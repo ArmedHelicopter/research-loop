@@ -1,0 +1,13 @@
+{
+  "id": "T026",
+  "title": "人类一致性门通过",
+  "program_question": "三人盲评是否给出 action-linked 的语域尺？",
+  "stage_question": "kappa 与正控是否达标？",
+  "hypotheses": [
+    "H1：人类尺可用",
+    "H2：一致性不足"
+  ],
+  "locked_rule": "pairwise quadratic kappa≥0.60 且正控方向≥80% 则人类门 proceed。",
+  "artifacts_summary": "16 提示 × 4 臂。",
+  "new_observation": "kappa 0.71，正控 14/16。abstain 6%。"
+}

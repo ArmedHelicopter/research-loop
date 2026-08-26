@@ -1,0 +1,13 @@
+{
+  "id": "T022",
+  "title": "能力下降集中在新题",
+  "program_question": "提示干预是否在 reasoning 上非劣？",
+  "stage_question": "CI 是否排除零且超过预注册代价门？",
+  "hypotheses": [
+    "H1：无下降",
+    "H2：有真实下降"
+  ],
+  "locked_rule": "reasoning 差的 CI 排除 0 且点估计劣于 −0.05 则 closed_negative。",
+  "artifacts_summary": "扩池后 96 题。",
+  "new_observation": "差 −0.089 [−0.156, −0.026]，新题 −0.125。"
+}

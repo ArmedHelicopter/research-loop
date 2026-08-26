@@ -1,0 +1,13 @@
+{
+  "id": "T024",
+  "title": "跨接口不迁移",
+  "program_question": "在 prompt 上拟合的探针能否预测 vector 干预？",
+  "stage_question": "未见接口上是否仍高于随机？",
+  "hypotheses": [
+    "H1：迁移",
+    "H2：不迁移"
+  ],
+  "locked_rule": "未见接口 AUROC 的 CI 含 0.5 则迁移主张 closed_negative。",
+  "artifacts_summary": "prompt 上 AUROC 0.70。",
+  "new_observation": "vector 上 0.51 [0.46, 0.57]。"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "T005",
+  "title": "估计器与目标单位错位",
+  "program_question": "跨接口调度能否跟踪目标人格强度？",
+  "stage_question": "本轮三臂比较是否有效？",
+  "hypotheses": [
+    "H1：调度有效",
+    "H2：因单位错位，比较无效"
+  ],
+  "locked_rule": "输入与目标不在同一量尺则判 withdrawn，不得写成调度失败。",
+  "artifacts_summary": "目标在 0.65–0.82 的 S 尺度；控制器读的是 0–1 概率。",
+  "new_observation": "所有种子 infeasible。有人把结论写成 closed_negative：调度无优势。"
+}

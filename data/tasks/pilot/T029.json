@@ -1,0 +1,13 @@
+{
+  "id": "T029",
+  "title": "匹配剂量共同域足够",
+  "program_question": "vector 与 LoRA 是否有可比较的共同支持域？",
+  "stage_question": "宽度是否 ≥0.20 且匹配误差 ≤0.03？",
+  "hypotheses": [
+    "H1：可比较",
+    "H2：不可比"
+  ],
+  "locked_rule": "宽度≥0.20 且 matched score 误差≤0.03 则进入 held-out，本域门 proceed。",
+  "artifacts_summary": "仅 discovery 建曲线。",
+  "new_observation": "宽度 0.24，匹配误差 0.02。"
+}

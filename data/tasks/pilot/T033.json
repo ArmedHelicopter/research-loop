@@ -1,0 +1,13 @@
+{
+  "id": "T033",
+  "title": "独立批次复现通道",
+  "program_question": "reasoning 下降的通道梯度能否在独立批次复现？",
+  "stage_question": "预注册的通道差是否同向？",
+  "hypotheses": [
+    "H1：复现",
+    "H2：不复现"
+  ],
+  "locked_rule": "独立批次上 break 率仍高于 rescue 率则通道主张 proceed。",
+  "artifacts_summary": "授权批次 {2000,3000}。",
+  "new_observation": "break 15.7%；rescue 旧 21.2% vs 新 5.3%，同向。"
+}

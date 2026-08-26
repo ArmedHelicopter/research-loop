@@ -1,0 +1,13 @@
+{
+  "id": "T007",
+  "title": "训练用了 final-test 标签",
+  "program_question": "线性探针能否在未见族上预测政策？",
+  "stage_question": "本次拟合是否泄漏 final-test？",
+  "hypotheses": [
+    "H1：未见预测成立",
+    "H2：拟合见过 final 标签，主张无效"
+  ],
+  "locked_rule": "探针或阈值若在 final-test 上选择，整次预测主张 withdrawn。",
+  "artifacts_summary": "三族数据。日志写 fit_on=all_rows。",
+  "new_observation": "层与阈值在含 held-out 族的网格上选了最大 AUROC。"
+}

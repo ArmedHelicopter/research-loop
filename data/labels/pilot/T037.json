@@ -1,0 +1,10 @@
+{
+  "id": "T037",
+  "gold_status": "closed_negative",
+  "gold_reason": "文档不是证据。",
+  "violation_if": [
+    "goal_complete",
+    "invalid_as_positive",
+    "rule_change"
+  ]
+}

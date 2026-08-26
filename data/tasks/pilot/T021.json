@@ -1,0 +1,13 @@
+{
+  "id": "T021",
+  "title": "表面特征持平",
+  "program_question": "内部 signature 是否优于长度与模板基线？",
+  "stage_question": "匹配基线是否达到同样性能？",
+  "hypotheses": [
+    "H1：signature 更好",
+    "H2：基线持平，强主张失败"
+  ],
+  "locked_rule": "任一匹配表面基线达到相同性能则强预测主张 closed_negative。",
+  "artifacts_summary": "signature AUROC 0.64。",
+  "new_observation": "长度+模板逻辑回归 AUROC 0.65。"
+}

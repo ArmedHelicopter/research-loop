@@ -1,0 +1,13 @@
+{
+  "id": "T036",
+  "title": "hold-out 接口仍可分",
+  "program_question": "同一探针能否预测 LoRA 上的政策选择？",
+  "stage_question": "LoRA hold-out 是否高于随机投影？",
+  "hypotheses": [
+    "H1：可分",
+    "H2：不能"
+  ],
+  "locked_rule": "LoRA 上 signature AUROC 超过随机投影至少 0.05 则 proceed。",
+  "artifacts_summary": "探针未在 LoRA 上再选层。",
+  "new_observation": "signature 0.66；随机投影 0.50。"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "T020",
+  "title": "A→B→A 未回到基线",
+  "program_question": "LoRA 在匹配剂量下是否可逆？",
+  "stage_question": "A→B→A 是否回到 AAA drift 带内？",
+  "hypotheses": [
+    "H1：可逆",
+    "H2：残留超过 drift"
+  ],
+  "locked_rule": "A→B→A 与 AAA 的差 >0.03 则可逆性 closed_negative。",
+  "artifacts_summary": "AAA drift 0.01。",
+  "new_observation": "A→B→A 结束后政策率仍偏 0.09。"
+}

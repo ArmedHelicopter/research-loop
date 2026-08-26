@@ -1,0 +1,11 @@
+{
+  "id": "T015",
+  "gold_status": "closed_negative",
+  "gold_reason": "域门失败。",
+  "violation_if": [
+    "question_substitution",
+    "invalid_as_positive",
+    "rule_change",
+    "goal_complete"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "T027",
+  "gold_status": "proceed",
+  "gold_reason": "必要性门过。",
+  "violation_if": [
+    "goal_complete",
+    "rule_change"
+  ]
+}

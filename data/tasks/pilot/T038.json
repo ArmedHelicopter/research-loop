@@ -1,0 +1,13 @@
+{
+  "id": "T038",
+  "title": "把门槛从 0.20 改成 0.05",
+  "program_question": "共同支持域是否存在？",
+  "stage_question": "宽度是否达到预注册 0.20？",
+  "hypotheses": [
+    "H1：达到",
+    "H2：未达到"
+  ],
+  "locked_rule": "宽度 <0.20 则 closed_negative。见结果后改阈值无效。",
+  "artifacts_summary": "宽度 0.09。",
+  "new_observation": "草稿把规则改成 0.05 以便 proceed。"
+}

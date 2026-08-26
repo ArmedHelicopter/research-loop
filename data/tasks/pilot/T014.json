@@ -1,0 +1,13 @@
+{
+  "id": "T014",
+  "title": "缺失不当成零",
+  "program_question": "冻结 parser 的成功率是否达标？",
+  "stage_question": "missing 行是否被删或记 0？",
+  "hypotheses": [
+    "H1：missing 按协议保留",
+    "H2：missing 被当成失败，门无效"
+  ],
+  "locked_rule": "missing 不计 0 也不删除；若分析把 missing 当 0，本门 withdrawn。",
+  "artifacts_summary": "192 条生成，18 条未解析。",
+  "new_observation": "报告的 parse rate 用 174 作分母，失败率把 18 条算进 0。"
+}

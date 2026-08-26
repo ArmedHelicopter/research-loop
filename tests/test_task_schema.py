@@ -7,7 +7,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_ids_match_and_rules_are_nonempty():
-    for path in (ROOT / "data" / "tasks" / "pilot").glob("T*.json"):
+    tasks = list((ROOT / "data" / "tasks" / "pilot").glob("T*.json"))
+    assert len(tasks) >= 40
+    for path in tasks:
         task = load_task(path)
         label = load_label(ROOT / "data" / "labels" / "pilot" / path.name)
         assert task["id"] == label["id"] == path.stem

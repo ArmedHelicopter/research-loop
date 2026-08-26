@@ -1,0 +1,13 @@
+{
+  "id": "T027",
+  "title": "消融达到必要性门",
+  "program_question": "去掉冻结方向是否必要地降低政策率？",
+  "stage_question": "Δ 是否 ≥0.10 且随机对照 ≤0.03？",
+  "hypotheses": [
+    "H1：必要",
+    "H2：否"
+  ],
+  "locked_rule": "目标 Δ≥0.10 且随机对照≤0.03 则必要性 proceed。",
+  "artifacts_summary": "匹配剂量。",
+  "new_observation": "目标 Δ=0.14；随机 0.01。"
+}

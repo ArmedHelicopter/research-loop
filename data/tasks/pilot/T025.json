@@ -1,0 +1,13 @@
+{
+  "id": "T025",
+  "title": "双 oracle 与 invariance 通过",
+  "program_question": "先核验再执行能否被双 oracle 分开？",
+  "stage_question": "CPU 门是否通过？",
+  "hypotheses": [
+    "H1：分开且抗 alias",
+    "H2：捷径或 oracle 不一致"
+  ],
+  "locked_rule": "两 oracle 对全部 golden 与双向 mutation 一致且 shortcut AUROC 均 <0.60 则 proceed。",
+  "artifacts_summary": "三族各 64 state。",
+  "new_observation": "192/192 golden 一致。alias AUROC 0.51、0.48、0.52。"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "T012",
+  "title": "捷径基线已过门槛却仍宣称 signature",
+  "program_question": "中层探针是否优于表面捷径？",
+  "stage_question": "alias 置换基线是否低于锁定 AUROC 门？",
+  "hypotheses": [
+    "H1：探针独有信号",
+    "H2：捷径已达同样性能"
+  ],
+  "locked_rule": "任一 grouped shortcut AUROC ≥0.60 则强预测主张失败，本确认性 run withdrawn。",
+  "artifacts_summary": "探针 AUROC 0.71。",
+  "new_observation": "leave-alias-bank-out AUROC 0.63。有人建议只报告探针数字。"
+}

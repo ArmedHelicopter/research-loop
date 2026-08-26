@@ -1,0 +1,13 @@
+{
+  "id": "T034",
+  "title": "token 平衡成立",
+  "program_question": "脚本化 compliant/anti/random 是否 token 平衡？",
+  "stage_question": "各 family 的 token 差是否在锁定额度内？",
+  "hypotheses": [
+    "H1：平衡",
+    "H2：不平衡构成捷径"
+  ],
+  "locked_rule": "family 内条件间 token 极差 ≤3% 则平衡门 proceed。",
+  "artifacts_summary": "三 family 脚本化对照。",
+  "new_observation": "极差 1.1%、0.8%、2.0%。"
+}

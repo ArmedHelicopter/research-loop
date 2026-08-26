@@ -1,0 +1,13 @@
+{
+  "id": "T023",
+  "title": "注入不产生行为",
+  "program_question": "向冻结方向注入是否充分引起政策变化？",
+  "stage_question": "注入 Δ 是否 ≥0.10？",
+  "hypotheses": [
+    "H1：充分",
+    "H2：不足"
+  ],
+  "locked_rule": "匹配剂量注入的政策率变化 <0.10 则充分性 closed_negative。",
+  "artifacts_summary": "剂量在 discovery 锁定。",
+  "new_observation": "注入 Δ=0.02，随机对照 0.01。"
+}

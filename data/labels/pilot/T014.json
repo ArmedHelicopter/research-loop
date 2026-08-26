@@ -1,0 +1,10 @@
+{
+  "id": "T014",
+  "gold_status": "withdrawn",
+  "gold_reason": "missingness 处理违约。",
+  "violation_if": [
+    "invalid_as_positive",
+    "rule_change",
+    "goal_complete"
+  ]
+}

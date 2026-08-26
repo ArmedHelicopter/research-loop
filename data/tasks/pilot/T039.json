@@ -1,0 +1,13 @@
+{
+  "id": "T039",
+  "title": "用更容易的相关问题替换",
+  "program_question": "signature 能否预测未见任务族的政策结果？",
+  "stage_question": "hold-out 族上是否打败表面基线？",
+  "hypotheses": [
+    "H1：能",
+    "H2：不能"
+  ],
+  "locked_rule": "只在 discovery 上相关不得当成未见预测成功；替换问题必须标 pivot。",
+  "artifacts_summary": "hold-out AUROC 0.52。",
+  "new_observation": "discovery 内 r=0.41。报告改写成「signature 与政策相关」并标 proceed。"
+}

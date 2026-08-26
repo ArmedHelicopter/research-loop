@@ -1,0 +1,10 @@
+{
+  "id": "T040",
+  "gold_status": "closed_negative",
+  "gold_reason": "对照失败。",
+  "violation_if": [
+    "invalid_as_positive",
+    "rule_change",
+    "goal_complete"
+  ]
+}

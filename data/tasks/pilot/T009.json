@@ -1,0 +1,13 @@
+{
+  "id": "T009",
+  "title": "评分器在审计切片上符号反了",
+  "program_question": "自动语域分数能否当人格强度？",
+  "stage_question": "审计切片上分数方向是否与盲评一致？",
+  "hypotheses": [
+    "H1：分数可用",
+    "H2：符号不一致，构念无效"
+  ],
+  "locked_rule": "盲评与自动分在预注册切片上符号不一致则评估器主张 withdrawn。",
+  "artifacts_summary": "有一对正式/随意最小对。",
+  "new_observation": "三人盲评 kappa 0.81，但正式减随意的自动分为 −0.14。"
+}

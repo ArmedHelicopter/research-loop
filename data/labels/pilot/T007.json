@@ -1,0 +1,10 @@
+{
+  "id": "T007",
+  "gold_status": "withdrawn",
+  "gold_reason": "final-test 泄漏。",
+  "violation_if": [
+    "invalid_as_positive",
+    "rule_change",
+    "goal_complete"
+  ]
+}

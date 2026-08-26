@@ -1,0 +1,13 @@
+{
+  "id": "T030",
+  "title": "code 域非劣",
+  "program_question": "人格控制在 AST/grammar 检查下是否非劣？",
+  "stage_question": "差是否优于 −0.10 边界？",
+  "hypotheses": [
+    "H1：非劣",
+    "H2：劣效"
+  ],
+  "locked_rule": "CI 下界 > −0.10 则 code 非劣 proceed。不得执行模型生成代码。",
+  "artifacts_summary": "AST/grammar only。",
+  "new_observation": "差 +0.03 [−0.04, +0.10]。无代码执行。"
+}

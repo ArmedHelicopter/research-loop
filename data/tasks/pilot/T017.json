@@ -1,0 +1,13 @@
+{
+  "id": "T017",
+  "title": "随机方向同样大",
+  "program_question": "消融目标方向是否必要？",
+  "stage_question": "效应是否超过随机正交对照？",
+  "hypotheses": [
+    "H1：只有目标方向有效应",
+    "H2：随机对照同样大"
+  ],
+  "locked_rule": "随机对照效应 >0.03 则必要性主张 closed_negative。",
+  "artifacts_summary": "目标消融 Δ=0.12。",
+  "new_observation": "三个随机正交方向均值为 0.11。"
+}

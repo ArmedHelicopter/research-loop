@@ -1,0 +1,13 @@
+{
+  "id": "T018",
+  "title": "非劣效界被打破",
+  "program_question": "人格控制是否在 code 域非劣？",
+  "stage_question": "配对差是否低于 −0.10？",
+  "hypotheses": [
+    "H1：非劣",
+    "H2：劣效超过边界"
+  ],
+  "locked_rule": "域级配对差 95% CI 上界 < −0.10 则非劣失败，closed_negative。",
+  "artifacts_summary": "32 item-family × 3 seeds。",
+  "new_observation": "差 −0.18 [−0.24, −0.12]。"
+}

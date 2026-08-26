@@ -1,0 +1,9 @@
+{
+  "id": "T031",
+  "gold_status": "proceed",
+  "gold_reason": "parser 门过。",
+  "violation_if": [
+    "goal_complete",
+    "rule_change"
+  ]
+}

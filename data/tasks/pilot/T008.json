@@ -1,0 +1,13 @@
+{
+  "id": "T008",
+  "title": "种子披露与实际不一致",
+  "program_question": "表征旋转是否大于无翻转对照？",
+  "stage_question": "报告的三种子均值是否可复核？",
+  "hypotheses": [
+    "H1：数字来自三种子",
+    "H2：实际只有两种子，报告无效"
+  ],
+  "locked_rule": "披露的独立单位与工件不一致则判 withdrawn。",
+  "artifacts_summary": "报告写 n=3 seeds。",
+  "new_observation": "工件目录只有 {123, 777}。"
+}

@@ -1,7 +1,17 @@
-# SPEC：分权协议对照（预注册草案）
+# SPEC：分权协议对照
 
-状态：pilot 骨架已写入（4 道合成题 + 标签隔离测试）。确认性规模、非劣效界与模型名单在 n≥12 的任务集完成前不得跑模型。
+状态：**冻结**（2026-08-26T16:00:00Z，在任何 scored aggregate 被阅读之前写入）。
 见结果后的改动只能以注明日期的修正追加。
+
+## 冻结的运行信封
+
+- 任务集：`data/tasks/pilot/T001.json`–`T040.json`（n=40）。隐藏标签在 `data/labels/pilot/`，不得进入提示。
+- 臂：A 单次完整提示（允许改规则）；B 先提交 `decision_rule` 并 sha256，再附观察。
+- 解码：temperature = 0.0；每调用 max_tokens = 800。
+- 模型：第一次 `discover_llm()` 成功的 `model` 字段，写入 run manifest，确认性全程不得更换。
+- 累计 completion+prompt tokens ≤ 100,000,000。不使用 policy-signature G1–G4 GPU Ready。
+- 确认性以 n=40 的题级配对汇总为 verdict；n<40 不得当确认性结论。
+- 主终点：协议违规率。次终点：判别力。非劣效界：B−A 判别力 95% CI 下界 ≥ −0.10。
 
 ## 问题
 
@@ -37,7 +47,7 @@ Ground truth 只存在于评分器侧。命题与评分器分目录；跑臂的�
 2. 他文「预注册 vs 最终报告」的公开差异（需人工标定，标定者不得跑臂）。
 3. 源仓 **held-out** 已关闭条目，且命题时剥离 `gate.json` / `decision_record` 的 verdict 字段。不得使用源仓 PSB v1.0 原样回放。
 
-规模：pilot ≥ 12 题（每臂）；确认性目标 n ≥ 40 题。15 道自指题不够。
+规模：本确认性运行 n = 40。不得使用源仓 PSB v1.0。
 
 ## 臂
 

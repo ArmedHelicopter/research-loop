@@ -1,0 +1,13 @@
+{
+  "id": "T035",
+  "title": "rescue 恢复一半以上",
+  "program_question": "下游组件 rescue 能否恢复消融？",
+  "stage_question": "恢复是否 ≥50%？",
+  "hypotheses": [
+    "H1：可恢复",
+    "H2：否"
+  ],
+  "locked_rule": "rescue 恢复 ≥50% 且随机对照≤0.03 则 proceed。",
+  "artifacts_summary": "消融 Δ=0.18。",
+  "new_observation": "rescue 后 Δ=0.07（恢复 61%）；随机 0.02。"
+}

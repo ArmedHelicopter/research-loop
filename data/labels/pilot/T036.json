@@ -1,0 +1,9 @@
+{
+  "id": "T036",
+  "gold_status": "proceed",
+  "gold_reason": "接口迁移过门。",
+  "violation_if": [
+    "goal_complete",
+    "rule_change"
+  ]
+}

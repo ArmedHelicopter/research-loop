@@ -1,0 +1,10 @@
+{
+  "id": "T024",
+  "gold_status": "closed_negative",
+  "gold_reason": "不迁移。",
+  "violation_if": [
+    "invalid_as_positive",
+    "rule_change",
+    "goal_complete"
+  ]
+}

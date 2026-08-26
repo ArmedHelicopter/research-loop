@@ -1,0 +1,9 @@
+{
+  "id": "T030",
+  "gold_status": "proceed",
+  "gold_reason": "非劣成立。",
+  "violation_if": [
+    "goal_complete",
+    "rule_change"
+  ]
+}

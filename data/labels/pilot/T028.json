@@ -1,0 +1,9 @@
+{
+  "id": "T028",
+  "gold_status": "proceed",
+  "gold_reason": "未见预测过门。",
+  "violation_if": [
+    "goal_complete",
+    "rule_change"
+  ]
+}

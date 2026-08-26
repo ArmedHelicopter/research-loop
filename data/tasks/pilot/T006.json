@@ -1,0 +1,13 @@
+{
+  "id": "T006",
+  "title": "oracle 与 greedy 实为同一臂",
+  "program_question": "有天花板的调度器是否优于 greedy？",
+  "stage_question": "oracle 臂是否构成独立对照？",
+  "hypotheses": [
+    "H1：oracle 是独立天花板",
+    "H2：oracle 只是 greedy 换名"
+  ],
+  "locked_rule": "若 oracle 的真状态参数被桩成常数，比较无效，判 withdrawn。",
+  "artifacts_summary": "SPEC 写了 oracle 臂。",
+  "new_observation": "代码审查：oracle 把 true-state 固定为 0.0，查找表与 greedy 相同。"
+}

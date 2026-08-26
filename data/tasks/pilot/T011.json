@@ -1,0 +1,13 @@
+{
+  "id": "T011",
+  "title": "两 oracle 共享 transition 缓存",
+  "program_question": "双独立 oracle 能否一致给黄金转移打分？",
+  "stage_question": "两个 oracle 是否共享实现？",
+  "hypotheses": [
+    "H1：独立且一致",
+    "H2：共享缓存，独立性失败"
+  ],
+  "locked_rule": "oracle 共享 transition、helper 或 cache 则评估器门 withdrawn。",
+  "artifacts_summary": "两个包名不同。",
+  "new_observation": "两者 import 同一 `_transition_memo`。对 mutation 仍 100% 一致。"
+}

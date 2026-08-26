@@ -1,0 +1,13 @@
+{
+  "id": "T013",
+  "title": "答案键有可证明的反转",
+  "program_question": "人格提示是否降低 reasoning 正确率？",
+  "stage_question": "本批评分键是否可复核？",
+  "hypotheses": [
+    "H1：下降是能力代价",
+    "H2：键错误使比较无效"
+  ],
+  "locked_rule": "发现可证明反转的金键则本批能力比较 withdrawn，直到键修复。",
+  "artifacts_summary": "384 行已评分。",
+  "new_observation": "r31 提示逻辑使 Mara 最重，键写成 Otto。人格臂因别名 token 得了分。"
+}

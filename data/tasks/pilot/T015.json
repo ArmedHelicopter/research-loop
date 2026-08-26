@@ -1,0 +1,13 @@
+{
+  "id": "T015",
+  "title": "共同支持域过窄",
+  "program_question": "vector 与 LoRA 在匹配剂量下是否方向不同？",
+  "stage_question": "共同支持域宽度是否 ≥0.20？",
+  "hypotheses": [
+    "H1：宽度 ≥0.20",
+    "H2：宽度不足"
+  ],
+  "locked_rule": "宽度 <0.20 则不得进 held-out 比较，status=closed_negative。",
+  "artifacts_summary": "discovery 剂量曲线已拟合。",
+  "new_observation": "共同支持域宽度 0.07。有人建议改问曲线是否单调。"
+}

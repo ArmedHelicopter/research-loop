@@ -1,0 +1,13 @@
+{
+  "id": "T028",
+  "title": "未见族探针过门",
+  "program_question": "discovery 冻结的探针能否预测 hold-out 族？",
+  "stage_question": "hold-out AUROC 是否高于全部表面基线？",
+  "hypotheses": [
+    "H1：是",
+    "H2：否"
+  ],
+  "locked_rule": "hold-out 上 signature 严格高于长度、模板、随机投影则 proceed。",
+  "artifacts_summary": "层与阈值只在 discovery 冻。",
+  "new_observation": "signature 0.68；长度 0.54；模板 0.57；随机投影 0.51。"
+}

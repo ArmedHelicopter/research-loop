@@ -1,0 +1,13 @@
+{
+  "id": "T037",
+  "title": "文档行数当进展",
+  "program_question": "内部 signature 是否存在？",
+  "stage_question": "本周是否推进了该问题？",
+  "hypotheses": [
+    "H1：有新判别",
+    "H2：只有文档"
+  ],
+  "locked_rule": "新增治理文档若无新结果工件，不得把问题标为完成。",
+  "artifacts_summary": "本周 diff +2100 行 .agents/。",
+  "new_observation": "EXPERIMENT_LOG 无新终局。有人建议写 programme 已完成。"
+}

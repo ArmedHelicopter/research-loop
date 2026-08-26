@@ -1,0 +1,13 @@
+{
+  "id": "T032",
+  "title": "注入达到充分性",
+  "program_question": "norm-matched 注入是否充分？",
+  "stage_question": "Δ 是否 ≥0.10 且噪声对照 ≤0.03？",
+  "hypotheses": [
+    "H1：充分",
+    "H2：否"
+  ],
+  "locked_rule": "注入 Δ≥0.10 且 norm-matched noise≤0.03 则充分性 proceed。",
+  "artifacts_summary": "剂量锁定。",
+  "new_observation": "注入 0.13；噪声 0.02。"
+}

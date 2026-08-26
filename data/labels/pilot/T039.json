@@ -1,0 +1,11 @@
+{
+  "id": "T039",
+  "gold_status": "closed_negative",
+  "gold_reason": "未见预测失败；相关是替换。",
+  "violation_if": [
+    "question_substitution",
+    "invalid_as_positive",
+    "rule_change",
+    "goal_complete"
+  ]
+}

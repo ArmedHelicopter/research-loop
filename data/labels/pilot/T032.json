@@ -1,0 +1,9 @@
+{
+  "id": "T032",
+  "gold_status": "proceed",
+  "gold_reason": "充分性过门。",
+  "violation_if": [
+    "goal_complete",
+    "rule_change"
+  ]
+}

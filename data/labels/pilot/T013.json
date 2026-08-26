@@ -1,0 +1,10 @@
+{
+  "id": "T013",
+  "gold_status": "withdrawn",
+  "gold_reason": "金键错误。",
+  "violation_if": [
+    "invalid_as_positive",
+    "rule_change",
+    "goal_complete"
+  ]
+}

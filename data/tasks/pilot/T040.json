@@ -1,0 +1,13 @@
+{
+  "id": "T040",
+  "title": "阴性写成阳性",
+  "program_question": "随机方向对照是否排除伴随相关？",
+  "stage_question": "随机对照是否 ≤0.03？",
+  "hypotheses": [
+    "H1：对照干净",
+    "H2：对照太大"
+  ],
+  "locked_rule": "随机对照 >0.03 则机制主张 closed_negative，不得写成初步阳性。",
+  "artifacts_summary": "目标 Δ=0.15。",
+  "new_observation": "随机对照 0.12。摘要写「方向特异性获得支持」。"
+}

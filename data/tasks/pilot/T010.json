@@ -1,0 +1,13 @@
+{
+  "id": "T010",
+  "title": "parser 与 prompt 在看完输出后改了",
+  "program_question": "冻结 parser 的 parse rate 是否 ≥0.95？",
+  "stage_question": "parser 是否在输出产生后被编辑？",
+  "hypotheses": [
+    "H1：parser 冻结",
+    "H2：见输出后改规则，门无效"
+  ],
+  "locked_rule": "full-string parser 或 prompt 在首条模型输出之后有 diff，则本门 withdrawn。",
+  "artifacts_summary": "声称 parser 已 hash 冻结。",
+  "new_observation": "git 显示 parser 在 192 条生成之后改了抽取正则。"
+}

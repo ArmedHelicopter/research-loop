@@ -1,0 +1,13 @@
+{
+  "id": "T031",
+  "title": "parser 分层达标",
+  "program_question": "冻结 parser 是否达到兼容性门？",
+  "stage_question": "总 parse rate 与分层是否达标？",
+  "hypotheses": [
+    "H1：达标",
+    "H2：分层失败"
+  ],
+  "locked_rule": "总 parse rate≥0.95 且每个 n≥20 层 ≥0.90 则 proceed。missing 不计 0。",
+  "artifacts_summary": "192 条，missing 单独报告。",
+  "new_observation": "总 0.97；各层最低 0.92。missing 8 条未当 0。"
+}

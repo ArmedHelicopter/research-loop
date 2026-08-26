@@ -1,0 +1,13 @@
+{
+  "id": "T019",
+  "title": "恢复不到一半",
+  "program_question": "下游 rescue 能否恢复消融效应？",
+  "stage_question": "rescue 是否恢复至少一半效应？",
+  "hypotheses": [
+    "H1：恢复 ≥50%",
+    "H2：不足"
+  ],
+  "locked_rule": "rescue 恢复 <50% 则可恢复性 closed_negative。",
+  "artifacts_summary": "消融 Δ=0.20。",
+  "new_observation": "rescue 后剩余 Δ=0.16（恢复 20%）。"
+}

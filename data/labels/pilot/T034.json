@@ -1,0 +1,9 @@
+{
+  "id": "T034",
+  "gold_status": "proceed",
+  "gold_reason": "平衡门过。",
+  "violation_if": [
+    "goal_complete",
+    "rule_change"
+  ]
+}

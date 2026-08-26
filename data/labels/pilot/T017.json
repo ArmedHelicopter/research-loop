@@ -1,0 +1,10 @@
+{
+  "id": "T017",
+  "gold_status": "closed_negative",
+  "gold_reason": "对照未分离。",
+  "violation_if": [
+    "invalid_as_positive",
+    "rule_change",
+    "goal_complete"
+  ]
+}
