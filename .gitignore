@@ -1,0 +1,9 @@
+.venv/
+.venv-cuda/
+__pycache__/
+*.pyc
+.DS_Store
+results/**/logs/
+results/**/cache/
+labels/
+.env
