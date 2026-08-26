@@ -1,0 +1,13 @@
+{
+  "id": "T001",
+  "title": "单位不可比的闭环调度",
+  "program_question": "接口调度能否在匹配剂量下优于静态接口？",
+  "stage_question": "本次闭环三臂比较是否构成有效检验？",
+  "hypotheses": [
+    "H1：调度优于静态接口",
+    "H2：比较无效，因为估计器与目标不在同一量尺"
+  ],
+  "locked_rule": "若任一臂的输入单位与锁定目标量尺不一致，本次比较判 withdrawn，不得写成 closed_negative。",
+  "artifacts_summary": "三臂各 72 轮。估计器拟合在 0–1 概率上，目标写在 0.65–0.82 的另一尺度。",
+  "new_observation": "closed_loop 在三粒种子上 72/72 轮返回 infeasible。open_loop 与 always_vector 的轨迹按构造相同。有人建议把结果写成「调度无优势」。"
+}

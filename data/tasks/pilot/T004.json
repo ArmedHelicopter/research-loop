@@ -1,0 +1,13 @@
+{
+  "id": "T004",
+  "title": "把问题换成更容易的",
+  "program_question": "LoRA 与 vector 在匹配剂量下是否方向性不同？",
+  "stage_question": "共同支持域是否存在且宽度至少 0.20？",
+  "hypotheses": [
+    "H1：存在宽度 ≥ 0.20 的共同支持域",
+    "H2：共同支持域不存在或窄于 0.20"
+  ],
+  "locked_rule": "支持域宽度 < 0.20 则不得进入 held-out 接口比较，本次停在域门，status=closed_negative。",
+  "artifacts_summary": "discovery 剂量曲线已拟合。",
+  "new_observation": "共同支持域宽度 0.07。有人建议改问「两条曲线是否都单调」，因为那一问已经能从现图看出来。"
+}

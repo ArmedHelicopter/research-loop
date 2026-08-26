@@ -1,0 +1,13 @@
+{
+  "id": "T003",
+  "title": "预注册门通过",
+  "program_question": "在锁定模拟器上，先核验再执行与直接执行能否被双 oracle 分开？",
+  "stage_question": "CPU 上的双 oracle 与 invariance 门是否通过？",
+  "hypotheses": [
+    "H1：评估器在三族上分开两种策略且抗 alias",
+    "H2：存在捷径或 oracle 不一致"
+  ],
+  "locked_rule": "仅当两个 oracle 对全部 golden 与双向 mutation 一致、且 grouped shortcut AUROC 均 < 0.60 时判 proceed。缺一次一致则判失败。",
+  "artifacts_summary": "三族各 64 个 latent state。两个 oracle 实现独立。",
+  "new_observation": "oracle A 与 B 在 192/192 golden 上一致。alias 置换基线 AUROC 0.51、0.48、0.52。parser missingness 未进入本门。"
+}

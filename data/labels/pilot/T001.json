@@ -1,0 +1,6 @@
+{
+  "id": "T001",
+  "gold_status": "withdrawn",
+  "gold_reason": "量尺不一致使比较无效，必须撤回而不是收窄为阴性。",
+  "violation_if": ["invalid_as_positive", "rule_change", "goal_complete"]
+}
