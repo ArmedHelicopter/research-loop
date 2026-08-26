@@ -64,12 +64,14 @@ def render_lock_prompt(task: dict[str, Any]) -> str:
 
 
 def render_observe_prompt(task: dict[str, Any], *, committed_rule: str) -> str:
-    """Arm B step 2: observation arrives only after the rule bytes are hashed."""
+    """Arm B step 2: full stem plus observation, only after the rule bytes are hashed."""
     return f"""规则已哈希锁定。最终 JSON 的 decision_rule 必须与下面提交的文本逐字相同。
 禁止宣告 programme 完成。{JSON_FIELDS}
 
 你提交的判定规则：
 {committed_rule}
+
+{_stem(task)}
 
 新观察：
 {task["new_observation"]}

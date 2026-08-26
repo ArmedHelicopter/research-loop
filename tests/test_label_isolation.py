@@ -18,9 +18,14 @@ def test_prompts_do_not_contain_label_payloads():
     for task_path in TASKS.glob("T*.json"):
         task = load_task(task_path)
         label = (LABELS / task_path.name).read_text(encoding="utf-8")
-        from experiments.sep_of_powers.render_prompt import render_lock_prompt
+        from experiments.sep_of_powers.render_prompt import render_lock_prompt, render_observe_prompt
 
-        prompts = [render_prompt(task, arm="A"), render_prompt(task, arm="B"), render_lock_prompt(task)]
+        prompts = [
+            render_prompt(task, arm="A"),
+            render_prompt(task, arm="B"),
+            render_lock_prompt(task),
+            render_observe_prompt(task, committed_rule=task["locked_rule"]),
+        ]
         for prompt in prompts:
             assert "gold_status" not in prompt
             assert "gold_reason" not in prompt

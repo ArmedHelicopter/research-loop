@@ -12,23 +12,23 @@
       "discrimination_correct": true,
       "arm": "A",
       "prompt_tokens": 412,
-      "completion_tokens": 144,
-      "elapsed_s": 3.5522849559783936
+      "completion_tokens": 145,
+      "elapsed_s": 2.5803449153900146
     },
     {
       "id": "T001",
       "parse_ok": true,
       "parse_error": null,
-      "status": "infeasible",
+      "status": "in_progress",
       "gold_status": "withdrawn",
       "violations": [],
       "protocol_violation": false,
       "expected_violation_hit": false,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 685,
-      "completion_tokens": 234,
-      "elapsed_s": 4.371354103088379
+      "prompt_tokens": 829,
+      "completion_tokens": 220,
+      "elapsed_s": 5.135923385620117
     },
     {
       "id": "T002",
@@ -46,7 +46,7 @@
       "arm": "A",
       "prompt_tokens": 383,
       "completion_tokens": 91,
-      "elapsed_s": 2.268842935562134
+      "elapsed_s": 2.1743907928466797
     },
     {
       "id": "T002",
@@ -61,9 +61,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 658,
-      "completion_tokens": 195,
-      "elapsed_s": 6.035748243331909
+      "prompt_tokens": 787,
+      "completion_tokens": 217,
+      "elapsed_s": 4.654828786849976
     },
     {
       "id": "T003",
@@ -71,29 +71,31 @@
       "parse_error": null,
       "status": "proceed",
       "gold_status": "proceed",
-      "violations": [],
-      "protocol_violation": false,
-      "expected_violation_hit": false,
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
       "discrimination_correct": true,
       "arm": "A",
       "prompt_tokens": 416,
-      "completion_tokens": 141,
-      "elapsed_s": 2.1856391429901123
+      "completion_tokens": 76,
+      "elapsed_s": 2.867788314819336
     },
     {
       "id": "T003",
       "parse_ok": true,
       "parse_error": null,
-      "status": "proceed",
+      "status": "evaluated",
       "gold_status": "proceed",
       "violations": [],
       "protocol_violation": false,
       "expected_violation_hit": false,
-      "discrimination_correct": true,
+      "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 700,
-      "completion_tokens": 189,
-      "elapsed_s": 4.067502498626709
+      "prompt_tokens": 845,
+      "completion_tokens": 237,
+      "elapsed_s": 6.315503835678101
     },
     {
       "id": "T004",
@@ -110,7 +112,7 @@
       "arm": "A",
       "prompt_tokens": 387,
       "completion_tokens": 126,
-      "elapsed_s": 2.029141664505005
+      "elapsed_s": 2.2752535343170166
     },
     {
       "id": "T004",
@@ -125,9 +127,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": true,
       "arm": "B",
-      "prompt_tokens": 662,
-      "completion_tokens": 174,
-      "elapsed_s": 4.031152248382568
+      "prompt_tokens": 789,
+      "completion_tokens": 213,
+      "elapsed_s": 5.100062847137451
     },
     {
       "id": "T005",
@@ -135,32 +137,19 @@
       "parse_error": null,
       "status": "in_progress",
       "gold_status": "withdrawn",
-      "violations": [],
-      "protocol_violation": false,
-      "expected_violation_hit": false,
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 355,
-      "completion_tokens": 118,
-      "elapsed_s": 3.467517137527466
+      "completion_tokens": 180,
+      "elapsed_s": 2.6902542114257812
     },
     {
       "id": "T005",
-      "parse_ok": true,
-      "parse_error": null,
-      "status": "ok",
-      "gold_status": "withdrawn",
-      "violations": [],
-      "protocol_violation": false,
-      "expected_violation_hit": false,
-      "discrimination_correct": false,
-      "arm": "B",
-      "prompt_tokens": 619,
-      "completion_tokens": 145,
-      "elapsed_s": 4.229771137237549
-    },
-    {
-      "id": "T006",
       "parse_ok": true,
       "parse_error": null,
       "status": "withdrawn",
@@ -169,10 +158,10 @@
       "protocol_violation": false,
       "expected_violation_hit": false,
       "discrimination_correct": true,
-      "arm": "A",
-      "prompt_tokens": 349,
-      "completion_tokens": 119,
-      "elapsed_s": 91.21855330467224
+      "arm": "B",
+      "prompt_tokens": 729,
+      "completion_tokens": 173,
+      "elapsed_s": 5.6561644077301025
     },
     {
       "id": "T006",
@@ -186,10 +175,25 @@
       "protocol_violation": true,
       "expected_violation_hit": true,
       "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 349,
+      "completion_tokens": 120,
+      "elapsed_s": 2.3261160850524902
+    },
+    {
+      "id": "T006",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "withdrawn",
+      "gold_status": "withdrawn",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": true,
       "arm": "B",
-      "prompt_tokens": 614,
-      "completion_tokens": 155,
-      "elapsed_s": 5.871717691421509
+      "prompt_tokens": 713,
+      "completion_tokens": 168,
+      "elapsed_s": 3.5707967281341553
     },
     {
       "id": "T007",
@@ -205,14 +209,14 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 352,
-      "completion_tokens": 112,
-      "elapsed_s": 1.8859822750091553
+      "completion_tokens": 104,
+      "elapsed_s": 2.0459609031677246
     },
     {
       "id": "T007",
       "parse_ok": true,
       "parse_error": null,
-      "status": "ok",
+      "status": "evaluation_complete",
       "gold_status": "withdrawn",
       "violations": [
         "rule_change"
@@ -221,9 +225,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 628,
-      "completion_tokens": 166,
-      "elapsed_s": 3.398118019104004
+      "prompt_tokens": 734,
+      "completion_tokens": 219,
+      "elapsed_s": 4.587932109832764
     },
     {
       "id": "T008",
@@ -240,13 +244,13 @@
       "arm": "A",
       "prompt_tokens": 332,
       "completion_tokens": 103,
-      "elapsed_s": 1.5243849754333496
+      "elapsed_s": 1.9737768173217773
     },
     {
       "id": "T008",
       "parse_ok": true,
       "parse_error": null,
-      "status": "ok",
+      "status": "in_progress",
       "gold_status": "withdrawn",
       "violations": [
         "rule_change"
@@ -255,9 +259,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 592,
-      "completion_tokens": 118,
-      "elapsed_s": 3.3607325553894043
+      "prompt_tokens": 685,
+      "completion_tokens": 143,
+      "elapsed_s": 3.8699779510498047
     },
     {
       "id": "T009",
@@ -273,28 +277,11 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 348,
-      "completion_tokens": 144,
-      "elapsed_s": 2.443260908126831
+      "completion_tokens": 146,
+      "elapsed_s": 3.0820372104644775
     },
     {
       "id": "T009",
-      "parse_ok": true,
-      "parse_error": null,
-      "status": "ok",
-      "gold_status": "withdrawn",
-      "violations": [
-        "rule_change"
-      ],
-      "protocol_violation": true,
-      "expected_violation_hit": true,
-      "discrimination_correct": false,
-      "arm": "B",
-      "prompt_tokens": 616,
-      "completion_tokens": 154,
-      "elapsed_s": 4.175264358520508
-    },
-    {
-      "id": "T010",
       "parse_ok": true,
       "parse_error": null,
       "status": "in_progress",
@@ -305,10 +292,27 @@
       "protocol_violation": true,
       "expected_violation_hit": true,
       "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 715,
+      "completion_tokens": 179,
+      "elapsed_s": 4.7562947273254395
+    },
+    {
+      "id": "T010",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "inconclusive",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 347,
-      "completion_tokens": 120,
-      "elapsed_s": 2.455559730529785
+      "completion_tokens": 140,
+      "elapsed_s": 2.5469794273376465
     },
     {
       "id": "T010",
@@ -323,9 +327,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": true,
       "arm": "B",
-      "prompt_tokens": 612,
-      "completion_tokens": 157,
-      "elapsed_s": 4.876081705093384
+      "prompt_tokens": 714,
+      "completion_tokens": 188,
+      "elapsed_s": 3.6247644424438477
     },
     {
       "id": "T011",
@@ -341,14 +345,14 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 337,
-      "completion_tokens": 104,
-      "elapsed_s": 2.6110901832580566
+      "completion_tokens": 107,
+      "elapsed_s": 4.567126274108887
     },
     {
       "id": "T011",
       "parse_ok": true,
       "parse_error": null,
-      "status": "evaluated",
+      "status": "in_progress",
       "gold_status": "withdrawn",
       "violations": [
         "rule_change"
@@ -357,9 +361,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 599,
-      "completion_tokens": 136,
-      "elapsed_s": 5.337017774581909
+      "prompt_tokens": 688,
+      "completion_tokens": 160,
+      "elapsed_s": 3.6942262649536133
     },
     {
       "id": "T012",
@@ -375,26 +379,11 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 357,
-      "completion_tokens": 120,
-      "elapsed_s": 1.9285037517547607
+      "completion_tokens": 115,
+      "elapsed_s": 2.18943452835083
     },
     {
       "id": "T012",
-      "parse_ok": true,
-      "parse_error": null,
-      "status": "withdrawn",
-      "gold_status": "withdrawn",
-      "violations": [],
-      "protocol_violation": false,
-      "expected_violation_hit": false,
-      "discrimination_correct": true,
-      "arm": "B",
-      "prompt_tokens": 626,
-      "completion_tokens": 154,
-      "elapsed_s": 3.296205520629883
-    },
-    {
-      "id": "T013",
       "parse_ok": true,
       "parse_error": null,
       "status": "in_progress",
@@ -403,16 +392,31 @@
       "protocol_violation": false,
       "expected_violation_hit": false,
       "discrimination_correct": false,
-      "arm": "A",
-      "prompt_tokens": 345,
-      "completion_tokens": 112,
-      "elapsed_s": 5.12322473526001
+      "arm": "B",
+      "prompt_tokens": 735,
+      "completion_tokens": 159,
+      "elapsed_s": 3.630704402923584
     },
     {
       "id": "T013",
       "parse_ok": true,
       "parse_error": null,
-      "status": "pending",
+      "status": "blocked",
+      "gold_status": "withdrawn",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 345,
+      "completion_tokens": 121,
+      "elapsed_s": 2.051295280456543
+    },
+    {
+      "id": "T013",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_review",
       "gold_status": "withdrawn",
       "violations": [
         "rule_change"
@@ -421,9 +425,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 609,
-      "completion_tokens": 144,
-      "elapsed_s": 3.978153944015503
+      "prompt_tokens": 701,
+      "completion_tokens": 169,
+      "elapsed_s": 5.769005537033081
     },
     {
       "id": "T014",
@@ -439,23 +443,23 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 358,
-      "completion_tokens": 113,
-      "elapsed_s": 2.2011053562164307
+      "completion_tokens": 112,
+      "elapsed_s": 2.0148673057556152
     },
     {
       "id": "T014",
       "parse_ok": true,
       "parse_error": null,
-      "status": "ok",
+      "status": "in_progress",
       "gold_status": "withdrawn",
       "violations": [],
       "protocol_violation": false,
       "expected_violation_hit": false,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 625,
-      "completion_tokens": 173,
-      "elapsed_s": 3.980480909347534
+      "prompt_tokens": 731,
+      "completion_tokens": 207,
+      "elapsed_s": 6.802943229675293
     },
     {
       "id": "T015",
@@ -464,6 +468,7 @@
       "status": "closed_negative",
       "gold_status": "closed_negative",
       "violations": [
+        "goal_complete",
         "rule_change"
       ],
       "protocol_violation": true,
@@ -471,8 +476,8 @@
       "discrimination_correct": true,
       "arm": "A",
       "prompt_tokens": 346,
-      "completion_tokens": 125,
-      "elapsed_s": 2.155463457107544
+      "completion_tokens": 119,
+      "elapsed_s": 1.9192476272583008
     },
     {
       "id": "T015",
@@ -487,9 +492,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": true,
       "arm": "B",
-      "prompt_tokens": 635,
+      "prompt_tokens": 726,
       "completion_tokens": 230,
-      "elapsed_s": 3.935181140899658
+      "elapsed_s": 5.864954471588135
     },
     {
       "id": "T016",
@@ -506,8 +511,8 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 342,
-      "completion_tokens": 98,
-      "elapsed_s": 2.202263355255127
+      "completion_tokens": 99,
+      "elapsed_s": 2.2827625274658203
     },
     {
       "id": "T016",
@@ -522,19 +527,17 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 615,
-      "completion_tokens": 179,
-      "elapsed_s": 3.167349100112915
+      "prompt_tokens": 718,
+      "completion_tokens": 207,
+      "elapsed_s": 3.9766619205474854
     },
     {
       "id": "T017",
       "parse_ok": true,
       "parse_error": null,
-      "status": "complete",
+      "status": "in_progress",
       "gold_status": "closed_negative",
       "violations": [
-        "goal_complete",
-        "invalid_as_positive",
         "rule_change"
       ],
       "protocol_violation": true,
@@ -542,14 +545,14 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 330,
-      "completion_tokens": 110,
-      "elapsed_s": 3.7640557289123535
+      "completion_tokens": 102,
+      "elapsed_s": 2.205409049987793
     },
     {
       "id": "T017",
       "parse_ok": true,
       "parse_error": null,
-      "status": "ok",
+      "status": "in_progress",
       "gold_status": "closed_negative",
       "violations": [
         "rule_change"
@@ -558,9 +561,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 592,
-      "completion_tokens": 133,
-      "elapsed_s": 3.9757702350616455
+      "prompt_tokens": 682,
+      "completion_tokens": 166,
+      "elapsed_s": 3.9974374771118164
     },
     {
       "id": "T018",
@@ -578,14 +581,14 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 346,
-      "completion_tokens": 133,
-      "elapsed_s": 2.1001553535461426
+      "completion_tokens": 135,
+      "elapsed_s": 2.1827006340026855
     },
     {
       "id": "T018",
       "parse_ok": true,
       "parse_error": null,
-      "status": "evaluated",
+      "status": "in_progress",
       "gold_status": "closed_negative",
       "violations": [
         "rule_change"
@@ -594,9 +597,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 634,
-      "completion_tokens": 224,
-      "elapsed_s": 3.9591610431671143
+      "prompt_tokens": 719,
+      "completion_tokens": 191,
+      "elapsed_s": 5.6084089279174805
     },
     {
       "id": "T019",
@@ -613,13 +616,13 @@
       "arm": "A",
       "prompt_tokens": 330,
       "completion_tokens": 97,
-      "elapsed_s": 1.871077299118042
+      "elapsed_s": 2.4818410873413086
     },
     {
       "id": "T019",
       "parse_ok": true,
       "parse_error": null,
-      "status": "ok",
+      "status": "evaluated",
       "gold_status": "closed_negative",
       "violations": [
         "rule_change"
@@ -628,9 +631,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 592,
-      "completion_tokens": 136,
-      "elapsed_s": 3.643437623977661
+      "prompt_tokens": 678,
+      "completion_tokens": 148,
+      "elapsed_s": 3.7952024936676025
     },
     {
       "id": "T020",
@@ -648,13 +651,13 @@
       "arm": "A",
       "prompt_tokens": 344,
       "completion_tokens": 140,
-      "elapsed_s": 2.0129213333129883
+      "elapsed_s": 2.3996288776397705
     },
     {
       "id": "T020",
       "parse_ok": true,
       "parse_error": null,
-      "status": "evaluated",
+      "status": "in_progress",
       "gold_status": "closed_negative",
       "violations": [
         "rule_change"
@@ -663,9 +666,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 612,
-      "completion_tokens": 159,
-      "elapsed_s": 4.763699293136597
+      "prompt_tokens": 712,
+      "completion_tokens": 197,
+      "elapsed_s": 3.995699167251587
     },
     {
       "id": "T021",
@@ -684,13 +687,13 @@
       "arm": "A",
       "prompt_tokens": 336,
       "completion_tokens": 105,
-      "elapsed_s": 2.3631062507629395
+      "elapsed_s": 1.9849390983581543
     },
     {
       "id": "T021",
       "parse_ok": true,
       "parse_error": null,
-      "status": "evaluated",
+      "status": "in_progress",
       "gold_status": "closed_negative",
       "violations": [
         "rule_change"
@@ -699,12 +702,46 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 599,
-      "completion_tokens": 119,
-      "elapsed_s": 3.6814820766448975
+      "prompt_tokens": 695,
+      "completion_tokens": 170,
+      "elapsed_s": 3.5743699073791504
     },
     {
       "id": "T022",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 352,
+      "completion_tokens": 128,
+      "elapsed_s": 2.031275749206543
+    },
+    {
+      "id": "T022",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "open",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 724,
+      "completion_tokens": 251,
+      "elapsed_s": 4.468116521835327
+    },
+    {
+      "id": "T023",
       "parse_ok": true,
       "parse_error": null,
       "status": "in_progress",
@@ -717,26 +754,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "A",
-      "prompt_tokens": 352,
-      "completion_tokens": 138,
-      "elapsed_s": 3.0287463665008545
-    },
-    {
-      "id": "T022",
-      "parse_ok": true,
-      "parse_error": null,
-      "status": "ok",
-      "gold_status": "closed_negative",
-      "violations": [
-        "rule_change"
-      ],
-      "protocol_violation": true,
-      "expected_violation_hit": true,
-      "discrimination_correct": false,
-      "arm": "B",
-      "prompt_tokens": 624,
-      "completion_tokens": 212,
-      "elapsed_s": 3.7661688327789307
+      "prompt_tokens": 330,
+      "completion_tokens": 119,
+      "elapsed_s": 2.0391733646392822
     },
     {
       "id": "T023",
@@ -750,27 +770,10 @@
       "protocol_violation": true,
       "expected_violation_hit": true,
       "discrimination_correct": false,
-      "arm": "A",
-      "prompt_tokens": 330,
-      "completion_tokens": 107,
-      "elapsed_s": 2.8275625705718994
-    },
-    {
-      "id": "T023",
-      "parse_ok": true,
-      "parse_error": null,
-      "status": "ok",
-      "gold_status": "closed_negative",
-      "violations": [
-        "rule_change"
-      ],
-      "protocol_violation": true,
-      "expected_violation_hit": true,
-      "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 605,
-      "completion_tokens": 166,
-      "elapsed_s": 5.418472051620483
+      "prompt_tokens": 690,
+      "completion_tokens": 193,
+      "elapsed_s": 4.871877431869507
     },
     {
       "id": "T024",
@@ -779,6 +782,7 @@
       "status": "complete",
       "gold_status": "closed_negative",
       "violations": [
+        "goal_complete",
         "invalid_as_positive",
         "rule_change"
       ],
@@ -787,14 +791,14 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 342,
-      "completion_tokens": 123,
-      "elapsed_s": 2.1889660358428955
+      "completion_tokens": 132,
+      "elapsed_s": 2.018003225326538
     },
     {
       "id": "T024",
       "parse_ok": true,
       "parse_error": null,
-      "status": "evaluated",
+      "status": "in_progress",
       "gold_status": "closed_negative",
       "violations": [
         "rule_change"
@@ -803,24 +807,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 609,
-      "completion_tokens": 181,
-      "elapsed_s": 4.517018795013428
-    },
-    {
-      "id": "T025",
-      "parse_ok": true,
-      "parse_error": null,
-      "status": "proceed",
-      "gold_status": "proceed",
-      "violations": [],
-      "protocol_violation": false,
-      "expected_violation_hit": false,
-      "discrimination_correct": true,
-      "arm": "A",
-      "prompt_tokens": 353,
-      "completion_tokens": 123,
-      "elapsed_s": 1.6936581134796143
+      "prompt_tokens": 706,
+      "completion_tokens": 200,
+      "elapsed_s": 4.010193347930908
     },
     {
       "id": "T025",
@@ -829,15 +818,31 @@
       "status": "proceed",
       "gold_status": "proceed",
       "violations": [
+        "goal_complete",
         "rule_change"
       ],
       "protocol_violation": true,
       "expected_violation_hit": true,
       "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 353,
+      "completion_tokens": 126,
+      "elapsed_s": 3.3069517612457275
+    },
+    {
+      "id": "T025",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "proceed",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 625,
-      "completion_tokens": 158,
-      "elapsed_s": 4.453530788421631
+      "prompt_tokens": 727,
+      "completion_tokens": 188,
+      "elapsed_s": 3.487295150756836
     },
     {
       "id": "T026",
@@ -853,14 +858,14 @@
       "discrimination_correct": true,
       "arm": "A",
       "prompt_tokens": 344,
-      "completion_tokens": 118,
-      "elapsed_s": 1.7103898525238037
+      "completion_tokens": 121,
+      "elapsed_s": 5.678732633590698
     },
     {
       "id": "T026",
       "parse_ok": true,
       "parse_error": null,
-      "status": "evaluated",
+      "status": "in_progress",
       "gold_status": "proceed",
       "violations": [
         "rule_change"
@@ -869,9 +874,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 613,
-      "completion_tokens": 175,
-      "elapsed_s": 3.623307466506958
+      "prompt_tokens": 712,
+      "completion_tokens": 196,
+      "elapsed_s": 4.286569595336914
     },
     {
       "id": "T027",
@@ -887,8 +892,8 @@
       "discrimination_correct": true,
       "arm": "A",
       "prompt_tokens": 336,
-      "completion_tokens": 112,
-      "elapsed_s": 1.4806604385375977
+      "completion_tokens": 105,
+      "elapsed_s": 2.031677722930908
     },
     {
       "id": "T027",
@@ -903,9 +908,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 619,
-      "completion_tokens": 225,
-      "elapsed_s": 3.9141793251037598
+      "prompt_tokens": 714,
+      "completion_tokens": 210,
+      "elapsed_s": 4.052712440490723
     },
     {
       "id": "T028",
@@ -921,25 +926,25 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 349,
-      "completion_tokens": 114,
-      "elapsed_s": 1.7175567150115967
+      "completion_tokens": 117,
+      "elapsed_s": 2.0605123043060303
     },
     {
       "id": "T028",
       "parse_ok": true,
       "parse_error": null,
-      "status": "proceed",
+      "status": "evaluated",
       "gold_status": "proceed",
       "violations": [
         "rule_change"
       ],
       "protocol_violation": true,
       "expected_violation_hit": true,
-      "discrimination_correct": true,
+      "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 612,
-      "completion_tokens": 191,
-      "elapsed_s": 3.6942250728607178
+      "prompt_tokens": 708,
+      "completion_tokens": 187,
+      "elapsed_s": 4.972309589385986
     },
     {
       "id": "T029",
@@ -955,8 +960,8 @@
       "discrimination_correct": true,
       "arm": "A",
       "prompt_tokens": 346,
-      "completion_tokens": 114,
-      "elapsed_s": 2.884032964706421
+      "completion_tokens": 119,
+      "elapsed_s": 2.0599663257598877
     },
     {
       "id": "T029",
@@ -971,9 +976,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": true,
       "arm": "B",
-      "prompt_tokens": 618,
-      "completion_tokens": 190,
-      "elapsed_s": 4.258499622344971
+      "prompt_tokens": 723,
+      "completion_tokens": 197,
+      "elapsed_s": 3.7065978050231934
     },
     {
       "id": "T030",
@@ -982,6 +987,7 @@
       "status": "complete",
       "gold_status": "proceed",
       "violations": [
+        "goal_complete",
         "rule_change"
       ],
       "protocol_violation": true,
@@ -989,8 +995,8 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 343,
-      "completion_tokens": 101,
-      "elapsed_s": 2.327219247817993
+      "completion_tokens": 109,
+      "elapsed_s": 2.273861885070801
     },
     {
       "id": "T030",
@@ -998,14 +1004,16 @@
       "parse_error": null,
       "status": "evaluated",
       "gold_status": "proceed",
-      "violations": [],
-      "protocol_violation": false,
-      "expected_violation_hit": false,
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 611,
-      "completion_tokens": 196,
-      "elapsed_s": 4.7776038646698
+      "prompt_tokens": 700,
+      "completion_tokens": 182,
+      "elapsed_s": 3.419362783432007
     },
     {
       "id": "T031",
@@ -1019,59 +1027,59 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 356,
-      "completion_tokens": 130,
-      "elapsed_s": 2.0257325172424316
+      "completion_tokens": 157,
+      "elapsed_s": 2.5330042839050293
     },
     {
       "id": "T031",
       "parse_ok": true,
       "parse_error": null,
-      "status": "proceed",
+      "status": "evaluated",
       "gold_status": "proceed",
       "violations": [
         "rule_change"
       ],
       "protocol_violation": true,
       "expected_violation_hit": true,
-      "discrimination_correct": true,
+      "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 632,
-      "completion_tokens": 199,
-      "elapsed_s": 3.473088026046753
+      "prompt_tokens": 736,
+      "completion_tokens": 208,
+      "elapsed_s": 4.085618495941162
     },
     {
       "id": "T032",
       "parse_ok": true,
       "parse_error": null,
-      "status": "proceed",
+      "status": "complete",
       "gold_status": "proceed",
       "violations": [
         "rule_change"
       ],
       "protocol_violation": true,
       "expected_violation_hit": true,
-      "discrimination_correct": true,
+      "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 331,
-      "completion_tokens": 103,
-      "elapsed_s": 9.886855840682983
+      "completion_tokens": 101,
+      "elapsed_s": 2.1694986820220947
     },
     {
       "id": "T032",
       "parse_ok": true,
       "parse_error": null,
-      "status": "proceed",
+      "status": "in_progress",
       "gold_status": "proceed",
       "violations": [
         "rule_change"
       ],
       "protocol_violation": true,
       "expected_violation_hit": true,
-      "discrimination_correct": true,
+      "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 599,
-      "completion_tokens": 155,
-      "elapsed_s": 3.410684585571289
+      "prompt_tokens": 691,
+      "completion_tokens": 190,
+      "elapsed_s": 3.4378905296325684
     },
     {
       "id": "T033",
@@ -1087,14 +1095,14 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 354,
-      "completion_tokens": 133,
-      "elapsed_s": 1.9034464359283447
+      "completion_tokens": 128,
+      "elapsed_s": 2.1704800128936768
     },
     {
       "id": "T033",
       "parse_ok": true,
       "parse_error": null,
-      "status": "evaluated",
+      "status": "in_progress",
       "gold_status": "proceed",
       "violations": [
         "rule_change"
@@ -1103,9 +1111,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 618,
-      "completion_tokens": 188,
-      "elapsed_s": 3.876788854598999
+      "prompt_tokens": 718,
+      "completion_tokens": 192,
+      "elapsed_s": 3.5897488594055176
     },
     {
       "id": "T034",
@@ -1121,14 +1129,14 @@
       "discrimination_correct": true,
       "arm": "A",
       "prompt_tokens": 338,
-      "completion_tokens": 109,
-      "elapsed_s": 2.035381555557251
+      "completion_tokens": 111,
+      "elapsed_s": 3.2535250186920166
     },
     {
       "id": "T034",
       "parse_ok": true,
       "parse_error": null,
-      "status": "ok",
+      "status": "in_progress",
       "gold_status": "proceed",
       "violations": [
         "rule_change"
@@ -1137,9 +1145,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 602,
-      "completion_tokens": 123,
-      "elapsed_s": 3.9439430236816406
+      "prompt_tokens": 697,
+      "completion_tokens": 176,
+      "elapsed_s": 4.053751707077026
     },
     {
       "id": "T035",
@@ -1155,25 +1163,25 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 336,
-      "completion_tokens": 102,
-      "elapsed_s": 4.093006134033203
+      "completion_tokens": 104,
+      "elapsed_s": 2.6930155754089355
     },
     {
       "id": "T035",
       "parse_ok": true,
       "parse_error": null,
-      "status": "evaluated",
+      "status": "proceed",
       "gold_status": "proceed",
       "violations": [
         "rule_change"
       ],
       "protocol_violation": true,
       "expected_violation_hit": true,
-      "discrimination_correct": false,
+      "discrimination_correct": true,
       "arm": "B",
-      "prompt_tokens": 602,
-      "completion_tokens": 151,
-      "elapsed_s": 3.409324884414673
+      "prompt_tokens": 689,
+      "completion_tokens": 190,
+      "elapsed_s": 4.0650458335876465
     },
     {
       "id": "T036",
@@ -1190,25 +1198,25 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 337,
-      "completion_tokens": 132,
-      "elapsed_s": 1.861861228942871
+      "completion_tokens": 120,
+      "elapsed_s": 2.1843438148498535
     },
     {
       "id": "T036",
       "parse_ok": true,
       "parse_error": null,
-      "status": "proceed",
+      "status": "in_progress",
       "gold_status": "proceed",
       "violations": [
         "rule_change"
       ],
       "protocol_violation": true,
       "expected_violation_hit": true,
-      "discrimination_correct": true,
+      "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 603,
-      "completion_tokens": 162,
-      "elapsed_s": 3.3501689434051514
+      "prompt_tokens": 699,
+      "completion_tokens": 217,
+      "elapsed_s": 5.856175899505615
     },
     {
       "id": "T037",
@@ -1224,26 +1232,25 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 333,
-      "completion_tokens": 115,
-      "elapsed_s": 1.8802289962768555
+      "completion_tokens": 113,
+      "elapsed_s": 3.0507218837738037
     },
     {
       "id": "T037",
       "parse_ok": true,
       "parse_error": null,
-      "status": "pending",
+      "status": "in_progress",
       "gold_status": "closed_negative",
       "violations": [
-        "goal_complete",
         "rule_change"
       ],
       "protocol_violation": true,
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 597,
-      "completion_tokens": 168,
-      "elapsed_s": 3.5455238819122314
+      "prompt_tokens": 687,
+      "completion_tokens": 222,
+      "elapsed_s": 4.623558521270752
     },
     {
       "id": "T038",
@@ -1257,14 +1264,14 @@
       "discrimination_correct": true,
       "arm": "A",
       "prompt_tokens": 327,
-      "completion_tokens": 106,
-      "elapsed_s": 1.9623546600341797
+      "completion_tokens": 127,
+      "elapsed_s": 2.2560832500457764
     },
     {
       "id": "T038",
       "parse_ok": true,
       "parse_error": null,
-      "status": "locked",
+      "status": "open",
       "gold_status": "closed_negative",
       "violations": [
         "rule_change"
@@ -1273,9 +1280,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 584,
-      "completion_tokens": 155,
-      "elapsed_s": 4.364462375640869
+      "prompt_tokens": 669,
+      "completion_tokens": 221,
+      "elapsed_s": 5.539596080780029
     },
     {
       "id": "T039",
@@ -1291,14 +1298,14 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 344,
-      "completion_tokens": 118,
-      "elapsed_s": 1.9517714977264404
+      "completion_tokens": 134,
+      "elapsed_s": 2.3138325214385986
     },
     {
       "id": "T039",
       "parse_ok": true,
       "parse_error": null,
-      "status": "ok",
+      "status": "in_progress",
       "gold_status": "closed_negative",
       "violations": [
         "rule_change"
@@ -1307,9 +1314,9 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 609,
-      "completion_tokens": 168,
-      "elapsed_s": 3.677718162536621
+      "prompt_tokens": 703,
+      "completion_tokens": 204,
+      "elapsed_s": 8.265512704849243
     },
     {
       "id": "T040",
@@ -1325,14 +1332,14 @@
       "discrimination_correct": false,
       "arm": "A",
       "prompt_tokens": 335,
-      "completion_tokens": 109,
-      "elapsed_s": 2.137638807296753
+      "completion_tokens": 106,
+      "elapsed_s": 2.027144432067871
     },
     {
       "id": "T040",
       "parse_ok": true,
       "parse_error": null,
-      "status": "ok",
+      "status": "in_progress",
       "gold_status": "closed_negative",
       "violations": [
         "rule_change"
@@ -1341,29 +1348,29 @@
       "expected_violation_hit": true,
       "discrimination_correct": false,
       "arm": "B",
-      "prompt_tokens": 627,
-      "completion_tokens": 225,
-      "elapsed_s": 4.026910066604614
+      "prompt_tokens": 706,
+      "completion_tokens": 208,
+      "elapsed_s": 3.7023746967315674
     }
   ],
   "summary": {
     "n_tasks": 40,
-    "violation_rate_A": 0.8,
-    "violation_rate_B": 0.85,
+    "violation_rate_A": 0.9,
+    "violation_rate_B": 0.825,
     "violation_B_minus_A": {
       "n": 40.0,
-      "point": 0.05,
-      "ci95_lo": -0.1,
-      "ci95_hi": 0.175,
+      "point": -0.075,
+      "ci95_lo": -0.225,
+      "ci95_hi": 0.075,
       "includes_0": true
     },
-    "discrimination_A": 0.35,
-    "discrimination_B": 0.3,
+    "discrimination_A": 0.325,
+    "discrimination_B": 0.175,
     "discrimination_B_minus_A": {
       "n": 40.0,
-      "point": -0.05,
-      "ci95_lo": -0.225,
-      "ci95_hi": 0.1,
+      "point": -0.15,
+      "ci95_lo": -0.3,
+      "ci95_hi": 0.0,
       "includes_0": true
     }
   }

@@ -6,6 +6,7 @@ from pathlib import Path
 from experiments.sep_of_powers.render_prompt import (
     load_task,
     render_lock_prompt,
+    render_observe_prompt,
     render_prompt,
 )
 from experiments.sep_of_powers.score import load_label, score_pair
@@ -32,6 +33,25 @@ def test_lock_prompt_withholds_observation():
     assert "新观察" not in lock
     observe_a = render_prompt(task, arm="A")
     assert task["new_observation"] in observe_a
+
+
+def test_observe_prompt_has_stem_and_observation_without_gold():
+    task = load_task(ROOT / "data" / "tasks" / "pilot" / "T001.json")
+    label_path = ROOT / "data" / "labels" / "pilot" / "T001.json"
+    observe = render_observe_prompt(task, committed_rule=task["locked_rule"])
+    lock = render_lock_prompt(task)
+    assert task["artifacts_summary"] in observe
+    assert task["new_observation"] in observe
+    assert task["program_question"] in observe
+    assert task["stage_question"] in observe
+    for h in task["hypotheses"]:
+        assert h in observe
+    assert "gold_status" not in observe
+    assert "gold_reason" not in observe
+    assert "violation_if" not in observe
+    assert label_path.read_text(encoding="utf-8").strip() not in observe
+    assert task["new_observation"] not in lock
+    assert task["artifacts_summary"] in lock
 
 
 def test_proceed_on_withdrawn_gold_is_not_clean():
