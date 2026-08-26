@@ -1,7 +1,6 @@
-# Verdict（2026-08-26）
+# Verdict（2026-08-26，确认性 n=40）
 
-本文件写于 SPEC 冻结之后。确认性 n=40 任务集与标签隔离已落地。
-**没有阅读任何模型 scored aggregate，因为本环境不能调用 LLM。**
+SPEC 冻结于阅读任何 scored aggregate 之前。本文件只报告预注册终点。
 
 ## SPEC 四条判定规则（原文）
 
@@ -10,19 +9,32 @@
 3. 若去泄漏后增益消失，支持 **H_leak**。
 4. 不得改用文档长度、通过测试数、或「看起来更规范」作为成功。
 
-非劣效界保持：B−A 判别力 95% CI 下界不得低于 −0.10。
+非劣效界：B−A 判别力 95% CI 下界不得低于 −0.10。
 
-## 本环境实际完成的
+## 预注册结果
 
-- 公开任务 40、隐藏标签 40、id 对齐。
-- 臂 B 的提示路径先提交 `decision_rule` 再给 `new_observation`；sha256 在观察前计算。
-- `python -m pytest tests` 通过（含标签隔离、withdrawn 上 proceed 不得算 clean）。
-- `python -m experiments.sep_of_powers.cli --task T001 --arm A|B` 各启动两次，均因缺少 API 密钥以退出码 2 结束。
+来源：`results/sep_of_powers/results.json`，manifest 在 `results/sep_of_powers/run_manifest.json`。
 
-## 本文件不声称的
+| 量 | A | B | B−A（配对 bootstrap 95% CI） |
+| --- | --- | --- | --- |
+| 协议违规率 | 0.80 | 0.85 | +0.05 [−0.10, +0.175]，**含 0** |
+| 判别力 | 0.35 | 0.30 | −0.05 [−0.225, +0.10]，下界 **< −0.10** |
 
-- H_protocol 得到支持或被证伪。
-- 任何违规率、判别力、CI、SOTA、AGI、或「协议已证明有效」。
-- CI 包含 0 被当成协议有效。
+n=40。模型请求名 `grok-4-fast-non-reasoning`，temperature 0，max_tokens 800。累计 generation tokens 50,215（≤ 1e8）。未使用 policy-signature GPU Ready。墙钟 355 s。
 
-缺 `XAI_API_KEY` / `GROK_API_KEY` / `OPENAI_API_KEY`。密钥可用后，用冻结信封跑 n=40 配对，再把数字写入 run manifest；在那之前不得补造模型输出。
+## 判定
+
+1. 主终点：CI 含 0 → **H_protocol 在本任务集上未得到支持**。B 的违规率点估计更高，不是更低。
+2. 判别力 CI 下界 −0.225 低于 −0.10 → **跌破非劣效界**。不得把分权写成「至少同样会判题」。
+3. 未做去泄漏消融，不把结果解释为 H_leak。
+4. 不以文档、测试绿、或 JSON 更完整作为成功。
+
+本对照 **不能** 支持「research-loop 提高证据效度」。源仓仍可把 loop 当控制，但不能把本数字写成仪器已校准。
+
+## 探索性（非判定）
+
+多数违规是 `rule_change`：模型改写锁定规则文本，而不是逐字复述。B 还出现 `ok` / `evaluated` 等非词表 status。这些解释次终点，不改变上面四条。
+
+## 不声称
+
+协议已证明、SOTA、AGI、源仓 G1–G4 因此更真、CI 含 0 等于有效。

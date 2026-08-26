@@ -27,19 +27,39 @@ class LLMUnavailable(RuntimeError):
     pass
 
 
+def _oidc_key_from_grok_auth() -> str | None:
+    """Use the local Grok CLI OIDC access token if present. Never logs the secret."""
+    path = Path.home() / ".grok" / "auth.json"
+    if not path.is_file():
+        return None
+    try:
+        blob = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    if not isinstance(blob, dict):
+        return None
+    for entry in blob.values():
+        if isinstance(entry, dict) and entry.get("auth_mode") == "oidc" and entry.get("key"):
+            return str(entry["key"])
+    return None
+
+
 def discover_llm() -> dict[str, str]:
     """Return endpoint settings or raise LLMUnavailable. Does not score tasks."""
+    grok_oidc = _oidc_key_from_grok_auth()
     key = (
         os.environ.get("XAI_API_KEY")
         or os.environ.get("GROK_API_KEY")
+        or grok_oidc
         or os.environ.get("OPENAI_API_KEY")
         or os.environ.get("OPENAI_APIKEY")
     )
     if not key:
         raise LLMUnavailable("no XAI_API_KEY / GROK_API_KEY / OPENAI_API_KEY in environment")
-    if os.environ.get("XAI_API_KEY") or os.environ.get("GROK_API_KEY"):
+    xai = bool(os.environ.get("XAI_API_KEY") or os.environ.get("GROK_API_KEY") or grok_oidc)
+    if xai:
         base = os.environ.get("XAI_API_BASE", "https://api.x.ai/v1")
-        model = os.environ.get("RESEARCH_LOOP_MODEL", "grok-4-fast")
+        model = os.environ.get("RESEARCH_LOOP_MODEL", "grok-4-fast-non-reasoning")
     else:
         base = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
         model = os.environ.get("RESEARCH_LOOP_MODEL", "gpt-4.1-mini")

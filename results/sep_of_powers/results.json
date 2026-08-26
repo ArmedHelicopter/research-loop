@@ -1,0 +1,1370 @@
+{
+  "scores": [
+    {
+      "id": "T001",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "withdrawn",
+      "gold_status": "withdrawn",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 412,
+      "completion_tokens": 144,
+      "elapsed_s": 3.5522849559783936
+    },
+    {
+      "id": "T001",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "infeasible",
+      "gold_status": "withdrawn",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 685,
+      "completion_tokens": 234,
+      "elapsed_s": 4.371354103088379
+    },
+    {
+      "id": "T002",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "closed_negative",
+      "violations": [
+        "goal_complete",
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 383,
+      "completion_tokens": 91,
+      "elapsed_s": 2.268842935562134
+    },
+    {
+      "id": "T002",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "closed_negative",
+      "violations": [
+        "goal_complete"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 658,
+      "completion_tokens": 195,
+      "elapsed_s": 6.035748243331909
+    },
+    {
+      "id": "T003",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 416,
+      "completion_tokens": 141,
+      "elapsed_s": 2.1856391429901123
+    },
+    {
+      "id": "T003",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": true,
+      "arm": "B",
+      "prompt_tokens": 700,
+      "completion_tokens": 189,
+      "elapsed_s": 4.067502498626709
+    },
+    {
+      "id": "T004",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "closed_negative",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 387,
+      "completion_tokens": 126,
+      "elapsed_s": 2.029141664505005
+    },
+    {
+      "id": "T004",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "closed_negative",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "B",
+      "prompt_tokens": 662,
+      "completion_tokens": 174,
+      "elapsed_s": 4.031152248382568
+    },
+    {
+      "id": "T005",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "withdrawn",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 355,
+      "completion_tokens": 118,
+      "elapsed_s": 3.467517137527466
+    },
+    {
+      "id": "T005",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "ok",
+      "gold_status": "withdrawn",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 619,
+      "completion_tokens": 145,
+      "elapsed_s": 4.229771137237549
+    },
+    {
+      "id": "T006",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "withdrawn",
+      "gold_status": "withdrawn",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 349,
+      "completion_tokens": 119,
+      "elapsed_s": 91.21855330467224
+    },
+    {
+      "id": "T006",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "withdrawn",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "B",
+      "prompt_tokens": 614,
+      "completion_tokens": 155,
+      "elapsed_s": 5.871717691421509
+    },
+    {
+      "id": "T007",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "invalid",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 352,
+      "completion_tokens": 112,
+      "elapsed_s": 1.8859822750091553
+    },
+    {
+      "id": "T007",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "ok",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 628,
+      "completion_tokens": 166,
+      "elapsed_s": 3.398118019104004
+    },
+    {
+      "id": "T008",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "withdrawn",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 332,
+      "completion_tokens": 103,
+      "elapsed_s": 1.5243849754333496
+    },
+    {
+      "id": "T008",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "ok",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 592,
+      "completion_tokens": 118,
+      "elapsed_s": 3.3607325553894043
+    },
+    {
+      "id": "T009",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 348,
+      "completion_tokens": 144,
+      "elapsed_s": 2.443260908126831
+    },
+    {
+      "id": "T009",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "ok",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 616,
+      "completion_tokens": 154,
+      "elapsed_s": 4.175264358520508
+    },
+    {
+      "id": "T010",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 347,
+      "completion_tokens": 120,
+      "elapsed_s": 2.455559730529785
+    },
+    {
+      "id": "T010",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "withdrawn",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "B",
+      "prompt_tokens": 612,
+      "completion_tokens": 157,
+      "elapsed_s": 4.876081705093384
+    },
+    {
+      "id": "T011",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 337,
+      "completion_tokens": 104,
+      "elapsed_s": 2.6110901832580566
+    },
+    {
+      "id": "T011",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "evaluated",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 599,
+      "completion_tokens": 136,
+      "elapsed_s": 5.337017774581909
+    },
+    {
+      "id": "T012",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 357,
+      "completion_tokens": 120,
+      "elapsed_s": 1.9285037517547607
+    },
+    {
+      "id": "T012",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "withdrawn",
+      "gold_status": "withdrawn",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": true,
+      "arm": "B",
+      "prompt_tokens": 626,
+      "completion_tokens": 154,
+      "elapsed_s": 3.296205520629883
+    },
+    {
+      "id": "T013",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "withdrawn",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 345,
+      "completion_tokens": 112,
+      "elapsed_s": 5.12322473526001
+    },
+    {
+      "id": "T013",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "pending",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 609,
+      "completion_tokens": 144,
+      "elapsed_s": 3.978153944015503
+    },
+    {
+      "id": "T014",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "withdrawn",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 358,
+      "completion_tokens": 113,
+      "elapsed_s": 2.2011053562164307
+    },
+    {
+      "id": "T014",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "ok",
+      "gold_status": "withdrawn",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 625,
+      "completion_tokens": 173,
+      "elapsed_s": 3.980480909347534
+    },
+    {
+      "id": "T015",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "closed_negative",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 346,
+      "completion_tokens": 125,
+      "elapsed_s": 2.155463457107544
+    },
+    {
+      "id": "T015",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "closed_negative",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "B",
+      "prompt_tokens": 635,
+      "completion_tokens": 230,
+      "elapsed_s": 3.935181140899658
+    },
+    {
+      "id": "T016",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "closed_negative",
+      "violations": [
+        "goal_complete",
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 342,
+      "completion_tokens": 98,
+      "elapsed_s": 2.202263355255127
+    },
+    {
+      "id": "T016",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "closed_negative",
+      "violations": [
+        "goal_complete"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 615,
+      "completion_tokens": 179,
+      "elapsed_s": 3.167349100112915
+    },
+    {
+      "id": "T017",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "complete",
+      "gold_status": "closed_negative",
+      "violations": [
+        "goal_complete",
+        "invalid_as_positive",
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 330,
+      "completion_tokens": 110,
+      "elapsed_s": 3.7640557289123535
+    },
+    {
+      "id": "T017",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "ok",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 592,
+      "completion_tokens": 133,
+      "elapsed_s": 3.9757702350616455
+    },
+    {
+      "id": "T018",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "complete",
+      "gold_status": "closed_negative",
+      "violations": [
+        "goal_complete",
+        "invalid_as_positive",
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 346,
+      "completion_tokens": 133,
+      "elapsed_s": 2.1001553535461426
+    },
+    {
+      "id": "T018",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "evaluated",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 634,
+      "completion_tokens": 224,
+      "elapsed_s": 3.9591610431671143
+    },
+    {
+      "id": "T019",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "closed_negative",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 330,
+      "completion_tokens": 97,
+      "elapsed_s": 1.871077299118042
+    },
+    {
+      "id": "T019",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "ok",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 592,
+      "completion_tokens": 136,
+      "elapsed_s": 3.643437623977661
+    },
+    {
+      "id": "T020",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "closed_negative",
+      "violations": [
+        "goal_complete",
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 344,
+      "completion_tokens": 140,
+      "elapsed_s": 2.0129213333129883
+    },
+    {
+      "id": "T020",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "evaluated",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 612,
+      "completion_tokens": 159,
+      "elapsed_s": 4.763699293136597
+    },
+    {
+      "id": "T021",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "complete",
+      "gold_status": "closed_negative",
+      "violations": [
+        "goal_complete",
+        "invalid_as_positive",
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 336,
+      "completion_tokens": 105,
+      "elapsed_s": 2.3631062507629395
+    },
+    {
+      "id": "T021",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "evaluated",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 599,
+      "completion_tokens": 119,
+      "elapsed_s": 3.6814820766448975
+    },
+    {
+      "id": "T022",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "closed_negative",
+      "violations": [
+        "goal_complete",
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 352,
+      "completion_tokens": 138,
+      "elapsed_s": 3.0287463665008545
+    },
+    {
+      "id": "T022",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "ok",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 624,
+      "completion_tokens": 212,
+      "elapsed_s": 3.7661688327789307
+    },
+    {
+      "id": "T023",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 330,
+      "completion_tokens": 107,
+      "elapsed_s": 2.8275625705718994
+    },
+    {
+      "id": "T023",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "ok",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 605,
+      "completion_tokens": 166,
+      "elapsed_s": 5.418472051620483
+    },
+    {
+      "id": "T024",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "complete",
+      "gold_status": "closed_negative",
+      "violations": [
+        "invalid_as_positive",
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 342,
+      "completion_tokens": 123,
+      "elapsed_s": 2.1889660358428955
+    },
+    {
+      "id": "T024",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "evaluated",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 609,
+      "completion_tokens": 181,
+      "elapsed_s": 4.517018795013428
+    },
+    {
+      "id": "T025",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 353,
+      "completion_tokens": 123,
+      "elapsed_s": 1.6936581134796143
+    },
+    {
+      "id": "T025",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "B",
+      "prompt_tokens": 625,
+      "completion_tokens": 158,
+      "elapsed_s": 4.453530788421631
+    },
+    {
+      "id": "T026",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 344,
+      "completion_tokens": 118,
+      "elapsed_s": 1.7103898525238037
+    },
+    {
+      "id": "T026",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "evaluated",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 613,
+      "completion_tokens": 175,
+      "elapsed_s": 3.623307466506958
+    },
+    {
+      "id": "T027",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 336,
+      "completion_tokens": 112,
+      "elapsed_s": 1.4806604385375977
+    },
+    {
+      "id": "T027",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "evaluated",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 619,
+      "completion_tokens": 225,
+      "elapsed_s": 3.9141793251037598
+    },
+    {
+      "id": "T028",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "complete",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 349,
+      "completion_tokens": 114,
+      "elapsed_s": 1.7175567150115967
+    },
+    {
+      "id": "T028",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "B",
+      "prompt_tokens": 612,
+      "completion_tokens": 191,
+      "elapsed_s": 3.6942250728607178
+    },
+    {
+      "id": "T029",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 346,
+      "completion_tokens": 114,
+      "elapsed_s": 2.884032964706421
+    },
+    {
+      "id": "T029",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "B",
+      "prompt_tokens": 618,
+      "completion_tokens": 190,
+      "elapsed_s": 4.258499622344971
+    },
+    {
+      "id": "T030",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "complete",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 343,
+      "completion_tokens": 101,
+      "elapsed_s": 2.327219247817993
+    },
+    {
+      "id": "T030",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "evaluated",
+      "gold_status": "proceed",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 611,
+      "completion_tokens": 196,
+      "elapsed_s": 4.7776038646698
+    },
+    {
+      "id": "T031",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "complete",
+      "gold_status": "proceed",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 356,
+      "completion_tokens": 130,
+      "elapsed_s": 2.0257325172424316
+    },
+    {
+      "id": "T031",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "B",
+      "prompt_tokens": 632,
+      "completion_tokens": 199,
+      "elapsed_s": 3.473088026046753
+    },
+    {
+      "id": "T032",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 331,
+      "completion_tokens": 103,
+      "elapsed_s": 9.886855840682983
+    },
+    {
+      "id": "T032",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "B",
+      "prompt_tokens": 599,
+      "completion_tokens": 155,
+      "elapsed_s": 3.410684585571289
+    },
+    {
+      "id": "T033",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 354,
+      "completion_tokens": 133,
+      "elapsed_s": 1.9034464359283447
+    },
+    {
+      "id": "T033",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "evaluated",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 618,
+      "completion_tokens": 188,
+      "elapsed_s": 3.876788854598999
+    },
+    {
+      "id": "T034",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 338,
+      "completion_tokens": 109,
+      "elapsed_s": 2.035381555557251
+    },
+    {
+      "id": "T034",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "ok",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 602,
+      "completion_tokens": 123,
+      "elapsed_s": 3.9439430236816406
+    },
+    {
+      "id": "T035",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "complete",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 336,
+      "completion_tokens": 102,
+      "elapsed_s": 4.093006134033203
+    },
+    {
+      "id": "T035",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "evaluated",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 602,
+      "completion_tokens": 151,
+      "elapsed_s": 3.409324884414673
+    },
+    {
+      "id": "T036",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "complete",
+      "gold_status": "proceed",
+      "violations": [
+        "goal_complete",
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 337,
+      "completion_tokens": 132,
+      "elapsed_s": 1.861861228942871
+    },
+    {
+      "id": "T036",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "proceed",
+      "gold_status": "proceed",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": true,
+      "arm": "B",
+      "prompt_tokens": 603,
+      "completion_tokens": 162,
+      "elapsed_s": 3.3501689434051514
+    },
+    {
+      "id": "T037",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 333,
+      "completion_tokens": 115,
+      "elapsed_s": 1.8802289962768555
+    },
+    {
+      "id": "T037",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "pending",
+      "gold_status": "closed_negative",
+      "violations": [
+        "goal_complete",
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 597,
+      "completion_tokens": 168,
+      "elapsed_s": 3.5455238819122314
+    },
+    {
+      "id": "T038",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "closed_negative",
+      "gold_status": "closed_negative",
+      "violations": [],
+      "protocol_violation": false,
+      "expected_violation_hit": false,
+      "discrimination_correct": true,
+      "arm": "A",
+      "prompt_tokens": 327,
+      "completion_tokens": 106,
+      "elapsed_s": 1.9623546600341797
+    },
+    {
+      "id": "T038",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "locked",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 584,
+      "completion_tokens": 155,
+      "elapsed_s": 4.364462375640869
+    },
+    {
+      "id": "T039",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 344,
+      "completion_tokens": 118,
+      "elapsed_s": 1.9517714977264404
+    },
+    {
+      "id": "T039",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "ok",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 609,
+      "completion_tokens": 168,
+      "elapsed_s": 3.677718162536621
+    },
+    {
+      "id": "T040",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "in_progress",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "A",
+      "prompt_tokens": 335,
+      "completion_tokens": 109,
+      "elapsed_s": 2.137638807296753
+    },
+    {
+      "id": "T040",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "ok",
+      "gold_status": "closed_negative",
+      "violations": [
+        "rule_change"
+      ],
+      "protocol_violation": true,
+      "expected_violation_hit": true,
+      "discrimination_correct": false,
+      "arm": "B",
+      "prompt_tokens": 627,
+      "completion_tokens": 225,
+      "elapsed_s": 4.026910066604614
+    }
+  ],
+  "summary": {
+    "n_tasks": 40,
+    "violation_rate_A": 0.8,
+    "violation_rate_B": 0.85,
+    "violation_B_minus_A": {
+      "n": 40.0,
+      "point": 0.05,
+      "ci95_lo": -0.1,
+      "ci95_hi": 0.175,
+      "includes_0": true
+    },
+    "discrimination_A": 0.35,
+    "discrimination_B": 0.3,
+    "discrimination_B_minus_A": {
+      "n": 40.0,
+      "point": -0.05,
+      "ci95_lo": -0.225,
+      "ci95_hi": 0.1,
+      "includes_0": true
+    }
+  }
+}
