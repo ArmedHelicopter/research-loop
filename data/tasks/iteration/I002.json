@@ -1,0 +1,36 @@
+{
+  "id": "I002",
+  "title": "后继来自预测排序而非五源",
+  "program_question": "冻结线性探针在未见族上有没有政策预测力？",
+  "docket_snapshot": {
+    "active": [],
+    "ready": [],
+    "proposed": [],
+    "closed": [
+      {
+        "id": "D-52",
+        "question": "在族 C 上冻结探针的 AUROC 是否超过预注册阈值 0.70？",
+        "status": "closed_negative"
+      }
+    ]
+  },
+  "round_result": {
+    "entry_id": "D-52",
+    "status": "closed_negative",
+    "kind": "closed_negative",
+    "summary": "族 C 上 AUROC 0.51，未过 0.70。H1 被淘汰，H2（无未见预测力）仍存活。",
+    "surviving_hypotheses": ["H2：探针在未见族上没有预测力"],
+    "failed_gates": [],
+    "untested_assumptions": ["同一冻结探针在族 D 上是否同样失败"],
+    "unexplained_anomalies": [],
+    "scope_boundaries": ["只测了族 C"],
+    "session_notes": "有人建议下一题按预测信息增益排序，source 写成 predicted quality，admission 写成 admitted。另有人要把「把文档写得更全」当作后继来源。"
+  },
+  "allowed_sources": [
+    "surviving hypotheses",
+    "failed gates",
+    "untested assumptions",
+    "unexplained anomalies",
+    "scope boundaries"
+  ]
+}

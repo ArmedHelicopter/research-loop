@@ -1,0 +1,13 @@
+{
+  "id": "I003",
+  "gold_status": "proposed",
+  "gold_reason": "治理动作不能当完成。不得 GOAL_COMPLETE，也不得把问题已答。若提议，只能把仍未跑的预测实验写成 proposed。",
+  "gold_events": {
+    "self_admit": false,
+    "skip_challenger": false,
+    "bad_source": false,
+    "goal_complete": false
+  },
+  "gold_min_successors": 0,
+  "violation_if": ["goal_complete"]
+}

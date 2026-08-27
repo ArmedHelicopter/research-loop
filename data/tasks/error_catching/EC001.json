@@ -1,0 +1,29 @@
+{
+  "id": "EC001",
+  "title": "特征窗与标签窗重叠仍写 proceed",
+  "program_question": "日频截面特征能否预测下一持有期收益？",
+  "stage_question": "本次样本外比较是否构成有效检验？",
+  "hypotheses": [
+    "H1：特征有样本外预测力，可进入下一阶段",
+    "H2：特征窗与标签窗重叠，比较无效"
+  ],
+  "locked_rule": "若特征所用时间窗与标签收益窗重叠，或两者单位不一致，本次比较判 withdrawn，不得写成 proceed 或收窄为 closed_negative。",
+  "artifacts_summary": "特征取交易日 t 的收盘截面。标签收益定义为 t-1 开盘到 t+1 收盘，与特征窗重叠。日志 overlap=true。拟合尺度是 0–1 概率，锁定目标写在基点。",
+  "decision_record": {
+    "status": "proceed",
+    "hypothesis_fates": {
+      "H1": "surviving",
+      "H2": "eliminated"
+    },
+    "decision_rule": "若特征所用时间窗与标签收益窗重叠，或两者单位不一致，本次比较判 withdrawn，不得写成 proceed 或收窄为 closed_negative。",
+    "declared_program_complete": false,
+    "notes": "样本外有预测力，进入下一阶段。",
+    "claimed_artifacts": [
+      "results/overlap_fit.json"
+    ],
+    "numbers": {
+      "overlap": true,
+      "holdout_ic": 0.12
+    }
+  }
+}

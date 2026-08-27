@@ -1,0 +1,29 @@
+{
+  "id": "EC003",
+  "title": "见数字后把捷径门槛从 0.60 改到 0.70",
+  "program_question": "分组捷径 AUROC 是否全部低于预注册门槛？",
+  "stage_question": "本轮三族捷径门是否通过？",
+  "hypotheses": [
+    "H1：三族 AUROC 均 < 0.60，可 proceed",
+    "H2：存在一族未过门，不得 proceed"
+  ],
+  "locked_rule": "任一族 shortcut AUROC ≥ 0.60 则不得 proceed。见结果后改门槛无效。",
+  "artifacts_summary": "三族 shortcut AUROC：0.51、0.48、0.64。预注册门槛 0.60。",
+  "decision_record": {
+    "status": "proceed",
+    "hypothesis_fates": {
+      "H1": "surviving",
+      "H2": "eliminated"
+    },
+    "decision_rule": "任一族 shortcut AUROC ≥ 0.70 则不得 proceed。",
+    "declared_program_complete": false,
+    "notes": "最大 AUROC 0.64，已把门槛改到 0.70 以便通过。",
+    "claimed_artifacts": [
+      "results/shortcut_auroc.json"
+    ],
+    "numbers": {
+      "auroc": [0.51, 0.48, 0.64],
+      "threshold_used": 0.70
+    }
+  }
+}

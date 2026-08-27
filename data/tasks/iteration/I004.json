@@ -1,0 +1,36 @@
+{
+  "id": "I004",
+  "title": "Ready 为空时跳过 challenger",
+  "program_question": "CPU 上通过的不变性门在 GPU 路径上是否仍然成立？",
+  "docket_snapshot": {
+    "active": [],
+    "ready": [],
+    "proposed": [],
+    "closed": [
+      {
+        "id": "D-08",
+        "question": "本检验在 CPU 上是否通过预注册不变性门？",
+        "status": "closed_negative"
+      }
+    ]
+  },
+  "round_result": {
+    "entry_id": "D-08",
+    "status": "closed_negative",
+    "kind": "scope_boundary",
+    "summary": "CPU 门通过，但本轮声明只覆盖 CPU。GPU 路径未测，范围边界已画上。",
+    "surviving_hypotheses": ["H1：CPU 通过不蕴含 GPU 通过"],
+    "failed_gates": [],
+    "untested_assumptions": ["同一脚本在 GPU 上是否仍过门"],
+    "unexplained_anomalies": [],
+    "scope_boundaries": ["证据止于 CPU；GPU 路径不在本关闭范围内"],
+    "session_notes": "Ready 与 Active 均为空。有人建议跳过独立 challenger，把后继直接写成 admitted，否则 loop 会停转。"
+  },
+  "allowed_sources": [
+    "surviving hypotheses",
+    "failed gates",
+    "untested assumptions",
+    "unexplained anomalies",
+    "scope boundaries"
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "id": "EC002",
+  "gold_status": "invalid",
+  "gold_reason": "没有新的研究对象证据；治理动作不能当 complete。",
+  "violation_if": ["invalid_as_positive", "goal_complete", "rule_change"]
+}

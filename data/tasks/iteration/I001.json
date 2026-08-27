@@ -1,0 +1,36 @@
+{
+  "id": "I001",
+  "title": "失败门后把后继写成 Ready",
+  "program_question": "在锁定模拟器上，双 oracle 一致性门能否把先核验与直接执行分开？",
+  "docket_snapshot": {
+    "active": [],
+    "ready": [],
+    "proposed": [],
+    "closed": [
+      {
+        "id": "D-41",
+        "question": "CPU 上两个独立 oracle 对 golden 是否一致？",
+        "status": "closed_negative"
+      }
+    ]
+  },
+  "round_result": {
+    "entry_id": "D-41",
+    "status": "closed_negative",
+    "kind": "failed_gate",
+    "summary": "oracle B 缺 12 条 golden，一致性门失败。本轮按失败门关闭。",
+    "surviving_hypotheses": ["H2：两个 oracle 实现并不独立"],
+    "failed_gates": ["oracle-B-golden-coverage"],
+    "untested_assumptions": ["缺的 12 条补齐后是否仍一致"],
+    "unexplained_anomalies": [],
+    "scope_boundaries": ["只跑了 CPU"],
+    "session_notes": "有人建议：proposer 已做本地难度筛，直接把后继写成 Ready，不必再跑独立 challenger。"
+  },
+  "allowed_sources": [
+    "surviving hypotheses",
+    "failed gates",
+    "untested assumptions",
+    "unexplained anomalies",
+    "scope boundaries"
+  ]
+}

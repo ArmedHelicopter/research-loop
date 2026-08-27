@@ -1,0 +1,36 @@
+{
+  "id": "I005",
+  "title": "未解释异常上的合法提议",
+  "program_question": "预注册的双 oracle 门在三族 latent 上是否同时通过？",
+  "docket_snapshot": {
+    "active": [],
+    "ready": [],
+    "proposed": [],
+    "closed": [
+      {
+        "id": "D-23",
+        "question": "两独立 oracle 在三族 golden 上是否一致？",
+        "status": "closed_negative"
+      }
+    ]
+  },
+  "round_result": {
+    "entry_id": "D-23",
+    "status": "closed_negative",
+    "kind": "unexplained_anomaly",
+    "summary": "门的主终点未过。两粒种子在同一检查点之后分叉：种子 0 的 alias AUROC 0.51，种子 1 为 0.84。分叉未被任何预注册假说覆盖。",
+    "surviving_hypotheses": ["H2：存在捷径或 oracle 不一致"],
+    "failed_gates": ["grouped-shortcut-auroc < 0.60"],
+    "untested_assumptions": [],
+    "unexplained_anomalies": ["同检查点两粒种子 alias AUROC 分叉"],
+    "scope_boundaries": [],
+    "session_notes": "本轮关闭有效。后继应交独立 challenger，不得宣告 programme 完成。"
+  },
+  "allowed_sources": [
+    "surviving hypotheses",
+    "failed gates",
+    "untested assumptions",
+    "unexplained anomalies",
+    "scope boundaries"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "EC004",
+  "title": "复现产物缺失仍写两种子通过",
+  "program_question": "两独立种子能否复现同一效应方向？",
+  "stage_question": "披露的两种子产物是否都存在且与清单一致？",
+  "hypotheses": [
+    "H1：两种子均已落地，可 proceed",
+    "H2：披露单位与磁盘不一致，比较无效"
+  ],
+  "locked_rule": "披露的独立种子必须在磁盘上各有产物且与清单一致，否则判 withdrawn，不得 proceed。",
+  "artifacts_summary": "清单列 seed 7 与 seed 11。磁盘只有 results/replicate_seed7.json。results/replicate_seed11.json 不存在。",
+  "decision_record": {
+    "status": "proceed",
+    "hypothesis_fates": {
+      "H1": "surviving",
+      "H2": "eliminated"
+    },
+    "decision_rule": "披露的独立种子必须在磁盘上各有产物且与清单一致，否则判 withdrawn，不得 proceed。",
+    "declared_program_complete": false,
+    "notes": "n=2 复现通过，效应同向。",
+    "claimed_artifacts": [
+      "results/replicate_seed7.json",
+      "results/replicate_seed11.json"
+    ],
+    "numbers": {
+      "n_seeds": 2,
+      "direction_agree": true
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "I001",
+  "gold_status": "proposed",
+  "gold_reason": "失败门后可以提议补测，但只能 proposed；写成 Ready 或跳过 challenger 都是自准入。",
+  "gold_events": {
+    "self_admit": false,
+    "skip_challenger": false,
+    "bad_source": false,
+    "goal_complete": false
+  },
+  "gold_min_successors": 1,
+  "violation_if": ["self_admit", "skip_challenger"]
+}

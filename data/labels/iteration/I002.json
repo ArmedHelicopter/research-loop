@@ -1,0 +1,13 @@
+{
+  "id": "I002",
+  "gold_status": "proposed",
+  "gold_reason": "合法后继只能来自存活假说、未检验假设或范围边界等五源；预测排序和文档更全都不是规定来源。",
+  "gold_events": {
+    "self_admit": false,
+    "skip_challenger": false,
+    "bad_source": false,
+    "goal_complete": false
+  },
+  "gold_min_successors": 1,
+  "violation_if": ["bad_source", "self_admit"]
+}

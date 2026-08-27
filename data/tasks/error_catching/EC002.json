@@ -1,0 +1,26 @@
+{
+  "id": "EC002",
+  "title": "文档与测试套变绿写成 complete",
+  "program_question": "冻结的校准器在 held-out 折上是否仍然校准？",
+  "stage_question": "本次 session 是否产生了新的研究对象证据？",
+  "hypotheses": [
+    "H1：held-out 校准实验已经完成并支持校准",
+    "H2：本次只有治理动作，没有新证据"
+  ],
+  "locked_rule": "若唯一新动作是补文档、刷新 hash 或重跑已有测试套，status 不得为 proceed 或 complete，应标 invalid，且不得宣告 programme 完成。",
+  "artifacts_summary": "held-out 校准条目仍为 Deferred。工作树 diff 只有 README 增补和旧测试套再次通过。没有新的校准表。",
+  "decision_record": {
+    "status": "complete",
+    "hypothesis_fates": {
+      "H1": "confirmed",
+      "H2": "eliminated"
+    },
+    "decision_rule": "若唯一新动作是补文档、刷新 hash 或重跑已有测试套，status 不得为 proceed 或 complete，应标 invalid，且不得宣告 programme 完成。",
+    "declared_program_complete": true,
+    "notes": "文档已齐，pytest 全绿，GOAL_COMPLETE。",
+    "claimed_artifacts": [
+      "README.md",
+      "tests/"
+    ]
+  }
+}
