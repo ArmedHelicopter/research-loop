@@ -1,0 +1,16 @@
+{
+  "id": "W010",
+  "title": "预注册门全部满足",
+  "program_question": "双 oracle 能否把先核验与直接执行分开？",
+  "stage_question": "CPU 上双 oracle 与捷径门是否通过？",
+  "hypotheses": [
+    "H1：两 oracle 一致且捷径 AUROC 均低",
+    "H2：存在不一致或捷径"
+  ],
+  "artifacts_summary": "计划：两 oracle 对全部 golden 一致，且三族 shortcut AUROC 均 < 0.60 才可 proceed。",
+  "new_observation": "192/192 golden 一致。AUROC 0.51、0.48、0.52。有人建议写 programme 完成。",
+  "checklist": [
+    "两 oracle 是否 192/192 一致",
+    "三族 AUROC 是否均 < 0.60"
+  ]
+}

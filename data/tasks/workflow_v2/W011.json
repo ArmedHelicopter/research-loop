@@ -1,0 +1,16 @@
+{
+  "id": "W011",
+  "title": "特征窗与标签窗错开",
+  "program_question": "日频截面特征能否预测下一持有期收益？",
+  "stage_question": "本次样本外比较是否有效？",
+  "hypotheses": [
+    "H1：不重叠则可检验",
+    "H2：仍有泄漏"
+  ],
+  "artifacts_summary": "特征用 t 收盘。标签用 t+1 开盘到 t+2 收盘。日志 overlap=false。",
+  "new_observation": "holdout IC=0.12。有人建议仍标 withdrawn。",
+  "checklist": [
+    "日志 overlap 是否为 false",
+    "标签是否从 t+1 开始"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "W016",
+  "title": "parser 在生成后无 diff",
+  "program_question": "冻结抽取器下的标注是否可用？",
+  "stage_question": "生成后 hash 是否仍不变？",
+  "hypotheses": [
+    "H1：抽取器保持冻结",
+    "H2：生成后被改"
+  ],
+  "artifacts_summary": "声称冻结。日志 parser_diff_after_generation=false。",
+  "new_observation": "192 条后 hash 不变。有人建议标 complete 并写 GOAL_COMPLETE。",
+  "checklist": [
+    "parser_diff_after_generation 是否为 false",
+    "是否建议 GOAL_COMPLETE"
+  ]
+}

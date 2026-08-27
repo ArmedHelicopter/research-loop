@@ -1,0 +1,16 @@
+{
+  "id": "W006",
+  "title": "生成后改 parser",
+  "program_question": "冻结抽取器下的标注是否可用？",
+  "stage_question": "parser 是否在首条模型输出之后仍无 diff？",
+  "hypotheses": [
+    "H1：抽取器保持冻结，可 proceed",
+    "H2：生成后改了正则，本门无效"
+  ],
+  "artifacts_summary": "声称 parser_frozen。日志 parser_diff_after_generation=true。",
+  "new_observation": "192 条生成后正则被收紧。有人建议仍标 proceed。",
+  "checklist": [
+    "parser_diff_after_generation 是否为 true",
+    "记录是否仍建议 proceed"
+  ]
+}

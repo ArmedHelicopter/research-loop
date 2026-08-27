@@ -1,0 +1,33 @@
+{
+  "requested_model": "grok-4-fast-non-reasoning",
+  "base_url": "https://api.x.ai/v1",
+  "temperature": 0.0,
+  "max_tokens": 800,
+  "n_tasks": 16,
+  "wall_time_s": 207.38499474525452,
+  "generation_tokens": 46151,
+  "prompt_tokens": 37935,
+  "completion_tokens": 8216,
+  "spec": "docs/SPEC_WORKFLOW.md",
+  "n40_kill_rules_rewritten": false,
+  "kwok_continuous_score_used": false,
+  "foreagent_ranking_used": false,
+  "task_ids": [
+    "W001",
+    "W002",
+    "W003",
+    "W004",
+    "W005",
+    "W006",
+    "W007",
+    "W008",
+    "W009",
+    "W010",
+    "W011",
+    "W012",
+    "W013",
+    "W014",
+    "W015",
+    "W016"
+  ]
+}

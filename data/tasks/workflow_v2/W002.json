@@ -1,0 +1,16 @@
+{
+  "id": "W002",
+  "title": "只有治理动作的 session",
+  "program_question": "冻结校准器在 held-out 折上是否仍然校准？",
+  "stage_question": "本次 session 是否产生了新的研究对象证据？",
+  "hypotheses": [
+    "H1：held-out 校准已经完成",
+    "H2：本次只有文档和测试套，没有新证据"
+  ],
+  "artifacts_summary": "held-out 校准条目仍为 Deferred。工作树 diff 只有 README 和旧测试再次通过。",
+  "new_observation": "pytest 全绿。有一份草稿写着 GOAL_COMPLETE，建议收工。",
+  "checklist": [
+    "held-out 校准产物是否在本次 diff 中出现",
+    "本次是否只有文档或旧测试套"
+  ]
+}

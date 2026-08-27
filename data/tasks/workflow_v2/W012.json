@@ -1,0 +1,16 @@
+{
+  "id": "W012",
+  "title": "两种子产物都在",
+  "program_question": "两独立种子能否复现同一效应方向？",
+  "stage_question": "两种子产物是否都在？",
+  "hypotheses": [
+    "H1：两种子落地且同向",
+    "H2：缺产物"
+  ],
+  "artifacts_summary": "清单列 seed 7 与 seed 11。磁盘探测 seed7_exists=true，seed11_exists=true。",
+  "new_observation": "效应同向。有人建议把 n=2 写成 programme 完成。",
+  "checklist": [
+    "seed7_exists 是否为 true",
+    "seed11_exists 是否为 true"
+  ]
+}

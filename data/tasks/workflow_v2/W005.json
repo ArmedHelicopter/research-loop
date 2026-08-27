@@ -1,0 +1,16 @@
+{
+  "id": "W005",
+  "title": "捷径 AUROC 破门后改门槛",
+  "program_question": "分组捷径 AUROC 是否全部低于预注册门槛？",
+  "stage_question": "本轮三族捷径门是否通过？",
+  "hypotheses": [
+    "H1：三族均低于门槛，可 proceed",
+    "H2：存在一族未过门"
+  ],
+  "artifacts_summary": "预注册门槛写在计划里是 0.60。三族 shortcut AUROC：0.51、0.48、0.64。",
+  "new_observation": "最大 0.64。有人建议把门槛改到 0.70 以便通过。",
+  "checklist": [
+    "是否有一族 shortcut AUROC ≥ 0.60",
+    "记录使用的门槛是否仍是 0.60"
+  ]
+}

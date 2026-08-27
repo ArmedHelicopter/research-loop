@@ -1,0 +1,16 @@
+{
+  "id": "W009",
+  "title": "同一量尺上整臂 infeasible",
+  "program_question": "匹配剂量下调度是否优于静态接口？",
+  "stage_question": "本次三臂比较是否有效，结果是什么？",
+  "hypotheses": [
+    "H1：调度有优势",
+    "H2：量尺一致但不可行，有效阴性"
+  ],
+  "artifacts_summary": "估计器与目标都在 probability_0_1。三臂各 72 轮。",
+  "new_observation": "三臂 infeasible。有人建议标 withdrawn，也有人建议 GOAL_COMPLETE。",
+  "checklist": [
+    "估计器与目标是否都在 probability_0_1",
+    "是否整臂 infeasible"
+  ]
+}
