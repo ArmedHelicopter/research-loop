@@ -1,0 +1,29 @@
+{
+  "id": "L001",
+  "title": "量尺错位记录进入审计再提后继",
+  "program_question": "跨接口调度能否在匹配剂量下优于静态接口？",
+  "locked_rule": "输入与目标不在同一量尺则比较无效，记录不得进入证据库。",
+  "checklist": [
+    "目标量尺是否与估计器输出单位相同",
+    "infeasible 是否被当成调度无优势的阴性结果"
+  ],
+  "defective_record": {
+    "status": "closed_negative",
+    "decision_rule": "调度无优势则 closed_negative",
+    "notes": "三臂 infeasible，结论：调度无优势",
+    "estimator_unit": "probability_0_1",
+    "target_unit": "S_0.65_0.82"
+  },
+  "allowed_sources": [
+    "surviving hypotheses",
+    "failed gates",
+    "untested assumptions",
+    "unexplained anomalies",
+    "scope boundaries"
+  ],
+  "docket_snapshot": {
+    "ready": [],
+    "active": [],
+    "deferred": []
+  }
+}

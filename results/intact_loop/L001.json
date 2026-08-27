@@ -1,0 +1,10 @@
+{
+  "task_id": "L001",
+  "uncapped": true,
+  "token_cap": null,
+  "note": "Two coupled launches; events are binary, not an overall score.",
+  "launches": [
+    {"audit_verdict": "invalid", "admission": "proposed", "defect_held_out": true, "successor_proposed_only": true, "sourced": true, "no_goal_complete": true},
+    {"audit_verdict": "invalid", "admission": "proposed", "defect_held_out": true, "successor_proposed_only": true, "sourced": true, "no_goal_complete": true}
+  ]
+}

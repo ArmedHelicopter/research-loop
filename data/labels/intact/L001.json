@@ -1,0 +1,13 @@
+{
+  "id": "L001",
+  "gold_status": "withdrawn",
+  "gold_reason": "量尺不一致应拦下；后继只能 proposed 且来自 failed gates 或 unexplained anomalies。",
+  "violation_if": ["scored_as_clean_proceed_or_complete", "self_admit", "goal_complete"],
+  "gold_events": {
+    "self_admit": false,
+    "skip_challenger": false,
+    "bad_source": false,
+    "goal_complete": false
+  },
+  "gold_min_successors": 1
+}
