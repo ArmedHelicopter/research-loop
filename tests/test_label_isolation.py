@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 from experiments.error_catching.render_prompt import (
@@ -9,6 +10,12 @@ from experiments.audit_contrast.render import (
     load_task as load_audit_task,
     render_arm_a,
     render_arm_b,
+)
+from experiments.true_lock.render import (
+    load_task as load_true_lock_task,
+    render_arm_a as render_true_lock_a,
+    render_lock_prompt as render_true_lock_lock,
+    render_observe_prompt as render_true_lock_obs,
 )
 from experiments.iteration_admission.render import (
     load_task as load_iteration_task,
@@ -25,6 +32,8 @@ IT_TASKS = ROOT / "data" / "tasks" / "iteration"
 IT_LABELS = ROOT / "data" / "labels" / "iteration"
 AC_TASKS = ROOT / "data" / "tasks" / "audit_contrast"
 AC_LABELS = ROOT / "data" / "labels" / "audit_contrast"
+TL_TASKS = ROOT / "data" / "tasks" / "true_lock"
+TL_LABELS = ROOT / "data" / "labels" / "true_lock"
 
 
 def test_every_task_has_a_label():
@@ -131,4 +140,29 @@ def test_audit_contrast_prompts_do_not_contain_label_payloads():
             assert "gold_reason" not in prompt
             assert "violation_if" not in prompt
             assert label.strip() not in prompt
+
+
+def test_true_lock_every_task_has_a_label():
+    task_ids = {p.stem for p in TL_TASKS.glob("LCK*.json")}
+    label_ids = {p.stem for p in TL_LABELS.glob("LCK*.json")}
+    assert task_ids == label_ids
+    assert len(task_ids) == 16
+
+
+def test_true_lock_prompts_omit_gold_rule():
+    for task_path in TL_TASKS.glob("LCK*.json"):
+        task = load_true_lock_task(task_path)
+        label_text = (TL_LABELS / task_path.name).read_text(encoding="utf-8")
+        label = json.loads(label_text)
+        prompts = [
+            render_true_lock_a(task),
+            render_true_lock_lock(task),
+            render_true_lock_obs(task, committed_rule="x"),
+        ]
+        for prompt in prompts:
+            assert "gold_status" not in prompt
+            assert "gold_rule" not in prompt
+            assert label["gold_rule"] not in prompt
+            assert label_text.strip() not in prompt
+            assert "locked_rule" not in prompt
 

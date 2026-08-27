@@ -1,6 +1,6 @@
 # 改进提案（未冻结，不是确认性 SPEC）
 
-状态：**proposed**（2026-08-27）。接受现有对照未支持。本文件不得改写 `docs/SPEC.md` 或 `docs/SPEC_AUDIT.md` 的判定规则。未经独立冻结不得当确认性信封。
+状态：**已落地为独立信封**（2026-08-27）。测量修正见 `docs/SPEC_TRUE_LOCK.md` 与 `docs/VERDICT_TRUE_LOCK.md`。本文件不得改写 `docs/SPEC.md` 或 `docs/SPEC_AUDIT.md` 的判定规则。旧 n=40 仪式对照仍按其自身阴性结果成立。
 
 ## 现有设计不足（已接受）
 

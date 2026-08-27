@@ -1,0 +1,12 @@
+{
+  "id": "LCK013",
+  "title": "捷径全部低于 0.60 且门槛未改",
+  "program_question": "分组捷径是否全部低于预注册门槛？",
+  "stage_question": "本轮三族是否通过？",
+  "hypotheses": [
+    "H1：三族均 < 0.60",
+    "H2：有一族破门"
+  ],
+  "artifacts_summary": "预注册门槛 0.60。三族 AUROC：0.51、0.48、0.55。",
+  "new_observation": "门槛保持 0.60。有人建议改成 0.50 让门更严、看起来更规范。"
+}

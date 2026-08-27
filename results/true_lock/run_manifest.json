@@ -1,0 +1,36 @@
+{
+  "requested_model": "grok-4-fast-non-reasoning",
+  "base_url": "https://api.x.ai/v1",
+  "temperature": 0.0,
+  "max_tokens": 800,
+  "n_tasks": 16,
+  "seeds": [
+    0
+  ],
+  "wall_time_s": 107.94972920417786,
+  "prompt_tokens": 16847,
+  "completion_tokens": 5729,
+  "generation_tokens": 22576,
+  "policy_signature_gpu_ready_used": false,
+  "task_ids": [
+    "LCK001",
+    "LCK002",
+    "LCK003",
+    "LCK004",
+    "LCK005",
+    "LCK006",
+    "LCK007",
+    "LCK008",
+    "LCK009",
+    "LCK010",
+    "LCK011",
+    "LCK012",
+    "LCK013",
+    "LCK014",
+    "LCK015",
+    "LCK016"
+  ],
+  "spec": "docs/SPEC_TRUE_LOCK.md",
+  "n40_kill_rules_rewritten": false,
+  "kwok_verifier_used": false
+}

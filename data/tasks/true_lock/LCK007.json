@@ -1,0 +1,12 @@
+{
+  "id": "LCK007",
+  "title": "拟合见过 final-test",
+  "program_question": "线性探针能否在未见族上预测政策？",
+  "stage_question": "本次拟合是否泄漏 final-test？",
+  "hypotheses": [
+    "H1：未见预测成立",
+    "H2：阈值在含 held-out 的网格上选出"
+  ],
+  "artifacts_summary": "日志 fit_on=all_rows。三族数据。",
+  "new_observation": "层与阈值在含 held-out 族的网格上选了最大 AUROC。有人建议写成阳性发现。"
+}

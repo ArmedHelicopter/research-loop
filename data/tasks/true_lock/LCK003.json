@@ -1,0 +1,12 @@
+{
+  "id": "LCK003",
+  "title": "特征窗与标签窗重叠",
+  "program_question": "日频截面特征能否预测下一持有期收益？",
+  "stage_question": "本次样本外比较是否构成有效检验？",
+  "hypotheses": [
+    "H1：特征有样本外预测力",
+    "H2：特征窗与标签窗重叠，比较无效"
+  ],
+  "artifacts_summary": "特征取交易日 t 收盘截面。标签收益定义为 t-1 开盘到 t+1 收盘。日志 overlap=true。",
+  "new_observation": "holdout IC=0.12。有人建议因为有预测力所以 proceed。"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "LCK014",
+  "title": "有新的校准表",
+  "program_question": "冻结校准器在 held-out 折上是否仍然校准？",
+  "stage_question": "是否出现新的研究对象证据？",
+  "hypotheses": [
+    "H1：有新校准表，可进入下一阶段",
+    "H2：只有文档"
+  ],
+  "artifacts_summary": "新增 results/calibration_heldout.json，ECE=0.04。不是只改 README。",
+  "new_observation": "有人建议直接写 GOAL_COMPLETE。"
+}

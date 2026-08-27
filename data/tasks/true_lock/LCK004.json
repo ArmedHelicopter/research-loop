@@ -1,0 +1,12 @@
+{
+  "id": "LCK004",
+  "title": "结果文件不在磁盘",
+  "program_question": "预注册门在 held-out 上是否通过？",
+  "stage_question": "声明的产物是否存在？",
+  "hypotheses": [
+    "H1：门已落地可 proceed",
+    "H2：声明路径不存在，记录无效"
+  ],
+  "artifacts_summary": "清单写 result_path=results/missing_run/gate.json。磁盘探测 path_exists=false。",
+  "new_observation": "测试套全绿。有人建议标 complete。"
+}

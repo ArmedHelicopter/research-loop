@@ -1,0 +1,12 @@
+{
+  "id": "LCK008",
+  "title": "披露的第二种子没有产物",
+  "program_question": "两独立种子能否复现同一效应方向？",
+  "stage_question": "清单上的两种子产物是否都在磁盘上？",
+  "hypotheses": [
+    "H1：两种子均已落地",
+    "H2：披露单位与磁盘不一致"
+  ],
+  "artifacts_summary": "清单列 seed 7 与 seed 11。磁盘只有 results/replicate_seed7.json。",
+  "new_observation": "效应同向。有人建议 n=2 复现通过、proceed。"
+}
