@@ -3,6 +3,11 @@
 > **来源：** 从 `Ariestar/policy-signature` 的 `.agents/research-loop.md` 抽出（2026-08-26）。
 > 文中 G1–G4 cursor、`docs/research-state/` 和 CUDA 调度属于源仓 programme，不是本仓主张。
 > 本仓检验的是三角色分权、LOCK-before-RUN、提案≠执行权、二元小事实审计。
+> **2026-08-27 协议修正（机制引用，不占用数字）：** 在 LOCK 与 RUN 之间加入
+> Predict-then-Verify 资格预报（Zheng et al. ACL 2026 的「先预测再执行」）；
+> 审计总判必须是预注册小事实的合取，可重复核对、不一致则 invalid
+> （Kwok et al. 2026 的准则分解与重复评估）。**不**引入连续分、不按预测质量
+> 给 docket 排序、不用 Beat Ratio / Terminal-Bench 数字。
 
 > **V4 规范性入口（2026-08-24）**：机器真源是
 > `docs/research-state/`，会话先运行
@@ -48,9 +53,17 @@ rule and falsifier **before seeing any outputs**, runs the work (Stages 0.5–7)
 and writes a terminal decision record whose status, next_action, and reflection
 are determined by comparing locked predictions against observed outcomes.
 
+After LOCK and **before** RUN, the executor writes a cheap **eligibility
+prediction** (units comparable? declared artifacts exist? construct still
+holds?) and **verifies** those predictions against the locked rule with
+pre-registered small facts. A failed verify is `withdrawn` — the expensive
+run does not start. This is Predict-then-Verify of *whether the test is
+executable*, not a ranking of which experiment would score higher.
+
 The executor **cannot**:
 - Modify its pre-registered decision rule after launch
 - Add, remove, or reorder docket entries
+- Rank Ready/Active by predicted quality, Beat Ratio, or verifier score
 - Declare the program-level goal complete (enforced by `goal_link` and
   `_validate_no_goal_completion_claim`)
 
@@ -64,8 +77,11 @@ quality. Examples of auditable facts:
 - Does the reflection's `surviving_hypotheses` contradict the hypotheses table?
 - Is the `docket_selected` entry actually in DOCKET.md?
 
-The auditor's verdict is **binary** (valid / invalid), never a score. A record
-that fails audit is rejected and does not enter the evidence base.
+Each checklist item is recorded 0/1. The overall verdict is the **deterministic
+AND** of those bits, not a holistic LLM judgment and never a score. An optional
+second independent pass is allowed; any disagreement → `invalid` (repeat to
+reduce variance, not to average a rating). A record that fails audit is
+rejected and does not enter the evidence base.
 
 The auditor **cannot**:
 - Propose new research questions
@@ -86,6 +102,10 @@ re-ran the test suite, declared GOAL_COMPLETE). No role has the four powers.
 3. SURVEY   docs/survey-<topic>.md — scoped to the selected entry's question
 4. LOCK     pre-register the decision rule, acceptance criteria, and falsifier
              before launching compute or reading outputs
+4a. PREDICT cheap eligibility forecast vs the locked rule (units, artifacts,
+             construct). Not a preference ranking of alternative experiments.
+4b. VERIFY  check the forecast with pre-registered small facts. Fail →
+             `withdrawn`, skip RUN. (Predict-then-Verify of executability)
 5. RUN      the minimum falsifier (agent-workflow.md Stages 1–5)
              - generation-bearing runs use environment_manager.py run cuda,
                which validates .agents/checks/device_check.py before launch
@@ -115,16 +135,22 @@ re-ran the test suite, declared GOAL_COMPLETE). No role has the four powers.
               - quality gates: L1-L3 lower band, U1-U4 upper band
               admit survivors, reject others with reason
 11. CLOSE   update the canonical candidate and locked claim branch; render views
-12. AUDIT   validator checks small falsifiable facts; binary pass/fail
+12. AUDIT   each locked checklist item 0/1; overall valid = AND of items.
+             optional second pass; mismatch → invalid. never a score.
 13. GOTO 1
 ```
 
 Steps 8–10 keep the programme reflective without forcing a successor.
 Step 4 (LOCK) is what prevents post-hoc goalpost moving: the decision rule must
 be committed before outcomes are observed, so the executor cannot redefine
-success after seeing results. Step 7 (OBSERVE) is the fail-fast sanity check
+success after seeing results. Steps 4a–4b (PREDICT then VERIFY) spend a cheap
+check on *whether the locked test can run at all* before the expensive RUN —
+the research-decision analogue of Zheng et al.'s predict-before-execute, not
+their AutoML preference model. Step 7 (OBSERVE) is the fail-fast sanity check
 gate that catches calculation errors and impossible values before they propagate
-into decision records.
+into decision records. Step 12 (AUDIT) takes Kwok et al.'s criteria
+decomposition and repeated evaluation, but stops at a binary AND: no continuous
+score, no tournament over successors.
 
 ## What the two-sided band does
 

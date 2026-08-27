@@ -27,7 +27,9 @@
 
 「把大判断拆成多条准则」看起来像 auditor 清单。差别是：他们把分解结果**加回一个可排序的分**；我们规定分解结果**不得**合成 overall effectiveness，也不得拿来给后继排序（FIFO，禁止偏好模型）。
 
-若把 LLM-as-a-Verifier 接进 auditor，就是用可最大化的分替换二元审计，直接违反 `protocol/research-loop.md` 和反 Goodhart 设计。本仓不实现、不对照他们的基准。
+**协议已吸收的机制（2026-08-27）：** 审计总判 = 预注册小事实的合取；允许第二次独立核对，不一致则 invalid。见 `protocol/research-loop.md` 步骤 12。
+
+**仍不吸收：** 连续分、Bradley–Terry 排序、Pivot Tournament 选后继、当 RL 奖励。那会把 FIFO 换成可最大化的分。
 
 ## Open（仍属本仓）
 
