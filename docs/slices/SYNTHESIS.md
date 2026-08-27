@@ -8,6 +8,7 @@
 | 事后纠错 | 已知缺陷记录能否被独立审计标 invalid/withdrawn | 漏检 = valid 或 proceed/complete | `docs/slices/error-catching.md` |
 | 后继准入 | 关闭后后继是否只 proposed、来源合法、无 GOAL_COMPLETE | 自准入或完成句 = unclean | `docs/slices/iteration-admission.md` |
 | 完整耦合 | 审计输出进入 proposer 之后的系统事件（非切片加总） | 四事件皆 1 仅支持本轨迹 | `docs/SYSTEMIC.md` / `docs/SYSTEM_VERDICT.md` |
+| 已写记录审计 vs 裸 agent | 混合应拦/应放记录上，协议审计臂题级正确率是否高于裸单 agent | H_audit 未支持（CI 含 0；B 点估计更差） | `docs/VERDICT_AUDIT.md` |
 
 不计算 overall effectiveness，不把准确率相加、平均或加权。任一切片失败不表示完整 loop 无用；任一切片通过不表示完整 loop 已校准。整机事件也不得回写切片或 n=40 kill rules。不把本文件写成 G1–G4 进展。
 

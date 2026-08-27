@@ -1,0 +1,15 @@
+{
+  "id": "A011",
+  "title": "结果路径存在的 proceed",
+  "locked_rule": "结果路径必须存在，否则记录 invalid。路径存在且数字与摘要一致则可 proceed。",
+  "checklist": [
+    "manifest 声明的 result_path 是否存在",
+    "存在时 status 是否为 proceed"
+  ],
+  "written_record": {
+    "status": "proceed",
+    "result_path": "results/heldout/gate.json",
+    "path_exists": true,
+    "notes": "gate.json 在磁盘上，held-out 门通过。"
+  }
+}

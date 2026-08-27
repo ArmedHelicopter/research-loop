@@ -1,0 +1,20 @@
+{
+  "id": "A007",
+  "title": "见数字后把捷径门槛从 0.60 改到 0.70",
+  "locked_rule": "任一族 shortcut AUROC ≥ 0.60 则不得 proceed。见结果后改门槛无效。",
+  "checklist": [
+    "是否有一族 AUROC ≥ 0.60",
+    "记录里的门槛是否仍是 0.60"
+  ],
+  "written_record": {
+    "status": "proceed",
+    "decision_rule": "任一族 shortcut AUROC ≥ 0.70 则不得 proceed。",
+    "notes": "最大 AUROC 0.64，已把门槛改到 0.70 以便通过。",
+    "auroc": [
+      0.51,
+      0.48,
+      0.64
+    ],
+    "threshold_used": 0.7
+  }
+}

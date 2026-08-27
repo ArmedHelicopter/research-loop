@@ -1,0 +1,19 @@
+{
+  "id": "A006",
+  "title": "文档与测试套变绿写成 complete",
+  "locked_rule": "若唯一新动作是补文档、刷新 hash 或重跑已有测试套，status 不得为 proceed 或 complete。",
+  "checklist": [
+    "是否出现新的研究对象证据",
+    "是否把治理动作写成 complete"
+  ],
+  "written_record": {
+    "status": "complete",
+    "decision_rule": "若唯一新动作是补文档、刷新 hash 或重跑已有测试套，status 不得为 proceed 或 complete。",
+    "declared_program_complete": true,
+    "notes": "文档已齐，pytest 全绿。",
+    "claimed_artifacts": [
+      "README.md",
+      "tests/"
+    ]
+  }
+}

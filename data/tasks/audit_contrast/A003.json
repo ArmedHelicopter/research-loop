@@ -1,0 +1,15 @@
+{
+  "id": "A003",
+  "title": "声明的结果文件不存在",
+  "locked_rule": "结果路径必须存在，否则记录 invalid。",
+  "checklist": [
+    "manifest 声明的 result_path 是否存在",
+    "缺失时 status 是否仍为 complete"
+  ],
+  "written_record": {
+    "status": "complete",
+    "result_path": "results/missing_run/gate.json",
+    "path_exists": false,
+    "notes": "pytest 全绿，将收工"
+  }
+}

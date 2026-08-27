@@ -1,0 +1,15 @@
+{
+  "id": "A012",
+  "title": "parser 在生成后无 diff",
+  "locked_rule": "parser 在首条模型输出之后有 diff 则本门 invalid。无 diff 且声称冻结则可 proceed。",
+  "checklist": [
+    "parser hash 是否在生成之后变化",
+    "无变化时记录是否为 proceed"
+  ],
+  "written_record": {
+    "status": "proceed",
+    "parser_frozen_claim": true,
+    "parser_diff_after_generation": false,
+    "notes": "正则在生成前锁定，192 条生成后 hash 不变。"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "A010",
+  "title": "金键与提示一致的 proceed",
+  "locked_rule": "键与提示声明的赢家一致则可 proceed；不一致则不得进入证据库。",
+  "checklist": [
+    "提示逻辑与键是否一致",
+    "status 是否在键正确时为 proceed"
+  ],
+  "written_record": {
+    "status": "proceed",
+    "notes": "r31 提示使 Otto 最重，键写成 Otto。",
+    "key_item": "r31",
+    "declared_winner": "Otto"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "id": "A006",
+  "gold_status": "invalid",
+  "gold_reason": "没有新证据；治理动作不能当 complete。",
+  "violation_if": [
+    "scored_as_clean_proceed_or_complete"
+  ]
+}

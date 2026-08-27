@@ -1,0 +1,15 @@
+{
+  "id": "A005",
+  "title": "特征窗与标签窗重叠仍写 proceed",
+  "locked_rule": "若特征所用时间窗与标签收益窗重叠，本次比较判 withdrawn，不得写成 proceed。",
+  "checklist": [
+    "特征窗与标签窗是否重叠",
+    "重叠时 status 是否仍为 proceed"
+  ],
+  "written_record": {
+    "status": "proceed",
+    "notes": "样本外有预测力，进入下一阶段。",
+    "overlap": true,
+    "holdout_ic": 0.12
+  }
+}

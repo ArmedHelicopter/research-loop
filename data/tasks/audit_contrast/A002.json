@@ -1,0 +1,15 @@
+{
+  "id": "A002",
+  "title": "金键可证明反转仍标 proceed",
+  "locked_rule": "发现可证明反转的金键则本批比较不得进入证据库。",
+  "checklist": [
+    "提示逻辑与键是否一致",
+    "status 是否在键错误时仍为 proceed"
+  ],
+  "written_record": {
+    "status": "proceed",
+    "notes": "r31 提示使 Mara 最重，键写成 Otto，人格臂仍得分",
+    "key_item": "r31",
+    "declared_winner": "Otto"
+  }
+}

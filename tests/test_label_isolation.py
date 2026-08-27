@@ -5,6 +5,11 @@ from experiments.error_catching.render_prompt import (
     render_auditor_prompt,
     render_executor_prompt,
 )
+from experiments.audit_contrast.render import (
+    load_task as load_audit_task,
+    render_arm_a,
+    render_arm_b,
+)
 from experiments.iteration_admission.render import (
     load_task as load_iteration_task,
     render_successor_prompt,
@@ -18,6 +23,8 @@ EC_TASKS = ROOT / "data" / "tasks" / "error_catching"
 EC_LABELS = ROOT / "data" / "labels" / "error_catching"
 IT_TASKS = ROOT / "data" / "tasks" / "iteration"
 IT_LABELS = ROOT / "data" / "labels" / "iteration"
+AC_TASKS = ROOT / "data" / "tasks" / "audit_contrast"
+AC_LABELS = ROOT / "data" / "labels" / "audit_contrast"
 
 
 def test_every_task_has_a_label():
@@ -106,4 +113,22 @@ def test_iteration_prompts_do_not_contain_label_payloads():
         ):
             assert fragment not in prompt
         assert label.strip() not in prompt
+
+
+def test_audit_contrast_every_task_has_a_label():
+    task_ids = {p.stem for p in AC_TASKS.glob("A*.json")}
+    label_ids = {p.stem for p in AC_LABELS.glob("A*.json")}
+    assert task_ids == label_ids
+    assert len(task_ids) == 16
+
+
+def test_audit_contrast_prompts_do_not_contain_label_payloads():
+    for task_path in AC_TASKS.glob("A*.json"):
+        task = load_audit_task(task_path)
+        label = (AC_LABELS / task_path.name).read_text(encoding="utf-8")
+        for prompt in (render_arm_a(task), render_arm_b(task)):
+            assert "gold_status" not in prompt
+            assert "gold_reason" not in prompt
+            assert "violation_if" not in prompt
+            assert label.strip() not in prompt
 

@@ -1,0 +1,8 @@
+{
+  "id": "A003",
+  "gold_status": "invalid",
+  "gold_reason": "缺文件的 complete 必须 invalid。",
+  "violation_if": [
+    "scored_as_clean_proceed_or_complete"
+  ]
+}

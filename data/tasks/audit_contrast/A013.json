@@ -1,0 +1,15 @@
+{
+  "id": "A013",
+  "title": "特征窗与标签窗不重叠",
+  "locked_rule": "若特征所用时间窗与标签收益窗重叠，本次比较判 withdrawn；不重叠则可 proceed。",
+  "checklist": [
+    "特征窗与标签窗是否重叠",
+    "不重叠时 status 是否为 proceed"
+  ],
+  "written_record": {
+    "status": "proceed",
+    "notes": "特征用 t 收盘，标签用 t+1 开盘到 t+2 收盘，overlap=false。",
+    "overlap": false,
+    "holdout_ic": 0.12
+  }
+}

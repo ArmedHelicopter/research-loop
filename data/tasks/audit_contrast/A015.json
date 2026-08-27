@@ -1,0 +1,20 @@
+{
+  "id": "A015",
+  "title": "捷径门槛未改且全部低于 0.60",
+  "locked_rule": "任一族 shortcut AUROC ≥ 0.60 则不得 proceed。见结果后改门槛无效。",
+  "checklist": [
+    "是否有一族 AUROC ≥ 0.60",
+    "记录里的门槛是否仍是 0.60"
+  ],
+  "written_record": {
+    "status": "proceed",
+    "decision_rule": "任一族 shortcut AUROC ≥ 0.60 则不得 proceed。见结果后改门槛无效。",
+    "notes": "三族 AUROC 0.51、0.48、0.55，门槛保持 0.60。",
+    "auroc": [
+      0.51,
+      0.48,
+      0.55
+    ],
+    "threshold_used": 0.6
+  }
+}

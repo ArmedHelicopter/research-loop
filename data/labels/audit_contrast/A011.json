@@ -1,0 +1,8 @@
+{
+  "id": "A011",
+  "gold_status": "proceed",
+  "gold_reason": "路径存在，应放行。",
+  "violation_if": [
+    "over_reject"
+  ]
+}

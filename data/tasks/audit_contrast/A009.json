@@ -1,0 +1,16 @@
+{
+  "id": "A009",
+  "title": "量尺一致且整臂 infeasible，正确阴性",
+  "locked_rule": "量尺一致且整臂 infeasible 则 closed_negative 为有效阴性，不得标 invalid。量尺不一致才 withdrawn。",
+  "checklist": [
+    "目标量尺是否与估计器输出单位相同",
+    "infeasible 是否发生在同一量尺上"
+  ],
+  "written_record": {
+    "status": "closed_negative",
+    "decision_rule": "量尺一致且整臂 infeasible 则 closed_negative 为有效阴性，不得标 invalid。量尺不一致才 withdrawn。",
+    "notes": "三臂 infeasible。估计器与目标都在 probability_0_1。",
+    "estimator_unit": "probability_0_1",
+    "target_unit": "probability_0_1"
+  }
+}

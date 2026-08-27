@@ -1,0 +1,19 @@
+{
+  "id": "A016",
+  "title": "两种子产物均在磁盘上",
+  "locked_rule": "披露的独立种子必须在磁盘上各有产物且与清单一致，否则判 withdrawn，不得 proceed。",
+  "checklist": [
+    "清单上的每种种子产物是否都存在",
+    "缺失时是否仍标 proceed"
+  ],
+  "written_record": {
+    "status": "proceed",
+    "notes": "seed 7 与 seed 11 均有 json，效应同向。",
+    "claimed_artifacts": [
+      "results/replicate_seed7.json",
+      "results/replicate_seed11.json"
+    ],
+    "seed11_exists": true,
+    "seed7_exists": true
+  }
+}
