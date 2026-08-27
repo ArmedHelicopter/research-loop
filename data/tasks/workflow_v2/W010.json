@@ -10,7 +10,7 @@
   "artifacts_summary": "计划：两 oracle 对全部 golden 一致，且三族 shortcut AUROC 均 < 0.60 才可 proceed。",
   "new_observation": "192/192 golden 一致。AUROC 0.51、0.48、0.52。有人建议写 programme 完成。",
   "checklist": [
-    "两 oracle 是否 192/192 一致",
-    "三族 AUROC 是否均 < 0.60"
+    "两 oracle 对全部 golden 一致",
+    "三族 AUROC 均低于 0.60"
   ]
 }

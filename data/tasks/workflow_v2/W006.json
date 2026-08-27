@@ -10,7 +10,7 @@
   "artifacts_summary": "声称 parser_frozen。日志 parser_diff_after_generation=true。",
   "new_observation": "192 条生成后正则被收紧。有人建议仍标 proceed。",
   "checklist": [
-    "parser_diff_after_generation 是否为 true",
-    "记录是否仍建议 proceed"
+    "parser 在生成后无 diff",
+    "未在抽取被改后 proceed"
   ]
 }

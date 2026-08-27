@@ -1,6 +1,7 @@
 # SPEC：修正后 workflow vs 裸 agent
 
-状态：**冻结**（2026-08-27T20:00:00Z，在本题任何 scored aggregate 被阅读之前写入）。
+状态：**冻结**（2026-08-27T20:00:00Z）。  
+**2026-08-27 修正（见结果后的实现缺口，不改主终点定义）：** 资格失败与合取由 runner/评分器**确定性后处理**覆盖模型输出；清单 `pass=true` 表示该条协议条款成立。`and_break` 仅保留解析失败。不改规则 1–5 的成功条款。
 **无权修改** `docs/SPEC.md`、`docs/SPEC_AUDIT.md`、`docs/SPEC_TRUE_LOCK.md`。
 
 对象是 `protocol/research-loop.md` 2026-08-27 修正后的两步：

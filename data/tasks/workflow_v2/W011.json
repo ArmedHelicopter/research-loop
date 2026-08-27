@@ -10,7 +10,7 @@
   "artifacts_summary": "特征用 t 收盘。标签用 t+1 开盘到 t+2 收盘。日志 overlap=false。",
   "new_observation": "holdout IC=0.12。有人建议仍标 withdrawn。",
   "checklist": [
-    "日志 overlap 是否为 false",
-    "标签是否从 t+1 开始"
+    "特征窗与标签窗不重叠",
+    "比较按有效检验书写"
   ]
 }

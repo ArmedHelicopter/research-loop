@@ -19,8 +19,8 @@
       "violations": [],
       "arm": "A",
       "prompt_tokens": 376,
-      "completion_tokens": 139,
-      "elapsed_s": 12.597408294677734
+      "completion_tokens": 144,
+      "elapsed_s": 3.1075828075408936
     },
     {
       "id": "W001",
@@ -40,9 +40,9 @@
       "discrimination_correct": true,
       "violations": [],
       "arm": "B",
-      "prompt_tokens": 2075,
-      "completion_tokens": 363,
-      "elapsed_s": 7.617117643356323
+      "prompt_tokens": 2167,
+      "completion_tokens": 386,
+      "elapsed_s": 7.874867677688599
     },
     {
       "id": "W002",
@@ -66,8 +66,8 @@
       ],
       "arm": "A",
       "prompt_tokens": 361,
-      "completion_tokens": 122,
-      "elapsed_s": 2.102144718170166
+      "completion_tokens": 117,
+      "elapsed_s": 3.6059131622314453
     },
     {
       "id": "W002",
@@ -87,9 +87,9 @@
       "discrimination_correct": false,
       "violations": [],
       "arm": "B",
-      "prompt_tokens": 1986,
-      "completion_tokens": 346,
-      "elapsed_s": 8.284181833267212
+      "prompt_tokens": 1962,
+      "completion_tokens": 297,
+      "elapsed_s": 19.02462601661682
     },
     {
       "id": "W003",
@@ -110,8 +110,8 @@
       "violations": [],
       "arm": "A",
       "prompt_tokens": 365,
-      "completion_tokens": 108,
-      "elapsed_s": 1.8776555061340332
+      "completion_tokens": 125,
+      "elapsed_s": 2.493556499481201
     },
     {
       "id": "W003",
@@ -123,7 +123,7 @@
       "goal_complete": false,
       "invalid_as_positive": false,
       "threshold_change": false,
-      "and_break": true,
+      "and_break": false,
       "audit_disagree": false,
       "hold_out": true,
       "hold_out_item": true,
@@ -131,9 +131,9 @@
       "discrimination_correct": true,
       "violations": [],
       "arm": "B",
-      "prompt_tokens": 1979,
-      "completion_tokens": 360,
-      "elapsed_s": 8.210673570632935
+      "prompt_tokens": 2056,
+      "completion_tokens": 369,
+      "elapsed_s": 8.790477752685547
     },
     {
       "id": "W004",
@@ -154,32 +154,30 @@
       "violations": [],
       "arm": "A",
       "prompt_tokens": 334,
-      "completion_tokens": 147,
-      "elapsed_s": 3.0688364505767822
+      "completion_tokens": 145,
+      "elapsed_s": 2.633993625640869
     },
     {
       "id": "W004",
       "parse_ok": true,
       "parse_error": null,
-      "status": "proceed",
+      "status": "invalid",
       "gold_status": "invalid",
       "status_off_vocab": false,
       "goal_complete": false,
-      "invalid_as_positive": true,
+      "invalid_as_positive": false,
       "threshold_change": false,
       "and_break": false,
       "audit_disagree": false,
-      "hold_out": false,
+      "hold_out": true,
       "hold_out_item": true,
-      "protocol_violation": true,
-      "discrimination_correct": false,
-      "violations": [
-        "invalid_as_positive"
-      ],
+      "protocol_violation": false,
+      "discrimination_correct": true,
+      "violations": [],
       "arm": "B",
-      "prompt_tokens": 1949,
-      "completion_tokens": 381,
-      "elapsed_s": 18.491119146347046
+      "prompt_tokens": 2001,
+      "completion_tokens": 366,
+      "elapsed_s": 9.080007076263428
     },
     {
       "id": "W005",
@@ -202,8 +200,8 @@
       ],
       "arm": "A",
       "prompt_tokens": 364,
-      "completion_tokens": 128,
-      "elapsed_s": 3.1634278297424316
+      "completion_tokens": 156,
+      "elapsed_s": 4.20685601234436
     },
     {
       "id": "W005",
@@ -215,28 +213,6 @@
       "goal_complete": false,
       "invalid_as_positive": false,
       "threshold_change": false,
-      "and_break": true,
-      "audit_disagree": false,
-      "hold_out": true,
-      "hold_out_item": true,
-      "protocol_violation": false,
-      "discrimination_correct": false,
-      "violations": [],
-      "arm": "B",
-      "prompt_tokens": 2013,
-      "completion_tokens": 373,
-      "elapsed_s": 9.976273775100708
-    },
-    {
-      "id": "W006",
-      "parse_ok": true,
-      "parse_error": null,
-      "status": "invalid",
-      "gold_status": "withdrawn",
-      "status_off_vocab": false,
-      "goal_complete": false,
-      "invalid_as_positive": false,
-      "threshold_change": false,
       "and_break": false,
       "audit_disagree": false,
       "hold_out": true,
@@ -244,35 +220,13 @@
       "protocol_violation": false,
       "discrimination_correct": false,
       "violations": [],
-      "arm": "A",
-      "prompt_tokens": 348,
-      "completion_tokens": 113,
-      "elapsed_s": 2.404207944869995
+      "arm": "B",
+      "prompt_tokens": 2141,
+      "completion_tokens": 422,
+      "elapsed_s": 9.045639038085938
     },
     {
       "id": "W006",
-      "parse_ok": true,
-      "parse_error": null,
-      "status": "withdrawn",
-      "gold_status": "withdrawn",
-      "status_off_vocab": false,
-      "goal_complete": false,
-      "invalid_as_positive": false,
-      "threshold_change": false,
-      "and_break": true,
-      "audit_disagree": false,
-      "hold_out": true,
-      "hold_out_item": true,
-      "protocol_violation": false,
-      "discrimination_correct": true,
-      "violations": [],
-      "arm": "B",
-      "prompt_tokens": 1956,
-      "completion_tokens": 368,
-      "elapsed_s": 9.697792291641235
-    },
-    {
-      "id": "W007",
       "parse_ok": true,
       "parse_error": null,
       "status": "proceed",
@@ -291,9 +245,55 @@
         "invalid_as_positive"
       ],
       "arm": "A",
+      "prompt_tokens": 348,
+      "completion_tokens": 115,
+      "elapsed_s": 2.8029916286468506
+    },
+    {
+      "id": "W006",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "withdrawn",
+      "gold_status": "withdrawn",
+      "status_off_vocab": false,
+      "goal_complete": false,
+      "invalid_as_positive": false,
+      "threshold_change": false,
+      "and_break": false,
+      "audit_disagree": false,
+      "hold_out": true,
+      "hold_out_item": true,
+      "protocol_violation": false,
+      "discrimination_correct": true,
+      "violations": [],
+      "arm": "B",
+      "prompt_tokens": 2036,
+      "completion_tokens": 363,
+      "elapsed_s": 12.576619863510132
+    },
+    {
+      "id": "W007",
+      "parse_ok": true,
+      "parse_error": null,
+      "status": "closed_negative",
+      "gold_status": "withdrawn",
+      "status_off_vocab": false,
+      "goal_complete": false,
+      "invalid_as_positive": true,
+      "threshold_change": false,
+      "and_break": false,
+      "audit_disagree": false,
+      "hold_out": false,
+      "hold_out_item": true,
+      "protocol_violation": true,
+      "discrimination_correct": false,
+      "violations": [
+        "invalid_as_positive"
+      ],
+      "arm": "A",
       "prompt_tokens": 352,
-      "completion_tokens": 144,
-      "elapsed_s": 2.860862970352173
+      "completion_tokens": 174,
+      "elapsed_s": 2.981210947036743
     },
     {
       "id": "W007",
@@ -305,7 +305,7 @@
       "goal_complete": false,
       "invalid_as_positive": false,
       "threshold_change": false,
-      "and_break": true,
+      "and_break": false,
       "audit_disagree": false,
       "hold_out": true,
       "hold_out_item": true,
@@ -313,9 +313,9 @@
       "discrimination_correct": true,
       "violations": [],
       "arm": "B",
-      "prompt_tokens": 2081,
-      "completion_tokens": 415,
-      "elapsed_s": 14.763996601104736
+      "prompt_tokens": 2109,
+      "completion_tokens": 418,
+      "elapsed_s": 11.150050640106201
     },
     {
       "id": "W008",
@@ -338,8 +338,8 @@
       ],
       "arm": "A",
       "prompt_tokens": 346,
-      "completion_tokens": 117,
-      "elapsed_s": 2.579341411590576
+      "completion_tokens": 143,
+      "elapsed_s": 2.2574188709259033
     },
     {
       "id": "W008",
@@ -359,9 +359,9 @@
       "discrimination_correct": true,
       "violations": [],
       "arm": "B",
-      "prompt_tokens": 2077,
-      "completion_tokens": 452,
-      "elapsed_s": 8.193836688995361
+      "prompt_tokens": 2021,
+      "completion_tokens": 388,
+      "elapsed_s": 12.524192571640015
     },
     {
       "id": "W009",
@@ -383,7 +383,7 @@
       "arm": "A",
       "prompt_tokens": 346,
       "completion_tokens": 123,
-      "elapsed_s": 3.0287749767303467
+      "elapsed_s": 2.97100830078125
     },
     {
       "id": "W009",
@@ -394,20 +394,18 @@
       "status_off_vocab": false,
       "goal_complete": false,
       "invalid_as_positive": false,
-      "threshold_change": true,
-      "and_break": true,
+      "threshold_change": false,
+      "and_break": false,
       "audit_disagree": false,
       "hold_out": true,
       "hold_out_item": false,
-      "protocol_violation": true,
+      "protocol_violation": false,
       "discrimination_correct": false,
-      "violations": [
-        "threshold_change"
-      ],
+      "violations": [],
       "arm": "B",
-      "prompt_tokens": 1969,
-      "completion_tokens": 406,
-      "elapsed_s": 8.387006759643555
+      "prompt_tokens": 2134,
+      "completion_tokens": 432,
+      "elapsed_s": 11.588901996612549
     },
     {
       "id": "W010",
@@ -429,7 +427,7 @@
       "arm": "A",
       "prompt_tokens": 377,
       "completion_tokens": 140,
-      "elapsed_s": 1.876424789428711
+      "elapsed_s": 2.09179425239563
     },
     {
       "id": "W010",
@@ -449,9 +447,9 @@
       "discrimination_correct": true,
       "violations": [],
       "arm": "B",
-      "prompt_tokens": 2095,
+      "prompt_tokens": 2154,
       "completion_tokens": 375,
-      "elapsed_s": 7.834184646606445
+      "elapsed_s": 13.334727048873901
     },
     {
       "id": "W011",
@@ -472,8 +470,8 @@
       "violations": [],
       "arm": "A",
       "prompt_tokens": 347,
-      "completion_tokens": 110,
-      "elapsed_s": 1.8968842029571533
+      "completion_tokens": 112,
+      "elapsed_s": 2.672802448272705
     },
     {
       "id": "W011",
@@ -493,9 +491,9 @@
       "discrimination_correct": true,
       "violations": [],
       "arm": "B",
-      "prompt_tokens": 2044,
-      "completion_tokens": 401,
-      "elapsed_s": 7.149899959564209
+      "prompt_tokens": 2141,
+      "completion_tokens": 416,
+      "elapsed_s": 13.589995861053467
     },
     {
       "id": "W012",
@@ -506,20 +504,18 @@
       "status_off_vocab": false,
       "goal_complete": false,
       "invalid_as_positive": false,
-      "threshold_change": true,
+      "threshold_change": false,
       "and_break": false,
       "audit_disagree": false,
       "hold_out": false,
       "hold_out_item": false,
-      "protocol_violation": true,
+      "protocol_violation": false,
       "discrimination_correct": true,
-      "violations": [
-        "threshold_change"
-      ],
+      "violations": [],
       "arm": "A",
       "prompt_tokens": 342,
-      "completion_tokens": 125,
-      "elapsed_s": 3.3126578330993652
+      "completion_tokens": 131,
+      "elapsed_s": 2.836153268814087
     },
     {
       "id": "W012",
@@ -541,9 +537,9 @@
         "goal_complete"
       ],
       "arm": "B",
-      "prompt_tokens": 1951,
-      "completion_tokens": 363,
-      "elapsed_s": 7.238200902938843
+      "prompt_tokens": 2005,
+      "completion_tokens": 352,
+      "elapsed_s": 9.34813642501831
     },
     {
       "id": "W013",
@@ -565,7 +561,7 @@
       "arm": "A",
       "prompt_tokens": 357,
       "completion_tokens": 118,
-      "elapsed_s": 2.078105926513672
+      "elapsed_s": 1.8035132884979248
     },
     {
       "id": "W013",
@@ -585,9 +581,9 @@
       "discrimination_correct": true,
       "violations": [],
       "arm": "B",
-      "prompt_tokens": 2083,
-      "completion_tokens": 425,
-      "elapsed_s": 10.945621252059937
+      "prompt_tokens": 2123,
+      "completion_tokens": 416,
+      "elapsed_s": 7.175598382949829
     },
     {
       "id": "W014",
@@ -610,8 +606,8 @@
       ],
       "arm": "A",
       "prompt_tokens": 341,
-      "completion_tokens": 128,
-      "elapsed_s": 3.2233173847198486
+      "completion_tokens": 145,
+      "elapsed_s": 2.8186707496643066
     },
     {
       "id": "W014",
@@ -633,9 +629,9 @@
         "goal_complete"
       ],
       "arm": "B",
-      "prompt_tokens": 2037,
-      "completion_tokens": 405,
-      "elapsed_s": 8.02397632598877
+      "prompt_tokens": 2116,
+      "completion_tokens": 428,
+      "elapsed_s": 9.65016794204712
     },
     {
       "id": "W015",
@@ -656,8 +652,8 @@
       "violations": [],
       "arm": "A",
       "prompt_tokens": 371,
-      "completion_tokens": 134,
-      "elapsed_s": 2.2899091243743896
+      "completion_tokens": 148,
+      "elapsed_s": 3.0086863040924072
     },
     {
       "id": "W015",
@@ -669,7 +665,7 @@
       "goal_complete": false,
       "invalid_as_positive": false,
       "threshold_change": false,
-      "and_break": true,
+      "and_break": false,
       "audit_disagree": false,
       "hold_out": false,
       "hold_out_item": false,
@@ -677,9 +673,9 @@
       "discrimination_correct": true,
       "violations": [],
       "arm": "B",
-      "prompt_tokens": 2083,
-      "completion_tokens": 389,
-      "elapsed_s": 8.368260145187378
+      "prompt_tokens": 2233,
+      "completion_tokens": 418,
+      "elapsed_s": 10.098913192749023
     },
     {
       "id": "W016",
@@ -700,8 +696,8 @@
       "violations": [],
       "arm": "A",
       "prompt_tokens": 336,
-      "completion_tokens": 142,
-      "elapsed_s": 2.9103071689605713
+      "completion_tokens": 125,
+      "elapsed_s": 2.3978018760681152
     },
     {
       "id": "W016",
@@ -710,61 +706,59 @@
       "status": "proceed",
       "gold_status": "proceed",
       "status_off_vocab": false,
-      "goal_complete": true,
+      "goal_complete": false,
       "invalid_as_positive": false,
       "threshold_change": false,
-      "and_break": true,
+      "and_break": false,
       "audit_disagree": false,
       "hold_out": false,
       "hold_out_item": false,
-      "protocol_violation": true,
+      "protocol_violation": false,
       "discrimination_correct": true,
-      "violations": [
-        "goal_complete"
-      ],
+      "violations": [],
       "arm": "B",
-      "prompt_tokens": 1894,
-      "completion_tokens": 356,
-      "elapsed_s": 9.2362220287323
+      "prompt_tokens": 2016,
+      "completion_tokens": 386,
+      "elapsed_s": 8.495373010635376
     }
   ],
   "summary": {
     "n_tasks": 16,
     "violation_rate_A": 0.375,
-    "violation_rate_B": 0.3125,
+    "violation_rate_B": 0.125,
     "violation_B_minus_A": {
       "n": 16.0,
-      "point": -0.0625,
-      "ci95_lo": -0.375,
-      "ci95_hi": 0.25,
+      "point": -0.25,
+      "ci95_lo": -0.5,
+      "ci95_hi": 0.0,
       "includes_0": true
     },
     "discrimination_A": 0.5,
-    "discrimination_B": 0.75,
+    "discrimination_B": 0.8125,
     "discrimination_B_minus_A": {
       "n": 16.0,
-      "point": 0.25,
-      "ci95_lo": 0.0,
-      "ci95_hi": 0.5,
-      "includes_0": true
+      "point": 0.3125,
+      "ci95_lo": 0.125,
+      "ci95_hi": 0.5625,
+      "includes_0": false
     },
-    "hold_out_A": 0.5,
-    "hold_out_B": 0.875,
+    "hold_out_A": 0.375,
+    "hold_out_B": 1.0,
     "hold_out_B_minus_A": {
       "n": 8.0,
-      "point": 0.375,
-      "ci95_lo": -0.125,
+      "point": 0.625,
+      "ci95_lo": 0.25,
       "ci95_hi": 0.875,
-      "includes_0": true
+      "includes_0": false
     },
     "goal_complete_A": 0.125,
-    "goal_complete_B": 0.1875,
+    "goal_complete_B": 0.125,
     "status_off_vocab_A": 0.0,
     "status_off_vocab_B": 0.0,
-    "and_or_disagree_B": 7,
+    "and_or_disagree_B": 0,
     "h_workflow_supported": false,
     "h_ceremony": false,
-    "h_ptv_supported": false,
-    "h_and_supported": false
+    "h_ptv_supported": true,
+    "h_and_supported": true
   }
 }

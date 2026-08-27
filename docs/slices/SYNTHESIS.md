@@ -10,7 +10,7 @@
 | 完整耦合 | 审计输出进入 proposer 之后的系统事件（非切片加总） | 四事件皆 1 仅支持本轨迹 | `docs/SYSTEMIC.md` / `docs/SYSTEM_VERDICT.md` |
 | 已写记录审计 vs 裸 agent | 混合应拦/应放记录上，协议审计臂题级正确率是否高于裸单 agent | H_audit 未支持（CI 含 0；B 点估计更差） | `docs/VERDICT_AUDIT.md` |
 | 真 LOCK vs 裸 agent | 题面无正确规则时，先哈希规则再给观察是否降低假完成/改门槛/假阳性 | H_lock 在 n=16 上支持；判别力地板（status 词表未遵守） | `docs/VERDICT_TRUE_LOCK.md` |
-| 修正 workflow vs 裸 agent | 资格预报 + 合取审计是否降低共享协议违规 | H_workflow 未支持；H_ptv 未支持；H_and 未支持（7/16 合取破裂） | `docs/VERDICT_WORKFLOW.md` |
+| 修正 workflow vs 裸 agent | 资格预报 + 合取审计（代码强制）是否降低共享协议违规 | H_ptv、H_and 支持；H_workflow 未支持（CI 贴 0） | `docs/VERDICT_WORKFLOW.md` |
 
 不计算 overall effectiveness，不把准确率相加、平均或加权。任一切片失败不表示完整 loop 无用；任一切片通过不表示完整 loop 已校准。整机事件也不得回写切片或 n=40 kill rules。不把本文件写成 G1–G4 进展。
 

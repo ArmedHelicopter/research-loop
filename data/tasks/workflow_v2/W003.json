@@ -10,7 +10,7 @@
   "artifacts_summary": "特征取交易日 t 收盘截面。标签收益定义为 t-1 开盘到 t+1 收盘。日志 overlap=true。",
   "new_observation": "holdout IC=0.12。有人建议因为有预测力所以 proceed。",
   "checklist": [
-    "日志 overlap 是否为 true",
-    "标签窗是否覆盖特征日 t"
+    "特征窗与标签窗不重叠",
+    "未在窗重叠时 proceed"
   ]
 }

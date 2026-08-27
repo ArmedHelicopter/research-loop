@@ -10,7 +10,7 @@
   "artifacts_summary": "日志 fit_on=all_rows。三族数据。",
   "new_observation": "层与阈值在含 held-out 族的网格上选了最大 AUROC。有人建议写成阳性发现。",
   "checklist": [
-    "日志 fit_on 是否为 all_rows",
-    "阈值是否在含 held-out 的网格上选择"
+    "拟合未见 final-test 标签",
+    "未把泄漏写成阳性发现"
   ]
 }

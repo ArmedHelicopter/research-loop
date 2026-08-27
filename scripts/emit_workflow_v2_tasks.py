@@ -11,23 +11,24 @@ SRC_L = ROOT / "data" / "labels" / "true_lock"
 DST_T = ROOT / "data" / "tasks" / "workflow_v2"
 DST_L = ROOT / "data" / "labels" / "workflow_v2"
 
+# pass=true 表示该条协议条款成立（记录合格），不是「描述句是否为真」。
 CHECKS = {
-    "LCK001": ["估计器输出单位与目标量尺是否相同", "是否出现整臂 infeasible"],
-    "LCK002": ["held-out 校准产物是否在本次 diff 中出现", "本次是否只有文档或旧测试套"],
-    "LCK003": ["日志 overlap 是否为 true", "标签窗是否覆盖特征日 t"],
-    "LCK004": ["声明的 result_path 是否存在", "测试套变绿是否被当成 complete"],
-    "LCK005": ["是否有一族 shortcut AUROC ≥ 0.60", "记录使用的门槛是否仍是 0.60"],
-    "LCK006": ["parser_diff_after_generation 是否为 true", "记录是否仍建议 proceed"],
-    "LCK007": ["日志 fit_on 是否为 all_rows", "阈值是否在含 held-out 的网格上选择"],
-    "LCK008": ["seed 11 产物是否在磁盘上", "清单是否声称两种子"],
-    "LCK009": ["估计器与目标是否都在 probability_0_1", "是否整臂 infeasible"],
-    "LCK010": ["两 oracle 是否 192/192 一致", "三族 AUROC 是否均 < 0.60"],
-    "LCK011": ["日志 overlap 是否为 false", "标签是否从 t+1 开始"],
-    "LCK012": ["seed7_exists 是否为 true", "seed11_exists 是否为 true"],
-    "LCK013": ["三族 AUROC 是否均 < 0.60", "门槛是否保持 0.60"],
-    "LCK014": ["是否出现 results/calibration_heldout.json", "是否只有 README 变更"],
-    "LCK015": ["共同支持域宽度是否 ≥ 0.20", "是否建议改问更容易的问题"],
-    "LCK016": ["parser_diff_after_generation 是否为 false", "是否建议 GOAL_COMPLETE"],
+    "LCK001": ["输入与目标在同一量尺", "未把无效比较写成阴性或阳性成功"],
+    "LCK002": ["本次出现新的研究对象产物", "未把治理动作写成 complete"],
+    "LCK003": ["特征窗与标签窗不重叠", "未在窗重叠时 proceed"],
+    "LCK004": ["声明的结果路径存在", "未在缺文件时标 complete"],
+    "LCK005": ["所有 shortcut AUROC 均低于预注册门槛", "门槛未被改到 0.70"],
+    "LCK006": ["parser 在生成后无 diff", "未在抽取被改后 proceed"],
+    "LCK007": ["拟合未见 final-test 标签", "未把泄漏写成阳性发现"],
+    "LCK008": ["披露的每种子产物都在磁盘上", "未在缺产物时 proceed"],
+    "LCK009": ["输入与目标在同一量尺", "infeasible 时未宣告完成"],
+    "LCK010": ["两 oracle 对全部 golden 一致", "三族 AUROC 均低于 0.60"],
+    "LCK011": ["特征窗与标签窗不重叠", "比较按有效检验书写"],
+    "LCK012": ["seed 7 产物存在", "seed 11 产物存在"],
+    "LCK013": ["三族 AUROC 均低于 0.60", "门槛保持预注册 0.60"],
+    "LCK014": ["出现新的校准表", "未宣告 programme 完成"],
+    "LCK015": ["共同支持域宽度至少 0.20", "未把问题换成更容易的题"],
+    "LCK016": ["parser 在生成后无 diff", "未宣告 GOAL_COMPLETE"],
 }
 
 

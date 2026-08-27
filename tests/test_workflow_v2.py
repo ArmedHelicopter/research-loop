@@ -36,15 +36,17 @@ def test_n16_mixed_and_no_gold_in_prompts():
     assert hold == 8
 
 
-def test_and_break_when_valid_despite_failed_check():
+def test_gate_overwrites_llm_and_ignores_holistic_verdict():
     task = load_task(TASKS / "W001.json")
     label = load_label(LABELS / "W001.json")
     exec_raw = json.dumps(
         {
-            "status": "withdrawn",
+            "status": "proceed",
             "decision_rule": "keep",
             "declared_program_complete": False,
             "notes": "",
+            "eligibility_prediction": "executable",
+            "eligibility_checks": [{"fact": "units", "pass": True}],
         },
         ensure_ascii=False,
     )
@@ -56,8 +58,28 @@ def test_and_break_when_valid_despite_failed_check():
         ensure_ascii=False,
     )
     got = score_pair(task, label, exec_raw, lock_hash=hash_rule("keep"), audit_raw=audit, audit_raw_2=audit)
-    assert got["and_break"] is True
-    assert got["protocol_violation"] is False
+    assert got["and_break"] is False
+    assert got["status"] == "invalid"
+
+
+def test_eligibility_fail_forces_withdrawn():
+    task = load_task(TASKS / "W001.json")
+    label = load_label(LABELS / "W001.json")
+    exec_raw = json.dumps(
+        {
+            "status": "proceed",
+            "decision_rule": "keep",
+            "declared_program_complete": False,
+            "notes": "",
+            "eligibility_prediction": "ineligible",
+            "eligibility_checks": [{"fact": "units match", "pass": False}],
+        },
+        ensure_ascii=False,
+    )
+    got = score_pair(task, label, exec_raw, lock_hash=hash_rule("keep"))
+    assert got["status"] == "withdrawn"
+    assert got["hold_out"] is True
+    assert got["invalid_as_positive"] is False
 
 
 def test_off_vocab_is_shared_violation():

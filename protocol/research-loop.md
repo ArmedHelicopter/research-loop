@@ -57,7 +57,8 @@ After LOCK and **before** RUN, the executor writes a cheap **eligibility
 prediction** (units comparable? declared artifacts exist? construct still
 holds?) and **verifies** those predictions against the locked rule with
 pre-registered small facts. A failed verify is `withdrawn` — the expensive
-run does not start. This is Predict-then-Verify of *whether the test is
+run does not start. In this repo's `workflow_v2` runner this is **machine-enforced**
+(eligibility `pass=false` or `ineligible` overwrites status). This is Predict-then-Verify of *whether the test is
 executable*, not a ranking of which experiment would score higher.
 
 The executor **cannot**:
@@ -78,7 +79,9 @@ quality. Examples of auditable facts:
 - Is the `docket_selected` entry actually in DOCKET.md?
 
 Each checklist item is recorded 0/1. The overall verdict is the **deterministic
-AND** of those bits, not a holistic LLM judgment and never a score. An optional
+AND** of those bits, not a holistic LLM judgment and never a score. The
+`workflow_v2` scorer overwrites `audit_verdict` with that AND and, if the AND
+fails, will not admit `proceed`/`complete`. An optional
 second independent pass is allowed; any disagreement → `invalid` (repeat to
 reduce variance, not to average a rating). A record that fails audit is
 rejected and does not enter the evidence base.

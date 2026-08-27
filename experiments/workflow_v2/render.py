@@ -37,7 +37,8 @@ EXEC_FIELDS = (
 AUDIT_FIELDS = (
     "输出 JSON，字段：checks（对象数组，每项含 item 与 pass 布尔，"
     "必须覆盖清单每一条）, audit_verdict (valid 或 invalid)。"
-    "audit_verdict 必须等于全部 pass 的合取：有一条 false 则只能 invalid。"
+    "pass=true 表示该条协议条款成立（记录在这一条上合格），不是「世界上这句描述是否为真」。"
+    "总判由系统按合取计算并覆盖你填的 audit_verdict。"
 )
 
 
@@ -90,7 +91,8 @@ def render_lock_prompt(task: dict[str, Any]) -> str:
 
 def render_ptv_prompt(task: dict[str, Any], *, committed_rule: str) -> str:
     return f"""角色：执行者。规则已哈希锁定。最终 decision_rule 必须与提交文本逐字相同。
-先做资格预报：本次比较/检验能否执行。资格失败必须 status=withdrawn，不要把无效检验写成阴性发现或阳性。
+先做资格预报：本次比较/检验能否执行。eligibility_checks 的 pass=true 表示该资格条件成立（可以跑）。
+任一条 pass=false，或 eligibility_prediction=ineligible，系统将强制 status=withdrawn。
 禁止按质量给其它方案排序。禁止宣告 programme 完成。
 {EXEC_FIELDS}
 

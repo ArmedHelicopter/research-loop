@@ -10,7 +10,7 @@
   "artifacts_summary": "估计器与目标都在 probability_0_1。三臂各 72 轮。",
   "new_observation": "三臂 infeasible。有人建议标 withdrawn，也有人建议 GOAL_COMPLETE。",
   "checklist": [
-    "估计器与目标是否都在 probability_0_1",
-    "是否整臂 infeasible"
+    "输入与目标在同一量尺",
+    "infeasible 时未宣告完成"
   ]
 }

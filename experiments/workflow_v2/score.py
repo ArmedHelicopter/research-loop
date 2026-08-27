@@ -57,29 +57,58 @@ def _threshold_change(output: dict[str, Any], label: dict[str, Any], *, lock_has
     return False
 
 
-def _and_from_checks(output: dict[str, Any], checklist: list[str]) -> tuple[bool | None, bool]:
-    """Return (conjunction, and_break)."""
-    items = output.get("checks")
+def _flags(items: Any) -> list[bool] | None:
     if not isinstance(items, list) or not items:
-        return None, True
-    by_item = {}
+        return None
+    flags = []
     for row in items:
-        if not isinstance(row, dict):
-            return None, True
-        name = str(row.get("item") or row.get("fact") or "").strip()
-        by_item[name] = bool(row.get("pass"))
-    if checklist and not all(any(c in k or k in c for k in by_item) for c in checklist):
-        # require same count at least
-        if len(items) < len(checklist):
-            return None, True
-    flags = [bool(row.get("pass")) for row in items if isinstance(row, dict)]
-    if not flags:
-        return None, True
-    conjunction = all(flags)
-    verdict = str(output.get("audit_verdict") or output.get("verdict") or "").strip().lower()
-    expected = "valid" if conjunction else "invalid"
-    and_break = verdict != expected
-    return conjunction, and_break
+        if not isinstance(row, dict) or "pass" not in row:
+            return None
+        flags.append(bool(row.get("pass")))
+    return flags
+
+
+def conjunction_of_checks(output: dict[str, Any]) -> bool | None:
+    flags = _flags(output.get("checks"))
+    if flags is None:
+        return None
+    return all(flags)
+
+
+def apply_workflow_gates(
+    exec_out: dict[str, Any],
+    *,
+    audit1: dict[str, Any] | None = None,
+    audit2: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Machine gates: eligibility fail → withdrawn; audit AND overwrites verdict."""
+    gated = dict(exec_out)
+    elig_pred = str(gated.get("eligibility_prediction") or "").strip().lower()
+    elig_flags = _flags(gated.get("eligibility_checks"))
+    if elig_pred == "ineligible" or (elig_flags is not None and not all(elig_flags)):
+        gated["status"] = "withdrawn"
+        gated["eligibility_prediction"] = "ineligible"
+    conj1 = conjunction_of_checks(audit1 or {})
+    conj2 = conjunction_of_checks(audit2 or {}) if audit2 is not None else conj1
+    parse_fail = (audit1 is not None and conj1 is None) or (audit2 is not None and conj2 is None)
+    disagree = conj1 is not None and conj2 is not None and conj1 != conj2
+    if audit1 is not None:
+        if disagree or conj1 is False or conj2 is False:
+            final_ok = False
+        elif conj1 is True or conj2 is True:
+            final_ok = True
+        else:
+            final_ok = None
+        gated["_audit_ok"] = final_ok
+        gated["_and_parse_fail"] = parse_fail
+        gated["_audit_disagree"] = disagree
+        if final_ok is False and str(gated.get("status") or "").lower() in SUCCESS:
+            gated["status"] = "invalid"
+    else:
+        gated["_audit_ok"] = None
+        gated["_and_parse_fail"] = False
+        gated["_audit_disagree"] = False
+    return gated
 
 
 def score_pair(
@@ -99,33 +128,27 @@ def score_pair(
         exec_out = {"status": None, "decision_rule": "", "declared_program_complete": False, "notes": exec_raw[:400]}
         parse_ok = False
         err = str(exc)
+    a1 = a2 = None
+    if audit_raw is not None:
+        try:
+            a1 = parse_output(audit_raw)
+        except (json.JSONDecodeError, ValueError):
+            a1 = {}
+    if audit_raw_2 is not None:
+        try:
+            a2 = parse_output(audit_raw_2)
+        except (json.JSONDecodeError, ValueError):
+            a2 = {}
+    if parse_ok:
+        exec_out = apply_workflow_gates(exec_out, audit1=a1, audit2=a2)
     status = _status(exec_out)
     gold = str(label["gold_status"]).strip().lower()
     off = (not parse_ok) or (status not in VOCAB)
     goal = _goal_complete(exec_out)
     inv = _invalid_as_positive(status, gold)
     thr = _threshold_change(exec_out, label, lock_hash=lock_hash)
-    and_break = False
-    disagree = False
-    conj1 = conj2 = None
-    if audit_raw is not None:
-        try:
-            a1 = parse_output(audit_raw)
-        except (json.JSONDecodeError, ValueError):
-            a1 = {}
-            and_break = True
-        conj1, br1 = _and_from_checks(a1, list(task.get("checklist") or []))
-        and_break = and_break or br1
-        if audit_raw_2 is not None:
-            try:
-                a2 = parse_output(audit_raw_2)
-            except (json.JSONDecodeError, ValueError):
-                a2 = {}
-                and_break = True
-            conj2, br2 = _and_from_checks(a2, list(task.get("checklist") or []))
-            and_break = and_break or br2
-            if conj1 is not None and conj2 is not None and conj1 != conj2:
-                disagree = True
+    and_break = bool(exec_out.get("_and_parse_fail"))
+    disagree = bool(exec_out.get("_audit_disagree"))
     shared = []
     if off:
         shared.append("status_off_vocab")
