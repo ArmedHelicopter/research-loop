@@ -166,3 +166,19 @@ def audit(value: Any, task: Task) -> dict[str, bool]:
 def implementation_hash() -> str:
     root = Path(__file__).parent
     return digest({p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.glob("*.py"))})
+
+
+# 仓库内版本标记：承诺字段、门禁或导出契约发生语义变化时递增。文件内容变化本身已由
+# implementation_hash 捕获；标记保证即使模块内容巧合不变，跨仓库契约升级也会使旧记录失效。
+RUNTIME_MARK = "research-loop-self-improving-2"
+
+
+def code_version_hash() -> str:
+    """Deterministic invalidation stamp written into version (policy) and trial records.
+
+    确定性方案：仓库内版本标记 + 全部运行时模块内容哈希，经 store 哈希链同一 digest 组合。
+    任一运行时模块内容变化或标记升级都会改变该值；version/trial 记录创建时写入，加载或
+    复用路径上与当前值比较，不一致即判定 stale 并显式拒绝（SELF_IMPROVING.md：升级源码后
+    不隐式迁移旧数据库，也没有忽略实现变化的开关）。
+    """
+    return digest({"runtime_mark": RUNTIME_MARK, "implementation": implementation_hash()})

@@ -7,7 +7,7 @@ import pytest
 from research_loop.agent import Agent, DEFAULT_CRITERIA
 from research_loop.cli import toy_task
 from research_loop.evaluate import evaluate
-from research_loop.ontology import ContractError, Task, canonical
+from research_loop.ontology import ContractError, Task, canonical, code_version_hash, digest
 from research_loop.provider import FixtureProvider
 from research_loop.store import Store
 
@@ -310,3 +310,109 @@ def test_journal_detects_accidental_edits(system):
     system.store.db.execute("UPDATE events SET body=? WHERE seq=1", (json.dumps({"edited": True}),))
     with pytest.raises(ContractError, match="journal"):
         system.store.verify_journal()
+
+
+def _reindex_trial(store, trial_key, mutate):
+    """Simulate an operator rewriting a trial record and recomputing its content address.
+
+    The objects table key is the record id, so a real re-hash moves the storage key too;
+    the helper returns the new trial id for downstream reuse attempts.
+    """
+    record = store.get("trial", trial_key)
+    mutate(record)
+    record["id"] = digest({k: v for k, v in record.items() if k != "id"})
+    store.db.execute("UPDATE objects SET id=?, body=? WHERE kind='trial' AND id=?",
+                     (record["id"], canonical(record), trial_key))
+    return record["id"]
+
+
+def test_trial_records_task_rule_and_label_commitments(system, tmp_path):
+    _, candidate = develop(system)
+    trial, labels = freeze(system, candidate, tmp_path)
+    record = system.trial(trial)
+    tasks = [Task.parse(t) for t in record["tasks"]]
+    assert record["task_commitments"] == [
+        {"id": t.id, "task_hash": digest(t.data()), "rule_hash": t.rule_hash, "fingerprint": t.fingerprint}
+        for t in tasks]
+    assert record["label_commitment"] == hashlib.sha256(labels.read_bytes()).hexdigest()
+    assert record["code_version_hash"] == code_version_hash()
+    frozen = system.store.last_event("trial_frozen", trial=trial)
+    assert frozen["task_commitments"] == record["task_commitments"]
+    assert frozen["label_commitment"] == record["label_commitment"]
+
+
+def test_tampered_trial_record_is_rejected(system, tmp_path):
+    _, candidate = develop(system)
+    trial, _ = freeze(system, candidate, tmp_path)
+    record = system.store.get("trial", trial)
+    record["tasks"][0]["rule"] += " Edited in place."
+    system.store.db.execute("UPDATE objects SET body=? WHERE kind='trial' AND id=?", (canonical(record), trial))
+    with pytest.raises(ContractError, match="frozen trial changed"):
+        system.run_trial(trial, FixtureProvider())
+
+
+def test_reindexed_trial_cannot_change_task_or_rule_commitments(system, tmp_path):
+    _, candidate = develop(system)
+    trial, labels = freeze(system, candidate, tmp_path)
+    forged = _reindex_trial(system.store, trial,
+                            lambda r: r["tasks"][0].update(rule=r["tasks"][0]["rule"] + " Rewritten after the freeze."))
+    with pytest.raises(ContractError, match="commitment"):
+        system.run_trial(forged, FixtureProvider())
+    # The evaluation path hits the same checkpoint before any scoring happens.
+    with pytest.raises(ContractError, match="commitment"):
+        evaluate(system.store, forged, labels)
+
+
+def test_reindexed_trial_cannot_rewind_commitments_behind_the_journal(system, tmp_path):
+    _, candidate = develop(system)
+    trial, _ = freeze(system, candidate, tmp_path)
+
+    def forge_everything(record):
+        record["tasks"][0]["rule"] += " Rewritten after the freeze."
+        task = Task.parse(record["tasks"][0])
+        record["task_commitments"][0] = {"id": task.id, "task_hash": digest(task.data()),
+                                         "rule_hash": task.rule_hash, "fingerprint": task.fingerprint}
+    forged = _reindex_trial(system.store, trial, forge_everything)
+    with pytest.raises(ContractError, match="freeze event"):
+        system.run_trial(forged, FixtureProvider())
+
+
+def test_reindexed_trial_cannot_change_label_commitment(system, tmp_path):
+    _, candidate = develop(system)
+    trial, _ = freeze(system, candidate, tmp_path)
+    forged = _reindex_trial(system.store, trial, lambda r: r.update(label_commitment="e" * 64))
+    with pytest.raises(ContractError, match="freeze event"):
+        system.run_trial(forged, FixtureProvider())
+
+
+def test_runtime_upgrade_marks_old_versions_and_trials_stale(system, tmp_path, monkeypatch):
+    from research_loop import agent as agent_module
+    _, candidate = develop(system)
+    trial, labels = freeze(system, candidate, tmp_path)
+    system.run_trial(trial, FixtureProvider())
+    evaluate(system.store, trial, labels)
+    monkeypatch.setattr(agent_module, "code_version_hash", lambda: "0" * 64)
+    with pytest.raises(ContractError, match="stale version"):
+        system.version()  # the active policy is not silently reused after the upgrade
+    with pytest.raises(ContractError, match="stale version"):
+        system.version(candidate)
+    with pytest.raises(ContractError, match="stale trial"):
+        system.trial(trial)
+    with pytest.raises(ContractError, match="stale trial"):
+        system.run_trial(trial, FixtureProvider())
+    with pytest.raises(ContractError, match="stale trial"):
+        system.promote(trial, reviewer="reviewer")
+
+
+def test_forged_receipt_without_independent_seal_cannot_promote(system, tmp_path):
+    _, candidate = develop(system)
+    trial, _ = freeze(system, candidate, tmp_path)
+    system.run_trial(trial, FixtureProvider())
+    forged = {"trial": trial, "trial_hash": digest(system.trial(trial)), "run_hashes": {},
+              "metrics": {}, "checks": {}, "eligible": True, "evaluator": "evaluator",
+              "provider": "fixture:negative-result-v1", "evidence_level": "engineering_fixture",
+              "scientific_effectiveness_proven": False}
+    system.store.put("evaluation", trial, forged)  # never produced by the evaluator subprocess
+    with pytest.raises(ContractError, match="no completion seal"):
+        system.promote(trial, reviewer="reviewer")
+    assert system.version()["id"] != candidate

@@ -84,6 +84,20 @@ class Store:
             previous, count = row["hash"], count + 1
         return count
 
+    def find_events(self, kind: str, **match: Any) -> list[dict[str, Any]]:
+        """Journal payloads of a kind whose payload carries every match pair, newest first."""
+        result: list[dict[str, Any]] = []
+        for row in self.db.execute("SELECT body FROM events ORDER BY seq DESC"):
+            event = json.loads(row["body"])
+            if event["kind"] == kind and all(event["payload"].get(k) == v for k, v in match.items()):
+                result.append(event["payload"])
+        return result
+
+    def last_event(self, kind: str, **match: Any) -> dict[str, Any] | None:
+        """Newest journal event of a kind whose payload carries every match pair."""
+        events = self.find_events(kind, **match)
+        return events[0] if events else None
+
     def verify_seal(self, kind: str, key: str, value: dict[str, Any]) -> None:
         event_kind, id_field, hash_field = {
             "run": ("run_closed", "run_id", "record_hash"),

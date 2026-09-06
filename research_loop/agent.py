@@ -8,7 +8,7 @@ import uuid
 from typing import Any
 
 from .ontology import (
-    COMPLETION, ContractError, Task, audit, canonical, check_references, decision,
+    COMPLETION, ContractError, Task, audit, canonical, check_references, code_version_hash, decision,
     digest, identifier, implementation_hash, public, shape, text,
 )
 from .provider import Provider
@@ -35,6 +35,16 @@ def version_id(version: dict[str, Any]) -> str:
     return digest({k: v for k, v in version.items() if k != "id"})
 
 
+def task_commitments(tasks: list[Task]) -> list[dict[str, str]]:
+    """Freeze per-task task hash, locked rule hash and fingerprint into the trial record.
+
+    跨仓库验收：task/rule/labels commitment 必须在冻结时成为 trial 记录里可显式核验的
+    一等承诺；labels commitment 即冻结前 SHA256 标签文件哈希（label_commitment）。
+    """
+    return [{"id": t.id, "task_hash": digest(t.data()), "rule_hash": t.rule_hash,
+             "fingerprint": t.fingerprint} for t in tasks]
+
+
 class Agent:
     def __init__(self, store: Store):
         self.store = store
@@ -45,8 +55,8 @@ class Agent:
             if current:
                 self.version(current)
                 return current
-            base = {"parent": None, "core_hash": implementation_hash(), "lessons": [],
-                    "proposer": "controller", "source_run": None}
+            base = {"parent": None, "core_hash": implementation_hash(), "code_version_hash": code_version_hash(),
+                    "lessons": [], "proposer": "controller", "source_run": None}
             base["id"] = version_id(base)
             self.store.put("version", base["id"], base)
             self.store.set_value("active_version", base["id"])
@@ -60,6 +70,9 @@ class Agent:
         value = self.store.get("version", key)
         if value["id"] != key or version_id(value) != key or value["core_hash"] != implementation_hash():
             raise ContractError("version content or runtime implementation changed")
+        if value.get("code_version_hash") != code_version_hash():
+            # Old versions (policies) are never silently reused after a runtime upgrade.
+            raise ContractError("stale version: runtime code_version_hash changed; start a new package database")
         return value
 
     def enqueue(self, task: Task) -> None:
@@ -217,7 +230,8 @@ class Agent:
         lessons = parent["lessons"] + [lesson]
         if len(lessons) > 32:
             raise ContractError("memory full; review and design explicit retirement before growing it")
-        candidate = {"parent": parent["id"], "core_hash": parent["core_hash"], "lessons": lessons,
+        candidate = {"parent": parent["id"], "core_hash": parent["core_hash"],
+                     "code_version_hash": code_version_hash(), "lessons": lessons,
                      "proposer": proposer, "source_run": source_run}
         candidate["id"] = version_id(candidate)
         with self.store.transaction():
@@ -249,19 +263,46 @@ class Agent:
             seen = dev_tasks + past_tasks
             if any(t.family == old.family or t.fingerprint == old.fingerprint for t in tasks for old in seen):
                 raise ContractError("evaluation family/content already used")
+            commitments = task_commitments(tasks)
             trial = {"baseline": baseline["id"], "candidate": candidate_key, "tasks": [t.data() for t in tasks],
                      "criteria": criteria, "evaluator": evaluator, "core_hash": implementation_hash(),
-                     "label_commitment": label_commitment}
+                     "code_version_hash": code_version_hash(), "label_commitment": label_commitment,
+                     "task_commitments": commitments}
             trial["id"] = digest(trial)
             self.store.put("trial", trial["id"], trial)
+            # The freeze event mirrors every commitment into the hash chain: a rewritten
+            # trial record cannot silently detach from what was frozen before the run.
             self.store.event("trial_frozen", {"trial": trial["id"], "candidate": candidate_key,
-                                            "criteria": criteria})
+                                            "criteria": criteria, "task_commitments": commitments,
+                                            "label_commitment": label_commitment})
             return trial["id"]
 
     def trial(self, key: str) -> dict[str, Any]:
+        # Single reuse checkpoint: run_trial, evaluate and promote all load trials here,
+        # so tampered records, runtime upgrades and commitment drift are rejected once.
+        self.store.verify_journal()
         trial = self.store.get("trial", key)
         if digest({k: v for k, v in trial.items() if k != "id"}) != key or trial["core_hash"] != implementation_hash():
             raise ContractError("frozen trial changed")
+        if trial.get("code_version_hash") != code_version_hash():
+            raise ContractError("stale trial: runtime code_version_hash changed after the freeze")
+        frozen = self.store.find_events("trial_frozen", candidate=trial["candidate"])
+        if frozen:
+            # Bind the record to the hash chain via the candidate: even a re-keyed
+            # (re-hashed) trial record must still match one frozen commitment set.
+            def consistent(event: dict[str, Any]) -> bool:
+                return all(field not in event or event[field] == trial.get(field)
+                           for field in ("task_commitments", "label_commitment"))
+            if not any(consistent(event) for event in frozen):
+                raise ContractError("frozen trial changed: commitments diverge from the hash-chained freeze events")
+        commitments = trial.get("task_commitments") or []
+        if commitments and len(commitments) != len(trial["tasks"]):
+            raise ContractError("frozen trial changed: task commitments do not cover the frozen task set")
+        for data, commitment in zip(trial["tasks"], commitments):
+            task = Task.parse(data)
+            if (digest(task.data()) != commitment["task_hash"] or task.rule_hash != commitment["rule_hash"]
+                    or task.fingerprint != commitment["fingerprint"]):
+                raise ContractError("frozen trial changed: task/rule commitment does not match the frozen task")
         return trial
 
     def run_trial(self, key: str, provider: Provider) -> list[dict[str, Any]]:

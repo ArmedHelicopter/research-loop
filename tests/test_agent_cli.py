@@ -62,7 +62,7 @@ def test_live_backend_refuses_source_worktree_with_labels():
 
 
 def test_public_agent_modules_do_not_import_scorers_or_read_label_files():
-    for name in ("agent.py", "ontology.py", "provider.py", "store.py"):
+    for name in ("agent.py", "export.py", "ontology.py", "provider.py", "store.py"):
         tree = ast.parse((ROOT / "research_loop" / name).read_text(encoding="utf-8"))
         imports = [n.module or "" for n in ast.walk(tree) if isinstance(n, ast.ImportFrom)]
         assert not any("evaluate" in name or "experiments" in name for name in imports)
