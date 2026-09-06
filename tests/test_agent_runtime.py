@@ -4,10 +4,12 @@ from dataclasses import replace
 
 import pytest
 
-from research_loop.agent import Agent, DEFAULT_CRITERIA
+from research_loop.agent import Agent, DEFAULT_CRITERIA, version_id
 from research_loop.cli import toy_task
 from research_loop.evaluate import evaluate
-from research_loop.ontology import ContractError, Task, canonical, code_version_hash, digest
+from research_loop.ontology import (
+    ContractError, Task, canonical, code_version_hash, digest, implementation_hash,
+)
 from research_loop.provider import FixtureProvider
 from research_loop.store import Store
 
@@ -339,6 +341,11 @@ def test_trial_records_task_rule_and_label_commitments(system, tmp_path):
     frozen = system.store.last_event("trial_frozen", trial=trial)
     assert frozen["task_commitments"] == record["task_commitments"]
     assert frozen["label_commitment"] == record["label_commitment"]
+    # The freeze event anchors every commitment, not only tasks and labels.
+    assert frozen["criteria"] == record["criteria"]
+    assert frozen["evaluator"] == record["evaluator"] == "evaluator"
+    assert frozen["core_hash"] == record["core_hash"]
+    assert frozen["code_version_hash"] == record["code_version_hash"] == code_version_hash()
 
 
 def test_tampered_trial_record_is_rejected(system, tmp_path):
@@ -416,3 +423,197 @@ def test_forged_receipt_without_independent_seal_cannot_promote(system, tmp_path
     with pytest.raises(ContractError, match="no completion seal"):
         system.promote(trial, reviewer="reviewer")
     assert system.version()["id"] != candidate
+
+
+# --- propose quality gates: only fully completed protocols become lessons ---------
+
+def test_propose_rejects_runs_without_a_decision(system):
+    # A prerequisite-gated run closes without any model decision at all.
+    data = toy_task("held", "held")
+    data["prerequisites"]["valid_comparison"] = False
+    system.enqueue(Task.parse(data))
+    run = system.run_next(FixtureProvider())
+    assert run["state"] == "closed" and run["decision"] is None and run["status"] == "withdrawn"
+    with pytest.raises(ContractError, match="no decision"):
+        system.propose(run["id"], FixtureProvider(), proposer="proposer")
+
+
+def test_propose_rejects_contract_rejected_runs(system):
+    # state == "closed" but the protocol rejected the executor output: no decision,
+    # no audit, status invalid. None of that failure may become memory.
+    def break_executor(role, value):
+        if role == "executor":
+            value["rule_hash"] = "changed-after-observation"
+        return value
+    system.enqueue(Task.parse(toy_task("rejected", "rejected")))
+    run = system.run_next(Modified(break_executor))
+    assert run["state"] == "closed" and run["status"] == "invalid"
+    assert run["decision"] is None and run["evidence_admitted"] is False
+    with pytest.raises(ContractError, match="no decision"):
+        system.propose(run["id"], FixtureProvider(), proposer="proposer")
+
+
+def test_propose_rejects_runs_whose_double_audit_failed(system):
+    # A decision exists, but the two auditors disagreed: audit_valid False.
+    def disagree(role, value):
+        if role == "auditor_1":
+            value["checks"][0]["pass"] = False
+        return value
+    system.enqueue(Task.parse(toy_task("audit-fail", "audit-fail")))
+    run = system.run_next(Modified(disagree))
+    assert run["state"] == "closed" and run["audit_valid"] is False and run["decision"] is not None
+    with pytest.raises(ContractError, match="audit is not valid"):
+        system.propose(run["id"], FixtureProvider(), proposer="proposer")
+
+
+def test_propose_rejects_withdrawn_status_even_when_audits_pass(system):
+    def withdraw(role, value):
+        if role == "executor":
+            value["status"] = "withdrawn"
+        return value
+    system.enqueue(Task.parse(toy_task("withdrawn", "withdrawn")))
+    run = system.run_next(Modified(withdraw))
+    assert run["state"] == "closed" and run["decision"] is not None and run["audit_valid"] is True
+    assert run["status"] == "withdrawn" and run["evidence_admitted"] is False
+    with pytest.raises(ContractError, match="status does not admit lessons"):
+        system.propose(run["id"], FixtureProvider(), proposer="proposer")
+
+
+def test_propose_rejects_runs_without_admitted_evidence(system):
+    # Defense in depth: execute() forces evidence_admitted from audit+status, so the
+    # only way to reach this gate is a forged-but-sealed record; it must still be
+    # refused instead of silently recycled into memory.
+    task = Task.parse(toy_task("D1", "dev"))
+    run = {"id": "dev-forged-evidence", "task": task.data(), "task_hash": digest(task.data()),
+           "version": system.version()["id"], "phase": "development",
+           "provider": FixtureProvider().identity, "state": "closed", "status": "proceed",
+           "decision": {"status": "proceed", "rule_hash": task.rule_hash, "evidence_ids": ["obs"],
+                        "reason": "fixture record", "declared_program_complete": False},
+           "audit_valid": True, "evidence_admitted": False, "protocol_violations": [],
+           "lesson_ids": [], "usage": {"calls": 3, "complete": True, "input_chars": 10,
+                                       "input_tokens": 1, "output_tokens": 1, "elapsed_s": 0.0}}
+    system.store.put("run", run["id"], run)
+    system.store.event("run_closed", {"run_id": run["id"], "record_hash": digest(run)})
+    with pytest.raises(ContractError, match="evidence was not admitted"):
+        system.propose(run["id"], FixtureProvider(), proposer="proposer")
+
+
+def test_propose_accepts_proceed_and_closed_negative_runs(system, tmp_path):
+    _, candidate = develop(system)  # a normal "proceed" development run proposes fine
+    assert len(system.version(candidate)["lessons"]) == 1
+    trial, labels = freeze(system, candidate, tmp_path)
+    system.run_trial(trial, FixtureProvider())
+    assert evaluate(system.store, trial, labels)["eligible"]
+    system.promote(trial, reviewer="reviewer")
+    system.enqueue(Task.parse(toy_task("D2", "new-development")))
+    negative = system.run_next(FixtureProvider())
+    assert negative["status"] == "closed_negative" and negative["evidence_admitted"] is True
+    candidate2 = system.propose(negative["id"], FixtureProvider(), proposer="proposer")
+    assert len(system.version(candidate2)["lessons"]) == 2
+
+
+# --- trial commitments: criteria/evaluator are anchored into the hash chain -------
+
+def test_reindexed_trial_cannot_change_criteria_or_evaluator(system, tmp_path):
+    _, candidate = develop(system)
+    trial, _ = freeze(system, candidate, tmp_path)
+    original = system.store.get("trial", trial)
+
+    def forge(mutate):
+        # Each re-hash moves the storage key, so every forgery starts from a copy
+        # of the originally frozen record and is re-keyed like an operator would.
+        record = json.loads(canonical(original))
+        mutate(record)
+        record["id"] = digest({k: v for k, v in record.items() if k != "id"})
+        system.store.put("trial", record["id"], record)
+        return record["id"]
+
+    forged_criteria = forge(lambda r: r["criteria"].update(min_pairs=1))
+    with pytest.raises(ContractError, match="freeze event"):
+        system.trial(forged_criteria)
+    forged_evaluator = forge(lambda r: r.update(evaluator="other-evaluator"))
+    with pytest.raises(ContractError, match="freeze event"):
+        system.trial(forged_evaluator)
+    with pytest.raises(ContractError, match="freeze event"):
+        system.run_trial(forged_evaluator, FixtureProvider())
+
+
+# --- task bindings: scientific scope of tasks and lessons -------------------------
+
+def bound_task(key, family, bindings):
+    data = toy_task(key, family)
+    data["bindings"] = bindings
+    return Task.parse(data)
+
+
+def test_task_bindings_parse_default_and_roundtrip():
+    assert Task.parse(toy_task("T1", "f")).bindings == {}  # legacy tasks stay unbound
+    data = toy_task("T2", "f")
+    data["bindings"] = {"compound": "aspirin", "condition": "ph7"}
+    task = Task.parse(data)
+    assert task.bindings == {"compound": "aspirin", "condition": "ph7"}
+    assert task.data()["bindings"] == {"compound": "aspirin", "condition": "ph7"}
+    assert Task.parse(task.data()) == task  # data() round-trips the binding
+
+
+def test_task_bindings_reject_non_mapping_and_invalid_identifiers():
+    data = toy_task("T3", "f")
+    data["bindings"] = ["compound:aspirin"]
+    with pytest.raises(ContractError, match="mapping"):
+        Task.parse(data)
+    data = toy_task("T4", "f")
+    data["bindings"] = {"bad key!": "aspirin"}
+    with pytest.raises(ContractError, match="binding"):
+        Task.parse(data)
+    data = toy_task("T5", "f")
+    data["bindings"] = {"compound": "bad value!"}
+    with pytest.raises(ContractError, match="binding"):
+        Task.parse(data)
+    data = toy_task("T6", "f")
+    data["bindings"] = {"compound": "aspirin"}
+    data["unknown_extra"] = "x"
+    with pytest.raises(ContractError, match="fields"):
+        Task.parse(data)
+
+
+def test_task_fingerprint_and_hash_follow_bindings():
+    plain = Task.parse(toy_task("T1", "f"))
+    aspirin = bound_task("T1", "f", {"compound": "aspirin"})
+    ibuprofen = bound_task("T1", "f", {"compound": "ibuprofen"})
+    assert len({plain.fingerprint, aspirin.fingerprint, ibuprofen.fingerprint}) == 3
+    assert bound_task("T1", "f", {"compound": "aspirin"}).fingerprint == aspirin.fingerprint
+    assert digest(aspirin.data()) != digest(plain.data())  # task_hash covers bindings too
+
+
+def test_lessons_do_not_cross_binding_boundaries(system):
+    system.enqueue(bound_task("D1", "dev", {"compound": "aspirin"}))
+    run = system.run_next(FixtureProvider())
+    candidate = system.propose(run["id"], FixtureProvider(), proposer="proposer")
+    lesson = system.version(candidate)["lessons"][0]
+    assert lesson["bindings"] == {"compound": "aspirin"}
+    other = system.execute(bound_task("D2", "other", {"compound": "ibuprofen"}), candidate,
+                           FixtureProvider(), phase="development", run_id="bound-other")
+    unbound = system.execute(Task.parse(toy_task("D3", "third")), candidate,
+                             FixtureProvider(), phase="development", run_id="unbound")
+    same = system.execute(bound_task("D4", "fourth", {"compound": "aspirin"}), candidate,
+                          FixtureProvider(), phase="development", run_id="bound-same")
+    assert not other["lesson_ids"] and not unbound["lesson_ids"]  # fail closed
+    assert same["lesson_ids"] == [lesson["id"]]
+
+
+def test_legacy_lessons_without_bindings_only_serve_unbound_tasks(system):
+    base = system.version()
+    legacy = {"scope": "toy.assay", "rule_hash": Task.parse(toy_task("X", "f")).rule_hash,
+              "id": "legacy-lesson",
+              "instruction": "保留有效阴性：negative observation 应依锁定规则关闭假说。"}
+    version = {"parent": base["id"], "core_hash": implementation_hash(),
+               "code_version_hash": code_version_hash(), "lessons": [legacy],
+               "proposer": "controller", "source_run": None}
+    version["id"] = version_id(version)
+    system.store.put("version", version["id"], version)
+    unbound = system.execute(Task.parse(toy_task("U1", "u")), version["id"], FixtureProvider(),
+                             phase="development", run_id="legacy-unbound")
+    bound = system.execute(bound_task("U2", "u2", {"compound": "aspirin"}), version["id"],
+                           FixtureProvider(), phase="development", run_id="legacy-bound")
+    assert unbound["lesson_ids"] == ["legacy-lesson"]  # missing key counts as unbound
+    assert not bound["lesson_ids"]                     # a bound task never inherits it

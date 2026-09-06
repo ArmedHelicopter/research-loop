@@ -56,7 +56,9 @@ def export_memory_hint(lesson: dict[str, Any], *, store: Store | None = None,
     The hint keeps ``source_run`` (the producing development run), ``scope``,
     ``rule_hash``, ``task_fingerprint``, an ISO ``created_at`` and the lesson
     payload; missing provenance raises ExportError. 传入 store 时会核验来源 run
-    已封存、scope/rule 与 run 一致、source_hash 与封存记录一致。
+    已封存、scope/rule 与 run 一致、source_hash 与封存记录一致。绑定的任务还会
+    在 hint 顶层携带 ``bindings``（artifact/subject/condition），供 ai4s-gate
+    把记忆限定在同一科学对象上；无绑定任务的 hint 保持旧格式（省略该键）。
     """
     if not isinstance(lesson, dict):
         raise ExportError("lesson must be a controller lesson mapping")
@@ -74,6 +76,7 @@ def export_memory_hint(lesson: dict[str, Any], *, store: Store | None = None,
     rule_hash = _hex64(lesson["rule_hash"], "rule_hash")
     source_hash = _hex64(lesson["source_hash"], "source_hash")
 
+    bindings: dict[str, str] = {}
     if run is None and store is not None:
         try:
             run = store.get("run", source_run)
@@ -100,6 +103,7 @@ def export_memory_hint(lesson: dict[str, Any], *, store: Store | None = None,
         if not set(evidence_ids) <= {e.id for e in task.evidence}:
             raise ExportError("lesson evidence_ids do not reference the source run evidence")
         task_fingerprint = task.fingerprint
+        bindings = dict(task.bindings)
     if not isinstance(task_fingerprint, str) or not HEX64.fullmatch(task_fingerprint):
         raise ExportError("task_fingerprint is required; export refuses hints without a resolvable task fingerprint")
 
@@ -121,6 +125,11 @@ def export_memory_hint(lesson: dict[str, Any], *, store: Store | None = None,
         if not isinstance(policy_version, str) or not policy_version.strip():
             raise ExportError("policy_version must be a nonempty version identifier")
         hint["policy_version"] = policy_version
+    if bindings:
+        # Scientific binding travels with the hint so the importer can keep memory
+        # scoped to the same subject/condition; unbound hints stay byte-compatible
+        # with the previous format (no empty bindings key).
+        hint["bindings"] = bindings
     try:
         public(hint)  # 导出内容绝不携带私有评分字段（gold_*、labels 等）。
     except ContractError as exc:

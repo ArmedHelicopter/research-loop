@@ -146,3 +146,27 @@ def test_candidate_policy_refuses_lessons_outside_the_candidate_version(system):
         export_candidate_policy([lesson], candidate_version="missing-version", store=system.store)
     with pytest.raises(ExportError, match="at least one"):
         export_candidate_policy([], candidate_version=candidate, store=system.store)
+
+
+def develop_bound(agent, key, bindings):
+    data = toy_task(key, "dev")
+    data["bindings"] = bindings
+    agent.enqueue(Task.parse(data))
+    run = agent.run_next(FixtureProvider())
+    candidate = agent.propose(run["id"], FixtureProvider(), proposer="proposer")
+    return run, candidate, agent.version(candidate)["lessons"][0]
+
+
+def test_memory_hint_carries_task_bindings_and_covers_them_in_hint_hash(system):
+    run, candidate, lesson = develop_bound(system, "D9", {"compound": "aspirin"})
+    assert lesson["bindings"] == {"compound": "aspirin"}
+    hint = export_memory_hint(lesson, store=system.store, policy_version=candidate)
+    assert hint["bindings"] == {"compound": "aspirin"} == Task.parse(run["task"]).bindings
+    assert hint["hint_hash"] == digest({k: v for k, v in hint.items() if k != "hint_hash"})
+
+
+def test_memory_hint_for_unbound_task_keeps_previous_format(system):
+    _, _, lesson = sourced_lesson(system)  # toy task without bindings
+    hint = export_memory_hint(lesson, store=system.store)
+    assert "bindings" not in hint  # empty bindings are omitted, not exported as {}
+    assert hint["hint_hash"] == digest({k: v for k, v in hint.items() if k != "hint_hash"})

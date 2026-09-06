@@ -163,7 +163,13 @@ class Agent:
             self.store.put("attempt", run_id, start)
             self.store.event("run_started", {"run_id": run_id, "task_hash": start["task_hash"],
                                            "version": version_key, "phase": phase})
-        lessons = [x for x in version["lessons"] if x["scope"] == task.scope and x["rule_hash"] == task.rule_hash][-3:]
+        # Retrieval is scoped: same scope, same locked rule AND the exact same
+        # scientific binding. Lessons without a bindings key (legacy) count as
+        # unbound and only serve unbound tasks; a bound task never inherits
+        # experience gathered on another molecule/receptor/condition.
+        lessons = [x for x in version["lessons"] if x["scope"] == task.scope
+                   and x["rule_hash"] == task.rule_hash
+                   and x.get("bindings", {}) == task.bindings][-3:]
         result: dict[str, Any] = {
             **start, "state": "closed", "status": "withdrawn", "decision": None,
             "audit_valid": None, "evidence_admitted": False, "protocol_violations": [],
@@ -210,6 +216,18 @@ class Agent:
         parent = self.version()
         if run["version"] != parent["id"] or run["provider"] != provider.identity:
             raise ContractError("proposal requires a run of the current version and provider")
+        # Quality gates: only a run that walked the full protocol (a decision, two
+        # agreeing audits, a completed scientific status and admitted evidence) may
+        # turn its record into a lesson; a rejected/failed protocol must never be
+        # recycled into "experience" memory.
+        if run["decision"] is None:
+            raise ContractError("run has no decision; lessons require a completed protocol")
+        if run["audit_valid"] is not True:
+            raise ContractError("run audit is not valid; lessons require admitted evidence")
+        if run["status"] not in {"proceed", "closed_negative"}:
+            raise ContractError("run status does not admit lessons; lessons require proceed or closed_negative")
+        if run["evidence_admitted"] is not True:
+            raise ContractError("run evidence was not admitted; lessons require admitted evidence")
         task = Task.parse(run["task"])
         proposal_id = "proposal-" + uuid.uuid4().hex
         value = self._call(provider, "reflector", {
@@ -225,7 +243,8 @@ class Agent:
             raise ContractError("completion claims cannot become memory")
         refs = check_references(value["evidence_ids"], task)
         lesson = {"scope": task.scope, "rule_hash": task.rule_hash, "source_run": source_run,
-                  "source_hash": digest(run), "instruction": instruction, "evidence_ids": refs}
+                  "source_hash": digest(run), "instruction": instruction, "evidence_ids": refs,
+                  "bindings": dict(task.bindings)}
         lesson["id"] = digest(lesson)
         lessons = parent["lessons"] + [lesson]
         if len(lessons) > 32:
@@ -274,7 +293,9 @@ class Agent:
             # trial record cannot silently detach from what was frozen before the run.
             self.store.event("trial_frozen", {"trial": trial["id"], "candidate": candidate_key,
                                             "criteria": criteria, "task_commitments": commitments,
-                                            "label_commitment": label_commitment})
+                                            "label_commitment": label_commitment,
+                                            "evaluator": evaluator, "core_hash": trial["core_hash"],
+                                            "code_version_hash": trial["code_version_hash"]})
             return trial["id"]
 
     def trial(self, key: str) -> dict[str, Any]:
@@ -290,9 +311,12 @@ class Agent:
         if frozen:
             # Bind the record to the hash chain via the candidate: even a re-keyed
             # (re-hashed) trial record must still match one frozen commitment set.
+            # `field not in event` keeps freeze events from before the full-anchoring
+            # upgrade loadable; every field a new freeze event carries must match.
             def consistent(event: dict[str, Any]) -> bool:
                 return all(field not in event or event[field] == trial.get(field)
-                           for field in ("task_commitments", "label_commitment"))
+                           for field in ("task_commitments", "label_commitment", "criteria",
+                                         "evaluator", "core_hash", "code_version_hash"))
             if not any(consistent(event) for event in frozen):
                 raise ContractError("frozen trial changed: commitments diverge from the hash-chained freeze events")
         commitments = trial.get("task_commitments") or []

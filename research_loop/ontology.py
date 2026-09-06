@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -27,8 +27,10 @@ def digest(value: Any) -> str:
     return hashlib.sha256(canonical(value).encode("utf-8")).hexdigest()
 
 
-def shape(value: Any, fields: set[str]) -> None:
-    if not isinstance(value, dict) or set(value) != fields:
+def shape(value: Any, fields: set[str], *, optional: frozenset[str] = frozenset()) -> None:
+    """Exact-shape check: every required field present, nothing beyond fields+optional."""
+    if (not isinstance(value, dict) or not fields <= set(value)
+            or set(value) - fields - optional):
         raise ContractError("unexpected or missing fields")
 
 
@@ -86,10 +88,16 @@ class Task:
     prerequisites: dict[str, bool]
     evidence: tuple[Evidence, ...]
     checks: tuple[str, ...]
+    # Scientific binding (artifact/subject/condition): lessons learned on one binding
+    # must never be reused on another. Keys and values are identifiers; an empty
+    # mapping means the task is unbound. Included in data() and fingerprint, so the
+    # task hash, task commitments and dedup all cover the binding automatically.
+    bindings: dict[str, str] = field(default_factory=dict)
 
     @classmethod
     def parse(cls, value: Any) -> Task:
-        shape(value, {"id", "family", "scope", "question", "rule", "prerequisites", "evidence", "checks"})
+        shape(value, {"id", "family", "scope", "question", "rule", "prerequisites", "evidence", "checks"},
+              optional=frozenset({"bindings"}))
         public(value)
         if len(canonical(value)) > 24000:
             raise ContractError("task exceeds the public context limit")
@@ -104,9 +112,16 @@ class Task:
         scope = identifier(value["scope"])
         if any(e.scope != scope for e in evidence) or len({e.id for e in evidence}) != len(evidence):
             raise ContractError("evidence scope mismatch or duplicate ID")
+        bindings = value.get("bindings", {})
+        if not isinstance(bindings, dict):
+            raise ContractError("task bindings require an identifier mapping")
+        try:
+            binding = {identifier(k): identifier(v) for k, v in bindings.items()}
+        except ContractError as exc:
+            raise ContractError(f"invalid task binding: {exc}") from exc
         return cls(identifier(value["id"]), identifier(value["family"]), scope,
                    text(value["question"]), text(value["rule"]), dict(pre), evidence,
-                   distinct_ids(value["checks"]))
+                   distinct_ids(value["checks"]), binding)
 
     def data(self) -> dict[str, Any]:
         value = asdict(self)
@@ -121,8 +136,10 @@ class Task:
     @property
     def fingerprint(self) -> str:
         # Catch exact content reuse even when an operator renames task/family IDs.
+        # Bindings are part of the scientific identity: the same content bound to a
+        # different subject/condition is a different evaluation task.
         return digest([self.scope, self.question, self.rule, self.prerequisites,
-                       [(e.kind, e.content) for e in self.evidence], self.checks])
+                       [(e.kind, e.content) for e in self.evidence], self.checks, self.bindings])
 
 
 def check_references(refs: Any, task: Task) -> list[str]:
