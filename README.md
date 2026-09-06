@@ -9,6 +9,20 @@
 
 本仓不是 `policy-signature` 的替代，也不是 AGI 项目。源仓 programme 句仍由那边的测试 hash 锁定。
 
+## 经验自改进 agent（2026-09-03）
+
+新增 research_loop/ 运行包，以类型、scope 和来源约束管理研究记录；
+按 FIFO 执行任务，从开发反馈提出经验候选，冻结外部配对评估，经独立评分和 reviewer
+晋升版本，支持持久化与回滚。工程闭环通过不等于科研有效性已经证明。
+
+~~~powershell
+python -m research_loop demo "$env:TEMP\research-loop-demo-20260903"
+python -m research_loop --help
+~~~
+
+接线、真实模型配置、任务格式和评价边界见
+[docs/SELF_IMPROVING.md](docs/SELF_IMPROVING.md)。真实调用前必须导出无标签运行目录。
+
 ## 仓库里有什么
 
 ```text
