@@ -10,8 +10,12 @@ from research_loop.evaluate import evaluate
 from research_loop.ontology import (
     ContractError, Task, canonical, code_version_hash, digest, implementation_hash,
 )
-from research_loop.provider import FixtureProvider
+from research_loop.provider import FixtureProvider, fixture_role_providers
 from research_loop.store import Store
+
+# One fixture provider per role; identities are pairwise distinct so every run passes
+# the fail-closed audit-independence gate. The providers are stateless.
+EXECUTOR, AUDITOR_1, AUDITOR_2 = fixture_role_providers()
 
 
 @pytest.fixture
@@ -24,7 +28,8 @@ def system(tmp_path):
 
 
 class Modified(FixtureProvider):
-    def __init__(self, change):
+    def __init__(self, change, identity=None):
+        super().__init__(identity)
         self.change = change
         self.seen = []
 
@@ -35,9 +40,9 @@ class Modified(FixtureProvider):
 
 
 def develop(agent, backend=None):
-    backend = backend or FixtureProvider()
+    backend = backend or EXECUTOR
     agent.enqueue(Task.parse(toy_task("D1", "dev")))
-    run = agent.run_next(backend)
+    run = agent.run_next(backend, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     candidate = agent.propose(run["id"], backend, proposer="proposer")
     return run, candidate
 
@@ -58,7 +63,7 @@ def test_persistent_learning_trial_promotion_and_rollback(system, tmp_path):
     assert before["status"] == "proceed"
     assert system.version()["id"] == base  # Proposal has no deployment authority.
     trial, labels = freeze(system, candidate, tmp_path)
-    system.run_trial(trial, FixtureProvider())
+    system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     receipt = evaluate(system.store, trial, labels)
     assert receipt["eligible"]
     assert receipt["metrics"]["baseline"]["errors"] == 2
@@ -67,11 +72,13 @@ def test_persistent_learning_trial_promotion_and_rollback(system, tmp_path):
     assert receipt["scientific_effectiveness_proven"] is False
     system.promote(trial, reviewer="reviewer")
     system.enqueue(Task.parse(toy_task("D2", "new-development")))
-    after = system.run_next(FixtureProvider())
+    after = system.run_next(EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     assert after["status"] == "closed_negative"
     assert after["audit_valid"] is True and after["evidence_admitted"] is True
     assert after["lesson_ids"]
-    assert system.rollback(reviewer="reviewer", reason="operator rollback") == base
+    # Rollback is fail-closed: only an explicitly authorized approver may deploy it.
+    assert Agent(system.store, approvers=["reviewer"]).rollback(
+        reviewer="reviewer", reason="operator rollback") == base
     reopened = Store(tmp_path / "state.sqlite")
     try:
         assert Agent(reopened).version()["id"] == base
@@ -87,13 +94,14 @@ def test_fifo_and_prerequisite_gate_avoid_model_calls(system):
     system.enqueue(Task.parse(first))
     system.enqueue(Task.parse(toy_task("second", "two")))
     backend = Modified(lambda role, value: value)
-    held = system.run_next(backend)
+    held = system.run_next(backend, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     assert held["task"]["id"] == "first"
     assert held["status"] == "withdrawn" and held["usage"]["calls"] == 0
     assert held["audit_valid"] is None and not held["evidence_admitted"]
     assert backend.seen == []
-    assert system.run_next(backend)["task"]["id"] == "second"
-    assert system.run_next(backend) is None
+    assert system.run_next(backend, auditor_provider=AUDITOR_1,
+                           auditor2_provider=AUDITOR_2)["task"]["id"] == "second"
+    assert system.run_next(backend, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2) is None
 
 
 @pytest.mark.parametrize("change", [
@@ -111,7 +119,7 @@ def test_bad_executor_never_reaches_evidence_store_or_auditors(system, change):
         return value
     backend = Modified(mutate)
     system.enqueue(Task.parse(toy_task("bad", "bad")))
-    run = system.run_next(backend)
+    run = system.run_next(backend, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     assert run["status"] == "invalid" and not run["evidence_admitted"]
     assert run["decision"] is None
     assert [role for role, _ in backend.seen] == ["executor"]
@@ -136,27 +144,34 @@ def test_audit_requires_complete_unique_typed_checks(system, case):
                 checks[0]["evidence_ids"] = ["unknown"]
         return value
     system.enqueue(Task.parse(toy_task("audit", "audit")))
-    run = system.run_next(Modified(mutate))
+    run = system.run_next(EXECUTOR, auditor_provider=Modified(mutate, AUDITOR_1.identity),
+                          auditor2_provider=AUDITOR_2)
     assert run["status"] == "invalid"
     assert not run["evidence_admitted"]
     assert run["protocol_violations"] == ["contract_rejected:auditor_1"]
 
 
 def test_auditors_disagreeing_on_individual_facts_are_rejected(system):
-    def mutate(role, value):
+    def disagree_first(role, value):
         if role == "auditor_1":
             value["checks"][0]["pass"] = False
+        return value
+
+    def disagree_second(role, value):
         if role == "auditor_2":
             value["checks"][1]["pass"] = False
         return value
-    backend = Modified(mutate)
+
+    first = Modified(disagree_first, AUDITOR_1.identity)
+    second = Modified(disagree_second, AUDITOR_2.identity)
     system.enqueue(Task.parse(toy_task("disagree", "disagree")))
-    run = system.run_next(backend)
+    run = system.run_next(EXECUTOR, auditor_provider=first, auditor2_provider=second)
     assert run["audit_valid"] is False
     assert not run["evidence_admitted"]
     assert "audit_failed_or_disagreed" in run["protocol_violations"]
+    seen = [*first.seen, *second.seen]
     assert all("lessons" not in payload and "audits" not in payload
-               for role, payload in backend.seen if role.startswith("auditor"))
+               for role, payload in seen if role.startswith("auditor"))
 
 
 def test_lessons_cannot_cross_scope_or_rule_boundary(system):
@@ -167,8 +182,9 @@ def test_lessons_cannot_cross_scope_or_rule_boundary(system):
             data["scope"] = data["evidence"][0]["scope"] = "different.scope"
         else:
             data["rule"] += " New version."
-        result = system.execute(Task.parse(data), candidate, FixtureProvider(),
-                                phase="development", run_id=f"direct-{index}")
+        result = system.execute(Task.parse(data), candidate, EXECUTOR, phase="development",
+                                run_id=f"direct-{index}", auditor_provider=AUDITOR_1,
+                                auditor2_provider=AUDITOR_2)
         assert not result["lesson_ids"]
         assert result["status"] == "proceed"
 
@@ -191,9 +207,9 @@ def test_ontology_rejects_mismatched_evidence_scope_and_private_nested_fields():
 def test_evaluation_cannot_become_reflection_or_development(system, tmp_path):
     _, candidate = develop(system)
     trial, _ = freeze(system, candidate, tmp_path)
-    results = system.run_trial(trial, FixtureProvider())
+    results = system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     with pytest.raises(ContractError, match="development"):
-        system.propose(results[0]["id"], FixtureProvider(), proposer="proposer")
+        system.propose(results[0]["id"], EXECUTOR, proposer="proposer")
     with pytest.raises(ContractError, match="evaluation"):
         system.enqueue(Task.parse(toy_task("later", "family-a")))
 
@@ -224,7 +240,7 @@ def test_renaming_task_and_family_cannot_hide_exact_content_reuse(system):
 def test_precommitted_labels_cannot_change_after_results(system, tmp_path):
     _, candidate = develop(system)
     trial, labels = freeze(system, candidate, tmp_path)
-    system.run_trial(trial, FixtureProvider())
+    system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     labels.write_text(canonical({"E1": "proceed", "E2": "proceed"}), encoding="utf-8")
     with pytest.raises(ContractError, match="changed after"):
         evaluate(system.store, trial, labels)
@@ -235,7 +251,7 @@ def test_precommitted_labels_cannot_change_after_results(system, tmp_path):
 def test_failed_gate_and_role_conflicts_prevent_promotion(system, tmp_path):
     _, candidate = develop(system)
     trial, labels = freeze(system, candidate, tmp_path, max_call_ratio=0.5)
-    system.run_trial(trial, FixtureProvider())
+    system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     receipt = evaluate(system.store, trial, labels)
     assert receipt["checks"]["fewer_errors"] and not receipt["checks"]["call_budget"]
     with pytest.raises(ContractError, match="separate"):
@@ -250,13 +266,15 @@ def test_trial_restarts_reuse_sealed_runs_and_reject_backend_changes(system, tmp
     _, candidate = develop(system)
     trial, _ = freeze(system, candidate, tmp_path)
     backend = Modified(lambda role, value: value)
-    assert len(system.run_trial(trial, backend)) == 4
+    assert len(system.run_trial(trial, backend, auditor_provider=AUDITOR_1,
+                                auditor2_provider=AUDITOR_2)) == 4
     calls = len(backend.seen)
-    assert len(system.run_trial(trial, backend)) == 4
+    assert len(system.run_trial(trial, backend, auditor_provider=AUDITOR_1,
+                                auditor2_provider=AUDITOR_2)) == 4
     assert len(backend.seen) == calls
     backend.identity = "another-model"
     with pytest.raises(ContractError, match="configuration changed"):
-        system.run_trial(trial, backend)
+        system.run_trial(trial, backend, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
 
 
 def test_backend_failure_records_unknown_usage_without_fabrication(system):
@@ -264,7 +282,7 @@ def test_backend_failure_records_unknown_usage_without_fabrication(system):
         def call(self, role, payload):
             raise RuntimeError("secret-api-key must never reach the journal")
     system.enqueue(Task.parse(toy_task("network", "network")))
-    run = system.run_next(Broken())
+    run = system.run_next(Broken(), auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     assert run["state"] == "failed" and run["decision"] is None
     assert run["usage"]["calls"] == 1
     assert run["usage"]["input_tokens"] is None
@@ -279,9 +297,10 @@ def test_interrupted_fifo_requires_explicit_recovery(system):
     system.enqueue(Task.parse(toy_task("two", "two")))
     system.store.db.execute("UPDATE queue SET state='running',run_id='interrupted' WHERE task_id='one'")
     with pytest.raises(ContractError, match="recover"):
-        system.run_next(FixtureProvider())
+        system.run_next(EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     system.recover("interrupted")
-    assert system.run_next(FixtureProvider())["task"]["id"] == "two"
+    assert system.run_next(EXECUTOR, auditor_provider=AUDITOR_1,
+                           auditor2_provider=AUDITOR_2)["task"]["id"] == "two"
 
 
 def test_tampered_version_trial_run_and_receipt_are_detected(system, tmp_path):
@@ -296,7 +315,7 @@ def test_tampered_version_trial_run_and_receipt_are_detected(system, tmp_path):
                 "保留有效阴性：negative observation 应依锁定规则关闭假说，不能写成支持。"}]}
     system.store.db.execute("UPDATE objects SET body=? WHERE kind='version' AND id=?", (canonical(original), candidate))
     trial, labels = freeze(system, candidate, tmp_path)
-    runs = system.run_trial(trial, FixtureProvider())
+    runs = system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     receipt = evaluate(system.store, trial, labels)
     receipt["eligible"] = False
     system.store.db.execute("UPDATE objects SET body=? WHERE kind='evaluation' AND id=?", (canonical(receipt), trial))
@@ -355,7 +374,7 @@ def test_tampered_trial_record_is_rejected(system, tmp_path):
     record["tasks"][0]["rule"] += " Edited in place."
     system.store.db.execute("UPDATE objects SET body=? WHERE kind='trial' AND id=?", (canonical(record), trial))
     with pytest.raises(ContractError, match="frozen trial changed"):
-        system.run_trial(trial, FixtureProvider())
+        system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
 
 
 def test_reindexed_trial_cannot_change_task_or_rule_commitments(system, tmp_path):
@@ -364,7 +383,7 @@ def test_reindexed_trial_cannot_change_task_or_rule_commitments(system, tmp_path
     forged = _reindex_trial(system.store, trial,
                             lambda r: r["tasks"][0].update(rule=r["tasks"][0]["rule"] + " Rewritten after the freeze."))
     with pytest.raises(ContractError, match="commitment"):
-        system.run_trial(forged, FixtureProvider())
+        system.run_trial(forged, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     # The evaluation path hits the same checkpoint before any scoring happens.
     with pytest.raises(ContractError, match="commitment"):
         evaluate(system.store, forged, labels)
@@ -381,7 +400,7 @@ def test_reindexed_trial_cannot_rewind_commitments_behind_the_journal(system, tm
                                          "rule_hash": task.rule_hash, "fingerprint": task.fingerprint}
     forged = _reindex_trial(system.store, trial, forge_everything)
     with pytest.raises(ContractError, match="freeze event"):
-        system.run_trial(forged, FixtureProvider())
+        system.run_trial(forged, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
 
 
 def test_reindexed_trial_cannot_change_label_commitment(system, tmp_path):
@@ -389,14 +408,14 @@ def test_reindexed_trial_cannot_change_label_commitment(system, tmp_path):
     trial, _ = freeze(system, candidate, tmp_path)
     forged = _reindex_trial(system.store, trial, lambda r: r.update(label_commitment="e" * 64))
     with pytest.raises(ContractError, match="freeze event"):
-        system.run_trial(forged, FixtureProvider())
+        system.run_trial(forged, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
 
 
 def test_runtime_upgrade_marks_old_versions_and_trials_stale(system, tmp_path, monkeypatch):
     from research_loop import agent as agent_module
     _, candidate = develop(system)
     trial, labels = freeze(system, candidate, tmp_path)
-    system.run_trial(trial, FixtureProvider())
+    system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     evaluate(system.store, trial, labels)
     monkeypatch.setattr(agent_module, "code_version_hash", lambda: "0" * 64)
     with pytest.raises(ContractError, match="stale version"):
@@ -406,7 +425,7 @@ def test_runtime_upgrade_marks_old_versions_and_trials_stale(system, tmp_path, m
     with pytest.raises(ContractError, match="stale trial"):
         system.trial(trial)
     with pytest.raises(ContractError, match="stale trial"):
-        system.run_trial(trial, FixtureProvider())
+        system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     with pytest.raises(ContractError, match="stale trial"):
         system.promote(trial, reviewer="reviewer")
 
@@ -414,7 +433,7 @@ def test_runtime_upgrade_marks_old_versions_and_trials_stale(system, tmp_path, m
 def test_forged_receipt_without_independent_seal_cannot_promote(system, tmp_path):
     _, candidate = develop(system)
     trial, _ = freeze(system, candidate, tmp_path)
-    system.run_trial(trial, FixtureProvider())
+    system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     forged = {"trial": trial, "trial_hash": digest(system.trial(trial)), "run_hashes": {},
               "metrics": {}, "checks": {}, "eligible": True, "evaluator": "evaluator",
               "provider": "fixture:negative-result-v1", "evidence_level": "engineering_fixture",
@@ -432,10 +451,10 @@ def test_propose_rejects_runs_without_a_decision(system):
     data = toy_task("held", "held")
     data["prerequisites"]["valid_comparison"] = False
     system.enqueue(Task.parse(data))
-    run = system.run_next(FixtureProvider())
+    run = system.run_next(EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     assert run["state"] == "closed" and run["decision"] is None and run["status"] == "withdrawn"
     with pytest.raises(ContractError, match="no decision"):
-        system.propose(run["id"], FixtureProvider(), proposer="proposer")
+        system.propose(run["id"], EXECUTOR, proposer="proposer")
 
 
 def test_propose_rejects_contract_rejected_runs(system):
@@ -446,11 +465,12 @@ def test_propose_rejects_contract_rejected_runs(system):
             value["rule_hash"] = "changed-after-observation"
         return value
     system.enqueue(Task.parse(toy_task("rejected", "rejected")))
-    run = system.run_next(Modified(break_executor))
+    run = system.run_next(Modified(break_executor), auditor_provider=AUDITOR_1,
+                          auditor2_provider=AUDITOR_2)
     assert run["state"] == "closed" and run["status"] == "invalid"
     assert run["decision"] is None and run["evidence_admitted"] is False
     with pytest.raises(ContractError, match="no decision"):
-        system.propose(run["id"], FixtureProvider(), proposer="proposer")
+        system.propose(run["id"], EXECUTOR, proposer="proposer")
 
 
 def test_propose_rejects_runs_whose_double_audit_failed(system):
@@ -460,10 +480,11 @@ def test_propose_rejects_runs_whose_double_audit_failed(system):
             value["checks"][0]["pass"] = False
         return value
     system.enqueue(Task.parse(toy_task("audit-fail", "audit-fail")))
-    run = system.run_next(Modified(disagree))
+    run = system.run_next(EXECUTOR, auditor_provider=Modified(disagree, AUDITOR_1.identity),
+                          auditor2_provider=AUDITOR_2)
     assert run["state"] == "closed" and run["audit_valid"] is False and run["decision"] is not None
     with pytest.raises(ContractError, match="audit is not valid"):
-        system.propose(run["id"], FixtureProvider(), proposer="proposer")
+        system.propose(run["id"], EXECUTOR, proposer="proposer")
 
 
 def test_propose_rejects_withdrawn_status_even_when_audits_pass(system):
@@ -472,11 +493,11 @@ def test_propose_rejects_withdrawn_status_even_when_audits_pass(system):
             value["status"] = "withdrawn"
         return value
     system.enqueue(Task.parse(toy_task("withdrawn", "withdrawn")))
-    run = system.run_next(Modified(withdraw))
+    run = system.run_next(Modified(withdraw), auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     assert run["state"] == "closed" and run["decision"] is not None and run["audit_valid"] is True
     assert run["status"] == "withdrawn" and run["evidence_admitted"] is False
     with pytest.raises(ContractError, match="status does not admit lessons"):
-        system.propose(run["id"], FixtureProvider(), proposer="proposer")
+        system.propose(run["id"], EXECUTOR, proposer="proposer")
 
 
 def test_propose_rejects_runs_without_admitted_evidence(system):
@@ -495,20 +516,20 @@ def test_propose_rejects_runs_without_admitted_evidence(system):
     system.store.put("run", run["id"], run)
     system.store.event("run_closed", {"run_id": run["id"], "record_hash": digest(run)})
     with pytest.raises(ContractError, match="evidence was not admitted"):
-        system.propose(run["id"], FixtureProvider(), proposer="proposer")
+        system.propose(run["id"], EXECUTOR, proposer="proposer")
 
 
 def test_propose_accepts_proceed_and_closed_negative_runs(system, tmp_path):
     _, candidate = develop(system)  # a normal "proceed" development run proposes fine
     assert len(system.version(candidate)["lessons"]) == 1
     trial, labels = freeze(system, candidate, tmp_path)
-    system.run_trial(trial, FixtureProvider())
+    system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     assert evaluate(system.store, trial, labels)["eligible"]
     system.promote(trial, reviewer="reviewer")
     system.enqueue(Task.parse(toy_task("D2", "new-development")))
-    negative = system.run_next(FixtureProvider())
+    negative = system.run_next(EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     assert negative["status"] == "closed_negative" and negative["evidence_admitted"] is True
-    candidate2 = system.propose(negative["id"], FixtureProvider(), proposer="proposer")
+    candidate2 = system.propose(negative["id"], EXECUTOR, proposer="proposer")
     assert len(system.version(candidate2)["lessons"]) == 2
 
 
@@ -535,7 +556,8 @@ def test_reindexed_trial_cannot_change_criteria_or_evaluator(system, tmp_path):
     with pytest.raises(ContractError, match="freeze event"):
         system.trial(forged_evaluator)
     with pytest.raises(ContractError, match="freeze event"):
-        system.run_trial(forged_evaluator, FixtureProvider())
+        system.run_trial(forged_evaluator, EXECUTOR, auditor_provider=AUDITOR_1,
+                         auditor2_provider=AUDITOR_2)
 
 
 # --- task bindings: scientific scope of tasks and lessons -------------------------
@@ -587,16 +609,19 @@ def test_task_fingerprint_and_hash_follow_bindings():
 
 def test_lessons_do_not_cross_binding_boundaries(system):
     system.enqueue(bound_task("D1", "dev", {"compound": "aspirin"}))
-    run = system.run_next(FixtureProvider())
-    candidate = system.propose(run["id"], FixtureProvider(), proposer="proposer")
+    run = system.run_next(EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
+    candidate = system.propose(run["id"], EXECUTOR, proposer="proposer")
     lesson = system.version(candidate)["lessons"][0]
     assert lesson["bindings"] == {"compound": "aspirin"}
     other = system.execute(bound_task("D2", "other", {"compound": "ibuprofen"}), candidate,
-                           FixtureProvider(), phase="development", run_id="bound-other")
+                           EXECUTOR, phase="development", run_id="bound-other",
+                           auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     unbound = system.execute(Task.parse(toy_task("D3", "third")), candidate,
-                             FixtureProvider(), phase="development", run_id="unbound")
+                             EXECUTOR, phase="development", run_id="unbound",
+                             auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     same = system.execute(bound_task("D4", "fourth", {"compound": "aspirin"}), candidate,
-                          FixtureProvider(), phase="development", run_id="bound-same")
+                          EXECUTOR, phase="development", run_id="bound-same",
+                          auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     assert not other["lesson_ids"] and not unbound["lesson_ids"]  # fail closed
     assert same["lesson_ids"] == [lesson["id"]]
 
@@ -611,9 +636,97 @@ def test_legacy_lessons_without_bindings_only_serve_unbound_tasks(system):
                "proposer": "controller", "source_run": None}
     version["id"] = version_id(version)
     system.store.put("version", version["id"], version)
-    unbound = system.execute(Task.parse(toy_task("U1", "u")), version["id"], FixtureProvider(),
-                             phase="development", run_id="legacy-unbound")
+    unbound = system.execute(Task.parse(toy_task("U1", "u")), version["id"], EXECUTOR,
+                             phase="development", run_id="legacy-unbound",
+                             auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     bound = system.execute(bound_task("U2", "u2", {"compound": "aspirin"}), version["id"],
-                           FixtureProvider(), phase="development", run_id="legacy-bound")
+                           EXECUTOR, phase="development", run_id="legacy-bound",
+                           auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     assert unbound["lesson_ids"] == ["legacy-lesson"]  # missing key counts as unbound
     assert not bound["lesson_ids"]                     # a bound task never inherits it
+
+
+# --- audit independence: pairwise-distinct per-role provider identities -----------
+
+def test_execute_requires_both_auditor_providers(system):
+    # Fail closed: reusing the executor provider as auditor, or omitting the second
+    # independent deployment, is rejected before any record is written.
+    task = Task.parse(toy_task("D1", "dev"))
+    key = system.version()["id"]
+    with pytest.raises(ContractError, match="pairwise-distinct"):
+        system.execute(task, key, EXECUTOR, phase="development", run_id="no-auditor-1")
+    with pytest.raises(ContractError, match="second independent auditor deployment"):
+        system.execute(task, key, EXECUTOR, phase="development", run_id="no-auditor-2",
+                       auditor_provider=AUDITOR_1)
+    assert system.store.all("attempt") == [] and system.store.all("run") == []
+
+
+def test_execute_rejects_identities_that_are_not_pairwise_distinct(system):
+    task = Task.parse(toy_task("D1", "dev"))
+    key = system.version()["id"]
+    with pytest.raises(ContractError, match="pairwise-distinct"):
+        system.execute(task, key, EXECUTOR, phase="development", run_id="executor-audits",
+                       auditor_provider=EXECUTOR, auditor2_provider=AUDITOR_2)
+    # Identity is the isolation boundary, not object identity: two distinct fixture
+    # instances sharing one identity are still one deployment.
+    with pytest.raises(ContractError, match="pairwise-distinct"):
+        system.execute(task, key, EXECUTOR, phase="development", run_id="shared-auditor",
+                       auditor_provider=FixtureProvider(AUDITOR_1.identity),
+                       auditor2_provider=FixtureProvider(AUDITOR_1.identity))
+    assert system.store.all("attempt") == [] and system.store.all("run") == []
+
+
+def test_run_record_seals_per_role_provider_identities(system):
+    system.enqueue(Task.parse(toy_task("D1", "dev")))
+    run = system.run_next(EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
+    assert run["providers"] == {"executor": EXECUTOR.identity, "auditor_1": AUDITOR_1.identity,
+                                "auditor_2": AUDITOR_2.identity}
+    assert len(set(run["providers"].values())) == 3
+    assert run["provider"] == EXECUTOR.identity  # legacy field kept for compatibility
+    system.store.verify_seal("run", run["id"], system.store.get("run", run["id"]))
+    # The sealed mapping covers every role: swapping one identity breaks the seal.
+    stored = system.store.get("run", run["id"])
+    stored["providers"]["auditor_2"] = EXECUTOR.identity
+    system.store.db.execute("UPDATE objects SET body=? WHERE kind='run' AND id=?",
+                            (canonical(stored), run["id"]))
+    with pytest.raises(ContractError, match="sealed record"):
+        system.store.verify_seal("run", run["id"], system.store.get("run", run["id"]))
+    with pytest.raises(ContractError, match="sealed record"):
+        system.propose(run["id"], EXECUTOR, proposer="proposer")
+
+
+def test_propose_requires_the_executor_provider_identity(system):
+    # The reflector rides the executor provider, so the proposing identity must be
+    # exactly the sealed run's executor identity.
+    system.enqueue(Task.parse(toy_task("D1", "dev")))
+    run = system.run_next(EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
+    with pytest.raises(ContractError, match="provider"):
+        system.propose(run["id"], AUDITOR_1, proposer="proposer")
+    candidate = system.propose(run["id"], EXECUTOR, proposer="proposer")
+    assert len(system.version(candidate)["lessons"]) == 1
+
+
+# --- rollback authorization: explicit fail-closed approver allowlist --------------
+
+def test_approver_allowlist_is_validated_deduplicated_and_frozen(system):
+    with pytest.raises(ContractError, match="identifier"):
+        Agent(system.store, approvers=["bad id!"])
+    with pytest.raises(ContractError, match="approvers"):
+        Agent(system.store, approvers="ops-reviewer")  # a bare string is not a collection
+    agent = Agent(system.store, approvers=["ops-reviewer", "ops-reviewer"])
+    assert agent.approvers == frozenset({"ops-reviewer"})
+
+
+def test_rollback_is_denied_by_default_and_requires_an_authorized_approver(system):
+    # Default empty allowlist: rollback is disabled entirely, even for well-formed names.
+    with pytest.raises(ContractError, match="authorized approver"):
+        system.rollback(reviewer="reviewer", reason="default deny")
+    base = system.version()["id"]
+    _, candidate = develop(system)
+    system.store.set_value("active_version", candidate)
+    agent = Agent(system.store, approvers=["ops-reviewer", "ops-reviewer"])
+    with pytest.raises(ContractError, match="authorized approver"):
+        agent.rollback(reviewer="insider", reason="valid identifier, but not authorized")
+    assert agent.rollback(reviewer="ops-reviewer", reason="authorized operator") == base
+    event = system.store.last_event("version_rolled_back")
+    assert event["reviewer"] == "ops-reviewer" and event["from"] == candidate and event["to"] == base

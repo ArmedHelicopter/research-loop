@@ -5,6 +5,7 @@ from __future__ import annotations
 import math
 import re
 import uuid
+from collections.abc import Collection
 from typing import Any
 
 from .ontology import (
@@ -45,9 +46,51 @@ def task_commitments(tasks: list[Task]) -> list[dict[str, str]]:
              "fingerprint": t.fingerprint} for t in tasks]
 
 
+def role_identities(provider: Provider, auditor_provider: Provider | None,
+                    auditor2_provider: Provider | None) -> dict[str, str]:
+    """Fail-closed audit independence gate: the three role identities must be pairwise distinct.
+
+    executor / auditor_1 / auditor_2 共用同一个 provider（同一 identity = 同一模型/部署）时，
+    两个 auditor 可以共享同样的错误或幻觉，audits[0] == audits[1] 不代表事实正确；当前实现
+    只存在角色隔离，缺少信息隔离，因此身份隔离是强制门槛而不是建议。identity 即隔离边界：
+    同一 base_url 下不同 model 名是最低要求（不同 model 名即不同 identity，可接受），推荐
+    不同 base_url 的独立部署；完全相同的部署必然共享权重与幻觉模式，直接拒绝。缺少任一
+    auditor provider（例如未提供第二个独立部署）同样拒绝。
+    """
+    roles: dict[str, Provider | None] = {"executor": provider, "auditor_1": auditor_provider,
+                                         "auditor_2": auditor2_provider}
+    missing = [role for role, value in roles.items() if value is None]
+    if missing:
+        hint = ("; a second independent auditor deployment (auditor2_provider) is required"
+                if "auditor_2" in missing else "")
+        raise ContractError("audit independence requires pairwise-distinct provider identities; missing: "
+                            + ", ".join(role + "_provider" for role in missing) + hint)
+    identities: dict[str, str] = {}
+    for role, value in roles.items():
+        identity = getattr(value, "identity", None)
+        if type(identity) is not str or not identity:
+            raise ContractError("each role requires a provider exposing a nonempty string identity")
+        identities[role] = identity
+    if len(set(identities.values())) != len(identities):
+        raise ContractError("audit independence requires pairwise-distinct provider identities: "
+                            + canonical(identities))
+    return identities
+
+
 class Agent:
-    def __init__(self, store: Store):
+    def __init__(self, store: Store, approvers: Collection[str] = ()):
+        """Create a controller over ``store``.
+
+        ``approvers`` is the explicit rollback allowlist: reviewer identifiers that may
+        execute :meth:`Agent.rollback`. Entries are validated with identifier(), deduplicated
+        and frozen into a frozenset. The default empty allowlist is deliberate fail-closed
+        design: rollback stays disabled until an operator names authorized approvers, so a
+        merely well-formed reviewer string never carries deployment authority by itself.
+        """
+        if isinstance(approvers, str) or not isinstance(approvers, Collection):
+            raise ContractError("approvers must be a collection of reviewer identifiers")
         self.store = store
+        self.approvers = frozenset(identifier(entry) for entry in approvers)
 
     def initialize(self) -> str:
         with self.store.transaction():
@@ -86,7 +129,11 @@ class Agent:
             self.store.db.execute("INSERT INTO queue(task_id,state) VALUES (?, 'queued')", (task.id,))
             self.store.event("enqueued", {"task_id": task.id, "fingerprint": task.fingerprint})
 
-    def run_next(self, provider: Provider) -> dict[str, Any] | None:
+    def run_next(self, provider: Provider, *, auditor_provider: Provider | None = None,
+                 auditor2_provider: Provider | None = None) -> dict[str, Any] | None:
+        # Fail closed before any queue mutation: a misconfigured audit triple must not
+        # leave an entry stuck in the running state.
+        role_identities(provider, auditor_provider, auditor2_provider)
         with self.store.transaction():
             if self.store.db.execute("SELECT 1 FROM queue WHERE state='running'").fetchone():
                 raise ContractError("a development run is active; recover it explicitly after interruption")
@@ -97,7 +144,8 @@ class Agent:
             version = self.version()
             self.store.db.execute("UPDATE queue SET state='running',run_id=? WHERE seq=?", (run_id, row["seq"]))
         result = self.execute(Task.parse(self.store.get("task", row["task_id"])), version["id"],
-                              provider, phase="development", run_id=run_id)
+                              provider, phase="development", run_id=run_id,
+                              auditor_provider=auditor_provider, auditor2_provider=auditor2_provider)
         with self.store.transaction():
             self.store.db.execute("UPDATE queue SET state='closed' WHERE run_id=?", (run_id,))
         return result
@@ -147,13 +195,30 @@ class Agent:
         }
 
     def execute(self, task: Task, version_key: str, provider: Provider, *, phase: str,
-                run_id: str) -> dict[str, Any]:
+                run_id: str, auditor_provider: Provider | None = None,
+                auditor2_provider: Provider | None = None) -> dict[str, Any]:
+        """Run one task under a frozen version: an executor decision plus two independent audits.
+
+        Audit independence is fail-closed: executor, auditor_1 and auditor_2 must be
+        providers with pairwise-distinct identities (see :func:`role_identities`). Two
+        auditors sharing one deployment share weights and failure modes, so
+        ``audits[0] == audits[1]`` alone proves nothing about factual correctness —
+        identity is the isolation boundary. A different model name on the same base_url
+        is the minimum acceptable separation; a distinct base_url is recommended.
+
+        The per-role identity mapping is frozen into the attempt and run records
+        (``providers``) and sealed by the run_closed record hash; the legacy
+        ``provider`` field is kept for backwards compatibility and equals the executor
+        identity.
+        """
         task = Task.parse(task.data())
         if phase not in {"development", "evaluation"}:
             raise ContractError("unknown run phase")
+        identities = role_identities(provider, auditor_provider, auditor2_provider)
         version = self.version(version_key)
         start = {"id": run_id, "task": task.data(), "task_hash": digest(task.data()),
-                 "version": version_key, "phase": phase, "provider": provider.identity}
+                 "version": version_key, "phase": phase, "provider": provider.identity,
+                 "providers": identities}
         with self.store.transaction():
             existing = self.store.db.execute("SELECT 1 FROM objects WHERE kind='attempt' AND id=?", (run_id,)).fetchone()
             if existing:
@@ -182,9 +247,11 @@ class Agent:
                                    "lessons": lessons}, run_id)
                 result["decision"] = decision(value, task)
                 audits = []
-                for role in ("auditor_1", "auditor_2"):
-                    # Auditors get the evidence and decision, not each other's judgments or the memory.
-                    value = self._call(provider, role, {"task": task.data(), "rule_hash": task.rule_hash,
+                for role, auditor in (("auditor_1", auditor_provider), ("auditor_2", auditor2_provider)):
+                    # Auditors get the evidence and decision, not each other's judgments or
+                    # the memory; each runs on its own provider identity so a shared
+                    # hallucination cannot masquerade as double agreement.
+                    value = self._call(auditor, role, {"task": task.data(), "rule_hash": task.rule_hash,
                                        "decision": result["decision"]}, run_id)
                     audits.append(audit(value, task))
                 result["audits"] = audits
@@ -208,13 +275,21 @@ class Agent:
         return result
 
     def propose(self, source_run: str, provider: Provider, *, proposer: str) -> str:
+        """Turn a completed development run into a lesson candidate on the current version.
+
+        The reflector deliberately rides the executor provider — reflection is not an
+        auditor role — so the sealed run must have been executed by exactly this
+        provider identity (``run["providers"]["executor"]``); a different provider may
+        not propose from a run it did not execute.
+        """
         proposer = identifier(proposer)
         run = self.store.get("run", source_run)
         self.store.verify_seal("run", source_run, run)
         if run["phase"] != "development" or run["state"] != "closed":
             raise ContractError("only completed development runs may generate lessons")
         parent = self.version()
-        if run["version"] != parent["id"] or run["provider"] != provider.identity:
+        executor_identity = (run.get("providers") or {}).get("executor") or run["provider"]
+        if run["version"] != parent["id"] or executor_identity != provider.identity:
             raise ContractError("proposal requires a run of the current version and provider")
         # Quality gates: only a run that walked the full protocol (a decision, two
         # agreeing audits, a completed scientific status and admitted evidence) may
@@ -329,8 +404,10 @@ class Agent:
                 raise ContractError("frozen trial changed: task/rule commitment does not match the frozen task")
         return trial
 
-    def run_trial(self, key: str, provider: Provider) -> list[dict[str, Any]]:
+    def run_trial(self, key: str, provider: Provider, *, auditor_provider: Provider | None = None,
+                  auditor2_provider: Provider | None = None) -> list[dict[str, Any]]:
         trial = self.trial(key)
+        role_identities(provider, auditor_provider, auditor2_provider)
         results = []
         for index, value in enumerate(trial["tasks"]):
             task = Task.parse(value)
@@ -338,7 +415,8 @@ class Agent:
             arms = ("baseline", "candidate") if index % 2 == 0 else ("candidate", "baseline")
             for arm in arms:
                 results.append(self.execute(task, trial[arm], provider, phase="evaluation",
-                               run_id=f"{key}:{task.id}:{arm}"))
+                               run_id=f"{key}:{task.id}:{arm}", auditor_provider=auditor_provider,
+                               auditor2_provider=auditor2_provider))
         return results
 
     def promote(self, trial_key: str, *, reviewer: str) -> str:
@@ -364,7 +442,17 @@ class Agent:
             return candidate["id"]
 
     def rollback(self, *, reviewer: str, reason: str) -> str:
+        """Roll the active version back to its parent — explicitly authorized only.
+
+        Fail closed: ``reviewer`` must be a member of the approvers allowlist passed to
+        :class:`Agent`. A well-formed reviewer string alone carries no authority; with
+        the default empty allowlist rollback is disabled entirely until an operator
+        configures authorized approvers. The reviewer/reason are still recorded in the
+        version_rolled_back event for the audit trail.
+        """
         reviewer, reason = identifier(reviewer), text(reason, limit=1000)
+        if reviewer not in self.approvers:
+            raise ContractError("rollback requires an authorized approver")
         with self.store.transaction():
             active = self.version()
             if active["parent"] is None:

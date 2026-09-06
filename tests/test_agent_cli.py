@@ -104,17 +104,28 @@ def test_actual_http_wire_and_accounting_from_exported_runner(tmp_path):
         task.write_text(canonical(toy_task("wire", "wire")), encoding="utf-8")
         assert command(target, "init").returncode == 0
         assert command(target, "enqueue", str(task)).returncode == 0
-        result = command(target, "run", env={
+        # One deployment per role; a different model name on the shared local test
+        # endpoint yields a distinct identity, which the fail-closed gate requires.
+        env = {
             "RESEARCH_LOOP_BASE_URL": f"http://127.0.0.1:{server.server_port}/v1",
             "RESEARCH_LOOP_MODEL": "wire-test",
             "RESEARCH_LOOP_API_KEY": "local-test-placeholder",
-        })
+            "RESEARCH_LOOP_AUDITOR_BASE_URL": f"http://127.0.0.1:{server.server_port}/v1",
+            "RESEARCH_LOOP_AUDITOR_MODEL": "wire-test-auditor-1",
+            "RESEARCH_LOOP_AUDITOR_API_KEY": "local-test-placeholder",
+            "RESEARCH_LOOP_AUDITOR2_BASE_URL": f"http://127.0.0.1:{server.server_port}/v1",
+            "RESEARCH_LOOP_AUDITOR2_MODEL": "wire-test-auditor-2",
+            "RESEARCH_LOOP_AUDITOR2_API_KEY": "local-test-placeholder",
+        }
+        result = command(target, "run", env=env)
         assert result.returncode == 0, result.stderr
         run = json.loads(result.stdout)[0]
         assert run["usage"]["calls"] == 3
         assert run["usage"]["input_tokens"] == 300
         assert run["usage"]["output_tokens"] == 30
         assert run["provider"].startswith("http:")
+        assert len(set(run["providers"].values())) == 3
+        assert run["providers"]["executor"] == run["provider"]
         assert len(requests) == 3
         assert all(len(r["messages"]) == 2 for r in requests)
         assert "local-test-placeholder" not in result.stdout
@@ -124,6 +135,19 @@ def test_actual_http_wire_and_accounting_from_exported_runner(tmp_path):
         server.shutdown()
         server.server_close()
         thread.join(timeout=3)
+
+
+def test_cli_rollback_is_fail_closed_without_an_explicit_approver(tmp_path):
+    root = tmp_path / "cli-rollback"
+    export(root)
+    db = str(root / "state.sqlite")
+    assert command(root, "--db", db, "init").returncode == 0
+    denied = command(root, "--db", db, "rollback", "--reviewer", "reviewer", "--reason", "unauthorized")
+    assert denied.returncode == 2 and "authorized approver" in denied.stderr
+    # The flag only names the approver; the base version still cannot be rolled back.
+    allowed = command(root, "--db", db, "--approver", "reviewer", "rollback",
+                      "--reviewer", "reviewer", "--reason", "authorized")
+    assert allowed.returncode == 2 and "no parent" in allowed.stderr
 
 
 def test_private_labels_inside_public_export_are_rejected_before_running(tmp_path):

@@ -14,7 +14,7 @@ from typing import Any
 
 from .agent import Agent, DEFAULT_CRITERIA
 from .ontology import ContractError, Task, canonical, implementation_hash
-from .provider import FixtureProvider, HTTPProvider
+from .provider import HTTPProvider, Provider, fixture_role_providers
 from .store import Store
 
 
@@ -42,6 +42,24 @@ def scorer(args: list[str]) -> dict[str, Any]:
         # Child errors never contain label contents; avoid passing arbitrary output to models.
         raise ContractError(result.stderr.strip() or "private evaluator failed")
     return json.loads(result.stdout)
+
+
+def role_providers(backend: str) -> tuple[Provider, Provider, Provider]:
+    """Assemble (executor, auditor_1, auditor_2) providers with pairwise-distinct identities.
+
+    The fixture backend ships three toy identities. Real deployments configure one
+    endpoint per role through environment variables: ``RESEARCH_LOOP_BASE_URL`` /
+    ``RESEARCH_LOOP_MODEL`` / ``RESEARCH_LOOP_API_KEY`` for the executor,
+    ``RESEARCH_LOOP_AUDITOR_*`` for auditor_1 and ``RESEARCH_LOOP_AUDITOR2_*`` for
+    auditor_2. A different model name on a shared base_url is the minimum acceptable
+    separation (it yields a distinct identity); distinct base_urls are recommended
+    because same-model deployments share hallucination modes. The agent rejects any
+    triple whose identities are not pairwise distinct.
+    """
+    if backend == "fixture":
+        return fixture_role_providers()
+    return (HTTPProvider.from_env(), HTTPProvider.from_env("RESEARCH_LOOP_AUDITOR_"),
+            HTTPProvider.from_env("RESEARCH_LOOP_AUDITOR2_"))
 
 
 def toy_task(key: str, family: str, *, negative: bool = True) -> dict[str, Any]:
@@ -99,7 +117,8 @@ def demo(directory: Path) -> dict[str, Any]:
     next_task.write_text(canonical(toy_task("D002", "new-dev-assay")), encoding="utf-8")
     command("enqueue", str(next_task))
     after = command("run", "--backend", "fixture")
-    rollback = command("rollback", "--reviewer", "demo-reviewer", "--reason", "Exercise reversible deployment.")
+    rollback = command("--approver", "demo-reviewer", "rollback", "--reviewer", "demo-reviewer",
+                       "--reason", "Exercise reversible deployment.")
     summary = {"mode": "engineering_fixture", "scientific_effectiveness_proven": False,
                "base": base["active_version"], "candidate": candidate, "trial": trial["trial"],
                "before": cycle["run"]["status"], "after": after[0]["status"],
@@ -110,8 +129,16 @@ def demo(directory: Path) -> dict[str, Any]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        epilog="Real backends need one deployment per role: RESEARCH_LOOP_BASE_URL/MODEL/API_KEY "
+               "for the executor and RESEARCH_LOOP_AUDITOR_*/RESEARCH_LOOP_AUDITOR2_* for the two "
+               "auditors; the three provider identities must be pairwise distinct (a different "
+               "model name is the minimum, a separate base_url is recommended).")
     parser.add_argument("--db", default="state.sqlite", help="controller database (operator-owned)")
+    parser.add_argument("--approver", action="append", default=[], metavar="ID",
+                        help="reviewer identifier authorized to roll back the active version; "
+                             "repeatable; default: none, rollback stays disabled (fail closed)")
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("init")
     commands.add_parser("status")
@@ -162,7 +189,7 @@ def main() -> None:
                              "--labels", str(Path(args.labels).resolve())])
         else:
             store = Store(args.db)
-            agent = Agent(store)
+            agent = Agent(store, approvers=args.approver)
             if args.command == "init":
                 result = {"active_version": agent.initialize()}
             elif args.command == "status":
@@ -193,24 +220,27 @@ def main() -> None:
                 agent.recover(args.run_id)
                 result = {"interrupted_run_closed": args.run_id, "retried": False}
             else:
-                backend = FixtureProvider() if args.backend == "fixture" else HTTPProvider.from_env()
+                executor, auditor_1, auditor_2 = role_providers(args.backend)
                 if args.command == "run":
                     if args.limit < 1:
                         raise ContractError("run limit must be positive")
                     result = []
                     for _ in range(args.limit):
-                        run = agent.run_next(backend)
+                        run = agent.run_next(executor, auditor_provider=auditor_1,
+                                             auditor2_provider=auditor_2)
                         if run is None:
                             break
                         result.append(run)
                 elif args.command == "cycle":
-                    run = agent.run_next(backend)
-                    candidate = agent.propose(run["id"], backend, proposer=args.proposer) if run and run["state"] == "closed" else None
+                    run = agent.run_next(executor, auditor_provider=auditor_1,
+                                         auditor2_provider=auditor_2)
+                    candidate = agent.propose(run["id"], executor, proposer=args.proposer) if run and run["state"] == "closed" else None
                     result = {"run": run, "candidate": candidate, "active_version": agent.version()["id"]}
                 elif args.command == "propose":
-                    result = {"candidate": agent.propose(args.run_id, backend, proposer=args.proposer)}
+                    result = {"candidate": agent.propose(args.run_id, executor, proposer=args.proposer)}
                 else:
-                    result = agent.run_trial(args.trial, backend)
+                    result = agent.run_trial(args.trial, executor, auditor_provider=auditor_1,
+                                             auditor2_provider=auditor_2)
         print(canonical(result))
     except (ContractError, OSError, ValueError, sqlite3.Error) as exc:
         parser.exit(2, f"Operation rejected: {exc}\n")

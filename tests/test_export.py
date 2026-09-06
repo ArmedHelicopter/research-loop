@@ -8,8 +8,11 @@ from research_loop.agent import Agent
 from research_loop.cli import toy_task
 from research_loop.export import ExportError, export_candidate_policy, export_memory_hint
 from research_loop.ontology import Task, digest
-from research_loop.provider import FixtureProvider
+from research_loop.provider import fixture_role_providers
 from research_loop.store import Store
+
+# Pairwise-distinct per-role fixture identities for the fail-closed audit gate.
+EXECUTOR, AUDITOR_1, AUDITOR_2 = fixture_role_providers()
 
 
 @pytest.fixture
@@ -23,8 +26,8 @@ def system(tmp_path):
 
 def develop(agent):
     agent.enqueue(Task.parse(toy_task("D1", "dev")))
-    run = agent.run_next(FixtureProvider())
-    candidate = agent.propose(run["id"], FixtureProvider(), proposer="proposer")
+    run = agent.run_next(EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
+    candidate = agent.propose(run["id"], EXECUTOR, proposer="proposer")
     return run, candidate
 
 
@@ -152,8 +155,8 @@ def develop_bound(agent, key, bindings):
     data = toy_task(key, "dev")
     data["bindings"] = bindings
     agent.enqueue(Task.parse(data))
-    run = agent.run_next(FixtureProvider())
-    candidate = agent.propose(run["id"], FixtureProvider(), proposer="proposer")
+    run = agent.run_next(EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
+    candidate = agent.propose(run["id"], EXECUTOR, proposer="proposer")
     return run, candidate, agent.version(candidate)["lessons"][0]
 
 

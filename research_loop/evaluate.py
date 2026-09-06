@@ -30,6 +30,15 @@ def private_labels(path: Path) -> tuple[dict[str, str], str]:
 
 
 def evaluate(store: Store, trial_key: str, labels_path: Path) -> dict[str, Any]:
+    """Deterministic local scoring: no provider is called anywhere in this path.
+
+    Independence of the score is structural, not provider-based: the private evaluator
+    runs as a separate process that alone opens the label file and only compares sealed
+    run records against pre-committed labels. There is therefore no model scorer whose
+    identity could collide with the executor. The receipt records the shared executor
+    identity under ``provider`` (paired arms must match), and each run's full per-role
+    ``providers`` mapping is committed through ``run_hashes``.
+    """
     agent = Agent(store)
     store.verify_journal()
     trial = agent.trial(trial_key)

@@ -117,11 +117,15 @@ SQLite 事务保存不可变对象、FIFO、当前版本和哈希链。版本、
 运行包源码也参与实现哈希。升级源码后不要继续使用旧包的版本数据库；保留旧运行包以复核旧结果，为新实现建立新数据库。本版没有隐式迁移或忽略实现变化的开关。
 
 ~~~powershell
-python -m research_loop rollback --reviewer reviewer-c --reason '出现过拒'
+python -m research_loop --approver reviewer-c rollback --reviewer reviewer-c --reason '出现过拒'
 python -m research_loop recover INTERRUPTED_DEVELOPMENT_RUN_ID
 ~~~
 
+回滚是显式 fail-closed 的白名单授权：只有 `--approver`（可重复）列出的 reviewer 才能执行 rollback；默认空白名单 = 回滚禁用，名字格式合法但未授权的 reviewer 一律拒绝。version_rolled_back 事件仍记录 reviewer/reason 供审计。
+
 recover 只关闭已确认中断的开发项，不自动重试可能已经收费的请求，调用前须确认原进程已停止。已完成 trial 重读不重复调用；请求中间中断则缺少封存记录，需调查并结束该 trial，不能删记录挑最好一次。
+
+模型调用按角色装配 provider：executor、auditor_1、auditor_2 三个角色的 provider identity 必须两两不同，否则 run 直接拒绝（fail closed）。同一部署的 auditor 会与 executor 共享权重与幻觉模式，`audits[0] == audits[1]` 不能证明事实正确。identity 即隔离边界：HTTP 后端经 `RESEARCH_LOOP_*`（executor）、`RESEARCH_LOOP_AUDITOR_*`（auditor_1）、`RESEARCH_LOOP_AUDITOR2_*`（auditor_2）环境变量装配；同 base_url 下不同 model 名是最低要求，推荐不同 base_url 的独立部署。reflector 沿用 executor provider（它是反思路色，不是审计者），propose 会校验封存 run 的 executor identity；每个 run 记录按角色封存 `providers` 身份映射。
 
 角色名字是可信操作者层面的权限约束，不是账户认证。哈希链能检测意外改写，不能防止拥有写权限的人重写整个数据库。面向不受信操作者部署时，还需要账户与进程隔离保护控制器、标签和数据库。HTTP 模型接口本身没有这些权限。
 

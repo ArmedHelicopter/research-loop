@@ -23,6 +23,15 @@ class Call:
 
 
 class Provider(Protocol):
+    """A stateless model endpoint.
+
+    ``identity`` is the audit-independence boundary: the executor, auditor_1 and
+    auditor_2 roles must be pairwise-distinct identities. Two roles on the same
+    deployment (same base_url, same model) share weights and therefore share
+    hallucination modes, so a different model name is the minimum acceptable
+    separation; a distinct base_url/deployment is recommended.
+    """
+
     identity: str
 
     def call(self, role: str, payload: dict[str, Any]) -> Call: ...
@@ -59,6 +68,14 @@ def require_public_workspace() -> None:
 
 
 class HTTPProvider:
+    """OpenAI-compatible chat endpoint; identity pins base_url + model + token limit.
+
+    The identity digest makes "same deployment, different model name" a different
+    identity (the minimum audit-independence bar) while identical deployments collide,
+    which the agent rejects. Running the same model under two names does not change
+    the weights, so distinct base_urls remain the recommended setup for auditors.
+    """
+
     def __init__(self, *, base_url: str, model: str, api_key: str, max_tokens: int = 800):
         parsed = urlsplit(base_url)
         if parsed.username or parsed.password or parsed.query or parsed.fragment:
@@ -73,10 +90,16 @@ class HTTPProvider:
         self.identity = "http:" + digest([self.base_url, model, max_tokens, 0.0])
 
     @classmethod
-    def from_env(cls) -> HTTPProvider:
-        required = ["RESEARCH_LOOP_BASE_URL", "RESEARCH_LOOP_MODEL", "RESEARCH_LOOP_API_KEY"]
+    def from_env(cls, prefix: str = "RESEARCH_LOOP_") -> HTTPProvider:
+        """Build a provider from ``<prefix>BASE_URL`` / ``<prefix>MODEL`` / ``<prefix>API_KEY``.
+
+        The prefix separates per-role deployments, e.g. ``RESEARCH_LOOP_AUDITOR_`` for
+        auditor_1 and ``RESEARCH_LOOP_AUDITOR2_`` for auditor_2; the agent rejects the
+        triple unless the three identities are pairwise distinct.
+        """
+        required = [prefix + "BASE_URL", prefix + "MODEL", prefix + "API_KEY"]
         if any(not os.environ.get(k) for k in required):
-            raise ContractError("set RESEARCH_LOOP_BASE_URL, RESEARCH_LOOP_MODEL and RESEARCH_LOOP_API_KEY")
+            raise ContractError(f"set {required[0]}, {required[1]} and {required[2]}")
         return cls(base_url=os.environ[required[0]], model=os.environ[required[1]], api_key=os.environ[required[2]])
 
     def call(self, role: str, payload: dict[str, Any]) -> Call:
@@ -108,9 +131,18 @@ class HTTPProvider:
 
 
 class FixtureProvider:
-    """Deliberately fallible toy executor for integration demos, never a model result."""
+    """Deliberately fallible toy executor for integration demos, never a model result.
+
+    The identity is parametrizable so demos and tests can assemble the
+    executor/auditor_1/auditor_2 roles with pairwise-distinct identities without any
+    real model call; the default identity keeps standalone single-role use working.
+    """
 
     identity = "fixture:negative-result-v1"
+
+    def __init__(self, identity: str | None = None):
+        if identity is not None:
+            self.identity = identity
 
     def call(self, role: str, payload: dict[str, Any]) -> Call:
         task = payload["task"]
@@ -131,3 +163,12 @@ class FixtureProvider:
             }
         # Zero real model tokens, not estimated tokens or a cost-saving claim.
         return Call(value, 0, 0, 0.0)
+
+
+def fixture_role_providers() -> tuple[FixtureProvider, FixtureProvider, FixtureProvider]:
+    """Assemble (executor, auditor_1, auditor_2) fixtures with pairwise-distinct identities.
+
+    用于测试与 CLI demo：三个角色的 identity 互异，满足 audit independence 的 fail-closed
+    门槛，同时保持零真实模型调用。
+    """
+    return (FixtureProvider(), FixtureProvider("fixture:auditor-1-v1"), FixtureProvider("fixture:auditor-2-v1"))
