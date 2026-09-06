@@ -150,6 +150,19 @@ def test_cli_rollback_is_fail_closed_without_an_explicit_approver(tmp_path):
     assert allowed.returncode == 2 and "no parent" in allowed.stderr
 
 
+def test_cli_promotion_is_fail_closed_without_an_explicit_approver(tmp_path):
+    root = tmp_path / "cli-promote"
+    export(root)
+    db = str(root / "state.sqlite")
+    assert command(root, "--db", db, "init").returncode == 0
+    denied = command(root, "--db", db, "promote", "any-trial", "--reviewer", "reviewer")
+    assert denied.returncode == 2 and "authorized approver" in denied.stderr
+    # The flag only names the approver; the unknown trial itself is then rejected.
+    allowed = command(root, "--db", db, "--approver", "reviewer", "promote",
+                      "any-trial", "--reviewer", "reviewer")
+    assert allowed.returncode == 2 and "missing trial" in allowed.stderr
+
+
 def test_private_labels_inside_public_export_are_rejected_before_running(tmp_path):
     target = tmp_path / "public"
     export(target)

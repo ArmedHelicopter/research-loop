@@ -89,7 +89,7 @@ python -m research_loop status
 python -m research_loop freeze-trial --candidate CANDIDATE_HASH --tasks .\evaluation-tasks.json --labels 'E:\private-evaluator\expected.json' --evaluator evaluator-b
 python -m research_loop run-trial TRIAL_HASH
 python -m research_loop evaluate TRIAL_HASH --labels 'E:\private-evaluator\expected.json'
-python -m research_loop promote TRIAL_HASH --reviewer reviewer-c
+python -m research_loop --approver reviewer-c promote TRIAL_HASH --reviewer reviewer-c
 ~~~
 
 freeze-trial 由评分子进程读标签，只返回运行前 SHA256；evaluate 再开独立评分进程。模型执行／反思路径不读取标签，不接收评分回执或逐题正确性信号。
@@ -121,7 +121,7 @@ python -m research_loop --approver reviewer-c rollback --reviewer reviewer-c --r
 python -m research_loop recover INTERRUPTED_DEVELOPMENT_RUN_ID
 ~~~
 
-回滚是显式 fail-closed 的白名单授权：只有 `--approver`（可重复）列出的 reviewer 才能执行 rollback；默认空白名单 = 回滚禁用，名字格式合法但未授权的 reviewer 一律拒绝。version_rolled_back 事件仍记录 reviewer/reason 供审计。
+晋升与回滚都是显式 fail-closed 的白名单授权：只有 `--approver`（可重复）列出的 reviewer 才能执行 promote 或 rollback；默认空白名单 = 晋升与回滚均禁用，名字格式合法但未授权的 reviewer 一律拒绝。version_promoted / version_rolled_back 事件仍记录 reviewer 供审计。
 
 recover 只关闭已确认中断的开发项，不自动重试可能已经收费的请求，调用前须确认原进程已停止。已完成 trial 重读不重复调用；请求中间中断则缺少封存记录，需调查并结束该 trial，不能删记录挑最好一次。
 

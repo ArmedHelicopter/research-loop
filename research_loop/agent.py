@@ -77,15 +77,37 @@ def role_identities(provider: Provider, auditor_provider: Provider | None,
     return identities
 
 
+LESSON_STATUSES = frozenset({"proceed", "closed_negative"})
+
+
+def require_lesson_worthy_run(run: dict[str, Any]) -> None:
+    """Shared quality gate: only a run that walked the full protocol may become memory.
+
+    ``Agent.propose`` 和跨仓库导出（export.export_memory_hint）共用这道门禁：run 必须
+    有非空 decision、双审计一致（audit_valid is True）、科学状态落在
+    {proceed, closed_negative} 且 evidence_admitted is True。四项逐项独立拒绝——被
+    拒绝/未走完协议的 run 绝不能回收成"经验"记忆，也不能导出为 memory hint。
+    """
+    if not run.get("decision"):
+        raise ContractError("run has no decision; lessons require a completed protocol")
+    if run.get("audit_valid") is not True:
+        raise ContractError("run audit is not valid; lessons require admitted evidence")
+    if run.get("status") not in LESSON_STATUSES:
+        raise ContractError("run status does not admit lessons; lessons require proceed or closed_negative")
+    if run.get("evidence_admitted") is not True:
+        raise ContractError("run evidence was not admitted; lessons require admitted evidence")
+
+
 class Agent:
     def __init__(self, store: Store, approvers: Collection[str] = ()):
         """Create a controller over ``store``.
 
-        ``approvers`` is the explicit rollback allowlist: reviewer identifiers that may
-        execute :meth:`Agent.rollback`. Entries are validated with identifier(), deduplicated
-        and frozen into a frozenset. The default empty allowlist is deliberate fail-closed
-        design: rollback stays disabled until an operator names authorized approvers, so a
-        merely well-formed reviewer string never carries deployment authority by itself.
+        ``approvers`` is the explicit deployment allowlist: reviewer identifiers that may
+        execute :meth:`Agent.promote` or :meth:`Agent.rollback`. Entries are validated with
+        identifier(), deduplicated and frozen into a frozenset. The default empty allowlist
+        is deliberate fail-closed design: promotion and rollback stay disabled until an
+        operator names authorized approvers, so a merely well-formed reviewer string never
+        carries deployment authority by itself.
         """
         if isinstance(approvers, str) or not isinstance(approvers, Collection):
             raise ContractError("approvers must be a collection of reviewer identifiers")
@@ -294,15 +316,8 @@ class Agent:
         # Quality gates: only a run that walked the full protocol (a decision, two
         # agreeing audits, a completed scientific status and admitted evidence) may
         # turn its record into a lesson; a rejected/failed protocol must never be
-        # recycled into "experience" memory.
-        if run["decision"] is None:
-            raise ContractError("run has no decision; lessons require a completed protocol")
-        if run["audit_valid"] is not True:
-            raise ContractError("run audit is not valid; lessons require admitted evidence")
-        if run["status"] not in {"proceed", "closed_negative"}:
-            raise ContractError("run status does not admit lessons; lessons require proceed or closed_negative")
-        if run["evidence_admitted"] is not True:
-            raise ContractError("run evidence was not admitted; lessons require admitted evidence")
+        # recycled into "experience" memory. The exporter applies the same gate.
+        require_lesson_worthy_run(run)
         task = Task.parse(run["task"])
         proposal_id = "proposal-" + uuid.uuid4().hex
         value = self._call(provider, "reflector", {
@@ -382,17 +397,29 @@ class Agent:
             raise ContractError("frozen trial changed")
         if trial.get("code_version_hash") != code_version_hash():
             raise ContractError("stale trial: runtime code_version_hash changed after the freeze")
-        frozen = self.store.find_events("trial_frozen", candidate=trial["candidate"])
-        if frozen:
-            # Bind the record to the hash chain via the candidate: even a re-keyed
-            # (re-hashed) trial record must still match one frozen commitment set.
-            # `field not in event` keeps freeze events from before the full-anchoring
-            # upgrade loadable; every field a new freeze event carries must match.
-            def consistent(event: dict[str, Any]) -> bool:
-                return all(field not in event or event[field] == trial.get(field)
-                           for field in ("task_commitments", "label_commitment", "criteria",
-                                         "evaluator", "core_hash", "code_version_hash"))
-            if not any(consistent(event) for event in frozen):
+        # Fail closed: the freeze event is located by THIS trial's id (freeze_trial
+        # writes "trial": trial["id"]), so promises can no longer be borrowed from
+        # other trials of the same candidate, and a self-consistent trial written
+        # directly into the store (digest self-computed, no freeze_trial) has no
+        # freeze event at all and is rejected outright — the minimal-sample, family
+        # dedup, development-task exclusion and evaluator commitment gates of
+        # freeze_trial cannot be bypassed by a direct store write.
+        frozen = self.store.find_events("trial_frozen", trial=key)
+        if not frozen:
+            raise ContractError("trial has no freeze event; direct store writes cannot substitute freeze_trial")
+        if len({canonical(event) for event in frozen}) > 1:
+            # Several freeze events claim this trial id with different content: the
+            # frozen commitment set is ambiguous, so no reading of it may run. Only
+            # byte-identical replays of one freeze event are tolerated.
+            raise ContractError("ambiguous freeze events for this trial: divergent frozen commitments")
+        anchors = ("task_commitments", "label_commitment", "criteria", "evaluator",
+                   "core_hash", "code_version_hash")
+        for event in frozen:
+            missing = [field for field in anchors if field not in event]
+            if missing:
+                raise ContractError("freeze event for this trial is missing anchoring fields: "
+                                    + ", ".join(missing))
+            if any(event[field] != trial.get(field) for field in anchors):
                 raise ContractError("frozen trial changed: commitments diverge from the hash-chained freeze events")
         commitments = trial.get("task_commitments") or []
         if commitments and len(commitments) != len(trial["tasks"]):
@@ -420,7 +447,17 @@ class Agent:
         return results
 
     def promote(self, trial_key: str, *, reviewer: str) -> str:
+        """Promote the trial's candidate with an explicitly authorized reviewer.
+
+        Symmetric with :meth:`rollback`: ``reviewer`` must be a member of the approvers
+        allowlist passed to :class:`Agent`; a well-formed reviewer string alone carries
+        no deployment authority, and with the default empty allowlist promotion is
+        disabled entirely. The reviewer is still recorded in the version_promoted event
+        for the audit trail.
+        """
         reviewer = identifier(reviewer)
+        if reviewer not in self.approvers:
+            raise ContractError("promotion requires an authorized approver")
         with self.store.transaction():
             trial = self.trial(trial_key)
             candidate = self.version(trial["candidate"])

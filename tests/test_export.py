@@ -122,6 +122,46 @@ def test_hint_refuses_private_payload_fields_and_bad_timestamps(system):
         export_memory_hint(lesson, store=system.store, created_at="yesterday")
 
 
+def _sealed_run_with(agent, run_id, **overrides):
+    """Forge a sealed, otherwise well-formed development run with the given field overrides."""
+    task = Task.parse(toy_task("D9", "dev"))
+    run = {"id": run_id, "task": task.data(), "task_hash": digest(task.data()),
+           "version": agent.version()["id"], "phase": "development",
+           "provider": EXECUTOR.identity,
+           "providers": {"executor": EXECUTOR.identity, "auditor_1": AUDITOR_1.identity,
+                         "auditor_2": AUDITOR_2.identity},
+           "state": "closed", "status": "proceed",
+           "decision": {"status": "proceed", "rule_hash": task.rule_hash, "evidence_ids": ["obs"],
+                        "reason": "fixture record", "declared_program_complete": False},
+           "audit_valid": True, "evidence_admitted": True, "protocol_violations": [],
+           "lesson_ids": [], "usage": {"calls": 3, "complete": True, "input_chars": 10,
+                                       "input_tokens": 1, "output_tokens": 1, "elapsed_s": 0.0}}
+    run.update(overrides)
+    agent.store.put("run", run_id, run)
+    agent.store.event("run_closed", {"run_id": run_id, "record_hash": digest(run)})
+    lesson = {"scope": task.scope, "rule_hash": task.rule_hash, "source_run": run_id,
+              "source_hash": digest(run), "instruction": "fixture lesson", "evidence_ids": ["obs"]}
+    lesson["id"] = digest(lesson)
+    return lesson
+
+
+@pytest.mark.parametrize("overrides", [
+    {"status": "withdrawn"},
+    {"status": "invalid"},
+    {"audit_valid": False},
+    {"evidence_admitted": False},
+])
+def test_export_refuses_sealed_runs_that_do_not_admit_lessons(system, overrides):
+    # Same gate as propose(): a sealed run that never walked the full protocol (failed
+    # audit, rejected status or unadmitted evidence) must not leave the controller as
+    # a memory hint, on the hint path or through a candidate policy proposal.
+    lesson = _sealed_run_with(system, "dev-forged-export", **overrides)
+    with pytest.raises(ExportError, match="does not admit lessons"):
+        export_memory_hint(lesson, store=system.store)
+    with pytest.raises(ExportError, match="does not admit lessons"):
+        export_candidate_policy([lesson], candidate_version="cand-x", store=system.store)
+
+
 def test_candidate_policy_exports_proposals_never_active_policies(system):
     run, candidate, lesson = sourced_lesson(system)
     base = system.version()["id"]
@@ -149,6 +189,37 @@ def test_candidate_policy_refuses_lessons_outside_the_candidate_version(system):
         export_candidate_policy([lesson], candidate_version="missing-version", store=system.store)
     with pytest.raises(ExportError, match="at least one"):
         export_candidate_policy([], candidate_version=candidate, store=system.store)
+
+
+def test_candidate_policy_base_version_must_be_verifiable_against_the_store(system):
+    run, candidate, lesson = sourced_lesson(system)
+    base = system.version()["id"]  # the candidate's parent and the active version here
+    # A claimed base version that is never checked is worse than none: no store, no export.
+    with pytest.raises(ExportError, match="requires the controller store"):
+        export_candidate_policy([lesson], candidate_version=candidate, base_version=base)
+    # Neither the candidate's parent nor the current active version: refused.
+    with pytest.raises(ExportError, match="neither its parent nor the current active version"):
+        export_candidate_policy([lesson], candidate_version=candidate, base_version="f" * 64,
+                                store=system.store)
+    # The candidate's parent is accepted.
+    proposal = export_candidate_policy([lesson], candidate_version=candidate, base_version=base,
+                                       store=system.store)
+    assert proposal["base_version"] == base
+
+
+def test_candidate_policy_base_version_can_be_the_current_active_version(system):
+    run, candidate, lesson = sourced_lesson(system)
+    base = system.version()["id"]
+    system.store.set_value("active_version", candidate)  # as a promotion would
+    # The parent is still accepted...
+    assert export_candidate_policy([lesson], candidate_version=candidate, base_version=base,
+                                   store=system.store)["base_version"] == base
+    # ...and so is the current active version even though it is not the parent.
+    assert export_candidate_policy([lesson], candidate_version=candidate, base_version=candidate,
+                                   store=system.store)["base_version"] == candidate
+    with pytest.raises(ExportError, match="neither its parent nor the current active version"):
+        export_candidate_policy([lesson], candidate_version=candidate, base_version=base + "0",
+                                store=system.store)
 
 
 def develop_bound(agent, key, bindings):

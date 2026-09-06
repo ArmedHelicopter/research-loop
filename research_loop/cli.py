@@ -112,7 +112,8 @@ def demo(directory: Path) -> dict[str, Any]:
                     "--criteria", str(criteria), "--labels", str(labels), "--evaluator", "demo-evaluator")
     command("run-trial", trial["trial"], "--backend", "fixture")
     receipt = command("evaluate", trial["trial"], "--labels", str(labels))
-    promoted = command("promote", trial["trial"], "--reviewer", "demo-reviewer")
+    promoted = command("--approver", "demo-reviewer", "promote", trial["trial"],
+                       "--reviewer", "demo-reviewer")
     next_task = runner / "next-development.json"
     next_task.write_text(canonical(toy_task("D002", "new-dev-assay")), encoding="utf-8")
     command("enqueue", str(next_task))
@@ -137,8 +138,8 @@ def main() -> None:
                "model name is the minimum, a separate base_url is recommended).")
     parser.add_argument("--db", default="state.sqlite", help="controller database (operator-owned)")
     parser.add_argument("--approver", action="append", default=[], metavar="ID",
-                        help="reviewer identifier authorized to roll back the active version; "
-                             "repeatable; default: none, rollback stays disabled (fail closed)")
+                        help="reviewer identifier authorized to promote or roll back; "
+                             "repeatable; default: none, promotion and rollback stay disabled (fail closed)")
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("init")
     commands.add_parser("status")
@@ -170,7 +171,8 @@ def main() -> None:
     p.add_argument("--labels", required=True)
     p = commands.add_parser("promote")
     p.add_argument("trial")
-    p.add_argument("--reviewer", required=True)
+    p.add_argument("--reviewer", required=True,
+                   help="must be an authorized --approver; promotion is fail closed by default")
     p = commands.add_parser("rollback")
     p.add_argument("--reviewer", required=True)
     p.add_argument("--reason", required=True)

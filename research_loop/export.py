@@ -16,6 +16,7 @@ import re
 from datetime import datetime, timezone
 from typing import Any
 
+from .agent import require_lesson_worthy_run
 from .ontology import (
     ContractError, Task, code_version_hash, digest, distinct_ids, identifier, public, text,
 )
@@ -56,9 +57,11 @@ def export_memory_hint(lesson: dict[str, Any], *, store: Store | None = None,
     The hint keeps ``source_run`` (the producing development run), ``scope``,
     ``rule_hash``, ``task_fingerprint``, an ISO ``created_at`` and the lesson
     payload; missing provenance raises ExportError. 传入 store 时会核验来源 run
-    已封存、scope/rule 与 run 一致、source_hash 与封存记录一致。绑定的任务还会
-    在 hint 顶层携带 ``bindings``（artifact/subject/condition），供 ai4s-gate
-    把记忆限定在同一科学对象上；无绑定任务的 hint 保持旧格式（省略该键）。
+    已封存、通过 lesson 质量门禁（require_lesson_worthy_run：decision、audit、
+    status、evidence）、scope/rule 与 run 一致、source_hash 与封存记录一致。
+    绑定的任务还会在 hint 顶层携带 ``bindings``（artifact/subject/condition），
+    供 ai4s-gate 把记忆限定在同一科学对象上；无绑定任务的 hint 保持旧格式
+    （省略该键）。
     """
     if not isinstance(lesson, dict):
         raise ExportError("lesson must be a controller lesson mapping")
@@ -94,6 +97,13 @@ def export_memory_hint(lesson: dict[str, Any], *, store: Store | None = None,
                 store.verify_seal("run", source_run, run)
             except ContractError as exc:
                 raise ExportError(f"lesson source run has no completion seal: {exc}") from exc
+        # Same quality gate as propose(): a run that never walked the full protocol
+        # (no decision, failed audits, rejected status or unadmitted evidence) must
+        # not leave the controller as a memory hint, even when it is sealed.
+        try:
+            require_lesson_worthy_run(run)
+        except ContractError as exc:
+            raise ExportError(f"lesson source run does not admit lessons: {exc}") from exc
         try:
             task = Task.parse(run["task"])
         except ContractError as exc:
@@ -145,15 +155,22 @@ def export_candidate_policy(lessons: list[dict[str, Any]], *, candidate_version:
 
     The proposal is never active: ``status`` only accepts ``"candidate"`` and the
     body marks promotion as not eligible. 激活必须另经冻结 trial、独立评分与独立
-    reviewer；传入 store 时会核验每个 lesson 确实属于该候选版本。
+    reviewer；传入 store 时会核验每个 lesson 确实属于该候选版本。提供 ``base_version``
+    时必须同时传入 store，并校验它就是候选版本的 parent 或当前 active version，
+    否则拒绝导出。
     """
     if status != "candidate":
         raise ExportError("lesson proposals export only as candidate policies; active policies require "
                           "the frozen-trial, independent-evaluation and separate-reviewer gates")
     if not isinstance(candidate_version, str) or not candidate_version.strip():
         raise ExportError("candidate_version must be a nonempty version identifier")
-    if base_version is not None and (not isinstance(base_version, str) or not base_version.strip()):
-        raise ExportError("base_version must be a nonempty version identifier")
+    if base_version is not None:
+        if not isinstance(base_version, str) or not base_version.strip():
+            raise ExportError("base_version must be a nonempty version identifier")
+        if store is None:
+            # A claimed base version that is never checked is worse than none: the
+            # proposal must be verifiable against the controller store.
+            raise ExportError("validating base_version requires the controller store")
     if not isinstance(lessons, list) or not lessons:
         raise ExportError("a candidate policy proposal requires at least one sourced lesson")
     stamp = created_at if created_at is not None else datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -164,6 +181,9 @@ def export_candidate_policy(lessons: list[dict[str, Any]], *, candidate_version:
             version = store.get("version", candidate_version)
         except ContractError as exc:
             raise ExportError(f"candidate version is not in the controller store: {candidate_version}") from exc
+        if base_version is not None and base_version != version.get("parent") \
+                and store.value("active_version") != base_version:
+            raise ExportError("candidate base_version is neither its parent nor the current active version")
         known = {entry.get("id") for entry in version.get("lessons", [])}
         absent = [hint["lesson_id"] for hint in hints if hint["lesson_id"] not in known]
         if absent:

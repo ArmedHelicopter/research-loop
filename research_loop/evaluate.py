@@ -35,9 +35,11 @@ def evaluate(store: Store, trial_key: str, labels_path: Path) -> dict[str, Any]:
     Independence of the score is structural, not provider-based: the private evaluator
     runs as a separate process that alone opens the label file and only compares sealed
     run records against pre-committed labels. There is therefore no model scorer whose
-    identity could collide with the executor. The receipt records the shared executor
-    identity under ``provider`` (paired arms must match), and each run's full per-role
-    ``providers`` mapping is committed through ``run_hashes``.
+    identity could collide with the executor. Every sealed run must carry the full
+    per-role ``providers`` mapping (executor/auditor_1/auditor_2) that ``execute``
+    froze and sealed, and the mappings of the paired arms must be identical per role —
+    a shared executor identity alone says nothing about who audited each arm. The
+    confirmed mapping is frozen into the receipt (sealed with it).
     """
     agent = Agent(store)
     store.verify_journal()
@@ -49,7 +51,7 @@ def evaluate(store: Store, trial_key: str, labels_path: Path) -> dict[str, Any]:
         raise ContractError("labels must cover exactly the frozen paired task set")
     hashes: dict[str, str] = {}
     metrics: dict[str, dict[str, Any]] = {}
-    providers = set()
+    deployments: dict[str, str] | None = None
     for arm in ("baseline", "candidate"):
         agent.version(trial[arm])
         metric = {"n": len(labels), "errors": 0, "protocol_violations": 0, "overreject": 0,
@@ -62,7 +64,18 @@ def evaluate(store: Store, trial_key: str, labels_path: Path) -> dict[str, Any]:
                     or run["task_hash"] != digest(task) or run["task"] != task
                     or run["state"] != "closed" or not run["usage"]["complete"]):
                 raise ContractError("incomplete or mismatched paired run")
-            providers.add(run["provider"])
+            mapping = run.get("providers")
+            if not isinstance(mapping, dict) or set(mapping) != {"executor", "auditor_1", "auditor_2"}:
+                # execute() freezes and seals the full role→identity mapping; a run
+                # without it was not produced (or not preserved) by the protocol.
+                raise ContractError("paired run is missing the frozen per-role provider mapping: " + run_id)
+            if deployments is None:
+                deployments = dict(mapping)
+            elif mapping != deployments:
+                # Comparing only the top-level executor field would let the two arms be
+                # audited by different deployments: one arm could be held to an
+                # independent standard the other never faced. Every role must match.
+                raise ContractError("paired arms must use identical per-role provider deployments")
             hashes[run_id] = digest(run)
             expected = labels[task["id"]]
             metric["errors"] += int(run["status"] != expected)
@@ -72,8 +85,8 @@ def evaluate(store: Store, trial_key: str, labels_path: Path) -> dict[str, Any]:
             for key in ("calls", "input_tokens", "output_tokens", "elapsed_s"):
                 metric[key] += run["usage"][key]
         metrics[arm] = metric
-    if len(providers) != 1:
-        raise ContractError("paired arms must use exactly the same backend and model settings")
+    if deployments is None:
+        raise ContractError("paired arms produced no sealed runs")
     baseline, candidate = metrics["baseline"], metrics["candidate"]
     criteria = trial["criteria"]
     checks = {
@@ -86,8 +99,10 @@ def evaluate(store: Store, trial_key: str, labels_path: Path) -> dict[str, Any]:
     }
     receipt = {"trial": trial_key, "trial_hash": digest(trial), "run_hashes": hashes,
                "metrics": metrics, "checks": checks, "eligible": all(checks.values()),
-               "evaluator": trial["evaluator"], "provider": next(iter(providers)),
-               "evidence_level": "engineering_fixture" if next(iter(providers)).startswith("fixture:") else "pilot",
+               "evaluator": trial["evaluator"], "provider": deployments["executor"],
+               # The confirmed per-role deployment mapping travels with the sealed receipt.
+               "providers": dict(deployments),
+               "evidence_level": "engineering_fixture" if deployments["executor"].startswith("fixture:") else "pilot",
                "scientific_effectiveness_proven": False}
     # No per-task labels or correctness signals return to the agent/reflection path.
     with store.transaction():

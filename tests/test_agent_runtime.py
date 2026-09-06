@@ -4,7 +4,7 @@ from dataclasses import replace
 
 import pytest
 
-from research_loop.agent import Agent, DEFAULT_CRITERIA, version_id
+from research_loop.agent import Agent, DEFAULT_CRITERIA, task_commitments, version_id
 from research_loop.cli import toy_task
 from research_loop.evaluate import evaluate
 from research_loop.ontology import (
@@ -70,7 +70,8 @@ def test_persistent_learning_trial_promotion_and_rollback(system, tmp_path):
     assert receipt["metrics"]["candidate"]["errors"] == 0
     assert receipt["evidence_level"] == "engineering_fixture"
     assert receipt["scientific_effectiveness_proven"] is False
-    system.promote(trial, reviewer="reviewer")
+    # Promotion shares the fail-closed approver allowlist with rollback.
+    Agent(system.store, approvers=["reviewer"]).promote(trial, reviewer="reviewer")
     system.enqueue(Task.parse(toy_task("D2", "new-development")))
     after = system.run_next(EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     assert after["status"] == "closed_negative"
@@ -245,7 +246,7 @@ def test_precommitted_labels_cannot_change_after_results(system, tmp_path):
     with pytest.raises(ContractError, match="changed after"):
         evaluate(system.store, trial, labels)
     with pytest.raises(ContractError, match="missing evaluation"):
-        system.promote(trial, reviewer="reviewer")
+        Agent(system.store, approvers=["reviewer"]).promote(trial, reviewer="reviewer")
 
 
 def test_failed_gate_and_role_conflicts_prevent_promotion(system, tmp_path):
@@ -254,12 +255,15 @@ def test_failed_gate_and_role_conflicts_prevent_promotion(system, tmp_path):
     system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     receipt = evaluate(system.store, trial, labels)
     assert receipt["checks"]["fewer_errors"] and not receipt["checks"]["call_budget"]
+    # The approver allowlist must contain these names so the separation and gate
+    # rejections below are the protocol's, not the allowlist's.
+    gatekeeper = Agent(system.store, approvers=["proposer", "evaluator", "reviewer"])
     with pytest.raises(ContractError, match="separate"):
-        system.promote(trial, reviewer="proposer")
+        gatekeeper.promote(trial, reviewer="proposer")
     with pytest.raises(ContractError, match="separate"):
-        system.promote(trial, reviewer="evaluator")
+        gatekeeper.promote(trial, reviewer="evaluator")
     with pytest.raises(ContractError, match="did not pass"):
-        system.promote(trial, reviewer="reviewer")
+        gatekeeper.promote(trial, reviewer="reviewer")
 
 
 def test_trial_restarts_reuse_sealed_runs_and_reject_backend_changes(system, tmp_path):
@@ -320,7 +324,7 @@ def test_tampered_version_trial_run_and_receipt_are_detected(system, tmp_path):
     receipt["eligible"] = False
     system.store.db.execute("UPDATE objects SET body=? WHERE kind='evaluation' AND id=?", (canonical(receipt), trial))
     with pytest.raises(ContractError, match="sealed record"):
-        system.promote(trial, reviewer="reviewer")
+        Agent(system.store, approvers=["reviewer"]).promote(trial, reviewer="reviewer")
     modified = {**runs[0], "status": "withdrawn"}
     system.store.db.execute("UPDATE objects SET body=? WHERE kind='run' AND id=?", (canonical(modified), modified["id"]))
     with pytest.raises(ContractError, match="sealed record"):
@@ -382,10 +386,13 @@ def test_reindexed_trial_cannot_change_task_or_rule_commitments(system, tmp_path
     trial, labels = freeze(system, candidate, tmp_path)
     forged = _reindex_trial(system.store, trial,
                             lambda r: r["tasks"][0].update(rule=r["tasks"][0]["rule"] + " Rewritten after the freeze."))
-    with pytest.raises(ContractError, match="commitment"):
+    # Re-hashing moves the trial id, so no trial_frozen event claims the forged record
+    # anymore: the fail-closed freeze-event gate rejects it before any commitment is
+    # even compared (the in-place variant is covered by test_tampered_trial_record_is_rejected).
+    with pytest.raises(ContractError, match="no freeze event"):
         system.run_trial(forged, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     # The evaluation path hits the same checkpoint before any scoring happens.
-    with pytest.raises(ContractError, match="commitment"):
+    with pytest.raises(ContractError, match="no freeze event"):
         evaluate(system.store, forged, labels)
 
 
@@ -427,7 +434,7 @@ def test_runtime_upgrade_marks_old_versions_and_trials_stale(system, tmp_path, m
     with pytest.raises(ContractError, match="stale trial"):
         system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     with pytest.raises(ContractError, match="stale trial"):
-        system.promote(trial, reviewer="reviewer")
+        Agent(system.store, approvers=["reviewer"]).promote(trial, reviewer="reviewer")
 
 
 def test_forged_receipt_without_independent_seal_cannot_promote(system, tmp_path):
@@ -440,7 +447,7 @@ def test_forged_receipt_without_independent_seal_cannot_promote(system, tmp_path
               "scientific_effectiveness_proven": False}
     system.store.put("evaluation", trial, forged)  # never produced by the evaluator subprocess
     with pytest.raises(ContractError, match="no completion seal"):
-        system.promote(trial, reviewer="reviewer")
+        Agent(system.store, approvers=["reviewer"]).promote(trial, reviewer="reviewer")
     assert system.version()["id"] != candidate
 
 
@@ -525,7 +532,7 @@ def test_propose_accepts_proceed_and_closed_negative_runs(system, tmp_path):
     trial, labels = freeze(system, candidate, tmp_path)
     system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     assert evaluate(system.store, trial, labels)["eligible"]
-    system.promote(trial, reviewer="reviewer")
+    Agent(system.store, approvers=["reviewer"]).promote(trial, reviewer="reviewer")
     system.enqueue(Task.parse(toy_task("D2", "new-development")))
     negative = system.run_next(EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
     assert negative["status"] == "closed_negative" and negative["evidence_admitted"] is True
@@ -558,6 +565,93 @@ def test_reindexed_trial_cannot_change_criteria_or_evaluator(system, tmp_path):
     with pytest.raises(ContractError, match="freeze event"):
         system.run_trial(forged_evaluator, EXECUTOR, auditor_provider=AUDITOR_1,
                          auditor2_provider=AUDITOR_2)
+
+
+# --- fail-closed freeze gate: reading a trial requires its own trial_frozen event --
+
+def _self_consistent_trial(system, candidate):
+    """Build a digest-consistent trial record without ever calling freeze_trial."""
+    tasks = [Task.parse(toy_task("E1", "family-a")), Task.parse(toy_task("E2", "family-b"))]
+    trial = {"baseline": system.version()["id"], "candidate": candidate,
+             "tasks": [t.data() for t in tasks], "criteria": {**DEFAULT_CRITERIA, "min_pairs": 2},
+             "evaluator": "evaluator", "core_hash": implementation_hash(),
+             "code_version_hash": code_version_hash(), "label_commitment": "a" * 64,
+             "task_commitments": task_commitments(tasks)}
+    trial["id"] = digest(trial)
+    return trial
+
+
+def test_directly_written_self_consistent_trial_is_rejected_on_every_reading_path(system, tmp_path):
+    # A self-consistent trial written straight into the store never went through
+    # freeze_trial, so its minimal-sample, family-dedup, development-task exclusion
+    # and evaluator commitment gates were all skipped. No trial_frozen event anchors
+    # it, and every reading path (run_trial, evaluate and promote all load trials
+    # through trial()) must fail closed instead of trusting the digest.
+    _, candidate = develop(system)
+    trial = _self_consistent_trial(system, candidate)
+    system.store.put("trial", trial["id"], trial)
+    labels = tmp_path / "private-labels.json"
+    labels.write_text(canonical({"E1": "closed_negative", "E2": "closed_negative"}), encoding="utf-8")
+    with pytest.raises(ContractError, match="no freeze event"):
+        system.trial(trial["id"])
+    with pytest.raises(ContractError, match="no freeze event"):
+        system.run_trial(trial["id"], EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
+    with pytest.raises(ContractError, match="no freeze event"):
+        evaluate(system.store, trial["id"], labels)
+    with pytest.raises(ContractError, match="no freeze event"):
+        Agent(system.store, approvers=["reviewer"]).promote(trial["id"], reviewer="reviewer")
+
+
+def test_divergent_freeze_events_for_one_trial_are_ambiguous(system, tmp_path):
+    # Two trial_frozen events claim the same trial id with different commitments:
+    # the frozen promise set is ambiguous, so the trial must not run at all.
+    _, candidate = develop(system)
+    trial, _ = freeze(system, candidate, tmp_path)
+    original = system.store.last_event("trial_frozen", trial=trial)
+    system.store.event("trial_frozen", {**original, "label_commitment": "b" * 64})
+    with pytest.raises(ContractError, match="ambiguous freeze events"):
+        system.trial(trial)
+
+
+def test_identical_freeze_event_replays_are_tolerated(system, tmp_path):
+    # Only byte-identical replays of one freeze event are tolerated.
+    _, candidate = develop(system)
+    trial, _ = freeze(system, candidate, tmp_path)
+    original = system.store.last_event("trial_frozen", trial=trial)
+    system.store.event("trial_frozen", dict(original))
+    assert system.trial(trial)["id"] == trial
+
+
+def test_freeze_event_missing_any_anchoring_field_is_rejected(system, tmp_path):
+    _, candidate = develop(system)
+    trial, _ = freeze(system, candidate, tmp_path)
+    original = system.store.last_event("trial_frozen", trial=trial)
+    for field in ("task_commitments", "label_commitment", "criteria", "evaluator",
+                  "core_hash", "code_version_hash"):
+        # trial_frozen is the newest journal event here; dropping and re-appending a
+        # pruned copy keeps the hash chain verifiable while removing one anchor.
+        system.store.db.execute("DELETE FROM events WHERE seq=(SELECT MAX(seq) FROM events)")
+        system.store.event("trial_frozen", {k: v for k, v in original.items() if k != field})
+        with pytest.raises(ContractError, match="missing anchoring fields"):
+            system.trial(trial)
+
+
+def test_trial_record_diverging_from_its_own_freeze_event_is_rejected(system):
+    # Even a digest-consistent trial body cannot detach from the hash chain: a single
+    # trial_frozen event claiming this trial id with different commitments is a hard
+    # mismatch between the record and the anchored promise set.
+    _, candidate = develop(system)
+    trial = _self_consistent_trial(system, candidate)
+    system.store.put("trial", trial["id"], trial)
+    system.store.event("trial_frozen", {"trial": trial["id"], "candidate": candidate,
+                                        "criteria": trial["criteria"],
+                                        "task_commitments": trial["task_commitments"],
+                                        "label_commitment": "b" * 64,  # diverges from the record
+                                        "evaluator": trial["evaluator"],
+                                        "core_hash": trial["core_hash"],
+                                        "code_version_hash": trial["code_version_hash"]})
+    with pytest.raises(ContractError, match="diverge from the hash-chained freeze events"):
+        system.trial(trial["id"])
 
 
 # --- task bindings: scientific scope of tasks and lessons -------------------------
@@ -706,7 +800,7 @@ def test_propose_requires_the_executor_provider_identity(system):
     assert len(system.version(candidate)["lessons"]) == 1
 
 
-# --- rollback authorization: explicit fail-closed approver allowlist --------------
+# --- deployment authorization: explicit fail-closed approver allowlist -------------
 
 def test_approver_allowlist_is_validated_deduplicated_and_frozen(system):
     with pytest.raises(ContractError, match="identifier"):
@@ -730,3 +824,74 @@ def test_rollback_is_denied_by_default_and_requires_an_authorized_approver(syste
     assert agent.rollback(reviewer="ops-reviewer", reason="authorized operator") == base
     event = system.store.last_event("version_rolled_back")
     assert event["reviewer"] == "ops-reviewer" and event["from"] == candidate and event["to"] == base
+
+
+def test_promotion_is_denied_by_default_and_requires_an_authorized_approver(system, tmp_path):
+    # Symmetric with rollback: the default empty allowlist disables promotion entirely,
+    # and a well-formed reviewer string without authorization carries no deployment
+    # authority — even when the evaluation receipt is fully eligible.
+    _, candidate = develop(system)
+    trial, labels = freeze(system, candidate, tmp_path)
+    system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
+    evaluate(system.store, trial, labels)
+    with pytest.raises(ContractError, match="authorized approver"):
+        system.promote(trial, reviewer="reviewer")  # default deny
+    assert system.version()["id"] != candidate
+    gatekeeper = Agent(system.store, approvers=["ops-reviewer"])
+    with pytest.raises(ContractError, match="authorized approver"):
+        gatekeeper.promote(trial, reviewer="insider")  # valid name, not authorized
+    assert system.version()["id"] != candidate
+    assert Agent(system.store, approvers=["reviewer"]).promote(trial, reviewer="reviewer") == candidate
+    event = system.store.last_event("version_promoted")
+    assert event["reviewer"] == "reviewer" and event["version"] == candidate and event["trial"] == trial
+
+
+# --- evaluation: paired arms must share the full per-role provider mapping ---------
+
+def _paired_trial(system, tmp_path):
+    _, candidate = develop(system)
+    trial, labels = freeze(system, candidate, tmp_path)
+    system.run_trial(trial, EXECUTOR, auditor_provider=AUDITOR_1, auditor2_provider=AUDITOR_2)
+    return trial, labels
+
+
+def _reseal_run(store, run_id, mutate):
+    """Rewrite a sealed run record and append a matching seal, as a store-level forger would."""
+    stored = store.get("run", run_id)
+    mutate(stored)
+    store.db.execute("UPDATE objects SET body=? WHERE kind='run' AND id=?",
+                     (canonical(stored), run_id))
+    store.event("run_closed", {"run_id": run_id, "record_hash": digest(stored)})
+
+
+def test_evaluate_rejects_arms_with_different_per_role_auditor_deployments(system, tmp_path):
+    # Both arms share the executor identity, but the candidate arm was audited by a
+    # different deployment than the baseline arm: comparing only the top-level executor
+    # field would hide that the two arms never faced the same audit standard.
+    trial, labels = _paired_trial(system, tmp_path)
+    tasks = system.store.get("trial", trial)["tasks"]
+    for task in tasks:
+        _reseal_run(system.store, f"{trial}:{task['id']}:candidate",
+                    lambda r: r["providers"].update({"auditor_1": "fixture:rogue-auditor"}))
+    with pytest.raises(ContractError, match="identical per-role provider deployments"):
+        evaluate(system.store, trial, labels)
+
+
+def test_evaluate_rejects_runs_without_the_frozen_provider_mapping(system, tmp_path):
+    # execute() freezes and seals the full role→identity mapping; a run without it was
+    # not produced (or not preserved) by the protocol and must not be scored.
+    trial, labels = _paired_trial(system, tmp_path)
+    first_task = system.store.get("trial", trial)["tasks"][0]["id"]
+    _reseal_run(system.store, f"{trial}:{first_task}:baseline",
+                lambda r: r.pop("providers"))
+    with pytest.raises(ContractError, match="missing the frozen per-role provider mapping"):
+        evaluate(system.store, trial, labels)
+
+
+def test_evaluation_receipt_carries_the_confirmed_per_role_mapping(system, tmp_path):
+    trial, labels = _paired_trial(system, tmp_path)
+    receipt = evaluate(system.store, trial, labels)
+    assert receipt["providers"] == {"executor": EXECUTOR.identity, "auditor_1": AUDITOR_1.identity,
+                                    "auditor_2": AUDITOR_2.identity}
+    assert receipt["provider"] == EXECUTOR.identity  # legacy top-level field kept
+    system.store.verify_seal("evaluation", trial, system.store.get("evaluation", trial))
