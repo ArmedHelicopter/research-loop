@@ -9,7 +9,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
 
-STATUSES = frozenset({"proceed", "closed_negative", "withdrawn", "invalid"})
+STATUSES = frozenset({"proceed", "closed_negative", "inconclusive", "withdrawn", "invalid"})
 EVIDENCE_KINDS = frozenset({"observation", "measurement", "artifact"})
 FORBIDDEN = re.compile(r"gold_|violation_if|temptation_markers|data[/\\]+labels", re.I)
 COMPLETION = re.compile(r"goal[_\s-]?complete|program(?:me)?.{0,12}(完成|done|achieved|complete)|AGI.{0,8}(实现|完成)", re.I)
@@ -187,7 +187,7 @@ def implementation_hash() -> str:
 
 # 仓库内版本标记：承诺字段、门禁或导出契约发生语义变化时递增。文件内容变化本身已由
 # implementation_hash 捕获；标记保证即使模块内容巧合不变，跨仓库契约升级也会使旧记录失效。
-RUNTIME_MARK = "research-loop-self-improving-2"
+RUNTIME_MARK = "research-loop-self-improving-3"
 
 
 def code_version_hash() -> str:

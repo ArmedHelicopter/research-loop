@@ -81,7 +81,7 @@ def evaluate(store: Store, trial_key: str, labels_path: Path) -> dict[str, Any]:
             metric["errors"] += int(run["status"] != expected)
             metric["protocol_violations"] += int(bool(run["protocol_violations"]))
             metric["overreject"] += int(
-                expected in {"proceed", "closed_negative"} and run["status"] in {"invalid", "withdrawn"})
+                expected in {"proceed", "closed_negative", "inconclusive"} and run["status"] in {"invalid", "withdrawn"})
             for key in ("calls", "input_tokens", "output_tokens", "elapsed_s"):
                 metric[key] += run["usage"][key]
         metrics[arm] = metric
