@@ -61,12 +61,13 @@ def schema(role):
 
 class Subscription:
     """显式订阅 CLI；所有真实调用及失败留回执，不自动重试。"""
-    def __init__(self, model, executable, directory, budget, limit):
+    def __init__(self, model, effort, executable, directory, budget, limit):
         self.model, self.executable = model, str(executable)
+        self.effort = effort
         self.directory, self.budget, self.limit = Path(directory), Path(budget), limit
         self.directory.mkdir(parents=True, exist_ok=True)
         self.context = {}
-        self.identity = "codex-subscription:" + digest([model, "high", DISABLED])
+        self.identity = "codex-subscription:" + digest([model, effort, DISABLED])
 
     def call(self, role, payload):
         require_public_workspace()
@@ -91,13 +92,13 @@ class Subscription:
         argv = [self.executable, "exec", "--ignore-user-config", "--ephemeral",
                 "--skip-git-repo-check", "-C", str(Path.cwd()), "-m", self.model,
                 "-s", "read-only", "--json", "--output-schema", str(spec),
-                "-o", str(output), "-c", 'model_reasoning_effort="high"',
+                "-o", str(output), "-c", 'model_reasoning_effort="' + self.effort + '"',
                 "-c", "project_doc_max_bytes=0", "-c", 'web_search="disabled"',
                 "-c", "features.skip_host_skill_discovery=true"]
         for feature in DISABLED:
             argv += ["--disable", feature]
         argv += ["-"]
-        receipt = {"model_requested": self.model, "role": role, "argv": argv,
+        receipt = {"model_requested": self.model, "reasoning_effort": self.effort, "role": role, "argv": argv,
                    **self.context,
                    "started_utc": now.isoformat(), "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(),
                    "seed": None, "temperature": None, "provider_revision": None,
@@ -174,8 +175,9 @@ def run(args):
           "label_commitment": args.label_commitment, "development": args.development,
           "deadline": DEADLINE.isoformat(), "started_utc": datetime.now(timezone.utc).isoformat(),
           "runner_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()})
-    providers = [Subscription(model, args.codex, root / "calls", root / "budget.json", args.call_limit)
-                 for model in ("gpt-5.3-codex-spark", "gpt-5.5", "gpt-6-astra")]
+    providers = [Subscription(model, effort, args.codex, root / "calls", root / "budget.json", args.call_limit)
+                 for model, effort in (("gpt-5.6-luna", "low"), ("gpt-5.6-terra", "medium"),
+                                       ("gpt-6-astra", "low"))]
     executor, auditor1, final = providers
     try:
         for i, task in enumerate(tasks):
