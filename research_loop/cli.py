@@ -31,6 +31,9 @@ def export(destination: Path) -> None:
     package.mkdir()
     for source in sorted(Path(__file__).parent.glob("*.py")):
         shutil.copyfile(source, package / source.name)
+    pause = Path(__file__).resolve().parents[1] / ".research-loop-paused"
+    if pause.exists():
+        shutil.copyfile(pause, destination / pause.name)
     (destination / "runtime-manifest.json").write_text(
         canonical({"core_hash": implementation_hash(), "contains_labels": False}), encoding="utf-8")
 
@@ -179,6 +182,9 @@ def main() -> None:
     p = commands.add_parser("recover")
     p.add_argument("run_id")
     args = parser.parse_args()
+    if ((Path(__file__).resolve().parents[1] / ".research-loop-paused").exists()
+            and args.command in {"enqueue", "run", "cycle", "propose", "freeze-trial", "run-trial", "promote"}):
+        parser.exit(2, "independent_review: research-loop live entry paused; use the independently reviewed single-experiment workflow.\n")
     store = None
     try:
         if args.command == "export":
