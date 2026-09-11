@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "purpose": "local qualification of incremental evidence adjudication",
+  "status": "inconclusive",
+  "use_decision": "disable_unreviewed_loop",
+  "reason": "independent heldout labels invalid; pre-registered no replacement rule",
+  "deadline_utc": "2026-09-11T23:34:24Z",
+  "candidate_commit": "841a9df095b629fef7f9b021133a321402fc6498",
+  "formal_model_calls": 0,
+  "development_tasks": 4,
+  "development_calls": 26,
+  "development_tokens": 360039,
+  "known_all_cli_tokens_lower_bound": 7910228,
+  "extra_api_spend": 0,
+  "gpu_runs": 0,
+  "hypotheses": {
+    "H1": "not_discriminated",
+    "H2": "not_discriminated"
+  },
+  "scientific_effectiveness_proven": false,
+  "actual_deployment_verified": true,
+  "heartbeat_status": "PAUSED",
+  "closed_policy_candidates": [],
+  "evidence_manifest": {
+    "REPORT.md": "0f386d6fd16b61423b8ba9e8775f599a44b454521317959b444674e23219c8f9",
+    "final-freeze.json": "26b514ebf57d7d9b7ee7405107a0f1e25028cc45ba8d76b8b8673aae5b549efc",
+    "heldout-gate.json": "7377a788163c0505d6891b5b3c46bedd1c44d9da98a9edb8d577316de9ea4a6b",
+    "receipts-summary.json": "f793e17b09495a8c533a8e6e0d5fd810b6a91d4523dd99b45823841c12e08045",
+    "deployment.json": "f8152fec1f7c25e42c155dd47191f864eebe54fac99cf76ee7798dcf0b248f07",
+    "deployment-verification.json": "b2021633cf8107aa677fd7b1f46c155246cbb148ffc02dbf01d3c8dc058ed68a",
+    "automation-final.json": "42e3497063cd3b4aeca2aa4c51e9936cd6855cd1f99cab165da3e37b8b1e0850"
+  }
+}
