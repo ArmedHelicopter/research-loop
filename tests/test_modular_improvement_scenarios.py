@@ -36,7 +36,7 @@ def test_m9_variants_retain_public_callback_payloads(tmp_path: Path, adapter: st
 def test_q63_executes_restricted_meta_builder(tmp_path: Path):
     task = task_for("blade")
     fixed = run_improvement_scenario("Q6.3", "fixed", task=task, frozen_controls=controls(task), sidecar=tmp_path / "fixed")
-    meta = run_improvement_scenario("Q6.3", "train_proposed", task=task, frozen_controls=controls(task), sidecar=tmp_path / "meta")
+    meta = run_improvement_scenario("Q6.3", "train_proposed", task=task, frozen_controls=controls(task), sidecar=tmp_path / "meta", callback=lambda _request: FrozenRecord.from_dict({"builder_dsl": {"entrypoint": "emit_literal_change_v1", "surface": "memory", "key": "mode", "value": "from-train-trace"}}))
     assert fixed.record.data()["detail"]["builder_receipt"]["output_candidate_digest"] == fixed.record.data()["detail"]["candidate_digest"]
     assert meta.record.data()["detail"]["builder_receipt"]["output_candidate_digest"] == meta.record.data()["detail"]["candidate_digest"]
     assert fixed.record.data()["detail"]["builder_digest"] != meta.record.data()["detail"]["active_builder_digest"]
@@ -53,5 +53,14 @@ def test_q66_next_workflow_observes_candidate_then_rollback_digest(tmp_path: Pat
 def test_q65_never_activates_the_real_promoter(tmp_path: Path):
     task = task_for("blade")
     result = run_improvement_scenario("Q6.5", "sealed_calibrated", task=task, frozen_controls=controls(task), sidecar=tmp_path / "feedback")
-    assert result.record.data()["detail"]["promotion"] == "not_attempted"
+    assert result.record.data()["detail"]["promotion"] == "protected_rejected"
     assert result.record.data()["detail"]["real_promoter_changed"] is False
+    assert all(row["shadow_promoted"] for row in result.record.data()["detail"]["offline_shadow_rounds"])
+
+
+def test_q62_automatic_uses_callback_train_proposal_or_records_rejection(tmp_path: Path):
+    task = task_for("blade")
+    valid = run_improvement_scenario("Q6.2", "automatic_train", task=task, frozen_controls=controls(task), sidecar=tmp_path / "valid", callback=lambda _request: FrozenRecord.from_dict({"changes": {"memory": {"mode": "automatic", "lesson": "derived-train-trace"}}}))
+    invalid = run_improvement_scenario("Q6.2", "automatic_train", task=task, frozen_controls=controls(task), sidecar=tmp_path / "invalid", callback=lambda _request: FrozenRecord.from_dict({"changes": {"scorer": {"rewrite": "no"}}}))
+    assert valid.record.data()["detail"]["candidate_changes"]["memory"]["lesson"] == "derived-train-trace"
+    assert invalid.record.data()["detail"]["candidate_digest"] is None and invalid.record.data()["detail"]["rejected"]

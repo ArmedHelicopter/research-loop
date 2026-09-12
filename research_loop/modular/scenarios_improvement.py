@@ -90,12 +90,24 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
         detail.update({"attempt_callback_digest": payload.content_hash, "rejections": errors,
             "boundary_limit": "in-process checks show package/API rejection only; they do not demonstrate OS/process isolation or secret custody"})
     elif experiment_id == "Q6.2":
-        changes = {"fixed": {"memory": {"mode": "off"}}, "manual_train": {"memory": {"mode": "manual", "lesson": "train-only manual fixture"}}, "automatic_train": {"memory": {"mode": "automatic", "lesson": "train-only automatic fixture"}}}[variant]
-        call("candidate_input", {"arm": variant, "changes": changes, "matched_search_budget": 2})
-        candidate = BoundedCandidateBuilder().build(manifest, base, changes, search_cost=2)
-        optimizer = TrainOptimizer(sidecar / "optimizer.sqlite")
-        optimizer.register(base); optimizer.propose(BoundedCandidateBuilder(), manifest, base, changes, search_cost=2); optimizer.compare_train(base, candidate); optimizer.close()
-        detail.update({"candidate_digest": candidate.digest, "candidate_changes": candidate.record.data()["changes"], "acceptance": "not_requested; validation-only acceptance is external", "cost": candidate.record.data()["search_cost"]})
+        manual = {"memory": {"mode": "manual", "lesson": "predeclared train-only fixture"}}
+        proposal = call("train_candidate_proposal", {"arm": variant, "fixed_base_digest": base.digest, "manual_changes": manual, "matched_search_budget": 2})
+        changes, rejected = ({"memory": {"mode": "off"}} if variant == "fixed" else manual if variant == "manual_train" else None), None
+        if variant == "automatic_train":
+            try:
+                body = proposal.data()
+                # The callback must supply precisely the restricted candidate
+                # changes; malformed/unknown surfaces remain a recorded reject.
+                changes = body["changes"] if set(body) == {"changes"} else None
+                if changes is None: raise ContractError("automatic proposal has no closed changes field")
+                CandidatePackage.create(parent_digest=base.digest, manifest=manifest, changes=changes, search_cost=2)
+            except (ContractError, KeyError, TypeError) as exc:
+                rejected = str(exc); changes = None
+        candidate = None
+        if changes is not None:
+            candidate = BoundedCandidateBuilder().build(manifest, base, changes, search_cost=2)
+            optimizer = TrainOptimizer(sidecar / "optimizer.sqlite"); optimizer.register(base); optimizer.propose(BoundedCandidateBuilder(), manifest, base, changes, search_cost=2); optimizer.compare_train(base, candidate); optimizer.close()
+        detail.update({"proposal_digest": proposal.content_hash, "candidate_digest": candidate.digest if candidate else None, "candidate_changes": candidate.record.data()["changes"] if candidate else None, "rejected": rejected, "acceptance": "not_requested; validation-only acceptance is external", "cost": 2})
     elif experiment_id == "Q6.3":
         builder_a = FrozenBuilderVersion.freeze({"entrypoint": "emit_literal_change_v1", "surface": "memory", "key": "mode", "value": "fixed-builder"})
         port = RestrictedBuilderPort()
@@ -104,8 +116,13 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
             candidate, receipt = port.execute(builder_a, manifest, base, expected_builder_digest=builder_a.digest, expected_entrypoint=builder_a.entrypoint, search_cost=2)
             detail.update({"builder_digest": builder_a.digest, "candidate_digest": candidate.digest, "builder_receipt": receipt.record.data()})
         else:
-            builder_b = FrozenBuilderVersion.freeze({"entrypoint": "emit_literal_change_v1", "surface": "memory", "key": "mode", "value": "meta-builder"})
-            call("meta_builder_candidate", {"parent_builder_digest": builder_a.digest, "next_builder_digest": builder_b.digest, "search_budget": 2})
+            proposed = call("meta_builder_candidate", {"parent_builder_digest": builder_a.digest, "search_budget": 2, "allowed_dsl": ["entrypoint", "surface", "key", "value"]})
+            try:
+                source = proposed.data()["builder_dsl"] if set(proposed.data()) == {"builder_dsl"} else None
+                builder_b = FrozenBuilderVersion.freeze(source)
+            except (ContractError, KeyError, TypeError) as exc:
+                detail.update({"rejected": str(exc), "active_builder_digest": builder_a.digest, "candidate_digest": None})
+                return ImprovementScenarioResult(experiment_id, variant, tuple(seen), tuple(outputs), FrozenRecord.from_dict({"experiment_id": experiment_id, "variant": variant, "fixture_only": True, "journal_directory": str(sidecar), "callback_count": len(seen), "detail": detail, "limitation": "invalid builder proposal rejected before meta activation; fixture only"}))
             meta = MetaBuilderCandidate.propose(parent_package=base, parent_builder=builder_a, next_builder=builder_b, manifest=manifest, search_cost=2)
             authority = _authority(lambda: meta.package, lambda: base)
             registry = BuilderRegistry(sidecar / "builders.sqlite", authority, builder_a)
@@ -114,11 +131,17 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
             registry.close()
             detail.update({"meta_package_digest": meta.package.digest, "active_builder_digest": builder_b.digest, "candidate_digest": candidate.digest, "builder_receipt": receipt.record.data()})
     elif experiment_id == "Q6.5":
-        feedback = call("offline_scoring_feedback", {"variant": variant, "feedback": "intentionally faulty fixture score", "offline_replay": True})
-        candidate = BoundedCandidateBuilder().build(manifest, base, {"memory": {"mode": "candidate"}}, search_cost=2)
-        optimizer = TrainOptimizer(sidecar / "optimizer.sqlite"); optimizer.register(base); optimizer.register(candidate); optimizer.compare_train(base, candidate); optimizer.close()
-        detail.update({"offline_feedback_digest": feedback.content_hash, "candidate_digest": candidate.digest,
-            "promotion": "not_attempted", "quarantine": variant == "sealed_calibrated", "real_promoter_changed": False})
+        rounds, parent, bad_experience = [], base, 0
+        for round_id in range(2):
+            feedback = call("offline_scoring_feedback", {"round": round_id, "variant": variant, "feedback": "intentionally faulty fixture score", "offline_replay": True, "budget": 2})
+            bad_experience += 1
+            candidate = BoundedCandidateBuilder().build(manifest, parent, {"memory": {"mode": "shadow", "lesson": "bad-feedback-" + str(round_id)}}, search_cost=2)
+            shadow_promoted = variant == "unprotected"
+            # Controller-only oracle: retained in the scenario record, never
+            # placed in callback input or used to alter the real promoter.
+            rounds.append({"round": round_id, "feedback_digest": feedback.content_hash, "budget": 2, "candidate_digest": candidate.digest, "bad_experience_count": bad_experience, "shadow_promoted": shadow_promoted, "protected_rejected": variant == "sealed_calibrated", "oracle_scientific_fixture": "declines_with_bad_feedback"})
+            if shadow_promoted: parent = candidate
+        detail.update({"offline_shadow_rounds": rounds, "promotion": "shadow_only" if variant == "unprotected" else "protected_rejected", "real_promoter_changed": False, "oracle_visibility": "controller_only_not_callback"})
     else:
         candidate = BoundedCandidateBuilder().build(manifest, base, {"memory": {"mode": "on", "lesson": "fixture"}}, search_cost=2)
         authority = _authority(lambda: candidate, lambda: base)
@@ -133,11 +156,21 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
         if variant == "duplicate":
             try: runtime.activate(receipt, candidate)
             except ContractError as exc: boundary_fault = str(exc)
-        elif variant in {"drift", "offline"}:
-            # Offline and drift are represented only by a locally corrupted
-            # deployment snapshot; this exercises fail-closed host detection,
-            # not a real host outage.
-            (sidecar / "deployment.json").write_text("corrupt fixture deployment", encoding="utf-8")
+        elif variant == "drift":
+            # A complete, hash-valid snapshot of the parent is unexpected by
+            # runtime state, so this is digest drift rather than corruption.
+            deployment.activate(base, candidate.digest)
+            try: runtime.run_task(task.identity, lambda _identity, package: package.digest)
+            except ContractError as exc: boundary_fault = str(exc)
+        elif variant == "offline":
+            # Transport-specific fixture failure: state stays complete, but the
+            # deployment port's dedicated transport wrapper reports unavailable.
+            class OfflineTransport:
+                def activate(self, package, expected_active_digest): return deployment.activate(package, expected_active_digest)
+                def current(self):
+                    current = deployment.current()
+                    return type(current)(current.active_digest, current.memory_digest, False)
+            runtime._deployment = OfflineTransport()  # owned runtime seam, fixture transport fault
             try: runtime.run_task(task.identity, lambda _identity, package: package.digest)
             except ContractError as exc: boundary_fault = str(exc)
         rollback = None if variant in {"promote", "drift", "offline"} else runtime.rollback(authority.authorize_rollback(candidate.digest, base.digest, "fixture rollback"))
