@@ -6,7 +6,8 @@ import pytest
 from research_loop.modular.benchmarks import BladeAdapter, DiscoveryBenchAdapter
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.scenarios_scoring import run_scoring_scenario
-from research_loop.modular.semantics import frozen_completion_semantics, judge_completion, semantic_request
+from research_loop.modular.semantics import (alternative_request, assess_alternatives, frozen_completion_semantics,
+    judge_completion, score_completion, semantic_request)
 from research_loop.ontology import ContractError
 
 
@@ -36,8 +37,12 @@ def semantic_fixture_judge(request):
     base = answer.removesuffix(" The same public record is supplied to this arm.")
     polarity, scope, alternative = table[base]
     abstained = polarity == "unknown"
+    specifications = [] if base != "A reasonable alternative explanation remains under consideration for the cited observation." else [
+        {"specification_id": "link-model", "link": "public exposure links to outcome through observed access", "function": "outcome=f(exposure, access)"},
+        {"specification_id": "function-model", "link": "public exposure links to outcome through observed selection", "function": "outcome=g(exposure, selection)"},
+    ]
     return {"polarity": polarity, "scope": scope, "evidence_refs": [] if abstained else ["fixture-evidence-a"], "abstained": abstained,
-            "rationale": "deterministic fixture judgement", "alternative_analysis": {"status": alternative, "rationale": "separate fixture alternative analysis"}}
+            "rationale": "deterministic fixture judgement", "alternative_analysis": {"status": alternative, "rationale": "separate fixture alternative analysis", "candidate_specifications": specifications}}
 
 
 @pytest.mark.parametrize("adapter", ["blade", "discovery"])
@@ -59,8 +64,9 @@ def test_q64_creates_new_version_for_both_arms_and_keeps_legacy_only_diagnostic(
     assert len(set(record["arm_scorer_digests"].values())) == 1
     assert record["legacy_diagnostic"]["prior_scorer_version"] == "legacy-unmodified"
     assert "validation" in record["legacy_diagnostic"]["purpose"]
-    assert all(score.data()["alternative_analysis"]["status"] == "unknown" for score in result.scores)
-    assert all(score.data()["reference_consistency"]["checked"] for score in result.scores)
+    assert all(score.data()["alternative_analysis"]["external_assessment"]["scientific_acceptability"] == "unknown" for score in result.scores)
+    assert all(score.data()["reference_contract"]["scientific_reference_consistency"] == "not_measured" for score in result.scores)
+    assert all(len(score.data()["alternative_analysis"]["candidate_specifications"]) == 2 for score in result.scores)
 
 
 @pytest.mark.parametrize("variant", ["negation", "quotation", "alternative"])
@@ -76,9 +82,9 @@ def test_abstention_and_reference_contract_are_strict():
     public_task = task("blade")
     request = semantic_request(public_task, frozen_completion_semantics(), raw_answer="A public answer.", public_evidence={"e": "public"})
     with pytest.raises(ContractError, match="abstention"):
-        judge_completion(request, lambda _: {"polarity": "unknown", "scope": "programme", "evidence_refs": [], "abstained": True, "rationale": "x", "alternative_analysis": {"status": "unknown", "rationale": "x"}})
+        judge_completion(request, lambda _: {"polarity": "unknown", "scope": "programme", "evidence_refs": [], "abstained": True, "rationale": "x", "alternative_analysis": {"status": "unknown", "rationale": "x", "candidate_specifications": []}})
     with pytest.raises(ContractError, match="public evidence"):
-        judge_completion(request, lambda _: {"polarity": "affirmed", "scope": "programme", "evidence_refs": ["hidden"], "abstained": False, "rationale": "x", "alternative_analysis": {"status": "considered", "rationale": "x"}})
+        judge_completion(request, lambda _: {"polarity": "affirmed", "scope": "programme", "evidence_refs": ["hidden"], "abstained": False, "rationale": "x", "alternative_analysis": {"status": "considered", "rationale": "x", "candidate_specifications": []}})
 
 
 def test_default_fixture_judge_abstains_instead_of_inventing_a_completion_call():
@@ -86,3 +92,20 @@ def test_default_fixture_judge_abstains_instead_of_inventing_a_completion_call()
     result = run_scoring_scenario("Q2.2", "affirm", task=public_task, frozen_controls=controls(public_task))
     assert result.scores[0].data()["abstained"] is True
     assert result.scores[0].data()["programme_completion_claim"] is False
+
+
+def test_score_revalidates_the_original_request_response_and_exact_rubric_binding():
+    public_task = task("blade")
+    semantics = frozen_completion_semantics()
+    request = semantic_request(public_task, semantics, raw_answer="A public answer.", public_evidence={"e": "public"})
+    response = {"polarity": "affirmed", "scope": "programme", "evidence_refs": ["e"], "abstained": False, "rationale": "public rationale", "alternative_analysis": {"status": "considered", "rationale": "alternative rationale", "candidate_specifications": []}}
+    judgement = judge_completion(request, lambda _: response)
+    assessment = assess_alternatives(alternative_request(request, judgement), lambda _: {"scientific_acceptability": "unknown", "rationale": "not independently assessed"})
+    score = score_completion(judgement, semantics=semantics, request=request, alternative_assessment=assessment)
+    assert score.data()["reference_contract"]["scientific_reference_consistency"] == "not_measured"
+    other_request = semantic_request(public_task, semantics, raw_answer="A different public answer.", public_evidence={"e": "public"})
+    with pytest.raises(ContractError, match="invalid semantic judgement"):
+        score_completion(judgement, semantics=semantics, request=other_request, alternative_assessment=assessment)
+    forged = FrozenRecord.from_dict({"schema": "completion-semantics-v2", "scorer_version": "completion-semantics-v2", "contract": {"polarity": [], "scope": [], "alternative_status": [], "programme_claim": "x", "quotation_and_counterfactual": "x", "judge_may_abstain": True}, "frozen_before_outcomes": True})
+    with pytest.raises(ContractError, match="closed frozen"):
+        score_completion(judgement, semantics=forged, request=request, alternative_assessment=assessment)
