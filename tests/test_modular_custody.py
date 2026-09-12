@@ -110,9 +110,9 @@ def test_stale_controller_cannot_overwrite_another_validation_lease(tmp_path: Pa
         source_qualification_digest="b" * 64, exposure_qualification_digest="c" * 64, tested_arm_ids=["tested"])
     group = first.split(seed="s", validation_percent=100)["rows"][0]["group"]
     second = calibrated_store(path)
-    lease = first.lease_validation(stage="stage-a", panel_digest="d" * 64, group_ids=[group], arm_schedule=["control", "candidate"], scorer_digest="e" * 64, protocol_digest="f" * 64, calibration_receipt=calibration("d" * 64))
+    lease = first.lease_validation(stage="stage-a", panel_digest="d" * 64, group_ids=[group], arm_schedule=["control", "candidate"], candidate_digest="7" * 64, scorer_digest="e" * 64, protocol_digest="f" * 64, calibration_receipt=calibration("d" * 64))
     with pytest.raises(ContractError, match="stale write"):
-        second.lease_validation(stage="stage-b", panel_digest="e" * 64, group_ids=[group], arm_schedule=["control", "candidate"], scorer_digest="e" * 64, protocol_digest="f" * 64, calibration_receipt=calibration("e" * 64))
+        second.lease_validation(stage="stage-b", panel_digest="e" * 64, group_ids=[group], arm_schedule=["control", "candidate"], candidate_digest="7" * 64, scorer_digest="e" * 64, protocol_digest="f" * 64, calibration_receipt=calibration("e" * 64))
     assert set(CustodyStore(path).state["leases"]) == {lease["id"]}
 
 
@@ -135,11 +135,11 @@ def test_hash_union_and_validation_lease_are_bound_and_one_use(tmp_path: Path) -
     group = rows["one:a"]["group"]
     with pytest.raises(ContractError, match="non-validation"):
         store.qualify_stage(stage="C1", panel_digest="c" * 64, group_ids=["not-a-validation-group"], arm_schedule=["arm-a", "arm-b"])
-    lease = store.lease_validation(stage="C1", panel_digest="c" * 64, group_ids=[group], arm_schedule=["arm-a", "arm-b"], scorer_digest="e" * 64, protocol_digest="f" * 64, calibration_receipt=calibration("c" * 64))
+    lease = store.lease_validation(stage="C1", panel_digest="c" * 64, group_ids=[group], arm_schedule=["arm-a", "arm-b"], candidate_digest="7" * 64, scorer_digest="e" * 64, protocol_digest="f" * 64, calibration_receipt=calibration("c" * 64))
     with pytest.raises(ContractError, match="panel or arm"):
         store.consume_validation(lease["id"], panel_digest="d" * 64, arm_schedule=["arm-a", "arm-b"])
     with pytest.raises(ContractError, match="allocated or consumed"):
-        store.lease_validation(stage="C2", panel_digest="d" * 64, group_ids=[group], arm_schedule=["arm-a", "arm-b"], scorer_digest="e" * 64, protocol_digest="f" * 64, calibration_receipt=calibration("d" * 64))
+        store.lease_validation(stage="C2", panel_digest="d" * 64, group_ids=[group], arm_schedule=["arm-a", "arm-b"], candidate_digest="7" * 64, scorer_digest="e" * 64, protocol_digest="f" * 64, calibration_receipt=calibration("d" * 64))
     assert store.consume_validation(lease["id"], panel_digest="c" * 64, arm_schedule=["arm-a", "arm-b"])["status"] == "consumed"
     with pytest.raises(ContractError, match="allocated or consumed"):
         store.qualify_stage(stage="C3", panel_digest="e" * 64, group_ids=[group], arm_schedule=["arm-a", "arm-b"])

@@ -58,9 +58,9 @@ def test_lease_requires_configured_authority_and_exact_panel_scorer_protocol(tmp
     custody, group = store(tmp_path)
     with pytest.raises(ContractError, match="exact panel, scorer, and protocol"):
         custody.lease_validation(stage="C1", panel_digest=PANEL, group_ids=[group], arm_schedule=["arm"],
-                                 scorer_digest=SCORER, protocol_digest=PROTOCOL, calibration_receipt=receipt(panel="9" * 64))
+                                 candidate_digest="d" * 64, scorer_digest=SCORER, protocol_digest=PROTOCOL, calibration_receipt=receipt(panel="9" * 64))
     lease = custody.lease_validation(stage="C1", panel_digest=PANEL, group_ids=[group], arm_schedule=["arm"],
-                                     scorer_digest=SCORER, protocol_digest=PROTOCOL, calibration_receipt=receipt())
+                                     candidate_digest="d" * 64, scorer_digest=SCORER, protocol_digest=PROTOCOL, calibration_receipt=receipt())
     assert lease["qualification"] == "calibration_eligible" and lease["status"] == "active"
     assert lease["calibration_receipt_digest"] == receipt().content_hash
 
@@ -70,7 +70,7 @@ def test_untrusted_or_caller_shaped_calibration_is_rejected(tmp_path: Path) -> N
     unsigned = FrozenRecord.from_dict({"body": receipt().data()["body"], "mac": "0" * 64})
     with pytest.raises(ContractError, match="signature"):
         custody.lease_validation(stage="C1", panel_digest=PANEL, group_ids=[group], arm_schedule=["arm"],
-                                 scorer_digest=SCORER, protocol_digest=PROTOCOL, calibration_receipt=unsigned)
+                                 candidate_digest="d" * 64, scorer_digest=SCORER, protocol_digest=PROTOCOL, calibration_receipt=unsigned)
 
 
 @pytest.mark.parametrize(("matrix", "coverage"), [
@@ -82,7 +82,7 @@ def test_signed_metadata_does_not_imply_calibration_eligibility(tmp_path: Path, 
     custody, group = store(tmp_path)
     with pytest.raises(ContractError, match="does not meet frozen criteria"):
         custody.lease_validation(stage="C1", panel_digest=PANEL, group_ids=[group], arm_schedule=["arm"],
-                                 scorer_digest=SCORER, protocol_digest=PROTOCOL,
+                                 candidate_digest="d" * 64, scorer_digest=SCORER, protocol_digest=PROTOCOL,
                                  calibration_receipt=receipt(matrix=matrix, coverage=coverage))
 
 
@@ -91,7 +91,7 @@ def test_nonfinite_uncertainty_is_rejected_before_qualification(tmp_path: Path, 
     custody, group = store(tmp_path)
     with pytest.raises(ContractError, match="finite"):
         custody.lease_validation(stage="C1", panel_digest=PANEL, group_ids=[group], arm_schedule=["arm"],
-                                 scorer_digest=SCORER, protocol_digest=PROTOCOL, calibration_receipt=receipt(uncertainty=uncertainty))
+                                 candidate_digest="d" * 64, scorer_digest=SCORER, protocol_digest=PROTOCOL, calibration_receipt=receipt(uncertainty=uncertainty))
 
 
 def test_signed_criteria_digest_cannot_drift(tmp_path: Path) -> None:
@@ -101,7 +101,7 @@ def test_signed_criteria_digest_cannot_drift(tmp_path: Path) -> None:
     forged = CalibrationAuthority("calibration-service", b"k" * 32).issue({**body, "criteria_digest": digest(body["criteria"])})
     bad = FrozenRecord.from_dict({"body": {**forged.data()["body"], "criteria_digest": "0" * 64}, "mac": forged.data()["mac"]})
     with pytest.raises(ContractError, match="criteria digest"):
-        custody.lease_validation(stage="C1", panel_digest=PANEL, group_ids=[group], arm_schedule=["arm"], scorer_digest=SCORER, protocol_digest=PROTOCOL, calibration_receipt=bad)
+        custody.lease_validation(stage="C1", panel_digest=PANEL, group_ids=[group], arm_schedule=["arm"], candidate_digest="d" * 64, scorer_digest=SCORER, protocol_digest=PROTOCOL, calibration_receipt=bad)
 
 
 def test_missing_benchmark_coverage_never_creates_an_eligible_receipt() -> None:

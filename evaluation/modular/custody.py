@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import hmac
 import json
 import os
 import re
@@ -200,11 +201,19 @@ def _writer_lock(path: Path):
 
 class CustodyStore:
     """Durable custody state with deterministic allocation and one-use leases."""
-    def __init__(self, path: Path, *, calibration_keys: dict[str, bytes] | None = None) -> None:
+    def __init__(self, path: Path, *, calibration_keys: dict[str, bytes] | None = None,
+                 signing_authority_id: str | None = None, signing_key: bytes | None = None) -> None:
         self.path = path
         # These keys are deployment configuration, never receipt input.  The
         # command-line metadata tool intentionally has none and cannot lease.
         self._calibration_keys = dict(calibration_keys or {})
+        if (signing_authority_id is None) != (signing_key is None):
+            raise ContractError("custody signing authority id and key must be configured together")
+        if signing_authority_id is not None:
+            _safe_name(signing_authority_id, "custody signing authority")
+            if not isinstance(signing_key, bytes) or len(signing_key) < 32:
+                raise ContractError("custody signing key must have at least 32 bytes")
+        self._signing_authority_id, self._signing_key = signing_authority_id, signing_key
         self.state = self._load()
         self._loaded_digest = digest(self.state) if path.exists() else None
 
@@ -331,14 +340,16 @@ class CustodyStore:
             result.append(DataIdentity(item.benchmark, item.task_id, row["group"], self.state["inventory_digest"], self.state["split"]["digest"], "train"))
         return result
 
-    def qualify_stage(self, *, stage: str, panel_digest: str, group_ids: list[str], arm_schedule: list[str],
+    def qualify_stage(self, *, stage: str, panel_digest: str, candidate_digest: str | None = None,
+                      group_ids: list[str], arm_schedule: list[str],
                       scorer_digest: str | None = None, protocol_digest: str | None = None,
                       calibration_receipt: FrozenRecord | None = None) -> dict[str, Any]:
         """Return explicit metadata status or a signed scorer-calibration qualification."""
         if self.state["split"] is None:
             raise ContractError("split required before stage qualification")
         _safe_name(stage, "stage")
-        if (not _is_digest(panel_digest) or len(set(group_ids)) != len(group_ids) or not group_ids
+        if (not _is_digest(panel_digest) or candidate_digest is not None and not _is_digest(candidate_digest)
+                or len(set(group_ids)) != len(group_ids) or not group_ids
                 or not arm_schedule or len(set(arm_schedule)) != len(arm_schedule)):
             raise ContractError("invalid stage qualification request")
         for arm in arm_schedule:
@@ -349,7 +360,8 @@ class CustodyStore:
         used = set().union(*(set(lease["groups"]) for lease in self.state["leases"].values()), set())
         if used & set(group_ids):
             raise ContractError("validation group already allocated or consumed")
-        base = {"stage": stage, "panel_digest": panel_digest, "groups": sorted(group_ids),
+        base = {"stage": stage, "panel_digest": panel_digest, "candidate_digest": candidate_digest,
+                "groups": sorted(group_ids),
                 "arm_schedule": list(arm_schedule), "arm_schedule_digest": digest(list(arm_schedule)),
                 "split_digest": self.state["split"]["digest"]}
         if calibration_receipt is None:
@@ -368,19 +380,22 @@ class CustodyStore:
                 "metadata_authenticated": True, "calibration_eligible": True,
                 "scorer_digest": scorer_digest, "protocol_digest": protocol_digest,
                 "calibration_receipt_digest": calibration_receipt.content_hash,
+                "criteria_digest": calibration["criteria_digest"],
                 "calibration_authority": calibration["authority"]}
 
-    def lease_validation(self, *, stage: str, panel_digest: str, group_ids: list[str], arm_schedule: list[str],
+    def lease_validation(self, *, stage: str, panel_digest: str,
+                         group_ids: list[str], arm_schedule: list[str], candidate_digest: str | None = None,
                          scorer_digest: str | None = None, protocol_digest: str | None = None,
                          calibration_receipt: FrozenRecord | None = None) -> dict[str, Any]:
         if self.state["split"] is None:
             raise ContractError("split required before lease")
-        if calibration_receipt is None or scorer_digest is None or protocol_digest is None:
+        if calibration_receipt is None or scorer_digest is None or protocol_digest is None or not _is_digest(candidate_digest or ""):
             raise ContractError("validation lease requires signed scorer calibration")
-        lease_id = digest({"stage": stage, "panel": panel_digest, "groups": sorted(group_ids), "arms": arm_schedule, "split": self.state["split"]["digest"], "scorer": scorer_digest, "protocol": protocol_digest, "calibration": calibration_receipt.content_hash})
+        lease_id = digest({"stage": stage, "panel": panel_digest, "candidate": candidate_digest, "groups": sorted(group_ids), "arms": arm_schedule, "split": self.state["split"]["digest"], "scorer": scorer_digest, "protocol": protocol_digest, "calibration": calibration_receipt.content_hash})
         if lease_id in self.state["leases"]:
             raise ContractError("validation lease is one-use")
-        qualification = self.qualify_stage(stage=stage, panel_digest=panel_digest, group_ids=group_ids, arm_schedule=arm_schedule,
+        qualification = self.qualify_stage(stage=stage, panel_digest=panel_digest, candidate_digest=candidate_digest,
+                                           group_ids=group_ids, arm_schedule=arm_schedule,
                                            scorer_digest=scorer_digest, protocol_digest=protocol_digest,
                                            calibration_receipt=calibration_receipt)
         lease = {"id": lease_id, **qualification, "status": "active"}
@@ -397,6 +412,28 @@ class CustodyStore:
         lease["status"] = "consumed"
         self._save()
         return dict(lease)
+
+    def issued_validation_receipt(self, lease_id: str) -> FrozenRecord:
+        """Sign only this store's already-consumed, calibrated lease state."""
+        if self._signing_authority_id is None or self._signing_key is None:
+            raise ContractError("custody issued receipt requires configured signing authority")
+        lease = self.state["leases"].get(lease_id)
+        if lease is None or lease.get("status") != "consumed" or lease.get("qualification") != "calibration_eligible":
+            raise ContractError("only a consumed calibration-eligible custody lease can be issued")
+        required = {"id", "stage", "panel_digest", "candidate_digest", "groups", "arm_schedule", "arm_schedule_digest",
+                    "split_digest", "qualified", "qualification", "metadata_authenticated", "calibration_eligible",
+                    "scorer_digest", "protocol_digest", "calibration_receipt_digest", "criteria_digest", "calibration_authority", "status"}
+        if set(lease) != required:
+            raise ContractError("stored custody lease has unsupported fields")
+        body = {"schema": "custody-panel-lease-v2", "lease_id": lease["id"], "stage": lease["stage"],
+                "panel_digest": lease["panel_digest"], "candidate_digest": lease["candidate_digest"],
+                "groups": lease["groups"], "arm_schedule": lease["arm_schedule"], "split_digest": lease["split_digest"],
+                "scorer_digest": lease["scorer_digest"], "protocol_digest": lease["protocol_digest"],
+                "calibration_receipt_digest": lease["calibration_receipt_digest"],
+                "criteria_digest": lease["criteria_digest"],
+                "status": "consumed", "authority": self._signing_authority_id}
+        return FrozenRecord.from_dict({"body": body, "mac": hmac.new(self._signing_key, canonical(body).encode(), hashlib.sha256).hexdigest()})
+
 
 
 def _main() -> None:

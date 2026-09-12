@@ -20,6 +20,7 @@ from research_loop.modular.combinations import validate_design
 from research_loop.modular.experiments import registry
 from research_loop.modular.runtime import verify_trace
 from research_loop.modular.protocol_trace import verify_protocol_trace
+from evaluation.modular.calibration import verify_calibration_receipt
 from research_loop.ontology import ContractError, canonical
 
 BENCHMARKS = frozenset({"discoverybench", "blade"})
@@ -247,6 +248,8 @@ class ScientificScorerReceipt:
 class ValidationAcceptance:
     lease: FrozenRecord
     acceptance: FrozenRecord
+    calibration_receipt: FrozenRecord | None = None
+    protocol_digest: str | None = None
 
 
 class SignedAuthority:
@@ -295,10 +298,12 @@ class PanelReceiptVerifier:
     """Verify every frozen cell; no default path grants scientific acceptance."""
     def __init__(self, *, scorer_verifier: Callable[[ScientificScorerReceipt, PanelCell, FrozenPanel], None] | None = None,
                  custody_keys: Mapping[str, bytes] | None = None,
-                 acceptance_keys: Mapping[str, bytes] | None = None):
+                 acceptance_keys: Mapping[str, bytes] | None = None,
+                 calibration_keys: Mapping[str, bytes] | None = None):
         self._scorer_verifier = scorer_verifier
         self._custody_keys = dict(custody_keys or {})
         self._acceptance_keys = dict(acceptance_keys or {})
+        self._calibration_keys = dict(calibration_keys or {})
 
     def verify(self, panel: FrozenPanel, runtime: Iterable[RuntimeReceipt], *,
                scorer_receipts: Iterable[ScientificScorerReceipt] = (),
@@ -422,12 +427,23 @@ class PanelReceiptVerifier:
 
     def _verify_validation(self, panel: FrozenPanel, validation: ValidationAcceptance, scientific: bool,
                            runtime: tuple[RuntimeReceipt, ...], scorer: tuple[ScientificScorerReceipt, ...]) -> str | None:
-        if not scientific or not self._custody_keys or not self._acceptance_keys:
+        if not scientific or not self._custody_keys or not self._acceptance_keys or not self._calibration_keys:
             return None
-        lease = verify_signed(validation.lease, self._custody_keys, schema="custody-panel-lease-v1")
+        if validation.calibration_receipt is None or validation.protocol_digest is None:
+            raise ContractError("validation requires a trusted calibration receipt and protocol binding")
+        scorer_digests = {cell.scorer_digest for cell in panel.cells}
+        if len(scorer_digests) != 1:
+            raise ContractError("validation panel must have exactly one scorer digest")
+        calibration = verify_calibration_receipt(validation.calibration_receipt, self._calibration_keys,
+                                                 panel_digest=panel.digest, scorer_digest=next(iter(scorer_digests)),
+                                                 protocol_digest=validation.protocol_digest)
+        lease = verify_signed(validation.lease, self._custody_keys, schema="custody-panel-lease-v2")
         if (lease.get("panel_digest") != panel.digest or lease.get("candidate_digest") != panel.candidate_digest
                 or lease.get("split_digest") != panel.split_digest or tuple(lease.get("arm_schedule", ())) != panel.arm_schedule
-                or tuple(sorted(lease.get("groups", ()))) != panel.validation_groups or lease.get("status") not in {"active", "consumed"}):
+                or tuple(sorted(lease.get("groups", ()))) != panel.validation_groups or lease.get("status") != "consumed"
+                or lease.get("scorer_digest") != next(iter(scorer_digests)) or lease.get("protocol_digest") != validation.protocol_digest
+                or lease.get("calibration_receipt_digest") != validation.calibration_receipt.content_hash
+                or lease.get("criteria_digest") != calibration["criteria_digest"]):
             raise ContractError("custody lease is not bound to this exact frozen validation panel")
         acceptance = verify_signed(validation.acceptance, self._acceptance_keys, schema="panel-acceptance-v1")
         runtime_digest = FrozenRecord.from_dict({"runtime": [self._runtime_data(row) for row in sorted(runtime, key=lambda row: row.cell_key)]}).content_hash

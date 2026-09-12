@@ -30,6 +30,15 @@ has no calibration key configuration, so it cannot issue a lease. The CLI suppor
 `attest`, `export`, `qualify`, and `consume` so a child process cannot bypass
 those checks.
 
+For panel validation, a configured custody service issues a `custody-panel-lease-v2`
+receipt only after consuming its own calibration-eligible lease. The receipt binds
+the candidate, panel, split, scorer, protocol, calibration-receipt and criteria
+digests, arm schedule, and groups. `PanelReceiptVerifier` verifies this receipt
+with configured custody and calibration keys; a standalone caller HMAC, active
+lease, or typed field match is insufficient. This remains engineering custody
+wiring: it does not prove that calibration materials were independently made or
+that an external scientific authority accepted a result.
+
 Exported identities bind the actual split digest, while the separate official
 split field preserves upstream provenance. Every member of a merged source
 group must have independent custody attestation before that group can enter
