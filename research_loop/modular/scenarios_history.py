@@ -179,7 +179,7 @@ def _apply(experiment_id: str, variant: str, task: PublicTask, evidence: Evidenc
         first_phase = "evidence_only" if variant == "blind_first" else "summary_first"
         first = FrozenRecord.from_dict({"schema": "history-review-input-v1", "fixture_only": True,
             "phase": first_phase, "task": task.data(), "sealed_evidence_snapshot": snapshot,
-            "evidence_roots": [root.root_id] if variant == "blind_first" else [],
+            "evidence_roots": [root.root_id], "public_evidence": [root.payload.data()],
             "historical_summary": None if variant == "blind_first" else "fixture historical summary"})
         review_payloads.append(first)
         response = (review_model(first) if review_model else {"assessment": "unknown", "evidence_refs": [root.root_id], "counterexamples": [], "uncertainty": "fixture-only"})
@@ -189,12 +189,16 @@ def _apply(experiment_id: str, variant: str, task: PublicTask, evidence: Evidenc
         followup = FrozenRecord.from_dict({"schema": "history-review-followup-v1", "fixture_only": True,
             "phase": "summary_after_evidence" if variant == "blind_first" else "evidence_after_summary",
             "task": task.data(), "sealed_submission": sealed.data(), "sealed_evidence_snapshot": snapshot,
-            "evidence_roots": [] if variant == "blind_first" else [root.root_id],
+            "evidence_roots": [root.root_id], "public_evidence": [root.payload.data()],
             "historical_summary": "fixture historical summary" if variant == "blind_first" else None})
         review_payloads.append(followup)
-        if review_model: review_model(followup)
-        trace.append({"event": "sealed_review_callback", "first_payload": first.content_hash, "followup_payload": followup.content_hash,
-                      "sealed_submission": sealed.before_hash})
+        followup_response = (review_model(followup) if review_model else
+                             {"assessment": "unknown", "evidence_refs": [root.root_id], "counterexamples": [], "uncertainty": "fixture-only default followup"})
+        revision = engine.revise_after_reveal(review.review_id, role_id="evidence", reviewer_id="fixture-reviewer", response=followup_response)
+        auxiliary["review"] = {"sealed_response": sealed.response.data(), "revised_response": revision.response.data()}
+        trace.append({"event": "sealed_review_callback" if review_model else "sealed_review_fixture_default_response",
+                      "first_payload": first.content_hash, "followup_payload": followup.content_hash,
+                      "sealed_submission": sealed.before_hash, "revision": revision.after_hash})
     elif experiment_id == "Q1.6":
         invalid = _append(evidence, task, "invalid-evidence")
         claim = _claim(claims, "old high-score explanation", invalid.root_id)
@@ -207,7 +211,7 @@ def _apply(experiment_id: str, variant: str, task: PublicTask, evidence: Evidenc
         if variant == "high_score":
             auxiliary["old_history"] = {"prior_score": 0.99, "status": "fixture-only historical narration"}
         trace.append({"event": "retracted_without_substitution", "availability": variant,
-                      "claim": claim.claim_id, "active_support": list(claims.claims()[0].support_roots)})
+                      "claim": claim.claim_id, "active_support": list(next(item for item in claims.claims() if item.claim_id == claim.claim_id).support_roots)})
     else:  # Q1.7
         if variant == "causal":
             root = _append(evidence, task, "ordered-observation", extra_root={"observed_at": "2026-01-02T00:00:00Z", "causal_predecessor_at": "2026-01-01T00:00:00Z", "causal_order": "predecessor_before_observation"})
@@ -244,7 +248,7 @@ def _bindings_from_identity(identity) -> dict[str, str]:
 
 def _question(task: PublicTask) -> str:
     payload = task.payload.data()
-    return str(payload.get("research_question", payload.get("task_id", task.identity.task_id)))
+    return str(payload.get("research_question", payload.get("question", payload.get("task_id", task.identity.task_id))))
 
 
 def _validate_variant(experiment_id: str, variant: str) -> None:

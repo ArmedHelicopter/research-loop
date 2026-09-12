@@ -4,6 +4,7 @@ from __future__ import annotations
 import pytest
 
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask
+from research_loop.modular.benchmarks import DiscoveryBenchAdapter
 from research_loop.modular.experiments import ControllerInputs, registry, scenario
 from research_loop.modular.scenarios_history import run_history_scenario
 
@@ -86,8 +87,13 @@ def test_q15_review_callback_receives_real_ordered_payloads_and_seals_response_b
     assert blind_seen[0].data()["phase"] == "evidence_only"
     assert summary_seen[0].data()["phase"] == "summary_first"
     assert blind_seen[0].data() != summary_seen[0].data()
+    assert blind_seen[0].data()["public_evidence"] == summary_seen[0].data()["public_evidence"]
+    assert blind_seen[1].data()["public_evidence"] == summary_seen[1].data()["public_evidence"]
     assert "sealed_submission" in blind_seen[1].data() and blind.review_payloads == tuple(blind_seen)
     assert summary.review_payloads == tuple(summary_seen)
+    review = blind.next_payload.data()["scenario_auxiliary"]["review"]
+    assert review["sealed_response"]["uncertainty"] == "fixture-only"
+    assert review["revised_response"]["uncertainty"] == "fixture-only"
 
 
 def test_q16_replacement_and_high_score_change_actual_payload_but_never_restore_invalid_support():
@@ -132,3 +138,17 @@ def test_prepared_payload_is_not_claimed_invoked_without_callback():
     public_task = task()
     result = run_history_scenario("Q1.7", "unknown", task=public_task, frozen_controls=controls(public_task))
     assert result.mechanism_trace.data()["events"][-1]["event"] == "next_model_payload_prepared"
+
+
+def test_discovery_adapter_question_is_carried_into_context():
+    identity = DataIdentity("discoverybench", "discovery-task", "group-a", "v1", "split", "train")
+    public_task = DiscoveryBenchAdapter().prepare(identity, {"task_id": "discovery-task", "question": "Does the public question survive?",
+        "difficulty": "fixture", "source_kind": "synthetic", "dataset": [{"name": "fixture", "description": "public", "columns": []}]})
+    result = run_history_scenario("Q1.7", "unknown", task=public_task, frozen_controls=controls(public_task))
+    assert result.next_payload.data()["context"]["question"] == "Does the public question survive?"
+
+
+def test_default_review_response_is_not_described_as_a_callback():
+    public_task = task()
+    result = run_history_scenario("Q1.5", "blind_first", task=public_task, frozen_controls=controls(public_task))
+    assert any(row["event"] == "sealed_review_fixture_default_response" for row in result.mechanism_trace.data()["events"])
