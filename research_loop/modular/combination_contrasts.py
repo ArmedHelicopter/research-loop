@@ -21,8 +21,7 @@ def _mean(values: list[float]) -> float:
 
 
 def estimate_grouped_contrast(panel: CombinationPanel, *, runtime: Iterable[RuntimeReceipt],
-                              scorer_receipts: Iterable[ScientificScorerReceipt],
-                              metrics: Iterable[FrozenRecord], verifier: CombinationPanelVerifier,
+                              scorer_receipts: Iterable[ScientificScorerReceipt], verifier: CombinationPanelVerifier,
                               direction: str, value_range: tuple[float, float], scale: str) -> FrozenRecord:
     """Estimate preregistered contrasts after actual journal/scorer verification.
 
@@ -44,27 +43,22 @@ def estimate_grouped_contrast(panel: CombinationPanel, *, runtime: Iterable[Runt
     expected = {cell.key: cell for cell in panel.cells}
     if any(row.status != "succeeded" for row in rows):
         raise ContractError("incomplete policy rejects failed or blocked combination cells")
-    by_key = {}
-    for metric in metrics:
-        if not isinstance(metric, FrozenRecord): raise ContractError("metrics must be immutable records")
-        body = metric.data()
-        if set(body) != {"schema", "cell_key", "runtime_trace_digest", "scorer_receipt_digest", "value", "direction", "value_range", "scale"} or body["schema"] != "combination-cell-metric-v1":
-            raise ContractError("unexpected metric record schema")
-        key = tuple(body["cell_key"])
-        if key not in expected or key in by_key or body["direction"] != direction or body["value_range"] != list(value_range) or body["scale"] != scale:
-            raise ContractError("foreign, duplicate, or analysis-drifted metric")
-        if type(body["value"]) not in {int, float} or not math.isfinite(body["value"]) or not value_range[0] <= body["value"] <= value_range[1]:
-            raise ContractError("metric is outside the frozen finite range")
-        by_key[key] = body
-    if set(by_key) != set(expected):
-        raise ContractError("incomplete policy rejects missing metric cells")
     scored_by_key = {row.cell_key: row for row in scored}
     if set(scored_by_key) != set(expected):
         raise ContractError("metrics require one independently verified scorer receipt per cell")
     runtime_by_key = {row.cell_key: row for row in rows}
-    for key, body in by_key.items():
-        if body["runtime_trace_digest"] != runtime_by_key[key].trace_digest or body["scorer_receipt_digest"] != scored_by_key[key].receipt.content_hash:
-            raise ContractError("metric does not bind verified runtime and scorer receipts")
+    by_key = {}
+    for key, receipt in scored_by_key.items():
+        body = receipt.receipt.data()
+        metric = body.get("metric")
+        if (not isinstance(metric, dict) or set(metric) != {"value", "direction", "value_range", "scale"}
+                or metric["direction"] != direction or metric["value_range"] != list(value_range) or metric["scale"] != scale):
+            raise ContractError("authenticated scorer receipt lacks this frozen numeric metric")
+        if type(metric["value"]) not in {int, float} or not math.isfinite(metric["value"]) or not value_range[0] <= metric["value"] <= value_range[1]:
+            raise ContractError("authenticated scorer metric is outside the frozen finite range")
+        if body.get("runtime_trace_digest") != runtime_by_key[key].trace_digest:
+            raise ContractError("scorer metric does not bind verified runtime")
+        by_key[key] = metric
     if panel.interaction_status == "not_identifiable":
         return FrozenRecord.from_dict({"schema": "frozen-grouped-combination-estimate-v1", "panel_digest": panel.digest,
             "estimand": panel.estimand, "status": "not_identifiable", "missing_policy": "incomplete_reject",
