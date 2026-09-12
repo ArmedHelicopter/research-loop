@@ -19,24 +19,78 @@ events, detected skill-context errors, absent output, invalid output, and a
 token-budget overrun become terminal. A reopened port rejects every
 ledger with a reserved, unknown, failed, over-budget, or incomplete call.
 
-The port invokes the installed CLI with `exec --ignore-user-config
---ignore-rules --ephemeral --skip-git-repo-check -C <empty per-call directory>
--s read-only --json --output-schema ... -o ...`. It also disables the listed
-tool, browser, plugin, hook, app, skill, image and goal features and sets
-`project_doc_max_bytes=0`, disabled web search, memories, skill search, and
-host-skill discovery (`--enable skip_host_skill_discovery`). A skill-context
-error event seals the call as untrusted. Before every paid `exec`, the port also
-runs the installed CLI's non-billed `debug prompt-input` with an empty task-local
-`CODEX_HOME` and the same skill/plugin/memory feature flags. It stores only a
-hash and boolean result, then refuses the paid process if the rendered context
-contains a skills block. This is a fail-closed probe, not an OS sandbox. The
-arguments were checked against `codex exec --help` on Codex CLI 0.153.4.
+The default port is **unqualified** and refuses paid calls. Real execution
+requires `frozen_base_context=FrozenBaseContextPolicy(reviewed_manifest_path,
+reviewed_manifest_sha256)`. There is no boolean qualification flag. An explicit
+`allow_mock_context=True` is only available when both process runners are
+non-subprocess test fixtures; it is recorded as `mock_fixture` in the ledger.
 
-The task-local contract uses the documented `[[skills.config]]` form with a
-`SKILL.md` path and `enabled = false` for each discovered local skill. On this
-host that override reduces local entries but does not remove the bundled SYSTEM
-catalog. A paid run therefore remains refused until the probe observes no skills
-block; it must not treat local overrides as proof that system skills are absent.
+`audit_base_context(executable, fixed_cwd, audit_root, ...)` performs only a
+non-billed `debug prompt-input`. Use a direct CLI executable (on Windows, the
+actual `.exe`, not an unhashed launcher chain), a fixed empty directory outside
+all ancestors containing `data/labels`, and a new empty audit destination.
+The helper archives the raw render, strictly validated visible role/content,
+a configuration source hash inventory, exact shared arguments, environment
+hash, CLI hash, and an **UNQUALIFIED** candidate manifest. It does not qualify
+the candidate. No credential files or environment values are copied into the
+report. Source inventories include absent paths and glob membership so new
+configuration/rule/skill files also change the binding.
+
+A reviewer must read the raw render and audit, check that the source inventory
+also covers any externally referenced configuration/instruction files, and
+write a separate manifest with `status="REVIEWED"` and a `review` object:
+`reviewer`, `reviewed_at`, `rationale`, and `source_completeness`. Preserve the
+candidate's `binding`, `audit_path`, and `audit_sha256`. Pin the resulting
+manifest file's SHA256 when constructing the port. This records a concrete
+review and the material it reviewed; it is not a signature proving the reviewer's
+identity. Reviewed common system/skill text is permitted across arms. An empty
+skills catalog is not a qualification requirement.
+
+One `shared_args()` supplies both `debug prompt-input` and `exec`, including
+model, reasoning effort, read-only sandbox configuration, never approval,
+project document limit, disabled web, and the same disabled execution/tool
+features. Both processes receive the exact same fixed empty cwd and captured
+environment, using the same default user config and rules. Neither uses
+`--ignore-user-config`, `--ignore-rules`, nor an alternate probe-only home.
+Every configured MCP server found in the inventoried TOML sources must have an
+explicit disabled override. Reviewed `skills.config` overrides may reference
+`SKILL.md` paths to reduce the common catalog. CLI bare MCP keys use
+`mcp_servers.NAME.enabled=false`; names outside the accepted bare-key grammar
+are refused rather than silently introducing a different server entry.
+
+Before each call, the controller rehashes the policy/audit materials, CLI,
+configuration inventory and environment; verifies cwd emptiness and label
+ancestry; renders the base prompt; and compares its exact role/content digest.
+It rechecks local bindings after rendering and immediately before reserving the
+paid call. Empty, malformed, unsuccessful, or changed renders cannot start the
+paid runner. The raw CLI JSON includes fresh message IDs/timestamps, so only
+those transport fields are excluded from the visible digest; all text,
+roles, content ordering, environment text and dates remain bound. The ledger
+freezes the full policy/hash/config binding and rejects changed configuration
+on reopen, including a different reviewed policy with identical prompt text.
+For a stable local deployment descriptor, pass an absolute
+`model_catalog_json` override in the shared arguments and include that exact
+catalog file in `context_source_specs(..., model_catalog_path=...)`. The live
+no-paid check verified this override against the installed CLI. A task-local
+catalog can preserve the cache's complete `models` array while archiving its
+original bytes separately; only refresh metadata (`fetched_at`, `etag`,
+`client_version`) is omitted from the catalog. In this explicit override mode,
+the unused shared `models_cache.json` is not a request source and its refresh
+does not block calls. Any frozen catalog content change still blocks. The
+catalog freezes the available local descriptors, not the provider's underlying
+weights or deployment version. Environment changes across processes require a
+fresh reviewed audit, not silent acceptance. Each call records actual argv/cwd, environment/policy hashes, probe
+receipt and its frozen slot-schema hash.
+
+The installed CLI's debug command renders base messages, not the full provider
+request/tool schema. `exec` additionally supplies the public task prompt and
+the ledger-frozen response schema for that slot, plus output/ephemeral flags.
+The controller does not establish identity of provider-owned instructions or
+remote deployments, nor atomic filesystem isolation against a concurrent
+writer. Tool events and skill-context error events still seal a call as
+untrusted. Configuration restrictions and event checks do not prove an OS
+sandbox. The contract requires the same reviewed base binding across arms;
+experiment orchestration must supply that policy consistently.
 
 `max_tokens` is enforced against recorded cumulative provider usage after each
 call. The CLI version checked here exposes no per-call output-token switch, so

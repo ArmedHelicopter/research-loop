@@ -13,6 +13,8 @@ import math
 import os
 import shutil
 import subprocess
+import re
+import tomllib
 from pathlib import Path
 from dataclasses import dataclass
 from typing import Any, Callable, Mapping
@@ -41,20 +43,249 @@ class TerminalCallInspection:
         self.receipt, self.response = receipt, response
 
 
+DISABLED_FEATURES = (
+    "shell_tool", "unified_exec", "multi_agent", "multi_agent_v2", "apps", "plugins",
+    "hooks", "browser_use", "browser_use_external", "computer_use", "image_generation",
+    "view_image", "sleep_tool", "workspace_dependencies", "skill_search", "memories",
+    "in_app_browser", "goals", "code_mode", "code_mode_host", "artifact", "tool_suggest",
+    "enable_mcp_apps", "standalone_web_search", "request_permissions_tool",
+    "default_mode_request_user_input", "skill_mcp_dependency_install", "remote_plugin",
+)
+
+
+def shared_args(model: str, effort: str, config_overrides: tuple[str, ...] = ()) -> list[str]:
+    """The sole source of context-affecting flags, shared by debug and exec.
+
+    Reviewed skill catalog overrides and per-server MCP disabling precede the
+    invariant flags, so a policy cannot enable a forbidden execution feature.
+    This is a reproducibility controller, not an OS isolation boundary.
+    """
+    args: list[str] = []
+    for override in config_overrides:
+        if not (override.startswith("skills.config=") or override.startswith("model_catalog_json=") or re.fullmatch(r'mcp_servers\.[A-Za-z0-9_-]+\.enabled=false', override)):
+            raise ContractError("unsupported frozen context override")
+        args.extend(("-c", override))
+    for setting in (f"model={json.dumps(model)}", f"model_reasoning_effort={json.dumps(effort)}",
+                    "project_doc_max_bytes=0", 'web_search="disabled"',
+                    'sandbox_mode="read-only"', 'approval_policy="never"'):
+        args.extend(("-c", setting))
+    for feature in DISABLED_FEATURES:
+        args.extend(("--disable", feature))
+    args.extend(("--enable", "skip_host_skill_discovery"))
+    return args
+
+
+def _base_context_bytes(raw: bytes) -> bytes:
+    """Keep exact model-visible role/content; discard only transport metadata.
+
+    The CLI emits fresh IDs and timestamps for every debug render. They are
+    archived in the raw artifact, but are not prompt content. Unknown message
+    or content forms fail closed instead of being silently dropped.
+    """
+    try:
+        messages = json.loads(raw)
+        if not isinstance(messages, list) or not messages:
+            raise ValueError("empty prompt")
+        visible = []
+        for message in messages:
+            if (not isinstance(message, dict) or set(message) - {"type", "id", "role", "content", "internal_chat_message_metadata_passthrough"}
+                    or message.get("type", "message") != "message" or message.get("role") not in {"system", "developer", "user"}
+                    or not isinstance(message.get("content"), list) or not message["content"]):
+                raise ValueError("invalid message")
+            for content in message["content"]:
+                if (not isinstance(content, dict) or set(content) != {"type", "text"}
+                        or content["type"] != "input_text" or not isinstance(content["text"], str) or not content["text"].strip()):
+                    raise ValueError("invalid text content")
+            visible.append({"role": message["role"], "content": message["content"]})
+        return canonical(visible).encode("utf-8")
+    except (ValueError, TypeError, UnicodeError) as exc:
+        raise ContractError("empty or malformed debug base context") from exc
+
+
+def context_source_specs(codex_home: Path, fixed_cwd: Path, *, model_catalog_path: Path | None = None) -> list[dict[str, str]]:
+    """Minimum local sources; the reviewer must add external referenced files.
+
+    Glob inventories bind additions/deletions as well as content changes. Auth
+    files are neither read nor copied. The default user configuration is used.
+    """
+    home, cwd = codex_home.resolve(), fixed_cwd.resolve()
+    specs = [{"path": str(home / name)} for name in ("config.toml", "AGENTS.md", "AGENTS.override.md")]
+    specs.append({"path": str(model_catalog_path.resolve() if model_catalog_path else home / "models_cache.json")})
+    specs += [{"path": str(home / "rules"), "glob": "**/*.rules"},
+              {"path": str(home / "skills"), "glob": "**/SKILL.md"},
+              {"path": str(Path.home() / ".agents" / "skills"), "glob": "**/SKILL.md"}]
+    for ancestor in (cwd, *cwd.parents):
+        specs += [{"path": str(ancestor / ".codex" / "config.toml")},
+                  {"path": str(ancestor / "AGENTS.md")}, {"path": str(ancestor / "AGENTS.override.md")}]
+    return specs
+
+
+def _source_manifest(specs: list[dict[str, str]]) -> dict[str, Any]:
+    if not isinstance(specs, list) or not specs:
+        raise ContractError("configuration source inventory required")
+    manifest = {}
+    for spec in specs:
+        if not isinstance(spec, dict) or set(spec) not in ({"path"}, {"path", "glob"}) or not isinstance(spec["path"], str) or not Path(spec["path"]).is_absolute():
+            raise ContractError("invalid configuration source inventory")
+        path = Path(spec["path"])
+        key = canonical(spec)
+        if key in manifest:
+            raise ContractError("duplicate configuration source")
+        if "glob" in spec:
+            if not isinstance(spec["glob"], str) or not spec["glob"]:
+                raise ContractError("invalid source glob")
+            manifest[key] = {str(p.resolve()): _sha(p.read_bytes()) for p in sorted(path.glob(spec["glob"])) if p.is_file()}
+        else:
+            manifest[key] = _sha(path.read_bytes()) if path.is_file() else None
+    return manifest
+
+
 @dataclass(frozen=True)
 class FrozenBaseContextPolicy:
-    """Manually reviewed, non-secret identity of a matched CLI base context."""
-    context_digest: str
-    cli_sha256: str
-    shared_argv_digest: str
-    config_sources_hash: str
-    fixed_cwd: Path
-    config_sources: tuple[Path, ...]
-    reviewed: bool = False
+    """A hash-pinned reviewed manifest; a boolean cannot qualify a context."""
+    source: Path
+    sha256: str
 
-    def __post_init__(self) -> None:
-        if self.reviewed is not True or not self.config_sources or any(not isinstance(x, str) or len(x) != 64 for x in (self.context_digest, self.cli_sha256, self.shared_argv_digest, self.config_sources_hash)):
-            raise ContractError("reviewed frozen base-context digests required")
+    def data(self) -> dict[str, Any]:
+        try:
+            raw = Path(self.source).resolve(strict=True).read_bytes()
+            if not isinstance(self.sha256, str) or re.fullmatch(r"[0-9a-f]{64}", self.sha256) is None or _sha(raw) != self.sha256:
+                raise ContractError("frozen context policy source drifted")
+            policy = json.loads(raw)
+            review = policy.get("review", {})
+            if (policy.get("schema") != "frozen-base-context-policy-v2" or policy.get("status") != "REVIEWED"
+                    or not isinstance(review, dict) or any(not isinstance(review.get(k), str) or not review[k].strip()
+                       for k in ("reviewer", "reviewed_at", "rationale", "source_completeness"))):
+                raise ContractError("unqualified frozen context requires material review provenance")
+            audit_raw = Path(policy["audit_path"]).read_bytes()
+            audit = json.loads(audit_raw)
+            if _sha(audit_raw) != policy["audit_sha256"] or policy["binding"] != audit["binding"] or audit.get("paid_call") is not False:
+                raise ContractError("frozen context review audit binding mismatch")
+            binding = policy["binding"]
+            context_raw = Path(audit["raw_context_path"]).read_bytes()
+            if _sha(context_raw) != audit["raw_context_sha256"] or _sha(_base_context_bytes(context_raw)) != binding["context_digest"]:
+                raise ContractError("frozen context review material drifted")
+            return policy
+        except ContractError:
+            raise
+        except (OSError, KeyError, ValueError, TypeError) as exc:
+            raise ContractError("invalid frozen context policy material") from exc
+
+
+def _require_empty_public_cwd(cwd: Path) -> None:
+    if not cwd.is_absolute() or not cwd.is_dir() or list(cwd.iterdir()):
+        raise ContractError("frozen context cwd must be a fixed empty directory")
+    if any((ancestor / "data" / "labels").exists() for ancestor in (cwd.resolve(), *cwd.resolve().parents)):
+        raise ContractError("frozen context cwd has a private label ancestor")
+
+
+def _runtime_binding(executable: str, cwd: Path, environment: dict[str, str], args: list[str],
+                     specs: list[dict[str, str]], overrides: list[str]) -> dict[str, Any]:
+    _require_empty_public_cwd(cwd)
+    cli = Path(executable).resolve(strict=True)
+    if os.name == "nt" and cli.suffix.lower() != ".exe":
+        raise ContractError("reviewed context requires a direct CLI executable, not an unhashed launcher chain")
+    home = Path(environment.get("CODEX_HOME") or str(Path(environment.get("USERPROFILE") or environment.get("HOME") or str(Path.home())) / ".codex")).resolve()
+    catalogs = [override.split("=", 1)[1] for override in overrides if override.startswith("model_catalog_json=")]
+    if len(catalogs) > 1:
+        raise ContractError("one frozen model catalog override permitted")
+    catalog = None
+    if catalogs:
+        try:
+            catalog_value = json.loads(catalogs[0])
+            if not isinstance(catalog_value, str) or not Path(catalog_value).is_absolute():
+                raise ValueError("absolute catalog path required")
+            catalog = Path(catalog_value).resolve(strict=True)
+            catalog_data = json.loads(catalog.read_bytes())
+            if not isinstance(catalog_data, dict) or set(catalog_data) != {"models"} or not isinstance(catalog_data["models"], list) or not catalog_data["models"]:
+                raise ValueError("nonempty local model catalog required")
+        except (ValueError, OSError, TypeError) as exc:
+            raise ContractError("invalid frozen local model catalog") from exc
+    required = {canonical(spec) for spec in context_source_specs(home, cwd, model_catalog_path=catalog)}
+    if not required <= {canonical(spec) for spec in specs}:
+        raise ContractError("frozen context omits mandatory default configuration sources")
+    sources = _source_manifest(specs)
+    for spec in specs:
+        source = Path(spec["path"])
+        if "glob" not in spec and source.suffix == ".toml" and source.is_file():
+            config = tomllib.loads(source.read_text(encoding="utf-8"))
+            for name in config.get("mcp_servers", {}):
+                if f'mcp_servers.{name}.enabled=false' not in overrides:
+                    raise ContractError("every configured MCP server must be explicitly disabled")
+    return {"cli_path": str(cli), "cli_sha256": _sha(cli.read_bytes()), "fixed_cwd": str(cwd.resolve()),
+            "environment_sha256": _sha(canonical(environment).encode()), "codex_home": str(home),
+            "shared_argv": args, "shared_argv_digest": _sha(canonical(args).encode()),
+            "config_overrides": list(overrides), "source_specs": specs,
+            "config_sources": sources, "config_sources_hash": _sha(canonical(sources).encode())}
+
+
+def audit_base_context(executable: Path, fixed_cwd: Path, audit_root: Path, *,
+                       model: str = "gpt-5.6-luna", effort: str = "low",
+                       source_specs: list[dict[str, str]] | None = None,
+                       config_overrides: tuple[str, ...] = (),
+                       context_probe_runner: ProcessRunner = subprocess.run) -> Path:
+    """Archive one NO-PAID render and an UNQUALIFIED review candidate.
+
+    This never qualifies itself. A reviewer must inspect the render, source
+    inventory, permitted common context and CLI limitations, then write a
+    separate REVIEWED manifest with concrete provenance and pin its SHA256.
+    """
+    cli, cwd, root = executable.resolve(strict=True), fixed_cwd.resolve(strict=True), audit_root.resolve()
+    _require_empty_public_cwd(cwd)
+    root.mkdir(parents=True, exist_ok=True)
+    if any(root.iterdir()):
+        raise ContractError("audit destination must be empty; preserve previous audit evidence")
+    environment = dict(os.environ)
+    home = Path(environment.get("CODEX_HOME") or str(Path.home() / ".codex"))
+    specs = source_specs if source_specs is not None else context_source_specs(home, cwd)
+    overrides = list(config_overrides)
+    args = shared_args(model, effort, tuple(overrides))
+    binding = _runtime_binding(str(cli), cwd, environment, args, specs, overrides)
+    argv = [str(cli), "debug", "prompt-input", *args]
+    result = context_probe_runner(argv, text=True, encoding="utf-8", capture_output=True,
+                                  timeout=30, cwd=str(cwd), env=dict(environment))
+    raw = (result.stdout or "").encode("utf-8")
+    raw_path = root / "debug-prompt-input.raw.json"
+    raw_path.write_bytes(raw)
+    # Do not print or persist stderr values; CLI diagnostics can contain config details.
+    if result.returncode != 0:
+        _atomic(root / "UNQUALIFIED-BASE-CONTEXT-AUDIT.json", {
+            "schema": "base-context-audit-v2", "status": "UNQUALIFIED_DEBUG_FAILED", "paid_call": False,
+            "argv": argv, "binding": binding, "raw_context_path": str(raw_path),
+            "raw_context_sha256": _sha(raw), "exit_code": result.returncode,
+            "stderr_sha256": _sha((result.stderr or "").encode())})
+        raise ContractError("no-paid debug render failed; raw artifact preserved")
+    visible = _base_context_bytes(raw)
+    after = _runtime_binding(str(cli), cwd, environment, args, specs, overrides)
+    if after != binding:
+        _atomic(root / "UNQUALIFIED-BASE-CONTEXT-AUDIT.json", {
+            "schema": "base-context-audit-v2", "status": "UNQUALIFIED_SOURCE_DRIFT", "paid_call": False,
+            "argv": argv, "binding": binding, "after_binding": after,
+            "changed_fields": [key for key in binding if binding[key] != after[key]],
+            "changed_source_paths": [key for key in binding["config_sources"] if binding["config_sources"][key] != after["config_sources"].get(key)],
+            "raw_context_path": str(raw_path), "raw_context_sha256": _sha(raw)})
+        raise ContractError("configuration changed during no-paid context audit")
+    visible_path = root / "base-context.visible.json"
+    visible_path.write_bytes(visible)
+    binding["context_digest"] = _sha(visible)
+    audit = {"schema": "base-context-audit-v2", "status": "UNQUALIFIED_PENDING_REVIEW", "paid_call": False,
+             "argv": argv, "binding": binding, "raw_context_path": str(raw_path),
+             "raw_context_sha256": _sha(raw), "visible_context_path": str(visible_path),
+             "stderr_sha256": _sha((result.stderr or "").encode()), "exit_code": result.returncode,
+             "limitations": ["Debug renders base prompt messages, not the full provider request or its tool schema.",
+                 "Only transport message IDs and internal metadata are excluded from the visible digest; all role/content text is exact.",
+                 "Exec adds request text and the ledger-frozen per-slot response schema.",
+                 "Manual review must establish completeness of local and externally referenced configuration sources.",
+                 "The environment is identical within each probe/exec pair and hash-bound across ledger reuse; values are not archived.",
+                 "This controller does not prove an OS sandbox or atomic protection against concurrent filesystem mutation.",
+                 "Remote provider instructions and model deployment changes are outside this local digest."]}
+    audit_path = root / "UNQUALIFIED-BASE-CONTEXT-AUDIT.json"
+    _atomic(audit_path, audit)
+    candidate = {"schema": "frozen-base-context-policy-v2", "status": "UNQUALIFIED", "review": {},
+                 "audit_path": str(audit_path), "audit_sha256": _sha(audit_path.read_bytes()), "binding": binding}
+    candidate_path = root / "UNQUALIFIED-POLICY.json"
+    _atomic(candidate_path, candidate)
+    return candidate_path
 
 
 def _validate_schema(schema: Any, value: Any) -> None:
@@ -99,7 +330,8 @@ class CodexModelPort:
                  effort: str = "low", max_calls: int, max_tokens: int,
                  schema_by_slot: Mapping[str, Mapping[str, Any]], timeout_seconds: int = 180,
                  process_runner: ProcessRunner | None = None, context_probe_runner: ProcessRunner | None = None,
-                 frozen_base_context: FrozenBaseContextPolicy | None = None) -> None:
+                 frozen_base_context: FrozenBaseContextPolicy | None = None,
+                 allow_mock_context: bool = False) -> None:
         if not isinstance(model, str) or not model or not isinstance(effort, str) or not effort:
             raise ContractError("model and effort must be nonempty")
         if type(max_calls) is not int or max_calls < 1 or type(max_tokens) is not int or max_tokens < 1:
@@ -121,16 +353,38 @@ class CodexModelPort:
         self.model, self.effort = model, effort
         self.max_calls, self.max_tokens = max_calls, max_tokens
         self.schemas = json.loads(canonical(schema_by_slot))
+        self.schemas_digest = _sha(canonical(self.schemas).encode())
         self.timeout_seconds, self.runner = timeout_seconds, process_runner or subprocess.run
         self.context_probe_runner = context_probe_runner or subprocess.run
         self.frozen_base_context = frozen_base_context
+        # Explicit fixture-only seam: never usable with either real subprocess runner.
+        if type(allow_mock_context) is not bool or (allow_mock_context and
+                (process_runner is None or context_probe_runner is None or
+                 process_runner is subprocess.run or context_probe_runner is subprocess.run)):
+            raise ContractError("mock context requires explicit non-subprocess fixture runners")
+        if allow_mock_context and frozen_base_context is not None:
+            raise ContractError("mock and reviewed contexts are mutually exclusive")
+        self.mock_context = allow_mock_context
+        self.environment = dict(os.environ)
+        self.policy_data = frozen_base_context.data() if frozen_base_context else None
+        self.context_binding = self.policy_data["binding"] if self.policy_data else None
+        self.fixed_cwd = Path(self.context_binding["fixed_cwd"]) if self.context_binding else self.root / "fixture-cwd"
+        if self.mock_context:
+            self.fixed_cwd.mkdir(parents=True, exist_ok=True)
+        overrides = tuple(self.context_binding["config_overrides"]) if self.context_binding else ()
+        self.shared = shared_args(self.model, self.effort, overrides)
         self.root.mkdir(parents=True, exist_ok=True)
         self.call_root = self.root / "calls"
         self.call_root.mkdir(exist_ok=True)
         self.ledger_path = self.root / "ledger.json"
         config = {"schema": "codex-model-port-v1", "executable": self.executable, "model": model,
                   "effort": effort, "max_calls": max_calls, "max_tokens": max_tokens,
-                  "schemas": self.schemas, "timeout_seconds": timeout_seconds}
+                  "schemas": self.schemas, "timeout_seconds": timeout_seconds,
+                  "context_mode": "mock_fixture" if self.mock_context else "reviewed" if frozen_base_context else "unqualified",
+                  "context_policy": {"source": str(Path(frozen_base_context.source).resolve()), "sha256": frozen_base_context.sha256,
+                                     "binding": self.context_binding} if frozen_base_context else None,
+                  "shared_argv": self.shared, "fixed_cwd": str(self.fixed_cwd),
+                  "environment_sha256": _sha(canonical(self.environment).encode())}
         if self.ledger_path.exists():
             self.ledger = json.loads(self.ledger_path.read_text(encoding="utf-8"))
             if self.ledger.get("config") != config:
@@ -150,7 +404,7 @@ class CodexModelPort:
             raise ContractError("unexpected RunSession model request")
         if self.ledger["usage_incomplete"] or len(self.ledger["calls"]) >= self.max_calls or self.ledger["tokens"] >= self.max_tokens:
             raise ContractError("model budget exhausted or usage incomplete")
-        self._require_no_skill_context()
+        self._require_frozen_context()
         call_id = len(self.ledger["calls"]) + 1
         call_dir = self.call_root / f"{call_id:04d}-{body['slot']}"
         call_dir.mkdir()
@@ -160,20 +414,19 @@ class CodexModelPort:
         prompt = "Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n" + request.encoded
         prompt_path = call_dir / "prompt.txt"
         prompt_path.write_text(prompt, encoding="utf-8")
-        argv = [self.executable, "exec", "--ignore-user-config", "--ignore-rules", "--ephemeral", "--skip-git-repo-check", "-C", str(call_dir), "-m", self.model, "-s", "read-only", "--json", "--output-schema", str(schema_path), "-o", str(output_path), "-c", f'model_reasoning_effort="{self.effort}"', "-c", "project_doc_max_bytes=0", "-c", 'web_search="disabled"', "-c", "features.skip_host_skill_discovery=true"]
-        for feature in ("shell_tool", "unified_exec", "multi_agent", "apps", "plugins", "hooks", "browser_use", "browser_use_external", "computer_use", "image_generation", "view_image", "sleep_tool", "workspace_dependencies", "skill_search", "memories", "in_app_browser", "goals"):
-            argv.extend(("--disable", feature))
-        argv.extend(("--enable", "skip_host_skill_discovery"))
-        argv.append("-")
-        if self.frozen_base_context is not None:
-            argv = [item for item in argv if item not in {"--ignore-user-config", "--ignore-rules"}]
-            argv[argv.index("-C") + 1] = str(self.frozen_base_context.fixed_cwd.resolve(strict=True))
+        argv = [self.executable, "exec", *self.shared, "--ephemeral", "--skip-git-repo-check",
+                "--json", "--output-schema", str(schema_path), "-o", str(output_path), "-"]
         reservation = {"id": call_id, "slot": body["slot"], "request_hash": request.content_hash,
-                       "prompt_hash": _sha(prompt.encode()), "status": "reserved", "provider": {"id": "codex-cli", "model": self.model}, "argv": argv}
+                       "prompt_hash": _sha(prompt.encode()), "status": "reserved", "provider": {"id": "codex-cli", "model": self.model}, "argv": argv,
+                       "cwd": str(self.fixed_cwd), "environment_sha256": _sha(canonical(self.environment).encode()),
+                       "context_policy_sha256": self.frozen_base_context.sha256 if self.frozen_base_context else None,
+                       "context_probe": len(self.ledger["context_probes"]), "schema_hash": _sha(schema_path.read_bytes())}
+        self._verify_context_binding()  # Recheck after probe/artifact preparation, before paid I/O.
         self.ledger["calls"].append(reservation)
         _atomic(self.ledger_path, self.ledger)  # Reservation precedes all provider I/O.
         try:
-            result = self.runner(argv, input=prompt, text=True, encoding="utf-8", capture_output=True, timeout=self.timeout_seconds)
+            result = self.runner(argv, input=prompt, text=True, encoding="utf-8", capture_output=True,
+                                 timeout=self.timeout_seconds, cwd=str(self.fixed_cwd), env=dict(self.environment))
         except subprocess.TimeoutExpired as exc:
             reservation.update({"status": "unknown", "error_type": type(exc).__name__})
             self.ledger["usage_incomplete"] = True
@@ -221,45 +474,58 @@ class CodexModelPort:
         _atomic(self.ledger_path, self.ledger)
         return response
 
-    def _require_no_skill_context(self) -> None:
-        """Fail closed before paid I/O if the installed CLI exposes skills."""
-        if self.frozen_base_context is not None:
-            policy = self.frozen_base_context
-            cwd = policy.fixed_cwd.resolve(strict=True)
-            shared = ["--disable", "plugins", "--disable", "skill_search", "--disable", "memories", "--enable", "skip_host_skill_discovery", "-c", f'model="{self.model}"', "-c", "project_doc_max_bytes=0", "-c", 'web_search="disabled"']
-            manifest = {str(Path(path).resolve(strict=True)): _sha(Path(path).read_bytes()) for path in policy.config_sources}
-            if _sha(canonical(shared).encode()) != policy.shared_argv_digest or _sha(Path(self.executable).read_bytes()) != policy.cli_sha256 or _sha(canonical(manifest).encode()) != policy.config_sources_hash:
-                raise ContractError("frozen base-context executable or shared arguments drifted")
-            argv = [self.executable, "debug", "prompt-input", *shared, "public context probe"]
-            result = self.context_probe_runner(argv, text=True, encoding="utf-8", capture_output=True, timeout=30, cwd=str(cwd))
-            raw = (result.stdout or "").encode("utf-8")
-            if result.returncode or _sha(raw) != policy.context_digest:
-                raise ContractError("frozen base context drifted before paid call")
-            self.ledger.setdefault("context_probes", []).append({"status": "frozen_matched", "prompt_hash": _sha(raw)})
-            _atomic(self.ledger_path, self.ledger)
+    def _verify_context_binding(self) -> None:
+        if _sha(canonical(self.schemas).encode()) != self.schemas_digest:
+            raise ContractError("frozen per-slot response schema drifted")
+        if self.mock_context:
+            if list(self.fixed_cwd.iterdir()):
+                raise ContractError("mock fixed cwd is no longer empty")
             return
-        isolated_home = self.root / "context-probe-home"
-        isolated_home.mkdir(exist_ok=True)
-        argv = [self.executable, "debug", "prompt-input", "--disable", "plugins", "--disable", "skill_search", "--disable", "memories", "--enable", "skip_host_skill_discovery", "public context probe"]
-        environment = dict(os.environ)
-        environment["CODEX_HOME"] = str(isolated_home)
+        if self.frozen_base_context is None:
+            raise ContractError("unqualified base context; paid call refused")
+        policy = self.frozen_base_context.data()
+        binding = policy["binding"]
+        _require_empty_public_cwd(self.fixed_cwd)
+        if binding != self.context_binding:
+            raise ContractError("frozen context policy binding drifted")
+        if str(self.fixed_cwd.resolve()) != binding["fixed_cwd"] or self.shared != shared_args(self.model, self.effort, tuple(binding["config_overrides"])):
+            raise ContractError("frozen context shared argv or cwd drifted")
+        live = _runtime_binding(self.executable, self.fixed_cwd, self.environment,
+                                self.shared, binding["source_specs"], binding["config_overrides"])
+        if live != {k: v for k, v in binding.items() if k != "context_digest"}:
+            raise ContractError("frozen base-context CLI, configuration, environment or shared arguments drifted")
+
+    def _require_frozen_context(self) -> None:
+        """Verify reviewed identity and render before any paid reservation."""
+        self._verify_context_binding()
+        argv = [self.executable, "debug", "prompt-input", *self.shared]
+        probe_dir = self.root / "context-probes"
+        probe_dir.mkdir(exist_ok=True)
+        number = len(self.ledger["context_probes"]) + 1
+        raw_path = probe_dir / f"{number:04d}.json"
+        receipt = {"status": "rejected", "argv": argv, "cwd": str(self.fixed_cwd),
+                   "environment_sha256": _sha(canonical(self.environment).encode()),
+                   "raw_path": str(raw_path)}
         try:
-            result = self.context_probe_runner(argv, text=True, encoding="utf-8", capture_output=True, timeout=30, env=environment)
+            result = self.context_probe_runner(argv, text=True, encoding="utf-8", capture_output=True,
+                                               timeout=30, cwd=str(self.fixed_cwd), env=dict(self.environment))
             raw = (result.stdout or "").encode("utf-8")
-            prompt_input = json.loads(raw.decode("utf-8"))
-            rendered = canonical(prompt_input).lower()
-            skills_present = any(marker in rendered for marker in ("<skills", "skills_instructions", "skill roots", "available skills"))
-            accepted = result.returncode == 0 and isinstance(prompt_input, list) and bool(prompt_input) and not skills_present
+            raw_path.write_bytes(raw)
+            receipt.update({"exit_code": result.returncode, "raw_sha256": _sha(raw)})
+            if result.returncode != 0:
+                raise ContractError("debug base context render failed")
+            visible = _base_context_bytes(raw)
+            receipt["context_digest"] = _sha(visible)
+            self._verify_context_binding()
+            if self.context_binding and receipt["context_digest"] != self.context_binding["context_digest"]:
+                raise ContractError("frozen base context drifted before paid call")
+            receipt["status"] = "mock_fixture" if self.mock_context else "frozen_matched"
         except Exception as exc:
-            probe = {"status": "failed", "error_type": type(exc).__name__}
-            self.ledger.setdefault("context_probes", []).append(probe)
+            receipt["error_type"] = type(exc).__name__
+            raise ContractError(f"cannot verify frozen model context: {exc}") from exc
+        finally:
+            self.ledger["context_probes"].append(receipt)
             _atomic(self.ledger_path, self.ledger)
-            raise ContractError("cannot verify no-skills model context") from exc
-        probe = {"status": "accepted" if accepted else "rejected", "prompt_hash": _sha(raw), "skill_context_present": skills_present}
-        self.ledger.setdefault("context_probes", []).append(probe)
-        _atomic(self.ledger_path, self.ledger)
-        if not accepted:
-            raise ContractError("Codex prompt context contains skills; paid call refused")
 
 
 def _events(stream: str) -> list[Mapping[str, Any]]:
