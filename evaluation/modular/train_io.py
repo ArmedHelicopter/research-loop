@@ -4,7 +4,7 @@ from __future__ import annotations
 import csv, hashlib, json, os, stat
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Mapping, Protocol
+from typing import Any, Mapping, Protocol, Sequence
 
 from research_loop.modular.benchmarks.blade import BladeAdapter
 from research_loop.modular.benchmarks.discovery import DiscoveryBenchAdapter
@@ -68,15 +68,21 @@ class TrainPacketExporter:
     def __init__(self, custody: CustodyExportPort, snapshot_root: Path, output_root: Path) -> None:
         self.custody, self.snapshot_root, self.output_root = custody, snapshot_root, output_root
 
-    def export(self) -> tuple[PublicTrainPacket, ...]:
+    def export(self, item_ids: Sequence[str]) -> tuple[PublicTrainPacket, ...]:
+        if not item_ids or len(set(item_ids)) != len(item_ids) or any(not isinstance(item, str) for item in item_ids):
+            raise ContractError("export requires an exact nonempty train item allowlist")
         identities = self.custody.export_train()
         state = self.custody.state
         if not isinstance(state, Mapping) or not isinstance(state.get("inventory"), list) or not isinstance(state.get("split"), Mapping):
             raise ContractError("custody state is incomplete")
         inventory = {f"{row['benchmark']}:{row['task_id']}": row for row in state["inventory"]}
         splits = {row["item"]: row for row in state["split"].get("rows", []) if row.get("domain") == "train"}
+        exported = {f"{identity.benchmark}:{identity.task_id}": identity for identity in identities}
+        if not set(item_ids) <= set(exported):
+            raise ContractError("requested item is not in custody train export")
         packets = []
-        for identity in identities:
+        for key in item_ids:
+            identity = exported[key]
             identity.require_train()
             key = f"{identity.benchmark}:{identity.task_id}"
             row = inventory.get(key)
@@ -110,16 +116,26 @@ class TrainPacketExporter:
                 columns = dataset.get("columns", [])
                 if not isinstance(columns, list):
                     raise ContractError("Discovery columns are invalid")
-                public_datasets.append({"name": dataset.get("name"), "description": dataset.get("description"),
-                                        "columns": [{"name": col.get("name"), "description": col.get("description")} for col in columns if isinstance(col, Mapping)]})
+                dataset_name = dataset.get("name")
+                if not isinstance(dataset_name, str) or not dataset_name:
+                    raise ContractError("Discovery dataset descriptor has no public name")
+                public_datasets.append({"name": dataset_name, "description": dataset.get("description") if isinstance(dataset.get("description"), str) else None,
+                                        "columns": [{"name": col.get("name"), "description": col.get("description") if isinstance(col.get("description"), str) else None} for col in columns if isinstance(col, Mapping) and isinstance(col.get("name"), str) and col.get("name")]})
             kind = row["official_split"].split("/", 1)[0]
-            task = DiscoveryBenchAdapter().prepare(identity, {"task_id": identity.task_id, "question": query.get("question"), "difficulty": query.get("difficulty"), "source_kind": "synthetic" if kind == "synth" else "real", "dataset": public_datasets})
+            question = query.get("question")
+            if not isinstance(question, str) or not question:
+                raise ContractError("Discovery public query is incomplete")
+            difficulty = query.get("difficulty")
+            task = DiscoveryBenchAdapter().prepare(identity, {"task_id": identity.task_id, "question": question, "difficulty": difficulty if isinstance(difficulty, str) else None, "source_kind": "synthetic" if kind == "synth" else "real", "dataset": public_datasets})
         elif identity.benchmark == "blade":
             source = _safe_under(self.snapshot_root / "scienceagent" / "work" / "BLADE" / "blade_bench" / "datasets", row["relative_path"])
             info = _public_file(source / "info.json", expected)
             data = _public_file(source / "data.csv", expected)
             raw = json.loads(info.read_text(encoding="utf-8"))
-            question, description = raw.get("research_question"), raw.get("data_desc")
+            questions = raw.get("research_questions", raw.get("research_question"))
+            question = questions[0] if isinstance(questions, list) and questions else questions
+            data_desc = raw.get("data_desc")
+            description = data_desc.get("dataset_description") if isinstance(data_desc, Mapping) else data_desc
             with data.open("r", encoding="utf-8", newline="") as stream:
                 header = next(csv.reader(stream), [])
             if not isinstance(question, str) or not isinstance(description, str) or not header or any(not isinstance(value, str) or not value for value in header):

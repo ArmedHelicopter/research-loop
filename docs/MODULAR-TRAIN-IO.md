@@ -1,6 +1,7 @@
 # Train-only public packet export
 
-`TrainPacketExporter` consumes `CustodyStore.export_train()` and the frozen
+`TrainPacketExporter.export(item_ids)` consumes an explicit nonempty allowlist
+which must be a subset of `CustodyStore.export_train()`, plus the frozen
 custody state. It refuses manually supplied domains, unknown identities, split
 or source-group drift, unsafe relative paths, links/reparse points, and hashes
 not present in frozen inventory before parsing public metadata.
