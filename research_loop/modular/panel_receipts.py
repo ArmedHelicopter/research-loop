@@ -353,8 +353,15 @@ class PanelReceiptVerifier:
                 raise ContractError("independent scorer receipts must exactly cover successful cells")
             for key, receipt in by_key.items():
                 self._scorer_verifier(receipt, expected[key], panel)
-                body = receipt.receipt.data()
-                if body.get("schema") != "independent-scored-cell-v1" or body.get("runtime_trace_digest") != actual[key].trace_digest or body.get("scorer_digest") != expected[key].scorer_digest:
+                raw = receipt.receipt.data()
+                # v2 is issued by the independent adapted-metric service.  Its
+                # signed body remains opaque until the configured verifier has
+                # authenticated it above; do not mistake an envelope for an
+                # unsigned v1 caller score.
+                body = raw.get("body") if set(raw) == {"body", "mac"} and isinstance(raw.get("body"), dict) else raw
+                if (body.get("schema") not in {"independent-scored-cell-v1", "independent-scored-cell-v2"}
+                        or body.get("runtime_trace_digest") != actual[key].trace_digest
+                        or body.get("scorer_digest") != expected[key].scorer_digest):
                     raise ContractError("scorer receipt lacks typed runtime and scorer binding")
             scientific = True
         elif scored:
