@@ -16,7 +16,10 @@ from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.ontology import ContractError, digest
 
 
-_IMAGE = re.compile(r"^[a-z0-9][a-z0-9._/-]*@sha256:[0-9a-f]{64}$")
+# A Docker reference may retain a locally meaningful tag while pinning the
+# executable content with a digest.  It is still one argv element, never shell
+# input; the digest remains mandatory.
+_IMAGE = re.compile(r"^[a-z0-9][a-z0-9._/-]*(?::[a-z0-9][a-z0-9._-]{0,127})?@sha256:[0-9a-f]{64}$")
 _INPUT = re.compile(r"^[A-Za-z][A-Za-z0-9_-]{0,63}$")
 _DOCKER_INFRASTRUCTURE_ERRORS = (
     "cannot connect to the docker daemon", "docker daemon", "error during connect",
@@ -180,6 +183,26 @@ class DockerExecutionBroker:
             raise ContractError("unsafe mount source")
         return value
 
+    def validate_inputs(self, identity: DataIdentity, inputs: Mapping[str, Path]) -> tuple[ArtifactReceipt, ...]:
+        """Preflight named public files before their metadata reaches a model.
+
+        This is read-only and repeats the same allowlist/link checks used by
+        ``execute``.  The subsequent execution still revalidates every mount,
+        so a preflight receipt never authorizes a changed path.
+        """
+        if not isinstance(identity, DataIdentity) or not isinstance(inputs, Mapping) or not inputs:
+            raise ContractError("execution needs one or more named public input files")
+        if any(not isinstance(key, str) or not _INPUT.fullmatch(key) for key in inputs):
+            raise ContractError("invalid input mount name")
+        receipts = []
+        for artifact_id, path in sorted(inputs.items()):
+            try:
+                checked = self._safe_file(path)
+                receipts.append(validate_artifact(identity, artifact_id, checked))
+            except (ContractError, OSError) as exc:
+                raise ContractError(f"public input preflight failed: {exc}") from exc
+        return tuple(receipts)
+
     @staticmethod
     def _clip(value: bytes | str | None, limit: int) -> str:
         if value is None:
@@ -198,6 +221,8 @@ class DockerExecutionBroker:
             return self._receipt(request.identity, "rejected", None, {"reason": str(exc)})
         try:
             artifact = validate_artifact(request.identity, "program", program)
+            input_artifacts = {key: validate_artifact(request.identity, key, path).record.data()
+                               for key, path in inputs.items()}
         except (ContractError, OSError) as exc:
             return self._receipt(request.identity, "rejected", None, {"reason": f"program validation failed: {exc}"})
         name = "research-loop-" + digest({"task": request.identity.data(), "program": artifact.sha256, "time": time.time_ns()})[:20]
@@ -211,12 +236,12 @@ class DockerExecutionBroker:
         try:
             completed = self._runner(argv, capture_output=True, timeout=request.timeout_seconds)
         except FileNotFoundError:
-            return self._receipt(request.identity, "unavailable", artifact, {"reason": "docker executable unavailable", "argv": argv})
+            return self._receipt(request.identity, "unavailable", artifact, {"reason": "docker executable unavailable", "argv": argv, "input_artifacts": input_artifacts})
         except subprocess.TimeoutExpired as exc:
             cleanup = self._cleanup_container(name)
-            return self._receipt(request.identity, "timed_out", artifact, {"argv": argv, "stdout": self._clip(exc.stdout, 12000), "stderr": self._clip(exc.stderr, 4000), "wall_seconds": round(time.monotonic() - started, 3), "cleanup": cleanup})
+            return self._receipt(request.identity, "timed_out", artifact, {"argv": argv, "stdout": self._clip(exc.stdout, 12000), "stderr": self._clip(exc.stderr, 4000), "wall_seconds": round(time.monotonic() - started, 3), "cleanup": cleanup, "input_artifacts": input_artifacts})
         except OSError as exc:
-            return self._receipt(request.identity, "unavailable", artifact, {"reason": f"docker invocation failed: {exc}", "argv": argv})
+            return self._receipt(request.identity, "unavailable", artifact, {"reason": f"docker invocation failed: {exc}", "argv": argv, "input_artifacts": input_artifacts})
         stderr = self._clip(completed.stderr, 4000)
         if completed.returncode and any(marker in stderr.lower() for marker in _DOCKER_INFRASTRUCTURE_ERRORS):
             status = "unavailable"
@@ -224,7 +249,7 @@ class DockerExecutionBroker:
             status = "succeeded" if completed.returncode == 0 else "failed"
         return self._receipt(request.identity, status, artifact, {"argv": argv, "exit_code": completed.returncode,
                 "stdout": self._clip(completed.stdout, 12000), "stderr": stderr,
-                "wall_seconds": round(time.monotonic() - started, 3)})
+                "wall_seconds": round(time.monotonic() - started, 3), "input_artifacts": input_artifacts})
 
     def _cleanup_container(self, name: str) -> dict[str, object]:
         """Only remove the digest-derived container name owned by this invocation."""
