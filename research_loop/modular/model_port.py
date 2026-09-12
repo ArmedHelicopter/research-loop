@@ -14,6 +14,7 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
+from dataclasses import dataclass
 from typing import Any, Callable, Mapping
 
 from research_loop.modular.contracts import FrozenRecord
@@ -38,6 +39,21 @@ class TerminalCallInspection:
 
     def __init__(self, receipt: FrozenRecord, response: FrozenRecord | None) -> None:
         self.receipt, self.response = receipt, response
+
+
+@dataclass(frozen=True)
+class FrozenBaseContextPolicy:
+    """Manually reviewed, non-secret identity of a matched CLI base context."""
+    context_digest: str
+    cli_sha256: str
+    shared_argv_digest: str
+    config_sources_hash: str
+    fixed_cwd: Path
+    reviewed: bool = False
+
+    def __post_init__(self) -> None:
+        if self.reviewed is not True or any(not isinstance(x, str) or len(x) != 64 for x in (self.context_digest, self.cli_sha256, self.shared_argv_digest, self.config_sources_hash)):
+            raise ContractError("reviewed frozen base-context digests required")
 
 
 def _validate_schema(schema: Any, value: Any) -> None:
@@ -81,7 +97,8 @@ class CodexModelPort:
     def __init__(self, executable: Path | str, work_root: Path, *, model: str = "gpt-5.6-luna",
                  effort: str = "low", max_calls: int, max_tokens: int,
                  schema_by_slot: Mapping[str, Mapping[str, Any]], timeout_seconds: int = 180,
-                 process_runner: ProcessRunner | None = None, context_probe_runner: ProcessRunner | None = None) -> None:
+                 process_runner: ProcessRunner | None = None, context_probe_runner: ProcessRunner | None = None,
+                 frozen_base_context: FrozenBaseContextPolicy | None = None) -> None:
         if not isinstance(model, str) or not model or not isinstance(effort, str) or not effort:
             raise ContractError("model and effort must be nonempty")
         if type(max_calls) is not int or max_calls < 1 or type(max_tokens) is not int or max_tokens < 1:
@@ -105,6 +122,7 @@ class CodexModelPort:
         self.schemas = json.loads(canonical(schema_by_slot))
         self.timeout_seconds, self.runner = timeout_seconds, process_runner or subprocess.run
         self.context_probe_runner = context_probe_runner or subprocess.run
+        self.frozen_base_context = frozen_base_context
         self.root.mkdir(parents=True, exist_ok=True)
         self.call_root = self.root / "calls"
         self.call_root.mkdir(exist_ok=True)
@@ -146,6 +164,9 @@ class CodexModelPort:
             argv.extend(("--disable", feature))
         argv.extend(("--enable", "skip_host_skill_discovery"))
         argv.append("-")
+        if self.frozen_base_context is not None:
+            argv = [item for item in argv if item not in {"--ignore-user-config", "--ignore-rules"}]
+            argv[argv.index("-C") + 1] = str(self.frozen_base_context.fixed_cwd.resolve(strict=True))
         reservation = {"id": call_id, "slot": body["slot"], "request_hash": request.content_hash,
                        "prompt_hash": _sha(prompt.encode()), "status": "reserved", "provider": {"id": "codex-cli", "model": self.model}, "argv": argv}
         self.ledger["calls"].append(reservation)
@@ -201,6 +222,20 @@ class CodexModelPort:
 
     def _require_no_skill_context(self) -> None:
         """Fail closed before paid I/O if the installed CLI exposes skills."""
+        if self.frozen_base_context is not None:
+            policy = self.frozen_base_context
+            cwd = policy.fixed_cwd.resolve(strict=True)
+            shared = ["--disable", "plugins", "--disable", "skill_search", "--disable", "memories", "--enable", "skip_host_skill_discovery", "-c", f'model="{self.model}"', "-c", "project_doc_max_bytes=0", "-c", 'web_search="disabled"']
+            if _sha(canonical(shared).encode()) != policy.shared_argv_digest or _sha(Path(self.executable).read_bytes()) != policy.cli_sha256:
+                raise ContractError("frozen base-context executable or shared arguments drifted")
+            argv = [self.executable, "debug", "prompt-input", *shared, "public context probe"]
+            result = self.context_probe_runner(argv, text=True, encoding="utf-8", capture_output=True, timeout=30, cwd=str(cwd))
+            raw = (result.stdout or "").encode("utf-8")
+            if result.returncode or _sha(raw) != policy.context_digest:
+                raise ContractError("frozen base context drifted before paid call")
+            self.ledger.setdefault("context_probes", []).append({"status": "frozen_matched", "prompt_hash": _sha(raw)})
+            _atomic(self.ledger_path, self.ledger)
+            return
         isolated_home = self.root / "context-probe-home"
         isolated_home.mkdir(exist_ok=True)
         argv = [self.executable, "debug", "prompt-input", "--disable", "plugins", "--disable", "skill_search", "--disable", "memories", "--enable", "skip_host_skill_discovery", "public context probe"]
