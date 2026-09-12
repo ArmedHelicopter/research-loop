@@ -301,17 +301,41 @@ class CustodyStore:
         self._save()
         return record
 
-    def split(self, *, seed: str, validation_percent: int = 30) -> dict[str, Any]:
+    def split(self, *, seed: str, validation_percent: int = 30,
+              train_only_item_ids: list[str] | None = None,
+              train_only_reason_commitment: str | None = None) -> dict[str, Any]:
+        """Freeze allocation, optionally pre-registering full groups as train-only.
+
+        A train-only declaration is a voluntary loss of validation eligibility;
+        it is neither an exposure assertion nor an independent-clean proof.
+        """
         if not self.state["inventory_digest"]:
             raise ContractError("inventory required before split")
         if not isinstance(validation_percent, int) or not 1 <= validation_percent <= 100:
             raise ContractError("validation percent must be 1..100")
         items = [InventoryItem.parse(row) for row in self.state["inventory"]]
         groups = _merged_groups(items)
+        known = set(groups)
+        if train_only_item_ids is None:
+            if train_only_reason_commitment is not None:
+                raise ContractError("train-only reason requires declared item ids")
+            declaration = None
+            train_only_groups: set[str] = set()
+        else:
+            if (not train_only_item_ids or len(set(train_only_item_ids)) != len(train_only_item_ids)
+                    or any(not isinstance(item_id, str) for item_id in train_only_item_ids)
+                    or not set(train_only_item_ids) <= known or not _is_digest(train_only_reason_commitment or "")):
+                raise ContractError("invalid train-only declaration")
+            declared = sorted(train_only_item_ids)
+            train_only_groups = {groups[item_id] for item_id in declared}
+            # Persist all group members, so an abbreviated caller list cannot
+            # make a connected member appear validation-eligible later.
+            declaration = {"item_ids": declared, "group_ids": sorted(train_only_groups),
+                           "reason_commitment": train_only_reason_commitment}
         allocation: dict[str, str] = {}
         for gid in set(groups.values()):
             members = [item for item in items if groups[f"{item.benchmark}:{item.task_id}"] == gid]
-            if any(item.exposure == "exposed" for item in members):
+            if gid in train_only_groups or any(item.exposure == "exposed" for item in members):
                 allocation[gid] = "train"
             elif not all(f"{item.benchmark}:{item.task_id}" in self.state["attestations"] for item in members):
                 allocation[gid] = "quarantine"
@@ -324,6 +348,10 @@ class CustodyStore:
             qualified = item_id in self.state["attestations"]
             rows.append({"item": item_id, "group": groups[item_id], "domain": allocation[groups[item_id]], "official_split": item.official_split, "exposure": item.exposure, "custodian_qualified": qualified})
         payload = {"seed": seed, "validation_percent": validation_percent, "inventory_digest": self.state["inventory_digest"], "rows": sorted(rows, key=lambda row: row["item"])}
+        # Preserve the pre-existing canonical payload and digest when callers
+        # make no declaration.  Old persisted split files remain valid.
+        if declaration is not None:
+            payload["train_only_declaration"] = declaration
         split_digest = digest(payload)
         if self.state["split"] is not None and self.state["split"]["digest"] != split_digest:
             raise ContractError("split drift or reallocation refused")
