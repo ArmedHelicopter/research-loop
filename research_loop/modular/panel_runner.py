@@ -180,7 +180,10 @@ class Q43ReviewDriver:
         return stage, candidate, tuple(responses)
 
 
-DRIVERS: dict[str, ScenarioDriver] = {"Q3.1": Q31PredictionDriver(), "Q4.3": Q43ReviewDriver()}
+from research_loop.modular.q15_panel_driver import Q15HistoryReviewDriver
+
+
+DRIVERS: dict[str, ScenarioDriver] = {"Q1.5": Q15HistoryReviewDriver(), "Q3.1": Q31PredictionDriver(), "Q4.3": Q43ReviewDriver()}
 
 
 def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
