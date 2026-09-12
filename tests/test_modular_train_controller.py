@@ -67,7 +67,7 @@ def model_port(root: Path, monkeypatch, *, max_calls: int = 24, valid_plan: bool
             directions = ["increase", "decrease", "increase"] if valid_plan else ["increase", "increase", "increase"]
             output = {"question": "public", "budget_units": 3, "branches": [{"hypothesis_id": f"h{i}", "mechanism_key": f"m{i}", "mechanism": "public mechanism", "intervention": "public intervention", "elimination_condition": "public disagreement", "predictions": [{"prediction_id": f"p{i}", "discriminator_id": "shared", "observable": "public observable", "direction": directions[i], "value_range": None, "failure_condition": "does not " + directions[i]}]} for i in range(3)]}
         else:
-            output = {"objective_digest": FrozenRecord.from_dict(request["objective"]).content_hash, "outcome": "unknown", "evidence_ids": [], "conclusion": "synthetic engineering result", "programme_complete": False}
+            output = {"objective_digest": request["module_context"]["required_objective_digest"], "outcome": "unknown", "evidence_ids": [], "conclusion": "synthetic engineering result", "programme_complete": False}
         Path(argv[argv.index("-o") + 1]).write_text(json.dumps(output), encoding="utf-8")
         usage = {"input_tokens": 1, "cached_input_tokens": 0, "cache_write_input_tokens": 0, "output_tokens": 1, "reasoning_output_tokens": 0}
         return SimpleNamespace(returncode=0, stdout=json.dumps({"type": "turn.completed", "usage": usage}), stderr="")
@@ -98,6 +98,14 @@ def test_actual_custody_export_port_runner_and_receipt_are_engineering_only(tmp_
     assert result.receipt.data()["execution_status"] == "engineering_complete"
     assert result.receipt.data()["model_policy_sha256"]
     assert all(runtime.status == "succeeded" for runtime in result.runtimes)
+    attempt = json.loads((tmp_path / "run" / "controller-attempt.json").read_text(encoding="utf-8"))
+    assert attempt["compiled_manifest"]["panel_digest"] == result.compiled.panel.digest
+    assert len(attempt["cell_plan"]) == len(attempt["runtime_receipts"]) == 12
+    for runtime in result.runtimes:
+        events = [json.loads(line) for line in runtime.trace_path.read_text(encoding="utf-8").splitlines()]
+        final_request = next(event["data"]["request"] for event in events if event["stage"] == "model_request" and event["data"]["request"]["slot"] == "final")
+        final_response = next(event["data"]["response"] for event in events if event["stage"] == "model_response" and event["data"]["request_digest"] == FrozenRecord.from_dict(final_request).content_hash)
+        assert final_response["objective_digest"] == final_request["module_context"]["required_objective_digest"]
     assert all(runtime.trace_path.exists() for runtime in result.runtimes)
 
 

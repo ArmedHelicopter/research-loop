@@ -54,8 +54,9 @@ class Q31PredictionDriver:
                    "scenario_digest": scenario.content_hash}
         controller = scenario.data()["controller_input"]
         first = workflow.invoke_model("scenario", model, instruction=(
-            "Produce a bounded three-branch prediction plan from this exact public scenario. "
-            "Do not claim a scientific result."), module_context=FrozenRecord.from_dict({
+            "Produce exactly a three-branch prediction plan from this exact public scenario with budget_units=3. "
+            "Every branch must use one common discriminator, and at least two branches must make different "
+            "predictions for it. The plan is not an observation or a scientific result; do not claim either."), module_context=FrozenRecord.from_dict({
                 "panel_cell": binding, "scenario_controller_input": controller,
                 "candidate_package": package.record.data(),
                 "control": "M4" if "M4" not in workflow.enabled else ""}))
@@ -73,8 +74,10 @@ class Q31PredictionDriver:
                                     scenario_digest=scenario.content_hash)
             result_context = {"m4_control_response": first.data()}
         candidate = workflow.invoke_model("final", model, instruction=(
-            "Return the bounded candidate record for this train-only run; unknown is allowed."),
+            "Return the bounded candidate record for this train-only run; unknown is allowed. "
+            "Copy required_objective_digest exactly into objective_digest; do not calculate or alter it."),
             module_context=FrozenRecord.from_dict({"panel_cell": binding, "candidate_package": package.record.data(),
+                                                    "required_objective_digest": workflow.session.objective.content_hash,
                                                     "driver_stage": stage.detail.data()["stage"],
                                                     "driver_result": result_context}))
         return stage, candidate, (first, candidate)

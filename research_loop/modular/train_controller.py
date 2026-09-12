@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -134,6 +135,8 @@ def run_q31_train_panel(config: FrozenTrainControllerConfig, *, custody: Custody
     _write(root / "controller-attempt.json", attempt)
     try:
         packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+        attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+        _write(root / "controller-attempt.json", attempt)
         tasks = [packet.task for packet in packets]
         if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
             raise ContractError("export did not return the frozen allowlist")
@@ -144,18 +147,30 @@ def run_q31_train_panel(config: FrozenTrainControllerConfig, *, custody: Custody
             p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
             scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
             replicates=tuple(data["replicates"]))
+        attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                        "compiled_manifest": compiled.manifest.data(),
+                        "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+        _write(root / "controller-attempt.json", attempt)
     except Exception as exc:
         attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
         _write(root / "controller-attempt.json", attempt)
         raise
     runtimes = []
-    for cell in compiled.panel.cells:
-        result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
-            package=compiled.packages[cell.runtime_arm.content_hash], objective=_record({"panel_digest": compiled.panel.digest}, "objective"),
-            sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
-            model=model, audit_verifier=audit_verifier, scorer=None)
-        runtimes.append(result.runtime)
-    verdict = PanelReceiptVerifier().verify(compiled.panel, tuple(runtimes))
+    try:
+        for cell in compiled.panel.cells:
+            result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                package=compiled.packages[cell.runtime_arm.content_hash], objective=_record({"panel_digest": compiled.panel.digest}, "objective"),
+                sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                model=model, audit_verifier=audit_verifier, scorer=None)
+            runtimes.append(result.runtime)
+            attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.runtime))
+            attempt["runtime_trace_digests"].append(result.runtime.trace_digest)
+            _write(root / "controller-attempt.json", attempt)
+        verdict = PanelReceiptVerifier().verify(compiled.panel, tuple(runtimes))
+    except Exception as exc:
+        attempt.update({"status": "execution_interrupted", "error_type": type(exc).__name__})
+        _write(root / "controller-attempt.json", attempt)
+        raise
     if verdict.decision != "engineering_verified" or verdict.scientific_verified:
         raise ContractError("Q3.1 controller cannot claim scientific measurement")
     execution_complete = verdict.failures == verdict.unscored == verdict.blocked == 0
@@ -175,7 +190,9 @@ def run_q31_train_panel(config: FrozenTrainControllerConfig, *, custody: Custody
 
 
 def _write(path: Path, value: Mapping[str, Any]) -> None:
-    path.write_text(canonical(dict(value)), encoding="utf-8")
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(canonical(dict(value)), encoding="utf-8")
+    os.replace(temporary, path)
 
 
 def _label_ancestor(path: Path) -> bool:
