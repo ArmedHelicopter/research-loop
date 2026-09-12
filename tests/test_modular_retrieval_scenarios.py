@@ -6,6 +6,7 @@ import pytest
 from research_loop.modular.benchmarks import BladeAdapter, DiscoveryBenchAdapter
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.runtime import verify_trace
+from research_loop.modular.experiments import registry
 from research_loop.modular.scenarios_retrieval import _VARIANTS, run_retrieval_scenario
 
 
@@ -34,6 +35,10 @@ def test_q8_registered_variants_keep_public_payloads_and_journals(tmp_path: Path
     assert "labels" not in "".join(item.encoded for item in seen).lower()
 
 
+def test_q8_variants_exactly_match_the_authoritative_registry():
+    assert {key: tuple(value) for key, value in _VARIANTS.items()} == {key: registry()[key].variants for key in _VARIANTS}
+
+
 def _response(request: FrozenRecord) -> FrozenRecord:
     slot = request.data()["slot"]
     if slot == "stage_1":
@@ -48,11 +53,12 @@ def _response(request: FrozenRecord) -> FrozenRecord:
     return FrozenRecord.from_dict({"response": "fixture"})
 
 
-def test_q81_binds_every_required_real_stage_to_a_trace(tmp_path: Path):
+@pytest.mark.parametrize(("variant", "stage"), [("research", "stage_0.5"), ("competition", "stage_1"), ("distinguish", "stage_3"), ("adversarial", "stage_7"), ("retrospective", "stage_9"), ("frontier", "frontier")])
+def test_q81_binds_each_required_real_stage_to_a_trace(tmp_path: Path, variant: str, stage: str):
     task = task_for("blade")
-    result = run_retrieval_scenario("Q8.1", "all_stages", task=task, frozen_controls=controls(task), sidecar=tmp_path / "all")
+    result = run_retrieval_scenario("Q8.1", variant, task=task, frozen_controls=controls(task), sidecar=tmp_path / variant)
     coverage = result.record.data()["detail"]["stage_coverage"]
-    assert {row["stage"] for row in coverage if row["status"] == "executed"} >= {"coverage_stage_0.5", "coverage_stage_1", "coverage_stage_3", "coverage_stage_7", "coverage_stage_9", "coverage_frontier"}
+    assert {row["stage"] for row in coverage if row["status"] == "executed"} == {"coverage_" + stage}
 
 
 def test_q83_same_budget_calls_all_lanes_and_allows_empty_routes(tmp_path: Path):
@@ -71,18 +77,18 @@ def test_q84_shared_source_is_one_m2_root_but_independent_sources_are_three(tmp_
     assert independent.record.data()["detail"]["evidence_root_count"] == 3
 
 
-def test_q85_cheap_diagnostic_blocks_stagnation_calls(tmp_path: Path):
+def test_q85_frozen_stagnation_cheap_diagnostic_blocks_calls(tmp_path: Path):
     task = task_for("blade")
-    blocked = run_retrieval_scenario("Q8.5", "cheap_diagnostic", task=task, frozen_controls=controls(task), sidecar=tmp_path / "cheap")
-    active = run_retrieval_scenario("Q8.5", "stagnation", task=task, frozen_controls=controls(task), sidecar=tmp_path / "stagnation")
+    blocked = run_retrieval_scenario("Q8.5", "never", task=task, frozen_controls=controls(task), sidecar=tmp_path / "cheap")
+    active = run_retrieval_scenario("Q8.5", "new_mechanism", task=task, frozen_controls=controls(task), sidecar=tmp_path / "new-mechanism")
     assert blocked.record.data()["detail"]["provider_calls"] == []
     assert len(active.record.data()["detail"]["provider_calls"]) == 3
 
 
 def test_q86_source_text_cannot_change_lock_and_q87_empty_frontier_has_no_authority(tmp_path: Path):
     task = task_for("blade")
-    q86 = run_retrieval_scenario("Q8.6", "malicious_text", task=task, frozen_controls=controls(task), sidecar=tmp_path / "authority")
+    q86 = run_retrieval_scenario("Q8.6", "malicious_override", task=task, frozen_controls=controls(task), sidecar=tmp_path / "authority")
     assert q86.record.data()["detail"]["final_gate"]["decision"] == "unknown"
-    q87 = run_retrieval_scenario("Q8.7", "empty_frontier", task=task, frozen_controls=controls(task), sidecar=tmp_path / "frontier")
+    q87 = run_retrieval_scenario("Q8.7", "empty", task=task, frozen_controls=controls(task), sidecar=tmp_path / "frontier")
     exported = q87.record.data()["detail"]["training_export"]
     assert exported["proposals"] == [] and exported["benchmark_admission"] is False and exported["queue_admission"] is False and exported["programme_complete"] is False
