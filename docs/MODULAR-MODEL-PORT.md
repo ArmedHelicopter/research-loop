@@ -32,6 +32,12 @@ hash and boolean result, then refuses the paid process if the rendered context
 contains a skills block. This is a fail-closed probe, not an OS sandbox. The
 arguments were checked against `codex exec --help` on Codex CLI 0.153.4.
 
+The task-local contract uses the documented `[[skills.config]]` form with a
+`SKILL.md` path and `enabled = false` for each discovered local skill. On this
+host that override reduces local entries but does not remove the bundled SYSTEM
+catalog. A paid run therefore remains refused until the probe observes no skills
+block; it must not treat local overrides as proof that system skills are absent.
+
 `max_tokens` is enforced against recorded cumulative provider usage after each
 call. The CLI version checked here exposes no per-call output-token switch, so
 it is an accounting stop, not a pre-call output-token cap.
