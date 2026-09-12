@@ -38,7 +38,9 @@ class ExplorationPlan:
         required_text(self.plan_id, "plan id")
         if not isinstance(self.identity, DataIdentity) or not isinstance(self.frozen_plan, FrozenRecord):
             raise ContractError("exploration plan needs frozen identity and plan")
-        self.identity.require_train()
+        # A frozen plan may execute a bounded diagnostic against its current
+        # validation task.  Only candidate selection and strategy learning are
+        # train-only; this object carries no cross-task feedback channel.
 
     @property
     def content_hash(self) -> str:

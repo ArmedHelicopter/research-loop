@@ -91,6 +91,13 @@ def test_feasibility_requires_all_stages_and_train_only_appeals() -> None:
     validation = DataIdentity("bench", "task", "group", "version", "validation", "validation")
     with pytest.raises(ContractError, match="training provenance"):
         ExplorationRatioCandidate("ratio", validation, 20)
+    validation_plan = ExplorationPlan("validation-runtime", validation, record("already-frozen"),
+                                      ResourceClosure("data-v1", "artifact", "negative", 1, 1))
+    validation_report = assess_feasibility(validation_plan, {
+        "data": FeasibilityObservation("data", "passed", "d"),
+    })
+    assert admit_exploration(plan=validation_plan, feasibility=validation_report,
+                             budget=ExplorationBudget(1, 1)).evidence_admission == "not_evidence"
 
 
 def test_instrument_repair_requires_new_execution_for_invalidated_evidence() -> None:
