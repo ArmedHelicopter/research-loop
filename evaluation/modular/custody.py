@@ -425,7 +425,8 @@ class CustodyStore:
         real inventory/split membership before allowing that later receipt.
         """
         from research_loop.modular.panel_receipts import FrozenPanel
-        if not isinstance(panel, FrozenPanel) or panel.domain != "validation":
+        from research_loop.modular.combination_panels import CombinationPanel
+        if not isinstance(panel, (FrozenPanel, CombinationPanel)) or panel.domain != "validation":
             raise ContractError("panel lease requires a frozen validation panel")
         if self.state["split"] is None:
             raise ContractError("split required before panel lease")

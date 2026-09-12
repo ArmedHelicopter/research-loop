@@ -361,7 +361,7 @@ class PanelReceiptVerifier:
             raise ContractError("caller supplied scorer receipts without an independent scorer verifier")
         acceptance_decision = None
         if panel.domain == "validation" and validation is not None:
-            acceptance_decision = self._verify_validation(panel, validation, scientific, rows, scored)
+            acceptance_decision = self.verify_validation_acceptance(panel, validation, scientific, rows, scored)
         elif validation is not None:
             raise ContractError("acceptance applies only to validation panels")
         failed = sum(row.status == "failed" for row in rows)
@@ -447,7 +447,7 @@ class PanelReceiptVerifier:
             raise ContractError("blocked receipt contradicts the actual terminal decision")
 
 
-    def _verify_validation(self, panel: FrozenPanel, validation: ValidationAcceptance, scientific: bool,
+    def verify_validation_acceptance(self, panel: Any, validation: ValidationAcceptance, scientific: bool,
                            runtime: tuple[RuntimeReceipt, ...], scorer: tuple[ScientificScorerReceipt, ...]) -> str | None:
         if not scientific or not self._custody_keys or not self._acceptance_keys or not self._calibration_keys:
             return None
