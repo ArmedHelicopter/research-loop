@@ -249,6 +249,18 @@ class RunSession:
             "response_digest": response.content_hash, "request_digest": last["data"]["request_digest"],
             "error_type": error_type})
 
+    def controller_failure(self, *, driver_id: str, error_type: str, panel_cell: Mapping[str, Any] | None = None) -> FrozenRecord:
+        """Close a driver before it obtained a response to bind as a rejection."""
+        if self._terminal or not isinstance(driver_id, str) or not driver_id or not isinstance(error_type, str) or not error_type:
+            raise ContractError("controller failure needs an active typed driver")
+        self._terminal = True
+        body = {"schema": "controller-failure-v1", "driver_id": driver_id, "error_type": error_type}
+        if panel_cell is not None:
+            if not isinstance(panel_cell, Mapping):
+                raise ContractError("controller failure panel binding must be a mapping")
+            body["panel_cell"] = dict(panel_cell)
+        return self._record("controller_failure", body)
+
     def admit(self, execution_digest: str, audits: list[FrozenRecord]) -> FrozenRecord:
         if self._terminal:
             raise ContractError("terminal runs cannot admit evidence")
@@ -323,4 +335,4 @@ def verify_trace(path: Path) -> FrozenRecord:
     if not stages or stages[0] != "objective_lock":
         raise ContractError("trace lacks objective lock")
     return FrozenRecord.from_dict({"lock_digest": lock, "events": len(stages), "trace_digest": previous,
-                                  "terminal": stages[-1] in {"final_decision", "model_failure", "driver_failure"}, "stages": stages})
+                                  "terminal": stages[-1] in {"final_decision", "model_failure", "driver_failure", "controller_failure"}, "stages": stages})

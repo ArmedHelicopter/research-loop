@@ -395,9 +395,12 @@ class PanelReceiptVerifier:
         expected_binding = {"experiment_id": expected.coverage_id, "variant": expected.variant,
                             "replicate": expected.replicate, "arm_id": expected.arm_id,
                             "scenario_digest": expected.scenario_digest}
-        if not any(request.get("task", {}).get("identity") == expected.identity.data()
-                       and request.get("module_context", {}).get("panel_cell") == expected_binding
-                       for request in requests):
+        bound_request = any(request.get("task", {}).get("identity") == expected.identity.data()
+                            and request.get("module_context", {}).get("panel_cell") == expected_binding
+                            for request in requests)
+        bound_early_failure = (not requests and events[-1].get("stage") == "controller_failure"
+                               and events[-1].get("data", {}).get("panel_cell") == expected_binding)
+        if not bound_request and not bound_early_failure:
             raise ContractError("runtime trace lacks a bound task and scenario request")
         pending = None
         slots = []
@@ -421,7 +424,7 @@ class PanelReceiptVerifier:
                     raise ContractError("runtime response is not bound to a pending request")
                 pending = None
         terminal = events[-1]
-        if terminal["stage"] == "driver_failure" and terminal["data"].get("driver_id") != expected.coverage_id:
+        if terminal["stage"] in {"driver_failure", "controller_failure"} and terminal["data"].get("driver_id") != expected.coverage_id:
             raise ContractError("terminal driver failure does not bind this panel obligation")
         responses = [event["data"]["response"] for event in events if event["stage"] == "model_response"]
         observed = FrozenRecord.from_dict({"responses": responses, "terminal": terminal["data"]}).content_hash
@@ -437,7 +440,7 @@ class PanelReceiptVerifier:
             if terminal["stage"] != "final_decision" or terminal["data"].get("decision") not in {"proceed", "closed_negative", "unknown", "invalid", "withdrawn"} or any(event["stage"] == "model_failure" for event in events) or not responses or receipt.output_digest != observed:
                 raise ContractError("successful receipt lacks terminal runtime output evidence")
         elif receipt.status == "failed":
-            if not (terminal["stage"] in {"model_failure", "driver_failure"} and receipt.output_digest is None) and not (
+            if not (terminal["stage"] in {"model_failure", "driver_failure", "controller_failure"} and receipt.output_digest is None) and not (
                     terminal["stage"] == "final_decision" and terminal["data"].get("decision") == "blocked"
                     and has_model_failure and receipt.output_digest == observed):
                 raise ContractError("failed receipt does not match terminal runtime evidence")

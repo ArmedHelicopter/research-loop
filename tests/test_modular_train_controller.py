@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -12,7 +13,7 @@ import pytest
 from evaluation.modular.custody import CustodyStore, InventoryItem
 from evaluation.modular.train_io import TrainPacketExporter
 from research_loop.modular.contracts import FrozenRecord
-from research_loop.modular.model_port import CodexModelPort, FrozenBaseContextPolicy
+from research_loop.modular.model_port import CodexModelPort, FrozenBaseContextPolicy, audit_base_context
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.panel_plan import executable_arms, obligation_grids
 from research_loop.modular.runtime import AuditVerifier
@@ -45,21 +46,35 @@ def snapshot_and_custody(root: Path) -> tuple[Path, CustodyStore]:
     return snapshot, store
 
 
-def model_port(root: Path, *, max_calls: int = 24) -> CodexModelPort:
+def model_port(root: Path, monkeypatch, *, max_calls: int = 24, valid_plan: bool = True) -> CodexModelPort:
+    home = root / "user" / ".codex"; home.mkdir(parents=True)
+    monkeypatch.setenv("HOME", str(home.parent)); monkeypatch.setenv("USERPROFILE", str(home.parent)); monkeypatch.setenv("CODEX_HOME", str(home))
+    (home / "config.toml").write_text('[mcp_servers.fixture]\nenabled=true\n', encoding="utf-8")
+    cli = root / "codex.exe"; cli.write_bytes(b"fixture cli")
+    cwd = root / "reviewed-empty-cwd"; cwd.mkdir()
+    raw = json.dumps([{"type": "message", "id": "fixture", "role": "developer", "content": [{"type": "input_text", "text": "reviewed public fixture context"}]}])
     def probe(*_args, **_kwargs):
-        return SimpleNamespace(returncode=0, stdout=json.dumps([{"role": "developer", "content": [{"type": "input_text", "text": "synthetic public fixture"}]}]), stderr="")
+        return SimpleNamespace(returncode=0, stdout=raw, stderr="")
+    candidate = audit_base_context(cli, cwd, root / "context-audit", config_overrides=('mcp_servers.fixture.enabled=false',), context_probe_runner=probe)
+    policy_data = json.loads(candidate.read_text(encoding="utf-8"))
+    policy_data.update(status="REVIEWED", review={"reviewer": "fixture reviewer", "reviewed_at": "2026-09-12T00:00:00Z", "rationale": "no-paid fixture audit", "source_completeness": "fixture source inventory"})
+    reviewed = root / "reviewed-policy.json"; reviewed.write_text(json.dumps(policy_data), encoding="utf-8")
+    policy = FrozenBaseContextPolicy(reviewed, sha(reviewed))
+    fixed_test_env = os.environ.get("PYTEST_CURRENT_TEST", "")
     def transport(argv, **kwargs):
         request = json.loads(kwargs["input"].split("\n", 1)[1])
         if request["slot"] == "scenario":
-            output = {"question": "public", "budget_units": 3, "branches": [{"hypothesis_id": f"h{i}", "mechanism_key": f"m{i}", "mechanism": "public mechanism", "intervention": "public intervention", "elimination_condition": "public disagreement", "predictions": [{"prediction_id": f"p{i}", "discriminator_id": "shared", "observable": "public observable", "direction": "increase", "value_range": None, "failure_condition": "does not increase"}]} for i in range(3)]}
+            directions = ["increase", "decrease", "increase"] if valid_plan else ["increase", "increase", "increase"]
+            output = {"question": "public", "budget_units": 3, "branches": [{"hypothesis_id": f"h{i}", "mechanism_key": f"m{i}", "mechanism": "public mechanism", "intervention": "public intervention", "elimination_condition": "public disagreement", "predictions": [{"prediction_id": f"p{i}", "discriminator_id": "shared", "observable": "public observable", "direction": directions[i], "value_range": None, "failure_condition": "does not " + directions[i]}]} for i in range(3)]}
         else:
             output = {"objective_digest": FrozenRecord.from_dict(request["objective"]).content_hash, "outcome": "unknown", "evidence_ids": [], "conclusion": "synthetic engineering result", "programme_complete": False}
         Path(argv[argv.index("-o") + 1]).write_text(json.dumps(output), encoding="utf-8")
         usage = {"input_tokens": 1, "cached_input_tokens": 0, "cache_write_input_tokens": 0, "output_tokens": 1, "reasoning_output_tokens": 0}
         return SimpleNamespace(returncode=0, stdout=json.dumps({"type": "turn.completed", "usage": usage}), stderr="")
-    return CodexModelPort(sys.executable, root / "model", max_calls=max_calls, max_tokens=200,
+    monkeypatch.setenv("PYTEST_CURRENT_TEST", fixed_test_env)
+    return CodexModelPort(cli, root / "model", max_calls=max_calls, max_tokens=200,
         schema_by_slot={"scenario": SCENARIO, "final": FINAL}, process_runner=transport,
-        context_probe_runner=probe, allow_mock_context=True)
+        context_probe_runner=probe, frozen_base_context=policy)
 
 
 def config(store: CustodyStore, snapshot: Path, root: Path) -> FrozenTrainControllerConfig:
@@ -73,38 +88,64 @@ def config(store: CustodyStore, snapshot: Path, root: Path) -> FrozenTrainContro
     return FrozenTrainControllerConfig(FrozenRecord.from_dict({"schema": "q31-train-controller-v1", "engineering_scope": "train_only_q3_1_engineering", "stage": "synthetic-q31", "scope_ids": ["Q3.1"], "item_ids": ["discoverybench:synth:train:family_1_1", "blade:fish"], "evidence_by_task": {task.content_hash: {"observations": []} for task in tasks}, "budget": {"model_calls": 2, "execution_limit": 0}, "baseline_digest": "a" * 64, "p0_control": control.data(), "packages_by_arm": arms, "scorer": {"identity": "not-configured"}, "acceptance_criteria": {"scope": "engineering-only"}, "replicates": ["r1"], "model": "gpt-5.6-luna", "effort": "low", "max_calls": 24, "max_tokens": 200, "schemas": {"scenario": SCENARIO, "final": FINAL}}))
 
 
-def test_actual_custody_export_port_runner_and_receipt_are_engineering_only(tmp_path: Path) -> None:
+def test_actual_custody_export_port_runner_and_receipt_are_engineering_only(tmp_path: Path, monkeypatch) -> None:
     snapshot, custody = snapshot_and_custody(tmp_path)
     result = run_q31_train_panel(config(custody, snapshot, tmp_path), custody=custody, snapshot_root=snapshot,
-        export_root=tmp_path / "export", run_root=tmp_path / "run", model=model_port(tmp_path),
+        export_root=tmp_path / "export", run_root=tmp_path / "run", model=model_port(tmp_path, monkeypatch),
         audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
     assert len(result.packets) == 2 and len(result.runtimes) == len(result.compiled.panel.cells) == 12
     assert result.verdict.decision == "engineering_verified" and not result.verdict.scientific_verified
+    assert result.receipt.data()["execution_status"] == "engineering_complete"
+    assert result.receipt.data()["model_policy_sha256"]
+    assert all(runtime.status == "succeeded" for runtime in result.runtimes)
     assert all(runtime.trace_path.exists() for runtime in result.runtimes)
 
 
-def test_rejects_config_drift_reused_root_and_unreviewed_policy(tmp_path: Path) -> None:
+def test_rejects_config_drift_reused_root_and_unreviewed_policy(tmp_path: Path, monkeypatch) -> None:
     snapshot, custody = snapshot_and_custody(tmp_path)
     frozen = config(custody, snapshot, tmp_path)
     with pytest.raises(ContractError, match="call capacity"):
         bad = FrozenTrainControllerConfig(FrozenRecord.from_dict({**frozen.data(), "max_calls": 2}))
-        run_q31_train_panel(bad, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export-a", run_root=tmp_path / "bad", model=model_port(tmp_path, max_calls=2), audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+        run_q31_train_panel(bad, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export-a", run_root=tmp_path / "bad", model=model_port(tmp_path, monkeypatch, max_calls=2), audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
     root = tmp_path / "reuse"
     root.mkdir()
     with pytest.raises(FileExistsError):
-        run_q31_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export-b", run_root=root, model=model_port(tmp_path / "second"), audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+        run_q31_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export-b", run_root=root, model=model_port(tmp_path / "second", monkeypatch), audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
     candidate = tmp_path / "candidate.json"
     candidate.write_text(json.dumps({"schema": "frozen-base-context-policy-v2", "status": "UNQUALIFIED", "review": {}, "audit_path": "missing", "audit_sha256": "0" * 64, "binding": {}}), encoding="utf-8")
     with pytest.raises(ContractError, match="unqualified"):
         FrozenBaseContextPolicy(candidate, sha(candidate)).data()
 
 
-def test_rejects_non_train_allowlist_and_evidence_task_mismatch_before_model(tmp_path: Path) -> None:
+def test_rejects_non_train_allowlist_and_evidence_task_mismatch_before_model(tmp_path: Path, monkeypatch) -> None:
     snapshot, custody = snapshot_and_custody(tmp_path)
     frozen = config(custody, snapshot, tmp_path)
     wrong_allowlist = FrozenTrainControllerConfig(FrozenRecord.from_dict({**frozen.data(), "item_ids": ["blade:absent", "discoverybench:synth:train:family_1_1"]}))
     with pytest.raises(ContractError, match="not in custody train export"):
-        run_q31_train_panel(wrong_allowlist, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "bad-export", run_root=tmp_path / "bad-allowlist", model=model_port(tmp_path / "bad-a"), audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+        run_q31_train_panel(wrong_allowlist, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "bad-export", run_root=tmp_path / "bad-allowlist", model=model_port(tmp_path / "bad-a", monkeypatch), audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
     broken = frozen.data(); broken["evidence_by_task"] = {"0" * 64: {"observations": []}}
     with pytest.raises(ContractError, match="evidence records"):
-        run_q31_train_panel(FrozenTrainControllerConfig(FrozenRecord.from_dict(broken)), custody=custody, snapshot_root=snapshot, export_root=tmp_path / "wrong-evidence", run_root=tmp_path / "bad-evidence", model=model_port(tmp_path / "bad-b"), audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+        run_q31_train_panel(FrozenTrainControllerConfig(FrozenRecord.from_dict(broken)), custody=custody, snapshot_root=snapshot, export_root=tmp_path / "wrong-evidence", run_root=tmp_path / "bad-evidence", model=model_port(tmp_path / "bad-b", monkeypatch), audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+
+
+def test_failed_cells_keep_the_complete_denominator_and_are_not_completed(tmp_path: Path, monkeypatch) -> None:
+    snapshot, custody = snapshot_and_custody(tmp_path)
+    result = run_q31_train_panel(config(custody, snapshot, tmp_path), custody=custody, snapshot_root=snapshot,
+        export_root=tmp_path / "export", run_root=tmp_path / "run", model=model_port(tmp_path, monkeypatch, valid_plan=False),
+        audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+    assert len(result.runtimes) == len(result.compiled.panel.cells) == 12
+    assert result.receipt.data()["execution_status"] == "execution_incomplete"
+    assert result.verdict.failures == 6 and all(runtime.trace_path.exists() for runtime in result.runtimes)
+
+
+def test_refuses_a_reused_ledger_before_export_or_run_side_effects(tmp_path: Path, monkeypatch) -> None:
+    snapshot, custody = snapshot_and_custody(tmp_path)
+    port = model_port(tmp_path, monkeypatch)
+    prior = FrozenRecord.from_dict({"schema": "public-model-request-v1", "task": {"identity": {"domain": "train"}},
+        "lock_digest": "fixture", "objective": {}, "slot": "scenario", "instruction": "public", "context": {}, "module_context": {}, "execution_feedback": []})
+    port(prior)
+    with pytest.raises(ContractError, match="fresh empty model ledger"):
+        run_q31_train_panel(config(custody, snapshot, tmp_path), custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=port,
+            audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+    assert not (tmp_path / "export").exists() and not (tmp_path / "run").exists()

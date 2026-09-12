@@ -121,8 +121,15 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
         stage, candidate, responses = driver.run(workflow, cell=cell, scenario=scenario, model=model, package=package)
     except Exception as exc:
         if not session._terminal:
-            last_response = FrozenRecord.from_dict(session._events[-1].data()["data"]["response"])
-            session.driver_failure(driver_id=driver.experiment_id, response=last_response, error_type=type(exc).__name__)
+            last = session._events[-1].data()
+            if last["stage"] == "model_response":
+                session.driver_failure(driver_id=driver.experiment_id,
+                                       response=FrozenRecord.from_dict(last["data"]["response"]),
+                                       error_type=type(exc).__name__)
+            else:
+                session.controller_failure(driver_id=driver.experiment_id, error_type=type(exc).__name__, panel_cell={
+                    "experiment_id": cell.coverage_id, "variant": cell.variant, "replicate": cell.replicate,
+                    "arm_id": cell.arm_id, "scenario_digest": scenario.content_hash})
         trace_path = sidecar / "trace.jsonl"
         trace_digest = FrozenRecord(trace_path.read_text(encoding="utf-8").splitlines()[-1]).content_hash
         runtime = RuntimeReceipt(cell.key, "failed", trace_path, trace_digest, None,

@@ -61,6 +61,12 @@ def verify_protocol_trace(path: Path) -> FrozenRecord:
                     or not data["driver_id"] or not isinstance(data.get("error_type"), str) or not data["error_type"]):
                 raise ContractError("driver failure lacks response, driver, or error binding")
             failed = True
+        elif stage == "controller_failure":
+            if pending_call is not None or pending_execution or data.get("schema") != "controller-failure-v1":
+                raise ContractError("controller failure has unresolved work")
+            if not isinstance(data.get("driver_id"), str) or not data["driver_id"] or not isinstance(data.get("error_type"), str) or not data["error_type"]:
+                raise ContractError("controller failure lacks typed driver details")
+            failed = True
         elif stage == "execution_request":
             attempts += 1
             if pending_execution or pending_call is not None or data.get("attempt") != attempts or attempts > lock["execution_limit"]:
