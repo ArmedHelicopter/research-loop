@@ -1,0 +1,84 @@
+{
+  "scope": "synthetic_integration_only",
+  "real_docker": true,
+  "real_model_calls": 0,
+  "real_benchmark_measurements": 0,
+  "results": [
+    {
+      "benchmark_adapter": "blade",
+      "execution_digest": "8951ea47ccd43c39a7e6b9f5d7d1a5b5fee5da3d1a67b49c15da866a69b8ffaf",
+      "decision": {
+        "candidate_digest": "c4d9561dbe0fcaa5fdeb842e3470f47ef4290fa03d7cd9b93163d28e95322852",
+        "decision": "proceed",
+        "execution_attempts": 1,
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "fixture-v1",
+          "domain": "train",
+          "group_id": "synthetic-blade",
+          "split_id": "fixture-split",
+          "task_id": "synthetic-integration"
+        },
+        "lock_digest": "a52749a45ab7bf1ec0171292098dfea9e05e8b2b07cacca132f2d515e1ea4c44",
+        "model_calls": 1,
+        "programme_complete": false,
+        "reasons": [],
+        "schema": "run-decision-v1",
+        "scientific_validated": true
+      },
+      "trace": {
+        "events": 7,
+        "lock_digest": "a52749a45ab7bf1ec0171292098dfea9e05e8b2b07cacca132f2d515e1ea4c44",
+        "stages": [
+          "objective_lock",
+          "execution_request",
+          "execution_result",
+          "scientific_admission",
+          "model_request",
+          "model_response",
+          "final_decision"
+        ],
+        "terminal": true,
+        "trace_digest": "dc6d27c0d06acdeadb69b1bfa6bcfecb5c59257c84439feef480d9e2c3ca7796"
+      }
+    },
+    {
+      "benchmark_adapter": "discoverybench",
+      "execution_digest": "178ba85982929673a0f4cfd8837c5c0ddef2e68e564ffa6b729ed36c3f53588a",
+      "decision": {
+        "candidate_digest": "2bace88f16009fab469a084383d2f58261a93a3640364458a3663cc3567d9492",
+        "decision": "proceed",
+        "execution_attempts": 1,
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "fixture-v1",
+          "domain": "train",
+          "group_id": "synthetic-discoverybench",
+          "split_id": "fixture-split",
+          "task_id": "synthetic-integration"
+        },
+        "lock_digest": "87edc3cb0ec4e81e8ec41977cc3f57adf5652c86a855326293d5f1df60692e48",
+        "model_calls": 1,
+        "programme_complete": false,
+        "reasons": [],
+        "schema": "run-decision-v1",
+        "scientific_validated": true
+      },
+      "trace": {
+        "events": 7,
+        "lock_digest": "87edc3cb0ec4e81e8ec41977cc3f57adf5652c86a855326293d5f1df60692e48",
+        "stages": [
+          "objective_lock",
+          "execution_request",
+          "execution_result",
+          "scientific_admission",
+          "model_request",
+          "model_response",
+          "final_decision"
+        ],
+        "terminal": true,
+        "trace_digest": "02dd963c2247e89553d7e939d69416982e26dae875a66db1d4c5f2b0472b8dba"
+      }
+    }
+  ]
+}

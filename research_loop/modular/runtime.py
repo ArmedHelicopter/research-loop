@@ -205,6 +205,9 @@ class RunSession:
         if execution_digest not in self.executions:
             raise ContractError("audit references unknown execution")
         execution = self.executions[execution_digest]
+        self._record("scientific_audit_inputs", {"execution_digest": execution_digest,
+            "receipts": [receipt.data() if isinstance(receipt, FrozenRecord) else {"malformed_type": type(receipt).__name__}
+                         for receipt in audits]})
         try:
             admission = self.verifier.verify_pair(audits, identity=self.task.identity, objective_digest=self.objective.content_hash,
                                                   execution=execution, required_audit=self.required_audit)

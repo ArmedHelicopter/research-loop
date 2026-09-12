@@ -25,6 +25,15 @@ arm schedule; it turns consumed permanently after use. The CLI also supports
 `attest`, `export`, `qualify`, and `consume` so a child process cannot bypass
 those checks.
 
+Exported identities bind the actual split digest, while the separate official
+split field preserves upstream provenance. Every member of a merged source
+group must have independent custody attestation before that group can enter
+validation. A cross-process writer lock and state compare-and-swap reject stale
+controllers that would otherwise overwrite another validation lease. Persisted
+inventory and split hashes are checked on reopen. These checks detect drift and
+concurrent lost writes; they are not authentication against an administrator who
+can rewrite the whole custody store.
+
 Example:
 
 ```text

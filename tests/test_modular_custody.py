@@ -38,6 +38,7 @@ def test_inventory_split_exposure_and_train_export(tmp_path: Path) -> None:
     # All available synthetic test groups are historical selection in this tiny fixture.
     assert {row["domain"] for row in split["rows"] if row["official_split"] == "synth/test"} == {"train"}
     assert all(identity.domain == "train" for identity in store.export_train())
+    assert all(identity.split_id == split["digest"] for identity in store.export_train())
     assert CustodyStore(tmp_path / "state.json").split(seed="fixed")["digest"] == split["digest"]
     with pytest.raises(ContractError, match="reallocation"):
         store.split(seed="other")
@@ -63,6 +64,28 @@ def test_historical_discovery_selection_is_one_first_variant_per_domain(tmp_path
     assert {"alpha_0_0", "beta_0_0", "gamma_0_0"} <= exposed
     assert "alpha_0_1" not in exposed
     assert "beta_1_0" not in exposed
+
+
+def test_partial_source_group_attestation_cannot_admit_unreviewed_members(tmp_path: Path) -> None:
+    store = CustodyStore(tmp_path / "partial.json")
+    store.inventory([InventoryItem("blade", name, "shared", "unsplit", name, ("a" * 64,)) for name in ["a", "b"]])
+    store.attest_independent_clean(item_ids=["blade:b"], custodian_id="custodian",
+        source_qualification_digest="b" * 64, exposure_qualification_digest="c" * 64, tested_arm_ids=["tested"])
+    assert {row["domain"] for row in store.split(seed="frozen", validation_percent=100)["rows"]} == {"quarantine"}
+
+
+def test_stale_controller_cannot_overwrite_another_validation_lease(tmp_path: Path) -> None:
+    path = tmp_path / "concurrent.json"
+    first = CustodyStore(path)
+    first.inventory([InventoryItem("blade", "a", "a", "unsplit", "a", ("a" * 64,))])
+    first.attest_independent_clean(item_ids=["blade:a"], custodian_id="custodian",
+        source_qualification_digest="b" * 64, exposure_qualification_digest="c" * 64, tested_arm_ids=["tested"])
+    group = first.split(seed="s", validation_percent=100)["rows"][0]["group"]
+    second = CustodyStore(path)
+    lease = first.lease_validation(stage="stage-a", panel_digest="d" * 64, group_ids=[group], arm_schedule=["control", "candidate"])
+    with pytest.raises(ContractError, match="stale write"):
+        second.lease_validation(stage="stage-b", panel_digest="e" * 64, group_ids=[group], arm_schedule=["control", "candidate"])
+    assert set(CustodyStore(path).state["leases"]) == {lease["id"]}
 
 
 def test_hash_union_and_validation_lease_are_bound_and_one_use(tmp_path: Path) -> None:

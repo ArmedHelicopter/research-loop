@@ -10,7 +10,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
+from contextlib import contextmanager
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -170,11 +172,37 @@ def _merged_groups(items: list[InventoryItem]) -> dict[str, str]:
     return {item_id: union.find(item_id) for item_id in ids}
 
 
+@contextmanager
+def _writer_lock(path: Path):
+    """Serialize controller writes across processes on Windows and POSIX."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a+b") as handle:
+        if handle.seek(0, os.SEEK_END) == 0:
+            handle.write(b"0")
+            handle.flush()
+        handle.seek(0)
+        if os.name == "nt":
+            import msvcrt
+            msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)
+        else:
+            import fcntl
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            handle.seek(0)
+            if os.name == "nt":
+                msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+
+
 class CustodyStore:
     """Durable custody state with deterministic allocation and one-use leases."""
     def __init__(self, path: Path) -> None:
         self.path = path
         self.state = self._load()
+        self._loaded_digest = digest(self.state) if path.exists() else None
 
     def _load(self) -> dict[str, Any]:
         if not self.path.exists():
@@ -182,14 +210,32 @@ class CustodyStore:
         data = json.loads(self.path.read_text(encoding="utf-8"))
         if set(data) != {"schema", "inventory", "inventory_digest", "attestations", "split", "leases"} or data["schema"] != SCHEMA:
             raise ContractError("unsupported custody state")
+        if data["inventory_digest"] is not None and digest(data["inventory"]) != data["inventory_digest"]:
+            raise ContractError("persisted inventory digest mismatch")
+        if data["split"] is not None:
+            split = dict(data["split"])
+            recorded_digest = split.pop("digest", None)
+            if recorded_digest != digest(split) or split.get("inventory_digest") != data["inventory_digest"]:
+                raise ContractError("persisted split digest mismatch")
         return data
 
     def _save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        encoded = canonical(self.state)
-        temporary = self.path.with_suffix(self.path.suffix + ".tmp")
-        temporary.write_text(encoded, encoding="utf-8")
-        temporary.replace(self.path)
+        with _writer_lock(self.path.with_suffix(self.path.suffix + ".lock")):
+            current = self._load() if self.path.exists() else None
+            current_digest = digest(current) if current is not None else None
+            if current_digest != self._loaded_digest:
+                self.state = current if current is not None else self._load()
+                self._loaded_digest = current_digest
+                raise ContractError("custody changed in another controller; stale write refused")
+            encoded = canonical(self.state)
+            temporary = self.path.with_suffix(self.path.suffix + ".tmp")
+            with temporary.open("w", encoding="utf-8", newline="\n") as stream:
+                stream.write(encoded)
+                stream.flush()
+                os.fsync(stream.fileno())
+            temporary.replace(self.path)
+            self._loaded_digest = digest(self.state)
 
     def inventory(self, items: Iterable[InventoryItem]) -> str:
         rows = sorted((item.data() for item in items), key=lambda row: (row["benchmark"], row["task_id"]))
@@ -247,13 +293,13 @@ class CustodyStore:
         items = [InventoryItem.parse(row) for row in self.state["inventory"]]
         groups = _merged_groups(items)
         allocation: dict[str, str] = {}
-        for item in items:
-            gid = groups[f"{item.benchmark}:{item.task_id}"]
-            if item.exposure == "exposed":
+        for gid in set(groups.values()):
+            members = [item for item in items if groups[f"{item.benchmark}:{item.task_id}"] == gid]
+            if any(item.exposure == "exposed" for item in members):
                 allocation[gid] = "train"
-            elif f"{item.benchmark}:{item.task_id}" not in self.state["attestations"]:
-                allocation.setdefault(gid, "quarantine")
-            elif allocation.get(gid) != "train":
+            elif not all(f"{item.benchmark}:{item.task_id}" in self.state["attestations"] for item in members):
+                allocation[gid] = "quarantine"
+            else:
                 bucket = int(hashlib.sha256(f"{seed}:{gid}".encode()).hexdigest(), 16) % 100
                 allocation[gid] = "validation" if bucket < validation_percent else "train"
         rows = []
@@ -278,7 +324,7 @@ class CustodyStore:
             if row["domain"] != "train":
                 continue
             item = items[row["item"]]
-            result.append(DataIdentity(item.benchmark, item.task_id, row["group"], self.state["inventory_digest"], item.official_split, "train"))
+            result.append(DataIdentity(item.benchmark, item.task_id, row["group"], self.state["inventory_digest"], self.state["split"]["digest"], "train"))
         return result
 
     def qualify_stage(self, *, stage: str, panel_digest: str, group_ids: list[str], arm_schedule: list[str]) -> dict[str, Any]:
