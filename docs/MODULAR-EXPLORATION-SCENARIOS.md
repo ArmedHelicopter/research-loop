@@ -1,0 +1,18 @@
+# Q7 exploration fixture scenarios
+
+`research_loop.modular.scenarios_exploration` implements the registered Q7.1--Q7.6 variants as bounded, fixture-only integration scenarios. Each call receives one already prepared `PublicTask`, a closed record containing its digest and a frozen budget digest, and optional next-model/review callbacks. It never accepts a task path, labels, validation records, scores, gold answers, network client, or optimizer state.
+
+The scenarios call real M1/M2/M5/M7 interfaces. A captured next payload proves the post-manipulation callback seam was invoked; it does not measure benchmark quality or scientific correctness. Public task and budget controls are identical across variants. Synthetic truth and train-score rows stay in the controller record and are not placed in callback payloads.
+
+| ID | Registered variants | Exercised mechanism |
+| --- | --- | --- |
+| Q7.1 | `low_cost`, `data_unknown`, `measurement_repair`, `valid_negative`, `conflict` | M1 exploration permission is separate from evidence admission; M7 still requires a passed data stage before issuing a diagnostic permit. A valid negative takes the same evidence gate as a positive. A conflict opens a bounded M5 review over two named observations, rather than sharing the low-cost path. |
+| Q7.2 | `deterministic`, `insufficient`, `value` | M7's deterministic authorization/resource block requires reassessment even after a repair digest. Insufficient evidence and value doubt may receive only a smaller diagnostic permit. |
+| Q7.3 | `zero`, `low`, `medium`, `high` | A finite candidate set reserves diagnostic and remaining main-task units from one fixed four-execution budget, and records both receipt sets. Train provenance is checked before sidecar creation, allocation, or score-row iteration. Tokens are explicitly `not_exercised`; no token-budget equality is claimed. |
+| Q7.4 | `invalid_measure`, `repair`, `old_evidence` | A restricted fixture broker and `RunSession.execute/admit` first admit a signed old positive or negative observation, then withdraw its ledger root after construct failure. M7 `InstrumentRepair` binds that old execution digest; only a distinct repaired execution and new audit can be admitted. |
+| Q7.5 | `valid_known`, `novel_refuted`, `infeasible`, `easy_valid` | M1 keeps validity, support, novelty, and investment separate, while M2 records support/refutation relations. The novel-refuted fixture explicitly records `novel` to `known` withdrawal while retaining its admitted observation root. |
+| Q7.6 | `contract_only`, `real_counterexample` | M1 verifies the typed admission contract and M5 records an actual sealed semantic-review callback over a concrete theory, construct, and equally bounded observation. Authentic signatures and hashes do not encode semantic truth; controller-only hit/miss classification stays out of reviewer and next-model payloads, while the reviewer's actual response is carried forward for later measurement. |
+
+Focused tests prepare both DiscoveryBench and BLADE public task envelopes and run every registered variant. They include adversarial checks for task-control drift, no validation score-row read before train rejection, invalid old evidence after repair, and the residual contract-versus-semantic-truth distinction.
+
+These are offline engineering fixtures using synthetic public tasks and callbacks. They are integration checks, not train measurements, validation measurements, evidence of a scientific effect, or an experiment-ledger decision. Actual research claims still require frozen two-benchmark receipts, independent groups, and the protocol's separate scientific evaluation.
