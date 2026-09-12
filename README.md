@@ -25,6 +25,11 @@ python -m research_loop --help
 
 ## 仓库里有什么
 
+逐模块研发的新设计见 [可逐模块证伪的研究架构](docs/MODULAR-RESEARCH-ARCHITECTURE.md)
+与 [训练/验证隔离协议](docs/MODULAR-EXPERIMENT-PROTOCOL.md)。它以 DiscoveryBench 和
+BLADE 为外部效果检验，规定训练集内优化、验证集只验收；当前为待实施设计，
+不替代既有冻结 SPEC 或实验结论。
+
 ```text
 protocol/research-loop.md   源协议（含源仓绑定，阅读时区分）
 docs/DESIGN.md              被测干预是什么、不是什么
