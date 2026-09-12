@@ -15,6 +15,13 @@ receipt verification; the original complete journal remains unchanged.
 
 `verify_protocol_trace` checks calls, frozen objectives, execution allocation,
 audit lineage and terminal outcome consistency in addition to hash chaining.
+New runtime journals preserve the complete execution receipt envelope, making
+its digest and program/subject binding recomputable. Raw audits must have the
+complete schema, two distinct issuers, matching subjects and consistent stated
+dispositions. This checks structure, not MAC authenticity or scientific truth.
+Successful replay uses the same closed candidate-shape checks as the live gate;
+an unavailable/rejected execution remains terminal. Old journals lacking the
+complete envelope cannot satisfy this stronger protocol receipt version.
 The panel receipt verifier calls this check before admitting a runtime receipt.
 Adversarial replays remove steps and recompute the chain, so a passing checksum
 cannot stand in for having executed the protocol. Blocked and incomplete runs
@@ -25,3 +32,7 @@ does not run actual benchmark analyses, authenticate audit signatures, or
 establish scientific truth. The independent audit and scoring services retain
 those responsibilities. It leaves Q2.2 semantic scorer calibration and all
 required paired training/validation efficacy measurements outstanding.
+Q2.6 checks the specific objective/completion rejection reason, independently
+of missing-evidence rejection; aggregate blocked counts alone are not attributed
+to the objective lock. It does not establish that a secondary endpoint is
+semantically unrelated, or qualify a legitimate new programme version.

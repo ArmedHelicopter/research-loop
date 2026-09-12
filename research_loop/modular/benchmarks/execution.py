@@ -86,6 +86,40 @@ class ExecutionReceipt:
                        "artifact": self.artifact.content_hash if self.artifact else None,
                        "record": self.record.data()})
 
+    def data(self) -> dict[str, object]:
+        artifact = self.artifact
+        return {"identity": self.identity.data(), "status": self.status, "record": self.record.data(),
+                "artifact": {"identity": artifact.identity.data(), "artifact_id": artifact.artifact_id,
+                    "path": artifact.path, "sha256": artifact.sha256, "byte_count": artifact.byte_count,
+                    "record": artifact.record.data()} if artifact else None}
+
+    @classmethod
+    def parse(cls, data: Mapping[str, object]) -> "ExecutionReceipt":
+        """Reconstruct the complete receipt without reading the solver's files."""
+        if not isinstance(data, Mapping) or set(data) != {"identity", "status", "record", "artifact"}:
+            raise ContractError("execution receipt envelope is incomplete")
+        identity = DataIdentity.parse(data["identity"])
+        if data["status"] not in {"succeeded", "failed", "unavailable", "timed_out", "rejected"}:
+            raise ContractError("execution receipt status is invalid")
+        record = FrozenRecord.from_dict(data["record"])
+        if record.data().get("status") != data["status"]:
+            raise ContractError("execution receipt status drift")
+        artifact, body = None, data["artifact"]
+        if body is not None:
+            if not isinstance(body, dict) or set(body) != {"identity", "artifact_id", "path", "sha256", "byte_count", "record"}:
+                raise ContractError("execution artifact envelope is incomplete")
+            if (body["identity"] != identity.data() or body["artifact_id"] != "program"
+                    or not isinstance(body["path"], str) or not body["path"]
+                    or not isinstance(body["sha256"], str) or not re.fullmatch("[0-9a-f]{64}", body["sha256"])
+                    or type(body["byte_count"]) is not int or body["byte_count"] < 0
+                    or body["record"] != {key: body[key] for key in ("artifact_id", "sha256", "byte_count")}):
+                raise ContractError("execution artifact binding is invalid")
+            artifact = ArtifactReceipt(identity, body["artifact_id"], body["path"], body["sha256"],
+                                       body["byte_count"], FrozenRecord.from_dict(body["record"]))
+        if data["status"] != "rejected" and artifact is None:
+            raise ContractError("executed receipt lacks a program artifact")
+        return cls(identity, data["status"], artifact, record)
+
 
 class DockerExecutionBroker:
     """Execute Python only in Docker; every unavailable state is a typed receipt."""

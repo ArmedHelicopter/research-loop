@@ -46,6 +46,9 @@ def test_all_protocol_faults_block_actual_gate_or_receipt(tmp_path, benchmark, e
         assert verify_protocol_trace(tmp_path / variant / "trace.jsonl").data()["decision"] == "proceed"
     else:
         assert result.gate.data()["decision"] == "blocked"
+        if experiment == "Q2.6":
+            specific = "programme_completion_unauthorized" if variant == "maintenance" else "objective_drift"
+            assert specific in result.gate.data()["reasons"]
     inputs = ControllerInputs(FrozenRecord.from_dict({"task": "fixture"}), FrozenRecord.from_dict({}), FrozenRecord.from_dict({"calls": 1}))
     assert scenario(registry()[experiment], variant, inputs=inputs).data()["controller_input"]["fault"] == variant
 
@@ -69,7 +72,7 @@ def rechain(path, rows):
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-@pytest.mark.parametrize("fault", ["execution", "audit", "request", "illegal_state", "candidate_swap", "late_event"])
+@pytest.mark.parametrize("fault", ["execution", "audit", "request", "illegal_state", "candidate_swap", "late_event", "fake_envelope", "fake_audits", "incomplete_unknown"])
 def test_protocol_replay_rejects_rechained_missing_steps_and_false_terminal_decisions(tmp_path, fault):
     run(tmp_path / "source", "Q2.7", "missing_lock")
     original = tmp_path / "source" / "trace.jsonl"
@@ -84,6 +87,20 @@ def test_protocol_replay_rejects_rechained_missing_steps_and_false_terminal_deci
         rows[-1]["data"]["decision"] = "programme_complete"
     elif fault == "candidate_swap":
         rows[-1]["data"]["candidate_digest"] = "different-response"
+    elif fault == "fake_envelope":
+        result = next(row for row in rows if row["stage"] == "execution_result")
+        result["data"]["receipt"] = {"status": "succeeded"}
+    elif fault == "fake_audits":
+        audit = next(row for row in rows if row["stage"] == "scientific_audit_inputs")
+        audit["data"]["receipts"] = [{}, {}]
+    elif fault == "incomplete_unknown":
+        response = next(row for row in rows if row["stage"] == "model_response")
+        candidate = response["data"]["response"]
+        candidate["outcome"] = "unknown"
+        del candidate["conclusion"]
+        del candidate["evidence_ids"]
+        rows[-1]["data"].update(decision="unknown", scientific_validated=False,
+                              candidate_digest=FrozenRecord.from_dict(candidate).content_hash)
     else:
         rows.append(dict(rows[1]))
     replay = tmp_path / "replay.jsonl"
@@ -98,3 +115,25 @@ def test_replay_is_not_a_signature_or_scientific_truth_verifier(tmp_path):
     proof = verify_protocol_trace(tmp_path / "source" / "trace.jsonl").data()
     assert proof["structurally_verified"] and not proof["scientific_audit_authenticated"]
     assert "scientific truth" in proof["limitation"]
+
+
+def test_terminal_unavailable_execution_cannot_be_followed_by_model_calls(tmp_path):
+    from research_loop.modular.benchmarks.execution import ExecutionReceipt
+    run(tmp_path / "source", "Q2.7", "missing_lock")
+    source = tmp_path / "source" / "trace.jsonl"
+    rows = [FrozenRecord(line).data() for line in source.read_text(encoding="utf-8").splitlines()]
+    rows = [row for row in rows if row["stage"] not in {"scientific_audit_inputs", "scientific_admission"}]
+    result = next(row["data"] for row in rows if row["stage"] == "execution_result")
+    envelope = result["receipt"]
+    envelope["status"] = "unavailable"
+    envelope["record"] = {"status": "unavailable", "reason": "fixture daemon unavailable"}
+    receipt = ExecutionReceipt.parse(envelope)
+    result.update(execution_digest=receipt.content_hash, status=receipt.status, record=receipt.record.data())
+    response = next(row["data"]["response"] for row in rows if row["stage"] == "model_response")
+    response.update(outcome="unknown", evidence_ids=[])
+    rows[-1]["data"].update(decision="unknown", scientific_validated=False,
+                          candidate_digest=FrozenRecord.from_dict(response).content_hash)
+    replay = tmp_path / "unavailable.jsonl"
+    rechain(replay, rows)
+    with pytest.raises(ContractError, match="terminal external failure"):
+        verify_protocol_trace(replay)

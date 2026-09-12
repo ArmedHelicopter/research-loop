@@ -23,6 +23,25 @@ from .combinations import default_compatibility
 from research_loop.ontology import canonical, digest
 
 
+def candidate_reasons(body: dict, objective_digest: str) -> list[str]:
+    """Shared closed candidate checks for live admission and journal replay."""
+    reasons = []
+    if set(body) != {"objective_digest", "outcome", "evidence_ids", "conclusion", "programme_complete"}:
+        reasons.append("candidate_schema")
+    if body.get("objective_digest") != objective_digest:
+        reasons.append("objective_drift")
+    if body.get("programme_complete") is not False:
+        reasons.append("programme_completion_unauthorized")
+    if body.get("outcome") not in {"positive", "negative", "unknown", "invalid", "withdrawn"}:
+        reasons.append("invalid_outcome")
+    ids = body.get("evidence_ids")
+    if not isinstance(ids, list) or any(not isinstance(x, str) for x in ids) or len(set(ids)) != len(ids):
+        reasons.append("invalid_evidence_ids")
+    if not isinstance(body.get("conclusion"), str) or not body.get("conclusion", "").strip():
+        reasons.append("missing_conclusion")
+    return reasons
+
+
 class AuditAuthority:
     """Private evaluator-side issuer. Never put this object/key in solver workers."""
 
@@ -206,7 +225,8 @@ class RunSession:
         self._record("execution_request", {"attempt": self._attempts, "program_sha256": hashlib.sha256(program.read_bytes()).hexdigest()})
         result = broker.execute(ExecutionRequest(self.task.identity, image, program, inputs, timeout_seconds))
         self.executions[result.content_hash] = result
-        self._record("execution_result", {"execution_digest": result.content_hash, "status": result.status, "record": result.record.data()})
+        self._record("execution_result", {"execution_digest": result.content_hash, "status": result.status,
+                                         "record": result.record.data(), "receipt": result.data()})
         if result.status in {"unavailable", "rejected"}:
             self._terminal = True
         return result
@@ -243,25 +263,13 @@ class RunSession:
         if self._events[-1].data()["stage"] == "final_decision":
             raise ContractError("a run has only one final decision")
         body = candidate.data()
-        fields = {"objective_digest", "outcome", "evidence_ids", "conclusion", "programme_complete"}
-        reasons = []
-        if set(body) != fields:
-            reasons.append("candidate_schema")
-        if body.get("objective_digest") != self.objective.content_hash:
-            reasons.append("objective_drift")
+        reasons = candidate_reasons(body, self.objective.content_hash)
         if self._terminal or self._next_call != len(self.slots):
             reasons.append("incomplete_execution_schedule")
-        if body.get("programme_complete") is not False:
-            reasons.append("programme_completion_unauthorized")
         outcome = body.get("outcome")
-        if outcome not in {"positive", "negative", "unknown", "invalid", "withdrawn"}:
-            reasons.append("invalid_outcome")
         ids = body.get("evidence_ids")
-        if not isinstance(ids, list) or any(not isinstance(x, str) for x in ids) or len(set(ids)) != len(ids):
-            reasons.append("invalid_evidence_ids")
+        if "invalid_evidence_ids" in reasons:
             ids = []
-        if not isinstance(body.get("conclusion"), str) or not body.get("conclusion", "").strip():
-            reasons.append("missing_conclusion")
         if outcome in {"positive", "negative"}:
             if not ids or any(x not in self.admissions or not self.admissions[x].data()["admitted"]
                               or self.admissions[x].data()["outcome"] != outcome

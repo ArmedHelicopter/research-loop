@@ -5,9 +5,12 @@ successful decision has an actual call, execution and admission lineage. It
 does not authenticate audit issuers or decide whether their science is right.
 """
 from pathlib import Path
+import re
 
 from research_loop.modular.contracts import FrozenRecord
-from research_loop.modular.runtime import verify_trace
+from research_loop.modular.benchmarks.execution import ExecutionReceipt
+from research_loop.modular.modules.admission import AuditItem, EvidenceAdmission, ScientificState
+from research_loop.modular.runtime import candidate_reasons, verify_trace
 from research_loop.ontology import ContractError
 
 
@@ -20,6 +23,7 @@ def verify_protocol_trace(path: Path) -> FrozenRecord:
     if lock.get("schema") != "run-lock-v1" or not isinstance(lock.get("slots"), list):
         raise ContractError("protocol lock schema is invalid")
     calls, attempts, pending_call, pending_execution = [], 0, None, False
+    program_sha = None
     executions, raw_audits, admissions = {}, {}, {}
     response, final, failed = None, None, False
     for event in events[1:]:
@@ -27,7 +31,7 @@ def verify_protocol_trace(path: Path) -> FrozenRecord:
         if stage == "objective_lock" or final is not None:
             raise ContractError("protocol changes its lock or continues after a final decision")
         if failed and stage != "final_decision":
-            raise ContractError("protocol continues after a failed model call")
+            raise ContractError("protocol continues after a terminal external failure")
         if stage == "model_request":
             request = data.get("request", {})
             if pending_call is not None or pending_execution:
@@ -53,6 +57,9 @@ def verify_protocol_trace(path: Path) -> FrozenRecord:
             if pending_execution or pending_call is not None or data.get("attempt") != attempts or attempts > lock["execution_limit"]:
                 raise ContractError("protocol execution violates its frozen allocation")
             pending_execution = True
+            program_sha = data.get("program_sha256")
+            if not isinstance(program_sha, str) or not re.fullmatch("[0-9a-f]{64}", program_sha):
+                raise ContractError("protocol execution lacks a program digest")
         elif stage == "execution_result":
             execution_id = data.get("execution_digest")
             if not pending_execution or not isinstance(execution_id, str) or execution_id in executions:
@@ -61,8 +68,15 @@ def verify_protocol_trace(path: Path) -> FrozenRecord:
                 raise ContractError("protocol execution has an illegal state")
             if data.get("record", {}).get("status") != data["status"]:
                 raise ContractError("protocol execution status disagrees with its receipt")
+            execution = ExecutionReceipt.parse(data.get("receipt"))
+            if (execution.content_hash != execution_id or execution.identity.data() != lock["identity"]
+                    or execution.record.data() != data["record"] or execution.status != data["status"]
+                    or (execution.artifact is not None and execution.artifact.sha256 != program_sha)):
+                raise ContractError("protocol execution envelope has subject, program or digest drift")
             pending_execution = False
             executions[execution_id] = data
+            if execution.status in {"unavailable", "rejected"}:
+                failed = True
         elif stage == "scientific_audit_inputs":
             if data.get("execution_digest") not in executions:
                 raise ContractError("protocol audit lacks an execution")
@@ -75,6 +89,7 @@ def verify_protocol_trace(path: Path) -> FrozenRecord:
             if (data.get("identity") != lock["identity"]
                     or data.get("objective_digest") != FrozenRecord.from_dict(lock["objective"]).content_hash):
                 raise ContractError("protocol admission has subject drift")
+            _check_audit_structure(raw, data, lock, ExecutionReceipt.parse(executions[execution_id]["receipt"]))
             admissions[execution_id] = data
         elif stage == "audit_rejected":
             if data.get("execution_digest") not in raw_audits:
@@ -95,6 +110,10 @@ def verify_protocol_trace(path: Path) -> FrozenRecord:
                 if failed or calls != lock["slots"] or response is None or final.get("candidate_digest") != response.content_hash:
                     raise ContractError("protocol final decision lacks a complete model response")
                 candidate = response.data()
+                if candidate_reasons(candidate, FrozenRecord.from_dict(lock["objective"]).content_hash):
+                    raise ContractError("protocol successful decision has an invalid candidate")
+                if any(execution_id not in executions for execution_id in candidate["evidence_ids"]):
+                    raise ContractError("protocol candidate has unbound evidence")
                 expected = {"positive": "proceed", "negative": "closed_negative"}.get(candidate.get("outcome"), candidate.get("outcome"))
                 if (decision != expected or candidate.get("programme_complete") is not False
                         or candidate.get("objective_digest") != FrozenRecord.from_dict(lock["objective"]).content_hash
@@ -122,3 +141,37 @@ def verify_protocol_trace(path: Path) -> FrozenRecord:
         "decision": final["decision"] if final else None,
         "structurally_verified": True, "scientific_audit_authenticated": False,
         "limitation": "scientific truth, audit signatures and host access isolation require independent verification"})
+
+
+def _check_audit_structure(raw: list, admission: dict, lock: dict, execution: ExecutionReceipt) -> None:
+    """Check conditional disposition and bindings without claiming MAC trust."""
+    bodies, authorities = [], []
+    for receipt in raw:
+        if not isinstance(receipt, dict) or set(receipt) != {"body", "mac"} or not isinstance(receipt["body"], dict):
+            raise ContractError("protocol raw audit envelope is incomplete")
+        if not isinstance(receipt["mac"], str) or not re.fullmatch("[0-9a-f]{64}", receipt["mac"]):
+            raise ContractError("protocol raw audit MAC is malformed")
+        body = receipt["body"]
+        if set(body) != {"schema", "authority", "identity", "objective_digest", "execution_digest", "state", "outcome", "audit"}:
+            raise ContractError("protocol raw audit body is incomplete")
+        if (body["schema"] != "host-scientific-audit-v1" or body["identity"] != lock["identity"]
+                or body["objective_digest"] != FrozenRecord.from_dict(lock["objective"]).content_hash
+                or body["execution_digest"] != execution.content_hash):
+            raise ContractError("protocol raw audit has subject drift")
+        try:
+            state = ScientificState(**body["state"])
+            checks = [AuditItem(**row) for row in body["audit"]]
+        except (TypeError, KeyError) as exc:
+            raise ContractError("protocol raw audit state or checks are malformed") from exc
+        disposition = EvidenceAdmission.decide(identity=execution.identity, state=state, outcome=body["outcome"],
+            execution_success=execution.status == "succeeded", trusted_validator=body["authority"], validator_verified=True,
+            evidence_ids=[execution.content_hash], subject_bindings={"task": execution.identity.task_id, "objective": body["objective_digest"]},
+            required_audit=lock["required_audit"], audit=checks)
+        authorities.append(body["authority"])
+        bodies.append({"state": body["state"], "outcome": body["outcome"],
+                       "audit": sorted(body["audit"], key=lambda row: row["name"]), "admitted": disposition.admitted})
+    expected = {"schema": "verified-dual-audit-v1", "identity": lock["identity"],
+        "objective_digest": FrozenRecord.from_dict(lock["objective"]).content_hash,
+        "execution_digest": execution.content_hash, "authorities": sorted(authorities), **bodies[0]}
+    if len(set(authorities)) != 2 or bodies[0] != bodies[1] or expected != admission:
+        raise ContractError("protocol raw audits disagree with each other or the admission")
