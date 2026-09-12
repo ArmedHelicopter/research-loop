@@ -6,13 +6,14 @@
   "pinned_commit": "72a629ce14309ed5bcfb42ebbc944028dd4b9542",
   "commit_evidence_url": "https://github.com/facebookresearch/airs-bench/commit/HEAD.patch",
   "commit_hash_kind": "Git commit SHA-1 from the official repository HEAD patch header",
-  "license": {"name": "CC BY-NC 4.0", "evidence_url": "https://github.com/facebookresearch/airs-bench/blob/72a629ce14309ed5bcfb42ebbc944028dd4b9542/LICENSE"},
+  "license": {"name": "CC BY-NC 4.0", "evidence_url": "https://github.com/facebookresearch/airs-bench/blob/72a629ce14309ed5bcfb42ebbc944028dd4b9542/LICENSE", "dataset_license_status": "requires_separate_review"},
   "release": {"kind": "repository release metadata", "status": "no GitHub releases observed on the official repository page", "evidence_url": "https://github.com/facebookresearch/airs-bench/releases"},
   "observed_repository_files": [
-    {"path": "README.md", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"},
-    {"path": "LICENSE", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"},
-    {"path": "pyproject.toml", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"}
+    {"path": "README.md", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
+    {"path": "LICENSE", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
+    {"path": "pyproject.toml", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"}
   ],
+  "tree_metadata": {"endpoint": "https://api.github.com/repos/facebookresearch/airs-bench/git/trees/72a629ce14309ed5bcfb42ebbc944028dd4b9542?recursive=1", "status": "unavailable", "error_record": "rawtree/airsbench.error.txt", "required_on_retry": ["commit validity", "truncated", "path", "type", "size", "Git blob SHA-1", "raw response SHA-256"]},
   "runtime_status": "catalog_only_no_runtime_adapter",
   "qualification": "quarantine_until_review"
 }

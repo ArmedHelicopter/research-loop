@@ -1,0 +1,7 @@
+Official metadata endpoint:
+https://api.github.com/repos/scicode-bench/SciCode/git/trees/8699b7c8fcebd916e429e26d28ac5d2257d25db3?recursive=1
+
+2026-09-12 collection result: unavailable.
+curl.exe --ssl-no-revoke: schannel failed to receive handshake, SSL/TLS connection failed.
+The environment's direct GitHub API connection closed before any tree JSON was received.
+No tree JSON, blob metadata, or file content was received.

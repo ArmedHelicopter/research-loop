@@ -1,0 +1,7 @@
+Official metadata endpoint:
+https://api.github.com/repos/siegelz/core-bench/git/trees/e32a2980e72fe6eb04ee04eb749458f570625663?recursive=1
+
+2026-09-12 collection result: unavailable.
+curl.exe --ssl-no-revoke: schannel failed to receive handshake, SSL/TLS connection failed.
+The environment's direct GitHub API connection closed before any tree JSON was received.
+No tree JSON, blob metadata, or file content was received.

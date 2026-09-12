@@ -6,13 +6,14 @@
   "pinned_commit": "8699b7c8fcebd916e429e26d28ac5d2257d25db3",
   "commit_evidence_url": "https://github.com/scicode-bench/SciCode/commit/HEAD.patch",
   "commit_hash_kind": "Git commit SHA-1 from the official repository HEAD patch header",
-  "license": {"name": "Apache-2.0", "evidence_url": "https://github.com/scicode-bench/SciCode/blob/8699b7c8fcebd916e429e26d28ac5d2257d25db3/LICENSE"},
+  "license": {"name": "Apache-2.0", "evidence_url": "https://github.com/scicode-bench/SciCode/blob/8699b7c8fcebd916e429e26d28ac5d2257d25db3/LICENSE", "dataset_license_status": "requires_separate_review"},
   "release": {"kind": "repository release metadata", "status": "no GitHub release used as a qualification artifact", "evidence_url": "https://github.com/scicode-bench/SciCode/releases"},
   "observed_repository_files": [
-    {"path": "README.md", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"},
-    {"path": "LICENSE", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"},
-    {"path": "pyproject.toml", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"}
+    {"path": "README.md", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
+    {"path": "LICENSE", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
+    {"path": "pyproject.toml", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"}
   ],
+  "tree_metadata": {"endpoint": "https://api.github.com/repos/scicode-bench/SciCode/git/trees/8699b7c8fcebd916e429e26d28ac5d2257d25db3?recursive=1", "status": "unavailable", "error_record": "rawtree/scicode.error.txt", "required_on_retry": ["commit validity", "truncated", "path", "type", "size", "Git blob SHA-1", "raw response SHA-256"]},
   "runtime_status": "catalog_only_no_runtime_adapter",
   "qualification": "quarantine_until_review"
 }

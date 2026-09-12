@@ -6,13 +6,14 @@
   "pinned_commit": "c26e151ed601ba109dc4d35e057ff8e73fec469d",
   "commit_evidence_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench/commit/HEAD.patch",
   "commit_hash_kind": "Git commit SHA-1 from the official repository HEAD patch header",
-  "license": {"name": "MIT for repository code", "evidence_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench/blob/c26e151ed601ba109dc4d35e057ff8e73fec469d/LICENSE"},
+  "license": {"name": "MIT for repository code", "evidence_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench/blob/c26e151ed601ba109dc4d35e057ff8e73fec469d/LICENSE", "dataset_license_status": "requires_separate_review"},
   "release": {"kind": "verified benchmark artifact announcement", "version_note": "2026-04-30 verified version announcement", "evidence_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench/commit/c26e151ed601ba109dc4d35e057ff8e73fec469d"},
   "observed_repository_files": [
-    {"path": "README.md", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"},
-    {"path": "LICENSE", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"},
-    {"path": "requirements.txt", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"}
+    {"path": "README.md", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
+    {"path": "LICENSE", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
+    {"path": "requirements.txt", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"}
   ],
+  "tree_metadata": {"endpoint": "https://api.github.com/repos/OSU-NLP-Group/ScienceAgentBench/git/trees/c26e151ed601ba109dc4d35e057ff8e73fec469d?recursive=1", "status": "unavailable", "error_record": "rawtree/scienceagentbench.error.txt", "required_on_retry": ["commit validity", "truncated", "path", "type", "size", "Git blob SHA-1", "raw response SHA-256"]},
   "runtime_status": "catalog_only_no_runtime_adapter",
   "qualification": "quarantine_until_review"
 }

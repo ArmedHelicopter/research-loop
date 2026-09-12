@@ -1,0 +1,8 @@
+Official metadata endpoint:
+https://api.github.com/repos/OSU-NLP-Group/ScienceAgentBench/git/trees/c26e151ed601ba109dc4d35e057ff8e73fec469d?recursive=1
+
+2026-09-12 collection result: unavailable.
+curl.exe --ssl-no-revoke: schannel failed to receive handshake, SSL/TLS connection failed.
+git fetch --filter=blob:none --no-checkout: TLS connect error, unexpected EOF while reading.
+Browser direct connection: ERR_CONNECTION_CLOSED.
+No tree JSON, blob metadata, or file content was received.
