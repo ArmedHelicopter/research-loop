@@ -275,3 +275,41 @@ class PredictionRegistry:
         if persist:
             self._log.append(event)
         return update
+
+
+def freeze_shared_experiment(registry: PredictionRegistry, question: str,
+                             branches: Sequence[Mapping[str, Any]], *, budget_units: int) -> PredictionPlan:
+    """Freeze a competing plan only when every branch names one intervention."""
+    if not branches or any(not isinstance(item, Mapping) for item in branches):
+        raise ContractError("shared experiment requires branch mappings")
+    interventions = {required_text(item.get("intervention"), "intervention") for item in branches}
+    if len(interventions) != 1:
+        raise ContractError("shared experiment requires one common intervention")
+    return registry.freeze(question, branches, budget_units=budget_units)
+
+
+def deduplicate_mechanism_predictions(proposals: Sequence[Mapping[str, Any]]) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    """Deduplicate only equal declared mechanism-and-prediction signatures."""
+    seen: set[tuple[str, str]] = set(); kept: list[str] = []; removed: list[str] = []
+    for proposal in proposals:
+        if not isinstance(proposal, Mapping) or set(proposal) != {"proposal_id", "mechanism_key", "prediction_signature", "title"}:
+            raise ContractError("dedup proposal requires title, mechanism, and prediction signature")
+        proposal_id = required_text(proposal["proposal_id"], "proposal id")
+        signature = (required_text(proposal["mechanism_key"], "mechanism key"),
+                     required_text(proposal["prediction_signature"], "prediction signature"))
+        (removed if signature in seen else kept).append(proposal_id)
+        seen.add(signature)
+    return tuple(kept), tuple(removed)
+
+
+def deduplicate_titles(proposals: Sequence[Mapping[str, Any]]) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    """Title-only baseline retained solely for a declared dedup comparison."""
+    seen: set[str] = set(); kept: list[str] = []; removed: list[str] = []
+    for proposal in proposals:
+        if not isinstance(proposal, Mapping):
+            raise ContractError("title dedup proposal must be a mapping")
+        proposal_id = required_text(proposal.get("proposal_id"), "proposal id")
+        title = required_text(proposal.get("title"), "proposal title")
+        (removed if title in seen else kept).append(proposal_id)
+        seen.add(title)
+    return tuple(kept), tuple(removed)

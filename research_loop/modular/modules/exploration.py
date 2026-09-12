@@ -100,6 +100,33 @@ def assess_feasibility(plan: ExplorationPlan, observations: Mapping[str, Feasibi
     return FeasibilityReport(plan.content_hash, states, next_stage)
 
 
+def select_claimed_diagnostic(plan: ExplorationPlan, policy: FrozenRecord,
+                              candidates: tuple[FrozenRecord, ...]) -> FrozenRecord:
+    """Select a bounded diagnostic inside a previously claimed item.
+
+    This is an execution-time choice, not strategy optimization, and may run on
+    either domain.  Training-only tuning of a criterion remains a separate API.
+    """
+    policy_data = policy.data() if isinstance(policy, FrozenRecord) else {}
+    if set(policy_data) != {"policy_version", "identity", "criterion", "frozen_before_validation"}:
+        raise ContractError("diagnostic selection requires a frozen bound policy")
+    if policy_data["identity"] != plan.identity.data() or policy_data["criterion"] not in {"subjective", "uncertainty_per_cost"}:
+        raise ContractError("diagnostic policy does not bind the claimed plan")
+    if plan.identity.domain == "validation" and policy_data["frozen_before_validation"] is not True:
+        raise ContractError("validation diagnostic policy was not frozen before validation")
+    if not candidates:
+        raise ContractError("diagnostic selection needs candidates")
+    rows = [item.data() for item in candidates]
+    required = {"diagnostic_id", "subjective_score", "uncertainty_reduction", "cost"}
+    if any(set(row) != required or type(row["cost"]) not in {int, float} or row["cost"] <= 0 for row in rows):
+        raise ContractError("diagnostic candidates are invalid")
+    if policy_data["criterion"] == "subjective":
+        chosen = max(zip(rows, candidates), key=lambda pair: (pair[0]["subjective_score"], pair[0]["diagnostic_id"]))
+    else:
+        chosen = max(zip(rows, candidates), key=lambda pair: (pair[0]["uncertainty_reduction"] / pair[0]["cost"], pair[0]["diagnostic_id"]))
+    return chosen[1]
+
+
 @dataclass(frozen=True)
 class Veto:
     kind: str
