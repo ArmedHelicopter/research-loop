@@ -31,6 +31,8 @@ class ScorerPort(Protocol):
 
 class ScenarioDriver(Protocol):
     experiment_id: str
+    slots: tuple[str, ...]
+    execution_limit: int
 
     def run(self, workflow: ModularWorkflow, *, cell: PanelCell, scenario: FrozenRecord,
             model: ModelPort, package: CandidatePackage) -> tuple[WorkflowResult, FrozenRecord, tuple[FrozenRecord, ...]]: ...
@@ -46,6 +48,8 @@ class TrainCellResult:
 class Q31PredictionDriver:
     """The first real driver: Q3.1 routes M4 on/off through ``propose``."""
     experiment_id = "Q3.1"
+    slots = ("scenario", "final")
+    execution_limit = 0
 
     def run(self, workflow: ModularWorkflow, *, cell: PanelCell, scenario: FrozenRecord,
             model: ModelPort, package: CandidatePackage) -> tuple[WorkflowResult, FrozenRecord, tuple[FrozenRecord, ...]]:
@@ -83,7 +87,91 @@ class Q31PredictionDriver:
         return stage, candidate, (first, candidate)
 
 
-DRIVERS: dict[str, ScenarioDriver] = {"Q3.1": Q31PredictionDriver()}
+class Q43ReviewDriver:
+    """Production Q4.3 driver with a real M5 barrier and matched control calls."""
+    experiment_id = "Q4.3"
+    slots = ("mechanism_initial", "measurement_initial", "mechanism_revision",
+             "measurement_revision", "final")
+    execution_limit = 0
+
+    def run(self, workflow: ModularWorkflow, *, cell: PanelCell, scenario: FrozenRecord,
+            model: ModelPort, package: CandidatePackage) -> tuple[WorkflowResult, FrozenRecord, tuple[FrozenRecord, ...]]:
+        binding = {"experiment_id": cell.coverage_id, "variant": cell.variant,
+                   "replicate": cell.replicate, "arm_id": cell.arm_id,
+                   "scenario_digest": scenario.content_hash}
+        controller = scenario.data()["controller_input"]
+        roles = (("mechanism", "What causal mechanism could produce the public pattern, and what observation would falsify it?"),
+                 ("measurement", "Identify a plausible measurement failure and a public check that would distinguish it from the stated mechanism."))
+        responses: list[FrozenRecord] = []
+        submissions = []
+        review_id = None
+        m5_enabled = "M5" in workflow.enabled
+        if m5_enabled:
+            review = workflow.reviews.open(task_binding=workflow.session.task.content_hash,
+                evidence_snapshot=scenario.content_hash,
+                roles=[{"role_id": role, "question": question} for role, question in roles], budget_units=len(roles))
+            review_id = review.review_id
+        for index, ((role, question), slot) in enumerate(zip(roles, self.slots[:2])):
+            previous = submissions[0].response.data() if (m5_enabled and cell.variant == "sequential" and index) else None
+            context = {"panel_cell": binding, "scenario_controller_input": controller,
+                       "candidate_package": package.record.data(), "review_role": role,
+                       "review_question": question, "review_phase": "initial",
+                       "visibility": "sequential" if cell.variant == "sequential" else "sealed"}
+            if m5_enabled:
+                context.update({"review_id": review_id, "sealed": cell.variant == "sealed_then_exchange",
+                                "prior_visible_submission": previous})
+            else:
+                context.update({"control": "M5", "prior_visible_submission": None,
+                                "control_notice": "M5 review intervention disabled; no peer response is exposed."})
+            response = workflow.invoke_model(slot, model, instruction="Answer only the assigned review question.",
+                module_context=FrozenRecord.from_dict(context))
+            responses.append(response)
+            if m5_enabled:
+                submissions.append(workflow.reviews.submit(review_id, role_id=role,
+                    reviewer_id=f"q43-{role}-reviewer", response=response.data(), cost_units=1))
+        revisions = []
+        revealed = None
+        if m5_enabled:
+            revealed = workflow.reviews.reveal(review_id)
+            workflow.revealed = FrozenRecord.from_dict({"review_id": review_id,
+                "submissions": [item.data() for item in revealed]})
+        for (role, question), slot in zip(roles, self.slots[2:4]):
+            context = {"panel_cell": binding, "scenario_controller_input": controller,
+                       "candidate_package": package.record.data(), "review_role": role,
+                       "review_question": question, "review_phase": "post_reveal_revision",
+                       "visibility": "post_reveal"}
+            if m5_enabled:
+                context.update({"review_id": review_id, "sealed": False,
+                                "revealed_submissions": [item.data() for item in revealed]})
+            else:
+                context.update({"control": "M5", "revealed_submissions": [],
+                                "control_notice": "M5 review intervention disabled; no submissions exist to reveal."})
+            response = workflow.invoke_model(slot, model, instruction="Reassess after the declared review visibility stage.",
+                module_context=FrozenRecord.from_dict(context))
+            responses.append(response)
+            if m5_enabled:
+                revisions.append(workflow.reviews.revise_after_reveal(review_id, role_id=role,
+                    reviewer_id=f"q43-{role}-reviewer", response=response.data()))
+        review_context = {"m5_enabled": m5_enabled, "variant": cell.variant,
+                          "initial_response_digests": [item.content_hash for item in responses[:2]],
+                          "revision_response_digests": [item.content_hash for item in responses[2:]],
+                          "review_id": review_id}
+        stage = workflow._trace("stage_7" if m5_enabled else "operation_m5_control", "executed",
+            **review_context, review_log_digest=(workflow.revealed.content_hash if workflow.revealed else None),
+            revision_count=len(revisions))
+        candidate = workflow.invoke_model("final", model, instruction=(
+            "Return the bounded candidate record for this train-only run; unknown is allowed. "
+            "Copy required_objective_digest exactly into objective_digest; do not calculate or alter it."),
+            module_context=FrozenRecord.from_dict({"panel_cell": binding, "candidate_package": package.record.data(),
+                "required_objective_digest": workflow.session.objective.content_hash, "driver_stage": stage.detail.data()["stage"],
+                "q43_review": review_context}))
+        responses.append(candidate)
+        if candidate.data().get("objective_digest") != workflow.session.objective.content_hash:
+            raise ContractError("Q4.3 final must copy required_objective_digest exactly")
+        return stage, candidate, tuple(responses)
+
+
+DRIVERS: dict[str, ScenarioDriver] = {"Q3.1": Q31PredictionDriver(), "Q4.3": Q43ReviewDriver()}
 
 
 def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
@@ -117,7 +205,7 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
     if not isinstance(objective, FrozenRecord) or not callable(model):
         raise ContractError("runner needs frozen objective and model port")
     session = RunSession(task, package_digest=package.digest, arm=cell.runtime_arm,
-                         objective=objective, slots=("scenario", "final"), execution_limit=0,
+                         objective=objective, slots=driver.slots, execution_limit=driver.execution_limit,
                          sidecar=sidecar, verifier=audit_verifier, required_audit=("measurement",))
     workflow = ModularWorkflow(session)
     try:
@@ -157,7 +245,7 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
         "cell_key": list(cell.key), "scenario_digest": scenario.content_hash,
         "enabled_modules": cell.runtime_arm.data()["enabled"], "package_digest": package.digest,
         "package_record_digest": package.record.content_hash, "package_changes": package.record.data()["changes"],
-        "package_binding": "candidate_package_record_in_model_context", "slots": ["scenario", "final"],
+        "package_binding": "candidate_package_record_in_model_context", "slots": list(session.slots),
         "workflow_stage": stage.detail.data()["stage"], "execution_attempts": session._attempts,
         "model_calls": session._next_call, "docker_execution": "not_requested_by_q3_1_driver"})
     scored = None
