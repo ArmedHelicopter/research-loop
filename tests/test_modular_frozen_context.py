@@ -13,7 +13,8 @@ import pytest
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.model_port import (
     CodexModelPort, DISABLED_FEATURES, FrozenBaseContextPolicy,
-    _base_context_bytes, audit_base_context, context_source_specs, shared_args,
+    _base_context_bytes, _expected_startup_notices, audit_base_context,
+    context_source_specs, inspect_terminal_call, shared_args,
 )
 from research_loop.ontology import ContractError
 
@@ -223,3 +224,98 @@ def test_frozen_catalog_ignores_unused_cache_refresh_but_blocks_catalog_changes(
     with pytest.raises(ContractError, match="drifted"):
         instance(request())
     assert len(h.calls) == 1
+
+
+def _notice_event(message, identifier="notice_0"):
+    return {"type": "item.completed", "item": {"id": identifier, "type": "error", "message": message}}
+
+
+def _review_notices(h):
+    messages = _expected_startup_notices(h.policy_data["binding"])
+    observed = [{"type": "thread.started", "thread_id": "fixture"}]
+    observed += [_notice_event(message, f"notice_{index}") for index, message in enumerate(messages.values())]
+    observed.append({"type": "turn.started"})
+    source = h.root / "previous-failed-call-events.jsonl"
+    source.write_text("\n".join(json.dumps(event) for event in observed) + "\n")
+    h.policy_data["allowed_startup_notices"] = [{"kind": kind, "message": message,
+        "source_events_path": str(source), "source_events_sha256": sha(source)} for kind, message in messages.items()]
+    h.policy_data["review"]["startup_notice_rationale"] = "Fixture review of exact notices for the frozen flags; no skill-load exceptions."
+    h.reviewed.write_text(json.dumps(h.policy_data))
+    return FrozenBaseContextPolicy(h.reviewed, sha(h.reviewed)), messages, source
+
+
+def _notice_runner(h, prefix):
+    def run(argv, **kwargs):
+        result = h.paid(argv, **kwargs)
+        result.stdout = "\n".join(json.dumps(event) for event in prefix) + "\n" + result.stdout
+        return result
+    return run
+
+
+def test_reviewed_exact_startup_notices_are_bound_and_recorded(harness):
+    h = harness
+    policy, messages, source = _review_notices(h)
+    prefix = [_notice_event(message, f"current_{index}") for index, message in enumerate(messages.values())]
+    prefix.append({"type": "turn.started"})
+    instance = h.port(frozen_base_context=policy, process_runner=_notice_runner(h, prefix))
+    assert instance(request()).data() == {"answer": "fixture"}
+    saved = instance.ledger["calls"][0]
+    assert saved["context_faults"] == [] and len(saved["reviewed_startup_notices"]) == 2
+    assert instance.ledger["config"]["context_policy"]["allowed_startup_notices"] == h.policy_data["allowed_startup_notices"]
+    assert inspect_terminal_call(h.root / "port", 1).receipt.data()["reconciled"] is True
+
+
+@pytest.mark.parametrize("fault", ["changed_text", "other_feature", "catalog_truncation", "skill_load_failure",
+                                   "code_host_load_failure", "unknown_warning", "context_warning", "after_turn", "duplicate", "wrong_envelope"])
+def test_reviewed_notice_exception_never_masks_other_diagnostics(harness, fault):
+    h = harness
+    policy, messages, _ = _review_notices(h)
+    message = messages["unstable_skip_host_skill_discovery"]
+    if fault == "changed_text": message += " Changed."
+    elif fault == "other_feature": message = message.replace("skip_host_skill_discovery", "shell_tool")
+    elif fault == "catalog_truncation": message = "Skill descriptions were shortened"
+    elif fault == "skill_load_failure": message = "Failed to load bundled skill catalog"
+    elif fault == "code_host_load_failure": message = "Code mode host failed to load its configuration"
+    prefix = [_notice_event(message)]
+    if fault == "unknown_warning": prefix = [{"type": "warning", "message": "Unknown context warning"}]
+    elif fault == "context_warning": prefix = [{"type": "context.warning", "message": "Unknown context source changed"}]
+    elif fault == "after_turn": prefix.insert(0, {"type": "turn.started"})
+    elif fault == "duplicate": prefix.append(_notice_event(message, "duplicate"))
+    elif fault == "wrong_envelope": prefix[0]["item"]["type"] = "warning"
+    instance = h.port(frozen_base_context=policy, process_runner=_notice_runner(h, prefix))
+    with pytest.raises(ContractError, match="untrusted context"):
+        instance(request())
+    assert instance.ledger["calls"][0]["status"] == "failed"
+    assert instance.ledger["calls"][0]["context_faults"]
+
+
+def test_old_failed_call_is_not_requalified_by_new_notice_policy(harness):
+    h = harness
+    message = _expected_startup_notices(h.policy_data["binding"])["unstable_skip_host_skill_discovery"]
+    instance = h.port(process_runner=_notice_runner(h, [_notice_event(message)]))
+    with pytest.raises(ContractError): instance(request())
+    ledger_path = h.root / "port" / "ledger.json"
+    before = ledger_path.read_bytes()
+    policy, _, _ = _review_notices(h)
+    inspection = inspect_terminal_call(h.root / "port", 1)
+    assert inspection.receipt.data()["reconciled"] is False
+    assert inspection.receipt.data()["stored_status"] == "failed"
+    assert ledger_path.read_bytes() == before
+    with pytest.raises(ContractError, match="configuration"):
+        h.port(frozen_base_context=policy)
+
+
+@pytest.mark.parametrize("drift", ["missing_review", "unknown_notice", "source_changed"])
+def test_notice_allowlist_requires_review_and_exact_archived_source_before_paid_io(harness, drift):
+    h = harness
+    policy, _, source = _review_notices(h)
+    if drift == "missing_review":
+        del h.policy_data["review"]["startup_notice_rationale"]
+    elif drift == "unknown_notice":
+        h.policy_data["allowed_startup_notices"][0]["message"] = "Failed to load skill catalog"
+    else:
+        source.write_text(source.read_text() + "{}\n")
+    h.reviewed.write_text(json.dumps(h.policy_data))
+    policy = FrozenBaseContextPolicy(h.reviewed, sha(h.reviewed))
+    with pytest.raises(ContractError): h.port(frozen_base_context=policy)
+    assert not h.calls

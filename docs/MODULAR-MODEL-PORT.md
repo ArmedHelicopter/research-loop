@@ -92,6 +92,27 @@ untrusted. Configuration restrictions and event checks do not prove an OS
 sandbox. The contract requires the same reviewed base binding across arms;
 experiment orchestration must supply that policy consistently.
 
+CLI startup notices are also fail-closed by default. Two specific notices can
+be approved in advance: the exact warning for the frozen
+`skip_host_skill_discovery` flag, and the exact disabled-code-mode-host notice
+when both code mode features are disabled. Neither notice reports a skill
+catalog or a skill-loading failure. A reviewed policy may add an
+`allowed_startup_notices` list of objects containing `kind`, exact `message`,
+absolute `source_events_path`, and `source_events_sha256`; its review must also
+include `startup_notice_rationale`. The supported kinds are
+`unstable_skip_host_skill_discovery` and `disabled_code_mode_host`. Each message
+must equal the known wording for the policy's frozen flags/config path and
+occur exactly once in the hash-pinned archived startup event stream.
+
+At execution, that exact event envelope/message is allowed only once before
+the turn begins. Its message hash and startup phase are recorded with the
+policy-bound call. Changed wording, extra enabled features, unknown warnings,
+catalog truncation, load errors, duplicate notices, and notices during the
+turn remain faults. This exception does not prove a provider tool schema or
+turn a failed old call into a success. Changing the allowlist requires a newly
+reviewed policy hash and a new ledger; terminal inspection uses the allowlist
+frozen in the original ledger, never a later replacement policy.
+
 `max_tokens` is enforced against recorded cumulative provider usage after each
 call. The CLI version checked here exposes no per-call output-token switch, so
 it is an accounting stop, not a pre-call output-token cap.

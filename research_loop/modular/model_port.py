@@ -165,11 +165,77 @@ class FrozenBaseContextPolicy:
             context_raw = Path(audit["raw_context_path"]).read_bytes()
             if _sha(context_raw) != audit["raw_context_sha256"] or _sha(_base_context_bytes(context_raw)) != binding["context_digest"]:
                 raise ContractError("frozen context review material drifted")
+            notices = policy.get("allowed_startup_notices", [])
+            if notices and (not isinstance(review.get("startup_notice_rationale"), str) or not review["startup_notice_rationale"].strip()):
+                raise ContractError("startup notices require explicit reviewed rationale")
+            _reviewed_notice_messages(binding, notices)
             return policy
         except ContractError:
             raise
         except (OSError, KeyError, ValueError, TypeError) as exc:
             raise ContractError("invalid frozen context policy material") from exc
+
+
+def _expected_startup_notices(binding: Mapping[str, Any]) -> dict[str, str]:
+    """Only these known CLI notices describe an already frozen configuration.
+
+    These are not skill catalog/truncation/load notices. No such notice can be
+    inferred from a reviewed catalog, and none is eligible for this exception.
+    """
+    args = binding.get("shared_argv", [])
+    pairs = set(zip(args, args[1:]))
+    expected = {}
+    if ("--enable", "skip_host_skill_discovery") in pairs:
+        config = str(Path(binding["codex_home"]) / "config.toml")
+        expected["unstable_skip_host_skill_discovery"] = (
+            "Under-development features enabled: skip_host_skill_discovery. "
+            "Under-development features are incomplete and may behave unpredictably. "
+            "To suppress this warning, set `suppress_unstable_features_warning = true` in " + config + ".")
+    if all(("--disable", name) in pairs for name in ("code_mode", "code_mode_host")):
+        expected["disabled_code_mode_host"] = (
+            "Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; "
+            "enable `features.code_mode_host` and install `codex-code-mode-host`.")
+    return expected
+
+
+def _notice_envelope(event: Mapping[str, Any]) -> str | None:
+    item = event.get("item")
+    if (set(event) == {"type", "item"} and event["type"] == "item.completed"
+            and isinstance(item, dict) and set(item) == {"id", "type", "message"}
+            and isinstance(item["id"], str) and item["type"] == "error" and isinstance(item["message"], str)):
+        return item["message"]
+    return None
+
+
+def _reviewed_notice_messages(binding: Mapping[str, Any], entries: Any) -> frozenset[str]:
+    """Validate exact notices against frozen flags and archived observed events."""
+    if not isinstance(entries, list):
+        raise ContractError("startup notice allowlist must be a list")
+    expected, messages = _expected_startup_notices(binding), set()
+    for entry in entries:
+        if (not isinstance(entry, dict) or set(entry) != {"kind", "message", "source_events_path", "source_events_sha256"}
+                or entry.get("kind") not in expected or entry.get("message") != expected[entry["kind"]]
+                or entry["message"] in messages):
+            raise ContractError("unrecognized or configuration-mismatched startup notice")
+        try:
+            source = Path(entry["source_events_path"])
+            if not source.is_absolute():
+                raise ValueError("absolute archived event path required")
+            raw = source.read_bytes()
+            if _sha(raw) != entry["source_events_sha256"]:
+                raise ValueError("archived notice source hash mismatch")
+            # Exact JSONL is required; malformed lines cannot be discarded while
+            # deciding whether an archived event is reviewable startup evidence.
+            events = [json.loads(line) for line in raw.decode("utf-8").splitlines()]
+            if not events or any(not isinstance(event, dict) for event in events):
+                raise ValueError("invalid archived event stream")
+            _, accepted = _context_diagnostics(events, frozenset({entry["message"]}))
+            if len(accepted) != 1 or sum(_notice_envelope(event) == entry["message"] for event in events) != 1:
+                raise ValueError("exact single startup notice absent from source")
+        except (OSError, ValueError, TypeError) as exc:
+            raise ContractError("startup notice lacks valid archived provenance") from exc
+        messages.add(entry["message"])
+    return frozenset(messages)
 
 
 def _require_empty_public_cwd(cwd: Path) -> None:
@@ -368,6 +434,8 @@ class CodexModelPort:
         self.environment = dict(os.environ)
         self.policy_data = frozen_base_context.data() if frozen_base_context else None
         self.context_binding = self.policy_data["binding"] if self.policy_data else None
+        self.allowed_startup_notices = self.policy_data.get("allowed_startup_notices", []) if self.policy_data else []
+        self.allowed_notice_messages = _reviewed_notice_messages(self.context_binding, self.allowed_startup_notices) if self.context_binding else frozenset()
         self.fixed_cwd = Path(self.context_binding["fixed_cwd"]) if self.context_binding else self.root / "fixture-cwd"
         if self.mock_context:
             self.fixed_cwd.mkdir(parents=True, exist_ok=True)
@@ -382,7 +450,7 @@ class CodexModelPort:
                   "schemas": self.schemas, "timeout_seconds": timeout_seconds,
                   "context_mode": "mock_fixture" if self.mock_context else "reviewed" if frozen_base_context else "unqualified",
                   "context_policy": {"source": str(Path(frozen_base_context.source).resolve()), "sha256": frozen_base_context.sha256,
-                                     "binding": self.context_binding} if frozen_base_context else None,
+                                     "binding": self.context_binding, "allowed_startup_notices": self.allowed_startup_notices} if frozen_base_context else None,
                   "shared_argv": self.shared, "fixed_cwd": str(self.fixed_cwd),
                   "environment_sha256": _sha(canonical(self.environment).encode())}
         if self.ledger_path.exists():
@@ -443,8 +511,9 @@ class CodexModelPort:
         events = _events(stdout)
         usage = _usage(events)
         tools = _tool_events(events)
-        faults = _context_faults(events)
-        reservation.update({"exit_code": result.returncode, "events_hash": _sha(stdout.encode()), "stderr_hash": _sha(stderr.encode()), "usage": usage, "tool_events": tools, "context_faults": faults})
+        faults, notices = _context_diagnostics(events, self.allowed_notice_messages)
+        reservation.update({"exit_code": result.returncode, "events_hash": _sha(stdout.encode()), "stderr_hash": _sha(stderr.encode()), "usage": usage, "tool_events": tools, "context_faults": faults,
+                            "reviewed_startup_notices": notices})
         if usage is None or tools or faults:
             reservation["status"] = "failed"
             self.ledger["usage_incomplete"] = True
@@ -610,7 +679,9 @@ def inspect_terminal_call(work_root: Path, call_id: int) -> TerminalCallInspecti
         raise ContractError("terminal event hash mismatch")
     events = _events(events_bytes.decode("utf-8"))
     usage, tools = _usage(events), _tool_events(events)
-    faults = _context_faults(events)
+    recorded_policy = config.get("context_policy") or {}
+    allowed = _reviewed_notice_messages(recorded_policy.get("binding", {}), recorded_policy.get("allowed_startup_notices", []))
+    faults, notices = _context_diagnostics(events, allowed)
     response = None
     output_hash = None
     if output_path.is_file():
@@ -625,20 +696,35 @@ def inspect_terminal_call(work_root: Path, call_id: int) -> TerminalCallInspecti
         "ledger_hash": _sha(ledger_path.read_bytes()), "stored_status": call.get("status"),
         "events_hash": events_hash, "events_hash_legacy_lf_match": stored_events_hash == legacy_lf_events and stored_events_hash != events_hash,
         "output_hash": output_hash, "usage": usage,
-        "tool_events": tools, "context_faults": faults,
+        "tool_events": tools, "context_faults": faults, "reviewed_startup_notices": notices,
         "reconciled": usage is not None and not tools and not faults and response is not None})
     return TerminalCallInspection(receipt, response)
 
 
-def _context_faults(events: list[Mapping[str, Any]]) -> list[str]:
-    faults = []
+def _context_diagnostics(events: list[Mapping[str, Any]], allowed: frozenset[str] = frozenset()) -> tuple[list[str], list[dict[str, Any]]]:
+    faults, accepted, seen = [], [], set()
+    startup = True
     for event in events:
         item = event.get("item")
-        if isinstance(item, Mapping) and item.get("type") == "error":
-            message = item.get("message")
-            if isinstance(message, str) and "skill" in message.lower():
-                faults.append("skill_context_detected")
-    return faults
+        kind = item.get("type") if isinstance(item, Mapping) else None
+        is_diagnostic = any(isinstance(name, str) and any(marker in name.lower() for marker in ("error", "warning", "failed"))
+                            for name in (kind, event.get("type")))
+        if is_diagnostic:
+            message = item.get("message") if isinstance(item, Mapping) else event.get("message")
+            exact = _notice_envelope(event)
+            if startup and exact in allowed and exact not in seen:
+                seen.add(exact)
+                accepted.append({"message_sha256": _sha(exact.encode()), "event_type": event["type"], "phase": "startup"})
+            else:
+                faults.append("skill_context_detected" if isinstance(message, str) and "skill" in message.lower() else "unreviewed_diagnostic_event")
+        elif event.get("type") != "thread.started":
+            startup = False
+    return faults, accepted
+
+
+def _context_faults(events: list[Mapping[str, Any]]) -> list[str]:
+    """Conservative historical inspection: no implicit notice exceptions."""
+    return _context_diagnostics(events)[0]
 
 
 def _schema_witness(schema: Mapping[str, Any]) -> Any:
