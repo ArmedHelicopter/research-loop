@@ -1,0 +1,18 @@
+{
+  "schema": "modular-external-source-metadata-v1",
+  "canonical_id": "corebench",
+  "collection_scope": "official repository metadata only; no benchmark, task, answer, reference, annotation, or dataset content was opened or downloaded",
+  "official_repository_url": "https://github.com/siegelz/core-bench",
+  "pinned_commit": "e32a2980e72fe6eb04ee04eb749458f570625663",
+  "commit_evidence_url": "https://github.com/siegelz/core-bench/commit/HEAD.patch",
+  "commit_hash_kind": "Git commit SHA-1 from the official repository HEAD patch header",
+  "license": {"name": "MIT", "evidence_url": "https://github.com/siegelz/core-bench/blob/e32a2980e72fe6eb04ee04eb749458f570625663/LICENSE"},
+  "release": {"kind": "repository release metadata", "status": "no GitHub releases observed on the official repository page", "evidence_url": "https://github.com/siegelz/core-bench/releases"},
+  "observed_repository_files": [
+    {"path": "README.md", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"},
+    {"path": "LICENSE", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"},
+    {"path": "requirements.txt", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"}
+  ],
+  "runtime_status": "catalog_only_no_runtime_adapter",
+  "qualification": "quarantine_until_review"
+}

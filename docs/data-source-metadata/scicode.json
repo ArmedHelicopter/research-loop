@@ -1,0 +1,18 @@
+{
+  "schema": "modular-external-source-metadata-v1",
+  "canonical_id": "scicode",
+  "collection_scope": "official repository metadata only; no benchmark, task, answer, reference, annotation, or dataset content was opened or downloaded",
+  "official_repository_url": "https://github.com/scicode-bench/SciCode",
+  "pinned_commit": "8699b7c8fcebd916e429e26d28ac5d2257d25db3",
+  "commit_evidence_url": "https://github.com/scicode-bench/SciCode/commit/HEAD.patch",
+  "commit_hash_kind": "Git commit SHA-1 from the official repository HEAD patch header",
+  "license": {"name": "Apache-2.0", "evidence_url": "https://github.com/scicode-bench/SciCode/blob/8699b7c8fcebd916e429e26d28ac5d2257d25db3/LICENSE"},
+  "release": {"kind": "repository release metadata", "status": "no GitHub release used as a qualification artifact", "evidence_url": "https://github.com/scicode-bench/SciCode/releases"},
+  "observed_repository_files": [
+    {"path": "README.md", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"},
+    {"path": "LICENSE", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"},
+    {"path": "pyproject.toml", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"}
+  ],
+  "runtime_status": "catalog_only_no_runtime_adapter",
+  "qualification": "quarantine_until_review"
+}

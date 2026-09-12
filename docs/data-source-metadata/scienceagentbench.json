@@ -1,0 +1,18 @@
+{
+  "schema": "modular-external-source-metadata-v1",
+  "canonical_id": "scienceagentbench",
+  "collection_scope": "official repository metadata only; no benchmark, task, answer, reference, annotation, or dataset content was opened or downloaded",
+  "official_repository_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench",
+  "pinned_commit": "c26e151ed601ba109dc4d35e057ff8e73fec469d",
+  "commit_evidence_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench/commit/HEAD.patch",
+  "commit_hash_kind": "Git commit SHA-1 from the official repository HEAD patch header",
+  "license": {"name": "MIT for repository code", "evidence_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench/blob/c26e151ed601ba109dc4d35e057ff8e73fec469d/LICENSE"},
+  "release": {"kind": "verified benchmark artifact announcement", "version_note": "2026-04-30 verified version announcement", "evidence_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench/commit/c26e151ed601ba109dc4d35e057ff8e73fec469d"},
+  "observed_repository_files": [
+    {"path": "README.md", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"},
+    {"path": "LICENSE", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"},
+    {"path": "requirements.txt", "size_bytes": null, "integrity_reference": "repository commit SHA-1 above", "size_status": "not collected to avoid content retrieval"}
+  ],
+  "runtime_status": "catalog_only_no_runtime_adapter",
+  "qualification": "quarantine_until_review"
+}
