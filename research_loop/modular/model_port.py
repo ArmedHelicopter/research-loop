@@ -249,7 +249,7 @@ class CodexModelPort:
             prompt_input = json.loads(raw.decode("utf-8"))
             rendered = canonical(prompt_input).lower()
             skills_present = any(marker in rendered for marker in ("<skills", "skills_instructions", "skill roots", "available skills"))
-            accepted = result.returncode == 0 and isinstance(prompt_input, list) and not skills_present
+            accepted = result.returncode == 0 and isinstance(prompt_input, list) and bool(prompt_input) and not skills_present
         except Exception as exc:
             probe = {"status": "failed", "error_type": type(exc).__name__}
             self.ledger.setdefault("context_probes", []).append(probe)
