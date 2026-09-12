@@ -17,7 +17,8 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Iterable
 
-from research_loop.modular.contracts import DataIdentity
+from research_loop.modular.contracts import DataIdentity, FrozenRecord
+from evaluation.modular.calibration import verify_calibration_receipt
 from research_loop.ontology import ContractError, canonical, digest
 
 SCHEMA = "modular-custody-v2"
@@ -199,8 +200,11 @@ def _writer_lock(path: Path):
 
 class CustodyStore:
     """Durable custody state with deterministic allocation and one-use leases."""
-    def __init__(self, path: Path) -> None:
+    def __init__(self, path: Path, *, calibration_keys: dict[str, bytes] | None = None) -> None:
         self.path = path
+        # These keys are deployment configuration, never receipt input.  The
+        # command-line metadata tool intentionally has none and cannot lease.
+        self._calibration_keys = dict(calibration_keys or {})
         self.state = self._load()
         self._loaded_digest = digest(self.state) if path.exists() else None
 
@@ -327,8 +331,10 @@ class CustodyStore:
             result.append(DataIdentity(item.benchmark, item.task_id, row["group"], self.state["inventory_digest"], self.state["split"]["digest"], "train"))
         return result
 
-    def qualify_stage(self, *, stage: str, panel_digest: str, group_ids: list[str], arm_schedule: list[str]) -> dict[str, Any]:
-        """Check a frozen panel before issuing its one-use validation capability."""
+    def qualify_stage(self, *, stage: str, panel_digest: str, group_ids: list[str], arm_schedule: list[str],
+                      scorer_digest: str | None = None, protocol_digest: str | None = None,
+                      calibration_receipt: FrozenRecord | None = None) -> dict[str, Any]:
+        """Return explicit metadata status or a signed scorer-calibration qualification."""
         if self.state["split"] is None:
             raise ContractError("split required before stage qualification")
         _safe_name(stage, "stage")
@@ -343,17 +349,38 @@ class CustodyStore:
         used = set().union(*(set(lease["groups"]) for lease in self.state["leases"].values()), set())
         if used & set(group_ids):
             raise ContractError("validation group already allocated or consumed")
-        return {"stage": stage, "panel_digest": panel_digest, "groups": sorted(group_ids),
+        base = {"stage": stage, "panel_digest": panel_digest, "groups": sorted(group_ids),
                 "arm_schedule": list(arm_schedule), "arm_schedule_digest": digest(list(arm_schedule)),
-                "split_digest": self.state["split"]["digest"], "qualified": True}
+                "split_digest": self.state["split"]["digest"]}
+        if calibration_receipt is None:
+            if scorer_digest is not None or protocol_digest is not None:
+                raise ContractError("scorer and protocol binding require a signed calibration receipt")
+            return {**base, "qualified": False, "qualification": "metadata_only"}
+        if not self._calibration_keys:
+            raise ContractError("validation qualification requires configured trusted calibration keys")
+        if scorer_digest is None or protocol_digest is None:
+            raise ContractError("validation qualification requires scorer and protocol digests")
+        calibration = verify_calibration_receipt(calibration_receipt, self._calibration_keys,
+                                                  panel_digest=panel_digest, scorer_digest=scorer_digest,
+                                                  protocol_digest=protocol_digest)
+        return {**base, "qualified": True, "qualification": "calibrated",
+                "scorer_digest": scorer_digest, "protocol_digest": protocol_digest,
+                "calibration_receipt_digest": calibration_receipt.content_hash,
+                "calibration_authority": calibration["authority"]}
 
-    def lease_validation(self, *, stage: str, panel_digest: str, group_ids: list[str], arm_schedule: list[str]) -> dict[str, Any]:
+    def lease_validation(self, *, stage: str, panel_digest: str, group_ids: list[str], arm_schedule: list[str],
+                         scorer_digest: str | None = None, protocol_digest: str | None = None,
+                         calibration_receipt: FrozenRecord | None = None) -> dict[str, Any]:
         if self.state["split"] is None:
             raise ContractError("split required before lease")
-        lease_id = digest({"stage": stage, "panel": panel_digest, "groups": sorted(group_ids), "arms": arm_schedule, "split": self.state["split"]["digest"]})
+        if calibration_receipt is None or scorer_digest is None or protocol_digest is None:
+            raise ContractError("validation lease requires signed scorer calibration")
+        lease_id = digest({"stage": stage, "panel": panel_digest, "groups": sorted(group_ids), "arms": arm_schedule, "split": self.state["split"]["digest"], "scorer": scorer_digest, "protocol": protocol_digest, "calibration": calibration_receipt.content_hash})
         if lease_id in self.state["leases"]:
             raise ContractError("validation lease is one-use")
-        qualification = self.qualify_stage(stage=stage, panel_digest=panel_digest, group_ids=group_ids, arm_schedule=arm_schedule)
+        qualification = self.qualify_stage(stage=stage, panel_digest=panel_digest, group_ids=group_ids, arm_schedule=arm_schedule,
+                                           scorer_digest=scorer_digest, protocol_digest=protocol_digest,
+                                           calibration_receipt=calibration_receipt)
         lease = {"id": lease_id, **qualification, "status": "active"}
         self.state["leases"][lease_id] = lease
         self._save()

@@ -8,7 +8,24 @@ from pathlib import Path
 import pytest
 
 from evaluation.modular.custody import CustodyStore, InventoryItem, build_known_inventory
+from evaluation.modular.calibration import CalibrationAuthority
+from research_loop.modular.contracts import FrozenRecord
 from research_loop.ontology import ContractError
+
+
+def calibration(panel_digest: str, scorer_digest: str = "e" * 64, protocol_digest: str = "f" * 64) -> FrozenRecord:
+    return CalibrationAuthority("test-calibration", b"k" * 32).issue({
+        "schema": "scorer-calibration-v1", "panel_digest": panel_digest, "scorer_digest": scorer_digest,
+        "protocol_digest": protocol_digest, "scorer_code_digest": "1" * 64, "judge_identity": "independent",
+        "judge_parameters": {"temperature": 0}, "rubric_digest": "2" * 64,
+        "calibration_manifest_digest": "3" * 64, "blind_review_protocol_digest": "4" * 64,
+        "arbitration_protocol_digest": "5" * 64, "applicable_benchmarks": ["blade", "discoverybench"],
+        "confusion_matrix": {"positive": {"positive": 1, "negative": 0}}, "uncertainty": {"bound": 0.1},
+    })
+
+
+def calibrated_store(path: Path) -> CustodyStore:
+    return CustodyStore(path, calibration_keys={"test-calibration": b"k" * 32})
 
 
 def file(path: Path, content: str = "x") -> None:
@@ -76,15 +93,15 @@ def test_partial_source_group_attestation_cannot_admit_unreviewed_members(tmp_pa
 
 def test_stale_controller_cannot_overwrite_another_validation_lease(tmp_path: Path) -> None:
     path = tmp_path / "concurrent.json"
-    first = CustodyStore(path)
+    first = calibrated_store(path)
     first.inventory([InventoryItem("blade", "a", "a", "unsplit", "a", ("a" * 64,))])
     first.attest_independent_clean(item_ids=["blade:a"], custodian_id="custodian",
         source_qualification_digest="b" * 64, exposure_qualification_digest="c" * 64, tested_arm_ids=["tested"])
     group = first.split(seed="s", validation_percent=100)["rows"][0]["group"]
-    second = CustodyStore(path)
-    lease = first.lease_validation(stage="stage-a", panel_digest="d" * 64, group_ids=[group], arm_schedule=["control", "candidate"])
+    second = calibrated_store(path)
+    lease = first.lease_validation(stage="stage-a", panel_digest="d" * 64, group_ids=[group], arm_schedule=["control", "candidate"], scorer_digest="e" * 64, protocol_digest="f" * 64, calibration_receipt=calibration("d" * 64))
     with pytest.raises(ContractError, match="stale write"):
-        second.lease_validation(stage="stage-b", panel_digest="e" * 64, group_ids=[group], arm_schedule=["control", "candidate"])
+        second.lease_validation(stage="stage-b", panel_digest="e" * 64, group_ids=[group], arm_schedule=["control", "candidate"], scorer_digest="e" * 64, protocol_digest="f" * 64, calibration_receipt=calibration("e" * 64))
     assert set(CustodyStore(path).state["leases"]) == {lease["id"]}
 
 
@@ -95,7 +112,7 @@ def test_hash_union_and_validation_lease_are_bound_and_one_use(tmp_path: Path) -
         InventoryItem("two", "b", "two:b", "test", "b", (clean_hash,)),
         InventoryItem("three", "c", "three:c", "test", "c", ("b" * 64,)),
     ]
-    store = CustodyStore(tmp_path / "state.json")
+    store = calibrated_store(tmp_path / "state.json")
     store.inventory(items)
     store.attest_independent_clean(item_ids=["one:a", "two:b", "three:c"], custodian_id="custody-service",
                                    source_qualification_digest="a" * 64,
@@ -107,11 +124,11 @@ def test_hash_union_and_validation_lease_are_bound_and_one_use(tmp_path: Path) -
     group = rows["one:a"]["group"]
     with pytest.raises(ContractError, match="non-validation"):
         store.qualify_stage(stage="C1", panel_digest="c" * 64, group_ids=["not-a-validation-group"], arm_schedule=["arm-a", "arm-b"])
-    lease = store.lease_validation(stage="C1", panel_digest="c" * 64, group_ids=[group], arm_schedule=["arm-a", "arm-b"])
+    lease = store.lease_validation(stage="C1", panel_digest="c" * 64, group_ids=[group], arm_schedule=["arm-a", "arm-b"], scorer_digest="e" * 64, protocol_digest="f" * 64, calibration_receipt=calibration("c" * 64))
     with pytest.raises(ContractError, match="panel or arm"):
         store.consume_validation(lease["id"], panel_digest="d" * 64, arm_schedule=["arm-a", "arm-b"])
     with pytest.raises(ContractError, match="allocated or consumed"):
-        store.lease_validation(stage="C2", panel_digest="d" * 64, group_ids=[group], arm_schedule=["arm-a", "arm-b"])
+        store.lease_validation(stage="C2", panel_digest="d" * 64, group_ids=[group], arm_schedule=["arm-a", "arm-b"], scorer_digest="e" * 64, protocol_digest="f" * 64, calibration_receipt=calibration("d" * 64))
     assert store.consume_validation(lease["id"], panel_digest="c" * 64, arm_schedule=["arm-a", "arm-b"])["status"] == "consumed"
     with pytest.raises(ContractError, match="allocated or consumed"):
         store.qualify_stage(stage="C3", panel_digest="e" * 64, group_ids=[group], arm_schedule=["arm-a", "arm-b"])
@@ -168,10 +185,7 @@ def test_cli_inventory_attest_split_export_qualify_lease_consume(tmp_path: Path)
     assert all(row["domain"] == "train" for row in json.loads(exported.stdout))
     qualified = subprocess.run([*base, "qualify", "--stage", "C1", "--panel-digest", "c" * 64,
                                 "--group", "blade:soccer", "--arm", "arm-a", "--arm", "arm-b"], capture_output=True, text=True, check=True)
-    assert json.loads(qualified.stdout)["qualified"] is True
+    assert json.loads(qualified.stdout)["qualification"] == "metadata_only"
     leased = subprocess.run([*base, "lease", "--stage", "C1", "--panel-digest", "c" * 64,
-                             "--group", "blade:soccer", "--arm", "arm-a", "--arm", "arm-b"], capture_output=True, text=True, check=True)
-    lease_id = json.loads(leased.stdout)["id"]
-    consumed = subprocess.run([*base, "consume", "--lease", lease_id, "--panel-digest", "c" * 64,
-                                "--arm", "arm-a", "--arm", "arm-b"], capture_output=True, text=True, check=True)
-    assert json.loads(consumed.stdout)["status"] == "consumed"
+                              "--group", "blade:soccer", "--arm", "arm-a", "--arm", "arm-b"], capture_output=True, text=True)
+    assert leased.returncode != 0 and "signed scorer calibration" in leased.stderr
