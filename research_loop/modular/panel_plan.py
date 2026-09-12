@@ -14,7 +14,7 @@ from research_loop.modular.benchmarks.catalog import REQUIRED_BENCHMARKS
 from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.experiments import ControllerInputs, registry, scenario
-from research_loop.modular.modules.improvement import CandidatePackage
+from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.p0_panel import fixed_control_design
 from research_loop.modular.panel_receipts import (
     CombinationObligations, FrozenPanel, PanelCell, RESEARCH_MODULES, REQUIRED_TRIPLES,
@@ -93,6 +93,14 @@ def compile_train_panel(*, stage: str, scope_ids: Sequence[str], tasks: Sequence
     arms = {arm.content_hash: arm for grid in grids.values() for arm in executable_arms(grid).values()}
     if set(packages_by_arm) != set(arms) or any(not isinstance(x, CandidatePackage) for x in packages_by_arm.values()):
         raise ContractError("exactly one actual candidate package per legal runtime arm is required")
+    # This compiler currently supports packages frozen for this entire training
+    # panel. Broader training manifests need a separate custody-bound contract;
+    # matching an opaque package hash alone cannot establish data provenance.
+    panel_identities = {task.identity for task in tasks}
+    for package in packages_by_arm.values():
+        manifest = TrainingManifest(FrozenRecord.from_dict(package.record.data()["training_manifest"]))
+        if set(manifest.identities()) != panel_identities:
+            raise ContractError("train package manifest must bind exactly this panel task set")
     bundle = FrozenRecord.from_dict({"schema": "train-panel-package-bundle-v1",
         "baseline_digest": baseline_digest,
         "packages": {key: package.record.data() for key, package in sorted(packages_by_arm.items())}})

@@ -78,6 +78,25 @@ def test_actual_package_or_scorer_or_budget_change_changes_frozen_panel():
     assert compile_train_panel(**values).panel.digest != first.panel.digest
 
 
+@pytest.mark.parametrize("fault", ["foreign_split", "foreign_task", "partial", "extra"])
+def test_package_manifest_cannot_cross_or_silently_change_training_panel(fault):
+    values = inputs(("Q3.1",))
+    identities = [task.identity for task in values["tasks"]]
+    if fault == "foreign_split":
+        identities = [replace(identity, split_id="b" * 64) for identity in identities]
+    elif fault == "foreign_task":
+        identities[0] = replace(identities[0], task_id="different-task")
+    elif fault == "partial":
+        identities.pop()
+    else:
+        identities.append(replace(identities[0], task_id="extra-training-task"))
+    package = CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze(identities),
+        changes={"prompt": {"instructions": "Public training package."}}, search_cost=0)
+    values["packages_by_arm"] = {arm: package for arm in values["packages_by_arm"]}
+    with pytest.raises(ContractError, match="manifest must bind exactly"):
+        compile_train_panel(**values)
+
+
 @pytest.mark.parametrize("fault", ["validation", "duplicate_task", "split", "missing_benchmark", "missing_package", "wrong_package", "missing_evidence", "duplicate_replicate", "unknown_scope"])
 def test_compiler_fails_before_execution_for_invalid_frozen_inputs(fault):
     values = inputs(("Q3.1",))
