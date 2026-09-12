@@ -336,11 +336,17 @@ def run_combination_cell(panel: CombinationPanel, cell: PanelCell, *, task: Publ
     binding = {"experiment_id": cell.coverage_id, "variant": cell.variant, "replicate": cell.replicate,
                "arm_id": cell.arm_id, "scenario_digest": scenario.content_hash}
     try:
-        candidate = session.invoke("combination", model, instruction="Return a bounded train-only combination candidate; unknown is allowed.",
+        candidate = session.invoke("combination", model, instruction=(
+            "Return a bounded train-only combination candidate; unknown is allowed. "
+            "Copy module_context.required_objective_digest verbatim into objective_digest. "
+            "The package is supplied as context; no module effect has been established."),
             module_context=FrozenRecord.from_dict({"panel_cell": binding, "combination_scenario": body,
+                                                    "required_objective_digest": session.objective.content_hash,
                                                     "candidate_package": package.record.data(),
                                                     "package_application_status": "controller_binding_only_not_module_effect"}))
     except Exception as exc:
+        if not session._terminal:
+            session.controller_failure(driver_id=cell.coverage_id, error_type=type(exc).__name__, panel_cell=binding)
         trace = sidecar / "trace.jsonl"
         lines = trace.read_text(encoding="utf-8").splitlines()
         return RuntimeReceipt(cell.key, "failed", trace, FrozenRecord(lines[-1]).content_hash, None,

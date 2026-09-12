@@ -128,7 +128,7 @@ def test_production_combination_runner_injects_exact_package_and_scenario(tmp_pa
     seen = []
     def model(request):
         seen.append(request.data()["module_context"])
-        objective_digest = FrozenRecord.from_dict(request.data()["objective"]).content_hash
+        objective_digest = request.data()["module_context"]["required_objective_digest"]
         return FrozenRecord.from_dict({"objective_digest": objective_digest, "outcome": "unknown", "evidence_ids": [],
                                        "conclusion": "engineering-only combination response", "programme_complete": False})
     verifier = AuditVerifier({"audit-a": b"a" * 32, "audit-b": b"b" * 32})
@@ -141,13 +141,14 @@ def test_production_combination_runner_injects_exact_package_and_scenario(tmp_pa
     assert seen[0]["candidate_package"] != seen[1]["candidate_package"]
     assert all(context["combination_scenario"]["task_digest"] == task.content_hash for context in seen)
     assert all(context["package_application_status"] == "controller_binding_only_not_module_effect" for context in seen)
+    assert all(context["required_objective_digest"] == FrozenRecord.from_dict({"objective": "combination"}).content_hash for context in seen)
 
 
 def test_all_catalogue_cells_run_through_production_runner_and_verify(tmp_path: Path):
     catalogue = _catalogue()
     verifier = AuditVerifier({"audit-a": b"a" * 32, "audit-b": b"b" * 32})
     def model(request):
-        objective_digest = FrozenRecord.from_dict(request.data()["objective"]).content_hash
+        objective_digest = request.data()["module_context"]["required_objective_digest"]
         return FrozenRecord.from_dict({"objective_digest": objective_digest, "outcome": "unknown", "evidence_ids": [],
                                        "conclusion": "synthetic engineering-only combination response", "programme_complete": False})
     total = 0
@@ -175,3 +176,27 @@ def test_production_runner_retains_model_failure_for_verifier_denominator(tmp_pa
     assert receipt.status == "failed" and receipt.output_digest is None
     events = [FrozenRecord(line).data() for line in receipt.trace_path.read_text(encoding="utf-8").splitlines()]
     assert events[-1]["stage"] == "model_failure"
+
+
+def test_context_builder_failure_retains_zero_call_cells(tmp_path: Path, monkeypatch):
+    from research_loop.modular.modules.context import ContextBuilder
+    tasks, packages, scorer, criteria = _inputs()
+    def context_fault(*_args, **_kwargs):
+        raise ContractError("injected context construction failure before request")
+    monkeypatch.setattr(ContextBuilder, "build", context_fault)
+    catalogue = compile_combination_catalogue(stage="context-construction-failure", tasks=tasks,
+        baseline_digest=SPLIT, packages_by_arm=packages, scorer=scorer, acceptance_criteria=criteria)
+    panel = catalogue.panels["pair:M1+M4"]
+    calls = []
+    def model(request):
+        calls.append(request)
+        raise AssertionError("context should fail before provider I/O")
+    receipts = [run_combination_cell(panel, cell, task=catalogue.tasks[cell.task_digest],
+        scenario=catalogue.scenarios[cell.key], package=catalogue.packages[cell.runtime_arm.content_hash],
+        objective=FrozenRecord.from_dict({"panel": panel.digest}), sidecar=tmp_path / str(index),
+        model=model, audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+        for index, cell in enumerate(panel.cells)]
+    assert not calls
+    assert all(row.status == "failed" for row in receipts)
+    verdict = CombinationPanelVerifier().verify(panel, receipts)
+    assert verdict.failures == verdict.observed_cells == len(panel.cells)
