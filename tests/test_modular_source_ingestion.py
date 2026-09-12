@@ -42,7 +42,8 @@ def test_acquires_verified_private_snapshot_and_returns_no_reader(tmp_path: Path
     install(monkeypatch, snapshot)
     receipt = SourceAcquirer(MemoryTransport({"public.jsonl": [payload[:4], payload[4:]]})).acquire("scicode", tmp_path / "private")
     row = receipt.data()
-    assert row["content_exposed"] is False and row["split_qualified"] is False
+    assert row["payload_returned"] is False and row["access_isolation"] == "not_verified"
+    assert row["split_qualified"] is False
     assert row["artifacts"][0]["local_sha256"] == hashlib.sha256(payload).hexdigest()
     assert not hasattr(SourceAcquirer, "read") and not hasattr(SourceAcquirer, "open")
     stored = tmp_path / "private" / "snapshots" / "scicode" / ("a" * 40) / "public.jsonl"
@@ -66,7 +67,7 @@ def test_interrupted_download_never_becomes_a_snapshot(tmp_path: Path, monkeypat
     assert not list((tmp_path / "private").rglob("snapshot-receipt.json"))
 
 
-@pytest.mark.parametrize("path", ["../escape", "/absolute", "nested\\escape"])
+@pytest.mark.parametrize("path", ["../escape", "/absolute", "nested\\escape", "C:/drive", "file:stream", " leading", "trailing "])
 def test_source_paths_reject_escape(path: str) -> None:
     with pytest.raises(ContractError):
         ArtifactSpec(path, 1, git_blob_sha1="a" * 40)
@@ -80,6 +81,30 @@ def test_existing_snapshot_is_an_immutable_conflict(tmp_path: Path, monkeypatch)
     acquirer.acquire("scicode", tmp_path / "private")
     with pytest.raises(ContractError, match="immutable"):
         acquirer.acquire("scicode", tmp_path / "private")
+
+
+def test_lfs_payload_uses_lfs_sha256_not_pointer_blob_sha1(tmp_path: Path, monkeypatch) -> None:
+    payload = b"lfs-payload"
+    pointer_sha1 = "b" * 40
+    snapshot = SourceSnapshot("scienceagentbench", "osunlp/ScienceAgentBench", "c" * 40, (
+        ArtifactSpec("data/public.parquet", len(payload), git_blob_sha1=pointer_sha1,
+                     lfs_sha256=hashlib.sha256(payload).hexdigest()),
+    ))
+    install(monkeypatch, snapshot)
+    receipt = SourceAcquirer(MemoryTransport({"data/public.parquet": [payload]})).acquire("scienceagentbench", tmp_path / "private")
+    artifact = receipt.data()["artifacts"][0]
+    assert artifact["git_blob_sha1"] == pointer_sha1
+    assert artifact["git_blob_sha1_kind"].startswith("Git LFS pointer")
+
+
+def test_lfs_sha256_mismatch_fails_closed_even_when_pointer_metadata_exists(tmp_path: Path, monkeypatch) -> None:
+    payload = b"lfs-payload"
+    snapshot = SourceSnapshot("scienceagentbench", "osunlp/ScienceAgentBench", "d" * 40, (
+        ArtifactSpec("data/public.parquet", len(payload), git_blob_sha1="b" * 40, lfs_sha256="a" * 64),
+    ))
+    install(monkeypatch, snapshot)
+    with pytest.raises(ContractError, match="LFS SHA-256"):
+        SourceAcquirer(MemoryTransport({"data/public.parquet": [payload]})).acquire("scienceagentbench", tmp_path / "private")
 
 
 def test_rejects_unregistered_source_and_never_accepts_moving_ref(tmp_path: Path) -> None:

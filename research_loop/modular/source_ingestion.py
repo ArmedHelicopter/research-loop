@@ -31,8 +31,10 @@ class ArtifactSpec:
 
     def __post_init__(self) -> None:
         path = PurePosixPath(self.source_path)
-        if (not self.source_path or path.is_absolute() or ".." in path.parts
-                or "\\" in self.source_path or len(path.parts) == 0):
+        if (not self.source_path or self.source_path != self.source_path.strip() or path.is_absolute()
+                or ".." in path.parts or "." in path.parts or "\\" in self.source_path
+                or ":" in self.source_path or len(path.parts) == 0
+                or any(not part or part != part.strip() for part in path.parts)):
             raise ContractError("source artifact path must be a safe relative POSIX path")
         if type(self.size_bytes) is not int or self.size_bytes < 0:
             raise ContractError("source artifact size must be a nonnegative integer")
@@ -104,9 +106,18 @@ def _git_blob_digest(size_bytes: int) -> "hashlib._Hash":
 
 def _private_child(root: Path, relative: str) -> Path:
     candidate = root / Path(*PurePosixPath(relative).parts)
-    if os.path.commonpath((str(root.resolve()), str(candidate.resolve()))) != str(root.resolve()):
-        raise ContractError("private-store path escaped root")
+    _assert_private_descendant(root, candidate)
     return candidate
+
+
+def _assert_private_descendant(root: Path, candidate: Path, *, allow_root: bool = False) -> None:
+    root_resolved, candidate_resolved = root.resolve(), candidate.resolve()
+    try:
+        inside = os.path.commonpath((str(root_resolved), str(candidate_resolved))) == str(root_resolved)
+    except ValueError:
+        inside = False
+    if not inside or (not allow_root and candidate_resolved == root_resolved):
+        raise ContractError("private-store path escaped root")
 
 
 class SourceAcquirer:
@@ -129,6 +140,7 @@ class SourceAcquirer:
         staging_parent = _private_child(root, ".staging")
         staging_parent.mkdir(exist_ok=True)
         staging = Path(tempfile.mkdtemp(prefix=f"{snapshot.canonical_id}-", dir=staging_parent))
+        _assert_private_descendant(root, staging)
         try:
             inventory = [self._download(snapshot, artifact, staging) for artifact in snapshot.artifacts]
             receipt = FrozenRecord.from_dict({
@@ -137,7 +149,8 @@ class SourceAcquirer:
                 "repository": snapshot.repository,
                 "revision": snapshot.revision,
                 "artifacts": inventory,
-                "content_exposed": False,
+                "payload_returned": False,
+                "access_isolation": "not_verified",
                 "split_qualified": False,
                 "task_projection_created": False,
             })
@@ -146,12 +159,15 @@ class SourceAcquirer:
             with receipt_path.open("r+b") as stream:
                 os.fsync(stream.fileno())
             final.parent.mkdir(parents=True, exist_ok=True)
+            _assert_private_descendant(root, final)
+            _assert_private_descendant(root, staging)
             if final.exists():
                 raise ContractError("immutable source snapshot already exists; inspect its receipt")
             os.replace(staging, final)
             return receipt
         except Exception:
             if staging.exists():
+                _assert_private_descendant(root, staging)
                 shutil.rmtree(staging)
             raise
 
@@ -159,7 +175,10 @@ class SourceAcquirer:
         target = _private_child(staging, artifact.source_path)
         target.parent.mkdir(parents=True, exist_ok=True)
         local_sha256 = hashlib.sha256()
-        git_sha1 = _git_blob_digest(artifact.size_bytes) if artifact.git_blob_sha1 else None
+        # A Hub LFS tree entry's Git SHA-1 identifies its pointer blob, not the
+        # downloaded payload.  Only non-LFS artifacts can compare this digest
+        # to the streamed bytes.
+        git_sha1 = _git_blob_digest(artifact.size_bytes) if artifact.git_blob_sha1 and artifact.lfs_sha256 is None else None
         written = 0
         try:
             with target.open("xb") as stream:
@@ -192,6 +211,8 @@ class SourceAcquirer:
             "source_path": artifact.source_path,
             "size_bytes": written,
             "git_blob_sha1": artifact.git_blob_sha1,
+            "git_blob_sha1_kind": ("Git LFS pointer blob SHA-1 metadata; not verified against downloaded payload"
+                                     if artifact.lfs_sha256 is not None else "Git blob SHA-1 verified against downloaded payload"),
             "lfs_sha256": artifact.lfs_sha256,
             "local_sha256": local_hash,
             "local_hash_kind": "SHA-256 of private downloaded bytes",
