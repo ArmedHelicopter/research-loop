@@ -10,17 +10,23 @@ Each invocation reserves a persistent ledger entry before starting Codex. The
 entry records request and prompt hashes, requested provider/model identity, the
 complete argument vector, output/event hashes, exit status, token usage, and
 any prohibited tool event. A valid stream has exactly one `turn.completed`
-usage object with literal integer `input_tokens` and `output_tokens` (and an
-optional `cached_input_tokens`). A timeout becomes `unknown`; provider errors,
-absent or duplicate usage, tool/execution events, absent output, invalid output,
-and a token-budget overrun become terminal. A reopened port rejects every
+usage object with the five literal-integer fields `input_tokens`,
+`cached_input_tokens`, `cache_write_input_tokens`, `output_tokens`, and
+`reasoning_output_tokens`. Accounting adds input plus output only; cached and
+reasoning fields are retained in the receipt without double counting. A timeout
+becomes `unknown`; provider errors, absent or duplicate usage, tool/execution
+events, detected skill-context errors, absent output, invalid output, and a
+token-budget overrun become terminal. A reopened port rejects every
 ledger with a reserved, unknown, failed, over-budget, or incomplete call.
 
 The port invokes the installed CLI with `exec --ignore-user-config
 --ignore-rules --ephemeral --skip-git-repo-check -C <empty per-call directory>
 -s read-only --json --output-schema ... -o ...`. It also disables the listed
 tool, browser, plugin, hook, app, skill, image and goal features and sets
-`project_doc_max_bytes=0`, disabled web search and host-skill discovery. The
+`project_doc_max_bytes=0`, disabled web search, memories, skill search, and
+host-skill discovery (`--enable skip_host_skill_discovery`). A skill-context
+error event seals the call as untrusted; this is a detection gate, not proof
+that the installed CLI omitted every global skill description. The
 arguments were checked against `codex exec --help` on Codex CLI 0.153.4.
 
 `max_tokens` is enforced against recorded cumulative provider usage after each
@@ -31,3 +37,11 @@ This constrains Codex configuration and its working directory. It is not an OS
 sandbox or a claim that a compromised provider process cannot access the host.
 The port does not discover files, derive task metadata or labels, load scorer
 or validation data, or feed any scoring/validation result into a solver.
+
+`inspect_terminal_call(work_root, call_id)` is read-only reconciliation for a
+completed call that a previous parser rejected. It checks the stored event and
+output hashes, the frozen output schema, full usage, tool events and context
+faults, and can return the already-written `FrozenRecord` response. It never
+changes the original ledger or permits a retry. A recovered response with a
+skill-context fault remains unreconciled and must not be presented as a formal
+experiment result.

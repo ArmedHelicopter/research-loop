@@ -33,6 +33,13 @@ def _sha(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
+class TerminalCallInspection:
+    """Read-only reconstruction of an already-terminal provider call."""
+
+    def __init__(self, receipt: FrozenRecord, response: FrozenRecord | None) -> None:
+        self.receipt, self.response = receipt, response
+
+
 def _validate_schema(schema: Any, value: Any) -> None:
     """Small closed JSON Schema subset used for model response slots."""
     if not isinstance(schema, Mapping) or set(schema) - {"type", "properties", "required", "additionalProperties", "items", "enum"}:
@@ -133,8 +140,9 @@ class CodexModelPort:
         prompt_path = call_dir / "prompt.txt"
         prompt_path.write_text(prompt, encoding="utf-8")
         argv = [self.executable, "exec", "--ignore-user-config", "--ignore-rules", "--ephemeral", "--skip-git-repo-check", "-C", str(call_dir), "-m", self.model, "-s", "read-only", "--json", "--output-schema", str(schema_path), "-o", str(output_path), "-c", f'model_reasoning_effort="{self.effort}"', "-c", "project_doc_max_bytes=0", "-c", 'web_search="disabled"', "-c", "features.skip_host_skill_discovery=true"]
-        for feature in ("shell_tool", "unified_exec", "multi_agent", "apps", "plugins", "hooks", "browser_use", "browser_use_external", "computer_use", "image_generation", "view_image", "sleep_tool", "workspace_dependencies", "skill_search", "in_app_browser", "goals"):
+        for feature in ("shell_tool", "unified_exec", "multi_agent", "apps", "plugins", "hooks", "browser_use", "browser_use_external", "computer_use", "image_generation", "view_image", "sleep_tool", "workspace_dependencies", "skill_search", "memories", "in_app_browser", "goals"):
             argv.extend(("--disable", feature))
+        argv.extend(("--enable", "skip_host_skill_discovery"))
         argv.append("-")
         reservation = {"id": call_id, "slot": body["slot"], "request_hash": request.content_hash,
                        "prompt_hash": _sha(prompt.encode()), "status": "reserved", "provider": {"id": "codex-cli", "model": self.model}, "argv": argv}
@@ -153,17 +161,18 @@ class CodexModelPort:
             _atomic(self.ledger_path, self.ledger)
             raise ContractError("model provider failed; usage is incomplete") from exc
         stdout, stderr = result.stdout or "", result.stderr or ""
-        (call_dir / "events.jsonl").write_text(stdout, encoding="utf-8")
-        (call_dir / "stderr.txt").write_text(stderr, encoding="utf-8")
+        (call_dir / "events.jsonl").write_bytes(stdout.encode("utf-8"))
+        (call_dir / "stderr.txt").write_bytes(stderr.encode("utf-8"))
         events = _events(stdout)
         usage = _usage(events)
         tools = _tool_events(events)
-        reservation.update({"exit_code": result.returncode, "events_hash": _sha(stdout.encode()), "stderr_hash": _sha(stderr.encode()), "usage": usage, "tool_events": tools})
-        if usage is None or tools:
+        faults = _context_faults(events)
+        reservation.update({"exit_code": result.returncode, "events_hash": _sha(stdout.encode()), "stderr_hash": _sha(stderr.encode()), "usage": usage, "tool_events": tools, "context_faults": faults})
+        if usage is None or tools or faults:
             reservation["status"] = "failed"
             self.ledger["usage_incomplete"] = True
             _atomic(self.ledger_path, self.ledger)
-            raise ContractError("model event stream has missing usage or a forbidden execution event")
+            raise ContractError("model event stream has missing usage, forbidden execution, or untrusted context")
         self.ledger["tokens"] += usage["total_tokens"]
         if self.ledger["tokens"] > self.max_tokens:
             reservation["status"] = "over_budget"
@@ -206,12 +215,13 @@ def _usage(events: list[Mapping[str, Any]]) -> dict[str, int] | None:
     if len(completed) != 1 or not isinstance(completed[0], Mapping):
         return None
     usage = completed[0]
-    if set(usage) not in ({"input_tokens", "output_tokens"}, {"input_tokens", "output_tokens", "cached_input_tokens"}):
+    allowed = {"input_tokens", "output_tokens", "cached_input_tokens", "cache_write_input_tokens", "reasoning_output_tokens"}
+    required = {"input_tokens", "output_tokens", "cached_input_tokens", "cache_write_input_tokens", "reasoning_output_tokens"}
+    if set(usage) != required or set(usage) - allowed:
         return None
     if any(type(value) is not int or value < 0 for value in usage.values()):
         return None
-    return {"input_tokens": usage["input_tokens"], "output_tokens": usage["output_tokens"],
-            "cached_input_tokens": usage.get("cached_input_tokens", 0), "total_tokens": usage["input_tokens"] + usage["output_tokens"]}
+    return {key: usage[key] for key in sorted(usage)} | {"total_tokens": usage["input_tokens"] + usage["output_tokens"]}
 
 
 def _tool_events(events: list[Mapping[str, Any]]) -> list[dict[str, str]]:
@@ -236,6 +246,69 @@ def _finite(value: Any) -> None:
     elif isinstance(value, dict):
         for child in value.values():
             _finite(child)
+
+
+def inspect_terminal_call(work_root: Path, call_id: int) -> TerminalCallInspection:
+    """Inspect a terminal call without changing its ledger or invoking Codex.
+
+    This is the only recovery path for a parser failure after a provider has
+    completed: it verifies on-disk hashes and returns the pre-existing response
+    only when the frozen slot schema, single usage record and no-tools event
+    stream all validate.
+    """
+    if type(call_id) is not int or call_id < 1:
+        raise ContractError("positive terminal call id required")
+    root = Path(work_root).expanduser().resolve(strict=True)
+    ledger_path = root / "ledger.json"
+    ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    calls = ledger.get("calls")
+    if not isinstance(calls, list) or call_id > len(calls) or not isinstance(ledger.get("config"), Mapping):
+        raise ContractError("terminal call is absent from ledger")
+    call, config = calls[call_id - 1], ledger["config"]
+    if not isinstance(call, Mapping) or call.get("id") != call_id or not isinstance(config.get("schemas"), Mapping):
+        raise ContractError("terminal call receipt is malformed")
+    slot = call.get("slot")
+    if not isinstance(slot, str) or slot not in config["schemas"]:
+        raise ContractError("terminal call has no frozen slot schema")
+    call_dir = root / "calls" / f"{call_id:04d}-{slot}"
+    events_path, output_path = call_dir / "events.jsonl", call_dir / "output.json"
+    events_bytes = events_path.read_bytes()
+    events_hash = _sha(events_bytes)
+    stored_events_hash = call.get("events_hash")
+    legacy_lf_events = _sha(events_bytes.replace(b"\r\n", b"\n"))
+    if stored_events_hash is not None and stored_events_hash not in {events_hash, legacy_lf_events}:
+        raise ContractError("terminal event hash mismatch")
+    events = _events(events_bytes.decode("utf-8"))
+    usage, tools = _usage(events), _tool_events(events)
+    faults = _context_faults(events)
+    response = None
+    output_hash = None
+    if output_path.is_file():
+        output = json.loads(output_path.read_text(encoding="utf-8"))
+        _finite(output)
+        _validate_schema(config["schemas"][slot], output)
+        response = FrozenRecord.from_dict(output)
+        output_hash = response.content_hash
+        if call.get("output_hash") is not None and call["output_hash"] != output_hash:
+            raise ContractError("terminal output hash mismatch")
+    receipt = FrozenRecord.from_dict({"schema": "terminal-model-call-inspection-v1", "call_id": call_id,
+        "ledger_hash": _sha(ledger_path.read_bytes()), "stored_status": call.get("status"),
+        "events_hash": events_hash, "events_hash_legacy_lf_match": stored_events_hash == legacy_lf_events and stored_events_hash != events_hash,
+        "output_hash": output_hash, "usage": usage,
+        "tool_events": tools, "context_faults": faults,
+        "reconciled": usage is not None and not tools and not faults and response is not None})
+    return TerminalCallInspection(receipt, response)
+
+
+def _context_faults(events: list[Mapping[str, Any]]) -> list[str]:
+    faults = []
+    for event in events:
+        item = event.get("item")
+        if isinstance(item, Mapping) and item.get("type") == "error":
+            message = item.get("message")
+            if isinstance(message, str) and "skill" in message.lower():
+                faults.append("skill_context_detected")
+    return faults
 
 
 def _schema_witness(schema: Mapping[str, Any]) -> Any:

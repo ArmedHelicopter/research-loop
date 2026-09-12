@@ -6,7 +6,7 @@ from types import SimpleNamespace
 import pytest
 
 from research_loop.modular.contracts import FrozenRecord
-from research_loop.modular.model_port import CodexModelPort
+from research_loop.modular.model_port import CodexModelPort, inspect_terminal_call
 from research_loop.ontology import ContractError
 
 
@@ -22,7 +22,7 @@ def runner(argv, **kwargs):
     assert "--disable" in argv and "shell_tool" in argv and "browser_use" in argv
     output = Path(argv[argv.index("-o") + 1])
     output.write_text(json.dumps({"answer": "bounded"}), encoding="utf-8")
-    return SimpleNamespace(returncode=0, stdout='{"type":"turn.completed","usage":{"input_tokens":5,"cached_input_tokens":2,"output_tokens":2}}\n', stderr="")
+    return SimpleNamespace(returncode=0, stdout='{"type":"turn.completed","usage":{"input_tokens":5,"cached_input_tokens":2,"cache_write_input_tokens":0,"output_tokens":2,"reasoning_output_tokens":1}}\n', stderr="")
 
 
 def port(tmp_path, **kwargs):
@@ -70,7 +70,7 @@ def test_timeout_is_unknown_and_never_retried(tmp_path):
 def test_rejects_bad_slot_output_and_reopen_configuration_drift(tmp_path):
     def bad_output(argv, **kwargs):
         Path(argv[argv.index("-o") + 1]).write_text('{"unexpected":true}', encoding="utf-8")
-        return SimpleNamespace(returncode=0, stdout='{"type":"turn.completed","usage":{"input_tokens":1,"output_tokens":0}}', stderr="")
+        return SimpleNamespace(returncode=0, stdout='{"type":"turn.completed","usage":{"input_tokens":1,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":0,"reasoning_output_tokens":0}}', stderr="")
     instance = CodexModelPort("codex", tmp_path / "port", max_calls=2, max_tokens=10,
                               schema_by_slot={"plan": SCHEMA}, process_runner=bad_output)
     with pytest.raises(ContractError, match="valid slot"):
@@ -83,7 +83,7 @@ def test_rejects_bad_slot_output_and_reopen_configuration_drift(tmp_path):
 def test_execution_event_and_reserved_ledger_block_reopen(tmp_path):
     def tool_event(argv, **kwargs):
         Path(argv[argv.index("-o") + 1]).write_text('{"answer":"ignored"}', encoding="utf-8")
-        return SimpleNamespace(returncode=0, stdout='{"type":"turn.completed","usage":{"input_tokens":1,"output_tokens":1}}\n{"type":"item.completed","item":{"type":"command_execution"}}', stderr="")
+        return SimpleNamespace(returncode=0, stdout='{"type":"turn.completed","usage":{"input_tokens":1,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":1,"reasoning_output_tokens":0}}\n{"type":"item.completed","item":{"type":"command_execution"}}', stderr="")
     instance = CodexModelPort("codex", tmp_path / "tools", max_calls=2, max_tokens=10,
                               schema_by_slot={"plan": SCHEMA}, process_runner=tool_event)
     with pytest.raises(ContractError, match="forbidden execution"):
@@ -98,7 +98,7 @@ def test_execution_event_and_reserved_ledger_block_reopen(tmp_path):
 def test_rejects_duplicate_usage_and_records_over_budget(tmp_path):
     def duplicate_usage(argv, **kwargs):
         Path(argv[argv.index("-o") + 1]).write_text('{"answer":"ignored"}', encoding="utf-8")
-        event = '{"type":"turn.completed","usage":{"input_tokens":1,"output_tokens":1}}\n'
+        event = '{"type":"turn.completed","usage":{"input_tokens":1,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":1,"reasoning_output_tokens":0}}\n'
         return SimpleNamespace(returncode=0, stdout=event + event, stderr="")
     instance = CodexModelPort("codex", tmp_path / "duplicate", max_calls=2, max_tokens=10,
                               schema_by_slot={"plan": SCHEMA}, process_runner=duplicate_usage)
@@ -106,17 +106,37 @@ def test_rejects_duplicate_usage_and_records_over_budget(tmp_path):
         instance(request())
     def boolean_usage(argv, **kwargs):
         Path(argv[argv.index("-o") + 1]).write_text('{"answer":"ignored"}', encoding="utf-8")
-        return SimpleNamespace(returncode=0, stdout='{"type":"turn.completed","usage":{"input_tokens":true,"output_tokens":1}}', stderr="")
+        return SimpleNamespace(returncode=0, stdout='{"type":"turn.completed","usage":{"input_tokens":true,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":1,"reasoning_output_tokens":0}}', stderr="")
     instance = CodexModelPort("codex", tmp_path / "boolean", max_calls=2, max_tokens=10,
                               schema_by_slot={"plan": SCHEMA}, process_runner=boolean_usage)
     with pytest.raises(ContractError, match="missing usage"):
         instance(request())
     def over_budget(argv, **kwargs):
         Path(argv[argv.index("-o") + 1]).write_text('{"answer":"ignored"}', encoding="utf-8")
-        return SimpleNamespace(returncode=0, stdout='{"type":"turn.completed","usage":{"input_tokens":8,"output_tokens":3}}', stderr="")
+        return SimpleNamespace(returncode=0, stdout='{"type":"turn.completed","usage":{"input_tokens":8,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":3,"reasoning_output_tokens":0}}', stderr="")
     instance = CodexModelPort("codex", tmp_path / "budget", max_calls=2, max_tokens=10,
                               schema_by_slot={"plan": SCHEMA}, process_runner=over_budget)
     with pytest.raises(ContractError, match="exceeded"):
         instance(request())
     ledger = json.loads((tmp_path / "budget" / "ledger.json").read_text(encoding="utf-8"))
     assert ledger["tokens"] == 11 and ledger["calls"][0]["status"] == "over_budget"
+
+
+def test_read_only_terminal_inspection_recovers_response_but_marks_skill_context_fault(tmp_path):
+    def skill_fault(argv, **kwargs):
+        Path(argv[argv.index("-o") + 1]).write_text('{"answer":"already-paid"}', encoding="utf-8")
+        event = '{"type":"turn.completed","usage":{"input_tokens":3,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":2,"reasoning_output_tokens":1}}\n'
+        error = '{"type":"item.completed","item":{"type":"error","message":"Skill descriptions were shortened"}}'
+        return SimpleNamespace(returncode=0, stdout=event + error, stderr="")
+    root = tmp_path / "terminal"
+    instance = CodexModelPort("codex", root, max_calls=2, max_tokens=10,
+                              schema_by_slot={"plan": SCHEMA}, process_runner=skill_fault)
+    with pytest.raises(ContractError, match="forbidden execution"):
+        instance(request())
+    before = (root / "ledger.json").read_bytes()
+    recovered = inspect_terminal_call(root, 1)
+    assert recovered.response.data() == {"answer": "already-paid"}
+    assert recovered.receipt.data()["usage"]["total_tokens"] == 5
+    assert recovered.receipt.data()["context_faults"] == ["skill_context_detected"]
+    assert recovered.receipt.data()["reconciled"] is False
+    assert (root / "ledger.json").read_bytes() == before
