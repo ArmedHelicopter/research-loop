@@ -156,6 +156,23 @@ def test_model_or_plan_failure_returns_a_trace_bound_failed_cell(tmp_path: Path)
     assert FrozenRecord(result.runtime.trace_path.read_text(encoding="utf-8").splitlines()[-1]).data()["stage"] == "driver_failure"
 
 
+def test_q31_driver_rejects_a_schema_valid_but_underfilled_prediction_response(tmp_path: Path) -> None:
+    frozen, scenarios, tasks, package = panel()
+    cell = next(row for row in frozen.cells if row.runtime_arm.data()["enabled"] == ["M4"])
+    def two_branches(request: FrozenRecord) -> FrozenRecord:
+        response = model(request)
+        if request.data()["slot"] == "scenario":
+            body = response.data(); body["branches"] = body["branches"][:2]
+            return FrozenRecord.from_dict(body)
+        return response
+    result = run_train_cell(cell, task=tasks[(cell.identity.benchmark, "task")],
+        scenario=scenarios[(cell.identity.benchmark, cell.variant, cell.arm_id)], package=package,
+        objective=FrozenRecord.from_dict({"objective": "train"}), sidecar=tmp_path / "two-branches",
+        model=two_branches, audit_verifier=audit())
+    assert result.runtime.status == "failed"
+    assert FrozenRecord(result.runtime.trace_path.read_text(encoding="utf-8").splitlines()[-1]).data()["stage"] == "driver_failure"
+
+
 def test_complete_panel_accepts_bound_driver_and_model_failures_and_rejects_tampering(tmp_path: Path) -> None:
     frozen, scenarios, tasks, package = panel()
     rows = []

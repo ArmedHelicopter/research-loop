@@ -87,6 +87,12 @@ def test_q43_complete_two_benchmark_grid_uses_real_journaled_m5_visibility_and_m
             assert all(not request["module_context"]["revealed_submissions"] for request in requests[2:4])
         if enabled:
             assert all(len(request["module_context"]["revealed_submissions"]) == 2 for request in requests[2:4])
+            final_review = requests[-1]["module_context"]["q43_review"]
+            assert [item["reviewer_id"] for item in final_review["initial_submissions"]] == ["q43-mechanism-reviewer", "q43-measurement-reviewer"]
+            assert [item["reviewer_id"] for item in final_review["post_reveal_revisions"]] == ["q43-mechanism-reviewer", "q43-measurement-reviewer"]
+            assert final_review["initial_submissions"][0]["response"]["evidence_refs"] == ["public-mechanism"]
+        else:
+            assert requests[-1]["module_context"]["q43_review"]["initial_submissions"] == []
     verdict = PanelReceiptVerifier().verify(frozen, tuple(run.runtime for run in runs))
     assert verdict.decision == "engineering_verified" and verdict.observed_cells == 8 and verdict.failures == 0
 

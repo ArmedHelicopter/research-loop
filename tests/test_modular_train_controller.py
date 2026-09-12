@@ -17,7 +17,7 @@ from research_loop.modular.model_port import CodexModelPort, FrozenBaseContextPo
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.panel_plan import executable_arms, obligation_grids
 from research_loop.modular.runtime import AuditVerifier
-from research_loop.modular.train_controller import FrozenTrainControllerConfig, run_q31_train_panel
+from research_loop.modular.train_controller import FrozenTrainControllerConfig, run_q31_train_panel, run_train_panel
 from research_loop.ontology import ContractError
 
 
@@ -26,6 +26,7 @@ def sha(path: Path) -> str: return hashlib.sha256(path.read_bytes()).hexdigest()
 
 SCENARIO = {"type": "object", "properties": {"question": {"type": "string"}, "budget_units": {"type": "integer"}, "branches": {"type": "array", "items": {"type": "object", "properties": {"hypothesis_id": {"type": "string"}, "mechanism_key": {"type": "string"}, "mechanism": {"type": "string"}, "intervention": {"type": "string"}, "elimination_condition": {"type": "string"}, "predictions": {"type": "array", "items": {"type": "object", "properties": {"prediction_id": {"type": "string"}, "discriminator_id": {"type": "string"}, "observable": {"type": "string"}, "direction": {"type": "string"}, "value_range": {"type": "null"}, "failure_condition": {"type": "string"}}, "required": ["prediction_id", "discriminator_id", "observable", "direction", "value_range", "failure_condition"], "additionalProperties": False}}}, "required": ["hypothesis_id", "mechanism_key", "mechanism", "intervention", "elimination_condition", "predictions"], "additionalProperties": False}}}, "required": ["question", "budget_units", "branches"], "additionalProperties": False}
 FINAL = {"type": "object", "properties": {"objective_digest": {"type": "string"}, "outcome": {"type": "string", "enum": ["unknown"]}, "evidence_ids": {"type": "array", "items": {"type": "string"}}, "conclusion": {"type": "string"}, "programme_complete": {"type": "boolean", "enum": [False]}}, "required": ["objective_digest", "outcome", "evidence_ids", "conclusion", "programme_complete"], "additionalProperties": False}
+REVIEW = {"type": "object", "properties": {"assessment": {"type": "string", "enum": ["accept", "concern", "unknown"]}, "evidence_refs": {"type": "array", "items": {"type": "string"}}, "counterexamples": {"type": "array", "items": {"type": "string"}}, "uncertainty": {"type": "string"}}, "required": ["assessment", "evidence_refs", "counterexamples", "uncertainty"], "additionalProperties": False}
 
 
 def snapshot_and_custody(root: Path) -> tuple[Path, CustodyStore]:
@@ -46,7 +47,7 @@ def snapshot_and_custody(root: Path) -> tuple[Path, CustodyStore]:
     return snapshot, store
 
 
-def model_port(root: Path, monkeypatch, *, max_calls: int = 24, valid_plan: bool = True) -> CodexModelPort:
+def model_port(root: Path, monkeypatch, *, max_calls: int = 24, valid_plan: bool = True, schemas=None) -> CodexModelPort:
     home = root / "user" / ".codex"; home.mkdir(parents=True)
     monkeypatch.setenv("HOME", str(home.parent)); monkeypatch.setenv("USERPROFILE", str(home.parent)); monkeypatch.setenv("CODEX_HOME", str(home))
     (home / "config.toml").write_text('[mcp_servers.fixture]\nenabled=true\n', encoding="utf-8")
@@ -66,14 +67,16 @@ def model_port(root: Path, monkeypatch, *, max_calls: int = 24, valid_plan: bool
         if request["slot"] == "scenario":
             directions = ["increase", "decrease", "increase"] if valid_plan else ["increase", "increase", "increase"]
             output = {"question": "public", "budget_units": 3, "branches": [{"hypothesis_id": f"h{i}", "mechanism_key": f"m{i}", "mechanism": "public mechanism", "intervention": "public intervention", "elimination_condition": "public disagreement", "predictions": [{"prediction_id": f"p{i}", "discriminator_id": "shared", "observable": "public observable", "direction": directions[i], "value_range": None, "failure_condition": "does not " + directions[i]}]} for i in range(3)]}
-        else:
+        elif request["slot"] == "final":
             output = {"objective_digest": request["module_context"]["required_objective_digest"], "outcome": "unknown", "evidence_ids": [], "conclusion": "synthetic engineering result", "programme_complete": False}
+        else:
+            output = {"assessment": "concern", "evidence_refs": ["synthetic-public-observation"], "counterexamples": [], "uncertainty": "synthetic transport review"}
         Path(argv[argv.index("-o") + 1]).write_text(json.dumps(output), encoding="utf-8")
         usage = {"input_tokens": 1, "cached_input_tokens": 0, "cache_write_input_tokens": 0, "output_tokens": 1, "reasoning_output_tokens": 0}
         return SimpleNamespace(returncode=0, stdout=json.dumps({"type": "turn.completed", "usage": usage}), stderr="")
     monkeypatch.setenv("PYTEST_CURRENT_TEST", fixed_test_env)
     return CodexModelPort(cli, root / "model", max_calls=max_calls, max_tokens=200,
-        schema_by_slot={"scenario": SCENARIO, "final": FINAL}, process_runner=transport,
+        schema_by_slot=schemas or {"scenario": SCENARIO, "final": FINAL}, process_runner=transport,
         context_probe_runner=probe, frozen_base_context=policy)
 
 
@@ -107,6 +110,27 @@ def test_actual_custody_export_port_runner_and_receipt_are_engineering_only(tmp_
         final_response = next(event["data"]["response"] for event in events if event["stage"] == "model_response" and event["data"]["request_digest"] == FrozenRecord.from_dict(final_request).content_hash)
         assert final_response["objective_digest"] == final_request["module_context"]["required_objective_digest"]
     assert all(runtime.trace_path.exists() for runtime in result.runtimes)
+
+
+def test_q43_closed_driver_runs_through_custody_export_and_frozen_policy(tmp_path: Path, monkeypatch) -> None:
+    snapshot, custody = snapshot_and_custody(tmp_path)
+    frozen = config(custody, snapshot, tmp_path)
+    task_package = next(iter(frozen.data()["packages_by_arm"].values()))
+    control = FrozenRecord.from_dict(frozen.data()["p0_control"])
+    grids = obligation_grids(("Q4.3",), baseline_digest="a" * 64, p0_control=control)
+    packages = {arm.content_hash: task_package for grid in grids.values() for arm in executable_arms(grid).values()}
+    schemas = {slot: REVIEW for slot in ("mechanism_initial", "measurement_initial", "mechanism_revision", "measurement_revision")}
+    schemas["final"] = FINAL
+    q43 = FrozenTrainControllerConfig(FrozenRecord.from_dict({**frozen.data(), "schema": "train-panel-controller-v1",
+        "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-q43", "scope_ids": ["Q4.3"],
+        "packages_by_arm": packages, "budget": {"model_calls": 5, "execution_limit": 0}, "max_calls": 48, "schemas": schemas}))
+    port = model_port(tmp_path, monkeypatch, max_calls=48, schemas=schemas)
+    result = run_train_panel(q43, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "q43-export",
+        run_root=tmp_path / "q43-run", model=port, audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+    assert len(result.runtimes) == len(result.compiled.panel.cells) == 8
+    assert result.verdict.decision == "engineering_verified" and len(port.ledger["calls"]) == 40
+    attempt = json.loads((tmp_path / "q43-run" / "controller-attempt.json").read_text(encoding="utf-8"))
+    assert attempt["scope_ids"] == ["Q4.3"] and attempt["expected_cells"] == 8 and attempt["expected_model_calls"] == 40
 
 
 def test_rejects_config_drift_reused_root_and_unreviewed_policy(tmp_path: Path, monkeypatch) -> None:

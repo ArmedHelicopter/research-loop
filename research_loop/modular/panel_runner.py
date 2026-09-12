@@ -33,6 +33,7 @@ class ScenarioDriver(Protocol):
     experiment_id: str
     slots: tuple[str, ...]
     execution_limit: int
+    docker_execution: str
 
     def run(self, workflow: ModularWorkflow, *, cell: PanelCell, scenario: FrozenRecord,
             model: ModelPort, package: CandidatePackage) -> tuple[WorkflowResult, FrozenRecord, tuple[FrozenRecord, ...]]: ...
@@ -50,6 +51,7 @@ class Q31PredictionDriver:
     experiment_id = "Q3.1"
     slots = ("scenario", "final")
     execution_limit = 0
+    docker_execution = "not_requested_by_driver"
 
     def run(self, workflow: ModularWorkflow, *, cell: PanelCell, scenario: FrozenRecord,
             model: ModelPort, package: CandidatePackage) -> tuple[WorkflowResult, FrozenRecord, tuple[FrozenRecord, ...]]:
@@ -68,6 +70,8 @@ class Q31PredictionDriver:
             body = first.data()
             if set(body) != {"question", "branches", "budget_units"}:
                 raise ContractError("Q3.1 M4 response lacks an operational prediction plan")
+            if body["budget_units"] != 3 or not isinstance(body["branches"], list) or len(body["branches"]) != 3:
+                raise ContractError("Q3.1 M4 response requires exactly three branches and budget_units=3")
             plan = workflow.predictions.freeze(body["question"], body["branches"], budget_units=body["budget_units"])
             stage = workflow._trace("stage_1", "executed", plan_digest=plan.payload.content_hash,
                                     scenario_digest=scenario.content_hash)
@@ -93,6 +97,7 @@ class Q43ReviewDriver:
     slots = ("mechanism_initial", "measurement_initial", "mechanism_revision",
              "measurement_revision", "final")
     execution_limit = 0
+    docker_execution = "not_requested_by_driver"
 
     def run(self, workflow: ModularWorkflow, *, cell: PanelCell, scenario: FrozenRecord,
             model: ModelPort, package: CandidatePackage) -> tuple[WorkflowResult, FrozenRecord, tuple[FrozenRecord, ...]]:
@@ -155,7 +160,11 @@ class Q43ReviewDriver:
         review_context = {"m5_enabled": m5_enabled, "variant": cell.variant,
                           "initial_response_digests": [item.content_hash for item in responses[:2]],
                           "revision_response_digests": [item.content_hash for item in responses[2:]],
-                          "review_id": review_id}
+                          "review_id": review_id,
+                          # This is supplied only after both submissions were
+                          # recorded and the sealed barrier was opened.
+                          "initial_submissions": [item.data() for item in submissions],
+                          "post_reveal_revisions": [item.data() for item in revisions]}
         stage = workflow._trace("stage_7" if m5_enabled else "operation_m5_control", "executed",
             **review_context, review_log_digest=(workflow.revealed.content_hash if workflow.revealed else None),
             revision_count=len(revisions))
@@ -230,7 +239,8 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
             "enabled_modules": cell.runtime_arm.data()["enabled"], "package_digest": package.digest,
             "package_record_digest": package.record.content_hash, "package_changes": package.record.data()["changes"],
             "slots": list(session.slots), "model_calls": session._next_call,
-            "execution_attempts": session._attempts, "terminal": session._events[-1].data()["stage"]})
+            "execution_attempts": session._attempts, "docker_execution": driver.docker_execution,
+            "terminal": session._events[-1].data()["stage"]})
         return TrainCellResult(runtime, None, plan)
     terminal = session.finish(candidate)
     trace_path = sidecar / "trace.jsonl"
@@ -247,7 +257,7 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
         "package_record_digest": package.record.content_hash, "package_changes": package.record.data()["changes"],
         "package_binding": "candidate_package_record_in_model_context", "slots": list(session.slots),
         "workflow_stage": stage.detail.data()["stage"], "execution_attempts": session._attempts,
-        "model_calls": session._next_call, "docker_execution": "not_requested_by_q3_1_driver"})
+        "model_calls": session._next_call, "docker_execution": driver.docker_execution})
     scored = None
     if scorer is not None:
         scored = scorer(cell, runtime)

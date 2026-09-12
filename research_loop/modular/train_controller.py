@@ -1,4 +1,4 @@
-"""Trusted, train-only Q3.1 panel controller.
+"""Trusted, train-only production-panel controller.
 
 This module deliberately owns orchestration but not custody qualification,
 context review, scoring, or scientific state transitions.  Its input is a
@@ -17,17 +17,19 @@ from typing import Any, Mapping, Sequence
 from evaluation.modular.custody import CustodyStore
 from evaluation.modular.train_io import TrainPacketExporter
 from research_loop.modular.contracts import FrozenRecord
+from research_loop.modular.experiments import registry
 from research_loop.modular.model_port import CodexModelPort, FrozenBaseContextPolicy
 from research_loop.modular.modules.improvement import CandidatePackage
-from research_loop.modular.panel_plan import CompiledTrainPanel, compile_train_panel
+from research_loop.modular.panel_plan import CompiledTrainPanel, compile_train_panel, executable_arms, obligation_grids
 from research_loop.modular.panel_receipts import PanelReceiptVerifier, PanelVerdict, RuntimeReceipt
-from research_loop.modular.panel_runner import run_train_cell
+from research_loop.modular.panel_runner import DRIVERS, run_train_cell
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.ontology import ContractError, canonical, digest
 
 
-_SCHEMA = "q31-train-controller-v1"
-_SCOPE = ("Q3.1",)
+_LEGACY_SCHEMA = "q31-train-controller-v1"
+_SCHEMA = "train-panel-controller-v1"
+_LEGACY_SCOPE = ("Q3.1",)
 
 
 def _record(value: Any, name: str) -> FrozenRecord:
@@ -48,10 +50,17 @@ class FrozenTrainControllerConfig:
                     "evidence_by_task", "budget", "baseline_digest", "p0_control",
                     "packages_by_arm", "scorer", "acceptance_criteria", "replicates",
                     "model", "effort", "max_calls", "max_tokens", "schemas"}
-        if set(data) != required or data["schema"] != _SCHEMA:
+        if set(data) != required or data["schema"] not in {_LEGACY_SCHEMA, _SCHEMA}:
             raise ContractError("unexpected train controller config schema")
-        if data["engineering_scope"] != "train_only_q3_1_engineering" or data["scope_ids"] != list(_SCOPE):
-            raise ContractError("controller is restricted to Q3.1 train engineering")
+        scope = tuple(data["scope_ids"]) if isinstance(data["scope_ids"], list) else ()
+        if (not scope or len(set(scope)) != len(scope) or set(scope) - set(DRIVERS)
+                or any(not isinstance(item, str) for item in scope)):
+            raise ContractError("controller scope must use closed production drivers")
+        if data["schema"] == _LEGACY_SCHEMA:
+            if data["engineering_scope"] != "train_only_q3_1_engineering" or scope != _LEGACY_SCOPE:
+                raise ContractError("legacy controller is restricted to Q3.1 train engineering")
+        elif data["engineering_scope"] != "train_only_panel_engineering":
+            raise ContractError("production panel controller must remain train-only engineering")
         if (not isinstance(data["stage"], str) or not data["stage"].strip() or not isinstance(data["item_ids"], list)
                 or not data["item_ids"] or len(set(data["item_ids"])) != len(data["item_ids"])
                 or any(not isinstance(item, str) or not item for item in data["item_ids"])):
@@ -76,9 +85,10 @@ class FrozenTrainControllerConfig:
         if (data["model"] != "gpt-5.6-luna" or data["effort"] != "low"
                 or type(data["max_calls"]) is not int or data["max_calls"] < 1
                 or type(data["max_tokens"]) is not int or data["max_tokens"] < 1):
-            raise ContractError("Q3.1 controller requires frozen Luna/low budgets")
-        if not isinstance(data["schemas"], Mapping) or set(data["schemas"]) != {"scenario", "final"}:
-            raise ContractError("controller requires exact scenario and final response schemas")
+            raise ContractError("production controller requires frozen Luna/low budgets")
+        expected_slots = {slot for coverage in scope for slot in DRIVERS[coverage].slots}
+        if not isinstance(data["schemas"], Mapping) or set(data["schemas"]) != expected_slots:
+            raise ContractError("controller requires exact production-driver response schemas")
 
     @classmethod
     def from_path(cls, path: Path, expected_sha256: str) -> "FrozenTrainControllerConfig":
@@ -105,10 +115,21 @@ class TrainPanelRun:
     receipt: FrozenRecord
 
 
-def run_q31_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+def _driver_plan(scope_ids: Sequence[str], *, baseline_digest: str, p0_control: FrozenRecord,
+                 item_count: int, replicates: Sequence[str]) -> tuple[int, int]:
+    """Return frozen complete-cell and model-call obligations before export."""
+    grids = obligation_grids(scope_ids, baseline_digest=baseline_digest, p0_control=p0_control)
+    cells_per_task = sum(len(registry().get(coverage).variants) * len(executable_arms(grids[coverage]))
+                         for coverage in scope_ids)
+    calls_per_task = sum(len(registry().get(coverage).variants) * len(executable_arms(grids[coverage]))
+                         * len(DRIVERS[coverage].slots) for coverage in scope_ids)
+    return item_count * cells_per_task * len(replicates), item_count * calls_per_task * len(replicates)
+
+
+def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
                         snapshot_root: Path, export_root: Path, run_root: Path,
                         model: CodexModelPort, audit_verifier: AuditVerifier) -> TrainPanelRun:
-    """Export exactly configured train data and execute every frozen Q3.1 cell."""
+    """Export and execute every cell selected by closed production drivers."""
     if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
         raise ContractError("trusted typed controller inputs required")
     if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
@@ -121,15 +142,17 @@ def run_q31_train_panel(config: FrozenTrainControllerConfig, *, custody: Custody
         raise ContractError("live model port differs from frozen controller configuration")
     if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
         raise ContractError("controller requires a fresh empty model ledger")
-    expected_cells = len(data["item_ids"]) * 3 * 2 * len(data["replicates"])
-    if model.max_calls < 2 * expected_cells:
+    expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+        p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"])
+    if model.max_calls < expected_calls:
         raise ContractError("frozen model call capacity cannot cover complete panel")
     # The root and attempt receipt exist before export because export itself is
     # an irreversible materialization.  A subsequent rejection therefore has
     # an auditable blocked controller record rather than pretending no action.
     root.mkdir(parents=True, exist_ok=False)
-    attempt = {"schema": "q31-train-controller-attempt-v1", "config_digest": config.record.content_hash,
-               "scope": "train_only_q3_1_engineering", "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+    attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+               "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+               "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
                "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
                "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
     _write(root / "controller-attempt.json", attempt)
@@ -141,7 +164,7 @@ def run_q31_train_panel(config: FrozenTrainControllerConfig, *, custody: Custody
         if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
             raise ContractError("export did not return the frozen allowlist")
         packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
-        compiled = compile_train_panel(stage=data["stage"], scope_ids=_SCOPE, tasks=tasks,
+        compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
             evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
             budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
             p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
@@ -172,13 +195,13 @@ def run_q31_train_panel(config: FrozenTrainControllerConfig, *, custody: Custody
         _write(root / "controller-attempt.json", attempt)
         raise
     if verdict.decision != "engineering_verified" or verdict.scientific_verified:
-        raise ContractError("Q3.1 controller cannot claim scientific measurement")
+        raise ContractError("production controller cannot claim scientific measurement")
     execution_complete = verdict.failures == verdict.unscored == verdict.blocked == 0
-    receipt = FrozenRecord.from_dict({"schema": "q31-train-controller-receipt-v1", "config_digest": config.record.content_hash,
+    receipt = FrozenRecord.from_dict({"schema": "train-panel-controller-receipt-v1", "config_digest": config.record.content_hash,
         "panel_digest": compiled.panel.digest, "packet_receipts": [packet.receipt.data() for packet in packets],
         "runtime_trace_digests": [runtime.trace_digest for runtime in runtimes], "verdict": verdict.__dict__,
         "execution_status": "engineering_complete" if execution_complete else "execution_incomplete",
-        "scientific_status": "not_measured", "scope": "train_only_q3_1_engineering",
+        "scientific_status": "not_measured", "scope": data["engineering_scope"], "scope_ids": data["scope_ids"],
         "model_policy_sha256": model.frozen_base_context.sha256,
         "model_context_binding_digest": digest(policy["binding"]),
         "model_ledger_config_digest": digest(model.ledger["config"])})
@@ -187,6 +210,10 @@ def run_q31_train_panel(config: FrozenTrainControllerConfig, *, custody: Custody
                     "runtime_trace_digests": [runtime.trace_digest for runtime in runtimes]})
     _write(root / "controller-attempt.json", attempt)
     return TrainPanelRun(compiled, tuple(packets), tuple(runtimes), verdict, receipt)
+
+
+# Stable compatibility entry point for pre-existing frozen Q3.1 configurations.
+run_q31_train_panel = run_train_panel
 
 
 def _write(path: Path, value: Mapping[str, Any]) -> None:
@@ -253,7 +280,7 @@ def main() -> None:
     data = config.data()
     port = CodexModelPort(args.codex_executable, args.model_root, model=data["model"], effort=data["effort"],
         max_calls=data["max_calls"], max_tokens=data["max_tokens"], schema_by_slot=data["schemas"], frozen_base_context=policy)
-    run_q31_train_panel(config, custody=CustodyStore(args.custody_state), snapshot_root=args.snapshot_root,
+    run_train_panel(config, custody=CustodyStore(args.custody_state), snapshot_root=args.snapshot_root,
         export_root=args.export_root, run_root=args.run_root, model=port, audit_verifier=AuditVerifier(_keys(args.audit_key)))
 
 
