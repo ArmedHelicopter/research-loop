@@ -55,7 +55,7 @@ def test_q65_never_activates_the_real_promoter(tmp_path: Path):
     result = run_improvement_scenario("Q6.5", "sealed_calibrated", task=task, frozen_controls=controls(task), sidecar=tmp_path / "feedback")
     assert result.record.data()["detail"]["promotion"] == "protected_rejected"
     assert result.record.data()["detail"]["real_promoter_changed"] is False
-    assert all(row["shadow_promoted"] for row in result.record.data()["detail"]["offline_shadow_rounds"])
+    assert not any(row["shadow_promoted"] for row in result.record.data()["detail"]["offline_shadow_rounds"])
 
 
 def test_q62_automatic_uses_callback_train_proposal_or_records_rejection(tmp_path: Path):
