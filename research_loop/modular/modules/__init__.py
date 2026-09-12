@@ -1,4 +1,4 @@
-"""M1--M3 research-state modules with explicit provenance boundaries."""
+"""Independently testable research modules with explicit provenance boundaries."""
 
 from .admission import (
     AuditItem,
