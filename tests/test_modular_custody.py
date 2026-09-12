@@ -52,6 +52,19 @@ def test_inventory_split_exposure_and_train_export(tmp_path: Path) -> None:
         InventoryItem("invalid", "clean", "invalid:clean", "test", "clean", ("a" * 64,), "clean")
 
 
+def test_historical_discovery_selection_is_one_first_variant_per_domain(tmp_path: Path) -> None:
+    root = snapshot(tmp_path / "source")
+    test_root = root / "discovery/upstream/discoverybench/synth/test"
+    for name in ("alpha_0_0", "alpha_0_1", "beta_0_0", "beta_1_0", "gamma_0_0"):
+        file(test_root / name / "metadata.json", name)
+    items = build_known_inventory(root)
+    exposed = {item.relative_path.rsplit("/", 1)[-1] for item in items
+               if item.benchmark == "discoverybench" and item.official_split == "synth/test" and item.exposure == "exposed"}
+    assert {"alpha_0_0", "beta_0_0", "gamma_0_0"} <= exposed
+    assert "alpha_0_1" not in exposed
+    assert "beta_1_0" not in exposed
+
+
 def test_hash_union_and_validation_lease_are_bound_and_one_use(tmp_path: Path) -> None:
     clean_hash = "a" * 64
     items = [

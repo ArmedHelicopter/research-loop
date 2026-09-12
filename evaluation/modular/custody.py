@@ -121,9 +121,16 @@ def build_known_inventory(root: Path) -> list[InventoryItem]:
     """Apply only documented historical exposure from the 2026-09-12 batch."""
     items = discover_inventory(root)
     blade_exposed = {"fish", "hurricane", "boxes", "affairs", "teachingratings", "caschools", "amtl", "mortgage", "reading", "panda_nuts", "crofoot"}
-    # The historical Discovery runner selected first twelve sorted synth/test
-    # dataset directories.  This reproduces its selection from names only.
-    discovery_test = sorted((item for item in items if item.benchmark == "discoverybench" and item.official_split == "synth/test"), key=lambda item: item.relative_path)[:12]
+    # The historical runner selected the first sorted directory in each semantic
+    # domain, then the first twelve sorted domains.  This is derived from the
+    # public directory names only; it deliberately does not parse task metadata.
+    test_items = sorted((item for item in items if item.benchmark == "discoverybench" and item.official_split == "synth/test"), key=lambda item: item.relative_path)
+    by_domain: dict[str, InventoryItem] = {}
+    for item in test_items:
+        dataset = item.relative_path.rsplit("/", 1)[-1]
+        domain = re.sub(r"_[0-9]+_[0-9]+$", "", dataset)
+        by_domain.setdefault(domain, item)
+    discovery_test = [by_domain[domain] for domain in sorted(by_domain)[:12]]
     selected = {item.task_id for item in discovery_test}
     return [InventoryItem(**{**item.data(), "content_hashes": tuple(item.content_hashes), "exposure": "exposed" if item.task_id in selected or (item.benchmark == "blade" and item.task_id in blade_exposed) else item.exposure}) for item in items]
 
