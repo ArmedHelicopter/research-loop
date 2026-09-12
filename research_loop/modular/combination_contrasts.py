@@ -36,6 +36,8 @@ def estimate_grouped_contrast(panel: CombinationPanel, *, runtime: Iterable[Runt
             or analysis["missing_policy"] != "incomplete_reject"
             or analysis["group_weighting"] != "task_replicate_mean_then_equal_group_mean"):
         raise ContractError("panel lacks frozen grouped contrast analysis policy")
+    if not isinstance(analysis["value_range"], list):
+        raise ContractError("frozen metric range must be a two-value list")
     direction, value_range, scale = analysis["direction"], tuple(analysis["value_range"]), analysis["scale"]
     if (not isinstance(direction, str) or direction not in {"higher_better", "lower_better"}
             or not isinstance(scale, str) or not scale or len(value_range) != 2
@@ -53,6 +55,11 @@ def estimate_grouped_contrast(panel: CombinationPanel, *, runtime: Iterable[Runt
     if set(scored_by_key) != set(expected):
         raise ContractError("metrics require one independently verified scorer receipt per cell")
     runtime_by_key = {row.cell_key: row for row in rows}
+    evidence = FrozenRecord.from_dict({"panel_digest": panel.digest,
+        "runtime": [{"cell_key": list(row.cell_key), "trace_digest": row.trace_digest}
+                    for row in sorted(rows, key=lambda value: value.cell_key)],
+        "scorer": [{"cell_key": list(row.cell_key), "receipt_digest": row.receipt.content_hash}
+                   for row in sorted(scored, key=lambda value: value.cell_key)]})
     by_key = {}
     for key, receipt in scored_by_key.items():
         body = receipt.receipt.data()
@@ -67,6 +74,7 @@ def estimate_grouped_contrast(panel: CombinationPanel, *, runtime: Iterable[Runt
         by_key[key] = metric
     if panel.estimand == "interaction_on_scale" and panel.interaction_status == "not_identifiable":
         return FrozenRecord.from_dict({"schema": "frozen-grouped-combination-estimate-v1", "panel_digest": panel.digest,
+            "input_evidence": evidence.data(), "input_evidence_digest": evidence.content_hash,
             "estimand": panel.estimand, "status": "not_identifiable", "missing_policy": "incomplete_reject",
             "direction": direction, "value_range": list(value_range), "scale": scale,
             "scientific_status": "estimation_only_not_acceptance", "benchmark_estimates": {}})
@@ -78,7 +86,7 @@ def estimate_grouped_contrast(panel: CombinationPanel, *, runtime: Iterable[Runt
     for (benchmark, group, _task, _replicate), values in arm_values.items():
         if panel.estimand == "interaction_on_scale":
             if not isinstance(coefficients, dict) or set(coefficients) != set(values): raise ContractError("frozen factorial contrast is incomplete")
-            contrast_by_group[(benchmark, group, "interaction")] .append(sum(float(coefficients[arm]) * values[arm] for arm in values))
+            contrast_by_group[(benchmark, group, "interaction")].append(sum(float(coefficients[arm]) * values[arm] for arm in values))
         else:
             if "full" not in values: raise ContractError("LOO panel lacks full arm")
             for arm, value in values.items():
@@ -99,6 +107,7 @@ def estimate_grouped_contrast(panel: CombinationPanel, *, runtime: Iterable[Runt
     else:
         estimates = estimates_by_component["interaction"]
     return FrozenRecord.from_dict({"schema": "frozen-grouped-combination-estimate-v1", "panel_digest": panel.digest,
+        "input_evidence": evidence.data(), "input_evidence_digest": evidence.content_hash,
         "estimand": panel.estimand, "status": "estimated", "missing_policy": "incomplete_reject",
         "direction": direction, "value_range": list(value_range), "scale": scale,
         "group_detail": group_detail, "benchmark_estimates": estimates,
