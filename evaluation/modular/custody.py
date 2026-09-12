@@ -355,7 +355,8 @@ class CustodyStore:
         if calibration_receipt is None:
             if scorer_digest is not None or protocol_digest is not None:
                 raise ContractError("scorer and protocol binding require a signed calibration receipt")
-            return {**base, "qualified": False, "qualification": "metadata_only"}
+            return {**base, "qualified": False, "qualification": "metadata_only",
+                    "metadata_authenticated": False, "calibration_eligible": False}
         if not self._calibration_keys:
             raise ContractError("validation qualification requires configured trusted calibration keys")
         if scorer_digest is None or protocol_digest is None:
@@ -363,7 +364,8 @@ class CustodyStore:
         calibration = verify_calibration_receipt(calibration_receipt, self._calibration_keys,
                                                   panel_digest=panel_digest, scorer_digest=scorer_digest,
                                                   protocol_digest=protocol_digest)
-        return {**base, "qualified": True, "qualification": "calibrated",
+        return {**base, "qualified": True, "qualification": "calibration_eligible",
+                "metadata_authenticated": True, "calibration_eligible": True,
                 "scorer_digest": scorer_digest, "protocol_digest": protocol_digest,
                 "calibration_receipt_digest": calibration_receipt.content_hash,
                 "calibration_authority": calibration["authority"]}

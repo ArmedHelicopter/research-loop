@@ -20,8 +20,13 @@ custodian remains a deployment duty.
 
 The broker merges items sharing a source-group label or a file hash, then assigns
 whole merged groups deterministically. It exports only `DataIdentity(domain=train)`
-objects. A validation lease is bound to a frozen split, panel digest, and exact
-arm schedule; it turns consumed permanently after use. The CLI also supports
+objects. A validation lease is bound to a frozen split, panel digest, scorer,
+pre-registered calibration protocol, and exact arm schedule; it turns consumed
+permanently after use. A metadata-only `qualify` result is not authenticated and
+is never calibration eligible. A lease requires a configured independent
+calibration authority's signed receipt, whose frozen criteria bind both
+benchmarks' coverage, confusion counts, abstention and finite uncertainty. The CLI
+has no calibration key configuration, so it cannot issue a lease. The CLI supports
 `attest`, `export`, `qualify`, and `consume` so a child process cannot bypass
 those checks.
 

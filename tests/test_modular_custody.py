@@ -11,16 +11,27 @@ from evaluation.modular.custody import CustodyStore, InventoryItem, build_known_
 from evaluation.modular.calibration import CalibrationAuthority
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.ontology import ContractError
+from research_loop.ontology import digest
 
 
 def calibration(panel_digest: str, scorer_digest: str = "e" * 64, protocol_digest: str = "f" * 64) -> FrozenRecord:
+    criteria = {"minimum_cases_per_benchmark": 9,
+                "minimum_coverage": {"valid_positive": 1, "valid_negative": 1, "invalid_measurement": 1,
+                                     "uncertain": 1, "negation_or_quoted_completion": 1, "correct_rejection": 1,
+                                     "over_rejection": 1, "reasonable_alternative": 1, "empty_output": 1},
+                "minimum_precision": 0.8, "minimum_recall": 0.8, "maximum_abstention_rate": 0.2, "maximum_uncertainty": 0.2}
+    coverage = {name: 1 for name in criteria["minimum_coverage"]}
+    matrix = {"tp": 4, "tn": 4, "fp": 0, "fn": 0, "abstained": 1}
     return CalibrationAuthority("test-calibration", b"k" * 32).issue({
         "schema": "scorer-calibration-v1", "panel_digest": panel_digest, "scorer_digest": scorer_digest,
         "protocol_digest": protocol_digest, "scorer_code_digest": "1" * 64, "judge_identity": "independent",
         "judge_parameters": {"temperature": 0}, "rubric_digest": "2" * 64,
         "calibration_manifest_digest": "3" * 64, "blind_review_protocol_digest": "4" * 64,
         "arbitration_protocol_digest": "5" * 64, "applicable_benchmarks": ["blade", "discoverybench"],
-        "confusion_matrix": {"positive": {"positive": 1, "negative": 0}}, "uncertainty": {"bound": 0.1},
+        "criteria": criteria, "criteria_digest": digest(criteria),
+        "coverage": {"blade": coverage, "discoverybench": coverage},
+        "confusion_matrix": {"blade": matrix, "discoverybench": matrix},
+        "uncertainty": {"blade": 0.1, "discoverybench": 0.1},
     })
 
 
