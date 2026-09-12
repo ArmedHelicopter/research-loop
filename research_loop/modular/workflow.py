@@ -25,15 +25,20 @@ class ModularWorkflow:
         self.predictions=PredictionRegistry(session.task.identity, storage_path=session.sidecar/"predictions.jsonl")
         self.reviews=ReviewEngine(session.task.identity, storage_path=session.sidecar/"reviews.jsonl")
         self.revealed: FrozenRecord|None=None; self.deployment=deployment
+        self.frontier_result: FrozenRecord | None = None
     def _trace(self, stage: str, status: str, **data: Any) -> WorkflowResult:
         item=FrozenRecord.from_dict({"stage":stage,"status":status,**data}); self.session._record("modular_workflow",item.data()); return WorkflowResult(status,item)
     def record_stages(self, records: Mapping[str, Mapping[str, str]]) -> tuple[WorkflowResult, ...]:
         if set(records) != set(STAGES): raise ContractError("every fixed stage requires a record")
-        known = {event.content_hash for event in self.session._events}; result=[]
+        known = {event.content_hash: event.data() for event in self.session._events}; result=[]
         for stage in STAGES:
             item=records[stage]
             if set(item)=={"reason"}: result.append(self._trace("coverage_"+stage,"blocked",reason=item["reason"]))
-            elif set(item)=={"trace_digest"} and item["trace_digest"] in known: result.append(self._trace("coverage_"+stage,"executed",trace_digest=item["trace_digest"]))
+            elif set(item)=={"trace_digest"} and item["trace_digest"] in known:
+                event = known[item["trace_digest"]]
+                if event["stage"] != "modular_workflow" or event["data"].get("stage") != stage or event["data"].get("status") != "executed":
+                    raise ContractError("coverage trace does not bind this executed stage")
+                result.append(self._trace("coverage_"+stage,"executed",trace_digest=item["trace_digest"]))
             else: raise ContractError("executed stage coverage requires an existing trace digest")
         return tuple(result)
     def _deployment_context(self) -> dict[str, Any]:
@@ -94,7 +99,7 @@ class ModularWorkflow:
         execution=self.session.execute(code,broker=broker,image=image,inputs=inputs)
         return self._trace("stage_3","executed",permit_digest=permit.diagnostic_digest,execution_digest=execution.content_hash)
     def run_panel(self,scheduler:FifoScheduler,*,experiment_id:str,jobs:Sequence[Mapping[str,Any]],worker_id:str,execute:Callable[[TaskLease],FrozenRecord])->WorkflowResult:
-        if "M8" not in self.enabled:return self._trace("stage_9","blocked",module="M8",reason="module_not_enabled")
+        if "M8" not in self.enabled:return self._trace("operation_m8_panel","blocked",module="M8",reason="module_not_enabled")
         snapshot={"evidence":self.session.evidence.version,"rules":self.session.objective.content_hash,"package":self.session.lock.data()["package_digest"]}
         for job in jobs:scheduler.enqueue(experiment_id=experiment_id,snapshot=snapshot,**job)
         receipts=[]
@@ -104,6 +109,84 @@ class ModularWorkflow:
             scheduler.complete(lease.run_id,receipt_id=receipt.content_hash,receipt=receipt.data(),cost_units=lease.cost_units);receipts.append(receipt.content_hash)
         merged=scheduler.merge(experiment_id)
         return self._trace("operation_m8_panel","executed",receipts=receipts,merged=[x.run_id for x in merged])
+
+    def retrospective(self, blind_slot: str, reveal_slot: str, model: Callable[[FrozenRecord], FrozenRecord],
+                      *, history_summary: FrozenRecord) -> WorkflowResult:
+        """Two actual calls: seal the first review, then reveal historical prose.
+
+        The independent review masks learned prompt/memory content in both arms;
+        the deployed digest is still checked. This is a frozen audit role, not a
+        candidate opportunity to rewrite the reviewer. Scientific correctness of
+        the two responses remains an independent evaluator's responsibility.
+        """
+        if not isinstance(history_summary, FrozenRecord):
+            raise ContractError("retrospective requires a frozen public history summary")
+        snapshot = self.session.evidence.snapshot()
+        deployment = self._deployment_context()
+        context = {"review_stage": "retrospective", "evidence_snapshot": snapshot.content_hash,
+                   "deployment_digest": deployment.get("deployment", {}).get("package_digest")}
+        if "M5" not in self.enabled:
+            context["history_summary"] = history_summary.data()
+        review = self.reviews.open(task_binding=self.session.task.content_hash,
+            evidence_snapshot=snapshot.content_hash,
+            roles=[{"role_id": "retrospective", "question": "What do the original evidence and frozen rules justify?"}],
+            budget_units=1)
+        first = self.session.invoke(blind_slot, model, instruction="Review the provided evidence under the frozen objective; unknown and no valid counterexample are allowed.",
+            module_context=FrozenRecord.from_dict(context), evidence_only=True)
+        submitted = self.reviews.submit(review.review_id, role_id="retrospective", reviewer_id="retrospective-reviewer",
+            response=first.data(), cost_units=1)
+        self.reviews.reveal(review.review_id)
+        context.update({"history_summary": history_summary.data(), "sealed_first_review": first.data(),
+                        "first_review_digest": submitted.before_hash})
+        revised = self.session.invoke(reveal_slot, model, instruction="Recheck the sealed judgment after seeing the historical summary. Cite evidence for any change; disagreement alone does not prove either judgment correct.",
+            module_context=FrozenRecord.from_dict(context), evidence_only=True)
+        revision = self.reviews.revise_after_reveal(review.review_id, role_id="retrospective", reviewer_id="retrospective-reviewer", response=revised.data())
+        return self._trace("stage_9", "executed", review_id=review.review_id,
+            method="evidence_first" if "M5" in self.enabled else "summary_first_control",
+            evidence_snapshot=snapshot.content_hash, summary_digest=history_summary.content_hash,
+            before_digest=submitted.before_hash, after_digest=revision.after_hash,
+            slots=[blind_slot, reveal_slot], correctness="requires_independent_scoring")
+
+    def frontier_audit(self, slot: str, model: Callable[[FrozenRecord], FrozenRecord],
+                       *, plan_ids: Sequence[str] = ()) -> WorkflowResult:
+        """Audit current gaps into proposals, with no benchmark or queue authority."""
+        from research_loop.modular.frontier import validate_frontier
+        catalog: dict[str, Any] = {"boundary:objective": {"kind": "boundary", "objective": self.session.objective.data()}}
+        self.session.claims.refresh_after_withdrawal()
+        for claim in self.session.claims.claims():
+            catalog["claim:" + claim.claim_id] = {"kind": "remaining", "claim": claim.data()}
+        for root in self.session.evidence.roots(admitted_only=False, active_only=False):
+            catalog["evidence:" + root.root_id] = {"kind": "anomaly", "observation": root.data(), "anomaly_confirmed": False}
+        for event in self.session._events:
+            row = event.data()
+            if row["stage"] in {"audit_rejected", "model_failure"} or (row["stage"] == "execution_result" and row["data"]["status"] != "succeeded"):
+                catalog["check:" + event.content_hash] = {"kind": "failed_check", "trace": row}
+        if isinstance(plan_ids, (str, bytes)) or len(set(plan_ids)) != len(plan_ids):
+            raise ContractError("frontier prediction plans must be unique")
+        for plan_id in plan_ids:
+            plan = self.predictions.plan(plan_id)
+            updates = self.predictions.updates(plan_id)
+            catalog["plan:" + plan_id] = {"kind": "remaining" if updates else "untested", "plan": plan.data(),
+                                          "updates": [update.data() for update in updates]}
+        frozen_catalog = FrozenRecord.from_dict(catalog)
+        response = self.invoke_model(slot, model, instruction="Audit the remaining research frontier. Proposals must cite supplied origins and describe a discriminating observation. An empty frontier does not complete the research programme. Never generate or admit this experiment's evaluation tasks.",
+            module_context=FrozenRecord.from_dict({"frontier_catalog": catalog, "catalog_digest": frozen_catalog.content_hash,
+                "authority": "proposals_only", "queue_admission": False, "benchmark_admission": False}))
+        try:
+            result = validate_frontier(response, frozen_catalog, self.session.task.identity)
+        except ContractError as exc:
+            self._trace("frontier", "rejected", response_digest=response.content_hash, reason=str(exc))
+            raise
+        self.frontier_result = result
+        return self._trace("frontier", "executed", result=result.data(), response_digest=response.content_hash,
+                           catalog_digest=frozen_catalog.content_hash, slot=slot)
+
+    def training_followups(self) -> FrozenRecord:
+        """Export proposals only on training; no method admits benchmark tasks."""
+        self.session.task.identity.require_train()
+        if self.frontier_result is None:
+            raise ContractError("frontier has not been audited")
+        return self.frontier_result
     def m9_policy(self, policy: FrozenRecord | None, *, receipt: AcceptanceReceipt | None = None,
                   candidate: CandidatePackage | None = None) -> WorkflowResult:
         if "M9" not in self.enabled:

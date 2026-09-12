@@ -158,13 +158,25 @@ class RunSession:
         return event
 
     def invoke(self, slot: str, model: Callable[[FrozenRecord], FrozenRecord], *, instruction: str,
-               baseline_summary: str = "", module_context: FrozenRecord | None = None) -> FrozenRecord:
+               baseline_summary: str = "", module_context: FrozenRecord | None = None,
+               evidence_only: bool = False) -> FrozenRecord:
         if self._terminal or self._next_call >= len(self.slots) or slot != self.slots[self._next_call]:
             raise ContractError("call does not match frozen schedule")
+        if type(evidence_only) is not bool:
+            raise ContractError("evidence-only review flag must be boolean")
         mode = "candidate" if "M3" in self.arm.data()["enabled"] else "baseline"
         self.claims.refresh_after_withdrawal()
-        context = self.cache.get_or_build(ContextBuilder(self.task.identity, budget_bytes=self.context_budget),
-            canonical(self.task.payload.data()), self.evidence, self.claims, mode=mode, baseline_summary=baseline_summary)
+        if evidence_only:
+            # An independent retrospective first pass must not inherit a claim
+            # summary, including one hidden in the normal reconstructed context.
+            context = FrozenRecord.from_dict({"mode": "evidence_only", "identity": self.task.identity.data(),
+                "records": [root.data() for root in self.evidence.roots(admitted_only=False, active_only=False)],
+                "withdrawn": self.evidence.snapshot().data()["withdrawn"]})
+            if len(context.encoded.encode()) > self.context_budget:
+                raise ContractError("raw evidence review exceeds frozen context budget")
+        else:
+            context = self.cache.get_or_build(ContextBuilder(self.task.identity, budget_bytes=self.context_budget),
+                canonical(self.task.payload.data()), self.evidence, self.claims, mode=mode, baseline_summary=baseline_summary)
         request = FrozenRecord.from_dict({"schema": "public-model-request-v1", "task": self.task.data(),
             "lock_digest": self.lock.content_hash, "objective": self.objective.data(), "slot": slot,
             "instruction": required_text(instruction, "instruction"), "context": context.data(),
