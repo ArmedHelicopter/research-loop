@@ -44,18 +44,25 @@ def registry() -> Mapping[str, ExperimentSpec]:
     if len(result)!=48: raise ContractError("registry must contain exactly 48 unique experiments")
     return result
 
-def scenario(spec: ExperimentSpec, variant: str, *, public_payload: Mapping[str,object] | None=None) -> FrozenRecord:
+@dataclass(frozen=True)
+class ControllerInputs:
+    task: FrozenRecord; evidence: FrozenRecord; budget: FrozenRecord
+
+def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs) -> FrozenRecord:
     if variant not in spec.variants: raise ContractError("variant is not registered")
-    # Only synthetic control fields are injected here.  A benchmark adapter must
-    # bind its current public task separately; no task text or labels enter this factory.
-    return FrozenRecord.from_dict({"experiment_id":spec.experiment_id,"scenario_kind":spec.scenario_kind,"variant":variant,"controls":{"same_task":True,"same_evidence":True,"same_budget":True},"public_injection":dict(public_payload or {})})
+    base={"task":inputs.task.content_hash,"evidence":inputs.evidence.content_hash,"budget":inputs.budget.content_hash}
+    if spec.experiment_id=="Q1.1": injection={"history":{"correct":"fixture-supported","wrong":"fixture-withdrawn","neutral":"fixture-none"}[variant]}
+    elif spec.experiment_id=="Q2.1": injection={"pressure":{"neutral":"apply_frozen_rule","positive":"seek_support_only_if_justified","negative":"seek_refutation_only_if_justified"}[variant]}
+    elif spec.experiment_id=="Q2.3": injection={"audit":{"false":False,"string_false":"false","empty":[],"duplicate":["x","x"],"unknown":{"status":"unknown"},"missing":{"status":"proceed"},"parse_error":"{invalid"}[variant]}
+    else: raise ContractError(f"blocked_endpoint_not_implemented:{spec.endpoint}")
+    return FrozenRecord.from_dict({"experiment_id":spec.experiment_id,"variant":variant,"controller_input":injection,"base":base,"controls":{"same_task":True,"same_evidence":True,"same_budget":True}})
 
 @dataclass(frozen=True)
 class RunReceipt:
-    benchmark: str; identity: DataIdentity; scenario_hash: str; arms: tuple[str,...]; module_switches: tuple[str,...]; package_digest: str; scorer_digest: str; run_digest: str
+    benchmark: str; identity: DataIdentity; scenario_hash: str; arms: tuple[str,...]; module_switches: tuple[str,...]; package_digest: str; scorer_digest: str; trace_digest: str; run_digest: str
     def __post_init__(self) -> None:
-        if self.benchmark not in BENCHMARKS or self.identity.domain not in {"train","validation"}: raise ContractError("invalid benchmark receipt")
-        for value in (self.scenario_hash,self.package_digest,self.scorer_digest,self.run_digest): required_text(value,"receipt digest")
+        if self.benchmark not in BENCHMARKS or self.identity.domain not in {"train","validation"} or self.identity.benchmark!=self.benchmark: raise ContractError("invalid benchmark receipt")
+        for value in (self.scenario_hash,self.package_digest,self.scorer_digest,self.trace_digest,self.run_digest): required_text(value,"receipt digest")
         if not self.arms or len(set(self.arms))!=len(self.arms) or len(set(self.module_switches))!=len(self.module_switches): raise ContractError("receipt needs unique arms and switches")
 
 @dataclass(frozen=True)
@@ -70,16 +77,16 @@ class ExperimentLedger:
         specs=registry(); spec=specs.get(experiment_id)
         if spec is None: raise ContractError("unknown experiment id")
         data=self.entries.data(); current=data[experiment_id]["status"]
-        if current in TERMINAL: raise ContractError("terminal experiment cannot transition")
+        if current in TERMINAL and current!="blocked": raise ContractError("terminal experiment cannot transition")
         order={state:i for i,state in enumerate(STATES[:7])}
         if target in order and current in order and order[target] != order[current]+1: raise ContractError("invalid experiment state transition")
         if target=="implemented" and not implementation_ref: raise ContractError("implemented requires implementation reference")
+        if target=="integration_verified" and not implementation_ref: raise ContractError("integration verification requires trace reference")
         if target == "blocked" and not blocked_reason: raise ContractError("blocked requires an explicit reason")
         if target in {"train_measured","validation_measured"}:
             if scenario_record is None: raise ContractError("measurement requires frozen scenario")
             self._validate_receipts(spec, scenario_record, receipts, "train" if target=="train_measured" else "validation")
-        if target in {"accepted","rejected","inconclusive"}:
-            if current!="validation_measured": raise ContractError("decision requires validation measurement")
+        if target in {"accepted","rejected","inconclusive"}: raise ContractError("scientific decision requires independent verifier")
         data[experiment_id]={"status":target,"spec_hash":spec.record.content_hash,"history":data[experiment_id]["history"]+[{"from":current,"to":target,"implementation_ref":implementation_ref,"scenario_hash":scenario_record.content_hash if scenario_record else None,"receipt_hashes":[receipt.run_digest for receipt in receipts],"blocked_reason":blocked_reason}]}
         return ExperimentLedger(FrozenRecord.from_dict(data))
     @staticmethod
