@@ -52,7 +52,7 @@ _SOURCES = {
         "scienceagentbench",
         "https://github.com/OSU-NLP-Group/ScienceAgentBench",
         "data-driven scientific-discovery program-generation workflows",
-        "official benchmark instance",
+        "shared source dataset, paper, or artifact family; instances sharing roots stay together",
     ),
     "scicode": BenchmarkSource(
         "scicode",
@@ -64,13 +64,13 @@ _SOURCES = {
         "corebench",
         "https://github.com/siegelz/core-bench",
         "computational reproduction of published scientific papers",
-        "official paper-derived task",
+        "source paper and shared artifact family; derived tasks stay together",
     ),
     "airsbench": BenchmarkSource(
         "airsbench",
         "https://github.com/facebookresearch/airs-bench",
         "end-to-end machine-learning research-agent workflows",
-        "official research task",
+        "shared source dataset and task lineage; repeated evaluations stay together",
     ),
 }
 
