@@ -57,7 +57,7 @@ def test_m8_barrier_and_fault_invariants(tmp_path: Path):
 
 def test_m8_sqlite_claim_is_atomic_across_real_spawned_processes():
     """Use an E-volume work root outside data/labels for the worker processes."""
-    work = Path(__file__).resolve().parents[1] / "work"
+    work = Path(__file__).resolve().parents[2] / "work"
     work.mkdir(exist_ok=True)
     root = Path(tempfile.mkdtemp(prefix="recovery-workers-", dir=work))
     try:
@@ -74,7 +74,10 @@ def test_m8_sqlite_claim_is_atomic_across_real_spawned_processes():
         claims = [queue.get(timeout=5), queue.get(timeout=5)]
         assert claims.count(run.run_id) == 1 and claims.count(None) == 1
     finally:
-        shutil.rmtree(root)
+        resolved_root = root.resolve()
+        if resolved_root.parent != work.resolve():
+            raise RuntimeError("refusing cleanup outside the owned test-work root")
+        shutil.rmtree(resolved_root)
 
 
 def test_stage_and_closure_boundaries(tmp_path: Path):

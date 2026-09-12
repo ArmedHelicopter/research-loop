@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 import sqlite3
 import time
+from contextlib import closing, contextmanager
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping, Sequence
@@ -69,7 +70,7 @@ class FifoScheduler:
             raise ContractError("scheduler limits must be positive integers")
         self.path, self.max_concurrency, self.total_budget = Path(path), max_concurrency, total_budget
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        with self._connect() as conn:
+        with closing(self._connect()) as conn:
             conn.executescript("""
             CREATE TABLE IF NOT EXISTS scheduler_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS runs (
@@ -92,9 +93,13 @@ class FifoScheduler:
 
     def _connect(self) -> sqlite3.Connection:
         conn = sqlite3.connect(self.path, timeout=10, isolation_level=None)
-        conn.row_factory = sqlite3.Row
-        conn.execute("PRAGMA journal_mode=WAL")
-        conn.execute("PRAGMA foreign_keys=ON")
+        try:
+            conn.row_factory = sqlite3.Row
+            conn.execute("PRAGMA journal_mode=WAL")
+            conn.execute("PRAGMA foreign_keys=ON")
+        except BaseException:
+            conn.close()
+            raise
         return conn
 
     def enqueue(self, *, experiment_id: str, task_id: str, dependencies: Sequence[str], resources: Sequence[str],
@@ -225,23 +230,26 @@ class FifoScheduler:
             return tuple(affected)
 
     def state(self, run_id: str) -> RunState:
-        with self._connect() as conn:
+        with closing(self._connect()) as conn:
             row = self._row(conn, required_text(run_id, "run id"))
             return RunState(row["run_id"], row["experiment_id"], row["task_id"], row["attempt"], row["status"], row["snapshot_hash"], row["receipt_id"])
 
     def runs(self, experiment_id: str) -> tuple[RunState, ...]:
-        with self._connect() as conn:
+        with closing(self._connect()) as conn:
             return tuple(RunState(row["run_id"], row["experiment_id"], row["task_id"], row["attempt"], row["status"], row["snapshot_hash"], row["receipt_id"])
                          for row in conn.execute("SELECT * FROM runs WHERE experiment_id=? ORDER BY fifo", (experiment_id,)))
 
+    @contextmanager
     def _tx(self):
-        class Tx:
-            def __init__(self, outer): self.outer, self.conn = outer, None
-            def __enter__(self):
-                self.conn = self.outer._connect(); self.conn.execute("BEGIN IMMEDIATE"); return self.conn
-            def __exit__(self, kind, value, trace):
-                self.conn.execute("ROLLBACK" if kind else "COMMIT"); self.conn.close()
-        return Tx(self)
+        with closing(self._connect()) as conn:
+            conn.execute("BEGIN IMMEDIATE")
+            try:
+                yield conn
+            except BaseException:
+                conn.execute("ROLLBACK")
+                raise
+            else:
+                conn.execute("COMMIT")
 
     @staticmethod
     def _row(conn: sqlite3.Connection, run_id: str) -> sqlite3.Row:
