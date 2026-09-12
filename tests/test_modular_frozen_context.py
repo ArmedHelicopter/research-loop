@@ -88,6 +88,24 @@ def harness(tmp_path, monkeypatch):
         paid=paid, probe=probe, probes=probes, calls=calls, root=tmp_path)
 
 
+def test_explicit_child_environment_binds_only_child_profile_sources(harness, tmp_path):
+    h = harness
+    child_profile = tmp_path / "isolated-profile"
+    child_home = child_profile / ".codex"
+    child_home.mkdir(parents=True)
+    (child_home / "config.toml").write_text('model="base"\n[mcp_servers.fixture]\nenabled=true\n', encoding="utf-8")
+    child_environment = dict(os.environ)
+    child_environment.update({"CODEX_HOME": str(child_home), "HOME": str(child_profile), "USERPROFILE": str(child_profile)})
+    candidate = audit_base_context(h.cli, h.cwd, tmp_path / "isolated-audit",
+        config_overrides=('mcp_servers.fixture.enabled=false',), context_probe_runner=h.probe,
+        environment=child_environment)
+    binding = json.loads(candidate.read_text(encoding="utf-8"))["binding"]
+    assert binding["codex_home"] == str(child_home.resolve())
+    assert any(spec["path"] == str(child_profile / ".agents" / "skills") for spec in binding["source_specs"])
+    assert all("Administrator\\.agents" not in spec["path"] for spec in binding["source_specs"])
+    assert h.probes[-1][1]["env"] == child_environment
+
+
 def test_exact_shared_arguments_cwd_environment_and_frozen_slot_receipts(harness):
     h = harness
     instance = h.port()

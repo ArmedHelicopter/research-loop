@@ -102,18 +102,23 @@ def _base_context_bytes(raw: bytes) -> bytes:
         raise ContractError("empty or malformed debug base context") from exc
 
 
-def context_source_specs(codex_home: Path, fixed_cwd: Path, *, model_catalog_path: Path | None = None) -> list[dict[str, str]]:
+def context_source_specs(codex_home: Path, fixed_cwd: Path, *, model_catalog_path: Path | None = None,
+                         environment: Mapping[str, str] | None = None) -> list[dict[str, str]]:
     """Minimum local sources; the reviewer must add external referenced files.
 
     Glob inventories bind additions/deletions as well as content changes. Auth
     files are neither read nor copied. The default user configuration is used.
     """
     home, cwd = codex_home.resolve(), fixed_cwd.resolve()
+    child_environment = dict(os.environ) if environment is None else dict(environment)
+    if any(not isinstance(key, str) or not isinstance(value, str) for key, value in child_environment.items()):
+        raise ContractError("context environment must contain string keys and values")
+    profile = Path(child_environment.get("USERPROFILE") or child_environment.get("HOME") or str(home.parent)).resolve()
     specs = [{"path": str(home / name)} for name in ("config.toml", "AGENTS.md", "AGENTS.override.md")]
     specs.append({"path": str(model_catalog_path.resolve() if model_catalog_path else home / "models_cache.json")})
     specs += [{"path": str(home / "rules"), "glob": "**/*.rules"},
               {"path": str(home / "skills"), "glob": "**/SKILL.md"},
-              {"path": str(Path.home() / ".agents" / "skills"), "glob": "**/SKILL.md"}]
+              {"path": str(profile / ".agents" / "skills"), "glob": "**/SKILL.md"}]
     for ancestor in (cwd, *cwd.parents):
         specs += [{"path": str(ancestor / ".codex" / "config.toml")},
                   {"path": str(ancestor / "AGENTS.md")}, {"path": str(ancestor / "AGENTS.override.md")}]
@@ -267,7 +272,7 @@ def _runtime_binding(executable: str, cwd: Path, environment: dict[str, str], ar
                 raise ValueError("nonempty local model catalog required")
         except (ValueError, OSError, TypeError) as exc:
             raise ContractError("invalid frozen local model catalog") from exc
-    required = {canonical(spec) for spec in context_source_specs(home, cwd, model_catalog_path=catalog)}
+    required = {canonical(spec) for spec in context_source_specs(home, cwd, model_catalog_path=catalog, environment=environment)}
     if not required <= {canonical(spec) for spec in specs}:
         raise ContractError("frozen context omits mandatory default configuration sources")
     sources = _source_manifest(specs)
@@ -289,7 +294,8 @@ def audit_base_context(executable: Path, fixed_cwd: Path, audit_root: Path, *,
                        model: str = "gpt-5.6-luna", effort: str = "low",
                        source_specs: list[dict[str, str]] | None = None,
                        config_overrides: tuple[str, ...] = (),
-                       context_probe_runner: ProcessRunner = subprocess.run) -> Path:
+                       context_probe_runner: ProcessRunner = subprocess.run,
+                        environment: Mapping[str, str] | None = None) -> Path:
     """Archive one NO-PAID render and an UNQUALIFIED review candidate.
 
     This never qualifies itself. A reviewer must inspect the render, source
@@ -301,9 +307,11 @@ def audit_base_context(executable: Path, fixed_cwd: Path, audit_root: Path, *,
     root.mkdir(parents=True, exist_ok=True)
     if any(root.iterdir()):
         raise ContractError("audit destination must be empty; preserve previous audit evidence")
-    environment = dict(os.environ)
+    environment = dict(os.environ) if environment is None else dict(environment)
+    if any(not isinstance(key, str) or not isinstance(value, str) for key, value in environment.items()):
+        raise ContractError("context environment must contain string keys and values")
     home = Path(environment.get("CODEX_HOME") or str(Path.home() / ".codex"))
-    specs = source_specs if source_specs is not None else context_source_specs(home, cwd)
+    specs = source_specs if source_specs is not None else context_source_specs(home, cwd, environment=environment)
     overrides = list(config_overrides)
     args = shared_args(model, effort, tuple(overrides))
     binding = _runtime_binding(str(cli), cwd, environment, args, specs, overrides)
@@ -397,7 +405,7 @@ class CodexModelPort:
                  schema_by_slot: Mapping[str, Mapping[str, Any]], timeout_seconds: int = 180,
                  process_runner: ProcessRunner | None = None, context_probe_runner: ProcessRunner | None = None,
                  frozen_base_context: FrozenBaseContextPolicy | None = None,
-                 allow_mock_context: bool = False) -> None:
+                 allow_mock_context: bool = False, environment: Mapping[str, str] | None = None) -> None:
         if not isinstance(model, str) or not model or not isinstance(effort, str) or not effort:
             raise ContractError("model and effort must be nonempty")
         if type(max_calls) is not int or max_calls < 1 or type(max_tokens) is not int or max_tokens < 1:
@@ -431,7 +439,9 @@ class CodexModelPort:
         if allow_mock_context and frozen_base_context is not None:
             raise ContractError("mock and reviewed contexts are mutually exclusive")
         self.mock_context = allow_mock_context
-        self.environment = dict(os.environ)
+        self.environment = dict(os.environ) if environment is None else dict(environment)
+        if any(not isinstance(key, str) or not isinstance(value, str) for key, value in self.environment.items()):
+            raise ContractError("model environment must contain string keys and values")
         self.policy_data = frozen_base_context.data() if frozen_base_context else None
         self.context_binding = self.policy_data["binding"] if self.policy_data else None
         self.allowed_startup_notices = self.policy_data.get("allowed_startup_notices", []) if self.policy_data else []
