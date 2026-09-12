@@ -14,7 +14,8 @@ from typing import Callable, Mapping
 
 from research_loop.modular.benchmarks.execution import ArtifactReceipt, DockerExecutionBroker, ExecutionReceipt
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask, required_text
-from research_loop.modular.runtime import AuditVerifier, RunSession, verify_trace
+from research_loop.modular.runtime import AuditVerifier, RunSession
+from research_loop.modular.protocol_trace import verify_protocol_trace as verify_common_protocol_trace
 from research_loop.modular.workflow import ModularWorkflow
 from research_loop.ontology import ContractError
 
@@ -97,8 +98,9 @@ def run_benchmark_solve(*, task: PublicTask, public_inputs: Mapping[str, Path], 
                          "task-relevant observations to stdout. It cannot determine scientific validity or a score."),
             module_context=FrozenRecord.from_dict(common),
         )
-    except Exception:
-        # RunSession has already written a terminal model_failure event.
+    except Exception as exc:
+        if not session._terminal:
+            session.controller_failure(driver_id="benchmark_solver", error_type=type(exc).__name__)
         return BenchmarkSolveResult(session, artifacts, None, None, None, None, "analysis_model_failed")
     try:
         program = _program_from(analysis)
@@ -109,7 +111,8 @@ def run_benchmark_solve(*, task: PublicTask, public_inputs: Mapping[str, Path], 
         execution = session.execute(program, broker=broker, image=image, inputs=public_inputs,
                                     timeout_seconds=timeout_seconds)
     except Exception as exc:
-        session.controller_failure(driver_id="benchmark_solver", error_type=type(exc).__name__)
+        if not session._terminal:
+            session.controller_failure(driver_id="benchmark_solver", error_type=type(exc).__name__)
         return BenchmarkSolveResult(session, artifacts, analysis, None, None, None, "execution_setup_failed")
     if execution.status in {"unavailable", "rejected"}:
         # RunSession is terminal for infrastructure/untrusted-mount failures;
@@ -125,18 +128,22 @@ def run_benchmark_solve(*, task: PublicTask, public_inputs: Mapping[str, Path], 
         "execution_digest": execution.content_hash,
         "execution_status": execution.status,
         "execution_input_artifacts": execution.record.data()["input_artifacts"],
+        "required_objective_digest": objective.content_hash,
     }
     try:
         answer = workflow.invoke_model(
             _FINAL_SLOT, model,
             instruction=("Give the benchmark answer using only the public task, prior immutable context, and the "
                          "recorded execution feedback. Return exactly objective_digest, outcome, evidence_ids, "
-                         "conclusion, and programme_complete. Copy objective_digest exactly. Set outcome to unknown, "
+                         "conclusion, and programme_complete. Copy module_context.required_objective_digest exactly "
+                         "into objective_digest. Set outcome to unknown, "
                          "evidence_ids to [], programme_complete to false, and put the actual answer in conclusion. "
                          "A failed or timed out execution remains unresolved and is never scientific validation."),
             module_context=FrozenRecord.from_dict(final_context),
         )
-    except Exception:
+    except Exception as exc:
+        if not session._terminal:
+            session.controller_failure(driver_id="benchmark_solver", error_type=type(exc).__name__)
         return BenchmarkSolveResult(session, artifacts, analysis, execution, None, None, "answer_model_failed")
     try:
         _candidate_from(answer, objective)
@@ -183,11 +190,11 @@ def _execution_inputs_match(artifacts: tuple[ArtifactReceipt, ...], execution: E
     return actual == expected
 
 
-def verify_protocol_trace(path: Path, task: PublicTask) -> FrozenRecord:
-    """Verify solve-specific ordering and source-task binding after hash replay."""
+def verify_benchmark_solve_trace(path: Path, task: PublicTask) -> FrozenRecord:
+    """Add solver-specific task binding on top of common protocol replay."""
     if not isinstance(task, PublicTask):
         raise ContractError("protocol trace needs the prepared source task")
-    base = verify_trace(path)
+    base = verify_common_protocol_trace(path)
     events = [FrozenRecord(line).data() for line in path.read_text(encoding="utf-8").splitlines()]
     lock = events[0]["data"]
     if lock.get("task_digest") != task.content_hash or lock.get("identity") != task.identity.data():
@@ -203,5 +210,5 @@ def verify_protocol_trace(path: Path, task: PublicTask) -> FrozenRecord:
         if terminal_data.get("candidate_digest") != final_response.content_hash or terminal_data.get("identity") != task.identity.data():
             raise ContractError("terminal decision does not bind the final model candidate")
     return FrozenRecord.from_dict({"schema": "benchmark-solve-protocol-trace-v1", "task_digest": task.content_hash,
-        "identity": task.identity.data(), "trace_digest": base.data()["trace_digest"], "terminal": terminal,
+        "identity": task.identity.data(), "trace_digest": base.data()["trace"]["trace_digest"], "terminal": terminal,
         "stages": stages})

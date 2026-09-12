@@ -223,7 +223,14 @@ class RunSession:
         program = self.sidecar / f"analysis-{self._attempts}.py"
         program.write_text(required_text(code, "program"), encoding="utf-8")
         self._record("execution_request", {"attempt": self._attempts, "program_sha256": hashlib.sha256(program.read_bytes()).hexdigest()})
-        result = broker.execute(ExecutionRequest(self.task.identity, image, program, inputs, timeout_seconds))
+        try:
+            result = broker.execute(ExecutionRequest(self.task.identity, image, program, inputs, timeout_seconds))
+        except Exception as exc:
+            self._terminal = True
+            self._record("execution_failure", {"attempt": self._attempts,
+                         "program_sha256": hashlib.sha256(program.read_bytes()).hexdigest(),
+                         "error_type": type(exc).__name__})
+            raise
         self.executions[result.content_hash] = result
         self._record("execution_result", {"execution_digest": result.content_hash, "status": result.status,
                                          "record": result.record.data(), "receipt": result.data()})
@@ -336,4 +343,4 @@ def verify_trace(path: Path) -> FrozenRecord:
     if not stages or stages[0] != "objective_lock":
         raise ContractError("trace lacks objective lock")
     return FrozenRecord.from_dict({"lock_digest": lock, "events": len(stages), "trace_digest": previous,
-                                  "terminal": stages[-1] in {"final_decision", "model_failure", "driver_failure", "controller_failure", "execution_terminal"}, "stages": stages})
+                                  "terminal": stages[-1] in {"final_decision", "model_failure", "driver_failure", "controller_failure", "execution_terminal", "execution_failure"}, "stages": stages})

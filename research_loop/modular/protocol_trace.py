@@ -25,12 +25,14 @@ def verify_protocol_trace(path: Path) -> FrozenRecord:
     calls, attempts, pending_call, pending_execution = [], 0, None, False
     program_sha = None
     executions, raw_audits, admissions = {}, {}, {}
-    response, response_request, final, failed = None, None, None, False
+    response, response_request, final, failed, execution_terminal = None, None, None, False, False
     for event in events[1:]:
         stage, data = event["stage"], event["data"]
         if stage == "objective_lock" or final is not None:
             raise ContractError("protocol changes its lock or continues after a final decision")
-        if failed and stage != "final_decision":
+        if execution_terminal:
+            raise ContractError("protocol continues after a terminal execution")
+        if failed and stage not in {"final_decision", "execution_terminal"}:
             raise ContractError("protocol continues after a terminal external failure")
         if stage == "model_request":
             request = data.get("request", {})
@@ -92,6 +94,23 @@ def verify_protocol_trace(path: Path) -> FrozenRecord:
             executions[execution_id] = data
             if execution.status in {"unavailable", "rejected"}:
                 failed = True
+        elif stage == "execution_failure":
+            if not pending_execution or set(data) != {"attempt", "program_sha256", "error_type"}:
+                raise ContractError("protocol execution failure lacks its pending request")
+            if (data["attempt"] != attempts or data["program_sha256"] != program_sha
+                    or not isinstance(data["error_type"], str) or not data["error_type"]):
+                raise ContractError("protocol execution failure has invalid binding")
+            pending_execution = False
+            failed = execution_terminal = True
+        elif stage == "execution_terminal":
+            if set(data) != {"execution_digest", "status"}:
+                raise ContractError("protocol execution terminal has an invalid envelope")
+            execution_id = data["execution_digest"]
+            if (not failed or pending_execution or execution_id not in executions
+                    or data["status"] not in {"unavailable", "rejected"}
+                    or executions[execution_id]["status"] != data["status"]):
+                raise ContractError("protocol execution terminal lacks its failed execution binding")
+            execution_terminal = True
         elif stage == "scientific_audit_inputs":
             if data.get("execution_digest") not in executions:
                 raise ContractError("protocol audit lacks an execution")

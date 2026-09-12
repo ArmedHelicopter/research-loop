@@ -5,7 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from research_loop.modular.benchmark_solver import run_benchmark_solve, verify_protocol_trace
+from research_loop.modular.benchmark_solver import run_benchmark_solve, verify_benchmark_solve_trace
+from research_loop.modular.protocol_trace import verify_protocol_trace
 from research_loop.modular.benchmarks import BladeAdapter, DiscoveryBenchAdapter, DockerExecutionBroker
 from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask
@@ -33,7 +34,7 @@ def model(seen: list[dict[str, object]]):
                 "program": "import csv\nwith open('/input/public_csv', newline='') as f:\n rows=list(csv.DictReader(f))\nprint(sum(float(r['x']) for r in rows)/len(rows))"})
         assert row["slot"] == "final_answer"
         assert row["execution_feedback"] and row["execution_feedback"][0]["stdout"].strip() == "2.0"
-        return FrozenRecord.from_dict({"objective_digest": FrozenRecord.from_dict(row["objective"]).content_hash, "outcome": "unknown", "evidence_ids": [],
+        return FrozenRecord.from_dict({"objective_digest": row["module_context"]["required_objective_digest"], "outcome": "unknown", "evidence_ids": [],
             "conclusion": "The fixture mean is 2.0.", "programme_complete": False})
     return callback
 
@@ -62,7 +63,9 @@ def test_public_task_model_program_docker_and_answer_are_trace_bound(tmp_path: P
     assert seen[1]["module_context"]["analysis_digest"] == result.analysis.content_hash
     assert seen[1]["module_context"]["predecessor_context"]["q31_prediction"] == "mean is discriminating"
     assert verify_trace(tmp_path / "run" / "trace.jsonl").data()["terminal"] is True
-    protocol = verify_protocol_trace(tmp_path / "run" / "trace.jsonl", prepared).data()
+    common = verify_protocol_trace(tmp_path / "run" / "trace.jsonl").data()
+    assert common["structurally_verified"] is True
+    protocol = verify_benchmark_solve_trace(tmp_path / "run" / "trace.jsonl", prepared).data()
     assert protocol["terminal"] == "final_decision" and protocol["identity"]["benchmark"] == benchmark
 
 
@@ -73,7 +76,7 @@ def test_execution_failure_still_reaches_answer_and_is_not_scientific_success(tm
     def failed_model(request: FrozenRecord) -> FrozenRecord:
         if request.data()["slot"] == "analysis_program":
             return FrozenRecord.from_dict({"analysis": "Attempt a public calculation.", "program": "raise SystemExit(7)"})
-        return FrozenRecord.from_dict({"objective_digest": FrozenRecord.from_dict(request.data()["objective"]).content_hash, "outcome": "unknown", "evidence_ids": [],
+        return FrozenRecord.from_dict({"objective_digest": request.data()["module_context"]["required_objective_digest"], "outcome": "unknown", "evidence_ids": [],
             "conclusion": "The run failed, so the answer remains unresolved.", "programme_complete": False})
     result = run_benchmark_solve(task=task(), public_inputs={"public_csv": data}, image=IMAGE,
         package_digest="fixture-package", arm=default_compatibility("fixture").arm([]),
@@ -99,6 +102,7 @@ def test_outside_allowlist_is_a_terminal_denominator_before_any_model_call(tmp_p
     assert calls == []
     assert result.status == "input_preflight_failed"
     assert verify_trace(sidecar / "trace.jsonl").data()["terminal"] is True
+    assert verify_protocol_trace(sidecar / "trace.jsonl").data()["structurally_verified"] is True
 
 
 def test_model_exception_is_a_terminal_denominator(tmp_path: Path) -> None:
@@ -112,6 +116,21 @@ def test_model_exception_is_a_terminal_denominator(tmp_path: Path) -> None:
         audit_verifier=AuditVerifier(KEYS))
     assert result.status == "analysis_model_failed" and result.analysis is None
     assert verify_trace(sidecar / "trace.jsonl").data()["terminal"] is True
+    assert verify_protocol_trace(sidecar / "trace.jsonl").data()["structurally_verified"] is True
+
+
+def test_context_build_failure_is_a_terminal_denominator(tmp_path: Path, monkeypatch) -> None:
+    public_root = tmp_path / "public"; public_root.mkdir()
+    data = public_root / "public.csv"; data.write_text("x\n1\n", encoding="utf-8")
+    sidecar = tmp_path / "run"; sidecar.mkdir()
+    def fail_context(*_args, **_kwargs): raise RuntimeError("fixture context preflight failed")
+    monkeypatch.setattr("research_loop.modular.runtime.ContextCache.get_or_build", fail_context)
+    result = run_benchmark_solve(task=task(), public_inputs={"public_csv": data}, image=IMAGE,
+        package_digest="fixture-package", arm=default_compatibility("fixture").arm([]),
+        objective=FrozenRecord.from_dict({"question": "What is the fixture mean?"}), sidecar=sidecar,
+        broker=DockerExecutionBroker([public_root, sidecar]), model=model([]), audit_verifier=AuditVerifier(KEYS))
+    assert result.status == "analysis_model_failed"
+    assert verify_protocol_trace(sidecar / "trace.jsonl").data()["structurally_verified"] is True
 
 
 def test_docker_unavailable_is_a_terminal_denominator(tmp_path: Path) -> None:
@@ -125,6 +144,21 @@ def test_docker_unavailable_is_a_terminal_denominator(tmp_path: Path) -> None:
         model=model([]), audit_verifier=AuditVerifier(KEYS))
     assert result.status == "execution_unavailable" and result.answer is None
     assert verify_trace(sidecar / "trace.jsonl").data()["terminal"] is True
+    assert verify_protocol_trace(sidecar / "trace.jsonl").data()["structurally_verified"] is True
+
+
+def test_broker_exception_closes_pending_execution_for_common_protocol(tmp_path: Path) -> None:
+    public_root = tmp_path / "public"; public_root.mkdir()
+    data = public_root / "public.csv"; data.write_text("x\n1\n", encoding="utf-8")
+    sidecar = tmp_path / "run"; sidecar.mkdir()
+    class ExplodingBroker(DockerExecutionBroker):
+        def execute(self, _request): raise RuntimeError("fixture broker failed")
+    result = run_benchmark_solve(task=task(), public_inputs={"public_csv": data}, image=IMAGE,
+        package_digest="fixture-package", arm=default_compatibility("fixture").arm([]),
+        objective=FrozenRecord.from_dict({"question": "What is the fixture mean?"}), sidecar=sidecar,
+        broker=ExplodingBroker([public_root, sidecar]), model=model([]), audit_verifier=AuditVerifier(KEYS))
+    assert result.status == "execution_setup_failed"
+    assert verify_protocol_trace(sidecar / "trace.jsonl").data()["structurally_verified"] is True
 
 
 def test_live_docker_path_when_already_available(tmp_path: Path) -> None:
