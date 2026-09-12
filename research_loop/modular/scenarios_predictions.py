@@ -2,8 +2,8 @@
 
 The runners bind only an already prepared :class:`PublicTask` and frozen public
 controls.  They exercise the real M4 prediction registry and M7 feasibility
-ports, while deliberately recording fixture ``unknown`` classifications unless
-an injected fixture evaluator supplies another classification.  They do not
+ports, while recording fixture ``unknown`` classifications independently of
+ordinary callback responses. They do not
 load data or labels and they make no claim about benchmark or scientific effect.
 """
 from __future__ import annotations
@@ -60,10 +60,9 @@ def run_prediction_scenario(
 ) -> PredictionScenarioResult:
     """Run one exact Q3/Q5 fixture through frozen M4/M7 mechanism ports.
 
-    The callback receives each actual frozen plan payload.  It may provide a
-    fixture-only complete per-branch classification mapping; absence means all
-    branches remain ``unknown``.  No observed outcome or expected winner is
-    embedded in the implementation.
+    The callback receives each actual frozen plan payload and its response is
+    retained. Ordinary callbacks have no scientific audit authority, so branch
+    classifications remain ``unknown``. No winner is embedded here.
     """
     _validate(experiment_id, variant)
     controls = _controls(task, frozen_controls)

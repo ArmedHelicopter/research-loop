@@ -11,3 +11,10 @@ Q5.2 combines M4 with M7 feasibility stages: the same-prediction request is reta
 The registry hook name for `research_loop.modular.experiments.scenario()` is `prediction_injection`. The shared registry is intentionally not edited in this worktree.
 
 These are engineering fixture traces across both public adapter forms. They demonstrate that the specified ports, controls, and callback bindings execute. They are not a benchmark run, a measurement of efficacy, evidence of scientific validity, or a result about actual model behavior.
+
+The fixture's local `frozen_before_validation` declaration is not a custody
+receipt proving when a policy was frozen. Formal validation still requires the
+independent panel lease and policy/package binding; callers cannot use this
+fixture declaration to qualify a validation search. Title comparison is
+implemented; an embedding baseline remains unmeasured. Observation IDs in these
+fixtures are declared synthetic IDs, not proof of independent source data.
