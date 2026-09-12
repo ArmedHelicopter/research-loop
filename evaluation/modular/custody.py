@@ -18,7 +18,7 @@ from typing import Any, Iterable
 from research_loop.modular.contracts import DataIdentity
 from research_loop.ontology import ContractError, canonical, digest
 
-SCHEMA = "modular-custody-v1"
+SCHEMA = "modular-custody-v2"
 DOMAINS = frozenset({"train", "validation", "quarantine"})
 
 
@@ -36,6 +36,10 @@ def _safe_name(value: str, field: str) -> str:
     return value
 
 
+def _is_digest(value: str) -> bool:
+    return re.fullmatch(r"[0-9a-f]{64}", value) is not None
+
+
 @dataclass(frozen=True)
 class InventoryItem:
     """A task-like public data unit without reading its content."""
@@ -46,7 +50,7 @@ class InventoryItem:
     official_split: str
     relative_path: str
     content_hashes: tuple[str, ...]
-    exposure: str = "unknown"  # exposed, clean, or unknown
+    exposure: str = "unknown"  # exposed or unknown; qualification is separate
 
     def __post_init__(self) -> None:
         for field in ("benchmark", "task_id", "source_group"):
@@ -54,7 +58,7 @@ class InventoryItem:
         if (not self.official_split or "\\" in self.official_split or "\x00" in self.official_split
                 or not self.relative_path or "\\" in self.relative_path or "\x00" in self.relative_path):
             raise ContractError("invalid inventory path metadata")
-        if self.exposure not in {"exposed", "clean", "unknown"}:
+        if self.exposure not in {"exposed", "unknown"}:
             raise ContractError("invalid exposure state")
         if not self.content_hashes or any(len(value) != 64 for value in self.content_hashes):
             raise ContractError("inventory item needs content hashes")
@@ -68,10 +72,6 @@ class InventoryItem:
         if set(value) != expected or not isinstance(value["content_hashes"], list):
             raise ContractError("invalid inventory item")
         return cls(**{**value, "content_hashes": tuple(value["content_hashes"])})
-
-
-def _files_with_names(directory: Path, names: set[str]) -> list[Path]:
-    return sorted((path for path in directory.iterdir() if path.is_file() and path.name in names), key=lambda path: path.name)
 
 
 def _discovery_source_group(kind: str, directory_name: str) -> str:
@@ -106,14 +106,13 @@ def discover_inventory(root: Path) -> list[InventoryItem]:
                     f"{kind}/{split}", relative, hashes, "unknown",
                 ))
     # BLADE has no train/dev/test directory split in this snapshot.  A complete
-    # public scoring triplet is known eligible; other directories remain unknown.
+    # file triplet proves only local shape, never independent provenance or
+    # non-exposure, so every BLADE directory starts quarantined.
     for directory in sorted((path for path in blade.iterdir() if path.is_dir()), key=lambda path: path.name):
-        names = {path.name for path in directory.iterdir() if path.is_file()}
         files = [path for path in directory.iterdir() if path.is_file()]
-        exposure = "clean" if {"data.csv", "info.json", "annotations.csv"} <= names else "unknown"
         result.append(InventoryItem(
             "blade", directory.name, f"blade:{directory.name}", "unsplit",
-            directory.name, tuple(sorted(_sha256(path) for path in files)), exposure,
+            directory.name, tuple(sorted(_sha256(path) for path in files)), "unknown",
         ))
     return result
 
@@ -172,9 +171,9 @@ class CustodyStore:
 
     def _load(self) -> dict[str, Any]:
         if not self.path.exists():
-            return {"schema": SCHEMA, "inventory": [], "inventory_digest": None, "split": None, "leases": {}}
+            return {"schema": SCHEMA, "inventory": [], "inventory_digest": None, "attestations": {}, "split": None, "leases": {}}
         data = json.loads(self.path.read_text(encoding="utf-8"))
-        if set(data) != {"schema", "inventory", "inventory_digest", "split", "leases"} or data["schema"] != SCHEMA:
+        if set(data) != {"schema", "inventory", "inventory_digest", "attestations", "split", "leases"} or data["schema"] != SCHEMA:
             raise ContractError("unsupported custody state")
         return data
 
@@ -197,6 +196,42 @@ class CustodyStore:
         self._save()
         return inventory_digest
 
+    def attest_independent_clean(self, *, item_ids: list[str], custodian_id: str,
+                                 source_qualification_digest: str,
+                                 exposure_qualification_digest: str,
+                                 tested_arm_ids: list[str]) -> dict[str, Any]:
+        """Record an external-custodian proof before any split is frozen.
+
+        This API does not authenticate a human or process.  The caller must use
+        an independently authenticated custody service in deployment; the fields
+        below make its proof and its separation from tested arms auditable.
+        """
+        if self.state["split"] is not None:
+            raise ContractError("cannot change exposure qualification after split")
+        _safe_name(custodian_id, "custodian id")
+        if (not item_ids or len(set(item_ids)) != len(item_ids) or not tested_arm_ids
+                or any(not _is_digest(value)
+                       for value in (source_qualification_digest, exposure_qualification_digest))
+                or custodian_id in tested_arm_ids):
+            raise ContractError("invalid independent custody attestation")
+        for arm in tested_arm_ids:
+            _safe_name(arm, "tested arm")
+        known = {f"{row['benchmark']}:{row['task_id']}" for row in self.state["inventory"]}
+        if not set(item_ids) <= known:
+            raise ContractError("attestation references unknown inventory item")
+        record = {"items": sorted(item_ids), "custodian_id": custodian_id,
+                  "source_qualification_digest": source_qualification_digest,
+                  "exposure_qualification_digest": exposure_qualification_digest,
+                  "tested_arm_ids": sorted(tested_arm_ids)}
+        record["digest"] = digest(record)
+        for item_id in record["items"]:
+            existing = self.state["attestations"].get(item_id)
+            if existing is not None and existing != record:
+                raise ContractError("custody attestation drift")
+            self.state["attestations"][item_id] = record
+        self._save()
+        return record
+
     def split(self, *, seed: str, validation_percent: int = 30) -> dict[str, Any]:
         if not self.state["inventory_digest"]:
             raise ContractError("inventory required before split")
@@ -209,7 +244,7 @@ class CustodyStore:
             gid = groups[f"{item.benchmark}:{item.task_id}"]
             if item.exposure == "exposed":
                 allocation[gid] = "train"
-            elif item.exposure == "unknown":
+            elif f"{item.benchmark}:{item.task_id}" not in self.state["attestations"]:
                 allocation.setdefault(gid, "quarantine")
             elif allocation.get(gid) != "train":
                 bucket = int(hashlib.sha256(f"{seed}:{gid}".encode()).hexdigest(), 16) % 100
@@ -217,7 +252,8 @@ class CustodyStore:
         rows = []
         for item in items:
             item_id = f"{item.benchmark}:{item.task_id}"
-            rows.append({"item": item_id, "group": groups[item_id], "domain": allocation[groups[item_id]], "official_split": item.official_split, "exposure": item.exposure})
+            qualified = item_id in self.state["attestations"]
+            rows.append({"item": item_id, "group": groups[item_id], "domain": allocation[groups[item_id]], "official_split": item.official_split, "exposure": item.exposure, "custodian_qualified": qualified})
         payload = {"seed": seed, "validation_percent": validation_percent, "inventory_digest": self.state["inventory_digest"], "rows": sorted(rows, key=lambda row: row["item"])}
         split_digest = digest(payload)
         if self.state["split"] is not None and self.state["split"]["digest"] != split_digest:
@@ -238,13 +274,16 @@ class CustodyStore:
             result.append(DataIdentity(item.benchmark, item.task_id, row["group"], self.state["inventory_digest"], item.official_split, "train"))
         return result
 
-    def qualify_stage(self, *, stage: str, panel_digest: str, group_ids: list[str]) -> dict[str, Any]:
+    def qualify_stage(self, *, stage: str, panel_digest: str, group_ids: list[str], arm_schedule: list[str]) -> dict[str, Any]:
         """Check a frozen panel before issuing its one-use validation capability."""
         if self.state["split"] is None:
             raise ContractError("split required before stage qualification")
         _safe_name(stage, "stage")
-        if len(panel_digest) != 64 or len(set(group_ids)) != len(group_ids) or not group_ids:
+        if (not _is_digest(panel_digest) or len(set(group_ids)) != len(group_ids) or not group_ids
+                or not arm_schedule or len(set(arm_schedule)) != len(arm_schedule)):
             raise ContractError("invalid stage qualification request")
+        for arm in arm_schedule:
+            _safe_name(arm, "arm")
         valid = {row["group"] for row in self.state["split"]["rows"] if row["domain"] == "validation"}
         if not set(group_ids) <= valid:
             raise ContractError("stage qualification includes non-validation group")
@@ -252,24 +291,27 @@ class CustodyStore:
         if used & set(group_ids):
             raise ContractError("validation group already allocated or consumed")
         return {"stage": stage, "panel_digest": panel_digest, "groups": sorted(group_ids),
+                "arm_schedule": list(arm_schedule), "arm_schedule_digest": digest(list(arm_schedule)),
                 "split_digest": self.state["split"]["digest"], "qualified": True}
 
-    def lease_validation(self, *, stage: str, panel_digest: str, group_ids: list[str]) -> dict[str, Any]:
+    def lease_validation(self, *, stage: str, panel_digest: str, group_ids: list[str], arm_schedule: list[str]) -> dict[str, Any]:
         if self.state["split"] is None:
             raise ContractError("split required before lease")
-        lease_id = digest({"stage": stage, "panel": panel_digest, "groups": sorted(group_ids), "split": self.state["split"]["digest"]})
+        lease_id = digest({"stage": stage, "panel": panel_digest, "groups": sorted(group_ids), "arms": arm_schedule, "split": self.state["split"]["digest"]})
         if lease_id in self.state["leases"]:
             raise ContractError("validation lease is one-use")
-        qualification = self.qualify_stage(stage=stage, panel_digest=panel_digest, group_ids=group_ids)
+        qualification = self.qualify_stage(stage=stage, panel_digest=panel_digest, group_ids=group_ids, arm_schedule=arm_schedule)
         lease = {"id": lease_id, **qualification, "status": "active"}
         self.state["leases"][lease_id] = lease
         self._save()
         return lease
 
-    def consume_validation(self, lease_id: str) -> dict[str, Any]:
+    def consume_validation(self, lease_id: str, *, panel_digest: str, arm_schedule: list[str]) -> dict[str, Any]:
         lease = self.state["leases"].get(lease_id)
         if lease is None or lease["status"] != "active":
             raise ContractError("unknown or consumed validation lease")
+        if lease["panel_digest"] != panel_digest or lease["arm_schedule"] != arm_schedule:
+            raise ContractError("lease panel or arm schedule mismatch")
         lease["status"] = "consumed"
         self._save()
         return dict(lease)
@@ -288,14 +330,44 @@ def _main() -> None:
     lease.add_argument("--stage", required=True)
     lease.add_argument("--panel-digest", required=True)
     lease.add_argument("--group", action="append", required=True)
+    lease.add_argument("--arm", action="append", required=True)
+    qualify = sub.add_parser("qualify")
+    qualify.add_argument("--stage", required=True)
+    qualify.add_argument("--panel-digest", required=True)
+    qualify.add_argument("--group", action="append", required=True)
+    qualify.add_argument("--arm", action="append", required=True)
+    consume = sub.add_parser("consume")
+    consume.add_argument("--lease", required=True)
+    consume.add_argument("--panel-digest", required=True)
+    consume.add_argument("--arm", action="append", required=True)
+    sub.add_parser("export")
+    attest = sub.add_parser("attest")
+    attest.add_argument("--item", action="append", required=True)
+    attest.add_argument("--custodian", required=True)
+    attest.add_argument("--source-proof", required=True)
+    attest.add_argument("--exposure-proof", required=True)
+    attest.add_argument("--tested-arm", action="append", required=True)
     args = parser.parse_args()
     store = CustodyStore(args.state)
     if args.command == "inventory":
         result: Any = {"inventory_digest": store.inventory(build_known_inventory(args.snapshot))}
     elif args.command == "split":
         result = store.split(seed=args.seed, validation_percent=args.validation_percent)
+    elif args.command == "export":
+        result = [identity.data() for identity in store.export_train()]
+    elif args.command == "attest":
+        result = store.attest_independent_clean(item_ids=args.item, custodian_id=args.custodian,
+                                                 source_qualification_digest=args.source_proof,
+                                                 exposure_qualification_digest=args.exposure_proof,
+                                                 tested_arm_ids=args.tested_arm)
+    elif args.command == "qualify":
+        result = store.qualify_stage(stage=args.stage, panel_digest=args.panel_digest,
+                                     group_ids=args.group, arm_schedule=args.arm)
+    elif args.command == "lease":
+        result = store.lease_validation(stage=args.stage, panel_digest=args.panel_digest,
+                                        group_ids=args.group, arm_schedule=args.arm)
     else:
-        result = store.lease_validation(stage=args.stage, panel_digest=args.panel_digest, group_ids=args.group)
+        result = store.consume_validation(args.lease, panel_digest=args.panel_digest, arm_schedule=args.arm)
     print(canonical(result))
 
 
