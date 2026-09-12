@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, Callable, Mapping
 
 from research_loop.modular.contracts import FrozenRecord, PublicTask, required_text
+from research_loop.modular.modules.predictions import PredictionRegistry, freeze_shared_experiment
 from research_loop.modular.modules.review import ReviewEngine
 from research_loop.ontology import ContractError
 
@@ -63,26 +64,32 @@ def run_review_scenario(
     _validate(experiment_id, variant)
     controls = _controls(task, frozen_controls)
     roles, costs, visibility, case = _design(experiment_id, variant)
+    call_plan = _freeze_call_plan(experiment_id, variant, roles, costs)
     identities = _identities(roles, reviewer_identities, heterogeneous=(experiment_id == "Q4.5" and variant == "heterogeneous"))
     engine = ReviewEngine(task.identity, storage_path=review_log_path)
     session = engine.open(task_binding=task.content_hash, evidence_snapshot=controls["evidence_digest"],
-                          roles=roles, budget_units=sum(costs.values()))
+                          roles=roles, budget_units=sum(item["fixture_units"] for item in call_plan))
     payloads: list[FrozenRecord] = []
     responses: list[FrozenRecord] = []
+    prediction_candidates: list[Mapping[str, Any]] = []
     submissions = []
     events: list[dict[str, Any]] = [{"event": "fixture_start", "fixture_only": True,
         "task_digest": task.content_hash, "evidence_digest": controls["evidence_digest"],
         "budget_digest": controls["budget_digest"], "controls_predeclared": True,
-        "planned_call_count": len(roles), "planned_cost_units": sum(costs.values())}]
+        "callback_plan": call_plan, "planned_call_count": len(call_plan),
+        "planned_fixture_units": sum(item["fixture_units"] for item in call_plan),
+        "real_token_matching_claimed": False}]
 
     for index, role in enumerate(roles):
         prior = submissions[0].data() if visibility == "sequential" and index else None
+        allocation = _reserve(events, call_plan, "initial", role["role_id"])
         payload = _payload(task, controls, session.review_id, role, identities[role["role_id"]],
                            invocation="initial", prior_visible_submission=prior, case=case)
-        response = _call(review_callback, payload, case)
+        response, candidate = _call(review_callback, payload, case)
+        if candidate is not None: prediction_candidates.append(candidate)
         submission = engine.submit(session.review_id, role_id=role["role_id"],
                                    reviewer_id=identities[role["role_id"]]["reviewer_id"],
-                                   response=response.data(), cost_units=costs[role["role_id"]])
+                                   response=response.data(), cost_units=allocation["fixture_units"])
         payloads.append(payload); responses.append(response); submissions.append(submission)
     revealed = engine.reveal(session.review_id)
     events.append({"event": "sealed_barrier_revealed", "review_id": session.review_id,
@@ -93,9 +100,10 @@ def run_review_scenario(
     if experiment_id in {"Q4.3", "Q4.5"}:
         for role in roles:
             role_id = role["role_id"]
+            _reserve(events, call_plan, "revision", role_id)
             payload = _payload(task, controls, session.review_id, role, identities[role_id], invocation="revision",
                                prior_visible_submission=[item.data() for item in revealed], case=case)
-            response = _call(review_callback, payload, case)
+            response, _ = _call(review_callback, payload, case)
             revision = engine.revise_after_reveal(session.review_id, role_id=role_id,
                                                   reviewer_id=identities[role_id]["reviewer_id"], response=response.data())
             payloads.append(payload); responses.append(response); revisions.append(revision)
@@ -107,11 +115,16 @@ def run_review_scenario(
                                   scorer_receipt={"trusted_scorer": "fixture-oracle-v1", "verified": True})
     events.append({"event": "independent_fixture_oracle", "score_receipt": receipt.data(), "metrics": metrics,
                    "oracle_not_exposed_to_callback": True})
+    m4 = _freeze_callback_predictions(task, experiment_id, prediction_candidates, call_plan)
+    events.append({"event": "callback_prediction_extraction", **m4})
     record = FrozenRecord.from_dict({"fixture_only": True, "experiment_id": experiment_id, "variant": variant,
         "task_digest": task.content_hash, "controls_digest": frozen_controls.content_hash,
-        "review_id": session.review_id, "budget": {"units": sum(costs.values()), "initial_calls": len(roles),
-        "revision_calls": len(revisions)}, "module_switches": {"M5": "on", "M4": "off"},
-        "module_coverage": "Q4.1 exercises its M5 review seam here; M4 prediction wiring is outside this scenario runner",
+        "review_id": session.review_id, "budget": {"fixture_units": sum(item["fixture_units"] for item in call_plan),
+        "initial_submission_units": sum(item["fixture_units"] for item in call_plan if item["phase"] == "initial"),
+        "revision_callback_units": sum(item["fixture_units"] for item in call_plan if item["phase"] == "revision"),
+        "initial_calls": len(roles), "revision_calls": len(revisions), "real_token_matching_claimed": False},
+        "callback_plan": call_plan, "callback_reservations": [item for item in events if item["event"] == "callback_reserved"],
+        "module_switches": {"M5": "on", "M4": m4["status"]}, "m4": m4,
         "callback_payload_digests": [item.content_hash for item in payloads],
         "callback_response_digests": [item.content_hash for item in responses], "metrics": metrics,
         "limitation": "fixture-only mechanism trace; no benchmark efficacy, provider independence, or scientific validity claim"})
@@ -195,11 +208,67 @@ def _payload(task, controls, review_id, role, identity, *, invocation, prior_vis
         "visibility_notice": "independent sealed submission" if prior_visible_submission is None else "prior submission was intentionally visible"})
 
 
-def _call(callback, payload, case) -> FrozenRecord:
+def _freeze_call_plan(experiment_id: str, variant: str, roles, costs) -> list[dict[str, Any]]:
+    """Declare every callback and fixture unit before any callback runs."""
+    needs_revision = experiment_id in {"Q4.3", "Q4.5"}
+    plan = []
+    for role in roles:
+        units = costs[role["role_id"]]
+        # Q4.5 comparisons use a four-unit allocation despite one versus two
+        # reviewers.  This is declared accounting, never a token-cost claim.
+        if experiment_id == "Q4.5" and variant != "heterogeneous": units = 2
+        plan.append({"phase": "initial", "role_id": role["role_id"], "fixture_units": units})
+    if needs_revision:
+        for role in roles:
+            units = costs[role["role_id"]]
+            if experiment_id == "Q4.5" and variant != "heterogeneous": units = 2
+            plan.append({"phase": "revision", "role_id": role["role_id"], "fixture_units": units})
+    return plan
+
+
+def _reserve(events: list[dict[str, Any]], plan: list[dict[str, Any]], phase: str, role_id: str) -> dict[str, Any]:
+    matches = [item for item in plan if item["phase"] == phase and item["role_id"] == role_id]
+    if len(matches) != 1: raise ContractError("callback is absent from the frozen allocation plan")
+    allocation = matches[0]
+    if any(item.get("phase") == phase and item.get("role_id") == role_id for item in events if item["event"] == "callback_reserved"):
+        raise ContractError("callback allocation was already reserved")
+    events.append({"event": "callback_reserved", **allocation, "reserved_before_callback": True})
+    return allocation
+
+
+def _call(callback, payload, case) -> tuple[FrozenRecord, Mapping[str, Any] | None]:
     value = callback(payload) if callback else {"assessment": "unknown", "evidence_refs": [case["observations"][0]["evidence_id"]], "counterexamples": [], "uncertainty": "fixture default; no model invoked"}
     if isinstance(value, FrozenRecord): value = value.data()
     if not isinstance(value, Mapping): raise ContractError("review callback must return a response mapping")
-    return FrozenRecord.from_dict(dict(value))
+    candidate = None
+    if set(value) == {"review", "prediction_candidate"}:
+        candidate = value["prediction_candidate"]
+        value = value["review"]
+        if candidate is not None and not isinstance(candidate, Mapping):
+            raise ContractError("prediction candidate must be a mapping or null")
+    return FrozenRecord.from_dict(dict(value)), dict(candidate) if candidate is not None else None
+
+
+def _freeze_callback_predictions(task: PublicTask, experiment_id: str,
+                                 candidates: list[Mapping[str, Any]], call_plan: list[dict[str, Any]]) -> dict[str, Any]:
+    """Use only callback-provided M4 branches; never fill in missing structure."""
+    if experiment_id != "Q4.1":
+        return {"status": "off", "reason": "Q4.1 is the only M4/M5 review scenario"}
+    if len(candidates) < 2:
+        return {"status": "rejected", "reason": "fewer than two callback prediction candidates", "candidate_count": len(candidates)}
+    try:
+        plan = freeze_shared_experiment(PredictionRegistry(task.identity), _question(task), candidates,
+                                        budget_units=sum(item["fixture_units"] for item in call_plan))
+    except ContractError as exc:
+        return {"status": "rejected", "reason": str(exc), "candidate_count": len(candidates)}
+    return {"status": "on", "plan_id": plan.plan_id, "plan_digest": plan.payload.content_hash,
+            "candidate_count": len(candidates), "budget_units": plan.budget_units,
+            "outcome": "unknown", "limitation": "fixture verifies declared prediction structure only"}
+
+
+def _question(task: PublicTask) -> str:
+    payload = task.payload.data()
+    return str(payload.get("research_question", payload.get("question", task.identity.task_id)))
 
 
 def _fixture_oracle(case, submissions, revisions):

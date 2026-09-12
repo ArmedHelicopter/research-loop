@@ -34,6 +34,18 @@ def responder(payload):
     return {"assessment": assessment, "evidence_refs": refs, "counterexamples": [], "uncertainty": "deterministic engineering callback"}
 
 
+def prediction_responder(payload):
+    review = responder(payload)
+    role = payload.data()["role"]["role_id"]
+    directions = {"sample_1": "positive", "sample_2": "negative", "sample_3": "null", "sample_4": "positive",
+                  "mechanism": "positive", "alternative": "negative", "measurement": "null", "experiment": "positive"}
+    return {"review": review, "prediction_candidate": {"hypothesis_id": f"candidate-{role}", "mechanism_key": f"mechanism-{role}",
+        "mechanism": f"callback supplied mechanism {role}", "intervention": "fixed-public-intervention",
+        "elimination_condition": "callback prediction fails", "predictions": [{"prediction_id": f"prediction-{role}",
+        "discriminator_id": "shared-public-discriminator", "observable": "public fixture outcome", "direction": directions[role],
+        "value_range": None, "failure_condition": f"declared {directions[role]} outcome is absent"}]}}
+
+
 @pytest.mark.parametrize("adapter", ["blade", "discovery"])
 @pytest.mark.parametrize(("experiment_id", "variant"), [
     ("Q4.1", "single"), ("Q4.1", "independent_samples"), ("Q4.1", "roles"),
@@ -56,10 +68,37 @@ def test_q41_has_equal_accounted_budget_but_actual_distinct_call_counts():
     single = run_review_scenario("Q4.1", "single", task=public_task, frozen_controls=controls(public_task), review_callback=responder)
     repeated = run_review_scenario("Q4.1", "independent_samples", task=public_task, frozen_controls=controls(public_task), review_callback=responder)
     roles = run_review_scenario("Q4.1", "roles", task=public_task, frozen_controls=controls(public_task), review_callback=responder)
-    assert single.record.data()["budget"] == {"units": 4, "initial_calls": 1, "revision_calls": 0}
-    assert repeated.record.data()["budget"] == {"units": 4, "initial_calls": 4, "revision_calls": 0}
-    assert roles.record.data()["budget"] == {"units": 4, "initial_calls": 4, "revision_calls": 0}
+    assert single.record.data()["budget"]["fixture_units"] == 4
+    assert repeated.record.data()["budget"]["fixture_units"] == 4
+    assert roles.record.data()["budget"]["fixture_units"] == 4
+    assert single.record.data()["budget"]["initial_calls"] == 1
+    assert repeated.record.data()["budget"]["initial_calls"] == roles.record.data()["budget"]["initial_calls"] == 4
     assert len({item.data()["role"]["question"] for item in roles.callback_payloads}) == 4
+
+
+def test_q41_only_freezes_m4_from_real_callback_candidates_without_synthesizing_missing_branches():
+    public_task = task("blade")
+    no_candidates = run_review_scenario("Q4.1", "single", task=public_task, frozen_controls=controls(public_task), review_callback=responder)
+    result = run_review_scenario("Q4.1", "roles", task=public_task, frozen_controls=controls(public_task), review_callback=prediction_responder)
+    assert no_candidates.record.data()["m4"]["status"] == "rejected"
+    assert result.record.data()["m4"]["status"] == "on"
+    assert result.record.data()["m4"]["outcome"] == "unknown"
+
+
+def test_revision_callbacks_are_preallocated_and_q45_matches_fixture_units_not_tokens():
+    public_task = task("blade")
+    right_wrong = run_review_scenario("Q4.5", "right_to_wrong", task=public_task, frozen_controls=controls(public_task), review_callback=responder)
+    identities = {
+        "reviewer_one": {"reviewer_id": "local-a", "model_id": "model-a", "provider": "local-host-a", "provenance": "caller-supplied receipt A"},
+        "reviewer_two": {"reviewer_id": "local-b", "model_id": "model-b", "provider": "local-host-b", "provenance": "caller-supplied receipt B"},
+    }
+    heterogeneous = run_review_scenario("Q4.5", "heterogeneous", task=public_task, frozen_controls=controls(public_task), review_callback=responder, reviewer_identities=identities)
+    for result in (right_wrong, heterogeneous):
+        record = result.record.data()
+        assert len(record["callback_reservations"]) == len(result.callback_payloads)
+        assert all(row["reserved_before_callback"] for row in record["callback_reservations"])
+        assert record["budget"]["fixture_units"] == 4
+        assert record["budget"]["real_token_matching_claimed"] is False
 
 
 def test_q43_sealed_and_sequential_have_actual_different_visibility_and_revisions(tmp_path):
