@@ -14,7 +14,7 @@ from typing import Callable, Mapping
 
 from research_loop.modular.benchmarks.execution import ArtifactReceipt, DockerExecutionBroker, ExecutionReceipt
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask, required_text
-from research_loop.modular.runtime import AuditVerifier, RunSession
+from research_loop.modular.runtime import AuditVerifier, RunSession, verify_trace
 from research_loop.modular.workflow import ModularWorkflow
 from research_loop.ontology import ContractError
 
@@ -75,30 +75,42 @@ def run_benchmark_solve(*, task: PublicTask, public_inputs: Mapping[str, Path], 
         raise ContractError("benchmark solve timeout must be between 1 and 120 seconds")
     if predecessor_context is not None and not isinstance(predecessor_context, FrozenRecord):
         raise ContractError("predecessor context must be immutable")
-    artifacts = _public_artifacts(broker, task.identity, public_inputs)
     session = RunSession(task, package_digest=required_text(package_digest, "package digest"), arm=arm,
                          objective=objective, slots=(_ANALYSIS_SLOT, _FINAL_SLOT), execution_limit=1,
                          sidecar=sidecar, verifier=audit_verifier, required_audit=("measurement",))
+    try:
+        artifacts = _public_artifacts(broker, task.identity, public_inputs)
+    except Exception as exc:
+        session.controller_failure(driver_id="benchmark_solver", error_type=type(exc).__name__)
+        return BenchmarkSolveResult(session, (), None, None, None, None, "input_preflight_failed")
     workflow = ModularWorkflow(session)
     common = {
         "solver": "public-benchmark-solve-v1",
         "public_artifacts": [artifact.record.data() for artifact in artifacts],
         "predecessor_context": predecessor_context.data() if predecessor_context else None,
     }
-    analysis = workflow.invoke_model(
-        _ANALYSIS_SLOT, model,
-        instruction=("Write a Python analysis program for the supplied public task and only the named /input files. "
-                     "Return a JSON object with exactly analysis and program. The program must print concise, "
-                     "task-relevant observations to stdout. It cannot determine scientific validity or a score."),
-        module_context=FrozenRecord.from_dict(common),
-    )
+    try:
+        analysis = workflow.invoke_model(
+            _ANALYSIS_SLOT, model,
+            instruction=("Write a Python analysis program for the supplied public task and only the named /input files. "
+                         "Return a JSON object with exactly analysis and program. The program must print concise, "
+                         "task-relevant observations to stdout. It cannot determine scientific validity or a score."),
+            module_context=FrozenRecord.from_dict(common),
+        )
+    except Exception:
+        # RunSession has already written a terminal model_failure event.
+        return BenchmarkSolveResult(session, artifacts, None, None, None, None, "analysis_model_failed")
     try:
         program = _program_from(analysis)
     except ContractError as exc:
         session.driver_failure(driver_id="benchmark_solver", response=analysis, error_type=type(exc).__name__)
         return BenchmarkSolveResult(session, artifacts, analysis, None, None, None, "analysis_rejected")
-    execution = session.execute(program, broker=broker, image=image, inputs=public_inputs,
-                                timeout_seconds=timeout_seconds)
+    try:
+        execution = session.execute(program, broker=broker, image=image, inputs=public_inputs,
+                                    timeout_seconds=timeout_seconds)
+    except Exception as exc:
+        session.controller_failure(driver_id="benchmark_solver", error_type=type(exc).__name__)
+        return BenchmarkSolveResult(session, artifacts, analysis, None, None, None, "execution_setup_failed")
     if execution.status in {"unavailable", "rejected"}:
         # RunSession is terminal for infrastructure/untrusted-mount failures;
         # preserve the attempt as a denominator row without inventing an answer.
@@ -114,26 +126,24 @@ def run_benchmark_solve(*, task: PublicTask, public_inputs: Mapping[str, Path], 
         "execution_status": execution.status,
         "execution_input_artifacts": execution.record.data()["input_artifacts"],
     }
-    answer = workflow.invoke_model(
-        _FINAL_SLOT, model,
-        instruction=("Give the benchmark answer using only the public task, prior immutable context, and the "
-                     "recorded execution feedback. Return exactly answer and rationale. Treat a failed or timed "
-                     "out execution as unresolved; do not claim scientific validation or programme completion."),
-        module_context=FrozenRecord.from_dict(final_context),
-    )
     try:
-        answer_text = _answer_from(answer)
+        answer = workflow.invoke_model(
+            _FINAL_SLOT, model,
+            instruction=("Give the benchmark answer using only the public task, prior immutable context, and the "
+                         "recorded execution feedback. Return exactly objective_digest, outcome, evidence_ids, "
+                         "conclusion, and programme_complete. Copy objective_digest exactly. Set outcome to unknown, "
+                         "evidence_ids to [], programme_complete to false, and put the actual answer in conclusion. "
+                         "A failed or timed out execution remains unresolved and is never scientific validation."),
+            module_context=FrozenRecord.from_dict(final_context),
+        )
+    except Exception:
+        return BenchmarkSolveResult(session, artifacts, analysis, execution, None, None, "answer_model_failed")
+    try:
+        _candidate_from(answer, objective)
     except ContractError as exc:
         session.driver_failure(driver_id="benchmark_solver", response=answer, error_type=type(exc).__name__)
         return BenchmarkSolveResult(session, artifacts, analysis, execution, answer, None, "answer_rejected")
-    candidate = FrozenRecord.from_dict({
-        "objective_digest": objective.content_hash,
-        "outcome": "unknown",
-        "evidence_ids": [],
-        "conclusion": answer_text,
-        "programme_complete": False,
-    })
-    decision = session.finish(candidate)
+    decision = session.finish(answer)
     return BenchmarkSolveResult(session, artifacts, analysis, execution, answer, decision,
                                 "execution_" + execution.status)
 
@@ -157,19 +167,41 @@ def _program_from(response: FrozenRecord) -> str:
     return program
 
 
-def _answer_from(response: FrozenRecord) -> str:
+def _candidate_from(response: FrozenRecord, objective: FrozenRecord) -> None:
     body = response.data()
-    if set(body) != {"answer", "rationale"}:
-        raise ContractError("final answer response must contain exactly answer and rationale")
-    answer, rationale = body["answer"], body["rationale"]
-    if not isinstance(answer, str) or not answer.strip() or len(answer.encode("utf-8")) > _MAX_TEXT_BYTES:
-        raise ContractError("benchmark answer must be bounded nonempty text")
-    if not isinstance(rationale, str) or not rationale.strip() or len(rationale.encode("utf-8")) > _MAX_TEXT_BYTES:
-        raise ContractError("benchmark rationale must be bounded nonempty text")
-    return answer
+    if set(body) != {"objective_digest", "outcome", "evidence_ids", "conclusion", "programme_complete"}:
+        raise ContractError("final answer response must use the exact candidate protocol")
+    if body["objective_digest"] != objective.content_hash or body["outcome"] != "unknown" or body["evidence_ids"] != [] or body["programme_complete"] is not False:
+        raise ContractError("final answer candidate drifts from the train-only protocol")
+    if not isinstance(body["conclusion"], str) or not body["conclusion"].strip() or len(body["conclusion"].encode("utf-8")) > _MAX_TEXT_BYTES:
+        raise ContractError("benchmark conclusion must be bounded nonempty text")
 
 
 def _execution_inputs_match(artifacts: tuple[ArtifactReceipt, ...], execution: ExecutionReceipt) -> bool:
     actual = execution.record.data().get("input_artifacts")
     expected = {artifact.artifact_id: artifact.record.data() for artifact in artifacts}
     return actual == expected
+
+
+def verify_protocol_trace(path: Path, task: PublicTask) -> FrozenRecord:
+    """Verify solve-specific ordering and source-task binding after hash replay."""
+    if not isinstance(task, PublicTask):
+        raise ContractError("protocol trace needs the prepared source task")
+    base = verify_trace(path)
+    events = [FrozenRecord(line).data() for line in path.read_text(encoding="utf-8").splitlines()]
+    lock = events[0]["data"]
+    if lock.get("task_digest") != task.content_hash or lock.get("identity") != task.identity.data():
+        raise ContractError("protocol trace source task binding drifted")
+    stages = [event["stage"] for event in events]
+    terminal = stages[-1]
+    if terminal == "final_decision":
+        expected = ["objective_lock", "model_request", "model_response", "execution_request", "execution_result", "model_request", "model_response", "final_decision"]
+        if stages != expected:
+            raise ContractError("successful solve protocol has an unexpected stage schedule")
+        final_response = FrozenRecord.from_dict(events[-2]["data"]["response"])
+        terminal_data = events[-1]["data"]
+        if terminal_data.get("candidate_digest") != final_response.content_hash or terminal_data.get("identity") != task.identity.data():
+            raise ContractError("terminal decision does not bind the final model candidate")
+    return FrozenRecord.from_dict({"schema": "benchmark-solve-protocol-trace-v1", "task_digest": task.content_hash,
+        "identity": task.identity.data(), "trace_digest": base.data()["trace_digest"], "terminal": terminal,
+        "stages": stages})

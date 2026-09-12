@@ -228,6 +228,7 @@ class RunSession:
         self._record("execution_result", {"execution_digest": result.content_hash, "status": result.status,
                                          "record": result.record.data(), "receipt": result.data()})
         if result.status in {"unavailable", "rejected"}:
+            self._record("execution_terminal", {"execution_digest": result.content_hash, "status": result.status})
             self._terminal = True
         return result
 
@@ -335,4 +336,4 @@ def verify_trace(path: Path) -> FrozenRecord:
     if not stages or stages[0] != "objective_lock":
         raise ContractError("trace lacks objective lock")
     return FrozenRecord.from_dict({"lock_digest": lock, "events": len(stages), "trace_digest": previous,
-                                  "terminal": stages[-1] in {"final_decision", "model_failure", "driver_failure", "controller_failure"}, "stages": stages})
+                                  "terminal": stages[-1] in {"final_decision", "model_failure", "driver_failure", "controller_failure", "execution_terminal"}, "stages": stages})

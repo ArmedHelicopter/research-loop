@@ -16,10 +16,7 @@ from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.ontology import ContractError, digest
 
 
-# A Docker reference may retain a locally meaningful tag while pinning the
-# executable content with a digest.  It is still one argv element, never shell
-# input; the digest remains mandatory.
-_IMAGE = re.compile(r"^[a-z0-9][a-z0-9._/-]*(?::[a-z0-9][a-z0-9._-]{0,127})?@sha256:[0-9a-f]{64}$")
+_IMAGE = re.compile(r"^[a-z0-9][a-z0-9._/-]*@sha256:[0-9a-f]{64}$")
 _INPUT = re.compile(r"^[A-Za-z][A-Za-z0-9_-]{0,63}$")
 _DOCKER_INFRASTRUCTURE_ERRORS = (
     "cannot connect to the docker daemon", "docker daemon", "error during connect",
