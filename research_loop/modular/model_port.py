@@ -81,7 +81,7 @@ class CodexModelPort:
     def __init__(self, executable: Path | str, work_root: Path, *, model: str = "gpt-5.6-luna",
                  effort: str = "low", max_calls: int, max_tokens: int,
                  schema_by_slot: Mapping[str, Mapping[str, Any]], timeout_seconds: int = 180,
-                 process_runner: ProcessRunner | None = None) -> None:
+                 process_runner: ProcessRunner | None = None, context_probe_runner: ProcessRunner | None = None) -> None:
         if not isinstance(model, str) or not model or not isinstance(effort, str) or not effort:
             raise ContractError("model and effort must be nonempty")
         if type(max_calls) is not int or max_calls < 1 or type(max_tokens) is not int or max_tokens < 1:
@@ -104,6 +104,7 @@ class CodexModelPort:
         self.max_calls, self.max_tokens = max_calls, max_tokens
         self.schemas = json.loads(canonical(schema_by_slot))
         self.timeout_seconds, self.runner = timeout_seconds, process_runner or subprocess.run
+        self.context_probe_runner = context_probe_runner or subprocess.run
         self.root.mkdir(parents=True, exist_ok=True)
         self.call_root = self.root / "calls"
         self.call_root.mkdir(exist_ok=True)
@@ -118,7 +119,7 @@ class CodexModelPort:
             if type(self.ledger.get("usage_incomplete")) is not bool or self.ledger["usage_incomplete"] or any(call.get("status") != "succeeded" for call in self.ledger.get("calls", [])):
                 raise ContractError("existing model ledger has an incomplete call; inspect it instead of continuing")
         else:
-            self.ledger = {"config": config, "calls": [], "tokens": 0, "usage_incomplete": False}
+            self.ledger = {"config": config, "calls": [], "context_probes": [], "tokens": 0, "usage_incomplete": False}
             _atomic(self.ledger_path, self.ledger)
 
     def __call__(self, request: FrozenRecord) -> FrozenRecord:
@@ -130,6 +131,7 @@ class CodexModelPort:
             raise ContractError("unexpected RunSession model request")
         if self.ledger["usage_incomplete"] or len(self.ledger["calls"]) >= self.max_calls or self.ledger["tokens"] >= self.max_tokens:
             raise ContractError("model budget exhausted or usage incomplete")
+        self._require_no_skill_context()
         call_id = len(self.ledger["calls"]) + 1
         call_dir = self.call_root / f"{call_id:04d}-{body['slot']}"
         call_dir.mkdir()
@@ -196,6 +198,31 @@ class CodexModelPort:
         reservation.update({"status": "succeeded", "output_hash": response.content_hash})
         _atomic(self.ledger_path, self.ledger)
         return response
+
+    def _require_no_skill_context(self) -> None:
+        """Fail closed before paid I/O if the installed CLI exposes skills."""
+        isolated_home = self.root / "context-probe-home"
+        isolated_home.mkdir(exist_ok=True)
+        argv = [self.executable, "debug", "prompt-input", "--disable", "plugins", "--disable", "skill_search", "--disable", "memories", "--enable", "skip_host_skill_discovery", "public context probe"]
+        environment = dict(os.environ)
+        environment["CODEX_HOME"] = str(isolated_home)
+        try:
+            result = self.context_probe_runner(argv, text=True, encoding="utf-8", capture_output=True, timeout=30, env=environment)
+            raw = (result.stdout or "").encode("utf-8")
+            prompt_input = json.loads(raw.decode("utf-8"))
+            rendered = canonical(prompt_input).lower()
+            skills_present = any(marker in rendered for marker in ("<skills", "skills_instructions", "skill roots", "available skills"))
+            accepted = result.returncode == 0 and isinstance(prompt_input, list) and not skills_present
+        except Exception as exc:
+            probe = {"status": "failed", "error_type": type(exc).__name__}
+            self.ledger.setdefault("context_probes", []).append(probe)
+            _atomic(self.ledger_path, self.ledger)
+            raise ContractError("cannot verify no-skills model context") from exc
+        probe = {"status": "accepted" if accepted else "rejected", "prompt_hash": _sha(raw), "skill_context_present": skills_present}
+        self.ledger.setdefault("context_probes", []).append(probe)
+        _atomic(self.ledger_path, self.ledger)
+        if not accepted:
+            raise ContractError("Codex prompt context contains skills; paid call refused")
 
 
 def _events(stream: str) -> list[Mapping[str, Any]]:

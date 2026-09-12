@@ -25,8 +25,11 @@ The port invokes the installed CLI with `exec --ignore-user-config
 tool, browser, plugin, hook, app, skill, image and goal features and sets
 `project_doc_max_bytes=0`, disabled web search, memories, skill search, and
 host-skill discovery (`--enable skip_host_skill_discovery`). A skill-context
-error event seals the call as untrusted; this is a detection gate, not proof
-that the installed CLI omitted every global skill description. The
+error event seals the call as untrusted. Before every paid `exec`, the port also
+runs the installed CLI's non-billed `debug prompt-input` with an empty task-local
+`CODEX_HOME` and the same skill/plugin/memory feature flags. It stores only a
+hash and boolean result, then refuses the paid process if the rendered context
+contains a skills block. This is a fail-closed probe, not an OS sandbox. The
 arguments were checked against `codex exec --help` on Codex CLI 0.153.4.
 
 `max_tokens` is enforced against recorded cumulative provider usage after each
