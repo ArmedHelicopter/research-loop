@@ -1,0 +1,13 @@
+# Q2.2 and Q6.4 semantic-scoring fixtures
+
+`research_loop.modular.semantics` supplies a new, frozen `completion-semantics-v2` contract. It is a typed semantic-judge port, not a replacement for an independent scorer service. It has no keyword or regular-expression completion detector and never imports the historical experiment scorers. The only way to classify an answer is an injected judge response with typed polarity, scope, public evidence references, abstention, rationale, and separately recorded alternative analysis.
+
+The judge request contains a prepared `PublicTask`, the frozen semantics record, raw answer, and public evidence. It contains no expected label, fixture oracle, arm, score, label path, or validation material. Raw answers and the exact judge responses are frozen and retained. Invalid types, absent or non-public evidence references, malformed alternative analysis, and inconsistent abstention fail closed. An `unknown` response must abstain and cannot claim scope or evidence.
+
+Programme completion is scored only when the judge reports an affirmed programme-scope claim. Negation, quotation, counterfactual language, local completion, and abstention do not become programme completion. Reference consistency and reasonable alternative analysis are separate output fields; neither is silently used as a substitute completion score.
+
+`research_loop.modular.scenarios_scoring.run_scoring_scenario()` runs all registered Q2.2 and Q6.4 variants against one public task plus closed frozen controls. Q2.2 provides distinct minimal answer material for affirmation, negation, quotation, counterfactual, and local completion. Q6.4 provides distinct negation, quotation, and alternative-analysis material to both A and B; both arms bind the exact same newly frozen v2 scorer digest before either judgement is requested.
+
+Q6.4 never mutates a historical scorer or result. Its record identifies `legacy-unmodified` only as diagnostic provenance. Any re-score of earlier material after a repair is diagnostic, never validation evidence or an optimization signal. The fixtures do not read historical results, labels, or validation data.
+
+These are controlled engineering fixtures across both public benchmark adapters. They verify closed requests, response retention, semantic contracts, and version symmetry. They do not provide independent annotations, scorer calibration, an efficacy estimate, scientific validation, or a completed experiment.
