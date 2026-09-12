@@ -15,16 +15,19 @@ from ._public import object_only, public_text, reject_private_names
 
 
 class DiscoveryBenchAdapter:
-    benchmark = "discoverybench_synthetic"
+    benchmark = "discoverybench"
 
     def prepare(self, identity: DataIdentity, metadata: Mapping[str, Any]) -> PublicTask:
         if identity.benchmark != self.benchmark:
             raise ContractError("DiscoveryBench identity benchmark mismatch")
-        raw = object_only(metadata, {"task_id", "question", "difficulty", "dataset"}, "DiscoveryBench metadata")
+        raw = object_only(metadata, {"task_id", "question", "difficulty", "dataset", "source_kind"}, "DiscoveryBench metadata")
         if raw.get("task_id") != identity.task_id:
             raise ContractError("DiscoveryBench task identity mismatch")
         question = public_text(raw.get("question"), "question")
         difficulty = public_text(raw.get("difficulty"), "difficulty", optional=True)
+        source_kind = raw.get("source_kind")
+        if source_kind not in {"synthetic", "real"}:
+            raise ContractError("DiscoveryBench source_kind must explicitly be synthetic or real")
         datasets = raw.get("dataset")
         if not isinstance(datasets, list) or not datasets:
             raise ContractError("DiscoveryBench dataset must be a nonempty public descriptor list")
@@ -42,6 +45,7 @@ class DiscoveryBenchAdapter:
                 public_columns.append({"name": public_text(col.get("name"), "column.name"),
                                        "description": public_text(col.get("description"), "column.description", optional=True)})
             prepared.append({"name": name, "description": description, "columns": public_columns})
-        payload = {"task_id": identity.task_id, "question": question, "difficulty": difficulty, "dataset": prepared}
+        payload = {"task_id": identity.task_id, "question": question, "difficulty": difficulty,
+                   "source_kind": source_kind, "dataset": prepared}
         reject_private_names(payload)
         return PublicTask.create(identity, payload)

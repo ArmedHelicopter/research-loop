@@ -16,9 +16,9 @@ def identity(benchmark: str, task_id: str = "task-1") -> DataIdentity:
 
 
 def test_public_adapters_create_immutable_solver_envelopes() -> None:
-    discovery = DiscoveryBenchAdapter().prepare(identity("discoverybench_synthetic"), {
+    discovery = DiscoveryBenchAdapter().prepare(identity("discoverybench"), {
         "task_id": "task-1", "question": "What is associated with x?", "difficulty": "easy",
-        "dataset": [{"name": "data.csv", "description": "public data", "columns": [{"name": "x", "description": "input"}]}],
+        "source_kind": "synthetic", "dataset": [{"name": "data.csv", "description": "public data", "columns": [{"name": "x", "description": "input"}]}],
     })
     blade = BladeAdapter().prepare(identity("blade"), {
         "task_id": "task-1", "dataset_id": "public-set", "research_question": "Estimate the association.",
@@ -26,7 +26,8 @@ def test_public_adapters_create_immutable_solver_envelopes() -> None:
     })
     assert discovery.payload.data()["question"] == "What is associated with x?"
     assert blade.payload.data()["dataset_id"] == "public-set"
-    assert discovery.content_hash == DiscoveryBenchAdapter().prepare(identity("discoverybench_synthetic"), discovery.payload.data()).content_hash
+    assert discovery.payload.data()["source_kind"] == "synthetic"
+    assert discovery.content_hash == DiscoveryBenchAdapter().prepare(identity("discoverybench"), discovery.payload.data()).content_hash
 
 
 def test_adapters_reject_reference_or_gold_fields() -> None:
@@ -36,8 +37,12 @@ def test_adapters_reject_reference_or_gold_fields() -> None:
             "task_instructions": "x", "reference": "hidden",
         })
     with pytest.raises(ContractError):
-        DiscoveryBenchAdapter().prepare(identity("discoverybench_synthetic"), {
-            "task_id": "task-1", "question": "q", "dataset": [{"name": "x", "gold_hint": "no"}],
+        DiscoveryBenchAdapter().prepare(identity("discoverybench"), {
+            "task_id": "task-1", "question": "q", "source_kind": "synthetic", "dataset": [{"name": "x", "gold_hint": "no"}],
+        })
+    with pytest.raises(ContractError):
+        DiscoveryBenchAdapter().prepare(identity("discoverybench"), {
+            "task_id": "task-1", "question": "q", "dataset": [{"name": "x", "columns": []}],
         })
 
 
@@ -50,8 +55,8 @@ def test_adapter_to_broker_entrypoint_builds_restricted_docker_command(tmp_path:
     program.write_text("print('ok')", encoding="utf-8")
     data.write_text("x\n1\n", encoding="utf-8")
     metadata.write_text("{}", encoding="utf-8")
-    task = DiscoveryBenchAdapter().prepare(identity("discoverybench_synthetic"), {
-        "task_id": "task-1", "question": "q", "dataset": [{"name": "data.csv", "columns": []}],
+    task = DiscoveryBenchAdapter().prepare(identity("discoverybench"), {
+        "task_id": "task-1", "question": "q", "source_kind": "synthetic", "dataset": [{"name": "data.csv", "columns": []}],
     })
     seen: list[list[str]] = []
     def fake(argv: list[str], **_: object) -> subprocess.CompletedProcess[bytes]:
@@ -62,6 +67,7 @@ def test_adapter_to_broker_entrypoint_builds_restricted_docker_command(tmp_path:
     )
     assert receipt.status == "succeeded"
     argv = seen[0]
+    assert ["--pull", "never"] == argv[2:4]
     assert ["--network", "none"] == argv[argv.index("--network"):argv.index("--network") + 2]
     assert "--read-only" in argv and ["--user", "1000:1000"] == argv[argv.index("--user"):argv.index("--user") + 2]
     assert ":/input/data_csv:ro" in " ".join(argv)
@@ -82,6 +88,33 @@ def test_broker_rejects_outside_or_symlink_mount_without_running_docker(tmp_path
     assert receipt.status == "rejected"
 
 
+def test_broker_rejects_parent_traversal_without_running_docker(tmp_path: Path) -> None:
+    root = tmp_path / "root"
+    root.mkdir()
+    program = root / "analysis.py"
+    data = root / "data.csv"
+    program.write_text("print(1)", encoding="utf-8")
+    data.write_text("x", encoding="utf-8")
+    traversing = root / "nested" / ".." / "data.csv"
+    receipt = DockerExecutionBroker([root], runner=lambda *_a, **_k: pytest.fail("runner must not run")).execute(
+        ExecutionRequest(identity("blade"), "example/image@sha256:" + "a" * 64, program, {"data": traversing})
+    )
+    assert receipt.status == "rejected"
+
+
+def test_broker_rejects_mount_option_injection_without_running_docker(tmp_path: Path) -> None:
+    root = tmp_path / "root"
+    root.mkdir()
+    program = root / "analysis.py"
+    injected = root / "data,ro.csv"
+    program.write_text("print(1)", encoding="utf-8")
+    injected.write_text("x", encoding="utf-8")
+    receipt = DockerExecutionBroker([root], runner=lambda *_a, **_k: pytest.fail("runner must not run")).execute(
+        ExecutionRequest(identity("blade"), "example/image@sha256:" + "a" * 64, program, {"data": injected})
+    )
+    assert receipt.status == "rejected"
+
+
 def test_broker_returns_typed_unavailable_without_host_fallback(tmp_path: Path) -> None:
     root = tmp_path / "root"
     root.mkdir()
@@ -96,6 +129,42 @@ def test_broker_returns_typed_unavailable_without_host_fallback(tmp_path: Path) 
     )
     assert receipt.status == "unavailable"
     assert receipt.artifact is not None
+
+
+def test_broker_classifies_daemon_connection_failure_as_infrastructure_unavailable(tmp_path: Path) -> None:
+    root = tmp_path / "root"
+    root.mkdir()
+    program = root / "analysis.py"
+    data = root / "data.csv"
+    program.write_text("print(1)", encoding="utf-8")
+    data.write_text("x", encoding="utf-8")
+    def daemon_down(argv: list[str], **_kwargs: object) -> subprocess.CompletedProcess[bytes]:
+        return subprocess.CompletedProcess(argv, 1, b"", b"Cannot connect to the Docker daemon")
+    receipt = DockerExecutionBroker([root], runner=daemon_down).execute(
+        ExecutionRequest(identity("blade"), "example/image@sha256:" + "b" * 64, program, {"data": data})
+    )
+    assert receipt.status == "unavailable"
+
+
+def test_timeout_attempts_cleanup_of_only_its_owned_container(tmp_path: Path) -> None:
+    root = tmp_path / "root"
+    root.mkdir()
+    program = root / "analysis.py"
+    data = root / "data.csv"
+    program.write_text("print(1)", encoding="utf-8")
+    data.write_text("x", encoding="utf-8")
+    calls: list[list[str]] = []
+    def timed_then_removed(argv: list[str], **_kwargs: object) -> subprocess.CompletedProcess[bytes]:
+        calls.append(argv)
+        if argv[1:3] == ["run", "--pull"]:
+            raise subprocess.TimeoutExpired(argv, 1)
+        return subprocess.CompletedProcess(argv, 0, b"removed", b"")
+    receipt = DockerExecutionBroker([root], runner=timed_then_removed).execute(
+        ExecutionRequest(identity("blade"), "example/image@sha256:" + "c" * 64, program, {"data": data}, timeout_seconds=1)
+    )
+    assert receipt.status == "timed_out"
+    assert calls[1][:3] == ["docker", "rm", "-f"]
+    assert receipt.record.data()["cleanup"]["removed"] is True
 
 
 def test_scoring_preserves_dimension_boundaries_and_empty_outputs() -> None:
