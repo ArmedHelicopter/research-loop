@@ -8,10 +8,13 @@ max_calls=..., max_tokens=..., schema_by_slot=...)` is a callable suitable for
 
 Each invocation reserves a persistent ledger entry before starting Codex. The
 entry records request and prompt hashes, requested provider/model identity, the
-complete argument vector, output/event hashes, exit status, token usage and a
-terminal status. A timeout becomes `unknown`; provider errors, absent output,
-invalid output, and absent usage become incomplete billing. An incomplete
-ledger blocks every following call, including after the port is reopened.
+complete argument vector, output/event hashes, exit status, token usage, and
+any prohibited tool event. A valid stream has exactly one `turn.completed`
+usage object with literal integer `input_tokens` and `output_tokens` (and an
+optional `cached_input_tokens`). A timeout becomes `unknown`; provider errors,
+absent or duplicate usage, tool/execution events, absent output, invalid output,
+and a token-budget overrun become terminal. A reopened port rejects every
+ledger with a reserved, unknown, failed, over-budget, or incomplete call.
 
 The port invokes the installed CLI with `exec --ignore-user-config
 --ignore-rules --ephemeral --skip-git-repo-check -C <empty per-call directory>
@@ -19,6 +22,10 @@ The port invokes the installed CLI with `exec --ignore-user-config
 tool, browser, plugin, hook, app, skill, image and goal features and sets
 `project_doc_max_bytes=0`, disabled web search and host-skill discovery. The
 arguments were checked against `codex exec --help` on Codex CLI 0.153.4.
+
+`max_tokens` is enforced against recorded cumulative provider usage after each
+call. The CLI version checked here exposes no per-call output-token switch, so
+it is an accounting stop, not a pre-call output-token cap.
 
 This constrains Codex configuration and its working directory. It is not an OS
 sandbox or a claim that a compromised provider process cannot access the host.

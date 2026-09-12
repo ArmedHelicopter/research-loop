@@ -9,17 +9,18 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
+import shutil
 import subprocess
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
 from research_loop.modular.contracts import FrozenRecord
-from research_loop.ontology import ContractError, canonical, digest
+from research_loop.ontology import ContractError, canonical
 
 
 ProcessRunner = Callable[..., Any]
-_PRIVATE_WORDS = ("gold", "label", "scorer", "reference", "validation")
 
 
 def _atomic(path: Path, value: Mapping[str, Any]) -> None:
@@ -83,12 +84,18 @@ class CodexModelPort:
         if not isinstance(schema_by_slot, Mapping) or not schema_by_slot or any(not isinstance(k, str) or not k or any(ch not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.-" for ch in k) for k in schema_by_slot):
             raise ContractError("nonempty schema map required")
         for schema in schema_by_slot.values():
-            if schema.get("type") != "object":
+            if not isinstance(schema, Mapping) or schema.get("type") != "object":
                 raise ContractError("model responses must be JSON objects")
             _validate_schema(schema, _schema_witness(schema))
-        self.executable, self.root = str(executable), Path(work_root)
+        executable_path = Path(executable).expanduser()
+        resolved_executable = executable_path.resolve() if executable_path.is_absolute() else shutil.which(str(executable_path))
+        if not resolved_executable:
+            raise ContractError("Codex executable cannot be resolved")
+        self.executable = str(Path(resolved_executable).resolve())
+        self.root = Path(work_root).expanduser().resolve()
         self.model, self.effort = model, effort
-        self.max_calls, self.max_tokens, self.schemas = max_calls, max_tokens, dict(schema_by_slot)
+        self.max_calls, self.max_tokens = max_calls, max_tokens
+        self.schemas = json.loads(canonical(schema_by_slot))
         self.timeout_seconds, self.runner = timeout_seconds, process_runner or subprocess.run
         self.root.mkdir(parents=True, exist_ok=True)
         self.call_root = self.root / "calls"
@@ -101,6 +108,8 @@ class CodexModelPort:
             self.ledger = json.loads(self.ledger_path.read_text(encoding="utf-8"))
             if self.ledger.get("config") != config:
                 raise ContractError("existing model ledger has a different frozen configuration")
+            if type(self.ledger.get("usage_incomplete")) is not bool or self.ledger["usage_incomplete"] or any(call.get("status") != "succeeded" for call in self.ledger.get("calls", [])):
+                raise ContractError("existing model ledger has an incomplete call; inspect it instead of continuing")
         else:
             self.ledger = {"config": config, "calls": [], "tokens": 0, "usage_incomplete": False}
             _atomic(self.ledger_path, self.ledger)
@@ -146,12 +155,20 @@ class CodexModelPort:
         stdout, stderr = result.stdout or "", result.stderr or ""
         (call_dir / "events.jsonl").write_text(stdout, encoding="utf-8")
         (call_dir / "stderr.txt").write_text(stderr, encoding="utf-8")
-        usage = _usage(stdout)
-        reservation.update({"exit_code": result.returncode, "events_hash": _sha(stdout.encode()), "stderr_hash": _sha(stderr.encode()), "usage": usage})
-        if usage is None:
+        events = _events(stdout)
+        usage = _usage(events)
+        tools = _tool_events(events)
+        reservation.update({"exit_code": result.returncode, "events_hash": _sha(stdout.encode()), "stderr_hash": _sha(stderr.encode()), "usage": usage, "tool_events": tools})
+        if usage is None or tools:
+            reservation["status"] = "failed"
             self.ledger["usage_incomplete"] = True
-        else:
-            self.ledger["tokens"] += usage
+            _atomic(self.ledger_path, self.ledger)
+            raise ContractError("model event stream has missing usage or a forbidden execution event")
+        self.ledger["tokens"] += usage["total_tokens"]
+        if self.ledger["tokens"] > self.max_tokens:
+            reservation["status"] = "over_budget"
+            _atomic(self.ledger_path, self.ledger)
+            raise ContractError("model call exceeded frozen token budget; do not continue")
         if result.returncode != 0 or not output_path.is_file():
             reservation["status"] = "failed"
             self.ledger["usage_incomplete"] = True
@@ -159,6 +176,7 @@ class CodexModelPort:
             raise ContractError("model CLI failed or did not produce output")
         try:
             output = json.loads(output_path.read_text(encoding="utf-8"))
+            _finite(output)
             _validate_schema(schema, output)
             response = FrozenRecord.from_dict(output)
         except (OSError, ValueError, ContractError) as exc:
@@ -171,18 +189,53 @@ class CodexModelPort:
         return response
 
 
-def _usage(events: str) -> int | None:
-    totals = []
-    for line in events.splitlines():
+def _events(stream: str) -> list[Mapping[str, Any]]:
+    events = []
+    for line in stream.splitlines():
         try:
             event = json.loads(line)
-            usage = event.get("usage") if event.get("type") == "turn.completed" else None
-            total = usage.get("total_tokens") if isinstance(usage, Mapping) else None
-            if type(total) is int and total >= 0:
-                totals.append(total)
-        except (ValueError, AttributeError):
+            if isinstance(event, Mapping):
+                events.append(event)
+        except ValueError:
             continue
-    return totals[-1] if totals else None
+    return events
+
+
+def _usage(events: list[Mapping[str, Any]]) -> dict[str, int] | None:
+    completed = [event.get("usage") for event in events if event.get("type") == "turn.completed"]
+    if len(completed) != 1 or not isinstance(completed[0], Mapping):
+        return None
+    usage = completed[0]
+    if set(usage) not in ({"input_tokens", "output_tokens"}, {"input_tokens", "output_tokens", "cached_input_tokens"}):
+        return None
+    if any(type(value) is not int or value < 0 for value in usage.values()):
+        return None
+    return {"input_tokens": usage["input_tokens"], "output_tokens": usage["output_tokens"],
+            "cached_input_tokens": usage.get("cached_input_tokens", 0), "total_tokens": usage["input_tokens"] + usage["output_tokens"]}
+
+
+def _tool_events(events: list[Mapping[str, Any]]) -> list[dict[str, str]]:
+    blocked = {"command_execution", "mcp_tool_call", "web_search", "file_change"}
+    found = []
+    for event in events:
+        kind = event.get("type")
+        item = event.get("item")
+        item_type = item.get("type") if isinstance(item, Mapping) else None
+        names = [name for name in (kind, item_type) if isinstance(name, str)]
+        if any(name in blocked or any(word in name.lower() for word in ("tool", "execution", "command", "mcp", "web_search", "file_change")) for name in names):
+            found.append({"event_type": kind if isinstance(kind, str) else "", "item_type": item_type if isinstance(item_type, str) else ""})
+    return found
+
+
+def _finite(value: Any) -> None:
+    if isinstance(value, float) and not math.isfinite(value):
+        raise ContractError("non-finite model output is forbidden")
+    if isinstance(value, list):
+        for child in value:
+            _finite(child)
+    elif isinstance(value, dict):
+        for child in value.values():
+            _finite(child)
 
 
 def _schema_witness(schema: Mapping[str, Any]) -> Any:
