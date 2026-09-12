@@ -8,6 +8,7 @@ about scientific truth.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from math import ceil
 from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
@@ -219,6 +220,7 @@ def _apply(experiment_id: str, variant: str, task: PublicTask, trace: list[dict[
         if variant == "novel_refuted":
             novelty_transition = {"before": "novel", "after": "known", "reason": "fixture prior-art withdrawal",
                                   "observation_root_retained": evidence.is_active_admitted(root.root_id)}
+            state = ScientificState(state.validity, state.support, "known", state.investment)
             trace.append({"event": "novelty_withdrawn_observation_retained", **novelty_transition})
         auxiliary.update({"state": state.__dict__, "claim_status": relation.status,
                           "active_root_count": len(evidence.roots()), "novelty_transition": novelty_transition})
@@ -307,7 +309,8 @@ def _audits(session: RunSession, execution_digest: str, state: ScientificState, 
 
 def _run_ratio_candidates(task: PublicTask, root: Path, broker: DockerExecutionBroker) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     total = 4
-    candidates = (("zero", 0, 0), ("low", 10, 1), ("medium", 30, 2), ("high", 60, 3))
+    candidates = tuple((name, percent, ceil(total * percent / 100))
+                       for name, percent in (("zero", 0), ("low", 10), ("medium", 30), ("high", 60)))
     rows, allocations = [], []
     for ratio_id, percent, exploration_units in candidates:
         budget = ExplorationBudget(total, 0)
@@ -322,6 +325,9 @@ def _run_ratio_candidates(task: PublicTask, root: Path, broker: DockerExecutionB
         # there is no controller expected-answer table.
         succeeded = sum(session.executions[value].status == "succeeded" for value in diagnostic_receipts)
         allocations.append({"ratio_id": ratio_id, "exploration_percent": percent,
+                            "effective_execution_percent": exploration_units * 100 / total,
+                            "rounding_policy": "ceil_to_whole_execution_opportunities",
+                            "measurement": "engineering_execution_status_only",
                             "exploration_execution_units": exploration_units,
                             "main_task_execution_units": total - exploration_units,
                             "diagnostic_receipt_digests": diagnostic_receipts,
@@ -375,10 +381,10 @@ def _semantic_material(variant: str) -> dict[str, str]:
     construct = "Response R is operationalized as fluorescence measured four hours after I."
     if variant == "real_counterexample":
         observation = "With verified C exposure, I leaves R unchanged at four hours in the same assay."
-        truth, identifier = "counterexample_hits_theory", "fixture-counterexample-hits"
+        truth, identifier = "counterexample_hits_theory", "fixture-counterexample-1"
     else:
         observation = "With verified C exposure, I changes a separate fluorescence channel outside the R assay."
-        truth, identifier = "counterexample_misses_construct", "fixture-counterexample-misses"
+        truth, identifier = "counterexample_misses_construct", "fixture-counterexample-1"
     return {"theory": theory, "construct": construct, "observation": observation,
             "counterexample_id": identifier, "controller_truth": truth}
 

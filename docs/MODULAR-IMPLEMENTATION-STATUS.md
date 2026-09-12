@@ -50,9 +50,10 @@ reconciliation now recovers its output and all five usage fields, while keeping
 the skill-context faults and original failure. Context isolation still needs
 verification before the next experimental call.
 
-The experiment registry has 48 obligations. Q1.1–Q1.7, Q2.1 and Q2.3–Q2.5 now
-have typed scenario-input builders; Q1.2–Q1.7 and Q2.4–Q2.5 also have concrete
-fixture mechanism runners. The other 37 exact scenario builders remain
+The experiment registry has 48 obligations. Q1.1–Q1.7, Q2.1, Q2.3–Q2.7,
+Q3.1–Q3.2, Q5.2–Q5.4 and Q7.1–Q7.6 have typed scenario-input builders (24 IDs).
+Except for the earlier Q1.1/Q2.1/Q2.3 input-only builders, these also have fixture
+mechanism runners. The other 24 exact scenario builders remain
 `blocked_endpoint_not_implemented`. Registry metadata and one generic module run
 must never be counted as completion of those experiments. Scoped panel receipts
 check every registered variant, conditional arm and both benchmarks, using actual
@@ -67,6 +68,25 @@ scientifically wrong agreeing-auditor fixture as a false-admission observation.
 The original pilot's CLI cwd was inside the source checkout, so it also lacks
 the required exported-workspace qualification. Future model runs must use a
 fixed public work root outside all label-bearing source ancestors.
+
+The subsequent BLADE training transport call completed with 7,085 input and
+1,271 output tokens and no tool events. Its pre-call visible context matched a
+reviewed frozen two-message base context. The controller nevertheless rejected
+the CLI startup notice containing `skip_host_skill_discovery` as a skill-context
+fault. This failed pilot is retained; it is not an efficacy observation. A
+separate, zero-new-model-call diagnostic executed its program on the allowed
+250-row BLADE fish input in restricted Docker. No scientific audit or score was
+issued. The exact startup-notice classification still requires repair before
+the next model experiment. A preceding root audit also caught a changed bundled
+skill file; its failed audit and the subsequent stable render are preserved.
+
+Review rejected preliminary Q7 code that relabelled validation identity as
+train, and Q3/Q5 fixtures whose variant changes did not reach callbacks. The
+integrated repairs preserve original provenance, retain actual callback outputs,
+and exercise fixed execution allocation and evidence withdrawal. Q7's fixture
+token budget is explicitly unexercised; four-execution ratio rounding is reported
+alongside requested and effective percentages. No fixture result qualifies a
+validation lease or turns successful execution into scientific evidence.
 
 No new module or combination has completed its required paired training effect
 study and independent validation. Current metadata custody has no qualified
