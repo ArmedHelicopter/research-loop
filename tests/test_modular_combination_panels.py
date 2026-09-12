@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 
 from research_loop.modular.benchmarks import BladeAdapter, DiscoveryBenchAdapter
-from research_loop.modular.combination_panels import CombinationPanelVerifier, compile_combination_catalogue
+from research_loop.modular.combination_panels import CombinationPanelVerifier, compile_combination_catalogue, run_combination_cell
 from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask
 from research_loop.modular.experiments import registry
@@ -76,6 +76,9 @@ def test_catalogue_freezes_all_obligations_without_relabeling_q_registry():
     assert catalogue.manifest.data()["scientific_status"] == "not_measured"
     assert "pair:M1+M4" in catalogue.panels and "pair:M2+M3" in catalogue.panels and "full-loo" in catalogue.panels
     assert all(obligation not in registry() for obligation in catalogue.panels)
+    assert set(catalogue.scenarios) == {cell.key for panel in catalogue.panels.values() for cell in panel.cells}
+    assert all(catalogue.scenarios[cell.key].content_hash == cell.scenario_digest
+               for panel in catalogue.panels.values() for cell in panel.cells)
 
 
 def test_legal_pair_has_complete_two_benchmark_arm_journals_and_engineering_verification(tmp_path: Path):
@@ -104,3 +107,36 @@ def test_dependency_pair_retains_unavailable_cell_and_only_runs_feasible_grid(tm
     verdict = CombinationPanelVerifier().verify(panel, rows)
     assert verdict.engineering_verified and verdict.interaction_status == "not_identifiable"
     assert verdict.scientific_status == "not_measured"
+
+
+def test_compiler_rejects_candidate_manifest_for_other_training_tasks():
+    tasks, arms, scorer, criteria = _inputs()
+    foreign = DataIdentity("blade", "foreign", "blade:foreign", "foreign-v1", "b" * 64, "train")
+    wrong = CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze([foreign]),
+                                    changes={"prompt": {"instructions": "wrong train manifest"}}, search_cost=0)
+    with pytest.raises(ContractError, match="exactly this panel task set"):
+        compile_combination_catalogue(stage="C2-C4-train", tasks=tasks, baseline_digest=SPLIT,
+                                      packages_by_arm={key: wrong for key in arms}, scorer=scorer,
+                                      acceptance_criteria=criteria)
+
+
+def test_production_combination_runner_injects_exact_package_and_scenario(tmp_path: Path):
+    catalogue = _catalogue(); panel = catalogue.panels["pair:M1+M4"]
+    task = catalogue.tasks[next(cell.task_digest for cell in panel.cells if cell.arm_id == "00")]
+    cells = [next(cell for cell in panel.cells if cell.identity == task.identity and cell.arm_id == arm)
+             for arm in ("00", "11")]
+    seen = []
+    def model(request):
+        seen.append(request.data()["module_context"])
+        objective_digest = FrozenRecord.from_dict(request.data()["objective"]).content_hash
+        return FrozenRecord.from_dict({"objective_digest": objective_digest, "outcome": "unknown", "evidence_ids": [],
+                                       "conclusion": "engineering-only combination response", "programme_complete": False})
+    verifier = AuditVerifier({"audit-a": b"a" * 32, "audit-b": b"b" * 32})
+    rows = [run_combination_cell(panel, cell, task=task, scenario=catalogue.scenarios[cell.key],
+                                 package=catalogue.packages[cell.runtime_arm.content_hash],
+                                 objective=FrozenRecord.from_dict({"objective": "combination"}),
+                                 sidecar=tmp_path / cell.arm_id, model=model, audit_verifier=verifier)
+            for cell in cells]
+    assert all(row.status == "succeeded" for row in rows)
+    assert seen[0]["candidate_package"] != seen[1]["candidate_package"]
+    assert all(context["combination_scenario"]["task_digest"] == task.content_hash for context in seen)
