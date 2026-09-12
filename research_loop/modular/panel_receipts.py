@@ -19,6 +19,7 @@ from research_loop.modular.contracts import DataIdentity, FrozenRecord, required
 from research_loop.modular.combinations import validate_design
 from research_loop.modular.experiments import registry
 from research_loop.modular.runtime import verify_trace
+from research_loop.modular.protocol_trace import verify_protocol_trace
 from research_loop.ontology import ContractError, canonical
 
 BENCHMARKS = frozenset({"discoverybench", "blade"})
@@ -353,6 +354,7 @@ class PanelReceiptVerifier:
         return PanelVerdict(panel.digest, True, scientific, accepted, decision, len(rows), failed, unscored, blocked, limitation)
 
     def _verify_runtime(self, receipt: RuntimeReceipt, expected: PanelCell) -> None:
+        verify_protocol_trace(receipt.trace_path)
         trace = verify_trace(receipt.trace_path).data()
         if trace["trace_digest"] != receipt.trace_digest:
             raise ContractError("runtime trace digest does not match the hash-chained journal")
