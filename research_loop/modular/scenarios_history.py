@@ -35,6 +35,7 @@ class HistoryScenarioResult:
     next_payload: FrozenRecord
     mechanism_trace: FrozenRecord
     review_payloads: tuple[FrozenRecord, ...] = ()
+    next_response: FrozenRecord | None = None
 
 
 def history_injection(experiment_id: str, variant: str) -> Mapping[str, Any]:
@@ -98,12 +99,17 @@ def run_history_scenario(
         "context": context.data(),
         "mechanism_trace_digest": digest(trace),
     })
+    next_response = None
     if next_model is not None:
-        next_model(payload)  # The captured payload is the actual post-mutation invocation.
-        trace.append({"event": "next_model_invoked", "payload_digest": payload.content_hash})
+        value = next_model(payload)  # The captured payload is the actual post-mutation invocation.
+        if isinstance(value, FrozenRecord): next_response = value
+        elif isinstance(value, Mapping): next_response = FrozenRecord.from_dict(dict(value))
+        elif value is not None: raise ContractError("next model response must be a mapping, frozen record, or None")
+        trace.append({"event": "next_model_invoked", "payload_digest": payload.content_hash,
+                      "response_digest": next_response.content_hash if next_response else None})
     else:
         trace.append({"event": "next_model_payload_prepared", "payload_digest": payload.content_hash})
-    return HistoryScenarioResult(experiment_id, variant, payload, FrozenRecord.from_dict({"events": trace}), tuple(review_payloads))
+    return HistoryScenarioResult(experiment_id, variant, payload, FrozenRecord.from_dict({"events": trace}), tuple(review_payloads), next_response)
 
 
 def _apply(experiment_id: str, variant: str, task: PublicTask, evidence: EvidenceLedger,
