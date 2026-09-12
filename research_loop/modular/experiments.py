@@ -55,6 +55,9 @@ def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs) ->
     elif spec.experiment_id in {"Q1.2","Q1.3","Q1.4","Q1.5","Q1.6","Q1.7"}:
         from research_loop.modular.scenarios_history import history_injection
         injection=dict(history_injection(spec.experiment_id, variant))
+    elif spec.experiment_id in {"Q2.4", "Q2.5"}:
+        from research_loop.modular.scenarios_audit import audit_injection
+        injection=dict(audit_injection(spec.experiment_id, variant))
     elif spec.experiment_id=="Q2.1": injection={"pressure":{"neutral":"apply_frozen_rule","positive":"seek_support_only_if_justified","negative":"seek_refutation_only_if_justified"}[variant]}
     elif spec.experiment_id=="Q2.3": injection={"audit":{"false":False,"string_false":"false","empty":[],"duplicate":["x","x"],"unknown":{"status":"unknown"},"missing":{"status":"proceed"},"parse_error":"{invalid"}[variant]}
     else: raise ContractError(f"blocked_endpoint_not_implemented:{spec.endpoint}")
