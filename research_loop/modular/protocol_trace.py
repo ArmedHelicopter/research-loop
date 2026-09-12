@@ -25,7 +25,7 @@ def verify_protocol_trace(path: Path) -> FrozenRecord:
     calls, attempts, pending_call, pending_execution = [], 0, None, False
     program_sha = None
     executions, raw_audits, admissions = {}, {}, {}
-    response, final, failed = None, None, False
+    response, response_request, final, failed = None, None, None, False
     for event in events[1:]:
         stage, data = event["stage"], event["data"]
         if stage == "objective_lock" or final is not None:
@@ -50,8 +50,17 @@ def verify_protocol_trace(path: Path) -> FrozenRecord:
             pending_call = None
             if stage == "model_response":
                 response = FrozenRecord.from_dict(data["response"])
+                response_request = data["request_digest"]
             else:
                 failed = True
+        elif stage == "driver_failure":
+            if pending_call is not None or pending_execution or response is None or data.get("schema") != "driver-failure-v1":
+                raise ContractError("driver failure lacks a completed model response")
+            if (data.get("response_digest") != response.content_hash or data.get("request_digest") != response_request
+                    or not isinstance(data.get("driver_id"), str)
+                    or not data["driver_id"] or not isinstance(data.get("error_type"), str) or not data["error_type"]):
+                raise ContractError("driver failure lacks response, driver, or error binding")
+            failed = True
         elif stage == "execution_request":
             attempts += 1
             if pending_execution or pending_call is not None or data.get("attempt") != attempts or attempts > lock["execution_limit"]:

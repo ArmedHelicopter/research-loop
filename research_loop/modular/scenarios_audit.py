@@ -7,6 +7,8 @@ or a model.  Its synthetic ground truth is retained by the controller only.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import hashlib
+import hmac
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
@@ -15,10 +17,11 @@ from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import FrozenRecord, PublicTask, required_text
 from research_loop.modular.modules.admission import AuditItem, ScientificState
 from research_loop.modular.runtime import AuditAuthority, AuditVerifier, RunSession, verify_trace
-from research_loop.ontology import ContractError
+from research_loop.ontology import ContractError, canonical
 
 
 _VARIANTS = {
+    "Q2.3": frozenset(("false", "string_false", "empty", "duplicate", "unknown", "missing", "parse_error")),
     "Q2.4": frozenset(("one_fail", "both_fail", "disagree", "same_wrong")),
     "Q2.5": frozenset(("invalid_positive", "invalid_negative", "valid_negative")),
 }
@@ -96,6 +99,29 @@ def run_audit_scenario(experiment_id: str, variant: str, *, task: PublicTask,
 
 
 def _receipts(experiment_id: str, variant: str, session: RunSession, execution_digest: str) -> tuple[tuple[FrozenRecord, ...], str, bool]:
+    if experiment_id == "Q2.3":
+        # Corrupt the authenticated issuer's checklist, then feed it to the
+        # actual RunSession admission port.  This is not a helper-only error
+        # or an invalid-MAC test: parsing/type/completeness must block finish.
+        state = ScientificState("valid", "supported", "unknown", "explore")
+        receipts = []
+        for name in _KEYS:
+            valid = AuditAuthority(name, _KEYS[name]).issue(identity=session.task.identity,
+                objective_digest=session.objective.content_hash, execution_digest=execution_digest,
+                state=state, outcome="positive", audit=[AuditItem("measurement", True, True)])
+            body = valid.data()["body"]
+            if variant == "parse_error":
+                receipts.append(FrozenRecord.from_dict({"raw_text": "{invalid", "parse_status": "failed"}))
+                continue
+            if variant == "false": body["audit"][0]["passed"] = False
+            elif variant == "string_false": body["audit"][0]["passed"] = "false"
+            elif variant == "empty": body["audit"] = []
+            elif variant == "duplicate": body["audit"] *= 2
+            elif variant == "unknown": body["audit"][0]["name"] = "not_a_registered_check"
+            elif variant == "missing": del body["audit"][0]["passed"]
+            receipts.append(FrozenRecord.from_dict({"body": body,
+                "mac": hmac.new(_KEYS[name], canonical(body).encode(), hashlib.sha256).hexdigest()}))
+        return tuple(receipts), "positive", False
     if experiment_id == "Q2.4":
         outcome, state = "positive", ScientificState("valid", "supported", "unknown", "explore")
         if variant == "one_fail":

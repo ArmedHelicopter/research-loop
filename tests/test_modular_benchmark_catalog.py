@@ -21,4 +21,7 @@ def test_catalog_entries_are_quarantined_source_contracts_not_adapters() -> None
         assert entry.purpose_scope
         assert entry.grouping_unit
         assert entry.qualification == "quarantine_until_review"
-        assert entry.runtime_adapter_status == "catalog_only_no_runtime_adapter"
+        expected = ("public_adapter_implemented" if benchmark in REQUIRED_BENCHMARKS
+            else "restricted_public_projection_only" if benchmark in {"scicode", "scienceagentbench"}
+            else "catalog_only_no_runtime_adapter")
+        assert entry.runtime_adapter_status == expected

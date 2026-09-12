@@ -78,3 +78,20 @@ def test_registry_binds_closed_fixture_audit_injections():
     controlled = scenario(registry()["Q2.4"], "same_wrong", inputs=inputs).data()
     assert controlled["controller_input"]["fixture_only"] is True
     assert controlled["controller_input"]["auxiliary"]["controller_ground_truth_private"] is True
+
+
+@pytest.mark.parametrize("adapter", ["blade", "discovery"])
+@pytest.mark.parametrize("variant", registry()["Q2.3"].variants)
+def test_q23_authenticated_malformed_audits_block_the_actual_final_gate(tmp_path, adapter, variant):
+    task, sidecar = public_task(adapter), tmp_path / (adapter + variant)
+    result = run_audit_scenario("Q2.3", variant, task=task, frozen_controls=controls(task),
+        sidecar=sidecar, broker=broker(sidecar))
+    assert result.gate.data()["decision"] == "blocked"
+    assert result.record.data()["admission"] is None or result.record.data()["admission"]["admitted"] is False
+    stages = result.trace.data()["stages"]
+    assert "execution_result" in stages and "scientific_audit_inputs" in stages and "final_decision" in stages
+    assert result.model_payload.data()["task"] == task.data()
+    events = [FrozenRecord(line).data() for line in (sidecar / "trace.jsonl").read_text(encoding="utf-8").splitlines()]
+    response = next(event["data"]["response"] for event in events if event["stage"] == "model_response")
+    assert response["outcome"] == "positive"
+    assert response["evidence_ids"] == [result.record.data()["execution_digest"]]

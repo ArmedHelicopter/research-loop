@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
+from evaluation.modular.calibration import CalibrationAuthority, COVERAGE_KINDS, verify_calibration_receipt
 from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.deployment import FileDeploymentPort
 from research_loop.modular.modules.improvement import (
@@ -30,6 +31,7 @@ _VARIANTS = {
     "Q6.6": ("promote", "rollback", "drift", "offline", "duplicate"),
 }
 _HOST_KEY, _VALIDATION_KEY = b"fixture-host-acceptance-key-32bytes", b"fixture-validation-key-32bytes"
+_CALIBRATION_KEY = b"fixture-calibration-authority-key-32"
 
 
 @dataclass(frozen=True)
@@ -91,8 +93,8 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
             "boundary_limit": "in-process checks show package/API rejection only; they do not demonstrate OS/process isolation or secret custody"})
     elif experiment_id == "Q6.2":
         manual = {"memory": {"mode": "manual", "lesson": "predeclared train-only fixture"}}
-        proposal = call("train_candidate_proposal", {"arm": variant, "fixed_base_digest": base.digest, "manual_changes": manual, "matched_search_budget": 2})
-        changes, rejected = ({"memory": {"mode": "off"}} if variant == "fixed" else manual if variant == "manual_train" else None), None
+        proposal = None if variant == "fixed" else call("train_candidate_proposal", {"arm": variant, "fixed_base_digest": base.digest, "manual_changes": manual, "matched_search_budget": 2})
+        changes, rejected = (None if variant == "fixed" else manual if variant == "manual_train" else None), None
         if variant == "automatic_train":
             try:
                 body = proposal.data()
@@ -103,11 +105,11 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
                 CandidatePackage.create(parent_digest=base.digest, manifest=manifest, changes=changes, search_cost=2)
             except (ContractError, KeyError, TypeError) as exc:
                 rejected = str(exc); changes = None
-        candidate = None
+        candidate = base if variant == "fixed" else None
         if changes is not None:
             candidate = BoundedCandidateBuilder().build(manifest, base, changes, search_cost=2)
             optimizer = TrainOptimizer(sidecar / "optimizer.sqlite"); optimizer.register(base); optimizer.propose(BoundedCandidateBuilder(), manifest, base, changes, search_cost=2); optimizer.compare_train(base, candidate); optimizer.close()
-        detail.update({"proposal_digest": proposal.content_hash, "candidate_digest": candidate.digest if candidate else None, "candidate_changes": candidate.record.data()["changes"] if candidate else None, "rejected": rejected, "acceptance": "not_requested; validation-only acceptance is external", "cost": 2})
+        detail.update({"proposal_digest": proposal.content_hash if proposal else None, "candidate_digest": candidate.digest if candidate else None, "candidate_changes": candidate.record.data()["changes"] if candidate and variant != "fixed" else None, "rejected": rejected, "acceptance": "not_requested; validation-only acceptance is external", "cost": 0 if variant == "fixed" else 2, "fixed_identity_preserved": variant != "fixed" or candidate.digest == base.digest, "callback_calls": len(seen)})
     elif experiment_id == "Q6.3":
         builder_a = FrozenBuilderVersion.freeze({"entrypoint": "emit_literal_change_v1", "surface": "memory", "key": "mode", "value": "fixed-builder"})
         port = RestrictedBuilderPort()
@@ -132,16 +134,39 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
             detail.update({"meta_package_digest": meta.package.digest, "active_builder_digest": builder_b.digest, "candidate_digest": candidate.digest, "builder_receipt": receipt.record.data()})
     elif experiment_id == "Q6.5":
         rounds, parent, bad_experience = [], base, 0
+        deployment = FileDeploymentPort(sidecar / "shadow-deployment.json", base)
+        # One authority remains installed for the whole shadow run.  Each
+        # signed fixture request binds its candidate and current parent, so a
+        # later activation cannot be authorized against an earlier parent.
+        shadow_authority = _shadow_authority()
+        runtime = ExecutionRuntime(sidecar / "shadow-runtime.sqlite", deployment, shadow_authority, base)
+        activation_count = 0
         for round_id in range(2):
             feedback = call("offline_scoring_feedback", {"round": round_id, "variant": variant, "feedback": "intentionally faulty fixture score", "offline_replay": True, "budget": 2})
             bad_experience += 1
-            candidate = BoundedCandidateBuilder().build(manifest, parent, {"memory": {"mode": "shadow", "lesson": "bad-feedback-" + str(round_id)}}, search_cost=2)
-            shadow_promoted = variant == "unprotected"
-            # Controller-only oracle: retained in the scenario record, never
-            # placed in callback input or used to alter the real promoter.
-            rounds.append({"round": round_id, "feedback_digest": feedback.content_hash, "budget": 2, "candidate_digest": candidate.digest, "bad_experience_count": bad_experience, "shadow_promoted": shadow_promoted, "protected_rejected": variant == "sealed_calibrated", "oracle_scientific_fixture": "declines_with_bad_feedback"})
-            if shadow_promoted: parent = candidate
-        detail.update({"offline_shadow_rounds": rounds, "promotion": "shadow_only" if variant == "unprotected" else "protected_rejected", "real_promoter_changed": False, "oracle_visibility": "controller_only_not_callback"})
+            parent_before = parent.digest
+            # The retained callback output is part of the package material;
+            # this is a real two-round parent chain, albeit an offline fixture.
+            candidate = BoundedCandidateBuilder().build(manifest, parent, {"memory": {"mode": "shadow", "lesson": "fixture-feedback-" + feedback.content_hash}}, search_cost=2)
+            decision, active_after, error = "not_attempted", runtime.active().digest, None
+            if variant == "unprotected":
+                receipt = shadow_authority.validate(candidate, parent.digest, _signed_shadow_validation(candidate.digest, parent.digest))
+                ack = runtime.activate(receipt, candidate); parent = candidate
+                activation_count += 1
+                decision, active_after = "offline_shadow_activated", ack.active_digest
+            else:
+                # The calibration receipt is correctly authenticated and binds
+                # these exact digests.  It fails eligibility (not its MAC), so
+                # no acceptance receipt or activation can be reached.
+                bad = _signed_calibration(parent.digest, base.digest, frozen_controls.content_hash, eligible=False)
+                try:
+                    _activate_with_calibration_guard(runtime, shadow_authority, candidate, parent.digest, bad,
+                                                      scorer_digest=base.digest, protocol_digest=frozen_controls.content_hash)
+                except ContractError as exc:
+                    error = str(exc); decision = "calibration_eligibility_rejected"
+            rounds.append({"round": round_id, "feedback_digest": feedback.content_hash, "budget": 2, "parent_digest_before": parent_before, "candidate_digest": candidate.digest, "bad_experience_count": bad_experience, "authority_decision": decision, "active_digest_after": active_after, "activation_attempted": variant == "unprotected", "calibration_receipt_digest": bad.content_hash if variant != "unprotected" else None, "calibration_eligible": None if variant == "unprotected" else False, "rejection": error, "scientific_effect_status": "not_measured"})
+        runtime.close()
+        detail.update({"offline_shadow_rounds": rounds, "promotion": "offline_shadow_activation" if variant == "unprotected" else "calibration_eligibility_rejected", "real_promoter_changed": variant == "unprotected", "activation_count": activation_count, "oracle_visibility": "controller_only_not_callback", "scientific_calibration_claimed": False, "scientific_effect_status": "not_measured"})
     else:
         candidate = BoundedCandidateBuilder().build(manifest, base, {"memory": {"mode": "on", "lesson": "fixture"}}, search_cost=2)
         authority = _authority(lambda: candidate, lambda: base)
@@ -193,6 +218,60 @@ def _authority(candidate: Callable[[], CandidatePackage], active: Callable[[], C
 def _signed_validation() -> SignedValidation:
     record = FrozenRecord.from_dict({"opaque": "validation service boundary"})
     return SignedValidation(record, hmac.new(_VALIDATION_KEY, record.encoded.encode("utf-8"), hashlib.sha256).hexdigest())
+
+
+def _shadow_authority() -> AcceptanceAuthority:
+    """Stable offline authority whose signed request binds each parent link."""
+    def validator(validation: SignedValidation) -> Mapping[str, Any]:
+        data = validation.record.data()
+        if set(data) != {"candidate_digest", "expected_active_digest"}:
+            raise ContractError("shadow validation has an exact request schema")
+        return {"validator_id": "offline-shadow-fixture-validation", "candidate_digest": data["candidate_digest"],
+                "expected_active_digest": data["expected_active_digest"], "trial_digest": "a" * 64,
+                "domain": "validation", "offline": False, "decision": "approved"}
+    return AcceptanceAuthority(_HOST_KEY, _VALIDATION_KEY, validator)
+
+
+def _signed_shadow_validation(candidate_digest: str, expected_active_digest: str) -> SignedValidation:
+    record = FrozenRecord.from_dict({"candidate_digest": candidate_digest, "expected_active_digest": expected_active_digest})
+    return SignedValidation(record, hmac.new(_VALIDATION_KEY, record.encoded.encode("utf-8"), hashlib.sha256).hexdigest())
+
+
+def _signed_calibration(panel_digest: str, scorer_digest: str, protocol_digest: str, *, eligible: bool) -> FrozenRecord:
+    """Create signed synthetic calibration material for engineering guard checks."""
+    criteria = {"minimum_cases_per_benchmark": 9, "minimum_coverage": {kind: 1 for kind in COVERAGE_KINDS},
+                "minimum_precision": 0.8, "minimum_recall": 0.8, "maximum_abstention_rate": 0.2,
+                "maximum_uncertainty": 0.2}
+    benchmarks = ["blade", "discoverybench"]
+    coverage = {kind: 1 for kind in COVERAGE_KINDS}
+    # Both bodies have valid schemas and MACs.  Only the negative controller
+    # violates frozen precision/recall; neither body measures a real scorer.
+    matrix = {"tp": 4, "tn": 4, "fp": 0, "fn": 0, "abstained": 1} if eligible else {"tp": 0, "tn": 0, "fp": 4, "fn": 4, "abstained": 1}
+    from research_loop.ontology import digest
+    return CalibrationAuthority("fixture-calibration-authority", _CALIBRATION_KEY).issue({
+        "schema": "scorer-calibration-v1", "panel_digest": panel_digest, "scorer_digest": scorer_digest,
+        "protocol_digest": protocol_digest, "scorer_code_digest": "d" * 64, "judge_identity": "fixture-judge",
+        "judge_parameters": {"temperature": 0}, "rubric_digest": "e" * 64,
+        "calibration_manifest_digest": "f" * 64, "blind_review_protocol_digest": "1" * 64,
+        "arbitration_protocol_digest": "2" * 64, "applicable_benchmarks": benchmarks,
+        "criteria": criteria, "criteria_digest": digest(criteria),
+        "coverage": {benchmark: coverage for benchmark in benchmarks},
+        "confusion_matrix": {benchmark: matrix for benchmark in benchmarks},
+        "uncertainty": {benchmark: 0.1 for benchmark in benchmarks},
+    })
+
+
+def _activate_with_calibration_guard(runtime: ExecutionRuntime, authority: AcceptanceAuthority,
+                                     candidate: CandidatePackage, expected_active_digest: str,
+                                     calibration_receipt: FrozenRecord, *, scorer_digest: str,
+                                     protocol_digest: str):
+    """The closed sequence used by both positive and negative guard controls."""
+    verify_calibration_receipt(calibration_receipt, {"fixture-calibration-authority": _CALIBRATION_KEY},
+                               panel_digest=expected_active_digest, scorer_digest=scorer_digest,
+                               protocol_digest=protocol_digest)
+    acceptance = authority.validate(candidate, expected_active_digest,
+                                    _signed_shadow_validation(candidate.digest, expected_active_digest))
+    return runtime.activate(acceptance, candidate)
 
 
 def _controls(task: PublicTask, controls: FrozenRecord) -> None:

@@ -17,6 +17,7 @@ from types import MappingProxyType
 
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, required_text
 from research_loop.modular.combinations import validate_design
+from research_loop.modular.p0_panel import validate_fixed_control_design
 from research_loop.modular.experiments import registry
 from research_loop.modular.runtime import verify_trace
 from research_loop.modular.protocol_trace import verify_protocol_trace
@@ -154,12 +155,17 @@ class FrozenPanel:
         legal_by_scope = {}
         for coverage, design_record in self.legal_arm_grids.items():
             if not isinstance(design_record, FrozenRecord): raise ContractError("legal-arm grid must be frozen")
-            validate_design(design_record); design = design_record.data()
-            factors = set(design["factors"])
             required = set(registry()[coverage].modules) - {"P0"}
-            if required and factors != required:
-                raise ContractError("legal-arm grid factors must equal the registered module set")
-            legal_by_scope[coverage] = {row["id"]: FrozenRecord.from_dict(row["arm"]) for row in design["cells"] if row["status"] == "executable"}
+            if not required:
+                design = validate_fixed_control_design(design_record).data()
+                if set(registry()[coverage].modules) != {"P0"}:
+                    raise ContractError("P0 fixed grid only applies to P0-only coverage")
+                legal_by_scope[coverage] = {"p0-fixed": FrozenRecord.from_dict(design["runtime_arm"])}
+            else:
+                validate_design(design_record); design = design_record.data()
+                if set(design["factors"]) != required:
+                    raise ContractError("legal-arm grid factors must equal the registered module set")
+                legal_by_scope[coverage] = {row["id"]: FrozenRecord.from_dict(row["arm"]) for row in design["cells"] if row["status"] == "executable"}
         if not self.cells or any(not isinstance(cell, PanelCell) for cell in self.cells):
             raise ContractError("panel requires typed expected cells")
         if any(cell.identity.domain != self.domain for cell in self.cells):
@@ -330,7 +336,8 @@ class PanelReceiptVerifier:
             missing, unexpected = set(expected) - set(actual), set(actual) - set(expected)
             raise ContractError(f"runtime receipt coverage mismatch: missing={len(missing)} unexpected={len(unexpected)}")
         for key, row in actual.items():
-            self._verify_runtime(row, expected[key])
+            grid = panel.legal_arm_grids[expected[key].coverage_id].data()
+            self._verify_runtime(row, expected[key], p0_control_digest=grid.get("p0_control_digest"))
         scored = tuple(scorer_receipts)
         if len({row.cell_key for row in scored}) != len(scored) or not set(row.cell_key for row in scored) <= set(expected):
             raise ContractError("duplicate or unexpected scorer receipt")
@@ -367,7 +374,7 @@ class PanelReceiptVerifier:
             limitation = "independent trusted scoring service is not configured"
         return PanelVerdict(panel.digest, True, scientific, accepted, decision, len(rows), failed, unscored, blocked, limitation)
 
-    def _verify_runtime(self, receipt: RuntimeReceipt, expected: PanelCell) -> None:
+    def _verify_runtime(self, receipt: RuntimeReceipt, expected: PanelCell, *, p0_control_digest: str | None = None) -> None:
         verify_protocol_trace(receipt.trace_path)
         trace = verify_trace(receipt.trace_path).data()
         if trace["trace_digest"] != receipt.trace_digest:
@@ -381,6 +388,10 @@ class PanelReceiptVerifier:
         if lock.get("task_digest") != expected.task_digest or lock.get("package_digest") != expected.package_digest or lock.get("arm") != expected.runtime_arm.data():
             raise ContractError("runtime trace package or legal-arm binding mismatch")
         requests = [event["data"].get("request", {}) for event in events if event["stage"] == "model_request"]
+        if p0_control_digest is not None and (not requests or any(
+                request.get("module_context", {}).get("p0_control_digest") != p0_control_digest
+                for request in requests)):
+            raise ContractError("runtime request lacks the frozen P0 control binding")
         expected_binding = {"experiment_id": expected.coverage_id, "variant": expected.variant,
                             "replicate": expected.replicate, "arm_id": expected.arm_id,
                             "scenario_digest": expected.scenario_digest}
@@ -410,6 +421,8 @@ class PanelReceiptVerifier:
                     raise ContractError("runtime response is not bound to a pending request")
                 pending = None
         terminal = events[-1]
+        if terminal["stage"] == "driver_failure" and terminal["data"].get("driver_id") != expected.coverage_id:
+            raise ContractError("terminal driver failure does not bind this panel obligation")
         responses = [event["data"]["response"] for event in events if event["stage"] == "model_response"]
         observed = FrozenRecord.from_dict({"responses": responses, "terminal": terminal["data"]}).content_hash
         has_model_failure = any(event["stage"] == "model_failure" for event in events)
@@ -424,7 +437,7 @@ class PanelReceiptVerifier:
             if terminal["stage"] != "final_decision" or terminal["data"].get("decision") not in {"proceed", "closed_negative", "unknown", "invalid", "withdrawn"} or any(event["stage"] == "model_failure" for event in events) or not responses or receipt.output_digest != observed:
                 raise ContractError("successful receipt lacks terminal runtime output evidence")
         elif receipt.status == "failed":
-            if not (terminal["stage"] == "model_failure" and receipt.output_digest is None) and not (
+            if not (terminal["stage"] in {"model_failure", "driver_failure"} and receipt.output_digest is None) and not (
                     terminal["stage"] == "final_decision" and terminal["data"].get("decision") == "blocked"
                     and has_model_failure and receipt.output_digest == observed):
                 raise ContractError("failed receipt does not match terminal runtime evidence")
@@ -454,7 +467,10 @@ class PanelReceiptVerifier:
                 or lease.get("scorer_digest") != next(iter(scorer_digests)) or lease.get("protocol_digest") != validation.protocol_digest
                 or lease.get("calibration_receipt_digest") != validation.calibration_receipt.content_hash
                 or lease.get("criteria_digest") != calibration["criteria_digest"]
-                or tuple(lease.get("required_benchmarks", ())) != panel.required_benchmarks):
+                or tuple(lease.get("required_benchmarks", ())) != panel.required_benchmarks
+                or lease.get("stage") != panel.stage
+                or lease.get("task_identities_digest") != hashlib.sha256(canonical(sorted(
+                    [cell.identity.data() for cell in panel.cells], key=canonical)).encode()).hexdigest()):
             raise ContractError("custody lease is not bound to this exact frozen validation panel")
         acceptance = verify_signed(validation.acceptance, self._acceptance_keys, schema="panel-acceptance-v1")
         runtime_digest = FrozenRecord.from_dict({"runtime": [self._runtime_data(row) for row in sorted(runtime, key=lambda row: row.cell_key)]}).content_hash

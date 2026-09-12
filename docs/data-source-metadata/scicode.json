@@ -6,14 +6,63 @@
   "pinned_commit": "8699b7c8fcebd916e429e26d28ac5d2257d25db3",
   "commit_evidence_url": "https://github.com/scicode-bench/SciCode/commit/HEAD.patch",
   "commit_hash_kind": "Git commit SHA-1 from the official repository HEAD patch header",
-  "license": {"name": "Apache-2.0", "evidence_url": "https://github.com/scicode-bench/SciCode/blob/8699b7c8fcebd916e429e26d28ac5d2257d25db3/LICENSE", "dataset_license_status": "requires_separate_review"},
-  "release": {"kind": "repository release metadata", "status": "no GitHub release used as a qualification artifact", "evidence_url": "https://github.com/scicode-bench/SciCode/releases"},
+  "license": {
+    "name": "Apache License 2.0",
+    "scope": "repository license text only",
+    "evidence_file": "rawtree/scicode.repository-license.txt",
+    "artifact_size_bytes": 11357,
+    "artifact_sha256": "C71D239DF91726FC519C6EB72D318EC65820627232B2F796219E87DCF35D0AB4",
+    "artifact_hash_kind": "SHA-256 of the saved license text artifact (not a Git object identifier)",
+    "git_blob_sha1": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+    "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+    "dataset_license_status": "requires_separate_review"
+  },
+  "release": {
+    "kind": "repository release metadata",
+    "status": "no GitHub release used as a qualification artifact",
+    "evidence_url": "https://github.com/scicode-bench/SciCode/releases"
+  },
   "observed_repository_files": [
-    {"path": "README.md", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
-    {"path": "LICENSE", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
-    {"path": "pyproject.toml", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"}
+    {
+      "path": "README.md",
+      "object_type": "blob",
+      "size_bytes": 8287,
+      "git_blob_sha1": "4765b4266145ee19e2660520f79ec2a2b45401fa",
+      "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+      "metadata_status": "recorded from official GitHub recursive tree response"
+    },
+    {
+      "path": "LICENSE",
+      "object_type": "blob",
+      "size_bytes": 11357,
+      "git_blob_sha1": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+      "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+      "metadata_status": "recorded from official GitHub recursive tree response"
+    },
+    {
+      "path": "pyproject.toml",
+      "object_type": "blob",
+      "size_bytes": 3373,
+      "git_blob_sha1": "c917b60303391ecb885b515856fbbd2a96f815e2",
+      "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+      "metadata_status": "recorded from official GitHub recursive tree response"
+    }
   ],
-  "tree_metadata": {"endpoint": "https://api.github.com/repos/scicode-bench/SciCode/git/trees/8699b7c8fcebd916e429e26d28ac5d2257d25db3?recursive=1", "status": "unavailable", "error_record": "rawtree/scicode.error.txt", "required_on_retry": ["commit validity", "truncated", "path", "type", "size", "Git blob SHA-1", "raw response SHA-256"]},
-  "runtime_status": "catalog_only_no_runtime_adapter",
+  "tree_metadata": {
+    "endpoint": "https://api.github.com/repos/scicode-bench/SciCode/git/trees/8699b7c8fcebd916e429e26d28ac5d2257d25db3?recursive=1",
+    "status": "recorded",
+    "raw_tree_file": "rawtree/scicode.tree.json",
+    "raw_tree_size_bytes": 9306,
+    "raw_tree_sha256": "3AB46B5B55F462E513E48D2B3F4F55F7B4D42AF43100461D9CA04CFEE7BCF69D",
+    "raw_tree_hash_kind": "SHA-256 of the saved JSON response (not a Git object identifier)",
+    "response_sha": "8699b7c8fcebd916e429e26d28ac5d2257d25db3",
+    "response_sha_kind": "GitHub API response sha; equals requested pinned commit",
+    "pinned_commit_matches_response_sha": true,
+    "truncated": false,
+    "entry_count": 40,
+    "historical_direct_error_record": "rawtree/scicode.error.txt",
+    "metadata_scope": "Git object metadata only; no repository blobs, benchmark tasks, answers, references, annotations, or dataset payloads were read"
+  },
+  "runtime_status": "restricted_public_projection_only",
   "qualification": "quarantine_until_review"
 }

@@ -6,14 +6,63 @@
   "pinned_commit": "e32a2980e72fe6eb04ee04eb749458f570625663",
   "commit_evidence_url": "https://github.com/siegelz/core-bench/commit/HEAD.patch",
   "commit_hash_kind": "Git commit SHA-1 from the official repository HEAD patch header",
-  "license": {"name": "MIT", "evidence_url": "https://github.com/siegelz/core-bench/blob/e32a2980e72fe6eb04ee04eb749458f570625663/LICENSE", "dataset_license_status": "requires_separate_review"},
-  "release": {"kind": "repository release metadata", "status": "no GitHub releases observed on the official repository page", "evidence_url": "https://github.com/siegelz/core-bench/releases"},
+  "license": {
+    "name": "MIT License",
+    "scope": "repository license text only",
+    "evidence_file": "rawtree/corebench.repository-license.txt",
+    "artifact_size_bytes": 1071,
+    "artifact_sha256": "FA800FC3033AD315E2BF2949AFCA5C6BCB9F19AD6331D1DB996E7DFCA1E0EEB8",
+    "artifact_hash_kind": "SHA-256 of the saved license text artifact (not a Git object identifier)",
+    "git_blob_sha1": "04d237f5a4395c7d6d08bfda609ba374a2778c45",
+    "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+    "dataset_license_status": "requires_separate_review"
+  },
+  "release": {
+    "kind": "repository release metadata",
+    "status": "no GitHub releases observed on the official repository page",
+    "evidence_url": "https://github.com/siegelz/core-bench/releases"
+  },
   "observed_repository_files": [
-    {"path": "README.md", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
-    {"path": "LICENSE", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
-    {"path": "requirements.txt", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"}
+    {
+      "path": "README.md",
+      "object_type": "blob",
+      "size_bytes": 10603,
+      "git_blob_sha1": "a76bf28039dec05ab3e1e9b97840557a26ac6fc9",
+      "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+      "metadata_status": "recorded from official GitHub recursive tree response"
+    },
+    {
+      "path": "LICENSE",
+      "object_type": "blob",
+      "size_bytes": 1071,
+      "git_blob_sha1": "04d237f5a4395c7d6d08bfda609ba374a2778c45",
+      "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+      "metadata_status": "recorded from official GitHub recursive tree response"
+    },
+    {
+      "path": "requirements.txt",
+      "object_type": "blob",
+      "size_bytes": 312,
+      "git_blob_sha1": "360384fb2498d4a1fec19c29a0507255d7bdd15e",
+      "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+      "metadata_status": "recorded from official GitHub recursive tree response"
+    }
   ],
-  "tree_metadata": {"endpoint": "https://api.github.com/repos/siegelz/core-bench/git/trees/e32a2980e72fe6eb04ee04eb749458f570625663?recursive=1", "status": "unavailable", "error_record": "rawtree/corebench.error.txt", "required_on_retry": ["commit validity", "truncated", "path", "type", "size", "Git blob SHA-1", "raw response SHA-256"]},
+  "tree_metadata": {
+    "endpoint": "https://api.github.com/repos/siegelz/core-bench/git/trees/e32a2980e72fe6eb04ee04eb749458f570625663?recursive=1",
+    "status": "recorded",
+    "raw_tree_file": "rawtree/corebench.tree.json",
+    "raw_tree_size_bytes": 906921,
+    "raw_tree_sha256": "B94BA6EBE31D1352FB2000E15FD6E7268D12A83638FE28B65981DF3E1F2561A1",
+    "raw_tree_hash_kind": "SHA-256 of the saved JSON response (not a Git object identifier)",
+    "response_sha": "e32a2980e72fe6eb04ee04eb749458f570625663",
+    "response_sha_kind": "GitHub API response sha; equals requested pinned commit",
+    "pinned_commit_matches_response_sha": true,
+    "truncated": false,
+    "entry_count": 3245,
+    "historical_direct_error_record": "rawtree/corebench.error.txt",
+    "metadata_scope": "Git object metadata only; no repository blobs, benchmark tasks, answers, references, annotations, or dataset payloads were read"
+  },
   "runtime_status": "catalog_only_no_runtime_adapter",
   "qualification": "quarantine_until_review"
 }

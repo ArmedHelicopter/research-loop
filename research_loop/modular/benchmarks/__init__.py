@@ -6,6 +6,8 @@ references, and split allocation remain outside this import path.
 
 from .blade import BladeAdapter
 from .discovery import DiscoveryBenchAdapter
+from .scienceagentbench import ScienceAgentBenchAdapter
+from .scicode import SciCodeAdapter
 from .execution import (
     ArtifactReceipt,
     DockerExecutionBroker,
@@ -18,6 +20,8 @@ __all__ = [
     "ArtifactReceipt",
     "BladeAdapter",
     "DiscoveryBenchAdapter",
+    "ScienceAgentBenchAdapter",
+    "SciCodeAdapter",
     "DockerExecutionBroker",
     "ExecutionReceipt",
     "ExecutionRequest",

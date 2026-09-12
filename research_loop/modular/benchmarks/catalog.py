@@ -1,8 +1,8 @@
 """Static contracts for benchmark sources that may enter modular review.
 
-This catalog is deliberately separate from the public task adapters.  A source
-listed here has no loader, evaluator, or split permission: it remains
-quarantined until custody review and an adapter-specific integration are added.
+This catalog is deliberately separate from the public task adapters. Listing
+a source grants no loader, evaluator, or split permission. Adapter availability
+is tracked independently of custody qualification.
 """
 
 from __future__ import annotations
@@ -41,24 +41,28 @@ _SOURCES = {
         "https://github.com/allenai/discoverybench",
         "data-driven scientific-discovery hypothesis and analysis workflows",
         "official benchmark task group",
+        runtime_adapter_status="public_adapter_implemented",
     ),
     "blade": BenchmarkSource(
         "blade",
         "https://github.com/behavioral-data/BLADE",
         "behavioral-data analysis and data-science workflow evaluation",
         "official dataset family",
+        runtime_adapter_status="public_adapter_implemented",
     ),
     "scienceagentbench": BenchmarkSource(
         "scienceagentbench",
         "https://github.com/OSU-NLP-Group/ScienceAgentBench",
         "data-driven scientific-discovery program-generation workflows",
         "shared source dataset, paper, or artifact family; instances sharing roots stay together",
+        runtime_adapter_status="restricted_public_projection_only",
     ),
     "scicode": BenchmarkSource(
         "scicode",
         "https://github.com/scicode-bench/SciCode",
         "scientific research code-generation and computation workflows",
         "official main problem",
+        runtime_adapter_status="restricted_public_projection_only",
     ),
     "corebench": BenchmarkSource(
         "corebench",

@@ -52,15 +52,24 @@ reconciliation now recovers its output and all five usage fields, while keeping
 the skill-context faults and original failure. Context isolation still needs
 verification before the next experimental call.
 
-The experiment registry has 48 obligations. Q1.1–Q1.7, Q2.1, Q2.3–Q2.7,
-Q3.1–Q3.2, Q5.2–Q5.4 and Q7.1–Q7.6 have typed scenario-input builders (24 IDs).
-Except for the earlier Q1.1/Q2.1/Q2.3 input-only builders, these also have fixture
-mechanism runners. The other 24 exact scenario builders remain
-`blocked_endpoint_not_implemented`. Registry metadata and one generic module run
-must never be counted as completion of those experiments. Scoped panel receipts
-check every registered variant, conditional arm and both benchmarks, using actual
-RunSession journals. Complete scientific scorer calibration, custody service
-wiring and measured combination contrasts still remain to be done.
+All 48 obligations now have typed input builders and callable engineering
+scenario drivers. The added drivers cover the exact registered Q3 recovery,
+Q4 review, Q5 feasibility, Q6 improvement/scorer and Q8 retrieval variants;
+Q1.1/Q2.1/Q2.3 no longer stop at input metadata. Q6.3 executes the restricted
+meta-builder separately. These are fixture mechanisms, not 48 completed
+benchmark experiments. Several drivers still need their full formal-panel
+adapter, matched module-off control and provider/scorer integration.
+
+ExperimentLedger now re-verifies a complete FrozenPanel, actual RunSession
+journals and independently verified scorer receipts before measurement. Legacy
+opaque hashes are insufficient. Candidate selection binds the training panel,
+split, scorer, criteria and required benchmark set. Validation requires a
+consumed custody-issued lease, eligible signed scorer calibration and an
+independent decision; the final ledger decision must match it. Custody checks
+each panel identity against its actual inventory and split before issuing a
+panel receipt. These local checks still require separately deployed trusted
+services and access restrictions; in-process signing fixtures do not establish
+that deployment or substantive scientific calibration.
 
 The retained Discovery training output was executed once as a separate Docker
 diagnostic without new model calls. It observed a constant target across 500
@@ -93,19 +102,29 @@ alongside requested and effective percentages. No fixture result qualifies a
 validation lease or turns successful execution into scientific evidence.
 
 No new module or combination has completed its required paired training effect
-study and independent validation. Current metadata custody has no qualified
-validation groups: unreviewed data stays quarantined. BLADE's shortage of new
-independent sources cannot be repaired by repetitions or renamed tasks.
+study and independent validation. The live metadata inventory checked in this
+continuation contains 403 items: 81 training items in 23 source groups, 322
+quarantined items in 53 groups, no validation items and no leases. No task or
+reference content was opened for this count. Repetitions or renamed tasks do
+not create independent data.
+
+The user authorized additional relevant datasets on 2026-09-12. The frozen
+required benchmark set can now include ScienceAgentBench, SciCode, CORE-Bench
+and AIRS-Bench while retaining DiscoveryBench and BLADE. Their source catalog
+and metadata pins are in [MODULAR-EXTENDED-DATASETS.md](MODULAR-EXTENDED-DATASETS.md).
+Catalog membership does not mean a runtime adapter, qualified split or scorer
+exists. Shared datasets, papers and artifacts must be grouped before splitting.
 
 ## Next required work
 
-1. Repair the real CLI usage/context issues and complete the bounded training
-   transport pilot with every failed call and cost retained.
-2. Implement every remaining exact scenario, substantive scorer calibration and
-   complete per-cell receipt verification; do not accept caller-selected success.
+1. Complete the next bounded training transport contract with the repaired
+   model port and freshly reviewed context; retain both earlier failed pilots.
+2. Finish formal per-cell scenario adapters and substantive blind scorer
+   calibration. Do not substitute synthetic signed counts for actual calibration.
 3. Freeze matched schedules and conduct all required training-side module and
    combination experiments, including the separate meta-builder phase.
-4. Obtain independently qualified fresh source groups for both benchmarks,
-   verify deployment access isolation, freeze validation panels and run acceptance.
+4. Acquire and qualify independent data under the expanded source scope, add
+   restricted public adapters/scorers, verify deployment access isolation, then
+   freeze validation panels and run acceptance. Never tune from validation.
 5. Verify approved whole-package deployment and rollback on the intended host;
    report every Q/C obligation with evidence and unresolved limitations.

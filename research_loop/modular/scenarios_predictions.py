@@ -29,6 +29,18 @@ _VARIANTS = {
     "Q5.4": frozenset(("subjective", "preregistered_cost")),
 }
 
+_Q31_DIAGNOSTICS = {
+    "mechanism": {"diagnostic_focus": "mechanism perturbation", "operational_constraints": [
+        "state a manipulable mechanism variable", "predeclare a perturbation and competing directional predictions",
+        "do not treat narrative plausibility as an observation"]},
+    "computation": {"diagnostic_focus": "independent recomputation", "operational_constraints": [
+        "specify an independently reproducible calculation", "predeclare agreement and disagreement conditions",
+        "do not treat a successful process exit as a scientific observation"]},
+    "measurement": {"diagnostic_focus": "measurement negative control and calibration", "operational_constraints": [
+        "name a negative control and calibration check", "predeclare a measurement failure condition",
+        "do not infer correctness from an uncalibrated measurement"]},
+}
+
 
 @dataclass(frozen=True)
 class PredictionScenarioResult:
@@ -43,11 +55,13 @@ class PredictionScenarioResult:
 def prediction_injection(experiment_id: str, variant: str) -> Mapping[str, Any]:
     """Closed controller description for the registry hook in ``experiments``."""
     _validate(experiment_id, variant)
+    diagnostic = _Q31_DIAGNOSTICS[variant] if experiment_id == "Q3.1" else {}
     return {"fixture_only": True,
             "fixture_notice": "engineering fixture; not a benchmark measurement",
             "auxiliary": {"prediction_scenario_variant": variant,
                           "requires_public_task": True,
-                          "requires_frozen_controls": True}}
+                          "requires_frozen_controls": True},
+            **diagnostic}
 
 
 def run_prediction_scenario(

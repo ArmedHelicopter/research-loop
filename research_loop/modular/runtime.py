@@ -231,6 +231,24 @@ class RunSession:
             self._terminal = True
         return result
 
+    def driver_failure(self, *, driver_id: str, response: FrozenRecord, error_type: str) -> FrozenRecord:
+        """Close after a driver rejects its last real model response.
+
+        This is distinct from a model-port failure: the response reached the
+        controller, but the closed scenario driver could not use it.
+        """
+        if self._terminal or not isinstance(response, FrozenRecord):
+            raise ContractError("driver failure requires an active response")
+        if not isinstance(driver_id, str) or not driver_id or not isinstance(error_type, str) or not error_type:
+            raise ContractError("driver failure needs typed driver and error")
+        last = self._events[-1].data()
+        if last["stage"] != "model_response" or FrozenRecord.from_dict(last["data"]["response"]).content_hash != response.content_hash:
+            raise ContractError("driver failure must bind the last model response")
+        self._terminal = True
+        return self._record("driver_failure", {"schema": "driver-failure-v1", "driver_id": driver_id,
+            "response_digest": response.content_hash, "request_digest": last["data"]["request_digest"],
+            "error_type": error_type})
+
     def admit(self, execution_digest: str, audits: list[FrozenRecord]) -> FrozenRecord:
         if self._terminal:
             raise ContractError("terminal runs cannot admit evidence")
@@ -305,4 +323,4 @@ def verify_trace(path: Path) -> FrozenRecord:
     if not stages or stages[0] != "objective_lock":
         raise ContractError("trace lacks objective lock")
     return FrozenRecord.from_dict({"lock_digest": lock, "events": len(stages), "trace_digest": previous,
-                                  "terminal": stages[-1] in {"final_decision", "model_failure"}, "stages": stages})
+                                  "terminal": stages[-1] in {"final_decision", "model_failure", "driver_failure"}, "stages": stages})

@@ -6,14 +6,63 @@
   "pinned_commit": "72a629ce14309ed5bcfb42ebbc944028dd4b9542",
   "commit_evidence_url": "https://github.com/facebookresearch/airs-bench/commit/HEAD.patch",
   "commit_hash_kind": "Git commit SHA-1 from the official repository HEAD patch header",
-  "license": {"name": "CC BY-NC 4.0", "evidence_url": "https://github.com/facebookresearch/airs-bench/blob/72a629ce14309ed5bcfb42ebbc944028dd4b9542/LICENSE", "dataset_license_status": "requires_separate_review"},
-  "release": {"kind": "repository release metadata", "status": "no GitHub releases observed on the official repository page", "evidence_url": "https://github.com/facebookresearch/airs-bench/releases"},
+  "license": {
+    "name": "Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)",
+    "scope": "repository license text only",
+    "evidence_file": "rawtree/airsbench.repository-license.txt",
+    "artifact_size_bytes": 19346,
+    "artifact_sha256": "3711F963C05D0BE80D53E5923308A6DEE31B203DA23435C9CFB7C7B6E4DD5E19",
+    "artifact_hash_kind": "SHA-256 of the saved license text artifact (not a Git object identifier)",
+    "git_blob_sha1": "12d4ca74d98cfb36269464dced75e9441b7bf645",
+    "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+    "dataset_license_status": "requires_separate_review"
+  },
+  "release": {
+    "kind": "repository release metadata",
+    "status": "no GitHub releases observed on the official repository page",
+    "evidence_url": "https://github.com/facebookresearch/airs-bench/releases"
+  },
   "observed_repository_files": [
-    {"path": "README.md", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
-    {"path": "LICENSE", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
-    {"path": "pyproject.toml", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"}
+    {
+      "path": "README.md",
+      "object_type": "blob",
+      "size_bytes": 12215,
+      "git_blob_sha1": "aabb2e43bab88d845bfb7f236f3b41d46b46c429",
+      "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+      "metadata_status": "recorded from official GitHub recursive tree response"
+    },
+    {
+      "path": "LICENSE",
+      "object_type": "blob",
+      "size_bytes": 19345,
+      "git_blob_sha1": "12d4ca74d98cfb36269464dced75e9441b7bf645",
+      "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+      "metadata_status": "recorded from official GitHub recursive tree response"
+    },
+    {
+      "path": "pyproject.toml",
+      "object_type": "blob",
+      "size_bytes": 2397,
+      "git_blob_sha1": "80178885ea52f9902871ce34fcfb10e6c606c967",
+      "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+      "metadata_status": "recorded from official GitHub recursive tree response"
+    }
   ],
-  "tree_metadata": {"endpoint": "https://api.github.com/repos/facebookresearch/airs-bench/git/trees/72a629ce14309ed5bcfb42ebbc944028dd4b9542?recursive=1", "status": "unavailable", "error_record": "rawtree/airsbench.error.txt", "required_on_retry": ["commit validity", "truncated", "path", "type", "size", "Git blob SHA-1", "raw response SHA-256"]},
+  "tree_metadata": {
+    "endpoint": "https://api.github.com/repos/facebookresearch/airs-bench/git/trees/72a629ce14309ed5bcfb42ebbc944028dd4b9542?recursive=1",
+    "status": "recorded",
+    "raw_tree_file": "rawtree/airsbench.tree.json",
+    "raw_tree_size_bytes": 100307,
+    "raw_tree_sha256": "730D878A1811FD28E2D55F322F7C7B17ACD23B0106DD942032EC50676D38B940",
+    "raw_tree_hash_kind": "SHA-256 of the saved JSON response (not a Git object identifier)",
+    "response_sha": "72a629ce14309ed5bcfb42ebbc944028dd4b9542",
+    "response_sha_kind": "GitHub API response sha; equals requested pinned commit",
+    "pinned_commit_matches_response_sha": true,
+    "truncated": false,
+    "entry_count": 352,
+    "historical_direct_error_record": "rawtree/airsbench.error.txt",
+    "metadata_scope": "Git object metadata only; no repository blobs, benchmark tasks, answers, references, annotations, or dataset payloads were read"
+  },
   "runtime_status": "catalog_only_no_runtime_adapter",
   "qualification": "quarantine_until_review"
 }

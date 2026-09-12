@@ -20,19 +20,30 @@ def test_registry_keeps_all_48_obligations_designed_and_emits_controlled_scenari
         ledger.transition("Q1.2","blocked")
     assert ledger.transition("Q1.2","blocked",blocked_reason="blocked_endpoint_unimplemented:claim_revision_context").data()["Q1.2"]["status"] == "blocked"
 
-def test_measurement_requires_bound_two_benchmark_receipts_and_does_not_auto_accept() -> None:
+def test_legacy_two_benchmark_hashes_cannot_claim_measurement() -> None:
     specs=registry(); controlled=scenario(specs["Q1.1"],"correct",inputs=inputs())
     ledger=ExperimentLedger.create().transition("Q1.1","implemented",implementation_ref="module@v1").transition("Q1.1","integration_verified",implementation_ref="trace@v1")
-    with pytest.raises(ContractError,match="both benchmark"):
+    with pytest.raises(ContractError,match="complete frozen panel"):
         ledger.transition("Q1.1","train_measured",scenario_record=controlled,receipts=(receipt("discoverybench","train","g1",controlled.content_hash),))
-    trained=ledger.transition("Q1.1","train_measured",scenario_record=controlled,receipts=(receipt("discoverybench","train","g1",controlled.content_hash),receipt("blade","train","g2",controlled.content_hash)))
-    assert trained.data()["Q1.1"]["status"]=="train_measured"
+    with pytest.raises(ContractError, match="legacy hashes are insufficient"):
+        ledger.transition("Q1.1","train_measured",scenario_record=controlled,receipts=(receipt("discoverybench","train","g1",controlled.content_hash),receipt("blade","train","g2",controlled.content_hash)))
+    assert ledger.data()["Q1.1"]["status"]=="integration_verified"
     with pytest.raises(ContractError,match="invalid experiment state"):
-        trained.transition("Q1.1","accepted")
+        ledger.transition("Q1.1","accepted")
 
-def test_validation_binding_rejects_wrong_domain_group_or_scenario() -> None:
-    spec=registry()["Q2.1"]; controlled=scenario(spec,"neutral",inputs=inputs())
-    switches=("M1:on","M5:on")
-    ledger=ExperimentLedger.create().transition("Q2.1","implemented",implementation_ref="m1@v1").transition("Q2.1","integration_verified",implementation_ref="trace@v1").transition("Q2.1","train_measured",scenario_record=controlled,receipts=(receipt("discoverybench","train","a",controlled.content_hash,("neutral",),switches),receipt("blade","train","b",controlled.content_hash,("neutral",),switches))).transition("Q2.1","candidate_frozen")
-    with pytest.raises(ContractError,match="domain or scenario"):
-        ledger.transition("Q2.1","validation_measured",scenario_record=controlled,receipts=(receipt("discoverybench","train","a",controlled.content_hash),receipt("blade","validation","b",controlled.content_hash)))
+def test_blocked_status_cannot_skip_measurement_or_validation() -> None:
+    ledger=ExperimentLedger.create().transition("Q2.1","implemented",implementation_ref="m1@v1").transition("Q2.1","blocked",blocked_reason="fixture unavailable")
+    for target in ("train_measured", "candidate_frozen", "validation_measured", "accepted", "rejected"):
+        with pytest.raises(ContractError,match="resume its recorded state"):
+            ledger.transition("Q2.1",target)
+    resumed=ledger.transition("Q2.1", "implemented")
+    assert resumed.data()["Q2.1"]["status"] == "implemented"
+
+
+@pytest.mark.parametrize("coverage", tuple(registry()))
+def test_added_runners_match_every_authoritative_variant(coverage):
+    spec = registry()[coverage]
+    for variant in spec.variants:
+        result = scenario(spec, variant, inputs=inputs()).data()
+        assert result["experiment_id"] == coverage and result["variant"] == variant
+        assert result["controller_input"]["fixture_only"] is True

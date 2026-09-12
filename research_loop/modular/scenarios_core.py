@@ -17,6 +17,13 @@ class CoreScenarioResult:
     responses: tuple[FrozenRecord, ...]
     record: FrozenRecord
 
+
+def core_injection(experiment_id: str, variant: str) -> Mapping[str, Any]:
+    if variant not in _V.get(experiment_id, ()):
+        raise ContractError("core scenario variant is not registered")
+    return {"fixture_only": True, "experiment_id": experiment_id, "variant": variant,
+            "runner": "run_core_scenario", "scientific_status": "not_measured"}
+
 def run_core_scenario(experiment_id: str, variant: str, *, task: PublicTask, frozen_controls: FrozenRecord,
                       callback: Callable[[FrozenRecord], Mapping[str, Any]] | None = None) -> CoreScenarioResult:
     if variant not in _V.get(experiment_id, ()): raise ContractError("core scenario variant is not registered")
@@ -33,9 +40,11 @@ def _invoke(callback, payload):
     return FrozenRecord.from_dict(dict(value))
 
 def _history(task,c,variant,callback):
-    # All three strategies receive the same new public evidence; 400 is a
-    # fixture character allocation, explicitly not a token-equivalence claim.
-    histories={"correct":"Prior public table: treated mean 12.1, control mean 9.0; allocation log covers both groups. The old interpretation says the difference is compatible with the recorded allocation.","wrong":"Prior public table: treated mean 12.1, control mean 9.0; allocation log covers both groups. The old interpretation incorrectly says the treated mean was 9.0 and control mean 12.1.","neutral":"Prior public table: treated mean 12.1, control mean 9.0; allocation log covers both groups. The old interpretation records the table but makes no conclusion."}
+    # A fixed allocation is shared, while actual serialized use is retained.
+    # These byte/character controls do not establish equal tokenizer costs.
+    histories={"correct":"The earlier treated mean exceeded the control mean.",
+               "wrong":"The earlier treated mean was below the control mean.",
+               "neutral":"The earlier report did not interpret the mean difference."}
     payloads=[]; responses=[]
     evidence=EvidenceLedger(task.identity); claims=ClaimLedger(evidence); cache=ContextCache(); builder=ContextBuilder(task.identity,budget_bytes=12000)
     old=evidence.append({"kind":"measurement","root_material":{"fixture":"old-public-table"},"representation":"raw","content":{"treated_mean":12.1,"control_mean":9.0},"subject_bindings":{"task":task.identity.task_id},"independent_group":task.identity.group_id},{"trusted_validator":"fixture","validator_verified":True,"admitted":True})
@@ -45,13 +54,15 @@ def _history(task,c,variant,callback):
         if strategy=="m3_rebuild":
             newroot=evidence.append({"kind":"measurement","root_material":{"fixture":"new-public-table"},"representation":"raw","content":new,"subject_bindings":{"task":task.identity.task_id},"independent_group":task.identity.group_id},{"trusted_validator":"fixture","validator_verified":True,"admitted":True})
             context=cache.get_or_build(builder,"What explains the public mean difference?",evidence,claims,mode="candidate").data()
-            evidence.withdraw(newroot.root_id,"fixture rebuild branch complete")
+        elif strategy=="rolling_summary":
+            context={"summary":histories[variant],"status":"untrusted_historical_interpretation"}
         else:
-            # Equal fixed character budget exposes different old summaries; it
-            # is not presented as an equal-token control.
-            context={"summary":histories[variant][:96],"character_budget":96}
+            raw_history=("Earlier public record: treated mean 12.1, control mean 9.0. "
+                         "Allocation covers both groups. " + histories[variant])
+            context={"raw_history_tail":raw_history[-96:],"character_budget":96}
         p=FrozenRecord.from_dict({"schema":"q11-history-input-v1","fixture_only":True,"task":task.data(),"frozen_controls":c,
-            "strategy":strategy,"history_context":context,"new_public_evidence":new,"fixture_character_budget":96,"token_equivalence_claimed":False})
+            "strategy":strategy,"history_context":context,"new_public_evidence":new,
+            "context_allocation_bytes":12000,"truncation_characters":96,"token_equivalence_claimed":False})
         payloads.append(p); responses.append(_invoke(callback,p))
     return CoreScenarioResult(tuple(payloads),tuple(responses),FrozenRecord.from_dict({"experiment_id":"Q1.1","variant":variant,"fixture_only":True,"payload_digests":[x.content_hash for x in payloads],"response_digests":[x.content_hash for x in responses],"denominator":{"strategies":3,"callback_calls":3},"limitation":"M3 context-routing fixture only; no efficacy or token-equivalence measurement"}))
 
@@ -75,4 +86,12 @@ def _pressure(task,c,variant,callback):
         gate=EvidenceAdmission.decide(identity=task.identity,state=state,outcome=cand["outcome"],execution_success=True,trusted_validator="fixture-host",validator_verified=True,evidence_ids=[row["evidence_id"]],subject_bindings={"task":task.identity.task_id},required_audit=["measurement"],audit=[AuditItem("measurement",True,True)])
         engine.submit(session.review_id,role_id=role,reviewer_id="fixture-"+role,response=review.data(),cost_units=1); payloads.append(p);responses.append(FrozenRecord.from_dict({"review":review.data(),"candidate":dict(cand)}));gates.append((row["case_id"],gate,cand,expected[row["case_id"]]))
     engine.reveal(session.review_id)
-    return CoreScenarioResult(tuple(payloads),tuple(responses),FrozenRecord.from_dict({"experiment_id":"Q2.1","variant":variant,"fixture_only":True,"payload_digests":[x.content_hash for x in payloads],"response_digests":[x.content_hash for x in responses],"m5_review_id":session.review_id,"m1_gates":[{"case_id":case,"admitted":gate.admitted,"reason":gate.reason,"candidate":dict(cand),"fixture_oracle_match":(cand["support"]=={"support":"supported","refute":"refuted","invalid":"undetermined","unknown":"undetermined"}[want])} for case,gate,cand,want in gates],"denominator":{"controlled_cases":4,"callback_calls":4,"m1_gates":4},"limitation":"M1 gate is caused by callback candidate; controller-only oracle scores matches and is never in callback payload"}))
+    expected_states={"support":("valid","supported","positive"),"refute":("valid","refuted","negative"),
+                     "invalid":("invalid","undetermined",None),"unknown":("unknown","undetermined",None)}
+    scored=[]
+    for case,gate,cand,want in gates:
+        validity,support,outcome=expected_states[want]
+        match=cand["validity"]==validity and cand["support"]==support and (outcome is None or cand["outcome"]==outcome)
+        scored.append({"case_id":case,"admitted":gate.admitted,"reason":gate.reason,"candidate":dict(cand),
+                       "fixture_oracle_match":match,"false_admission_observed":gate.admitted and not match})
+    return CoreScenarioResult(tuple(payloads),tuple(responses),FrozenRecord.from_dict({"experiment_id":"Q2.1","variant":variant,"fixture_only":True,"payload_digests":[x.content_hash for x in payloads],"response_digests":[x.content_hash for x in responses],"m5_review_id":session.review_id,"m1_gates":scored,"denominator":{"controlled_cases":4,"callback_calls":4,"m1_gates":4},"limitation":"M1 receives the fixture callback judgement; structural admission does not authenticate an independent scientific evaluator. Private fixture oracle scoring is separate and cannot support production promotion."}))

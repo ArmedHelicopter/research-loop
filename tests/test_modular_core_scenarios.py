@@ -29,3 +29,29 @@ def test_q21_callback_candidate_changes_gate_and_always_positive_is_not_oracle_c
  r=run_core_scenario("Q2.1","neutral",task=t,frozen_controls=controls(t),callback=always).record.data()
  assert r["m1_gates"][0]["admitted"] is True
  assert r["m1_gates"][1]["fixture_oracle_match"] is False and r["m1_gates"][2]["fixture_oracle_match"] is False
+ assert r["m1_gates"][1]["false_admission_observed"] is True
+
+
+def test_q11_manipulates_actual_history_material_and_rebuilds_from_identical_roots():
+ t=task("blade")
+ runs={v:run_core_scenario("Q1.1",v,task=t,frozen_controls=controls(t),callback=cb) for v in registry()["Q1.1"].variants}
+ for strategy_index in (0,1):
+  # Exclude strategy/variant identifiers: actual history content must differ.
+  contexts=[FrozenRecord.from_dict(r.payloads[strategy_index].data()["history_context"]).content_hash for r in runs.values()]
+  assert len(set(contexts))==3
+ for r in runs.values():
+  bodies=[p.data() for p in r.payloads]
+  assert bodies[0]["history_context"] != bodies[1]["history_context"]
+  assert bodies[2]["history_context"]["mode"] == "candidate"
+  entries=bodies[2]["history_context"]["entries"]["entries"]
+  assert any(e["kind"] == "evidence" and e["payload"]["content"].get("treated_mean")==10.2 for e in entries)
+  assert all(b["new_public_evidence"] == bodies[0]["new_public_evidence"] for b in bodies)
+ assert len({FrozenRecord.from_dict(r.payloads[2].data()["history_context"]).content_hash for r in runs.values()})==1
+
+
+def test_q21_unknown_and_invalid_are_not_conflated_by_fixture_oracle():
+ t=task("blade")
+ r=run_core_scenario("Q2.1","neutral",task=t,frozen_controls=controls(t),callback=cb)
+ gates=r.record.data()["m1_gates"]
+ assert gates[2]["fixture_oracle_match"] is True
+ assert gates[3]["fixture_oracle_match"] is False

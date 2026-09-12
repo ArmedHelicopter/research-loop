@@ -5,6 +5,9 @@ from research_loop.modular.contracts import FrozenRecord, required_text
 from research_loop.ontology import ContractError
 
 def fixed_control_design(baseline_digest: str, p0_control_digest: str) -> FrozenRecord:
+    required_text(p0_control_digest, "P0 control digest")
+    if len(p0_control_digest) != 64 or any(ch not in "0123456789abcdef" for ch in p0_control_digest):
+        raise ContractError("P0 control digest must be a sha256 digest")
     arm=default_compatibility(required_text(baseline_digest,"baseline digest")).arm(())
     return FrozenRecord.from_dict({"schema":"p0-fixed-control-grid-v1","baseline_digest":baseline_digest,
         "p0_control_digest":required_text(p0_control_digest,"P0 control digest"),"runtime_arm":arm.data(),

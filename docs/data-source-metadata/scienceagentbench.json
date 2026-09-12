@@ -6,14 +6,63 @@
   "pinned_commit": "c26e151ed601ba109dc4d35e057ff8e73fec469d",
   "commit_evidence_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench/commit/HEAD.patch",
   "commit_hash_kind": "Git commit SHA-1 from the official repository HEAD patch header",
-  "license": {"name": "MIT for repository code", "evidence_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench/blob/c26e151ed601ba109dc4d35e057ff8e73fec469d/LICENSE", "dataset_license_status": "requires_separate_review"},
-  "release": {"kind": "verified benchmark artifact announcement", "version_note": "2026-04-30 verified version announcement", "evidence_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench/commit/c26e151ed601ba109dc4d35e057ff8e73fec469d"},
+  "license": {
+    "name": "MIT License",
+    "scope": "repository license text only",
+    "evidence_file": "rawtree/scienceagentbench.repository-license.txt",
+    "artifact_size_bytes": 1088,
+    "artifact_sha256": "93B43D692B033B76129504448695BFE76EF22D18B11E51352BFAB4B5622E5AAA",
+    "artifact_hash_kind": "SHA-256 of the saved license text artifact (not a Git object identifier)",
+    "git_blob_sha1": "281b68077e52aa0edc708b0daeeab60d4601c1d1",
+    "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+    "dataset_license_status": "requires_separate_review"
+  },
+  "release": {
+    "kind": "verified benchmark artifact announcement",
+    "version_note": "2026-04-30 verified version announcement",
+    "evidence_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench/commit/c26e151ed601ba109dc4d35e057ff8e73fec469d"
+  },
   "observed_repository_files": [
-    {"path": "README.md", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
-    {"path": "LICENSE", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"},
-    {"path": "requirements.txt", "size_bytes": null, "git_blob_sha1": null, "metadata_status": "pending official Git tree response"}
+    {
+      "path": "README.md",
+      "object_type": "blob",
+      "size_bytes": 12039,
+      "git_blob_sha1": "d1eb0900de1820ec40bd1f35c63bc25ff050b26a",
+      "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+      "metadata_status": "recorded from official GitHub recursive tree response"
+    },
+    {
+      "path": "LICENSE",
+      "object_type": "blob",
+      "size_bytes": 1088,
+      "git_blob_sha1": "281b68077e52aa0edc708b0daeeab60d4601c1d1",
+      "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+      "metadata_status": "recorded from official GitHub recursive tree response"
+    },
+    {
+      "path": "requirements.txt",
+      "object_type": "blob",
+      "size_bytes": 203,
+      "git_blob_sha1": "315a1d8b71f5123660396551f2d91fc36bef14cc",
+      "git_blob_hash_kind": "Git blob SHA-1 (not SHA-256)",
+      "metadata_status": "recorded from official GitHub recursive tree response"
+    }
   ],
-  "tree_metadata": {"endpoint": "https://api.github.com/repos/OSU-NLP-Group/ScienceAgentBench/git/trees/c26e151ed601ba109dc4d35e057ff8e73fec469d?recursive=1", "status": "unavailable", "error_record": "rawtree/scienceagentbench.error.txt", "required_on_retry": ["commit validity", "truncated", "path", "type", "size", "Git blob SHA-1", "raw response SHA-256"]},
-  "runtime_status": "catalog_only_no_runtime_adapter",
+  "tree_metadata": {
+    "endpoint": "https://api.github.com/repos/OSU-NLP-Group/ScienceAgentBench/git/trees/c26e151ed601ba109dc4d35e057ff8e73fec469d?recursive=1",
+    "status": "recorded",
+    "raw_tree_file": "rawtree/scienceagentbench.tree.json",
+    "raw_tree_size_bytes": 9159,
+    "raw_tree_sha256": "A731716F72A15BB4330F8E2241E4B9E5F45195B3FB12BF3661487683C99B03DE",
+    "raw_tree_hash_kind": "SHA-256 of the saved JSON response (not a Git object identifier)",
+    "response_sha": "c26e151ed601ba109dc4d35e057ff8e73fec469d",
+    "response_sha_kind": "GitHub API response sha; equals requested pinned commit",
+    "pinned_commit_matches_response_sha": true,
+    "truncated": false,
+    "entry_count": 37,
+    "historical_direct_error_record": "rawtree/scienceagentbench.error.txt",
+    "metadata_scope": "Git object metadata only; no repository blobs, benchmark tasks, answers, references, annotations, or dataset payloads were read"
+  },
+  "runtime_status": "restricted_public_projection_only",
   "qualification": "quarantine_until_review"
 }

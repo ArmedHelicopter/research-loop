@@ -6,7 +6,13 @@ auditable as a state transition.  It does not manufacture a benchmark run.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Mapping
+from typing import Mapping, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from research_loop.modular.panel_receipts import (
+        FrozenPanel, PanelReceiptVerifier, RuntimeReceipt, ScientificScorerReceipt,
+        ValidationAcceptance,
+    )
 
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, required_text
 from research_loop.ontology import ContractError, digest
@@ -37,7 +43,7 @@ class ExperimentSpec:
         if not self.modules or not self.variants: raise ContractError("experiment needs modules and variants")
     @property
     def record(self) -> FrozenRecord:
-        return FrozenRecord.from_dict({"experiment_id":self.experiment_id,"modules":list(self.modules),"module_switches":{module:["off","on"] for module in self.modules},"scenario_kind":self.scenario_kind,"variants":list(self.variants),"endpoint":self.endpoint,"comparison_mode":"combination" if self.combination else "standalone_or_conditional","required_benchmarks":["discoverybench","blade"]})
+        return FrozenRecord.from_dict({"experiment_id":self.experiment_id,"modules":list(self.modules),"module_switches":{module:["on"] if module == "P0" else ["off","on"] for module in self.modules},"scenario_kind":self.scenario_kind,"variants":list(self.variants),"endpoint":self.endpoint,"comparison_mode":"fixed_control" if set(self.modules) == {"P0"} else "combination" if self.combination else "standalone_or_conditional","required_benchmarks":["discoverybench","blade"]})
 
 def registry() -> Mapping[str, ExperimentSpec]:
     result={row[0]:ExperimentSpec(*row) for row in _ROWS}
@@ -51,29 +57,45 @@ class ControllerInputs:
 def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs) -> FrozenRecord:
     if variant not in spec.variants: raise ContractError("variant is not registered")
     base={"task":inputs.task.content_hash,"evidence":inputs.evidence.content_hash,"budget":inputs.budget.content_hash}
-    if spec.experiment_id=="Q1.1": injection={"history":{"correct":"fixture-supported","wrong":"fixture-withdrawn","neutral":"fixture-none"}[variant]}
+    if spec.experiment_id in {"Q1.1", "Q2.1"}:
+        from research_loop.modular.scenarios_core import core_injection
+        injection=dict(core_injection(spec.experiment_id, variant))
     elif spec.experiment_id in {"Q1.2","Q1.3","Q1.4","Q1.5","Q1.6","Q1.7"}:
         from research_loop.modular.scenarios_history import history_injection
         injection=dict(history_injection(spec.experiment_id, variant))
-    elif spec.experiment_id in {"Q2.4", "Q2.5"}:
+    elif spec.experiment_id in {"Q2.3", "Q2.4", "Q2.5"}:
         from research_loop.modular.scenarios_audit import audit_injection
         injection=dict(audit_injection(spec.experiment_id, variant))
     elif spec.experiment_id in {"Q2.6", "Q2.7"}:
         from research_loop.modular.scenarios_protocol import protocol_injection
         injection=protocol_injection(spec.experiment_id, variant)
+    elif spec.experiment_id in {"Q2.2", "Q6.4"}:
+        from research_loop.modular.scenarios_scoring import scoring_injection
+        injection=dict(scoring_injection(spec.experiment_id, variant))
+    elif spec.experiment_id in {"Q6.1", "Q6.2", "Q6.3", "Q6.5", "Q6.6"}:
+        from research_loop.modular.scenarios_improvement import improvement_injection
+        injection=improvement_injection(spec.experiment_id, variant).data()
     elif spec.experiment_id in {"Q3.1", "Q3.2", "Q5.2", "Q5.3", "Q5.4"}:
         from research_loop.modular.scenarios_predictions import prediction_injection
         injection=dict(prediction_injection(spec.experiment_id, variant))
+    elif spec.experiment_id in {"Q3.3", "Q3.4", "Q3.5", "Q5.1", "Q5.5"}:
+        from research_loop.modular.scenarios_recovery import recovery_injection
+        injection=dict(recovery_injection(spec.experiment_id, variant))
+    elif spec.experiment_id in {"Q4.1", "Q4.2", "Q4.3", "Q4.4", "Q4.5"}:
+        from research_loop.modular.scenarios_review import review_injection
+        injection=dict(review_injection(spec.experiment_id, variant))
     elif spec.experiment_id in {"Q7.1", "Q7.2", "Q7.3", "Q7.4", "Q7.5", "Q7.6"}:
         from research_loop.modular.scenarios_exploration import exploration_injection
         injection=dict(exploration_injection(spec.experiment_id, variant))
-    elif spec.experiment_id=="Q2.1": injection={"pressure":{"neutral":"apply_frozen_rule","positive":"seek_support_only_if_justified","negative":"seek_refutation_only_if_justified"}[variant]}
-    elif spec.experiment_id=="Q2.3": injection={"audit":{"false":False,"string_false":"false","empty":[],"duplicate":["x","x"],"unknown":{"status":"unknown"},"missing":{"status":"proceed"},"parse_error":"{invalid"}[variant]}
+    elif spec.experiment_id in {"Q8.1", "Q8.2", "Q8.3", "Q8.4", "Q8.5", "Q8.6", "Q8.7"}:
+        from research_loop.modular.scenarios_retrieval import retrieval_injection
+        injection=retrieval_injection(spec.experiment_id, variant).data()
     else: raise ContractError(f"blocked_endpoint_not_implemented:{spec.endpoint}")
     return FrozenRecord.from_dict({"experiment_id":spec.experiment_id,"variant":variant,"controller_input":injection,"base":base,"controls":{"same_task":True,"same_evidence":True,"same_budget":True}})
 
 @dataclass(frozen=True)
 class RunReceipt:
+    """Legacy provenance record, never sufficient evidence of measurement."""
     benchmark: str; identity: DataIdentity; scenario_hash: str; arms: tuple[str,...]; module_switches: tuple[str,...]; package_digest: str; scorer_digest: str; trace_digest: str; run_digest: str
     def __post_init__(self) -> None:
         if self.benchmark not in BENCHMARKS or self.identity.domain not in {"train","validation"} or self.identity.benchmark!=self.benchmark: raise ContractError("invalid benchmark receipt")
@@ -87,33 +109,77 @@ class ExperimentLedger:
     def create(cls) -> "ExperimentLedger":
         return cls(FrozenRecord.from_dict({key:{"status":"designed","spec_hash":value.record.content_hash,"history":[]} for key,value in registry().items()}))
     def data(self)->dict[str,object]: return self.entries.data()
-    def transition(self, experiment_id:str, target:str, *, implementation_ref:str|None=None, scenario_record:FrozenRecord|None=None, receipts:tuple[RunReceipt,...]=(), blocked_reason:str|None=None) -> "ExperimentLedger":
+    def transition(self, experiment_id:str, target:str, *, implementation_ref:str|None=None,
+                   scenario_record:FrozenRecord|None=None, receipts:tuple[RunReceipt,...]=(),
+                   blocked_reason:str|None=None, panel:FrozenPanel|None=None,
+                   runtime_receipts:tuple[RuntimeReceipt,...]=(),
+                   scorer_receipts:tuple[ScientificScorerReceipt,...]=(),
+                   panel_verifier:PanelReceiptVerifier|None=None,
+                   validation_acceptance:ValidationAcceptance|None=None,
+                   frozen_candidate:FrozenRecord|None=None) -> "ExperimentLedger":
         if target not in STATES: raise ContractError("unknown experiment state")
         specs=registry(); spec=specs.get(experiment_id)
         if spec is None: raise ContractError("unknown experiment id")
-        data=self.entries.data(); current=data[experiment_id]["status"]
+        data=self.entries.data(); entry=data[experiment_id]; current=entry["status"]
         if current in TERMINAL and current!="blocked": raise ContractError("terminal experiment cannot transition")
+        if current == "blocked":
+            if target != entry.get("resume_state"):
+                raise ContractError("blocked experiment must resume its recorded state")
+            data[experiment_id] = {**entry, "status": target, "resume_state": None,
+                "history": entry["history"] + [{"from": current, "to": target, "action": "resume"}]}
+            return ExperimentLedger(FrozenRecord.from_dict(data))
         order={state:i for i,state in enumerate(STATES[:7])}
         if target in order and current in order and order[target] != order[current]+1: raise ContractError("invalid experiment state transition")
         if target=="implemented" and not implementation_ref: raise ContractError("implemented requires implementation reference")
         if target=="integration_verified" and not implementation_ref: raise ContractError("integration verification requires trace reference")
         if target == "blocked" and not blocked_reason: raise ContractError("blocked requires an explicit reason")
+        measurement = None
         if target in {"train_measured","validation_measured"}:
-            if scenario_record is None: raise ContractError("measurement requires frozen scenario")
-            self._validate_receipts(spec, scenario_record, receipts, "train" if target=="train_measured" else "validation")
-        if target in {"accepted","rejected","inconclusive"}: raise ContractError("scientific decision requires independent verifier")
-        data[experiment_id]={"status":target,"spec_hash":spec.record.content_hash,"history":data[experiment_id]["history"]+[{"from":current,"to":target,"implementation_ref":implementation_ref,"scenario_hash":scenario_record.content_hash if scenario_record else None,"receipt_hashes":[receipt.run_digest for receipt in receipts],"blocked_reason":blocked_reason}]}
+            from research_loop.modular.panel_receipts import FrozenPanel, PanelReceiptVerifier
+            if receipts or not isinstance(panel, FrozenPanel) or not isinstance(panel_verifier, PanelReceiptVerifier):
+                raise ContractError("measurement requires complete frozen panel and independent verifier; legacy hashes are insufficient")
+            domain = "train" if target == "train_measured" else "validation"
+            if panel.domain != domain or experiment_id not in panel.scope_ids:
+                raise ContractError("measurement panel domain or experiment binding mismatch")
+            if target == "validation_measured":
+                freeze = entry.get("frozen_candidate")
+                if not freeze or panel.candidate_digest != freeze["candidate_digest"] or panel.split_digest != freeze["split_digest"]:
+                    raise ContractError("validation panel differs from train-frozen candidate or split")
+                if panel.acceptance_criteria.content_hash != freeze["acceptance_criteria_digest"] or {cell.scorer_digest for cell in panel.cells} != {freeze["scorer_digest"]}:
+                    raise ContractError("validation scorer or acceptance criteria drift")
+                if list(panel.required_benchmarks) != freeze["required_benchmarks"]:
+                    raise ContractError("validation benchmark set differs from train-frozen selection")
+                if validation_acceptance is None:
+                    raise ContractError("validation measurement requires independent custody and acceptance receipts")
+            verdict = panel_verifier.verify(panel, runtime_receipts, scorer_receipts=scorer_receipts, validation=validation_acceptance)
+            if not verdict.scientific_verified:
+                raise ContractError("engineering trace verification is insufficient for scientific measurement")
+            if target == "validation_measured" and verdict.decision not in {"accepted", "rejected", "inconclusive"}:
+                raise ContractError("validation measurement requires independently verified acceptance decision")
+            measurement = {"panel_digest": panel.digest, "candidate_digest": panel.candidate_digest,
+                "split_digest": panel.split_digest, "scorer_digest": panel.cells[0].scorer_digest,
+                "required_benchmarks": list(panel.required_benchmarks),
+                "acceptance_criteria_digest": panel.acceptance_criteria.content_hash,
+                "runtime_receipts_digest": FrozenRecord.from_dict({"runtime": [panel_verifier._runtime_data(row) for row in sorted(runtime_receipts, key=lambda row: row.cell_key)]}).content_hash,
+                "scorer_receipts_digest": FrozenRecord.from_dict({"scorer": [row.receipt.content_hash for row in sorted(scorer_receipts, key=lambda row: row.cell_key)]}).content_hash,
+                "observed_cells": verdict.observed_cells, "failures": verdict.failures,
+                "unscored": verdict.unscored, "blocked": verdict.blocked, "decision": verdict.decision}
+        if target == "candidate_frozen":
+            if not isinstance(frozen_candidate, FrozenRecord):
+                raise ContractError("candidate freeze requires explicit immutable train selection")
+            freeze = frozen_candidate.data()
+            trained = entry.get("train_measurement", {})
+            expected = {"training_panel_digest": trained.get("panel_digest"),
+                **{key: trained.get(key) for key in ("candidate_digest", "split_digest", "scorer_digest", "acceptance_criteria_digest", "required_benchmarks")}}
+            if freeze != expected or not trained:
+                raise ContractError("candidate freeze must bind verified training panel, candidate, split, scorer and criteria")
+        if target in {"accepted","rejected","inconclusive"}:
+            if current != "validation_measured" or entry.get("validation_measurement", {}).get("decision") != target:
+                raise ContractError("scientific decision must match the independent validation verdict")
+        data[experiment_id]={**entry, "status":target,"spec_hash":spec.record.content_hash,
+            "resume_state": current if target == "blocked" else None,
+            "history":entry["history"]+[{"from":current,"to":target,"implementation_ref":implementation_ref,"scenario_hash":scenario_record.content_hash if scenario_record else None,"receipt_hashes":[receipt.run_digest for receipt in receipts],"blocked_reason":blocked_reason,"measurement":measurement}]}
+        if measurement is not None:
+            data[experiment_id]["train_measurement" if target == "train_measured" else "validation_measurement"] = measurement
+        if target == "candidate_frozen": data[experiment_id]["frozen_candidate"] = frozen_candidate.data()
         return ExperimentLedger(FrozenRecord.from_dict(data))
-    @staticmethod
-    def _validate_receipts(spec:ExperimentSpec, scenario_record:FrozenRecord, receipts:tuple[RunReceipt,...], domain:str)->None:
-        if {receipt.benchmark for receipt in receipts} != BENCHMARKS: raise ContractError("measurement needs both benchmark receipts")
-        scenario_variant = scenario_record.data().get("variant")
-        if scenario_record.data().get("experiment_id") != spec.experiment_id or scenario_variant not in spec.variants:
-            raise ContractError("scenario does not bind registered experiment")
-        groups=set()
-        for receipt in receipts:
-            if receipt.identity.domain != domain or receipt.scenario_hash != scenario_record.content_hash: raise ContractError("receipt domain or scenario binding mismatch")
-            if scenario_variant not in receipt.arms: raise ContractError("receipt arms do not bind registered scenario")
-            if set(receipt.module_switches) != {f"{module}:on" for module in spec.modules}: raise ContractError("receipt module switches do not bind registered experiment")
-            groups.add(receipt.identity.group_id)
-        if len(groups)!=2: raise ContractError("benchmark receipts need distinct task groups")
