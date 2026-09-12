@@ -1,0 +1,5 @@
+{"type":"thread.started","thread_id":"01a097fe-0b49-7f22-a045-cdc6b4cbe7d5"}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."}}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"{\"conclusion\":\"No scientific result or programme completion is authorized; the supplied scenario only defines candidate hypotheses and a comparison plan.\",\"evidence_ids\":[],\"objective_digest\":\"6302a920aea8fbf1b945f4c45a098ff868fc7db24de99c4f9a26579bdbdc9728\",\"outcome\":\"unknown\",\"programme_complete\":false}"}}
+{"type":"turn.completed","usage":{"input_tokens":8012,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":135,"reasoning_output_tokens":42}}

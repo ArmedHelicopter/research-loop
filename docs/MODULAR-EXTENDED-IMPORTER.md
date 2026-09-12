@@ -53,7 +53,13 @@ written and returned from the fact that `raw_private_payload_returned` is
 false; `access_isolation: not_verified` remains because the module cannot
 prove OS isolation or prior non-exposure.
 
-The importer has synthetic tests only. A custodian running it against a
-received snapshot must retain the controller log and receipt separately; this
-module does not treat a test result or inventory creation as a scientific or
-data-qualification result.
+The importer also ran against the two actual pinned snapshots on 2026-09-13,
+creating 80 SciCode and 102 ScienceAgentBench inventory items. All remain
+unknown-exposure and unsplit; no raw private payload was returned to the model.
+The original custody state remained byte-identical. Acquisition receipts and the
+metadata-only import summary are retained in
+`results/modular-engineering-20260912/live-training-20260913/extended-sources/`.
+An initial reporting-script field-name error occurred after successful import;
+the summary was recovered from existing metadata without repeating the import.
+Neither a test result nor inventory creation is a scientific or qualification
+result. See [MODULAR-CHECKPOINT-20260913.md](MODULAR-CHECKPOINT-20260913.md).

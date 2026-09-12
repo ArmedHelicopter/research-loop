@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="1.322" timestamp="2026-09-12T22:49:55.294694+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_combination_panels" name="test_production_combination_runner_injects_exact_package_and_scenario" time="0.412" /><testcase classname="tests.test_modular_combination_panels" name="test_over_budget_public_context_retains_zero_call_cells" time="0.788"><failure message="assert not [FrozenRecord(encoded='{&quot;context&quot;:{&quot;budget_bytes&quot;:12000,&quot;claim_version&quot;:&quot;8a1571a5f2542904a0087ee753755ecd49430d22c4527...ynthetic long public task synthetic long public task synthetic long public task synthetic long public task &quot;}}}'), ...]">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/combo-live-contract-root/test_over_budget_public_contex0')
+
+    def test_over_budget_public_context_retains_zero_call_cells(tmp_path: Path):
+        tasks, packages, scorer, criteria = _inputs()
+        tasks = [PublicTask.create(task.identity, {"question": "synthetic long public task " * 1200}) for task in tasks]
+        catalogue = compile_combination_catalogue(stage="over-budget-public-context", tasks=tasks,
+            baseline_digest=SPLIT, packages_by_arm=packages, scorer=scorer, acceptance_criteria=criteria)
+        panel = catalogue.panels["pair:M1+M4"]
+        calls = []
+        def model(request):
+            calls.append(request)
+            raise AssertionError("context should fail before provider I/O")
+        receipts = [run_combination_cell(panel, cell, task=catalogue.tasks[cell.task_digest],
+            scenario=catalogue.scenarios[cell.key], package=catalogue.packages[cell.runtime_arm.content_hash],
+            objective=FrozenRecord.from_dict({"panel": panel.digest}), sidecar=tmp_path / str(index),
+            model=model, audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+            for index, cell in enumerate(panel.cells)]
+&gt;       assert not calls
+E       assert not [FrozenRecord(encoded='{"context":{"budget_bytes":12000,"claim_version":"8a1571a5f2542904a0087ee753755ecd49430d22c4527...ynthetic long public task synthetic long public task synthetic long public task synthetic long public task "}}}'), ...]
+
+tests\test_modular_combination_panels.py:196: AssertionError</failure></testcase></testsuite></testsuites>

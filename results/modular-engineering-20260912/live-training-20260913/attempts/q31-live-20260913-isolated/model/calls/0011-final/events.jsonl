@@ -1,0 +1,5 @@
+{"type":"thread.started","thread_id":"01a097ff-26e2-7b93-b51b-c642a19be974"}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."}}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"{\"conclusion\":\"Unknown: no observations or evaluation material are available to estimate average fish caught per hour or assess the effects of livebait, camper status, group composition, and hours.\",\"evidence_ids\":[],\"objective_digest\":\"6302a920aea8fbf1b945f4c45a098ff868fc7db24de99c4f9a26579bdbdc9728\",\"outcome\":\"unknown\",\"programme_complete\":false}"}}
+{"type":"turn.completed","usage":{"input_tokens":8089,"cached_input_tokens":4864,"cache_write_input_tokens":0,"output_tokens":134,"reasoning_output_tokens":29}}

@@ -1,0 +1,283 @@
+{
+  "schema": "q31-live-engineering-analysis-v1",
+  "source_commit": "67b55b07464df9baa4666d4027f3ce376f8fcb2c",
+  "cells": [
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "blade:fish",
+        "split_id": "4aa279f7e70c04f9073ca957e9c02fc400d09b4bb00662705d7174b1376f0c90",
+        "task_id": "fish"
+      },
+      "cell": {
+        "arm_id": "1",
+        "experiment_id": "Q3.1",
+        "replicate": "r1",
+        "scenario_digest": "350ed703f6a44dc8d84f85802b4bc398510b75323ffefe2e04ffcc7dcb3c61bd",
+        "variant": "measurement"
+      },
+      "branch_count": 3,
+      "model_calls": 2,
+      "terminal": "final_decision",
+      "trace_sha256": "067f8d6a05d58e2d047ad2794fa955f26dfd63d26e43170396baca598d49be73"
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "discoverybench:synth:test:ancient-languages_0_0",
+        "split_id": "4aa279f7e70c04f9073ca957e9c02fc400d09b4bb00662705d7174b1376f0c90",
+        "task_id": "synth:test:ancient-languages_0_0"
+      },
+      "cell": {
+        "arm_id": "0",
+        "experiment_id": "Q3.1",
+        "replicate": "r1",
+        "scenario_digest": "5ed1302cae67722fb100caf2f82b91cb2d8df28745c15d90d7ebad69442f18ca",
+        "variant": "measurement"
+      },
+      "branch_count": 3,
+      "model_calls": 2,
+      "terminal": "final_decision",
+      "trace_sha256": "f853600892234b1def107a296f911a9927663ca8aac19421dbab7213775612f9"
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "blade:fish",
+        "split_id": "4aa279f7e70c04f9073ca957e9c02fc400d09b4bb00662705d7174b1376f0c90",
+        "task_id": "fish"
+      },
+      "cell": {
+        "arm_id": "1",
+        "experiment_id": "Q3.1",
+        "replicate": "r1",
+        "scenario_digest": "120e963fbc8f4dc9fe1be87552b20e7f38801678464b0db7462be6bc26ecc43e",
+        "variant": "computation"
+      },
+      "branch_count": 3,
+      "model_calls": 2,
+      "terminal": "final_decision",
+      "trace_sha256": "6ce1736d266fabd6661a2a1d1741b44d0526803dfe298634531cc48c6f870e11"
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "discoverybench:synth:test:ancient-languages_0_0",
+        "split_id": "4aa279f7e70c04f9073ca957e9c02fc400d09b4bb00662705d7174b1376f0c90",
+        "task_id": "synth:test:ancient-languages_0_0"
+      },
+      "cell": {
+        "arm_id": "1",
+        "experiment_id": "Q3.1",
+        "replicate": "r1",
+        "scenario_digest": "5ed1302cae67722fb100caf2f82b91cb2d8df28745c15d90d7ebad69442f18ca",
+        "variant": "measurement"
+      },
+      "branch_count": 3,
+      "model_calls": 2,
+      "terminal": "final_decision",
+      "trace_sha256": "de4b7ced32b3ec278c92b5235150ce615cfb0c38a3e0fd5ba30c1fe7c55354f2"
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "discoverybench:synth:test:ancient-languages_0_0",
+        "split_id": "4aa279f7e70c04f9073ca957e9c02fc400d09b4bb00662705d7174b1376f0c90",
+        "task_id": "synth:test:ancient-languages_0_0"
+      },
+      "cell": {
+        "arm_id": "1",
+        "experiment_id": "Q3.1",
+        "replicate": "r1",
+        "scenario_digest": "6b59decd727aa354d228679178b0d18f93143b09581fb1548bde29215eb4266d",
+        "variant": "computation"
+      },
+      "branch_count": 3,
+      "model_calls": 2,
+      "terminal": "final_decision",
+      "trace_sha256": "f808f8e079dc180037dd5979cb4917997420cb9f169db98ce3378b55124c5e23"
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "blade:fish",
+        "split_id": "4aa279f7e70c04f9073ca957e9c02fc400d09b4bb00662705d7174b1376f0c90",
+        "task_id": "fish"
+      },
+      "cell": {
+        "arm_id": "0",
+        "experiment_id": "Q3.1",
+        "replicate": "r1",
+        "scenario_digest": "120e963fbc8f4dc9fe1be87552b20e7f38801678464b0db7462be6bc26ecc43e",
+        "variant": "computation"
+      },
+      "branch_count": 3,
+      "model_calls": 2,
+      "terminal": "final_decision",
+      "trace_sha256": "71658e600b284a6197c2b0646f7b2a367bfa5281def4cfb287ff7376e46feb06"
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "discoverybench:synth:test:ancient-languages_0_0",
+        "split_id": "4aa279f7e70c04f9073ca957e9c02fc400d09b4bb00662705d7174b1376f0c90",
+        "task_id": "synth:test:ancient-languages_0_0"
+      },
+      "cell": {
+        "arm_id": "0",
+        "experiment_id": "Q3.1",
+        "replicate": "r1",
+        "scenario_digest": "6b59decd727aa354d228679178b0d18f93143b09581fb1548bde29215eb4266d",
+        "variant": "computation"
+      },
+      "branch_count": 3,
+      "model_calls": 2,
+      "terminal": "final_decision",
+      "trace_sha256": "22ab2eeb1b94b53dd3322e81e75f5a01652ba9a3b4e700b29ef9b77be8e52218"
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "discoverybench:synth:test:ancient-languages_0_0",
+        "split_id": "4aa279f7e70c04f9073ca957e9c02fc400d09b4bb00662705d7174b1376f0c90",
+        "task_id": "synth:test:ancient-languages_0_0"
+      },
+      "cell": {
+        "arm_id": "0",
+        "experiment_id": "Q3.1",
+        "replicate": "r1",
+        "scenario_digest": "2a4f0504f9ba902ddf9c776de308d71f50f137b5300e42b36e9e0cebf1c6e96d",
+        "variant": "mechanism"
+      },
+      "branch_count": 3,
+      "model_calls": 2,
+      "terminal": "final_decision",
+      "trace_sha256": "57ba3afe46ef82989854d3d6ce2db23a90dd3f96251fdc41bbb65e8ffe1269b5"
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "blade:fish",
+        "split_id": "4aa279f7e70c04f9073ca957e9c02fc400d09b4bb00662705d7174b1376f0c90",
+        "task_id": "fish"
+      },
+      "cell": {
+        "arm_id": "1",
+        "experiment_id": "Q3.1",
+        "replicate": "r1",
+        "scenario_digest": "195ddb75bc478d96b70fee787607888720a36c93c4eee1e261a9ee16b6870fff",
+        "variant": "mechanism"
+      },
+      "branch_count": 1,
+      "model_calls": 1,
+      "terminal": "driver_failure",
+      "trace_sha256": "a1acf0e5398c8fb0d75f6930b61754aaff3ab29c3553c46ec2ec2d0a98ad8bab"
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "blade:fish",
+        "split_id": "4aa279f7e70c04f9073ca957e9c02fc400d09b4bb00662705d7174b1376f0c90",
+        "task_id": "fish"
+      },
+      "cell": {
+        "arm_id": "0",
+        "experiment_id": "Q3.1",
+        "replicate": "r1",
+        "scenario_digest": "350ed703f6a44dc8d84f85802b4bc398510b75323ffefe2e04ffcc7dcb3c61bd",
+        "variant": "measurement"
+      },
+      "branch_count": 3,
+      "model_calls": 2,
+      "terminal": "final_decision",
+      "trace_sha256": "dc62d53bc683f0eecc1642708734fcbc74d00d467bd58c1c0dda33584debfc48"
+    },
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "blade:fish",
+        "split_id": "4aa279f7e70c04f9073ca957e9c02fc400d09b4bb00662705d7174b1376f0c90",
+        "task_id": "fish"
+      },
+      "cell": {
+        "arm_id": "0",
+        "experiment_id": "Q3.1",
+        "replicate": "r1",
+        "scenario_digest": "195ddb75bc478d96b70fee787607888720a36c93c4eee1e261a9ee16b6870fff",
+        "variant": "mechanism"
+      },
+      "branch_count": 3,
+      "model_calls": 2,
+      "terminal": "final_decision",
+      "trace_sha256": "8c7c75db36507c52110cfda5f9ac91ff47380a9b2040151197ea690ba5802e2c"
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+        "domain": "train",
+        "group_id": "discoverybench:synth:test:ancient-languages_0_0",
+        "split_id": "4aa279f7e70c04f9073ca957e9c02fc400d09b4bb00662705d7174b1376f0c90",
+        "task_id": "synth:test:ancient-languages_0_0"
+      },
+      "cell": {
+        "arm_id": "1",
+        "experiment_id": "Q3.1",
+        "replicate": "r1",
+        "scenario_digest": "2a4f0504f9ba902ddf9c776de308d71f50f137b5300e42b36e9e0cebf1c6e96d",
+        "variant": "mechanism"
+      },
+      "branch_count": 3,
+      "model_calls": 2,
+      "terminal": "final_decision",
+      "trace_sha256": "cb7aa994dda816d0cad7a1e843223db22b5642af8b15ff6da5c79259a9ce0ff7"
+    }
+  ],
+  "observed_cells": 12,
+  "runtime_status_counts": {
+    "succeeded": 11,
+    "failed": 1
+  },
+  "model_calls": 23,
+  "provider_status_counts": {
+    "succeeded": 23
+  },
+  "usage": {
+    "cache_write_input_tokens": 0,
+    "cached_input_tokens": 23552,
+    "input_tokens": 200442,
+    "output_tokens": 8513,
+    "reasoning_output_tokens": 1074,
+    "total_tokens": 208955
+  },
+  "monetary_cost": "not_reported_by_provider",
+  "usage_incomplete": false,
+  "scientific_status": "not_measured",
+  "effect_estimate": "not_measured",
+  "validation_access": "none",
+  "execution_scope": "prediction-plan and transport only; no benchmark program execution or independent scorer",
+  "failure": "BLADE mechanism M4-on emitted one branch; operational registry rejected it; retained in denominator",
+  "context_scope": "all calls matched reviewed public context; host OS isolation not established"
+}

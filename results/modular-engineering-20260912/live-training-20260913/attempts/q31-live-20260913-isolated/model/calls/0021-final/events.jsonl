@@ -1,0 +1,5 @@
+{"type":"thread.started","thread_id":"01a09801-d4e4-7f52-aaeb-dfa6863eed9f"}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."}}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"{\"conclusion\":\"Unknown: no dataset observations or evaluation evidence were supplied, so the adjusted artifact-to-tool ratio relationship with translation effectiveness cannot be determined.\",\"evidence_ids\":[],\"objective_digest\":\"6302a920aea8fbf1b945f4c45a098ff868fc7db24de99c4f9a26579bdbdc9728\",\"outcome\":\"unknown\",\"programme_complete\":false}"}}
+{"type":"turn.completed","usage":{"input_tokens":9773,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":128,"reasoning_output_tokens":30}}

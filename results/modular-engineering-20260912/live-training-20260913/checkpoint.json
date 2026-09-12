@@ -1,0 +1,24 @@
+{
+  "schema": "modular-live-training-checkpoint-v1",
+  "source_commit": "67b55b07464df9baa4666d4027f3ce376f8fcb2c",
+  "full_suite": {
+    "tests": "815",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "690.571"
+  },
+  "live_status": "execution_incomplete",
+  "model_calls": 23,
+  "tokens": 208955,
+  "training_cells": 12,
+  "scientific_status": "not_measured",
+  "original_failed_attempts_preserved": true,
+  "excluded": [
+    "auth material",
+    "audit signing keys",
+    "private reference/task snapshots",
+    "duplicate exported train CSVs"
+  ],
+  "next_obligations": "All 48 Q plus 36 pairs, 5 triples, full/LOO and Q6.3 separate phase remain required; none has completed formal efficacy and validation."
+}

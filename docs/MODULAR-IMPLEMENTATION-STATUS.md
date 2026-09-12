@@ -3,7 +3,24 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Working state (2026-09-12)
+## Current checkpoint (2026-09-13)
+
+The tested source is `67b55b07464df9baa4666d4027f3ce376f8fcb2c`: 815 tests passed,
+zero failures/errors/skips (690.571 seconds). The first complete scheduled real
+Q3.1 training transport panel made 23 provider calls, used 208,955 tokens and
+retained 11 successful runtime cells plus one rejected prediction plan. It is
+`execution_incomplete`, with no benchmark-program execution, independent score,
+scientific effect or validation result. The two new pinned sources were actually
+acquired and imported as 182 unknown-exposure items in a separate unsplit store.
+The original 403-item store is unchanged. Combination panels and grouped contrast
+calculation now exist, but actual combined module intervention is not connected.
+
+See [MODULAR-CHECKPOINT-20260913.md](MODULAR-CHECKPOINT-20260913.md) and
+`results/modular-engineering-20260912/live-training-20260913/` for current evidence,
+complete failure denominators and scope. The sections below preserve the earlier
+2026-09-12 checkpoint and do not supersede the newer record.
+
+## Earlier working state (2026-09-12)
 
 - Integration checkout: `E:/_ryanDev/AI/research-loop-modular/integration`, branch
   `codex/modular-integration`, based on `dfaebe554d8bae0191ece2251a812682054a2169`.

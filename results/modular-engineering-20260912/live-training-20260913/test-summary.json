@@ -1,0 +1,86 @@
+{
+  "source-ingestion-root.xml": {
+    "tests": "14",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "0.362"
+  },
+  "panel-manifest-binding-root.xml": {
+    "tests": "15",
+    "errors": "0",
+    "failures": "4",
+    "skipped": "0",
+    "time": "0.370"
+  },
+  "panel-manifest-binding-root-repair.xml": {
+    "tests": "15",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "0.250"
+  },
+  "combo-root-integration.xml": {
+    "tests": "22",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "84.409"
+  },
+  "q31-root-final-prelive.xml": {
+    "tests": "25",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "10.611"
+  },
+  "extended-ingestion-root-final.xml": {
+    "tests": "40",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "0.992"
+  },
+  "combo-live-contract-root.xml": {
+    "tests": "2",
+    "errors": "0",
+    "failures": "1",
+    "skipped": "0",
+    "time": "1.322"
+  },
+  "combo-live-contract-root-repair.xml": {
+    "tests": "2",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "1.014"
+  },
+  "combo-contrast-root-final.xml": {
+    "tests": "14",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "69.498"
+  },
+  "contrast-input-evidence-root.xml": {
+    "tests": "6",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "12.003"
+  },
+  "context-and-train-split-root-20260913.xml": {
+    "tests": "62",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "5.887"
+  },
+  "integrated-20260913.xml": {
+    "tests": "815",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "690.571"
+  }
+}

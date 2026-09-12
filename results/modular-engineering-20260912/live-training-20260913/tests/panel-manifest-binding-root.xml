@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="15" time="0.370" timestamp="2026-09-12T22:36:17.399134+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_panel_plan" name="test_every_obligation_gets_all_variants_and_all_legal_paired_arms" time="0.152" /><testcase classname="tests.test_modular_panel_plan" name="test_actual_package_or_scorer_or_budget_change_changes_frozen_panel" time="0.005" /><testcase classname="tests.test_modular_panel_plan" name="test_package_manifest_cannot_cross_or_silently_change_training_panel[foreign_split]" time="0.004"><failure message="NameError: name 'first' is not defined">fault = 'foreign_split'
+
+    @pytest.mark.parametrize("fault", ["foreign_split", "foreign_task", "partial", "extra"])
+    def test_package_manifest_cannot_cross_or_silently_change_training_panel(fault):
+        values = inputs(("Q3.1",))
+        identities = [task.identity for task in values["tasks"]]
+        if fault == "foreign_split":
+            identities = [replace(identity, split_id="b" * 64) for identity in identities]
+        elif fault == "foreign_task":
+            identities[0] = replace(identities[0], task_id="different-task")
+        elif fault == "partial":
+            identities.pop()
+        else:
+            identities.append(replace(identities[0], task_id="extra-training-task"))
+        package = CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze(identities),
+            changes={"prompt": {"instructions": "Public training package."}}, search_cost=0)
+        values["packages_by_arm"] = {arm: package for arm in values["packages_by_arm"]}
+        with pytest.raises(ContractError, match="manifest must bind exactly"):
+            compile_train_panel(**values)
+        values = inputs(("Q3.1",))
+        values["scorer"] = FrozenRecord.from_dict({"different_scorer": True})
+&gt;       assert compile_train_panel(**values).panel.digest != first.panel.digest
+                                                             ^^^^^
+E       NameError: name 'first' is not defined
+
+tests\test_modular_panel_plan.py:94: NameError</failure></testcase><testcase classname="tests.test_modular_panel_plan" name="test_package_manifest_cannot_cross_or_silently_change_training_panel[foreign_task]" time="0.004"><failure message="NameError: name 'first' is not defined">fault = 'foreign_task'
+
+    @pytest.mark.parametrize("fault", ["foreign_split", "foreign_task", "partial", "extra"])
+    def test_package_manifest_cannot_cross_or_silently_change_training_panel(fault):
+        values = inputs(("Q3.1",))
+        identities = [task.identity for task in values["tasks"]]
+        if fault == "foreign_split":
+            identities = [replace(identity, split_id="b" * 64) for identity in identities]
+        elif fault == "foreign_task":
+            identities[0] = replace(identities[0], task_id="different-task")
+        elif fault == "partial":
+            identities.pop()
+        else:
+            identities.append(replace(identities[0], task_id="extra-training-task"))
+        package = CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze(identities),
+            changes={"prompt": {"instructions": "Public training package."}}, search_cost=0)
+        values["packages_by_arm"] = {arm: package for arm in values["packages_by_arm"]}
+        with pytest.raises(ContractError, match="manifest must bind exactly"):
+            compile_train_panel(**values)
+        values = inputs(("Q3.1",))
+        values["scorer"] = FrozenRecord.from_dict({"different_scorer": True})
+&gt;       assert compile_train_panel(**values).panel.digest != first.panel.digest
+                                                             ^^^^^
+E       NameError: name 'first' is not defined
+
+tests\test_modular_panel_plan.py:94: NameError</failure></testcase><testcase classname="tests.test_modular_panel_plan" name="test_package_manifest_cannot_cross_or_silently_change_training_panel[partial]" time="0.004"><failure message="NameError: name 'first' is not defined">fault = 'partial'
+
+    @pytest.mark.parametrize("fault", ["foreign_split", "foreign_task", "partial", "extra"])
+    def test_package_manifest_cannot_cross_or_silently_change_training_panel(fault):
+        values = inputs(("Q3.1",))
+        identities = [task.identity for task in values["tasks"]]
+        if fault == "foreign_split":
+            identities = [replace(identity, split_id="b" * 64) for identity in identities]
+        elif fault == "foreign_task":
+            identities[0] = replace(identities[0], task_id="different-task")
+        elif fault == "partial":
+            identities.pop()
+        else:
+            identities.append(replace(identities[0], task_id="extra-training-task"))
+        package = CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze(identities),
+            changes={"prompt": {"instructions": "Public training package."}}, search_cost=0)
+        values["packages_by_arm"] = {arm: package for arm in values["packages_by_arm"]}
+        with pytest.raises(ContractError, match="manifest must bind exactly"):
+            compile_train_panel(**values)
+        values = inputs(("Q3.1",))
+        values["scorer"] = FrozenRecord.from_dict({"different_scorer": True})
+&gt;       assert compile_train_panel(**values).panel.digest != first.panel.digest
+                                                             ^^^^^
+E       NameError: name 'first' is not defined
+
+tests\test_modular_panel_plan.py:94: NameError</failure></testcase><testcase classname="tests.test_modular_panel_plan" name="test_package_manifest_cannot_cross_or_silently_change_training_panel[extra]" time="0.004"><failure message="NameError: name 'first' is not defined">fault = 'extra'
+
+    @pytest.mark.parametrize("fault", ["foreign_split", "foreign_task", "partial", "extra"])
+    def test_package_manifest_cannot_cross_or_silently_change_training_panel(fault):
+        values = inputs(("Q3.1",))
+        identities = [task.identity for task in values["tasks"]]
+        if fault == "foreign_split":
+            identities = [replace(identity, split_id="b" * 64) for identity in identities]
+        elif fault == "foreign_task":
+            identities[0] = replace(identities[0], task_id="different-task")
+        elif fault == "partial":
+            identities.pop()
+        else:
+            identities.append(replace(identities[0], task_id="extra-training-task"))
+        package = CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze(identities),
+            changes={"prompt": {"instructions": "Public training package."}}, search_cost=0)
+        values["packages_by_arm"] = {arm: package for arm in values["packages_by_arm"]}
+        with pytest.raises(ContractError, match="manifest must bind exactly"):
+            compile_train_panel(**values)
+        values = inputs(("Q3.1",))
+        values["scorer"] = FrozenRecord.from_dict({"different_scorer": True})
+&gt;       assert compile_train_panel(**values).panel.digest != first.panel.digest
+                                                             ^^^^^
+E       NameError: name 'first' is not defined
+
+tests\test_modular_panel_plan.py:94: NameError</failure></testcase><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[validation]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[duplicate_task]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[split]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[missing_benchmark]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[missing_package]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[wrong_package]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[missing_evidence]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[duplicate_replicate]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[unknown_scope]" time="0.001" /></testsuite></testsuites>
