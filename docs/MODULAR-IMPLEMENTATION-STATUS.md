@@ -28,8 +28,10 @@ stage, and C1–C5 combination experiments defined in the design documents.
 
 ## Evidence boundaries
 
-The combined Python suite passed 308 tests with no failures, errors or skips after
-the runner-root repairs; every subsequent source change still needs its appropriate checks.
+The combined Python suite passed 435 tests with no failures, errors or skips
+after the protocol, scenario and model-port repairs (329.099 seconds). The prior
+308-test checkpoint and failed setup attempts are retained; every subsequent
+source change still needs its appropriate checks.
 Current test commands and entrypoints
 are in [MODULAR-RUNNING.md](MODULAR-RUNNING.md). Component test counts are not
 scientific benchmark results.
@@ -76,8 +78,10 @@ the CLI startup notice containing `skip_host_skill_discovery` as a skill-context
 fault. This failed pilot is retained; it is not an efficacy observation. A
 separate, zero-new-model-call diagnostic executed its program on the allowed
 250-row BLADE fish input in restricted Docker. No scientific audit or score was
-issued. The exact startup-notice classification still requires repair before
-the next model experiment. A preceding root audit also caught a changed bundled
+issued. Exact startup-notice classification has since been repaired and its two
+prospective exceptions reviewed, without reinterpreting the failed ledger. Every
+future model call still requires a fresh live match to its reviewed context. A
+preceding root audit also caught a changed bundled
 skill file; its failed audit and the subsequent stable render are preserved.
 
 Review rejected preliminary Q7 code that relabelled validation identity as

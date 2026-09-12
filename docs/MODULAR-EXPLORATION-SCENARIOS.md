@@ -16,3 +16,10 @@ The scenarios call real M1/M2/M5/M7 interfaces. A captured next payload proves t
 Focused tests prepare both DiscoveryBench and BLADE public task envelopes and run every registered variant. They include adversarial checks for task-control drift, no validation score-row read before train rejection, invalid old evidence after repair, and the residual contract-versus-semantic-truth distinction.
 
 These are offline engineering fixtures using synthetic public tasks and callbacks. They are integration checks, not train measurements, validation measurements, evidence of a scientific effect, or an experiment-ledger decision. Actual research claims still require frozen two-benchmark receipts, independent groups, and the protocol's separate scientific evaluation.
+
+With only four execution opportunities, the fixture rounds a requested positive
+allocation upward to a whole opportunity and reports the effective percentages
+(0, 25, 50, 75) alongside requested values (0, 10, 30, 60). Selection uses
+execution-status observations only; it does not measure useful diagnostic yield
+or scientific quality. A scientific budget-ratio study must supply those
+independently scored outcomes and sufficient allocation granularity.
