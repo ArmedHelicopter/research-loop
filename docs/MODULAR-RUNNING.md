@@ -2,9 +2,14 @@
 
 Use an isolated checkout and Python 3.11 or later with the project's development
 dependencies. Existing production pause and historical study protocols are separate.
+Solver exports and test temporary roots must be outside every ancestor containing
+`data/labels`. Create a task work directory beside the source checkout, then use
+a new absolute subdirectory for each pytest run. Do not relax the label-isolation
+guard to run an exported solver beneath this checkout. Keep retained evidence
+outside pytest's temporary directory, which pytest may clean on reuse.
 
 ```powershell
-python -m pytest tests --disable-warnings
+python -m pytest tests --disable-warnings --basetemp ABSOLUTE_TASK_WORK/pytest-RUN_ID
 python -m research_loop.modular plan --baseline BASELINE_COMMIT --output work/programme-plan.json
 python -m evaluation.modular.custody --state work/custody.json inventory --snapshot SNAPSHOT_ROOT
 python -m evaluation.modular.custody --state work/custody.json split --seed modular-v1

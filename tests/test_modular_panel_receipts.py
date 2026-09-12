@@ -21,45 +21,39 @@ def obligations() -> CombinationObligations:
     return CombinationObligations(tuple(combinations(modules, 2)),
         (("M2", "M3", "M5"), ("M4", "M5", "M6"), ("M1", "M4", "M7"), ("M3", "M6", "M9"), ("M7", "M8", "M9")), modules, modules)
 
-def trace(path: Path, *, identity: DataIdentity, package: str, arm: FrozenRecord, coverage: str, variant: str, replicate: str, arm_id: str) -> str:
-    lock = FrozenRecord.from_dict({"schema": "run-lock-v1", "task_digest": DIGEST, "identity": identity.data(),
-        "package_digest": package, "arm": arm.data(), "objective": {}, "slots": ["only"],
-        "execution_limit": 0, "required_audit": ["a"], "context_budget": 1})
-    first = FrozenRecord.from_dict({"sequence": 0, "previous": None, "lock_digest": lock.content_hash,
-        "stage": "objective_lock", "data": lock.data()})
-    request = {"task": {"identity": identity.data()}, "module_context": {"panel_cell": {"experiment_id": coverage, "variant": variant, "replicate": replicate, "arm_id": arm_id, "scenario_digest": DIGEST}}}
-    second = FrozenRecord.from_dict({"sequence": 1, "previous": first.content_hash, "lock_digest": lock.content_hash,
-        "stage": "model_request", "data": {"request": request}})
-    response = {"answer": "fixture"}
-    third = FrozenRecord.from_dict({"sequence": 2, "previous": second.content_hash, "lock_digest": lock.content_hash,
-        "stage": "model_response", "data": {"response": response}})
-    terminal = {"decision": "proceed"}
-    last = FrozenRecord.from_dict({"sequence": 3, "previous": third.content_hash, "lock_digest": lock.content_hash,
-        "stage": "final_decision", "data": terminal})
-    path.write_text("\n".join((first.encoded, second.encoded, third.encoded, last.encoded)) + "\n", encoding="utf-8")
-    return last.content_hash, FrozenRecord.from_dict({"responses": [response], "terminal": terminal}).content_hash
+def trace(sidecar: Path, *, task: PublicTask, package: str, arm: FrozenRecord, coverage: str, variant: str, replicate: str, arm_id: str):
+    objective = FrozenRecord.from_dict({"question": "fixture"})
+    run = RunSession(task, package_digest=package, arm=arm, objective=objective, slots=("only",), execution_limit=0,
+        sidecar=sidecar, verifier=AuditVerifier({"a": b"a"*32, "b": b"b"*32}), required_audit=("measurement",))
+    context = FrozenRecord.from_dict({"panel_cell": {"experiment_id": coverage, "variant": variant, "replicate": replicate, "arm_id": arm_id, "scenario_digest": DIGEST}})
+    candidate = FrozenRecord.from_dict({"objective_digest": objective.content_hash, "outcome": "unknown", "evidence_ids": [], "conclusion": "engineering fixture", "programme_complete": False})
+    response = run.invoke("only", lambda _: candidate, instruction="fixture", module_context=context)
+    terminal = run.finish(response)
+    return run._events[-1].content_hash, FrozenRecord.from_dict({"responses": [response.data()], "terminal": terminal.data()}).content_hash
 
 def panel(tmp_path: Path, *, domain: str = "train") -> tuple[FrozenPanel, list[RuntimeReceipt]]:
     compatibility = default_compatibility(DIGEST)
-    designs = {coverage: compatibility.conditional_factorial(tuple(module for module in spec.modules if module != "P0") or ("M1",)) for coverage, spec in registry().items()}
+    scope = {key: registry()[key] for key in ("Q1.3", "Q2.5")}
+    designs = {coverage: compatibility.conditional_factorial(spec.modules) for coverage, spec in scope.items()}
     cells, runtime = [], []
-    for coverage, spec in registry().items():
+    for coverage, spec in scope.items():
         arms = {row["id"]: FrozenRecord.from_dict(row["arm"]) for row in designs[coverage].data()["cells"] if row["status"] == "executable"}
         for benchmark in ("discoverybench", "blade"):
             identity = DataIdentity(benchmark, f"{coverage}-{benchmark}", f"g-{coverage}", "v1", DIGEST, domain)
+            task = PublicTask.create(identity, {"question": "public fixture"})
             for variant in spec.variants:
                 for arm_id, arm in arms.items():
-                    cell = PanelCell(coverage, identity, "r1", variant, arm_id, arm, DIGEST, DIGEST, DIGEST, DIGEST)
+                    cell = PanelCell(coverage, identity, "r1", variant, arm_id, arm, task.content_hash, DIGEST, DIGEST, DIGEST)
                     cells.append(cell)
-                    path = tmp_path / f"{coverage}-{benchmark}-{variant}-{arm_id}.jsonl"
-                    trace_digest, output_digest = trace(path, identity=identity, package=DIGEST, arm=arm, coverage=coverage, variant=variant, replicate="r1", arm_id=arm_id)
-                    runtime.append(RuntimeReceipt(cell.key, "succeeded", path, trace_digest, output_digest))
-    return FrozenPanel("C1", domain, DIGEST, DIGEST, tuple(registry()), designs, FrozenRecord.from_dict({"criterion": "frozen"}), tuple(cells), obligations()), runtime
+                    path = tmp_path / f"{coverage}-{benchmark}-{variant}-{arm_id}"
+                    trace_digest, output_digest = trace(path, task=task, package=DIGEST, arm=arm, coverage=coverage, variant=variant, replicate="r1", arm_id=arm_id)
+                    runtime.append(RuntimeReceipt(cell.key, "succeeded", path / "trace.jsonl", trace_digest, output_digest))
+    return FrozenPanel("C1", domain, DIGEST, DIGEST, tuple(scope), designs, FrozenRecord.from_dict({"criterion": "frozen"}), tuple(cells), obligations()), runtime
 
 def test_complete_panel_requires_all_cells_and_preserves_failures(tmp_path: Path) -> None:
     frozen, rows = panel(tmp_path)
     verdict = PanelReceiptVerifier().verify(frozen, rows)
-    assert verdict.decision == "engineering_verified" and verdict.observed_cells > 96
+    assert verdict.decision == "engineering_verified" and verdict.observed_cells == 28
     with pytest.raises(ContractError, match="coverage mismatch"):
         PanelReceiptVerifier().verify(frozen, rows[:-1])
     failed = list(rows)
@@ -102,7 +96,8 @@ def test_validation_never_accepts_a_caller_decision_without_independent_services
     fake = ValidationAcceptance(FrozenRecord.from_dict({"arbitrary": "lease"}), FrozenRecord.from_dict({"decision": "accepted"}))
     assert PanelReceiptVerifier().verify(frozen, rows, validation=fake).decision == "engineering_verified"
 
-def test_validation_acceptance_needs_scoring_and_signed_custody_binding(tmp_path: Path) -> None:
+@pytest.mark.parametrize("decision", ["accepted", "rejected", "inconclusive"])
+def test_validation_acceptance_needs_scoring_and_signed_custody_binding(tmp_path: Path, decision: str) -> None:
     frozen, rows = panel(tmp_path, domain="validation")
     scorer = lambda receipt, cell, panel: None
     custody, accept = SignedAuthority("custody", b"c" * 32), SignedAuthority("accept", b"d" * 32)
@@ -116,9 +111,12 @@ def test_validation_acceptance_needs_scoring_and_signed_custody_binding(tmp_path
         "scorer_receipts_digest": FrozenRecord.from_dict({"scorer": [
             {"cell_key": list(row.cell_key), "receipt_digest": row.receipt.content_hash}
             for row in sorted(scores, key=lambda row: row.cell_key)]}).content_hash,
-        "decision": "accepted"})
+        "decision": decision})
     verifier = PanelReceiptVerifier(scorer_verifier=scorer, custody_keys={"custody": b"c" * 32}, acceptance_keys={"accept": b"d" * 32})
-    assert verifier.verify(frozen, rows, scorer_receipts=scores, validation=ValidationAcceptance(lease, acceptance)).decision == "accepted"
+    result = verifier.verify(frozen, rows, scorer_receipts=scores, validation=ValidationAcceptance(lease, acceptance))
+    assert result.decision == decision and result.acceptance_verified == (decision == "accepted")
+    unsigned_scoring = PanelReceiptVerifier(acceptance_keys={"accept": b"d"*32})
+    assert unsigned_scoring.verify(frozen, rows, validation=ValidationAcceptance(lease, acceptance)).decision == "engineering_verified"
 
 def test_real_runsession_trace_binds_scoped_q13_cells(tmp_path: Path) -> None:
     """No broker or paid model: real journal produced by invoke + finish."""

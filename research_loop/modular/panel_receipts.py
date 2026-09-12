@@ -131,6 +131,8 @@ class FrozenPanel:
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "legal_arm_grids", MappingProxyType(dict(self.legal_arm_grids)))
+        object.__setattr__(self, "scope_ids", tuple(self.scope_ids))
+        object.__setattr__(self, "cells", tuple(self.cells))
         required_text(self.stage, "stage")
         if self.domain not in {"train", "validation"}:
             raise ContractError("panel domain must be train or validation")
@@ -335,15 +337,16 @@ class PanelReceiptVerifier:
             scientific = True
         elif scored:
             raise ContractError("caller supplied scorer receipts without an independent scorer verifier")
-        accepted = False
+        acceptance_decision = None
         if panel.domain == "validation" and validation is not None:
-            accepted = self._verify_validation(panel, validation, scientific, rows, scored)
+            acceptance_decision = self._verify_validation(panel, validation, scientific, rows, scored)
         elif validation is not None:
             raise ContractError("acceptance applies only to validation panels")
         failed = sum(row.status == "failed" for row in rows)
         unscored = sum(row.status == "unscored" for row in rows)
         blocked = sum(row.status == "blocked" for row in rows)
-        decision = "accepted" if accepted else ("evidence_verified" if scientific else "engineering_verified")
+        accepted = acceptance_decision == "accepted"
+        decision = acceptance_decision or ("evidence_verified" if scientific else "engineering_verified")
         limitation = ("combination routing_only: no contrast matrix was measured" if not accepted else None)
         if not scientific:
             limitation = "independent trusted scoring service is not configured"
@@ -369,23 +372,56 @@ class PanelReceiptVerifier:
                        and request.get("module_context", {}).get("panel_cell") == expected_binding
                        for request in requests):
             raise ContractError("runtime trace lacks a bound task and scenario request")
+        pending = None
+        slots = []
+        for event in events[1:]:
+            data = event["data"]
+            if event["stage"] == "model_request":
+                request = data.get("request")
+                if pending is not None or not isinstance(request, dict):
+                    raise ContractError("runtime request sequence is incomplete")
+                pending = FrozenRecord.from_dict(request).content_hash
+                if data.get("request_digest") != pending or request.get("lock_digest") != trace["lock_digest"]:
+                    raise ContractError("runtime request digest is not bound to its frozen lock")
+                if (FrozenRecord.from_dict(request.get("task", {})).content_hash != expected.task_digest
+                        or request.get("objective") != lock.get("objective")):
+                    raise ContractError("runtime request task or objective drift")
+                slots.append(request.get("slot"))
+                if slots != lock.get("slots", [])[:len(slots)]:
+                    raise ContractError("runtime request violates the frozen call schedule")
+            elif event["stage"] in {"model_response", "model_failure"}:
+                if pending is None or data.get("request_digest") != pending:
+                    raise ContractError("runtime response is not bound to a pending request")
+                pending = None
         terminal = events[-1]
         responses = [event["data"]["response"] for event in events if event["stage"] == "model_response"]
         observed = FrozenRecord.from_dict({"responses": responses, "terminal": terminal["data"]}).content_hash
+        has_model_failure = any(event["stage"] == "model_failure" for event in events)
+        if terminal["stage"] == "final_decision":
+            closing_failure = terminal["data"].get("decision") == "blocked" and has_model_failure
+            if (pending is not None or (not closing_failure and (slots != lock.get("slots") or not responses
+                    or terminal["data"].get("candidate_digest") != FrozenRecord.from_dict(responses[-1]).content_hash))
+                    or terminal["data"].get("lock_digest") != trace["lock_digest"]
+                    or terminal["data"].get("identity") != expected.identity.data()):
+                raise ContractError("final decision lacks a complete response-bound candidate")
         if receipt.status == "succeeded":
-            if terminal["stage"] != "final_decision" or terminal["data"].get("decision") == "blocked" or any(event["stage"] == "model_failure" for event in events) or not responses or receipt.output_digest != observed:
+            if terminal["stage"] != "final_decision" or terminal["data"].get("decision") not in {"proceed", "closed_negative", "unknown", "invalid", "withdrawn"} or any(event["stage"] == "model_failure" for event in events) or not responses or receipt.output_digest != observed:
                 raise ContractError("successful receipt lacks terminal runtime output evidence")
         elif receipt.status == "failed":
-            if terminal["stage"] != "model_failure" or receipt.output_digest is not None:
+            if not (terminal["stage"] == "model_failure" and receipt.output_digest is None) and not (
+                    terminal["stage"] == "final_decision" and terminal["data"].get("decision") == "blocked"
+                    and has_model_failure and receipt.output_digest == observed):
                 raise ContractError("failed receipt does not match terminal runtime evidence")
-        elif terminal["stage"] != "final_decision":
-            raise ContractError("non-success receipt lacks a terminal decision")
+        elif terminal["stage"] != "final_decision" or receipt.output_digest != observed:
+            raise ContractError("non-success receipt lacks a bound terminal decision")
+        if receipt.status == "blocked" and terminal["data"].get("decision") != "blocked":
+            raise ContractError("blocked receipt contradicts the actual terminal decision")
 
 
     def _verify_validation(self, panel: FrozenPanel, validation: ValidationAcceptance, scientific: bool,
-                           runtime: tuple[RuntimeReceipt, ...], scorer: tuple[ScientificScorerReceipt, ...]) -> bool:
+                           runtime: tuple[RuntimeReceipt, ...], scorer: tuple[ScientificScorerReceipt, ...]) -> str | None:
         if not scientific or not self._custody_keys or not self._acceptance_keys:
-            return False
+            return None
         lease = verify_signed(validation.lease, self._custody_keys, schema="custody-panel-lease-v1")
         if (lease.get("panel_digest") != panel.digest or lease.get("candidate_digest") != panel.candidate_digest
                 or lease.get("split_digest") != panel.split_digest or tuple(lease.get("arm_schedule", ())) != panel.arm_schedule
@@ -401,7 +437,7 @@ class PanelReceiptVerifier:
                 or acceptance.get("runtime_digest") != runtime_digest or acceptance.get("scorer_receipts_digest") != scorer_digest
                 or acceptance.get("decision") not in {"accepted", "rejected", "inconclusive"}):
             raise ContractError("acceptance receipt is not bound to panel, candidate, and custody lease")
-        return acceptance["decision"] == "accepted"
+        return acceptance["decision"]
 
     @staticmethod
     def _runtime_data(row: RuntimeReceipt) -> dict[str, Any]:

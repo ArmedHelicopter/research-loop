@@ -80,10 +80,10 @@ def run_audit_scenario(experiment_id: str, variant: str, *, task: PublicTask,
         if model is not None:
             return model(request)
         return _candidate(session, execution.content_hash, outcome)
-    session.invoke("final", engineering_callback, instruction="Report only the fixture evidence.",
+    response = session.invoke("final", engineering_callback, instruction="Report only the fixture evidence.",
                    module_context=FrozenRecord.from_dict({"fixture_only": True, "controls_digest": frozen_controls.content_hash,
                                                            "callback": "engineering_default" if model is None else "injected"}))
-    gate = session.finish(_candidate(session, execution.content_hash, outcome))
+    gate = session.finish(response)
     trace = verify_trace(sidecar / "trace.jsonl")
     record = FrozenRecord.from_dict({"fixture_only": True, "controls": controls,
         "execution_digest": execution.content_hash, "audit_receipt_digests": [item.content_hash for item in receipts],

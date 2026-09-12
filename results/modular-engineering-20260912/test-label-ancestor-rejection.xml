@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.224" timestamp="2026-09-12T20:13:43.018003+08:00" hostname="SC-202507131830"><testcase classname="tests.test_agent_cli" name="test_full_cli_demo_runs_in_separate_public_processes" time="0.003"><failure message="research_loop.ontology.ContractError: export outside any workspace containing data/labels">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/integration/work/pytest-integration-absolute/test_full_cli_demo_runs_in_sep0')
+
+    def test_full_cli_demo_runs_in_separate_public_processes(tmp_path):
+&gt;       result = demo(tmp_path / "demo")
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_agent_cli.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\cli.py:87: in demo
+    export(runner)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+destination = WindowsPath('E:/_ryanDev/AI/research-loop-modular/integration/work/pytest-integration-absolute/test_full_cli_demo_runs_in_sep0/demo/public')
+
+    def export(destination: Path) -&gt; None:
+        destination = destination.resolve()
+        if any((p / "data" / "labels").exists() for p in (destination, *destination.parents)):
+&gt;           raise ContractError("export outside any workspace containing data/labels")
+E           research_loop.ontology.ContractError: export outside any workspace containing data/labels
+
+research_loop\cli.py:28: ContractError</failure></testcase></testsuite></testsuites>

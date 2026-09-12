@@ -4,9 +4,13 @@
 new boundary beside the legacy per-experiment ledger; it does not change that
 ledger or make its two-receipt check sufficient.
 
-A `FrozenPanel` freezes every expected cell: all 48 Q1--Q8 coverage IDs, each
+A `FrozenPanel` freezes every expected cell for an explicit subset of Q1--Q8
+coverage IDs, each
 benchmark, task/source-group/replicate, variant, legal module arm, scenario,
 package and scorer digest.  The verifier requires an exact set of receipts.
+Each scoped Q includes all its registered variants and both benchmarks, with
+its own compatibility-derived conditional factorial grid. The separate programme
+ledger retains all 48 obligations; incremental panels do not remove that scope.
 Duplicates, omissions, unexpected cells, a changed package/scorer/arm/task,
 or a non-cartesian variant-by-arm task panel fail closed.  Source-group
 distinctness is keyed by `(benchmark, group)`; the two benchmarks remain
@@ -20,7 +24,10 @@ unless a separate panel supplies and verifies the exact contrast matrix.
 
 For every runtime receipt, the verifier calls `verify_trace` on the actual
 JSONL sidecar and then checks its hash-chained objective lock against the
-expected `DataIdentity`, package and canonical legal arm.  A trace hash proves
+expected `DataIdentity`, full task hash, package and canonical legal arm. It also
+checks request/response linkage, ordered frozen call slots, recorded cell binding,
+and the final response's candidate digest. Authentic rejected and inconclusive
+acceptance decisions remain visible after all their binding checks. A trace hash proves
 only journal integrity and binding; it does not establish a valid measurement,
 score, or scientific conclusion.
 
