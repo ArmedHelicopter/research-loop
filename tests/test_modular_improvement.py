@@ -8,8 +8,9 @@ import pytest
 
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.modules.improvement import (
-    AcceptanceAuthority, BoundedCandidateBuilder, CandidatePackage, DeploymentAck,
-    ExecutionRuntime, SignedValidation, TrainingManifest, TrainOptimizer,
+    AcceptanceAuthority, BoundedCandidateBuilder, BuilderRegistry, CandidatePackage, DeploymentAck,
+    ExecutionRuntime, FrozenBuilderVersion, MetaBuilderCandidate, RestrictedBuilderPort,
+    SignedValidation, TrainingManifest, TrainOptimizer,
 )
 from research_loop.ontology import ContractError
 
@@ -93,17 +94,25 @@ def test_train_only_candidate_and_real_on_off_on_activation_rollback(tmp_path: P
     optimizer.close()
 
 
-def test_second_metaprogram_phase_binds_builder_source_and_entrypoint(tmp_path: Path) -> None:
+def test_second_metaprogram_phase_executes_frozen_builder_then_switches_next_round(tmp_path: Path) -> None:
     base = baseline()
-    source = hashlib.sha256(b"frozen CandidateBuilder source").hexdigest()
-    builder = BoundedCandidateBuilder(phase="metaprogram", source_digest=source, entrypoint="build_candidate")
-    candidate = TrainOptimizer(tmp_path / "optimizer.sqlite").propose(
-        builder, manifest(), base, {"prompt": {"style": "train-only-meta"}}, search_cost=2)
-    data = candidate.record.data()
-    assert data["phase"] == "metaprogram"
-    assert data["builder_source_digest"] == source
-    assert data["builder_entrypoint"] == "build_candidate"
-    assert data["training_manifest"]["domain"] == "train"
+    builder_a = FrozenBuilderVersion.freeze({"entrypoint": "emit_literal_change_v1", "surface": "memory", "key": "mode", "value": "builder-a"})
+    builder_b = FrozenBuilderVersion.freeze({"entrypoint": "emit_literal_change_v1", "surface": "memory", "key": "mode", "value": "builder-b"})
+    port = RestrictedBuilderPort()
+    out_a, receipt_a = port.execute(builder_a, manifest(), base, expected_builder_digest=builder_a.digest,
+                                    expected_entrypoint=builder_a.entrypoint, search_cost=2)
+    meta = MetaBuilderCandidate.propose(parent_package=base, parent_builder=builder_a, next_builder=builder_b,
+                                        manifest=manifest(), search_cost=2)
+    candidate_box.update(candidate=meta.package, active=base.digest)
+    registry = BuilderRegistry(tmp_path / "builders.sqlite", authority(), builder_a)
+    registry.activate_meta(meta, authority().validate(meta.package, base.digest, signed_validation()))
+    out_b, receipt_b = port.execute(registry.active(), manifest(), base, expected_builder_digest=builder_b.digest,
+                                    expected_entrypoint=builder_b.entrypoint, search_cost=2)
+    assert out_a.record.data()["changes"]["memory"]["mode"] == "builder-a"
+    assert out_b.record.data()["changes"]["memory"]["mode"] == "builder-b"
+    assert receipt_a.record.data()["output_candidate_digest"] == out_a.digest
+    assert receipt_b.record.data()["builder_digest"] == builder_b.digest
+    registry.close()
 
 
 def test_validation_and_privileged_surfaces_are_rejected(tmp_path: Path) -> None:
@@ -115,7 +124,7 @@ def test_validation_and_privileged_surfaces_are_rejected(tmp_path: Path) -> None
         CandidatePackage.create(manifest=manifest(), parent_digest=None, changes={"prompt": {}}, search_cost=1, phase="metaprogram")
     optimizer = TrainOptimizer(tmp_path / "optimizer.sqlite")
     with pytest.raises(ContractError, match="matched search cost"):
-        optimizer.compare_train(baseline(), CandidatePackage.create(manifest=manifest(), parent_digest=None, changes={"config": {"x": 1}}, search_cost=3))
+        optimizer.compare_train(baseline(), CandidatePackage.create(manifest=manifest(), parent_digest=None, changes={"config": {"max_steps": 1}}, search_cost=3))
     optimizer.close()
 
 
@@ -146,3 +155,26 @@ def test_unsigned_validation_cannot_be_converted_to_acceptance() -> None:
     candidate_box.update(candidate=candidate, active=base.digest)
     with pytest.raises(ContractError, match="validation receipt signature"):
         authority().validate(candidate, base.digest, SignedValidation(FrozenRecord.from_dict({"opaque": "forged"}), "forged"))
+
+
+def test_factory_bypass_and_builder_drift_are_rejected_at_composition_boundaries(tmp_path: Path) -> None:
+    validation_manifest = FrozenRecord.from_dict({"domain": "train", "identities": [task("private", "validation").data()]})
+    with pytest.raises(ContractError, match="training provenance"):
+        TrainingManifest(validation_manifest)
+    forged = FrozenRecord.from_dict({"parent_digest": None, "training_manifest": manifest().record.data(),
+                                     "training_manifest_digest": manifest().content_hash, "changes": {"config": {"custody": "rewrite"}},
+                                     "search_cost": False, "phase": "candidate"})
+    with pytest.raises(ContractError):
+        CandidatePackage(forged)
+    builder = FrozenBuilderVersion.freeze({"entrypoint": "emit_literal_change_v1", "surface": "memory", "key": "mode", "value": "safe"})
+    with pytest.raises(ContractError, match="source drift"):
+        RestrictedBuilderPort().execute(builder, manifest(), baseline(), expected_builder_digest="a" * 64,
+                                        expected_entrypoint=builder.entrypoint, search_cost=2)
+    with pytest.raises(ContractError, match="entrypoint drift"):
+        RestrictedBuilderPort().execute(builder, manifest(), baseline(), expected_builder_digest=builder.digest,
+                                        expected_entrypoint="other", search_cost=2)
+    class ForgingBuilder:
+        def build(self, *_args, **_kwargs):
+            return CandidatePackage.create(manifest=manifest(), parent_digest=None, changes={"memory": {"mode": "bad"}}, search_cost=2)
+    with pytest.raises(ContractError, match="outside its train-only contract"):
+        TrainOptimizer(tmp_path / "optimizer.sqlite").propose(ForgingBuilder(), manifest(), baseline(), {"memory": {"mode": "on"}}, search_cost=2)

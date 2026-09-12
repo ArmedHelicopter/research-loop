@@ -20,6 +20,11 @@ from research_loop.ontology import ContractError, canonical, digest
 
 _SURFACES = frozenset({"prompt", "memory", "config"})
 _PHASES = frozenset({"candidate", "metaprogram"})
+_SURFACE_KEYS = {
+    "prompt": frozenset({"template", "instructions", "style"}),
+    "memory": frozenset({"mode", "lesson", "facts"}),
+    "config": frozenset({"max_steps", "revision_limit", "temperature"}),
+}
 
 
 def _text(value: Any, field: str) -> str:
@@ -35,9 +40,71 @@ def _digest(value: Any, field: str) -> str:
     return value
 
 
+def _strict_int(value: Any, field: str) -> int:
+    if type(value) is not int or value < 0:
+        raise ContractError(f"{field} must be a nonnegative integer, not a boolean")
+    return value
+
+
+def _validate_builder_source(source: Any) -> dict[str, Any]:
+    required = {"entrypoint", "surface", "key", "value"}
+    if not isinstance(source, Mapping) or set(source) != required:
+        raise ContractError("builder DSL has an exact four-field schema")
+    result = dict(source)
+    if _text(result["entrypoint"], "builder entrypoint") != "emit_literal_change_v1":
+        raise ContractError("unsupported builder DSL entrypoint")
+    surface = _text(result["surface"], "builder surface")
+    if surface not in {"prompt", "memory"}:
+        raise ContractError("builder DSL may change only prompt or memory")
+    key = _text(result["key"], "builder key")
+    if key not in _SURFACE_KEYS[surface]:
+        raise ContractError("builder DSL change key is not allowlisted")
+    if not isinstance(result["value"], str):
+        raise ContractError("builder DSL literal value must be text")
+    return result
+
+
+def _validate_changes(changes: Any, phase: str) -> dict[str, Any]:
+    if not isinstance(changes, Mapping) or not changes or set(changes) - _SURFACES:
+        raise ContractError("candidate changes are limited to prompt, memory, and config")
+    copied = dict(changes)
+    if phase == "metaprogram":
+        if set(copied) != {"config"} or not isinstance(copied["config"], Mapping) or set(copied["config"]) != {"candidate_builder_dsl"}:
+            raise ContractError("meta candidates may carry only their restricted builder DSL")
+        _validate_builder_source(copied["config"]["candidate_builder_dsl"])
+        return copied
+    for surface, value in copied.items():
+        if not isinstance(value, Mapping) or not value or set(value) - _SURFACE_KEYS[surface]:
+            raise ContractError(f"{surface} changes are outside the runtime allowlist")
+        for key, item in value.items():
+            if surface == "config" and key in {"max_steps", "revision_limit"}:
+                _strict_int(item, f"config.{key}")
+            elif surface == "config" and key == "temperature":
+                if type(item) not in {int, float} or not 0 <= item <= 2:
+                    raise ContractError("config.temperature must be a finite scalar")
+            elif not isinstance(item, str):
+                raise ContractError(f"{surface}.{key} must be text")
+    return copied
+
+
 @dataclass(frozen=True)
 class TrainingManifest:
     record: FrozenRecord
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.record, FrozenRecord):
+            raise ContractError("training manifest requires an immutable record")
+        data = self.record.data()
+        if set(data) != {"domain", "identities"} or data["domain"] != "train" or not isinstance(data["identities"], list) or not data["identities"]:
+            raise ContractError("training manifest has an invalid schema")
+        seen = set()
+        for item in data["identities"]:
+            identity = DataIdentity.parse(item)
+            identity.require_train()
+            encoded = canonical(identity.data())
+            if encoded in seen:
+                raise ContractError("training manifest contains duplicate tasks")
+            seen.add(encoded)
 
     @classmethod
     def freeze(cls, identities: Sequence[DataIdentity]) -> "TrainingManifest":
@@ -68,6 +135,29 @@ class TrainingManifest:
 class CandidatePackage:
     record: FrozenRecord
 
+    def __post_init__(self) -> None:
+        if not isinstance(self.record, FrozenRecord):
+            raise ContractError("candidate package requires an immutable record")
+        data = self.record.data()
+        phase = data.get("phase")
+        base = {"parent_digest", "training_manifest", "training_manifest_digest", "changes", "search_cost", "phase"}
+        required = base | ({"builder_source_digest", "builder_entrypoint"} if phase == "metaprogram" else set())
+        if phase not in _PHASES or set(data) != required:
+            raise ContractError("candidate package has an invalid schema")
+        if data["parent_digest"] is not None:
+            _digest(data["parent_digest"], "parent_digest")
+        manifest = TrainingManifest(FrozenRecord.from_dict(data["training_manifest"]))
+        if _digest(data["training_manifest_digest"], "training_manifest_digest") != manifest.content_hash:
+            raise ContractError("candidate package training manifest drift")
+        _strict_int(data["search_cost"], "search_cost")
+        changes = _validate_changes(data["changes"], phase)
+        if phase == "metaprogram":
+            source = _validate_builder_source(changes["config"]["candidate_builder_dsl"])
+            if _digest(data["builder_source_digest"], "builder_source_digest") != digest(source):
+                raise ContractError("meta candidate builder source drift")
+            if _text(data["builder_entrypoint"], "builder_entrypoint") != source["entrypoint"]:
+                raise ContractError("meta candidate builder entrypoint drift")
+
     @classmethod
     def create(
         cls, *, parent_digest: str | None, manifest: TrainingManifest, changes: Mapping[str, Any],
@@ -78,15 +168,10 @@ class CandidatePackage:
             _digest(parent_digest, "parent_digest")
         if not isinstance(manifest, TrainingManifest):
             raise ContractError("candidate requires a frozen training manifest")
-        if not isinstance(changes, Mapping) or not changes or set(changes) - _SURFACES:
-            raise ContractError("candidate changes are limited to prompt, memory, and config")
-        if not isinstance(search_cost, int) or search_cost < 0:
-            raise ContractError("search_cost must be a nonnegative integer")
+        _validate_changes(changes, phase)
+        _strict_int(search_cost, "search_cost")
         if phase not in _PHASES:
             raise ContractError("unknown candidate phase")
-        for surface, value in changes.items():
-            if not isinstance(value, Mapping):
-                raise ContractError(f"{surface} changes must be a mapping")
         meta: dict[str, str] = {}
         if phase == "metaprogram":
             meta = {"builder_source_digest": _digest(builder_source_digest, "builder_source_digest"),
@@ -147,6 +232,9 @@ class TrainOptimizer:
     def register(self, package: CandidatePackage) -> CandidatePackage:
         if not isinstance(package, CandidatePackage):
             raise ContractError("optimizer registers immutable packages only")
+        package = CandidatePackage(package.record)
+        if package.record.data()["phase"] != "candidate":
+            raise ContractError("ordinary optimizer cannot register a meta-program candidate")
         with self._db:
             self._db.execute("INSERT OR IGNORE INTO candidates(digest, record) VALUES (?, ?)", (package.digest, package.record.encoded))
         return package
@@ -154,15 +242,179 @@ class TrainOptimizer:
     def propose(self, builder: CandidateBuilder, manifest: TrainingManifest, parent: CandidatePackage,
                 changes: Mapping[str, Any], *, search_cost: int) -> CandidatePackage:
         candidate = builder.build(manifest, parent, changes, search_cost=search_cost)
+        candidate = CandidatePackage(candidate.record)
+        if (candidate.record.data()["phase"] != "candidate" or candidate.parent_digest != parent.digest
+                or candidate.record.data()["training_manifest_digest"] != manifest.content_hash
+                or candidate.record.data()["search_cost"] != search_cost):
+            raise ContractError("CandidateBuilder returned a package outside its train-only contract")
         return self.register(candidate)
 
     def compare_train(self, baseline: CandidatePackage, candidate: CandidatePackage) -> None:
+        baseline, candidate = CandidatePackage(baseline.record), CandidatePackage(candidate.record)
         if baseline.record.data()["training_manifest_digest"] != candidate.record.data()["training_manifest_digest"]:
             raise ContractError("train comparison must share a frozen training manifest")
         if baseline.record.data()["search_cost"] != candidate.record.data()["search_cost"]:
             raise ContractError("train comparison requires matched search cost")
         with self._db:
             self._db.execute("INSERT OR IGNORE INTO comparisons(candidate, baseline) VALUES (?, ?)", (candidate.digest, baseline.digest))
+
+    def close(self) -> None:
+        self._db.close()
+
+
+@dataclass(frozen=True)
+class FrozenBuilderVersion:
+    """A deliberately small executable DSL, never arbitrary host source code."""
+
+    record: FrozenRecord
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.record, FrozenRecord):
+            raise ContractError("builder version requires an immutable record")
+        _validate_builder_source(self.record.data())
+
+    @classmethod
+    def freeze(cls, source: Mapping[str, Any]) -> "FrozenBuilderVersion":
+        return cls(FrozenRecord.from_dict(_validate_builder_source(source)))
+
+    @property
+    def digest(self) -> str:
+        return self.record.content_hash
+
+    @property
+    def entrypoint(self) -> str:
+        return self.record.data()["entrypoint"]
+
+
+@dataclass(frozen=True)
+class BuilderRunReceipt:
+    record: FrozenRecord
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.record, FrozenRecord):
+            raise ContractError("builder run receipt requires an immutable record")
+        data = self.record.data()
+        required = {"builder_digest", "builder_source", "builder_entrypoint", "parent_package_digest", "training_manifest_digest", "output_candidate_digest", "search_cost"}
+        if set(data) != required:
+            raise ContractError("builder run receipt has an invalid schema")
+        source = _validate_builder_source(data["builder_source"])
+        if (_digest(data["builder_digest"], "builder_digest") != digest(source)
+                or _text(data["builder_entrypoint"], "builder_entrypoint") != source["entrypoint"]):
+            raise ContractError("builder run receipt source drift")
+        for field in ("parent_package_digest", "training_manifest_digest", "output_candidate_digest"):
+            _digest(data[field], field)
+        _strict_int(data["search_cost"], "search_cost")
+
+    @property
+    def output_candidate_digest(self) -> str:
+        return self.record.data()["output_candidate_digest"]
+
+
+class RestrictedBuilderPort:
+    """Actually interprets a frozen builder DSL using only a train manifest."""
+
+    def execute(self, builder: FrozenBuilderVersion, manifest: TrainingManifest, parent: CandidatePackage,
+                *, expected_builder_digest: str, expected_entrypoint: str, search_cost: int) -> tuple[CandidatePackage, BuilderRunReceipt]:
+        if not isinstance(builder, FrozenBuilderVersion) or builder.digest != _digest(expected_builder_digest, "expected_builder_digest"):
+            raise ContractError("CandidateBuilder source drift")
+        if builder.entrypoint != _text(expected_entrypoint, "expected_entrypoint"):
+            raise ContractError("CandidateBuilder entrypoint drift")
+        if not isinstance(parent, CandidatePackage):
+            raise ContractError("builder run requires an immutable parent package")
+        for identity in manifest.identities():
+            identity.require_train()
+        source = builder.record.data()
+        # This is the complete DSL interpreter. It has no filesystem, network,
+        # process, validation, task-generation, scorer, or promotion capability.
+        changes = {source["surface"]: {source["key"]: source["value"]}}
+        output = CandidatePackage.create(parent_digest=parent.digest, manifest=manifest, changes=changes, search_cost=search_cost)
+        receipt = BuilderRunReceipt(FrozenRecord.from_dict({
+            "builder_digest": builder.digest, "builder_source": source, "builder_entrypoint": builder.entrypoint,
+            "parent_package_digest": parent.digest, "training_manifest_digest": manifest.content_hash,
+            "output_candidate_digest": output.digest, "search_cost": search_cost,
+        }))
+        return output, receipt
+
+
+@dataclass(frozen=True)
+class MetaBuilderCandidate:
+    """A validation-bound proposal to replace the next-round builder version."""
+
+    package: CandidatePackage
+    parent_builder_digest: str
+    next_builder: FrozenBuilderVersion
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.package, CandidatePackage) or not isinstance(self.next_builder, FrozenBuilderVersion):
+            raise ContractError("meta builder candidate requires immutable package and builder")
+        if _digest(self.parent_builder_digest, "parent_builder_digest") != self.parent_builder_digest:
+            raise ContractError("meta builder parent digest is invalid")
+        data = self.package.record.data()
+        if (data["phase"] != "metaprogram" or data["builder_source_digest"] != self.next_builder.digest
+                or data["builder_entrypoint"] != self.next_builder.entrypoint):
+            raise ContractError("meta builder candidate source drift")
+
+    @classmethod
+    def propose(cls, *, parent_package: CandidatePackage, parent_builder: FrozenBuilderVersion,
+                next_builder: FrozenBuilderVersion, manifest: TrainingManifest, search_cost: int) -> "MetaBuilderCandidate":
+        for identity in manifest.identities():
+            identity.require_train()
+        package = CandidatePackage.create(
+            parent_digest=parent_package.digest, manifest=manifest,
+            changes={"config": {"candidate_builder_dsl": next_builder.record.data()}}, search_cost=search_cost,
+            phase="metaprogram", builder_source_digest=next_builder.digest, builder_entrypoint=next_builder.entrypoint,
+        )
+        return cls(package, parent_builder.digest, next_builder)
+
+
+class BuilderRegistry:
+    """Separate persistent control plane: only independent meta acceptance changes it."""
+
+    def __init__(self, db_path: Path, authority: "AcceptanceAuthority", initial: FrozenBuilderVersion) -> None:
+        self._db = sqlite3.connect(str(db_path))
+        self._authority = authority
+        self._db.execute("CREATE TABLE IF NOT EXISTS builder_versions (digest TEXT PRIMARY KEY, record TEXT NOT NULL)")
+        self._db.execute("CREATE TABLE IF NOT EXISTS builder_state (slot INTEGER PRIMARY KEY CHECK(slot=1), digest TEXT NOT NULL)")
+        self._db.execute("CREATE TABLE IF NOT EXISTS consumed_meta_receipts (id TEXT PRIMARY KEY)")
+        self._store(initial)
+        row = self._db.execute("SELECT digest FROM builder_state WHERE slot=1").fetchone()
+        if row is None:
+            with self._db:
+                self._db.execute("INSERT INTO builder_state(slot, digest) VALUES(1, ?)", (initial.digest,))
+        elif self._load(row[0]) is None:
+            raise ContractError("persisted active CandidateBuilder is missing")
+        self._db.commit()
+
+    def _store(self, builder: FrozenBuilderVersion) -> None:
+        self._db.execute("INSERT OR IGNORE INTO builder_versions(digest, record) VALUES (?, ?)", (builder.digest, builder.record.encoded))
+
+    def _load(self, value: str) -> FrozenBuilderVersion | None:
+        row = self._db.execute("SELECT record FROM builder_versions WHERE digest=?", (value,)).fetchone()
+        return FrozenBuilderVersion(FrozenRecord(row[0])) if row else None
+
+    def active(self) -> FrozenBuilderVersion:
+        value = self._db.execute("SELECT digest FROM builder_state WHERE slot=1").fetchone()[0]
+        builder = self._load(value)
+        if builder is None:
+            raise ContractError("active CandidateBuilder is missing")
+        return builder
+
+    def activate_meta(self, meta: MetaBuilderCandidate, receipt: "AcceptanceReceipt") -> FrozenBuilderVersion:
+        self._authority.verify(receipt)
+        if self._db.execute("SELECT 1 FROM consumed_meta_receipts WHERE id=?", (receipt.receipt_id,)).fetchone():
+            raise ContractError("meta acceptance receipt was already consumed")
+        active = self.active()
+        data = receipt.record.data()
+        if (meta.parent_builder_digest != active.digest or data["candidate_digest"] != meta.package.digest
+                or data["expected_active_digest"] != meta.package.parent_digest
+                or meta.package.record.data()["builder_source_digest"] != meta.next_builder.digest
+                or meta.package.record.data()["builder_entrypoint"] != meta.next_builder.entrypoint):
+            raise ContractError("meta builder acceptance is stale or source drifted")
+        self._store(meta.next_builder)
+        with self._db:
+            self._db.execute("UPDATE builder_state SET digest=? WHERE slot=1", (meta.next_builder.digest,))
+            self._db.execute("INSERT INTO consumed_meta_receipts(id) VALUES (?)", (receipt.receipt_id,))
+        return meta.next_builder
 
     def close(self) -> None:
         self._db.close()

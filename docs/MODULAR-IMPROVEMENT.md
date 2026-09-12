@@ -7,10 +7,22 @@ generation or validation API. Ordinary candidate packages may change only
 `prompt`, `memory`, and `config`. Their train comparison must use the same
 manifest and the same recorded search cost.
 
-The independent meta-program phase uses the same bounded builder port but also
-freezes the CandidateBuilder source digest and entrypoint in the resulting
-package. It remains unable to alter custody, scoring, promotion, permissions,
-or the current validation target.
+The independent meta-program phase uses an actually executed, restricted
+CandidateBuilder DSL rather than host code execution. Its exact source has four
+fields: the fixed `emit_literal_change_v1` entrypoint, one allowlisted `prompt`
+or `memory` surface, an allowlisted key, and a text literal. `RestrictedBuilderPort`
+interprets that frozen source only after it matches the expected source digest
+and entrypoint; it emits a candidate plus a receipt binding the builder source,
+entrypoint, parent package, training manifest, output candidate, and search
+cost. It has no filesystem, network, process, validation, task-generation,
+scorer, admission, or promotion capability.
+
+`MetaBuilderCandidate` carries the next DSL version as a metaprogram package.
+`BuilderRegistry` switches the next-round active builder only after an independent
+acceptance receipt for that exact meta package. A builder source or entrypoint
+drift, validation provenance, repeated meta receipt, or stale parent builder is
+rejected. Ordinary prompt changes cannot use this registry or count as a Q6.3
+meta-program run.
 
 `TrainOptimizer` stores candidates and matched-cost comparison links in its own
 SQLite database. It has no acceptance, deployment, or validation receipt method.
@@ -31,4 +43,6 @@ hosts, drift, stale receipts, and replayed receipts fail closed.
 The included fixture verifies actual off → on → off task behavior, including
 memory digest restoration, and a separate meta-program phase package. These are
 engineering checks using synthetic train identities only; they do not measure
-benchmark or scientific performance.
+benchmark or scientific performance. In particular, neither the ordinary M9
+candidate path nor the second builder phase has received the required two
+benchmark independent validation results.
