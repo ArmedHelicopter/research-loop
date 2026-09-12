@@ -1,4 +1,4 @@
-"""Independent adapted-metric scoring boundary for the two core benchmarks.
+"""Authenticated adapted-metric aggregation boundary for the two core benchmarks.
 
 The solver submits an immutable artifact and a cell/runtime binding.  A service
 owned task handle selects the benchmark evaluator; reference material never
@@ -6,9 +6,11 @@ appears in this request, response, or receipt.  The small HMAC authority is a
 testable transport stand-in: deployed keys and reference resolvers must live in
 the independently operated scoring service.
 
-This authenticates a score calculation and its provenance.  It does not
-calibrate the evaluator, measure a module effect, or establish scientific
-validity.
+This repository does not provide a production reference evaluator: connecting
+the frozen upstream rubric through ``FrozenRubricTransport`` remains an
+operator task. Until then this is an authenticated aggregation boundary, not a
+benchmark scorer. It does not calibrate an evaluator, measure a module effect,
+or establish scientific validity.
 """
 from __future__ import annotations
 
@@ -20,7 +22,7 @@ from typing import Any, Callable, Mapping, Protocol
 
 from research_loop.modular.benchmarks.scoring import blade_adapted_score, discovery_adapted_score
 from research_loop.modular.contracts import FrozenRecord, required_text
-from research_loop.modular.panel_receipts import PanelCell, RuntimeReceipt, ScientificScorerReceipt
+from research_loop.modular.panel_receipts import FrozenPanel, PanelCell, PanelReceiptVerifier, RuntimeReceipt, ScientificScorerReceipt
 from research_loop.modular.runtime import verify_trace
 from research_loop.ontology import ContractError, canonical
 
@@ -72,43 +74,29 @@ class ScorerConfig:
         return tuple(self.record.data()["benchmarks"])
 
 
-class ReferenceEvaluator(Protocol):
-    """Service-only evaluator.  Its closure may read a protected task reference."""
-    def __call__(self, task_handle: str, submission: FrozenRecord) -> Mapping[str, object]: ...
+class RubricTransport(Protocol):
+    """Independent endpoint that owns references and invokes a frozen rubric."""
+    def __call__(self, request: FrozenRecord) -> FrozenRecord: ...
 
 
-class ExactFieldReferenceEvaluator:
-    """A service-side adapted evaluator for structured benchmark candidates.
+class FrozenRubricTransport:
+    """Strict adapter for an independently deployed frozen benchmark scorer.
 
-    Each task handle resolves only inside the evaluator to its protected
-    reference record.  Dimensions are calculated by parsing the executed
-    candidate and comparing its benchmark-specific fields; callers cannot
-    provide dimensions.  Production services may replace this with the frozen
-    upstream evaluator while preserving the same narrow protocol.
+    ``invoke`` is the controlled service RPC/runner. It receives candidate and
+    opaque task handle, resolves protected reference material on its own host,
+    and returns dimensions from the existing benchmark rubric. This repository
+    deliberately provides no local reference evaluator or reference reader.
     """
-    _FIELDS = {
-        "discoverybench": {"context": "outcome", "variable_f1": "conclusion", "relation": "programme_complete"},
-        "blade": {"cvars": "outcome", "transform": "conclusion", "model": "programme_complete"},
-    }
+    def __init__(self, invoke: Callable[[FrozenRecord], FrozenRecord]):
+        if not callable(invoke):
+            raise ContractError("frozen rubric transport needs an invoke port")
+        self._invoke = invoke
 
-    def __init__(self, references: Mapping[str, Mapping[str, object]]):
-        if not isinstance(references, Mapping) or not references:
-            raise ContractError("reference evaluator needs service-owned references")
-        self._references = {required_text(handle, "task handle"): dict(reference)
-                            for handle, reference in references.items() if isinstance(reference, Mapping)}
-        if len(self._references) != len(references):
-            raise ContractError("reference evaluator records must be mappings")
-        for reference in self._references.values():
-            if reference.get("benchmark") not in _DIMENSIONS or not isinstance(reference.get("expected"), Mapping):
-                raise ContractError("reference evaluator record is malformed")
-
-    def __call__(self, task_handle: str, submission: FrozenRecord) -> Mapping[str, object]:
-        reference = self._references.get(task_handle)
-        if reference is None:
-            raise ContractError("unknown protected task handle")
-        candidate, expected = submission.data(), reference["expected"]
-        fields = self._FIELDS[reference["benchmark"]]
-        return {dimension: float(candidate.get(field) == expected.get(field)) for dimension, field in fields.items()}
+    def __call__(self, request: FrozenRecord) -> FrozenRecord:
+        response = self._invoke(request)
+        if not isinstance(response, FrozenRecord):
+            raise ContractError("frozen rubric transport returned no immutable response")
+        return response
 
 
 @dataclass(frozen=True)
@@ -131,7 +119,7 @@ class ScoringAuthority:
 class IndependentScoringService:
     """Controller/service API.  It is deliberately not a solver-side port."""
     def __init__(self, *, config: ScorerConfig, authority: ScoringAuthority,
-                 evaluator: ReferenceEvaluator, allowed_task_handles: Mapping[str, str]):
+                 evaluator: RubricTransport, allowed_task_handles: Mapping[str, str]):
         if not isinstance(config, ScorerConfig) or not isinstance(authority, ScoringAuthority) or not callable(evaluator):
             raise ContractError("service needs typed config, authority, and evaluator")
         if not isinstance(allowed_task_handles, Mapping) or not allowed_task_handles:
@@ -142,32 +130,38 @@ class IndependentScoringService:
             required_text(handle, "task handle")
         self.config, self.authority, self._evaluator, self._handles = config, authority, evaluator, handles
 
-    def score(self, *, panel_digest: str, cell: PanelCell, runtime: RuntimeReceipt) -> ScientificScorerReceipt:
+    def score(self, *, panel: FrozenPanel, cell: PanelCell, runtime: RuntimeReceipt) -> ScientificScorerReceipt:
         """Compute and sign one receipt from a real evaluator response.
 
         The candidate is extracted from the hash-chained runtime trace.  This
         API intentionally has no caller-provided submission parameter.
         """
-        _digest(panel_digest, "panel digest")
+        if not isinstance(panel, FrozenPanel):
+            raise ContractError("scoring requires the frozen panel, not only its digest")
         if runtime.cell_key != cell.key:
             raise ContractError("runtime receipt cell does not match the scored cell")
         if runtime.status != "succeeded" or runtime.output_digest is None:
             raise ContractError("only a successful bound runtime may be scored")
         if cell.identity.benchmark not in self.config.benchmarks or cell.scorer_digest != self.config.digest:
             raise ContractError("cell benchmark or scorer configuration is not this service")
+        expected = {candidate.key: candidate for candidate in panel.cells}.get(cell.key)
+        if expected != cell:
+            raise ContractError("scored cell is not the exact frozen panel cell")
+        grid = panel.legal_arm_grids[cell.coverage_id].data()
+        PanelReceiptVerifier()._verify_runtime(runtime, cell, p0_control_digest=grid.get("p0_control_digest"))
         identity_digest = FrozenRecord.from_dict(cell.identity.data()).content_hash
         task_handle = self._handles.get(identity_digest)
         if task_handle is None:
             raise ContractError("task is not delegated to this scoring service")
         benchmark = cell.identity.benchmark
         submission = self._executed_submission(cell, runtime)
-        dimensions = self._dimensions(benchmark, self._evaluator(task_handle, submission))
+        dimensions = self._dimensions(benchmark, self._rubric_dimensions(panel, benchmark, task_handle, submission))
         aggregate = (discovery_adapted_score if benchmark == "discoverybench" else blade_adapted_score)(
             submission.encoded, dimensions)
         metric = {"name": _METRICS[benchmark], "dimensions": dimensions,
                   "value": aggregate["adapted_score"], "direction": "higher_better",
                   "value_range": [0.0, 1.0], "scale": "unit"}
-        body = {"schema": "independent-scored-cell-v2", "panel_digest": panel_digest,
+        body = {"schema": "independent-scored-cell-v2", "panel_digest": panel.digest,
                 "cell_key": list(cell.key), "runtime_trace_digest": runtime.trace_digest,
                 "runtime_output_digest": runtime.output_digest, "scorer_digest": self.config.digest,
                 "scorer_config_digest": self.config.digest, "benchmark": benchmark,
@@ -175,6 +169,21 @@ class IndependentScoringService:
                 "submission_digest": submission.content_hash, "metric": metric,
                 "status": "scored", "scientific_validity": "not_measured", "calibration": "not_measured"}
         return ScientificScorerReceipt(cell.key, self.authority.issue(body))
+
+    def _rubric_dimensions(self, panel: FrozenPanel, benchmark: str, task_handle: str,
+                           submission: FrozenRecord) -> Mapping[str, object]:
+        request = FrozenRecord.from_dict({"schema": "adapted-rubric-evaluation-request-v1", "panel_digest": panel.digest,
+            "scorer_config_digest": self.config.digest, "benchmark": benchmark,
+            "task_handle": task_handle, "candidate": submission.data(), "candidate_digest": submission.content_hash})
+        response = self._evaluator(request).data()
+        required = {"schema", "panel_digest", "scorer_config_digest", "benchmark", "task_handle_digest", "candidate_digest", "dimensions"}
+        if set(response) != required or response["schema"] != "adapted-rubric-evaluation-response-v1":
+            raise ContractError("frozen rubric response has an invalid contract")
+        if (response["panel_digest"] != panel.digest or response["scorer_config_digest"] != self.config.digest
+                or response["benchmark"] != benchmark or response["candidate_digest"] != submission.content_hash
+                or response["task_handle_digest"] != hashlib.sha256(task_handle.encode()).hexdigest()):
+            raise ContractError("frozen rubric response does not bind the requested candidate")
+        return response["dimensions"]
 
     @staticmethod
     def _executed_submission(cell: PanelCell, runtime: RuntimeReceipt) -> FrozenRecord:

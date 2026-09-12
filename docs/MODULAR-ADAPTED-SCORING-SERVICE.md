@@ -1,9 +1,9 @@
 # Independent adapted scoring service
 
-`evaluation.modular.scoring_service` is the controller/service boundary for
-the required DiscoveryBench and BLADE adapted metrics.  It extracts the final
+`evaluation.modular.scoring_service` is an authenticated aggregation boundary
+for the required DiscoveryBench and BLADE adapted metrics.  It extracts the final
 immutable candidate from the hash-chained runtime trace and sends it to an
-independently owned `ReferenceEvaluator`; callers cannot submit arbitrary
+independently owned `FrozenRubricTransport`; callers cannot submit arbitrary
 candidate material or dimensions.  The evaluator is selected through a
 controller-owned opaque task-handle map.  A solver request, panel receipt and
 score receipt contain digests and handles only; they never contain a reference
@@ -19,7 +19,14 @@ dimension results and recomputed adapted metric.  `AdaptedMetricReceiptVerifier`
 checks the authority MAC, every binding, exact metric contract and aggregate.
 It can be supplied as `PanelReceiptVerifier(scorer_verifier=...)`.
 
-The provided test uses a synthetic protected evaluator to exercise:
+The production package contains only the typed transport adapter. It does not
+implement a local reference evaluator or invent benchmark dimensions. A
+deployment must connect its transport to the frozen upstream rubric on the
+independent evaluator host. The frozen BLADE source routes `Evaluator` results
+through `CalcSubmissionMetrics`; this repository does not import it or its
+reference material. No equivalent live endpoint was configured for this work,
+so the production scorer remains incomplete. The test-only endpoint uses a synthetic parser and
+comparator to exercise the contract:
 
 `immutable submission -> service calculation -> signed receipt -> receipt verifier`.
 
