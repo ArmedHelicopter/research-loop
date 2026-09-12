@@ -140,3 +140,38 @@ def test_production_combination_runner_injects_exact_package_and_scenario(tmp_pa
     assert all(row.status == "succeeded" for row in rows)
     assert seen[0]["candidate_package"] != seen[1]["candidate_package"]
     assert all(context["combination_scenario"]["task_digest"] == task.content_hash for context in seen)
+    assert all(context["package_application_status"] == "controller_binding_only_not_module_effect" for context in seen)
+
+
+def test_all_catalogue_cells_run_through_production_runner_and_verify(tmp_path: Path):
+    catalogue = _catalogue()
+    verifier = AuditVerifier({"audit-a": b"a" * 32, "audit-b": b"b" * 32})
+    def model(request):
+        objective_digest = FrozenRecord.from_dict(request.data()["objective"]).content_hash
+        return FrozenRecord.from_dict({"objective_digest": objective_digest, "outcome": "unknown", "evidence_ids": [],
+                                       "conclusion": "synthetic engineering-only combination response", "programme_complete": False})
+    total = 0
+    for panel_number, (obligation, panel) in enumerate(catalogue.panels.items()):
+        rows = []
+        for number, cell in enumerate(panel.cells):
+            rows.append(run_combination_cell(panel, cell, task=catalogue.tasks[cell.task_digest],
+                scenario=catalogue.scenarios[cell.key], package=catalogue.packages[cell.runtime_arm.content_hash],
+                objective=FrozenRecord.from_dict({"panel": panel.digest}), sidecar=tmp_path / str(panel_number) / str(number),
+                model=model, audit_verifier=verifier))
+        verdict = CombinationPanelVerifier().verify(panel, rows)
+        assert verdict.decision == "engineering_verified" and not verdict.scientific_verified
+        total += len(rows)
+    assert total == sum(len(panel.cells) for panel in catalogue.panels.values())
+
+
+def test_production_runner_retains_model_failure_for_verifier_denominator(tmp_path: Path):
+    catalogue = _catalogue(); panel = catalogue.panels["pair:M1+M4"]
+    cell = panel.cells[0]
+    def failed(_request): raise RuntimeError("synthetic transport failure")
+    receipt = run_combination_cell(panel, cell, task=catalogue.tasks[cell.task_digest],
+        scenario=catalogue.scenarios[cell.key], package=catalogue.packages[cell.runtime_arm.content_hash],
+        objective=FrozenRecord.from_dict({"panel": panel.digest}), sidecar=tmp_path / "failed", model=failed,
+        audit_verifier=AuditVerifier({"audit-a": b"a" * 32, "audit-b": b"b" * 32}))
+    assert receipt.status == "failed" and receipt.output_digest is None
+    events = [FrozenRecord(line).data() for line in receipt.trace_path.read_text(encoding="utf-8").splitlines()]
+    assert events[-1]["stage"] == "model_failure"

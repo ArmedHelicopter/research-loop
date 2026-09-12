@@ -3,7 +3,9 @@
 These panels are deliberately separate from Q1--Q8 coverage.  They preserve
 the compatibility design's unavailable cells as design facts and can verify
 trace-bound engineering journals, but do not manufacture scores, custody
-leases, scientific effects, or promotion decisions.
+leases, scientific effects, or promotion decisions.  A candidate-package record
+in a request binds controller intent; it is not proof that a module effect was
+actually applied by a model or benchmark executor.
 """
 from __future__ import annotations
 
@@ -333,13 +335,22 @@ def run_combination_cell(panel: CombinationPanel, cell: PanelCell, *, task: Publ
                          verifier=audit_verifier, required_audit=("measurement",))
     binding = {"experiment_id": cell.coverage_id, "variant": cell.variant, "replicate": cell.replicate,
                "arm_id": cell.arm_id, "scenario_digest": scenario.content_hash}
-    candidate = session.invoke("combination", model, instruction="Return a bounded train-only combination candidate; unknown is allowed.",
-        module_context=FrozenRecord.from_dict({"panel_cell": binding, "combination_scenario": body,
-                                                "candidate_package": package.record.data()}))
+    try:
+        candidate = session.invoke("combination", model, instruction="Return a bounded train-only combination candidate; unknown is allowed.",
+            module_context=FrozenRecord.from_dict({"panel_cell": binding, "combination_scenario": body,
+                                                    "candidate_package": package.record.data(),
+                                                    "package_application_status": "controller_binding_only_not_module_effect"}))
+    except Exception as exc:
+        trace = sidecar / "trace.jsonl"
+        lines = trace.read_text(encoding="utf-8").splitlines()
+        return RuntimeReceipt(cell.key, "failed", trace, FrozenRecord(lines[-1]).content_hash, None,
+                              f"{type(exc).__name__}: model_port_rejected")
     terminal = session.finish(candidate)
     trace = sidecar / "trace.jsonl"
     lines = trace.read_text(encoding="utf-8").splitlines()
-    output = FrozenRecord.from_dict({"response": candidate.data(), "terminal": terminal.data()}).content_hash
+    # Keep this exact common receipt shape so PanelReceiptVerifier and the
+    # combination verifier reconstruct the same output commitment.
+    output = FrozenRecord.from_dict({"responses": [candidate.data()], "terminal": terminal.data()}).content_hash
     return RuntimeReceipt(cell.key, "blocked" if terminal.data()["decision"] == "blocked" else "succeeded",
                           trace, FrozenRecord(lines[-1]).content_hash, output,
                           "terminal decision blocked" if terminal.data()["decision"] == "blocked" else None)
