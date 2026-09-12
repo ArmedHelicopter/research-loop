@@ -11,6 +11,7 @@ import pytest
 import evaluation.modular.extended_ingestion as ingestion
 from evaluation.modular.custody import CustodyStore, InventoryItem
 from evaluation.modular.extended_ingestion import ExtendedInventoryImporter, ExtendedTrainProjectionExporter
+import research_loop.modular.source_ingestion as source_ingestion
 from research_loop.modular.source_ingestion import ArtifactSpec, SourceSnapshot
 from research_loop.ontology import ContractError, canonical
 
@@ -62,7 +63,8 @@ def _sources(tmp_path: Path, snapshots: dict[str, SourceSnapshot], source_data: 
             artifacts.append({"source_path": artifact.source_path, "size_bytes": len(content),
                 "git_blob_sha1": artifact.git_blob_sha1,
                 "git_blob_sha1_kind": ("Git LFS pointer blob SHA-1 metadata; not verified against downloaded payload" if artifact.lfs_sha256 else "Git blob SHA-1 verified against downloaded payload"),
-                "lfs_sha256": artifact.lfs_sha256, "local_sha256": hashlib.sha256(content).hexdigest()})
+                "lfs_sha256": artifact.lfs_sha256, "local_sha256": hashlib.sha256(content).hexdigest(),
+                "local_hash_kind": "SHA-256 of private downloaded bytes"})
         receipt = {"schema": "pinned-source-snapshot-receipt-v1", "source": source, "repository": spec.repository,
             "revision": spec.revision, "artifacts": artifacts, "payload_returned": False,
             "access_isolation": "not_verified", "split_qualified": False, "task_projection_created": False}
@@ -112,6 +114,48 @@ def test_projection_requires_exact_train_allowlist_and_drops_private_fields(tmp_
         ExtendedTrainProjectionExporter(custody, root, tmp_path / "other-public").export(["scicode:not-a-task"])
 
 
+class _MemoryTransport:
+    def __init__(self, payloads: dict[str, bytes]) -> None:
+        self.payloads = payloads
+
+    def iter_bytes(self, url: str):
+        payload = self.payloads[url]
+        yield payload[:7]
+        yield payload[7:]
+
+
+def test_source_acquirer_receipts_flow_to_one_fresh_custody_import_without_payload_output(
+        tmp_path: Path, synthetic_snapshots, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+    """Exercise the actual downloader receipt shape, not a handwritten substitute."""
+    snapshots, source_data = synthetic_snapshots
+    monkeypatch.setattr(source_ingestion, "SOURCE_SNAPSHOTS", MappingProxyType(snapshots))
+    private_store = tmp_path / "private-synthetic"
+    urls = {source_ingestion.source_url(snapshots[source], artifact): source_data[source][artifact.source_path]
+            for source in snapshots for artifact in snapshots[source].artifacts}
+    transport = _MemoryTransport(urls)
+    monkeypatch.setattr(source_ingestion, "HttpDownloadTransport", lambda: transport)
+    stdout = []
+    for source in ("scicode", "scienceagentbench"):
+        assert source_ingestion.main(["--source", source, "--private-store", str(private_store)]) == 0
+        stdout.append(capsys.readouterr().out)
+    # The CLI's actual stdout is the acquisition receipt only: no source row,
+    # answer, test, or reference marker crosses this boundary.
+    for emitted in stdout:
+        body = json.loads(emitted)
+        assert body["schema"] == "pinned-source-snapshot-receipt-v1"
+        assert "PRIVATE_GOLD_MARKER" not in emitted and "PRIVATE_TEST_MARKER" not in emitted
+    before = {path.relative_to(private_store).as_posix(): path.read_bytes()
+              for path in private_store.glob("snapshots/**/*") if path.is_file() and path.name != "snapshot-receipt.json"}
+    custody = CustodyStore(tmp_path / "fresh-custody.json")
+    imported = ExtendedInventoryImporter(private_store).import_into(custody, ("scicode", "scienceagentbench"))
+    after = {path.relative_to(private_store).as_posix(): path.read_bytes()
+             for path in private_store.glob("snapshots/**/*") if path.is_file() and path.name != "snapshot-receipt.json"}
+    assert after == before
+    summary = canonical({"import": imported.receipt.data(), "custody": custody.state})
+    assert "PRIVATE_GOLD_MARKER" not in summary and "PRIVATE_TEST_MARKER" not in summary
+    assert imported.receipt.data()["item_counts"] == {"scicode": 2, "scienceagentbench": 1}
+
+
 def test_real_pin_cannot_be_mimicked_by_synthetic_bytes(tmp_path: Path, synthetic_snapshots) -> None:
     snapshots, source_data = synthetic_snapshots
     root = _sources(tmp_path, snapshots, source_data)
@@ -130,7 +174,8 @@ def test_real_pin_cannot_be_mimicked_by_synthetic_bytes(tmp_path: Path, syntheti
         artifacts.append({"source_path": artifact.source_path, "size_bytes": artifact.size_bytes,
             "git_blob_sha1": artifact.git_blob_sha1,
             "git_blob_sha1_kind": "Git blob SHA-1 verified against downloaded payload",
-            "lfs_sha256": None, "local_sha256": hashlib.sha256(content).hexdigest()})
+            "lfs_sha256": None, "local_sha256": hashlib.sha256(content).hexdigest(),
+            "local_hash_kind": "SHA-256 of private downloaded bytes"})
     (snapshot / "snapshot-receipt.json").write_text(canonical({"schema": "pinned-source-snapshot-receipt-v1",
         "source": "scicode", "repository": real.repository, "revision": real.revision, "artifacts": artifacts,
         "payload_returned": False, "access_isolation": "not_verified", "split_qualified": False,

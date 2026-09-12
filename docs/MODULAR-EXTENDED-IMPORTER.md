@@ -3,9 +3,11 @@
 `evaluation.modular.extended_ingestion.ExtendedInventoryImporter` is a
 controller-side reader for the two fixed source snapshots registered in
 `research_loop.modular.source_ingestion`: SciCode and ScienceAgentBench. It
-first verifies the exact acquisition-receipt schema, static source/revision,
-artifact list, file size, and fixed Git-blob SHA-1 (non-LFS) or LFS SHA-256
-(LFS payload). It rejects symlink/reparse roots and every path segment, then
+first verifies the exact seven-field acquisition artifact receipt
+(`source_path`, size, Git SHA-1 and its kind, LFS SHA-256, local SHA-256 and
+its kind), static source/revision, artifact list, file size, and fixed
+Git-blob SHA-1 (non-LFS) or LFS SHA-256 (LFS payload). It rejects
+symlink/reparse roots and every path segment, then
 uses `CustodyStore.inventory()` for the durable manifest. It does not call
 attestation, qualification, splitting, leasing, or model APIs.
 

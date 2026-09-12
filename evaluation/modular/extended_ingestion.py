@@ -90,7 +90,7 @@ def _receipt(snapshot: Path, source: str) -> Mapping[str, Any]:
     specs = {item.source_path: item for item in spec.artifacts}
     for artifact in artifacts:
         expected = specs[artifact["source_path"]] if isinstance(artifact, Mapping) and artifact.get("source_path") in specs else None
-        required_artifact = {"source_path", "size_bytes", "git_blob_sha1", "git_blob_sha1_kind", "lfs_sha256", "local_sha256"}
+        required_artifact = {"source_path", "size_bytes", "git_blob_sha1", "git_blob_sha1_kind", "lfs_sha256", "local_sha256", "local_hash_kind"}
         if (not isinstance(artifact, Mapping) or set(artifact) != required_artifact
                 or not isinstance(artifact.get("size_bytes"), int)
                 or not isinstance(artifact.get("local_sha256"), str) or len(artifact["local_sha256"]) != 64):
@@ -99,6 +99,11 @@ def _receipt(snapshot: Path, source: str) -> Mapping[str, Any]:
                 or artifact.get("git_blob_sha1") != expected.git_blob_sha1
                 or artifact.get("lfs_sha256") != expected.lfs_sha256):
             raise ContractError("source receipt conflicts with pinned artifact metadata")
+        expected_git_kind = ("Git LFS pointer blob SHA-1 metadata; not verified against downloaded payload"
+                             if expected.lfs_sha256 is not None else "Git blob SHA-1 verified against downloaded payload")
+        if (artifact["git_blob_sha1_kind"] != expected_git_kind
+                or artifact["local_hash_kind"] != "SHA-256 of private downloaded bytes"):
+            raise ContractError("source receipt hash-kind metadata drift")
         local = _inside(snapshot, artifact["source_path"])
         content = local.read_bytes()
         if local.stat().st_size != artifact["size_bytes"] or hashlib.sha256(content).hexdigest() != artifact["local_sha256"]:
