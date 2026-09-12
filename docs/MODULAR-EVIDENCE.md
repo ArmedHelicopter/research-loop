@@ -18,10 +18,19 @@ against active, admitted roots with matching data identity, group, and subject
 bindings. Call `refresh_after_withdrawal()` after an evidence revocation to record
 affected claim revisions in its sidecar.
 
+Claims can also persist explicit `link_dependencies()` edges. A changed or
+withdrawn upstream revision marks downstream interpretations `needs_review` while
+preserving their own still-active roots. `mark_unattributed_summary()` records a
+review requirement only: an unknown-origin string cannot become support. Replay
+checks identity, bindings, continuous CAS revisions, active-root filtering, and
+dependency structure for propagation records. The JSONL log is audit storage, not
+a signature authority; custody still owns writer permissions and trust.
+
 `ContextBuilder(identity, budget_bytes=...)` provides `baseline` and `candidate`
 paths. The candidate path rebuilds from active roots and current claim relations;
 baseline summaries are explicitly `untrusted_summary` entries with no evidence
-roots. `ContextCache` keys every bundle by identity and ledger versions. Validation
+roots. Candidate entries include `needs_review` and their dependency IDs.
+`ContextCache` keys every bundle by its full derived content hash. Validation
 bundles are ephemeral and never enter its retained cache.
 
 Typical runtime construction:

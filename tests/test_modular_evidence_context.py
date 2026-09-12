@@ -10,7 +10,7 @@ from research_loop.modular.contracts import DataIdentity
 from research_loop.modular.modules.admission import AuditItem, EvidenceAdmission, ExplorationPolicy, ScientificState
 from research_loop.modular.modules.context import ContextBuilder, ContextCache
 from research_loop.modular.modules.evidence import ClaimLedger, EvidenceLedger
-from research_loop.ontology import ContractError
+from research_loop.ontology import ContractError, canonical
 
 
 def identity(*, domain: str = "train", task: str = "task-a", group: str = "group-a") -> DataIdentity:
@@ -181,3 +181,53 @@ def test_q1_remaining_m1_m3_paths_withdraw_without_replacement_and_preserve_unkn
         required_audit=["schema", "binding"], audit=audit(),
     ).allowed
     assert not admit(ident, current=unknown).admitted
+
+
+def test_claim_dependency_propagates_revision_but_retains_independent_chain(tmp_path: Path):
+    ident = identity()
+    evidence_path, claims_path = tmp_path / "evidence.jsonl", tmp_path / "claims.jsonl"
+    evidence = EvidenceLedger(ident, storage_path=evidence_path)
+    first = evidence.append(observation(root="first"), receipt()).root_id
+    second = evidence.append(observation(root="second"), receipt()).root_id
+    claims = ClaimLedger(evidence, storage_path=claims_path)
+    base = claims.create("base claim", subject_bindings={"subject": "s-1"})
+    base = claims.apply(base.claim_id, {"supports": [first, second], "refutes": [], "subject_bindings": {"subject": "s-1"}}, expected_revision=base.revision).claim
+    derived = claims.create("derived interpretation", subject_bindings={"subject": "s-1"})
+    derived = claims.link_dependencies(derived.claim_id, [base.claim_id], expected_revision=derived.revision).claim
+    evidence.withdraw(first, "instrument failure")
+    refreshed = {item.claim.claim_id: item.claim for item in claims.refresh_after_withdrawal()}
+    assert refreshed[base.claim_id].support_roots == (second,)
+    assert refreshed[base.claim_id].needs_review and refreshed[derived.claim_id].needs_review
+    replayed = ClaimLedger(EvidenceLedger(ident, storage_path=evidence_path), storage_path=claims_path)
+    assert replayed.claims() == claims.claims()
+
+
+def test_unattributed_summary_only_marks_review_and_next_payload_refreshes():
+    ident, evidence = identity(), EvidenceLedger(identity())
+    root = evidence.append(observation(), receipt()).root_id
+    claims = ClaimLedger(evidence)
+    claim = claims.create("claim", subject_bindings={"subject": "s-1"})
+    claim = claims.apply(claim.claim_id, {"supports": [root], "refutes": [], "subject_bindings": {"subject": "s-1"}}, expected_revision=claim.revision).claim
+    cache, builder, seen = ContextCache(), ContextBuilder(ident, budget_bytes=4096), []
+    def capturing_model(bundle):
+        seen.append(bundle.entries.data())
+    capturing_model(cache.get_or_build(builder, "q", evidence, claims))
+    claims.mark_unattributed_summary(claim.claim_id, "a conclusion without a source", expected_revision=claim.revision)
+    capturing_model(cache.get_or_build(builder, "q", evidence, claims))
+    entry = next(item for item in seen[-1]["entries"] if item["kind"] == "claim")
+    assert entry["needs_review"] and entry["support_roots"] == [root] and seen[0] != seen[-1]
+
+
+def test_replay_rejects_forged_noncontinuous_propagation_event(tmp_path: Path):
+    ident = identity(); evidence_path, claims_path = tmp_path / "e.jsonl", tmp_path / "c.jsonl"
+    evidence = EvidenceLedger(ident, storage_path=evidence_path)
+    root = evidence.append(observation(), receipt()).root_id
+    claims = ClaimLedger(evidence, storage_path=claims_path)
+    claim = claims.create("claim", subject_bindings={"subject": "s-1"})
+    claim = claims.apply(claim.claim_id, {"supports": [root], "refutes": [], "subject_bindings": {"subject": "s-1"}}, expected_revision=claim.revision).claim
+    forged = {"event": "withdrawal_refresh", "identity": ident.data(), "prior_revision": 0,
+              "claim": {**claim.data(), "revision": 99, "needs_review": True}}
+    with claims_path.open("a", encoding="utf-8", newline="\n") as handle:
+        handle.write(canonical(forged) + "\n")
+    with pytest.raises(ContractError):
+        ClaimLedger(EvidenceLedger(ident, storage_path=evidence_path), storage_path=claims_path)

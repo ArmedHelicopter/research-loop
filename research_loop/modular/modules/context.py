@@ -72,12 +72,13 @@ class ContextBuilder:
             for claim in claims.claims():
                 supports = [root for root in claim.support_roots if root in active_roots]
                 refutes = [root for root in claim.refute_roots if root in active_roots]
-                if not supports and not refutes:
+                if not supports and not refutes and not claim.needs_review:
                     continue
                 status = "undetermined" if supports and refutes else "supported" if supports else "refuted"
                 candidates.append({
                     "kind": "claim", "claim_id": claim.claim_id, "statement": claim.statement,
                     "status": status, "support_roots": supports, "refute_roots": refutes,
+                    "depends_on": list(claim.depends_on), "needs_review": claim.needs_review,
                     "revision": claim.revision,
                 })
             for record in evidence.roots(admitted_only=True, active_only=True):
@@ -105,11 +106,6 @@ class ContextCache:
 
     def __init__(self) -> None:
         self._items: dict[str, ContextBundle] = {}
-
-    @staticmethod
-    def _key(identity: DataIdentity, question: str, mode: str, evidence_version: str, claim_version: str) -> str:
-        return digest({"identity": identity.data(), "question": question, "mode": mode,
-                       "evidence_version": evidence_version, "claim_version": claim_version})
 
     def get_or_build(
         self,

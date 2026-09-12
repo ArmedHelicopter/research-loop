@@ -63,6 +63,8 @@ class ClaimRecord:
     revision: int
     support_roots: tuple[str, ...]
     refute_roots: tuple[str, ...]
+    depends_on: tuple[str, ...]
+    needs_review: bool
     status: str
 
     def data(self) -> dict[str, Any]:
@@ -70,6 +72,7 @@ class ClaimRecord:
             "claim_id": self.claim_id, "identity": self.identity.data(), "statement": self.statement,
             "subject_bindings": dict(self.subject_bindings), "revision": self.revision,
             "support_roots": list(self.support_roots), "refute_roots": list(self.refute_roots),
+            "depends_on": list(self.depends_on), "needs_review": self.needs_review,
             "status": self.status,
         }
 
@@ -277,17 +280,54 @@ class ClaimLedger:
         assert isinstance(result, ClaimRevision)
         return result
 
+    def link_dependencies(self, claim_id: str, depends_on: Sequence[str], *, expected_revision: int) -> ClaimRevision:
+        """Persist explicit claim-to-claim edges; no text is inferred as support."""
+        claim_id = required_text(claim_id, "claim id")
+        if type(expected_revision) is not int or expected_revision < 0:
+            raise ContractError("expected revision must be a nonnegative integer")
+        dependencies = self._claim_list(depends_on, claim_id=claim_id)
+        event = {"event": "dependency_update", "identity": self.identity.data(), "claim_id": claim_id,
+                 "expected_revision": expected_revision, "depends_on": list(dependencies)}
+        result = self._apply_event(event, persist=True)
+        assert isinstance(result, ClaimRevision)
+        return result
+
+    def mark_unattributed_summary(self, claim_id: str, summary: str, *, expected_revision: int) -> ClaimRevision:
+        """An unknown-provenance summary can request review, never become support."""
+        event = {"event": "summary_notice", "identity": self.identity.data(), "claim_id": required_text(claim_id, "claim id"),
+                 "summary_hash": digest({"summary": required_text(summary, "summary")}), "expected_revision": expected_revision}
+        result = self._apply_event(event, persist=True)
+        assert isinstance(result, ClaimRevision)
+        return result
+
     def refresh_after_withdrawal(self) -> tuple[ClaimRevision, ...]:
         changed: list[ClaimRevision] = []
+        changed_ids: set[str] = set()
         for claim in list(self._claims.values()):
             active_support = tuple(root for root in claim.support_roots if self.evidence.is_active_admitted(root))
             active_refute = tuple(root for root in claim.refute_roots if self.evidence.is_active_admitted(root))
             if active_support != claim.support_roots or active_refute != claim.refute_roots:
-                next_claim = self._make_claim(claim.claim_id, claim.statement, dict(claim.subject_bindings), claim.revision + 1, active_support, active_refute)
-                self._claims[claim.claim_id] = next_claim
-                changed.append(ClaimRevision(next_claim, True))
-                self._log.append({"event": "withdrawal_refresh", "identity": self.identity.data(), "claim": next_claim.data()})
+                next_claim = self._make_claim(claim.claim_id, claim.statement, dict(claim.subject_bindings), claim.revision + 1, active_support, active_refute, claim.depends_on, True)
+                self._replace_refresh(claim, next_claim, event_type="withdrawal_refresh")
+                changed.append(ClaimRevision(next_claim, True)); changed_ids.add(claim.claim_id)
+        changed.extend(self._propagate_dependents(changed_ids))
         return tuple(changed)
+
+    def _propagate_dependents(self, changed_ids: set[str]) -> list[ClaimRevision]:
+        changed: list[ClaimRevision] = []
+        # A changed upstream revision invalidates every dependent interpretation,
+        # but independent root chains on that downstream claim remain retained.
+        while changed_ids:
+            upstream = changed_ids
+            changed_ids = set()
+            for claim in list(self._claims.values()):
+                if claim.claim_id in upstream or not set(claim.depends_on) & upstream:
+                    continue
+                next_claim = self._make_claim(claim.claim_id, claim.statement, dict(claim.subject_bindings), claim.revision + 1,
+                                              claim.support_roots, claim.refute_roots, claim.depends_on, True)
+                self._replace_refresh(claim, next_claim, event_type="dependency_refresh")
+                changed.append(ClaimRevision(next_claim, True)); changed_ids.add(claim.claim_id)
+        return changed
 
     def claims(self) -> tuple[ClaimRecord, ...]:
         return tuple(sorted(self._claims.values(), key=lambda claim: claim.claim_id))
@@ -307,13 +347,31 @@ class ClaimLedger:
                 raise ContractError("claim relation needs active admitted evidence")
         return roots
 
-    def _make_claim(self, claim_id: str, statement: str, bindings: Mapping[str, str], revision: int, supports: Sequence[str], refutes: Sequence[str]) -> ClaimRecord:
+    def _claim_list(self, value: Any, *, claim_id: str | None = None) -> tuple[str, ...]:
+        if not isinstance(value, Sequence) or isinstance(value, (str, bytes)):
+            raise ContractError("claim dependencies must be a list")
+        claims = tuple(required_text(item, "dependent claim") for item in value)
+        if len(set(claims)) != len(claims) or (claim_id is not None and claim_id in claims):
+            raise ContractError("invalid claim dependency")
+        for item in claims:
+            if item not in self._claims:
+                raise ContractError("claim dependency references unknown claim")
+        return tuple(sorted(claims))
+
+    def _make_claim(self, claim_id: str, statement: str, bindings: Mapping[str, str], revision: int, supports: Sequence[str], refutes: Sequence[str], depends_on: Sequence[str] = (), needs_review: bool = False) -> ClaimRecord:
         if type(revision) is not int or revision < 0:
             raise ContractError("invalid claim revision")
         active_support = tuple(sorted(supports))
         active_refute = tuple(sorted(refutes))
         status = "undetermined" if active_support and active_refute else "supported" if active_support else "refuted" if active_refute else "undetermined"
-        return ClaimRecord(claim_id, self.identity, required_text(statement, "claim statement"), tuple(sorted(_mapping(bindings, "claim subject bindings").items())), revision, active_support, active_refute, status)
+        dependencies = self._claim_list(depends_on, claim_id=claim_id)
+        if type(needs_review) is not bool:
+            raise ContractError("claim needs review must be a literal boolean")
+        return ClaimRecord(claim_id, self.identity, required_text(statement, "claim statement"), tuple(sorted(_mapping(bindings, "claim subject bindings").items())), revision, active_support, active_refute, dependencies, needs_review, status)
+
+    def _replace_refresh(self, current: ClaimRecord, replacement: ClaimRecord, *, event_type: str) -> None:
+        self._claims[current.claim_id] = replacement
+        self._log.append({"event": event_type, "identity": self.identity.data(), "prior_revision": current.revision, "claim": replacement.data()})
 
     def _apply_event(self, event: Mapping[str, Any], *, persist: bool) -> ClaimRecord | ClaimRevision | None:
         _same_identity(event.get("identity"), self.identity)
@@ -355,24 +413,87 @@ class ClaimLedger:
                     raise ContractError("cross-subject evidence cannot update a claim")
             if set(supports) & set(refutes):
                 raise ContractError("review assigns a root to both relations")
-            next_claim = self._make_claim(claim_id, current.statement, bindings, current.revision + 1, supports, refutes)
+            next_claim = self._make_claim(claim_id, current.statement, bindings, current.revision + 1, supports, refutes, current.depends_on, False)
             self._claims[claim_id] = next_claim
             revision = ClaimRevision(next_claim, False)
             if persist:
                 self._log.append(event)
+                self._propagate_dependents({claim_id})
             return revision
-        if event_type == "withdrawal_refresh":
+        if event_type == "dependency_update":
+            claim_id = required_text(event.get("claim_id"), "claim id")
+            current = self._claims.get(claim_id)
+            if current is None:
+                raise ContractError("dependency update references unknown claim")
+            expected_revision = event.get("expected_revision")
+            if type(expected_revision) is not int or expected_revision != current.revision:
+                raise ContractError("claim revision conflict")
+            dependencies = self._claim_list(event.get("depends_on"), claim_id=claim_id)
+            for dependency in dependencies:
+                if dict(self._claims[dependency].subject_bindings) != dict(current.subject_bindings):
+                    raise ContractError("cross-subject claim dependency")
+            if self._reaches(claim_id, dependencies):
+                raise ContractError("claim dependency cycle")
+            next_claim = self._make_claim(claim_id, current.statement, dict(current.subject_bindings), current.revision + 1,
+                                          current.support_roots, current.refute_roots, dependencies, True)
+            self._claims[claim_id] = next_claim
+            result = ClaimRevision(next_claim, True)
+            if persist:
+                self._log.append(event)
+                self._propagate_dependents({claim_id})
+            return result
+        if event_type == "summary_notice":
+            claim_id = required_text(event.get("claim_id"), "claim id")
+            current = self._claims.get(claim_id)
+            if current is None:
+                raise ContractError("summary notice references unknown claim")
+            if type(event.get("expected_revision")) is not int or event["expected_revision"] != current.revision:
+                raise ContractError("claim revision conflict")
+            required_text(event.get("summary_hash"), "summary hash")
+            next_claim = self._make_claim(claim_id, current.statement, dict(current.subject_bindings), current.revision + 1,
+                                          current.support_roots, current.refute_roots, current.depends_on, True)
+            self._claims[claim_id] = next_claim
+            result = ClaimRevision(next_claim, True)
+            if persist:
+                self._log.append(event)
+                self._propagate_dependents({claim_id})
+            return result
+        if event_type in {"withdrawal_refresh", "dependency_refresh"}:
             claim_data = event.get("claim")
             if not isinstance(claim_data, Mapping):
                 raise ContractError("invalid persisted withdrawal refresh")
-            identity = DataIdentity.parse(dict(claim_data.get("identity", {})))
-            _same_identity(identity.data(), self.identity)
+            current_id = required_text(claim_data.get("claim_id"), "claim id")
+            current = self._claims.get(current_id)
+            if current is None or event.get("prior_revision") != current.revision:
+                raise ContractError("claim propagation has no continuous prior revision")
+            identity = DataIdentity.parse(dict(claim_data.get("identity", {}))); _same_identity(identity.data(), self.identity)
+            if required_text(claim_data.get("statement"), "claim statement") != current.statement or _mapping(claim_data.get("subject_bindings"), "claim subject bindings") != dict(current.subject_bindings):
+                raise ContractError("claim propagation changes bound claim structure")
+            supports = self._root_list(claim_data.get("support_roots"))
+            refutes = self._root_list(claim_data.get("refute_roots"))
+            dependencies = self._claim_list(claim_data.get("depends_on"), claim_id=current_id)
+            if dependencies != current.depends_on or type(claim_data.get("needs_review")) is not bool or not claim_data["needs_review"]:
+                raise ContractError("claim propagation changes unsupported claim structure")
+            expected_support = tuple(root for root in current.support_roots if self.evidence.is_active_admitted(root))
+            expected_refute = tuple(root for root in current.refute_roots if self.evidence.is_active_admitted(root))
+            if supports != expected_support or refutes != expected_refute:
+                raise ContractError("claim propagation does not match active evidence")
             claim = self._make_claim(
-                required_text(claim_data.get("claim_id"), "claim id"),
-                required_text(claim_data.get("statement"), "claim statement"),
-                _mapping(claim_data.get("subject_bindings"), "claim subject bindings"),
-                claim_data.get("revision"), self._root_list(claim_data.get("support_roots")), self._root_list(claim_data.get("refute_roots")),
+                current_id, current.statement, dict(current.subject_bindings),
+                claim_data.get("revision"), supports, refutes, dependencies, True,
             )
+            if claim.revision != current.revision + 1 or claim.status != claim_data.get("status"):
+                raise ContractError("claim propagation revision or status invalid")
             self._claims[claim.claim_id] = claim
             return ClaimRevision(claim, True)
         raise ContractError("unknown claim ledger event")
+
+    def _reaches(self, target: str, dependencies: Sequence[str]) -> bool:
+        pending = list(dependencies); seen: set[str] = set()
+        while pending:
+            item = pending.pop()
+            if item == target:
+                return True
+            if item not in seen:
+                seen.add(item); pending.extend(self._claims[item].depends_on)
+        return False
