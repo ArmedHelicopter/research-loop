@@ -49,10 +49,11 @@ class FrozenBaseContextPolicy:
     shared_argv_digest: str
     config_sources_hash: str
     fixed_cwd: Path
+    config_sources: tuple[Path, ...]
     reviewed: bool = False
 
     def __post_init__(self) -> None:
-        if self.reviewed is not True or any(not isinstance(x, str) or len(x) != 64 for x in (self.context_digest, self.cli_sha256, self.shared_argv_digest, self.config_sources_hash)):
+        if self.reviewed is not True or not self.config_sources or any(not isinstance(x, str) or len(x) != 64 for x in (self.context_digest, self.cli_sha256, self.shared_argv_digest, self.config_sources_hash)):
             raise ContractError("reviewed frozen base-context digests required")
 
 
@@ -226,7 +227,8 @@ class CodexModelPort:
             policy = self.frozen_base_context
             cwd = policy.fixed_cwd.resolve(strict=True)
             shared = ["--disable", "plugins", "--disable", "skill_search", "--disable", "memories", "--enable", "skip_host_skill_discovery", "-c", f'model="{self.model}"', "-c", "project_doc_max_bytes=0", "-c", 'web_search="disabled"']
-            if _sha(canonical(shared).encode()) != policy.shared_argv_digest or _sha(Path(self.executable).read_bytes()) != policy.cli_sha256:
+            manifest = {str(Path(path).resolve(strict=True)): _sha(Path(path).read_bytes()) for path in policy.config_sources}
+            if _sha(canonical(shared).encode()) != policy.shared_argv_digest or _sha(Path(self.executable).read_bytes()) != policy.cli_sha256 or _sha(canonical(manifest).encode()) != policy.config_sources_hash:
                 raise ContractError("frozen base-context executable or shared arguments drifted")
             argv = [self.executable, "debug", "prompt-input", *shared, "public context probe"]
             result = self.context_probe_runner(argv, text=True, encoding="utf-8", capture_output=True, timeout=30, cwd=str(cwd))
