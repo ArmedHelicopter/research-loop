@@ -3,9 +3,17 @@
 `evaluation.modular.extended_ingestion.ExtendedInventoryImporter` is a
 controller-side reader for the two fixed source snapshots registered in
 `research_loop.modular.source_ingestion`: SciCode and ScienceAgentBench. It
-first verifies the acquisition receipt and its pinned source/revision, then
+first verifies the exact acquisition-receipt schema, static source/revision,
+artifact list, file size, and fixed Git-blob SHA-1 (non-LFS) or LFS SHA-256
+(LFS payload). It rejects symlink/reparse roots and every path segment, then
 uses `CustodyStore.inventory()` for the durable manifest. It does not call
 attestation, qualification, splitting, leasing, or model APIs.
+
+The importer only accepts a new empty `CustodyStore`: an existing inventory is
+immutable and is never deduplicated, appended to, or overwritten. Its receipt
+records `parent_inventory_digest: null` and the resulting inventory digest.
+In particular, a live custody manifest must remain separate until an explicit
+merge protocol exists.
 
 The importer always writes `exposure="unknown"`. A successful download,
 receipt, or inventory digest therefore does not establish process isolation,
@@ -38,9 +46,10 @@ allowlists:
 It never emits source record extras such as solutions, expected outputs, test
 cases, annotations, gold programs, evaluator scripts, references, or private
 artifact locators. The on-disk public packet is the authorized solver-facing
-projection; return receipts say `payload_returned: false` only about this API,
-and `access_isolation: not_verified` because it cannot prove OS isolation or
-prior non-exposure.
+projection. Projection receipts distinguish that a public projection was
+written and returned from the fact that `raw_private_payload_returned` is
+false; `access_isolation: not_verified` remains because the module cannot
+prove OS isolation or prior non-exposure.
 
 The importer has synthetic tests only. A custodian running it against a
 received snapshot must retain the controller log and receipt separately; this

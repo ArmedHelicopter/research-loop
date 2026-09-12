@@ -12,6 +12,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import stat
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any, Iterable, Mapping, Sequence
@@ -44,11 +45,27 @@ def _safe_relative(value: str) -> str:
 
 def _inside(root: Path, relative: str) -> Path:
     _safe_relative(relative)
-    root = root.resolve(strict=True)
-    candidate = (root / Path(*PurePosixPath(relative).parts)).resolve(strict=True)
+    root = root.absolute()
+    if not root.is_dir() or _reparse(root):
+        raise ContractError("extended source root is not a concrete directory")
+    candidate = root / Path(*PurePosixPath(relative).parts)
+    cursor = candidate
+    while cursor != root.parent:
+        if _reparse(cursor):
+            raise ContractError("extended source path contains a symlink or reparse point")
+        cursor = cursor.parent
+    candidate = candidate.resolve(strict=True)
     if not candidate.is_relative_to(root) or not candidate.is_file():
         raise ContractError("extended source artifact escaped snapshot root")
     return candidate
+
+
+def _reparse(path: Path) -> bool:
+    try:
+        info = path.stat(follow_symlinks=False)
+    except OSError as exc:
+        raise ContractError("extended source path is unavailable") from exc
+    return path.is_symlink() or bool(getattr(info, "st_file_attributes", 0) & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400))
 
 
 def _receipt(snapshot: Path, source: str) -> Mapping[str, Any]:
@@ -67,12 +84,15 @@ def _receipt(snapshot: Path, source: str) -> Mapping[str, Any]:
             or value["split_qualified"] is not False or value["task_projection_created"] is not False):
         raise ContractError("source receipt does not establish an eligible pinned snapshot")
     artifacts = value["artifacts"]
-    if not isinstance(artifacts, list) or {a.get("source_path") for a in artifacts if isinstance(a, Mapping)} != {a.source_path for a in spec.artifacts}:
+    if (not isinstance(artifacts, list) or len(artifacts) != len(spec.artifacts)
+            or {a.get("source_path") for a in artifacts if isinstance(a, Mapping)} != {a.source_path for a in spec.artifacts}):
         raise ContractError("source receipt artifact inventory drift")
     specs = {item.source_path: item for item in spec.artifacts}
     for artifact in artifacts:
         expected = specs[artifact["source_path"]] if isinstance(artifact, Mapping) and artifact.get("source_path") in specs else None
-        if (not isinstance(artifact, Mapping) or not isinstance(artifact.get("size_bytes"), int)
+        required_artifact = {"source_path", "size_bytes", "git_blob_sha1", "git_blob_sha1_kind", "lfs_sha256", "local_sha256"}
+        if (not isinstance(artifact, Mapping) or set(artifact) != required_artifact
+                or not isinstance(artifact.get("size_bytes"), int)
                 or not isinstance(artifact.get("local_sha256"), str) or len(artifact["local_sha256"]) != 64):
             raise ContractError("source receipt lacks immutable artifact digest")
         if (expected is None or artifact["size_bytes"] != expected.size_bytes
@@ -80,8 +100,16 @@ def _receipt(snapshot: Path, source: str) -> Mapping[str, Any]:
                 or artifact.get("lfs_sha256") != expected.lfs_sha256):
             raise ContractError("source receipt conflicts with pinned artifact metadata")
         local = _inside(snapshot, artifact["source_path"])
-        if local.stat().st_size != artifact["size_bytes"] or hashlib.sha256(local.read_bytes()).hexdigest() != artifact["local_sha256"]:
+        content = local.read_bytes()
+        if local.stat().st_size != artifact["size_bytes"] or hashlib.sha256(content).hexdigest() != artifact["local_sha256"]:
             raise ContractError("private snapshot artifact drift")
+        if expected.lfs_sha256 is not None:
+            if hashlib.sha256(content).hexdigest() != expected.lfs_sha256:
+                raise ContractError("private LFS payload does not match fixed metadata")
+        else:
+            git_blob = hashlib.sha1(f"blob {len(content)}\0".encode("ascii") + content).hexdigest()
+            if git_blob != expected.git_blob_sha1:
+                raise ContractError("private Git blob does not match fixed metadata")
     return value
 
 
@@ -149,6 +177,8 @@ class ExtendedInventoryImporter:
     def import_into(self, custody: CustodyStore, sources: Sequence[str] = ("scicode", "scienceagentbench")) -> ExtendedImport:
         if not sources or len(set(sources)) != len(sources) or set(sources) - {"scicode", "scienceagentbench"}:
             raise ContractError("import requires a unique supported source allowlist")
+        if custody.state["inventory_digest"] is not None:
+            raise ContractError("extended import requires a new empty custody state; existing inventory is immutable")
         items: list[InventoryItem] = []
         counts: dict[str, int] = {}
         pins: dict[str, str] = {}
@@ -168,7 +198,8 @@ class ExtendedInventoryImporter:
         inventory_digest = custody.inventory(items)
         receipt = FrozenRecord.from_dict({"schema": "extended-source-inventory-import-v1", "sources": list(sources),
             "source_pins": pins, "item_counts": counts, "inventory_digest": inventory_digest,
-            "payload_returned": False, "access_isolation": "not_verified", "qualification": "quarantine_until_review"})
+            "parent_inventory_digest": None, "raw_private_payload_returned": False,
+            "access_isolation": "not_verified", "qualification": "quarantine_until_review"})
         return ExtendedImport(inventory_digest, receipt)
 
     def _scicode(self, snapshot: Path) -> list[InventoryItem]:
@@ -252,4 +283,5 @@ class ExtendedTrainProjectionExporter:
         target.mkdir(parents=True, exist_ok=False)
         (target / "public.json").write_text(canonical(task.data()) + "\n", encoding="utf-8")
         (target / "receipt.json").write_text(canonical({"identity": task.identity.data(), "task_hash": task.content_hash,
-            "payload_returned": False, "access_isolation": "not_verified"}) + "\n", encoding="utf-8")
+            "public_projection_written": True, "public_projection_returned": True,
+            "raw_private_payload_returned": False, "access_isolation": "not_verified"}) + "\n", encoding="utf-8")
