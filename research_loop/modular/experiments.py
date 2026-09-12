@@ -85,10 +85,13 @@ class ExperimentLedger:
     @staticmethod
     def _validate_receipts(spec:ExperimentSpec, scenario_record:FrozenRecord, receipts:tuple[RunReceipt,...], domain:str)->None:
         if {receipt.benchmark for receipt in receipts} != BENCHMARKS: raise ContractError("measurement needs both benchmark receipts")
+        scenario_variant = scenario_record.data().get("variant")
+        if scenario_record.data().get("experiment_id") != spec.experiment_id or scenario_variant not in spec.variants:
+            raise ContractError("scenario does not bind registered experiment")
         groups=set()
         for receipt in receipts:
             if receipt.identity.domain != domain or receipt.scenario_hash != scenario_record.content_hash: raise ContractError("receipt domain or scenario binding mismatch")
-            if not set(spec.variants) & set(receipt.arms): raise ContractError("receipt arms do not bind registered scenario")
+            if scenario_variant not in receipt.arms: raise ContractError("receipt arms do not bind registered scenario")
             if set(receipt.module_switches) != {f"{module}:on" for module in spec.modules}: raise ContractError("receipt module switches do not bind registered experiment")
             groups.add(receipt.identity.group_id)
         if len(groups)!=2: raise ContractError("benchmark receipts need distinct task groups")
