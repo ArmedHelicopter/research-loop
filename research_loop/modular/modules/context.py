@@ -122,7 +122,9 @@ class ContextCache:
         baseline_summary: str | None = None,
     ) -> ContextBundle:
         candidate = builder.build(question, evidence, claims, mode=mode, baseline_summary=baseline_summary)
-        key = self._key(candidate.identity, candidate.question, candidate.mode, candidate.evidence_version, candidate.claim_version)
+        # A history manipulation or context-budget change is part of the input,
+        # even when the ledger has not changed. Cache by the complete bundle.
+        key = candidate.content_hash
         if candidate.ephemeral:
             return candidate
         existing = self._items.get(key)
