@@ -1,5 +1,6 @@
 import hashlib
 import hmac
+import multiprocessing
 from pathlib import Path
 
 import pytest
@@ -53,6 +54,16 @@ def signed_validation() -> SignedValidation:
     return SignedValidation(record, hmac.new(VALIDATION_KEY, record.encoded.encode(), hashlib.sha256).hexdigest())
 
 
+def _competing_activate(state_path: str, initial_record: str, candidate_record: str,
+                        expected_digest: str, barrier, results) -> None:
+    initial = CandidatePackage(FrozenRecord(initial_record))
+    candidate = CandidatePackage(FrozenRecord(candidate_record))
+    port = FileDeploymentPort(Path(state_path), initial)
+    barrier.wait(timeout=10)
+    ack = port.activate(candidate, expected_digest)
+    results.put((ack.online, ack.active_digest, ack.memory_digest))
+
+
 def test_file_port_on_off_on_persists_and_rejects_drift_offline_replay_and_forgery(tmp_path: Path) -> None:
     base, candidate = packages()
     port = FileDeploymentPort(tmp_path / "active-package.json", base)
@@ -87,6 +98,37 @@ def test_file_port_on_off_on_persists_and_rejects_drift_offline_replay_and_forge
         fresh.activate(receipt, candidate)
     with pytest.raises(ContractError, match="corrupt or incomplete"):
         FileDeploymentPort(tmp_path / "fresh.json", base)
+
+
+def test_file_port_compare_and_swap_is_cross_process_and_preserves_previous_snapshot(tmp_path: Path) -> None:
+    base, candidate_a = packages()
+    manifest = TrainingManifest(FrozenRecord.from_dict(base.record.data()["training_manifest"]))
+    candidate_b = CandidatePackage.create(parent_digest=base.digest, manifest=manifest,
+        changes={"memory": {"mode": "on", "lesson": "independent competitor"}}, search_cost=1)
+    state = tmp_path / "shared.json"
+    FileDeploymentPort(state, base)
+    context = multiprocessing.get_context("spawn")
+    barrier = context.Barrier(2)
+    results = context.Queue()
+    processes = [context.Process(target=_competing_activate, args=(str(state), base.record.encoded,
+        candidate.record.encoded, base.digest, barrier, results)) for candidate in (candidate_a, candidate_b)]
+    for process in processes:
+        process.start()
+    for process in processes:
+        process.join(15)
+        assert process.exitcode == 0
+    acknowledgements = [results.get(timeout=2) for _ in processes]
+    winners = [ack for ack in acknowledgements if ack[0]]
+    assert len(winners) == 1
+    active_digest = winners[0][1]
+    active = FileDeploymentPort(state, base)
+    assert active.current().online and active.current().active_digest == active_digest
+    assert active.previous() is not None and active.previous().digest == base.digest
+    snapshot = FrozenRecord(state.read_text(encoding="utf-8")).data()
+    selected = next(candidate for candidate in (candidate_a, candidate_b) if candidate.digest == active_digest)
+    assert snapshot["package"] == selected.record.data()
+    assert snapshot["memory_view"] == selected.record.data()["changes"].get("memory", {})
+    assert snapshot["memory_digest"] == selected.memory_digest
 
 
 def test_m9_binds_locked_package_and_injects_frozen_payload_for_m4_m5_m6_and_final(tmp_path: Path) -> None:

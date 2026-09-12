@@ -1,11 +1,22 @@
 # M9 modular deployment boundary
 
 `FileDeploymentPort` persists a complete immutable `CandidatePackage` and the
-derived memory view in one canonical state file.  It writes a SHA-256 companion
-file after fsyncing temporary files, then atomically replaces the state file and
-its hash.  `current()` recomputes the real file hash and reconstructs the
-package, so a torn write, edit, missing companion file, package digest mismatch,
-or memory-view mismatch reports offline and blocks execution.
+derived memory view in one canonical state file.  A cross-process directory
+lock covers initialization and the full read/compare/archive/write activation
+transaction, so two callers using the same expected active digest cannot both
+activate.  It writes a SHA-256 companion file after fsyncing temporary files,
+then atomically replaces the state file and its hash.  `current()` recomputes
+the real file hash and reconstructs the package, so a torn write, edit, missing
+companion file, package digest mismatch, or memory-view mismatch reports offline
+and blocks execution.
+
+Before replacing a valid active state, the port stores the prior complete,
+hash-verified snapshot as `*.previous` plus its hash.  `previous()` is
+read-only; it exists for an authorized operator or signed rollback workflow to
+inspect.  The port never auto-restores it.  A lock left by a crashed process or
+an incomplete/tampered state requires explicit operator recovery after the
+process and artifact provenance are checked; initialization never resets it to
+the supplied initial package.
 
 `ExecutionRuntime` remains the authority for activation.  It accepts only an
 independently signed validation receipt bound to the candidate and expected
