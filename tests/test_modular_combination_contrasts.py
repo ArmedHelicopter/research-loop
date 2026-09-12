@@ -27,13 +27,13 @@ def test_pair_interaction_is_group_weighted_and_requires_complete_bound_metrics(
             sidecar=tmp_path / str(i), model=model, audit_verifier=verifier) for i, cell in enumerate(panel.cells)]
     scored = tuple(ScientificScorerReceipt(row.cell_key, FrozenRecord.from_dict({"schema": "independent-scored-cell-v1", "runtime_trace_digest": row.trace_digest,
         "scorer_digest": next(cell.scorer_digest for cell in panel.cells if cell.key == row.cell_key), "metric": {"value": 1.0 if row.cell_key[-1] == "11" else 0.0,
-        "direction": "higher_better", "value_range": [0.0, 1.0], "scale": "unit"}})) for row in rows)
+        "direction": "higher_better", "value_range": [0.0, 2.0], "scale": "unit"}})) for row in rows)
     result = estimate_grouped_contrast(panel, runtime=rows, scorer_receipts=scored,
-        verifier=CombinationPanelVerifier(scorer_verifier=lambda *_: None), direction="higher_better", value_range=(0.0, 1.0), scale="unit")
+        verifier=CombinationPanelVerifier(scorer_verifier=lambda *_: None))
     assert all(value["mean"] == 1.0 for value in result.data()["benchmark_estimates"].values())
     with pytest.raises(ContractError, match="scorer receipts"):
         estimate_grouped_contrast(panel, runtime=rows, scorer_receipts=scored[:-1],
-            verifier=CombinationPanelVerifier(scorer_verifier=lambda *_: None), direction="higher_better", value_range=(0.0, 1.0), scale="unit")
+            verifier=CombinationPanelVerifier(scorer_verifier=lambda *_: None))
 
 
 @pytest.mark.parametrize("obligation,positive_arm", [("triple:M4+M5+M6", "111"), ("full-loo", "full")])
@@ -44,10 +44,13 @@ def test_triple_and_loo_use_frozen_arms_and_keep_benchmarks_separate(tmp_path: P
     def model(request):
         return FrozenRecord.from_dict({"objective_digest": FrozenRecord.from_dict(request.data()["objective"]).content_hash, "outcome": "unknown", "evidence_ids": [], "conclusion": "synthetic", "programme_complete": False})
     rows = [helper["run_combination_cell"](panel, cell, task=catalogue.tasks[cell.task_digest], scenario=catalogue.scenarios[cell.key], package=catalogue.packages[cell.runtime_arm.content_hash], objective=FrozenRecord.from_dict({"p": panel.digest}), sidecar=tmp_path / str(i), model=model, audit_verifier=audit) for i, cell in enumerate(panel.cells)]
-    scored = tuple(ScientificScorerReceipt(row.cell_key, FrozenRecord.from_dict({"schema": "independent-scored-cell-v1", "runtime_trace_digest": row.trace_digest, "scorer_digest": next(cell.scorer_digest for cell in panel.cells if cell.key == row.cell_key), "metric": {"value": 1.0 if row.cell_key[-1] == positive_arm else 0.0, "direction": "higher_better", "value_range": [0.0, 1.0], "scale": "unit"}})) for row in rows)
-    report = estimate_grouped_contrast(panel, runtime=rows, scorer_receipts=scored, verifier=CombinationPanelVerifier(scorer_verifier=lambda *_: None), direction="higher_better", value_range=(0.0, 1.0), scale="unit").data()
+    scored = tuple(ScientificScorerReceipt(row.cell_key, FrozenRecord.from_dict({"schema": "independent-scored-cell-v1", "runtime_trace_digest": row.trace_digest, "scorer_digest": next(cell.scorer_digest for cell in panel.cells if cell.key == row.cell_key), "metric": {"value": 1.0 if row.cell_key[-1] == positive_arm else 0.0, "direction": "higher_better", "value_range": [0.0, 2.0], "scale": "unit"}})) for row in rows)
+    report = estimate_grouped_contrast(panel, runtime=rows, scorer_receipts=scored, verifier=CombinationPanelVerifier(scorer_verifier=lambda *_: None)).data()
     if obligation == "full-loo":
-        assert report["status"] == "not_identifiable" and report["benchmark_estimates"] == {}
+        assert report["status"] == "estimated"
+        components = report["benchmark_estimates"]
+        assert any(value["status"] == "not_identifiable" for value in components.values())
+        assert any(value["status"] == "estimated" for value in components.values())
         return
     assert set(report["benchmark_estimates"]) == {"blade", "discoverybench"}
     assert all(row["mean"] == 1.0 for row in report["benchmark_estimates"].values())
@@ -85,7 +88,7 @@ def test_group_equal_weighting_does_not_promote_two_tasks_to_two_independent_gro
         value = 2.0 if group_b and row.cell_key[-1] == "11" else 0.0
         cell = next(c for c in panel.cells if c.key == row.cell_key)
         scored.append(ScientificScorerReceipt(row.cell_key, FrozenRecord.from_dict({"schema": "independent-scored-cell-v1", "runtime_trace_digest": row.trace_digest, "scorer_digest": cell.scorer_digest, "metric": {"value": value, "direction": "higher_better", "value_range": [0.0, 2.0], "scale": "unit"}})))
-    report = estimate_grouped_contrast(panel, runtime=rows, scorer_receipts=scored, verifier=CombinationPanelVerifier(scorer_verifier=lambda *_: None), direction="higher_better", value_range=(0.0, 2.0), scale="unit").data()
+    report = estimate_grouped_contrast(panel, runtime=rows, scorer_receipts=scored, verifier=CombinationPanelVerifier(scorer_verifier=lambda *_: None)).data()
     assert all(value["independent_groups"] == 2 and value["mean"] == 1.0 for value in report["benchmark_estimates"].values())
 
 
@@ -95,12 +98,14 @@ def test_metric_mutation_and_trace_drift_fail_authenticated_scorer_verifier(tmp_
     audit = AuditVerifier({"a": b"a" * 32, "b": b"b" * 32})
     def model(request): return FrozenRecord.from_dict({"objective_digest": FrozenRecord.from_dict(request.data()["objective"]).content_hash, "outcome": "unknown", "evidence_ids": [], "conclusion": "synthetic", "programme_complete": False})
     rows = [helper["run_combination_cell"](panel, cell, task=catalogue.tasks[cell.task_digest], scenario=catalogue.scenarios[cell.key], package=catalogue.packages[cell.runtime_arm.content_hash], objective=FrozenRecord.from_dict({"p": panel.digest}), sidecar=tmp_path / str(i), model=model, audit_verifier=audit) for i, cell in enumerate(panel.cells)]
-    scored = tuple(ScientificScorerReceipt(row.cell_key, FrozenRecord.from_dict({"schema": "independent-scored-cell-v1", "runtime_trace_digest": row.trace_digest, "scorer_digest": next(c.scorer_digest for c in panel.cells if c.key == row.cell_key), "metric": {"value": 0.0, "direction": "higher_better", "value_range": [0.0, 1.0], "scale": "unit"}})) for row in rows)
+    scored = tuple(ScientificScorerReceipt(row.cell_key, FrozenRecord.from_dict({"schema": "independent-scored-cell-v1", "runtime_trace_digest": row.trace_digest, "scorer_digest": next(c.scorer_digest for c in panel.cells if c.key == row.cell_key), "metric": {"value": 0.0, "direction": "higher_better", "value_range": [0.0, 2.0], "scale": "unit"}})) for row in rows)
     allowed = {item.receipt.content_hash for item in scored}
     trusted = CombinationPanelVerifier(scorer_verifier=lambda receipt, *_: (_ for _ in ()).throw(ContractError("signature drift")) if receipt.receipt.content_hash not in allowed else None)
     changed = list(scored); body = changed[0].receipt.data(); body["metric"]["value"] = 1.0; changed[0] = ScientificScorerReceipt(changed[0].cell_key, FrozenRecord.from_dict(body))
     with pytest.raises(ContractError, match="signature drift"):
-        estimate_grouped_contrast(panel, runtime=rows, scorer_receipts=changed, verifier=trusted, direction="higher_better", value_range=(0.0, 1.0), scale="unit")
+        estimate_grouped_contrast(panel, runtime=rows, scorer_receipts=changed, verifier=trusted)
     body = scored[0].receipt.data(); body["runtime_trace_digest"] = "0" * 64; drift = list(scored); drift[0] = ScientificScorerReceipt(drift[0].cell_key, FrozenRecord.from_dict(body))
     with pytest.raises(ContractError):
-        estimate_grouped_contrast(panel, runtime=rows, scorer_receipts=drift, verifier=CombinationPanelVerifier(scorer_verifier=lambda *_: None), direction="higher_better", value_range=(0.0, 1.0), scale="unit")
+        estimate_grouped_contrast(panel, runtime=rows, scorer_receipts=drift, verifier=CombinationPanelVerifier(scorer_verifier=lambda *_: None))
+
+

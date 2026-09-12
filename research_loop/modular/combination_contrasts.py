@@ -21,8 +21,7 @@ def _mean(values: list[float]) -> float:
 
 
 def estimate_grouped_contrast(panel: CombinationPanel, *, runtime: Iterable[RuntimeReceipt],
-                              scorer_receipts: Iterable[ScientificScorerReceipt], verifier: CombinationPanelVerifier,
-                              direction: str, value_range: tuple[float, float], scale: str) -> FrozenRecord:
+                              scorer_receipts: Iterable[ScientificScorerReceipt], verifier: CombinationPanelVerifier) -> FrozenRecord:
     """Estimate preregistered contrasts after actual journal/scorer verification.
 
     ``verifier`` is an object dependency, never a caller-supplied ``verified``
@@ -31,6 +30,13 @@ def estimate_grouped_contrast(panel: CombinationPanel, *, runtime: Iterable[Runt
     """
     if not isinstance(panel, CombinationPanel) or not isinstance(verifier, CombinationPanelVerifier):
         raise ContractError("typed panel and combination verifier required")
+    analysis = panel.acceptance_criteria.data().get("contrast_analysis")
+    if (not isinstance(analysis, dict) or set(analysis) != {"schema", "direction", "value_range", "scale", "missing_policy", "group_weighting"}
+            or analysis["schema"] != "frozen-combination-contrast-analysis-v1"
+            or analysis["missing_policy"] != "incomplete_reject"
+            or analysis["group_weighting"] != "task_replicate_mean_then_equal_group_mean"):
+        raise ContractError("panel lacks frozen grouped contrast analysis policy")
+    direction, value_range, scale = analysis["direction"], tuple(analysis["value_range"]), analysis["scale"]
     if (not isinstance(direction, str) or direction not in {"higher_better", "lower_better"}
             or not isinstance(scale, str) or not scale or len(value_range) != 2
             or any(type(x) not in {int, float} or not math.isfinite(x) for x in value_range)
@@ -59,7 +65,7 @@ def estimate_grouped_contrast(panel: CombinationPanel, *, runtime: Iterable[Runt
         if body.get("runtime_trace_digest") != runtime_by_key[key].trace_digest:
             raise ContractError("scorer metric does not bind verified runtime")
         by_key[key] = metric
-    if panel.interaction_status == "not_identifiable":
+    if panel.estimand == "interaction_on_scale" and panel.interaction_status == "not_identifiable":
         return FrozenRecord.from_dict({"schema": "frozen-grouped-combination-estimate-v1", "panel_digest": panel.digest,
             "estimand": panel.estimand, "status": "not_identifiable", "missing_policy": "incomplete_reject",
             "direction": direction, "value_range": list(value_range), "scale": scale,
@@ -67,23 +73,31 @@ def estimate_grouped_contrast(panel: CombinationPanel, *, runtime: Iterable[Runt
     arm_values: dict[tuple[str, str, str, str], dict[str, float]] = defaultdict(dict)
     for cell in panel.cells:
         arm_values[(cell.identity.benchmark, cell.identity.group_id, cell.identity.task_id, cell.replicate)][cell.arm_id] = float(by_key[cell.key]["value"])
-    contrast_by_group: dict[tuple[str, str], list[float]] = defaultdict(list)
+    contrast_by_group: dict[tuple[str, str, str], list[float]] = defaultdict(list)
     coefficients = panel.design.data().get("contrast")
     for (benchmark, group, _task, _replicate), values in arm_values.items():
         if panel.estimand == "interaction_on_scale":
             if not isinstance(coefficients, dict) or set(coefficients) != set(values): raise ContractError("frozen factorial contrast is incomplete")
-            contrast = sum(float(coefficients[arm]) * values[arm] for arm in values)
+            contrast_by_group[(benchmark, group, "interaction")] .append(sum(float(coefficients[arm]) * values[arm] for arm in values))
         else:
             if "full" not in values: raise ContractError("LOO panel lacks full arm")
-            contrast = _mean([values["full"] - value for arm, value in values.items() if arm != "full"])
-        contrast_by_group[(benchmark, group)].append(contrast)
-    benchmark_groups: dict[str, list[float]] = defaultdict(list)
+            for arm, value in values.items():
+                if arm != "full": contrast_by_group[(benchmark, group, arm)].append(values["full"] - value)
+    benchmark_groups: dict[tuple[str, str], list[float]] = defaultdict(list)
     group_detail = {}
-    for (benchmark, group), values in sorted(contrast_by_group.items()):
-        group_detail[f"{benchmark}:{group}"] = {"task_replicate_contrasts": len(values), "mean": _mean(values)}
-        benchmark_groups[benchmark].append(_mean(values))
-    estimates = {benchmark: {"independent_groups": len(values), "mean": _mean(values)}
-                 for benchmark, values in sorted(benchmark_groups.items())}
+    for (benchmark, group, component), values in sorted(contrast_by_group.items()):
+        group_detail[f"{component}:{benchmark}:{group}"] = {"task_replicate_contrasts": len(values), "mean": _mean(values)}
+        benchmark_groups[(component, benchmark)].append(_mean(values))
+    estimates_by_component = {component: {benchmark: {"independent_groups": len(values), "mean": _mean(values)}
+        for (name, benchmark), values in sorted(benchmark_groups.items()) if name == component}
+        for component in sorted({name for name, _benchmark in benchmark_groups})}
+    if panel.estimand == "leave_one_out_at_full":
+        unavailable = {item["id"] for item in panel.structurally_unavailable}
+        all_components = [row["id"] for row in panel.design.data()["cells"] if row["id"] != "full"]
+        estimates = {component: ({"status": "not_identifiable", "benchmark_estimates": {}} if component in unavailable
+            else {"status": "estimated", "benchmark_estimates": estimates_by_component.get(component, {})}) for component in all_components}
+    else:
+        estimates = estimates_by_component["interaction"]
     return FrozenRecord.from_dict({"schema": "frozen-grouped-combination-estimate-v1", "panel_digest": panel.digest,
         "estimand": panel.estimand, "status": "estimated", "missing_policy": "incomplete_reject",
         "direction": direction, "value_range": list(value_range), "scale": scale,

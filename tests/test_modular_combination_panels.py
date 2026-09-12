@@ -41,7 +41,7 @@ def _inputs():
                 if arm.content_hash not in arms:
                     arms[arm.content_hash] = CandidatePackage.create(parent_digest=None, manifest=manifest,
                         changes={"prompt": {"instructions": "predeclared combination arm " + arm.content_hash}}, search_cost=0)
-    return tasks, arms, FrozenRecord.from_dict({"scorer": "fixture-independent-unconfigured"}), FrozenRecord.from_dict({"criterion": "engineering only"})
+    return tasks, arms, FrozenRecord.from_dict({"scorer": "fixture-independent-unconfigured"}), FrozenRecord.from_dict({"criterion": "engineering only", "contrast_analysis": {"schema": "frozen-combination-contrast-analysis-v1", "direction": "higher_better", "value_range": [0.0, 2.0], "scale": "unit", "missing_policy": "incomplete_reject", "group_weighting": "task_replicate_mean_then_equal_group_mean"}})
 
 
 def _catalogue():
