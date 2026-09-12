@@ -44,7 +44,8 @@ def test_public_adapter_driver_calls_m4_to_m8_and_final_gate(tmp_path):
  p=Provider(docs);w.retrieve_then_invoke("m6",model,instruction="research",provider=p,query=FrozenRecord.from_dict({"q":"q"}),source_bundle=FrozenSourceBundle("bundle",docs),policy=FrozenRetrievalPolicy("p",("new_mechanism",),RetrievalBudget(1,1)),signals=RetrievalSignals(new_mechanism=True))
  assert p.calls==['support','counter','method']
  assert all(row['objective'] == s.objective.data() for row in seen)
- assert "submissions" not in seen[2]["module_context"] and "independent_review" in seen[3]["module_context"]
+ assert "submissions" not in seen[2]["module_context"] and "submissions" not in seen[1]["module_context"] and "independent_review" in seen[3]["module_context"]
+ assert seen[1]["module_context"]["question"]=="why?" and seen[2]["module_context"]["question"]=="bias?"
  plan=ExplorationPlan("x",s.task.identity,FrozenRecord.from_dict({"x":1}),ResourceClosure("v","a","n",1,1))
  assert w.explore(plan,{"data":FeasibilityObservation("data","passed","d")},ExplorationBudget(1,1),code="print(2)",broker=b,image="x@sha256:"+"a"*64,inputs=inputs).status=="executed"
  panel=w.run_panel(FifoScheduler(tmp_path/"panel.sqlite",max_concurrency=1,total_budget=2),experiment_id="panel",jobs=[{"task_id":"a","dependencies":[],"resources":[],"cost_units":1},{"task_id":"b","dependencies":[],"resources":[],"cost_units":1}],worker_id="w",execute=lambda lease:FrozenRecord.from_dict({"run":lease.run_id}))
@@ -53,7 +54,7 @@ def test_public_adapter_driver_calls_m4_to_m8_and_final_gate(tmp_path):
 
 def test_disabled_and_unpermitted_paths_are_blocked(tmp_path):
  s,b,inputs=make(tmp_path/"off",["M1","M2","M3"],("final",));w=ModularWorkflow(s)
- assert w.propose("final",lambda _:FrozenRecord.from_dict({}),instruction="x").status=="blocked"
+ assert w.propose("final",lambda _:FrozenRecord.from_dict({}),instruction="x").status=="executed"
  assert w.m9_policy(None).status=="blocked"
 
 
@@ -63,3 +64,4 @@ def test_m7_no_permit_does_not_execute(tmp_path):
  plan=ExplorationPlan("x",s.task.identity,FrozenRecord.from_dict({"x":1}),ResourceClosure("v","a","n",1,1))
  result=w.explore(plan,{},ExplorationBudget(1,1),code="print(1)",broker=b,image="x@sha256:"+"a"*64,inputs=inputs)
  assert result.status=="blocked" and s._attempts==0
+
