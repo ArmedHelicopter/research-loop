@@ -13,10 +13,10 @@ from dataclasses import dataclass
 from typing import Any, Mapping
 
 from research_loop.modular.contracts import FrozenRecord, required_text
+from research_loop.modular.benchmarks.catalog import REQUIRED_BENCHMARKS, SUPPORTED_BENCHMARKS
 from research_loop.ontology import ContractError, canonical, digest
 
-
-BENCHMARKS = frozenset(("blade", "discoverybench"))
+BENCHMARKS = frozenset(REQUIRED_BENCHMARKS)
 COVERAGE_KINDS = ("valid_positive", "valid_negative", "invalid_measurement", "uncertain",
                   "negation_or_quoted_completion", "correct_rejection", "over_rejection",
                   "reasonable_alternative", "empty_output")
@@ -34,9 +34,9 @@ def _count_map(value: Any, expected: tuple[str, ...], field: str) -> None:
         raise ContractError(f"{field} must have exact nonnegative integer counts")
 
 
-def _uncertainty(value: Any) -> None:
-    if not isinstance(value, Mapping) or set(value) != BENCHMARKS or any(type(number) not in {int, float} or not math.isfinite(number) or number < 0 for number in value.values()):
-        raise ContractError("calibration uncertainty must be finite nonnegative values for both benchmarks")
+def _uncertainty(value: Any, benchmarks: tuple[str, ...]) -> None:
+    if not isinstance(value, Mapping) or set(value) != set(benchmarks) or any(type(number) not in {int, float} or not math.isfinite(number) or number < 0 for number in value.values()):
+        raise ContractError("calibration uncertainty must be finite nonnegative values for every declared benchmark")
 
 
 def _criteria(value: Any) -> Mapping[str, Any]:
@@ -54,10 +54,29 @@ def _criteria(value: Any) -> Mapping[str, Any]:
     return value
 
 
-def calibration_eligible(body: Mapping[str, Any]) -> bool:
+def _requested_benchmarks(value: Any) -> tuple[str, ...]:
+    benchmarks = _names(value, "required benchmark")
+    if not set(benchmarks) <= set(SUPPORTED_BENCHMARKS) or not set(REQUIRED_BENCHMARKS) <= set(benchmarks):
+        raise ContractError("required benchmarks must be supported and include the core pair")
+    return benchmarks
+
+
+def _names(value: Any, field: str) -> tuple[str, ...]:
+    if isinstance(value, (str, bytes, Mapping)):
+        raise ContractError(f"{field} must be a collection")
+    result = tuple(value)
+    if not result or len(set(result)) != len(result) or any(not isinstance(name, str) or not name for name in result):
+        raise ContractError(f"{field} must be nonempty and unique")
+    return result
+
+
+def calibration_eligible(body: Mapping[str, Any], *, required_benchmarks: tuple[str, ...] = REQUIRED_BENCHMARKS) -> bool:
     """Evaluate the externally signed criteria; this function has no defaults."""
     criteria = _criteria(body["criteria"])
-    for benchmark in BENCHMARKS:
+    requested = _requested_benchmarks(required_benchmarks)
+    if not set(requested) <= set(body["applicable_benchmarks"]):
+        return False
+    for benchmark in requested:
         coverage, matrix = body["coverage"][benchmark], body["confusion_matrix"][benchmark]
         total = sum(coverage.values())
         if total < criteria["minimum_cases_per_benchmark"] or any(coverage[name] < criteria["minimum_coverage"][name] for name in COVERAGE_KINDS):
@@ -112,21 +131,23 @@ def validate_calibration_body(body: Mapping[str, Any]) -> None:
         _digest(body[field], field)
     if not isinstance(body["judge_parameters"], Mapping):
         raise ContractError("judge parameters must be a mapping")
-    if not isinstance(body["applicable_benchmarks"], list) or set(body["applicable_benchmarks"]) != BENCHMARKS or len(body["applicable_benchmarks"]) != len(BENCHMARKS):
-        raise ContractError("calibration must exactly cover both required benchmarks")
+    if not isinstance(body["applicable_benchmarks"], list):
+        raise ContractError("calibration applicable benchmarks must be a list")
+    applicable = _requested_benchmarks(body["applicable_benchmarks"])
     criteria = _criteria(body["criteria"])
     if body["criteria_digest"] != _digest(body["criteria_digest"], "criteria digest") or body["criteria_digest"] != digest(dict(criteria)):
         raise ContractError("calibration criteria digest mismatch")
-    if not isinstance(body["coverage"], Mapping) or set(body["coverage"]) != BENCHMARKS or not isinstance(body["confusion_matrix"], Mapping) or set(body["confusion_matrix"]) != BENCHMARKS:
-        raise ContractError("calibration must carry both benchmark coverage and confusion counts")
-    for benchmark in BENCHMARKS:
+    if not isinstance(body["coverage"], Mapping) or set(body["coverage"]) != set(applicable) or not isinstance(body["confusion_matrix"], Mapping) or set(body["confusion_matrix"]) != set(applicable):
+        raise ContractError("calibration must carry every declared benchmark coverage and confusion counts")
+    for benchmark in applicable:
         _count_map(body["coverage"][benchmark], COVERAGE_KINDS, f"{benchmark} calibration coverage")
         _count_map(body["confusion_matrix"][benchmark], ("tp", "tn", "fp", "fn", "abstained"), f"{benchmark} calibration confusion matrix")
-    _uncertainty(body["uncertainty"])
+    _uncertainty(body["uncertainty"], applicable)
 
 
 def verify_calibration_receipt(receipt: FrozenRecord, keys: Mapping[str, bytes], *, panel_digest: str,
-                               scorer_digest: str, protocol_digest: str) -> Mapping[str, Any]:
+                               scorer_digest: str, protocol_digest: str,
+                               required_benchmarks: tuple[str, ...] = REQUIRED_BENCHMARKS) -> Mapping[str, Any]:
     if not isinstance(receipt, FrozenRecord):
         raise ContractError("calibration receipt must be frozen")
     envelope = receipt.data()
@@ -142,6 +163,6 @@ def verify_calibration_receipt(receipt: FrozenRecord, keys: Mapping[str, bytes],
         raise ContractError("scorer calibration signature mismatch")
     if body["panel_digest"] != _digest(panel_digest, "panel digest") or body["scorer_digest"] != _digest(scorer_digest, "scorer digest") or body["protocol_digest"] != _digest(protocol_digest, "protocol digest"):
         raise ContractError("scorer calibration does not bind exact panel, scorer, and protocol")
-    if not calibration_eligible(body):
+    if not calibration_eligible(body, required_benchmarks=_requested_benchmarks(required_benchmarks)):
         raise ContractError("metadata-authenticated scorer calibration does not meet frozen criteria")
     return body

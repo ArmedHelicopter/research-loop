@@ -22,7 +22,7 @@ CRITERIA = {"minimum_cases_per_benchmark": 9,
             "minimum_precision": .8, "minimum_recall": .8, "maximum_abstention_rate": .2, "maximum_uncertainty": .2}
 
 
-def calibration(panel_digest: str) -> FrozenRecord:
+def calibration(panel_digest: str, benchmarks: tuple[str, ...] = ("blade", "discoverybench")) -> FrozenRecord:
     coverage = {name: 1 for name in CRITERIA["minimum_coverage"]}
     matrix = {"tp": 4, "tn": 4, "fp": 0, "fn": 0, "abstained": 1}
     return CalibrationAuthority("calibration", b"k" * 32).issue({
@@ -30,9 +30,9 @@ def calibration(panel_digest: str) -> FrozenRecord:
         "protocol_digest": PROTOCOL, "scorer_code_digest": "d" * 64, "judge_identity": "synthetic-independent",
         "judge_parameters": {"temperature": 0}, "rubric_digest": "e" * 64, "calibration_manifest_digest": "f" * 64,
         "blind_review_protocol_digest": "1" * 64, "arbitration_protocol_digest": "2" * 64,
-        "applicable_benchmarks": ["blade", "discoverybench"], "criteria": CRITERIA,
-        "criteria_digest": digest(CRITERIA), "coverage": {"blade": coverage, "discoverybench": coverage},
-        "confusion_matrix": {"blade": matrix, "discoverybench": matrix}, "uncertainty": {"blade": .1, "discoverybench": .1},
+        "applicable_benchmarks": list(benchmarks), "criteria": CRITERIA,
+        "criteria_digest": digest(CRITERIA), "coverage": {benchmark: coverage for benchmark in benchmarks},
+        "confusion_matrix": {benchmark: matrix for benchmark in benchmarks}, "uncertainty": {benchmark: .1 for benchmark in benchmarks},
     })
 
 
@@ -43,12 +43,15 @@ def obligations() -> CombinationObligations:
         (("M2", "M3", "M5"), ("M4", "M5", "M6"), ("M1", "M4", "M7"), ("M3", "M6", "M9"), ("M7", "M8", "M9")), modules, modules)
 
 
-def panel(tmp_path: Path, split_digest: str) -> tuple[FrozenPanel, tuple[RuntimeReceipt, ...]]:
+def panel(tmp_path: Path, store: CustodyStore, benchmarks: tuple[str, ...] = ("blade", "discoverybench")) -> tuple[FrozenPanel, tuple[RuntimeReceipt, ...]]:
+    split_digest = store.state["split"]["digest"]
+    groups = {row["item"]: row["group"] for row in store.state["split"]["rows"]}
     spec, design = registry()["Q1.3"], default_compatibility(DIGEST).conditional_factorial(("M2",))
     arms = {row["id"]: FrozenRecord.from_dict(row["arm"]) for row in design.data()["cells"] if row["status"] == "executable"}
     cells, rows = [], []
-    for benchmark in ("blade", "discoverybench"):
-        identity = DataIdentity(benchmark, f"g-Q1.3", "g-Q1.3", "v1", split_digest, "validation")
+    for benchmark in benchmarks:
+        identity = DataIdentity(benchmark, "g-Q1.3", groups[f"{benchmark}:g-Q1.3"],
+                                store.state["inventory_digest"], split_digest, "validation")
         task = PublicTask.create(identity, {"question": "synthetic public fixture"})
         for variant in spec.variants:
             for arm_id, arm in arms.items():
@@ -64,14 +67,14 @@ def panel(tmp_path: Path, split_digest: str) -> tuple[FrozenPanel, tuple[Runtime
                 trace = sidecar / "trace.jsonl"
                 output = FrozenRecord.from_dict({"responses": [response.data()], "terminal": terminal.data()}).content_hash
                 rows.append(RuntimeReceipt(cell.key, "succeeded", trace, run._events[-1].content_hash, output)); cells.append(cell)
-    return FrozenPanel("C1", "validation", split_digest, DIGEST, ("Q1.3",), {"Q1.3": design}, FrozenRecord.from_dict({"criterion": "fixture"}), tuple(cells), obligations()), tuple(rows)
+    return FrozenPanel("C1", "validation", split_digest, DIGEST, ("Q1.3",), {"Q1.3": design}, FrozenRecord.from_dict({"criterion": "fixture"}), tuple(cells), obligations(), benchmarks), tuple(rows)
 
 
-def custody_store(tmp_path: Path) -> tuple[CustodyStore, str]:
+def custody_store(tmp_path: Path, benchmarks: tuple[str, ...] = ("blade", "discoverybench")) -> tuple[CustodyStore, str]:
     store = CustodyStore(tmp_path / "custody.json", calibration_keys={"calibration": b"k" * 32},
                          signing_authority_id="custody", signing_key=b"s" * 32)
     items = [InventoryItem(benchmark, "g-Q1.3", "fixture-source-" + benchmark, "fixture", "fixture", (("0" if benchmark == "blade" else "1") * 64,))
-             for benchmark in ("blade", "discoverybench")]
+             for benchmark in benchmarks]
     store.inventory(items)
     for item in items:
         store.attest_independent_clean(item_ids=[f"{item.benchmark}:{item.task_id}"], custodian_id="custodian-" + item.benchmark,
@@ -82,10 +85,12 @@ def custody_store(tmp_path: Path) -> tuple[CustodyStore, str]:
 
 def issue_lease(store: CustodyStore, frozen: FrozenPanel, *, candidate: str = DIGEST) -> FrozenRecord:
     groups = list(frozen.validation_groups)
-    calibration_receipt = calibration(frozen.digest)
-    lease = store.lease_validation(stage="C1", panel_digest=frozen.digest, candidate_digest=candidate, group_ids=groups,
-                                   arm_schedule=list(frozen.arm_schedule), scorer_digest=DIGEST, protocol_digest=PROTOCOL,
-                                   calibration_receipt=calibration_receipt)
+    calibration_receipt = calibration(frozen.digest, frozen.required_benchmarks)
+    if candidate != frozen.candidate_digest:
+        # A mismatched candidate can be tested only via the raw compatibility
+        # API; it cannot produce a custody-issued panel receipt.
+        return calibration_receipt
+    lease = store.lease_panel(frozen, protocol_digest=PROTOCOL, calibration_receipt=calibration_receipt)
     with pytest.raises(ContractError, match="only a consumed"):
         store.issued_validation_receipt(lease["id"])
     store.consume_validation(lease["id"], panel_digest=frozen.digest, arm_schedule=list(frozen.arm_schedule))
@@ -102,7 +107,7 @@ def acceptance(frozen: FrozenPanel, rows: tuple[RuntimeReceipt, ...], scores: tu
 
 def test_consumed_custody_lease_is_required_for_panel_validation(tmp_path: Path) -> None:
     store, split = custody_store(tmp_path / "state")
-    frozen, rows = panel(tmp_path / "runtime", split)
+    frozen, rows = panel(tmp_path / "runtime", store)
     calibration_receipt = issue_lease(store, frozen)
     lease = store.issued_validation_receipt(next(iter(store.state["leases"])))
     scores = tuple(ScientificScorerReceipt(row.cell_key, FrozenRecord.from_dict({"schema": "independent-scored-cell-v1", "runtime_trace_digest": row.trace_digest, "scorer_digest": DIGEST})) for row in rows)
@@ -116,12 +121,31 @@ def test_consumed_custody_lease_is_required_for_panel_validation(tmp_path: Path)
 
 def test_wrong_candidate_or_missing_calibration_cannot_pass_panel(tmp_path: Path) -> None:
     store, split = custody_store(tmp_path / "state")
-    frozen, rows = panel(tmp_path / "runtime", split)
-    calibration_receipt = issue_lease(store, frozen, candidate="9" * 64)
-    lease = store.issued_validation_receipt(next(iter(store.state["leases"])))
+    frozen, rows = panel(tmp_path / "runtime", store)
+    calibration_receipt = calibration(frozen.digest)
+    raw = store.lease_validation(stage=frozen.stage, panel_digest=frozen.digest, candidate_digest="9" * 64,
+                                 group_ids=list(frozen.validation_groups), arm_schedule=list(frozen.arm_schedule),
+                                 scorer_digest=DIGEST, protocol_digest=PROTOCOL, calibration_receipt=calibration_receipt)
+    store.consume_validation(raw["id"], panel_digest=frozen.digest, arm_schedule=list(frozen.arm_schedule))
+    with pytest.raises(ContractError, match="only a consumed"):
+        store.issued_validation_receipt(raw["id"])
     scores = tuple(ScientificScorerReceipt(row.cell_key, FrozenRecord.from_dict({"schema": "independent-scored-cell-v1", "runtime_trace_digest": row.trace_digest, "scorer_digest": DIGEST})) for row in rows)
     verifier = PanelReceiptVerifier(scorer_verifier=lambda *_: None, custody_keys={"custody": b"s" * 32}, acceptance_keys={"accept": b"t" * 32}, calibration_keys={"calibration": b"k" * 32})
-    with pytest.raises(ContractError, match="custody lease"):
-        verifier.verify(frozen, rows, scorer_receipts=scores, validation=ValidationAcceptance(lease, acceptance(frozen, rows, scores, lease), calibration_receipt, PROTOCOL))
     with pytest.raises(ContractError, match="calibration receipt"):
-        verifier.verify(frozen, rows, scorer_receipts=scores, validation=ValidationAcceptance(lease, acceptance(frozen, rows, scores, lease)))
+        verifier.verify(frozen, rows, scorer_receipts=scores, validation=ValidationAcceptance(FrozenRecord.from_dict({}), FrozenRecord.from_dict({})))
+
+
+def test_three_benchmark_panel_uses_exact_frozen_set_and_real_custody_identities(tmp_path: Path) -> None:
+    benchmarks = ("discoverybench", "blade", "scienceagentbench")
+    store, _ = custody_store(tmp_path / "state", benchmarks)
+    frozen, rows = panel(tmp_path / "runtime", store, benchmarks)
+    assert frozen.required_benchmarks == benchmarks
+    assert set(frozen.validation_groups) == {row["group"] for row in store.state["split"]["rows"]}
+    before = frozen.digest
+    assert FrozenPanel(frozen.stage, frozen.domain, frozen.split_digest, frozen.candidate_digest,
+                       frozen.scope_ids, frozen.legal_arm_grids, frozen.acceptance_criteria,
+                       frozen.cells, frozen.combinations, tuple(reversed(benchmarks))).digest != before
+    receipt = calibration(frozen.digest, benchmarks)
+    lease = store.lease_panel(frozen, calibration_receipt=receipt, protocol_digest=PROTOCOL)
+    store.consume_validation(lease["id"], panel_digest=frozen.digest, arm_schedule=list(frozen.arm_schedule))
+    assert store.issued_validation_receipt(lease["id"]).data()["body"]["required_benchmarks"] == list(benchmarks)

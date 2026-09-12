@@ -78,7 +78,7 @@ def test_inventory_split_exposure_and_train_export(tmp_path: Path) -> None:
     with pytest.raises(ContractError, match="inventory drift"):
         store.inventory(altered)
     with pytest.raises(ContractError, match="invalid exposure"):
-        InventoryItem("invalid", "clean", "invalid:clean", "test", "clean", ("a" * 64,), "clean")
+        InventoryItem("blade", "clean", "blade:clean", "test", "clean", ("a" * 64,), "clean")
 
 
 def test_historical_discovery_selection_is_one_first_variant_per_domain(tmp_path: Path) -> None:
@@ -119,20 +119,20 @@ def test_stale_controller_cannot_overwrite_another_validation_lease(tmp_path: Pa
 def test_hash_union_and_validation_lease_are_bound_and_one_use(tmp_path: Path) -> None:
     clean_hash = "a" * 64
     items = [
-        InventoryItem("one", "a", "one:a", "test", "a", (clean_hash,)),
-        InventoryItem("two", "b", "two:b", "test", "b", (clean_hash,)),
-        InventoryItem("three", "c", "three:c", "test", "c", ("b" * 64,)),
+        InventoryItem("scienceagentbench", "a", "one:a", "test", "a", (clean_hash,)),
+        InventoryItem("scicode", "b", "two:b", "test", "b", (clean_hash,)),
+        InventoryItem("corebench", "c", "three:c", "test", "c", ("b" * 64,)),
     ]
     store = calibrated_store(tmp_path / "state.json")
     store.inventory(items)
-    store.attest_independent_clean(item_ids=["one:a", "two:b", "three:c"], custodian_id="custody-service",
+    store.attest_independent_clean(item_ids=["scienceagentbench:a", "scicode:b", "corebench:c"], custodian_id="custody-service",
                                    source_qualification_digest="a" * 64,
                                    exposure_qualification_digest="b" * 64,
                                    tested_arm_ids=["arm-a", "arm-b"])
     split = store.split(seed="seed", validation_percent=100)
     rows = {row["item"]: row for row in split["rows"]}
-    assert rows["one:a"]["group"] == rows["two:b"]["group"]
-    group = rows["one:a"]["group"]
+    assert rows["scienceagentbench:a"]["group"] == rows["scicode:b"]["group"]
+    group = rows["scienceagentbench:a"]["group"]
     with pytest.raises(ContractError, match="non-validation"):
         store.qualify_stage(stage="C1", panel_digest="c" * 64, group_ids=["not-a-validation-group"], arm_schedule=["arm-a", "arm-b"])
     lease = store.lease_validation(stage="C1", panel_digest="c" * 64, group_ids=[group], arm_schedule=["arm-a", "arm-b"], candidate_digest="7" * 64, scorer_digest="e" * 64, protocol_digest="f" * 64, calibration_receipt=calibration("c" * 64))
@@ -176,6 +176,14 @@ def test_unverified_blade_folder_stays_quarantined_until_external_attestation(tm
     soccer = next(row for row in qualified_split["rows"] if row["item"] == "blade:soccer")
     assert soccer["domain"] == "validation"
     assert soccer["custodian_qualified"] is True
+
+
+def test_cataloged_new_source_starts_quarantined_without_an_adapter_or_attestation(tmp_path: Path) -> None:
+    store = CustodyStore(tmp_path / "new-source.json")
+    store.inventory([InventoryItem("scienceagentbench", "synthetic", "scienceagentbench:synthetic",
+                                   "declared", "synthetic", ("a" * 64,))])
+    row = store.split(seed="synthetic", validation_percent=100)["rows"][0]
+    assert row["domain"] == "quarantine" and row["custodian_qualified"] is False
 
 
 def test_cli_inventory_attest_split_export_qualify_lease_consume(tmp_path: Path) -> None:

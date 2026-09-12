@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from evaluation.modular.calibration import CalibrationAuthority
+from evaluation.modular.calibration import CalibrationAuthority, verify_calibration_receipt
 from evaluation.modular.custody import CustodyStore, InventoryItem
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.ontology import ContractError, digest
@@ -24,16 +24,17 @@ def receipt(*, panel=PANEL, scorer=SCORER, protocol=PROTOCOL, criteria=CRITERIA,
     coverage = coverage or {name: 1 for name in CRITERIA["minimum_coverage"]}
     matrix = matrix or {"tp": 4, "tn": 4, "fp": 0, "fn": 0, "abstained": 1}
     uncertainty = uncertainty if uncertainty is not None else 0.1
+    declared = benchmarks or ["blade", "discoverybench"]
     return CalibrationAuthority("calibration-service", b"k" * 32).issue({
         "schema": "scorer-calibration-v1", "panel_digest": panel, "scorer_digest": scorer,
         "protocol_digest": protocol, "scorer_code_digest": "d" * 64, "judge_identity": "independent-judge",
         "judge_parameters": {"temperature": 0}, "rubric_digest": "e" * 64,
         "calibration_manifest_digest": "f" * 64, "blind_review_protocol_digest": "1" * 64,
-        "arbitration_protocol_digest": "2" * 64, "applicable_benchmarks": benchmarks or ["blade", "discoverybench"],
+        "arbitration_protocol_digest": "2" * 64, "applicable_benchmarks": declared,
         "criteria": criteria, "criteria_digest": digest(criteria),
-        "coverage": {"blade": coverage, "discoverybench": coverage},
-        "confusion_matrix": {"blade": matrix, "discoverybench": matrix},
-        "uncertainty": {"blade": uncertainty, "discoverybench": uncertainty},
+        "coverage": {benchmark: coverage for benchmark in declared},
+        "confusion_matrix": {benchmark: matrix for benchmark in declared},
+        "uncertainty": {benchmark: uncertainty for benchmark in declared},
     })
 
 
@@ -105,5 +106,17 @@ def test_signed_criteria_digest_cannot_drift(tmp_path: Path) -> None:
 
 
 def test_missing_benchmark_coverage_never_creates_an_eligible_receipt() -> None:
-    with pytest.raises(ContractError, match="both required benchmarks"):
+    with pytest.raises(ContractError, match="include the core pair"):
         receipt(benchmarks=["blade"])
+
+
+def test_panel_required_set_must_be_covered_by_the_signed_calibration() -> None:
+    signed_core = receipt()
+    with pytest.raises(ContractError, match="frozen criteria"):
+        verify_calibration_receipt(signed_core, {"calibration-service": b"k" * 32},
+                                   panel_digest=PANEL, scorer_digest=SCORER, protocol_digest=PROTOCOL,
+                                   required_benchmarks=("discoverybench", "blade", "scienceagentbench"))
+    signed_three = receipt(benchmarks=["discoverybench", "blade", "scienceagentbench"])
+    assert verify_calibration_receipt(signed_three, {"calibration-service": b"k" * 32},
+                                      panel_digest=PANEL, scorer_digest=SCORER, protocol_digest=PROTOCOL,
+                                      required_benchmarks=("discoverybench", "blade", "scienceagentbench"))["applicable_benchmarks"][-1] == "scienceagentbench"

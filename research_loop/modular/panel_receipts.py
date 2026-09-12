@@ -20,10 +20,12 @@ from research_loop.modular.combinations import validate_design
 from research_loop.modular.experiments import registry
 from research_loop.modular.runtime import verify_trace
 from research_loop.modular.protocol_trace import verify_protocol_trace
+from research_loop.modular.benchmarks.catalog import REQUIRED_BENCHMARKS, SUPPORTED_BENCHMARKS
 from evaluation.modular.calibration import verify_calibration_receipt
 from research_loop.ontology import ContractError, canonical
 
-BENCHMARKS = frozenset({"discoverybench", "blade"})
+# Compatibility name for callers that mean the default required pair.
+BENCHMARKS = frozenset(REQUIRED_BENCHMARKS)
 MODULES = ("P0", "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9")
 # P0 is a required control plane; the nine binary research modules are M1--M9.
 RESEARCH_MODULES = MODULES[1:]
@@ -64,7 +66,7 @@ class PanelCell:
     scorer_digest: str
 
     def __post_init__(self) -> None:
-        if self.identity.benchmark not in BENCHMARKS:
+        if self.identity.benchmark not in SUPPORTED_BENCHMARKS:
             raise ContractError("panel cell has an unsupported benchmark")
         required_text(self.coverage_id, "coverage id")
         required_text(self.replicate, "replicate")
@@ -130,16 +132,21 @@ class FrozenPanel:
     acceptance_criteria: FrozenRecord
     cells: tuple[PanelCell, ...]
     combinations: CombinationObligations
+    required_benchmarks: tuple[str, ...] = REQUIRED_BENCHMARKS
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "legal_arm_grids", MappingProxyType(dict(self.legal_arm_grids)))
         object.__setattr__(self, "scope_ids", tuple(self.scope_ids))
         object.__setattr__(self, "cells", tuple(self.cells))
+        object.__setattr__(self, "required_benchmarks", _names(self.required_benchmarks, "required benchmark"))
         required_text(self.stage, "stage")
         if self.domain not in {"train", "validation"}:
             raise ContractError("panel domain must be train or validation")
         _hex(self.split_digest, "split digest")
         _hex(self.candidate_digest, "candidate digest")
+        if (not set(self.required_benchmarks) <= set(SUPPORTED_BENCHMARKS)
+                or not set(REQUIRED_BENCHMARKS) <= set(self.required_benchmarks)):
+            raise ContractError("panel required benchmarks must be supported and include the core pair")
         if not isinstance(self.acceptance_criteria, FrozenRecord):
             raise ContractError("panel requires frozen legal-arm grid and acceptance criteria")
         if set(_names(self.scope_ids, "scope id")) - set(registry()) or set(self.legal_arm_grids) != set(self.scope_ids):
@@ -166,8 +173,8 @@ class FrozenPanel:
         if {cell.coverage_id for cell in self.cells} != set(self.scope_ids):
             raise ContractError("panel must exactly cover its registered scope")
         if {(cell.coverage_id, cell.identity.benchmark) for cell in self.cells} != {
-                (coverage, benchmark) for coverage in self.scope_ids for benchmark in BENCHMARKS}:
-            raise ContractError("each obligation must independently cover both benchmarks")
+                (coverage, benchmark) for coverage in self.scope_ids for benchmark in self.required_benchmarks}:
+            raise ContractError("each obligation must independently cover every required benchmark")
         # Each task panel has the exact same variant x legal-arm grid.  Thus a
         # caller cannot omit a negative arm or compare different tasks by arm.
         grouped: dict[tuple[str, str, str, str, str], list[PanelCell]] = {}
@@ -202,6 +209,7 @@ class FrozenPanel:
             "split_digest": self.split_digest, "candidate_digest": self.candidate_digest,
             "scope_ids": list(self.scope_ids), "legal_arm_grid_digests": {k: v.content_hash for k, v in sorted(self.legal_arm_grids.items())},
             "acceptance_criteria_digest": self.acceptance_criteria.content_hash,
+            "required_benchmarks": list(self.required_benchmarks),
             "combinations": self.combinations.data(),
             "cells": [cell.data() for cell in sorted(self.cells, key=lambda cell: cell.key)]}).content_hash
 
@@ -211,9 +219,10 @@ class FrozenPanel:
 
     @property
     def validation_groups(self) -> tuple[str, ...]:
-        # Custody identifiers include the benchmark.  A same-spelled group in
-        # another benchmark is a different source group, never a lease alias.
-        return tuple(sorted({f"{cell.identity.benchmark}:{cell.identity.group_id}" for cell in self.cells}))
+        # Custody owns canonical group identifiers.  They are already
+        # benchmark-namespaced (or a deterministic merged-group representative);
+        # prepending a cell benchmark would double-prefix real custody groups.
+        return tuple(sorted({cell.identity.group_id for cell in self.cells}))
 
 
 @dataclass(frozen=True)
@@ -436,14 +445,16 @@ class PanelReceiptVerifier:
             raise ContractError("validation panel must have exactly one scorer digest")
         calibration = verify_calibration_receipt(validation.calibration_receipt, self._calibration_keys,
                                                  panel_digest=panel.digest, scorer_digest=next(iter(scorer_digests)),
-                                                 protocol_digest=validation.protocol_digest)
+                                                 protocol_digest=validation.protocol_digest,
+                                                 required_benchmarks=panel.required_benchmarks)
         lease = verify_signed(validation.lease, self._custody_keys, schema="custody-panel-lease-v2")
         if (lease.get("panel_digest") != panel.digest or lease.get("candidate_digest") != panel.candidate_digest
                 or lease.get("split_digest") != panel.split_digest or tuple(lease.get("arm_schedule", ())) != panel.arm_schedule
                 or tuple(sorted(lease.get("groups", ()))) != panel.validation_groups or lease.get("status") != "consumed"
                 or lease.get("scorer_digest") != next(iter(scorer_digests)) or lease.get("protocol_digest") != validation.protocol_digest
                 or lease.get("calibration_receipt_digest") != validation.calibration_receipt.content_hash
-                or lease.get("criteria_digest") != calibration["criteria_digest"]):
+                or lease.get("criteria_digest") != calibration["criteria_digest"]
+                or tuple(lease.get("required_benchmarks", ())) != panel.required_benchmarks):
             raise ContractError("custody lease is not bound to this exact frozen validation panel")
         acceptance = verify_signed(validation.acceptance, self._acceptance_keys, schema="panel-acceptance-v1")
         runtime_digest = FrozenRecord.from_dict({"runtime": [self._runtime_data(row) for row in sorted(runtime, key=lambda row: row.cell_key)]}).content_hash

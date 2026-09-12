@@ -58,3 +58,21 @@ python -m evaluation.modular.custody --state work/custody.json split --seed stag
 This is an API and export boundary only. Directory separation does not prove OS,
 container, cache, network, credential, or process isolation; those controls need
 independent deployment verification.
+
+## Cataloged benchmark sets and panel leases
+
+The default required calibration set is DiscoveryBench and BLADE. A frozen panel
+may require a larger set from `research_loop.modular.benchmarks.catalog`, but it
+must retain those two core benchmarks. A signed calibration may declare a larger
+applicable set; eligibility is calculated for the panel's exact frozen set.
+Cataloging a source supplies no loader, evaluator, attestation, or automatic
+qualification. New cataloged metadata remains quarantined until separate review
+and adapter work exist.
+
+Only `lease_panel(panel, calibration_receipt, protocol_digest)` can produce a
+lease that custody will sign for panel verification. It compares every frozen
+cell's benchmark/task identity, canonical custody group, inventory digest, split
+digest, and validation domain with stored state. The raw lease API is metadata
+compatibility only; even once consumed it cannot produce a signed panel receipt.
+This is engineering enforcement, not evidence that independently produced
+calibration materials or scientific acceptance exist.

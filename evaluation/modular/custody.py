@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
+from research_loop.modular.benchmarks.catalog import REQUIRED_BENCHMARKS, SUPPORTED_BENCHMARKS
 from evaluation.modular.calibration import verify_calibration_receipt
 from research_loop.ontology import ContractError, canonical, digest
 
@@ -59,6 +60,8 @@ class InventoryItem:
     def __post_init__(self) -> None:
         for field in ("benchmark", "task_id", "source_group"):
             _safe_name(getattr(self, field), field)
+        if self.benchmark not in SUPPORTED_BENCHMARKS:
+            raise ContractError("unsupported benchmark inventory metadata")
         if (not self.official_split or "\\" in self.official_split or "\x00" in self.official_split
                 or not self.relative_path or "\\" in self.relative_path or "\x00" in self.relative_path):
             raise ContractError("invalid inventory path metadata")
@@ -343,7 +346,8 @@ class CustodyStore:
     def qualify_stage(self, *, stage: str, panel_digest: str, candidate_digest: str | None = None,
                       group_ids: list[str], arm_schedule: list[str],
                       scorer_digest: str | None = None, protocol_digest: str | None = None,
-                      calibration_receipt: FrozenRecord | None = None) -> dict[str, Any]:
+                      calibration_receipt: FrozenRecord | None = None,
+                      required_benchmarks: tuple[str, ...] = REQUIRED_BENCHMARKS) -> dict[str, Any]:
         """Return explicit metadata status or a signed scorer-calibration qualification."""
         if self.state["split"] is None:
             raise ContractError("split required before stage qualification")
@@ -354,6 +358,11 @@ class CustodyStore:
             raise ContractError("invalid stage qualification request")
         for arm in arm_schedule:
             _safe_name(arm, "arm")
+        required_benchmarks = tuple(required_benchmarks)
+        if (not required_benchmarks or len(set(required_benchmarks)) != len(required_benchmarks)
+                or not set(required_benchmarks) <= set(SUPPORTED_BENCHMARKS)
+                or not set(REQUIRED_BENCHMARKS) <= set(required_benchmarks)):
+            raise ContractError("required benchmark set must be supported and include the core pair")
         valid = {row["group"] for row in self.state["split"]["rows"] if row["domain"] == "validation"}
         if not set(group_ids) <= valid:
             raise ContractError("stage qualification includes non-validation group")
@@ -363,7 +372,8 @@ class CustodyStore:
         base = {"stage": stage, "panel_digest": panel_digest, "candidate_digest": candidate_digest,
                 "groups": sorted(group_ids),
                 "arm_schedule": list(arm_schedule), "arm_schedule_digest": digest(list(arm_schedule)),
-                "split_digest": self.state["split"]["digest"]}
+                "split_digest": self.state["split"]["digest"],
+                "required_benchmarks": list(required_benchmarks)}
         if calibration_receipt is None:
             if scorer_digest is not None or protocol_digest is not None:
                 raise ContractError("scorer and protocol binding require a signed calibration receipt")
@@ -375,7 +385,8 @@ class CustodyStore:
             raise ContractError("validation qualification requires scorer and protocol digests")
         calibration = verify_calibration_receipt(calibration_receipt, self._calibration_keys,
                                                   panel_digest=panel_digest, scorer_digest=scorer_digest,
-                                                  protocol_digest=protocol_digest)
+                                                  protocol_digest=protocol_digest,
+                                                  required_benchmarks=required_benchmarks)
         return {**base, "qualified": True, "qualification": "calibration_eligible",
                 "metadata_authenticated": True, "calibration_eligible": True,
                 "scorer_digest": scorer_digest, "protocol_digest": protocol_digest,
@@ -386,7 +397,8 @@ class CustodyStore:
     def lease_validation(self, *, stage: str, panel_digest: str,
                          group_ids: list[str], arm_schedule: list[str], candidate_digest: str | None = None,
                          scorer_digest: str | None = None, protocol_digest: str | None = None,
-                         calibration_receipt: FrozenRecord | None = None) -> dict[str, Any]:
+                         calibration_receipt: FrozenRecord | None = None,
+                         required_benchmarks: tuple[str, ...] = REQUIRED_BENCHMARKS) -> dict[str, Any]:
         if self.state["split"] is None:
             raise ContractError("split required before lease")
         if calibration_receipt is None or scorer_digest is None or protocol_digest is None or not _is_digest(candidate_digest or ""):
@@ -397,11 +409,53 @@ class CustodyStore:
         qualification = self.qualify_stage(stage=stage, panel_digest=panel_digest, candidate_digest=candidate_digest,
                                            group_ids=group_ids, arm_schedule=arm_schedule,
                                            scorer_digest=scorer_digest, protocol_digest=protocol_digest,
-                                           calibration_receipt=calibration_receipt)
-        lease = {"id": lease_id, **qualification, "status": "active"}
+                                           calibration_receipt=calibration_receipt,
+                                           required_benchmarks=required_benchmarks)
+        lease = {"id": lease_id, **qualification, "panel_validated": False, "status": "active"}
         self.state["leases"][lease_id] = lease
         self._save()
         return lease
+
+    def lease_panel(self, panel: Any, *, calibration_receipt: FrozenRecord,
+                    protocol_digest: str) -> dict[str, Any]:
+        """Lease only a panel whose task identities belong to this frozen split.
+
+        Raw ``lease_validation`` remains a metadata compatibility API.  Its
+        lease can never be signed for panel acceptance; this entry verifies the
+        real inventory/split membership before allowing that later receipt.
+        """
+        from research_loop.modular.panel_receipts import FrozenPanel
+        if not isinstance(panel, FrozenPanel) or panel.domain != "validation":
+            raise ContractError("panel lease requires a frozen validation panel")
+        if self.state["split"] is None:
+            raise ContractError("split required before panel lease")
+        items = {f"{row['benchmark']}:{row['task_id']}": InventoryItem.parse(row)
+                 for row in self.state["inventory"]}
+        split_rows = {row["item"]: row for row in self.state["split"]["rows"]}
+        identities = []
+        for cell in panel.cells:
+            identity, item_id = cell.identity, f"{cell.identity.benchmark}:{cell.identity.task_id}"
+            item, row = items.get(item_id), split_rows.get(item_id)
+            if (item is None or row is None or identity.dataset_version != self.state["inventory_digest"]
+                    or identity.split_id != self.state["split"]["digest"]
+                    or identity.group_id != row["group"] or row["domain"] != "validation"):
+                raise ContractError("panel task identity is not a validation member of this custody split")
+            identities.append(identity.data())
+        groups = list(panel.validation_groups)
+        if set(groups) != {row["group"] for row in split_rows.values()
+                           if row["item"] in {f"{cell.identity.benchmark}:{cell.identity.task_id}" for cell in panel.cells}}:
+            raise ContractError("panel groups do not exactly match its custody task identities")
+        lease = self.lease_validation(stage=panel.stage, panel_digest=panel.digest,
+                                      candidate_digest=panel.candidate_digest, group_ids=groups,
+                                      arm_schedule=list(panel.arm_schedule),
+                                      scorer_digest=panel.cells[0].scorer_digest,
+                                      protocol_digest=protocol_digest,
+                                      calibration_receipt=calibration_receipt,
+                                      required_benchmarks=panel.required_benchmarks)
+        lease["panel_validated"] = True
+        lease["task_identities_digest"] = digest(sorted(identities, key=canonical))
+        self._save()
+        return dict(lease)
 
     def consume_validation(self, lease_id: str, *, panel_digest: str, arm_schedule: list[str]) -> dict[str, Any]:
         lease = self.state["leases"].get(lease_id)
@@ -418,11 +472,12 @@ class CustodyStore:
         if self._signing_authority_id is None or self._signing_key is None:
             raise ContractError("custody issued receipt requires configured signing authority")
         lease = self.state["leases"].get(lease_id)
-        if lease is None or lease.get("status") != "consumed" or lease.get("qualification") != "calibration_eligible":
+        if (lease is None or lease.get("status") != "consumed" or lease.get("qualification") != "calibration_eligible"
+                or lease.get("panel_validated") is not True):
             raise ContractError("only a consumed calibration-eligible custody lease can be issued")
         required = {"id", "stage", "panel_digest", "candidate_digest", "groups", "arm_schedule", "arm_schedule_digest",
                     "split_digest", "qualified", "qualification", "metadata_authenticated", "calibration_eligible",
-                    "scorer_digest", "protocol_digest", "calibration_receipt_digest", "criteria_digest", "calibration_authority", "status"}
+                    "scorer_digest", "protocol_digest", "calibration_receipt_digest", "criteria_digest", "calibration_authority", "required_benchmarks", "panel_validated", "task_identities_digest", "status"}
         if set(lease) != required:
             raise ContractError("stored custody lease has unsupported fields")
         body = {"schema": "custody-panel-lease-v2", "lease_id": lease["id"], "stage": lease["stage"],
@@ -431,6 +486,8 @@ class CustodyStore:
                 "scorer_digest": lease["scorer_digest"], "protocol_digest": lease["protocol_digest"],
                 "calibration_receipt_digest": lease["calibration_receipt_digest"],
                 "criteria_digest": lease["criteria_digest"],
+                "required_benchmarks": lease["required_benchmarks"],
+                "task_identities_digest": lease["task_identities_digest"],
                 "status": "consumed", "authority": self._signing_authority_id}
         return FrozenRecord.from_dict({"body": body, "mac": hmac.new(self._signing_key, canonical(body).encode(), hashlib.sha256).hexdigest()})
 
