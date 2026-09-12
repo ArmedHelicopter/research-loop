@@ -1,0 +1,1035 @@
+{
+  "schema": "modular-coverage-checkpoint-v1",
+  "records": [
+    {
+      "experiment_id": "Q1.1",
+      "modules": [
+        "M3"
+      ],
+      "variants": [
+        "correct",
+        "wrong",
+        "neutral"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 12,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q1.2",
+      "modules": [
+        "M2",
+        "M3"
+      ],
+      "variants": [
+        "summary_only",
+        "registered",
+        "withdraw"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 18,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q1.3",
+      "modules": [
+        "M2"
+      ],
+      "variants": [
+        "log",
+        "report",
+        "summary",
+        "memory"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 16,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q1.4",
+      "modules": [
+        "M2"
+      ],
+      "variants": [
+        "one_withdrawn",
+        "all_withdrawn",
+        "copies"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 12,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q1.5",
+      "modules": [
+        "M5"
+      ],
+      "variants": [
+        "blind_first",
+        "summary_first"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 8,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q1.6",
+      "modules": [
+        "M1",
+        "M2"
+      ],
+      "variants": [
+        "replacement",
+        "none",
+        "high_score"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 24,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q1.7",
+      "modules": [
+        "M3"
+      ],
+      "variants": [
+        "irrelevant",
+        "causal",
+        "unknown"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 12,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q2.1",
+      "modules": [
+        "M1",
+        "M5"
+      ],
+      "variants": [
+        "neutral",
+        "positive",
+        "negative"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 24,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q2.2",
+      "modules": [
+        "P0"
+      ],
+      "variants": [
+        "affirm",
+        "negate",
+        "quote",
+        "counterfactual",
+        "local"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "p0-fixed"
+      ],
+      "synthetic_compiled_cells": 10,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q2.3",
+      "modules": [
+        "M1"
+      ],
+      "variants": [
+        "false",
+        "string_false",
+        "empty",
+        "duplicate",
+        "unknown",
+        "missing",
+        "parse_error"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 28,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q2.4",
+      "modules": [
+        "M1"
+      ],
+      "variants": [
+        "one_fail",
+        "both_fail",
+        "disagree",
+        "same_wrong"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 16,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q2.5",
+      "modules": [
+        "M1"
+      ],
+      "variants": [
+        "invalid_positive",
+        "invalid_negative",
+        "valid_negative"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 12,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q2.6",
+      "modules": [
+        "M1"
+      ],
+      "variants": [
+        "secondary_win",
+        "maintenance",
+        "late_pivot"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 12,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q2.7",
+      "modules": [
+        "P0"
+      ],
+      "variants": [
+        "missing_lock",
+        "missing_execution",
+        "missing_audit",
+        "illegal_state"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "p0-fixed"
+      ],
+      "synthetic_compiled_cells": 8,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q3.1",
+      "modules": [
+        "M4"
+      ],
+      "variants": [
+        "mechanism",
+        "computation",
+        "measurement"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 12,
+      "production_panel_driver": "available",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q3.2",
+      "modules": [
+        "M4"
+      ],
+      "variants": [
+        "joint",
+        "separate"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 8,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q3.3",
+      "modules": [
+        "M8"
+      ],
+      "variants": [
+        "one_worker",
+        "k_workers"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 8,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q3.4",
+      "modules": [
+        "M8"
+      ],
+      "variants": [
+        "favorable_first",
+        "unfavorable_first"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 8,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q3.5",
+      "modules": [
+        "M8"
+      ],
+      "variants": [
+        "write_conflict",
+        "withdrawal",
+        "crash",
+        "expiry",
+        "duplicate"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 20,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q4.1",
+      "modules": [
+        "M4",
+        "M5"
+      ],
+      "variants": [
+        "single",
+        "independent_samples",
+        "roles"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 24,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q4.2",
+      "modules": [
+        "M5"
+      ],
+      "variants": [
+        "mechanism",
+        "alternative",
+        "measurement",
+        "experiment",
+        "generic"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 20,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q4.3",
+      "modules": [
+        "M5"
+      ],
+      "variants": [
+        "sealed_then_exchange",
+        "sequential"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 8,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q4.4",
+      "modules": [
+        "M5"
+      ],
+      "variants": [
+        "none_valid",
+        "defective"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 8,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q4.5",
+      "modules": [
+        "M5"
+      ],
+      "variants": [
+        "right_to_wrong",
+        "wrong_to_right",
+        "heterogeneous"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 12,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q5.1",
+      "modules": [
+        "M7"
+      ],
+      "variants": [
+        "subjective",
+        "data",
+        "minimal_run",
+        "measurement",
+        "independent"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 20,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q5.2",
+      "modules": [
+        "M4",
+        "M7"
+      ],
+      "variants": [
+        "zero_exit_same_prediction",
+        "negative_control"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 16,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q5.3",
+      "modules": [
+        "M4"
+      ],
+      "variants": [
+        "same_mechanism",
+        "opposite_prediction",
+        "title"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 12,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q5.4",
+      "modules": [
+        "M4",
+        "M7"
+      ],
+      "variants": [
+        "subjective",
+        "preregistered_cost"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 16,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q5.5",
+      "modules": [
+        "M6",
+        "M7"
+      ],
+      "variants": [
+        "missing_data",
+        "missing_method",
+        "missing_budget",
+        "missing_control"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 32,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q6.1",
+      "modules": [
+        "P0",
+        "M9"
+      ],
+      "variants": [
+        "change_rule",
+        "read_validation",
+        "forge_receipt",
+        "self_activate"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 16,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q6.2",
+      "modules": [
+        "M9"
+      ],
+      "variants": [
+        "fixed",
+        "manual_train",
+        "automatic_train"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 12,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q6.3",
+      "modules": [
+        "M9"
+      ],
+      "variants": [
+        "fixed",
+        "train_proposed"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 8,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q6.4",
+      "modules": [
+        "P0"
+      ],
+      "variants": [
+        "negation",
+        "quotation",
+        "alternative"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "p0-fixed"
+      ],
+      "synthetic_compiled_cells": 6,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q6.5",
+      "modules": [
+        "M9"
+      ],
+      "variants": [
+        "unprotected",
+        "sealed_calibrated"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 8,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q6.6",
+      "modules": [
+        "M9"
+      ],
+      "variants": [
+        "promote",
+        "rollback",
+        "drift",
+        "offline",
+        "duplicate"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 20,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q7.1",
+      "modules": [
+        "M1",
+        "M7"
+      ],
+      "variants": [
+        "low_cost",
+        "data_unknown",
+        "measurement_repair",
+        "valid_negative",
+        "conflict"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 40,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q7.2",
+      "modules": [
+        "M7"
+      ],
+      "variants": [
+        "deterministic",
+        "insufficient",
+        "value"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 12,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q7.3",
+      "modules": [
+        "M7"
+      ],
+      "variants": [
+        "zero",
+        "low",
+        "medium",
+        "high"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 16,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q7.4",
+      "modules": [
+        "M1",
+        "M7"
+      ],
+      "variants": [
+        "invalid_measure",
+        "repair",
+        "old_evidence"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 24,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q7.5",
+      "modules": [
+        "M1",
+        "M2"
+      ],
+      "variants": [
+        "valid_known",
+        "novel_refuted",
+        "infeasible",
+        "easy_valid"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 32,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q7.6",
+      "modules": [
+        "M1",
+        "M5"
+      ],
+      "variants": [
+        "contract_only",
+        "real_counterexample"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 16,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q8.1",
+      "modules": [
+        "P0",
+        "M6",
+        "M5"
+      ],
+      "variants": [
+        "research",
+        "competition",
+        "distinguish",
+        "adversarial",
+        "retrospective",
+        "frontier"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 48,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q8.2",
+      "modules": [
+        "M6"
+      ],
+      "variants": [
+        "correct",
+        "method",
+        "reframe"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 12,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q8.3",
+      "modules": [
+        "M6"
+      ],
+      "variants": [
+        "support_only",
+        "neutral",
+        "three_lane"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 12,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q8.4",
+      "modules": [
+        "M6",
+        "M2"
+      ],
+      "variants": [
+        "shared_root",
+        "independent_roots"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 16,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q8.5",
+      "modules": [
+        "M6"
+      ],
+      "variants": [
+        "always",
+        "never",
+        "new_mechanism",
+        "conflict",
+        "innovation",
+        "dependency_unknown",
+        "stagnation"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "0",
+        "1"
+      ],
+      "synthetic_compiled_cells": 28,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q8.6",
+      "modules": [
+        "M1",
+        "M6"
+      ],
+      "variants": [
+        "conflict",
+        "malicious_override",
+        "pause_new_version"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 24,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    },
+    {
+      "experiment_id": "Q8.7",
+      "modules": [
+        "M4",
+        "M5"
+      ],
+      "variants": [
+        "remaining",
+        "failed_check",
+        "untested",
+        "anomaly",
+        "empty"
+      ],
+      "input_builder": "constructed_for_every_variant",
+      "legal_arms": [
+        "00",
+        "01",
+        "10",
+        "11"
+      ],
+      "synthetic_compiled_cells": 40,
+      "production_panel_driver": "not_connected",
+      "training_effect_study": "not_measured",
+      "validation_acceptance": "not_measured"
+    }
+  ],
+  "total_obligations": 48,
+  "programme_digest": "d81f1b5fb897c7b610e740c949ce09a396919a68616b2c3e0f97e84cce58628d",
+  "compiled_fixture_panel_digest": "9e14330ca7698bbaad6319afdb7c5c334708c2327fbc48fd73d300a3a21532f2",
+  "fixture_cells": 826,
+  "pair_obligations": 36,
+  "triple_obligations": 5,
+  "combination_status": "routing_only"
+}

@@ -1,0 +1,34 @@
+{
+  "scienceagentbench": {
+    "pin": "c26e151ed601ba109dc4d35e057ff8e73fec469d",
+    "tree_entries": 37,
+    "tree_sha256": "a731716f72a15bb4330f8e2241e4b9e5f45195b3fb12bf3661487683c99b03de",
+    "repository_license_sha256": "93b43d692b033b76129504448695bfe76ef22d18b11e51352bfab4b5622e5aaa",
+    "dataset_qualification": "quarantine_until_review",
+    "public_adapter_status": "restricted_public_projection_only"
+  },
+  "scicode": {
+    "pin": "8699b7c8fcebd916e429e26d28ac5d2257d25db3",
+    "tree_entries": 40,
+    "tree_sha256": "3ab46b5b55f462e513e48d2b3f4f55f7b4d42af43100461d9ca04cfee7bcf69d",
+    "repository_license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "dataset_qualification": "quarantine_until_review",
+    "public_adapter_status": "restricted_public_projection_only"
+  },
+  "corebench": {
+    "pin": "e32a2980e72fe6eb04ee04eb749458f570625663",
+    "tree_entries": 3245,
+    "tree_sha256": "b94ba6ebe31d1352fb2000e15fd6e7268d12a83638fe28b65981df3e1f2561a1",
+    "repository_license_sha256": "fa800fc3033ad315e2bf2949afca5c6bcb9f19ad6331d1db996e7dfca1e0eeb8",
+    "dataset_qualification": "quarantine_until_review",
+    "public_adapter_status": "catalog_only_no_runtime_adapter"
+  },
+  "airsbench": {
+    "pin": "72a629ce14309ed5bcfb42ebbc944028dd4b9542",
+    "tree_entries": 352,
+    "tree_sha256": "730d878a1811fd28e2d55f322f7c7b17acd23b0106dd942032ec50676d38b940",
+    "repository_license_sha256": "3711f963c05d0be80d53e5923308a6dee31b203da23435c9cfb7c7b6e4dd5e19",
+    "dataset_qualification": "quarantine_until_review",
+    "public_adapter_status": "catalog_only_no_runtime_adapter"
+  }
+}

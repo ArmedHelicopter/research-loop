@@ -1,0 +1,20 @@
+{
+  "schema": "custody-metadata-only-summary-v1",
+  "source": "E:\\_ryanDev\\AI\\research-loop-modular\\benchmarks\\work\\custody-live-20260912.json",
+  "source_sha256": "933f158b947a0761ed297ea7cb713d816c2385e58f4d1df37dc7669071c9e96f",
+  "inventory_digest": "3a9864afcd052cd315aa40c1c8c15e17a3326bd7a80889ec845f4ee451189388",
+  "split_digest": "4aa279f7e70c04f9073ca957e9c02fc400d09b4bb00662705d7174b1376f0c90",
+  "items": 403,
+  "domains": {
+    "train": 81,
+    "quarantine": 322
+  },
+  "groups": {
+    "train": 23,
+    "validation": 0,
+    "quarantine": 53
+  },
+  "leases": 0,
+  "data_payload_access": false,
+  "live_custody_modified": false
+}

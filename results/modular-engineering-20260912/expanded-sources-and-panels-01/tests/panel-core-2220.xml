@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="71" time="64.197" timestamp="2026-09-12T21:29:25.286300+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_panel_receipts" name="test_complete_panel_requires_all_cells_and_preserves_failures" time="3.365" /><testcase classname="tests.test_modular_panel_receipts" name="test_real_trace_binding_rejects_package_or_task_forgery" time="4.067" /><testcase classname="tests.test_modular_panel_receipts" name="test_panel_rejects_omitted_variant_arm_and_benchmark_obligation" time="4.066"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'independently cover both benchmarks'&#10; Input: 'each obligation must independently cover every required benchmark'">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/panel-core-20260912-2220/test_panel_rejects_omitted_var0')
+
+    def test_panel_rejects_omitted_variant_arm_and_benchmark_obligation(tmp_path: Path) -&gt; None:
+        frozen, _ = panel(tmp_path)
+        with pytest.raises(ContractError, match="complete variant by legal-arm grid"):
+            FrozenPanel(frozen.stage, frozen.domain, frozen.split_digest, frozen.candidate_digest,
+                frozen.scope_ids, frozen.legal_arm_grids, frozen.acceptance_criteria, frozen.cells[:-1], frozen.combinations)
+        q = frozen.cells[0].coverage_id
+        without_blade = tuple(cell for cell in frozen.cells if not (cell.coverage_id == q and cell.identity.benchmark == "blade"))
+        with pytest.raises(ContractError, match="independently cover both benchmarks"):
+&gt;           FrozenPanel(frozen.stage, frozen.domain, frozen.split_digest, frozen.candidate_digest,
+                frozen.scope_ids, frozen.legal_arm_grids, frozen.acceptance_criteria, without_blade, frozen.combinations)
+
+tests\test_modular_panel_receipts.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+&lt;string&gt;:13: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = FrozenPanel(stage='C1', domain='train', split_digest='aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...leave_one_out=('M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9')), required_benchmarks=('discoverybench', 'blade'))
+
+    def __post_init__(self) -&gt; None:
+        object.__setattr__(self, "legal_arm_grids", MappingProxyType(dict(self.legal_arm_grids)))
+        object.__setattr__(self, "scope_ids", tuple(self.scope_ids))
+        object.__setattr__(self, "cells", tuple(self.cells))
+        object.__setattr__(self, "required_benchmarks", _names(self.required_benchmarks, "required benchmark"))
+        required_text(self.stage, "stage")
+        if self.domain not in {"train", "validation"}:
+            raise ContractError("panel domain must be train or validation")
+        _hex(self.split_digest, "split digest")
+        _hex(self.candidate_digest, "candidate digest")
+        if (not set(self.required_benchmarks) &lt;= set(SUPPORTED_BENCHMARKS)
+                or not set(REQUIRED_BENCHMARKS) &lt;= set(self.required_benchmarks)):
+            raise ContractError("panel required benchmarks must be supported and include the core pair")
+        if not isinstance(self.acceptance_criteria, FrozenRecord):
+            raise ContractError("panel requires frozen legal-arm grid and acceptance criteria")
+        if set(_names(self.scope_ids, "scope id")) - set(registry()) or set(self.legal_arm_grids) != set(self.scope_ids):
+            raise ContractError("panel scope and legal-arm grids must be exact registered ids")
+        legal_by_scope = {}
+        for coverage, design_record in self.legal_arm_grids.items():
+            if not isinstance(design_record, FrozenRecord): raise ContractError("legal-arm grid must be frozen")
+            validate_design(design_record); design = design_record.data()
+            factors = set(design["factors"])
+            required = set(registry()[coverage].modules) - {"P0"}
+            if required and factors != required:
+                raise ContractError("legal-arm grid factors must equal the registered module set")
+            legal_by_scope[coverage] = {row["id"]: FrozenRecord.from_dict(row["arm"]) for row in design["cells"] if row["status"] == "executable"}
+        if not self.cells or any(not isinstance(cell, PanelCell) for cell in self.cells):
+            raise ContractError("panel requires typed expected cells")
+        if any(cell.identity.domain != self.domain for cell in self.cells):
+            raise ContractError("cell domain differs from frozen panel")
+        if any(cell.identity.split_id != self.split_digest for cell in self.cells):
+            raise ContractError("cell split identity differs from frozen panel")
+        if any(cell.coverage_id not in legal_by_scope or cell.arm_id not in legal_by_scope[cell.coverage_id] or cell.runtime_arm != legal_by_scope[cell.coverage_id][cell.arm_id] for cell in self.cells):
+            raise ContractError("cell arm is not the frozen compatibility-derived legal arm")
+        if len({cell.key for cell in self.cells}) != len(self.cells):
+            raise ContractError("duplicate expected panel cell")
+        if {cell.coverage_id for cell in self.cells} != set(self.scope_ids):
+            raise ContractError("panel must exactly cover its registered scope")
+        if {(cell.coverage_id, cell.identity.benchmark) for cell in self.cells} != {
+                (coverage, benchmark) for coverage in self.scope_ids for benchmark in self.required_benchmarks}:
+&gt;           raise ContractError("each obligation must independently cover every required benchmark")
+E           research_loop.ontology.ContractError: each obligation must independently cover every required benchmark
+
+research_loop\modular\panel_receipts.py:177: ContractError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/panel-core-20260912-2220/test_panel_rejects_omitted_var0')
+
+    def test_panel_rejects_omitted_variant_arm_and_benchmark_obligation(tmp_path: Path) -&gt; None:
+        frozen, _ = panel(tmp_path)
+        with pytest.raises(ContractError, match="complete variant by legal-arm grid"):
+            FrozenPanel(frozen.stage, frozen.domain, frozen.split_digest, frozen.candidate_digest,
+                frozen.scope_ids, frozen.legal_arm_grids, frozen.acceptance_criteria, frozen.cells[:-1], frozen.combinations)
+        q = frozen.cells[0].coverage_id
+        without_blade = tuple(cell for cell in frozen.cells if not (cell.coverage_id == q and cell.identity.benchmark == "blade"))
+&gt;       with pytest.raises(ContractError, match="independently cover both benchmarks"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'independently cover both benchmarks'
+E        Input: 'each obligation must independently cover every required benchmark'
+
+tests\test_modular_panel_receipts.py:118: AssertionError</failure></testcase><testcase classname="tests.test_modular_panel_receipts" name="test_validation_never_accepts_a_caller_decision_without_independent_services" time="3.533" /><testcase classname="tests.test_modular_panel_receipts" name="test_validation_acceptance_needs_scoring_and_signed_custody_binding[accepted]" time="3.807" /><testcase classname="tests.test_modular_panel_receipts" name="test_validation_acceptance_needs_scoring_and_signed_custody_binding[rejected]" time="3.503" /><testcase classname="tests.test_modular_panel_receipts" name="test_validation_acceptance_needs_scoring_and_signed_custody_binding[inconclusive]" time="4.037" /><testcase classname="tests.test_modular_panel_receipts" name="test_real_runsession_trace_binds_scoped_q13_cells" time="2.027" /><testcase classname="tests.test_modular_panel_receipts" name="test_ledger_rechecks_actual_panel_and_rejects_missing_cells_unscored_and_tampering" time="3.116" /><testcase classname="tests.test_modular_panel_receipts" name="test_ledger_validation_binds_frozen_training_selection_and_independent_decision[accepted]" time="9.610" /><testcase classname="tests.test_modular_panel_receipts" name="test_ledger_validation_binds_frozen_training_selection_and_independent_decision[rejected]" time="6.342" /><testcase classname="tests.test_modular_panel_receipts" name="test_ledger_validation_binds_frozen_training_selection_and_independent_decision[inconclusive]" time="7.666" /><testcase classname="tests.test_modular_core_scenarios" name="test_registry_q11_and_q21_variants_execute_both_public_adapters" time="0.009" /><testcase classname="tests.test_modular_core_scenarios" name="test_q11_same_evidence_and_q21_all_four_actual_gates" time="0.002" /><testcase classname="tests.test_modular_core_scenarios" name="test_q21_callback_candidate_changes_gate_and_always_positive_is_not_oracle_correct" time="0.001" /><testcase classname="tests.test_modular_core_scenarios" name="test_q11_manipulates_actual_history_material_and_rebuilds_from_identical_roots" time="0.003" /><testcase classname="tests.test_modular_core_scenarios" name="test_q21_unknown_and_invalid_are_not_conflated_by_fixture_oracle" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_registry_keeps_all_48_obligations_designed_and_emits_controlled_scenarios" time="0.002" /><testcase classname="tests.test_modular_experiments" name="test_legacy_two_benchmark_hashes_cannot_claim_measurement" time="0.002" /><testcase classname="tests.test_modular_experiments" name="test_blocked_status_cannot_skip_measurement_or_validation" time="0.002" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.1]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.2]" time="0.012" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.3]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.6]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.7]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.1]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.2]" time="0.003" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.3]" time="0.002" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.6]" time="0.002" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.7]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q3.1]" time="0.008" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q3.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q3.3]" time="0.009" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q3.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q3.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.1]" time="0.002" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.3]" time="0.000" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.4]" time="0.000" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.5]" time="0.000" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q5.1]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q5.2]" time="0.000" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q5.3]" time="0.000" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q5.4]" time="0.000" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q5.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.1]" time="0.010" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.3]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.5]" time="0.000" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.6]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q7.1]" time="0.002" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q7.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q7.3]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q7.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q7.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q7.6]" time="0.000" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.1]" time="0.007" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.3]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.4]" time="0.000" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.6]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.7]" time="0.001" /><testcase classname="tests.test_modular_custody_panel" name="test_consumed_custody_lease_is_required_for_panel_validation" time="2.323" /><testcase classname="tests.test_modular_custody_panel" name="test_wrong_candidate_or_missing_calibration_cannot_pass_panel" time="2.535" /><testcase classname="tests.test_modular_custody_panel" name="test_three_benchmark_panel_uses_exact_frozen_set_and_real_custody_identities" time="3.831" /></testsuite></testsuites>

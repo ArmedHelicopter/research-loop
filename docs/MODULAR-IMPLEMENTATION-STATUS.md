@@ -28,10 +28,14 @@ stage, and C1–C5 combination experiments defined in the design documents.
 
 ## Evidence boundaries
 
-The combined Python suite passed 435 tests with no failures, errors or skips
-after the protocol, scenario and model-port repairs (329.099 seconds). The prior
-308-test checkpoint and failed setup attempts are retained; every subsequent
-source change still needs its appropriate checks.
+The combined Python suite passed 768 tests with no failures, errors or skips
+on source commit `6ac59bad4fc7fb0215a6a80b3fa0b1fc9e1cc6d0` (397.321 seconds).
+The earlier 308, 435 and 723-test checkpoints remain retained. The intervening
+767-test run had one real Windows SQLite handle-cleanup failure; its report is
+preserved alongside the scheduler lifecycle repair and 44 passing focused checks.
+The final source hashes, all 48 coverage records, 826 compiled synthetic cells,
+source metadata and raw test reports are archived under
+`results/modular-engineering-20260912/expanded-sources-and-panels-01/`.
 Current test commands and entrypoints
 are in [MODULAR-RUNNING.md](MODULAR-RUNNING.md). Component test counts are not
 scientific benchmark results.
@@ -59,6 +63,23 @@ Q1.1/Q2.1/Q2.3 no longer stop at input metadata. Q6.3 executes the restricted
 meta-builder separately. These are fixture mechanisms, not 48 completed
 benchmark experiments. Several drivers still need their full formal-panel
 adapter, matched module-off control and provider/scorer integration.
+
+The train-only panel compiler now constructs a complete frozen grid for every
+registered obligation from prepared public tasks and actual package records.
+P0-only Q2.2/Q2.7/Q6.4 use a single fixed control bound to source/protocol material;
+P0 never has an off arm. The production per-cell entry point currently connects
+Q3.1 through real runtime requests, M4 plan/control handling and final journals.
+The compiled two-benchmark synthetic Q3.1 grid contains 12 cells. A separate full
+grid fixture retains two failed cells (a rejected plan and a model exception),
+and its verifier rejects tampered failure binding. Other formal per-cell drivers
+remain explicitly unavailable at this entry point.
+
+Q6.2's fixed arm now preserves the original package and invokes no optimizer or
+proposal callback. Q6.5 executes two linked offline-shadow updates through one
+authority. Its protected control rejects an authenticated but ineligible
+synthetic calibration receipt before activation; a positive control proves the
+same guard admits an eligible receipt. This checks the guard mechanism and does
+not establish calibration of a real scientific scorer or a measured feedback effect.
 
 ExperimentLedger now re-verifies a complete FrozenPanel, actual RunSession
 journals and independently verified scorer receipts before measurement. Legacy
@@ -115,6 +136,13 @@ and metadata pins are in [MODULAR-EXTENDED-DATASETS.md](MODULAR-EXTENDED-DATASET
 Catalog membership does not mean a runtime adapter, qualified split or scorer
 exists. Shared datasets, papers and artifacts must be grouped before splitting.
 
+All four new sources have retained pinned Git-tree metadata and repository
+license artifacts with verified hashes. SciCode and ScienceAgentBench also have
+restricted public-projection adapters and synthetic runtime-request integration
+checks. CORE-Bench and AIRS-Bench remain catalog-only. No new source task payload
+has been acquired, no validation groups have been assigned, and no scientific
+score has been obtained from these four sources.
+
 ## Next required work
 
 1. Complete the next bounded training transport contract with the repaired
@@ -122,7 +150,10 @@ exists. Shared datasets, papers and artifacts must be grouped before splitting.
 2. Finish formal per-cell scenario adapters and substantive blind scorer
    calibration. Do not substitute synthetic signed counts for actual calibration.
 3. Freeze matched schedules and conduct all required training-side module and
-   combination experiments, including the separate meta-builder phase.
+   combination experiments, including the separate meta-builder phase. A
+   dedicated combination panel is still required: the Q-specific factor
+   restriction cannot encode arbitrary pair/triple/full/LOO scopes. Its routing
+   manifest must not be treated as an executed or scored contrast.
 4. Acquire and qualify independent data under the expanded source scope, add
    restricted public adapters/scorers, verify deployment access isolation, then
    freeze validation panels and run acceptance. Never tune from validation.
