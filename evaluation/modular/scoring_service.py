@@ -21,6 +21,7 @@ from typing import Any, Callable, Mapping, Protocol
 from research_loop.modular.benchmarks.scoring import blade_adapted_score, discovery_adapted_score
 from research_loop.modular.contracts import FrozenRecord, required_text
 from research_loop.modular.panel_receipts import PanelCell, RuntimeReceipt, ScientificScorerReceipt
+from research_loop.modular.runtime import verify_trace
 from research_loop.ontology import ContractError, canonical
 
 
@@ -76,6 +77,40 @@ class ReferenceEvaluator(Protocol):
     def __call__(self, task_handle: str, submission: FrozenRecord) -> Mapping[str, object]: ...
 
 
+class ExactFieldReferenceEvaluator:
+    """A service-side adapted evaluator for structured benchmark candidates.
+
+    Each task handle resolves only inside the evaluator to its protected
+    reference record.  Dimensions are calculated by parsing the executed
+    candidate and comparing its benchmark-specific fields; callers cannot
+    provide dimensions.  Production services may replace this with the frozen
+    upstream evaluator while preserving the same narrow protocol.
+    """
+    _FIELDS = {
+        "discoverybench": {"context": "outcome", "variable_f1": "conclusion", "relation": "programme_complete"},
+        "blade": {"cvars": "outcome", "transform": "conclusion", "model": "programme_complete"},
+    }
+
+    def __init__(self, references: Mapping[str, Mapping[str, object]]):
+        if not isinstance(references, Mapping) or not references:
+            raise ContractError("reference evaluator needs service-owned references")
+        self._references = {required_text(handle, "task handle"): dict(reference)
+                            for handle, reference in references.items() if isinstance(reference, Mapping)}
+        if len(self._references) != len(references):
+            raise ContractError("reference evaluator records must be mappings")
+        for reference in self._references.values():
+            if reference.get("benchmark") not in _DIMENSIONS or not isinstance(reference.get("expected"), Mapping):
+                raise ContractError("reference evaluator record is malformed")
+
+    def __call__(self, task_handle: str, submission: FrozenRecord) -> Mapping[str, object]:
+        reference = self._references.get(task_handle)
+        if reference is None:
+            raise ContractError("unknown protected task handle")
+        candidate, expected = submission.data(), reference["expected"]
+        fields = self._FIELDS[reference["benchmark"]]
+        return {dimension: float(candidate.get(field) == expected.get(field)) for dimension, field in fields.items()}
+
+
 @dataclass(frozen=True)
 class ScoringAuthority:
     authority_id: str
@@ -107,16 +142,17 @@ class IndependentScoringService:
             required_text(handle, "task handle")
         self.config, self.authority, self._evaluator, self._handles = config, authority, evaluator, handles
 
-    def score(self, *, panel_digest: str, cell: PanelCell, runtime: RuntimeReceipt,
-              submission: FrozenRecord) -> ScientificScorerReceipt:
+    def score(self, *, panel_digest: str, cell: PanelCell, runtime: RuntimeReceipt) -> ScientificScorerReceipt:
         """Compute and sign one receipt from a real evaluator response.
 
-        ``submission`` is immutable candidate material supplied only to this
-        service.  It never carries a reference, expected dimensions, or score.
+        The candidate is extracted from the hash-chained runtime trace.  This
+        API intentionally has no caller-provided submission parameter.
         """
         _digest(panel_digest, "panel digest")
-        if not isinstance(submission, FrozenRecord) or runtime.status != "succeeded" or runtime.output_digest is None:
-            raise ContractError("only a successful bound runtime and immutable submission may be scored")
+        if runtime.cell_key != cell.key:
+            raise ContractError("runtime receipt cell does not match the scored cell")
+        if runtime.status != "succeeded" or runtime.output_digest is None:
+            raise ContractError("only a successful bound runtime may be scored")
         if cell.identity.benchmark not in self.config.benchmarks or cell.scorer_digest != self.config.digest:
             raise ContractError("cell benchmark or scorer configuration is not this service")
         identity_digest = FrozenRecord.from_dict(cell.identity.data()).content_hash
@@ -124,6 +160,7 @@ class IndependentScoringService:
         if task_handle is None:
             raise ContractError("task is not delegated to this scoring service")
         benchmark = cell.identity.benchmark
+        submission = self._executed_submission(cell, runtime)
         dimensions = self._dimensions(benchmark, self._evaluator(task_handle, submission))
         aggregate = (discovery_adapted_score if benchmark == "discoverybench" else blade_adapted_score)(
             submission.encoded, dimensions)
@@ -138,6 +175,25 @@ class IndependentScoringService:
                 "submission_digest": submission.content_hash, "metric": metric,
                 "status": "scored", "scientific_validity": "not_measured", "calibration": "not_measured"}
         return ScientificScorerReceipt(cell.key, self.authority.issue(body))
+
+    @staticmethod
+    def _executed_submission(cell: PanelCell, runtime: RuntimeReceipt) -> FrozenRecord:
+        trace = verify_trace(runtime.trace_path).data()
+        if trace["trace_digest"] != runtime.trace_digest:
+            raise ContractError("runtime trace digest does not match the scoring request")
+        events = [FrozenRecord(line).data() for line in runtime.trace_path.read_text(encoding="utf-8").splitlines()]
+        terminal = events[-1].get("data") if events else None
+        lock = events[0].get("data") if events else None
+        responses = [event["data"].get("response") for event in events if event.get("stage") == "model_response"]
+        if (not isinstance(lock, Mapping) or lock.get("identity") != cell.identity.data()
+                or not isinstance(terminal, Mapping) or events[-1].get("stage") != "final_decision"
+                or not responses or any(not isinstance(response, Mapping) for response in responses)):
+            raise ContractError("successful runtime has no cell-bound executed final candidate")
+        submission = FrozenRecord.from_dict(responses[-1])
+        observed = FrozenRecord.from_dict({"responses": responses, "terminal": dict(terminal)}).content_hash
+        if runtime.output_digest != observed or terminal.get("candidate_digest") != submission.content_hash:
+            raise ContractError("runtime output does not bind the executed candidate")
+        return submission
 
     def _dimensions(self, benchmark: str, value: Mapping[str, object]) -> dict[str, float]:
         names = _DIMENSIONS[benchmark]

@@ -306,6 +306,7 @@ class PanelVerdict:
     failures: int
     unscored: int
     blocked: int
+    adapted_score_verified: bool
     limitation: str | None
 
 
@@ -342,6 +343,7 @@ class PanelReceiptVerifier:
         if len({row.cell_key for row in scored}) != len(scored) or not set(row.cell_key for row in scored) <= set(expected):
             raise ContractError("duplicate or unexpected scorer receipt")
         scientific = False
+        adapted_score = False
         if self._scorer_verifier is not None:
             # A scorer receipt is required for every successful execution; failed
             # cells remain in the denominator but cannot be silently scored as 0.
@@ -363,7 +365,13 @@ class PanelReceiptVerifier:
                         or body.get("runtime_trace_digest") != actual[key].trace_digest
                         or body.get("scorer_digest") != expected[key].scorer_digest):
                     raise ContractError("scorer receipt lacks typed runtime and scorer binding")
-            scientific = True
+            # Adapted benchmark scores authenticate the configured calculation,
+            # but their receipts explicitly say calibration and scientific
+            # validity are unmeasured.  They must not promote a panel through
+            # the scientific or validation-acceptance paths.
+            adapted_score = any((row.receipt.data().get("body", row.receipt.data()).get("schema")
+                                 == "independent-scored-cell-v2") for row in scored)
+            scientific = not adapted_score
         elif scored:
             raise ContractError("caller supplied scorer receipts without an independent scorer verifier")
         acceptance_decision = None
@@ -375,11 +383,13 @@ class PanelReceiptVerifier:
         unscored = sum(row.status == "unscored" for row in rows)
         blocked = sum(row.status == "blocked" for row in rows)
         accepted = acceptance_decision == "accepted"
-        decision = acceptance_decision or ("evidence_verified" if scientific else "engineering_verified")
+        decision = acceptance_decision or ("evidence_verified" if scientific else "adapted_score_verified" if adapted_score else "engineering_verified")
         limitation = ("combination routing_only: no contrast matrix was measured" if not accepted else None)
         if not scientific:
-            limitation = "independent trusted scoring service is not configured"
-        return PanelVerdict(panel.digest, True, scientific, accepted, decision, len(rows), failed, unscored, blocked, limitation)
+            limitation = ("adapted score calculation is authenticated; calibration and scientific validity are not measured"
+                          if adapted_score else "independent trusted scoring service is not configured")
+        return PanelVerdict(panel.digest, True, scientific, accepted, decision, len(rows), failed, unscored, blocked,
+                            adapted_score, limitation)
 
     def _verify_runtime(self, receipt: RuntimeReceipt, expected: PanelCell, *, p0_control_digest: str | None = None) -> None:
         verify_protocol_trace(receipt.trace_path)
