@@ -49,6 +49,7 @@ def job_material(task, state, fault=None):
     jobs = [{'id': ids[i], 'purpose': 'probe' if i == 2 else 'main',
         'program': ("raise RuntimeError('original phase failure')" if fault == 'phase' else
             'import time\ntime.sleep(3)' if fault == 'timeout' else
+            header.replace('time.sleep(0.3)', 'started=time.monotonic_ns()\ntime.sleep(4)')+body.replace('}))', ", 'started_ns':started, 'finished_ns':time.monotonic_ns()}))") if fault == 'container_overlap' else
             header.replace('time.sleep(0.3)', 'time.sleep('+('1.5' if i == 0 else '0.05')+')')+body if fault == 'order' else header+body),
         'dependencies': [ids[0]] if fault == 'dependency' and i == 1 else [],
         'resources': [hashlib.sha256(('shared-public-csv' if fault == 'conflict' else 'resource-'+str(i)).encode()).hexdigest()],
@@ -232,6 +233,9 @@ def test_full24_prospective_cells_docker_and_independent_primary_scores(grid):
         assert phase['peak_leases']==(2 if 'M8' in executed.cell.runtime_arm.data()['enabled'] else 0) and phase['remaining_leases']==phase['residual_containers']==[]
         if 'M8' not in executed.cell.runtime_arm.data()['enabled']: assert phase['completion_order']==phase['fifo_order']
         assert phase['selection']['permit'] is None
+        frozen_jobs=replay_args(setup,result,executed)['material'].scheduling().data()['jobs']
+        assert phase['selection']['selected']==[job['id'] for job in frozen_jobs[:2]]
+        assert 'M7' not in executed.cell.runtime_arm.data()['enabled']
         assert (phase['overlap_ns']>0)==('M8' in executed.cell.runtime_arm.data()['enabled'])
         assert len(phase['public']['observations'])==2 and all(o['status']=='succeeded' for o in phase['public']['observations'])
         verify_state_scheduling_cell(executed,**replay_args(setup,result,executed))
@@ -477,7 +481,7 @@ def test_rehashed_solver_execution_cannot_relax_docker_limits(grid,field,value):
     verify_state_scheduling_cell(executed,**args)
 
 
-@pytest.mark.parametrize('mode',['dependency','conflict','order','timeout'])
+@pytest.mark.parametrize('mode',['dependency','conflict','order','timeout','container_overlap'])
 def test_bound_driver_scheduler_variants_with_real_docker_and_primary_score(tmp_path,mode):
     from research_loop.modular.state_scheduling_combination_driver import run_state_scheduling_cell
     from evaluation.modular.combination_scoring import verify_combination_adapted_receipt
@@ -496,6 +500,10 @@ def test_bound_driver_scheduler_variants_with_real_docker_and_primary_score(tmp_
     if mode in ('dependency','conflict'):
         assert phase['peak_leases']==phase['peak_dispatches']==1 and phase['overlap_ns']==0
         assert phase['completion_order']==phase['fifo_order']
+    elif mode=='container_overlap':
+        intervals=[json.loads(row['stdout']) for row in phase['public']['observations']]
+        assert min(row['finished_ns'] for row in intervals)>max(row['started_ns'] for row in intervals)
+        assert phase['peak_leases']==phase['peak_dispatches']==2 and phase['overlap_ns']>0
     elif mode=='order':
         assert phase['completion_order']==list(reversed(phase['fifo_order'])) and phase['overlap_ns']>0
         assert [o['binding'] for o in phase['public']['observations']]==phase['fifo_order']
