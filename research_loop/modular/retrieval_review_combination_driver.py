@@ -3,12 +3,12 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from research_loop.modular.benchmark_cell import _solver_journal_state, _compare_solver_result
-from research_loop.modular.benchmark_solver import run_benchmark_solve_in_session
+from research_loop.modular.benchmark_solver import run_benchmark_solve_in_session, _public_artifacts, _model_public_artifacts
 from research_loop.modular.combination_benchmark_driver import _runtime, _private_arm_marker
 from research_loop.modular.combination_panels import CombinationPanel
 from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import FrozenRecord, PublicTask
-from research_loop.modular.lineage_combination_driver import _MemoryLog, _read_events
+from research_loop.modular.lineage_combination_driver import _MemoryLog, _read_events, _verify_solver_files
 from research_loop.modular.modules.predictions import PredictionRegistry
 from research_loop.modular.modules.review import ReviewEngine
 from research_loop.modular.modules.retrieval import FrozenSourceBundle, LANES
@@ -135,6 +135,8 @@ def run_retrieval_review_cell(*, panel, cell, task, scenario, package, material,
             responses.append(answer)
             if review:
                 workflow.reviews.submit(review.review_id, role_id=role, reviewer_id=role, response=answer.data(), cost_units=1)
+                session._record('shared_review_submission', {'response_digest': answer.content_hash,
+                    'barrier_open': workflow.reviews.barrier_open(review.review_id)})
         if review:
             revealed = FrozenRecord.from_dict({'review_id': review.review_id,
                 'submissions': [s.data() for s in workflow.reviews.reveal(review.review_id)]})
@@ -224,7 +226,7 @@ def _verify_sources(events, task, material, enabled):
     return projection
 
 
-def verify_retrieval_review_cell(result, *, panel, task, scenario, package, material):
+def verify_retrieval_review_cell(result, *, panel, task, scenario, package, material, public_inputs, broker):
     """Read-only replay; never calls provider, model, Docker, or scorer."""
     cell = result.cell; _validate(panel, cell, task, scenario, package, material)
     PanelReceiptVerifier()._verify_runtime(result.runtime, cell)
@@ -269,6 +271,24 @@ def verify_retrieval_review_cell(result, *, panel, task, scenario, package, mate
             'module_response_digests': [first.content_hash, *[r.content_hash for r in actual_reviews]]})
         if result.joint_mechanism != expected_joint or [e['data'] for e in events if e['stage']=='combination_mechanism'] != [{'joint': expected_joint.data(), 'joint_digest': expected_joint.content_hash}]:
             raise ContractError('joint mechanism differs from actual model/module replay')
+        submissions = [e for e in events if e['stage']=='shared_review_submission']
+        if [e['data'] for e in submissions] != ([{'response_digest': r.content_hash, 'barrier_open': i==1}
+                for i,r in enumerate(actual_reviews)] if review else []):
+            raise ContractError('sealed review barrier drift')
+        for i,event in enumerate(submissions):
+            response_index = next(j for j,e in enumerate(events) if e['stage']=='model_response'
+                and e['data']['request_digest']==request_events[i+1]['data']['request_digest'])
+            next_index = events.index(request_events[i+2]) if i==0 else events.index(next(e for e in events if e['stage']=='combination_mechanism'))
+            if not response_index < events.index(event) < next_index: raise ContractError('sealed submission chronology drift')
+        stages = [e for e in events if e['stage']=='modular_workflow']
+        expected_stages = ([{'stage':'stage_1','status':'executed','plan_id':plan.plan_id,'plan_digest':plan.payload.content_hash}]
+            if plan else [{'stage':'operation_proposal','status':'executed','response_digest':first.content_hash}])
+        expected_stages += ([{'stage':'stage_7','status':'executed','review_id':review.review_id,
+            'review_digest':FrozenRecord.from_dict(revealed).content_hash}] if review else
+            [{'stage':'operation_review','status':'executed','response_digests':[r.content_hash for r in actual_reviews]}])
+        if [e['data'] for e in stages] != expected_stages: raise ContractError('prediction/review workflow stages drift')
+        if not events.index(request_events[0]) < events.index(stages[0]) < events.index(request_events[1]):
+            raise ContractError('prediction freeze did not precede review')
         for name, rows in (('predictions.jsonl', registry._log.rows), ('reviews.jsonl', review_engine._log.rows)):
             path = result.runtime.trace_path.parent/name
             actual = _read_events(path) if path.exists() else []
@@ -276,7 +296,17 @@ def verify_retrieval_review_cell(result, *, panel, task, scenario, package, mate
         joint_index = next(i for i,e in enumerate(events) if e['stage']=='combination_mechanism')
         if any(e['stage']=='execution_request' for e in events[:joint_index]): raise ContractError('feedback preceded mechanism freeze')
         if result.solver is None: raise ContractError('frozen mechanism lacks solver terminal state')
-        _compare_solver_result(result.solver, _solver_journal_state(events))
+        last_review = max(i for i,e in enumerate(events) if e['stage']=='model_response'
+            and e['data']['request_digest'] in {r['data']['request_digest'] for r in request_events[:3]})
+        first_solver = next((i for i,e in enumerate(events) if e['stage']=='model_request'
+            and e['data']['request']['slot']=='analysis_program'), len(events))
+        if not last_review < joint_index < first_solver: raise ContractError('joint freeze order drift')
+        state = _solver_journal_state(events)
+        _compare_solver_result(result.solver, state)
+        if result.runtime.status != ('succeeded' if state['status']=='execution_succeeded' else 'failed'):
+            raise ContractError('solver failure relabelled')
+        artifacts = _model_public_artifacts(_public_artifacts(broker, task.identity, public_inputs))
+        _verify_solver_files(state, events, result.runtime.trace_path, FrozenRecord.from_dict({'public_artifacts': artifacts}))
         if result.solver.session.sidecar != result.runtime.trace_path.parent: raise ContractError('solver used another session')
         for request in requests[3:]:
             if request['module_context'].get('joint_mechanism') != _public(expected_joint).data() or request['module_context'].get('joint_mechanism_digest') != _public(expected_joint).content_hash:

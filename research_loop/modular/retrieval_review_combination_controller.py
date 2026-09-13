@@ -33,7 +33,7 @@ class FrozenRetrievalReviewConfig:
     record: FrozenRecord
 
     def __post_init__(self):
-        if not isinstance(self.record, FrozenRecord): raise ContractError('frozen lineage train configuration required')
+        if not isinstance(self.record, FrozenRecord): raise ContractError('frozen retrieval review train configuration required')
         b = self.data()
         required = {'schema', 'domain', 'stage', 'item_ids', 'task_bindings', 'baseline_digest', 'packages_by_arm',
             'scorer', 'scorer_handle_bindings', 'acceptance_criteria', 'replicates', 'model', 'effort', 'max_calls',
@@ -41,7 +41,7 @@ class FrozenRetrievalReviewConfig:
         if (set(b) != required or b['schema'] != 'retrieval-review-combination-train-config-v1' or b['domain'] != 'train'
                 or not isinstance(b['stage'], str) or not b['stage'].strip() or not _names(b['item_ids'])
                 or not _names(b['replicates']) or not _digest(b['baseline_digest'])):
-            raise ContractError('closed lineage train scope or source list invalid')
+            raise ContractError('closed retrieval review train scope or source list invalid')
         bindings = b['task_bindings']
         if not isinstance(bindings, dict) or set(bindings) != set(b['item_ids']):
             raise ContractError('exact train identity and CSV bindings required')
@@ -202,7 +202,7 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
                 sidecar=cell_root, image=b['image'], model=model, audit_verifier=audit_verifier, timeout_seconds=b['timeout_seconds'])
             row.update(phase='source_verification', runtime=PanelReceiptVerifier._runtime_data(result.runtime)); persist()
             if result.cell != cell or result.runtime.cell_key != cell.key: raise ContractError('foreign executor cell')
-            verified = verify_retrieval_review_cell(result, **{k:v for k,v in args.items() if k not in ('public_inputs','broker')})
+            verified = verify_retrieval_review_cell(result, **args)
             row['verification'] = verified.data(); runtime_by_panel.setdefault(panel.digest, []).append(result.runtime)
             if result.runtime.status != 'succeeded':
                 row.update(status='failed', phase='execution', reason='original_execution_failure'); continue
@@ -237,7 +237,7 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
                 scorer_receipts=[s for s in scores if s.cell_key in {c.key for c in panel.cells}],
                 verifier=CombinationPanelVerifier(scorer_verifier=verify_score))
         except Exception as exc:
-            contrast = FrozenRecord.from_dict({'schema': 'lineage-inconclusive-contrast-v1', 'panel_digest': panel.digest,
+            contrast = FrozenRecord.from_dict({'schema': 'retrieval-review-inconclusive-contrast-v1', 'panel_digest': panel.digest,
                 'status': 'inconclusive', 'reason': 'incomplete_or_failed_cell', 'error_type': type(exc).__name__})
         contrasts.append(contrast)
     receipt = FrozenRecord.from_dict({'schema': 'retrieval-review-train-receipt-v1', 'config_digest': config.record.content_hash,

@@ -9,11 +9,12 @@ import pytest
 from evaluation.modular.train_io import TrainPacketExporter
 from evaluation.modular.scorer_process import CombinationScorerProcessClient, serialize_combination_panel
 from research_loop.modular.retrieval_review_combination_driver import (DESIGNS, SLOTS, BUDGET, registered_design,
-    freeze_material, admission_receipt, verify_retrieval_review_cell)
+    freeze_material, admission_receipt, verify_retrieval_review_cell, run_retrieval_review_cell)
 from research_loop.modular.retrieval_review_combination_controller import (FrozenRetrievalReviewConfig,
     compile_retrieval_review_panels, run_retrieval_review_panels, _arms)
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.runtime import AuditVerifier
+from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.ontology import ContractError, canonical
 from test_modular_combination_train_controller import _fixture as old_fixture, EXECUTION, SCORER, ANALYSIS
 from test_modular_combination_benchmark_driver import _plan
@@ -147,12 +148,14 @@ def grid(tmp_path_factory):
 
 
 def verify_all(result):
-    tasks={p.task.content_hash:p.task for p in result.compiled.packets}
+    packets={p.task.content_hash:p for p in result.compiled.packets}
     for panel in result.compiled.panels:
         for executed in [r for r in result.results if r and r.cell in panel.cells]:
-            verify_retrieval_review_cell(executed,panel=panel,task=tasks[executed.cell.task_digest],
+            packet=packets[executed.cell.task_digest]
+            verify_retrieval_review_cell(executed,panel=panel,task=packet.task,
                 scenario=result.compiled.scenarios[executed.cell.key],package=result.compiled.packages[executed.cell.runtime_arm.content_hash],
-                material=result.compiled.materials[executed.cell.task_digest])
+                material=result.compiled.materials[executed.cell.task_digest], public_inputs={'public_csv':packet.csv_path},
+                broker=DockerExecutionBroker([packet.csv_path.parent,executed.runtime.trace_path.parent]))
 
 
 def test_full_registry_custody_shared_session_grid_real_docker_and_scorer_processes(grid):
@@ -204,3 +207,96 @@ def test_failures_preserve_complete_grid_budget_unknown_cost_and_no_scores(tmp_p
     else:
         assert len(seen)==4 and b['blocked_cells']==31 and len(provider.calls)==3
         assert b['actual_model_usage']['model_usage_incomplete'] is True
+
+
+def _args(result, executed):
+    packet=next(p for p in result.compiled.packets if p.task.content_hash==executed.cell.task_digest)
+    return dict(panel=next(p for p in result.compiled.panels if executed.cell in p.cells),task=packet.task,
+        scenario=result.compiled.scenarios[executed.cell.key],package=result.compiled.packages[executed.cell.runtime_arm.content_hash],
+        material=result.compiled.materials[executed.cell.task_digest],public_inputs={'public_csv':packet.csv_path},
+        broker=DockerExecutionBroker([packet.csv_path.parent,executed.runtime.trace_path.parent]))
+
+
+def test_verifier_is_readonly_and_cannot_call_any_external_port(grid):
+    root,result,*_=grid
+    files=[p for p in (root/'run').rglob('*') if p.is_file()]
+    before={p:hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
+    verify_all(result)
+    assert before=={p:hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
+
+
+@pytest.mark.parametrize('fault',['program','csv','prediction_log','review_log','source_item','source_context','source_budget','barrier','joint_order'])
+def test_independent_replay_rejects_artifact_or_rehashed_mechanism_drift(grid,fault):
+    from test_modular_combination_benchmark_driver import _rewrite_trace
+    root,result,*_=grid
+    executed=next(r for r in result.results if r.cell.coverage_id=='triple:M4+M5+M6' and r.cell.arm_id=='111')
+    args=_args(result,executed); sidecar=executed.runtime.trace_path.parent
+    if fault in ('program','csv','prediction_log','review_log'):
+        path={'program':sidecar/'analysis-1.py','csv':args['public_inputs']['public_csv'],
+            'prediction_log':sidecar/'predictions.jsonl','review_log':sidecar/'reviews.jsonl'}[fault]
+        before=path.read_bytes()
+        try:
+            path.write_bytes(before+b'\n# changed\n')
+            with pytest.raises((ContractError,ValueError)): verify_retrieval_review_cell(executed,**args)
+        finally: path.write_bytes(before)
+        return
+    path=executed.runtime.trace_path; before=path.read_bytes()
+    def mutate(events):
+        if fault=='source_item': next(e for e in events if e['stage']=='q8_retrieval_item')['data']['source_digest']='0'*64
+        if fault=='source_context': next(e for e in events if e['stage']=='retrieval_review_sources')['data']['projection']['by_lane']['counter']=[]
+        if fault=='source_budget': next(e for e in events if e['stage']=='q8_retrieval_request')['data']['remaining']['source_slots']=3
+        if fault=='barrier': next(e for e in events if e['stage']=='shared_review_submission')['data']['barrier_open']=True
+        if fault=='joint_order':
+            joint=next(e for e in events if e['stage']=='combination_mechanism'); events.remove(joint)
+            at=next(i for i,e in enumerate(events) if e['stage']=='model_request' and e['data']['request']['slot']=='analysis_program')
+            events.insert(at+1,joint)
+    try:
+        digest=_rewrite_trace(path,mutate)
+        forged=replace(executed,runtime=replace(executed.runtime,trace_digest=digest))
+        with pytest.raises(ContractError): verify_retrieval_review_cell(forged,**args)
+    finally: path.write_bytes(before)
+
+
+@pytest.mark.parametrize('fault',['missing_arm','calls','source_cap','context_bytes','domain','handles','material_task','schema','scorer_scope'])
+def test_closed_configuration_or_explicit_scorer_scope_rejects_before_io(tmp_path,fault):
+    from evaluation.modular.scorer_process import parse_combination_panel
+    _,_,config,compiled,_=fixture(tmp_path)
+    b=config.data()
+    if fault=='scorer_scope':
+        for panel in compiled.panels:
+            with pytest.raises(ContractError): serialize_combination_panel(panel)
+            encoded=serialize_combination_panel(panel,retrieval_review=True)
+            with pytest.raises(ContractError): parse_combination_panel(encoded)
+            assert parse_combination_panel(encoded,retrieval_review=True)==panel
+        return
+    if fault=='missing_arm': b['packages_by_arm'].pop(next(iter(b['packages_by_arm'])))
+    if fault=='calls': b['max_calls']-=1
+    if fault=='source_cap': b['allocation']['source_cap_per_cell']=9
+    if fault=='context_bytes': next(iter(b['materials_by_task'].values()))['budget']['context_bytes']*=3
+    if fault=='domain': b['domain']='validation'
+    if fault=='handles': b['scorer_handle_bindings']={}
+    if fault=='material_task': next(iter(b['materials_by_task'].values()))['task_digest']='0'*64
+    if fault=='schema': b['schemas'].pop('proposal')
+    with pytest.raises(ContractError): FrozenRetrievalReviewConfig(FrozenRecord.from_dict(b))
+    assert not (tmp_path/'run').exists()
+
+
+def test_failed_actual_docker_cannot_be_relabeled_by_final_answer(tmp_path,monkeypatch,grid):
+    _,original,*_=grid
+    prior=original.results[-1]; args=_args(original,prior)
+    sidecar=tmp_path/'run'/'cells'/'one'; provider=Provider(tmp_path); seen=[]; ordinary=model_response(seen)
+    def response(request):
+        slot=request.data()['slot']
+        if slot=='analysis_program': return FrozenRecord.from_dict({'analysis':'Preserve the failed public execution.', 'program':"raise ValueError('public fixture failure')"})
+        if slot=='final_answer': return FrozenRecord.from_dict({'objective_digest':request.data()['module_context']['required_objective_digest'],
+            'outcome':'unknown','evidence_ids':[],'conclusion':'The public execution failed.','programme_complete':False})
+        return ordinary(request)
+    port=model_port(tmp_path/'port',monkeypatch,max_calls=5,schemas=SCHEMAS,response_factory=response)
+    args['broker']=DockerExecutionBroker([args['public_inputs']['public_csv'].parent,sidecar])
+    result=run_retrieval_review_cell(cell=prior.cell,**args,provider=provider,admission_port=admission_receipt,
+        objective=FrozenRecord.from_dict({'panel_digest':args['panel'].digest}),sidecar=sidecar,
+        image=original.compiled.panels and grid[-1][2].data()['image'],model=port,audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}))
+    assert result.solver.status=='execution_failed' and result.runtime.status=='failed' and result.runtime.output_digest is None
+    assert len(port.ledger['calls'])==5 and len(provider.calls)==3
+    verify_retrieval_review_cell(result,**args)
+    with pytest.raises(ContractError): verify_retrieval_review_cell(replace(result,runtime=replace(result.runtime,status='succeeded')),**args)
