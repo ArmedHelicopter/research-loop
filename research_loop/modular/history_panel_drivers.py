@@ -54,10 +54,17 @@ def _request_material(material: FrozenRecord, record: FrozenRecord, *, phase: st
     return result
 
 
+def public_admission_receipt(receipt: Mapping[str, Any]) -> dict[str, Any]:
+    """Keep subject/qualification, with an opaque authority binding for models."""
+    result = dict(receipt)
+    result["trusted_validator"] = FrozenRecord.from_dict({"authority_id": receipt["trusted_validator"]}).content_hash
+    return result
+
+
 def _admission_context(record: FrozenRecord, receipt: Mapping[str, Any] | None) -> dict[str, Any]:
     result = {"public_record_digest": record.content_hash}
     if receipt is not None:
-        result["admission_receipt"] = dict(receipt)
+        result["admission_receipt"] = public_admission_receipt(receipt)
     return result
 
 
@@ -68,7 +75,7 @@ def _append(session, *, record: FrozenRecord, root: str, receipt: Mapping[str, A
         "representation": "raw", "content": record.data()["evidence"],
         "subject_bindings": {"task": session.task.identity.task_id},
         "independent_group": session.task.identity.group_id}
-    receipt_fields = {key: receipt.get(key) for key in ("trusted_validator", "validator_verified", "admitted")}
+    receipt_fields = {key: public_admission_receipt(receipt).get(key) for key in ("trusted_validator", "validator_verified", "admitted")}
     return session.evidence.append(observation, receipt_fields)
 
 
@@ -205,7 +212,7 @@ class Q11HistoryDriver:
         material = _resolve(self.material_resolver, workflow.session.task, scenario, "Q1.1", cell.variant)
         before_record, current_record = _record(material, "before"), _record(material, "current")
         before_receipt = _admit(self.admission_port, workflow.session.task, before_record, purpose="Q1.1 before record")
-        before_root = _append(workflow.session, record=before_record, root="q11-before", receipt=before_receipt)
+        before_root = _append(workflow.session, record=before_record, root="public-history-0", receipt=before_receipt)
         enabled = "M3" in workflow.enabled
         summary = material.data()["historical_summary"]
         before = _context(workflow, mode="candidate" if enabled else "baseline", baseline_summary=summary)
@@ -216,7 +223,7 @@ class Q11HistoryDriver:
                 **_admission_context(before_record, before_receipt)}))
         current_receipt = _admit(self.admission_port, workflow.session.task, current_record, purpose="Q1.1 current record")
         workflow.session.evidence.withdraw(before_root.root_id, material.data()["transition"]["reason"])
-        current_root = _append(workflow.session, record=current_record, root="q11-current", receipt=current_receipt)
+        current_root = _append(workflow.session, record=current_record, root="public-history-1", receipt=current_receipt)
         workflow._trace("operation_public_record_replacement", "executed", before_record_digest=before_record.content_hash,
                         current_record_digest=current_record.content_hash, withdrawn_root=before_root.root_id,
                         current_root=current_root.root_id)
@@ -254,7 +261,7 @@ class Q12DependencyDriver:
         root = upstream = downstream = None
         if m2:
             before_receipt = _admit(self.admission_port, workflow.session.task, before_record, purpose="Q1.2 M2 before record")
-            root = _append(workflow.session, record=before_record, root="q12-upstream", receipt=before_receipt)
+            root = _append(workflow.session, record=before_record, root="public-history-0", receipt=before_receipt)
             bindings = {"task": workflow.session.task.identity.task_id}
             upstream = workflow.session.claims.create(material.data()["upstream_claim"], subject_bindings=bindings)
             upstream = workflow.session.claims.apply(upstream.claim_id, {"supports": [root.root_id], "refutes": [], "subject_bindings": bindings}, expected_revision=0).claim

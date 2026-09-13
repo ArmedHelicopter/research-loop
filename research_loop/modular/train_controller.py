@@ -126,7 +126,7 @@ class FrozenTrainControllerConfig:
                 or type(data["max_tokens"]) is not int or data["max_tokens"] < 1):
             raise ContractError("production controller requires frozen Luna/low budgets")
         mode = data.get("execution_mode", "mechanism_pilot")
-        if mode not in {"mechanism_pilot", "linked_benchmark_solve"} or (mode == "linked_benchmark_solve" and set(scope) - {"Q1.5", "Q3.1", "Q3.2", "Q4.3", "Q5.3", "Q8.2", "Q8.3"}):
+        if mode not in {"mechanism_pilot", "linked_benchmark_solve"} or (mode == "linked_benchmark_solve" and set(scope) - {"Q1.1", "Q1.2", "Q1.3", "Q1.4", "Q1.5", "Q3.1", "Q3.2", "Q4.3", "Q5.3", "Q8.2", "Q8.3"}):
             raise ContractError("controller linked mode has an unsupported scope")
         expected_slots = {slot for coverage in scope for slot in DRIVERS[coverage].slots}
         if mode == "linked_benchmark_solve": expected_slots |= {"analysis_program", "final_answer"}
@@ -365,6 +365,13 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                 raise ContractError("feasibility controller requires one shared exported CSV identity")
             name = next(iter(names))[0]
             return {name: packet.csv_path}
+        if data.get("execution_mode") == "linked_benchmark_solve":
+            from research_loop.modular.lineage_singleton_replay import COVERAGE, validate_lineage_material
+            lineage_cells = [item for item in compiled.panel.cells if item.coverage_id in COVERAGE]
+            if lineage_cells and not callable(history_admission_port):
+                raise ContractError("linked lineage requires a caller-owned source admission port")
+            for item in lineage_cells:
+                validate_lineage_material(cell=item, task=compiled.tasks[item.task_digest], scenario=compiled.scenarios[item.key])
         for cell in compiled.panel.cells:
             objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
             if data.get("execution_mode") == "linked_benchmark_solve":
@@ -375,7 +382,8 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                     solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
                     public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
                     broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier,
-                    retrieval_provider=retrieval_provider, retrieval_admission_port=retrieval_admission_port)
+                    retrieval_provider=retrieval_provider, retrieval_admission_port=retrieval_admission_port,
+                    history_admission_port=history_admission_port)
                 verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
                     scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
                 if verification.data().get("engineering_verified") is not True:

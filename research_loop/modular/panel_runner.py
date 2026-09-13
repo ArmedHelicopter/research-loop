@@ -342,6 +342,30 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
             "arm_id": cell.arm_id, "scenario_digest": scenario.content_hash},
             "p0_control_digest": p0_control.content_hash})
     workflow = ModularWorkflow(session)
+    if isinstance(driver, (Q11HistoryDriver, Q12DependencyDriver, Q13RepresentationDriver, Q14SupportDriver)) and driver.admission_port is not None:
+        original_admission = driver.admission_port
+        def recorded_admission(public_task, public_record):
+            workflow._trace("operation_public_material_admission_attempt", "reserved",
+                record_digest=public_record.content_hash, limits={"max_calls": 1},
+                cost_measurement="not_provided_by_caller_port")
+            try:
+                receipt = original_admission(public_task, public_record)
+            except Exception as exc:
+                workflow._trace("operation_public_material_admission_failure", "failed",
+                    record_digest=public_record.content_hash, error_type=type(exc).__name__,
+                    cost_measurement="unknown")
+                raise
+            if not isinstance(receipt, Mapping):
+                raise ContractError("public source admission returned a malformed receipt")
+            workflow._trace("operation_public_material_admission", "executed",
+                record=public_record.data(), receipt=dict(receipt))
+            return receipt
+        driver = replace(driver, admission_port=recorded_admission)
+    def source_admission_usage():
+        attempts = sum(event.data()["stage"] == "modular_workflow" and
+            event.data()["data"].get("stage") == "operation_public_material_admission_attempt" for event in session._events)
+        return {"source_admission_attempts": attempts,
+                "source_admission_cost": "not_provided_by_caller_port" if attempts else 0}
     try:
         stage, candidate, responses = driver.run(workflow, cell=cell, scenario=scenario, model=model, package=package)
     except Exception as exc:
@@ -359,7 +383,7 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
         trace_digest = FrozenRecord(trace_path.read_text(encoding="utf-8").splitlines()[-1]).content_hash
         runtime = RuntimeReceipt(cell.key, "failed", trace_path, trace_digest, None,
                                  f"{type(exc).__name__}: driver_or_model_rejected")
-        plan = FrozenRecord.from_dict({"schema": "train-panel-call-plan-v1", "driver": driver.experiment_id,
+        plan = FrozenRecord.from_dict({"schema": "train-panel-call-plan-v1", **source_admission_usage(), "driver": driver.experiment_id,
             "cell_key": list(cell.key), "scenario_digest": scenario.content_hash,
             "enabled_modules": cell.runtime_arm.data()["enabled"], "package_digest": package.digest,
             "package_record_digest": package.record.content_hash, "package_changes": package.record.data()["changes"],
@@ -404,7 +428,7 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
         except Exception as exc:
             protocol_post.update(status="failed", reason="post_runtime_sidecar_persistence_failed", error_type=type(exc).__name__)
             runtime = replace(runtime, status="unscored", failure_reason=protocol_post["reason"])
-    plan = FrozenRecord.from_dict({"schema": "train-panel-call-plan-v1", "driver": driver.experiment_id,
+    plan = FrozenRecord.from_dict({"schema": "train-panel-call-plan-v1", **source_admission_usage(), "driver": driver.experiment_id,
         "cell_key": list(cell.key), "scenario_digest": scenario.content_hash,
         "enabled_modules": cell.runtime_arm.data()["enabled"], "package_digest": package.digest,
         "package_record_digest": package.record.content_hash, "package_changes": package.record.data()["changes"],

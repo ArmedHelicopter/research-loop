@@ -23,7 +23,7 @@ from research_loop.ontology import ContractError
 
 
 ModelPort = Callable[[FrozenRecord], FrozenRecord]
-_SUPPORTED_MECHANISMS = frozenset({"Q1.5", "Q3.1", "Q3.2", "Q4.3", "Q5.3", "Q8.2", "Q8.3"})
+_SUPPORTED_MECHANISMS = frozenset({"Q1.1", "Q1.2", "Q1.3", "Q1.4", "Q1.5", "Q3.1", "Q3.2", "Q4.3", "Q5.3", "Q8.2", "Q8.3"})
 
 
 @dataclass(frozen=True)
@@ -44,7 +44,7 @@ def run_benchmark_cell(*, cell: PanelCell, task: PublicTask, scenario: FrozenRec
                        public_inputs: Mapping[str, Path], image: str,
                        broker: DockerExecutionBroker, model: ModelPort,
                        audit_verifier: AuditVerifier, timeout_seconds: int = 20,
-                       retrieval_provider=None, retrieval_admission_port=None) -> LinkedBenchmarkCellResult:
+                       retrieval_provider=None, retrieval_admission_port=None, history_admission_port=None) -> LinkedBenchmarkCellResult:
     """Run a registered linked mechanism first, then solve from its trace.
 
     A failed mechanism remains an explicit row and does not call the solver.
@@ -52,10 +52,13 @@ def run_benchmark_cell(*, cell: PanelCell, task: PublicTask, scenario: FrozenRec
     terminal journal, so both failure classes remain in the denominator.
     """
     _validate_inputs(cell, task, scenario, package, objective, model)
+    if cell.coverage_id in {"Q1.1", "Q1.2", "Q1.3", "Q1.4"}:
+        from research_loop.modular.lineage_singleton_replay import validate_lineage_material
+        validate_lineage_material(cell=cell, task=task, scenario=scenario)
     mechanism = run_train_cell(cell, task=task, scenario=scenario, package=package,
                                objective=objective, sidecar=mechanism_sidecar, model=model,
                                audit_verifier=audit_verifier, retrieval_provider=retrieval_provider,
-                               retrieval_admission_port=retrieval_admission_port)
+                               retrieval_admission_port=retrieval_admission_port, history_admission_port=history_admission_port)
     if mechanism.runtime.status != "succeeded":
         return _result(cell, mechanism, None, None, "mechanism_" + mechanism.runtime.status)
     try:
@@ -92,11 +95,12 @@ def verified_mechanism_provenance(*, cell: PanelCell, task: PublicTask, scenario
     if cell.coverage_id in {"Q3.2", "Q5.3"}:
         from research_loop.modular.linked_prediction_projection import verify_prediction_chronology
         verify_prediction_chronology(cell, events)
+    lineage = cell.coverage_id in {"Q1.1", "Q1.2", "Q1.3", "Q1.4"}
     stages = [event for event in events if event["stage"] == "modular_workflow"
-              and event["data"].get("stage") in {"stage_1", "stage_7", "stage_9",
+              and (lineage or event["data"].get("stage") in {"stage_1", "stage_7", "stage_9",
                                                    "operation_m4_control", "operation_m5_control",
                                                    "stage_0.5", "operation_m6_ordinary_baseline",
-                                                   "prediction_artifacts"}]
+                                                   "prediction_artifacts"})]
     if not stages:
         raise ContractError("mechanism trace lacks an executed mechanism stage")
     calls = _model_calls(events)
@@ -106,8 +110,12 @@ def verified_mechanism_provenance(*, cell: PanelCell, task: PublicTask, scenario
     if cell.coverage_id in {"Q3.2", "Q5.3"}:
         from research_loop.modular.linked_prediction_projection import prediction_registry_observation
         mechanism_stages.append(prediction_registry_observation(mechanism.runtime.trace_path.parent))
+    replay = {}
+    if lineage:
+        from research_loop.modular.lineage_singleton_replay import verify_lineage_trace
+        replay = {"lineage_replay": verify_lineage_trace(cell=cell, task=task, scenario=scenario, package=package, events=events, sidecar=mechanism.runtime.trace_path.parent)}
     return FrozenRecord.from_dict({
-        "schema": "verified-mechanism-provenance-v1",
+        **replay, "schema": "verified-mechanism-provenance-v1",
         "panel_cell": _binding(cell).data(),
         "identity": task.identity.data(),
         "task_digest": task.content_hash,
