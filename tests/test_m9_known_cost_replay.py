@@ -18,12 +18,20 @@ from test_modular_combination_benchmark_driver import _rewrite_trace
 
 @pytest.fixture(scope='module')
 def state_grid(tmp_path_factory):
-    return state.grid.__wrapped__(tmp_path_factory)
+    setup, run = state.grid.__wrapped__(tmp_path_factory)
+    assert len(run.builds) == 11 and len(run.results) == len(run.scores) == 22
+    assert len(setup['seen']) == 55 and len(setup['calls']) == 66
+    assert run.receipt.data()['actual_docker_attempts'] == 22
+    return setup, run
 
 
 @pytest.fixture(scope='module')
 def mechanism_grid(tmp_path_factory):
-    return mechanism.grid.__wrapped__(tmp_path_factory)
+    setup, run = mechanism.grid.__wrapped__(tmp_path_factory)
+    assert len(run.builds) == 6 and len(run.results) == len(run.scores) == 24
+    assert len(setup['seen']) == 78 and len(setup['calls']) + len(setup['corpus_calls']) == 76
+    assert run.receipt.data()['actual_docker_attempts'] == 24
+    return setup, run
 
 
 def unknown_source(path, verifier):

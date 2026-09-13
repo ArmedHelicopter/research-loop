@@ -123,6 +123,8 @@ def verify_mechanism_improvement_cell(result,*,panel,task,scenario,package,mater
             or lock['context_budget']!=material.data()['context_budget_bytes'] or lock['required_audit']!=['measurement']):
         raise ContractError('target allocation changed')
     sourcepath=path.parent.parent/'source-verification.json';source=source_verifier.replay(material,sourcepath,cell_binding=binding)
+    if any(c['cost_unknown'] for c in json.loads(sourcepath.read_bytes())['calls']):
+        raise ContractError('unknown source cost blocks target model I/O')
     q=source_verifier.assessments(material,sourcepath,cell_binding=binding) if type(material) is FrozenAdmissionMaterial else None
     evidence=EvidenceLedger(task.identity);claims=ClaimLedger(evidence);evidence._log=_MemoryLog();claims._log=_MemoryLog()
     transition=_transition(evidence,claims,ContextCache(),material,set(cell.runtime_arm.data()['enabled']),q)
@@ -132,6 +134,8 @@ def verify_mechanism_improvement_cell(result,*,panel,task,scenario,package,mater
     retrieval_source=None;retrieval=None
     if retrieval_material is not None:
         retrieval_source=retrieval_verifier.replay(retrieval_material,path.parent.parent/'retrieval'/'source-verification.json',cell_binding=binding)
+        if any(c['cost_unknown'] for c in json.loads((path.parent.parent/'retrieval'/'source-verification.json').read_bytes())['calls']):
+            raise ContractError('unknown corpus qualification cost blocks target I/O')
         projection=_verify_sources(events,task,retrieval_material.retrieval(),'M6' in cell.runtime_arm.data()['enabled'])
         retrieval=public_retrieval(projection)
     predictions=PredictionRegistry(task.identity);reviews=ReviewEngine(task.identity)
