@@ -113,7 +113,7 @@ def run(setup, monkeypatch, *, fault=None):
         assert 'PRIVATE-REFERENCE-SENTINEL' not in request.encoded
         if b['slot']=='final_answer':
             seen.append(b)
-            assert b['execution_feedback'][0]['exit_code']==0
+            assert b['execution_feedback'][0]['status']=='succeeded'
             return FrozenRecord.from_dict({'objective_digest':b['module_context']['required_objective_digest'],
                 'outcome':'unknown','evidence_ids':[],'conclusion':'Observed public output: '+b['execution_feedback'][0]['stdout'],
                 'programme_complete':False})

@@ -27,3 +27,10 @@ Deliverable: explicit configuration handling, one shared packet-source helper,
 three wired controllers, integration/failure evidence and frozen source hashes.
 This change does not increase model opportunities, alter combination designs or
 prune any experiment.
+
+The first frozen 24-check run on `9208a2c` retained 21 passes and three failed
+normal grids. Its synthetic final-response callback incorrectly required
+`execution_feedback.exit_code`, while the actual public contract exposes
+`status/stdout/stderr`. Each controller retained its first failed call and all
+later blocked cells. The corrected callback checks the existing `succeeded`
+status; no production behavior or acceptance threshold was relaxed.
