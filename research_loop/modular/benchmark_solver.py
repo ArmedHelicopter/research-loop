@@ -9,6 +9,7 @@ here.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import hashlib
 from pathlib import Path
 from typing import Callable, Mapping
 
@@ -129,12 +130,25 @@ def run_benchmark_solve(*, task: PublicTask, public_inputs: Mapping[str, Path], 
     if not _execution_inputs_match(artifacts, execution):
         session.controller_failure(driver_id="benchmark_solver", error_type="InputArtifactDrift")
         return BenchmarkSolveResult(session, artifacts, analysis, execution, None, None, "input_artifact_drift")
+    # ``RunSession`` owns the program file. Hash its exact bytes (including
+    # platform newline encoding), then require the broker's receipt to bind it.
+    program_sha256 = hashlib.sha256((sidecar / "analysis-1.py").read_bytes()).hexdigest()
+    if execution.artifact is None or execution.artifact.sha256 != program_sha256:
+        session.controller_failure(driver_id="benchmark_solver", error_type="ExecutionProgramDrift")
+        return BenchmarkSolveResult(session, artifacts, analysis, execution, None, None, "execution_program_drift")
+    execution_feedback = [{"execution_digest": execution.content_hash, "status": execution.status,
+                           "stdout": execution.record.data().get("stdout", ""),
+                           "stderr": execution.record.data().get("stderr", ""),
+                           "program_sha256": execution.artifact.sha256}]
     final_context = {
         **common,
+        "analysis": analysis.data(),
         "analysis_digest": analysis.content_hash,
+        "analysis_program_sha256": program_sha256,
         "execution_digest": execution.content_hash,
         "execution_status": execution.status,
         "execution_input_artifacts": execution.record.data()["input_artifacts"],
+        "execution_feedback": execution_feedback,
         "required_objective_digest": objective.content_hash,
     }
     try:

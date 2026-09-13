@@ -15,10 +15,19 @@ input to this adapter.
 
 `verify_linked_benchmark_cell` replays both journals and checks the shared
 binding, exact provenance in every solver request, all recorded model calls,
-and the execution receipt. A failed or blocked mechanism produces a linked
+and the execution receipt. It derives solver status, analysis, answer, final
+decision, and execution material from the solver journal rather than trusting
+mutable result fields, and requires its lock to match the mechanism task,
+package, arm, and objective. A failed or blocked mechanism produces a linked
 denominator row without a solver. A solver model or execution failure remains
 a row with its terminal solver trace. Docker exit status is execution evidence
 only; the linked receipt always records `scientific_effect: not_measured`.
+
+For cold-start finalization, the solver supplies the exact analysis response
+(including program and analysis text), its immutable response digest, the
+executed-program SHA-256, and execution feedback to the final model request.
+The program digest is checked against the broker execution artifact and journal
+before that request is made.
 
 The synthetic integration suite is
 `tests/test_modular_benchmark_cell.py`. It uses both supported public task

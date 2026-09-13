@@ -15,6 +15,8 @@ from research_loop.modular.runtime import AuditVerifier, verify_trace
 
 IMAGE = "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349"
 KEYS = {"audit-a": b"a" * 32, "audit-b": b"b" * 32}
+ANALYSIS_SENTINEL = "Synthetic transform sentinel: add forty-one after calculating the mean."
+PROGRAM_SENTINEL = "import csv\n# FINAL_CONTEXT_PROGRAM_SENTINEL\nwith open('/input/public_csv', newline='') as f:\n rows=list(csv.DictReader(f))\nprint(sum(float(r['x']) for r in rows)/len(rows))"
 
 
 def task(benchmark: str = "discoverybench") -> PublicTask:
@@ -30,10 +32,13 @@ def model(seen: list[dict[str, object]]):
     def callback(request: FrozenRecord) -> FrozenRecord:
         row = request.data(); seen.append(row)
         if row["slot"] == "analysis_program":
-            return FrozenRecord.from_dict({"analysis": "Compute the mean of the public x column.",
-                "program": "import csv\nwith open('/input/public_csv', newline='') as f:\n rows=list(csv.DictReader(f))\nprint(sum(float(r['x']) for r in rows)/len(rows))"})
+            return FrozenRecord.from_dict({"analysis": ANALYSIS_SENTINEL, "program": PROGRAM_SENTINEL})
         assert row["slot"] == "final_answer"
         assert row["execution_feedback"] and row["execution_feedback"][0]["stdout"].strip() == "2.0"
+        context = row["module_context"]
+        assert context["analysis"] == {"analysis": ANALYSIS_SENTINEL, "program": PROGRAM_SENTINEL}
+        assert context["execution_feedback"][0]["stdout"].strip() == "2.0"
+        assert context["execution_feedback"][0]["program_sha256"] == context["analysis_program_sha256"]
         return FrozenRecord.from_dict({"objective_digest": row["module_context"]["required_objective_digest"], "outcome": "unknown", "evidence_ids": [],
             "conclusion": "The fixture mean is 2.0.", "programme_complete": False})
     return callback
@@ -61,6 +66,11 @@ def test_public_task_model_program_docker_and_answer_are_trace_bound(tmp_path: P
     assert result.record.data()["scientific_effect"] == "not_measured"
     assert seen[0]["module_context"]["predecessor_context"]["q31_prediction"] == "mean is discriminating"
     assert seen[1]["module_context"]["analysis_digest"] == result.analysis.content_hash
+    assert seen[1]["module_context"]["analysis"] == result.analysis.data()
+    assert result.execution.artifact is not None
+    trace_events = [FrozenRecord(line).data() for line in (sidecar / "trace.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert next(event["data"]["program_sha256"] for event in trace_events if event["stage"] == "execution_request") == result.execution.artifact.sha256
+    assert seen[1]["module_context"]["analysis_program_sha256"] == result.execution.artifact.sha256
     assert seen[1]["module_context"]["predecessor_context"]["q31_prediction"] == "mean is discriminating"
     assert verify_trace(tmp_path / "run" / "trace.jsonl").data()["terminal"] is True
     common = verify_protocol_trace(tmp_path / "run" / "trace.jsonl").data()

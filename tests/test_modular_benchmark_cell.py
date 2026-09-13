@@ -1,11 +1,15 @@
 """Synthetic public end-to-end checks for linked mechanism and solver cells."""
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
+import subprocess
 
 import pytest
 
+from research_loop.modular import benchmark_cell
 from research_loop.modular.benchmark_cell import run_benchmark_cell, verify_linked_benchmark_cell, verified_mechanism_provenance
+from research_loop.modular.benchmark_solver import run_benchmark_solve
 from research_loop.modular.benchmarks import BladeAdapter, DiscoveryBenchAdapter, DockerExecutionBroker
 from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask
@@ -108,7 +112,14 @@ def test_linked_cell_keeps_mechanism_and_solver_failures_as_rows(tmp_path: Path)
         mechanism_sidecar=tmp_path / "m2", solver_sidecar=tmp_path / "s2", public_inputs={"public_csv": public / "public.csv"}, image=IMAGE,
         broker=DockerExecutionBroker([public, tmp_path]), model=fail_solver, audit_verifier=_audit())
     assert second.status == "solver_analysis_model_failed" and second.solver is not None
+    solver_calls = second.receipt.data()["solver_calls"]
+    assert len(solver_calls) == 1 and solver_calls[0]["slot"] == "analysis_program"
+    assert solver_calls[0]["status"] == "failed" and solver_calls[0]["error_type"] == "RuntimeError"
     assert verify_linked_benchmark_cell(second, task=task, scenario=controlled, package=package).data()["engineering_verified"] is True
+    crashed = run_benchmark_cell(cell=cell, task=task, scenario=controlled, package=package, objective=FrozenRecord.from_dict({"q": "x"}),
+        mechanism_sidecar=tmp_path / "m3", solver_sidecar=tmp_path / "s3", public_inputs={"public_csv": public / "public.csv"}, image=IMAGE,
+        broker=DockerExecutionBroker([public, tmp_path]), model=lambda _: (_ for _ in ()).throw(RuntimeError("mechanism port failed")), audit_verifier=_audit())
+    assert crashed.status == "mechanism_failed" and crashed.receipt.data()["mechanism_calls"][0]["status"] == "failed"
 
 
 def test_verified_provenance_rejects_foreign_task_arm_package_and_tampering(tmp_path: Path) -> None:
@@ -129,3 +140,21 @@ def test_verified_provenance_rejects_foreign_task_arm_package_and_tampering(tmp_
     result.mechanism.runtime.trace_path.write_text("\n".join([*lines[:-1], FrozenRecord.from_dict(changed).encoded]) + "\n", encoding="utf-8")
     with pytest.raises(ContractError):
         verified_mechanism_provenance(cell=cell, task=task, scenario=controlled, package=package, mechanism=result.mechanism)
+
+
+def test_verifier_rejects_a_hash_consistent_solver_with_foreign_arm_and_objective(tmp_path: Path) -> None:
+    task, controlled, package, cell = _material("discoverybench", "Q3.1")
+    public = tmp_path / "public"; public.mkdir(); data = public / "public.csv"; data.write_text("x\n1\n3\n", encoding="utf-8")
+    result = run_benchmark_cell(cell=cell, task=task, scenario=controlled, package=package, objective=FrozenRecord.from_dict({"q": "original"}),
+        mechanism_sidecar=tmp_path / "mechanism", solver_sidecar=tmp_path / "solver", public_inputs={"public_csv": data}, image=IMAGE,
+        broker=DockerExecutionBroker([public, tmp_path]), model=_model([]), audit_verifier=_audit())
+    foreign_dir = tmp_path / "foreign"; foreign_dir.mkdir()
+    foreign = run_benchmark_solve(task=task, public_inputs={"public_csv": data}, image=IMAGE, package_digest=package.digest,
+        arm=default_compatibility("base").arm(["M4"]), objective=FrozenRecord.from_dict({"q": "foreign objective"}), sidecar=foreign_dir,
+        broker=DockerExecutionBroker([public, foreign_dir], runner=lambda argv, **_: subprocess.CompletedProcess(argv, 0, b"2.0\n", b"")),
+        model=_model([]), audit_verifier=_audit(), predecessor_context=result.provenance,
+        panel_cell_binding=benchmark_cell._binding(cell), mechanism_provenance=result.provenance)
+    forged = replace(result, solver=foreign, status="linked_succeeded")
+    forged = replace(forged, receipt=benchmark_cell._receipt(cell, result.mechanism, foreign, result.provenance, forged.status))
+    with pytest.raises(ContractError, match="solver lock"):
+        verify_linked_benchmark_cell(forged, task=task, scenario=controlled, package=package)

@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Callable, Mapping
 
 from research_loop.modular.benchmark_solver import BenchmarkSolveResult, run_benchmark_solve, verify_benchmark_solve_trace
-from research_loop.modular.benchmarks.execution import DockerExecutionBroker
+from research_loop.modular.benchmarks.execution import DockerExecutionBroker, ExecutionReceipt
 from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.modules.improvement import CandidatePackage
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier
@@ -124,6 +124,22 @@ def verify_linked_benchmark_cell(result: LinkedBenchmarkCellResult, *, task: Pub
             raise ContractError("linked mechanism provenance is not the verified precursor trace")
         solver_trace = verify_benchmark_solve_trace(result.solver.session.sidecar / "trace.jsonl", task)
         solver_events = _events(result.solver.session.sidecar / "trace.jsonl")
+        mechanism_lock = _events(result.mechanism.runtime.trace_path)[0]["data"]
+        state = _solver_journal_state(solver_events)
+        lock = solver_events[0]["data"]
+        if (lock.get("identity") != result.cell.identity.data() or lock.get("task_digest") != result.cell.task_digest
+                or lock.get("package_digest") != result.cell.package_digest or lock.get("arm") != result.cell.runtime_arm.data()
+                or lock.get("objective") != mechanism_lock.get("objective")):
+            raise ContractError("solver lock does not bind the mechanism cell task, package, arm, and objective")
+        if (result.solver.session.task.identity != result.cell.identity
+                or result.solver.session.task.content_hash != result.cell.task_digest
+                or result.solver.session.lock.data() != lock
+                or result.solver.session.objective.data() != lock["objective"]):
+            raise ContractError("solver result session drifts from its journal lock")
+        _compare_solver_result(result.solver, state)
+        derived_status = "linked_succeeded" if state["status"] == "execution_succeeded" else "solver_" + state["status"]
+        if result.status != derived_status:
+            raise ContractError("linked result status is not derived from the solver journal")
         requests = [event["data"]["request"] for event in solver_events if event["stage"] == "model_request"]
         binding, provenance = _binding(result.cell).data(), result.provenance.data()
         if len(requests) and any(request.get("module_context", {}).get("panel_cell") != binding
@@ -131,8 +147,6 @@ def verify_linked_benchmark_cell(result: LinkedBenchmarkCellResult, *, task: Pub
                                  or request.get("module_context", {}).get("predecessor_context") != provenance
                                  for request in requests):
             raise ContractError("solver requests do not carry the verified mechanism context")
-        if result.solver.execution is not None and result.solver.execution.identity != task.identity:
-            raise ContractError("solver execution receipt has foreign task identity")
         if result.receipt.data().get("solver_trace_digest") != solver_trace.data()["trace_digest"]:
             raise ContractError("linked receipt has a solver trace digest mismatch")
     expected_receipt = _receipt(result.cell, result.mechanism, result.solver, result.provenance, result.status)
@@ -183,8 +197,66 @@ def _model_calls(events: list[dict]) -> list[dict]:
             response = FrozenRecord.from_dict(event["data"]["response"])
             calls.append({"slot": request["slot"], "request_digest": request_digest,
                           "request": request, "response_digest": response.content_hash,
-                          "response": response.data()})
+                          "response": response.data(), "status": "responded"})
+        elif event["stage"] == "model_failure":
+            request_digest = event["data"]["request_digest"]
+            request = pending.pop(request_digest, None)
+            if request is None:
+                raise ContractError("failure has no request while extracting model calls")
+            calls.append({"slot": request["slot"], "request_digest": request_digest,
+                          "request": request, "status": "failed",
+                          "error_type": event["data"]["error_type"]})
     return calls
+
+
+def _solver_journal_state(events: list[dict]) -> dict:
+    """Derive every mutable solver result field from the hash-chained journal."""
+    requests, responses, execution = {}, {}, None
+    for event in events:
+        stage, data = event["stage"], event["data"]
+        if stage == "model_request":
+            requests[data["request_digest"]] = data["request"]
+        elif stage == "model_response":
+            responses[data["request_digest"]] = FrozenRecord.from_dict(data["response"])
+        elif stage == "execution_result":
+            execution = ExecutionReceipt.parse(data["receipt"])
+    terminal = events[-1]
+    terminal_stage, terminal_data = terminal["stage"], terminal["data"]
+    analysis = next((responses[key] for key, request in requests.items()
+                     if request["slot"] == "analysis_program" and key in responses), None)
+    answer = next((responses[key] for key, request in requests.items()
+                    if request["slot"] == "final_answer" and key in responses), None)
+    decision = FrozenRecord.from_dict(terminal_data) if terminal_stage == "final_decision" else None
+    if terminal_stage == "final_decision" and execution is not None:
+        status = "execution_" + execution.status
+    elif terminal_stage == "execution_terminal" and execution is not None:
+        status = "execution_" + execution.status
+    elif terminal_stage == "execution_failure":
+        status = "execution_setup_failed"
+    elif terminal_stage == "model_failure":
+        request = requests.get(terminal_data["request_digest"], {})
+        status = "analysis_model_failed" if request.get("slot") == "analysis_program" else "answer_model_failed"
+    elif terminal_stage == "driver_failure":
+        request = requests.get(terminal_data["request_digest"], {})
+        status = "analysis_rejected" if request.get("slot") == "analysis_program" else "answer_rejected"
+    elif terminal_stage == "controller_failure":
+        status = {"InputArtifactDrift": "input_artifact_drift", "ExecutionProgramDrift": "execution_program_drift"}.get(
+            terminal_data.get("error_type"), "input_preflight_failed" if not requests else "execution_setup_failed")
+    else:
+        raise ContractError("solver journal has no recognized terminal state")
+    return {"status": status, "analysis": analysis, "execution": execution, "answer": answer,
+            "decision": decision, "calls": len(requests)}
+
+
+def _compare_solver_result(solver: BenchmarkSolveResult, state: dict) -> None:
+    for field in ("analysis", "execution", "answer", "decision"):
+        actual, expected = getattr(solver, field), state[field]
+        if (actual is None) != (expected is None):
+            raise ContractError("solver result omits or invents journal material")
+        if actual is not None and actual.content_hash != expected.content_hash:
+            raise ContractError("solver result material does not match its journal")
+    if solver.status != state["status"]:
+        raise ContractError("solver result status is not derived from its journal")
 
 
 def _result(cell: PanelCell, mechanism: TrainCellResult, solver: BenchmarkSolveResult | None,
@@ -197,6 +269,7 @@ def _receipt(cell: PanelCell, mechanism: TrainCellResult, solver: BenchmarkSolve
              provenance: FrozenRecord | None, status: str) -> FrozenRecord:
     mechanism_events = _events(mechanism.runtime.trace_path)
     solver_events = _events(solver.session.sidecar / "trace.jsonl") if solver else []
+    solver_state = _solver_journal_state(solver_events) if solver_events else None
     return FrozenRecord.from_dict({"schema": "linked-benchmark-cell-receipt-v1", "cell_key": list(cell.key),
         "identity": cell.identity.data(), "task_digest": cell.task_digest,
         "scenario_digest": cell.scenario_digest, "package_digest": cell.package_digest,
@@ -206,7 +279,7 @@ def _receipt(cell: PanelCell, mechanism: TrainCellResult, solver: BenchmarkSolve
         "mechanism_calls": _model_calls(mechanism_events),
         "mechanism_provenance_digest": provenance.content_hash if provenance else None,
         "solver_trace_digest": FrozenRecord.from_dict(solver_events[-1]).content_hash if solver_events else None,
-        "solver_status": solver.status if solver else None,
+        "solver_status": solver_state["status"] if solver_state else None,
         "solver_calls": _model_calls(solver_events),
-        "execution": solver.execution.data() if solver and solver.execution else None,
+        "execution": solver_state["execution"].data() if solver_state and solver_state["execution"] else None,
         "scientific_effect": "not_measured"})
