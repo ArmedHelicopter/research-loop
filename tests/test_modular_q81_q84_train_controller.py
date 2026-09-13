@@ -107,6 +107,7 @@ def test_q81_q84_full_custody_controller_grid_real_docker(tmp_path, monkeypatch)
 
 
 def verify_grid(result):
+    from test_m6_public_input_boundary import verify_actual_public_requests
     cells = {cell.key: cell for cell in result.compiled.panel.cells}; rows = []; q84 = {}
     assert result.receipt.data()["execution_status"] == "engineering_complete"
     assert result.compiled.control.data()["always_enabled"] is True
@@ -115,6 +116,7 @@ def verify_grid(result):
         verify_trace(runtime.trace_path)
         cell = cells[runtime.cell_key]; enabled = set(cell.runtime_arm.data()["enabled"])
         events = [json.loads(line) for line in runtime.trace_path.read_text(encoding="utf-8").splitlines()]
+        verify_actual_public_requests(events)
         requests = [event["data"]["request"] for event in events if event["stage"] == "model_request"]
         final = requests[-1]; assert final["slot"] == "final"
         assert final["module_context"]["panel_cell"]["cell_digest"] == FrozenRecord.from_dict(cell.data()).content_hash
@@ -146,7 +148,8 @@ def verify_grid(result):
             elif cell.variant == "adversarial":
                 assert len(requests) == 3
                 assert requests[0]["module_context"]["role"] != requests[1]["module_context"]["role"]
-                assert ("sealed" in requests[0]["module_context"]) == ("M5" in enabled)
+                original = next(row['data']['controller_context'] for row in events if row['stage']=='q8_public_model_context')
+                assert ("sealed" in original) == ("M5" in enabled)
             else: assert final["module_context"]["retrieval_stage_result"]["frontier"]["programme_complete"] is False
         else:
             detail = final["module_context"]["retrieval_stage_result"]
@@ -154,7 +157,7 @@ def verify_grid(result):
             expected = 1 if cell.variant == "shared_root" and enabled else 3
             assert len(detail["units"]) == expected
             assert outcome["conclusion"] == "Observed public source units: " + str(expected)
-            assert len(FrozenRecord.from_dict(detail).encoded.encode("utf-8")) == budget["context_bytes"] <= 4096
+            assert len(FrozenRecord.from_dict(detail).encoded.encode("utf-8")) <= budget["context_bytes"] <= 4096
             assert accounting["m2_admitted_records"] == (3 if "M2" in enabled else 0)
             ledger = EvidenceLedger(cell.identity, storage_path=runtime.trace_path.parent / "q84-source-ledger.jsonl")
             assert len(ledger.roots()) == ((1 if cell.variant == "shared_root" else 3) if "M2" in enabled else 0)

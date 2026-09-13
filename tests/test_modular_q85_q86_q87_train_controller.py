@@ -135,12 +135,14 @@ def test_q85_q86_q87_full_production_grid(tmp_path, monkeypatch):
 
 
 def verify_grid(result):
+    from test_m6_public_input_boundary import verify_actual_public_requests
     cells = {cell.key: cell for cell in result.compiled.panel.cells}; rows = []; counts = {key:0 for key in SCOPE}
     assert result.receipt.data()["execution_status"] == "engineering_complete" and result.verdict.scientific_verified is False
     assert result.compiled.control.data()["always_enabled"] is True
     for runtime in result.runtimes:
         verify_trace(runtime.trace_path); cell = cells[runtime.cell_key]; enabled = set(cell.runtime_arm.data()["enabled"]); counts[cell.coverage_id] += 1
         events = [json.loads(line) for line in runtime.trace_path.read_text(encoding="utf-8").splitlines()]
+        verify_actual_public_requests(events)
         requests = [row["data"]["request"] for row in events if row["stage"] == "model_request"]
         final = requests[-1]; detail = final["module_context"]["retrieval_final_result"]
         budget = next(row["data"] for row in events if row["stage"] == "q8_retrieval_budget")
@@ -179,11 +181,17 @@ def verify_grid(result):
             frontier = requests[2]["module_context"]; catalog = frontier["frontier_catalog"]
             origins = [row for row in catalog.values() if row["kind"] != "boundary"]
             assert [row["kind"] for row in origins] == ([] if cell.variant == "empty" else [cell.variant])
-            assert ("sealed" in requests[0]["module_context"]) == ("M5" in enabled)
+            original = next(row['data']['controller_context'] for row in events if row['stage']=='q8_public_model_context')
+            assert ("sealed" in original) == ("M5" in enabled)
             assert ("first_review" in requests[1]["module_context"]) == ("M5" not in enabled)
             assert len(frontier["review_context"]["responses"]) == 2
             assert len(detail["registered_successors"]) == (1 if "M4" in enabled and cell.variant != "empty" else 0)
-            if cell.variant == "untested": assert ("plan" in origins[0]) == ("M4" in enabled)
+            if cell.variant == "untested":
+                original_frontier=next(row['data']['controller_context']['frontier_catalog'] for row in events
+                    if row['stage']=='q8_public_model_context' and row['data']['slot']=='frontier')
+                original_origin=next(v for v in original_frontier.values() if v['kind']=='untested')
+                assert ('plan' in original_origin)==('M4' in enabled)
+                assert 'plan' in origins[0]
             result_body = detail["frontier"]
             assert result_body["programme_complete"] is False and result_body["benchmark_admission"] is False and result_body["queue_admission"] is False
             if cell.variant == "failed_check": assert next(row["data"] for row in events if row["stage"] == "execution_result")["status"] == "failed"

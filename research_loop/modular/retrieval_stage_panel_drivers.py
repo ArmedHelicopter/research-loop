@@ -101,6 +101,8 @@ class RetrievalStagePanelDriver:
     def slots_for_variant(self, variant): return SLOTS[variant] if self.experiment_id == "Q8.1" else ("final",)
     def slots_for(self, cell): return self.slots_for_variant(cell.variant)
     def run(self, workflow, *, cell, scenario, model, package):
+        from research_loop.modular.m6_public_inputs import M6PublicInputBoundary
+        workflow.public_input_boundary = M6PublicInputBoundary(self.experiment_id, cell.variant)
         session = workflow.session; task = session.task; body = scenario.data()
         if set(body) != {"experiment_id", "variant", "controller_input", "base", "controls"} or body["experiment_id"] != self.experiment_id or body["variant"] != cell.variant:
             raise ContractError("stage scenario binding drift")

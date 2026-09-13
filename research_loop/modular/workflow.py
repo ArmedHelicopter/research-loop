@@ -26,6 +26,14 @@ class ModularWorkflow:
         self.reviews=ReviewEngine(session.task.identity, storage_path=session.sidecar/"reviews.jsonl")
         self.revealed: FrozenRecord|None=None; self.deployment=deployment
         self.frontier_result: FrozenRecord | None = None
+        self.public_input_boundary = None
+
+    def _public_model_context(self, slot, context):
+        if self.public_input_boundary is None: return context
+        public = self.public_input_boundary.project(slot, context)
+        self.session._record('q8_public_model_context', {'slot': slot, 'controller_context': context.data(),
+            'public_context': public.data(), 'public_digest': public.content_hash})
+        return public
     def _trace(self, stage: str, status: str, **data: Any) -> WorkflowResult:
         item=FrozenRecord.from_dict({"stage":stage,"status":status,**data}); self.session._record("modular_workflow",item.data()); return WorkflowResult(status,item)
     def record_stages(self, records: Mapping[str, Mapping[str, str]]) -> tuple[WorkflowResult, ...]:
@@ -63,6 +71,8 @@ class ModularWorkflow:
         context = module_context.data() if module_context else {}
         if "deployment" in context:
             raise ContractError("module context cannot override deployment payload")
+        if self.public_input_boundary is not None:
+            context = self._public_model_context(slot, FrozenRecord.from_dict(context)).data()
         context.update(self._deployment_context())
         return self.session.invoke(slot, model, instruction=instruction, baseline_summary=baseline_summary,
                                    module_context=FrozenRecord.from_dict(context) if context else None,
@@ -136,14 +146,14 @@ class ModularWorkflow:
             roles=[{"role_id": "retrospective", "question": "What do the original evidence and frozen rules justify?"}],
             budget_units=1)
         first = self.session.invoke(blind_slot, model, instruction="Review the provided evidence under the frozen objective; unknown and no valid counterexample are allowed.",
-            module_context=FrozenRecord.from_dict(context), evidence_only=True)
+            module_context=self._public_model_context(blind_slot, FrozenRecord.from_dict(context)), evidence_only=True)
         submitted = self.reviews.submit(review.review_id, role_id="retrospective", reviewer_id="retrospective-reviewer",
             response=first.data(), cost_units=1)
         self.reviews.reveal(review.review_id)
         context.update({"history_summary": history_summary.data(), "sealed_first_review": first.data(),
                         "first_review_digest": submitted.before_hash})
         revised = self.session.invoke(reveal_slot, model, instruction="Recheck the sealed judgment after seeing the historical summary. Cite evidence for any change; disagreement alone does not prove either judgment correct.",
-            module_context=FrozenRecord.from_dict(context), evidence_only=True)
+            module_context=self._public_model_context(reveal_slot, FrozenRecord.from_dict(context)), evidence_only=True)
         revision = self.reviews.revise_after_reveal(review.review_id, role_id="retrospective", reviewer_id="retrospective-reviewer", response=revised.data())
         return self._trace("stage_9", "executed", review_id=review.review_id,
             method="evidence_first" if "M5" in self.enabled else "summary_first_control",
@@ -189,6 +199,12 @@ class ModularWorkflow:
             context["review_context"] = review_context.data()
         response = self.invoke_model(slot, model, instruction="Audit the remaining research frontier. Proposals must cite supplied origins and describe a discriminating observation. An empty frontier does not complete the research programme. Never generate or admit this experiment's evaluation tasks.",
             module_context=FrozenRecord.from_dict(context))
+        if self.public_input_boundary is not None:
+            original_response = response
+            response = self.public_input_boundary.restore_frontier_response(response)
+            self.session._record('q8_public_frontier_binding', {'references': self.public_input_boundary.frontier_refs,
+                'public_response': original_response.data(), 'controller_response': response.data(),
+                'original_catalog_digest': frozen_catalog.content_hash})
         try:
             result = validate_frontier(response, frozen_catalog, self.session.task.identity)
         except ContractError as exc:
