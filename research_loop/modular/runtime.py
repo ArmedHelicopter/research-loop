@@ -14,7 +14,7 @@ import os
 from pathlib import Path
 from typing import Callable, Mapping
 
-from .contracts import ContractError, DataIdentity, FrozenRecord, PublicTask, required_text
+from .contracts import ContractError, DataIdentity, FrozenRecord, PublicTask, required_text, strict_bool
 from .benchmarks.execution import DockerExecutionBroker, ExecutionReceipt, ExecutionRequest
 from .modules.admission import AuditItem, EvidenceAdmission, ScientificState
 from .modules.context import ContextBuilder, ContextCache
@@ -59,6 +59,25 @@ class AuditAuthority:
         body = {"schema": "host-scientific-audit-v1", "authority": self.authority_id,
                 "identity": identity.data(), "objective_digest": objective_digest,
                 "execution_digest": execution_digest, "state": state.__dict__, "outcome": outcome,
+                "audit": [{"name": item.name, "executed": item.executed, "passed": item.passed} for item in audit]}
+        return FrozenRecord.from_dict({"body": body, "mac": hmac.new(self._key, canonical(body).encode(), hashlib.sha256).hexdigest()})
+
+    def issue_material(self, *, identity: DataIdentity, subject_digest: str,
+                       execution_success: bool, state: ScientificState, outcome: str,
+                       audit: list[AuditItem]) -> FrozenRecord:
+        """Authenticate caller-provided public material without inventing an execution.
+
+        The caller owns the observed material and obtains this receipt from an
+        authority.  The controller only verifies its origin and exact subject
+        binding; it does not treat the signature as a scientific result.
+        """
+        if outcome not in {"positive", "negative"}:
+            raise ContractError("material audit requires explicit outcome")
+        strict_bool(execution_success, "material execution success")
+        required_text(subject_digest, "material audit subject digest")
+        body = {"schema": "host-material-audit-v1", "authority": self.authority_id,
+                "identity": identity.data(), "subject_digest": subject_digest,
+                "execution_success": execution_success, "state": state.__dict__, "outcome": outcome,
                 "audit": [{"name": item.name, "executed": item.executed, "passed": item.passed} for item in audit]}
         return FrozenRecord.from_dict({"body": body, "mac": hmac.new(self._key, canonical(body).encode(), hashlib.sha256).hexdigest()})
 
@@ -111,6 +130,61 @@ class AuditVerifier:
         return FrozenRecord.from_dict({"schema": "verified-dual-audit-evidence-v1", "identity": identity.data(),
             "objective_digest": objective_digest, "execution_digest": execution.content_hash,
             "authorities": sorted(bodies), **normalized[0]})
+
+    def verify_material(self, receipts: list[FrozenRecord], *, identity: DataIdentity,
+                        subject_digest: str, required_audit: tuple[str, ...]) -> FrozenRecord:
+        """Verify a pair of authority-issued public-material receipts.
+
+        This deliberately has no execution receipt parameter: callers may
+        supply a public observation that this RunSession did not execute.  The
+        signed ``subject_digest`` binds the material, task, state, outcome and
+        audit facts before a model is called.
+        """
+        required_text(subject_digest, "material audit subject digest")
+        if len(receipts) != 2:
+            raise ContractError("two complete material audit receipts required")
+        bodies = {}
+        expected_fields = {"schema", "authority", "identity", "subject_digest", "execution_success", "state", "outcome", "audit"}
+        for receipt in receipts:
+            if not isinstance(receipt, FrozenRecord):
+                raise ContractError("malformed material audit receipt")
+            envelope = receipt.data()
+            if set(envelope) != {"body", "mac"} or not isinstance(envelope["body"], dict):
+                raise ContractError("malformed material audit envelope")
+            body = envelope["body"]
+            if set(body) != expected_fields:
+                raise ContractError("unexpected material audit fields")
+            authority = body["authority"]
+            if authority not in self._keys or authority in bodies or not isinstance(envelope["mac"], str):
+                raise ContractError("unknown or duplicate material audit authority")
+            expected = hmac.new(self._keys[authority], canonical(body).encode(), hashlib.sha256).hexdigest()
+            if not hmac.compare_digest(envelope["mac"], expected):
+                raise ContractError("material audit signature mismatch")
+            if (body["schema"] != "host-material-audit-v1" or body["identity"] != identity.data()
+                    or body["subject_digest"] != subject_digest):
+                raise ContractError("material audit subject binding mismatch")
+            try:
+                ScientificState(**body["state"])
+                checks = [AuditItem(**row) for row in body["audit"]]
+                strict_bool(body["execution_success"], "material execution success")
+                if body["outcome"] not in {"positive", "negative"}:
+                    raise ContractError("material audit outcome is invalid")
+                # This verifies only receipt shape and registered checklist.
+                # Calling EvidenceAdmission here would make the M1-off arm
+                # execute the intervention it is meant to control for.
+                if (not required_audit or len(set(required_audit)) != len(required_audit)
+                        or {item.name for item in checks} != set(required_audit)
+                        or len({item.name for item in checks}) != len(checks)):
+                    raise ContractError("material audit checklist is incomplete")
+            except (TypeError, KeyError) as exc:
+                raise ContractError("malformed material audit state or checks") from exc
+            bodies[authority] = {"execution_success": body["execution_success"], "state": body["state"],
+                                  "outcome": body["outcome"], "audit": sorted(body["audit"], key=lambda row: row["name"])}
+        normalized = list(bodies.values())
+        if normalized[0] != normalized[1]:
+            raise ContractError("dual material audit disagreement")
+        return FrozenRecord.from_dict({"schema": "verified-dual-material-audit-v1", "identity": identity.data(),
+            "subject_digest": subject_digest, "authorities": sorted(bodies), **normalized[0]})
 
     def verify_pair(self, receipts: list[FrozenRecord], *, identity: DataIdentity,
                     objective_digest: str, execution: ExecutionReceipt,
