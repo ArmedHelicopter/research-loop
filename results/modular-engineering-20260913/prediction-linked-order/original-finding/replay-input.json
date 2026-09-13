@@ -1,0 +1,590 @@
+{
+  "cell": {
+    "arm_id": "1",
+    "coverage_id": "Q5.3",
+    "identity": {
+      "benchmark": "discoverybench",
+      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+      "domain": "train",
+      "group_id": "discoverybench:synth:train:family_1_1",
+      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+      "task_id": "synth:train:family_1_1"
+    },
+    "package_digest": "edb6bedb99d7339579006b18c0e4118a51a673b35331a3cffb68c05db8958579",
+    "replicate": "r1",
+    "runtime_arm": {
+      "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+      "enabled": [
+        "M4"
+      ],
+      "schema": "module-arm-v1"
+    },
+    "scenario_digest": "6ff050db95f19a5f5608738cab2b4a945babd36b9a8883b20401e763c1776a0a",
+    "scorer_digest": "19f85b0b488e8b9ebf232e9fb2c0da400f854e0dfb31c5f8c69ec3f3f57d3c22",
+    "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+    "variant": "opposite_prediction"
+  },
+  "package": {
+    "changes": {
+      "prompt": {
+        "instructions": "public train package"
+      }
+    },
+    "parent_digest": null,
+    "phase": "candidate",
+    "search_cost": 0,
+    "training_manifest": {
+      "domain": "train",
+      "identities": [
+        {
+          "benchmark": "discoverybench",
+          "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+          "domain": "train",
+          "group_id": "discoverybench:synth:train:family_1_1",
+          "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+          "task_id": "synth:train:family_1_1"
+        },
+        {
+          "benchmark": "blade",
+          "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+          "domain": "train",
+          "group_id": "blade:fish",
+          "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+          "task_id": "fish"
+        }
+      ]
+    },
+    "training_manifest_digest": "823711e53b3fcb5a6b8616ca164c916a6de02c9302d282b1f7b5b760a465fcef"
+  },
+  "runtime": {
+    "cell_key": [
+      "Q5.3",
+      "discoverybench",
+      "synth:train:family_1_1",
+      "discoverybench:synth:train:family_1_1",
+      "r1",
+      "opposite_prediction",
+      "1"
+    ],
+    "failure_reason": null,
+    "output_digest": "9ce738da3d6efd282fef138f7e93e5452a9836de5730a607924bc7571aa6cecc",
+    "status": "succeeded",
+    "trace_digest": "2e2ffe3cb84feb6ee0b7b6bf8b28a4ce9ed5ba19b45abab82916a5f82589d4f1"
+  },
+  "scenario": {
+    "base": {
+      "budget": "588a0097151d2194e18e9649af6d93a7de27345fddd625bb60eba6a0f7f6e736",
+      "evidence": "ff73a204efd00528124db860475c79ba36d1fece37da80410d4db4855ea6ef2b",
+      "task": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+    },
+    "controller_input": {
+      "material_bundle": {
+        "controller_truth": {
+          "marker": "CONTROLLER_ONLY_REFERENCE_MARKER",
+          "schema": "prediction-controller-truth-v1"
+        },
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+          "domain": "train",
+          "group_id": "discoverybench:synth:train:family_1_1",
+          "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+          "task_id": "synth:train:family_1_1"
+        },
+        "public_evidence": {
+          "observation_id": "observation-0",
+          "public_summary": "Recorded public observation",
+          "schema": "prediction-public-evidence-v1",
+          "source_id": "source-0",
+          "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+        },
+        "q32": {
+          "joint": {
+            "plans": [
+              {
+                "branches": [
+                  {
+                    "elimination_condition": "public failure",
+                    "hypothesis_id": "h0",
+                    "intervention": "public intervention",
+                    "mechanism": "public m0",
+                    "mechanism_key": "m0",
+                    "predictions": [
+                      {
+                        "direction": "positive",
+                        "discriminator_id": "public-disc",
+                        "failure_condition": "not positive",
+                        "observable": "public x",
+                        "prediction_id": "h0-prediction",
+                        "value_range": null
+                      }
+                    ]
+                  },
+                  {
+                    "elimination_condition": "public failure",
+                    "hypothesis_id": "h1",
+                    "intervention": "public intervention",
+                    "mechanism": "public m1",
+                    "mechanism_key": "m1",
+                    "predictions": [
+                      {
+                        "direction": "negative",
+                        "discriminator_id": "public-disc",
+                        "failure_condition": "not negative",
+                        "observable": "public x",
+                        "prediction_id": "h1-prediction",
+                        "value_range": null
+                      }
+                    ]
+                  },
+                  {
+                    "elimination_condition": "public failure",
+                    "hypothesis_id": "h2",
+                    "intervention": "public intervention",
+                    "mechanism": "public m2",
+                    "mechanism_key": "m2",
+                    "predictions": [
+                      {
+                        "direction": "null",
+                        "discriminator_id": "public-disc",
+                        "failure_condition": "not null",
+                        "observable": "public x",
+                        "prediction_id": "h2-prediction",
+                        "value_range": null
+                      }
+                    ]
+                  }
+                ],
+                "budget_units": 3,
+                "question": "Assess the public observation",
+                "support_records": [
+                  {
+                    "branch_ids": [
+                      "h0",
+                      "h1",
+                      "h2"
+                    ],
+                    "caller_admission_receipt": {
+                      "authority_id": "caller-authority",
+                      "observation_id": "public-observation-0",
+                      "receipt_digest": "receipt-0",
+                      "schema": "caller-observation-admission-v1",
+                      "source_id": "public-source-0",
+                      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+                    },
+                    "observation_id": "public-observation-0",
+                    "public_observation": "public observation 0",
+                    "schema": "prediction-support-record-v1",
+                    "source_id": "public-source-0",
+                    "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+                  }
+                ]
+              }
+            ]
+          },
+          "separate": {
+            "plans": [
+              {
+                "branches": [
+                  {
+                    "elimination_condition": "public failure",
+                    "hypothesis_id": "h0",
+                    "intervention": "public intervention",
+                    "mechanism": "public m0",
+                    "mechanism_key": "m0",
+                    "predictions": [
+                      {
+                        "direction": "positive",
+                        "discriminator_id": "public-disc",
+                        "failure_condition": "not positive",
+                        "observable": "public x",
+                        "prediction_id": "h0-prediction",
+                        "value_range": null
+                      }
+                    ]
+                  },
+                  {
+                    "elimination_condition": "public failure",
+                    "hypothesis_id": "h1",
+                    "intervention": "public intervention",
+                    "mechanism": "public m1",
+                    "mechanism_key": "m1",
+                    "predictions": [
+                      {
+                        "direction": "negative",
+                        "discriminator_id": "public-disc",
+                        "failure_condition": "not negative",
+                        "observable": "public x",
+                        "prediction_id": "h1-prediction",
+                        "value_range": null
+                      }
+                    ]
+                  }
+                ],
+                "budget_units": 1,
+                "question": "Assess the public observation",
+                "support_records": [
+                  {
+                    "branch_ids": [
+                      "h0",
+                      "h1"
+                    ],
+                    "caller_admission_receipt": {
+                      "authority_id": "caller-authority",
+                      "observation_id": "public-observation-0",
+                      "receipt_digest": "receipt-0",
+                      "schema": "caller-observation-admission-v1",
+                      "source_id": "public-source-0",
+                      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+                    },
+                    "observation_id": "public-observation-0",
+                    "public_observation": "public observation 0",
+                    "schema": "prediction-support-record-v1",
+                    "source_id": "public-source-0",
+                    "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+                  }
+                ]
+              },
+              {
+                "branches": [
+                  {
+                    "elimination_condition": "public failure",
+                    "hypothesis_id": "h0",
+                    "intervention": "public intervention",
+                    "mechanism": "public m0",
+                    "mechanism_key": "m0",
+                    "predictions": [
+                      {
+                        "direction": "positive",
+                        "discriminator_id": "public-disc",
+                        "failure_condition": "not positive",
+                        "observable": "public x",
+                        "prediction_id": "h0-prediction",
+                        "value_range": null
+                      }
+                    ]
+                  },
+                  {
+                    "elimination_condition": "public failure",
+                    "hypothesis_id": "h2",
+                    "intervention": "public intervention",
+                    "mechanism": "public m2",
+                    "mechanism_key": "m2",
+                    "predictions": [
+                      {
+                        "direction": "null",
+                        "discriminator_id": "public-disc",
+                        "failure_condition": "not null",
+                        "observable": "public x",
+                        "prediction_id": "h2-prediction",
+                        "value_range": null
+                      }
+                    ]
+                  }
+                ],
+                "budget_units": 1,
+                "question": "Assess the public observation",
+                "support_records": [
+                  {
+                    "branch_ids": [
+                      "h0",
+                      "h2"
+                    ],
+                    "caller_admission_receipt": {
+                      "authority_id": "caller-authority",
+                      "observation_id": "public-observation-1",
+                      "receipt_digest": "receipt-1",
+                      "schema": "caller-observation-admission-v1",
+                      "source_id": "public-source-1",
+                      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+                    },
+                    "observation_id": "public-observation-1",
+                    "public_observation": "public observation 1",
+                    "schema": "prediction-support-record-v1",
+                    "source_id": "public-source-1",
+                    "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+                  }
+                ]
+              },
+              {
+                "branches": [
+                  {
+                    "elimination_condition": "public failure",
+                    "hypothesis_id": "h1",
+                    "intervention": "public intervention",
+                    "mechanism": "public m1",
+                    "mechanism_key": "m1",
+                    "predictions": [
+                      {
+                        "direction": "negative",
+                        "discriminator_id": "public-disc",
+                        "failure_condition": "not negative",
+                        "observable": "public x",
+                        "prediction_id": "h1-prediction",
+                        "value_range": null
+                      }
+                    ]
+                  },
+                  {
+                    "elimination_condition": "public failure",
+                    "hypothesis_id": "h2",
+                    "intervention": "public intervention",
+                    "mechanism": "public m2",
+                    "mechanism_key": "m2",
+                    "predictions": [
+                      {
+                        "direction": "null",
+                        "discriminator_id": "public-disc",
+                        "failure_condition": "not null",
+                        "observable": "public x",
+                        "prediction_id": "h2-prediction",
+                        "value_range": null
+                      }
+                    ]
+                  }
+                ],
+                "budget_units": 1,
+                "question": "Assess the public observation",
+                "support_records": [
+                  {
+                    "branch_ids": [
+                      "h1",
+                      "h2"
+                    ],
+                    "caller_admission_receipt": {
+                      "authority_id": "caller-authority",
+                      "observation_id": "public-observation-2",
+                      "receipt_digest": "receipt-2",
+                      "schema": "caller-observation-admission-v1",
+                      "source_id": "public-source-2",
+                      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+                    },
+                    "observation_id": "public-observation-2",
+                    "public_observation": "public observation 2",
+                    "schema": "prediction-support-record-v1",
+                    "source_id": "public-source-2",
+                    "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "q53": {
+          "opposite_prediction": {
+            "plan": {
+              "branches": [
+                {
+                  "elimination_condition": "public failure",
+                  "hypothesis_id": "h0",
+                  "intervention": "public intervention",
+                  "mechanism": "public m0",
+                  "mechanism_key": "m0",
+                  "predictions": [
+                    {
+                      "direction": "positive",
+                      "discriminator_id": "public-disc",
+                      "failure_condition": "not positive",
+                      "observable": "public x",
+                      "prediction_id": "h0-prediction",
+                      "value_range": null
+                    }
+                  ]
+                },
+                {
+                  "elimination_condition": "public failure",
+                  "hypothesis_id": "h1",
+                  "intervention": "public intervention",
+                  "mechanism": "public m0",
+                  "mechanism_key": "m0",
+                  "predictions": [
+                    {
+                      "direction": "negative",
+                      "discriminator_id": "public-disc",
+                      "failure_condition": "not negative",
+                      "observable": "public x",
+                      "prediction_id": "h1-prediction",
+                      "value_range": null
+                    }
+                  ]
+                }
+              ],
+              "budget_units": 2,
+              "question": "Assess the public observation"
+            },
+            "proposals": [
+              {
+                "mechanism_key": "m0",
+                "prediction_signature": "5d9f0abd8f5d7e267274bc4c258c77cb58febf42a1fe37e65cffe04ac36793d9",
+                "proposal_id": "h0",
+                "root_id": "origin-0",
+                "title": "Study A"
+              },
+              {
+                "mechanism_key": "m0",
+                "prediction_signature": "b14ee52e5e74ada72078a9979e36bcf4d5ce51186811cb146828a8ce64cda2b4",
+                "proposal_id": "h1",
+                "root_id": "origin-1",
+                "title": "Study B"
+              }
+            ]
+          },
+          "same_mechanism": {
+            "plan": {
+              "branches": [
+                {
+                  "elimination_condition": "public failure",
+                  "hypothesis_id": "h0",
+                  "intervention": "public intervention",
+                  "mechanism": "public m0",
+                  "mechanism_key": "m0",
+                  "predictions": [
+                    {
+                      "direction": "positive",
+                      "discriminator_id": "public-disc",
+                      "failure_condition": "not positive",
+                      "observable": "public x",
+                      "prediction_id": "h0-prediction",
+                      "value_range": null
+                    }
+                  ]
+                },
+                {
+                  "elimination_condition": "public failure",
+                  "hypothesis_id": "h1",
+                  "intervention": "public intervention",
+                  "mechanism": "public m0",
+                  "mechanism_key": "m0",
+                  "predictions": [
+                    {
+                      "direction": "positive",
+                      "discriminator_id": "public-disc",
+                      "failure_condition": "not positive",
+                      "observable": "public x",
+                      "prediction_id": "h1-prediction",
+                      "value_range": null
+                    }
+                  ]
+                }
+              ],
+              "budget_units": 2,
+              "question": "Assess the public observation"
+            },
+            "proposals": [
+              {
+                "mechanism_key": "m0",
+                "prediction_signature": "5d9f0abd8f5d7e267274bc4c258c77cb58febf42a1fe37e65cffe04ac36793d9",
+                "proposal_id": "h0",
+                "root_id": "origin-0",
+                "title": "Study A"
+              },
+              {
+                "mechanism_key": "m0",
+                "prediction_signature": "5d9f0abd8f5d7e267274bc4c258c77cb58febf42a1fe37e65cffe04ac36793d9",
+                "proposal_id": "h1",
+                "root_id": "origin-1",
+                "title": "Study B"
+              }
+            ]
+          },
+          "title": {
+            "plan": {
+              "branches": [
+                {
+                  "elimination_condition": "public failure",
+                  "hypothesis_id": "h0",
+                  "intervention": "public intervention",
+                  "mechanism": "public m0",
+                  "mechanism_key": "m0",
+                  "predictions": [
+                    {
+                      "direction": "positive",
+                      "discriminator_id": "public-disc",
+                      "failure_condition": "not positive",
+                      "observable": "public x",
+                      "prediction_id": "h0-prediction",
+                      "value_range": null
+                    }
+                  ]
+                },
+                {
+                  "elimination_condition": "public failure",
+                  "hypothesis_id": "h1",
+                  "intervention": "public intervention",
+                  "mechanism": "public m1",
+                  "mechanism_key": "m1",
+                  "predictions": [
+                    {
+                      "direction": "null",
+                      "discriminator_id": "public-disc",
+                      "failure_condition": "not null",
+                      "observable": "public x",
+                      "prediction_id": "h1-prediction",
+                      "value_range": null
+                    }
+                  ]
+                }
+              ],
+              "budget_units": 2,
+              "question": "Assess the public observation"
+            },
+            "proposals": [
+              {
+                "mechanism_key": "m0",
+                "prediction_signature": "5d9f0abd8f5d7e267274bc4c258c77cb58febf42a1fe37e65cffe04ac36793d9",
+                "proposal_id": "h0",
+                "root_id": "origin-0",
+                "title": "Study A"
+              },
+              {
+                "mechanism_key": "m1",
+                "prediction_signature": "bcecc0c9f7bb009eed0b5bea8263fd6ce70c7c75a6e0530155df08e44e345afc",
+                "proposal_id": "h1",
+                "root_id": "origin-1",
+                "title": "Study A"
+              }
+            ]
+          }
+        },
+        "schema": "typed-prediction-panel-bundle-v2"
+      },
+      "schema": "prediction-panel-controller-v2"
+    },
+    "controls": {
+      "same_budget": true,
+      "same_evidence": true,
+      "same_task": true
+    },
+    "experiment_id": "Q5.3",
+    "variant": "opposite_prediction"
+  },
+  "task": {
+    "identity": {
+      "benchmark": "discoverybench",
+      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+      "domain": "train",
+      "group_id": "discoverybench:synth:train:family_1_1",
+      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+      "task_id": "synth:train:family_1_1"
+    },
+    "payload": {
+      "dataset": [
+        {
+          "columns": [
+            {
+              "description": null,
+              "name": "x"
+            }
+          ],
+          "description": null,
+          "name": "data.csv"
+        }
+      ],
+      "difficulty": null,
+      "question": "public discovery question",
+      "source_kind": "synthetic",
+      "task_id": "synth:train:family_1_1"
+    }
+  }
+}

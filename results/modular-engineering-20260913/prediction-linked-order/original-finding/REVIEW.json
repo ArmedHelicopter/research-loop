@@ -1,0 +1,16 @@
+{
+  "copied_trace_sha256": "77d51d58a76e28a11b6b7153e4138166fbbd99d6f0df8a2ad4a1437a4ee1e3f3",
+  "docker_calls": 0,
+  "final_response_sequence": 4,
+  "finding": "Both real provenance extraction and public projection accept rehashed stage_1/prediction_artifacts after final response.",
+  "late_stage_sequences": [
+    5,
+    6
+  ],
+  "model_calls": 0,
+  "original_closed_verification_sha256": "74755e619d24dd4aced666eb85f6ccd52f6a2bed72291e5efb1f08918f064b05",
+  "original_files_untouched": true,
+  "priority": "P2",
+  "scorer_calls": 0,
+  "source_commit": "8e235510756c7098051f38e59ff2d41c0b989d91"
+}
