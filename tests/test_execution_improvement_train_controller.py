@@ -50,7 +50,7 @@ def phase_material(task,csv,fault=None):
         jobs.append({'id':hashlib.sha256(('public-job-'+str(i)).encode()).hexdigest(),'purpose':'probe' if i==2 else 'main',
             'program':program,'dependencies':[],'resources':[hashlib.sha256(('resource-'+str(i)).encode()).hexdigest()],'cost_units':1})
     return FrozenExplorationSchedulerMaterial(FrozenRecord.from_dict({'schema':'exploration-scheduler-material-v1',
-        'identity':task.identity.data(),'task_digest':task.content_hash,'context_budget_bytes':16000,
+        'identity':task.identity.data(),'task_digest':task.content_hash,'context_budget_bytes':state_material(task,csv,False).data()['context_budget_bytes'],
         'public_artifacts':state_material(task,csv,False).data()['public_artifacts'],'jobs':jobs}))
 
 
