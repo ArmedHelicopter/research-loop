@@ -29,10 +29,20 @@ _MAX_TEXT_BYTES = 16_000
 
 
 @dataclass(frozen=True)
+class CompletedSolverSession:
+    """Read-only journal view; construction cannot resume or write a run."""
+
+    task: PublicTask
+    lock: FrozenRecord
+    objective: FrozenRecord
+    sidecar: Path
+
+
+@dataclass(frozen=True)
 class BenchmarkSolveResult:
     """Trace-bound result of one scheduled solve attempt, never a score."""
 
-    session: RunSession
+    session: RunSession | CompletedSolverSession
     artifacts: tuple[ArtifactReceipt, ...]
     analysis: FrozenRecord | None
     execution: ExecutionReceipt | None

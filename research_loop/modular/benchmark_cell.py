@@ -10,11 +10,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Mapping
 
-from research_loop.modular.benchmark_solver import BenchmarkSolveResult, run_benchmark_solve, verify_benchmark_solve_trace
-from research_loop.modular.benchmarks.execution import DockerExecutionBroker, ExecutionReceipt
+from research_loop.modular.benchmark_solver import BenchmarkSolveResult, CompletedSolverSession, run_benchmark_solve, verify_benchmark_solve_trace
+from research_loop.modular.benchmarks.execution import DockerExecutionBroker, ExecutionReceipt, validate_artifact
 from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.modules.improvement import CandidatePackage
-from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier, opaque_panel_cell_binding
+from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier, RuntimeReceipt, opaque_panel_cell_binding
 from research_loop.modular.linked_public_projection import project_linked_public_context, verify_linked_public_context
 from research_loop.modular.panel_runner import TrainCellResult, run_train_cell
 from research_loop.modular.protocol_trace import verify_protocol_trace
@@ -108,6 +108,70 @@ def verified_mechanism_provenance(*, cell: PanelCell, task: PublicTask, scenario
         "mechanism_stages": [{"stage": event["data"]["stage"], "data": event["data"]} for event in stages],
         "responses": calls,
     })
+
+
+def restore_completed_benchmark_cell(*, cell: PanelCell, task: PublicTask, scenario: FrozenRecord,
+                                    package: CandidatePackage, runtime: RuntimeReceipt,
+                                    linked_receipt: FrozenRecord, solver_sidecar: Path | None,
+                                    public_inputs: Mapping[str, Path]) -> LinkedBenchmarkCellResult:
+    """Rehydrate closed execution evidence for scoring, without any execution port.
+
+    The caller supplies the original frozen runtime and linked receipts. Every
+    restored field is replayed against those receipts and the current artifact
+    bytes. The old call plan was not persisted by the linked controller: the
+    replacement field explicitly records recovery, never an invented old plan.
+    This function writes nothing and has no model, Docker, scorer, or RunSession
+    constructor. Original failures remain failures.
+    """
+    if not isinstance(runtime, RuntimeReceipt) or not isinstance(linked_receipt, FrozenRecord):
+        raise ContractError("recovery requires original typed execution receipts")
+    _validate_inputs(cell, task, scenario, package, FrozenRecord.from_dict({"purpose": "recovery"}), lambda _: None)
+    PanelReceiptVerifier()._verify_runtime(runtime, cell)
+    source = linked_receipt.data()
+    mechanism = TrainCellResult(runtime, None, FrozenRecord.from_dict({
+        "schema": "completed-linked-cell-recovery-v1", "cell_key": list(cell.key),
+        "original_linked_receipt_digest": linked_receipt.content_hash,
+        "original_call_plan": "not_persisted", "execution_repeated": False}))
+    provenance = None
+    solver = None
+    if source.get("solver_trace_digest") is not None:
+        if not isinstance(solver_sidecar, Path):
+            raise ContractError("recovery lacks the original solver sidecar")
+        trace_path = solver_sidecar / "trace.jsonl"
+        verify_benchmark_solve_trace(trace_path, task)
+        events = _events(trace_path)
+        if FrozenRecord.from_dict(events[-1]).content_hash != source["solver_trace_digest"]:
+            raise ContractError("recovery solver trace differs from the original receipt")
+        lock = FrozenRecord.from_dict(events[0]["data"])
+        state = _solver_journal_state(events)
+        artifacts = tuple(validate_artifact(task.identity, name, path) for name, path in sorted(public_inputs.items()))
+        declarations = [{"artifact": artifact.record.data(), "container_path": "/input/" + artifact.artifact_id}
+                        for artifact in artifacts]
+        analysis_requests = [event["data"]["request"] for event in events if event["stage"] == "model_request"
+                             and event["data"]["request"]["slot"] == "analysis_program"]
+        if analysis_requests and analysis_requests[0]["module_context"].get("public_artifacts") != declarations:
+            raise ContractError("recovery public inputs differ from the original request")
+        execution = state["execution"]
+        if execution is not None:
+            if execution.record.data().get("input_artifacts") != {a.artifact_id: a.record.data() for a in artifacts}:
+                raise ContractError("recovery public inputs differ from executed input bytes")
+            if execution.artifact is not None:
+                program_path = solver_sidecar / "analysis-1.py"
+                restored = validate_artifact(task.identity, "program", program_path)
+                if restored.content_hash != execution.artifact.content_hash:
+                    raise ContractError("recovery program differs from executed program bytes")
+                if state["analysis"] is None or program_path.read_text(encoding="utf-8") != state["analysis"].data().get("program"):
+                    raise ContractError("recovery program differs from the original model response")
+        session = CompletedSolverSession(task, lock, FrozenRecord.from_dict(lock.data()["objective"]), solver_sidecar)
+        solver = BenchmarkSolveResult(session, artifacts, state["analysis"], execution,
+                                      state["answer"], state["decision"], state["status"])
+        provenance = verified_mechanism_provenance(cell=cell, task=task, scenario=scenario,
+                                                   package=package, mechanism=mechanism)
+    elif solver_sidecar is not None:
+        raise ContractError("recovery cannot attach solver material absent from the original receipt")
+    result = LinkedBenchmarkCellResult(cell, mechanism, solver, provenance, linked_receipt, source.get("status"))
+    verify_linked_benchmark_cell(result, task=task, scenario=scenario, package=package)
+    return result
 
 
 def verify_linked_benchmark_cell(result: LinkedBenchmarkCellResult, *, task: PublicTask,
