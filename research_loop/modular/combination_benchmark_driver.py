@@ -23,6 +23,10 @@ from research_loop.modular.panel_receipts import opaque_panel_cell_binding
 from research_loop.modular.protocol_trace import verify_protocol_trace
 from research_loop.modular.runtime import AuditVerifier, RunSession, verify_trace
 from research_loop.modular.workflow import ModularWorkflow
+from research_loop.modular.m4_m5_useful_controls import (
+    RECIPE, PLAN_INSTRUCTION, ORDINARY_INSTRUCTION, REVIEW_INSTRUCTION, REVISION_INSTRUCTION,
+    useful_scenario, proposal_envelope, review_context, verify_useful_inputs,
+)
 from research_loop.ontology import ContractError
 
 
@@ -57,7 +61,7 @@ def run_m4_m5_combination_benchmark_cell(*, panel: CombinationPanel, cell: Panel
     binding = FrozenRecord.from_dict(opaque_panel_cell_binding(cell))
     try:
         plan, m4_response = _run_m4(workflow, cell, scenario, model, binding)
-        revealed, review_id, review_responses = _run_m5(workflow, cell, scenario, model, binding, plan)
+        revealed, review_id, review_responses = _run_m5(workflow, cell, scenario, model, binding, plan, m4_response)
         joint = _joint(cell, task, scenario, panel, plan, revealed, review_id, m4_response, review_responses)
         session._record("combination_mechanism", {"joint": joint.data(), "joint_digest": joint.content_hash,
             "controller_contrast_coefficient": panel.design.data()["contrast"][cell.arm_id]})
@@ -112,6 +116,14 @@ def verify_m4_m5_combination_benchmark_cell(result: CombinationBenchmarkCellResu
     if len(module_requests) != 3 or any(item is None for item in actual) or [item.content_hash for item in actual] != joint.get("module_response_digests"):
         raise ContractError("joint mechanism response digests do not bind the three actual module calls")
     _verify_actual_module_artifacts(joint, actual, enabled)
+    useful = useful_scenario(scenario)
+    if useful:
+        verify_useful_inputs(joint=joint, requests=[e['data']['request'] for e in module_requests],
+            responses=actual, enabled=enabled, roles=_ROLES, task=task.data(),
+            binding=opaque_panel_cell_binding(result.cell), sidecar=result.runtime.trace_path.parent)
+    elif joint.get('schema') != 'm4-m5-joint-mechanism-v1' or any(
+            key in joint for key in ('execution_recipe', 'proposal', 'review_responses')):
+        raise ContractError('legacy M4/M5 result cannot substitute the useful-output recipe')
     joint_index = next(index for index,event in enumerate(events) if event["stage"] == "combination_mechanism")
     response_indexes = [index for index,event in enumerate(events) if event["stage"] == "model_response" and event["data"]["request_digest"] in {item["data"]["request_digest"] for item in module_requests}]
     solver_indexes = [index for index,event in enumerate(events) if event["stage"] == "model_request" and event["data"]["request"]["slot"] == "analysis_program"]
@@ -129,7 +141,7 @@ def verify_m4_m5_combination_benchmark_cell(result: CombinationBenchmarkCellResu
     first_response = next(event["data"]["response"] for event in events
                           if event["stage"] == "model_response" and event["data"]["request_digest"]
                           == next(item["data"]["request_digest"] for item in events if item["stage"] == "model_request" and item["data"]["request"]["slot"] == "m5_mechanism"))
-    if FrozenRecord.from_dict(first_response).encoded in FrozenRecord.from_dict(requests[2]).encoded:
+    if (not useful or 'M5' in enabled) and FrozenRecord.from_dict(first_response).encoded in FrozenRecord.from_dict(requests[2]).encoded:
         raise ContractError("second sealed reviewer received the first submission")
     if result.solver is None:
         raise ContractError("successful combination mechanism requires an in-trace solver result")
@@ -151,11 +163,13 @@ def verify_m4_m5_combination_benchmark_cell(result: CombinationBenchmarkCellResu
 
 def _run_m4(workflow: ModularWorkflow, cell: PanelCell, scenario: FrozenRecord, model: ModelPort,
             binding: FrozenRecord):
-    response = workflow.invoke_model("m4_plan", model, instruction=(
-        "Produce exactly a three-branch public prediction plan with budget_units=3. Each branch must use one common "
-        "discriminator and at least two branches must differ on it. This is train-only reasoning, not a score or truth."),
+    useful = useful_scenario(scenario)
+    response = workflow.invoke_model("m4_plan", model,
+        instruction=ORDINARY_INSTRUCTION if useful and 'M4' not in workflow.enabled else PLAN_INSTRUCTION,
         module_context=FrozenRecord.from_dict({"panel_cell": binding.data(), "public_task": workflow.session.task.data(),
                                                 "mechanism_phase": "proposal"}))
+    if useful:
+        proposal_envelope(response)
     if "M4" not in workflow.enabled:
         workflow._trace("operation_m4_control", "executed", response_digest=response.content_hash)
         return None, response
@@ -170,18 +184,25 @@ def _run_m4(workflow: ModularWorkflow, cell: PanelCell, scenario: FrozenRecord, 
 
 
 def _run_m5(workflow: ModularWorkflow, cell: PanelCell, scenario: FrozenRecord, model: ModelPort,
-            binding: FrozenRecord, plan):
+            binding: FrozenRecord, plan, m4_response=None):
     review, submissions, responses = None, [], []
     if "M5" in workflow.enabled:
         review = workflow.reviews.open(task_binding=workflow.session.task.content_hash, evidence_snapshot=scenario.content_hash,
                                        roles=[{"role_id": role, "question": question} for role, question in _ROLES], budget_units=2)
-    plan_payload = plan.payload.data() if plan is not None else None
+    useful = useful_scenario(scenario)
+    plan_payload = plan.payload.data() if plan is not None else m4_response.data() if useful else None
     for slot, (role, question) in zip(_SLOTS[1:3], _ROLES):
         context = {"panel_cell": binding.data(), "public_task": workflow.session.task.data(), "mechanism_phase": "sealed_review",
                    "review_role": role, "review_question": question,
                    "prediction_plan": plan_payload, "sealed": True}
-        response = workflow.invoke_model(slot, model, instruction="Answer only the assigned public review question.",
+        if useful:
+            context = review_context(binding=binding.data(), task=workflow.session.task.data(), role=role,
+                question=question, proposal=plan_payload, sealed=review is not None, earlier=[r.data() for r in responses])
+        instruction = REVISION_INSTRUCTION if useful and review is None else REVIEW_INSTRUCTION
+        response = workflow.invoke_model(slot, model, instruction=instruction,
                                          module_context=FrozenRecord.from_dict(context))
+        if useful:
+            ReviewEngine._response(response.data())
         responses.append(response)
         if review is not None:
             submissions.append(workflow.reviews.submit(review.review_id, role_id=role, reviewer_id="m4m5-" + role,
@@ -204,12 +225,20 @@ def _joint(cell: PanelCell, task: PublicTask, scenario: FrozenRecord, panel: Com
         "prediction_plan_id": plan.plan_id if plan else None, "prediction_plan_digest": plan.payload.content_hash if plan else None,
         "review_id": review_id, "revealed_review": revealed.data() if revealed else None,
         "review_digest": revealed.content_hash if revealed else None,
-        "module_response_digests": [m4_response.content_hash, *[item.content_hash for item in review_responses]]})
+        "module_response_digests": [m4_response.content_hash, *[item.content_hash for item in review_responses]],
+        **({'schema': 'm4-m5-joint-mechanism-v2', 'execution_recipe': RECIPE.data(),
+            'proposal': m4_response.data(), 'review_responses': [r.data() for r in review_responses]}
+           if useful_scenario(scenario) else {})})
 
 
 def _public_joint(joint: FrozenRecord) -> FrozenRecord:
     """Keep journal identities and controller design fields out of solver inputs."""
     body = joint.data()
+    if body['schema'] == 'm4-m5-joint-mechanism-v2':
+        return FrozenRecord.from_dict({'schema': 'm4-m5-public-joint-context-v2',
+            'panel_cell': body['panel_cell'], 'task_digest': body['task_digest'],
+            'source_joint_digest': joint.content_hash, 'proposal': body['proposal'],
+            'review_responses': body['review_responses']})
     review = body["revealed_review"]
     return FrozenRecord.from_dict({"schema": "m4-m5-public-joint-context-v1",
         "panel_cell": body["panel_cell"], "task_digest": body["task_digest"],
@@ -254,6 +283,11 @@ def _validate_panel_inputs(panel: CombinationPanel, cell: PanelCell, task: Publi
     expected = {"00": set(), "10": {"M4"}, "01": {"M5"}, "11": {"M4", "M5"}}
     if cell.arm_id not in expected or set(cell.runtime_arm.data().get("enabled", ())) != expected[cell.arm_id]:
         raise ContractError("M4/M5 combination arm is not the frozen four-arm grid")
+    if useful_scenario(scenario):
+        b = scenario.data()
+        if (b['obligation_id'] != panel.obligation_id or b['design_digest'] != panel.design.content_hash
+                or b['task_digest'] != task.content_hash or b['replicate'] != cell.replicate):
+            raise ContractError('useful-output recipe scenario differs from its exact frozen cell')
 
 
 def _verify_module_logs(sidecar: Path, task: PublicTask, joint: Mapping, enabled: set[str]) -> None:

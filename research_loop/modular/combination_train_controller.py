@@ -35,6 +35,7 @@ from research_loop.modular.modules.improvement import CandidatePackage, Training
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier, ScientificScorerReceipt
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.modular.train_controller import _checked_roots, _reviewed_model_policy, _write
+from research_loop.modular.m4_m5_useful_controls import source_contract_body
 from research_loop.ontology import ContractError
 
 
@@ -80,7 +81,7 @@ class FrozenM4M5TrainConfig:
         fields = {"schema", "domain", "stage", "item_ids", "task_bindings", "baseline_digest", "packages_by_arm",
                   "scorer", "scorer_handle_bindings", "acceptance_criteria", "replicates", "model", "effort",
                   "max_calls", "max_tokens", "schemas", "allocation", "image", "timeout_seconds"}
-        if not source_schema_matches(body, fields, "m4-m5-train-controller-config-v1") or body["domain"] != "train":
+        if not source_schema_matches(source_contract_body(body), fields, "m4-m5-train-controller-config-v1") or body["domain"] != "train":
             raise ContractError("controller supports the exact train-only M4/M5 configuration")
         if not isinstance(body["stage"], str) or not body["stage"].strip() or not _names(body["item_ids"]) or not _names(body["replicates"]):
             raise ContractError("stage, train allowlist and replicates must be nonempty and unique")
@@ -184,7 +185,9 @@ def compile_m4_m5_train_panel(config: FrozenM4M5TrainConfig, packets: tuple[Publ
         for replicate in body["replicates"]:
             scenario = FrozenRecord.from_dict({"schema": "combination-public-scenario-v1", "obligation_id": _PAIR,
                 "design_digest": design.content_hash, "task_digest": packet.task.content_hash,
-                "replicate": replicate, "status": "predeclared"})
+                "replicate": replicate, "status": "predeclared", **({
+                    "schema": "combination-public-scenario-v2", "execution_recipe": body["execution_recipe"]
+                } if "execution_recipe" in body else {})})
             for arm_id, arm in arms.items():
                 cell = PanelCell(_PAIR, packet.task.identity, replicate, "combination", arm_id, arm,
                     packet.task.content_hash, scenario.content_hash, packages[arm.content_hash].digest,
