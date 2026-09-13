@@ -3,11 +3,11 @@ import json
 import pytest
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.modules.improvement import CandidatePackage,TrainingManifest
-from research_loop.modular.modules.improvement import AcceptanceAuthority,ExecutionRuntime
+from research_loop.modular.modules.improvement import AcceptanceAuthority,AcceptanceReceipt,ExecutionRuntime
 from research_loop.modular.deployment import FileDeploymentPort
 from research_loop.modular.metaprogram_training import metaprogram_schemas,model_configuration
 from research_loop.modular.train_operations import (FrozenTrainOperationPlan,TrainOperationAuthority,
-    run_train_operations,verify_train_operations)
+    TrainStagingAuthorization,check_existing_production_acceptance,run_train_operations,verify_train_operations)
 from research_loop.ontology import ContractError
 from test_modular_metaprogram_training import fixture
 from test_modular_train_controller import model_port
@@ -43,6 +43,10 @@ def operation_fixture(tmp_path,monkeypatch,experiment,feedback_fault=None):
         schemas=metaprogram_schemas(),response_factory=model)
     def feedback(request):
         feedback_calls.append(request)
+        source=tmp_path/'stage'/'cells'/request.data()['subject']['cell_id']/'host-operation'/'operations.jsonl'
+        reserved=json.loads(source.read_text(encoding='utf-8').splitlines()[-1])
+        assert reserved['stage']=='feedback_reserved' and reserved['data']['request_digest']==request.content_hash
+        assert reserved['data']['request']['limits']=={'calls':1,'max_units':2}
         if feedback_fault=='throw': raise OSError('controlled independent feedback failure')
         return FrozenRecord.from_dict({'subject_digest':request.content_hash if feedback_fault!='foreign' else '0'*64,
             'status':'ineligible','units':1})
@@ -89,6 +93,13 @@ def test_full_operation_grids_execute_and_consume_actual_shadow_results(tmp_path
     if experiment=='Q6.5':
         assert len(feedback)==16 and run.receipt.data()['feedback_actual']=={'calls':16,'reported_units':16,'unknown_cost':False}
     assert run.receipt.data()['actual']['provider_calls']==(44 if experiment=='Q6.6' else 48)
+    # A host MAC cannot substitute for an actual matching operation journal.
+    path=run.cells[0].root/'host-operation'/'receipt.json';original=path.read_bytes()
+    forged=json.loads(original);forged['record']['public']['status']='invented'
+    forged['signature']=args['authority'].sign(FrozenRecord.from_dict(forged['record']))
+    path.write_text(FrozenRecord.from_dict(forged).encoded,encoding='utf-8')
+    with pytest.raises(ContractError): verify_train_operations(run,plan=plan,authority=args['authority'])
+    path.write_bytes(original)
 
 
 @pytest.mark.parametrize('fault',['throw','foreign'])
@@ -118,12 +129,33 @@ def test_staging_token_cannot_authorize_production_even_with_mistaken_key_reuse(
     candidate=CandidatePackage.create(parent_digest=parent.digest,
         manifest=TrainingManifest(FrozenRecord.from_dict(parent.record.data()['training_manifest'])),
         changes={'memory':{'lesson':'public change'}},search_cost=1)
-    token=authority.staging_authorization(candidate,parent,{'test':'cross-domain refusal'})
+    subject={'plan_digest':'a'*64,'cell_id':'b'*64,'candidate_digest':candidate.digest,
+        'parent_digest':parent.digest,'task_digest':'c'*64}
+    token=authority.staging_authorization(candidate,parent,subject)
     authority.verify_staging(token)
     def forbidden(_): pytest.fail('train-only test must not obtain validation approval')
     production=AcceptanceAuthority(key,b'other-independent-validator-key-32',forbidden)
+    with pytest.raises(ContractError):
+        check_existing_production_acceptance(token,candidate=candidate,active=parent,authority=production,source_verifier=forbidden)
     runtime=ExecutionRuntime(tmp_path/'shadow-production.sqlite',FileDeploymentPort(tmp_path/'shadow-production.json',parent),production,parent)
     try:
         with pytest.raises(ContractError): runtime.activate(token,candidate)
+        with pytest.raises(ContractError): runtime.activate(AcceptanceReceipt(token.record,token.signature),candidate)
         assert runtime.active()==parent
     finally: runtime.close()
+
+
+@pytest.mark.parametrize('fault',['domain','schema','missing','boolean_digest','subject','signature_type'])
+def test_staging_contract_rejected_before_mac_for_bad_fields(monkeypatch,fault):
+    authority=TrainOperationAuthority('synthetic-stage',b'stage-specific-private-key-32bytes')
+    record={'schema':'train-staging-authorization-v1','domain':'train','candidate_digest':'a'*64,
+        'expected_active_digest':'b'*64,'subject':{k:'c'*64 for k in ('plan_digest','cell_id','candidate_digest','parent_digest','task_digest')}}
+    signature='d'*64
+    if fault in {'domain','schema'}: record[fault]='foreign'
+    elif fault=='missing': record.pop('candidate_digest')
+    elif fault=='boolean_digest': record['candidate_digest']=True
+    elif fault=='subject': record['subject']={}
+    else: signature=b'not-a-string'
+    def forbidden(_): pytest.fail('bad staging schema reached MAC verification')
+    monkeypatch.setattr(authority,'_staging_signature',forbidden)
+    with pytest.raises(ContractError): authority.verify_staging(TrainStagingAuthorization(FrozenRecord.from_dict(record),signature))

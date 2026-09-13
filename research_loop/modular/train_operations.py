@@ -67,9 +67,45 @@ class TrainOperationAuthority:
         return hmac.new(self._key,b'train-staging-only-v1\x00'+record.encoded.encode('utf-8'),hashlib.sha256).hexdigest()
 
     def verify_staging(self,authorization):
-        if not isinstance(authorization,TrainStagingAuthorization) or not hmac.compare_digest(
-                self._staging_signature(authorization.record),authorization.signature):
+        if not isinstance(authorization,TrainStagingAuthorization) or not isinstance(authorization.record,FrozenRecord):
+            raise ContractError('staging authorization needs its exact typed record')
+        body=authorization.record.data()
+        if (set(body)!={'schema','domain','candidate_digest','expected_active_digest','subject'}
+                or body['schema']!='train-staging-authorization-v1' or body['domain']!='train'
+                or not isinstance(body['subject'],dict)
+                or set(body['subject'])!={'plan_digest','cell_id','candidate_digest','parent_digest','task_digest'}):
+            raise ContractError('staging authorization schema, domain or subject is invalid')
+        for value in (body['candidate_digest'],body['expected_active_digest'],*body['subject'].values(),authorization.signature):
+            shared._digest(value,'staging authorization field')
+        if not hmac.compare_digest(self._staging_signature(authorization.record),authorization.signature):
             raise ContractError('staging authorization signature domain is invalid')
+
+
+def check_existing_production_acceptance(receipt,*,candidate,active,authority,source_verifier):
+    """Read-only future seam for an already issued independent acceptance.
+
+    A caller-owned verifier must resolve the original independent source and
+    return its exact qualified record. This function issues no receipt, reads
+    no validation data itself, and performs no activation. Train phase runners
+    never call it; genuine source qualification remains an external boundary.
+    """
+    if (type(receipt)is not AcceptanceReceipt or not isinstance(candidate,CandidatePackage)
+            or not isinstance(active,CandidatePackage) or not isinstance(authority,AcceptanceAuthority)
+            or not callable(source_verifier)):
+        raise ContractError('existing production acceptance requires independent typed dependencies')
+    data=receipt.record.data()
+    if (set(data)!={'validator_id','candidate_digest','expected_active_digest','trial_digest','domain','offline','decision'}
+            or data['domain']!='validation' or data['offline']is not False or data['decision']!='approved'
+            or data['candidate_digest']!=candidate.digest or data['expected_active_digest']!=active.digest
+            or candidate.parent_digest!=active.digest or not isinstance(data['validator_id'],str) or not data['validator_id'].strip()):
+        raise ContractError('existing acceptance is not bound to the production candidate and active parent')
+    shared._digest(data['trial_digest'],'independent trial')
+    authority.verify(receipt)
+    original=source_verifier(receipt)
+    if not isinstance(original,FrozenRecord) or original!=receipt.record:
+        raise ContractError('independent acceptance source differs from supplied receipt')
+    return FrozenRecord.from_dict({'status':'configured_acceptance_source_verified','receipt_digest':receipt.receipt_id,
+        'candidate_digest':candidate.digest,'activation':'not_performed','scientific_source_qualification':'external_verifier_responsibility'})
 
 
 class _StagingRuntime:
@@ -113,6 +149,7 @@ def _material(targets,histories,parent,fixed,experiment,baseline,p0,image,config
     if experiment not in _VARIANTS: raise ContractError('unsupported train operation experiment')
     # Reuse all source, model schema, image, manifest and deep budget preflight.
     common=shared._plan_material(targets,histories,parent,fixed,baseline,p0,image,config,timeout).data()
+    for key in ('schema','cells','arm_grid'): common.pop(key)
     projection=shared._projection(parent).data()
     if not (projection['instructions'] or projection['memory_lesson']):
         raise ContractError('train operation parent must carry consumed public instructions or memory')
@@ -139,7 +176,7 @@ def _material(targets,histories,parent,fixed,experiment,baseline,p0,image,config
                     row={**row,'cell_id':digest(row)};cells.append(row);previous=row['cell_id']
     if config.data()['max_calls']<len(cells)*3: raise ContractError('complete operation grid model allocation missing')
     return FrozenRecord.from_dict({'schema':'train-operation-plan-v1','experiment_id':experiment,
-        'common':common,'cells':cells,'authority':authority.data(),'feedback_rules':rules.data() if rules else None,
+        'common':common,'cells':cells,'arm_grid':grid.data(),'authority':authority.data(),'feedback_rules':rules.data() if rules else None,
         'budget':{'cells':len(cells),'rounds':rounds,'model_calls':len(cells)*3,'per_cell':shared._ALLOCATION,
             'feedback_opportunities':len(cells) if rules else 0,'staging_mutations_per_cell':3},
         'scientific_effect':'not_measured','production_promotion':'not_authorized'})
@@ -287,11 +324,14 @@ def _verify_operation(plan,cell,parent,candidate,histories,root,authority):
     selected=CandidatePackage(FrozenRecord.from_dict(r['selected_package'])) if r['selected_package'] else None
     if selected is not None and selected not in (parent,candidate): raise ContractError('host selected a foreign package')
     experiment=plan.record.data()['experiment_id']
-    if experiment=='Q6.1':
+    if r['status']=='operation_failed':
+        if selected is not None or not r['actions'] or r['actions'][-1].get('operation')!='host' or r['actions'][-1].get('status')!='failed':
+            raise ContractError('failed host operation invented a successor package')
+    elif experiment=='Q6.1':
         if (len(r['actions'])!=1 or r['actions'][0]['operation']!=cell['variant']
                 or r['actions'][0]['status']!=r['status']):
             raise ContractError('capability result does not bind the frozen challenge')
-    elif experiment=='Q6.6' and r['status']!='operation_failed':
+    elif experiment=='Q6.6':
         expected_actions=['promote']+([] if cell['variant']=='promote' else [cell['variant']])
         if [a['operation'] for a in r['actions']]!=expected_actions:
             raise ContractError('actual staging actions differ from the frozen operation')
@@ -396,13 +436,16 @@ def run_train_operations(plan,*,run_root,model,audit_verifier,authority):
     if root==model.root.resolve() or root in model.root.resolve().parents or model.root.resolve() in root.parents:
         raise ContractError('model and operation roots must be separate')
     root.mkdir();shared._exclusive(root/'plan.json',plan.record)
+    shared._atomic(root/'attempt.json',{'plan_digest':plan.record.content_hash,
+        'allocated_cells':[c['cell_id'] for c in plan.record.data()['cells']],'cells':[]})
     broker=shared.DockerExecutionBroker([root,*{p.parent for t in plan.targets for _,p in t.inputs}])
     completed={};targets={t.task.content_hash:t for t in plan.targets}
     for cell in plan.record.data()['cells']:
         adapter=_attempt(plan,cell,completed,authority)
         result=shared._run_cell(adapter,cell,targets[cell['task_digest']],root/'cells'/cell['cell_id'],model,broker,audit_verifier)
         completed[cell['cell_id']]=result
-        shared._atomic(root/'attempt.json',{'plan_digest':plan.record.content_hash,'cells':[c.record.data() for c in completed.values()]})
+        shared._atomic(root/'attempt.json',{'plan_digest':plan.record.content_hash,
+            'allocated_cells':[c['cell_id'] for c in plan.record.data()['cells']],'cells':[c.record.data() for c in completed.values()]})
     cells=tuple(completed.values())
     record=_result_record(plan,cells,model.ledger_path)
     shared._exclusive(root/'receipt.json',record)
