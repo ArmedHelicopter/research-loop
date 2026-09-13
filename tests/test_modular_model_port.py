@@ -85,6 +85,33 @@ def test_rejects_bad_slot_output_and_reopen_configuration_drift(tmp_path):
                        schema_by_slot={"plan": SCHEMA}, process_runner=bad_output, context_probe_runner=probe, allow_mock_context=True)
 
 
+def test_array_item_bounds_validate_schema_and_record_a_failed_real_port_call(tmp_path):
+    schema = {"type": "object", "properties": {"branches": {"type": "array", "items": {"type": "string"},
+              "minItems": 3, "maxItems": 3}}, "required": ["branches"], "additionalProperties": False}
+    responses = iter(({"branches": ["one", "two", "three"]}, {"branches": ["only-one"]}))
+    def bounded_runner(argv, **kwargs):
+        Path(argv[argv.index("-o") + 1]).write_text(json.dumps(next(responses)), encoding="utf-8")
+        return SimpleNamespace(returncode=0, stdout='{"type":"turn.completed","usage":{"input_tokens":1,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":1,"reasoning_output_tokens":0}}', stderr="")
+    instance = CodexModelPort("codex", tmp_path / "bounded", max_calls=2, max_tokens=10,
+        schema_by_slot={"plan": schema}, process_runner=bounded_runner, context_probe_runner=probe, allow_mock_context=True)
+    assert instance(request()).data()["branches"] == ["one", "two", "three"]
+    with pytest.raises(ContractError, match="valid slot"):
+        instance(request())
+    ledger = json.loads((tmp_path / "bounded" / "ledger.json").read_text(encoding="utf-8"))
+    assert [call["status"] for call in ledger["calls"]] == ["succeeded", "failed"]
+    invalids = (
+        {"type": "array", "items": {"type": "string"}, "minItems": True},
+        {"type": "array", "items": {"type": "string"}, "maxItems": -1},
+        {"type": "array", "items": {"type": "string"}, "minItems": 4, "maxItems": 3},
+        {"type": "string", "minItems": 1},
+    )
+    for index, child in enumerate(invalids):
+        invalid = {"type": "object", "properties": {"branches": child}, "required": ["branches"], "additionalProperties": False}
+        with pytest.raises(ContractError):
+            CodexModelPort("codex", tmp_path / f"invalid-{index}", max_calls=1, max_tokens=10,
+                schema_by_slot={"plan": invalid}, process_runner=bounded_runner, context_probe_runner=probe, allow_mock_context=True)
+
+
 def test_execution_event_and_reserved_ledger_block_reopen(tmp_path):
     def tool_event(argv, **kwargs):
         Path(argv[argv.index("-o") + 1]).write_text('{"answer":"ignored"}', encoding="utf-8")

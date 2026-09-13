@@ -364,7 +364,7 @@ def audit_base_context(executable: Path, fixed_cwd: Path, audit_root: Path, *,
 
 def _validate_schema(schema: Any, value: Any) -> None:
     """Small closed JSON Schema subset used for model response slots."""
-    if not isinstance(schema, Mapping) or set(schema) - {"type", "properties", "required", "additionalProperties", "items", "enum", "minimum", "maximum"}:
+    if not isinstance(schema, Mapping) or set(schema) - {"type", "properties", "required", "additionalProperties", "items", "enum", "minimum", "maximum", "minItems", "maxItems"}:
         raise ContractError("unsupported output schema")
     kind = schema.get("type")
     if kind not in {"object", "array", "string", "number", "integer", "boolean", "null"}:
@@ -381,6 +381,13 @@ def _validate_schema(schema: Any, value: Any) -> None:
     elif kind == "array":
         if not isinstance(value, list) or "items" not in schema:
             raise ContractError("model output violates array schema")
+        if any(name in schema and (type(schema[name]) is not int or schema[name] < 0) for name in ("minItems", "maxItems")):
+            raise ContractError("array item bounds must be nonnegative integers")
+        if "minItems" in schema and "maxItems" in schema and schema["minItems"] > schema["maxItems"]:
+            raise ContractError("array item bounds are inconsistent")
+        if (("minItems" in schema and len(value) < schema["minItems"])
+                or ("maxItems" in schema and len(value) > schema["maxItems"])):
+            raise ContractError("model output violates array item bounds")
         for child in value:
             _validate_schema(schema["items"], child)
     elif kind == "string" and not isinstance(value, str):
@@ -393,6 +400,8 @@ def _validate_schema(schema: Any, value: Any) -> None:
         raise ContractError("model output violates boolean schema")
     elif kind == "null" and value is not None:
         raise ContractError("model output violates null schema")
+    if kind != "array" and ("minItems" in schema or "maxItems" in schema):
+        raise ContractError("array item bounds require an array schema")
     if "minimum" in schema or "maximum" in schema:
         if kind not in {"number", "integer"}:
             raise ContractError("numeric bounds require a numeric output schema")
@@ -791,7 +800,9 @@ def _schema_witness(schema: Mapping[str, Any]) -> Any:
         props, required = schema.get("properties", {}), schema.get("required", [])
         return {key: _schema_witness(props[key]) for key in required if key in props}
     if kind == "array":
-        return []
+        minimum = schema.get("minItems", 0)
+        count = minimum if type(minimum) is int and minimum >= 0 else 0
+        return [_schema_witness(schema.get("items", {})) for _ in range(count)]
     if kind == "string": return "x"
     if kind == "number": return schema.get("minimum", 0)
     if kind == "integer": return schema.get("minimum", 0)
