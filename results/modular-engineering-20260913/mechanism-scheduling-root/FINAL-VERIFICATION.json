@@ -1,0 +1,39 @@
+{
+  "source_commit": "e61dadd6dd73596d6915c176c09200bba57553b3",
+  "source_files": 542,
+  "source_unchanged": true,
+  "junit": {
+    "tests": 46,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "junit_sha256": "a09f2c852257707674f7dd606a7e27718635cad8c1d0676d9c8fc45ab7f272df",
+  "coverage": "31 of 36 pair controllers; 2 of 5 triple controllers; synthetic engineering only",
+  "complete_grid": {
+    "cells": 24,
+    "scripted_model_calls": 72,
+    "source_qualifications": 48,
+    "actual_docker": 72,
+    "actual_scorer_process_calls": 24,
+    "retrieval_calls": 24
+  },
+  "focused_scheduler_variants": 5,
+  "successful_variant_scores": 4,
+  "source_archive": {
+    "files": 11,
+    "indexed": 10,
+    "zip_members": 2124,
+    "isolated_checks": 114
+  },
+  "root_scope": "complete grid; real scheduler variants; persistent queue/journal attacks; exact scorer family scopes; legacy prediction process; labels",
+  "limitations": [
+    "scripted model and scorer responses",
+    "selected-cell adversarial coverage",
+    "unknown realized source costs retained",
+    "no concurrent-host throughput estimate"
+  ],
+  "new_generation_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}

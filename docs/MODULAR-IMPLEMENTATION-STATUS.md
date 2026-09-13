@@ -3,7 +3,33 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current mechanism/exploration and Grok integration checkpoint (2026-09-13)
+## Current mechanism/scheduling integration checkpoint (2026-09-13)
+
+Source `e61dadd` passed 46 root checks with all 542 frozen source/document
+hashes unchanged. M4×M8, M5×M8 and M6×M8 now have prospective TRAIN
+controllers with actual FIFO scheduling. The complete 24-cell grid used 72
+scripted model calls, 48 source qualifications, 24 retrieval calls, 72 actual
+Docker executions and 24 independent process scores. M7 is absent; both M8
+levels select the same two useful literal jobs and two cost units.
+
+Five focused real Docker variants verified container-internal overlap,
+dependency/resource serialization, reversed completion with FIFO public
+results and timeout cleanup. Four successful variants received independent
+scores; the timeout retained its failure without scoring. Persistent queue,
+snapshot, lease, reservation and barrier attacks, exact scorer-family scopes,
+the legacy prediction scorer and label isolation passed root verification.
+These checks establish scheduling behavior, not throughput gains on a busy host.
+
+The isolated source passed 114 checks. Its 11-file archive has 10 indexed
+artifacts and 2,124 verified ZIP members, including all original synthetic
+failure/unknown/unused rows. Root source review and closure are under
+`results/modular-engineering-20260913/mechanism-scheduling-root/`.
+Coverage is now 31/36 pair controllers and 2/5 triple controllers. No actual
+generation or validation access occurred in this checkpoint. Real TRAIN
+effects, calibration, remaining combinations, the frozen final bundle and
+validation acceptance remain unfinished.
+
+## Prior mechanism/exploration and Grok integration checkpoint (2026-09-13)
 
 Source `20a1c29` passed 81 root checks with all 537 frozen source/document
 hashes unchanged. M4×M7, M5×M7 and M6×M7 now have prospective TRAIN
