@@ -198,7 +198,7 @@ class ModularWorkflow:
             if not isinstance(review_context, FrozenRecord): raise ContractError("frontier review context must be frozen")
             context["review_context"] = review_context.data()
         response = self.invoke_model(slot, model, instruction="Audit the remaining research frontier. Proposals must cite supplied origins and describe a discriminating observation. An empty frontier does not complete the research programme. Never generate or admit this experiment's evaluation tasks.",
-            module_context=FrozenRecord.from_dict(context))
+            module_context=FrozenRecord.from_dict(context), evidence_only=self.public_input_boundary is not None)
         if self.public_input_boundary is not None:
             original_response = response
             response = self.public_input_boundary.restore_frontier_response(response)

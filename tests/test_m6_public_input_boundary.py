@@ -54,6 +54,10 @@ def verify_actual_public_requests(events):
         encoded=FrozenRecord.from_dict(request).encoded
         assert all(digest not in encoded for digest in forbidden_digests)
         assert 'shared-experiment' not in encoded
+        # The generic runtime context is a second input surface. Unadmitted
+        # frontier observations belong to the explicit public catalog only.
+        for evidence in request['context'].get('records', []):
+            assert 'qualification' not in evidence.get('payload', {}).get('content', {})
         slot=request['slot']
         if 'retrieval' in raw:
             assert public['retrieval']=={k:raw['retrieval'][k] for k in ('by_lane','source_qualification','scientific_admission')}
@@ -88,6 +92,7 @@ def verify_actual_public_requests(events):
                 assert b['execution']=={'status':a['execution']['status'],'record':{k:a['execution']['record'][k] for k in ('stdout','stderr','exit_code','status') if k in a['execution']['record']}}
                 assert b['expected_observation']==a['expected_observation']
         if slot=='frontier':
+            assert request['context'].get('records') == []
             assert 'catalog_digest' not in public
             assert list(public['frontier_catalog'])==['origin-'+str(i) for i in range(len(raw['frontier_catalog']))]
             if 'review_context' in raw:assert public['review_context']=={'responses':raw['review_context']['responses']}

@@ -1,0 +1,3342 @@
+{
+  "source_commit": "0340e9f659ccd92aa046ad009dd761ee44bda330",
+  "finding": "The frontier generic context duplicates unadmitted qualified observation wrappers outside the projected module context.",
+  "requests": [
+    {
+      "trace_sha256": "9597b521a539e07e1dde7a21fcb312eec0835c64c32641c9210b194932ba49a3",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\30f66f19c32c9cf903cbd0f1d46500fc0e2d0813b46ff3a7ab0d36b12ee719dc\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "discoverybench",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "discoverybench:synth:train:family_1_1",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "synth:train:family_1_1"
+              },
+              "independent_group": "discoverybench:synth:train:family_1_1",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "discoverybench",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "discoverybench:synth:train:family_1_1",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "synth:train:family_1_1"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\30f66f19c32c9cf903cbd0f1d46500fc0e2d0813b46ff3a7ab0d36b12ee719dc\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "discoverybench",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "discoverybench:synth:train:family_1_1",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "synth:train:family_1_1"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-0e7b4ed391a880e715d7",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\30f66f19c32c9cf903cbd0f1d46500fc0e2d0813b46ff3a7ab0d36b12ee719dc\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 6,
+                          "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.312
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "4e079135a09fd3b2522468bff8ea0735c79018fcea141832d0a6f4ac987c475d"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "6cd63ec833b553f916bcc821391b23e1e354842d980e9d11a5d3e167c15298dc"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "cdeb92eab322e69facad8ac8589f7690b403b1e275f8a65f1ae0ad149e097f61",
+              "representation": "raw",
+              "root_id": "49741662f36023970f65e10d6a76b387d72c986bd4597f48163bafecb4c040e7",
+              "subject_bindings": {
+                "task": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "6cd63ec833b553f916bcc821391b23e1e354842d980e9d11a5d3e167c15298dc",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Report the observed result under the immutable objective. Public origins and execution do not establish scientific validity. No programme completion.",
+        "lock_digest": "d00ff4f4639cfbebbff7845622c76178b7596fee14a8056d1d32b9f3162cbd08",
+        "module_context": {
+          "panel_cell": {
+            "cell_digest": "30f66f19c32c9cf903cbd0f1d46500fc0e2d0813b46ff3a7ab0d36b12ee719dc",
+            "schema": "opaque-panel-cell-binding-v1"
+          },
+          "required_objective_digest": "f53b459df22acb3c3d95ea90da7065794001be92e0dea38c43df855b3d78f25f",
+          "retrieval_final_result": {
+            "frontier": {
+              "authority": "proposals_only",
+              "benchmark_admission": false,
+              "empty_reason": null,
+              "programme_complete": false,
+              "proposals": [
+                {
+                  "kind": "anomaly",
+                  "observable": "x",
+                  "opposing_predictions": [
+                    "x increases",
+                    "x decreases"
+                  ],
+                  "origin_ref": "origin-1",
+                  "question": "Which public mechanism predicts the next x direction?"
+                }
+              ],
+              "queue_admission": false,
+              "semantic_novelty_and_discriminability": "requires_independent_review"
+            },
+            "registered_successors": [
+              "33f5080a6106c573bafa84fa2e381809d3c8deba6f9034049bbcd388f37d3791"
+            ],
+            "scientific_verified": false
+          }
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "final",
+        "task": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "payload": {
+            "dataset": [
+              {
+                "columns": [
+                  {
+                    "description": null,
+                    "name": "x"
+                  }
+                ],
+                "description": null,
+                "name": "data.csv"
+              }
+            ],
+            "difficulty": null,
+            "question": "public discovery question",
+            "source_kind": "synthetic",
+            "task_id": "synth:train:family_1_1"
+          }
+        }
+      },
+      "sequence": 21
+    },
+    {
+      "trace_sha256": "a62d2024bb7699078d7e6b57554c19cb44dad1b9eb89cae0669a9a2bebeccd92",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\3770e77c633e5a28367bbd0c587ae5bf4375a46d9fdd294c6da83861c7cd284b\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "blade",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "blade:fish",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "fish"
+              },
+              "independent_group": "blade:fish",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "blade",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "blade:fish",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "fish"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\3770e77c633e5a28367bbd0c587ae5bf4375a46d9fdd294c6da83861c7cd284b\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "blade",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "blade:fish",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "fish"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-599297f5658e9ba852f0",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\3770e77c633e5a28367bbd0c587ae5bf4375a46d9fdd294c6da83861c7cd284b\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 10,
+                          "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.266
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "41b12578b6b8d298ca6c6d40774b832687151597177c16bc8baaf88b5fe48fe3"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "4cd043d871aeed851c7cb4470aa4292175bcc002256bb9946a54a48e7bcefd9a"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "64bb284c201f40debd9faa332979e5d4a3b82f29a4eee437a258d1daada040d3",
+              "representation": "raw",
+              "root_id": "6c07ac65cd74d3c38cfc8840f207575af36f925e25e24ccc36f7ed31f6083280",
+              "subject_bindings": {
+                "task": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "4cd043d871aeed851c7cb4470aa4292175bcc002256bb9946a54a48e7bcefd9a",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Review this current-task origin and preserve uncertainty.",
+        "lock_digest": "6c9df0d3a3ae4a3377e515e60dd080ab7d325eddfd05c719a1d06f3b7bd82a73",
+        "module_context": {
+          "execution": {
+            "record": {
+              "exit_code": 0,
+              "status": "succeeded",
+              "stderr": "",
+              "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+            },
+            "status": "succeeded"
+          },
+          "expected_observation": {
+            "rows": 1,
+            "sum": 0.0
+          },
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "kind": "anomaly",
+          "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a"
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "frontier_review_a",
+        "task": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "payload": {
+            "data_schema": [
+              {
+                "description": null,
+                "dtype": null,
+                "name": "x"
+              },
+              {
+                "description": null,
+                "dtype": null,
+                "name": "y"
+              }
+            ],
+            "dataset_id": "fish",
+            "research_question": "public blade question",
+            "task_id": "fish",
+            "task_instructions": "public instruction"
+          }
+        }
+      },
+      "sequence": 7
+    },
+    {
+      "trace_sha256": "a62d2024bb7699078d7e6b57554c19cb44dad1b9eb89cae0669a9a2bebeccd92",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\3770e77c633e5a28367bbd0c587ae5bf4375a46d9fdd294c6da83861c7cd284b\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "blade",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "blade:fish",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "fish"
+              },
+              "independent_group": "blade:fish",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "blade",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "blade:fish",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "fish"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\3770e77c633e5a28367bbd0c587ae5bf4375a46d9fdd294c6da83861c7cd284b\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "blade",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "blade:fish",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "fish"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-599297f5658e9ba852f0",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\3770e77c633e5a28367bbd0c587ae5bf4375a46d9fdd294c6da83861c7cd284b\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 10,
+                          "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.266
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "41b12578b6b8d298ca6c6d40774b832687151597177c16bc8baaf88b5fe48fe3"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "4cd043d871aeed851c7cb4470aa4292175bcc002256bb9946a54a48e7bcefd9a"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "64bb284c201f40debd9faa332979e5d4a3b82f29a4eee437a258d1daada040d3",
+              "representation": "raw",
+              "root_id": "6c07ac65cd74d3c38cfc8840f207575af36f925e25e24ccc36f7ed31f6083280",
+              "subject_bindings": {
+                "task": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "4cd043d871aeed851c7cb4470aa4292175bcc002256bb9946a54a48e7bcefd9a",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Review this origin after seeing the first review.",
+        "lock_digest": "6c9df0d3a3ae4a3377e515e60dd080ab7d325eddfd05c719a1d06f3b7bd82a73",
+        "module_context": {
+          "first_review": {
+            "assessment": "unknown",
+            "counterexamples": [],
+            "evidence_refs": [],
+            "uncertainty": "Independent fixture origin remains scientifically unresolved."
+          },
+          "origin": {
+            "execution": {
+              "record": {
+                "exit_code": 0,
+                "status": "succeeded",
+                "stderr": "",
+                "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+              },
+              "status": "succeeded"
+            },
+            "expected_observation": {
+              "rows": 1,
+              "sum": 0.0
+            },
+            "identity": {
+              "benchmark": "blade",
+              "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+              "domain": "train",
+              "group_id": "blade:fish",
+              "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+              "task_id": "fish"
+            },
+            "kind": "anomaly",
+            "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a"
+          }
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "frontier_review_b",
+        "task": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "payload": {
+            "data_schema": [
+              {
+                "description": null,
+                "dtype": null,
+                "name": "x"
+              },
+              {
+                "description": null,
+                "dtype": null,
+                "name": "y"
+              }
+            ],
+            "dataset_id": "fish",
+            "research_question": "public blade question",
+            "task_id": "fish",
+            "task_instructions": "public instruction"
+          }
+        }
+      },
+      "sequence": 10
+    },
+    {
+      "trace_sha256": "a62d2024bb7699078d7e6b57554c19cb44dad1b9eb89cae0669a9a2bebeccd92",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\3770e77c633e5a28367bbd0c587ae5bf4375a46d9fdd294c6da83861c7cd284b\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "blade",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "blade:fish",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "fish"
+              },
+              "independent_group": "blade:fish",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "blade",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "blade:fish",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "fish"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\3770e77c633e5a28367bbd0c587ae5bf4375a46d9fdd294c6da83861c7cd284b\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "blade",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "blade:fish",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "fish"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-599297f5658e9ba852f0",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\3770e77c633e5a28367bbd0c587ae5bf4375a46d9fdd294c6da83861c7cd284b\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 10,
+                          "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.266
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "41b12578b6b8d298ca6c6d40774b832687151597177c16bc8baaf88b5fe48fe3"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "4cd043d871aeed851c7cb4470aa4292175bcc002256bb9946a54a48e7bcefd9a"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "64bb284c201f40debd9faa332979e5d4a3b82f29a4eee437a258d1daada040d3",
+              "representation": "raw",
+              "root_id": "6c07ac65cd74d3c38cfc8840f207575af36f925e25e24ccc36f7ed31f6083280",
+              "subject_bindings": {
+                "task": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "4cd043d871aeed851c7cb4470aa4292175bcc002256bb9946a54a48e7bcefd9a",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Report the observed result under the immutable objective. Public origins and execution do not establish scientific validity. No programme completion.",
+        "lock_digest": "6c9df0d3a3ae4a3377e515e60dd080ab7d325eddfd05c719a1d06f3b7bd82a73",
+        "module_context": {
+          "panel_cell": {
+            "cell_digest": "3770e77c633e5a28367bbd0c587ae5bf4375a46d9fdd294c6da83861c7cd284b",
+            "schema": "opaque-panel-cell-binding-v1"
+          },
+          "required_objective_digest": "f53b459df22acb3c3d95ea90da7065794001be92e0dea38c43df855b3d78f25f",
+          "retrieval_final_result": {
+            "frontier": {
+              "authority": "proposals_only",
+              "benchmark_admission": false,
+              "empty_reason": null,
+              "programme_complete": false,
+              "proposals": [
+                {
+                  "kind": "anomaly",
+                  "observable": "x",
+                  "opposing_predictions": [
+                    "x increases",
+                    "x decreases"
+                  ],
+                  "origin_ref": "origin-1",
+                  "question": "Which public mechanism predicts the next x direction?"
+                }
+              ],
+              "queue_admission": false,
+              "semantic_novelty_and_discriminability": "requires_independent_review"
+            },
+            "registered_successors": [],
+            "scientific_verified": false
+          }
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "final",
+        "task": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "payload": {
+            "data_schema": [
+              {
+                "description": null,
+                "dtype": null,
+                "name": "x"
+              },
+              {
+                "description": null,
+                "dtype": null,
+                "name": "y"
+              }
+            ],
+            "dataset_id": "fish",
+            "research_question": "public blade question",
+            "task_id": "fish",
+            "task_instructions": "public instruction"
+          }
+        }
+      },
+      "sequence": 20
+    },
+    {
+      "trace_sha256": "c69f7c14eeebf80cf8b663b0d9fdcce177ae43908f5a95f6976b59e65ee58317",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\4c7780df179aec27c57cecac64d2faaaffc78f494a5220ef08c5fa3f3f19d6df\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "discoverybench",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "discoverybench:synth:train:family_1_1",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "synth:train:family_1_1"
+              },
+              "independent_group": "discoverybench:synth:train:family_1_1",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "discoverybench",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "discoverybench:synth:train:family_1_1",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "synth:train:family_1_1"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\4c7780df179aec27c57cecac64d2faaaffc78f494a5220ef08c5fa3f3f19d6df\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "discoverybench",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "discoverybench:synth:train:family_1_1",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "synth:train:family_1_1"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-96b8d6489439bef2c511",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\4c7780df179aec27c57cecac64d2faaaffc78f494a5220ef08c5fa3f3f19d6df\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 6,
+                          "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.312
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "cca8363574a1e59be2b49fceeb70eb4ff833db1bba41f2fc8863a2c73cfe1222"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "bdab398ddb2f3f0bb5d756d8b28dd014ee399b93ef8ce34c821650aee2b3bd71"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "aaac2213b48a24fa53a91a5ed26e5fb2a8399b33a94fb42af4a464ffb2f98876",
+              "representation": "raw",
+              "root_id": "85169edcd9ccb4f1025220333a4280c509ef8a34d3b948024479f0b3a48bfc5f",
+              "subject_bindings": {
+                "task": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "bdab398ddb2f3f0bb5d756d8b28dd014ee399b93ef8ce34c821650aee2b3bd71",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Report the observed result under the immutable objective. Public origins and execution do not establish scientific validity. No programme completion.",
+        "lock_digest": "d7c552beee26064674a27e247c465aaa1610687d311e2c0944ebfcdcf9565058",
+        "module_context": {
+          "panel_cell": {
+            "cell_digest": "4c7780df179aec27c57cecac64d2faaaffc78f494a5220ef08c5fa3f3f19d6df",
+            "schema": "opaque-panel-cell-binding-v1"
+          },
+          "required_objective_digest": "f53b459df22acb3c3d95ea90da7065794001be92e0dea38c43df855b3d78f25f",
+          "retrieval_final_result": {
+            "frontier": {
+              "authority": "proposals_only",
+              "benchmark_admission": false,
+              "empty_reason": null,
+              "programme_complete": false,
+              "proposals": [
+                {
+                  "kind": "anomaly",
+                  "observable": "x",
+                  "opposing_predictions": [
+                    "x increases",
+                    "x decreases"
+                  ],
+                  "origin_ref": "origin-1",
+                  "question": "Which public mechanism predicts the next x direction?"
+                }
+              ],
+              "queue_admission": false,
+              "semantic_novelty_and_discriminability": "requires_independent_review"
+            },
+            "registered_successors": [],
+            "scientific_verified": false
+          }
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "final",
+        "task": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "payload": {
+            "dataset": [
+              {
+                "columns": [
+                  {
+                    "description": null,
+                    "name": "x"
+                  }
+                ],
+                "description": null,
+                "name": "data.csv"
+              }
+            ],
+            "difficulty": null,
+            "question": "public discovery question",
+            "source_kind": "synthetic",
+            "task_id": "synth:train:family_1_1"
+          }
+        }
+      },
+      "sequence": 21
+    },
+    {
+      "trace_sha256": "29b9a9e873a35566f7eb901884e89a6edd85636299a4abfe52a2a194bc24ebc4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\63eadfc2a2820ba28caabfa88da351d4bdd19cd52a2dc1c8b2f24f4b70497cab\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "discoverybench",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "discoverybench:synth:train:family_1_1",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "synth:train:family_1_1"
+              },
+              "independent_group": "discoverybench:synth:train:family_1_1",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "discoverybench",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "discoverybench:synth:train:family_1_1",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "synth:train:family_1_1"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\63eadfc2a2820ba28caabfa88da351d4bdd19cd52a2dc1c8b2f24f4b70497cab\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "discoverybench",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "discoverybench:synth:train:family_1_1",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "synth:train:family_1_1"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-016eec70349f6a448eae",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\63eadfc2a2820ba28caabfa88da351d4bdd19cd52a2dc1c8b2f24f4b70497cab\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 6,
+                          "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.266
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "fa9be250459b3e2e1a1a0b7ff9d204542e1ac281a2aab35a315f082d2269525b"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "158c5298128402338081060486b8f5731c331f1f6063426e04c271de4ae63ff7"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "a1d9c82f3f5d9f68495248f28cba746f113ff7af842d633dba45ed801d4cfba5",
+              "representation": "raw",
+              "root_id": "e077a3d7c5699f4b6a4ebd5aee752e6dc3a3ed948feeaff2dbd4a5a16c7ebfdb",
+              "subject_bindings": {
+                "task": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "158c5298128402338081060486b8f5731c331f1f6063426e04c271de4ae63ff7",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Review this current-task origin and preserve uncertainty.",
+        "lock_digest": "a3313c6fcf4894416b54a1a6dac34e43adb965c97cbc34328202560c7aa53b39",
+        "module_context": {
+          "execution": {
+            "record": {
+              "exit_code": 0,
+              "status": "succeeded",
+              "stderr": "",
+              "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+            },
+            "status": "succeeded"
+          },
+          "expected_observation": {
+            "rows": 1,
+            "sum": 0.0
+          },
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "kind": "anomaly",
+          "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "frontier_review_a",
+        "task": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "payload": {
+            "dataset": [
+              {
+                "columns": [
+                  {
+                    "description": null,
+                    "name": "x"
+                  }
+                ],
+                "description": null,
+                "name": "data.csv"
+              }
+            ],
+            "difficulty": null,
+            "question": "public discovery question",
+            "source_kind": "synthetic",
+            "task_id": "synth:train:family_1_1"
+          }
+        }
+      },
+      "sequence": 7
+    },
+    {
+      "trace_sha256": "29b9a9e873a35566f7eb901884e89a6edd85636299a4abfe52a2a194bc24ebc4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\63eadfc2a2820ba28caabfa88da351d4bdd19cd52a2dc1c8b2f24f4b70497cab\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "discoverybench",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "discoverybench:synth:train:family_1_1",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "synth:train:family_1_1"
+              },
+              "independent_group": "discoverybench:synth:train:family_1_1",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "discoverybench",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "discoverybench:synth:train:family_1_1",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "synth:train:family_1_1"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\63eadfc2a2820ba28caabfa88da351d4bdd19cd52a2dc1c8b2f24f4b70497cab\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "discoverybench",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "discoverybench:synth:train:family_1_1",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "synth:train:family_1_1"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-016eec70349f6a448eae",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\63eadfc2a2820ba28caabfa88da351d4bdd19cd52a2dc1c8b2f24f4b70497cab\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 6,
+                          "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.266
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "fa9be250459b3e2e1a1a0b7ff9d204542e1ac281a2aab35a315f082d2269525b"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "158c5298128402338081060486b8f5731c331f1f6063426e04c271de4ae63ff7"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "a1d9c82f3f5d9f68495248f28cba746f113ff7af842d633dba45ed801d4cfba5",
+              "representation": "raw",
+              "root_id": "e077a3d7c5699f4b6a4ebd5aee752e6dc3a3ed948feeaff2dbd4a5a16c7ebfdb",
+              "subject_bindings": {
+                "task": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "158c5298128402338081060486b8f5731c331f1f6063426e04c271de4ae63ff7",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Review this origin after seeing the first review.",
+        "lock_digest": "a3313c6fcf4894416b54a1a6dac34e43adb965c97cbc34328202560c7aa53b39",
+        "module_context": {
+          "first_review": {
+            "assessment": "unknown",
+            "counterexamples": [],
+            "evidence_refs": [],
+            "uncertainty": "Independent fixture origin remains scientifically unresolved."
+          },
+          "origin": {
+            "execution": {
+              "record": {
+                "exit_code": 0,
+                "status": "succeeded",
+                "stderr": "",
+                "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+              },
+              "status": "succeeded"
+            },
+            "expected_observation": {
+              "rows": 1,
+              "sum": 0.0
+            },
+            "identity": {
+              "benchmark": "discoverybench",
+              "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+              "domain": "train",
+              "group_id": "discoverybench:synth:train:family_1_1",
+              "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+              "task_id": "synth:train:family_1_1"
+            },
+            "kind": "anomaly",
+            "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+          }
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "frontier_review_b",
+        "task": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "payload": {
+            "dataset": [
+              {
+                "columns": [
+                  {
+                    "description": null,
+                    "name": "x"
+                  }
+                ],
+                "description": null,
+                "name": "data.csv"
+              }
+            ],
+            "difficulty": null,
+            "question": "public discovery question",
+            "source_kind": "synthetic",
+            "task_id": "synth:train:family_1_1"
+          }
+        }
+      },
+      "sequence": 10
+    },
+    {
+      "trace_sha256": "29b9a9e873a35566f7eb901884e89a6edd85636299a4abfe52a2a194bc24ebc4",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\63eadfc2a2820ba28caabfa88da351d4bdd19cd52a2dc1c8b2f24f4b70497cab\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "discoverybench",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "discoverybench:synth:train:family_1_1",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "synth:train:family_1_1"
+              },
+              "independent_group": "discoverybench:synth:train:family_1_1",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "discoverybench",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "discoverybench:synth:train:family_1_1",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "synth:train:family_1_1"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\63eadfc2a2820ba28caabfa88da351d4bdd19cd52a2dc1c8b2f24f4b70497cab\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "discoverybench",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "discoverybench:synth:train:family_1_1",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "synth:train:family_1_1"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-016eec70349f6a448eae",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\63eadfc2a2820ba28caabfa88da351d4bdd19cd52a2dc1c8b2f24f4b70497cab\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 6,
+                          "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.266
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "fa9be250459b3e2e1a1a0b7ff9d204542e1ac281a2aab35a315f082d2269525b"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "158c5298128402338081060486b8f5731c331f1f6063426e04c271de4ae63ff7"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "a1d9c82f3f5d9f68495248f28cba746f113ff7af842d633dba45ed801d4cfba5",
+              "representation": "raw",
+              "root_id": "e077a3d7c5699f4b6a4ebd5aee752e6dc3a3ed948feeaff2dbd4a5a16c7ebfdb",
+              "subject_bindings": {
+                "task": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "158c5298128402338081060486b8f5731c331f1f6063426e04c271de4ae63ff7",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Report the observed result under the immutable objective. Public origins and execution do not establish scientific validity. No programme completion.",
+        "lock_digest": "a3313c6fcf4894416b54a1a6dac34e43adb965c97cbc34328202560c7aa53b39",
+        "module_context": {
+          "panel_cell": {
+            "cell_digest": "63eadfc2a2820ba28caabfa88da351d4bdd19cd52a2dc1c8b2f24f4b70497cab",
+            "schema": "opaque-panel-cell-binding-v1"
+          },
+          "required_objective_digest": "f53b459df22acb3c3d95ea90da7065794001be92e0dea38c43df855b3d78f25f",
+          "retrieval_final_result": {
+            "frontier": {
+              "authority": "proposals_only",
+              "benchmark_admission": false,
+              "empty_reason": null,
+              "programme_complete": false,
+              "proposals": [
+                {
+                  "kind": "anomaly",
+                  "observable": "x",
+                  "opposing_predictions": [
+                    "x increases",
+                    "x decreases"
+                  ],
+                  "origin_ref": "origin-1",
+                  "question": "Which public mechanism predicts the next x direction?"
+                }
+              ],
+              "queue_admission": false,
+              "semantic_novelty_and_discriminability": "requires_independent_review"
+            },
+            "registered_successors": [
+              "33f5080a6106c573bafa84fa2e381809d3c8deba6f9034049bbcd388f37d3791"
+            ],
+            "scientific_verified": false
+          }
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "final",
+        "task": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "payload": {
+            "dataset": [
+              {
+                "columns": [
+                  {
+                    "description": null,
+                    "name": "x"
+                  }
+                ],
+                "description": null,
+                "name": "data.csv"
+              }
+            ],
+            "difficulty": null,
+            "question": "public discovery question",
+            "source_kind": "synthetic",
+            "task_id": "synth:train:family_1_1"
+          }
+        }
+      },
+      "sequence": 20
+    },
+    {
+      "trace_sha256": "d608f50055a20ff632b392c78a44e6cea95aea18775160a2f64e5930a7e6a556",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\88e99fe7f10c810588f1f07a3bcb3eb7306849b1d28930fa67ba4e32291017d1\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "discoverybench",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "discoverybench:synth:train:family_1_1",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "synth:train:family_1_1"
+              },
+              "independent_group": "discoverybench:synth:train:family_1_1",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "discoverybench",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "discoverybench:synth:train:family_1_1",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "synth:train:family_1_1"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\88e99fe7f10c810588f1f07a3bcb3eb7306849b1d28930fa67ba4e32291017d1\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "discoverybench",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "discoverybench:synth:train:family_1_1",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "synth:train:family_1_1"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-0c35a59139cb5e4259f9",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\88e99fe7f10c810588f1f07a3bcb3eb7306849b1d28930fa67ba4e32291017d1\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 6,
+                          "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.25
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "1cc320c9231ee9254dff211ba9b5e7e12fb5122e40669a290df975520d4e62e4"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "3f085ac9fb9968a1acee8b878578cabc92be5670dbc6465c9abed5a24f932101"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "3610331a348830a2795b83c50f1c9795b51cdd37375bd204f155060593bcedd1",
+              "representation": "raw",
+              "root_id": "e3dfa6546cba7a9c581a01b1edba2d554ee7187b3646cda2589af3864e08b83c",
+              "subject_bindings": {
+                "task": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "3f085ac9fb9968a1acee8b878578cabc92be5670dbc6465c9abed5a24f932101",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Review this current-task origin and preserve uncertainty.",
+        "lock_digest": "c6a1c3ce25f205e144739f09b4730207aa8aab25a534d238d3f058a7e3151117",
+        "module_context": {
+          "execution": {
+            "record": {
+              "exit_code": 0,
+              "status": "succeeded",
+              "stderr": "",
+              "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+            },
+            "status": "succeeded"
+          },
+          "expected_observation": {
+            "rows": 1,
+            "sum": 0.0
+          },
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "kind": "anomaly",
+          "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "frontier_review_a",
+        "task": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "payload": {
+            "dataset": [
+              {
+                "columns": [
+                  {
+                    "description": null,
+                    "name": "x"
+                  }
+                ],
+                "description": null,
+                "name": "data.csv"
+              }
+            ],
+            "difficulty": null,
+            "question": "public discovery question",
+            "source_kind": "synthetic",
+            "task_id": "synth:train:family_1_1"
+          }
+        }
+      },
+      "sequence": 7
+    },
+    {
+      "trace_sha256": "d608f50055a20ff632b392c78a44e6cea95aea18775160a2f64e5930a7e6a556",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\88e99fe7f10c810588f1f07a3bcb3eb7306849b1d28930fa67ba4e32291017d1\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "discoverybench",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "discoverybench:synth:train:family_1_1",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "synth:train:family_1_1"
+              },
+              "independent_group": "discoverybench:synth:train:family_1_1",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "discoverybench",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "discoverybench:synth:train:family_1_1",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "synth:train:family_1_1"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\88e99fe7f10c810588f1f07a3bcb3eb7306849b1d28930fa67ba4e32291017d1\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "discoverybench",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "discoverybench:synth:train:family_1_1",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "synth:train:family_1_1"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-0c35a59139cb5e4259f9",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\88e99fe7f10c810588f1f07a3bcb3eb7306849b1d28930fa67ba4e32291017d1\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 6,
+                          "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.25
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "1cc320c9231ee9254dff211ba9b5e7e12fb5122e40669a290df975520d4e62e4"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "3f085ac9fb9968a1acee8b878578cabc92be5670dbc6465c9abed5a24f932101"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "3610331a348830a2795b83c50f1c9795b51cdd37375bd204f155060593bcedd1",
+              "representation": "raw",
+              "root_id": "e3dfa6546cba7a9c581a01b1edba2d554ee7187b3646cda2589af3864e08b83c",
+              "subject_bindings": {
+                "task": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "3f085ac9fb9968a1acee8b878578cabc92be5670dbc6465c9abed5a24f932101",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Review this origin after seeing the first review.",
+        "lock_digest": "c6a1c3ce25f205e144739f09b4730207aa8aab25a534d238d3f058a7e3151117",
+        "module_context": {
+          "first_review": {
+            "assessment": "unknown",
+            "counterexamples": [],
+            "evidence_refs": [],
+            "uncertainty": "Independent fixture origin remains scientifically unresolved."
+          },
+          "origin": {
+            "execution": {
+              "record": {
+                "exit_code": 0,
+                "status": "succeeded",
+                "stderr": "",
+                "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+              },
+              "status": "succeeded"
+            },
+            "expected_observation": {
+              "rows": 1,
+              "sum": 0.0
+            },
+            "identity": {
+              "benchmark": "discoverybench",
+              "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+              "domain": "train",
+              "group_id": "discoverybench:synth:train:family_1_1",
+              "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+              "task_id": "synth:train:family_1_1"
+            },
+            "kind": "anomaly",
+            "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+          }
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "frontier_review_b",
+        "task": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "payload": {
+            "dataset": [
+              {
+                "columns": [
+                  {
+                    "description": null,
+                    "name": "x"
+                  }
+                ],
+                "description": null,
+                "name": "data.csv"
+              }
+            ],
+            "difficulty": null,
+            "question": "public discovery question",
+            "source_kind": "synthetic",
+            "task_id": "synth:train:family_1_1"
+          }
+        }
+      },
+      "sequence": 10
+    },
+    {
+      "trace_sha256": "d608f50055a20ff632b392c78a44e6cea95aea18775160a2f64e5930a7e6a556",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\88e99fe7f10c810588f1f07a3bcb3eb7306849b1d28930fa67ba4e32291017d1\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "discoverybench",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "discoverybench:synth:train:family_1_1",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "synth:train:family_1_1"
+              },
+              "independent_group": "discoverybench:synth:train:family_1_1",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "discoverybench",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "discoverybench:synth:train:family_1_1",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "synth:train:family_1_1"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\88e99fe7f10c810588f1f07a3bcb3eb7306849b1d28930fa67ba4e32291017d1\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "discoverybench",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "discoverybench:synth:train:family_1_1",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "synth:train:family_1_1"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-0c35a59139cb5e4259f9",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\discoverybench\\19745ee7ef4425bbd4669ffe9a63b88f13c5bf5c14a8d464306a04490c5ac387\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\88e99fe7f10c810588f1f07a3bcb3eb7306849b1d28930fa67ba4e32291017d1\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 6,
+                          "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.25
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "1cc320c9231ee9254dff211ba9b5e7e12fb5122e40669a290df975520d4e62e4"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "3f085ac9fb9968a1acee8b878578cabc92be5670dbc6465c9abed5a24f932101"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "3610331a348830a2795b83c50f1c9795b51cdd37375bd204f155060593bcedd1",
+              "representation": "raw",
+              "root_id": "e3dfa6546cba7a9c581a01b1edba2d554ee7187b3646cda2589af3864e08b83c",
+              "subject_bindings": {
+                "task": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "3f085ac9fb9968a1acee8b878578cabc92be5670dbc6465c9abed5a24f932101",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Report the observed result under the immutable objective. Public origins and execution do not establish scientific validity. No programme completion.",
+        "lock_digest": "c6a1c3ce25f205e144739f09b4730207aa8aab25a534d238d3f058a7e3151117",
+        "module_context": {
+          "panel_cell": {
+            "cell_digest": "88e99fe7f10c810588f1f07a3bcb3eb7306849b1d28930fa67ba4e32291017d1",
+            "schema": "opaque-panel-cell-binding-v1"
+          },
+          "required_objective_digest": "f53b459df22acb3c3d95ea90da7065794001be92e0dea38c43df855b3d78f25f",
+          "retrieval_final_result": {
+            "frontier": {
+              "authority": "proposals_only",
+              "benchmark_admission": false,
+              "empty_reason": null,
+              "programme_complete": false,
+              "proposals": [
+                {
+                  "kind": "anomaly",
+                  "observable": "x",
+                  "opposing_predictions": [
+                    "x increases",
+                    "x decreases"
+                  ],
+                  "origin_ref": "origin-1",
+                  "question": "Which public mechanism predicts the next x direction?"
+                }
+              ],
+              "queue_admission": false,
+              "semantic_novelty_and_discriminability": "requires_independent_review"
+            },
+            "registered_successors": [],
+            "scientific_verified": false
+          }
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "final",
+        "task": {
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "discoverybench:synth:train:family_1_1",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "synth:train:family_1_1"
+          },
+          "payload": {
+            "dataset": [
+              {
+                "columns": [
+                  {
+                    "description": null,
+                    "name": "x"
+                  }
+                ],
+                "description": null,
+                "name": "data.csv"
+              }
+            ],
+            "difficulty": null,
+            "question": "public discovery question",
+            "source_kind": "synthetic",
+            "task_id": "synth:train:family_1_1"
+          }
+        }
+      },
+      "sequence": 20
+    },
+    {
+      "trace_sha256": "50f480ec2c0d230982dec1157bbdf9412557e96763896f6289c836cc72f4b5bc",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\a277c3c46cd30b4d52e7ec8078c0674275a0eabf631779f724533f6352904d90\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "blade",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "blade:fish",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "fish"
+              },
+              "independent_group": "blade:fish",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "blade",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "blade:fish",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "fish"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\a277c3c46cd30b4d52e7ec8078c0674275a0eabf631779f724533f6352904d90\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "blade",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "blade:fish",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "fish"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-653735eaed81e7f32a64",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\a277c3c46cd30b4d52e7ec8078c0674275a0eabf631779f724533f6352904d90\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 10,
+                          "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.266
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "782775c91226b18b6d94701ae68b0b2e86764827ae1c62a256175f58d9a639ae"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "6756b507cec4f4ed0b6c64b020270e181492cf51536e599bbfdec2a0b662ecbf"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "e76e2c3c0fee5490a82a8853f0bfedb45332830cbeb75b39e02121979ec33bf1",
+              "representation": "raw",
+              "root_id": "f750f78463fcd70d0d2b21efe81502dddc3203cf1581ba49ce79dbc563832d68",
+              "subject_bindings": {
+                "task": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "6756b507cec4f4ed0b6c64b020270e181492cf51536e599bbfdec2a0b662ecbf",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Report the observed result under the immutable objective. Public origins and execution do not establish scientific validity. No programme completion.",
+        "lock_digest": "224dded8b061ed84d633c4ba5f440cb4d90ea65a60bf8ff6b846eb3aa0952b2e",
+        "module_context": {
+          "panel_cell": {
+            "cell_digest": "a277c3c46cd30b4d52e7ec8078c0674275a0eabf631779f724533f6352904d90",
+            "schema": "opaque-panel-cell-binding-v1"
+          },
+          "required_objective_digest": "f53b459df22acb3c3d95ea90da7065794001be92e0dea38c43df855b3d78f25f",
+          "retrieval_final_result": {
+            "frontier": {
+              "authority": "proposals_only",
+              "benchmark_admission": false,
+              "empty_reason": null,
+              "programme_complete": false,
+              "proposals": [
+                {
+                  "kind": "anomaly",
+                  "observable": "x",
+                  "opposing_predictions": [
+                    "x increases",
+                    "x decreases"
+                  ],
+                  "origin_ref": "origin-1",
+                  "question": "Which public mechanism predicts the next x direction?"
+                }
+              ],
+              "queue_admission": false,
+              "semantic_novelty_and_discriminability": "requires_independent_review"
+            },
+            "registered_successors": [
+              "33f5080a6106c573bafa84fa2e381809d3c8deba6f9034049bbcd388f37d3791"
+            ],
+            "scientific_verified": false
+          }
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "final",
+        "task": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "payload": {
+            "data_schema": [
+              {
+                "description": null,
+                "dtype": null,
+                "name": "x"
+              },
+              {
+                "description": null,
+                "dtype": null,
+                "name": "y"
+              }
+            ],
+            "dataset_id": "fish",
+            "research_question": "public blade question",
+            "task_id": "fish",
+            "task_instructions": "public instruction"
+          }
+        }
+      },
+      "sequence": 21
+    },
+    {
+      "trace_sha256": "248f1de1e1e9da722a14ad29f74c4a129d32c1721b59b6d915e2d1b0d46f58ec",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\d57582934d8266d9dde0e58c33ca0f17e60fa4b468531179c303fcdaa01f9638\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "blade",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "blade:fish",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "fish"
+              },
+              "independent_group": "blade:fish",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "blade",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "blade:fish",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "fish"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\d57582934d8266d9dde0e58c33ca0f17e60fa4b468531179c303fcdaa01f9638\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "blade",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "blade:fish",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "fish"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-45327751bb45082905a3",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\d57582934d8266d9dde0e58c33ca0f17e60fa4b468531179c303fcdaa01f9638\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 10,
+                          "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.281
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "cd24284a0ad280742c1ebf60b910b97e4488817acabadd98789db87af21544ea"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "f9e98e268942b21badcfb56262ebcac3e9574160b2d7751dec7dae8ccffc15dc"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "3332877bf0b8fc8011bbe8950bd336aac3945b844f3d68950dcbab5caa883219",
+              "representation": "raw",
+              "root_id": "50c0ba9748982d658a6cada754f1d3c6fb85ff3f50c4725cedfadb0e3977cef7",
+              "subject_bindings": {
+                "task": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "f9e98e268942b21badcfb56262ebcac3e9574160b2d7751dec7dae8ccffc15dc",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Review this current-task origin and preserve uncertainty.",
+        "lock_digest": "fb6354277f09302258c16a929aeb4cf743091115e7235c374aa06a2d523cc80d",
+        "module_context": {
+          "execution": {
+            "record": {
+              "exit_code": 0,
+              "status": "succeeded",
+              "stderr": "",
+              "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+            },
+            "status": "succeeded"
+          },
+          "expected_observation": {
+            "rows": 1,
+            "sum": 0.0
+          },
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "kind": "anomaly",
+          "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a"
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "frontier_review_a",
+        "task": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "payload": {
+            "data_schema": [
+              {
+                "description": null,
+                "dtype": null,
+                "name": "x"
+              },
+              {
+                "description": null,
+                "dtype": null,
+                "name": "y"
+              }
+            ],
+            "dataset_id": "fish",
+            "research_question": "public blade question",
+            "task_id": "fish",
+            "task_instructions": "public instruction"
+          }
+        }
+      },
+      "sequence": 7
+    },
+    {
+      "trace_sha256": "248f1de1e1e9da722a14ad29f74c4a129d32c1721b59b6d915e2d1b0d46f58ec",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\d57582934d8266d9dde0e58c33ca0f17e60fa4b468531179c303fcdaa01f9638\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "blade",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "blade:fish",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "fish"
+              },
+              "independent_group": "blade:fish",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "blade",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "blade:fish",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "fish"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\d57582934d8266d9dde0e58c33ca0f17e60fa4b468531179c303fcdaa01f9638\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "blade",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "blade:fish",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "fish"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-45327751bb45082905a3",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\d57582934d8266d9dde0e58c33ca0f17e60fa4b468531179c303fcdaa01f9638\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 10,
+                          "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.281
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "cd24284a0ad280742c1ebf60b910b97e4488817acabadd98789db87af21544ea"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "f9e98e268942b21badcfb56262ebcac3e9574160b2d7751dec7dae8ccffc15dc"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "3332877bf0b8fc8011bbe8950bd336aac3945b844f3d68950dcbab5caa883219",
+              "representation": "raw",
+              "root_id": "50c0ba9748982d658a6cada754f1d3c6fb85ff3f50c4725cedfadb0e3977cef7",
+              "subject_bindings": {
+                "task": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "f9e98e268942b21badcfb56262ebcac3e9574160b2d7751dec7dae8ccffc15dc",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Review this origin after seeing the first review.",
+        "lock_digest": "fb6354277f09302258c16a929aeb4cf743091115e7235c374aa06a2d523cc80d",
+        "module_context": {
+          "first_review": {
+            "assessment": "unknown",
+            "counterexamples": [],
+            "evidence_refs": [],
+            "uncertainty": "Independent fixture origin remains scientifically unresolved."
+          },
+          "origin": {
+            "execution": {
+              "record": {
+                "exit_code": 0,
+                "status": "succeeded",
+                "stderr": "",
+                "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+              },
+              "status": "succeeded"
+            },
+            "expected_observation": {
+              "rows": 1,
+              "sum": 0.0
+            },
+            "identity": {
+              "benchmark": "blade",
+              "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+              "domain": "train",
+              "group_id": "blade:fish",
+              "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+              "task_id": "fish"
+            },
+            "kind": "anomaly",
+            "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a"
+          }
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "frontier_review_b",
+        "task": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "payload": {
+            "data_schema": [
+              {
+                "description": null,
+                "dtype": null,
+                "name": "x"
+              },
+              {
+                "description": null,
+                "dtype": null,
+                "name": "y"
+              }
+            ],
+            "dataset_id": "fish",
+            "research_question": "public blade question",
+            "task_id": "fish",
+            "task_instructions": "public instruction"
+          }
+        }
+      },
+      "sequence": 10
+    },
+    {
+      "trace_sha256": "248f1de1e1e9da722a14ad29f74c4a129d32c1721b59b6d915e2d1b0d46f58ec",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\d57582934d8266d9dde0e58c33ca0f17e60fa4b468531179c303fcdaa01f9638\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "blade",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "blade:fish",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "fish"
+              },
+              "independent_group": "blade:fish",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "blade",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "blade:fish",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "fish"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\d57582934d8266d9dde0e58c33ca0f17e60fa4b468531179c303fcdaa01f9638\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "blade",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "blade:fish",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "fish"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-45327751bb45082905a3",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\d57582934d8266d9dde0e58c33ca0f17e60fa4b468531179c303fcdaa01f9638\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 10,
+                          "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.281
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "cd24284a0ad280742c1ebf60b910b97e4488817acabadd98789db87af21544ea"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "f9e98e268942b21badcfb56262ebcac3e9574160b2d7751dec7dae8ccffc15dc"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "3332877bf0b8fc8011bbe8950bd336aac3945b844f3d68950dcbab5caa883219",
+              "representation": "raw",
+              "root_id": "50c0ba9748982d658a6cada754f1d3c6fb85ff3f50c4725cedfadb0e3977cef7",
+              "subject_bindings": {
+                "task": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "f9e98e268942b21badcfb56262ebcac3e9574160b2d7751dec7dae8ccffc15dc",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Report the observed result under the immutable objective. Public origins and execution do not establish scientific validity. No programme completion.",
+        "lock_digest": "fb6354277f09302258c16a929aeb4cf743091115e7235c374aa06a2d523cc80d",
+        "module_context": {
+          "panel_cell": {
+            "cell_digest": "d57582934d8266d9dde0e58c33ca0f17e60fa4b468531179c303fcdaa01f9638",
+            "schema": "opaque-panel-cell-binding-v1"
+          },
+          "required_objective_digest": "f53b459df22acb3c3d95ea90da7065794001be92e0dea38c43df855b3d78f25f",
+          "retrieval_final_result": {
+            "frontier": {
+              "authority": "proposals_only",
+              "benchmark_admission": false,
+              "empty_reason": null,
+              "programme_complete": false,
+              "proposals": [
+                {
+                  "kind": "anomaly",
+                  "observable": "x",
+                  "opposing_predictions": [
+                    "x increases",
+                    "x decreases"
+                  ],
+                  "origin_ref": "origin-1",
+                  "question": "Which public mechanism predicts the next x direction?"
+                }
+              ],
+              "queue_admission": false,
+              "semantic_novelty_and_discriminability": "requires_independent_review"
+            },
+            "registered_successors": [
+              "33f5080a6106c573bafa84fa2e381809d3c8deba6f9034049bbcd388f37d3791"
+            ],
+            "scientific_verified": false
+          }
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "final",
+        "task": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "payload": {
+            "data_schema": [
+              {
+                "description": null,
+                "dtype": null,
+                "name": "x"
+              },
+              {
+                "description": null,
+                "dtype": null,
+                "name": "y"
+              }
+            ],
+            "dataset_id": "fish",
+            "research_question": "public blade question",
+            "task_id": "fish",
+            "task_instructions": "public instruction"
+          }
+        }
+      },
+      "sequence": 20
+    },
+    {
+      "trace_sha256": "3d5dafd01d86c802457f875b22aafe941ae268216b9a28a8c8a62f8fd2964544",
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\ea77d90168fd0854808da72966b99255a0961db639984ea72558d4c3b26b315a\\trace.jsonl",
+      "request": {
+        "context": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "records": [
+            {
+              "admitted": false,
+              "identity": {
+                "benchmark": "blade",
+                "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                "domain": "train",
+                "group_id": "blade:fish",
+                "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                "task_id": "fish"
+              },
+              "independent_group": "blade:fish",
+              "payload": {
+                "content": {
+                  "execution": {
+                    "artifact": {
+                      "artifact_id": "program",
+                      "byte_count": 180,
+                      "identity": {
+                        "benchmark": "blade",
+                        "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                        "domain": "train",
+                        "group_id": "blade:fish",
+                        "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                        "task_id": "fish"
+                      },
+                      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\ea77d90168fd0854808da72966b99255a0961db639984ea72558d4c3b26b315a\\analysis-1.py",
+                      "record": {
+                        "artifact_id": "program",
+                        "byte_count": 180,
+                        "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                      },
+                      "sha256": "4307f4fd48f15dcc8a05a342db39fcdc051a96a7ce1b2f099043065646f0540a"
+                    },
+                    "identity": {
+                      "benchmark": "blade",
+                      "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+                      "domain": "train",
+                      "group_id": "blade:fish",
+                      "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+                      "task_id": "fish"
+                    },
+                    "record": {
+                      "argv": [
+                        "docker",
+                        "run",
+                        "--pull",
+                        "never",
+                        "--name",
+                        "research-loop-adbca70d99650497fe36",
+                        "--rm",
+                        "--network",
+                        "none",
+                        "--read-only",
+                        "--user",
+                        "1000:1000",
+                        "--tmpfs",
+                        "/tmp:rw,noexec,nosuid,size=64m",
+                        "--pids-limit",
+                        "128",
+                        "--memory",
+                        "1g",
+                        "--cpus",
+                        "1.0",
+                        "--cap-drop",
+                        "ALL",
+                        "--security-opt",
+                        "no-new-privileges",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\export\\blade\\1d961fee7f13217ec380d3fba5a3942b26f421ff2f075606a88c6ef32ba114fe\\data.csv:/input/public_csv:ro",
+                        "-v",
+                        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-public-final06\\test_q85_q86_q87_full_producti0\\run\\cells\\ea77d90168fd0854808da72966b99255a0961db639984ea72558d4c3b26b315a\\analysis-1.py:/task/analysis.py:ro",
+                        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        "python3",
+                        "/task/analysis.py"
+                      ],
+                      "exit_code": 0,
+                      "input_artifacts": {
+                        "public_csv": {
+                          "artifact_id": "public_csv",
+                          "byte_count": 10,
+                          "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4"
+                        }
+                      },
+                      "status": "succeeded",
+                      "stderr": "",
+                      "stdout": "{\"rows\": 1, \"sum\": 1.0}\n",
+                      "wall_seconds": 0.313
+                    },
+                    "status": "succeeded"
+                  },
+                  "expected_observation": {
+                    "rows": 1,
+                    "sum": 0.0
+                  },
+                  "qualification": {
+                    "caller_public_train_qualified": true,
+                    "schema": "q8-origin-qualification-v1",
+                    "scientific_verified": false,
+                    "subject_digest": "4c82171cf64ccab5c2caed406f33bbca627a76476e2eae8f1fa0aa5ffeebcbc4"
+                  }
+                },
+                "kind": "observation",
+                "root_material": {
+                  "execution_digest": "859bc332501dea6b8964e72cfdb7aeec23fce2a64f3394d29a1bad448d76665f"
+                },
+                "trusted_validator": "caller-public-origin",
+                "validator_verified": false
+              },
+              "record_id": "491d95738113d1b5f9b85b17e45957907e8bcbf79cdbca8764b225787d2ff372",
+              "representation": "raw",
+              "root_id": "bfcbdabdad1084580ce5dea88e28b90b624f4fd66e2ed5798ead1ccef4d79c97",
+              "subject_bindings": {
+                "task": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a"
+              }
+            }
+          ],
+          "withdrawn": []
+        },
+        "execution_feedback": [
+          {
+            "id": "859bc332501dea6b8964e72cfdb7aeec23fce2a64f3394d29a1bad448d76665f",
+            "status": "succeeded",
+            "stderr": "",
+            "stdout": "{\"rows\": 1, \"sum\": 1.0}\n"
+          }
+        ],
+        "instruction": "Report the observed result under the immutable objective. Public origins and execution do not establish scientific validity. No programme completion.",
+        "lock_digest": "bbb4e2613eccd7bb43572c420232dd156f7f7edb6116fc4273df510cbb62f264",
+        "module_context": {
+          "panel_cell": {
+            "cell_digest": "ea77d90168fd0854808da72966b99255a0961db639984ea72558d4c3b26b315a",
+            "schema": "opaque-panel-cell-binding-v1"
+          },
+          "required_objective_digest": "f53b459df22acb3c3d95ea90da7065794001be92e0dea38c43df855b3d78f25f",
+          "retrieval_final_result": {
+            "frontier": {
+              "authority": "proposals_only",
+              "benchmark_admission": false,
+              "empty_reason": null,
+              "programme_complete": false,
+              "proposals": [
+                {
+                  "kind": "anomaly",
+                  "observable": "x",
+                  "opposing_predictions": [
+                    "x increases",
+                    "x decreases"
+                  ],
+                  "origin_ref": "origin-1",
+                  "question": "Which public mechanism predicts the next x direction?"
+                }
+              ],
+              "queue_admission": false,
+              "semantic_novelty_and_discriminability": "requires_independent_review"
+            },
+            "registered_successors": [],
+            "scientific_verified": false
+          }
+        },
+        "objective": {
+          "panel_digest": "895956cab9b53a43dbcfd266561974f4d9181b83b77ccb3e383d93c2182553e6"
+        },
+        "schema": "public-model-request-v1",
+        "slot": "final",
+        "task": {
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c4e815331f408575e63aa60e50e820c14bf2fcebfcf4720869611972ca308a34",
+            "domain": "train",
+            "group_id": "blade:fish",
+            "split_id": "558f5f3fe103129a904f6dadd8bee909ae406936db859537905b4dde48c926a7",
+            "task_id": "fish"
+          },
+          "payload": {
+            "data_schema": [
+              {
+                "description": null,
+                "dtype": null,
+                "name": "x"
+              },
+              {
+                "description": null,
+                "dtype": null,
+                "name": "y"
+              }
+            ],
+            "dataset_id": "fish",
+            "research_question": "public blade question",
+            "task_id": "fish",
+            "task_instructions": "public instruction"
+          }
+        }
+      },
+      "sequence": 21
+    }
+  ]
+}
