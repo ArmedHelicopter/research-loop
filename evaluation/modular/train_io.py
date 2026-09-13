@@ -97,10 +97,12 @@ class TrainPacketExporter:
 
     def _one(self, identity: DataIdentity, row: Mapping[str, Any], split_digest: str) -> PublicTrainPacket:
         expected = set(row["content_hashes"])
+        source_selector = None
         if identity.benchmark == "discoverybench":
             source = _safe_under(self.snapshot_root / "discovery" / "upstream" / "discoverybench", row["relative_path"])
             metadata = _public_file(next(iter(sorted(source.glob("metadata_*.json")))), expected)
             raw = json.loads(metadata.read_text(encoding="utf-8"))
+            source_selector = {"metadata_file": metadata.name, "metadata_sha256": _sha(metadata), "query_index": 0}
             query = raw.get("queries", [None])[0]
             datasets = raw.get("datasets")
             if not isinstance(query, Mapping) or not isinstance(datasets, list) or not datasets:
@@ -148,6 +150,8 @@ class TrainPacketExporter:
         csv_target = destination / "data.csv"
         csv_target.write_bytes(data.read_bytes())
         receipt = FrozenRecord.from_dict({"identity": identity.data(), "source_group": identity.group_id, "official_split": row["official_split"], "split_digest": split_digest, "csv_sha256": _sha(data), "packet_hash": task.content_hash})
+        if source_selector is not None:
+            receipt = FrozenRecord.from_dict({**receipt.data(), "source_selector": source_selector})
         packet_path = destination / "public.json"
         packet_path.write_text(canonical({"task": task.data(), "receipt": receipt.data()}), encoding="utf-8")
         return PublicTrainPacket(task, packet_path, csv_target, receipt)
