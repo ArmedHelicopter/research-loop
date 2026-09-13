@@ -29,6 +29,7 @@ from research_loop.modular.feasibility_panel_drivers import FeasibilityAuthority
 from research_loop.modular.exploration_panel_drivers import ExplorationAuthorityPort, BUDGET as EXPLORATION_BUDGET
 from research_loop.modular.exploration_extended_panel_drivers import BUDGET as EXTENDED_EXPLORATION_BUDGET
 from research_loop.modular.q54_causal_driver import DiagnosticAuthority
+from research_loop.modular.q55_causal_driver import Authority as Q55Authority
 from research_loop.modular.benchmark_cell import LinkedBenchmarkCellResult, run_benchmark_cell, verify_linked_benchmark_cell
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.protocol_panel_driver import (ProtocolAuditPort, ProtocolReplayAuthority,
@@ -177,6 +178,8 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                         feasibility_authority: FeasibilityAuthorityPort | None = None,
                         exploration_authority: ExplorationAuthorityPort | None = None,
                         diagnostic_authority: DiagnosticAuthority | None = None,
+                        q55_authority: Q55Authority | None = None,
+                        q55_authority_keys: Mapping[str, bytes] | None = None,
                         protocol_audit_port: ProtocolAuditPort | None = None,
                         protocol_replay_authority: ProtocolReplayAuthority | None = None) -> TrainPanelRun:
     """Export and execute every cell selected by closed production drivers."""
@@ -188,6 +191,9 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     extended_exploration = bool(set(data["scope_ids"]) & set(EXTENDED_EXPLORATION_BUDGET))
     exploration = extended_exploration or bool(set(data["scope_ids"]) & {"Q7.1", "Q7.2"})
     diagnostic = "Q5.4" in data["scope_ids"]
+    q55 = "Q5.5" in data["scope_ids"]
+    if q55 and (not callable(getattr(q55_authority, "verify_closure", None)) or not isinstance(q55_authority_keys, Mapping)):
+        raise ContractError("Q5.5 controller requires dual closure authority and keys before export")
     if diagnostic and not callable(getattr(diagnostic_authority, "verify_diagnostic", None)):
         raise ContractError("diagnostic controller requires its caller-owned verification port before export")
     if exploration and not all(callable(getattr(exploration_authority, method, None))
@@ -253,6 +259,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
         feasibility_broker = DockerExecutionBroker([exported, root]) if feasibility else None
         exploration_broker = DockerExecutionBroker([exported, root]) if exploration else None
         diagnostic_broker = DockerExecutionBroker([exported, root]) if diagnostic else None
+        q55_broker = DockerExecutionBroker([exported, root]) if q55 else None
         packets_by_digest = {packet.task.content_hash: packet for packet in packets}
         def diagnostic_inputs(task, bundle):
             packet = packets_by_digest.get(task.content_hash)
@@ -271,6 +278,16 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
         if diagnostic:
             for task in compiled.tasks.values():
                 diagnostic_inputs(task, _record(data["evidence_by_task"][task.content_hash], "diagnostic material"))
+        def q55_inputs(task, bundle):
+            packet = packets_by_digest.get(task.content_hash)
+            if packet is None or packet.task != task: raise ContractError("Q5.5 input is not an exported train task")
+            rows = list(bundle.data()["items"].values()); names={tuple(sorted(row["inputs"])) for row in rows}
+            if len(names)!=1 or len(next(iter(names)))!=1: raise ContractError("Q5.5 requires one shared exported CSV identity")
+            name=next(iter(names))[0]; raw=packet.csv_path.read_bytes(); expected={"sha256":hashlib.sha256(raw).hexdigest(),"byte_count":len(raw)}
+            if any(row["inputs"][name] != expected for row in rows): raise ContractError("Q5.5 material differs from exported train CSV bytes")
+            return {name:packet.csv_path}
+        if q55:
+            for task in compiled.tasks.values(): q55_inputs(task, _record(data["evidence_by_task"][task.content_hash], "Q5.5 material"))
         def exploration_inputs(task, bundle):
             packet = packets_by_digest.get(task.content_hash)
             if packet is None or packet.task != task:
@@ -342,6 +359,8 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                 diagnostic_broker=diagnostic_broker,
                 diagnostic_input_resolver=diagnostic_inputs if diagnostic else None,
                 diagnostic_authority=diagnostic_authority,
+                q55_broker=q55_broker, q55_input_resolver=q55_inputs if q55 else None,
+                q55_authority=q55_authority, q55_authority_keys=q55_authority_keys,
                 protocol_audit_port=protocol_audit_port, protocol_replay_authority=protocol_replay_authority)
             runtimes.append(result.runtime)
             attempt.setdefault("runtime_call_plans", []).append(result.call_plan.data())

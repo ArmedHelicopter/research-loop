@@ -115,8 +115,8 @@ def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs,
         from research_loop.modular.scheduler_panel_drivers import scheduler_panel_injection
         injection=dict(scheduler_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
     elif spec.experiment_id == "Q5.5":
-        from research_loop.modular.scenarios_recovery import recovery_injection
-        injection=dict(recovery_injection(spec.experiment_id, variant))
+        from research_loop.modular.q55_causal_driver import q55_injection
+        injection=q55_injection(task=inputs.task, evidence=inputs.evidence).data()
     elif spec.experiment_id in {"Q4.1", "Q4.2", "Q4.4", "Q4.5"}:
         from research_loop.modular.scenarios_review import q4_injection
         injection=dict(q4_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
