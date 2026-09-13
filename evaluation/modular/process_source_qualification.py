@@ -13,6 +13,7 @@ from pathlib import Path
 
 from evaluation.modular.canonical_lineage import normalize_reference, record_token, validate_graph
 from evaluation.modular.extended_ingestion import _inside, _receipt
+from evaluation.modular.custody import InventoryItem, SCHEMA as CUSTODY_SCHEMA
 from evaluation.modular.fresh_airs_custodian import CustodyError, _write_new
 from research_loop.modular.source_ingestion import SOURCE_SNAPSHOTS
 from research_loop.ontology import digest
@@ -88,14 +89,23 @@ def process_audit(config):
     reads = BoundReads()
     state, state_sha = reads.read(config["extended_inventory"])
     imported, imported_sha = reads.read(config["import_metadata"])
-    if (state_sha != imported.get("custody_state_sha256") or state.get("split") is not None
+    items = [InventoryItem.parse(row) for row in state.get("inventory", [])]
+    if (state.get("schema") != CUSTODY_SCHEMA or len(items) != 182
+            or {source: sum(item.benchmark == source for item in items) for source in SOURCES} != {"scicode": 80, "scienceagentbench": 102}
+            or any(item.exposure != "unknown" for item in items)
+            or len({(item.benchmark, item.task_id) for item in items}) != 182
+            or state_sha != imported.get("custody_state_sha256") or state.get("split") is not None
             or state.get("leases") or state.get("attestations")
             or state.get("inventory_digest") != imported.get("inventory_digest")
             or digest(state.get("inventory")) != state.get("inventory_digest")):
         raise CustodyError()
     metadata, metadata_sha = reads.read(config["metadata_receipt"])
     if (metadata.get("schema") != "extended-custodian-metadata-receipt-v1"
-            or metadata.get("optimizer_access") != "none"):
+            or metadata.get("optimizer_access") != "none"
+            or metadata.get("read_scope") != "private_schema_provenance_paths_and_content_hashes_only"
+            or any(metadata.get(key) is not False for key in ("raw_private_payload_returned", "mutated_private_store", "mutated_custody_state"))
+            or metadata.get("live_inventory_binding", {}).get("inventory_digest") != state.get("inventory_digest")
+            or metadata.get("live_inventory_binding", {}).get("custody_state_sha256") != state_sha):
         raise CustodyError()
     acquisitions = {}
     for source in SOURCES:
@@ -298,6 +308,10 @@ def seal_new_split(destination, config, *, seed):
     if hashlib.sha256(canonical_raw).hexdigest() != audit["canonical_receipt_sha256"]:
         raise CustodyError()
     groups = apply_canonical_closure(groups, json.loads(canonical_raw)["graph"])
+    confirmed = process_audit(config)
+    if confirmed["input_bindings"] != audit["input_bindings"]:
+        raise CustodyError()
+    audit = confirmed
     destination = Path(destination)
     destination.mkdir(parents=True, exist_ok=False)
     result = prospective_split(audit, groups, seed=seed)
