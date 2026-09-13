@@ -228,6 +228,7 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
                    diagnostic_input_resolver: PublicInputResolver | None = None,
                    diagnostic_authority: DiagnosticAuthority | None = None,
                    q55_broker: DockerExecutionBroker | None = None,
+                   q55_provider=None,
                    q55_input_resolver: PublicInputResolver | None = None,
                    q55_authority: Q55Authority | None = None,
                    q55_authority_keys: Mapping[str, bytes] | None = None,
@@ -279,6 +280,7 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
             authority=diagnostic_authority if diagnostic_authority is not None else driver.authority)
     if isinstance(driver, Q55Driver):
         driver = replace(driver, broker=q55_broker if q55_broker is not None else driver.broker,
+            provider=q55_provider if q55_provider is not None else driver.provider,
             resolver=q55_input_resolver if q55_input_resolver is not None else driver.resolver,
             authority=q55_authority if q55_authority is not None else driver.authority,
             authority_keys=q55_authority_keys if q55_authority_keys is not None else driver.authority_keys)

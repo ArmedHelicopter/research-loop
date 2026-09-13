@@ -340,6 +340,7 @@ class Q55Driver:
     experiment_id: str = "Q5.5"
     slots: tuple[str, str] = ("diagnostic", "final")
     execution_limit: int = 1
+    docker_execution: str = "one authority-qualified public diagnostic"
 
     def _scenario(self, *, task: PublicTask, cell: PanelCell, scenario: FrozenRecord, package: CandidatePackage) -> FrozenRecord:
         if not isinstance(scenario, FrozenRecord):

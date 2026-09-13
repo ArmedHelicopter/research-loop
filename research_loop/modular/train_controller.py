@@ -180,6 +180,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                         diagnostic_authority: DiagnosticAuthority | None = None,
                         q55_authority: Q55Authority | None = None,
                         q55_authority_keys: Mapping[str, bytes] | None = None,
+                        q55_provider=None,
                         protocol_audit_port: ProtocolAuditPort | None = None,
                         protocol_replay_authority: ProtocolReplayAuthority | None = None) -> TrainPanelRun:
     """Export and execute every cell selected by closed production drivers."""
@@ -192,7 +193,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     exploration = extended_exploration or bool(set(data["scope_ids"]) & {"Q7.1", "Q7.2"})
     diagnostic = "Q5.4" in data["scope_ids"]
     q55 = "Q5.5" in data["scope_ids"]
-    if q55 and (not callable(getattr(q55_authority, "verify_closure", None)) or not isinstance(q55_authority_keys, Mapping)):
+    if q55 and (not callable(getattr(q55_authority, "verify_closure", None)) or not isinstance(q55_authority_keys, Mapping) or not callable(getattr(q55_provider, "search", None))):
         raise ContractError("Q5.5 controller requires dual closure authority and keys before export")
     if diagnostic and not callable(getattr(diagnostic_authority, "verify_diagnostic", None)):
         raise ContractError("diagnostic controller requires its caller-owned verification port before export")
@@ -360,7 +361,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                 diagnostic_input_resolver=diagnostic_inputs if diagnostic else None,
                 diagnostic_authority=diagnostic_authority,
                 q55_broker=q55_broker, q55_input_resolver=q55_inputs if q55 else None,
-                q55_authority=q55_authority, q55_authority_keys=q55_authority_keys,
+                q55_authority=q55_authority, q55_authority_keys=q55_authority_keys, q55_provider=q55_provider,
                 protocol_audit_port=protocol_audit_port, protocol_replay_authority=protocol_replay_authority)
             runtimes.append(result.runtime)
             attempt.setdefault("runtime_call_plans", []).append(result.call_plan.data())

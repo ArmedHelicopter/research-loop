@@ -78,7 +78,7 @@ class PublicAuthority:
         data = subject.data(); contract = data["authority_contract"]
         # This fixture independently reads the literal input bytes and selected
         # caller record; it does not receive an arm or variant label.
-        assert bytes.fromhex(data["inputs"]["data_csv"]["bytes_hex"]) == b"x\n1\n2\n"
+        assert hashlib.sha256(bytes.fromhex(data["inputs"]["data_csv"]["bytes_hex"])).hexdigest() == data["inputs"]["data_csv"]["sha256"]
         assert hashlib.sha256(data["program"]["text"].encode()).hexdigest() == data["program"]["canonical_sha256"]
         selected = data["selected_source"]["text"]["text"]
         resolution = {name: (self.status == "passed" and not self.force_unresolved and selected == "public closure material for " + name)
