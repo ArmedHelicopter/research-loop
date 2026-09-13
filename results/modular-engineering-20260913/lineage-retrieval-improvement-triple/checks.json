@@ -1,0 +1,47 @@
+{
+  "triple369-5e5a879-a": {
+    "commit": "5e5a879fe68ad0ce15c655c7cf04421872ed7c1c",
+    "source_unchanged": true,
+    "source_count": 543,
+    "exit_code": 0,
+    "wall_seconds": 1634.0,
+    "new_paid_calls": 0,
+    "report_sha256": "1f51b5bb0eefa81e086715e8de6183a15d03c880588bcdd7850a9f14513cf2f1",
+    "junit": {
+      "tests": 74,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "triple369-7da51df-cost": {
+    "commit": "7da51df3ba7b92ceb46d642a27dda5fa4c131a21",
+    "source_unchanged": true,
+    "source_count": 543,
+    "exit_code": 1,
+    "wall_seconds": 351.15699999999924,
+    "new_paid_calls": 0,
+    "report_sha256": "c3d57fc7d4bf9eb416641b45f5a716264d284f6840e200488ef1cb0b4fca731a",
+    "junit": {
+      "tests": 3,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "triple369-e5bf4cf-final": {
+    "commit": "e5bf4cfcd3eb0011dfa202fd3ef976851f3a0aec",
+    "source_unchanged": true,
+    "source_count": 543,
+    "exit_code": 0,
+    "wall_seconds": 105.54699999999866,
+    "new_paid_calls": 0,
+    "report_sha256": "38cdb6c9b2969480c2ffe76fd2f69160c5cc0767492424aacf84b634149a5b2f",
+    "junit": {
+      "tests": 61,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  }
+}

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="303.349" timestamp="2026-09-14T00:37:50.586977+08:00" hostname="SC-202507131830"><testcase classname="tests.test_lineage_retrieval_improvement_train_controller" name="test_rehashed_verified_unknown_source_cost_cannot_issue_successful_target[state]" time="290.313"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...trieval_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+kind = 'state'
+
+    @pytest.mark.parametrize('kind',['state','corpus'])
+    def test_rehashed_verified_unknown_source_cost_cannot_issue_successful_target(grid,kind):
+        from research_loop.modular.panel_receipts import PanelReceiptVerifier
+        setup,run=grid;result=run.results[0];trace=result.runtime.trace_path
+        source=trace.parent.parent/('source-verification.json' if kind=='state' else 'retrieval/source-verification.json')
+        original_trace=trace.read_bytes();original_source=source.read_bytes()
+        verifier=setup['verifiers'][result.cell.coverage_id] if kind=='state' else setup['corpus']
+        b=json.loads(original_source)
+        for row,authority in zip(b['calls'],verifier.authorities,strict=True):
+            response=row['response']['body'];response['cost_units']=None
+            row['response']=authority.authority.issue({k:v for k,v in response.items() if k!='authority'}).data()
+            row['cost_units']=None;row['cost_unknown']=True
+        try:
+            source.write_text(canonical(b)+'\n',encoding='utf-8',newline='\n')
+            digest=hashlib.sha256(source.read_bytes()).hexdigest()
+            def mutate(rows):
+                event=next(e for e in rows if e['stage']=='lineage_retrieval_improvement_transition')
+                event['data']['source_sha256' if kind=='state' else 'retrieval_source_sha256']=digest
+            tail=_rewrite_trace(trace,mutate);forged=replace(result,runtime=replace(result.runtime,trace_digest=tail))
+            PanelReceiptVerifier()._verify_runtime(forged.runtime,forged.cell)
+&gt;           with pytest.raises(ContractError,match='unknown.*cost'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+tests\test_lineage_retrieval_improvement_train_controller.py:509: Failed</failure></testcase><testcase classname="tests.test_lineage_retrieval_improvement_train_controller" name="test_rehashed_verified_unknown_source_cost_cannot_issue_successful_target[corpus]" time="0.212"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...trieval_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+kind = 'corpus'
+
+    @pytest.mark.parametrize('kind',['state','corpus'])
+    def test_rehashed_verified_unknown_source_cost_cannot_issue_successful_target(grid,kind):
+        from research_loop.modular.panel_receipts import PanelReceiptVerifier
+        setup,run=grid;result=run.results[0];trace=result.runtime.trace_path
+        source=trace.parent.parent/('source-verification.json' if kind=='state' else 'retrieval/source-verification.json')
+        original_trace=trace.read_bytes();original_source=source.read_bytes()
+        verifier=setup['verifiers'][result.cell.coverage_id] if kind=='state' else setup['corpus']
+        b=json.loads(original_source)
+        for row,authority in zip(b['calls'],verifier.authorities,strict=True):
+            response=row['response']['body'];response['cost_units']=None
+            row['response']=authority.authority.issue({k:v for k,v in response.items() if k!='authority'}).data()
+            row['cost_units']=None;row['cost_unknown']=True
+        try:
+            source.write_text(canonical(b)+'\n',encoding='utf-8',newline='\n')
+            digest=hashlib.sha256(source.read_bytes()).hexdigest()
+            def mutate(rows):
+                event=next(e for e in rows if e['stage']=='lineage_retrieval_improvement_transition')
+                event['data']['source_sha256' if kind=='state' else 'retrieval_source_sha256']=digest
+            tail=_rewrite_trace(trace,mutate);forged=replace(result,runtime=replace(result.runtime,trace_digest=tail))
+            PanelReceiptVerifier()._verify_runtime(forged.runtime,forged.cell)
+&gt;           with pytest.raises(ContractError,match='unknown.*cost'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+tests\test_lineage_retrieval_improvement_train_controller.py:509: Failed</failure></testcase><testcase classname="tests.test_lineage_retrieval_improvement_train_controller" name="test_rehashed_build_unknown_source_cost_cannot_pass_canonical_replay" time="0.054"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...trieval_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+
+    def test_rehashed_build_unknown_source_cost_cannot_pass_canonical_replay(grid):
+        setup,run=grid;build=run.builds[1];root=build.root;source=root/'source/source-verification.json';trace=root/'proposal/trace.jsonl'
+        before={p:p.read_bytes() for p in root.rglob('*') if p.is_file()}
+        b=json.loads(source.read_bytes());verifier=setup['verifiers'][build.record.data()['recipe']['pair']]
+        for row,authority in zip(b['calls'],verifier.authorities,strict=True):
+            response=row['response']['body'];response['cost_units']=None
+            row['response']=authority.authority.issue({k:v for k,v in response.items() if k!='authority'}).data()
+            row['cost_units']=None;row['cost_unknown']=True
+        try:
+            source.write_text(canonical(b)+'\n',encoding='utf-8',newline='\n')
+            digest=hashlib.sha256(source.read_bytes()).hexdigest()
+            def mutate(rows):
+                next(e for e in rows if e['stage']=='state_improvement_history')['data']['source_sha256']=digest
+            _rewrite_trace(trace,mutate)
+            metadata=build.record.data();metadata['files']={p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
+                for p in before if p!=root/'build-receipt.json'}
+            forged=replace(build,record=FrozenRecord.from_dict(metadata))
+            (root/'build-receipt.json').write_text(forged.record.encoded+'\n',encoding='utf-8',newline='\n')
+            verify_trace(trace)
+            from research_loop.modular.metaprogram_training import _phase_rows
+            _phase_rows(root/'phase.jsonl')
+&gt;           with pytest.raises(ContractError,match='unknown.*cost'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+tests\test_lineage_retrieval_improvement_train_controller.py:543: Failed</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,3893 @@
+{
+  "source_commit": "e5bf4cfcd3eb0011dfa202fd3ef976851f3a0aec",
+  "cells": [
+    {
+      "cell": {
+        "arm_id": "000",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "synth:test:case2"
+        },
+        "package_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "866ed244c30811d1829f966afd79697e71447c1760da81f533bddb5b9a585925",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "b1ac22f6fac482e9148292075308ccabb19be802c6301fef758d089a74085cc9",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 74.0,
+        "candidate": 2.0,
+        "counter_sources": 0,
+        "pending": 0,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "instructions": "Use candidate adjustment=2",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "evidence_roots": [],
+            "kind": "untrusted_summary",
+            "text": "The old interpretation that x is high remains in this ordinary summary."
+          }
+        ],
+        "observations": [
+          {
+            "binding": "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "ebe7da1437577cb18a8b1a450323618a0ce759816f323bbfd588be7b5007046e",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "9232f84c2de2ee49a0d01d6bdbfd0e43150752221fb1d9fa9c45b36d8e00eb4b",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-56f0d8602e0bde6e341d",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\62325d09a7b968dc764a7a1b1d93ab01681daf059dbf815f939761e998fb3f0b\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "a311fe45abce5ec5b09894a4f63559faea42310ff561b03a7fd8a1275e4eb8cb",
+      "scorer_receipt_digest": "0fe5fa87d96c7c5f8ad120707102c773ccf81874661e053bb2841d0a40e97873"
+    },
+    {
+      "cell": {
+        "arm_id": "000",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "case2"
+        },
+        "package_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "51049c8c2fad19ce5e77872bae11a84113b8d2dcc1446357a64ac072ff6a302c",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "cc39ad32b4361955dff05e54b074099f72c27360b73a6937ac9fcabc578104f5",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 64.0,
+        "candidate": 2.0,
+        "counter_sources": 0,
+        "pending": 0,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "instructions": "Use candidate adjustment=2",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "evidence_roots": [],
+            "kind": "untrusted_summary",
+            "text": "The old interpretation that x is high remains in this ordinary summary."
+          }
+        ],
+        "observations": [
+          {
+            "binding": "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "e08daa3ae3927d0eff8cc03c70b037306ed9741fd85adfa808c3df30c31e4d59",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "9232f84c2de2ee49a0d01d6bdbfd0e43150752221fb1d9fa9c45b36d8e00eb4b",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-d4a2219a9b3e36075112",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\9b7108a71ba6276b7734fedf84755854d5c9eb8b8dd095a224efccb91495b7f1\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "7d0065af1e7327b9aa67bc7c8d987acfdefd9a09c945ad9eb8cffb0d0b9db867",
+      "scorer_receipt_digest": "dfa649691cd38b8cfb7abf0b5de88d5858a4ab1ada279bcefd27b9a5419e7b27"
+    },
+    {
+      "cell": {
+        "arm_id": "001",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "synth:test:case2"
+        },
+        "package_digest": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "866ed244c30811d1829f966afd79697e71447c1760da81f533bddb5b9a585925",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "b1ac22f6fac482e9148292075308ccabb19be802c6301fef758d089a74085cc9",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 122.0,
+        "candidate": 50.0,
+        "counter_sources": 0,
+        "pending": 0,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "instructions": "Use candidate adjustment=50.0",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "evidence_roots": [],
+            "kind": "untrusted_summary",
+            "text": "The old interpretation that x is high remains in this ordinary summary."
+          }
+        ],
+        "observations": [
+          {
+            "binding": "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "ebe7da1437577cb18a8b1a450323618a0ce759816f323bbfd588be7b5007046e",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "07bdeede2137c1f0b20053be55ca9e76e70b492ca9c976ec1a1172cc56e1c689",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-b793f8cdcfd16063bdc7",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\046cfb47c3d58a0d0f548933290c0f8cfb2b6752988dbdd9e20c23304cbc8bb2\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "8c0086a925e4b56eff4302aae374663153a92ef4bc816e3d40e17e0afec94d7a",
+      "scorer_receipt_digest": "0c88b56b1fc1538e46caa51bebe6892a17ab1abc3234446cbae473c286df43c0"
+    },
+    {
+      "cell": {
+        "arm_id": "001",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "case2"
+        },
+        "package_digest": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "51049c8c2fad19ce5e77872bae11a84113b8d2dcc1446357a64ac072ff6a302c",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "cc39ad32b4361955dff05e54b074099f72c27360b73a6937ac9fcabc578104f5",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 112.0,
+        "candidate": 50.0,
+        "counter_sources": 0,
+        "pending": 0,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "instructions": "Use candidate adjustment=50.0",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "evidence_roots": [],
+            "kind": "untrusted_summary",
+            "text": "The old interpretation that x is high remains in this ordinary summary."
+          }
+        ],
+        "observations": [
+          {
+            "binding": "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "e08daa3ae3927d0eff8cc03c70b037306ed9741fd85adfa808c3df30c31e4d59",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "07bdeede2137c1f0b20053be55ca9e76e70b492ca9c976ec1a1172cc56e1c689",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-3996e3fd07e5ecf68454",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\d4ebc427fd54dd67882482f1df37b16beb63884968b32df838d94b044435f68b\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "c582cf50adb9792cb970f40e279d504da5748aec0f134877f1be568267e00fbf",
+      "scorer_receipt_digest": "59a8a3f4e837734bd5a3d02f20ce3fb832aa9fc173bb104d26a86858da4edd65"
+    },
+    {
+      "cell": {
+        "arm_id": "010",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "synth:test:case2"
+        },
+        "package_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M6"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "866ed244c30811d1829f966afd79697e71447c1760da81f533bddb5b9a585925",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "b1ac22f6fac482e9148292075308ccabb19be802c6301fef758d089a74085cc9",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 74.0,
+        "candidate": 2.0,
+        "counter_sources": 1,
+        "pending": 0,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "instructions": "Use candidate adjustment=2",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "evidence_roots": [],
+            "kind": "untrusted_summary",
+            "text": "The old interpretation that x is high remains in this ordinary summary."
+          }
+        ],
+        "observations": [
+          {
+            "binding": "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "ebe7da1437577cb18a8b1a450323618a0ce759816f323bbfd588be7b5007046e",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [
+            {
+              "lane": "counter",
+              "root_source_id": "r002",
+              "source_id": "s002",
+              "text": {
+                "text": "Check public outliers with a median."
+              }
+            }
+          ],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "b3e77cb03b34e6f06b20c89878d8c9d4407625de472f8f6bba98ddcf463aebe8",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-efdfa8f60505ec9cff72",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\bb7c7bf7ae0e150f3dce7d879296df6674bdc4b1b32e77a74a7a82975edd02d9\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "26d0fbdd40aa6b47dfd217a6ee6d149916c81053f4c18dfc78d0b75eb4e3839b",
+      "scorer_receipt_digest": "8136c808c20410d04b0000e717aab6b1fa5ac0b39f97244bd4bb82cada077ecb"
+    },
+    {
+      "cell": {
+        "arm_id": "010",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "case2"
+        },
+        "package_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M6"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "51049c8c2fad19ce5e77872bae11a84113b8d2dcc1446357a64ac072ff6a302c",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "cc39ad32b4361955dff05e54b074099f72c27360b73a6937ac9fcabc578104f5",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 64.0,
+        "candidate": 2.0,
+        "counter_sources": 1,
+        "pending": 0,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "instructions": "Use candidate adjustment=2",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "evidence_roots": [],
+            "kind": "untrusted_summary",
+            "text": "The old interpretation that x is high remains in this ordinary summary."
+          }
+        ],
+        "observations": [
+          {
+            "binding": "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "e08daa3ae3927d0eff8cc03c70b037306ed9741fd85adfa808c3df30c31e4d59",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [
+            {
+              "lane": "counter",
+              "root_source_id": "r002",
+              "source_id": "s002",
+              "text": {
+                "text": "Check public outliers with a median."
+              }
+            }
+          ],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "b3e77cb03b34e6f06b20c89878d8c9d4407625de472f8f6bba98ddcf463aebe8",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-65fc22c958cb683411c9",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\6b63f8c87c321cf85e7fafb059b5c46d70ef59d4daef31741efd8ff33ea1cc1c\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "4c1cb1488d994b051d1ed125c11df42f776d4c6a517a7ccb7e1dcfb0d58dad13",
+      "scorer_receipt_digest": "60a0c6c6fd1f0ee6780b595bd0741b69c45052a09be143700f2589d39d1a6894"
+    },
+    {
+      "cell": {
+        "arm_id": "011",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "synth:test:case2"
+        },
+        "package_digest": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M6",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "866ed244c30811d1829f966afd79697e71447c1760da81f533bddb5b9a585925",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "b1ac22f6fac482e9148292075308ccabb19be802c6301fef758d089a74085cc9",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 122.0,
+        "candidate": 50.0,
+        "counter_sources": 1,
+        "pending": 0,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "instructions": "Use candidate adjustment=50.0",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "evidence_roots": [],
+            "kind": "untrusted_summary",
+            "text": "The old interpretation that x is high remains in this ordinary summary."
+          }
+        ],
+        "observations": [
+          {
+            "binding": "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "ebe7da1437577cb18a8b1a450323618a0ce759816f323bbfd588be7b5007046e",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [
+            {
+              "lane": "counter",
+              "root_source_id": "r002",
+              "source_id": "s002",
+              "text": {
+                "text": "Check public outliers with a median."
+              }
+            }
+          ],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "48e47a5a5a4d8bf0bda74408e181db3d6678f07296fa2aa7ef61f9579535c85a",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-35ff8ca532c713436f56",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\e3158c2ebefe3d888d12d375e73dcc248d0cb5fbb109ed82dd8c9646f86b0812\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "049a3dfc0be62c5fe915d2c3e258dc4100731cfdb8bcd013911fe6933b802a99",
+      "scorer_receipt_digest": "e3f9c1098ed745096ea88de61ca63db3ffeac8b7b287b9b9577b7eaece86a919"
+    },
+    {
+      "cell": {
+        "arm_id": "011",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "case2"
+        },
+        "package_digest": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M6",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "51049c8c2fad19ce5e77872bae11a84113b8d2dcc1446357a64ac072ff6a302c",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "cc39ad32b4361955dff05e54b074099f72c27360b73a6937ac9fcabc578104f5",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 112.0,
+        "candidate": 50.0,
+        "counter_sources": 1,
+        "pending": 0,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "instructions": "Use candidate adjustment=50.0",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "evidence_roots": [],
+            "kind": "untrusted_summary",
+            "text": "The old interpretation that x is high remains in this ordinary summary."
+          }
+        ],
+        "observations": [
+          {
+            "binding": "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "e08daa3ae3927d0eff8cc03c70b037306ed9741fd85adfa808c3df30c31e4d59",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [
+            {
+              "lane": "counter",
+              "root_source_id": "r002",
+              "source_id": "s002",
+              "text": {
+                "text": "Check public outliers with a median."
+              }
+            }
+          ],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "48e47a5a5a4d8bf0bda74408e181db3d6678f07296fa2aa7ef61f9579535c85a",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-bf9cb3310f2c6ab549c8",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\fcbbe17870ab249303866d512acdafe9acd466a508442625a176cec712fb2e46\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "587795fa77c40662f2773f3f12a2ed068e84d505e51234840441f7fe45997c79",
+      "scorer_receipt_digest": "28a4cc28300d061efa0d834efef6df8331ce80ca3ad841c2d48d52ea71be8def"
+    },
+    {
+      "cell": {
+        "arm_id": "100",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "synth:test:case2"
+        },
+        "package_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M3"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "866ed244c30811d1829f966afd79697e71447c1760da81f533bddb5b9a585925",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "b1ac22f6fac482e9148292075308ccabb19be802c6301fef758d089a74085cc9",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 72.0,
+        "candidate": 2.0,
+        "counter_sources": 0,
+        "pending": 2,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "instructions": "Use candidate adjustment=2",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "claim_id": "390ca1186e0c93bc9eab63bcccf022c447bfe7c2cd2bc870c9cbd9b9dec91d12",
+            "depends_on": [
+              "9558ac94c1cdbb69f4295a8de483f0cfd677678c653f900449bbd5eb40812d13"
+            ],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 3,
+            "statement": "Interpretation depends on the old observation.",
+            "status": "supported",
+            "support_roots": [
+              "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401"
+            ]
+          },
+          {
+            "claim_id": "9558ac94c1cdbb69f4295a8de483f0cfd677678c653f900449bbd5eb40812d13",
+            "depends_on": [],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 2,
+            "statement": "The older x is high.",
+            "status": "undetermined",
+            "support_roots": []
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 1
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "current-measurement"
+              }
+            },
+            "root_id": "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401",
+            "subject_bindings": {
+              "task": "synth:test:case2",
+              "variable": "x"
+            }
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 99
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "uncalibrated-measurement"
+              }
+            },
+            "root_id": "ebe7da1437577cb18a8b1a450323618a0ce759816f323bbfd588be7b5007046e",
+            "subject_bindings": {
+              "task": "synth:test:case2",
+              "variable": "x"
+            }
+          }
+        ],
+        "observations": [
+          {
+            "binding": "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "ebe7da1437577cb18a8b1a450323618a0ce759816f323bbfd588be7b5007046e",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "25b3ba2ac99d46b768959b1a9e12d5377c70435f7a5122521779af1e7345fb4d",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-626ee93d4c7af5435865",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\97d0cc3d7bad48b45f8bcc30c58a40d07ac286b0cda17a29645239cc0313ede0\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "3ca03e58ae2689b8d15625a5e686e0d181ea8fea1ea8d17302ecdc6516f13ad0",
+      "scorer_receipt_digest": "ed10e5b8bbfd2253ff8c9705044c61aca48b6c9862a32e6e9ae14e86ad46ca29"
+    },
+    {
+      "cell": {
+        "arm_id": "100",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "case2"
+        },
+        "package_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M3"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "51049c8c2fad19ce5e77872bae11a84113b8d2dcc1446357a64ac072ff6a302c",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "cc39ad32b4361955dff05e54b074099f72c27360b73a6937ac9fcabc578104f5",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 62.0,
+        "candidate": 2.0,
+        "counter_sources": 0,
+        "pending": 2,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "instructions": "Use candidate adjustment=2",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "claim_id": "639873e9135eda3e0f93733377c325cf6adc928d093a0a5828426a0764f007b2",
+            "depends_on": [
+              "81dcf9098e46549dbf1be7ae923c822edcfe7a3dbe08e4f315401f715ebe35ee"
+            ],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 3,
+            "statement": "Interpretation depends on the old observation.",
+            "status": "supported",
+            "support_roots": [
+              "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc"
+            ]
+          },
+          {
+            "claim_id": "81dcf9098e46549dbf1be7ae923c822edcfe7a3dbe08e4f315401f715ebe35ee",
+            "depends_on": [],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 2,
+            "statement": "The older x is high.",
+            "status": "undetermined",
+            "support_roots": []
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 1
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "current-measurement"
+              }
+            },
+            "root_id": "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc",
+            "subject_bindings": {
+              "task": "case2",
+              "variable": "x"
+            }
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 99
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "uncalibrated-measurement"
+              }
+            },
+            "root_id": "e08daa3ae3927d0eff8cc03c70b037306ed9741fd85adfa808c3df30c31e4d59",
+            "subject_bindings": {
+              "task": "case2",
+              "variable": "x"
+            }
+          }
+        ],
+        "observations": [
+          {
+            "binding": "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "e08daa3ae3927d0eff8cc03c70b037306ed9741fd85adfa808c3df30c31e4d59",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "25b3ba2ac99d46b768959b1a9e12d5377c70435f7a5122521779af1e7345fb4d",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-d3fe0c29c8a2660268a0",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\9fa16f6e4f4f03474be9ca83483abe57898046a9e077f496d96842dc82eb5331\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "ba744ce034c448f1d096c0f85733530d7c36c4c5fde2cd3d2e15520435c80015",
+      "scorer_receipt_digest": "ce07f9f208ca1b8bd0386ec75d8226b67ea7b65c0ed7c5631bff8547d5a3c008"
+    },
+    {
+      "cell": {
+        "arm_id": "101",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "synth:test:case2"
+        },
+        "package_digest": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M3",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "866ed244c30811d1829f966afd79697e71447c1760da81f533bddb5b9a585925",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "b1ac22f6fac482e9148292075308ccabb19be802c6301fef758d089a74085cc9",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 120.0,
+        "candidate": 50.0,
+        "counter_sources": 0,
+        "pending": 2,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "instructions": "Use candidate adjustment=50.0",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "claim_id": "390ca1186e0c93bc9eab63bcccf022c447bfe7c2cd2bc870c9cbd9b9dec91d12",
+            "depends_on": [
+              "9558ac94c1cdbb69f4295a8de483f0cfd677678c653f900449bbd5eb40812d13"
+            ],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 3,
+            "statement": "Interpretation depends on the old observation.",
+            "status": "supported",
+            "support_roots": [
+              "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401"
+            ]
+          },
+          {
+            "claim_id": "9558ac94c1cdbb69f4295a8de483f0cfd677678c653f900449bbd5eb40812d13",
+            "depends_on": [],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 2,
+            "statement": "The older x is high.",
+            "status": "undetermined",
+            "support_roots": []
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 1
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "current-measurement"
+              }
+            },
+            "root_id": "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401",
+            "subject_bindings": {
+              "task": "synth:test:case2",
+              "variable": "x"
+            }
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 99
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "uncalibrated-measurement"
+              }
+            },
+            "root_id": "ebe7da1437577cb18a8b1a450323618a0ce759816f323bbfd588be7b5007046e",
+            "subject_bindings": {
+              "task": "synth:test:case2",
+              "variable": "x"
+            }
+          }
+        ],
+        "observations": [
+          {
+            "binding": "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "ebe7da1437577cb18a8b1a450323618a0ce759816f323bbfd588be7b5007046e",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "2a4cf10be8efb42c59305fcf8b4ba579879d26edfa31ca142db31c514a70587e",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-18a639157f7c8982c5b9",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\9b4d857368d40c3a24a5dc5dfc8a25d582969d15cbc92528cb487f6cf1c140d2\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "792de598d72b3580b61eb30c3c8616933c05e4cd8eba8c1468347d4e6a89ad8b",
+      "scorer_receipt_digest": "f570946088ad8b654e13d3ae6328c9ad66c92c32450f0659d13726ab6d7f7491"
+    },
+    {
+      "cell": {
+        "arm_id": "101",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "case2"
+        },
+        "package_digest": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M3",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "51049c8c2fad19ce5e77872bae11a84113b8d2dcc1446357a64ac072ff6a302c",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "cc39ad32b4361955dff05e54b074099f72c27360b73a6937ac9fcabc578104f5",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 110.0,
+        "candidate": 50.0,
+        "counter_sources": 0,
+        "pending": 2,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "instructions": "Use candidate adjustment=50.0",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "claim_id": "639873e9135eda3e0f93733377c325cf6adc928d093a0a5828426a0764f007b2",
+            "depends_on": [
+              "81dcf9098e46549dbf1be7ae923c822edcfe7a3dbe08e4f315401f715ebe35ee"
+            ],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 3,
+            "statement": "Interpretation depends on the old observation.",
+            "status": "supported",
+            "support_roots": [
+              "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc"
+            ]
+          },
+          {
+            "claim_id": "81dcf9098e46549dbf1be7ae923c822edcfe7a3dbe08e4f315401f715ebe35ee",
+            "depends_on": [],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 2,
+            "statement": "The older x is high.",
+            "status": "undetermined",
+            "support_roots": []
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 1
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "current-measurement"
+              }
+            },
+            "root_id": "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc",
+            "subject_bindings": {
+              "task": "case2",
+              "variable": "x"
+            }
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 99
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "uncalibrated-measurement"
+              }
+            },
+            "root_id": "e08daa3ae3927d0eff8cc03c70b037306ed9741fd85adfa808c3df30c31e4d59",
+            "subject_bindings": {
+              "task": "case2",
+              "variable": "x"
+            }
+          }
+        ],
+        "observations": [
+          {
+            "binding": "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "e08daa3ae3927d0eff8cc03c70b037306ed9741fd85adfa808c3df30c31e4d59",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "2a4cf10be8efb42c59305fcf8b4ba579879d26edfa31ca142db31c514a70587e",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-58156ec1f12eb03f5513",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\4e5f79911c4bd3a918fd5de336041ab1780913a130cddccda122ae503aa72012\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "83bccc5d53c9bedf4f28cea042ae5e10a978cd70371219d48ef974a72555cbeb",
+      "scorer_receipt_digest": "dad1d3e353be2622018e6fcc312350fbbc23b3ffc8fbaa37da5f5229efc3c742"
+    },
+    {
+      "cell": {
+        "arm_id": "110",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "synth:test:case2"
+        },
+        "package_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M3",
+            "M6"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "866ed244c30811d1829f966afd79697e71447c1760da81f533bddb5b9a585925",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "b1ac22f6fac482e9148292075308ccabb19be802c6301fef758d089a74085cc9",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 72.0,
+        "candidate": 2.0,
+        "counter_sources": 1,
+        "pending": 2,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "instructions": "Use candidate adjustment=2",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "claim_id": "390ca1186e0c93bc9eab63bcccf022c447bfe7c2cd2bc870c9cbd9b9dec91d12",
+            "depends_on": [
+              "9558ac94c1cdbb69f4295a8de483f0cfd677678c653f900449bbd5eb40812d13"
+            ],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 3,
+            "statement": "Interpretation depends on the old observation.",
+            "status": "supported",
+            "support_roots": [
+              "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401"
+            ]
+          },
+          {
+            "claim_id": "9558ac94c1cdbb69f4295a8de483f0cfd677678c653f900449bbd5eb40812d13",
+            "depends_on": [],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 2,
+            "statement": "The older x is high.",
+            "status": "undetermined",
+            "support_roots": []
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 1
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "current-measurement"
+              }
+            },
+            "root_id": "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401",
+            "subject_bindings": {
+              "task": "synth:test:case2",
+              "variable": "x"
+            }
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 99
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "uncalibrated-measurement"
+              }
+            },
+            "root_id": "ebe7da1437577cb18a8b1a450323618a0ce759816f323bbfd588be7b5007046e",
+            "subject_bindings": {
+              "task": "synth:test:case2",
+              "variable": "x"
+            }
+          }
+        ],
+        "observations": [
+          {
+            "binding": "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "ebe7da1437577cb18a8b1a450323618a0ce759816f323bbfd588be7b5007046e",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [
+            {
+              "lane": "counter",
+              "root_source_id": "r002",
+              "source_id": "s002",
+              "text": {
+                "text": "Check public outliers with a median."
+              }
+            }
+          ],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "884f6a40488d437dba7e7738bd03a012a2c0ea72247878c7da6a771b6184bedc",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-331d2d587038ceb1b25a",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\ec49ed357cecb8a8fe4f11ac07be0ec50ac829ed46aee210d68eb1fdb6a13bfd\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "d3552283fbec3e101ce3d63d2ae2eeb355cc33316e13f76484c9d829a2bddff0",
+      "scorer_receipt_digest": "214ff38c0742f1d5960f551cf91abda80f8926c726f575d8e1d12ab6cd44bec3"
+    },
+    {
+      "cell": {
+        "arm_id": "110",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "case2"
+        },
+        "package_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M3",
+            "M6"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "51049c8c2fad19ce5e77872bae11a84113b8d2dcc1446357a64ac072ff6a302c",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "cc39ad32b4361955dff05e54b074099f72c27360b73a6937ac9fcabc578104f5",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 62.0,
+        "candidate": 2.0,
+        "counter_sources": 1,
+        "pending": 2,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "instructions": "Use candidate adjustment=2",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "claim_id": "639873e9135eda3e0f93733377c325cf6adc928d093a0a5828426a0764f007b2",
+            "depends_on": [
+              "81dcf9098e46549dbf1be7ae923c822edcfe7a3dbe08e4f315401f715ebe35ee"
+            ],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 3,
+            "statement": "Interpretation depends on the old observation.",
+            "status": "supported",
+            "support_roots": [
+              "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc"
+            ]
+          },
+          {
+            "claim_id": "81dcf9098e46549dbf1be7ae923c822edcfe7a3dbe08e4f315401f715ebe35ee",
+            "depends_on": [],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 2,
+            "statement": "The older x is high.",
+            "status": "undetermined",
+            "support_roots": []
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 1
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "current-measurement"
+              }
+            },
+            "root_id": "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc",
+            "subject_bindings": {
+              "task": "case2",
+              "variable": "x"
+            }
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 99
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "uncalibrated-measurement"
+              }
+            },
+            "root_id": "e08daa3ae3927d0eff8cc03c70b037306ed9741fd85adfa808c3df30c31e4d59",
+            "subject_bindings": {
+              "task": "case2",
+              "variable": "x"
+            }
+          }
+        ],
+        "observations": [
+          {
+            "binding": "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "e08daa3ae3927d0eff8cc03c70b037306ed9741fd85adfa808c3df30c31e4d59",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [
+            {
+              "lane": "counter",
+              "root_source_id": "r002",
+              "source_id": "s002",
+              "text": {
+                "text": "Check public outliers with a median."
+              }
+            }
+          ],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "884f6a40488d437dba7e7738bd03a012a2c0ea72247878c7da6a771b6184bedc",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-d20197a67b5c0c12395b",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\c4a0847a23f587f5da2a1235aa73de8919e5db4f13ba92accc4b4ed061cffb64\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "f82510d58c5e94f910bc39243c9a9e6d2ee1089bedd06a9216caedf970e9842c",
+      "scorer_receipt_digest": "1352d0e42c8ddc65a44d22fdd7f0324780742412a9acf2779317783b4e472590"
+    },
+    {
+      "cell": {
+        "arm_id": "111",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "synth:test:case2"
+        },
+        "package_digest": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M3",
+            "M6",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "866ed244c30811d1829f966afd79697e71447c1760da81f533bddb5b9a585925",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "b1ac22f6fac482e9148292075308ccabb19be802c6301fef758d089a74085cc9",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 120.0,
+        "candidate": 50.0,
+        "counter_sources": 1,
+        "pending": 2,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "instructions": "Use candidate adjustment=50.0",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "claim_id": "390ca1186e0c93bc9eab63bcccf022c447bfe7c2cd2bc870c9cbd9b9dec91d12",
+            "depends_on": [
+              "9558ac94c1cdbb69f4295a8de483f0cfd677678c653f900449bbd5eb40812d13"
+            ],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 3,
+            "statement": "Interpretation depends on the old observation.",
+            "status": "supported",
+            "support_roots": [
+              "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401"
+            ]
+          },
+          {
+            "claim_id": "9558ac94c1cdbb69f4295a8de483f0cfd677678c653f900449bbd5eb40812d13",
+            "depends_on": [],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 2,
+            "statement": "The older x is high.",
+            "status": "undetermined",
+            "support_roots": []
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 1
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "current-measurement"
+              }
+            },
+            "root_id": "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401",
+            "subject_bindings": {
+              "task": "synth:test:case2",
+              "variable": "x"
+            }
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 99
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "uncalibrated-measurement"
+              }
+            },
+            "root_id": "ebe7da1437577cb18a8b1a450323618a0ce759816f323bbfd588be7b5007046e",
+            "subject_bindings": {
+              "task": "synth:test:case2",
+              "variable": "x"
+            }
+          }
+        ],
+        "observations": [
+          {
+            "binding": "d118cb1f53e8298ad104ba9f659e685051d888f65e223465c05b6950f9154401",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "ebe7da1437577cb18a8b1a450323618a0ce759816f323bbfd588be7b5007046e",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [
+            {
+              "lane": "counter",
+              "root_source_id": "r002",
+              "source_id": "s002",
+              "text": {
+                "text": "Check public outliers with a median."
+              }
+            }
+          ],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "bb8ac4de3cca1129a3c217655d44e79b4b4bebd25baaa1b7963c8b09f3ec142a",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-b50e2fc0c0c00fa24d26",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\c955bcffe4255c4692b1ff44bd221c94d81a2dcdf3655c76e62948fcdd0d8fc0\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "5ee2bf105ad465097e3137987d3ee1c0fd3ed87d47ffabf09a6dda4ffc6561a9",
+      "scorer_receipt_digest": "7463de9415cd76842377dab3d11a6f7861081cae92f162b2488dd692aa23bd8a"
+    },
+    {
+      "cell": {
+        "arm_id": "111",
+        "coverage_id": "triple:M3+M6+M9",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "cf87f9754db0b8c0fdb731747b8e3c9d7ffde71d19223cff1209547ac13bbf0b",
+          "domain": "train",
+          "group_id": "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+          "split_id": "13263fe3d783979217ffb00c2a37995e8774052e623245e7c9fdd5f662f40837",
+          "task_id": "case2"
+        },
+        "package_digest": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M3",
+            "M6",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "51049c8c2fad19ce5e77872bae11a84113b8d2dcc1446357a64ac072ff6a302c",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "cc39ad32b4361955dff05e54b074099f72c27360b73a6937ac9fcabc578104f5",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "observed": {
+        "target_statistic": 110.0,
+        "candidate": 50.0,
+        "counter_sources": 1,
+        "pending": 2,
+        "observations": [
+          1,
+          99
+        ]
+      },
+      "candidate_context": {
+        "binding": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "instructions": "Use candidate adjustment=50.0",
+        "memory_lesson": null,
+        "schema": "q63-public-candidate-context-v1"
+      },
+      "state_projection": {
+        "memory": [
+          {
+            "claim_id": "639873e9135eda3e0f93733377c325cf6adc928d093a0a5828426a0764f007b2",
+            "depends_on": [
+              "81dcf9098e46549dbf1be7ae923c822edcfe7a3dbe08e4f315401f715ebe35ee"
+            ],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 3,
+            "statement": "Interpretation depends on the old observation.",
+            "status": "supported",
+            "support_roots": [
+              "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc"
+            ]
+          },
+          {
+            "claim_id": "81dcf9098e46549dbf1be7ae923c822edcfe7a3dbe08e4f315401f715ebe35ee",
+            "depends_on": [],
+            "kind": "claim",
+            "needs_review": true,
+            "refute_roots": [],
+            "revision": 2,
+            "statement": "The older x is high.",
+            "status": "undetermined",
+            "support_roots": []
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 1
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "current-measurement"
+              }
+            },
+            "root_id": "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc",
+            "subject_bindings": {
+              "task": "case2",
+              "variable": "x"
+            }
+          },
+          {
+            "kind": "evidence",
+            "payload": {
+              "content": {
+                "x": 99
+              },
+              "kind": "observation",
+              "root_material": {
+                "observation": "uncalibrated-measurement"
+              }
+            },
+            "root_id": "e08daa3ae3927d0eff8cc03c70b037306ed9741fd85adfa808c3df30c31e4d59",
+            "subject_bindings": {
+              "task": "case2",
+              "variable": "x"
+            }
+          }
+        ],
+        "observations": [
+          {
+            "binding": "2ae5da63f14668f950c95bcd946b0e204031b64e0b9390cf096f741bb0080bdc",
+            "content": {
+              "x": 1
+            }
+          },
+          {
+            "binding": "e08daa3ae3927d0eff8cc03c70b037306ed9741fd85adfa808c3df30c31e4d59",
+            "content": {
+              "x": 99
+            }
+          }
+        ]
+      },
+      "retrieval": {
+        "by_lane": {
+          "counter": [
+            {
+              "lane": "counter",
+              "root_source_id": "r002",
+              "source_id": "s002",
+              "text": {
+                "text": "Check public outliers with a median."
+              }
+            }
+          ],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Compute the CSV mean or robust median."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "Use the public mean."
+              }
+            }
+          ]
+        },
+        "scientific_admission": false,
+        "source_qualification": "caller_declared_public_train_unvalidated"
+      },
+      "program_sha256": "bb8ac4de3cca1129a3c217655d44e79b4b4bebd25baaa1b7963c8b09f3ec142a",
+      "docker_argv": [
+        "docker",
+        "run",
+        "--pull",
+        "never",
+        "--name",
+        "research-loop-cc3ff158bd3cd1561afd",
+        "--rm",
+        "--network",
+        "none",
+        "--read-only",
+        "--user",
+        "1000:1000",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "--pids-limit",
+        "128",
+        "--memory",
+        "1g",
+        "--cpus",
+        "1.0",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\data.csv:/input/public_csv:ro",
+        "-v",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\triple369-e5bf4cf-final\\lineage-retrieval-improvement0\\run\\targets\\5c5773c9ae6d5cfa6861c58106fae06f7a969ff8de53f72b98720d566c605a4f\\runtime\\analysis-1.py:/task/analysis.py:ro",
+        "research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+        "python3",
+        "/task/analysis.py"
+      ],
+      "runtime_digest": "418585309a73342680f589b97268f8845664ef35a1ab6b49e9b804944dcc9718",
+      "scorer_receipt_digest": "4733fc7859d48a83f7f0b4a3585c00234314a16a97ce59cae0d1615bfe0a077b"
+    }
+  ],
+  "builds": [
+    {
+      "receipt": {
+        "candidate_digest": "7d1c18f689ebb47fe3ff49463808979200a9c665aa3a132bf4a8f60a9ad300d5",
+        "files": {
+          "builder-receipt.json": "ba3e12958ab0dfcb35f833f0879623b1416ba2fa07ffc4730d3713d2aabb5640",
+          "builder.json": "6d0c378ff718a098990a56200ca876b4849c3f3aa56b6d55c889c9d7cb017287",
+          "candidate.json": "66f6a5956231537709f924becfc2882c3256a79e20514f157577aa5af5f64876",
+          "phase.jsonl": "9c316701bb3006b858a28a7dffddedac31f0c9c49e6ab07fd22068957eb946ed",
+          "proposal/claims.jsonl": "f6629dda9f5dc8ba0e4329c7c899a594133e952e6a25fd1b05fc3beadb62f827",
+          "proposal/evidence.jsonl": "da2bea9fb9ad1b93ddcc011d0c0e0e2a4e92a43b680c87e6af2059eae0863e59",
+          "proposal/predictions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "proposal/reviews.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "proposal/trace.jsonl": "36d931afe4a165c72c625ce13079fb49a73dbeeb9adab32391caf9f667572c6b",
+          "source/source-verification.json": "5505577b77b9b1333e9ff302c90b0f57e13d9f7e67a959b3c6737956321a324e"
+        },
+        "plan_digest": "5369749bcc191e24efb417aa3cdae20a977919d5c3e4a450666418096fe9fef8",
+        "reason": null,
+        "recipe": {
+          "arm": {
+            "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+            "enabled": [
+              "M2"
+            ],
+            "schema": "module-arm-v1"
+          },
+          "arm_id": "000",
+          "pair": "triple:M3+M6+M9"
+        },
+        "schema": "state-improvement-build-receipt-v1",
+        "status": "succeeded"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "000",
+        "pair": "triple:M3+M6+M9"
+      },
+      "source": {
+        "binding": {
+          "authorities": [
+            {
+              "authority": "state-0",
+              "key_digest": "b37361a0be8af8905de1f4384e701365ece4313dd5e064d375eb2851c043ba68",
+              "source_group": "state-observation-0"
+            },
+            {
+              "authority": "state-1",
+              "key_digest": "2cf2c6077769e8f910ed119ac8fa288d12817d4fdcef245576c752a076d3217a",
+              "source_group": "state-observation-1"
+            }
+          ],
+          "cost_limit_per_call": 1
+        },
+        "calls": [
+          {
+            "authority": "state-0",
+            "cost_units": 1,
+            "cost_unknown": false,
+            "limits": {
+              "calls": 1,
+              "cost_units": 1
+            },
+            "request_digest": "3910edc6008cce0ea8fcb91ff551c2bda8239c9fd3cf60184bde9f1b218a5a49",
+            "response": {
+              "body": {
+                "authority": "state-0",
+                "cost_units": 1,
+                "identity": {
+                  "benchmark": "blade",
+                  "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                  "domain": "train",
+                  "group_id": "closed-history-group",
+                  "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                  "task_id": "closed-history"
+                },
+                "material_digest": "e073c593bc52edb1dc9b88e378830fb3c347666933cfeb618975d1fe919d14b8",
+                "request_digest": "3910edc6008cce0ea8fcb91ff551c2bda8239c9fd3cf60184bde9f1b218a5a49",
+                "schema": "lineage-material-provenance-response-v1",
+                "source_group": "state-observation-0",
+                "verdict": "verified"
+              },
+              "mac": "9af902e99fd040af1d9482e8fac99192b139da22bee5083e5182746f9d0257d9"
+            },
+            "status": "verified"
+          },
+          {
+            "authority": "state-1",
+            "cost_units": 1,
+            "cost_unknown": false,
+            "limits": {
+              "calls": 1,
+              "cost_units": 1
+            },
+            "request_digest": "3910edc6008cce0ea8fcb91ff551c2bda8239c9fd3cf60184bde9f1b218a5a49",
+            "response": {
+              "body": {
+                "authority": "state-1",
+                "cost_units": 1,
+                "identity": {
+                  "benchmark": "blade",
+                  "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                  "domain": "train",
+                  "group_id": "closed-history-group",
+                  "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                  "task_id": "closed-history"
+                },
+                "material_digest": "e073c593bc52edb1dc9b88e378830fb3c347666933cfeb618975d1fe919d14b8",
+                "request_digest": "3910edc6008cce0ea8fcb91ff551c2bda8239c9fd3cf60184bde9f1b218a5a49",
+                "schema": "lineage-material-provenance-response-v1",
+                "source_group": "state-observation-1",
+                "verdict": "verified"
+              },
+              "mac": "816988d38fa3619a4fb8cd3b30f577c5d7f7ab3a01ecb54eab3db2bc1e66b914"
+            },
+            "status": "verified"
+          }
+        ],
+        "request": {
+          "cell_binding": {
+            "cell_digest": "8280f417654756259206b6a3e72361b691ea662973110a71292102864551992a",
+            "scenario_digest": "5369749bcc191e24efb417aa3cdae20a977919d5c3e4a450666418096fe9fef8"
+          },
+          "limits": {
+            "calls": 1,
+            "cost_units": 1
+          },
+          "material": {
+            "claims": [
+              {
+                "depends_on": [],
+                "key": "upstream",
+                "refutes": [],
+                "statement": "The older x is high.",
+                "subject_bindings": {
+                  "task": "closed-history",
+                  "variable": "x"
+                },
+                "supports": [
+                  "old"
+                ]
+              },
+              {
+                "depends_on": [
+                  "upstream"
+                ],
+                "key": "downstream",
+                "refutes": [],
+                "statement": "Interpretation depends on the old observation.",
+                "subject_bindings": {
+                  "task": "closed-history",
+                  "variable": "x"
+                },
+                "supports": [
+                  "current"
+                ]
+              }
+            ],
+            "context_budget_bytes": 24000,
+            "identity": {
+              "benchmark": "blade",
+              "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+              "domain": "train",
+              "group_id": "closed-history-group",
+              "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "task_id": "closed-history"
+            },
+            "ordinary_summary": "The old interpretation that x is high remains in this ordinary summary.",
+            "originals": [
+              {
+                "content": {
+                  "x": 8
+                },
+                "key": "old",
+                "root_material": {
+                  "history_digest": "7834af9e6429f370df7b714401ef1e1ad7b37b255b1bd9975fd3855826652093",
+                  "observation_key": "old"
+                },
+                "subject_bindings": {
+                  "task": "closed-history",
+                  "variable": "x"
+                }
+              },
+              {
+                "content": {
+                  "x": 1
+                },
+                "key": "current",
+                "root_material": {
+                  "history_digest": "7834af9e6429f370df7b714401ef1e1ad7b37b255b1bd9975fd3855826652093",
+                  "observation_key": "current"
+                },
+                "subject_bindings": {
+                  "task": "closed-history",
+                  "variable": "x"
+                }
+              },
+              {
+                "content": {
+                  "x": 99
+                },
+                "key": "uncalibrated",
+                "root_material": {
+                  "history_digest": "7834af9e6429f370df7b714401ef1e1ad7b37b255b1bd9975fd3855826652093",
+                  "observation_key": "uncalibrated"
+                },
+                "subject_bindings": {
+                  "task": "closed-history",
+                  "variable": "x"
+                }
+              }
+            ],
+            "public_artifacts": [
+              {
+                "artifact": {
+                  "artifact_id": "public_csv",
+                  "byte_count": 13,
+                  "sha256": "02f3bb9bc14ac2eb8786cd0c7dbb993991ed14e75980da4e96029e57cae2569e"
+                },
+                "container_path": "/input/public_csv"
+              }
+            ],
+            "question": "Which current observations support the value of x?",
+            "representations": [
+              {
+                "content": {
+                  "reported_x": 8
+                },
+                "key": "old-report",
+                "representation": "report",
+                "root": "old"
+              },
+              {
+                "content": {
+                  "summary_x": 8
+                },
+                "key": "old-summary",
+                "representation": "summary",
+                "root": "old"
+              }
+            ],
+            "schema": "lineage-combination-material-v1",
+            "task_digest": "63fb909bfbe9a305ca0f4e9dc0fbbc3cd8c7ac46b0fbd7f98c8fe4ed280cb23a",
+            "withdrawals": [
+              {
+                "reason": "Original public source withdrew its old observation.",
+                "root": "old"
+              }
+            ]
+          },
+          "material_digest": "e073c593bc52edb1dc9b88e378830fb3c347666933cfeb618975d1fe919d14b8",
+          "schema": "lineage-material-provenance-request-v1"
+        }
+      },
+      "status": "succeeded"
+    },
+    {
+      "receipt": {
+        "candidate_digest": "7d57cd4edf766338be6edf64afaa7c24b99eb10434b63ad63c2ff7db8b405db8",
+        "files": {
+          "builder-receipt.json": "d14c76eda91e72a1a9caf6393884ea4bbc853e672dd019748721702527ab9b6c",
+          "builder.json": "4607bdb0907b97006e582d7c35b111ca901570615282306bb57a6a8bce7eb4f0",
+          "candidate.json": "46930354c4701a977503fb3eb7f32de55a7058609e6d788409919430105bccbc",
+          "phase.jsonl": "831fabe605bf4218e8a3461cbbaf67ecc3a7ef3e00f676353a31f9658347d5ae",
+          "proposal/claims.jsonl": "f6629dda9f5dc8ba0e4329c7c899a594133e952e6a25fd1b05fc3beadb62f827",
+          "proposal/evidence.jsonl": "da2bea9fb9ad1b93ddcc011d0c0e0e2a4e92a43b680c87e6af2059eae0863e59",
+          "proposal/predictions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "proposal/reviews.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "proposal/trace.jsonl": "258976029a4235885324df6b3d7fc8d343b784cb7aaa0bfd0b16d3a5756a4c0d",
+          "source/source-verification.json": "cc910de5658a0d6e69596410deccc0e5a9ccfb03730c6bb2c7358ec810f4d496"
+        },
+        "plan_digest": "5369749bcc191e24efb417aa3cdae20a977919d5c3e4a450666418096fe9fef8",
+        "reason": null,
+        "recipe": {
+          "arm": {
+            "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+            "enabled": [
+              "M2",
+              "M9"
+            ],
+            "schema": "module-arm-v1"
+          },
+          "arm_id": "001",
+          "pair": "triple:M3+M6+M9"
+        },
+        "schema": "state-improvement-build-receipt-v1",
+        "status": "succeeded"
+      },
+      "recipe": {
+        "arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M2",
+            "M9"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "arm_id": "001",
+        "pair": "triple:M3+M6+M9"
+      },
+      "source": {
+        "binding": {
+          "authorities": [
+            {
+              "authority": "state-0",
+              "key_digest": "b37361a0be8af8905de1f4384e701365ece4313dd5e064d375eb2851c043ba68",
+              "source_group": "state-observation-0"
+            },
+            {
+              "authority": "state-1",
+              "key_digest": "2cf2c6077769e8f910ed119ac8fa288d12817d4fdcef245576c752a076d3217a",
+              "source_group": "state-observation-1"
+            }
+          ],
+          "cost_limit_per_call": 1
+        },
+        "calls": [
+          {
+            "authority": "state-0",
+            "cost_units": 1,
+            "cost_unknown": false,
+            "limits": {
+              "calls": 1,
+              "cost_units": 1
+            },
+            "request_digest": "2a1a266ac4febfe0dcce20b98466ae07f029394c6e467f63808686e7fa29887a",
+            "response": {
+              "body": {
+                "authority": "state-0",
+                "cost_units": 1,
+                "identity": {
+                  "benchmark": "blade",
+                  "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                  "domain": "train",
+                  "group_id": "closed-history-group",
+                  "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                  "task_id": "closed-history"
+                },
+                "material_digest": "e073c593bc52edb1dc9b88e378830fb3c347666933cfeb618975d1fe919d14b8",
+                "request_digest": "2a1a266ac4febfe0dcce20b98466ae07f029394c6e467f63808686e7fa29887a",
+                "schema": "lineage-material-provenance-response-v1",
+                "source_group": "state-observation-0",
+                "verdict": "verified"
+              },
+              "mac": "2a9b79a7699ae40d27c27ec6dbd11c1e3ef7fc78f6e2cb71d20006a21f1c6ced"
+            },
+            "status": "verified"
+          },
+          {
+            "authority": "state-1",
+            "cost_units": 1,
+            "cost_unknown": false,
+            "limits": {
+              "calls": 1,
+              "cost_units": 1
+            },
+            "request_digest": "2a1a266ac4febfe0dcce20b98466ae07f029394c6e467f63808686e7fa29887a",
+            "response": {
+              "body": {
+                "authority": "state-1",
+                "cost_units": 1,
+                "identity": {
+                  "benchmark": "blade",
+                  "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                  "domain": "train",
+                  "group_id": "closed-history-group",
+                  "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                  "task_id": "closed-history"
+                },
+                "material_digest": "e073c593bc52edb1dc9b88e378830fb3c347666933cfeb618975d1fe919d14b8",
+                "request_digest": "2a1a266ac4febfe0dcce20b98466ae07f029394c6e467f63808686e7fa29887a",
+                "schema": "lineage-material-provenance-response-v1",
+                "source_group": "state-observation-1",
+                "verdict": "verified"
+              },
+              "mac": "e27712f26e8d659c45bf4a26765bcfd19d77e23ddf9dabfcf4fad877977a7142"
+            },
+            "status": "verified"
+          }
+        ],
+        "request": {
+          "cell_binding": {
+            "cell_digest": "f9f4bcc8607eb3edef4c3bed3a0b44ec7e0136bd9e09e327162ba9e83de00dd7",
+            "scenario_digest": "5369749bcc191e24efb417aa3cdae20a977919d5c3e4a450666418096fe9fef8"
+          },
+          "limits": {
+            "calls": 1,
+            "cost_units": 1
+          },
+          "material": {
+            "claims": [
+              {
+                "depends_on": [],
+                "key": "upstream",
+                "refutes": [],
+                "statement": "The older x is high.",
+                "subject_bindings": {
+                  "task": "closed-history",
+                  "variable": "x"
+                },
+                "supports": [
+                  "old"
+                ]
+              },
+              {
+                "depends_on": [
+                  "upstream"
+                ],
+                "key": "downstream",
+                "refutes": [],
+                "statement": "Interpretation depends on the old observation.",
+                "subject_bindings": {
+                  "task": "closed-history",
+                  "variable": "x"
+                },
+                "supports": [
+                  "current"
+                ]
+              }
+            ],
+            "context_budget_bytes": 24000,
+            "identity": {
+              "benchmark": "blade",
+              "dataset_version": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+              "domain": "train",
+              "group_id": "closed-history-group",
+              "split_id": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+              "task_id": "closed-history"
+            },
+            "ordinary_summary": "The old interpretation that x is high remains in this ordinary summary.",
+            "originals": [
+              {
+                "content": {
+                  "x": 8
+                },
+                "key": "old",
+                "root_material": {
+                  "history_digest": "7834af9e6429f370df7b714401ef1e1ad7b37b255b1bd9975fd3855826652093",
+                  "observation_key": "old"
+                },
+                "subject_bindings": {
+                  "task": "closed-history",
+                  "variable": "x"
+                }
+              },
+              {
+                "content": {
+                  "x": 1
+                },
+                "key": "current",
+                "root_material": {
+                  "history_digest": "7834af9e6429f370df7b714401ef1e1ad7b37b255b1bd9975fd3855826652093",
+                  "observation_key": "current"
+                },
+                "subject_bindings": {
+                  "task": "closed-history",
+                  "variable": "x"
+                }
+              },
+              {
+                "content": {
+                  "x": 99
+                },
+                "key": "uncalibrated",
+                "root_material": {
+                  "history_digest": "7834af9e6429f370df7b714401ef1e1ad7b37b255b1bd9975fd3855826652093",
+                  "observation_key": "uncalibrated"
+                },
+                "subject_bindings": {
+                  "task": "closed-history",
+                  "variable": "x"
+                }
+              }
+            ],
+            "public_artifacts": [
+              {
+                "artifact": {
+                  "artifact_id": "public_csv",
+                  "byte_count": 13,
+                  "sha256": "02f3bb9bc14ac2eb8786cd0c7dbb993991ed14e75980da4e96029e57cae2569e"
+                },
+                "container_path": "/input/public_csv"
+              }
+            ],
+            "question": "Which current observations support the value of x?",
+            "representations": [
+              {
+                "content": {
+                  "reported_x": 8
+                },
+                "key": "old-report",
+                "representation": "report",
+                "root": "old"
+              },
+              {
+                "content": {
+                  "summary_x": 8
+                },
+                "key": "old-summary",
+                "representation": "summary",
+                "root": "old"
+              }
+            ],
+            "schema": "lineage-combination-material-v1",
+            "task_digest": "63fb909bfbe9a305ca0f4e9dc0fbbc3cd8c7ac46b0fbd7f98c8fe4ed280cb23a",
+            "withdrawals": [
+              {
+                "reason": "Original public source withdrew its old observation.",
+                "root": "old"
+              }
+            ]
+          },
+          "material_digest": "e073c593bc52edb1dc9b88e378830fb3c347666933cfeb618975d1fe919d14b8",
+          "schema": "lineage-material-provenance-request-v1"
+        }
+      },
+      "status": "succeeded"
+    }
+  ],
+  "contrasts": [
+    {
+      "components": {
+        "M3": {
+          "benchmark_estimates": {
+            "blade": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            },
+            "discoverybench": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            }
+          },
+          "status": "estimated"
+        },
+        "M3+M6": {
+          "benchmark_estimates": {
+            "blade": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            },
+            "discoverybench": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            }
+          },
+          "status": "estimated"
+        },
+        "M3+M6+M9": {
+          "benchmark_estimates": {
+            "blade": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            },
+            "discoverybench": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            }
+          },
+          "status": "estimated"
+        },
+        "M3+M9": {
+          "benchmark_estimates": {
+            "blade": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            },
+            "discoverybench": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            }
+          },
+          "status": "estimated"
+        },
+        "M6": {
+          "benchmark_estimates": {
+            "blade": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            },
+            "discoverybench": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            }
+          },
+          "status": "estimated"
+        },
+        "M6+M9": {
+          "benchmark_estimates": {
+            "blade": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            },
+            "discoverybench": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            }
+          },
+          "status": "estimated"
+        },
+        "M9": {
+          "benchmark_estimates": {
+            "blade": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            },
+            "discoverybench": {
+              "confidence_interval": {
+                "level": 0.95,
+                "lower": null,
+                "reason": "insufficient_independent_groups",
+                "status": "not_estimable",
+                "upper": null
+              },
+              "independent_groups": 1,
+              "mean": 0.0
+            }
+          },
+          "status": "estimated"
+        }
+      },
+      "highest_order": {
+        "benchmark_estimates": {
+          "blade": {
+            "independent_groups": 1,
+            "mean": 0.0
+          },
+          "discoverybench": {
+            "independent_groups": 1,
+            "mean": 0.0
+          }
+        },
+        "direction": "higher_better",
+        "estimand": "interaction_on_scale",
+        "group_detail": {
+          "interaction:blade:5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030": {
+            "mean": 0.0,
+            "task_replicate_contrasts": 1
+          },
+          "interaction:discoverybench:59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c": {
+            "mean": 0.0,
+            "task_replicate_contrasts": 1
+          }
+        },
+        "input_evidence": {
+          "panel_digest": "767feb54023c75ade79d64fdf10590f8848bd59d7f4efc8679fca0fb583b63b3",
+          "runtime": [
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "000"
+              ],
+              "trace_digest": "7d0065af1e7327b9aa67bc7c8d987acfdefd9a09c945ad9eb8cffb0d0b9db867"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "001"
+              ],
+              "trace_digest": "c582cf50adb9792cb970f40e279d504da5748aec0f134877f1be568267e00fbf"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "010"
+              ],
+              "trace_digest": "4c1cb1488d994b051d1ed125c11df42f776d4c6a517a7ccb7e1dcfb0d58dad13"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "011"
+              ],
+              "trace_digest": "587795fa77c40662f2773f3f12a2ed068e84d505e51234840441f7fe45997c79"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "100"
+              ],
+              "trace_digest": "ba744ce034c448f1d096c0f85733530d7c36c4c5fde2cd3d2e15520435c80015"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "101"
+              ],
+              "trace_digest": "83bccc5d53c9bedf4f28cea042ae5e10a978cd70371219d48ef974a72555cbeb"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "110"
+              ],
+              "trace_digest": "f82510d58c5e94f910bc39243c9a9e6d2ee1089bedd06a9216caedf970e9842c"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "111"
+              ],
+              "trace_digest": "418585309a73342680f589b97268f8845664ef35a1ab6b49e9b804944dcc9718"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "000"
+              ],
+              "trace_digest": "a311fe45abce5ec5b09894a4f63559faea42310ff561b03a7fd8a1275e4eb8cb"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "001"
+              ],
+              "trace_digest": "8c0086a925e4b56eff4302aae374663153a92ef4bc816e3d40e17e0afec94d7a"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "010"
+              ],
+              "trace_digest": "26d0fbdd40aa6b47dfd217a6ee6d149916c81053f4c18dfc78d0b75eb4e3839b"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "011"
+              ],
+              "trace_digest": "049a3dfc0be62c5fe915d2c3e258dc4100731cfdb8bcd013911fe6933b802a99"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "100"
+              ],
+              "trace_digest": "3ca03e58ae2689b8d15625a5e686e0d181ea8fea1ea8d17302ecdc6516f13ad0"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "101"
+              ],
+              "trace_digest": "792de598d72b3580b61eb30c3c8616933c05e4cd8eba8c1468347d4e6a89ad8b"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "110"
+              ],
+              "trace_digest": "d3552283fbec3e101ce3d63d2ae2eeb355cc33316e13f76484c9d829a2bddff0"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "111"
+              ],
+              "trace_digest": "5ee2bf105ad465097e3137987d3ee1c0fd3ed87d47ffabf09a6dda4ffc6561a9"
+            }
+          ],
+          "scorer": [
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "000"
+              ],
+              "receipt_digest": "dfa649691cd38b8cfb7abf0b5de88d5858a4ab1ada279bcefd27b9a5419e7b27"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "001"
+              ],
+              "receipt_digest": "59a8a3f4e837734bd5a3d02f20ce3fb832aa9fc173bb104d26a86858da4edd65"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "010"
+              ],
+              "receipt_digest": "60a0c6c6fd1f0ee6780b595bd0741b69c45052a09be143700f2589d39d1a6894"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "011"
+              ],
+              "receipt_digest": "28a4cc28300d061efa0d834efef6df8331ce80ca3ad841c2d48d52ea71be8def"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "100"
+              ],
+              "receipt_digest": "ce07f9f208ca1b8bd0386ec75d8226b67ea7b65c0ed7c5631bff8547d5a3c008"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "101"
+              ],
+              "receipt_digest": "dad1d3e353be2622018e6fcc312350fbbc23b3ffc8fbaa37da5f5229efc3c742"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "110"
+              ],
+              "receipt_digest": "1352d0e42c8ddc65a44d22fdd7f0324780742412a9acf2779317783b4e472590"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "blade",
+                "case2",
+                "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+                "r1",
+                "combination",
+                "111"
+              ],
+              "receipt_digest": "4733fc7859d48a83f7f0b4a3585c00234314a16a97ce59cae0d1615bfe0a077b"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "000"
+              ],
+              "receipt_digest": "0fe5fa87d96c7c5f8ad120707102c773ccf81874661e053bb2841d0a40e97873"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "001"
+              ],
+              "receipt_digest": "0c88b56b1fc1538e46caa51bebe6892a17ab1abc3234446cbae473c286df43c0"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "010"
+              ],
+              "receipt_digest": "8136c808c20410d04b0000e717aab6b1fa5ac0b39f97244bd4bb82cada077ecb"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "011"
+              ],
+              "receipt_digest": "e3f9c1098ed745096ea88de61ca63db3ffeac8b7b287b9b9577b7eaece86a919"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "100"
+              ],
+              "receipt_digest": "ed10e5b8bbfd2253ff8c9705044c61aca48b6c9862a32e6e9ae14e86ad46ca29"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "101"
+              ],
+              "receipt_digest": "f570946088ad8b654e13d3ae6328c9ad66c92c32450f0659d13726ab6d7f7491"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "110"
+              ],
+              "receipt_digest": "214ff38c0742f1d5960f551cf91abda80f8926c726f575d8e1d12ab6cd44bec3"
+            },
+            {
+              "cell_key": [
+                "triple:M3+M6+M9",
+                "discoverybench",
+                "synth:test:case2",
+                "59bf59ea25c2327bae32095997105373da633acc0950b3448df118fd1f376f6c",
+                "r1",
+                "combination",
+                "111"
+              ],
+              "receipt_digest": "7463de9415cd76842377dab3d11a6f7861081cae92f162b2488dd692aa23bd8a"
+            }
+          ]
+        },
+        "input_evidence_digest": "79b20b1a6a8e478c977b42108b1ad48d62d914e07815a2ad7ba31472a67d5f09",
+        "missing_policy": "incomplete_reject",
+        "panel_digest": "767feb54023c75ade79d64fdf10590f8848bd59d7f4efc8679fca0fb583b63b3",
+        "scale": "unit",
+        "schema": "frozen-grouped-combination-estimate-v1",
+        "scientific_status": "estimation_only_not_acceptance",
+        "significance": "not_computed_no_frozen_alpha_or_minimum_groups",
+        "status": "estimated",
+        "value_range": [
+          0.0,
+          1.0
+        ]
+      },
+      "policy": {
+        "ci": {
+          "level": 0.95,
+          "method": "unavailable_in_one_group_per_benchmark_slice",
+          "minimum_independent_groups": 2
+        },
+        "coefficients": {
+          "M3": {
+            "000": -0.25,
+            "001": -0.25,
+            "010": -0.25,
+            "011": -0.25,
+            "100": 0.25,
+            "101": 0.25,
+            "110": 0.25,
+            "111": 0.25
+          },
+          "M3+M6": {
+            "000": 0.5,
+            "001": 0.5,
+            "010": -0.5,
+            "011": -0.5,
+            "100": -0.5,
+            "101": -0.5,
+            "110": 0.5,
+            "111": 0.5
+          },
+          "M3+M6+M9": {
+            "000": -1.0,
+            "001": 1.0,
+            "010": 1.0,
+            "011": -1.0,
+            "100": 1.0,
+            "101": -1.0,
+            "110": -1.0,
+            "111": 1.0
+          },
+          "M3+M9": {
+            "000": 0.5,
+            "001": -0.5,
+            "010": 0.5,
+            "011": -0.5,
+            "100": -0.5,
+            "101": 0.5,
+            "110": -0.5,
+            "111": 0.5
+          },
+          "M6": {
+            "000": -0.25,
+            "001": -0.25,
+            "010": 0.25,
+            "011": 0.25,
+            "100": -0.25,
+            "101": -0.25,
+            "110": 0.25,
+            "111": 0.25
+          },
+          "M6+M9": {
+            "000": 0.5,
+            "001": -0.5,
+            "010": -0.5,
+            "011": 0.5,
+            "100": 0.5,
+            "101": -0.5,
+            "110": -0.5,
+            "111": 0.5
+          },
+          "M9": {
+            "000": -0.25,
+            "001": 0.25,
+            "010": -0.25,
+            "011": 0.25,
+            "100": -0.25,
+            "101": 0.25,
+            "110": -0.25,
+            "111": 0.25
+          }
+        },
+        "factors": [
+          "M3",
+          "M6",
+          "M9"
+        ],
+        "group_weighting": "task_replicate_mean_then_equal_group_mean",
+        "missing_policy": "incomplete_reject",
+        "schema": "lineage-retrieval-improvement-components-v1",
+        "source_binding": "exact_original_state_and_corpus_for_all_arms"
+      },
+      "schema": "lineage-retrieval-improvement-estimate-v1",
+      "scientific_status": "descriptive_estimation_only_not_acceptance",
+      "status": "estimated"
+    }
+  ],
+  "allocation": {
+    "arm_recipe_bindings": 8,
+    "build_recipes": 2,
+    "builder_executions": 2,
+    "builder_proposals": 2,
+    "docker_attempts": 16,
+    "model_calls": 34,
+    "retrieval_calls": 48,
+    "retrieval_operations": 16,
+    "scorer_calls": 16,
+    "source_calls": 68,
+    "structural_exclusions": 0,
+    "target_cells": 16,
+    "target_model_calls": 32
+  }
+}
