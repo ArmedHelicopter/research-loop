@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="19" failures="5" skipped="0" tests="34" time="1.333" timestamp="2026-09-13T21:35:57.064474+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.298" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.029" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.043" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.129" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.120" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_real_docker_all_three_pairs_share_state_and_retrieval_solver" time="0.015"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_failures_remain_replayable_without_false_success[provider]" time="0.012"><failure message="research_loop.ontology.ContractError: execution needs one or more public input files">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b/test_original_failures_remain_0')
+fault = 'provider'
+
+    @pytest.mark.parametrize('fault',['provider','model','analysis','docker'])
+    def test_original_failures_remain_replayable_without_false_success(tmp_path,fault):
+        panel,args,_,_=fixture(tmp_path,'pair:M1+M6'); cell=panel.cells[-1]
+&gt;       result,seen,calls=execute(tmp_path,args[cell.key],cell,fault)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:185: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='discoverybench', task_id='public-example', group_id='public-group-di...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</failure></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_failures_remain_replayable_without_false_success[model]" time="0.010"><failure message="research_loop.ontology.ContractError: execution needs one or more public input files">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b/test_original_failures_remain_1')
+fault = 'model'
+
+    @pytest.mark.parametrize('fault',['provider','model','analysis','docker'])
+    def test_original_failures_remain_replayable_without_false_success(tmp_path,fault):
+        panel,args,_,_=fixture(tmp_path,'pair:M1+M6'); cell=panel.cells[-1]
+&gt;       result,seen,calls=execute(tmp_path,args[cell.key],cell,fault)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:185: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='discoverybench', task_id='public-example', group_id='public-group-di...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</failure></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_failures_remain_replayable_without_false_success[analysis]" time="0.012"><failure message="research_loop.ontology.ContractError: execution needs one or more public input files">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b/test_original_failures_remain_2')
+fault = 'analysis'
+
+    @pytest.mark.parametrize('fault',['provider','model','analysis','docker'])
+    def test_original_failures_remain_replayable_without_false_success(tmp_path,fault):
+        panel,args,_,_=fixture(tmp_path,'pair:M1+M6'); cell=panel.cells[-1]
+&gt;       result,seen,calls=execute(tmp_path,args[cell.key],cell,fault)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:185: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='discoverybench', task_id='public-example', group_id='public-group-di...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</failure></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_failures_remain_replayable_without_false_success[docker]" time="0.012"><failure message="research_loop.ontology.ContractError: execution needs one or more public input files">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b/test_original_failures_remain_3')
+fault = 'docker'
+
+    @pytest.mark.parametrize('fault',['provider','model','analysis','docker'])
+    def test_original_failures_remain_replayable_without_false_success(tmp_path,fault):
+        panel,args,_,_=fixture(tmp_path,'pair:M1+M6'); cell=panel.cells[-1]
+&gt;       result,seen,calls=execute(tmp_path,args[cell.key],cell,fault)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:185: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='discoverybench', task_id='public-example', group_id='public-group-di...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</failure></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[state_original]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[state_claims]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[corpus]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[query]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[provenance]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[authority_signature]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[program]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[csv]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[transition]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[source_item]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[source_budget]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[retrieval_projection]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[state_journal]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[joint]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[request_context]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[evidence_context]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[response_program]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[order]" time="0.000"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution needs one or more public input files&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-..._ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        outputs=[]
+        for obligation in DESIGNS:
+            root=tmp_path_factory.mktemp('state-retrieval-'+DESIGNS[obligation][0]); panel,args,sources,retrieval=fixture(root,obligation)
+            for cell in panel.cells:
+&gt;               result,seen,calls=execute(root,args[cell.key],cell)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:134: in execute
+    result=run_state_retrieval_cell(cell=cell, **args, provider=Provider(calls,fault=='provider'), objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),
+research_loop\modular\state_retrieval_combination_driver.py:141: in run_state_retrieval_cell
+    state, docs = _validate(panel, cell, task, scenario, package, material, source_verifier, retrieval_verifier)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_retrieval_combination_driver.py:112: in _validate
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+&lt;string&gt;:8: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ExecutionRequest(identity=DataIdentity(benchmark='blade', task_id='public-example', group_id='public-group-blade', dat...3b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349', program=WindowsPath('analysis.py'), inputs={}, timeout_seconds=20)
+
+    def __post_init__(self) -&gt; None:
+        if not isinstance(self.image, str) or not _IMAGE.fullmatch(self.image):
+            raise ContractError("execution image must be pinned by sha256 digest")
+        if not isinstance(self.timeout_seconds, int) or not 1 &lt;= self.timeout_seconds &lt;= 120:
+            raise ContractError("execution timeout must be between 1 and 120 seconds")
+        if not isinstance(self.inputs, Mapping) or not self.inputs:
+&gt;           raise ContractError("execution needs one or more public input files")
+E           research_loop.ontology.ContractError: execution needs one or more public input files
+
+research_loop\modular\benchmarks\execution.py:71: ContractError</error></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_exact_family_material_types_and_signed_corpus_admission_precede_io" time="0.011"><failure message="assert (0 == 2)&#10; +  where 0 = len([])">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-4a1db59-b/test_exact_family_material_typ0')
+
+    def test_exact_family_material_types_and_signed_corpus_admission_precede_io(tmp_path):
+        panel,args,sources,retrieval=fixture(tmp_path,'pair:M1+M6',source_fault='unknown'); cell=panel.cells[0]
+        seen=[]; provider_calls=[]
+        with pytest.raises(ContractError):
+            run_state_retrieval_cell(cell=cell,**args[cell.key],provider=Provider(provider_calls),model=model(seen),
+                objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),sidecar=tmp_path/'failed',image=IMAGE,
+                audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}))
+&gt;       assert len(sources)==len(retrieval)==2 and not seen and not provider_calls
+E       assert (0 == 2)
+E        +  where 0 = len([])
+
+tests\test_state_retrieval_combination_driver.py:269: AssertionError</failure></testcase></testsuite></testsuites>

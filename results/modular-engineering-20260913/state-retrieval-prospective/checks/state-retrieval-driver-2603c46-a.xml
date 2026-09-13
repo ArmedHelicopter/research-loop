@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="23" time="59.878" timestamp="2026-09-13T21:32:11.608727+08:00" hostname="SC-202507131830"><testcase classname="tests.test_state_retrieval_combination_driver" name="test_real_docker_all_three_pairs_share_state_and_retrieval_solver" time="52.915" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_failures_remain_replayable_without_false_success[provider]" time="0.664"><failure message="research_loop.ontology.ContractError: runtime trace lacks a bound task and scenario request">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-retrieval-driver-2603c46-a/test_original_failures_remain_0')
+fault = 'provider'
+
+    @pytest.mark.parametrize('fault',['provider','model','analysis','docker'])
+    def test_original_failures_remain_replayable_without_false_success(tmp_path,fault):
+        panel,args,_,_=fixture(tmp_path,'pair:M1+M6'); cell=panel.cells[-1]
+&gt;       result,seen,calls=execute(tmp_path,args[cell.key],cell,fault)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_retrieval_combination_driver.py:184: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_retrieval_combination_driver.py:135: in execute
+    verify_state_retrieval_cell(result,**args)
+research_loop\modular\state_retrieval_combination_driver.py:184: in verify_state_retrieval_cell
+    PanelReceiptVerifier()._verify_runtime(result.runtime, cell)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.panel_receipts.PanelReceiptVerifier object at 0x00000266AD4D6810&gt;
+receipt = RuntimeReceipt(cell_key=('pair:M1+M6', 'discoverybench', 'public-example', 'public-group-discoverybench', 'r1', 'combi...5952700505c1e3fad9f82e151e6a09a2e7f22fb5b', output_digest=None, failure_reason='combination mechanism or solve failed')
+expected = PanelCell(coverage_id='pair:M1+M6', identity=DataIdentity(benchmark='discoverybench', task_id='public-example', group_...6651a6ec9c68bdb552c3cc2594fd337f55c', scorer_digest='dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd')
+
+    def _verify_runtime(self, receipt: RuntimeReceipt, expected: PanelCell, *, p0_control_digest: str | None = None) -&gt; None:
+        if receipt.cell_key != expected.key:
+            raise ContractError("runtime receipt cell key does not match the frozen panel cell")
+        verify_protocol_trace(receipt.trace_path)
+        trace = verify_trace(receipt.trace_path).data()
+        if trace["trace_digest"] != receipt.trace_digest:
+            raise ContractError("runtime trace digest does not match the hash-chained journal")
+        events = [FrozenRecord(line).data() for line in receipt.trace_path.read_text(encoding="utf-8").splitlines()]
+        lock = events[0].get("data")
+        if events[0].get("lock_digest") != FrozenRecord.from_dict(lock).content_hash:
+            raise ContractError("objective lock event does not bind its own lock")
+        if not isinstance(lock, dict) or lock.get("identity") != expected.identity.data():
+            raise ContractError("runtime trace task binding mismatch")
+        if lock.get("task_digest") != expected.task_digest or lock.get("package_digest") != expected.package_digest or lock.get("arm") != expected.runtime_arm.data():
+            raise ContractError("runtime trace package or legal-arm binding mismatch")
+        requests = [event["data"].get("request", {}) for event in events if event["stage"] == "model_request"]
+        expected_binding = {"experiment_id": expected.coverage_id, "variant": expected.variant,
+                            "replicate": expected.replicate, "arm_id": expected.arm_id,
+                            "scenario_digest": expected.scenario_digest}
+        protocol_bindings = [e["data"] for e in events if e["stage"] == "q27_panel_binding"]
+        bound_protocol_failure = (expected.coverage_id == "Q2.7" and not requests
+            and events[-1]["stage"] in {"controller_failure", "execution_failure", "execution_terminal"}
+            and protocol_bindings == [{"panel_cell": expected_binding, "p0_control_digest": p0_control_digest}])
+        if p0_control_digest is not None and not bound_protocol_failure and (not requests or any(
+                request.get("module_context", {}).get("p0_control_digest") != p0_control_digest for request in requests)):
+            raise ContractError("runtime request lacks the frozen P0 control binding")
+        expected_opaque_binding = opaque_panel_cell_binding(expected)
+        bound_request = any(request.get("task", {}).get("identity") == expected.identity.data()
+                            and request.get("module_context", {}).get("panel_cell") in (expected_binding, expected_opaque_binding)
+                            for request in requests)
+        bound_early_failure = (not requests and events[-1].get("stage") == "controller_failure"
+                               and events[-1].get("data", {}).get("panel_cell") == expected_binding)
+        if not bound_request and not bound_early_failure and not bound_protocol_failure:
+&gt;           raise ContractError("runtime trace lacks a bound task and scenario request")
+E           research_loop.ontology.ContractError: runtime trace lacks a bound task and scenario request
+
+research_loop\modular\panel_receipts.py:449: ContractError</failure></testcase><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_failures_remain_replayable_without_false_success[model]" time="1.200" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_failures_remain_replayable_without_false_success[analysis]" time="1.977" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_failures_remain_replayable_without_false_success[docker]" time="2.279" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[state_original]" time="0.003" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[state_claims]" time="0.002" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[corpus]" time="0.001" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[query]" time="0.001" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[provenance]" time="0.001" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[authority_signature]" time="0.021" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[program]" time="0.032" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_original_material_files_and_signatures_are_rechecked[csv]" time="0.061" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[transition]" time="0.045" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[source_item]" time="0.048" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[source_budget]" time="0.052" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[retrieval_projection]" time="0.037" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[state_journal]" time="0.030" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[joint]" time="0.040" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[request_context]" time="0.020" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[response_program]" time="0.023" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_rehashed_forgeries_fail_independent_replay[order]" time="0.031" /><testcase classname="tests.test_state_retrieval_combination_driver" name="test_exact_family_material_types_and_signed_corpus_admission_precede_io" time="0.043" /></testsuite></testsuites>

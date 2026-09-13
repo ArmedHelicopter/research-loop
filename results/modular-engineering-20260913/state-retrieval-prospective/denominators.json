@@ -1,0 +1,230 @@
+{
+  "state-retrieval-controller-607bfde-a/state-retrieval-controller0": {
+    "status": "complete_train_engineering",
+    "expected_cells": 24,
+    "observed_cells": 24,
+    "scored_cells": 24,
+    "failed_cells": 0,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 96,
+      "model_calls": 48,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 24,
+    "actual_scorer_calls": 24,
+    "source_calls": 96,
+    "retrieval_calls": 72,
+    "unused_model_opportunities": 0,
+    "unused_docker_opportunities": 0,
+    "unused_scorer_opportunities": 0,
+    "unused_retrieval_opportunities": 0,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "estimated",
+        "reason": null
+      },
+      {
+        "status": "estimated",
+        "reason": null
+      },
+      {
+        "status": "estimated",
+        "reason": null
+      }
+    ]
+  },
+  "state-retrieval-controller-607bfde-a/test_m1_semantic_drift_preserv0": {
+    "status": "inconclusive",
+    "expected_cells": 24,
+    "observed_cells": 24,
+    "scored_cells": 24,
+    "failed_cells": 0,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 96,
+      "model_calls": 48,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 24,
+    "actual_scorer_calls": 24,
+    "source_calls": 96,
+    "retrieval_calls": 72,
+    "unused_model_opportunities": 0,
+    "unused_docker_opportunities": 0,
+    "unused_scorer_opportunities": 0,
+    "unused_retrieval_opportunities": 0,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "admission_qualification_semantic_drift"
+      },
+      {
+        "status": "estimated",
+        "reason": null
+      },
+      {
+        "status": "estimated",
+        "reason": null
+      }
+    ]
+  },
+  "state-retrieval-controller-607bfde-a/test_poisoned_ledger_preserves0": {
+    "status": "inconclusive",
+    "expected_cells": 24,
+    "observed_cells": 24,
+    "scored_cells": 0,
+    "failed_cells": 1,
+    "blocked_cells": 23,
+    "actual_model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 1,
+      "model_usage_incomplete": true
+    },
+    "actual_docker_attempts": 0,
+    "actual_scorer_calls": 0,
+    "source_calls": 4,
+    "retrieval_calls": 3,
+    "unused_model_opportunities": 47,
+    "unused_docker_opportunities": 24,
+    "unused_scorer_opportunities": 24,
+    "unused_retrieval_opportunities": 69,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "state-retrieval-controller-607bfde-a/test_qualification_and_provide0": {
+    "status": "inconclusive",
+    "expected_cells": 24,
+    "observed_cells": 24,
+    "scored_cells": 0,
+    "failed_cells": 24,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 0,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 0,
+    "actual_scorer_calls": 0,
+    "source_calls": 48,
+    "retrieval_calls": 0,
+    "unused_model_opportunities": 48,
+    "unused_docker_opportunities": 24,
+    "unused_scorer_opportunities": 24,
+    "unused_retrieval_opportunities": 72,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "state-retrieval-controller-607bfde-a/test_qualification_and_provide1": {
+    "status": "inconclusive",
+    "expected_cells": 24,
+    "observed_cells": 24,
+    "scored_cells": 0,
+    "failed_cells": 24,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 0,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 0,
+    "actual_scorer_calls": 0,
+    "source_calls": 96,
+    "retrieval_calls": 0,
+    "unused_model_opportunities": 48,
+    "unused_docker_opportunities": 24,
+    "unused_scorer_opportunities": 24,
+    "unused_retrieval_opportunities": 72,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "state-retrieval-controller-607bfde-a/test_qualification_and_provide2": {
+    "status": "inconclusive",
+    "expected_cells": 24,
+    "observed_cells": 24,
+    "scored_cells": 0,
+    "failed_cells": 24,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 0,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 0,
+    "actual_scorer_calls": 0,
+    "source_calls": 96,
+    "retrieval_calls": 24,
+    "unused_model_opportunities": 48,
+    "unused_docker_opportunities": 24,
+    "unused_scorer_opportunities": 24,
+    "unused_retrieval_opportunities": 48,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  }
+}
