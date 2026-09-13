@@ -15,6 +15,7 @@ from evaluation.modular.fresh_airs_custodian import CustodyError
 from evaluation.modular.scorer_process import CombinationScorerProcessClient, serialize_combination_panel
 from evaluation.modular.scoring_service import ScorerConfig, FrozenBenchmarkRubricEndpoint
 from evaluation.modular.train_io import TrainPacketExporter
+from evaluation.modular.state_prediction_scoring import issue_state_prediction_score_input
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.runtime import AuditVerifier
@@ -124,7 +125,8 @@ def invoke(setup, monkeypatch, *, fault=None):
         assert [(p['digest'],p['cells']) for p in frozen['panels']] == [(p.digest,[c.data() for c in p.cells]) for p in setup['compiled'].panels]
         if len(seen)==1:
             assert frozen['actual_scorer_calls']==0
-            assert all(r['status']=='not_started' for r in frozen['cells'][1:])
+            current=next(i for i,r in enumerate(frozen['cells']) if r['status']=='running')
+            assert all(r['status']=='not_started' for r in frozen['cells'][current+1:])
             if fault=='poison':raise RuntimeError('synthetic unknown model usage')
         if data['slot']=='m4_plan':
             state=data['module_context']['state_projection']
@@ -242,7 +244,8 @@ def test_source_failure_preserves_full_denominator(tmp_path,monkeypatch):
     assert result.contrasts[0].data()['status']=='inconclusive'
 
 
-@pytest.mark.parametrize('fault',['original_proposal','proposal_context','model_response','joint','modules','program','registry'])
+@pytest.mark.parametrize('fault',['original_proposal','proposal_context','model_response','joint','modules','program','registry',
+    'evidence_journal','claims_journal','state_order','plan_order'])
 def test_rehashed_replay_forgeries_fail_closed(grid,fault):
     setup,result,_,_=grid;mutations=[]
     for executed in result.results:
@@ -268,23 +271,35 @@ def test_rehashed_replay_forgeries_fail_closed(grid,fault):
                     if row['stage']=='model_response' and row['data']['request_digest']==old:row['data']['request_digest']=target['request_digest']
             elif fault=='model_response':
                 target=next(e for e in rows if e['stage']=='model_response')['data']
-                target['response']['question']='forged response';target['response_digest']=FrozenRecord.from_dict(target['response']).content_hash
+                target['response']['question']='forged response'
             elif fault=='joint':
                 joint['proposal']['question']='forged solver proposal'
                 target=next(e for e in rows if e['stage']=='state_prediction_joint')['data']
                 target.update(joint=joint,joint_digest=FrozenRecord.from_dict(joint).content_hash)
             elif fault=='modules':
-                rows[0]['data']['arm']['enabled']=[]
+                rows[0]['data']['arm']['enabled']=['M4'] if not rows[0]['data']['arm']['enabled'] else []
+            elif fault in ('state_order','plan_order'):
+                stage='state_transition' if fault=='state_order' else 'state_prediction_plan'
+                target=next(e for e in rows if e['stage']==stage);rows.remove(target)
+                after=next(i for i,e in enumerate(rows) if e['stage']=='model_request' and e['data']['request']['slot']=='analysis_program')
+                rows.insert(after+1,target)
         try:
-            if fault in ('program','registry'):
-                extra=path.parent/('analysis-1.py' if fault=='program' else 'predictions.jsonl');saved=extra.read_bytes()
-                extra.write_bytes(b'print("forged")\n' if fault=='program' else b'{}\n')
+            if fault in ('program','registry','evidence_journal','claims_journal'):
+                filename={'program':'analysis-1.py','registry':'predictions.jsonl','evidence_journal':'evidence.jsonl','claims_journal':'claims.jsonl'}[fault]
+                extra=path.parent/filename;saved=extra.read_bytes()
+                extra.write_bytes(b'print("forged")\n' if fault=='program' else saved+b'{}\n')
                 forged=executed
             else:
                 tail=_rewrite_trace(path,change)
-                forged=replace(executed,joint_mechanism=FrozenRecord.from_dict(joint),runtime=replace(executed.runtime,trace_digest=tail))
-            with pytest.raises((ContractError,KeyError,ValueError)):
+                rows=[FrozenRecord(line).data() for line in path.read_text(encoding='utf-8').splitlines()]
+                output=FrozenRecord.from_dict({'responses':[e['data']['response'] for e in rows if e['stage']=='model_response'],
+                    'terminal':rows[-1]['data']}).content_hash
+                forged=replace(executed,joint_mechanism=FrozenRecord.from_dict(joint),
+                    runtime=replace(executed.runtime,trace_digest=tail,output_digest=output))
+            with pytest.raises(ContractError):
                 verify_state_prediction_combination_cell(forged,**args)
+            with pytest.raises(ContractError):
+                issue_state_prediction_score_input(authority=EXECUTION,result=forged,**args)
             mutations.append({'pair':panel.obligation_id,'arm':executed.cell.arm_id,'fault':fault})
         finally:
             path.write_bytes(original)

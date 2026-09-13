@@ -11,7 +11,9 @@ from research_loop.modular.benchmark_solver import run_benchmark_solve_in_sessio
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import FrozenRecord, PublicTask
-from research_loop.modular.lineage_combination_driver import _transition, _source_binding, _verify_solver_files
+from research_loop.modular.lineage_combination_driver import (
+    _transition, _source_binding, _verify_solver_files, _MemoryLog, _read_events,
+)
 from research_loop.modular.benchmark_cell import _solver_journal_state, _compare_solver_result
 from research_loop.modular.lineage_combination_material import FrozenLineageMaterial, DualMaterialVerifier, check_material_inputs
 from research_loop.modular.modules.improvement import CandidatePackage
@@ -160,13 +162,19 @@ def verify_state_prediction_combination_cell(result, *, panel, task, scenario, p
     enabled = set(result.cell.runtime_arm.data()["enabled"])
     # Replay uses one shared ledger, exactly as the live transition did.
     evidence = EvidenceLedger(task.identity); claims = ClaimLedger(evidence)
+    evidence._log = _MemoryLog(); claims._log = _MemoryLog()
     transition = _transition(evidence, claims, ContextCache(), material, enabled, qualification)
+    if (_read_events(result.runtime.trace_path.parent / 'evidence.jsonl') != evidence._log.rows
+            or _read_events(result.runtime.trace_path.parent / 'claims.jsonl') != claims._log.rows):
+        raise ContractError('actual state module journals differ from replayed operations')
     rows = [e for e in events if e["stage"] == "state_transition"]
     if len(rows) != 1 or rows[0]["data"] != {"transition": transition.data(), "source_sha256": source_hash} or transition != result.transition:
         raise ContractError("state transition replay drift")
     requests = [e["data"]["request"] for e in events if e["stage"] == "model_request"]
     if tuple(r["slot"] for r in requests) != SLOTS[:len(requests)]:
         raise ContractError("state prediction request schedule drift")
+    if requests and events.index(rows[0]) >= next(i for i,e in enumerate(events) if e['stage'] == 'model_request'):
+        raise ContractError('state operations occurred after the model consumed their result')
     if result.joint_mechanism is None:
         if result.runtime.status != 'failed' or result.solver is not None or any(r["slot"] != "m4_plan" for r in requests):
             raise ContractError("failed state prediction cell started an unbound solver")
@@ -205,6 +213,10 @@ def verify_state_prediction_combination_cell(result, *, panel, task, scenario, p
     if len(joint_events) != 1 or joint_events[0]["data"] != {"joint": expected.data(), "joint_digest": expected.content_hash}:
         raise ContractError("state prediction joint drift")
     joint_i = events.index(joint_events[0]); analysis_i = next((i for i,e in enumerate(events) if e["stage"] == "model_request" and e["data"]["request"]["slot"] == "analysis_program"), None)
+    proposal_i = next(i for i,e in enumerate(events) if e['stage'] == 'model_response'
+                      and e['data']['request_digest'] == first['data']['request_digest'])
+    if not proposal_i < events.index(plan_rows[0]) < joint_i:
+        raise ContractError('prediction registration must follow the proposal and precede solver context')
     if analysis_i is not None and joint_i >= analysis_i:
         raise ContractError("prediction plan was not frozen before Docker solver")
     if result.solver is None or result.solver.session.sidecar != result.runtime.trace_path.parent:
