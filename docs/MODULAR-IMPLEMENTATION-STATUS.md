@@ -3,6 +3,35 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Complete pair/triple controller engineering coverage (2026-09-14)
+
+Root source `ee8b45a` passed 32 integration checks with all 580 frozen source and
+document hashes unchanged. The initial command named a nonexistent label test;
+its zero-test failure is retained, followed by the corrected passing selection
+at the same source commit. Evidence is under
+`results/modular-engineering-20260914/remaining-combinations-root/`.
+
+The added M3×M6×M9 grid completed 16 targets and scores after two shared history
+builds, using 34 scripted model calls, 68 qualifications, 48 retrieval requests
+and 16 target Docker executions. M7×M9, M8×M9 and M7×M8×M9 completed 32 targets
+and scores after six builds, using 70 scripted model calls, 76 qualifications,
+64 auxiliary and 32 solver Docker executions. Original state/mechanism M9 grids,
+source-cost replay regressions, cross-family scorer routing and label isolation
+passed in the same root checkpoint.
+
+Accumulated engineering coverage is 36/36 requested pair controllers and all
+five required triple controllers. Dependency-constrained and structurally
+unavailable arms remain explicit; this does not identify every factorial effect
+or represent a fresh rerun of all historical cases. No actual model generation
+or validation access occurred. Source checkpoints, original failures and native
+synthetic observations remain separately indexed.
+
+Full/LOO composition is undergoing its own implementation and checks. P0/real
+calibration, all real TRAIN effects, the final TRAIN-selected bundle and sealed
+validation acceptance remain unfinished. The Grok material-authoring attempt
+stopped before any model prompt at CLI initialization; no actual material or
+calibration success is inferred from the engineering closures.
+
 ## Included-subscription diagnostic bridge checkpoint (2026-09-14)
 
 The separately versioned Grok4.6 native diagnostic bridge preserves all36

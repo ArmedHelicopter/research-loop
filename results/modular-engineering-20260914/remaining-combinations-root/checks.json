@@ -1,0 +1,32 @@
+{
+  "remaining-combinations-integrated-r1": {
+    "commit": "ee8b45aa839bdd12ea69226d632a7887a72f073c",
+    "source_unchanged": true,
+    "source_count": 580,
+    "exit_code": 4,
+    "wall_seconds": 1.312999999994645,
+    "new_paid_calls": 0,
+    "report_sha256": "c86d6cf026d40bd559e6f062e95ea4b6a2a8515b9ffff4f20dabf5cbdf8678c0",
+    "junit": {
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "remaining-combinations-integrated-r2": {
+    "commit": "ee8b45aa839bdd12ea69226d632a7887a72f073c",
+    "source_unchanged": true,
+    "source_count": 580,
+    "exit_code": 0,
+    "wall_seconds": 1432.703999999998,
+    "new_paid_calls": 0,
+    "report_sha256": "867f0e1f62c488764907a76680b6eaaf309e75b69227acd32320c70721170bde",
+    "junit": {
+      "tests": 32,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  }
+}
