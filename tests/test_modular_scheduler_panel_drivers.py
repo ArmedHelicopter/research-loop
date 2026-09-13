@@ -55,7 +55,7 @@ def _model(request: FrozenRecord) -> FrozenRecord:
 def test_full_public_two_benchmark_m8_grid_runs_real_fifo_barrier_and_recovery(tmp_path: Path):
     tasks = [_task("blade"), _task("discoverybench")]
     package = CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze([task.identity for task in tasks]), changes={"prompt": {"instructions": "public"}}, search_cost=0)
-    seen = []
+    seen = []; by_condition = {}
     for task in tasks:
         bundle = _bundle(task)
         for experiment, variants in VARIANTS.items():
@@ -72,8 +72,11 @@ def test_full_public_two_benchmark_m8_grid_runs_real_fifo_barrier_and_recovery(t
                     assert terminal.data()["decision"] == "unknown"
                     assert stage.status == "executed"
                     observed = stage.detail.data()["scheduler_observation"]
-                    assert observed["total_cost_units"] == 2
-                    if experiment == "Q3.3":
+                    assert observed["reserved_cost_units"] == 2
+                    by_condition[(task.identity.benchmark, experiment, variant, arm_id)] = observed["engine"]
+                    if observed["engine"] == "deterministic_preflight_baseline":
+                        assert observed["actual_completed_cost_units"] == 0 and observed["unsafe_execution_started"] is False
+                    elif experiment == "Q3.3":
                         assert observed["merged_task_ids"] == ["public-first", "public-second"] and observed["prediction_ordering_used"] is False
                     elif experiment == "Q3.4":
                         assert observed["merge_barrier_blocked"] is True and len(observed["merged_snapshot_hashes"]) == 1
@@ -83,3 +86,8 @@ def test_full_public_two_benchmark_m8_grid_runs_real_fifo_barrier_and_recovery(t
                     else: assert observed["duplicate_receipt_rejected"] is True
                     seen.append(cell)
     assert len(seen) == 2 * sum(len(values) for values in VARIANTS.values()) * 2
+    for task in tasks:
+        for experiment, variants in VARIANTS.items():
+            for variant in variants:
+                modes = {by_condition[(task.identity.benchmark, experiment, variant, arm_id)] for arm_id, _ in _arms()}
+                assert modes == {"deterministic_preflight_baseline", "durable_fifo"}

@@ -148,6 +148,8 @@ def _model_observation(observation: Mapping[str, Any]) -> dict[str, Any]:
 def _run_scheduler(sidecar: Path, cell: PanelCell, material: Mapping[str, Any]) -> dict[str, Any]:
     jobs = material["jobs"]
     variant, experiment_id = cell.variant, cell.coverage_id
+    if "M8" not in cell.runtime_arm.data()["enabled"]:
+        return _baseline_replay(jobs, material)
     workers = 1 if (experiment_id == "Q3.3" and variant == "one_worker") else 2
     total_budget = sum(job["cost_units"] for job in jobs)
     scheduler = FifoScheduler(sidecar / "m8-scheduler.sqlite", max_concurrency=workers, total_budget=total_budget)
@@ -168,9 +170,9 @@ def _run_scheduler(sidecar: Path, cell: PanelCell, material: Mapping[str, Any]) 
                 raise ContractError("k-worker scheduler did not claim FIFO runnable work")
             for lease in active: _complete(scheduler, lease)
         merged = scheduler.merge(experiment)
-        return {"kind": "fifo_workers", "issued_task_ids": [lease.task_id for lease in active],
+        return {"engine": "durable_fifo", "kind": "fifo_workers", "issued_task_ids": [row.task_id for row in merged],
                 "merged_task_ids": [row.task_id for row in merged], "worker_count": workers,
-                "total_cost_units": total_budget, "prediction_ordering_used": False}
+                "reserved_cost_units": total_budget, "actual_completed_cost_units": total_budget, "remaining_leases": [], "prediction_ordering_used": False}
     if experiment_id == "Q3.4":
         if len(active) != 2: raise ContractError("completion-order driver requires two active leases")
         by_task = {lease.task_id: lease for lease in active}; ordered = [by_task[task_id] for task_id in material["completion_order"]]
@@ -179,34 +181,45 @@ def _run_scheduler(sidecar: Path, cell: PanelCell, material: Mapping[str, Any]) 
         except ContractError: barrier = True
         pending = scheduler.state(ordered[1].run_id)
         _complete(scheduler, ordered[1]); merged = scheduler.merge(experiment)
-        return {"kind": "completion_order", "issued_task_ids": [lease.task_id for lease in active],
+        return {"engine": "durable_fifo", "kind": "completion_order", "issued_task_ids": [lease.task_id for lease in active],
                 "completion_task_ids": [lease.task_id for lease in ordered], "merge_barrier_blocked": barrier,
                 "pending_snapshot_hash": pending.snapshot_hash, "merged_snapshot_hashes": sorted({row.snapshot_hash for row in merged}),
-                "total_cost_units": total_budget}
+                "reserved_cost_units": total_budget, "actual_completed_cost_units": total_budget, "remaining_leases": []}
     if experiment_id != "Q3.5": raise ContractError("M8 driver supports Q3.3 through Q3.5 only")
     if variant == "write_conflict":
         if len(active) != 1: raise ContractError("write-conflict schedule did not defer the locked work item")
-        return {"kind": "write_conflict", "issued_task_ids": [active[0].task_id], "deferred_task_ids": [states[1].task_id],
-                "double_execution": False, "total_cost_units": total_budget}
+        scheduler.invalidate(experiment, subjects=jobs[0]["resources"], reason="preflight retained conflict")
+        return {"engine": "durable_fifo", "kind": "write_conflict", "issued_task_ids": [active[0].task_id], "deferred_task_ids": [states[1].task_id],
+                "double_execution": False, "reserved_cost_units": total_budget, "actual_completed_cost_units": 0, "remaining_leases": []}
     if variant == "withdrawal":
         affected = scheduler.invalidate(experiment, subjects=material["withdraw_subjects"], reason="caller public withdrawal")
-        return {"kind": "withdrawal", "invalidated_run_ids": list(affected), "issued_task_ids": [lease.task_id for lease in active],
-                "snapshot_mutated": False, "total_cost_units": total_budget}
+        return {"engine": "durable_fifo", "kind": "withdrawal", "invalidated_run_ids": list(affected), "issued_task_ids": [lease.task_id for lease in active],
+                "snapshot_mutated": False, "reserved_cost_units": total_budget, "actual_completed_cost_units": 0, "remaining_leases": []}
     if variant in {"crash", "expiry"}:
         if not active: raise ContractError("recovery schedule obtained no lease")
         lease = active[0]; unknown = scheduler.expire_leases(now=lease.lease_until + 1)
         blocked = _claim(scheduler, "m8-no-autorerun") is None
         scheduler.confirm_terminated(lease.run_id, termination_receipt={"schema": "m8-termination-v1", "task_id": lease.task_id})
         retry = scheduler.recover(lease.run_id)
-        return {"kind": variant, "unknown_run_ids": list(unknown), "autorerun_blocked": blocked,
-                "recovery_attempt": retry.attempt, "total_cost_units": total_budget}
+        scheduler.invalidate(experiment, subjects=[item for job in jobs for item in job["resources"]], reason="preflight recovery closure")
+        return {"engine": "durable_fifo", "kind": variant, "unknown_run_ids": list(unknown), "autorerun_blocked": blocked,
+                "recovery_attempt": retry.attempt, "reserved_cost_units": total_budget, "actual_completed_cost_units": 0, "remaining_leases": []}
     if len(active) != 2: raise ContractError("duplicate receipt schedule requires two active leases")
     receipt = _receipt(active[0]); scheduler.complete(active[0].run_id, receipt_id=receipt.content_hash, receipt=receipt.data(), cost_units=active[0].cost_units)
     rejected = False
     try: scheduler.complete(active[1].run_id, receipt_id=receipt.content_hash, receipt=receipt.data(), cost_units=active[1].cost_units)
     except ContractError: rejected = True
-    return {"kind": "duplicate", "duplicate_receipt_rejected": rejected, "issued_task_ids": [lease.task_id for lease in active],
-            "total_cost_units": total_budget}
+    scheduler.invalidate(experiment, subjects=jobs[1]["resources"], reason="preflight duplicate closure")
+    return {"engine": "durable_fifo", "kind": "duplicate", "duplicate_receipt_rejected": rejected, "issued_task_ids": [lease.task_id for lease in active],
+            "reserved_cost_units": total_budget, "actual_completed_cost_units": active[0].cost_units, "remaining_leases": []}
+
+
+def _baseline_replay(jobs: list[Mapping[str, Any]], material: Mapping[str, Any]) -> dict[str, Any]:
+    """Pre-registered safe control: records planned work, never leases or merges it."""
+    return {"engine": "deterministic_preflight_baseline", "planned_task_ids": [job["task_id"] for job in jobs],
+            "planned_resource_sets": [list(job["resources"]) for job in jobs], "reserved_cost_units": sum(job["cost_units"] for job in jobs),
+            "actual_completed_cost_units": 0, "remaining_leases": [], "unsafe_execution_started": False,
+            "snapshot_digest": FrozenRecord.from_dict(dict(material["snapshot"])).content_hash}
 
 
 def install_drivers(target: MutableMapping[str, Any], *, material_resolver: BundleResolver | None = None):
