@@ -1,0 +1,55 @@
+{
+  "source_commit": "e166386eabd8269d106e3fc95647c9e6a951f9c5",
+  "reports": {
+    "useful-controls-red-r1": {
+      "tests": 15,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "useful-controls-grid-r1": {
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "useful-controls-final-r1": {
+      "tests": 67,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "useful-controls-final-r2": {
+      "tests": 26,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "zips": {
+    "useful-controls-grid-r1": {
+      "sha256": "f1800f3d0eba3d6cfb0efdb9728b938344df9de9209246dbc4b5d0e69fbe55be",
+      "members": 310
+    },
+    "useful-controls-final-r1": {
+      "sha256": "446ccbbd611f4a0d7b0a38af8e352cfdb60617fa24433d9b37f749e4c3e8ad71",
+      "members": 427
+    },
+    "useful-controls-final-r2": {
+      "sha256": "411f62e66a52ab0b8ef2283fbe8d3996b901bf93724c3a710ce09da9e6a31999",
+      "members": 599
+    }
+  },
+  "scope": "synthetic engineering; only new recipe case sidecars included in ZIPs; existing regression reports retained",
+  "excluded": [
+    "private fixture stores",
+    "legacy fixture preparation",
+    "primary fixture preparation",
+    "key bytes",
+    "symlinks"
+  ],
+  "red_before_manifest": "not recorded; clean contract-only commit df91611a093951493a9a9b79fb18c2a84ef5ef06",
+  "new_paid_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}

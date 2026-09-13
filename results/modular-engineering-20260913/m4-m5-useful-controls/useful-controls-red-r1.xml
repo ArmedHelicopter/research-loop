@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="15" time="10.372" timestamp="2026-09-13T20:24:57.427807+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.232" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.027" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.035" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.098" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.082" /><testcase classname="tests.test_m4_m5_useful_controls" name="test_explicit_recipe_frozen_into_every_cell" time="1.578"><failure message="research_loop.ontology.ContractError: controller supports the exact train-only M4/M5 configuration">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/useful-controls-red-r1/test_explicit_recipe_frozen_in0')
+
+    def test_explicit_recipe_frozen_into_every_cell(tmp_path):
+&gt;       setup = configured(tmp_path)
+                ^^^^^^^^^^^^^^^^^^^^
+
+tests\test_m4_m5_useful_controls.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_m4_m5_useful_controls.py:28: in configured
+    setup['config'] = controller.FrozenM4M5TrainConfig(FrozenRecord.from_dict(body))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:4: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = FrozenM4M5TrainConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"contrast_analysis":{"direction":"higher_be...d":"case2"},"task_digest":"b643146507149fd4522d41879aa09275fa8c796bde58e993f89c12dd5b49ef56"}},"timeout_seconds":20}'))
+
+    def __post_init__(self):
+        if not isinstance(self.record, FrozenRecord):
+            raise ContractError("combination controller configuration must be frozen")
+        body = self.record.data()
+        fields = {"schema", "domain", "stage", "item_ids", "task_bindings", "baseline_digest", "packages_by_arm",
+                  "scorer", "scorer_handle_bindings", "acceptance_criteria", "replicates", "model", "effort",
+                  "max_calls", "max_tokens", "schemas", "allocation", "image", "timeout_seconds"}
+        if not source_schema_matches(body, fields, "m4-m5-train-controller-config-v1") or body["domain"] != "train":
+&gt;           raise ContractError("controller supports the exact train-only M4/M5 configuration")
+E           research_loop.ontology.ContractError: controller supports the exact train-only M4/M5 configuration
+
+research_loop\modular\combination_train_controller.py:84: ContractError</failure></testcase><testcase classname="tests.test_m4_m5_useful_controls" name="test_recipe_rejects_silent_migration_and_mutation[legacy_flag]" time="1.901" /><testcase classname="tests.test_m4_m5_useful_controls" name="test_recipe_rejects_silent_migration_and_mutation[missing_recipe]" time="1.585" /><testcase classname="tests.test_m4_m5_useful_controls" name="test_recipe_rejects_silent_migration_and_mutation[changed_recipe]" time="1.551" /><testcase classname="tests.test_m4_m5_useful_controls" name="test_recipe_rejects_silent_migration_and_mutation[legacy_source]" time="1.693" /></testsuite></testsuites>

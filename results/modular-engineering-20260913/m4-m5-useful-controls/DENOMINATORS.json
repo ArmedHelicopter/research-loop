@@ -1,0 +1,246 @@
+{
+  "useful-controls-grid-r1": [
+    {
+      "case": "test_eight_cell_useful_output_0",
+      "status": "estimated",
+      "planned_cells": 8,
+      "cell_statuses": {
+        "succeeded": 8,
+        "failed": 0,
+        "blocked": 0,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 80,
+        "model_calls": 40,
+        "model_usage_incomplete": false
+      },
+      "scorer_calls": 8
+    }
+  ],
+  "useful-controls-final-r1": [
+    {
+      "case": "test_eight_cell_useful_output_0",
+      "status": "estimated",
+      "planned_cells": 8,
+      "cell_statuses": {
+        "succeeded": 8,
+        "failed": 0,
+        "blocked": 0,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 80,
+        "model_calls": 40,
+        "model_usage_incomplete": false
+      },
+      "scorer_calls": 8
+    },
+    {
+      "case": "test_malformed_reviews_keep_al0",
+      "status": "inconclusive",
+      "planned_cells": 8,
+      "cell_statuses": {
+        "succeeded": 0,
+        "failed": 1,
+        "blocked": 7,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 4,
+        "model_calls": 2,
+        "model_usage_incomplete": true
+      },
+      "scorer_calls": 0
+    },
+    {
+      "case": "test_new_recipe_keeps_primary_0",
+      "status": "blocked_before_execution",
+      "planned_cells": 0,
+      "cell_statuses": {
+        "succeeded": 0,
+        "failed": 0,
+        "blocked": 0,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "scorer_calls": 0
+    },
+    {
+      "case": "test_new_recipe_keeps_primary_1",
+      "status": "blocked_before_execution",
+      "planned_cells": 0,
+      "cell_statuses": {
+        "succeeded": 0,
+        "failed": 0,
+        "blocked": 0,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "scorer_calls": 0
+    },
+    {
+      "case": "test_new_recipe_keeps_primary_2",
+      "status": "blocked_before_execution",
+      "planned_cells": 0,
+      "cell_statuses": {
+        "succeeded": 0,
+        "failed": 0,
+        "blocked": 0,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "scorer_calls": 0
+    },
+    {
+      "case": "test_new_recipe_keeps_primary_3",
+      "status": "blocked_before_execution",
+      "planned_cells": 0,
+      "cell_statuses": {
+        "succeeded": 0,
+        "failed": 0,
+        "blocked": 0,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "scorer_calls": 0
+    }
+  ],
+  "useful-controls-final-r2": [
+    {
+      "case": "test_eight_cell_useful_output_0",
+      "status": "estimated",
+      "planned_cells": 8,
+      "cell_statuses": {
+        "succeeded": 8,
+        "failed": 0,
+        "blocked": 0,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 80,
+        "model_calls": 40,
+        "model_usage_incomplete": false
+      },
+      "scorer_calls": 8
+    },
+    {
+      "case": "test_malformed_reviews_keep_fu0",
+      "status": "inconclusive",
+      "planned_cells": 8,
+      "cell_statuses": {
+        "succeeded": 0,
+        "failed": 1,
+        "blocked": 7,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 4,
+        "model_calls": 2,
+        "model_usage_incomplete": true
+      },
+      "scorer_calls": 0
+    },
+    {
+      "case": "test_malformed_reviews_keep_fu1",
+      "status": "inconclusive",
+      "planned_cells": 8,
+      "cell_statuses": {
+        "succeeded": 0,
+        "failed": 8,
+        "blocked": 0,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 32,
+        "model_calls": 16,
+        "model_usage_incomplete": false
+      },
+      "scorer_calls": 0
+    },
+    {
+      "case": "test_new_recipe_keeps_primary_0",
+      "status": "blocked_before_execution",
+      "planned_cells": 0,
+      "cell_statuses": {
+        "succeeded": 0,
+        "failed": 0,
+        "blocked": 0,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "scorer_calls": 0
+    },
+    {
+      "case": "test_new_recipe_keeps_primary_1",
+      "status": "blocked_before_execution",
+      "planned_cells": 0,
+      "cell_statuses": {
+        "succeeded": 0,
+        "failed": 0,
+        "blocked": 0,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "scorer_calls": 0
+    },
+    {
+      "case": "test_new_recipe_keeps_primary_2",
+      "status": "blocked_before_execution",
+      "planned_cells": 0,
+      "cell_statuses": {
+        "succeeded": 0,
+        "failed": 0,
+        "blocked": 0,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "scorer_calls": 0
+    },
+    {
+      "case": "test_new_recipe_keeps_primary_3",
+      "status": "blocked_before_execution",
+      "planned_cells": 0,
+      "cell_statuses": {
+        "succeeded": 0,
+        "failed": 0,
+        "blocked": 0,
+        "not_started": 0
+      },
+      "model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "scorer_calls": 0
+    }
+  ]
+}

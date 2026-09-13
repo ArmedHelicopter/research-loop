@@ -41,3 +41,14 @@ stopped after two calls with an incomplete ledger and kept one failed plus
 seven blocked cells. The corrected test checks that stop rule and separately
 checks a schema-valid but empty review rejected by the runtime in all eight
 cells. No provider stop rule or frozen research success criterion was weakened.
+
+The final isolated source `e166386` passed 26 checks with 486 unchanged frozen
+source/document files. The prior 67-check run passed 66, retaining the test
+expectation failure above. The eight-cell useful-output grid reached eight
+independent synthetic primary scores with 40 fixture model calls and eight
+actual Docker attempts. Two additional actual executions rejected 18 rehashed
+joint/request mutations; separate provider-contract and runtime-review failure
+grids retained all eight planned cells each. Reports, source manifests, original
+failed runs and selected synthetic sidecars are archived under
+`results/modular-engineering-20260913/m4-m5-useful-controls/` (21 files, three
+ZIPs, 1,336 verified members). No actual paid model or validation call occurred.
