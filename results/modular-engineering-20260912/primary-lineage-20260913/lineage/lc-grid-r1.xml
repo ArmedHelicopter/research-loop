@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="62.667" timestamp="2026-09-13T15:23:45.657156+08:00" hostname="SC-202507131830"><testcase classname="tests.test_lineage_combination_controller" name="test_complete_34_cell_custody_compiler_shared_session_docker_and_independent_rubric" time="61.782"><failure message="AssertionError: assert ['inconclusiv...inconclusive'] == ['not_identif...identifiable']&#10;  &#10;  At index 0 diff: 'inconclusive' != 'not_identifiable'&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lc-grid-r1-tmp/test_complete_34_cell_custody_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000015957C93230&gt;
+
+    def test_complete_34_cell_custody_compiler_shared_session_docker_and_independent_rubric(tmp_path,monkeypatch):
+        result,port,calls,scores,sources,_ = _run(tmp_path,monkeypatch)
+        assert len(result.results)==len(result.scores)==34, [r.data() for r in result.attempts if r.data()['status']!='succeeded']
+        assert len(calls)==len(port.ledger['calls'])==136 and len(scores)==34 and len(sources)==68
+        assert [len(p.cells) for p in result.compiled.panels]==[6,8,8,12]
+&gt;       assert [c.data()['status'] for c in result.contrasts]==['not_identifiable','estimated','estimated','not_identifiable']
+E       AssertionError: assert ['inconclusiv...inconclusive'] == ['not_identif...identifiable']
+E         
+E         At index 0 diff: 'inconclusive' != 'not_identifiable'
+E         Use -v to get more diff
+
+tests\test_lineage_combination_controller.py:158: AssertionError</failure></testcase></testsuite></testsuites>

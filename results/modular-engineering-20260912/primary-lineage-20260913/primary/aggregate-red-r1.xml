@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.356" timestamp="2026-09-13T15:51:39.722787+08:00" hostname="SC-202507131830"><testcase classname="tests.test_primary_process_qualification" name="test_aggregate_classification_matches_original_direct_child_metadata_contract" time="0.191"><failure message="evaluation.modular.fresh_airs_custodian.CustodyError">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/primary-process-qualification-checks/aggregate-red-r1/test_aggregate_classification_0')
+
+    def test_aggregate_classification_matches_original_direct_child_metadata_contract(tmp_path):
+        config = source_fixture(tmp_path, nested_duplicate=True)
+        del config["inputs"]["canonical_manifest"]
+&gt;       audit, _ = p.audit_primary_process(config)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_primary_process_qualification.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = {'blade_call_receipts': [{'input': 'blade_call', 'task_id': 'case0'}], 'expected_counts': {'blade': 4, 'discoverybench...67b658f4ea60fa3e228e85d4d874a08ddb5f5e4'}, ...}, 'runs': [{'attempt': 'later_attempt', 'ledger': 'later_ledger'}], ...}
+
+    def audit_primary_process(config):
+        try:
+            return _audit_primary_process(config)
+        except BaseException:
+&gt;           raise CustodyError() from None
+E           evaluation.modular.fresh_airs_custodian.CustodyError
+
+evaluation\modular\primary_process_qualification.py:385: CustodyError</failure></testcase></testsuite></testsuites>

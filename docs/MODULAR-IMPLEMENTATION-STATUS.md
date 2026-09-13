@@ -3,7 +3,32 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current train export and retrieval checkpoint (2026-09-13)
+## Current primary partition and lineage checkpoint (2026-09-13)
+
+Source `73a6c2d` passed 201 integrated checks covering the new primary seal,
+prospective exporter, custody, shared M2/M3 behavior and combination controllers.
+The primary observed-family split has 308 train and 95 sealed validation items:
+Discovery 294/94 and BLADE 14/1. Root recomputed the frozen allocation and checked
+all 24 declared input pins and retention of the old 81 train items. This is a
+bounded history/relationship qualification; BLADE's sole validation group cannot
+satisfy the protocol's multiple disjoint stage shards. All SAB 18 remain on hold.
+
+Four lineage panels now execute 34 synthetic controller cells. M2×M5 and M3×M5
+with fixed M2 background have complete factor grids; M2×M3 and M2×M3×M5 retain
+their structural missing cells and unidentifiable interactions. The earlier
+M4×M5 panel remains separately source-qualified. Thus four of 36 pair controllers
+and one of five triple controllers are wired; the other 32 pairs, four triples,
+full/LOO and final train-selected bundle still require execution. No null result
+has pruned any combination. A real lineage scorer process is in a separate
+delivery; current synthetic scores do not measure scientific effects.
+
+The registry still contains 40 question drivers plus five separate Q6 phases;
+the final three drivers await source integration. The evidence archive now has
+1,595 indexed files, preserving all previous 1,524. It includes the closed 1,078
+file lineage grid, original failures and a recorded archive-path repair. See
+[the checkpoint](MODULAR-CHECKPOINT-20260913-PRIMARY-LINEAGE.md).
+
+## Previous train export and retrieval checkpoint (2026-09-13)
 
 The integrated registry has 40 question drivers plus the five separate Q6 train
 phases, covering 45 engineering execution contracts. Q8.5/Q8.6/Q8.7 are undergoing

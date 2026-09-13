@@ -1,0 +1,48 @@
+{
+  "schema": "primary-lineage-engineering-checkpoint-v1",
+  "source_commit": "73a6c2da0f3105f86331606a5308ba037e578aaf",
+  "root_report": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "201",
+    "time": "766.441",
+    "timestamp": "2026-09-13T15:59:13.087603+08:00",
+    "hostname": "SC-202507131830"
+  },
+  "primary_counts": {
+    "train": 308,
+    "validation": 95
+  },
+  "primary_source_counts": {
+    "blade": {
+      "train": 14,
+      "validation": 1
+    },
+    "discoverybench": {
+      "train": 294,
+      "validation": 94
+    }
+  },
+  "old_train_retained": 81,
+  "SAB_validation_records_on_hold": 18,
+  "primary_validation_payload_read": false,
+  "lineage_controller_cells": 34,
+  "lineage_synthetic_grid_files": 1078,
+  "complete_pair_contrasts": {
+    "pair:M2+M5": "estimated_synthetic_only",
+    "pair:M3+M5": "estimated_synthetic_only"
+  },
+  "structural_contrasts": {
+    "pair:M2+M3": "not_identifiable",
+    "triple:M2+M3+M5": "not_identifiable"
+  },
+  "lineage_independent_process_scorer": "separate_implementation_in_progress",
+  "new_paid_calls": 0,
+  "scientific_effectiveness": "not_established",
+  "validation_acceptance": "not_run",
+  "pruned_combinations": [],
+  "BLADE_validation_group_count": 1,
+  "multi_stage_fresh_primary_validation_group_sufficiency": "insufficient"
+}

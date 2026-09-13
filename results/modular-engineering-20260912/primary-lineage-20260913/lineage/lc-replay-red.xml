@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="8" time="52.996" timestamp="2026-09-13T15:29:23.890504+08:00" hostname="SC-202507131830"><testcase classname="tests.test_lineage_combination_controller" name="test_readonly_replay_rejects_consistently_rehashed_public_artifact_forgery[request_context]" time="52.227" /><testcase classname="tests.test_lineage_combination_controller" name="test_readonly_replay_rejects_consistently_rehashed_public_artifact_forgery[ledger_withdrawal]" time="0.039" /><testcase classname="tests.test_lineage_combination_controller" name="test_readonly_replay_rejects_consistently_rehashed_public_artifact_forgery[review_response]" time="0.043" /><testcase classname="tests.test_lineage_combination_controller" name="test_readonly_replay_rejects_consistently_rehashed_public_artifact_forgery[script_same_size]" time="0.047" /><testcase classname="tests.test_lineage_combination_controller" name="test_readonly_replay_rejects_consistently_rehashed_public_artifact_forgery[source_cost_bool]" time="0.038" /><testcase classname="tests.test_lineage_combination_controller" name="test_readonly_replay_rejects_consistently_rehashed_public_artifact_forgery[final_execution_binding]" time="0.041"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">grid = (LineageTrainRun(compiled=CompiledLineagePanels(panels=(CombinationPanel(stage='synthetic-lineage', domain='train', sp...ured-public-origin-1', verify=&lt;function _sources.&lt;locals&gt;.verify at 0x0000018B706CC040&gt;)), cost_limit_per_call=1), ...)
+fault = 'final_execution_binding'
+
+    @pytest.mark.parametrize('fault', ['request_context', 'ledger_withdrawal', 'review_response', 'script_same_size',
+        'source_cost_bool', 'final_execution_binding', 'joint_before_reviews', 'barrier_open_early'])
+    def test_readonly_replay_rejects_consistently_rehashed_public_artifact_forgery(grid, fault):
+        from test_modular_combination_benchmark_driver import _rewrite_trace
+        run,_,_,_,_,sources,root = grid
+        result=next(r for r in run.results if set(r.cell.runtime_arm.data()['enabled'])=={'M2','M3','M5'})
+        panel=next(p for p in run.compiled.panels if result.cell in p.cells)
+        packet=next(p for p in run.compiled.packets if p.task.content_hash==result.cell.task_digest)
+        args=dict(panel=panel,task=packet.task,scenario=run.compiled.scenarios[result.cell.key],
+            package=run.compiled.packages[result.cell.runtime_arm.content_hash],material=run.compiled.materials[result.cell.task_digest],
+            source_verifier=sources,public_inputs={'public_csv':packet.csv_path},broker=DockerExecutionBroker([root/'export',root/'run']))
+        trace=result.runtime.trace_path; saved={p:p.read_bytes() for p in trace.parent.iterdir() if p.is_file()}
+        source_path=trace.parent.parent/'source-verification.json'; saved[source_path]=source_path.read_bytes()
+        def change(events):
+            if fault in {'request_context','final_execution_binding'}:
+                request=next(e for e in events if e['stage']=='model_request' and e['data']['request']['slot']==('lineage_review' if fault=='request_context' else 'final_answer'))
+                if fault=='request_context': request['data']['request']['module_context']['material']['observations']=[]
+                else: request['data']['request']['module_context']['execution_digest']='0'*64
+                old=request['data']['request_digest']; new=FrozenRecord.from_dict(request['data']['request']).content_hash
+                request['data']['request_digest']=new
+                for event in events:
+                    if event['stage']=='model_response' and event['data']['request_digest']==old: event['data']['request_digest']=new
+            elif fault=='ledger_withdrawal':
+                path=trace.parent/'evidence.jsonl'; rows=path.read_text(encoding='utf-8').splitlines()
+                path.write_text('\n'.join(line for line in rows if FrozenRecord(line).data()['event']!='withdraw')+'\n',encoding='utf-8')
+            elif fault=='review_response':
+                path=trace.parent/'reviews.jsonl'; rows=[FrozenRecord(line).data() for line in path.read_text(encoding='utf-8').splitlines()]
+                rows[1]['response']['uncertainty']='a different provider response'
+                path.write_text('\n'.join(FrozenRecord.from_dict(r).encoded for r in rows)+'\n',encoding='utf-8')
+            elif fault=='script_same_size':
+                path=trace.parent/'analysis-1.py'; original=path.read_bytes(); altered=original.replace(b'print(',b'PRINT(',1)
+                assert altered!=original and len(altered)==len(original); path.write_bytes(altered)
+            elif fault=='source_cost_bool':
+                data=json.loads(source_path.read_text(encoding='utf-8')); data['calls'][0]['cost_units']=True
+                source_path.write_text(json.dumps(data),encoding='utf-8')
+                next(e for e in events if e['stage']=='lineage_transition')['data']['source_sha256']=hashlib.sha256(source_path.read_bytes()).hexdigest()
+            elif fault=='joint_before_reviews':
+                joint=next(e for e in events if e['stage']=='lineage_joint'); events.remove(joint)
+                events.insert(next(i for i,e in enumerate(events) if e['stage']=='model_request'),joint)
+            elif fault=='barrier_open_early':
+                next(e for e in events if e['stage']=='lineage_review_submission')['data']['barrier_open']=True
+        try:
+            tail=_rewrite_trace(trace,change)
+&gt;           with pytest.raises(ContractError):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+tests\test_lineage_combination_controller.py:225: Failed</failure></testcase><testcase classname="tests.test_lineage_combination_controller" name="test_readonly_replay_rejects_consistently_rehashed_public_artifact_forgery[joint_before_reviews]" time="0.041"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">grid = (LineageTrainRun(compiled=CompiledLineagePanels(panels=(CombinationPanel(stage='synthetic-lineage', domain='train', sp...ured-public-origin-1', verify=&lt;function _sources.&lt;locals&gt;.verify at 0x0000018B706CC040&gt;)), cost_limit_per_call=1), ...)
+fault = 'joint_before_reviews'
+
+    @pytest.mark.parametrize('fault', ['request_context', 'ledger_withdrawal', 'review_response', 'script_same_size',
+        'source_cost_bool', 'final_execution_binding', 'joint_before_reviews', 'barrier_open_early'])
+    def test_readonly_replay_rejects_consistently_rehashed_public_artifact_forgery(grid, fault):
+        from test_modular_combination_benchmark_driver import _rewrite_trace
+        run,_,_,_,_,sources,root = grid
+        result=next(r for r in run.results if set(r.cell.runtime_arm.data()['enabled'])=={'M2','M3','M5'})
+        panel=next(p for p in run.compiled.panels if result.cell in p.cells)
+        packet=next(p for p in run.compiled.packets if p.task.content_hash==result.cell.task_digest)
+        args=dict(panel=panel,task=packet.task,scenario=run.compiled.scenarios[result.cell.key],
+            package=run.compiled.packages[result.cell.runtime_arm.content_hash],material=run.compiled.materials[result.cell.task_digest],
+            source_verifier=sources,public_inputs={'public_csv':packet.csv_path},broker=DockerExecutionBroker([root/'export',root/'run']))
+        trace=result.runtime.trace_path; saved={p:p.read_bytes() for p in trace.parent.iterdir() if p.is_file()}
+        source_path=trace.parent.parent/'source-verification.json'; saved[source_path]=source_path.read_bytes()
+        def change(events):
+            if fault in {'request_context','final_execution_binding'}:
+                request=next(e for e in events if e['stage']=='model_request' and e['data']['request']['slot']==('lineage_review' if fault=='request_context' else 'final_answer'))
+                if fault=='request_context': request['data']['request']['module_context']['material']['observations']=[]
+                else: request['data']['request']['module_context']['execution_digest']='0'*64
+                old=request['data']['request_digest']; new=FrozenRecord.from_dict(request['data']['request']).content_hash
+                request['data']['request_digest']=new
+                for event in events:
+                    if event['stage']=='model_response' and event['data']['request_digest']==old: event['data']['request_digest']=new
+            elif fault=='ledger_withdrawal':
+                path=trace.parent/'evidence.jsonl'; rows=path.read_text(encoding='utf-8').splitlines()
+                path.write_text('\n'.join(line for line in rows if FrozenRecord(line).data()['event']!='withdraw')+'\n',encoding='utf-8')
+            elif fault=='review_response':
+                path=trace.parent/'reviews.jsonl'; rows=[FrozenRecord(line).data() for line in path.read_text(encoding='utf-8').splitlines()]
+                rows[1]['response']['uncertainty']='a different provider response'
+                path.write_text('\n'.join(FrozenRecord.from_dict(r).encoded for r in rows)+'\n',encoding='utf-8')
+            elif fault=='script_same_size':
+                path=trace.parent/'analysis-1.py'; original=path.read_bytes(); altered=original.replace(b'print(',b'PRINT(',1)
+                assert altered!=original and len(altered)==len(original); path.write_bytes(altered)
+            elif fault=='source_cost_bool':
+                data=json.loads(source_path.read_text(encoding='utf-8')); data['calls'][0]['cost_units']=True
+                source_path.write_text(json.dumps(data),encoding='utf-8')
+                next(e for e in events if e['stage']=='lineage_transition')['data']['source_sha256']=hashlib.sha256(source_path.read_bytes()).hexdigest()
+            elif fault=='joint_before_reviews':
+                joint=next(e for e in events if e['stage']=='lineage_joint'); events.remove(joint)
+                events.insert(next(i for i,e in enumerate(events) if e['stage']=='model_request'),joint)
+            elif fault=='barrier_open_early':
+                next(e for e in events if e['stage']=='lineage_review_submission')['data']['barrier_open']=True
+        try:
+            tail=_rewrite_trace(trace,change)
+&gt;           with pytest.raises(ContractError):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+tests\test_lineage_combination_controller.py:225: Failed</failure></testcase><testcase classname="tests.test_lineage_combination_controller" name="test_readonly_replay_rejects_consistently_rehashed_public_artifact_forgery[barrier_open_early]" time="0.040"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">grid = (LineageTrainRun(compiled=CompiledLineagePanels(panels=(CombinationPanel(stage='synthetic-lineage', domain='train', sp...ured-public-origin-1', verify=&lt;function _sources.&lt;locals&gt;.verify at 0x0000018B706CC040&gt;)), cost_limit_per_call=1), ...)
+fault = 'barrier_open_early'
+
+    @pytest.mark.parametrize('fault', ['request_context', 'ledger_withdrawal', 'review_response', 'script_same_size',
+        'source_cost_bool', 'final_execution_binding', 'joint_before_reviews', 'barrier_open_early'])
+    def test_readonly_replay_rejects_consistently_rehashed_public_artifact_forgery(grid, fault):
+        from test_modular_combination_benchmark_driver import _rewrite_trace
+        run,_,_,_,_,sources,root = grid
+        result=next(r for r in run.results if set(r.cell.runtime_arm.data()['enabled'])=={'M2','M3','M5'})
+        panel=next(p for p in run.compiled.panels if result.cell in p.cells)
+        packet=next(p for p in run.compiled.packets if p.task.content_hash==result.cell.task_digest)
+        args=dict(panel=panel,task=packet.task,scenario=run.compiled.scenarios[result.cell.key],
+            package=run.compiled.packages[result.cell.runtime_arm.content_hash],material=run.compiled.materials[result.cell.task_digest],
+            source_verifier=sources,public_inputs={'public_csv':packet.csv_path},broker=DockerExecutionBroker([root/'export',root/'run']))
+        trace=result.runtime.trace_path; saved={p:p.read_bytes() for p in trace.parent.iterdir() if p.is_file()}
+        source_path=trace.parent.parent/'source-verification.json'; saved[source_path]=source_path.read_bytes()
+        def change(events):
+            if fault in {'request_context','final_execution_binding'}:
+                request=next(e for e in events if e['stage']=='model_request' and e['data']['request']['slot']==('lineage_review' if fault=='request_context' else 'final_answer'))
+                if fault=='request_context': request['data']['request']['module_context']['material']['observations']=[]
+                else: request['data']['request']['module_context']['execution_digest']='0'*64
+                old=request['data']['request_digest']; new=FrozenRecord.from_dict(request['data']['request']).content_hash
+                request['data']['request_digest']=new
+                for event in events:
+                    if event['stage']=='model_response' and event['data']['request_digest']==old: event['data']['request_digest']=new
+            elif fault=='ledger_withdrawal':
+                path=trace.parent/'evidence.jsonl'; rows=path.read_text(encoding='utf-8').splitlines()
+                path.write_text('\n'.join(line for line in rows if FrozenRecord(line).data()['event']!='withdraw')+'\n',encoding='utf-8')
+            elif fault=='review_response':
+                path=trace.parent/'reviews.jsonl'; rows=[FrozenRecord(line).data() for line in path.read_text(encoding='utf-8').splitlines()]
+                rows[1]['response']['uncertainty']='a different provider response'
+                path.write_text('\n'.join(FrozenRecord.from_dict(r).encoded for r in rows)+'\n',encoding='utf-8')
+            elif fault=='script_same_size':
+                path=trace.parent/'analysis-1.py'; original=path.read_bytes(); altered=original.replace(b'print(',b'PRINT(',1)
+                assert altered!=original and len(altered)==len(original); path.write_bytes(altered)
+            elif fault=='source_cost_bool':
+                data=json.loads(source_path.read_text(encoding='utf-8')); data['calls'][0]['cost_units']=True
+                source_path.write_text(json.dumps(data),encoding='utf-8')
+                next(e for e in events if e['stage']=='lineage_transition')['data']['source_sha256']=hashlib.sha256(source_path.read_bytes()).hexdigest()
+            elif fault=='joint_before_reviews':
+                joint=next(e for e in events if e['stage']=='lineage_joint'); events.remove(joint)
+                events.insert(next(i for i,e in enumerate(events) if e['stage']=='model_request'),joint)
+            elif fault=='barrier_open_early':
+                next(e for e in events if e['stage']=='lineage_review_submission')['data']['barrier_open']=True
+        try:
+            tail=_rewrite_trace(trace,change)
+&gt;           with pytest.raises(ContractError):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+tests\test_lineage_combination_controller.py:225: Failed</failure></testcase></testsuite></testsuites>

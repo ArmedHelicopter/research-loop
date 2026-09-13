@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="48.471" timestamp="2026-09-13T15:44:12.683084+08:00" hostname="SC-202507131830"><testcase classname="tests.test_lineage_combination_controller" name="test_closed_controller_preserves_failed_cells_usage_and_full_denominator[contrast]" time="48.051"><failure message="AssertionError: assert ([] == []&#10;  &#10;  Use -v to get more diff and 'complete_train_engineering' == 'inconclusive'&#10;  &#10;  - inconclusive&#10;  + complete_train_engineering)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lc-status-red-tmp/test_closed_controller_preserv0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026658728F80&gt;
+fault = 'contrast'
+
+    @pytest.mark.parametrize('fault', ['unknown','exception','scorer','solver_transport','contrast'])
+    def test_closed_controller_preserves_failed_cells_usage_and_full_denominator(tmp_path,monkeypatch,fault):
+        if fault=='contrast':
+            original=controller.estimate_grouped_contrast; estimates=[]
+            def fail_first(*args,**kwargs):
+                estimates.append(1)
+                if len(estimates)==1: raise ContractError('synthetic contrast verification failure')
+                return original(*args,**kwargs)
+            monkeypatch.setattr(controller,'estimate_grouped_contrast',fail_first)
+        result,port,calls,scores,source_calls,_=_run(tmp_path,monkeypatch,fault)
+        assert len(result.results)==len(result.attempts)==result.receipt.data()['expected_cells']==34
+&gt;       assert result.receipt.data()['pruned_cells']==[] and result.receipt.data()['status']=='inconclusive'
+E       AssertionError: assert ([] == []
+E         
+E         Use -v to get more diff and 'complete_train_engineering' == 'inconclusive'
+E         
+E         - inconclusive
+E         + complete_train_engineering)
+
+tests\test_lineage_combination_controller.py:251: AssertionError</failure></testcase></testsuite></testsuites>

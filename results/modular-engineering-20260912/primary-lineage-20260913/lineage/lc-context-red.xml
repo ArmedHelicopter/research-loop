@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.486" timestamp="2026-09-13T15:35:19.901688+08:00" hostname="SC-202507131830"><testcase classname="tests.test_lineage_combination_controller" name="test_withdrawal_context_does_not_turn_absent_support_into_refutation" time="0.096"><failure message="AssertionError: assert 'refuted' == 'undetermined'&#10;  &#10;  - undetermined&#10;  + refuted">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lc-context-red-tmp/test_withdrawal_context_does_n0')
+
+    def test_withdrawal_context_does_not_turn_absent_support_into_refutation(tmp_path):
+        from research_loop.modular.lineage_combination_driver import _transition
+        from research_loop.modular.modules.evidence import EvidenceLedger, ClaimLedger
+        from research_loop.modular.modules.context import ContextCache
+        sources=_sources([]); _,_,packets,config,_,_=_fixture(tmp_path,sources)
+        material=FrozenLineageMaterial(FrozenRecord.from_dict(config.data()['materials_by_task'][packets[0].task.content_hash]))
+        evidence=EvidenceLedger(packets[0].task.identity)
+        transition=_transition(evidence,ClaimLedger(evidence),ContextCache(),material,{'M2','M3'}).data()
+        empty=next(c for c in transition['after_claims']['claims'] if not c['support_roots'] and not c['refute_roots'])
+        assert empty['status']=='undetermined'
+        entry=next(c for c in transition['public']['memory'] if c.get('claim_id')==empty['claim_id'])
+&gt;       assert entry['status']=='undetermined'
+E       AssertionError: assert 'refuted' == 'undetermined'
+E         
+E         - undetermined
+E         + refuted
+
+tests\test_lineage_combination_controller.py:344: AssertionError</failure></testcase></testsuite></testsuites>

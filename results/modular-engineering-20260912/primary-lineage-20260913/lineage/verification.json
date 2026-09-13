@@ -1,0 +1,168 @@
+{
+  "schema": "lineage-combination-engineering-verification-v1",
+  "commit": "86368a2e022dca137c2063d3e4380aeae80b9aab",
+  "contract_commit": "0241e34bca51936e5e1318ab7fa53936f25df1e5",
+  "prerequisite_cherry_picks": {
+    "cf571b0512d682378a45eb00df41462a50da7de0": "6756c1406ec28123a0553e43a5f9cf1915087d8f",
+    "7a5c3784e0a4553bbd389ab6e82b1df968016050": "f56a5fc3cd5afe71a52f0cea4609ff2c3bf35f7c"
+  },
+  "implementation_commits": [
+    "6e0d3a17497fa67105c33b8f05e4be0f542c8d68",
+    "86368a2e022dca137c2063d3e4380aeae80b9aab"
+  ],
+  "source_sha256": {
+    "docs/LINEAGE-COMBINATION-EXECUTION.md": "a5990b3841b41bb167e957208fac17f9c7bdc35de7aa80870496632b8e1b5290",
+    "evaluation/modular/combination_scoring.py": "e5f9b2fa1b3e7ba65e854583dce48210bf403d50540ddb3bbfa8f76bef449318",
+    "evaluation/modular/lineage_combination_scoring.py": "8cc4b7e3e32fa0b3a93f6bb87f94bcce5874a42a4505c18401c455e2e809ed8a",
+    "research_loop/modular/combination_panels.py": "0fbf50a19ff87f5723b48b3cc2a6948befd99ca38d574ee29e0a1acdb8af75d7",
+    "research_loop/modular/lineage_combination_controller.py": "15ff22576c65ab6b3415e0f75ff8ea617c6c34128c7e78cb41fa790ce8cbca82",
+    "research_loop/modular/lineage_combination_driver.py": "14dd883976692df196684d12c95cb1f3cf96c37d10a70503465f603a7d34fb44",
+    "research_loop/modular/lineage_combination_material.py": "0f7f8b3e74c44d7eea67b236c6ed8ee573588e8f5aa0d159daab6434173f90c2",
+    "research_loop/modular/modules/context.py": "1dd3166a5373240acb3f6886819e2f76a534c9cb685f10962fb56b8dd7e426fd",
+    "research_loop/modular/modules/evidence.py": "117103f28ccdcc92f29ca9b214ae64389ec25d27604c2fa2a39106b05d7b338f",
+    "tests/test_lineage_combination_controller.py": "ba9e42a6cf85ecf1f839f365a692e460b6ed95b0070420e2918445453990513e"
+  },
+  "source_frozen": true,
+  "worktree_clean": true,
+  "reports": {
+    "lc-label.xml": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lc-label.xml",
+      "sha256": "16cb0d3e246346271ce1817bc2c4b1a6fce4aae693d5868152d48ca525fa62d0",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.526"
+    },
+    "lc-grid-r1.xml": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lc-grid-r1.xml",
+      "sha256": "cbf46920c7005d52c1f8e71c53b99106fc206f1baf8323551a34c639f0087210",
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "62.667"
+    },
+    "lc-root-red.xml": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lc-root-red.xml",
+      "sha256": "461c0b55e0ec9d50d7ba73b5abb326f79c618aa3f0f1b36fe22fae70f0654116",
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.075"
+    },
+    "lc-replay-red.xml": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lc-replay-red.xml",
+      "sha256": "e90f9971eca35445b695e789b731af7da4f49f157f2ef72038b8832c4706bf47",
+      "tests": "8",
+      "failures": "3",
+      "errors": "0",
+      "skipped": "0",
+      "time": "52.996"
+    },
+    "lc-context-red.xml": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lc-context-red.xml",
+      "sha256": "8c5444bfbf8111e81d5c23de310e37de3d734778a080653d5914a821dc49c8c4",
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.486"
+    },
+    "lc-final-r1.xml": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lc-final-r1.xml",
+      "sha256": "186d99ca0198f0704db3e210bbf2c8f1fd7d4e5f73121a9676a084bbe51fd801",
+      "tests": "162",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "363.320"
+    },
+    "lc-status-red.xml": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lc-status-red.xml",
+      "sha256": "58934aed79415c24d7ce98f04cf99146499308bdaf5d0bc660809534cd7d608b",
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "48.471"
+    },
+    "lc-final-r2.xml": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lc-final-r2.xml",
+      "sha256": "737371205b3c6ba007d14cd9a2556247170b161223dc009f1f8aca96cef31127",
+      "tests": "42",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "371.241"
+    }
+  },
+  "sessions": {
+    "43608": {
+      "status": "closed",
+      "exit_code": 0,
+      "commit": "6e0d3a17497fa67105c33b8f05e4be0f542c8d68",
+      "tests": 162
+    },
+    "40513": {
+      "status": "closed",
+      "exit_code": 0,
+      "commit": "86368a2e022dca137c2063d3e4380aeae80b9aab",
+      "tests": 42
+    }
+  },
+  "red_provenance": {
+    "lc-root-red.xml": {
+      "legacy_file": "lc-legacy-evidence.py",
+      "sha256": "b08be5048d91ff9c187a94efdb368cc359323aef834bb44b395cf3adab9ee4d6",
+      "source_commit": "f56a5fc3cd5afe71a52f0cea4609ff2c3bf35f7c",
+      "scope": "8 fresh processes with varied hash seeds; 4 chose a report instead of the admitted raw representative"
+    },
+    "lc-grid-r1.xml": "pre-commit initial implementation; 34 cells scored but wrapper/contrast seam failed; not final evidence",
+    "lc-replay-red.xml": "pre-commit replay rejected five forgeries but missed final execution binding, joint order and early barrier; retained RED",
+    "lc-context-red.xml": "pre-commit no active support/refutation rendered refuted instead of undetermined",
+    "lc-status-red.xml": "production 6e0d3a1 with new test; injected contrast verification failure retained all 34 scores but falsely completed overall"
+  },
+  "final_grid_receipt": {
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lc-final-r2-tmp\\lineage-grid0\\run\\controller-receipt.json",
+    "sha256": "67efcdd617f1438646efa1dfe0e3bfc6036e5ab9e2eea98f3793b5b0c12a2301",
+    "expected_cells": 34,
+    "actual_model_calls": 136,
+    "actual_model_known_tokens": 272,
+    "actual_docker_attempts": 34,
+    "actual_source_calls": 68,
+    "actual_fixture_scorer_calls": 34,
+    "panel_sizes": [
+      6,
+      8,
+      8,
+      12
+    ],
+    "contrast_statuses": [
+      "not_identifiable",
+      "estimated",
+      "estimated",
+      "not_identifiable"
+    ],
+    "complete_pair_primary_contrasts": 0.0
+  },
+  "boundary": {
+    "paid_calls": 0,
+    "private_validation_reads": 0,
+    "original_research_run_mutations": 0,
+    "scientific_validity": "not_measured",
+    "endpoint_calibration": "not_measured",
+    "lineage_independent_process_scorer": "not_implemented",
+    "paid_evaluation_ready": false,
+    "future_obligation": "Frozen lineage rubric endpoint, protected evaluator response schema, independent process client/server, source-bound train reference qualification and integration tests."
+  },
+  "limitations": [
+    "Fixture source authority provenance is not scientific independence or validity.",
+    "New lineage endpoints use caller FrozenRubricTransport; existing CodexEvaluatorModelPort and scorer_process cannot directly execute this wrapper.",
+    "Public joint context is not a calibrated train reference for correct roots or withdrawal truth.",
+    "Original retained journals retain their source-version semantics; no retrospective rewrite or scoring.",
+    "Literal program replay binds immutable host paths and host newline convention; OS isolation and wholesale replacement resistance need trusted external pins.",
+    "162 and 42 test totals overlap and must not be added as unique tests."
+  ]
+}

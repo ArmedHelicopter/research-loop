@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.075" timestamp="2026-09-13T15:29:11.317473+08:00" hostname="SC-202507131830"><testcase classname="tests.test_lineage_combination_controller" name="test_evidence_root_representative_is_deterministic_across_fresh_processes" time="0.669"><failure message="AssertionError: [(1, 'Traceback (most recent call last):&#10;    File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;  AssertionError: same-root report re...all last):&#10;    File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;  AssertionError: same-root report replaced original raw record&#10;  ')]&#10;assert [(1, 'Traceba...aw record\n')] == []&#10;  &#10;  Left contains 4 more items, first extra item: (1, 'Traceback (most recent call last):\n  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;\nAssertionError: same-root report replaced original raw record\n')&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lc-root-red-tmp/test_evidence_root_representat0')
+
+    def test_evidence_root_representative_is_deterministic_across_fresh_processes(tmp_path):
+        import os, subprocess, sys
+        code = '''
+    import json, os, importlib.util, sys
+    from research_loop.modular.contracts import DataIdentity
+    if os.environ.get('LINEAGE_LEGACY_EVIDENCE'):
+     spec=importlib.util.spec_from_file_location('legacy_evidence',os.environ['LINEAGE_LEGACY_EVIDENCE'])
+     m=importlib.util.module_from_spec(spec); sys.modules[spec.name]=m; spec.loader.exec_module(m)
+     EvidenceLedger=m.EvidenceLedger
+    else:
+     from research_loop.modular.modules.evidence import EvidenceLedger
+    i=DataIdentity('blade','t','g','v','s','train'); e=EvidenceLedger(i)
+    def add(representation,admitted,content,root='root'):
+     return e.append({'kind':'observation','root_material':{'id':root},'content':{'value':content},'subject_bindings':{'task':'t'},'independent_group':'g','representation':representation}, {'trusted_validator':'public-fixture','validator_verified':True,'admitted':admitted})
+    r=add('raw',True,1); add('report',True,9); add('summary',True,7)
+    assert e.roots()[0].representation=='raw', 'same-root report replaced original raw record'
+    e.withdraw(r.root_id,'fixture withdrawal'); assert e.roots()==()
+    assert len(e.roots(active_only=False))==1
+    add('raw',False,2,'other'); add('report',True,3,'other')
+    assert e.roots()[0].representation=='report' and e.roots()[0].admitted, 'raw preference weakened admission semantics'
+    print('verified')
+    '''
+        failures=[]
+        for seed in range(8):
+            env=dict(os.environ,PYTHONHASHSEED=str(seed),PYTHONDONTWRITEBYTECODE='1')
+            process=subprocess.run([sys.executable,'-c',code],env=env,capture_output=True,text=True,encoding='utf-8')
+            if process.returncode: failures.append((seed,process.stderr))
+&gt;       assert failures==[], failures
+E       AssertionError: [(1, 'Traceback (most recent call last):
+E           File "&lt;string&gt;", line 14, in &lt;module&gt;
+E         AssertionError: same-root report re...all last):
+E           File "&lt;string&gt;", line 14, in &lt;module&gt;
+E         AssertionError: same-root report replaced original raw record
+E         ')]
+E       assert [(1, 'Traceba...aw record\n')] == []
+E         
+E         Left contains 4 more items, first extra item: (1, 'Traceback (most recent call last):\n  File "&lt;string&gt;", line 14, in &lt;module&gt;\nAssertionError: same-root report replaced original raw record\n')
+E         Use -v to get more diff
+
+tests\test_lineage_combination_controller.py:309: AssertionError</failure></testcase></testsuite></testsuites>
