@@ -59,11 +59,12 @@ def run_benchmark_cell(*, cell: PanelCell, task: PublicTask, scenario: FrozenRec
     try:
         provenance = verified_mechanism_provenance(cell=cell, task=task, scenario=scenario,
                                                     package=package, mechanism=mechanism)
+        public_projection = project_linked_public_context(provenance=provenance, cell=cell,
+            task=task, scenario=scenario)
     except ContractError:
-        # The preceding run exists but its receipt cannot be used as context.
+        # The preceding run exists but its receipt or public projection cannot
+        # be used as solver context.  Keep the denominator row intact.
         return _result(cell, mechanism, None, None, "mechanism_receipt_rejected")
-    public_projection = project_linked_public_context(provenance=provenance, cell=cell,
-        task=task, scenario=scenario)
     opaque_binding = FrozenRecord.from_dict(opaque_panel_cell_binding(cell))
     solver = run_benchmark_solve(task=task, public_inputs=public_inputs, image=image,
         package_digest=package.digest, arm=cell.runtime_arm, objective=objective,
@@ -123,8 +124,12 @@ def verify_linked_benchmark_cell(result: LinkedBenchmarkCellResult, *, task: Pub
             if result.status != "mechanism_receipt_rejected" or result.provenance is not None:
                 raise ContractError("mechanism-only result requires a reproducible receipt rejection after a successful precursor")
             try:
-                verified_mechanism_provenance(cell=result.cell, task=task, scenario=scenario,
+                expected = verified_mechanism_provenance(cell=result.cell, task=task, scenario=scenario,
                     package=package, mechanism=result.mechanism)
+                public_projection = project_linked_public_context(provenance=expected, cell=result.cell,
+                    task=task, scenario=scenario)
+                verify_linked_public_context(projection=public_projection, provenance=expected,
+                    cell=result.cell, task=task, scenario=scenario)
             except ContractError:
                 pass
             else:

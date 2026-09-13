@@ -73,7 +73,7 @@ def _model(seen: list[dict]):
                  "elimination_condition": "shared observation", "predictions": [{"prediction_id": "p" + str(n), "discriminator_id": "d",
                  "observable": "x", "direction": "decrease" if n == 1 else "increase", "value_range": None, "failure_condition": "not increase"}]} for n in range(3)]})
         if slot != "final":
-            return FrozenRecord.from_dict({"assessment": "public concern", "evidence_refs": ["public"], "counterexamples": [], "uncertainty": "synthetic"})
+            return FrozenRecord.from_dict({"assessment": "concern", "evidence_refs": ["public"], "counterexamples": [], "uncertainty": "synthetic"})
         return FrozenRecord.from_dict({"objective_digest": row["module_context"]["required_objective_digest"], "outcome": "unknown",
             "evidence_ids": [], "conclusion": "mechanism candidate", "programme_complete": False})
     return callback
@@ -101,7 +101,7 @@ def test_linked_cell_uses_verified_mechanism_in_both_solver_calls_and_live_docke
     assert all(row["module_context"]["panel_cell"] == projection.data()["opaque_panel_cell"] for row in solver_requests)
     assert result.provenance.data()["arm"] == cell.runtime_arm.data()
     encoded = projection.encoded
-    assert all(marker not in encoded for marker in ("arm_id", "runtime_arm", "package_digest", "cell_key", "variant", "responses", "mechanism_stages", "request"))
+    assert all(marker not in encoded for marker in ("arm_id", "runtime_arm", "package_digest", "cell_key", "variant", "responses", "mechanism_stages", "request", "_control"))
     assert verify_linked_public_context(projection=projection, provenance=result.provenance,
         cell=cell, task=task, scenario=controlled).content_hash == projection.content_hash
     forged = projection.data(); forged["controller_input"] = {"forged": True}
@@ -153,6 +153,77 @@ def test_public_projection_keeps_only_actual_enabled_mechanism_material(tmp_path
         assert material["prediction_plan"] is not None
     else:
         assert material["revealed_review"] is not None
+
+
+@pytest.mark.parametrize(("mechanism", "kind", "nullable_field", "keys"), [
+    ("Q1.5", "historical_review", "sealed_review", {"kind", "public_evidence", "historical_summary", "sealed_review"}),
+    ("Q3.1", "prediction_plan", "prediction_plan", {"kind", "prediction_plan"}),
+    ("Q4.3", "sealed_review", "revealed_review", {"kind", "revealed_review"}),
+])
+def test_public_projection_uses_one_schema_for_enabled_and_control_material(tmp_path: Path, mechanism: str,
+                                                                              kind: str, nullable_field: str,
+                                                                              keys: set[str]) -> None:
+    task, controlled, package, cell = _material("discoverybench", mechanism)
+    mechanism_result = benchmark_cell.run_train_cell(cell, task=task, scenario=controlled, package=package,
+        objective=FrozenRecord.from_dict({"q": "projection control"}), sidecar=tmp_path / "mechanism",
+        model=_model([]), audit_verifier=_audit())
+    provenance = verified_mechanism_provenance(cell=cell, task=task, scenario=controlled,
+        package=package, mechanism=mechanism_result)
+    projection = project_linked_public_context(provenance=provenance, cell=cell, task=task, scenario=controlled)
+    material = projection.data()["mechanism_material"]
+    assert set(material) == keys and material["kind"] == kind
+    assert material[nullable_field] is None
+    assert "_control" not in projection.encoded
+
+
+def test_public_projection_rejects_unbound_requests_and_incomplete_m5_material(tmp_path: Path) -> None:
+    task, controlled, package, base_cell = _material("discoverybench", "Q1.5")
+    cell = replace(base_cell, runtime_arm=default_compatibility("base").arm(["M5"]), arm_id="projection-m5")
+    mechanism_result = benchmark_cell.run_train_cell(cell, task=task, scenario=controlled, package=package,
+        objective=FrozenRecord.from_dict({"q": "projection faults"}), sidecar=tmp_path / "q15",
+        model=_model([]), audit_verifier=_audit())
+    provenance = verified_mechanism_provenance(cell=cell, task=task, scenario=controlled,
+        package=package, mechanism=mechanism_result)
+    forged = provenance.data(); forged["responses"][0]["request_digest"] = "0" * 64
+    with pytest.raises(ContractError, match="matching request"):
+        project_linked_public_context(provenance=FrozenRecord.from_dict(forged), cell=cell, task=task, scenario=controlled)
+    forged = provenance.data(); forged["mechanism_stages"][0]["data"]["initial_submission"] = None
+    with pytest.raises(ContractError, match="complete sealed review material"):
+        project_linked_public_context(provenance=FrozenRecord.from_dict(forged), cell=cell, task=task, scenario=controlled)
+    forged = provenance.data(); forged["mechanism_stages"][0]["stage"] = "operation_m5_control"
+    with pytest.raises(ContractError, match="frozen arm"):
+        project_linked_public_context(provenance=FrozenRecord.from_dict(forged), cell=cell, task=task, scenario=controlled)
+
+
+def test_public_projection_requires_all_q43_control_responses(tmp_path: Path) -> None:
+    task, controlled, package, cell = _material("discoverybench", "Q4.3")
+    mechanism_result = benchmark_cell.run_train_cell(cell, task=task, scenario=controlled, package=package,
+        objective=FrozenRecord.from_dict({"q": "q43 control faults"}), sidecar=tmp_path / "q43",
+        model=_model([]), audit_verifier=_audit())
+    provenance = verified_mechanism_provenance(cell=cell, task=task, scenario=controlled,
+        package=package, mechanism=mechanism_result)
+    forged = provenance.data()
+    forged["responses"] = [call for call in forged["responses"] if call["slot"] != "measurement_revision"]
+    with pytest.raises(ContractError, match="required mechanism response"):
+        project_linked_public_context(provenance=FrozenRecord.from_dict(forged), cell=cell, task=task, scenario=controlled)
+
+
+def test_projection_rejection_keeps_the_successful_mechanism_in_the_denominator(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    task, controlled, package, cell = _material("discoverybench", "Q3.1")
+    public = tmp_path / "public"; public.mkdir(); (public / "public.csv").write_text("x\n1\n3\n", encoding="utf-8")
+
+    def reject_public_projection(**_: object) -> FrozenRecord:
+        raise ContractError("synthetic public projection rejection")
+
+    monkeypatch.setattr(benchmark_cell, "project_linked_public_context", reject_public_projection)
+    result = run_benchmark_cell(cell=cell, task=task, scenario=controlled, package=package,
+        objective=FrozenRecord.from_dict({"q": "projection rejection"}), mechanism_sidecar=tmp_path / "mechanism",
+        solver_sidecar=tmp_path / "solver", public_inputs={"public_csv": public / "public.csv"}, image=IMAGE,
+        broker=DockerExecutionBroker([public, tmp_path]), model=_model([]), audit_verifier=_audit())
+    assert result.mechanism.runtime.status == "succeeded"
+    assert result.status == "mechanism_receipt_rejected" and result.solver is None and result.provenance is None
+    assert verify_linked_benchmark_cell(result, task=task, scenario=controlled, package=package).data()["engineering_verified"] is True
+
 
 def test_linked_cell_keeps_mechanism_and_solver_failures_as_rows(tmp_path: Path) -> None:
     task, controlled, package, cell = _material("discoverybench", "Q3.1")

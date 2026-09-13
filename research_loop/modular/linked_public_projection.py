@@ -30,11 +30,11 @@ def project_linked_public_context(*, provenance: FrozenRecord, cell: PanelCell,
     final = _response(responses, "final")
     coverage = cell.coverage_id
     if coverage == "Q1.5":
-        material = _q15_material(body["mechanism_stages"], responses)
+        material = _q15_material(cell, body["mechanism_stages"], responses)
     elif coverage == "Q3.1":
-        material = _q31_material(task, body["mechanism_stages"], responses)
+        material = _q31_material(cell, task, body["mechanism_stages"], responses)
     elif coverage == "Q4.3":
-        material = _q43_material(body["mechanism_stages"], responses)
+        material = _q43_material(cell, body["mechanism_stages"], responses)
     else:  # guarded above, retained for a closed extension point
         raise ContractError("linked public projection does not support this mechanism")
     return FrozenRecord.from_dict({
@@ -99,18 +99,31 @@ def _responses(value: list[Any]) -> dict[str, dict[str, Any]]:
             raise ContractError("linked public projection has an unbound model response")
         # Requests are deliberately inspected only to prove the slot is genuine;
         # they are never returned in public context.
-        if not isinstance(call["request"], Mapping) or call["request"].get("slot") != call["slot"]:
+        if not isinstance(call["request"], Mapping):
+            raise ContractError("linked public projection response has no matching request")
+        request = FrozenRecord.from_dict(call["request"])
+        if request.content_hash != call["request_digest"] or request.data().get("slot") != call["slot"]:
             raise ContractError("linked public projection response has no matching request")
         result[call["slot"]] = response.data()
     return result
 
 
-def _stage(stages: list[Any], *, names: set[str]) -> dict[str, Any]:
+def _stage(stages: list[Any], *, names: set[str]) -> tuple[str, dict[str, Any]]:
     matches = [entry for entry in stages if isinstance(entry, Mapping) and set(entry) == {"stage", "data"}
                and entry["stage"] in names and isinstance(entry["data"], Mapping)]
     if len(matches) != 1:
         raise ContractError("linked public projection requires one actual mechanism stage")
-    return dict(matches[0]["data"])
+    return str(matches[0]["stage"]), dict(matches[0]["data"])
+
+
+def _stage_for_arm(cell: PanelCell, stages: list[Any], *, module: str,
+                   enabled_stage: str, control_stage: str) -> tuple[bool, dict[str, Any]]:
+    """Require the real stage that belongs to this frozen arm without exposing it."""
+    stage_name, stage = _stage(stages, names={enabled_stage, control_stage})
+    enabled = module in cell.runtime_arm.data()["enabled"]
+    if stage_name != (enabled_stage if enabled else control_stage):
+        raise ContractError("linked public projection stage does not match the frozen arm")
+    return enabled, stage
 
 
 def _response(calls: Mapping[str, dict[str, Any]], slot: str) -> dict[str, Any]:
@@ -120,8 +133,9 @@ def _response(calls: Mapping[str, dict[str, Any]], slot: str) -> dict[str, Any]:
         raise ContractError("linked public projection lacks a required mechanism response") from exc
 
 
-def _q15_material(stages: list[Any], calls: Mapping[str, dict[str, Any]]) -> dict[str, Any]:
-    stage = _stage(stages, names={"stage_9", "operation_m5_control"})
+def _q15_material(cell: PanelCell, stages: list[Any], calls: Mapping[str, dict[str, Any]]) -> dict[str, Any]:
+    m5_enabled, stage = _stage_for_arm(cell, stages, module="M5",
+        enabled_stage="stage_9", control_stage="operation_m5_control")
     for key in ("public_evidence", "history_summary", "initial_submission", "post_reveal_revision"):
         if key not in stage:
             raise ContractError("Q1.5 mechanism stage lacks declared review material")
@@ -129,9 +143,13 @@ def _q15_material(stages: list[Any], calls: Mapping[str, dict[str, Any]]) -> dic
     if not isinstance(public_evidence, Mapping) or not isinstance(history, str) or not history.strip():
         raise ContractError("Q1.5 mechanism stage has invalid public review material")
     first, second = _response(calls, "initial_review"), _response(calls, "reveal_review")
-    if stage.get("initial_submission") is None or stage.get("post_reveal_revision") is None:
-        return {"kind": "historical_review_control", "public_evidence": dict(public_evidence),
+    if not m5_enabled:
+        if stage["initial_submission"] is not None or stage["post_reveal_revision"] is not None:
+            raise ContractError("Q1.5 control stage contains sealed review material")
+        return {"kind": "historical_review", "public_evidence": dict(public_evidence),
                 "historical_summary": history, "sealed_review": None}
+    if stage["initial_submission"] is None or stage["post_reveal_revision"] is None:
+        raise ContractError("Q1.5 M5 stage lacks complete sealed review material")
     initial, revision = stage["initial_submission"], stage["post_reveal_revision"]
     if not isinstance(initial, Mapping) or not isinstance(revision, Mapping):
         raise ContractError("Q1.5 sealed review material is malformed")
@@ -143,13 +161,18 @@ def _q15_material(stages: list[Any], calls: Mapping[str, dict[str, Any]]) -> dic
             "sealed_review": {"initial": first, "revision": second}}
 
 
-def _q31_material(task: PublicTask, stages: list[Any], calls: Mapping[str, dict[str, Any]]) -> dict[str, Any]:
-    stage = _stage(stages, names={"stage_1", "operation_m4_control"})
+def _q31_material(cell: PanelCell, task: PublicTask, stages: list[Any], calls: Mapping[str, dict[str, Any]]) -> dict[str, Any]:
+    m4_enabled, stage = _stage_for_arm(cell, stages, module="M4",
+        enabled_stage="stage_1", control_stage="operation_m4_control")
     proposal = _response(calls, "scenario")
-    if "plan_digest" not in stage:
+    if not m4_enabled:
+        if "plan_digest" in stage:
+            raise ContractError("Q3.1 control stage contains an M4 prediction plan")
         if stage.get("response_digest") != FrozenRecord.from_dict(proposal).content_hash:
             raise ContractError("Q3.1 control stage does not bind its actual response")
-        return {"kind": "prediction_control", "prediction_plan": None}
+        return {"kind": "prediction_plan", "prediction_plan": None}
+    if "plan_digest" not in stage:
+        raise ContractError("Q3.1 M4 stage lacks a prediction plan")
     if not isinstance(stage["plan_digest"], str):
         raise ContractError("Q3.1 prediction stage lacks a plan digest")
     if set(proposal) != {"question", "branches", "budget_units"}:
@@ -160,19 +183,22 @@ def _q31_material(task: PublicTask, stages: list[Any], calls: Mapping[str, dict[
     return {"kind": "prediction_plan", "prediction_plan": plan.payload.data()}
 
 
-def _q43_material(stages: list[Any], calls: Mapping[str, dict[str, Any]]) -> dict[str, Any]:
-    stage = _stage(stages, names={"stage_7", "operation_m5_control"})
+def _q43_material(cell: PanelCell, stages: list[Any], calls: Mapping[str, dict[str, Any]]) -> dict[str, Any]:
+    m5_enabled, stage = _stage_for_arm(cell, stages, module="M5",
+        enabled_stage="stage_7", control_stage="operation_m5_control")
     submitted, revised = stage.get("initial_submissions"), stage.get("post_reveal_revisions")
     if submitted is None or revised is None:
         raise ContractError("Q4.3 mechanism stage lacks review records")
     if not isinstance(submitted, list) or not isinstance(revised, list):
         raise ContractError("Q4.3 review records are malformed")
-    if not submitted and not revised:
-        return {"kind": "sealed_review_control", "revealed_review": None}
     initial = [_response(calls, slot) for slot in ("mechanism_initial", "measurement_initial")]
     revisions = [_response(calls, slot) for slot in ("mechanism_revision", "measurement_revision")]
     for response in [*initial, *revisions]:
         ReviewEngine._response(response)
+    if not m5_enabled:
+        if submitted != [] or revised != []:
+            raise ContractError("Q4.3 control stage contains sealed review material")
+        return {"kind": "sealed_review", "revealed_review": None}
     if len(submitted) != len(initial) or len(revised) != len(revisions):
         raise ContractError("Q4.3 sealed review records are incomplete")
     for item, response in zip(submitted, initial):
