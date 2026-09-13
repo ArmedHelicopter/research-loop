@@ -129,5 +129,9 @@ baseline, source changes that alter computed values, worker/model failure
 evidence, sidecar reuse rejection, and typed receipt snapshot tampering.
 
 No real benchmark questions, validation data, private references or paid model
-calls are used by these tests. Production panel routing and any scientific
-benchmark evaluation remain separate integration/qualification obligations.
+calls are used by these tests. The production registry and scenario compiler
+route Q3.3/Q3.4/Q3.5 to these caller-bound drivers. Dedicated integration checks
+exercise every cell through custody export, the frozen train controller and
+the actual Codex model port with mocked process transport. Scientific benchmark
+evaluation, throughput/fairness and scientific-context contamination remain
+separate qualification obligations.

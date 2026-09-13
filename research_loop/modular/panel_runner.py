@@ -179,6 +179,7 @@ from research_loop.modular.withdrawal_panel_drivers import Q16WithdrawalDriver, 
 from research_loop.modular.audit_panel_drivers import Q23AuditFaultDriver, Q24AuditPairDriver, AuditReceiptPort, ShadowExecutionPort
 from research_loop.modular.prediction_panel_drivers import Q32JointSeparateDriver, Q53DedupDriver
 from research_loop.modular.polarity_goal_panel_drivers import Q25EvidencePolarityDriver, Q26GoalLockDriver
+from research_loop.modular.scheduler_panel_drivers import M8SchedulerDriver
 
 
 DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12DependencyDriver(),
@@ -187,6 +188,7 @@ DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12Dep
     "Q2.1": Q21PressureDriver(), "Q2.3": Q23AuditFaultDriver(), "Q2.4": Q24AuditPairDriver(),
     "Q2.5": Q25EvidencePolarityDriver(), "Q2.6": Q26GoalLockDriver(),
     "Q3.1": Q31PredictionDriver(), "Q3.2": Q32JointSeparateDriver(), "Q5.3": Q53DedupDriver(),
+    "Q3.3": M8SchedulerDriver("Q3.3"), "Q3.4": M8SchedulerDriver("Q3.4"), "Q3.5": M8SchedulerDriver("Q3.5"),
     "Q4.1": Q41IndependenceDriver(), "Q4.2": Q42RoleDriver(), "Q4.3": Q43ReviewDriver(),
     "Q4.4": Q44CounterexampleDriver(), "Q4.5": Q45SelfCorrectionDriver()}
 
