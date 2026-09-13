@@ -3,7 +3,30 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current combination scoring checkpoint (2026-09-13)
+## Current scheduler controller checkpoint (2026-09-13)
+
+Source `ce2e81b` additionally connects Q3.3–Q3.5 through the production scenario
+compiler, custody exporter, frozen train controller and Codex model port.
+The registry now has 23 question drivers. The 36-cell synthetic M8 grid uses
+both benchmark adapter shapes, caller-owned integer work and actual worker
+threads/SQLite; it does not solve actual benchmark questions. All 212 focused
+root checks passed in 319.951 seconds. The agent's source-qualified 100-test
+suite and 152-test expanded suite overlap; they are not independent replications.
+
+The baseline actually executes the same workload and publishes each return.
+M8-on applies resource locks, invalidation, merge barriers, typed receipt
+deduplication and confirmed-termination recovery. Costs include every started
+attempt. Q3.3 throughput/fairness, Q3.4 unfinished scientific-context pollution,
+OS process-crash durability and benchmark scientific quality remain unmeasured.
+See [the driver contract](MODULAR-SCHEDULER-PANEL-DRIVERS.md).
+
+The archive contains 876 byte-hash-indexed files, including closed reports and
+the explicit notice excluding intermediate source-unfrozen runs from final
+verification. Earlier reports are unchanged. No new paid call, validation lease,
+scientific effect, combination pruning or deployment occurred. The separate
+full suite on source `fd985fa` is still running and predates these M8 changes.
+
+## Previous combination scoring checkpoint (2026-09-13)
 
 Source `fd985fa` connects 20 production question drivers and the first actual
 four-arm M4+M5 execution-to-signed-adapted-score-to-contrast path. Q3.2/Q5.3 are

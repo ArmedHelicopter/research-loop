@@ -1,0 +1,9 @@
+{
+  "schema": "m8-intermediate-evidence-classification-v1",
+  "reason": "Sources were edited while intermediate pytest processes were active. These reports are retained but are not final commit verification.",
+  "source_unfrozen": true,
+  "reports": [
+    "m8-causal-verified-20260913-1138.xml",
+    "m8-causal-failure-final-20260913-1147.xml"
+  ]
+}

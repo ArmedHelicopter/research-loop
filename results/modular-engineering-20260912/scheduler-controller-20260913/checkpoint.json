@@ -1,0 +1,56 @@
+{
+  "schema": "scheduler-production-checkpoint-v1",
+  "source_commit": "ce2e81b8aa626f875920347ec32029a402d74476",
+  "production_question_drivers": 23,
+  "reports": {
+    "scheduler-controller-root-ce2e81b.xml": {
+      "tests": "212",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "319.951"
+    },
+    "m8-causal-52985b3-focused.xml": {
+      "tests": "100",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "200.618"
+    },
+    "m8-causal-final-source-frozen.xml": {
+      "tests": "152",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "302.332"
+    },
+    "m8-intermediate-source-unfrozen-1138.xml": {
+      "tests": "152",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "301.823"
+    },
+    "m8-intermediate-source-unfrozen-1147.xml": {
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "35.135"
+    }
+  },
+  "actual_production_cells": 36,
+  "worker_scope": "bounded caller-owned public integers",
+  "model_transport": "actual CodexModelPort with mocked process transport",
+  "remaining_measurements": [
+    "benchmark scientific quality",
+    "Q3.3 throughput and fairness pressure",
+    "Q3.4 unfinished scientific worker context contamination",
+    "OS process crash durability"
+  ],
+  "new_paid_calls": 0,
+  "scientific_effectiveness_proven": false,
+  "validation_acceptance": "not_measured",
+  "overlapping_tests_must_not_be_summed_as_independent_evidence": true,
+  "intermediate_source_unfrozen_reports_are_not_final_verification": true
+}

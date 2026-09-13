@@ -1,0 +1,47 @@
+{
+  "scheduler-controller-root-ce2e81b.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\work\\scheduler-controller-root-20260913-r1.xml",
+    "sha256": "ca30fbafcef3f1043b55d6dac44ff1cbbf65201c48ac7ae748efc596d3e8540c",
+    "qualification": "ce2e81b"
+  },
+  "m8-causal-52985b3-focused.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m8-causal-52985b3-focused-20260913.xml",
+    "sha256": "ce5f6957979800bcee072a51d9141db3754c349a65164f9cce57ca62ca58b506",
+    "qualification": "52985b3"
+  },
+  "m8-causal-final-source-frozen.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m8-causal-final-frozen-20260913.xml",
+    "sha256": "15a7f31d37f21417eab437cec49f6598d5d0fb1d63a5e6bc512da5fe1715b53c",
+    "qualification": "source hash frozen before commit; overlaps focused checks"
+  },
+  "m8-intermediate-source-unfrozen-1138.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m8-causal-verified-20260913-1138.xml",
+    "sha256": "e7fe52ddd9b35ad4743cd5f2fd3597d1a5c550f6597e520191a63f66f56649e3",
+    "qualification": "source_unfrozen; not final verification"
+  },
+  "m8-intermediate-source-unfrozen-1147.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m8-causal-failure-final-20260913-1147.xml",
+    "sha256": "53748a837eacd3738b69154c957bf62bf7f6b35f3abe9cf4be2ef339a5ca0099",
+    "qualification": "source_unfrozen; not final verification"
+  },
+  "source-unfrozen-notice.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m8-causal-source-unfrozen-notice-20260913.json",
+    "sha256": "0f18fdb28cf42d696e6b6119f0cf67eb51054419f08c05ce27f1f28ddefca88d",
+    "qualification": "exclusion record"
+  },
+  "agent-verification.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m8-causal-52985b3-verification.json",
+    "sha256": "73394184928758a9ac31fd99dc4cafb152bfaa24c51d19bea8d605ab718121fe",
+    "qualification": "agent report; exact XML and source manifest retained"
+  },
+  "agent-frozen-source.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m8-causal-final-frozen-source-20260913.json",
+    "sha256": "169d4807a9afd1b7057ff84e451dc90abab8747f0a01d4e3c95bb7bc614ef608",
+    "qualification": "source byte hashes"
+  },
+  "publish_modular_scheduler_checkpoint_20260913.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\publish_modular_scheduler_checkpoint_20260913.py",
+    "sha256": "710d9816e61943074230ce3a8b0a3671e4f871633c52a4784996ab7e2ef8f4ca",
+    "qualification": "archive publisher"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "limits": [
+    "synthetic_integer_workload_only",
+    "Q3.4_global_visibility_and_merge_order_only",
+    "no_Q3.3_throughput_or_fairness_stress_measurement",
+    "controlled_thread_crash_not_OS_process_kill"
+  ],
+  "paid_model_calls": 0,
+  "test_report": "m8-causal-52985b3-focused-20260913.xml",
+  "source_frozen": true,
+  "schema": "m8-causal-verification-v1",
+  "source_unfrozen_reports_excluded": "m8-causal-source-unfrozen-notice-20260913.json",
+  "errors": 0,
+  "scientific_effectiveness_proven": false,
+  "commit": "52985b36f5940948fbb42fc07ee510a3fd4c1553",
+  "seconds": 200.618,
+  "failures": 0,
+  "source_manifest": "m8-causal-final-frozen-source-20260913.json",
+  "tests": 100,
+  "worktree_clean": true,
+  "skipped": 0
+}
