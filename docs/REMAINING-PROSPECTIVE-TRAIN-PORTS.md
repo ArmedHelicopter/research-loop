@@ -25,3 +25,11 @@ wrong source mode, mismatched roots/splits, validation tokens, token swaps,
 forged packet metadata and missing completion anchors. Reject before downstream
 model/authority/Docker/scorer I/O, preserving completed export receipts. Actual
 private reference payloads and validation exports remain excluded.
+
+Verification on 2026-09-13: the isolated source passed 54 checks with 466
+unchanged source/document hashes. The actual primary-packet grids reached all
+24 admission scores, eight scheduler scores and 12 Q3.2 measurements. The first
+scheduler attempt failed all eight cells before any Docker/model/scorer call
+because execution still used a legacy task-name lookup; its original report and
+full denominators remain archived. The repair uses complete identity binding.
+No scientific efficacy or validation eligibility is inferred.

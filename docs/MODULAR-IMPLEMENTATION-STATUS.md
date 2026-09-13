@@ -3,7 +3,27 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current admission, execution and private transport checkpoint (2026-09-13)
+## Current common primary TRAIN source checkpoint (2026-09-13)
+
+Source `64798f4` passed 44 integrated checks with 466 unchanged frozen
+source/document hashes. Admission and M7×M8 now accept explicit v2 primary
+TRAIN tokens; Q3.2 has a separate typed prospective-source entry sharing its
+unchanged execution kernel. The new source grids executed 24 admission cells,
+eight M7×M8 cells and four Q3.2 cells with 12 measurements. Original legacy
+entries and budgets remain available. Source faults are rejected before model,
+qualification, Docker or scorer dispatch, while completed export audit records
+are retained. The first scheduler source run kept all eight failed cells after
+an old benchmark/task lookup remained in execution; complete-identity binding
+fixed it before the 54-check isolated run and this root integration.
+
+Pair/triple coverage remains 10/36 and 2/5; this is a data-port extension, not
+new combination efficacy evidence. Validation remains sealed and no new actual
+paid model call was issued. Scientific measurement, real model calibration,
+TRAIN effect studies and final validation remain open. Evidence:
+`results/modular-engineering-20260913/remaining-prospective-sources/` and
+`results/modular-engineering-20260913/remaining-prospective-source-root/`.
+
+## Prior admission, execution and private transport checkpoint (2026-09-13)
 
 Source `a70482a` passed 81 integrated checks with no failures, errors or skips;
 all 463 frozen source/document hashes remained unchanged. The preceding
