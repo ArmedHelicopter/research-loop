@@ -186,6 +186,8 @@ def verify_build(result, *, recipe, plan_digest, history, material, qualifier, p
     qualifier_check(recipe['pair'],material,qualifier);check_history(history,material,broker,inputs)
     binding=build_binding(plan_digest,recipe);sourcepath=root/'source'/'source-verification.json'
     source=qualifier.replay(material,sourcepath,cell_binding=binding)
+    if any(c['cost_unknown'] for c in json.loads(sourcepath.read_bytes())['calls']):
+        raise ContractError('unknown source cost blocks completed build replay')
     q=qualifier.assessments(material,sourcepath,cell_binding=binding) if type(material) is FrozenAdmissionMaterial else None
     evidence=EvidenceLedger(history.task.identity);claims=ClaimLedger(evidence)
     evidence._log=_MemoryLog();claims._log=_MemoryLog()
