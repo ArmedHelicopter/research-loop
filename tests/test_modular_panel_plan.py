@@ -13,6 +13,20 @@ from research_loop.ontology import ContractError
 HEX = "a" * 64
 
 
+def q21_bundle(task):
+    rows = []
+    for number, case_id in enumerate(("support", "refute", "invalid", "unknown"), 1):
+        rows.append({"case_id": case_id,
+            "observation": {"kind": "measurement", "root_material": {"source": "fixture-%s" % number},
+                "representation": "raw", "content": {"public": "fixture-%s" % number},
+                "subject_bindings": {"task": task.identity.task_id}, "independent_group": task.identity.group_id},
+            "authority_receipt": {"trusted_validator": "fixture-authority-%s" % number,
+                "validator_verified": number != 4, "admitted": number < 3},
+            "review_material": {"public": "fixture-%s" % number}})
+    return FrozenRecord.from_dict({"schema": "q21-pressure-material-bundle-v1", "identity": task.identity.data(),
+        "task_payload_digest": task.payload.content_hash, "cases": rows})
+
+
 def inputs(scope_ids=tuple(registry())):
     tasks = []
     for benchmark in ("blade", "discoverybench"):
@@ -32,9 +46,9 @@ def inputs(scope_ids=tuple(registry())):
         changes={"prompt": {"instructions": "Use public observations; report uncertainty."}}, search_cost=0)
     packages = {arm.content_hash: package for grid in grids.values() for arm in executable_arms(grid).values()}
     return dict(stage="engineering-planning", scope_ids=scope_ids, tasks=tasks,
-        evidence_by_task={task.content_hash: FrozenRecord.from_dict({"schema": "q15-review-material-v1",
+        evidence_by_task={task.content_hash: (q21_bundle(task) if "Q2.1" in scope_ids else FrozenRecord.from_dict({"schema": "q15-review-material-v1",
             "identity": task.identity.data(), "public_evidence": {"measurement": "synthetic public observation"},
-            "historical_summary": "Synthetic historical summary for frozen planning."}) for task in tasks},
+            "historical_summary": "Synthetic historical summary for frozen planning."})) for task in tasks},
         budget=FrozenRecord.from_dict({"schema": "fixture-budget", "model_calls": 2, "execution_limit": 0}),
         baseline_digest=HEX, p0_control=control, packages_by_arm=packages,
         scorer=FrozenRecord.from_dict({"schema": "fixture-scorer", "qualification": "none"}),
@@ -42,13 +56,17 @@ def inputs(scope_ids=tuple(registry())):
 
 
 def test_every_obligation_gets_all_variants_and_all_legal_paired_arms():
-    values = inputs()
+    # Q2.1 has a distinct caller-supplied material contract, so it compiles as
+    # its own panel rather than coercing its evidence into Q1.5's contract.
+    values = inputs(tuple(name for name in registry() if name != "Q2.1"))
     compiled = compile_train_panel(**values)
     panel = compiled.panel
-    assert set(panel.scope_ids) == set(registry())
+    assert set(panel.scope_ids) == set(registry()) - {"Q2.1"}
     assert len(panel.combinations.pairs) == 36 and len(panel.combinations.triples) == 5
     assert set(panel.combinations.leave_one_out) == {f"M{i}" for i in range(1, 10)}
     for coverage, spec in registry().items():
+        if coverage == "Q2.1":
+            continue
         arms = executable_arms(panel.legal_arm_grids[coverage])
         for task in values["tasks"]:
             rows = [cell for cell in panel.cells if cell.coverage_id == coverage and cell.identity == task.identity]
@@ -61,6 +79,9 @@ def test_every_obligation_gets_all_variants_and_all_legal_paired_arms():
     assert compiled.manifest.data()["status"] == "planned_only"
     assert compiled.manifest.data()["scientific_status"] == "not_measured"
     assert all(len(executable_arms(panel.legal_arm_grids[q])) == 1 for q in ("Q2.2", "Q2.7", "Q6.4"))
+    q21 = compile_train_panel(**inputs(("Q2.1",)))
+    assert set(q21.panel.scope_ids) == {"Q2.1"}
+    assert len(q21.panel.cells) == 24
 
 
 def test_actual_package_or_scorer_or_budget_change_changes_frozen_panel():

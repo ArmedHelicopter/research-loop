@@ -61,8 +61,8 @@ def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs) ->
         from research_loop.modular.history_panel_drivers import history_panel_injection
         injection=dict(history_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
     elif spec.experiment_id == "Q2.1":
-        from research_loop.modular.scenarios_core import core_injection
-        injection=dict(core_injection(spec.experiment_id, variant))
+        from research_loop.modular.pressure_panel_driver import pressure_injection
+        injection={"q21_pressure_projection": dict(pressure_injection(variant, task=inputs.task, evidence=inputs.evidence))}
     elif spec.experiment_id == "Q1.5":
         from research_loop.modular.scenarios_history import q15_injection
         injection=dict(q15_injection(variant, task=inputs.task, evidence=inputs.evidence))
