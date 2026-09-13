@@ -156,6 +156,9 @@ class PressureScenarioProjection:
 
 def pressure_injection(variant: str, *, task: FrozenRecord, evidence: FrozenRecord) -> Mapping[str, Any]:
     """Project the compiler's one bundle-per-task evidence input for Q2.1."""
+    if evidence.data().get("schema") != "q21-pressure-material-bundle-v1":
+        from research_loop.modular.scenarios_core import core_injection
+        return core_injection("Q2.1", variant)
     return PressureMaterialBundle.parse(evidence, task=task).projection(variant).data()
 
 
@@ -260,6 +263,7 @@ class Q21PressureDriver:
             "public_case_material": [item.review_material.data() for item in projection.bundle.cases],
             "public_material_digests": [item.review_material.content_hash for item in projection.bundle.cases],
             "candidate_judgements": [item.data() for item in candidate_judgements],
+            "admission_decisions": m1_decisions,
             "review_id": review_id,
             "decision_material": ({"kind": "sealed_review_submissions", "records": [item.data() for item in submissions]}
                                   if m5_enabled else {"kind": "raw_unverified_review_responses", "records": [item.data() for item in responses]}),

@@ -91,8 +91,6 @@ def _events(result):
 
 def test_q21_full_train_grid_projects_caller_material_into_changed_pressure_requests_and_controls(tmp_path: Path, monkeypatch):
     compiled = _compiled()
-    import research_loop.modular.panel_runner as runner
-    monkeypatch.setitem(runner.DRIVERS, "Q2.1", Q21PressureDriver())
     assert len(compiled.panel.cells) == 24  # 2 public benchmark tasks * 3 pressures * M1/M5 factorial grid
     results = []
     for number, cell in enumerate(compiled.panel.cells):
@@ -136,6 +134,7 @@ def test_q21_full_train_grid_projects_caller_material_into_changed_pressure_requ
         stages = [event["data"].get("stage") if event["stage"] == "modular_workflow" else event["stage"] for event in events]
         m1_event = next(event["data"] for event in events if event["stage"] == "modular_workflow"
                         and event["data"].get("stage") in {"stage_1", "operation_m1_control"})
+        assert requests[-1]["module_context"]["q21_review"]["admission_decisions"] == m1_event["decisions"]
         if "M1" in enabled:
             assert "stage_1" in stages
             assert m1_event["intervention"] == "EvidenceAdmission.decide"
