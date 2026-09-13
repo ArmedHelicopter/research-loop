@@ -1,0 +1,28 @@
+{
+  "source_commit": "9b18e47d2680e4bed0d9a07cc72010633324bfcb",
+  "source_files": 498,
+  "source_unchanged": true,
+  "junit": {
+    "tests": 32,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "junit_sha256": "32b5d794cd86bb596d6f32ff6de45ebc55b1105c319ed206b8e8c76bd8836a6f",
+  "state_prediction_archive": {
+    "total_files": 245,
+    "indexed_files": 244,
+    "disk_equals_git": true
+  },
+  "scope": "new 24-cell primary TRAIN integration, shared v3 qualification drift and legacy admission process regression",
+  "coverage": "13 of 36 pair controllers; 2 of 5 triples; synthetic engineering only",
+  "limitations": [
+    "mutation tests select BLADE arms 00/01",
+    "scripted solver and fixed synthetic scorer",
+    "later controller model/Docker failures not specifically exercised by this family"
+  ],
+  "index_count_correction": "lineage-useful archive contains18 total files,17 SHA256-indexed entries; earlier independent audit called18 indexed",
+  "new_paid_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}

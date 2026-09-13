@@ -3,7 +3,37 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current lineage review and qualification parity checkpoint (2026-09-13)
+## Current state/prediction integration checkpoint (2026-09-13)
+
+Source `9b18e47` passed 32 root integration checks with 498 unchanged frozen
+source/document files. M1×M4, M2×M4 and M3×M4 now have complete prospective
+TRAIN controllers and independent process scoring. The 24-cell grid uses
+72 scripted model calls, 48 source calls, 24 actual Docker executions and
+24 process scores. M3 keeps its registered M2 background; both M4 levels
+supply their original useful proposal to the solver, and M4-on additionally
+uses the actual persistent prediction registry.
+
+The isolated source passed 45 checks, including source and model failures,
+M1 qualification drift and eleven rehashed replay attacks. The root run also
+checked the shared v3 admission qualification guard and legacy admission
+process behavior. Independent source review found no concrete blocking defect;
+its limits are recorded: mutation cases select BLADE arms 00/01, and later
+model/Docker failure paths lack specific coverage in this controller family.
+
+The original archive has 245 files (244 indexed), verified against committed
+Git bytes. The nine-file root checkpoint is under
+`results/modular-engineering-20260913/state-prediction-root/`; it includes the
+source review, before/after hashes, JUnit and archive verification. The prior
+lineage-useful archive has 18 total files and 17 indexed entries, correcting
+the earlier audit's wording without changing its original evidence.
+
+Coverage is now 13/36 pair controllers and 2/5 triple controllers. Scripted
+responses and fixed synthetic scores establish execution/replay/scoring wiring,
+not scientific gains. The remaining combinations, actual TRAIN effects,
+calibration, final frozen bundle and validation acceptance remain unfinished.
+No actual generation or validation access occurred in this checkpoint.
+
+## Prior lineage review and qualification parity checkpoint (2026-09-13)
 
 Source `33296e4` passed 25 integrated checks with all 490 frozen source/document
 hashes unchanged. The seven lineage/admission panels now have an explicit v3
@@ -23,7 +53,7 @@ across arms. The two structurally incomplete lineage contrasts remain
 
 The root archive contains 12 files and 3,615 verified ZIP members under
 `results/modular-engineering-20260913/lineage-parity-root/`. Its earlier archive
-contains 18 indexed files and 5,437 members verified against actual and Git
+contains 18 files and 5,437 members verified against actual and Git
 bytes. An initial audit used the wrong directory and a mistyped count; both
 that report and its correction are retained. Unlocated earlier parity test
 reports are not counted as proof; this source's original before/after and

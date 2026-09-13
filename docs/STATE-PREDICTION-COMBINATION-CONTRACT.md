@@ -41,3 +41,23 @@ cell signatures.  If they differ, all cells, costs, failures, and scores stay
 in the receipt but that contrast is `inconclusive`.  M2/M3 provenance
 qualification only establishes frozen-material acceptance and is not treated
 as the same semantic state.
+
+## Implemented integration and limits
+
+The closed `FrozenStatePredictionTrainConfig` compiler/controller and the
+explicit `state_prediction` scorer-process scope now enforce the three-pair
+24-cell prospective TRAIN design. The driver reconstructs qualification,
+evidence/claim journals, the original proposal and persistent prediction
+registry before score issuance; program and model-response bindings also
+replay through the shared solver. Unknown model usage preserves its reservation
+and blocks all remaining cells; per-cell source outages retain failed cells
+while other eligible cells continue.
+
+Isolated source `1cfee61` passed 45 checks. Integrated source `9b18e47` passed
+32 checks, including the shared admission guard and legacy process seam, with
+498 frozen files unchanged. Original failures and all 24 public synthetic
+runtime traces are in `results/state-prediction-prospective-20260913/`;
+root closure and independent review are in
+`results/modular-engineering-20260913/state-prediction-root/`.
+Rehashed mutation tests select BLADE arms 00/01 rather than every task/arm;
+the scripted solver and fixed scorer cannot establish real model efficacy.
