@@ -9,7 +9,11 @@ def receipt(benchmark:str, domain:str, group:str, scenario_hash:str, arms:tuple[
 
 def inputs() -> ControllerInputs:
     from research_loop.modular.contracts import FrozenRecord
-    return ControllerInputs(FrozenRecord.from_dict({"task":"fixture"}), FrozenRecord.from_dict({"evidence":"fixture"}), FrozenRecord.from_dict({"budget":1}))
+    identity = DataIdentity("discoverybench", "fixture", "group", "v1", "split", "train")
+    return ControllerInputs(FrozenRecord.from_dict({"identity": identity.data(), "payload": {"question": "fixture"}}),
+        FrozenRecord.from_dict({"schema": "q15-review-material-v1", "identity": identity.data(),
+            "public_evidence": {"measurement": "fixture"}, "historical_summary": "fixture historical summary"}),
+        FrozenRecord.from_dict({"budget":1}))
 
 def test_registry_keeps_all_48_obligations_designed_and_emits_controlled_scenarios() -> None:
     specs=registry(); assert len(specs)==48
@@ -19,6 +23,14 @@ def test_registry_keeps_all_48_obligations_designed_and_emits_controlled_scenari
     with pytest.raises(ContractError,match="explicit reason"):
         ledger.transition("Q1.2","blocked")
     assert ledger.transition("Q1.2","blocked",blocked_reason="blocked_endpoint_unimplemented:claim_revision_context").data()["Q1.2"]["status"] == "blocked"
+
+
+def test_q15_requires_actual_identity_bound_review_material() -> None:
+    from research_loop.modular.contracts import FrozenRecord
+    seeded = inputs()
+    with pytest.raises(ContractError, match="Q1.5 review material"):
+        scenario(registry()["Q1.5"], "blind_first", inputs=ControllerInputs(
+            seeded.task, FrozenRecord.from_dict({"evidence": "metadata is not material"}), seeded.budget))
 
 def test_legacy_two_benchmark_hashes_cannot_claim_measurement() -> None:
     specs=registry(); controlled=scenario(specs["Q1.1"],"correct",inputs=inputs())

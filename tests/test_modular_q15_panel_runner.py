@@ -32,8 +32,13 @@ def _panel():
     package = CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze([task.identity for task in tasks.values()]), changes={"prompt": {"instructions": "public q15 package"}}, search_cost=0)
     cells, scenarios = [], {}
     for name, task in tasks.items():
+        review_material = FrozenRecord.from_dict({"schema": "q15-review-material-v1", "identity": task.identity.data(),
+            "public_evidence": {"measurement_id": "public-measurement-" + name,
+                "observation": "Raw public measurement changed after the intervention.", "value": 1.5},
+            "historical_summary": ("Incorrect historical summary: no change was measured." if name == "discoverybench"
+                                   else "Correct historical summary: the public measurement changed.")})
         for variant in spec.variants:
-            material = scenario(spec, variant, inputs=ControllerInputs(FrozenRecord.from_dict(task.data()), FrozenRecord.from_dict({"evidence": "public"}), FrozenRecord.from_dict({"budget": "fixed"})))
+            material = scenario(spec, variant, inputs=ControllerInputs(FrozenRecord.from_dict(task.data()), review_material, FrozenRecord.from_dict({"budget": "fixed"})))
             for arm_id, arm in arms.items():
                 cell = PanelCell("Q1.5", task.identity, "r1", variant, arm_id, arm, task.content_hash, material.content_hash, package.digest, SCORER)
                 cells.append(cell); scenarios[(name, variant, arm_id)] = material
@@ -71,6 +76,10 @@ def test_q15_complete_grid_binds_order_visibility_sealed_content_final_and_m5_co
             assert initial["module_context"]["historical_summary"] is not None
             assert followup["module_context"]["historical_summary"] is None
         assert initial["module_context"]["public_evidence_digest"] == followup["module_context"]["public_evidence_digest"]
+        expected_summary = "Incorrect historical summary: no change was measured." if cell.identity.benchmark == "discoverybench" else "Correct historical summary: the public measurement changed."
+        visible_summary = followup if cell.variant == "blind_first" else initial
+        assert visible_summary["module_context"]["historical_summary"] == expected_summary
+        assert initial["context"]["mode"] == "evidence_only"
         if enabled:
             assert initial["module_context"]["sealed"] is True
             assert followup["module_context"]["sealed_submission"]["reviewer_id"] == "q15-evidence-reviewer"

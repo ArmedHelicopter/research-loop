@@ -28,6 +28,38 @@ _VARIANTS = {
 }
 
 
+class Q15ReviewMaterial:
+    """Frozen public evidence and historical prose for the Q1.5 intervention."""
+    def __init__(self, record: FrozenRecord, *, task_identity: Mapping[str, Any]) -> None:
+        if not isinstance(record, FrozenRecord):
+            raise ContractError("Q1.5 requires frozen review material")
+        body = record.data()
+        if set(body) != {"schema", "identity", "public_evidence", "historical_summary"}:
+            raise ContractError("Q1.5 review material has unexpected fields")
+        if body["schema"] != "q15-review-material-v1" or body["identity"] != task_identity:
+            raise ContractError("Q1.5 review material task identity mismatch")
+        if not isinstance(body["public_evidence"], Mapping) or not body["public_evidence"]:
+            raise ContractError("Q1.5 review material requires concrete public evidence")
+        required_text(body["historical_summary"], "Q1.5 historical summary")
+        self.record = record
+
+    def data(self) -> dict[str, Any]:
+        return self.record.data()
+
+
+def q15_injection(variant: str, *, task: FrozenRecord, evidence: FrozenRecord) -> Mapping[str, Any]:
+    """Bind Q1.5 to caller-supplied public material, never fixture prose."""
+    _validate_variant("Q1.5", variant)
+    task_body = task.data()
+    identity = task_body.get("identity") if isinstance(task_body, Mapping) else None
+    if not isinstance(identity, Mapping):
+        raise ContractError("Q1.5 task must carry a typed public identity")
+    material = Q15ReviewMaterial(evidence, task_identity=dict(identity))
+    return {"fixture_only": True, "fixture_notice": "synthetic fixture truth; not a benchmark effect",
+            "auxiliary": {"review_order": variant, "sealed_public_inputs": True},
+            "q15_review_material": material.data(), "q15_review_material_digest": material.record.content_hash}
+
+
 @dataclass(frozen=True)
 class HistoryScenarioResult:
     experiment_id: str

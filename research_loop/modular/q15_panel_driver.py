@@ -25,14 +25,17 @@ class Q15HistoryReviewDriver:
         binding = {"experiment_id": cell.coverage_id, "variant": cell.variant,
                    "replicate": cell.replicate, "arm_id": cell.arm_id,
                    "scenario_digest": scenario.content_hash}
-        controller = scenario.data()["controller_input"]
-        # This material is entirely public and frozen before either reviewer is
-        # invoked. Both calls receive the identical evidence record.
-        public_evidence = FrozenRecord.from_dict({"task": workflow.session.task.data(),
-            "scenario_controller_input": controller, "kind": "public_history_evidence"})
-        history_summary = FrozenRecord.from_dict({"task_digest": workflow.session.task.content_hash,
-            "evidence_digest": public_evidence.content_hash, "source": "frozen_public_history_summary",
-            "summary": "Historical prose is untrusted review context, not admitted evidence."})
+        scenario_body = scenario.data()
+        controller = scenario_body["controller_input"]
+        material = controller.get("q15_review_material")
+        material_digest = controller.get("q15_review_material_digest")
+        if (not isinstance(material, dict) or not isinstance(material_digest, str)
+                or scenario_body["base"].get("evidence") != material_digest):
+            raise ContractError("Q1.5 scenario lacks material bound to base evidence")
+        if material.get("identity") != workflow.session.task.identity.data():
+            raise ContractError("Q1.5 review material identity differs from run task")
+        public_evidence = FrozenRecord.from_dict(material["public_evidence"])
+        history_summary = material["historical_summary"]
         m5_enabled = "M5" in workflow.enabled
         first_has_summary = cell.variant == "summary_first"
         review_id = None
@@ -45,14 +48,14 @@ class Q15HistoryReviewDriver:
         initial_context = {"panel_cell": binding, "scenario_controller_input": controller,
             "candidate_package": package.record.data(), "review_phase": "initial",
             "public_evidence": public_evidence.data(), "public_evidence_digest": public_evidence.content_hash,
-            "historical_summary": history_summary.data() if first_has_summary else None,
+            "historical_summary": history_summary if first_has_summary else None,
             "summary_visibility": "before_initial_review" if first_has_summary else "withheld_until_after_initial_review"}
         if m5_enabled:
             initial_context.update({"review_id": review_id, "sealed": True})
         else:
             initial_context.update({"control": "M5", "control_notice": "M5 review intervention disabled; no submission is sealed or revealed."})
         first = workflow.invoke_model("initial_review", model, instruction="Assess the supplied public evidence under the frozen objective.",
-            module_context=FrozenRecord.from_dict(initial_context))
+            module_context=FrozenRecord.from_dict(initial_context), evidence_only=True)
         if m5_enabled:
             submission = workflow.reviews.submit(review_id, role_id="evidence", reviewer_id="q15-evidence-reviewer",
                 response=first.data(), cost_units=1)
@@ -62,7 +65,7 @@ class Q15HistoryReviewDriver:
         reveal_context = {"panel_cell": binding, "scenario_controller_input": controller,
             "candidate_package": package.record.data(), "review_phase": "after_initial_review",
             "public_evidence": public_evidence.data(), "public_evidence_digest": public_evidence.content_hash,
-            "historical_summary": history_summary.data() if not first_has_summary else None,
+            "historical_summary": history_summary if not first_has_summary else None,
             "summary_visibility": "after_sealed_initial_review" if not first_has_summary else "already_visible_before_initial_review"}
         if m5_enabled:
             reveal_context.update({"review_id": review_id, "sealed_submission": revealed.data()})
@@ -74,7 +77,7 @@ class Q15HistoryReviewDriver:
         if m5_enabled:
             revision = workflow.reviews.revise_after_reveal(review_id, role_id="evidence", reviewer_id="q15-evidence-reviewer", response=second.data())
         review_context = {"m5_enabled": m5_enabled, "variant": cell.variant, "review_id": review_id,
-            "public_evidence": public_evidence.data(), "history_summary": history_summary.data(),
+            "public_evidence": public_evidence.data(), "history_summary": history_summary,
             "initial_submission": submission.data() if submission else None,
             "post_reveal_revision": revision.data() if revision else None}
         stage = workflow._trace("stage_9" if m5_enabled else "operation_m5_control", "executed", **review_context)

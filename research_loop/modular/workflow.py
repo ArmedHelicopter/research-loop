@@ -57,13 +57,15 @@ class ModularWorkflow:
                                 "config": changes.get("config", {})}}
 
     def invoke_model(self, slot: str, model: Callable[[FrozenRecord], FrozenRecord], *, instruction: str,
-                     module_context: FrozenRecord | None = None, baseline_summary: str = "") -> FrozenRecord:
+                     module_context: FrozenRecord | None = None, baseline_summary: str = "",
+                     evidence_only: bool = False) -> FrozenRecord:
         context = module_context.data() if module_context else {}
         if "deployment" in context:
             raise ContractError("module context cannot override deployment payload")
         context.update(self._deployment_context())
         return self.session.invoke(slot, model, instruction=instruction, baseline_summary=baseline_summary,
-                                   module_context=FrozenRecord.from_dict(context) if context else None)
+                                   module_context=FrozenRecord.from_dict(context) if context else None,
+                                   evidence_only=evidence_only)
 
     def propose(self,slot:str,model:Callable[[FrozenRecord],FrozenRecord],*,instruction:str)->WorkflowResult:
         if "M4" not in self.enabled:
