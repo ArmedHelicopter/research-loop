@@ -103,6 +103,9 @@ def test_all_24_retrieval_mechanisms_reach_docker_and_both_solver_requests(linke
     assert report['verified_cells']==24
     assert result.receipt.data()['execution_status']=='engineering_complete'
     assert all(row.status=='linked_succeeded' and row.solver.execution.status=='succeeded' for row in result.linked_results)
+    forbidden_digests = {stage['data'][key] for row in result.linked_results
+        for stage in row.provenance.data()['mechanism_stages']
+        for key in ('policy_digest', 'source_bundle_digest')}
     for row in result.linked_results:
         task=result.compiled.tasks[row.cell.task_digest];scenario=result.compiled.scenarios[row.cell.key]
         verify_linked_benchmark_cell(row,task=task,scenario=scenario,package=result.compiled.packages[row.cell.runtime_arm.content_hash])
@@ -118,6 +121,12 @@ def test_all_24_retrieval_mechanisms_reach_docker_and_both_solver_requests(linke
         solver=[json.loads(line) for line in (row.solver.session.sidecar/'trace.jsonl').read_text(encoding='utf-8').splitlines()]
         requests=[e['data']['request'] for e in solver if e['stage']=='model_request']
         assert len(requests)==2
+        precursors=[e['data']['request'] for e in mechanism if e['stage']=='model_request']
+        assert len(precursors)==1
+        for request in precursors + requests:
+            encoded=FrozenRecord.from_dict(request).encoded
+            assert all(key not in encoded for key in ('policy_digest', 'source_bundle_digest'))
+            assert all(digest not in encoded for digest in forbidden_digests)
         for request in requests:
             public=request['module_context']['predecessor_context']
             assert public['mechanism_material']=={'kind':'retrieved_public_sources','retrieval':expected}
@@ -127,7 +136,7 @@ def test_all_24_retrieval_mechanisms_reach_docker_and_both_solver_requests(linke
     (tmp_path/'independent-fixture-authority.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
 
 
-@pytest.mark.parametrize('fault',['stage_source','request_source','source_pool','arm_stage'])
+@pytest.mark.parametrize('fault',['stage_source','request_source','source_pool','arm_stage', 'request_policy', 'request_pool'])
 def test_retrieval_public_projection_rejects_unbound_sources(linked_grid,fault):
     result,*_=linked_grid
     row=next(r for r in result.linked_results if r.cell.coverage_id=='Q8.3' and 'M6' in r.cell.runtime_arm.data()['enabled'])
@@ -137,6 +146,11 @@ def test_retrieval_public_projection_rejects_unbound_sources(linked_grid,fault):
         request=body['responses'][0]['request'];request['module_context']['retrieval']['by_lane']['support']=[]
         body['responses'][0]['request_digest']=FrozenRecord.from_dict(request).content_hash
     elif fault=='source_pool':body['mechanism_stages'][0]['data']['source_bundle_digest']='f'*64
+    elif fault in {'request_policy', 'request_pool'}:
+        key='policy_digest' if fault=='request_policy' else 'source_bundle_digest'
+        request=body['responses'][0]['request']
+        request['module_context']['retrieval'][key]=body['mechanism_stages'][0]['data'][key]
+        body['responses'][0]['request_digest']=FrozenRecord.from_dict(request).content_hash
     else:
         body['mechanism_stages'][0]['stage']='operation_m6_ordinary_baseline'
         body['mechanism_stages'][0]['data']['stage']='operation_m6_ordinary_baseline'

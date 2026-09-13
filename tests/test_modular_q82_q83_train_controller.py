@@ -72,13 +72,18 @@ def independent_fixture_authority(result, frozen_materials):
         material = frozen_materials[cell.task_digest]["materials"][cell.coverage_id][cell.variant]
         allowed = {doc["source_id"]: doc for doc in material["sources"]}
         projection = request["module_context"]["retrieval"]
+        stage = next(event['data'] for event in events if event['stage'] == 'modular_workflow'
+            and event['data']['stage'] in {'stage_0.5', 'operation_m6_ordinary_baseline'})
+        full_projection = {key: stage[key] for key in ('by_lane', 'source_qualification',
+            'scientific_admission', 'policy_digest', 'source_bundle_digest')}
+        assert projection == {key: stage[key] for key in ('by_lane', 'source_qualification', 'scientific_admission')}
         actual = [doc for lane in projection["by_lane"].values() for doc in lane]
         assert all(allowed[doc["source_id"]] == doc for doc in actual)
         assert len({doc["root_source_id"] for doc in actual}) == len(actual)
         assert projection["scientific_admission"] is False
         admitted = next(event["data"]["receipt"] for event in events if event["stage"] == "q8_source_admission")
         assert admitted["identity"] == cell.identity.data() and admitted["task_digest"] == cell.task_digest
-        assert admitted["source_bundle_digest"] == projection["source_bundle_digest"]
+        assert admitted["source_bundle_digest"] == stage["source_bundle_digest"]
         assert admitted["public_train_safe"] is True and admitted["scientific_verified"] is False
         assert response["objective_digest"] == request["module_context"]["required_objective_digest"]
         assert response["evidence_ids"] == []  # Public sources never become scientific evidence IDs.
@@ -89,7 +94,8 @@ def independent_fixture_authority(result, frozen_materials):
         assert budget["limits"] == {"provider_calls": 3, "source_cap": 3, "context_bytes": 4096}
         assert budget["provider_calls"] + budget["unused_provider_calls"] == 3
         assert budget["sources_returned"] + budget["unused_source_slots"] == 3
-        assert budget["context_bytes"] == len(FrozenRecord.from_dict(projection).encoded.encode("utf-8")) <= 4096
+        assert budget["context_bytes"] == len(FrozenRecord.from_dict(full_projection).encoded.encode("utf-8")) <= 4096
+        assert len(FrozenRecord.from_dict(projection).encoded.encode('utf-8')) <= budget['context_bytes']
         assert budget["external_cost"]["units"] is None
         if cell.coverage_id == "Q8.2" and not enabled:
             assert actual == [] and queries == []
@@ -104,7 +110,7 @@ def independent_fixture_authority(result, frozen_materials):
         observations[key] = projection["by_lane"]
         rows.append({"cell_key": list(cell.key), "m6_enabled": enabled,
             "trace_sha256": hashlib.sha256(raw).hexdigest(), "trace_chain_digest": runtime.trace_digest,
-            "source_bundle_digest": projection["source_bundle_digest"], "request_digest": FrozenRecord.from_dict(request).content_hash,
+            "source_bundle_digest": stage["source_bundle_digest"], "request_digest": FrozenRecord.from_dict(request).content_hash,
             "response_digest": FrozenRecord.from_dict(response).content_hash, "source_ids": [doc["source_id"] for doc in actual],
             "usage": budget, "scientific_admission": False})
     for benchmark in ("blade", "discoverybench"):

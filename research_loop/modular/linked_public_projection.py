@@ -219,7 +219,7 @@ def _retrieval_material(cell: PanelCell, task: PublicTask, scenario: FrozenRecor
     Selection labels, queries, costs and policy IDs stay in the full provenance.
     Both arms use the same output shape; Q8.3's ordinary retrieval stays visible.
     """
-    from research_loop.modular.retrieval_panel_drivers import _docs, freeze_retrieval_bundle
+    from research_loop.modular.retrieval_panel_drivers import _docs, freeze_retrieval_bundle, public_retrieval_context
     from research_loop.modular.modules.retrieval import FrozenSourceBundle, LANES
     enabled, stage = _stage_for_arm(cell, body['mechanism_stages'], module='M6',
         enabled_stage='stage_0.5', control_stage='operation_m6_ordinary_baseline')
@@ -256,7 +256,7 @@ def _retrieval_material(cell: PanelCell, task: PublicTask, scenario: FrozenRecor
     if len(calls)!=1 or calls[0]['slot']!='final':
         raise ContractError('retrieval precursor must contain exactly its final response')
     projection={key:stage[key] for key in fields}
-    if calls[0]['request'].get('module_context',{}).get('retrieval') != projection:
+    public = public_retrieval_context(projection)
+    if calls[0]['request'].get('module_context',{}).get('retrieval') != public:
         raise ContractError('retrieval stage differs from the material actually shown to the model')
-    return {'kind':'retrieved_public_sources','retrieval':{key:stage[key] for key in
-        ('by_lane','source_qualification','scientific_admission')}}
+    return {'kind':'retrieved_public_sources','retrieval':public}
