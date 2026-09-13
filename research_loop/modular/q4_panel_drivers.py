@@ -34,10 +34,13 @@ def _material(workflow: "ModularWorkflow", scenario: FrozenRecord) -> Mapping[st
     controller = scenario.data().get("controller_input", {})
     body = controller.get("q4_review_material") if isinstance(controller, Mapping) else None
     material_digest = controller.get("q4_review_material_digest") if isinstance(controller, Mapping) else None
+    bundle_digest = controller.get("q4_review_material_bundle_digest") if isinstance(controller, Mapping) else None
     if (not isinstance(body, Mapping) or not isinstance(material_digest, str)
-            or scenario.data()["base"].get("evidence") != material_digest
+            or scenario.data()["base"].get("evidence") != (bundle_digest or material_digest)
             or FrozenRecord.from_dict(dict(body)).content_hash != material_digest):
         raise ContractError("Q4 scenario lacks material bound to base evidence")
+    if bundle_digest is not None and (not isinstance(bundle_digest, str) or not bundle_digest):
+        raise ContractError("Q4 scenario bundle binding is invalid")
     checked = Q4ReviewMaterial(FrozenRecord.from_dict(dict(body)), task_identity=workflow.session.task.identity.data())
     return checked.data()
 

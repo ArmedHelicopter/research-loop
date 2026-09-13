@@ -10,6 +10,7 @@ from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.experiments import ControllerInputs, registry, scenario
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.panel_receipts import CombinationObligations, FrozenPanel, PanelCell, PanelReceiptVerifier
+from research_loop.modular.panel_plan import compile_train_panel, executable_arms
 from research_loop.modular.panel_runner import run_train_cell
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.ontology import ContractError
@@ -35,37 +36,41 @@ def _obligations():
         (("M2", "M3", "M5"), ("M4", "M5", "M6"), ("M1", "M4", "M7"), ("M3", "M6", "M9"), ("M7", "M8", "M9")), modules, modules)
 
 
-def _material(task, coverage, variant):
+def _variant_material(coverage, variant):
     counterexample = {"candidate": "Q44-COUNTEREXAMPLE-A" if variant == "none_valid" else "Q44-COUNTEREXAMPLE-B",
         "source": "public counterexample record"}
     direction = {"right_to_wrong": ("INITIAL-ALPHA", "SUMMARY-ALPHA"),
         "wrong_to_right": ("INITIAL-BETA", "SUMMARY-BETA"),
         "heterogeneous": ("INITIAL-GAMMA", "SUMMARY-GAMMA")}.get(variant, ("INITIAL-GENERIC", "SUMMARY-GENERIC"))
-    return FrozenRecord.from_dict({"schema": "q4-review-material-v1", "identity": task.identity.data(),
-        "public_evidence": task.payload.data(), "counterexample_material": counterexample,
+    return {"counterexample_material": counterexample,
         "initial_answer_material": {"prior_answer": direction[0], "provenance": "public frozen review record"},
-        "summary_material": {"summary": direction[1], "provenance": "public frozen review summary"}})
+        "summary_material": {"summary": direction[1], "provenance": "public frozen review summary"}}
+
+
+def _bundle(task):
+    return FrozenRecord.from_dict({"schema": "q4-review-material-bundle-v1", "identity": task.identity.data(),
+        "public_evidence": task.payload.data(), "materials": {coverage: {variant: _variant_material(coverage, variant)
+        for variant in registry()[coverage].variants} for coverage in ("Q4.1", "Q4.2", "Q4.3", "Q4.4", "Q4.5")}})
 
 
 def _panel():
     tasks = {name: _task(name) for name in ("discoverybench", "blade")}
     package = CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze([task.identity for task in tasks.values()]),
         changes={"prompt": {"instructions": "PACKAGE-PROMPT-SENTINEL"}, "memory": {"lesson": "PACKAGE-MEMORY-SENTINEL"}}, search_cost=0)
-    cells, scenarios, grids = [], {}, {}
+    grids = {}
+    bundles = {benchmark: _bundle(task) for benchmark, task in tasks.items()}
     for coverage in SCOPE:
         modules = registry()[coverage].modules
         grid = default_compatibility("base").conditional_factorial(modules)
         grids[coverage] = grid
-        arms = {row["id"]: FrozenRecord.from_dict(row["arm"]) for row in grid.data()["cells"] if row["status"] == "executable"}
-        for benchmark, task in tasks.items():
-            for variant in registry()[coverage].variants:
-                material = scenario(registry()[coverage], variant, inputs=ControllerInputs(FrozenRecord.from_dict(task.data()),
-                    _material(task, coverage, variant), FrozenRecord.from_dict({"budget": "fixed"})))
-                for arm_id, arm in arms.items():
-                    cell = PanelCell(coverage, task.identity, "r1", variant, arm_id, arm, task.content_hash, material.content_hash, package.digest, SCORER)
-                    cells.append(cell); scenarios[cell.key] = material
-    return FrozenPanel("train-q4-remaining", "train", SPLIT, package.digest, SCOPE, grids,
-        FrozenRecord.from_dict({"criterion": "engineering runner wiring only"}), tuple(cells), _obligations()), scenarios, tasks, package
+    packages = {arm.content_hash: package for grid in grids.values() for arm in executable_arms(grid).values()}
+    compiled = compile_train_panel(stage="train-q4-remaining", scope_ids=SCOPE, tasks=tuple(tasks.values()),
+        evidence_by_task={task.content_hash: bundles[benchmark] for benchmark, task in tasks.items()},
+        budget=FrozenRecord.from_dict({"budget": "fixed"}), baseline_digest="base",
+        p0_control=FrozenRecord.from_dict({"control": "fixed"}), packages_by_arm=packages,
+        scorer=FrozenRecord.from_dict({"scorer": "not-measured"}),
+        acceptance_criteria=FrozenRecord.from_dict({"criterion": "engineering runner wiring only"}))
+    return compiled.panel, compiled.scenarios, tasks, package
 
 
 def _branch(number):

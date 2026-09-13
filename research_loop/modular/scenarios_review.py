@@ -43,6 +43,31 @@ class Q4ReviewMaterial:
         return self.record.data()
 
 
+class Q4ReviewMaterialBundle:
+    """One task's public evidence plus every frozen Q4 variant material."""
+    def __init__(self, record: FrozenRecord, *, task_identity: Mapping[str, Any]) -> None:
+        body = record.data()
+        if set(body) != {"schema", "identity", "public_evidence", "materials"} or body["schema"] != "q4-review-material-bundle-v1" or body["identity"] != task_identity:
+            raise ContractError("Q4 review material bundle has unexpected fields or task identity")
+        if not isinstance(body["public_evidence"], Mapping) or not body["public_evidence"] or not isinstance(body["materials"], Mapping):
+            raise ContractError("Q4 review material bundle requires public evidence and materials")
+        if set(body["materials"]) != set(_VARIANTS):
+            raise ContractError("Q4 review material bundle must cover every Q4 intervention")
+        for experiment_id, variants in _VARIANTS.items():
+            rows = body["materials"].get(experiment_id)
+            if not isinstance(rows, Mapping) or set(rows) != set(variants):
+                raise ContractError("Q4 review material bundle lacks a registered variant")
+            for item in rows.values():
+                if not isinstance(item, Mapping) or set(item) != {"counterexample_material", "initial_answer_material", "summary_material"} or any(not isinstance(value, Mapping) or not value for value in item.values()):
+                    raise ContractError("Q4 bundle variant material is incomplete")
+        self.record = record
+
+    def selected(self, experiment_id: str, variant: str) -> Q4ReviewMaterial:
+        item = self.record.data()["materials"][experiment_id][variant]
+        return Q4ReviewMaterial(FrozenRecord.from_dict({"schema": "q4-review-material-v1", "identity": self.record.data()["identity"],
+            "public_evidence": self.record.data()["public_evidence"], **item}), task_identity=self.record.data()["identity"])
+
+
 def q4_injection(experiment_id: str, variant: str, *, task: FrozenRecord, evidence: FrozenRecord) -> Mapping[str, Any]:
     """Bind production Q4 drivers to caller-supplied material, never fixture truth."""
     _validate(experiment_id, variant)
@@ -50,6 +75,14 @@ def q4_injection(experiment_id: str, variant: str, *, task: FrozenRecord, eviden
     identity = task_body.get("identity") if isinstance(task_body, Mapping) else None
     if not isinstance(identity, Mapping):
         raise ContractError("Q4 task must carry a typed public identity")
+    if evidence.data().get("schema") == "q4-review-material-bundle-v1":
+        bundle = Q4ReviewMaterialBundle(evidence, task_identity=dict(identity))
+        material = bundle.selected(experiment_id, variant)
+        return {"fixture_only": True, "fixture_notice": "synthetic public material; not a benchmark effect",
+                "auxiliary": {"review_scenario_variant": variant, "requires_public_task": True,
+                              "requires_frozen_material": True}, "q4_review_material": material.data(),
+                "q4_review_material_digest": material.record.content_hash,
+                "q4_review_material_bundle_digest": bundle.record.content_hash}
     if evidence.data().get("schema") != "q4-review-material-v1":
         # Planning may retain a public evidence digest shared with another
         # intervention.  It is not an executable Q4 material: the production
