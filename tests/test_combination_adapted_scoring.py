@@ -87,11 +87,26 @@ def test_signed_source_and_score_binding_tampering_and_missing_or_failed_cells_a
     result = results[0]; cell = result.cell
     source = issue_combination_score_input(panel=panel, result=result, task=catalogue.tasks[cell.task_digest],
         scenario=catalogue.scenarios[cell.key], package=catalogue.packages[cell.runtime_arm.content_hash], authority=EXEC)
+    # Trusted signatures authenticate a sender; they do not exempt a sender's
+    # malformed output from the frozen cell and scorer contracts.
+    for field, value in (("scorer_digest", "0" * 64), ("runtime_output_digest", None)):
+        changed = source.data()["body"]; changed[field] = value
+        with pytest.raises(ContractError):
+            verify_combination_score_input(EXEC.issue(changed), authority_keys={EXEC.authority_id: EXEC.key}, panel=panel, cell=cell)
+    for field, value in (("mac", False), ("body", {"authority": []})):
+        malformed = source.data(); malformed[field] = value
+        with pytest.raises(ContractError, match="signature"):
+            verify_combination_score_input(FrozenRecord.from_dict(malformed), authority_keys={EXEC.authority_id: EXEC.key}, panel=panel, cell=cell)
     for field, value in (("design_digest", "0" * 64), ("joint_mechanism_digest", "0" * 64), ("executed_program_sha256", "0" * 64), ("task_digest", "0" * 64)):
         forged = source.data(); forged["body"][field] = value
         with pytest.raises(ContractError, match="signature"):
             verify_combination_score_input(FrozenRecord.from_dict(forged), authority_keys={EXEC.authority_id: EXEC.key}, panel=panel, cell=cell)
     score = service.score_combination(panel=panel, cell=cell, score_input=source)
+    other_config = ScorerConfig.create(benchmark="core_pair", evaluator_id="different-evaluator",
+        version="v1", rubric_digest=FrozenBenchmarkRubricEndpoint.rubric_digest())
+    with pytest.raises(ContractError, match="frozen scorer"):
+        verify_combination_adapted_receipt(score, authority_keys={SCORER.authority_id: SCORER.key}, config=other_config,
+            panel=panel, cell=cell, score_input=source, execution_authority_keys={EXEC.authority_id: EXEC.key})
     forged_score = score.receipt.data(); forged_score["body"]["runtime_trace_digest"] = "0" * 64
     with pytest.raises(ContractError, match="signature"):
         verify_combination_adapted_receipt(replace(score, receipt=FrozenRecord.from_dict(forged_score)), authority_keys={SCORER.authority_id: SCORER.key},

@@ -17,8 +17,10 @@ individual-cell behavior.
 The final two solver calls run through `run_benchmark_solve_in_session`, so they
 share the same lock, trace, execution budget, and module state. They receive a
 frozen joint record containing only actual public M4/M5 artifacts or `null`.
-The record binds opaque cell identity, task/scenario/design, and module response
-digests. The frozen contrast coefficient remains controller trace material and
+The public record binds opaque cell identity, the task digest, and an opaque
+digest of the full joint record. It includes the actual prediction plan and
+review response bodies or same-shaped null values. Scenario/design identifiers,
+review registry identities, and the frozen contrast coefficient remain controller trace material and
 does not enter either model request. The public record contains no arm
 identifier, enabled-module list, truth label, scorer result, package record, or
 controller trace label. Public input metadata includes the broker-defined read-only path

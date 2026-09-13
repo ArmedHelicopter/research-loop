@@ -17,13 +17,12 @@ from research_loop.modular.benchmarks.scoring import blade_adapted_score, discov
 from research_loop.modular.combination_benchmark_driver import (CombinationBenchmarkCellResult,
     verify_m4_m5_combination_benchmark_cell)
 from research_loop.modular.combination_panels import CombinationPanel
-from research_loop.modular.contracts import FrozenRecord, PublicTask, required_text
+from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.modules.improvement import CandidatePackage
 from research_loop.modular.panel_receipts import PanelCell, ScientificScorerReceipt
 from research_loop.ontology import ContractError, canonical
 
 _DIMENSIONS = {"discoverybench": ("context", "variable_f1", "relation"), "blade": ("cvars", "transform", "model")}
-_METRICS = {"discoverybench": "discovery_adapted_score", "blade": "blade_adapted_score"}
 
 
 def _digest(value: object, field: str) -> str:
@@ -37,8 +36,8 @@ def _signed_body(receipt: FrozenRecord, keys: Mapping[str, bytes], *, message: s
     if set(envelope) != {"body", "mac"} or not isinstance(envelope["body"], dict):
         raise ContractError(f"{message} envelope is malformed")
     body, authority = envelope["body"], envelope["body"].get("authority")
-    key = keys.get(authority) if isinstance(keys, Mapping) else None
-    if not isinstance(key, bytes) or not hmac.compare_digest(envelope["mac"], hmac.new(key, canonical(body).encode(), hashlib.sha256).hexdigest()):
+    key = keys.get(authority) if isinstance(keys, Mapping) and isinstance(authority, str) else None
+    if not isinstance(key, bytes) or not isinstance(envelope["mac"], str) or not hmac.compare_digest(envelope["mac"], hmac.new(key, canonical(body).encode(), hashlib.sha256).hexdigest()):
         raise ContractError(f"{message} signature is untrusted")
     return body
 
@@ -116,7 +115,7 @@ def verify_combination_score_input(receipt: FrozenRecord, *, authority_keys: Map
         raise ContractError("combination score input panel binding drift")
     if body["cell_key"] != list(cell.key) or body["identity"] != cell.identity.data() or body["panel_cell_digest"] != _panel_cell_digest(cell):
         raise ContractError("combination score input cell binding drift")
-    if body["task_digest"] != cell.task_digest or body["scenario_digest"] != cell.scenario_digest or body["package_digest"] != cell.package_digest or body["arm_digest"] != cell.runtime_arm.content_hash:
+    if body["task_digest"] != cell.task_digest or body["scenario_digest"] != cell.scenario_digest or body["package_digest"] != cell.package_digest or body["arm_digest"] != cell.runtime_arm.content_hash or body["scorer_digest"] != cell.scorer_digest:
         raise ContractError("combination score input frozen cell drift")
     candidate = body["candidate"]
     if (not isinstance(candidate, Mapping) or set(candidate) != {"analysis", "program", "answer", "execution_feedback"}
@@ -126,8 +125,7 @@ def verify_combination_score_input(receipt: FrozenRecord, *, authority_keys: Map
     if hashlib.sha256(canonical(candidate).encode()).hexdigest() != body["candidate_digest"]:
         raise ContractError("combination candidate digest drift")
     for field in required - {"schema", "authority", "cell_key", "identity", "candidate", "status", "scientific_validity", "obligation_id"}:
-        if field != "runtime_output_digest" or body[field] is not None:
-            _digest(body[field], field)
+        _digest(body[field], field)
     return FrozenRecord.from_dict(body)
 
 
@@ -181,6 +179,8 @@ def verify_combination_adapted_receipt(receipt: ScientificScorerReceipt, *, auth
     if body.get("authority") in execution_authority_keys or any(authority_keys.get(body.get("authority")) == key for key in execution_authority_keys.values()):
         raise ContractError("combination execution and scorer authorities must be distinct")
     source = verify_combination_score_input(score_input, authority_keys=execution_authority_keys, panel=panel, cell=cell).data()
+    if cell.identity.benchmark not in config.benchmarks or cell.scorer_digest != config.digest or source["scorer_digest"] != config.digest:
+        raise ContractError("combination adapted receipt frozen scorer drift")
     required = {"schema", "authority", "cell_key", "panel_digest", "design_digest", "obligation_id", "scorer_digest", "scorer_config_digest", "benchmark", "combination_input_digest", "runtime_trace_digest", "runtime_output_digest", "joint_mechanism_digest", "solver_trace_digest", "candidate_digest", "metric", "dimensions", "evaluator_evidence", "scientific_validity", "calibration"}
     if set(body) != required or body["schema"] != "combination-adapted-scored-cell-v1" or body["scientific_validity"] != "not_measured" or body["calibration"] != "not_measured":
         raise ContractError("combination adapted receipt contract drift")
