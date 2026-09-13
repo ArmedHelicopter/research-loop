@@ -34,3 +34,10 @@ outputs, sealed-review cross-contamination, and post-freeze recipe changes,
 even after a caller rehashes the trace. Failed cells retain the full denominator.
 Actual TRAIN effectiveness, calibration, all other combination obligations and
 validation acceptance remain separate unfinished work.
+
+The first extended check run retained one test failure: the test expected 16
+calls after a malformed provider response, while the existing port correctly
+stopped after two calls with an incomplete ledger and kept one failed plus
+seven blocked cells. The corrected test checks that stop rule and separately
+checks a schema-valid but empty review rejected by the runtime in all eight
+cells. No provider stop rule or frozen research success criterion was weakened.

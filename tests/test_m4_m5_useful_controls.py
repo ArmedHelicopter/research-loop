@@ -34,6 +34,10 @@ def configured(root):
     setup['config'] = controller.FrozenM4M5TrainConfig(FrozenRecord.from_dict(body))
     setup['compiled'] = controller.compile_m4_m5_train_panel(setup['config'], setup['packets'])
     assert setup['compiled'].panel.digest != old_panel.digest
+    (root/'frozen-useful-config.json').write_text(setup['config'].record.encoded+'\n', encoding='utf-8')
+    (root/'frozen-useful-scenarios.json').write_text(json.dumps([
+        {'cell': c.data(), 'scenario': setup['compiled'].scenarios[c.key].data()}
+        for c in setup['compiled'].panel.cells]), encoding='utf-8')
     return setup
 
 
@@ -143,14 +147,16 @@ def test_replay_rejects_useful_output_substitution_and_review_contamination(tmp_
         (tmp_path/('replay-faults-'+arm+'.json')).write_text(json.dumps(failures), encoding='utf-8')
 
 
-def test_malformed_reviews_keep_all_eight_failed_cells(tmp_path, monkeypatch):
+@pytest.mark.parametrize('fault', ['provider_contract', 'runtime_review'])
+def test_malformed_reviews_keep_full_denominator_and_stop_rule(tmp_path, monkeypatch, fault):
     setup = configured(tmp_path); ordinary = setup['module']._model
     def factory(seen):
         original = ordinary(seen)
         def respond(request):
             if request.data()['slot'] == 'm5_mechanism':
                 seen.append(request.data())
-                return FrozenRecord.from_dict({'invalid_review': True})
+                return FrozenRecord.from_dict({'invalid_review': True} if fault == 'provider_contract' else
+                    {'assessment':'unknown', 'evidence_refs':[], 'counterexamples':[], 'uncertainty':''})
             return original(request)
         return respond
     monkeypatch.setattr(setup['module'], '_model', factory)
@@ -158,9 +164,14 @@ def test_malformed_reviews_keep_all_eight_failed_cells(tmp_path, monkeypatch):
     assert len(result.attempts) == 8 and not result.scores
     assert result.receipt.data()['status'] == 'inconclusive'
     assert result.receipt.data()['pruned_cells'] == []
-    assert len(port.ledger['calls']) == len(seen) == 16
-    assert all(r.solver is None for r in result.results)
-    assert not list((tmp_path/'run').rglob('execution-*.json'))
+    blocked = fault == 'provider_contract'
+    assert len(port.ledger['calls']) == len(seen) == (2 if blocked else 16)
+    assert port.ledger['usage_incomplete'] is blocked
+    assert result.receipt.data()['blocked_cells'] == (7 if blocked else 0)
+    assert result.receipt.data()['failed_cells'] == (1 if blocked else 8)
+    assert all(r is None or r.solver is None for r in result.results)
+    assert all(not any(FrozenRecord(line).data()['stage'] == 'execution_request'
+        for line in p.read_text(encoding='utf-8').splitlines()) for p in (tmp_path/'run').rglob('trace.jsonl'))
 
 
 @pytest.mark.parametrize('fault', ['validation', 'swapped_tokens', 'export_receipt', 'completion_anchor'])
