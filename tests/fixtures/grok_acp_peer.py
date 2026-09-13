@@ -86,11 +86,21 @@ for line in sys.stdin:
         event('agent_message_chunk', content={'type': 'text', 'text': '{"ok":true}'})
         inter = {'input_tokens': 8, 'output_tokens': 2, 'cache_read_input_tokens': 2,
                  'cache_creation_input_tokens': 0, 'reasoning_tokens': 0}
-        event('response_completed', stop_reason='end_turn', usage=inter)
+        if scenario == 'optional_usage':
+            event('response_completed')
+        elif scenario in ('optional_stop', 'optional_stop_bad_terminal'):
+            event('response_completed', usage=inter)
+        else:
+            event('response_completed', stop_reason='end_turn', usage=inter)
         usage = {'inputTokens': 10, 'outputTokens': 2, 'totalTokens': 12,
                  'cachedReadTokens': 2, 'cacheCreationTokens': 0, 'reasoningTokens': 0,
                  'modelCalls': 1, 'apiDurationMs': 20, 'costUsdTicks': 123}
         usage = {**usage, 'numTurns': 1, 'modelUsage': {'grok-4.6-build': dict(usage)}}
+        if scenario == 'rpc_error_usage':
+            usage['usageIsIncomplete'] = True
+            send({'id': req['id'], 'error': {'code': -32000, 'message': 'PRIVATE ERROR',
+                  'data': {'promptUsage': usage}}})
+            continue
         if scenario == 'unknown_cost':
             usage.pop('costUsdTicks'); usage['modelUsage']['grok-4.6-build'].pop('costUsdTicks')
         if scenario == 'partial':
@@ -112,7 +122,13 @@ for line in sys.stdin:
             meta['toolOverrides'] = {}
         if scenario == 'schema':
             meta['structuredOutput'] = {'ok': False}
-        result = {'stopReason': 'end_turn', '_meta': meta}
+        if scenario == 'context_count':
+            meta['totalTokens'] = True
+        if scenario in ('prompt_complete', 'prompt_complete_wrong'):
+            send({'method': '_x.ai/session/prompt_complete', 'params': {'sessionId': sid,
+                  'promptId': 'other' if scenario == 'prompt_complete_wrong' else pid,
+                  'stopReason': 'end_turn', 'agentResult': None}})
+        result = {'stopReason': 'max_tokens' if scenario == 'optional_stop_bad_terminal' else 'end_turn', '_meta': meta}
     else:
         raise AssertionError(method)
     send({'id': req['id'], 'result': result})

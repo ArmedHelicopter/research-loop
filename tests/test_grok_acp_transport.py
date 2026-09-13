@@ -222,3 +222,42 @@ def test_queue_repair_still_rejects_other_work(tmp_path, scenario, fault):
     assert fault in result.receipt.data()['faults']
     assert sum(r['method'] == 'session/prompt' for r in requests) == 1
     assert result.response is None
+
+
+def test_optional_intermediate_stop_requires_bound_terminal_success(tmp_path):
+    _, result, _ = invoke(tmp_path, 'optional_stop')
+    assert result.receipt.data()['accepted'], result.receipt.data()
+    assert result.receipt.data()['known_response_usage'][0]['output_tokens'] == 2
+
+
+def test_missing_intermediate_stop_does_not_allow_bad_terminal(tmp_path):
+    _, result, _ = invoke(tmp_path, 'optional_stop_bad_terminal')
+    assert not result.receipt.data()['accepted']
+    assert 'result_stop_or_model' in result.receipt.data()['faults']
+    assert result.receipt.data()['known_response_usage'][0]['output_tokens'] == 2
+
+
+@pytest.mark.parametrize('scenario', ['optional_usage', 'prompt_complete'])
+def test_source_optional_metadata_and_terminal_notification(tmp_path, scenario):
+    _, result, _ = invoke(tmp_path, scenario)
+    assert result.receipt.data()['accepted'], result.receipt.data()
+    assert result.receipt.data()['known_usage']['totalTokens'] == 12
+
+
+@pytest.mark.parametrize('scenario,fault', [('prompt_complete_wrong', 'prompt_complete_binding'),
+                                         ('context_count', 'terminal_context_count_shape')])
+def test_source_optional_review_keeps_binding_and_types(tmp_path, scenario, fault):
+    _, result, _ = invoke(tmp_path, scenario)
+    assert fault in result.receipt.data()['faults']
+
+
+def test_rejected_rpc_retains_already_received_partial_usage(tmp_path):
+    _, result, requests = invoke(tmp_path, 'rpc_error_usage')
+    r = result.receipt.data()
+    assert r['faults'] == ['rpc_error']
+    assert r['known_usage']['totalTokens'] == 12
+    assert r['known_usage']['usageIsIncomplete'] is True
+    assert r['known_usage_binding_verified'] is False
+    assert r['reported_cost_usd'] is None
+    assert r['known_response_usage'][0]['output_tokens'] == 2
+    assert sum(x['method'] == 'session/prompt' for x in requests) == 1

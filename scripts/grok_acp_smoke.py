@@ -28,7 +28,8 @@ def git(*args):
 
 
 def source_manifest():
-    paths = git('ls-files', '*.py', 'pyproject.toml', 'docs/GROK_ACP_TRANSPORT.md').splitlines()
+    paths = git('ls-files', '*.py', 'pyproject.toml', 'docs/GROK_ACP_TRANSPORT.md',
+                'docs/GROK_ACP_PROTOCOL_REVIEW.md').splitlines()
     return {str(REPO / p): digest((REPO / p).read_bytes()) for p in paths}
 
 

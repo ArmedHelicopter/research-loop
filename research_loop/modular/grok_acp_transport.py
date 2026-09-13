@@ -309,12 +309,18 @@ class SinglePromptACP:
             elif kind == 'response_completed':
                 require(self.sent, 'completion_before_prompt')
                 self.response_usage.append(update.get('usage'))
-                require(len(self.response_usage) == 1 and update.get('stop_reason') == 'end_turn',
+                require(not set(update) - {'sessionUpdate', 'message_id', 'stop_reason',
+                        'usage', 'signature', 'stop_sequence'}, 'unknown_response_field')
+                # This intermediate wire field is optional. The bound prompt
+                # result must still explicitly finish with end_turn below.
+                require(len(self.response_usage) == 1
+                        and update.get('stop_reason') in (None, 'end_turn', 'stop'),
                         'unexpected_response_completion')
             elif kind == 'turn_completed':
                 # Capture independently parseable usage before rejecting bindings.
                 self.usage = known_usage(update.get('usage')) or self.usage
                 require(self.sent and update.get('prompt_id') == self.prompt_id, 'prompt_binding')
+                require(update.get('error_kind') is None, 'terminal_error_kind')
                 self.turns += 1
                 require(self.turns == 1 and update.get('stop_reason') == 'end_turn', 'unexpected_turn')
             elif kind in ('tool_call', 'tool_call_update', 'tool_call_delta_chunk'):
@@ -339,7 +345,8 @@ class SinglePromptACP:
                     'cache_read_input_tokens', 'cache_creation_input_tokens')), 'response_start_shape')
                 require(self.event_counts.get(kind, 0) == 0, 'extra_response_started')
             elif kind == 'reasoning_completed':
-                require(self.sent and isinstance(update.get('signature', ''), str),
+                require(self.sent and (update.get('signature') is None
+                        or isinstance(update['signature'], str)),
                         'reasoning_complete_shape')
             else:
                 raise Rejected('unknown_or_disallowed_session_update')
@@ -354,6 +361,15 @@ class SinglePromptACP:
             require(self.sid is None or self.sid == sid, 'session_binding')
         elif method == '_x.ai/models/update':
             require(params.get('currentModelId') == MODEL, 'model_changed')
+        elif method == '_x.ai/session/prompt_complete':
+            require(self.sent and params.get('sessionId') == self.sid
+                    and params.get('promptId') == self.prompt_id, 'prompt_complete_binding')
+            require(set(params) <= {'sessionId', 'promptId', 'stopReason', 'agentResult'}
+                    and params.get('stopReason') == 'end_turn'
+                    and (params.get('agentResult') is None or isinstance(params['agentResult'], str)),
+                    'prompt_complete_failure')
+            require(self.event_counts.get('prompt_complete', 0) == 0, 'duplicate_prompt_complete')
+            self.event_counts['prompt_complete'] = 1
         elif method == '_x.ai/queue/changed':
             # Native prompt lifecycle display, not a new prompt request. Accept
             # only an empty queue or our one bound pending/running prompt.
@@ -438,6 +454,10 @@ class SinglePromptACP:
             'structuredOutputError', 'toolOverrides'}, 'unknown_result_field')
         require(parsed_usage is not None, 'result_usage_missing')
         require(previous is None or previous == parsed_usage, 'terminal_usage_disagreement')
+        require(integer(meta.get('totalTokens')), 'terminal_context_count_shape')
+        require(all(k not in meta or integer(meta[k]) for k in
+                ('inputTokens', 'outputTokens', 'cachedReadTokens', 'reasoningTokens')),
+                'terminal_last_call_count_shape')
         require(meta.get('sessionId') == self.sid and meta.get('promptId') == self.prompt_id
                 and meta.get('requestId') == self.prompt_id, 'result_binding')
         self.usage_bound = True
@@ -447,6 +467,14 @@ class SinglePromptACP:
                 'cancelTrigger', 'cancellationContext', 'structuredOutputError', 'toolOverrides')),
                 'result_extra_work_or_failure')
         usage = self.usage
+        known_responses = []
+        response_fields = {'input_tokens', 'output_tokens', 'cache_read_input_tokens',
+                           'cache_creation_input_tokens', 'reasoning_tokens'}
+        for item in self.response_usage:
+            if (isinstance(item, dict) and set(item) == response_fields
+                    and all(integer(v) for v in item.values())
+                    and item['reasoning_tokens'] <= item['output_tokens']):
+                known_responses.append(item)
         require(usage is not None and usage['numTurns'] == 1 and usage['modelCalls'] == 1
                 and not usage['usageIsIncomplete'], 'usage_incomplete_or_extra_calls')
         require(usage['outputTokens'] <= 128 and usage['totalTokens'] <= self.max_total_tokens,
@@ -463,12 +491,13 @@ class SinglePromptACP:
         intermediate = self.response_usage[0]
         fields = ('input_tokens', 'output_tokens', 'cache_read_input_tokens',
                   'cache_creation_input_tokens', 'reasoning_tokens')
-        require(isinstance(intermediate, dict) and set(intermediate) == set(fields)
-                and all(integer(v) for v in intermediate.values()), 'response_usage_shape')
-        expected = (usage['inputTokens'] - usage['cachedReadTokens'] - usage['cacheCreationTokens'],
-                    usage['outputTokens'], usage['cachedReadTokens'],
-                    usage['cacheCreationTokens'], usage['reasoningTokens'])
-        require(tuple(intermediate[k] for k in fields) == expected, 'response_usage_disagreement')
+        if intermediate is not None:
+            require(isinstance(intermediate, dict) and set(intermediate) == set(fields)
+                    and all(integer(v) for v in intermediate.values()), 'response_usage_shape')
+            expected = (usage['inputTokens'] - usage['cachedReadTokens'] - usage['cacheCreationTokens'],
+                        usage['outputTokens'], usage['cachedReadTokens'],
+                        usage['cacheCreationTokens'], usage['reasoningTokens'])
+            require(tuple(intermediate[k] for k in fields) == expected, 'response_usage_disagreement')
         try:
             text = load_json(''.join(self.text))
             require(text == meta.get('structuredOutput'), 'structured_text_disagreement')
@@ -573,9 +602,13 @@ class SinglePromptACP:
         for line in (self.private / 'stdout.private.jsonl').read_bytes().splitlines():
             try:
                 row = load_json(line)
-                candidate = known_usage(row.get('result', {}).get('_meta', {}).get('usage'))
-                if candidate and candidate not in candidates:
-                    candidates.append(candidate)
+                possible = [row.get('result', {}).get('_meta', {}).get('usage'),
+                    row.get('params', {}).get('update', {}).get('usage'),
+                    row.get('error', {}).get('data', {}).get('promptUsage')]
+                for item in possible:
+                    candidate = known_usage(item)
+                    if candidate and candidate not in candidates:
+                        candidates.append(candidate)
             except (ValueError, UnicodeError, AttributeError):
                 continue
         if self.usage is None and len(candidates) == 1:
@@ -602,6 +635,8 @@ class SinglePromptACP:
             'runtime_empty_inventory_count': len(self.inventory_sessions),
             'event_counts': self.event_counts, 'known_usage': usage,
             'known_usage_binding_verified': self.usage_bound,
+            'known_response_usage': known_responses,
+            'response_usage_scope': 'observed model responses; not all-opportunity totals',
             'known_terminal_usage_candidates': candidates,
             'reported_cost_usd': ticks / 10_000_000_000 if cost_complete else None,
             'reported_cost_complete': cost_complete, 'settled_additional_charge_usd': None,
