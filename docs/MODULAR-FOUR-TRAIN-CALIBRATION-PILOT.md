@@ -82,3 +82,32 @@ retains the new reservation as unknown and blocks further I/O. Transport failure
 and invalid received responses have separate counters. Parent timeouts preserve
 captured partial stdout/stderr privately, mark the child call/token/money totals
 unknown pending private-ledger reconciliation, and never retry automatically.
+
+## Frozen synthetic verification
+
+Source `c160b8341b12a827825d223822cdf5f5d4a72870` passed 115 related checks in
+459.575 seconds, with zero failures/errors/skips and all 459 tracked Python file
+hashes unchanged. The suite includes a real one-shot worker, standard resolver,
+36 distinct synthetic material slots, both primary benchmarks and 72 evaluator
+opportunities. Its ordinary full grid dispatched 36 + 36 blinded reviewer calls,
+zero arbitration calls and 72 canned evaluator calls. The disagreement grid
+used all 36 arbitration opportunities. These are synthetic ports, not paid model
+calls or scientific accuracy evidence.
+
+Twenty final-run journals retain 182 reviewer1, 178 reviewer2, 36 arbitrator and
+359 evaluator dispatch attempts across positive and adversarial tests. All raw
+responses, invalid receipts, unknown costs and budget reservations stay in the
+private synthetic journals. Their hash chains and metadata are indexed under
+`work/cal-pilot-checks/synthetic-denominators-r2.json`.
+
+The earlier 112-check run retains one fixture-shape failure (111 passed), with
+unchanged source. Independent branch `codex/calibration-boundary-red` / `4187412`
+retains three failing counterexamples on the old worker: nonpersistent source
+halt, reused usage evidence, and discarded timeout partial streams. That RED
+branch is evidence only and must not be integrated. The repaired boundary checks
+and the complete final regression passed. No actual four-task reference, model,
+Docker, validation lease, split or hold was used or changed by this work.
+
+[Verification metadata](calibration-pilot-verification.json) identifies the exact
+JUnit and source hashes. The actual pilot still requires independently reviewed
+material/reviewer services and reliable model/context/pricing ports.

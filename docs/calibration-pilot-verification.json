@@ -1,0 +1,100 @@
+{
+  "schema": "four-train-calibration-pilot-verification-v1",
+  "source_commit": "c160b8341b12a827825d223822cdf5f5d4a72870",
+  "source_files": 459,
+  "source_changes_during_final_run": 0,
+  "tests": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\red-r1.xml",
+      "sha256": "445bdf05afd3bd1da11649de21cc2052fffdc939c6282468426d5edfe2172b11",
+      "tests": 1,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0,
+      "seconds": 0.216
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\green-r1.xml",
+      "sha256": "28a43fa01f8e1885ca00fd80df9ed500bfe3472e3544dc3803b167ff7bfbd714",
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 262.621
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\boundary-r2.xml",
+      "sha256": "3b18520a12c377652816a97b83e05dbfd7a1daeac7ca844e13360267d97b9a1f",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 2.551
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final-r1.xml",
+      "sha256": "dbae42591bfaa0f85d07c64d0a119106671ea50765faaf9651a94742c4f307fd",
+      "tests": 112,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 535.532
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\red-boundary-r1.xml",
+      "sha256": "909e3eedd25a74ec3f5ad32be3a732d99d57680e3efcaf5930db1a77e92a3e43",
+      "tests": 3,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 2.687
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\green-boundary-r3.xml",
+      "sha256": "de327f0baee4fc6b8b6bcda7824e344aec4674775d83f609d19a6d02d0a26096",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 3.356
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final-r2.xml",
+      "sha256": "b8a86e9ec0c34e7f37fcd8f2693bbb4532cf3b5eba7f2fb3c12f37776fab2b79",
+      "tests": 115,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 459.575
+    }
+  ],
+  "final_acceptance": true,
+  "source_after": {
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\source-after-final-r2.json",
+    "sha256": "23a334f5d907845f13bd61e2ee4eda22bcf0f61cb27b35b2500737cbe0b46613",
+    "size_bytes": 84961
+  },
+  "synthetic_denominators": {
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\synthetic-denominators-r2.json",
+    "sha256": "b79da3351cc4869349a923572b033077e08659117a4c54becf518ec3bd41d957",
+    "size_bytes": 18212
+  },
+  "retained_red_branch_commit": "4187412",
+  "red_branch_must_not_be_integrated": true,
+  "prior_fixture_failure": "final-r1 retained an empty-candidate-shape fixture failure; 111 other tests passed; source unchanged",
+  "scope": {
+    "actual_four_train_reference_read": false,
+    "actual_model_calls": 0,
+    "docker_calls": 0,
+    "validation_leases": 0,
+    "legacy_split_or_hold_mutations": 0,
+    "official_metric_equivalence": false,
+    "scientific_calibration": false
+  },
+  "remaining": [
+    "Deploy independent reviewers with standard resolver and private references",
+    "Provide and independently review exact full-context/tokenizer/output-limit and pricing bounds",
+    "Freeze actual four-train material and expected-target receipts using existing allowlist",
+    "Four tasks cannot establish population calibration or validation eligibility"
+  ]
+}
