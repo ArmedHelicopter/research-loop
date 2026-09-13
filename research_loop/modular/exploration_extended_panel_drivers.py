@@ -340,7 +340,7 @@ def _run(driver, workflow, *, cell, scenario, model):
     for value in diagnostic.data().values(): required_text(value, 'diagnostic text')
     workflow.session._record('extended_judgement_observed', {'judgement': diagnostic.data(), 'operation': operation})
     p0 = [{'execution_digest': execution.content_hash,
-           'admission': {key: observation['admission'][key] for key in ('admitted', 'state', 'outcome', 'evidence_ids')}}
+           'admission': {key: observation['admission'][key] for key in ('admitted', 'state', 'outcome')}}
           for observation, execution in zip(observations, executions) if execution is not None]
     final = _invoke(workflow, cell, model, 'final', 'Return the standard candidate with required_objective_digest and programme_complete=false. '
         'Only fixed-P0 qualified evidence may support positive/negative. Do not revive old invalid measurements or convert novelty/investment into validity.',

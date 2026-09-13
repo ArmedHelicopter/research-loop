@@ -198,7 +198,7 @@ def _model(seen, *, old_overclaim=False):
             # Deliberately observable anchoring susceptibility in this synthetic
             # model, determined from available context rather than module IDs.
             assessment='accept' if 'earlier_assessment' in context else 'concern' if concern else 'unknown'
-            return FrozenRecord.from_dict({'assessment':assessment,'evidence_refs':[context['observation']['execution_digest']] if actual else [],
+            return FrozenRecord.from_dict({'assessment':assessment,'evidence_refs':[context['observation']['binding']] if actual else [],
                 'counterexamples':['The observed field or mean does not support the declared theory.'] if concern else [],'uncertainty':'Synthetic construct review only.'})
         if row['slot']=='diagnostic':
             qualified=any(o.get('scientific_gate',{}).get('admitted') for o in context['observations'])
