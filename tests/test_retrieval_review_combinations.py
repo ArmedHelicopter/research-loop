@@ -225,7 +225,7 @@ def test_verifier_is_readonly_and_cannot_call_any_external_port(grid):
     assert before=={p:hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
 
 
-@pytest.mark.parametrize('fault',['program','csv','prediction_log','review_log','source_item','source_context','source_budget','barrier','joint_order'])
+@pytest.mark.parametrize('fault',['program','csv','prediction_log','review_log','source_item','source_context','source_budget','barrier','joint_order','admission_order','selection_order'])
 def test_independent_replay_rejects_artifact_or_rehashed_mechanism_drift(grid,fault):
     from test_modular_combination_benchmark_driver import _rewrite_trace
     root,result,*_=grid
@@ -250,6 +250,11 @@ def test_independent_replay_rejects_artifact_or_rehashed_mechanism_drift(grid,fa
             joint=next(e for e in events if e['stage']=='combination_mechanism'); events.remove(joint)
             at=next(i for i,e in enumerate(events) if e['stage']=='model_request' and e['data']['request']['slot']=='analysis_program')
             events.insert(at+1,joint)
+        if fault in ('admission_order','selection_order'):
+            stage='q8_source_admission' if fault=='admission_order' else 'retrieval_review_sources'
+            event=next(e for e in events if e['stage']==stage); events.remove(event)
+            at=next(i for i,e in enumerate(events) if e['stage']=='model_request')
+            events.insert(at+1,event)
     try:
         digest=_rewrite_trace(path,mutate)
         forged=replace(executed,runtime=replace(executed.runtime,trace_digest=digest))
@@ -285,6 +290,7 @@ def test_failed_actual_docker_cannot_be_relabeled_by_final_answer(tmp_path,monke
     _,original,*_=grid
     prior=original.results[-1]; args=_args(original,prior)
     sidecar=tmp_path/'run'/'cells'/'one'; provider=Provider(tmp_path); seen=[]; ordinary=model_response(seen)
+    sidecar.mkdir(parents=True)
     def response(request):
         slot=request.data()['slot']
         if slot=='analysis_program': return FrozenRecord.from_dict({'analysis':'Preserve the failed public execution.', 'program':"raise ValueError('public fixture failure')"})
@@ -295,7 +301,7 @@ def test_failed_actual_docker_cannot_be_relabeled_by_final_answer(tmp_path,monke
     args['broker']=DockerExecutionBroker([args['public_inputs']['public_csv'].parent,sidecar])
     result=run_retrieval_review_cell(cell=prior.cell,**args,provider=provider,admission_port=admission_receipt,
         objective=FrozenRecord.from_dict({'panel_digest':args['panel'].digest}),sidecar=sidecar,
-        image=original.compiled.panels and grid[-1][2].data()['image'],model=port,audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}))
+        image=grid[-1][2].data()['image'],model=port,audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}))
     assert result.solver.status=='execution_failed' and result.runtime.status=='failed' and result.runtime.output_digest is None
     assert len(port.ledger['calls'])==5 and len(provider.calls)==3
     verify_retrieval_review_cell(result,**args)

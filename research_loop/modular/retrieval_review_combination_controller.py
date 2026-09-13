@@ -175,6 +175,8 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
     try:
         packets = TrainPacketExporter(custody, snapshot, exported).export(b['item_ids'])
         compiled = compile_retrieval_review_panels(config, packets)
+        if any(scoring_services[p.obligation_id].panel != p for p in compiled.panels):
+            raise ContractError('scorer process does not bind the exact compiled panel')
         broker = DockerExecutionBroker([exported, root])
         by_task = {p.task.content_hash: p for p in packets}
         for packet in packets:

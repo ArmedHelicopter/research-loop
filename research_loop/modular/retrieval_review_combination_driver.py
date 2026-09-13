@@ -171,6 +171,9 @@ def _verify_sources(events, task, material, enabled):
         # An admission failure may occur before any reservation, but never authorize later work.
         if not admissions and not any(e['stage'] in ('q8_retrieval_request', 'model_request') for e in events): return None
         raise ContractError('source qualification replay mismatch')
+    admission_index = next(i for i,e in enumerate(events) if e['stage']=='q8_source_admission')
+    if any(e['stage'] in ('q8_retrieval_request','model_request') for e in events[:admission_index]):
+        raise ContractError('source I/O preceded caller qualification')
     calls = items_total = 0; pending = None; seen = set(); dropped = set(); excluded = []
     policy = 'three_lane' if enabled else 'neutral'
     intent = ('Seek support, counterevidence, and runnable methods separately.' if enabled else
@@ -223,6 +226,9 @@ def _verify_sources(events, task, material, enabled):
         'external_cost': {'units': None, 'status': 'unknown'}}
     if source_events != [{'projection': projection, 'usage': usage}] or [e['data'] for e in events if e['stage']=='q8_retrieval_budget'] != [usage] or [e['data'] for e in events if e['stage']=='q8_retrieval_selection'] != [{'dropped_duplicate_roots': sorted(dropped), 'excluded_context_budget': excluded}]:
         raise ContractError('actual source admission/context differs from item replay')
+    selection_index = next(i for i,e in enumerate(events) if e['stage']=='retrieval_review_sources')
+    if any(e['stage']=='model_request' for e in events[:selection_index]) or any(e['stage'].startswith('q8_retrieval_') for e in events[selection_index+1:]):
+        raise ContractError('public source selection did not precede all model calls')
     return projection
 
 
@@ -287,7 +293,9 @@ def verify_retrieval_review_cell(result, *, panel, task, scenario, package, mate
             'review_digest':FrozenRecord.from_dict(revealed).content_hash}] if review else
             [{'stage':'operation_review','status':'executed','response_digests':[r.content_hash for r in actual_reviews]}])
         if [e['data'] for e in stages] != expected_stages: raise ContractError('prediction/review workflow stages drift')
-        if not events.index(request_events[0]) < events.index(stages[0]) < events.index(request_events[1]):
+        proposal_response_index = next(i for i,e in enumerate(events) if e['stage']=='model_response'
+            and e['data']['request_digest']==request_events[0]['data']['request_digest'])
+        if not proposal_response_index < events.index(stages[0]) < events.index(request_events[1]):
             raise ContractError('prediction freeze did not precede review')
         for name, rows in (('predictions.jsonl', registry._log.rows), ('reviews.jsonl', review_engine._log.rows)):
             path = result.runtime.trace_path.parent/name
