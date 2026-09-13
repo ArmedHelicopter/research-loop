@@ -116,7 +116,7 @@ def model_response(seen, fail=False):
             # The actual program consumes the prediction observables, review text and retrieved text.
             metadata={'predictions':[] if plan is None else [p for branch in plan['branches'] for p in branch['predictions']],
                 'notes':joint['ordinary_notes'], 'reviews':joint['review_responses'], 'sources':joint['retrieval']['by_lane']}
-            program="import csv,json\nwith open('/input/public_csv',newline='') as f: rows=list(csv.DictReader(f))\nmean=sum(float(r['x']) for r in rows)/len(rows)\nm="+repr(metadata)+"\nchecks=[{'observable':p['observable'],'direction':p['direction'],'observed_mean':mean} for p in m['predictions']]\nprint(json.dumps({'mean':mean,'checks':checks,'notes':m['notes'],'reviews':m['reviews'],'sources':m['sources']},sort_keys=True))"
+            program="import csv,json\nwith open('/input/public_csv',newline='') as f: rows=list(csv.DictReader(f))\nmean=sum(float(r['x']) for r in rows)/len(rows)\nm="+repr(metadata)+"\nchecks=[{'observable':p['observable'],'direction':p['direction'],'observed_mean':mean,'direction_consistent':{'increase':mean>0,'decrease':mean<0,'unchanged':mean==0}[p['direction']]} for p in m['predictions']]\nprint(json.dumps({'mean':mean,'checks':checks,'notes':m['notes'],'reviews':m['reviews'],'sources':m['sources']},sort_keys=True))"
             return FrozenRecord.from_dict({'analysis':'Compute the public mean and report the supplied prediction observations and review concerns.','program':program})
         observed=json.loads(b['execution_feedback'][0]['stdout']); assert observed['mean']==1.0
         return FrozenRecord.from_dict({'objective_digest':context['required_objective_digest'],'outcome':'unknown','evidence_ids':[],
@@ -177,6 +177,7 @@ def test_full_registry_custody_shared_session_grid_real_docker_and_scorer_proces
         for r in cells:
             enabled=r.cell.runtime_arm.data()['enabled']; observed=json.loads(r.solver.execution.record.data()['stdout'])
             assert len(observed['checks'])==(3 if 'M4' in enabled else 0)
+            if 'M4' in enabled: assert [c['direction_consistent'] for c in observed['checks']]==[True,False,False]
             assert len(observed['sources']['counter'])==(1 if 'M6' in enabled else 0)
             assert ('Follow up:' in observed['reviews'][1]['uncertainty'])==('M5' not in enabled)
             assert r.solver.session.sidecar==r.runtime.trace_path.parent and r.solver.answer.data()['programme_complete'] is False
@@ -306,3 +307,22 @@ def test_failed_actual_docker_cannot_be_relabeled_by_final_answer(tmp_path,monke
     assert len(port.ledger['calls'])==5 and len(provider.calls)==3
     verify_retrieval_review_cell(result,**args)
     with pytest.raises(ContractError): verify_retrieval_review_cell(replace(result,runtime=replace(result.runtime,status='succeeded')),**args)
+
+
+def test_manually_self_consistent_background_design_is_not_registered(tmp_path):
+    from research_loop.modular.combinations import default_compatibility
+    _,_,config,compiled,_=fixture(tmp_path)
+    panel=compiled.panels[0]
+    design=default_compatibility(config.data()['baseline_digest']).factorial(DESIGNS[panel.obligation_id],background=('M1',))
+    arms={r['id']:FrozenRecord.from_dict(r['arm']) for r in design.data()['cells']}
+    package=next(iter(compiled.packages.values()))
+    forged=replace(panel,design=design,cells=tuple(replace(c,runtime_arm=arms[c.arm_id]) for c in panel.cells),
+        package_bundle=FrozenRecord.from_dict({'schema':'combination-package-bundle-v1',
+            'packages':{arm.content_hash:package.record.data() for arm in arms.values()}}))
+    with pytest.raises(ContractError,match='registered design'): serialize_combination_panel(forged,retrieval_review=True)
+    cell=forged.cells[0]; task=next(p.task for p in compiled.packets if p.task.content_hash==cell.task_digest)
+    with pytest.raises(ContractError,match='exact default registry'):
+        run_retrieval_review_cell(panel=forged,cell=cell,task=task,scenario=compiled.scenarios[cell.key],package=package,
+            material=compiled.materials[cell.task_digest],provider=None,admission_port=None,objective=None,sidecar=tmp_path/'forbidden',
+            public_inputs={},image='',broker=None,model=None,audit_verifier=None)
+    assert not (tmp_path/'forbidden').exists()

@@ -130,12 +130,14 @@ def serialize_combination_panel(panel: CombinationPanel, *, lineage: bool = Fals
                                 retrieval_review: bool = False) -> dict[str, object]:
     """Keep each explicitly opted-in combination family in a closed scope."""
     from research_loop.modular.lineage_combination_driver import DESIGNS as LINEAGE_DESIGNS
-    from research_loop.modular.retrieval_review_combination_driver import DESIGNS as RETRIEVAL_DESIGNS
+    from research_loop.modular.retrieval_review_combination_driver import DESIGNS as RETRIEVAL_DESIGNS, registered_design
     if type(lineage) is not bool or type(retrieval_review) is not bool or (lineage and retrieval_review):
         raise ContractError('combination scorer requires one strict explicit scope')
     permitted = LINEAGE_DESIGNS if lineage else RETRIEVAL_DESIGNS if retrieval_review else ('pair:M4+M5',)
     if not isinstance(panel, CombinationPanel) or panel.obligation_id not in permitted or panel.domain != "train":
         raise ContractError("process scoring combination is outside its explicit closed scope")
+    if retrieval_review and panel.design != registered_design(panel.obligation_id, panel.design.data()['compatibility']['baseline_digest']):
+        raise ContractError('process scoring retrieval design differs from the exact registered design')
     return {"schema": "combination-scorer-process-panel-v1", "panel_digest": panel.digest, "panel": {
         "stage": panel.stage, "domain": panel.domain, "split_digest": panel.split_digest,
         "obligation_id": panel.obligation_id, "estimand": panel.estimand, "design": panel.design.data(),

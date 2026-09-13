@@ -61,6 +61,8 @@ def admission_receipt(task, pool):
 def _validate(panel, cell, task, scenario, package, material):
     if not isinstance(panel, CombinationPanel) or panel.obligation_id not in DESIGNS or cell not in panel.cells:
         raise ContractError('unregistered shared-session combination')
+    if panel.design != registered_design(panel.obligation_id, cell.runtime_arm.data()['baseline_digest']):
+        raise ContractError('combination design is outside the exact default registry')
     if task.identity != cell.identity or task.content_hash != cell.task_digest or package.digest != cell.package_digest:
         raise ContractError('combination task/candidate drift')
     if scenario.content_hash != cell.scenario_digest or scenario.data() != {
