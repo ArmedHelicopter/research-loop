@@ -354,6 +354,33 @@ class SinglePromptACP:
             require(self.sid is None or self.sid == sid, 'session_binding')
         elif method == '_x.ai/models/update':
             require(params.get('currentModelId') == MODEL, 'model_changed')
+        elif method == '_x.ai/queue/changed':
+            # Native prompt lifecycle display, not a new prompt request. Accept
+            # only an empty queue or our one bound pending/running prompt.
+            require(params.get('sessionId') == self.sid and self.sid is not None,
+                    'queue_session_binding')
+            require(not set(params) - {'sessionId', 'entries', 'runningPromptId',
+                    'runningText', 'runningKind', 'runningCombinedTexts'}, 'unknown_queue_field')
+            entries = params.get('entries')
+            require(isinstance(entries, list) and len(entries) <= 1, 'extra_queued_work')
+            running = params.get('runningPromptId')
+            require(running is None or (self.sent and running == self.prompt_id), 'queue_prompt_binding')
+            require(params.get('runningCombinedTexts') in (None, []), 'combined_prompt_work')
+            if running is not None:
+                require(not entries and isinstance(params.get('runningText'), str)
+                        and params.get('runningKind') == 'prompt', 'queue_running_shape')
+            else:
+                require(params.get('runningText') is None and params.get('runningKind') is None,
+                        'queue_running_shape')
+            for entry in entries:
+                require(isinstance(entry, dict) and not set(entry) - {'id', 'version', 'owner',
+                        'lastEditor', 'kind', 'text', 'combinedTexts', 'position'}, 'queue_entry_shape')
+                require(self.sent and entry.get('id') == self.prompt_id, 'queue_prompt_binding')
+                require(entry.get('kind') == 'prompt' and isinstance(entry.get('text'), str)
+                        and integer(entry.get('version')) and type(entry.get('position')) is int
+                        and entry['position'] == 0 and entry.get('combinedTexts') in (None, []),
+                        'queue_entry_shape')
+            self.event_counts['queue_changed'] = self.event_counts.get('queue_changed', 0) + 1
         elif method in ('_x.ai/settings/update', '_x.ai/announcements/update'):
             pass  # Advisory startup metadata only; never copied to observer.
         else:

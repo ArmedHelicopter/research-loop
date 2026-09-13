@@ -62,6 +62,18 @@ for line in sys.stdin:
             result = {'rule': {'enabled': True}}
     elif method == 'session/prompt':
         pid = req['params']['_meta']['promptId']
+        if scenario in ('queue', 'queue_wrong', 'queue_extra', 'queue_unknown'):
+            send({'method': '_x.ai/queue/changed', 'params': {'sessionId': sid, 'entries': [
+                {'id': pid, 'version': 1, 'kind': 'prompt', 'text': 'PRIVATE PROMPT DISPLAY', 'position': 0}]}})
+            params = {'sessionId': sid, 'entries': [], 'runningPromptId': pid,
+                      'runningText': 'PRIVATE PROMPT DISPLAY', 'runningKind': 'prompt'}
+            if scenario == 'queue_wrong':
+                params['runningPromptId'] = 'other-prompt'
+            if scenario == 'queue_extra':
+                params['entries'] = [{'id': 'another'}, {'id': 'another2'}]
+            if scenario == 'queue_unknown':
+                params['launchNewAgent'] = True
+            send({'method': '_x.ai/queue/changed', 'params': params})
         if scenario == 'timeout':
             child = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(120)'])
             Path(log_path + '.child').write_text(str(child.pid))

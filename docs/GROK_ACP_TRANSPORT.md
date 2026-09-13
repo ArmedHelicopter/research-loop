@@ -92,3 +92,17 @@ checking, frozen-file changes, durable reservations and descendant cleanup.
 Fixture success is engineering evidence, not a live ACP compatibility claim,
 subscription settlement proof or scientific result. No benchmark inputs are
 used by these tests.
+
+The first frozen v2 native smoke (source a5a287d) passed its selected-model,
+empty-inventory and included-only gates, then rejected `_x.ai/queue/changed`
+immediately after reserving/sending its one main prompt. That attempt is terminal;
+its main and title usage remain unknown. A separate read-only post-billing check
+still observed cap/used/prepaid zero and no top-up rule. This is no settlement
+proof. The failed attempt must not be reinterpreted as a successful smoke.
+
+The narrow repair recognizes the source-defined
+[queue display lifecycle](https://github.com/xai-org/grok-build/blob/37949780c144e37df692e3d669051a21fec24f20/crates/codegen/xai-grok-shell/src/session/acp_session_impl/prompt_queue.rs#L429).
+Only the same session and the reserved prompt may appear as one queued or running
+row; extra work, combined prompts, unknown fields or mismatched IDs still fail.
+Its text stays private. Regression tests replay the sanitized shape using
+synthetic content. This repair has not itself triggered another model request.

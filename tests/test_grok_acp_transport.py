@@ -205,3 +205,20 @@ def test_native_startup_pins_config_and_excludes_api_environment(tmp_path, monke
     assert env['GROK_TURN_SUMMARY'] == 'false'
     assert 'session_summary = "grok-4.6"' in SAFE_CONFIG
     assert 'max_retries = 0' in SAFE_CONFIG
+
+
+def test_bound_native_queue_display_does_not_expose_prompt_or_add_dispatch(tmp_path):
+    _, result, requests = invoke(tmp_path, 'queue')
+    assert result.receipt.data()['accepted'], result.receipt.data()
+    assert result.receipt.data()['event_counts']['queue_changed'] == 2
+    assert sum(r['method'] == 'session/prompt' for r in requests) == 1
+    assert 'PRIVATE PROMPT DISPLAY' not in result.receipt.encoded
+
+
+@pytest.mark.parametrize('scenario,fault', [('queue_wrong', 'queue_prompt_binding'),
+    ('queue_extra', 'extra_queued_work'), ('queue_unknown', 'unknown_queue_field')])
+def test_queue_repair_still_rejects_other_work(tmp_path, scenario, fault):
+    _, result, requests = invoke(tmp_path, scenario)
+    assert fault in result.receipt.data()['faults']
+    assert sum(r['method'] == 'session/prompt' for r in requests) == 1
+    assert result.response is None
