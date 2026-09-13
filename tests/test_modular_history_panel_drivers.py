@@ -1,24 +1,25 @@
-"""Synthetic public grid checks for the unregistered Q1.1/Q1.2 panel drivers."""
+"""Synthetic public-grid checks for the unregistered Q1.1/Q1.2 drivers."""
 from __future__ import annotations
 
-from itertools import combinations
 from pathlib import Path
 
 import pytest
 
 from research_loop.modular import panel_runner
 from research_loop.modular.benchmarks import BladeAdapter, DiscoveryBenchAdapter
-from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.experiments import registry
-from research_loop.modular.history_panel_drivers import freeze_history_bundle, install_drivers
+from research_loop.modular.history_panel_drivers import (
+    freeze_history_bundle, install_drivers, select_history_material,
+)
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.panel_plan import compile_train_panel, executable_arms, obligation_grids
 from research_loop.modular.panel_receipts import PanelReceiptVerifier
 from research_loop.modular.runtime import AuditVerifier
+from research_loop.ontology import ContractError, canonical
 
 
-SPLIT, SCORER = "f" * 64, "a" * 64
+SPLIT = "f" * 64
 AUDIT = AuditVerifier({"a": b"a" * 32, "b": b"b" * 32})
 
 
@@ -29,11 +30,31 @@ def _task(benchmark: str):
     return DiscoveryBenchAdapter().prepare(identity, {"task_id": identity.task_id, "question": "What does public evidence show?", "source_kind": "synthetic", "dataset": [{"name": "public.csv", "columns": [{"name": "x"}]}]})
 
 
+def _q12(pre: str, post: str, upstream: str, downstream: str, *, withdrawal: bool, dependency: bool):
+    return {"pre_transition_summary": pre, "post_transition_summary": post,
+            "upstream_claim": upstream, "downstream_claim": downstream,
+            "withdrawal": withdrawal, "dependency": dependency}
+
+
+def _bundle(task, _scenario=None):
+    return freeze_history_bundle(
+        task,
+        before_evidence={"measurement_id": "before-" + task.identity.benchmark, "observation": "BEFORE-SENTINEL public grouped measurement.", "value": 1.5},
+        current_evidence={"measurement_id": "current-" + task.identity.benchmark, "observation": "CURRENT-SENTINEL public grouped measurement after update.", "value": 1.6},
+        transition={"action": "replace_public_measurement", "reason": "frozen public replacement"},
+        q11={"correct": {"historical_summary": "Earlier report says treatment exceeded control."},
+             "wrong": {"historical_summary": "Earlier report says treatment was below control."},
+             "neutral": {"historical_summary": "Earlier report has no interpretation."}},
+        q12={"summary_only": _q12("PRE-SUMMARY-ONLY-SENTINEL", "POST-SUMMARY-ONLY-SENTINEL", "Summary upstream public claim.", "Summary downstream public claim.", withdrawal=False, dependency=False),
+             "registered": _q12("PRE-REGISTERED-SENTINEL", "POST-REGISTERED-SENTINEL", "Registered upstream public claim.", "Registered downstream public claim.", withdrawal=False, dependency=True),
+             "withdraw": _q12("PRE-WITHDRAW-SENTINEL", "POST-WITHDRAWAL-SENTINEL", "Withdrawn upstream public claim.", "Withdrawn downstream public claim.", withdrawal=True, dependency=True)},
+    )
+
+
 def _rows(coverage: str):
-    spec = registry()[coverage]
     tasks = {name: _task(name) for name in ("discoverybench", "blade")}
     package = CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze([task.identity for task in tasks.values()]), changes={"prompt": {"instructions": "public history package"}}, search_cost=0)
-    bundles = {task.content_hash: _bundle(task, None) for task in tasks.values()}
+    bundles = {task.content_hash: _bundle(task) for task in tasks.values()}
     control = FrozenRecord.from_dict({"source": "synthetic", "always_enabled": True})
     grids = obligation_grids((coverage,), baseline_digest="b" * 64, p0_control=control)
     packages = {arm.content_hash: package for grid in grids.values() for arm in executable_arms(grid).values()}
@@ -53,76 +74,120 @@ def _model(seen):
     return call
 
 
-def _bundle(task, _scenario):
-    return freeze_history_bundle(task, before_evidence={"measurement_id": "before-" + task.identity.benchmark, "observation": "BEFORE-SENTINEL public grouped measurement.", "value": 1.5}, current_evidence={"measurement_id": "current-" + task.identity.benchmark, "observation": "CURRENT-SENTINEL public grouped measurement after update.", "value": 1.6}, transition={"action": "replace_public_measurement", "reason": "frozen public correction"},
-        q11={"correct": {"historical_summary": "Earlier report says treatment exceeded control.", "withdrawal": False, "dependency": False},
-             "wrong": {"historical_summary": "Earlier report says treatment was below control.", "withdrawal": False, "dependency": False},
-             "neutral": {"historical_summary": "Earlier report has no interpretation.", "withdrawal": False, "dependency": False}},
-        q12={"summary_only": {"historical_summary": "Historical summary lacks a registered source dependency.", "withdrawal": False, "dependency": False},
-             "registered": {"historical_summary": "Historical upstream revision is registered.", "withdrawal": False, "dependency": True},
-             "withdraw": {"historical_summary": "Historical upstream source is withdrawn.", "withdrawal": True, "dependency": True}})
+def _admit(_task, record):
+    return {"trusted_validator": "synthetic-independent-admission", "validator_verified": True,
+            "admitted": True, "record_digest": record.content_hash}
 
 
-def _admit(_task, _material):
-    return {"trusted_validator": "synthetic-independent-admission", "validator_verified": True, "admitted": True}
-
-
-@pytest.mark.parametrize("coverage", ["Q1.1", "Q1.2"])
-def test_full_public_grid_records_real_m2_m3_material_and_final_payload(tmp_path: Path, monkeypatch, coverage: str):
+def _run_grid(tmp_path: Path, monkeypatch, coverage: str):
     compiled, tasks, bundles = _rows(coverage)
-    local = dict(panel_runner.DRIVERS); install_drivers(local, material_resolver=lambda task, _scenario: bundles[task.content_hash], admission_port=_admit); monkeypatch.setattr(panel_runner, "DRIVERS", local)
-    runtimes = []; requests = []
+    local = dict(panel_runner.DRIVERS)
+    install_drivers(local, material_resolver=lambda task, _scenario: bundles[task.content_hash], admission_port=_admit)
+    monkeypatch.setattr(panel_runner, "DRIVERS", local)
+    runtimes, requests = [], []
     for number, cell in enumerate(compiled.panel.cells):
         run = panel_runner.run_train_cell(cell, task=tasks[cell.identity.benchmark], scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash],
             objective=FrozenRecord.from_dict({"objective": coverage}), sidecar=tmp_path / str(number), model=_model(requests), audit_verifier=AUDIT)
         runtimes.append(run.runtime)
         assert run.runtime.status == "succeeded" and run.call_plan.data()["model_calls"] == 3
     assert PanelReceiptVerifier().verify(compiled.panel, tuple(runtimes)).decision == "engineering_verified"
+    return requests
+
+
+def _by_binding(rows, slot):
+    return {row["module_context"]["panel_cell"]["cell_digest"]: row for row in rows if row["slot"] == slot}
+
+
+def _claims(context):
+    return [entry for entry in context["entries"]["entries"] if entry["kind"] == "claim"]
+
+
+@pytest.mark.parametrize("coverage", ["Q1.1", "Q1.2"])
+def test_full_public_grid_uses_phase_bound_material_and_real_m2_m3_state(tmp_path: Path, monkeypatch, coverage: str):
+    requests = _run_grid(tmp_path, monkeypatch, coverage)
     assert all(row["task"]["identity"]["benchmark"] in {"blade", "discoverybench"} for row in requests)
-    assert all(row["slot"] != "final" or row["module_context"]["reconstructed_context"]["entries"] is not None for row in requests)
+    assert all(row["module_context"]["panel_cell"].keys() == {"schema", "cell_digest"} for row in requests)
     if coverage == "Q1.1":
-        q11 = [row for row in requests if row["slot"] != "final"]
-        assert all(row["module_context"]["panel_cell"].keys() == {"schema", "cell_digest"} for row in q11)
-        assert all(set(row["module_context"]["history_material"]) == {"schema", "identity", "public_evidence", "transition", "historical_summary", "withdrawal", "dependency"} for row in q11)
-        before = [row for row in requests if row["slot"] == "history_baseline"]
-        after = [row for row in requests if row["slot"] == "history_rebuilt"]
-        assert all("BEFORE-SENTINEL" in FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).encoded for row in before)
-        assert all("CURRENT-SENTINEL" not in FrozenRecord.from_dict(row["module_context"]["history_material"]).encoded for row in before)
-        assert any("CURRENT-SENTINEL" in FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).encoded for row in after if row["module_context"]["m3"] == "enabled")
-        assert all("BEFORE-SENTINEL" in FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).encoded for row in after if row["module_context"]["m3"] == "frozen_control")
-        assert {FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).content_hash for row in before} != {FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).content_hash for row in after if row["module_context"]["m3"] == "enabled"}
-        finals = [row for row in requests if row["slot"] == "final"]
-        assert any("CURRENT-SENTINEL" in FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).encoded and row["module_context"]["reconstructed_context"]["mode"] == "candidate" for row in finals)
-        assert all("BEFORE-SENTINEL" in FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).encoded for row in finals if row["module_context"]["reconstructed_context"]["mode"] == "baseline")
+        first, second, final = _by_binding(requests, "history_baseline"), _by_binding(requests, "history_rebuilt"), _by_binding(requests, "final")
+        assert set(first) == set(second) == set(final)
+        paired = {}
+        for binding, row in first.items():
+            material = row["module_context"]["history_material"]
+            assert set(material) == {"schema", "identity", "phase", "public_record", "historical_summary"}
+            assert material["phase"] == "before" and "CURRENT-SENTINEL" not in canonical(material)
+            assert row["module_context"]["public_record_digest"] == FrozenRecord.from_dict(material["public_record"]).content_hash
+            assert row["module_context"]["admission_receipt"]["record_digest"] == row["module_context"]["public_record_digest"]
+            paired.setdefault((row["task"]["identity"]["task_id"], material["historical_summary"]), {})[row["module_context"]["m3"]] = material["public_record"]
+        for pair in paired.values():
+            assert pair["enabled"] == pair["frozen_control"]
+        for binding, row in second.items():
+            material = row["module_context"]["history_material"]
+            assert material["phase"] == "current" and "CURRENT-SENTINEL" in canonical(material)
+            assert row["module_context"]["public_record_digest"] == FrozenRecord.from_dict(material["public_record"]).content_hash
+            assert material["public_record"] == final[binding]["module_context"]["history_material"]["public_record"]
+            assert row["module_context"]["admission_receipt"]["record_digest"] == row["module_context"]["public_record_digest"]
+            paired.setdefault((row["task"]["identity"]["task_id"], material["historical_summary"]), {})[row["module_context"]["m3"] + "-current"] = material["public_record"]
+        for pair in paired.values():
+            assert pair["enabled-current"] == pair["frozen_control-current"]
+        for binding, before_row in first.items():
+            after_row = second[binding]
+            if before_row["module_context"]["m3"] == "enabled":
+                assert before_row["context"]["mode"] == after_row["context"]["mode"] == "candidate"
+                assert "BEFORE-SENTINEL" in canonical(before_row["context"])
+                assert "CURRENT-SENTINEL" in canonical(after_row["context"])
+            else:
+                assert before_row["context"]["mode"] == after_row["context"]["mode"] == "baseline"
+                assert before_row["context"]["entries"] == after_row["context"]["entries"]
+                assert before_row["module_context"]["context_material"] == after_row["module_context"]["context_material"]
     else:
-        after = [row for row in requests if row["slot"] == "downstream_after_withdrawal"]
-        assert any(row["module_context"]["withdrawal_applied"] for row in after)
-        assert any(row["module_context"]["m2"] == "frozen_control" and row["module_context"]["m3"] == "frozen_control" for row in after)
-        first_by_binding = {row["module_context"]["panel_cell"]["cell_digest"]: row for row in requests if row["slot"] == "upstream_before_withdrawal"}
-        for row in after:
+        first, second = _by_binding(requests, "upstream_before_withdrawal"), _by_binding(requests, "downstream_after_withdrawal")
+        assert set(first) == set(second)
+        for binding, row in first.items():
+            material = row["module_context"]["history_material"]
+            assert set(material) == {"schema", "identity", "phase", "public_record", "pre_transition_summary", "upstream_claim"}
+            assert material["phase"] == "before"
+            assert "POST-" not in canonical(material) and "replace_public_measurement" not in canonical(material) and "withdrawal" not in canonical(material)
+            assert row["module_context"]["public_record_digest"] == FrozenRecord.from_dict(material["public_record"]).content_hash
+        for binding, row in second.items():
+            material = row["module_context"]["history_material"]
+            assert material["phase"] == "current" and "POST-" in canonical(material) and material["transition"]["action"] == "replace_public_measurement"
             if row["module_context"]["m3"] == "frozen_control":
-                assert row["module_context"]["reconstructed_context"] == first_by_binding[row["module_context"]["panel_cell"]["cell_digest"]]["module_context"]["claim_context"]
-        withdrawn = next(row for row in after if row["module_context"]["withdrawal_applied"])
-        assert withdrawn["module_context"]["reconstructed_context"]["entries"]["entries"] != []
-        enabled = [row for row in after if row["module_context"]["m2"] == "enabled" and row["module_context"]["m3"] == "enabled"]
-        summary = next(row for row in enabled if "lacks a registered" in row["module_context"]["history_material"]["historical_summary"])
-        registered = next(row for row in enabled if "is registered" in row["module_context"]["history_material"]["historical_summary"])
-        withdrawn = next(row for row in enabled if row["module_context"]["withdrawal_applied"])
-        claims = lambda row: [entry for entry in row["module_context"]["reconstructed_context"]["entries"]["entries"] if entry["kind"] == "claim"]
-        assert all(not claim["depends_on"] for claim in claims(summary))
-        assert any(claim["depends_on"] and claim["needs_review"] and claim["revision"] == 1 for claim in claims(registered))
-        assert any(claim["depends_on"] and claim["needs_review"] and not claim["support_roots"] for claim in claims(withdrawn))
-    trace = (tmp_path / "0" / "trace.jsonl").read_text(encoding="utf-8")
-    assert "operation_m3_" in trace
+                assert row["module_context"]["reconstructed_context"] == first[binding]["module_context"]["claim_context"]
+        enabled_first = [row for row in first.values() if row["module_context"]["m2"] == "enabled" and row["module_context"]["m3"] == "enabled"]
+        summary = next(row for row in enabled_first if row["module_context"]["history_material"]["pre_transition_summary"] == "PRE-SUMMARY-ONLY-SENTINEL")
+        registered = next(row for row in enabled_first if row["module_context"]["history_material"]["pre_transition_summary"] == "PRE-REGISTERED-SENTINEL")
+        withdrawn = next(row for row in enabled_first if row["module_context"]["history_material"]["pre_transition_summary"] == "PRE-WITHDRAW-SENTINEL")
+        assert all(not claim["depends_on"] for claim in _claims(summary["module_context"]["claim_context"]))
+        assert any(claim["depends_on"] and claim["support_roots"] for claim in _claims(registered["module_context"]["claim_context"]))
+        withdrawn_after = second[withdrawn["module_context"]["panel_cell"]["cell_digest"]]
+        assert withdrawn_after["module_context"]["withdrawal_applied"]
+        assert any(claim["depends_on"] and claim["needs_review"] and not claim["support_roots"] for claim in _claims(withdrawn_after["module_context"]["reconstructed_context"]))
 
 
-def test_rejects_unbound_resolver_bundle_before_any_model_call(tmp_path: Path, monkeypatch):
-    compiled, tasks, bundles = _rows("Q1.2")
-    foreign = next(iter(bundles.values()))
-    local = dict(panel_runner.DRIVERS); install_drivers(local, material_resolver=lambda _task, _scenario: foreign, admission_port=_admit); monkeypatch.setattr(panel_runner, "DRIVERS", local)
-    cell = next(item for item in compiled.panel.cells if item.identity.benchmark == "blade")
+def test_rejects_unbound_bundle_or_missing_q11_admission_before_model_call(tmp_path: Path, monkeypatch):
+    compiled, tasks, bundles = _rows("Q1.1")
+    foreign = next(bundle for digest, bundle in bundles.items() if digest != tasks["blade"].content_hash)
     called = []
+    local = dict(panel_runner.DRIVERS)
+    install_drivers(local, material_resolver=lambda _task, _scenario: foreign, admission_port=_admit)
+    monkeypatch.setattr(panel_runner, "DRIVERS", local)
+    cell = next(item for item in compiled.panel.cells if item.identity.benchmark == "blade")
     result = panel_runner.run_train_cell(cell, task=tasks["blade"], scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash],
-        objective=FrozenRecord.from_dict({"objective": "guard"}), sidecar=tmp_path / "guard", model=lambda request: called.append(request), audit_verifier=AUDIT)
-    assert result.runtime.status == "failed"
-    assert called == []
+        objective=FrozenRecord.from_dict({"objective": "guard"}), sidecar=tmp_path / "foreign", model=lambda request: called.append(request), audit_verifier=AUDIT)
+    assert result.runtime.status == "failed" and called == []
+    local = dict(panel_runner.DRIVERS)
+    install_drivers(local, material_resolver=lambda task, _scenario: bundles[task.content_hash])
+    monkeypatch.setattr(panel_runner, "DRIVERS", local)
+    result = panel_runner.run_train_cell(cell, task=tasks["blade"], scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash],
+        objective=FrozenRecord.from_dict({"objective": "guard"}), sidecar=tmp_path / "missing-admission", model=lambda request: called.append(request), audit_verifier=AUDIT)
+    assert result.runtime.status == "failed" and called == []
+
+
+def test_transition_parser_rejects_nonreplacement_before_driver_execution():
+    task = _task("blade")
+    bundle = _bundle(task)
+    malformed = bundle.data(); malformed["transition"] = {"action": "arbitrary", "reason": "still not valid"}
+    with pytest.raises(ContractError):
+        select_history_material(FrozenRecord.from_dict(malformed), task, "Q1.1", "neutral")
+    with pytest.raises(ContractError):
+        freeze_history_bundle(task, before_evidence={"id": "a"}, current_evidence={"id": "b"}, transition={"action": "replace_public_measurement", "reason": ""}, q11=bundle.data()["q11"], q12=bundle.data()["q12"])
