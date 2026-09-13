@@ -100,6 +100,6 @@ def test_root_dedup_is_structural_and_text_never_grants_admission():
     assert next(data for stage, data in journal.events if stage == "q8_retrieval_selection")["dropped_duplicate_roots"] == ["one-root"]
 
 
-def test_only_q82_q83_have_new_production_drivers():
+def test_only_delivered_q81_through_q84_have_production_drivers():
     from research_loop.modular.panel_runner import DRIVERS
-    assert {key for key in DRIVERS if key.startswith("Q8.")} == {"Q8.2", "Q8.3"}
+    assert {key for key in DRIVERS if key.startswith("Q8.")} == {"Q8.1", "Q8.2", "Q8.3", "Q8.4"}

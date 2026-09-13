@@ -164,8 +164,15 @@ def _driver_plan(scope_ids: Sequence[str], *, baseline_digest: str, p0_control: 
     grids = obligation_grids(scope_ids, baseline_digest=baseline_digest, p0_control=p0_control)
     cells_per_task = sum(len(registry().get(coverage).variants) * len(executable_arms(grids[coverage]))
                          for coverage in scope_ids)
-    calls_per_task = sum(len(registry().get(coverage).variants) * len(executable_arms(grids[coverage]))
-                         * (len(DRIVERS[coverage].slots) + (2 if linked else 0)) for coverage in scope_ids)
+    def variant_call_count(coverage, variant):
+        driver = DRIVERS[coverage]
+        schedule = getattr(driver, "slots_for_variant", None)
+        slots = schedule(variant) if callable(schedule) else driver.slots
+        if not isinstance(slots, tuple) or not slots or any(slot not in driver.slots for slot in slots):
+            raise ContractError("driver variant schedule must be a nonempty subset of frozen slots")
+        return len(slots) + (2 if linked else 0)
+    calls_per_task = sum(len(executable_arms(grids[coverage])) * variant_call_count(coverage, variant)
+                         for coverage in scope_ids for variant in registry()[coverage].variants)
     return item_count * cells_per_task * len(replicates), item_count * calls_per_task * len(replicates)
 
 
@@ -183,6 +190,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                         q55_provider=None,
                         retrieval_provider=None,
                         retrieval_admission_port=None,
+                        retrieval_stage_authority=None,
                         protocol_audit_port: ProtocolAuditPort | None = None,
                         protocol_replay_authority: ProtocolReplayAuthority | None = None) -> TrainPanelRun:
     """Export and execute every cell selected by closed production drivers."""
@@ -197,7 +205,10 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     q55 = "Q5.5" in data["scope_ids"]
     if q55 and (not callable(getattr(q55_authority, "verify_closure", None)) or not isinstance(q55_authority_keys, Mapping) or not callable(getattr(q55_provider, "search", None))):
         raise ContractError("Q5.5 controller requires dual closure authority and keys before export")
-    retrieval = bool(set(data["scope_ids"]) & {"Q8.2", "Q8.3"})
+    retrieval = bool(set(data["scope_ids"]) & {"Q8.1", "Q8.2", "Q8.3", "Q8.4"})
+    retrieval_stage = bool(set(data["scope_ids"]) & {"Q8.1", "Q8.4"})
+    if retrieval_stage and not all(callable(getattr(retrieval_stage_authority, name, None)) for name in ("verify_execution", "verify_provenance")):
+        raise ContractError("retrieval stages require caller execution and provenance authority before export")
     if retrieval and (not callable(getattr(retrieval_provider, "search", None)) or not callable(retrieval_admission_port)):
         raise ContractError("retrieval controller requires caller-owned provider and source admission before export")
     if diagnostic and not callable(getattr(diagnostic_authority, "verify_diagnostic", None)):
@@ -266,7 +277,15 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
         exploration_broker = DockerExecutionBroker([exported, root]) if exploration else None
         diagnostic_broker = DockerExecutionBroker([exported, root]) if diagnostic else None
         q55_broker = DockerExecutionBroker([exported, root]) if q55 else None
+        retrieval_stage_broker = DockerExecutionBroker([exported, root]) if "Q8.1" in data["scope_ids"] else None
         packets_by_digest = {packet.task.content_hash: packet for packet in packets}
+        def retrieval_stage_inputs(task, bundle):
+            packet = packets_by_digest.get(task.content_hash)
+            if packet is None or packet.task != task: raise ContractError("retrieval stage input must be exported train data")
+            spec = bundle.data()["execution"]; raw = packet.csv_path.read_bytes()
+            if hashlib.sha256(raw).hexdigest() != spec["input_sha256"] or len(raw) != spec["input_byte_count"]:
+                raise ContractError("retrieval stage input differs from custody-exported CSV")
+            return {"public_csv": packet.csv_path}
         def diagnostic_inputs(task, bundle):
             packet = packets_by_digest.get(task.content_hash)
             if packet is None or packet.task != task:
@@ -369,6 +388,9 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                 q55_authority=q55_authority, q55_authority_keys=q55_authority_keys, q55_provider=q55_provider,
                 retrieval_provider=retrieval_provider,
                 retrieval_admission_port=retrieval_admission_port,
+                retrieval_stage_authority=retrieval_stage_authority,
+                retrieval_stage_broker=retrieval_stage_broker,
+                retrieval_stage_input_resolver=retrieval_stage_inputs if retrieval_stage else None,
                 protocol_audit_port=protocol_audit_port, protocol_replay_authority=protocol_replay_authority)
             runtimes.append(result.runtime)
             attempt.setdefault("runtime_call_plans", []).append(result.call_plan.data())

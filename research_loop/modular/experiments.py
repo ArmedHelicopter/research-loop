@@ -126,7 +126,10 @@ def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs,
     elif spec.experiment_id in {"Q8.2", "Q8.3"}:
         from research_loop.modular.retrieval_panel_drivers import retrieval_panel_injection
         injection = dict(retrieval_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
-    elif spec.experiment_id in {"Q8.1", "Q8.4", "Q8.5", "Q8.6", "Q8.7"}:
+    elif spec.experiment_id in {"Q8.1", "Q8.4"}:
+        from research_loop.modular.retrieval_stage_panel_drivers import retrieval_stage_injection
+        injection = dict(retrieval_stage_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
+    elif spec.experiment_id in {"Q8.5", "Q8.6", "Q8.7"}:
         from research_loop.modular.scenarios_retrieval import retrieval_injection
         injection=retrieval_injection(spec.experiment_id, variant).data()
     else: raise ContractError(f"blocked_endpoint_not_implemented:{spec.endpoint}")
