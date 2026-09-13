@@ -1,0 +1,35 @@
+{
+  "schema": "extended-source-qualification-v1",
+  "core_benchmarks_retained": ["discoverybench", "blade"],
+  "live_metadata_binding": {
+    "inventory_digest": "9a25e086a55a1ebd73837a549c332a7cfd103910d0b086042b89ab1e5cbef7c7",
+    "custody_state_sha256": "6959fe024f6468b0fc0bae79ab3d39ff73c0492c6f15659079d178e4b0a212d3",
+    "source_pins_observed_in_live_import": {"scicode": "4510f6a6aa27c43fad7b43da2c59602a86e88480", "scienceagentbench": "9c6e96c9e74572e979b0930ee735041cef528cb7"},
+    "access_isolation": "not_verified",
+    "split_assigned": false
+  },
+  "sources": {
+    "scicode": {
+      "item_count": 80,
+      "minimum_grouping": "all substeps of one official problem_id",
+      "source_family_evidence": "missing",
+      "dataset_license_status": "pending_received_record_review",
+      "metadata_pin_reconciliation": "required: live import pin differs from recorded official metadata pin 8699b7c8fcebd916e429e26d28ac5d2257d25db3",
+      "exposure": "unknown",
+      "runtime_status": "quarantine_until_review",
+      "required_evidence": ["signed received-artifact inventory with immutable hashes", "per-record dataset license mapping", "custodian-derived provenance/artifact family tokens", "independent custodian exposure attestation", "frozen group-level train/validation split"]
+    },
+    "scienceagentbench": {
+      "item_count": 102,
+      "minimum_grouping": "71 opaque dataset-folder-root constraints only",
+      "source_family_evidence": "missing",
+      "dataset_license_status": "pending_received_record_review",
+      "metadata_pin_reconciliation": "required: live import pin differs from recorded official metadata pin c26e151ed601ba109dc4d35e057ff8e73fec469d",
+      "exposure": "unknown",
+      "runtime_status": "quarantine_until_review",
+      "required_evidence": ["signed received-artifact inventory with immutable hashes", "per-record upstream license mapping including adapted tasks", "custodian-derived publication/dataset/artifact family tokens", "independent custodian exposure attestation", "frozen group-level train/validation split"]
+    }
+  },
+  "decision": "blocked_pending_independent_custody",
+  "required_independent_custody": true
+}
