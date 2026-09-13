@@ -467,14 +467,6 @@ class SinglePromptACP:
                 'cancelTrigger', 'cancellationContext', 'structuredOutputError', 'toolOverrides')),
                 'result_extra_work_or_failure')
         usage = self.usage
-        known_responses = []
-        response_fields = {'input_tokens', 'output_tokens', 'cache_read_input_tokens',
-                           'cache_creation_input_tokens', 'reasoning_tokens'}
-        for item in self.response_usage:
-            if (isinstance(item, dict) and set(item) == response_fields
-                    and all(integer(v) for v in item.values())
-                    and item['reasoning_tokens'] <= item['output_tokens']):
-                known_responses.append(item)
         require(usage is not None and usage['numTurns'] == 1 and usage['modelCalls'] == 1
                 and not usage['usageIsIncomplete'], 'usage_incomplete_or_extra_calls')
         require(usage['outputTokens'] <= 128 and usage['totalTokens'] <= self.max_total_tokens,
@@ -614,6 +606,14 @@ class SinglePromptACP:
         if self.usage is None and len(candidates) == 1:
             self.usage = candidates[0]
         usage = self.usage
+        known_responses = []
+        response_fields = {'input_tokens', 'output_tokens', 'cache_read_input_tokens',
+                           'cache_creation_input_tokens', 'reasoning_tokens'}
+        for item in self.response_usage:
+            if (isinstance(item, dict) and set(item) == response_fields
+                    and all(integer(v) for v in item.values())
+                    and item['reasoning_tokens'] <= item['output_tokens']):
+                known_responses.append(item)
         ticks = usage['costUsdTicks'] if usage else None
         cost_complete = bool(usage and ticks is not None and not usage['costIsPartial']
                              and not usage['usageIsIncomplete'])
