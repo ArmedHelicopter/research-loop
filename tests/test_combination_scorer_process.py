@@ -36,6 +36,23 @@ def fixture(root):
     return snapshot,custody,config,compiled,args,server
 
 
+@pytest.mark.parametrize('flags', [
+    {'lineage': True, 'retrieval_review': True},
+    {'lineage': 1, 'retrieval_review': False},
+    {'lineage': False, 'retrieval_review': 1},
+    {'lineage': 'false', 'retrieval_review': False},
+])
+def test_merged_combination_scopes_cannot_be_mixed_or_coerced(tmp_path, flags):
+    _, _, _, compiled, _, _ = fixture(tmp_path)
+    envelope = serialize_combination_panel(compiled.panel)
+    with pytest.raises(ContractError, match='one strict explicit scope'):
+        serialize_combination_panel(compiled.panel, **flags)
+    with pytest.raises(ContractError, match='one strict explicit scope'):
+        parse_combination_panel(envelope, **flags)
+    assert not (tmp_path / 'worker.jsonl').exists()
+    assert not (tmp_path / 'client.jsonl').exists()
+
+
 def test_full_eight_cell_custody_controller_uses_real_separate_scorer_with_utf8(tmp_path,monkeypatch):
     snapshot,custody,config,compiled,args,server=fixture(tmp_path)
     seen=[];ordinary=_model(seen)
