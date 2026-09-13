@@ -293,6 +293,31 @@ class SubscriptionPilot(DiagnosticPilot):
             for state in ('known', 'unknown', 'not_applicable')}}
 
 
+def verify_native_request_binding(result, entry, directory, spec, frozen_files):
+    """Bind returned objects to actual private native receipt/reservation bytes."""
+    r = result.receipt.data()
+    if record(json.loads((directory / 'native' / 'observer-receipt.json').read_bytes())) != result.receipt:
+        raise ContractError('returned native receipt differs from private record')
+    if result.response is None:
+        raise ContractError('native response is absent')
+    expected = {'prompt_sha256': entry['prompt_sha256'], 'schema_sha256': entry['schema_digest'],
+        'response_sha256': result.response.content_hash,
+        'reservation_sha256': sha(directory / 'native-reservation.json'),
+        'source_manifest_sha256': digest(frozen_files),
+        'input_byte_cap': spec['max_input_bytes'], 'observed_main_token_cap': spec['observed_main_token_cap']}
+    if r.get('schema') != 'grok-native-acp-diagnostic-receipt-v1' or r.get('diagnostic_binding') != expected:
+        raise ContractError('native response/request/source binding differs')
+    reservation = json.loads((directory / 'native-reservation.json').read_bytes())
+    if (reservation.get('prompt_sha256') != entry['prompt_sha256']
+            or reservation.get('schema_sha256') != entry['schema_digest']
+            or reservation.get('source_manifest_sha256') != digest(frozen_files)
+            or reservation.get('session_id') != r.get('session_id')
+            or reservation.get('prompt_id') != r.get('prompt_id')
+            or reservation.get('model') != MODEL
+            or r.get('source_manifest_sha256') != digest(frozen_files)):
+        raise ContractError('native reservation binding differs')
+
+
 class PrivateSubscriptionPorts:
     def __init__(self, *, manifest, resolver, authorities, inventory, native_slots,
                  frozen_files, executable, root, source_guard, fixture_factory=None):
@@ -302,30 +327,6 @@ class PrivateSubscriptionPorts:
         self.native_slots, self.frozen_files = native_slots, frozen_files
         self.executable, self.guard, self.fixture_factory = executable, source_guard, fixture_factory
         self.pending = {}; self.used = set(); self.halted = False
-
-    def verify_native_binding(self, result, entry, directory, spec):
-        """Bind returned objects to actual private native receipt/reservation bytes."""
-        r = result.receipt.data()
-        if record(json.loads((directory / 'native' / 'observer-receipt.json').read_bytes())) != result.receipt:
-            raise ContractError('returned native receipt differs from private record')
-        if result.response is None:
-            raise ContractError('native response is absent')
-        expected = {'prompt_sha256': entry['prompt_sha256'], 'schema_sha256': entry['schema_digest'],
-            'response_sha256': result.response.content_hash,
-            'reservation_sha256': sha(directory / 'native-reservation.json'),
-            'source_manifest_sha256': digest(self.frozen_files),
-            'input_byte_cap': spec['max_input_bytes'], 'observed_main_token_cap': spec['observed_main_token_cap']}
-        if r.get('schema') != 'grok-native-acp-diagnostic-receipt-v1' or r.get('diagnostic_binding') != expected:
-            raise ContractError('native response/request/source binding differs')
-        reservation = json.loads((directory / 'native-reservation.json').read_bytes())
-        if (reservation.get('prompt_sha256') != entry['prompt_sha256']
-                or reservation.get('schema_sha256') != entry['schema_digest']
-                or reservation.get('source_manifest_sha256') != digest(self.frozen_files)
-                or reservation.get('session_id') != r.get('session_id')
-                or reservation.get('prompt_id') != r.get('prompt_id')
-                or reservation.get('model') != MODEL
-                or r.get('source_manifest_sha256') != digest(self.frozen_files)):
-            raise ContractError('native reservation binding differs')
 
     def plan(self, role, request):
         if self.halted:
@@ -375,7 +376,7 @@ class PrivateSubscriptionPorts:
                 self.halted = True
             output = result.response
             try:
-                self.verify_native_binding(result, entry, directory, spec)
+                verify_native_request_binding(result, entry, directory, spec, self.frozen_files)
             except Exception:
                 self.halted = True
                 output = None  # Native usage survives even a coherent response swap.
