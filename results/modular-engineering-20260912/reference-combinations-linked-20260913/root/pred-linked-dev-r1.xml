@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="10" time="77.060" timestamp="2026-09-13T16:46:11.399804+08:00" hostname="SC-202507131830"><testcase classname="tests.test_prediction_linked_benchmark" name="test_linked_config_freezes_all_twenty_prediction_cells" time="0.321" /><testcase classname="tests.test_prediction_linked_benchmark" name="test_all_twenty_cells_apply_actual_artifacts_before_docker" time="50.406"><failure message="assert False&#10; +  where False = all(&lt;generator object test_all_twenty_cells_apply_actual_artifacts_before_docker.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000218C8A5EA80&gt;)">prediction_grid = (TrainPanelRun(compiled=CompiledTrainPanel(panel=FrozenPanel(stage='prediction-linked-fixture', domain='train', split_...00000218C8957740&gt;, WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/pred-linked-dev-r1/prediction-linked-grid0'))
+
+    def test_all_twenty_cells_apply_actual_artifacts_before_docker(prediction_grid):
+        from research_loop.modular.benchmark_cell import verify_linked_benchmark_cell
+        result,port,root=prediction_grid
+        assert len(result.linked_results)==20
+        assert result.receipt.data()['execution_status']=='engineering_complete'
+        assert len(port.ledger['calls'])==96 and port.ledger['tokens']==192
+        assert all(r.status=='linked_succeeded' and r.solver.execution.status=='succeeded' for r in result.linked_results)
+        observations=[]
+        for row in result.linked_results:
+            verify_linked_benchmark_cell(row,task=result.compiled.tasks[row.cell.task_digest],
+                scenario=result.compiled.scenarios[row.cell.key],package=result.compiled.packages[row.cell.runtime_arm.content_hash])
+            mechanism=events(row.mechanism.runtime.trace_path)
+            final=next(e['data']['request']['module_context']['prediction_artifacts'] for e in mechanism
+                       if e['stage']=='model_request' and e['data']['request']['slot']=='final')
+            solver=events(row.solver.session.sidecar/'trace.jsonl')
+            requests=[e['data']['request'] for e in solver if e['stage']=='model_request']
+            assert len(requests)==2
+            for request in requests:
+                material=request['module_context']['predecessor_context']['mechanism_material']
+                assert material=={'kind':'operational_prediction_material',**final}
+            all_requests=[e['data']['request'] for e in mechanism+solver if e['stage']=='model_request']
+            for request in all_requests:
+                visible=FrozenRecord.from_dict(request['module_context']).encoded
+&gt;               assert all(secret not in visible for secret in ('CONTROLLER_ONLY_REFERENCE_MARKER','controller_truth',
+                    'caller_admission_receipt','planning_status','execution_status','title_baseline','same_mechanism',
+                    'opposite_prediction','Q3.2','Q5.3','"variant"','"enabled"','"arm_id"'))
+E               assert False
+E                +  where False = all(&lt;generator object test_all_twenty_cells_apply_actual_artifacts_before_docker.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000218C8A5EA80&gt;)
+
+tests\test_prediction_linked_benchmark.py:122: AssertionError</failure></testcase><testcase classname="tests.test_prediction_linked_benchmark" name="test_prediction_projection_rejects_rehashed_false_provenance[artifact]" time="0.003" /><testcase classname="tests.test_prediction_linked_benchmark" name="test_prediction_projection_rejects_rehashed_false_provenance[request]" time="0.003" /><testcase classname="tests.test_prediction_linked_benchmark" name="test_prediction_projection_rejects_rehashed_false_provenance[registry]" time="0.003" /><testcase classname="tests.test_prediction_linked_benchmark" name="test_prediction_projection_rejects_rehashed_false_provenance[response]" time="0.003" /><testcase classname="tests.test_prediction_linked_benchmark" name="test_prediction_projection_rejects_rehashed_false_provenance[arm_stage]" time="0.003" /><testcase classname="tests.test_prediction_linked_benchmark" name="test_prediction_projection_rejects_rehashed_false_provenance[source]" time="0.003" /><testcase classname="tests.test_prediction_linked_benchmark" name="test_changed_persisted_registry_is_rejected_without_touching_original" time="0.034" /><testcase classname="tests.test_prediction_linked_benchmark" name="test_dedup_response_failure_keeps_all_twenty_denominators" time="25.880" /></testsuite></testsuites>

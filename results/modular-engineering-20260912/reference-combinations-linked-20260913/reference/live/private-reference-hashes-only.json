@@ -1,0 +1,33 @@
+{
+  "reason": "Private TRAIN reference bodies remain outside the archive.",
+  "artifacts": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\primary-prospective-train-reference-20260913-r1\\b2cc6e153feb49c0e7a75c4dd3132e343783c680d300c0488de34b13a4d1eda4.json",
+      "reference_count": 1,
+      "sha256": "0f2d7056ff7d5a7780a2d44c5dcc94ce84b3b9084e99f54273b3df3e8e445955",
+      "source": "discoverybench",
+      "token": "012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\primary-prospective-train-reference-20260913-r1\\cca2bcfdc657f3f61759662d18a8214e81c179c86853304f27bf6d317466785a.json",
+      "reference_count": 1,
+      "sha256": "8d8ff2f02e53c7ca1c9ab9f9a85ba8446d20de90c2cd6a15c37d1699e6328278",
+      "source": "discoverybench",
+      "token": "021280701960bd662b5da995e6bd454400820fb83539a3ef78215615cb449a2b"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\primary-prospective-train-reference-20260913-r1\\18e454b8ac9066e5c3978ffde18c929c85bad4aaaf7410f489842e0128a3fc7a.json",
+      "reference_count": 73,
+      "sha256": "c090c96400602e3491699be8db10dafcaabfc9b04cec2cacbf6d4a1a9a2a5f3e",
+      "source": "blade",
+      "token": "13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\primary-prospective-train-reference-20260913-r1\\f02c545a85609169a52e7a3ac9f9d1f148e22fbcdc2f3345be9a5a7df950a4fc.json",
+      "reference_count": 121,
+      "sha256": "4f7c066a1907f2c8e98a9e45eb443d2a620b13a4d25d18f86bb238e7c5ab60c2",
+      "source": "blade",
+      "token": "1b81bfefc108fbe6396bf67762306cb12c5c187cc4926ca8d9c586255bcbdbfc"
+    }
+  ]
+}

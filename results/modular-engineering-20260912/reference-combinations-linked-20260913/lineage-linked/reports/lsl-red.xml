@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="12" time="1.254" timestamp="2026-09-13T16:39:07.371938+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.260" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.024" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.028" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.082" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.087" /><testcase classname="tests.test_lineage_singleton_linked" name="test_all_four_questions_have_frozen_linked_solver_configuration[history-30]" time="0.125"><failure message="research_loop.ontology.ContractError: controller linked mode has an unsupported scope">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lsl-red-tmp/test_all_four_questions_have_f0')
+group = 'history', count = 30
+
+    @pytest.mark.parametrize('group,count',[('history',30),('support',28)])
+    def test_all_four_questions_have_frozen_linked_solver_configuration(tmp_path,group,count):
+&gt;       _,_,frozen,_=_config(tmp_path,group)
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_lineage_singleton_linked.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_lineage_singleton_linked.py:63: in _config
+    return snapshot,custody,FrozenTrainControllerConfig(FrozenRecord.from_dict(body)),packets
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:4: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...1b081fa6a15ec9a24a40fa5e","schema":"adapted-metric-scorer-config-v1","version":"v1"},"stage":"public-train-history"}'))
+
+    def __post_init__(self) -&gt; None:
+        data = self.record.data()
+        required = {"schema", "engineering_scope", "stage", "scope_ids", "item_ids",
+                    "evidence_by_task", "budget", "baseline_digest", "p0_control",
+                    "packages_by_arm", "scorer", "acceptance_criteria", "replicates",
+                    "model", "effort", "max_calls", "max_tokens", "schemas"}
+        if (not required &lt;= set(data) or set(data) - required - {"execution_mode", "objective_by_task"}
+                or data["schema"] not in {_LEGACY_SCHEMA, _SCHEMA}):
+            raise ContractError("unexpected train controller config schema")
+        scope = tuple(data["scope_ids"]) if isinstance(data["scope_ids"], list) else ()
+        if (not scope or len(set(scope)) != len(scope) or set(scope) - set(DRIVERS)
+                or any(not isinstance(item, str) for item in scope)):
+            raise ContractError("controller scope must use closed production drivers")
+        if data["schema"] == _LEGACY_SCHEMA:
+            if data["engineering_scope"] != "train_only_q3_1_engineering" or scope != _LEGACY_SCOPE:
+                raise ContractError("legacy controller is restricted to Q3.1 train engineering")
+        elif data["engineering_scope"] != "train_only_panel_engineering":
+            raise ContractError("production panel controller must remain train-only engineering")
+        if (not isinstance(data["stage"], str) or not data["stage"].strip() or not isinstance(data["item_ids"], list)
+                or not data["item_ids"] or len(set(data["item_ids"])) != len(data["item_ids"])
+                or any(not isinstance(item, str) or not item for item in data["item_ids"])):
+            raise ContractError("controller needs an exact nonempty train allowlist")
+        if not isinstance(data["evidence_by_task"], Mapping) or not data["evidence_by_task"]:
+            raise ContractError("controller needs exact task evidence")
+        for value in data["evidence_by_task"].values(): _record(value, "evidence")
+        if "Q2.6" in scope and "objective_by_task" not in data:
+            raise ContractError("goal-lock controller requires predeclared task objectives")
+        if "objective_by_task" in data:
+            objectives = data["objective_by_task"]
+            if not isinstance(objectives, Mapping) or set(objectives) != set(data["evidence_by_task"]):
+                raise ContractError("task objectives must exactly cover the frozen task evidence")
+            for value in objectives.values():
+                if not _record(value, "task objective").data():
+                    raise ContractError("task objectives must be nonempty")
+        for name in ("budget", "p0_control", "scorer", "acceptance_criteria"):
+            _record(data[name], name)
+        if set(scope) &amp; {"Q7.1", "Q7.2"} and (data["budget"] != EXPLORATION_BUDGET
+                or any(type(value) is not int for value in data["budget"].values())):
+            raise ContractError("exploration controller requires exact matched opportunity budget")
+        if set(scope) &amp; set(EXTENDED_EXPLORATION_BUDGET) and (data["budget"] != EXTENDED_EXPLORATION_BUDGET
+                or any(type(value) is not int for row in data["budget"].values() for value in row.values())):
+            raise ContractError("extended exploration controller requires exact matched opportunity budgets")
+        if "Q5.4" in scope and (data["budget"] != {"model_calls":3, "execution_opportunities":1, "verification_calls":1}
+                or any(type(value) is not int for value in data["budget"].values())):
+            raise ContractError("diagnostic controller requires exact matched opportunity budget")
+        if "Q2.7" in scope and any(type(data["budget"].get(key)) is not int or data["budget"][key] != 1
+                for key in ("docker_attempts", "audit_calls", "model_calls")):
+            raise ContractError("protocol budget must freeze one Docker, audit batch and model call per cell")
+        if set(scope) &amp; {"Q2.2", "Q6.4", "Q2.7"}:
+            from research_loop.modular.p0_panel import fixed_control_design
+            expected_grid = fixed_control_design(data["baseline_digest"], _record(data["p0_control"], "P0 control").content_hash)
+            if any(value.get("p0_fixed_control") != expected_grid.data() for value in data["evidence_by_task"].values()):
+                raise ContractError("semantic material must bind the controller's frozen P0 control")
+        if (not isinstance(data["baseline_digest"], str) or len(data["baseline_digest"]) != 64
+                or any(char not in "0123456789abcdef" for char in data["baseline_digest"])):
+            raise ContractError("baseline digest must be frozen")
+        if not isinstance(data["packages_by_arm"], Mapping) or not data["packages_by_arm"]:
+            raise ContractError("controller needs actual packages for every arm")
+        for arm, package in data["packages_by_arm"].items():
+            if not isinstance(arm, str) or len(arm) != 64:
+                raise ContractError("package map uses runtime-arm digests")
+            CandidatePackage(_record(package, "candidate package"))
+        if (not isinstance(data["replicates"], list) or not data["replicates"]
+                or len(set(data["replicates"])) != len(data["replicates"])):
+            raise ContractError("replicates must be frozen and unique")
+        if (data["model"] != "gpt-5.6-luna" or data["effort"] != "low"
+                or type(data["max_calls"]) is not int or data["max_calls"] &lt; 1
+                or type(data["max_tokens"]) is not int or data["max_tokens"] &lt; 1):
+            raise ContractError("production controller requires frozen Luna/low budgets")
+        mode = data.get("execution_mode", "mechanism_pilot")
+        if mode not in {"mechanism_pilot", "linked_benchmark_solve"} or (mode == "linked_benchmark_solve" and set(scope) - {"Q1.5", "Q3.1", "Q4.3", "Q8.2", "Q8.3"}):
+&gt;           raise ContractError("controller linked mode has an unsupported scope")
+E           research_loop.ontology.ContractError: controller linked mode has an unsupported scope
+
+research_loop\modular\train_controller.py:130: ContractError</failure></testcase><testcase classname="tests.test_lineage_singleton_linked" name="test_all_four_questions_have_frozen_linked_solver_configuration[support-28]" time="0.108"><failure message="research_loop.ontology.ContractError: controller linked mode has an unsupported scope">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lsl-red-tmp/test_all_four_questions_have_f1')
+group = 'support', count = 28
+
+    @pytest.mark.parametrize('group,count',[('history',30),('support',28)])
+    def test_all_four_questions_have_frozen_linked_solver_configuration(tmp_path,group,count):
+&gt;       _,_,frozen,_=_config(tmp_path,group)
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_lineage_singleton_linked.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_lineage_singleton_linked.py:63: in _config
+    return snapshot,custody,FrozenTrainControllerConfig(FrozenRecord.from_dict(body)),packets
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:4: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...1b081fa6a15ec9a24a40fa5e","schema":"adapted-metric-scorer-config-v1","version":"v1"},"stage":"public-train-support"}'))
+
+    def __post_init__(self) -&gt; None:
+        data = self.record.data()
+        required = {"schema", "engineering_scope", "stage", "scope_ids", "item_ids",
+                    "evidence_by_task", "budget", "baseline_digest", "p0_control",
+                    "packages_by_arm", "scorer", "acceptance_criteria", "replicates",
+                    "model", "effort", "max_calls", "max_tokens", "schemas"}
+        if (not required &lt;= set(data) or set(data) - required - {"execution_mode", "objective_by_task"}
+                or data["schema"] not in {_LEGACY_SCHEMA, _SCHEMA}):
+            raise ContractError("unexpected train controller config schema")
+        scope = tuple(data["scope_ids"]) if isinstance(data["scope_ids"], list) else ()
+        if (not scope or len(set(scope)) != len(scope) or set(scope) - set(DRIVERS)
+                or any(not isinstance(item, str) for item in scope)):
+            raise ContractError("controller scope must use closed production drivers")
+        if data["schema"] == _LEGACY_SCHEMA:
+            if data["engineering_scope"] != "train_only_q3_1_engineering" or scope != _LEGACY_SCOPE:
+                raise ContractError("legacy controller is restricted to Q3.1 train engineering")
+        elif data["engineering_scope"] != "train_only_panel_engineering":
+            raise ContractError("production panel controller must remain train-only engineering")
+        if (not isinstance(data["stage"], str) or not data["stage"].strip() or not isinstance(data["item_ids"], list)
+                or not data["item_ids"] or len(set(data["item_ids"])) != len(data["item_ids"])
+                or any(not isinstance(item, str) or not item for item in data["item_ids"])):
+            raise ContractError("controller needs an exact nonempty train allowlist")
+        if not isinstance(data["evidence_by_task"], Mapping) or not data["evidence_by_task"]:
+            raise ContractError("controller needs exact task evidence")
+        for value in data["evidence_by_task"].values(): _record(value, "evidence")
+        if "Q2.6" in scope and "objective_by_task" not in data:
+            raise ContractError("goal-lock controller requires predeclared task objectives")
+        if "objective_by_task" in data:
+            objectives = data["objective_by_task"]
+            if not isinstance(objectives, Mapping) or set(objectives) != set(data["evidence_by_task"]):
+                raise ContractError("task objectives must exactly cover the frozen task evidence")
+            for value in objectives.values():
+                if not _record(value, "task objective").data():
+                    raise ContractError("task objectives must be nonempty")
+        for name in ("budget", "p0_control", "scorer", "acceptance_criteria"):
+            _record(data[name], name)
+        if set(scope) &amp; {"Q7.1", "Q7.2"} and (data["budget"] != EXPLORATION_BUDGET
+                or any(type(value) is not int for value in data["budget"].values())):
+            raise ContractError("exploration controller requires exact matched opportunity budget")
+        if set(scope) &amp; set(EXTENDED_EXPLORATION_BUDGET) and (data["budget"] != EXTENDED_EXPLORATION_BUDGET
+                or any(type(value) is not int for row in data["budget"].values() for value in row.values())):
+            raise ContractError("extended exploration controller requires exact matched opportunity budgets")
+        if "Q5.4" in scope and (data["budget"] != {"model_calls":3, "execution_opportunities":1, "verification_calls":1}
+                or any(type(value) is not int for value in data["budget"].values())):
+            raise ContractError("diagnostic controller requires exact matched opportunity budget")
+        if "Q2.7" in scope and any(type(data["budget"].get(key)) is not int or data["budget"][key] != 1
+                for key in ("docker_attempts", "audit_calls", "model_calls")):
+            raise ContractError("protocol budget must freeze one Docker, audit batch and model call per cell")
+        if set(scope) &amp; {"Q2.2", "Q6.4", "Q2.7"}:
+            from research_loop.modular.p0_panel import fixed_control_design
+            expected_grid = fixed_control_design(data["baseline_digest"], _record(data["p0_control"], "P0 control").content_hash)
+            if any(value.get("p0_fixed_control") != expected_grid.data() for value in data["evidence_by_task"].values()):
+                raise ContractError("semantic material must bind the controller's frozen P0 control")
+        if (not isinstance(data["baseline_digest"], str) or len(data["baseline_digest"]) != 64
+                or any(char not in "0123456789abcdef" for char in data["baseline_digest"])):
+            raise ContractError("baseline digest must be frozen")
+        if not isinstance(data["packages_by_arm"], Mapping) or not data["packages_by_arm"]:
+            raise ContractError("controller needs actual packages for every arm")
+        for arm, package in data["packages_by_arm"].items():
+            if not isinstance(arm, str) or len(arm) != 64:
+                raise ContractError("package map uses runtime-arm digests")
+            CandidatePackage(_record(package, "candidate package"))
+        if (not isinstance(data["replicates"], list) or not data["replicates"]
+                or len(set(data["replicates"])) != len(data["replicates"])):
+            raise ContractError("replicates must be frozen and unique")
+        if (data["model"] != "gpt-5.6-luna" or data["effort"] != "low"
+                or type(data["max_calls"]) is not int or data["max_calls"] &lt; 1
+                or type(data["max_tokens"]) is not int or data["max_tokens"] &lt; 1):
+            raise ContractError("production controller requires frozen Luna/low budgets")
+        mode = data.get("execution_mode", "mechanism_pilot")
+        if mode not in {"mechanism_pilot", "linked_benchmark_solve"} or (mode == "linked_benchmark_solve" and set(scope) - {"Q1.5", "Q3.1", "Q4.3", "Q8.2", "Q8.3"}):
+&gt;           raise ContractError("controller linked mode has an unsupported scope")
+E           research_loop.ontology.ContractError: controller linked mode has an unsupported scope
+
+research_loop\modular\train_controller.py:130: ContractError</failure></testcase></testsuite></testsuites>

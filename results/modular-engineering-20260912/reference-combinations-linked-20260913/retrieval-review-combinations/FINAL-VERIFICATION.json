@@ -1,0 +1,61 @@
+{
+  "additional_failed_docker_cells": 1,
+  "artifact_count_before_manifest": 404,
+  "artifact_manifest_sha256": "54c6d2b2a6ba63ac163430ca6c7b42d949ceb8310d19ddbae524e98a4a42f8c9",
+  "complete_grid_cells": 32,
+  "docker_attempts": 32,
+  "final_tests": {
+    "binding_limit": "Historical development commits bind content; contemporaneous raw source byte manifests exist only for final05/06/07.",
+    "errors": 0,
+    "failures": 0,
+    "full_model_metadata_isolation_checked": true,
+    "git_blob_sha256": {
+      "docs/retrieval-review-combinations-contract.md": "35cfa8fbd9b07937ba78065b379cb34de175447480f0e43dc2cbcfaaf52f7a8b",
+      "evaluation/modular/scorer_process.py": "95ae4505b3325df8b6b0bf75808dcb8905660b8748761a14a959a204d9e98feb",
+      "research_loop/modular/retrieval_review_combination_controller.py": "43f2a6f04cd9081291b62bb7154895f8f0e38cfe2848725fb759e60cb2e57541",
+      "research_loop/modular/retrieval_review_combination_driver.py": "305ab46cf51ca421db5d4c0584c81cce6936ae715b1e731586153661b30d34a2",
+      "tests/test_retrieval_review_combinations.py": "7844e2c412bbd79d4e240d8f3a0697cbd621f6fc1aa1ea778d63fc4b384ef8c4"
+    },
+    "junit_sha256": "6df1c16ef2c10afe74b9bee7f5268ddabfcf05be995da2cdcf4262ff6395b817",
+    "round": "final07",
+    "skipped": 0,
+    "source_commit": "0f94d709018bc1b9f2c8bf5e1ef3c1d4c230d25a",
+    "source_tree": "176d917bc969e05e72d2983f2df898802fa273e9",
+    "tests": 81
+  },
+  "grid_denominator": {
+    "pair:M4+M6": 8,
+    "pair:M5+M6": 8,
+    "triple:M4+M5+M6": 16
+  },
+  "historical_model_blinding_limit_retained": true,
+  "junit_sha256": "6df1c16ef2c10afe74b9bee7f5268ddabfcf05be995da2cdcf4262ff6395b817",
+  "mechanism_endpoint_independently_scored": false,
+  "model_calls": 160,
+  "model_failure_grid": {
+    "blocked": 31,
+    "failed": 1,
+    "model_calls": 4,
+    "planned": 32,
+    "provider_calls": 3
+  },
+  "partial_failure_grid": {
+    "failed": 32,
+    "model_calls": 0,
+    "planned": 32,
+    "provider_calls": 32,
+    "provider_items": 32
+  },
+  "primary_companion_scores": 32,
+  "provider_calls": 96,
+  "provider_items": 80,
+  "pruned_cells": [],
+  "schema": "retrieval-review-final-verification-v1",
+  "scientific_effectiveness_proven": false,
+  "source_bytes_unchanged_through_final_test": true,
+  "source_commit": "0f94d709018bc1b9f2c8bf5e1ef3c1d4c230d25a",
+  "source_files": 659,
+  "source_manifest_sha256": "ab2aaffe4b5f902cb38914ea8d3cd660bd768fabe472f4f5f80e98e0dfbdd45e",
+  "source_tree": "176d917bc969e05e72d2983f2df898802fa273e9",
+  "validation_opened": false
+}

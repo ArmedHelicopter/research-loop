@@ -1,0 +1,186 @@
+{
+  "schema": "lineage-singleton-linked-engineering-verification-v1",
+  "commit": "57bed6ee30147f64fdc10379ae83f6023460b49f",
+  "commit_chain": [
+    "e94e6cc7c15f3823c7b5726315b940ee932a52e9",
+    "57bed6ee30147f64fdc10379ae83f6023460b49f"
+  ],
+  "session_id": 40024,
+  "session_status": "closed",
+  "exit_code": 0,
+  "source_hashes": {
+    "docs/LINEAGE-SINGLETON-LINKED.md": "07f9d37b4f2fbae6058edc745c4f33f2948428bea9152697f2eafbf66e4bf6a6",
+    "research_loop/modular/benchmark_cell.py": "99867933ea1ec16fe4fb302181da533f85b898030e6f44ea15a2a8cacecb41dc",
+    "research_loop/modular/history_panel_drivers.py": "bde3330968102bff09f8a7a6ffc46b4a19097a324414f769822e3158aac0d767",
+    "research_loop/modular/lineage_singleton_replay.py": "2ebfa33993d73dd1fa086bd467aecfc53f144bc892abe23f1921b79bc7a5c39f",
+    "research_loop/modular/linked_public_projection.py": "cdfc8f3859c44e1678ecf078e5b8ea4cd43cd7a7202cdea85dbc9101e993d9b2",
+    "research_loop/modular/panel_runner.py": "df5723a0505bb9262ad4c58389fa121645e236bb2677883bfa8105bf3eb9fa69",
+    "research_loop/modular/support_panel_drivers.py": "bdd1e31eaff2fe3372eba72870f5ba72cb46413b01cb91121780745485cdd7af",
+    "research_loop/modular/train_controller.py": "77321e11121b60adf6b3bf7bf9c2d732f5226aee533a3487ee208c3cec556f77",
+    "tests/test_lineage_singleton_linked.py": "014679d58d438939c4b40523d15797e8e285e76e45c03da4a9814bbf1410a3f6"
+  },
+  "source_unchanged": true,
+  "git_clean": true,
+  "reports": {
+    "lsl-red.xml": {
+      "sha256": "e2e2c60cd085c1e71332640c5dbd8592dd4c4fa27702c2cc47852a55b477ce6e",
+      "tests": 12,
+      "failures": 2,
+      "errors": 0
+    },
+    "lsl-config.xml": {
+      "sha256": "96d08f53460c4c6df59e5252a7f1ec1f1a39a96ee7370e9e8c4e7e8aaf8f4ae6",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0
+    },
+    "lsl-grid-r1.xml": {
+      "sha256": "ec49edc9171b4ee7321ef0fc6dea0e3044343c18c1d4576cd6e4519f84a5d6e6",
+      "tests": 2,
+      "failures": 2,
+      "errors": 0
+    },
+    "lsl-grid-r2.xml": {
+      "sha256": "265f665f16406f452b02d35e608de299c8368e5f3ef8a92902a914c8fde35188",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0
+    },
+    "lsl-legacy.xml": {
+      "sha256": "ece4250cc52291c8cc78c6352399a33c3fbcd32c960067361aae38766efac82a",
+      "tests": 30,
+      "failures": 0,
+      "errors": 0
+    },
+    "lsl-authority-red.xml": {
+      "sha256": "99ef9501e42b81fbe1e2d179be46575b1d52474938fbd1eff27d8b4367a8e6c4",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0
+    },
+    "lsl-guards.xml": {
+      "sha256": "f0604aeba7469867f753c30932d0d1129ebaba5ef90c845549df160b2153ec2e",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0
+    },
+    "lsl-late.xml": {
+      "sha256": "f12cbf0357b935f8e28eef8a70f68cf113ec41758f503f2fb079a02482b2d8e2",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "lsl-final.xml": {
+      "sha256": "bf67e7915eb2a93c582496cb93182a715bd348b61809568c3a62779d67d28dc2",
+      "tests": 106,
+      "failures": 2,
+      "errors": 0
+    },
+    "lsl-public-field-red.xml": {
+      "sha256": "b31647b4f12091e7e880b7381cfb7522990c40cd1033f3b2f80a8d894e36ff23",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0
+    },
+    "lsl-public-field-green.xml": {
+      "sha256": "5834a99f12d9322c2720a3a23d604f9f58f89c273aa9dcb9a04934321a2d6b5f",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "lsl-final-r2.xml": {
+      "sha256": "f0e6f8e52731dd998356a020e1edc4fac74b39ad65a33b8939ee319ab07db791",
+      "tests": 107,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "normal_groups": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lsl-final2-tmp\\lineage-history0",
+      "cells": 30,
+      "linked_statuses": {
+        "linked_succeeded": 30
+      },
+      "model_calls": 150,
+      "fixture_tokens": 300,
+      "usage_incomplete": false,
+      "actual_docker_receipts": {
+        "succeeded": 30
+      },
+      "source_admission_attempts": 36,
+      "source_admission_cost": "not_provided_by_caller_port",
+      "scorer_events": {
+        "reserved": 30,
+        "succeeded": 30
+      }
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lsl-final2-tmp\\lineage-support0",
+      "cells": 28,
+      "linked_statuses": {
+        "linked_succeeded": 28
+      },
+      "model_calls": 140,
+      "fixture_tokens": 280,
+      "usage_incomplete": false,
+      "actual_docker_receipts": {
+        "succeeded": 28
+      },
+      "source_admission_attempts": 30,
+      "source_admission_cost": "not_provided_by_caller_port",
+      "scorer_events": {
+        "reserved": 28,
+        "succeeded": 28
+      }
+    }
+  ],
+  "source_failure_groups": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lsl-final2-tmp\\test_admission_failure_keeps_e0",
+      "cells": 30,
+      "linked_statuses": {
+        "mechanism_failed": 24,
+        "linked_succeeded": 6
+      },
+      "model_calls": 30,
+      "fixture_tokens": 60,
+      "usage_incomplete": false,
+      "actual_docker_receipts": {
+        "succeeded": 6
+      },
+      "source_admission_attempts": 24,
+      "source_admission_cost": "not_provided_by_caller_port",
+      "scorer_events": {}
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lsl-final2-tmp\\test_admission_failure_keeps_e1",
+      "cells": 28,
+      "linked_statuses": {
+        "linked_succeeded": 14,
+        "mechanism_failed": 14
+      },
+      "model_calls": 70,
+      "fixture_tokens": 140,
+      "usage_incomplete": false,
+      "actual_docker_receipts": {
+        "succeeded": 14
+      },
+      "source_admission_attempts": 14,
+      "source_admission_cost": "not_provided_by_caller_port",
+      "scorer_events": {}
+    }
+  ],
+  "scientific_mechanism_scoring": "not_measured",
+  "actual_training_effect": "not_measured",
+  "paid_calls": 0,
+  "actual_references_read": false,
+  "validation_payload_read": false,
+  "limitations": [
+    "Canned independent-process primary scorer checks engineering only.",
+    "Caller dual-admission provenance is not independent scientific validity.",
+    "Source admission monetary/token cost is not supplied by the legacy caller port.",
+    "Operation replay uses fresh pure ledgers with the registered operation implementation.",
+    "Separate scorer process runs under the same operating-system user."
+  ]
+}

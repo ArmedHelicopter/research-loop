@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="20.234" timestamp="2026-09-13T16:24:03.580871+08:00" hostname="SC-202507131830"><testcase classname="work.lps-endpoint-scale-red" name="test_fixed_lineage_endpoint_rejects_signed_off_grid_score" time="0.010"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">def test_fixed_lineage_endpoint_rejects_signed_off_grid_score():
+        root=Path('E:/_ryanDev/AI/research-loop-modular/work/lps-final-tmp/lineage-process-grid0')
+        server=json.loads((root/'worker0/server.json').read_text(encoding='utf-8'))
+        panel=parse_combination_panel(server['panel'],lineage=True);cell=panel.cells[0]
+        rows=json.loads((root/'run/controller-attempt.json').read_text(encoding='utf-8'))['cells'];row=rows[0]
+        body=row['scorer_receipt']['body']
+        body['endpoints']['root_attribution']=.25
+        body['rubric_response']['lineage_endpoints']['root_attribution']=.25
+        body['rubric_response_digest']=digest(body['rubric_response'])
+        forged=ScientificScorerReceipt(cell.key,LinkedExecutionAuthority('lineage-scoring',b's'*32).issue(body))
+&gt;       with pytest.raises(ContractError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+..\work\lps-endpoint-scale-red.py:23: Failed</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.146" timestamp="2026-09-13T17:01:04.345883+08:00" hostname="SC-202507131830"><testcase classname="tests.test_lineage_singleton_linked" name="test_source_authority_labels_stay_out_of_actual_mechanism_requests" time="1.779"><failure message="assert 'Q1.1-arm_id...ce-authority' not in '{&quot;requests&quot;...s&quot;:null}}}]}'&#10;  &#10;  'Q1.1-arm_id-correct-source-authority' is contained here:&#10;    lidator&quot;:&quot;Q1.1-arm_id-correct-source-authority&quot;,&quot;validator_verified&quot;:true},&quot;root_id&quot;:&quot;702aeed39f3e5d58dfc81cd513743684eacd5d2070436b96425f08f69c7176f5&quot;,&quot;subject_bindings&quot;:{&quot;task&quot;:&quot;history-blade&quot;}}]},&quot;evidence_version&quot;:&quot;3dda06f5cadd426244ef5f6fea5c36a3987bcc8dabdf7f985adb3d3040b04714&quot;,&quot;identity&quot;:{&quot;benchmark&quot;:&quot;blade&quot;,&quot;dataset_version&quot;:&quot;synthetic-v1&quot;,&quot;domain&quot;:&quot;train&quot;,&quot;group_id&quot;:&quot;blade:history&quot;,&quot;split_id&quot;:&quot;ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff&quot;,&quot;task_id&quot;:&quot;history-blade&quot;},&quot;question&quot;:&quot;{\&quot;dat...&#10;  &#10;  ...Full output truncated (2 lines hidden), use '-vv' to show">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lsl-authority-red-tmp/test_source_authority_labels_s0')
+
+    def test_source_authority_labels_stay_out_of_actual_mechanism_requests(tmp_path):
+        from test_modular_history_panel_drivers import _rows,_model
+        from research_loop.modular.panel_runner import run_train_cell
+        compiled,tasks,_=_rows('Q1.1')
+        cell=next(item for item in compiled.panel.cells if 'M3' in item.runtime_arm.data()['enabled'])
+        seen=[];private_name='Q1.1-arm_id-correct-source-authority'
+        def labelled(task,record):
+            receipt=_admit(task,record);receipt['trusted_validator']=private_name;return receipt
+        result=run_train_cell(cell,task=tasks[cell.identity.benchmark],scenario=compiled.scenarios[cell.key],
+            package=compiled.packages[cell.runtime_arm.content_hash],objective=FrozenRecord.from_dict({'purpose':'public training'}),
+            sidecar=tmp_path/'cell',model=_model(seen),audit_verifier=AuditVerifier(KEYS),history_admission_port=labelled)
+        assert result.runtime.status=='succeeded'
+        assert len(seen)==3
+&gt;       assert private_name not in FrozenRecord.from_dict({'requests':seen}).encoded
+E       assert 'Q1.1-arm_id...ce-authority' not in '{"requests"...s":null}}}]}'
+E         
+E         'Q1.1-arm_id-correct-source-authority' is contained here:
+E           lidator":"Q1.1-arm_id-correct-source-authority","validator_verified":true},"root_id":"702aeed39f3e5d58dfc81cd513743684eacd5d2070436b96425f08f69c7176f5","subject_bindings":{"task":"history-blade"}}]},"evidence_version":"3dda06f5cadd426244ef5f6fea5c36a3987bcc8dabdf7f985adb3d3040b04714","identity":{"benchmark":"blade","dataset_version":"synthetic-v1","domain":"train","group_id":"blade:history","split_id":"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff","task_id":"history-blade"},"question":"{\"dat...
+E         
+E         ...Full output truncated (2 lines hidden), use '-vv' to show
+
+tests\test_lineage_singleton_linked.py:289: AssertionError</failure></testcase></testsuite></testsuites>

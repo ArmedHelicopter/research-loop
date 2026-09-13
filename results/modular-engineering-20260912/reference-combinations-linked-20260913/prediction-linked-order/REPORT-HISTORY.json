@@ -1,0 +1,35 @@
+[
+  {
+    "binding_limit": "Frozen original late-freeze regression, before production repair.",
+    "errors": 0,
+    "failures": 1,
+    "junit_sha256": "3f4ad4707633337e599baf36fa9fdd0e3d240b3b4e0262e5cf46a9d627bdfaa9",
+    "round": "red01",
+    "seconds": 0.538,
+    "skipped": 0,
+    "source_commit": "ba0733f440fe4e786b111fc318097c43d733c914",
+    "tests": 1
+  },
+  {
+    "binding_limit": "Development sanity test before committing the identical production repair; no contemporaneous whole-source manifest.",
+    "errors": 0,
+    "failures": 0,
+    "junit_sha256": "dbc3a10af9dcd419b2f72668463b5b8f4d1cdb53fcff16cb358af9cc5937e8db",
+    "round": "repair02",
+    "seconds": 0.137,
+    "skipped": 0,
+    "source_commit": "16d649f1cde30702bca2c888d6cde386059a7997",
+    "tests": 1
+  },
+  {
+    "binding_limit": "Frozen full regression; source byte manifests before and after are equal.",
+    "errors": 0,
+    "failures": 0,
+    "junit_sha256": "8613371d7f87a368f78f1d4c04944f1caf7c91e2c9d33f68bb16bc2964128157",
+    "round": "final03",
+    "seconds": 185.827,
+    "skipped": 0,
+    "source_commit": "16d649f1cde30702bca2c888d6cde386059a7997",
+    "tests": 61
+  }
+]

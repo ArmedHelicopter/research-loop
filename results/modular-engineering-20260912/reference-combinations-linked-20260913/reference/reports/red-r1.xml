@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.734" timestamp="2026-09-13T16:35:02.295086+08:00" hostname="SC-202507131830"><testcase classname="tests.test_primary_reference_bridge" name="test_primary_new_identity_reaches_standard_frozen_reference_resolver" time="1.459"><failure message="research_loop.ontology.ContractError: prospective train reference bridge is not implemented">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/primary-reference-checks/red-r1/test_primary_new_identity_reac0')
+
+    def test_primary_new_identity_reaches_standard_frozen_reference_resolver(tmp_path):
+        bridge, requests, packets, _ = material(tmp_path)
+&gt;       publication = bridge.prepare(requests, packets).data()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_primary_reference_bridge.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;evaluation.modular.primary_reference_bridge.PrimaryProspectiveReferenceBridge object at 0x000001B52E7E2000&gt;
+requests = [PrimaryReferenceItem(item=PrimaryTrainExportItem(source='discoverybench', token='eee71d9a9f3c62e068336f28c1e629e7ef27...340c710a8c40a76c91a9e7a3e4c59253d', receipt_sha256='9a1a082cfc4b22644479d1927e3c9af242e849d119e1448380fdcd925542c8b7')]
+packets = (PublicTrainPacket(task=PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='synth:test:case2', group...d2b3c272a48d8741e88bf32d13f5a0e","split_digest":"be6df9dd30291b94a0ee0bf2636df9ceab8f1784a620f888bc0fcc5d5ae5f00f"}')))
+
+    def prepare(self, requests, packets):
+&gt;       raise ContractError("prospective train reference bridge is not implemented")
+E       research_loop.ontology.ContractError: prospective train reference bridge is not implemented
+
+evaluation\modular\primary_reference_bridge.py:18: ContractError</failure></testcase></testsuite></testsuites>

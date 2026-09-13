@@ -1,0 +1,43 @@
+{
+  "Q3.2_execution_status": "planning_only",
+  "artifact_count_before_manifest": 394,
+  "artifact_manifest_sha256": "cd908764c6cafb5210e0a75f3360df0bb2d53b99c60002336fffc10284edf9af",
+  "failure_grid": {
+    "docker": 8,
+    "mechanism_failed": 12,
+    "model_calls": 60,
+    "succeeded": 8,
+    "total": 20
+  },
+  "final_tests": {
+    "binding_limit": "Frozen full regression; source byte manifests before and after are equal.",
+    "errors": 0,
+    "failures": 0,
+    "junit_sha256": "8613371d7f87a368f78f1d4c04944f1caf7c91e2c9d33f68bb16bc2964128157",
+    "round": "final03",
+    "seconds": 185.827,
+    "skipped": 0,
+    "source_commit": "16d649f1cde30702bca2c888d6cde386059a7997",
+    "tests": 61
+  },
+  "junit_sha256": "8613371d7f87a368f78f1d4c04944f1caf7c91e2c9d33f68bb16bc2964128157",
+  "original_source_files_unchanged": 425,
+  "prediction_grid": {
+    "Q3.2": 8,
+    "Q5.3": 12,
+    "docker": 20,
+    "model_calls": 96,
+    "primary_fixture_scores": 20,
+    "succeeded": 20,
+    "total": 20
+  },
+  "pruned_cells": [],
+  "rehashed_chronology_rejections": 24,
+  "scientific_effectiveness_proven": false,
+  "source_after_sha256": "7c1f17cded0ed126f07a9dc48c4c01eef08ea083d718b0ce6b401a7f1407a736",
+  "source_before_sha256": "7c1f17cded0ed126f07a9dc48c4c01eef08ea083d718b0ce6b401a7f1407a736",
+  "source_bytes_unchanged": true,
+  "source_commit": "16d649f1cde30702bca2c888d6cde386059a7997",
+  "source_file_count": 679,
+  "validation_opened": false
+}

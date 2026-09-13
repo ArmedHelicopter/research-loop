@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.156" timestamp="2026-09-13T16:26:48.749403+08:00" hostname="SC-202507131830"><testcase classname="tests.test_retrieval_review_combinations" name="test_registered_combination_scope" time="0.019"><failure message="ModuleNotFoundError: No module named 'research_loop.modular.retrieval_review_combination_driver'">def test_registered_combination_scope():
+&gt;       from research_loop.modular.retrieval_review_combination_driver import DESIGNS, registered_design
+E       ModuleNotFoundError: No module named 'research_loop.modular.retrieval_review_combination_driver'
+
+tests\test_retrieval_review_combinations.py:2: ModuleNotFoundError</failure></testcase></testsuite></testsuites>

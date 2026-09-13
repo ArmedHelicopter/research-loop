@@ -1,0 +1,156 @@
+{
+  "schema": "lineage-process-engineering-verification-v1",
+  "head": "213444e1f780c57569c06f7c99725a14431083f8",
+  "branch": "codex/lineage-process-scoring",
+  "base": "86368a2e022dca137c2063d3e4380aeae80b9aab",
+  "commits": [
+    "61a1151129cfef5f6bd11fad4956781eff0baedb",
+    "4b1a74ed4b44a406c9ae5afa28976179009561a2",
+    "213444e1f780c57569c06f7c99725a14431083f8"
+  ],
+  "source_hashes": {
+    "docs/LINEAGE-PROCESS-SCORING.md": "86ec0cf63f7e1be1b9a2a8b82d5847841f2a0f45d78b9d473ea33a08febb7832",
+    "evaluation/modular/evaluator_model_port.py": "758a0657cd6ae7e2404a754224e05d123f44c375d3a922e84cc3519f12e104a9",
+    "evaluation/modular/lineage_combination_scoring.py": "565feee0b83275d65e6b77cded48e5f204190fd58b6055f9f47fbef0ddb63fe6",
+    "evaluation/modular/lineage_rubric.py": "327de6ee2bad5da98844f43fe50d06a65b101f89da4e6459fa825462653eb389",
+    "evaluation/modular/lineage_scorer_process.py": "3c2755f3e8c9176e04a650d553a0ac9e98b5fcfc2fb763a7e974a6380b1bb108",
+    "evaluation/modular/scorer_process.py": "33b43f6ab8d1961239b3a722d00b68d8c8caa77d1ffbef00cd1b16c99eec7e8e",
+    "research_loop/modular/lineage_combination_controller.py": "d0c121a37cfeeffaec242128eb6a95c4f39ae85b2360b7f06f52a925b73d5d5e",
+    "tests/helpers/lineage_scorer_helper.py": "c52ce8573ad1e72a41cf855162993c1b550fc2a3df3027454f422673507a0186",
+    "tests/test_lineage_process_scoring.py": "d58f4361dc3b5ac3000105a5c091c82c035945e50e1810acf206741936efa43e"
+  },
+  "source_unchanged_during_final": true,
+  "git_clean": true,
+  "reports": [
+    {
+      "file": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-red.xml",
+      "sha256": "41a4aadd6d7f67a07005bcf218c9d1166b9b954572148a6882e377d0eeed05f4",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "seconds": 0.307,
+      "source": "86368a2 plus new RED test",
+      "role": "missing protected lineage mode RED"
+    },
+    {
+      "file": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-r1.xml",
+      "sha256": "383642163ef5d355aa313b19a3747f84f932ac253b425574bd4253395c5d738f",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 153.228,
+      "source": "uncommitted intermediate",
+      "role": "provisional 34-cell process integration"
+    },
+    {
+      "file": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-r2.xml",
+      "sha256": "99047bc92a5c25987fd17d2666dcdd46d96299be19936821f555112039cf7a61",
+      "tests": 50,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 316.872,
+      "source": "61a1151",
+      "role": "frozen 50-test compatibility regression"
+    },
+    {
+      "file": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-final.xml",
+      "sha256": "6cfa4ca026f7fb0b701e77f08021d318bd24f0fc1c7a5fe53f5ca914a364ed77",
+      "tests": 52,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 328.944,
+      "source": "4b1a74e",
+      "role": "frozen 52-test predecessor; later endpoint scale counterexample found"
+    },
+    {
+      "file": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-scale-red.xml",
+      "sha256": "717df94577a0abded580d9e321d007ef3b6d364a92fb8ceb7f5e8ce739114062",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "seconds": 20.234,
+      "source": "4b1a74e",
+      "role": "readonly resigned 0.25 endpoint RED"
+    },
+    {
+      "file": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-scale-green.xml",
+      "sha256": "f1e0d0df3ec6a6c6549133881af98e0cf546e9a609b4174a4e2f9b9bc17a2c67",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 0.439,
+      "source": "213444e",
+      "role": "same counterexample rejected after repair"
+    },
+    {
+      "file": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-213-final.xml",
+      "sha256": "3a45539fb79e88964560a8d356181b5340ae17502cc666e8ee61455c22a8e98a",
+      "tests": 36,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 260.177,
+      "source": "213444e1f780c57569c06f7c99725a14431083f8",
+      "role": "final frozen regression"
+    }
+  ],
+  "runs": [
+    {
+      "run": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-213-final-tmp\\lineage-process-grid0",
+      "controller_receipt_sha256": "2bf9edbfe1c410fe7a6246256eeecac91647f97c6a84cf5b95dc36db2438f076",
+      "controller_attempt_sha256": "db85b9ea5c7deea50d324b5af1bbbee051f4432e0c5c552ca3db5b2141589d37",
+      "cells": 34,
+      "scored_cells": 34,
+      "failed_cells": 0,
+      "status": "complete_train_engineering",
+      "actual_docker_attempts": 34,
+      "scorer_submissions": 34,
+      "actual_evaluator_calls": 34,
+      "known_evaluator_tokens": 170,
+      "evaluator_usage_incomplete": false,
+      "evaluator_ledgers": {
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-213-final-tmp\\lineage-process-grid0\\worker0\\evaluator\\ledger.json": "2d6a86b7a4c008bd1795a5f519a7fd398551c14ca38dbc6371a38776f75d343f",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-213-final-tmp\\lineage-process-grid0\\worker1\\evaluator\\ledger.json": "3597f5724b98d3e5e0476ed84d0f82cf80752a3c5b58ba85d113ddd2ebfc21d1",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-213-final-tmp\\lineage-process-grid0\\worker2\\evaluator\\ledger.json": "d19a5e8ed3721f08520fc30dfff12085f6c1869496dbc7ef7aac9d007d134ebc",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-213-final-tmp\\lineage-process-grid0\\worker3\\evaluator\\ledger.json": "b775672d95406ede615d9a15e799fe047f7fe468ae4f0a947afcd42beb0af8e4"
+      }
+    },
+    {
+      "run": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-213-final-tmp\\test_full_controller_keeps_fai0",
+      "controller_receipt_sha256": "fc4397a50a7603fc6921ec38d7f2066e8679e293adc9274eed82f515c5a37573",
+      "controller_attempt_sha256": "8da109ee654675b5d8854b51c935670504f14dec80a5610208ed266bdad8b954",
+      "cells": 34,
+      "scored_cells": 28,
+      "failed_cells": 6,
+      "status": "inconclusive",
+      "actual_docker_attempts": 34,
+      "scorer_submissions": 34,
+      "actual_evaluator_calls": 29,
+      "known_evaluator_tokens": 145,
+      "evaluator_usage_incomplete": true,
+      "evaluator_ledgers": {
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-213-final-tmp\\test_full_controller_keeps_fai0\\worker0\\evaluator\\ledger.json": "e97ee802bd06189cd6345c0e06d7b443f78662c81245bf39b5cd5f9e041c41f5",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-213-final-tmp\\test_full_controller_keeps_fai0\\worker1\\evaluator\\ledger.json": "276d7438efc4034b578c34c47f3eda8d3d5c70c0e975e63a6d099cc667d25c77",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-213-final-tmp\\test_full_controller_keeps_fai0\\worker2\\evaluator\\ledger.json": "177e271d548edc88f88214e651dbc054656fe3250376d19888fcedd15d968675",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-213-final-tmp\\test_full_controller_keeps_fai0\\worker3\\evaluator\\ledger.json": "798b03797bade02d64486642a534f15dec0858f5487ada6b14a157d99aeb298a"
+      }
+    }
+  ],
+  "closed_sessions": [
+    62752,
+    18537,
+    48649,
+    35425,
+    11262
+  ],
+  "boundaries": {
+    "paid_calls": 0,
+    "private_reference_reads": 0,
+    "validation_payload_reads": 0,
+    "model_transport": "actual CodexEvaluatorModelPort with explicit synthetic ProcessRunner inside real Python child",
+    "process_isolation": "distinct PID and stdio; same OS user; no ACL/mount/OS isolation attestation",
+    "reference_qualification": "exact caller-pinned train annotation sources and subjects; qualification metadata is not scientific validity",
+    "legacy_accounting_fields": "transport_not_provided and scorer_usage_unknown remain conservative legacy summary fields; actual signed evaluator usage is retained per attempt",
+    "scientific_validity": "not_measured",
+    "calibration": "not_measured"
+  }
+}

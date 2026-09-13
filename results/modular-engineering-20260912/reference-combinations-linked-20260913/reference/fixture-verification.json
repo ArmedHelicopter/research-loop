@@ -1,0 +1,562 @@
+{
+  "schema": "primary-reference-bridge-delivery-verification-v1",
+  "source_commit": "574bfbf19837fac73ae4d464a67374b907b89d3d",
+  "base_commit": "b9f7ff46030f16ddfe321c616bf863b92fc9a08c",
+  "source_files_verified": 261,
+  "source_before_after_unchanged": true,
+  "junit": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\red-r1.xml",
+      "sha256": "5856623d76d636e04827e3581c16743be2e49d5716529546ee0695a27a30a9e5",
+      "verification_scope": "development",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "time_seconds": 1.734
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\green-r2.xml",
+      "sha256": "bb988b47e99b5fbed531b3c4702e45dfeb838b1268364c7fc9f1f02ca203114d",
+      "verification_scope": "development",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time_seconds": 5.197
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3.xml",
+      "sha256": "9349d8de0162236d0454beb9f628fcaf57effc06b60515f5400ca6645f8be1b4",
+      "verification_scope": "invalid_source_changed_during_run",
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time_seconds": 77.739
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4.xml",
+      "sha256": "9c231069c4ab78f8a59034b7fb5b891b72096da2fb366cf07f4aa05158707cbb",
+      "verification_scope": "development",
+      "tests": 29,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time_seconds": 95.671
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1.xml",
+      "sha256": "3962344becb69cdbaf23ff9435afe11d6bcade125110986388981d6f5474418f",
+      "verification_scope": "frozen_acceptance",
+      "tests": 125,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "time_seconds": 686.443
+    }
+  ],
+  "new_bridge_scorer_process_fixture_calls": [
+    {
+      "run": "integration-r4",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_actual_scorer_subprocess_0\\fixture-call-counts.json",
+      "sha256": "cdcef6d5d1f36eed7fbf6d8ca8f57fcbe6c5dc2eaed0aff1034123a10b175663",
+      "counts": {
+        "schema": "primary-reference-fixture-counts-v1",
+        "scorer_processes": 1,
+        "scorer_requests": 2,
+        "fixture_evaluator_calls": 2,
+        "failed_calls": 0,
+        "model_calls": 0,
+        "network_calls": 0,
+        "docker_calls": 0,
+        "scientific_validity": "not_measured"
+      }
+    },
+    {
+      "run": "frozen-r1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_actual_scorer_subprocess_0\\fixture-call-counts.json",
+      "sha256": "cdcef6d5d1f36eed7fbf6d8ca8f57fcbe6c5dc2eaed0aff1034123a10b175663",
+      "counts": {
+        "schema": "primary-reference-fixture-counts-v1",
+        "scorer_processes": 1,
+        "scorer_requests": 2,
+        "fixture_evaluator_calls": 2,
+        "failed_calls": 0,
+        "model_calls": 0,
+        "network_calls": 0,
+        "docker_calls": 0,
+        "scientific_validity": "not_measured"
+      }
+    }
+  ],
+  "reference_attempt_denominators": [
+    {
+      "run": "green-r2",
+      "journal_count": 1,
+      "intentionally_corrupt_journals": 0,
+      "events": {
+        "attempt_reserved": 1,
+        "completed": 1,
+        "failed": 0,
+        "reference_read_reserved": 2,
+        "publication_reserved": 1
+      },
+      "journals": [
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\green-r2\\test_primary_new_identity_reac0\\reference-audit\\references.jsonl",
+          "sha256": "04d49be7c0ec5bba09e63e055ff1b2240a334571d50cc13a6e3fb24c4d6db17a"
+        }
+      ]
+    },
+    {
+      "run": "boundary-r3",
+      "journal_count": 24,
+      "intentionally_corrupt_journals": 1,
+      "events": {
+        "attempt_reserved": 23,
+        "completed": 1,
+        "failed": 22,
+        "reference_read_reserved": 9,
+        "publication_reserved": 2
+      },
+      "journals": [
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_answer_key_hash_refused_b0\\reference-audit\\references.jsonl",
+          "sha256": "7e3128ef5059971a041e69b2afaf7dc47007534810de77e9c6ea10b8cf616713"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_complete_denial_before_so0\\reference-audit\\references.jsonl",
+          "sha256": "e5edd4a4441eae0ba688bf315fdc7284ee88d8c2406a0454d6c0a46f9b0a558d"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_complete_denial_before_so1\\reference-audit\\references.jsonl",
+          "sha256": "d9cb0b9af76aa72905049ed1c4f3446af1cd102567f36bfb9345cc7f42432c77"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_complete_denial_before_so10\\reference-audit\\references.jsonl",
+          "sha256": "de38fb2eb5121e1c68206c0c2270e7c9f4bfbdf51e3c48863ead11971dae0890"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_complete_denial_before_so11\\reference-audit\\references.jsonl",
+          "sha256": "fb11987e14e63cf605e7d1f8c5949e7808a2f381a7f5b3e9a62f6625601574fc"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_complete_denial_before_so12\\reference-audit\\references.jsonl",
+          "sha256": "d74997ebda72306831f2270eca46ecf0a2547b393ba5a7f684f4b8163f61a01c"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_complete_denial_before_so2\\reference-audit\\references.jsonl",
+          "sha256": "56d04b7cb4d3a488df7329fb1720dfc62be285237349a52d8cea2797648838e5"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_complete_denial_before_so3\\reference-audit\\references.jsonl",
+          "sha256": "410e14f792a4e41fa151d5ba119d3907b3cc9c6e5abf03c0276c50a6103fa4b0"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_complete_denial_before_so4\\reference-audit\\references.jsonl",
+          "sha256": "9f8d6b78bfc4bcc06ad3f27022957f2859bac0e42dcd2bec30afeb9b6ef0cc9b"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_complete_denial_before_so5\\reference-audit\\references.jsonl",
+          "sha256": "4bc72c9d0dd46f0e3a0cb5208565f466bddc0c9ba8074f32790a4ba716b7615a"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_complete_denial_before_so6\\reference-audit\\references.jsonl",
+          "sha256": "36e53bb4b32244e5b305020d898cd712a0ab49f8dc46aa453743f7650f12e863"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_complete_denial_before_so7\\reference-audit\\references.jsonl",
+          "sha256": "7e6ca55f1ed5d24a901aae7f729bfa234afe1dfd9afc609ddc903cbf13fbb0f2"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_complete_denial_before_so8\\reference-audit\\references.jsonl",
+          "sha256": "698e0a53b2a77e6709ca8bd24fbb3a9138b9d90a2a5b5e0dd3eaefbfa853e959"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_complete_denial_before_so9\\reference-audit\\references.jsonl",
+          "sha256": "d82adbedc379487122eb45b13d1c86387d036507fa763f23554f5801a9e1e0be"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_corrupt_journal_cannot_re0\\reference-audit\\references.jsonl",
+          "sha256": "4ea46faf208f1d88883ac665dd9803f156c530552ca8a0295e03acac19dc830e"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_partial_read_and_publicat0\\reference-audit\\references.jsonl",
+          "sha256": "b9e683058bf62d2679ec513424cd7ab38c23b14f7c46765ba0a3433a72b0da09"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_partial_read_and_publicat1\\reference-audit\\references.jsonl",
+          "sha256": "949d06edcdadc6265b5bd2138d2337c4f0861ce5337fe086b725ad08a6d13eda"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_partial_read_and_publicat2\\reference-audit\\references.jsonl",
+          "sha256": "182c44ce332c12d065388fc568faf7261d18210b8badf3147be2e684a928be82"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_primary_new_identity_reac0\\reference-audit\\references.jsonl",
+          "sha256": "177a0a42af5f637605ac481f153c96af6ad6a77d2c9d16fc948ee10906afd6a7"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_same_byte_reparse_answer_0\\reference-audit\\references.jsonl",
+          "sha256": "766bc8dca365cfde4d6097e8527c776015b0f0063c813cb871aec62bc7edec3c"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_source_or_audit_bytes_dri0\\reference-audit\\references.jsonl",
+          "sha256": "92ae98baab2a91361ed6d2b6d457d4c689641f5672cd1dd696445f27a99251c4"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_source_or_audit_bytes_dri1\\reference-audit\\references.jsonl",
+          "sha256": "0343502bf51d493596a5339a5ebf9ada2c60660431f24d367514b4690ba571ed"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_source_or_audit_bytes_dri2\\reference-audit\\references.jsonl",
+          "sha256": "01e3e49594949fe7faf538206a1bc6e895fe173e1cd4c0e6aaf5a2c30d0f03c0"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3\\test_source_or_audit_bytes_dri3\\reference-audit\\references.jsonl",
+          "sha256": "0f4e1b54498435c8fac7697c8937d4612aaf7df1201838197c613e636f8283bd"
+        }
+      ]
+    },
+    {
+      "run": "integration-r4",
+      "journal_count": 29,
+      "intentionally_corrupt_journals": 1,
+      "events": {
+        "attempt_reserved": 28,
+        "completed": 2,
+        "failed": 26,
+        "reference_read_reserved": 13,
+        "publication_reserved": 4
+      },
+      "journals": [
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_actual_scorer_subprocess_0\\reference-audit\\references.jsonl",
+          "sha256": "3a7a8f0947d64b9fa3a6f5105a837c25456a5f1506527ffe900d2dd48c5db700"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_answer_key_hash_refused_b0\\reference-audit\\references.jsonl",
+          "sha256": "768743c7c20eb378b3e70bf3b08b06f87da910be227b7e7ea6b0061d89f90c46"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_complete_denial_before_so0\\reference-audit\\references.jsonl",
+          "sha256": "a5830375798d28b6d496f85b84105cb42f5ade5195bf38170f20abe7bdad029c"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_complete_denial_before_so1\\reference-audit\\references.jsonl",
+          "sha256": "d9de665d20696c2f0269db67e59d5710039f91b759fe30593c5718467c909006"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_complete_denial_before_so10\\reference-audit\\references.jsonl",
+          "sha256": "a107b91a010b6683eb756004de2dd44c70babf850a8f24eb54b26ef54157e654"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_complete_denial_before_so11\\reference-audit\\references.jsonl",
+          "sha256": "88e5c9a5f1e9bd8fef863c3944c58fa1c7da4aa192b2c7f438ee880726a03051"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_complete_denial_before_so12\\reference-audit\\references.jsonl",
+          "sha256": "e01a37aaeb32d1910640c34702ba1805a7125c7707eacb9a18c669cc6334c7ac"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_complete_denial_before_so2\\reference-audit\\references.jsonl",
+          "sha256": "18cd1ed5b995323d1d2365d09f2e1749e679c4b6018967a1346662ae7a1db898"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_complete_denial_before_so3\\reference-audit\\references.jsonl",
+          "sha256": "05a6f7a943b7aeb38b40627e61c6e289afe93613ecb0dba9cc27ceacdb00a6a1"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_complete_denial_before_so4\\reference-audit\\references.jsonl",
+          "sha256": "680d4052219c7df7c8e130181bd05bc2d3233dec85c4620b36a1c03a5013ad88"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_complete_denial_before_so5\\reference-audit\\references.jsonl",
+          "sha256": "7828b7fc79efea2778a130355f1c741e968caeb12ed46bf702f86f300e2c2939"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_complete_denial_before_so6\\reference-audit\\references.jsonl",
+          "sha256": "1ba0060d0b453b8d92141274d02ac6ce2d2d6d82c29c3b7890b0513b5e339923"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_complete_denial_before_so7\\reference-audit\\references.jsonl",
+          "sha256": "54b56b677ede68169af3f322ba6612084dcee8e8aea2033a44d71dcb1066d635"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_complete_denial_before_so8\\reference-audit\\references.jsonl",
+          "sha256": "aeb2e38f41059b731eaac63aaecc446a7c7657597b41aaf96d96dd8dc186b5b7"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_complete_denial_before_so9\\reference-audit\\references.jsonl",
+          "sha256": "35ab621b4b2c8e33a57920a6c1fb9058e1f1b1e84621d811f14bedfbfc93b7c3"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_corrupt_journal_cannot_re0\\reference-audit\\references.jsonl",
+          "sha256": "4ea46faf208f1d88883ac665dd9803f156c530552ca8a0295e03acac19dc830e"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_partial_read_and_publicat0\\reference-audit\\references.jsonl",
+          "sha256": "b4604fde77795b7668295e7f73dd80a2ea06c9586b4f185421bef69f53f05031"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_partial_read_and_publicat1\\reference-audit\\references.jsonl",
+          "sha256": "e9fb40ef441633296592c67d76d5e83b4c1ef490f272a5882b9338bd9df9252e"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_partial_read_and_publicat2\\reference-audit\\references.jsonl",
+          "sha256": "2698757387c333c136b186fa7067f6bb4d721e5b3a83ad1d907c879024f922e1"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_primary_new_identity_reac0\\reference-audit\\references.jsonl",
+          "sha256": "d035a48cd85a1e77035111c256434088d183a2423e09fa88deda67737ffed076"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_repinning_forged_public_m0\\reference-audit\\references.jsonl",
+          "sha256": "4041ebeb296b9c1054f60d83f22d1b2476112490f79cce3cb1dff090b73af297"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_repinning_forged_public_m1\\reference-audit\\references.jsonl",
+          "sha256": "8c069fbf8f1e6683bdec00ddc863c0865efa1248bed861355152c5d900b899d1"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_repinning_forged_public_m2\\reference-audit\\references.jsonl",
+          "sha256": "b05dcaa76522716f651accdc991af52574641f74ef483fbf53ada17b49307561"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_same_byte_reparse_answer_0\\reference-audit\\references.jsonl",
+          "sha256": "1ea682b1e1fe496ded35d6503f7d00cdcb010eb70e013b702bb62b86edb3e0d8"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_source_or_audit_bytes_dri0\\reference-audit\\references.jsonl",
+          "sha256": "4b07856d9199535839b71c56dc3bf9bc061fd6251ec10d40a1eb6a6914f7c778"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_source_or_audit_bytes_dri1\\reference-audit\\references.jsonl",
+          "sha256": "15a49468a30c84cbffd27fc5b88ac34c911f49321f2c85bb6bc2f15ff0658b23"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_source_or_audit_bytes_dri2\\reference-audit\\references.jsonl",
+          "sha256": "320fcdb3590c96178ad75c2e4eca1ebffdf9d8c7094a0c3567b673065238c990"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_source_or_audit_bytes_dri3\\reference-audit\\references.jsonl",
+          "sha256": "39aaa86463a536da52c674659ee43e0b578c5f4098f9a710617ef6539a292819"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\integration-r4\\test_staged_reference_drift_ca0\\reference-audit\\references.jsonl",
+          "sha256": "74136fdb0080d524fd7a80edda74027b529cec27eb7c68f604a1c1c7178201ab"
+        }
+      ]
+    },
+    {
+      "run": "frozen-r1",
+      "journal_count": 29,
+      "intentionally_corrupt_journals": 1,
+      "events": {
+        "attempt_reserved": 28,
+        "completed": 2,
+        "failed": 26,
+        "reference_read_reserved": 13,
+        "publication_reserved": 4
+      },
+      "journals": [
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_actual_scorer_subprocess_0\\reference-audit\\references.jsonl",
+          "sha256": "2db474e6cf026fba869a0e07b4483d17b03177b7f03eb28c3f0e3baf90874a34"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_answer_key_hash_refused_b0\\reference-audit\\references.jsonl",
+          "sha256": "76ed15d02405dee4e9d03e5cf6690035b68b59cdba0a7bb3a1ef6594e0cb1086"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_complete_denial_before_so0\\reference-audit\\references.jsonl",
+          "sha256": "66e0d4574241f07ebd31e72cb5c1c7d60897f5cf4e0cfdd1522ce38943f32114"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_complete_denial_before_so1\\reference-audit\\references.jsonl",
+          "sha256": "db433cc7a0d0ca27f1b959f8503c61e034d3cf85d68fef5feea7e30e1e4cd081"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_complete_denial_before_so10\\reference-audit\\references.jsonl",
+          "sha256": "7e07431f749cc4113d11e20fa91e52efe4c873b88b950ba36dfffad22aef2d8f"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_complete_denial_before_so11\\reference-audit\\references.jsonl",
+          "sha256": "c2931c24ca57d8369baccd0d09efbcfe570b454c801035df90aa764c5dd380b7"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_complete_denial_before_so12\\reference-audit\\references.jsonl",
+          "sha256": "6f40e8cda18066d3c0b63cf2005a208584234e6d646630a61b4acd0bce04c0f7"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_complete_denial_before_so2\\reference-audit\\references.jsonl",
+          "sha256": "34af6f7ae5215c407e493cf1f15adf5bb5250dde932a15c9cb1d8f189850475d"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_complete_denial_before_so3\\reference-audit\\references.jsonl",
+          "sha256": "3bf09ff590cb214f2b101c2c80ca80a2fadfd3746b4a1337c028a3fad38effca"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_complete_denial_before_so4\\reference-audit\\references.jsonl",
+          "sha256": "81dda8a9a1ad28a0e21cca4b07e9fbd2733fe2b7480b167b98ceb55364e10163"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_complete_denial_before_so5\\reference-audit\\references.jsonl",
+          "sha256": "9ec22736a57bbb9774f9f36b8c9760e9b99d9375679e393da213a2fe5a257406"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_complete_denial_before_so6\\reference-audit\\references.jsonl",
+          "sha256": "c1e1ab2e8d4960bde1b29c9538523f6f1ebd781377335209087000f017b05715"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_complete_denial_before_so7\\reference-audit\\references.jsonl",
+          "sha256": "92d3f2036b5bc3e69bf1498d38e47a1d255b47485bfc24b33e4b96ffbc59275b"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_complete_denial_before_so8\\reference-audit\\references.jsonl",
+          "sha256": "aa6c5f118a34ebe5fae944cc16c9f3ed36ed3408cffddd7a32a504e393cf4cc8"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_complete_denial_before_so9\\reference-audit\\references.jsonl",
+          "sha256": "b7c50d7da98835cabda8488695f680f932e63f2f1e1dcb991fcb2abe63c3416e"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_corrupt_journal_cannot_re0\\reference-audit\\references.jsonl",
+          "sha256": "4ea46faf208f1d88883ac665dd9803f156c530552ca8a0295e03acac19dc830e"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_partial_read_and_publicat0\\reference-audit\\references.jsonl",
+          "sha256": "dd4613efc0f53e9c3b61e89a55cec6dc2f5323f1af9f08301b76b34b6a9489ef"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_partial_read_and_publicat1\\reference-audit\\references.jsonl",
+          "sha256": "3292c63574f84038cee6719f00e9f880e309d71cf3a25fa23c61e5c8b80e48aa"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_partial_read_and_publicat2\\reference-audit\\references.jsonl",
+          "sha256": "d87477d2bffc8fd9835896f97e5aa1c96e307856084ca4be6b28bf1276e0568c"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_primary_new_identity_reac0\\reference-audit\\references.jsonl",
+          "sha256": "3728bca5e2066d72198e6a51c117041a9a989dd4c5e3390b29e5419c3e9cb17d"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_repinning_forged_public_m0\\reference-audit\\references.jsonl",
+          "sha256": "ab846d8cf6e83c0ad4f52fd40998e4c27298c828055e2509a7283ba26b29192e"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_repinning_forged_public_m1\\reference-audit\\references.jsonl",
+          "sha256": "255e7cd7245ee5ab073f411a6d08b4524fc4c90a474ab3a0f6139a6b253f2fc7"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_repinning_forged_public_m2\\reference-audit\\references.jsonl",
+          "sha256": "0c9ab9494ee7a1806e48fa0f7ab6f26b2f22d8d274defbe7bc6a55903fa7f084"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_same_byte_reparse_answer_0\\reference-audit\\references.jsonl",
+          "sha256": "065e92dad3d5f63ee18f74eb670423c7798695138cfea76dd66e0afa7a566583"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_source_or_audit_bytes_dri0\\reference-audit\\references.jsonl",
+          "sha256": "c93668232f40951b86a01462c211f6d4aa2ee7ecc12f0f0a5a24638d5da9f8fa"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_source_or_audit_bytes_dri1\\reference-audit\\references.jsonl",
+          "sha256": "aaf63d6b69ac05a1606b16d113f3f20a72cee2a25f88b81a1f9a4f5a8eac6ad3"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_source_or_audit_bytes_dri2\\reference-audit\\references.jsonl",
+          "sha256": "81d9ce60e263d295993b44af2b168cafc576a83f5d8b2e05687f803c24aa7c81"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_source_or_audit_bytes_dri3\\reference-audit\\references.jsonl",
+          "sha256": "0b05aef1c35a8236510aea0e2d491bcac63992a4402d4e5b753c8b3c336177e2"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1\\test_staged_reference_drift_ca0\\reference-audit\\references.jsonl",
+          "sha256": "2283f19834fcc70d1c188a8e24f50707929f991f663b6533d85fd3b51a3ea6c1"
+        }
+      ]
+    }
+  ],
+  "worktree_setup_failure": {
+    "attempts": 2,
+    "failed_attempts": 1,
+    "failure_category": "windows_filename_too_long",
+    "failed_path": "E:\\_ryanDev\\AI\\research-loop-modular\\primary-prospective-reference-bridge",
+    "successful_path": "E:\\_ryanDev\\AI\\research-loop-modular\\pr-ref",
+    "git_config_override": "one_command_core.longpaths_true",
+    "global_git_config_modified": false
+  },
+  "artifact_pins": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\source-freeze-r1.json",
+      "sha256": "f074589326fee7ef97e065713e9f3846232f136bb4b05e96f2a35cfbd5a89706"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-result-r1.json",
+      "sha256": "937a1b764889ba5aeed5147dcbc55ca2019cb3d3a49a14376bff0aa91984d232"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-command-r1.json",
+      "sha256": "f128bb09ce5762efc70662db1520833a3da3113ff1eb24ee1041f1d011f10692"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1.log",
+      "sha256": "1b982734727a488536488669d52d5b7787f1799e60f270c8f159951a18f8eeb0"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3-source-change.json",
+      "sha256": "476a7e66654463bdfa83fdec8caa8def3c5f75519453b00aff7403e800a21173"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3-source-reconstructed-before.py",
+      "sha256": "2c4f0002e81450de08256849c18d852b573d570c564f2281713fb12baf102632"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3-source-after.py",
+      "sha256": "b4680d6da87c660c68b6652d5e5efd8e5ff0f129bb08e021aedc9947133f7a4b"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\actual-four-train-reference-plan-r1.json",
+      "sha256": "5e6a79bc55c1385b25f7eb73b61381adffb1a085d6a20b0c9ea68931e7208818"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\actual-four-train-reference-descriptor-r2.json",
+      "sha256": "53b849053d87eb81565c16440f53c2460f800e9bdbbc1e0d568ee47445669f3e"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\verify_descriptor_metadata.py",
+      "sha256": "728afa7a6facc1acd78de9382b5ed0a0beae62533a0d336064af3059cec76e43"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\run_frozen.py",
+      "sha256": "505a710a3f6082f2a4f11dc2ab1f0b565499f500ae728f9adfcf9e8a8fa09c0e"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\preserve_development_scope.py",
+      "sha256": "384192172bdb2dc29b5a2ccb45bd8b8fa2fc8fed7ba8c5a28058306e4c57373b"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\archive_frozen.py",
+      "sha256": "f2fd5120627c4cfda928564bcaa1b2c6577150d536dad7f243835a0e0862a3e1"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\archive-failed-r1.py",
+      "sha256": "33a85c3c426fd5ac08ef2609080feb3bd18e51a92db548e10be28f341b43018d"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\archive-failure-r1.json",
+      "sha256": "fac345284ac8ad5c2476cf178dc200b1123cbfb8c64c88abb83f2f1cd1e3e794"
+    }
+  ],
+  "actual_reference_payload_reads": 0,
+  "actual_validation_exports": 0,
+  "actual_validation_leases": 0,
+  "paid_model_calls": 0,
+  "network_calls": 0,
+  "scientific_validity": "not_measured",
+  "calibration": "not_measured",
+  "actual_public_four_export_unchanged": true
+}

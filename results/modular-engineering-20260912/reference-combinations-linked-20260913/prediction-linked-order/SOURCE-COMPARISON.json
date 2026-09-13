@@ -1,0 +1,23 @@
+{
+  "base_commit": "8e235510756c7098051f38e59ff2d41c0b989d91",
+  "git_blob_sha256": {
+    "16d649f1cde30702bca2c888d6cde386059a7997": {
+      "research_loop/modular/benchmark_cell.py": "36d705592776df99d752e1746a9a0ac68d212bcc54d0ea4f8af11ebb964021c9",
+      "research_loop/modular/linked_prediction_projection.py": "720450fa72e568129cb0a59b05bfd9f5a6c8e5e13b55c2f5159272f473661f75",
+      "tests/test_prediction_linked_benchmark.py": "a5ad6e4bd67787832352844ed7f6a7c3474a0457013356f7391e865dc642080e",
+      "tests/test_prediction_linked_order.py": "63debe60636541708fa2b6b3d30a404c91b014544a46d76a3a7297cc81273ac9"
+    },
+    "8e23551": {
+      "research_loop/modular/benchmark_cell.py": "f6e5aaa0e54a79f8369e1c5fd9713fae493a0e394e6e49a286d118a7c55813a5",
+      "research_loop/modular/linked_prediction_projection.py": "80a703963cfc6a6eed6975fe0684293bcfb68be48273c4a8037204e5ec361ded",
+      "tests/test_prediction_linked_benchmark.py": "7f974eb2dd76b8b205a027a11544afc6d94957b27af792d045bf99b2c01da47c"
+    },
+    "ba0733f": {
+      "research_loop/modular/benchmark_cell.py": "f6e5aaa0e54a79f8369e1c5fd9713fae493a0e394e6e49a286d118a7c55813a5",
+      "research_loop/modular/linked_prediction_projection.py": "80a703963cfc6a6eed6975fe0684293bcfb68be48273c4a8037204e5ec361ded",
+      "tests/test_prediction_linked_benchmark.py": "7f974eb2dd76b8b205a027a11544afc6d94957b27af792d045bf99b2c01da47c",
+      "tests/test_prediction_linked_order.py": "63debe60636541708fa2b6b3d30a404c91b014544a46d76a3a7297cc81273ac9"
+    }
+  },
+  "repair_commit": "16d649f1cde30702bca2c888d6cde386059a7997"
+}

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="106" time="504.319" timestamp="2026-09-13T17:03:18.882539+08:00" hostname="SC-202507131830"><testcase classname="tests.test_lineage_singleton_linked" name="test_all_four_questions_have_frozen_linked_solver_configuration[history-30]" time="0.092" /><testcase classname="tests.test_lineage_singleton_linked" name="test_all_four_questions_have_frozen_linked_solver_configuration[support-28]" time="0.098" /><testcase classname="tests.test_lineage_singleton_linked" name="test_full_grid_uses_actual_context_in_solver_and_docker[history]" time="62.298" /><testcase classname="tests.test_lineage_singleton_linked" name="test_every_actual_solver_result_reaches_independent_primary_process[history]" time="7.675" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[history-stage]" time="0.007" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[history-root]" time="0.007" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[history-context]" time="0.006" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[history-admission_subject]" time="0.004" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[history-missing_admission]" time="0.003" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[history-failed_source]" time="0.007" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[history-malformed]" time="0.009" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[history-output_digest]" time="0.008" /><testcase classname="tests.test_lineage_singleton_linked" name="test_fixed_actual_ledger_file_is_required_and_cannot_be_substituted[history]" time="0.027"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'ledger'&#10; Input: 'lineage replay has malformed typed material'">proof = {'claim_events': [], 'events': [{'data': {'arm': {'baseline_digest': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...: '380a9f839473dfbfd63b254783cf66115d356332b5947fe85437bfb246864482', 'sequence': 5, ...}, ...], 'evidence_events': []}
+
+    def _replay(proof, *, cell, task, scenario):
+        try:
+&gt;           return _replay_checked(proof, cell=cell, task=task, scenario=scenario)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+research_loop\modular\lineage_singleton_replay.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+proof = {'claim_events': [], 'events': [{'data': {'arm': {'baseline_digest': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...: '380a9f839473dfbfd63b254783cf66115d356332b5947fe85437bfb246864482', 'sequence': 5, ...}, ...], 'evidence_events': []}
+
+    def _replay_checked(proof, *, cell, task, scenario):
+        if not isinstance(proof,dict) or set(proof)!={'events','evidence_events','claim_events'}:
+            raise ContractError('lineage replay proof is malformed')
+        validate_lineage_material(cell=cell,task=task,scenario=scenario)
+        events=proof['events']
+        if not isinstance(events,list) or len(events)&lt;2 or events[0].get('stage')!='objective_lock':
+            raise ContractError('lineage replay lacks its real source lock')
+        lock=FrozenRecord.from_dict(events[0]['data']); body=lock.data()
+        driver_type=_DRIVERS[cell.coverage_id]
+        if (body.get('identity')!=task.identity.data() or body.get('task_digest')!=task.content_hash
+            or body.get('package_digest')!=cell.package_digest or body.get('arm')!=cell.runtime_arm.data()
+            or body.get('slots')!=list(driver_type().slots) or type(body.get('execution_limit')) is not int or body.get('execution_limit')!=0
+            or body.get('required_audit')!=['measurement'] or type(body.get('context_budget')) is not int
+            or body['context_budget']&lt;1):
+            raise ContractError('lineage replay has a foreign run lock')
+        session=object.__new__(_ReplaySession)
+        session.task=task;session.objective=FrozenRecord.from_dict(body['objective']);session.arm=cell.runtime_arm;session.lock=lock
+        session.context_budget=body['context_budget'];session.required_audit=tuple(body['required_audit'])
+        session.slots=tuple(body['slots']);session.execution_limit=0
+        session.evidence=EvidenceLedger(task.identity);session.claims=ClaimLedger(session.evidence);session.cache=ContextCache()
+        session.evidence._log=_Log();session.claims._log=_Log()
+        session.executions={};session.admissions={};session.admission_roots={};session._events=[]
+        session._next_call=0;session._attempts=0;session._terminal=False;session._research_version=None
+        session._record('objective_lock',lock.data())
+        workflow=object.__new__(ModularWorkflow);workflow.session=session;workflow.enabled=frozenset(cell.runtime_arm.data()['enabled'])
+        workflow.deployment=None;workflow.revealed=None;workflow.frontier_result=None
+        admissions=[row['data'] for row in events if row.get('stage')=='modular_workflow' and row['data'].get('stage')=='operation_public_material_admission']
+        requests=[row['data'] for row in events if row.get('stage')=='model_request']
+        responses=[row['data'] for row in events if row.get('stage')=='model_response']
+        admission_index=0;model_index=0
+        def admission(public_task, record):
+            nonlocal admission_index
+            if admission_index&gt;=len(admissions): raise ContractError('lineage replay lacks an actual admission')
+            row=admissions[admission_index];admission_index+=1
+            if row.get('record')!=record.data() or public_task!=task: raise ContractError('lineage admission subject mismatch')
+            receipt=row.get('receipt')
+            if not isinstance(receipt,dict): raise ContractError('lineage admission receipt is malformed')
+            workflow._trace('operation_public_material_admission_attempt','reserved',record_digest=record.content_hash,
+                limits={'max_calls':1},cost_measurement='not_provided_by_caller_port')
+            workflow._trace('operation_public_material_admission','executed',record=record.data(),receipt=receipt)
+            return receipt
+        def model(request):
+            nonlocal model_index
+            if model_index&gt;=len(requests) or model_index&gt;=len(responses): raise ContractError('lineage replay lacks actual model I/O')
+            wanted=requests[model_index]; response=responses[model_index];model_index+=1
+            if (wanted!={'request_digest':request.content_hash,'request':request.data()}
+                or response.get('request_digest')!=request.content_hash):
+                raise ContractError('lineage model context does not match actual ledger replay')
+            return FrozenRecord.from_dict(response['response'])
+        _,candidate,_=driver_type(admission_port=admission).run(workflow,cell=cell,scenario=scenario,model=model,package=None)
+        session.finish(candidate)
+        if (admission_index!=len(admissions) or model_index!=len(requests) or model_index!=len(responses)
+            or [row.data() for row in session._events]!=events
+            or session.evidence._log.rows!=proof['evidence_events'] or session.claims._log.rows!=proof['claim_events']):
+&gt;           raise ContractError('lineage actual stages or ledger files differ from replay')
+E           research_loop.ontology.ContractError: lineage actual stages or ledger files differ from replay
+
+research_loop\modular\lineage_singleton_replay.py:126: ContractError
+
+The above exception was the direct cause of the following exception:
+
+linked_grid = (TrainPanelRun(compiled=CompiledTrainPanel(panel=FrozenPanel(stage='public-train-history', domain='train', split_diges...x000001768FA69970&gt;, WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lsl-final-tmp/lineage-history0'), 'history')
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lsl-final-tmp/test_fixed_actual_ledger_file_0')
+
+    def test_fixed_actual_ledger_file_is_required_and_cannot_be_substituted(linked_grid,tmp_path):
+        import shutil
+        from dataclasses import replace
+        from research_loop.modular.benchmark_cell import verified_mechanism_provenance
+        result,*_=linked_grid
+        row=next(item for item in result.linked_results if 'M2' in item.cell.runtime_arm.data()['enabled'])
+        sidecar=tmp_path/'copied-sidecar';shutil.copytree(row.mechanism.runtime.trace_path.parent,sidecar)
+        target=sidecar/'evidence.jsonl';target.write_text('',encoding='utf-8')
+        mechanism=replace(row.mechanism,runtime=replace(row.mechanism.runtime,trace_path=sidecar/'trace.jsonl'))
+        with pytest.raises(ContractError,match='ledger'):
+&gt;           verified_mechanism_provenance(cell=row.cell,task=result.compiled.tasks[row.cell.task_digest],
+                scenario=result.compiled.scenarios[row.cell.key],package=result.compiled.packages[row.cell.runtime_arm.content_hash],mechanism=mechanism)
+
+tests\test_lineage_singleton_linked.py:232: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\benchmark_cell.py:108: in verified_mechanism_provenance
+    replay = {"lineage_replay": verify_lineage_trace(cell=cell, task=task, scenario=scenario, package=package, events=events, sidecar=mechanism.runtime.trace_path.parent)}
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\lineage_singleton_replay.py:133: in verify_lineage_trace
+    _replay(proof,cell=cell,task=task,scenario=scenario)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+proof = {'claim_events': [], 'events': [{'data': {'arm': {'baseline_digest': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...: '380a9f839473dfbfd63b254783cf66115d356332b5947fe85437bfb246864482', 'sequence': 5, ...}, ...], 'evidence_events': []}
+
+    def _replay(proof, *, cell, task, scenario):
+        try:
+            return _replay_checked(proof, cell=cell, task=task, scenario=scenario)
+        except (KeyError, TypeError, ValueError, IndexError, AttributeError) as exc:
+&gt;           raise ContractError('lineage replay has malformed typed material') from exc
+E           research_loop.ontology.ContractError: lineage replay has malformed typed material
+
+research_loop\modular\lineage_singleton_replay.py:69: ContractError
+
+During handling of the above exception, another exception occurred:
+
+linked_grid = (TrainPanelRun(compiled=CompiledTrainPanel(panel=FrozenPanel(stage='public-train-history', domain='train', split_diges...x000001768FA69970&gt;, WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lsl-final-tmp/lineage-history0'), 'history')
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lsl-final-tmp/test_fixed_actual_ledger_file_0')
+
+    def test_fixed_actual_ledger_file_is_required_and_cannot_be_substituted(linked_grid,tmp_path):
+        import shutil
+        from dataclasses import replace
+        from research_loop.modular.benchmark_cell import verified_mechanism_provenance
+        result,*_=linked_grid
+        row=next(item for item in result.linked_results if 'M2' in item.cell.runtime_arm.data()['enabled'])
+        sidecar=tmp_path/'copied-sidecar';shutil.copytree(row.mechanism.runtime.trace_path.parent,sidecar)
+        target=sidecar/'evidence.jsonl';target.write_text('',encoding='utf-8')
+        mechanism=replace(row.mechanism,runtime=replace(row.mechanism.runtime,trace_path=sidecar/'trace.jsonl'))
+&gt;       with pytest.raises(ContractError,match='ledger'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'ledger'
+E        Input: 'lineage replay has malformed typed material'
+
+tests\test_lineage_singleton_linked.py:231: AssertionError</failure></testcase><testcase classname="tests.test_lineage_singleton_linked" name="test_full_grid_uses_actual_context_in_solver_and_docker[support]" time="73.286" /><testcase classname="tests.test_lineage_singleton_linked" name="test_every_actual_solver_result_reaches_independent_primary_process[support]" time="11.203" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[support-stage]" time="0.007" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[support-root]" time="0.007" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[support-context]" time="0.005" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[support-admission_subject]" time="0.004" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[support-missing_admission]" time="0.003" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[support-failed_source]" time="0.007" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[support-malformed]" time="0.007" /><testcase classname="tests.test_lineage_singleton_linked" name="test_replay_rejects_mutated_actual_lineage[support-output_digest]" time="0.007" /><testcase classname="tests.test_lineage_singleton_linked" name="test_fixed_actual_ledger_file_is_required_and_cannot_be_substituted[support]" time="0.130"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'ledger'&#10; Input: 'lineage replay has malformed typed material'">proof = {'claim_events': [{'claim_id': '66b0c0c3c05be988bfc0694f219ed1547c527e9148d8da5d8f18437f4c6f5b22', 'event': 'create', ...: 'aea67439e75c712cef6c8d62f28decc13ed79fb368808b8a75b04cb448533cbb', 'sequence': 5, ...}, ...], 'evidence_events': []}
+
+    def _replay(proof, *, cell, task, scenario):
+        try:
+&gt;           return _replay_checked(proof, cell=cell, task=task, scenario=scenario)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+research_loop\modular\lineage_singleton_replay.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+proof = {'claim_events': [{'claim_id': '66b0c0c3c05be988bfc0694f219ed1547c527e9148d8da5d8f18437f4c6f5b22', 'event': 'create', ...: 'aea67439e75c712cef6c8d62f28decc13ed79fb368808b8a75b04cb448533cbb', 'sequence': 5, ...}, ...], 'evidence_events': []}
+
+    def _replay_checked(proof, *, cell, task, scenario):
+        if not isinstance(proof,dict) or set(proof)!={'events','evidence_events','claim_events'}:
+            raise ContractError('lineage replay proof is malformed')
+        validate_lineage_material(cell=cell,task=task,scenario=scenario)
+        events=proof['events']
+        if not isinstance(events,list) or len(events)&lt;2 or events[0].get('stage')!='objective_lock':
+            raise ContractError('lineage replay lacks its real source lock')
+        lock=FrozenRecord.from_dict(events[0]['data']); body=lock.data()
+        driver_type=_DRIVERS[cell.coverage_id]
+        if (body.get('identity')!=task.identity.data() or body.get('task_digest')!=task.content_hash
+            or body.get('package_digest')!=cell.package_digest or body.get('arm')!=cell.runtime_arm.data()
+            or body.get('slots')!=list(driver_type().slots) or type(body.get('execution_limit')) is not int or body.get('execution_limit')!=0
+            or body.get('required_audit')!=['measurement'] or type(body.get('context_budget')) is not int
+            or body['context_budget']&lt;1):
+            raise ContractError('lineage replay has a foreign run lock')
+        session=object.__new__(_ReplaySession)
+        session.task=task;session.objective=FrozenRecord.from_dict(body['objective']);session.arm=cell.runtime_arm;session.lock=lock
+        session.context_budget=body['context_budget'];session.required_audit=tuple(body['required_audit'])
+        session.slots=tuple(body['slots']);session.execution_limit=0
+        session.evidence=EvidenceLedger(task.identity);session.claims=ClaimLedger(session.evidence);session.cache=ContextCache()
+        session.evidence._log=_Log();session.claims._log=_Log()
+        session.executions={};session.admissions={};session.admission_roots={};session._events=[]
+        session._next_call=0;session._attempts=0;session._terminal=False;session._research_version=None
+        session._record('objective_lock',lock.data())
+        workflow=object.__new__(ModularWorkflow);workflow.session=session;workflow.enabled=frozenset(cell.runtime_arm.data()['enabled'])
+        workflow.deployment=None;workflow.revealed=None;workflow.frontier_result=None
+        admissions=[row['data'] for row in events if row.get('stage')=='modular_workflow' and row['data'].get('stage')=='operation_public_material_admission']
+        requests=[row['data'] for row in events if row.get('stage')=='model_request']
+        responses=[row['data'] for row in events if row.get('stage')=='model_response']
+        admission_index=0;model_index=0
+        def admission(public_task, record):
+            nonlocal admission_index
+            if admission_index&gt;=len(admissions): raise ContractError('lineage replay lacks an actual admission')
+            row=admissions[admission_index];admission_index+=1
+            if row.get('record')!=record.data() or public_task!=task: raise ContractError('lineage admission subject mismatch')
+            receipt=row.get('receipt')
+            if not isinstance(receipt,dict): raise ContractError('lineage admission receipt is malformed')
+            workflow._trace('operation_public_material_admission_attempt','reserved',record_digest=record.content_hash,
+                limits={'max_calls':1},cost_measurement='not_provided_by_caller_port')
+            workflow._trace('operation_public_material_admission','executed',record=record.data(),receipt=receipt)
+            return receipt
+        def model(request):
+            nonlocal model_index
+            if model_index&gt;=len(requests) or model_index&gt;=len(responses): raise ContractError('lineage replay lacks actual model I/O')
+            wanted=requests[model_index]; response=responses[model_index];model_index+=1
+            if (wanted!={'request_digest':request.content_hash,'request':request.data()}
+                or response.get('request_digest')!=request.content_hash):
+                raise ContractError('lineage model context does not match actual ledger replay')
+            return FrozenRecord.from_dict(response['response'])
+        _,candidate,_=driver_type(admission_port=admission).run(workflow,cell=cell,scenario=scenario,model=model,package=None)
+        session.finish(candidate)
+        if (admission_index!=len(admissions) or model_index!=len(requests) or model_index!=len(responses)
+            or [row.data() for row in session._events]!=events
+            or session.evidence._log.rows!=proof['evidence_events'] or session.claims._log.rows!=proof['claim_events']):
+&gt;           raise ContractError('lineage actual stages or ledger files differ from replay')
+E           research_loop.ontology.ContractError: lineage actual stages or ledger files differ from replay
+
+research_loop\modular\lineage_singleton_replay.py:126: ContractError
+
+The above exception was the direct cause of the following exception:
+
+linked_grid = (TrainPanelRun(compiled=CompiledTrainPanel(panel=FrozenPanel(stage='public-train-support', domain='train', split_diges...x0000017691DE3E30&gt;, WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lsl-final-tmp/lineage-support0'), 'support')
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lsl-final-tmp/test_fixed_actual_ledger_file_1')
+
+    def test_fixed_actual_ledger_file_is_required_and_cannot_be_substituted(linked_grid,tmp_path):
+        import shutil
+        from dataclasses import replace
+        from research_loop.modular.benchmark_cell import verified_mechanism_provenance
+        result,*_=linked_grid
+        row=next(item for item in result.linked_results if 'M2' in item.cell.runtime_arm.data()['enabled'])
+        sidecar=tmp_path/'copied-sidecar';shutil.copytree(row.mechanism.runtime.trace_path.parent,sidecar)
+        target=sidecar/'evidence.jsonl';target.write_text('',encoding='utf-8')
+        mechanism=replace(row.mechanism,runtime=replace(row.mechanism.runtime,trace_path=sidecar/'trace.jsonl'))
+        with pytest.raises(ContractError,match='ledger'):
+&gt;           verified_mechanism_provenance(cell=row.cell,task=result.compiled.tasks[row.cell.task_digest],
+                scenario=result.compiled.scenarios[row.cell.key],package=result.compiled.packages[row.cell.runtime_arm.content_hash],mechanism=mechanism)
+
+tests\test_lineage_singleton_linked.py:232: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\benchmark_cell.py:108: in verified_mechanism_provenance
+    replay = {"lineage_replay": verify_lineage_trace(cell=cell, task=task, scenario=scenario, package=package, events=events, sidecar=mechanism.runtime.trace_path.parent)}
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\lineage_singleton_replay.py:133: in verify_lineage_trace
+    _replay(proof,cell=cell,task=task,scenario=scenario)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+proof = {'claim_events': [{'claim_id': '66b0c0c3c05be988bfc0694f219ed1547c527e9148d8da5d8f18437f4c6f5b22', 'event': 'create', ...: 'aea67439e75c712cef6c8d62f28decc13ed79fb368808b8a75b04cb448533cbb', 'sequence': 5, ...}, ...], 'evidence_events': []}
+
+    def _replay(proof, *, cell, task, scenario):
+        try:
+            return _replay_checked(proof, cell=cell, task=task, scenario=scenario)
+        except (KeyError, TypeError, ValueError, IndexError, AttributeError) as exc:
+&gt;           raise ContractError('lineage replay has malformed typed material') from exc
+E           research_loop.ontology.ContractError: lineage replay has malformed typed material
+
+research_loop\modular\lineage_singleton_replay.py:69: ContractError
+
+During handling of the above exception, another exception occurred:
+
+linked_grid = (TrainPanelRun(compiled=CompiledTrainPanel(panel=FrozenPanel(stage='public-train-support', domain='train', split_diges...x0000017691DE3E30&gt;, WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lsl-final-tmp/lineage-support0'), 'support')
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lsl-final-tmp/test_fixed_actual_ledger_file_1')
+
+    def test_fixed_actual_ledger_file_is_required_and_cannot_be_substituted(linked_grid,tmp_path):
+        import shutil
+        from dataclasses import replace
+        from research_loop.modular.benchmark_cell import verified_mechanism_provenance
+        result,*_=linked_grid
+        row=next(item for item in result.linked_results if 'M2' in item.cell.runtime_arm.data()['enabled'])
+        sidecar=tmp_path/'copied-sidecar';shutil.copytree(row.mechanism.runtime.trace_path.parent,sidecar)
+        target=sidecar/'evidence.jsonl';target.write_text('',encoding='utf-8')
+        mechanism=replace(row.mechanism,runtime=replace(row.mechanism.runtime,trace_path=sidecar/'trace.jsonl'))
+&gt;       with pytest.raises(ContractError,match='ledger'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'ledger'
+E        Input: 'lineage replay has malformed typed material'
+
+tests\test_lineage_singleton_linked.py:231: AssertionError</failure></testcase><testcase classname="tests.test_lineage_singleton_linked" name="test_admission_failure_keeps_every_cell_and_actual_cost[history-30-6]" time="31.994" /><testcase classname="tests.test_lineage_singleton_linked" name="test_admission_failure_keeps_every_cell_and_actual_cost[support-28-14]" time="34.513" /><testcase classname="tests.test_lineage_singleton_linked" name="test_preflight_rejects_before_model[label]" time="0.480" /><testcase classname="tests.test_lineage_singleton_linked" name="test_preflight_rejects_before_model[bad_bundle]" time="0.264" /><testcase classname="tests.test_lineage_singleton_linked" name="test_preflight_rejects_before_model[missing_port]" time="0.218" /><testcase classname="tests.test_lineage_singleton_linked" name="test_source_authority_labels_stay_out_of_actual_mechanism_requests[history]" time="1.489" /><testcase classname="tests.test_lineage_singleton_linked" name="test_source_authority_labels_stay_out_of_actual_mechanism_requests[support]" time="1.337" /><testcase classname="tests.test_lineage_singleton_linked" name="test_late_source_failure_preserves_already_spent_model_slot" time="0.676" /><testcase classname="tests.test_modular_history_panel_drivers" name="test_full_public_grid_uses_phase_bound_material_and_real_m2_m3_state[Q1.1]" time="17.411" /><testcase classname="tests.test_modular_history_panel_drivers" name="test_full_public_grid_uses_phase_bound_material_and_real_m2_m3_state[Q1.2]" time="24.402" /><testcase classname="tests.test_modular_history_panel_drivers" name="test_rejects_unbound_bundle_or_missing_q11_admission_before_model_call" time="0.268" /><testcase classname="tests.test_modular_history_panel_drivers" name="test_transition_parser_rejects_nonreplacement_before_driver_execution" time="0.000" /><testcase classname="tests.test_modular_history_panel_drivers" name="test_registered_history_driver_runs_from_custody_controller_with_caller_admission" time="16.483" /><testcase classname="tests.test_modular_support_panel_drivers" name="test_shared_bundle_full_grid_exercises_actual_support_state[Q1.3]" time="10.529" /><testcase classname="tests.test_modular_support_panel_drivers" name="test_shared_bundle_full_grid_exercises_actual_support_state[Q1.4]" time="12.002" /><testcase classname="tests.test_modular_support_panel_drivers" name="test_rejects_unbound_receipts_before_model_calls" time="0.974" /><testcase classname="tests.test_modular_support_panel_drivers" name="test_rejects_invalid_q14_topology" time="0.001" /><testcase classname="tests.test_modular_evidence_context" name="test_m1_strict_audit_host_validation_and_positive_negative_symmetry" time="0.001" /><testcase classname="tests.test_modular_evidence_context" name="test_m1_exploration_is_not_evidence_admission" time="0.000" /><testcase classname="tests.test_modular_evidence_context" name="test_m2_deduplicates_evidence_roots_and_summary_cannot_create_evidence" time="0.001" /><testcase classname="tests.test_modular_evidence_context" name="test_m2_relations_preserve_independent_support_and_reject_cross_subject" time="0.001" /><testcase classname="tests.test_modular_evidence_context" name="test_m2_persists_append_withdrawal_and_claim_revisions" time="0.271" /><testcase classname="tests.test_modular_evidence_context" name="test_m3_rebuilds_current_context_does_not_promote_summary_and_invalidates_cache" time="0.001" /><testcase classname="tests.test_modular_evidence_context" name="test_m3_validation_context_is_ephemeral_and_memory_domain_isolated" time="0.001" /><testcase classname="tests.test_modular_evidence_context" name="test_q1_remaining_m1_m3_paths_withdraw_without_replacement_and_preserve_unknown" time="0.001" /><testcase classname="tests.test_modular_evidence_context" name="test_claim_dependency_propagates_revision_but_retains_independent_chain" time="0.598" /><testcase classname="tests.test_modular_evidence_context" name="test_unattributed_summary_only_marks_review_and_next_payload_refreshes" time="0.002" /><testcase classname="tests.test_modular_evidence_context" name="test_replay_rejects_forged_noncontinuous_propagation_event" time="0.349" /><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.009" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.005" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.004" /><testcase classname="tests.test_modular_benchmark_cell" name="test_linked_cell_uses_verified_mechanism_in_both_solver_calls_and_live_docker[Q1.5-discoverybench]" time="1.524" /><testcase classname="tests.test_modular_benchmark_cell" name="test_linked_cell_uses_verified_mechanism_in_both_solver_calls_and_live_docker[Q1.5-blade]" time="1.582" /><testcase classname="tests.test_modular_benchmark_cell" name="test_linked_cell_uses_verified_mechanism_in_both_solver_calls_and_live_docker[Q3.1-discoverybench]" time="1.570" /><testcase classname="tests.test_modular_benchmark_cell" name="test_linked_cell_uses_verified_mechanism_in_both_solver_calls_and_live_docker[Q3.1-blade]" time="1.878" /><testcase classname="tests.test_modular_benchmark_cell" name="test_linked_cell_uses_verified_mechanism_in_both_solver_calls_and_live_docker[Q4.3-discoverybench]" time="1.720" /><testcase classname="tests.test_modular_benchmark_cell" name="test_linked_cell_uses_verified_mechanism_in_both_solver_calls_and_live_docker[Q4.3-blade]" time="1.855" /><testcase classname="tests.test_modular_benchmark_cell" name="test_public_projection_keeps_only_actual_enabled_mechanism_material[Q1.5-M5-historical_review]" time="0.969" /><testcase classname="tests.test_modular_benchmark_cell" name="test_public_projection_keeps_only_actual_enabled_mechanism_material[Q3.1-M4-prediction_plan]" time="0.467" /><testcase classname="tests.test_modular_benchmark_cell" name="test_public_projection_keeps_only_actual_enabled_mechanism_material[Q4.3-M5-sealed_review]" time="1.112" /><testcase classname="tests.test_modular_benchmark_cell" name="test_public_projection_uses_one_schema_for_enabled_and_control_material[Q1.5-historical_review-sealed_review-keys0]" time="0.320" /><testcase classname="tests.test_modular_benchmark_cell" name="test_public_projection_uses_one_schema_for_enabled_and_control_material[Q3.1-prediction_plan-prediction_plan-keys1]" time="0.434" /><testcase classname="tests.test_modular_benchmark_cell" name="test_public_projection_uses_one_schema_for_enabled_and_control_material[Q4.3-sealed_review-revealed_review-keys2]" time="0.848" /><testcase classname="tests.test_modular_benchmark_cell" name="test_public_projection_rejects_unbound_requests_and_incomplete_m5_material" time="1.124" /><testcase classname="tests.test_modular_benchmark_cell" name="test_public_projection_requires_all_q43_control_responses" time="0.759" /><testcase classname="tests.test_modular_benchmark_cell" name="test_projection_rejection_keeps_the_successful_mechanism_in_the_denominator" time="0.627" /><testcase classname="tests.test_modular_benchmark_cell" name="test_linked_cell_keeps_mechanism_and_solver_failures_as_rows" time="1.319" /><testcase classname="tests.test_modular_benchmark_cell" name="test_verified_provenance_rejects_foreign_task_arm_package_and_tampering" time="1.220" /><testcase classname="tests.test_modular_benchmark_cell" name="test_verifier_rejects_a_hash_consistent_solver_with_foreign_arm_and_objective" time="1.516" /><testcase classname="tests.test_modular_linked_train_controller" name="test_linked_config_has_exact_driver_and_solver_slots_and_two_extra_calls[Q1.5]" time="0.132" /><testcase classname="tests.test_modular_linked_train_controller" name="test_linked_config_has_exact_driver_and_solver_slots_and_two_extra_calls[Q3.1]" time="0.173" /><testcase classname="tests.test_modular_linked_train_controller" name="test_linked_config_has_exact_driver_and_solver_slots_and_two_extra_calls[Q4.3]" time="0.201" /><testcase classname="tests.test_modular_linked_train_controller" name="test_linked_controller_runs_custody_export_real_port_live_docker_and_replays_receipts" time="23.325" /><testcase classname="tests.test_modular_linked_train_controller" name="test_solver_execution_failures_stay_in_denominator_and_do_not_complete[failed]" time="13.659" /><testcase classname="tests.test_modular_linked_train_controller" name="test_solver_execution_failures_stay_in_denominator_and_do_not_complete[timed_out]" time="12.111" /><testcase classname="tests.test_modular_linked_train_controller" name="test_solver_execution_failures_stay_in_denominator_and_do_not_complete[unavailable]" time="8.273" /><testcase classname="tests.test_modular_linked_train_controller" name="test_mechanism_failures_remain_denominator_rows" time="1.925" /><testcase classname="tests.test_modular_linked_train_controller" name="test_linked_call_budget_rejects_before_any_model_or_export_side_effect" time="0.166" /><testcase classname="tests.test_modular_train_controller" name="test_actual_custody_export_port_runner_and_receipt_are_engineering_only" time="6.315" /><testcase classname="tests.test_modular_train_controller" name="test_support_drivers_reach_production_controller_without_registry_patch[Q1.3-slots0-16]" time="12.510" /><testcase classname="tests.test_modular_train_controller" name="test_support_drivers_reach_production_controller_without_registry_patch[Q1.4-slots1-12]" time="9.837" /><testcase classname="tests.test_modular_train_controller" name="test_withdrawal_drivers_reach_custody_controller_with_caller_admission[Q1.6-slots0]" time="19.911" /><testcase classname="tests.test_modular_train_controller" name="test_withdrawal_drivers_reach_custody_controller_with_caller_admission[Q1.7-slots1]" time="7.943" /><testcase classname="tests.test_modular_train_controller" name="test_prediction_drivers_reach_custody_controller_without_registry_patch[Q3.2-8-slots0]" time="6.759" /><testcase classname="tests.test_modular_train_controller" name="test_prediction_drivers_reach_custody_controller_without_registry_patch[Q5.3-12-slots1]" time="5.387" /><testcase classname="tests.test_modular_train_controller" name="test_polarity_and_goal_drivers_use_frozen_task_objectives_in_actual_controller[Q2.5]" time="6.069" /><testcase classname="tests.test_modular_train_controller" name="test_polarity_and_goal_drivers_use_frozen_task_objectives_in_actual_controller[Q2.6]" time="4.748" /><testcase classname="tests.test_modular_train_controller" name="test_audit_drivers_reach_controller_with_bound_execution_and_receipt_ports[Q2.3-28]" time="15.322" /><testcase classname="tests.test_modular_train_controller" name="test_audit_drivers_reach_controller_with_bound_execution_and_receipt_ports[Q2.4-16]" time="8.865" /><testcase classname="tests.test_modular_train_controller" name="test_q43_closed_driver_runs_through_custody_export_and_frozen_policy" time="5.708" /><testcase classname="tests.test_modular_train_controller" name="test_rejects_config_drift_reused_root_and_unreviewed_policy" time="0.256" /><testcase classname="tests.test_modular_train_controller" name="test_rejects_live_response_schema_drift_before_export" time="0.142" /><testcase classname="tests.test_modular_train_controller" name="test_rejects_non_train_allowlist_and_evidence_task_mismatch_before_model" time="0.170" /><testcase classname="tests.test_modular_train_controller" name="test_failed_cells_keep_the_complete_denominator_and_are_not_completed" time="3.279" /><testcase classname="tests.test_modular_train_controller" name="test_refuses_a_reused_ledger_before_export_or_run_side_effects" time="0.199" /></testsuite></testsuites>

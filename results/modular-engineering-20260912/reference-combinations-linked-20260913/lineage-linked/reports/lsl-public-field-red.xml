@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.407" timestamp="2026-09-13T17:12:12.022079+08:00" hostname="SC-202507131830"><testcase classname="tests.test_lineage_singleton_linked" name="test_public_projection_preserves_scientific_fields_named_like_metadata" time="0.003"><failure message="AssertionError: assert {'public_reco...vidence': {}}} == {'public_reco...nt-setting'}}}&#10;  &#10;  Differing items:&#10;  {'public_record': {'evidence': {}}} != {'public_record': {'evidence': {'ephemeral': False, 'mode': 'instrument-setting'}}}&#10;  Use -v to get more diff">def test_public_projection_preserves_scientific_fields_named_like_metadata():
+        from research_loop.modular.lineage_singleton_replay import _public
+        material={'source_material':{'public_record':{'evidence':{'mode':'instrument-setting','ephemeral':False}}},
+            'context':{'entries':{'entries':[{'kind':'evidence','payload':{
+                'trusted_validator':'private-id','validator_verified':True,
+                'content':{'mode':'instrument-setting','ephemeral':False}}}]}}}
+        result=_public(material)
+&gt;       assert result['source_material']==material['source_material']
+E       AssertionError: assert {'public_reco...vidence': {}}} == {'public_reco...nt-setting'}}}
+E         
+E         Differing items:
+E         {'public_record': {'evidence': {}}} != {'public_record': {'evidence': {'ephemeral': False, 'mode': 'instrument-setting'}}}
+E         Use -v to get more diff
+
+tests\test_lineage_singleton_linked.py:330: AssertionError</failure></testcase></testsuite></testsuites>

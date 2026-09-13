@@ -1,0 +1,61 @@
+{
+  "schema": "actual-primary-reference-descriptor-supplement-v1",
+  "status": "archived_descriptor_metadata_verified",
+  "original_plan_sha256": "5e6a79bc55c1385b25f7eb73b61381adffb1a085d6a20b0c9ea68931e7208818",
+  "discovery_answer_keys": {
+    "synth": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\discovery\\upstream\\eval\\answer_key_synth.csv",
+      "sha256": "afd51d7053cefff6b335c209a42a1943217cb73a9fd36144a500cce49ecda675",
+      "encoding": "cp1252"
+    }
+  },
+  "selected_discovery_count": 2,
+  "official_split": "synth/test",
+  "official_source_kind": "synthetic",
+  "original_snapshot_root_matches": true,
+  "original_inventory_digest_matches": true,
+  "archived_custody_sha256_matches": true,
+  "archived_reference_manifest_source_pin_matches": true,
+  "answer_file_exists": true,
+  "answer_file_size_bytes": 61658,
+  "answer_file_bytes_read_or_rehashed": false,
+  "fresh_answer_content_pin_verification": "deferred_to_authorized_preparation_bound_reader",
+  "metadata_input_pins": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260912\\history-support-scorer-20260913\\prepare_live_train_references_20260913.py",
+      "sha256": "2243680ae610c4b7ecdc3308bb33840d716a9bb252564c11022f991e8faeb5ee"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260912\\history-support-scorer-20260913\\train-reference-status.json",
+      "sha256": "2a0164fc7c64f23cd03d55444f20d64d81af7d3fc42b4eeaf5c5693723c01855"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260912\\history-support-scorer-20260913\\train-reference-publication.json",
+      "sha256": "dcb2c224f9e730f92ffd9fd9e4becd9cf4b8d1214dfef144aef8fee4ee893974"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\train-reference-store-20260913-01\\manifest.json",
+      "sha256": "717e4c00c47593eb63da0a4565dd523c49a3fb3079b7af97f061dfeccc2d32a8"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\frozen-request-r1.json",
+      "sha256": "8713df0bccbd7dfd499e4461790bb5c983fe0b89b37d3eac98867df250cb6685"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\export-receipt.json",
+      "sha256": "b08238bc3fdf9757074d5e64e49ca7b3b5cdc2f58015b0688420cd9f78ad3bb3"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-process-qualification-checks\\primary-config-r1.json",
+      "sha256": "1310f8e1ab2b25a4fdc2879e0f98e813be198f4550e8c74d899207cfb3204130"
+    }
+  ],
+  "actual_reference_preparation_executed": false,
+  "actual_answer_reference_semantic_reads": 0,
+  "actual_validation_exports": 0,
+  "actual_validation_leases": 0,
+  "model_calls": 0,
+  "network_calls": 0,
+  "scientific_validity": "not_measured",
+  "license_qualification_claimed": false
+}

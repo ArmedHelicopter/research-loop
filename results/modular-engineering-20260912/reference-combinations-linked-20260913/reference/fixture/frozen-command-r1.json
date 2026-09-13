@@ -1,0 +1,22 @@
+{
+  "command": [
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_primary_reference_bridge.py",
+    "tests/test_train_reference_store.py",
+    "tests/test_primary_prospective_exporter.py",
+    "tests/test_primary_process_qualification.py",
+    "tests/test_modular_train_io.py",
+    "tests/test_label_isolation.py",
+    "tests/test_scorer_process.py",
+    "tests/test_combination_scorer_process.py",
+    "tests/test_modular_train_controller.py",
+    "-q",
+    "--basetemp",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1",
+    "--junitxml",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1.xml"
+  ],
+  "cwd": "E:\\_ryanDev\\AI\\research-loop-modular\\pr-ref"
+}

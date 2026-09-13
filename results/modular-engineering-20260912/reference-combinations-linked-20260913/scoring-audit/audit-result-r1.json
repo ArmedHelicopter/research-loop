@@ -1,0 +1,87 @@
+{
+  "schema": "primary-scoring-calibration-audit-result-v1",
+  "reference_commit": "8d8ff1028db8572431db78018f920c01e35bf47c",
+  "source_count": 20,
+  "official_local_code_count": 14,
+  "prior_evidence_count": 13,
+  "files_rechecked": 47,
+  "byte_changes_after_manifest": [],
+  "source_edits_by_auditor": 0,
+  "calls": {
+    "solver": 0,
+    "evaluator": 0,
+    "scorer": 0,
+    "docker": 0,
+    "validation_lease": 0
+  },
+  "reference_payload_reads": 0,
+  "validation_payload_reads": 0,
+  "test_runs": 0,
+  "calibration_status": "not_measured",
+  "official_equivalence": "not_established",
+  "existing_four_train_reference_preparation": "completed_prior_receipt_scoped",
+  "gaps": {
+    "discovery": [
+      "D1",
+      "D2",
+      "D3",
+      "D4",
+      "D5",
+      "D6",
+      "D7"
+    ],
+    "blade": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6",
+      "B7"
+    ],
+    "calibration_design_gaps": 9
+  },
+  "draft_only": true,
+  "preflight": {
+    "attempts": 1,
+    "train_bindings": 4,
+    "max_controlled_resolver_checks": 4,
+    "model_calls": 0,
+    "scorer_calls": 0,
+    "docker_calls": 0,
+    "validation_calls": 0,
+    "purpose": "train_scorer_preflight_only"
+  },
+  "pilot_proposal": {
+    "source_tasks": 4,
+    "benchmarks": 2,
+    "slots_per_task": 9,
+    "material_slots": 36,
+    "independent_reviews_max": 72,
+    "arbitrations_max": 36,
+    "judge_repeats": 2,
+    "evaluator_calls_max": 72,
+    "input_tokens_per_call_max": 61440,
+    "output_tokens_per_call_max": 4096,
+    "tokens_total_max": 4718592,
+    "cost_usd_max": 20,
+    "per_call_timeout_seconds": 240,
+    "serial_call_wall_seconds_max": 17280,
+    "automatic_retries": 0,
+    "solver_calls": 0,
+    "docker_calls": 0,
+    "validation_calls": 0,
+    "may_issue_validation_eligible_receipt": false,
+    "price_and_context_verified_before_io_required": true,
+    "unresolved_slots_kept": true
+  },
+  "limits": [
+    "Four task clusters do not establish population calibration",
+    "No production threshold change",
+    "No reference body in public artifacts",
+    "No actual pilot implemented or executed",
+    "No broad historical calibration search"
+  ],
+  "original_raw_git_blob_comparison_retained": "evidence-manifest-r1.json",
+  "newline_only_comparison_receipt": "evidence-manifest-r2.json"
+}

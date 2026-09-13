@@ -1,0 +1,815 @@
+{
+  "all_model_requests_checked": 160,
+  "cell_assertions": [
+    {
+      "arm_id": "00",
+      "benchmark": "discoverybench",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M4+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "27f49d51a5f5f6ebff4f202b13be10e0da930298cbc3f05e1ae5d1668d3177d8",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "f14d6f1b05468a16d7aa52fd1942289a80a6eb427c36195082335b698a9b5e9e",
+      "second_review_follows_first": true,
+      "stdout_sha256": "abf25e733223acfa5706afec3965213706196f21665b7ffdae659b69e508d12d",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "82f47b76e5a93f88a4790620e99ca1168447954995bcca6c7937960e001ee961"
+    },
+    {
+      "arm_id": "01",
+      "benchmark": "discoverybench",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M4+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "7c79547f900a8804ee3ed7bef98bab1cd94bce798ddddafc0d770957fb0d8fb6",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "f14d6f1b05468a16d7aa52fd1942289a80a6eb427c36195082335b698a9b5e9e",
+      "second_review_follows_first": true,
+      "stdout_sha256": "83acae5b6ba615fab52f1dd8edcac55e973a6d5b8557d6b0558785a518ce9eba",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "c1ea139cf4936c58c13034c887857bf60b8e2b20fca4cab07fb05c052750a347"
+    },
+    {
+      "arm_id": "10",
+      "benchmark": "discoverybench",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M4+M6",
+      "observed_checks": [
+        {
+          "direction": "increase",
+          "direction_consistent": true,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "decrease",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "unchanged",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        }
+      ],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "ba3789b5ed2eac8c9335180171b6247d2508d91751cd20b440d3f60b18f8e47b",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "f14d6f1b05468a16d7aa52fd1942289a80a6eb427c36195082335b698a9b5e9e",
+      "second_review_follows_first": true,
+      "stdout_sha256": "d735db0298c60711220db38dfae2b7585dcc2ab1ca265a6dc134fb447d6c4b30",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "2386cdc8eeda841eb21e4b061dd8c236fa284e8feed86877aab0ebd7231db68c"
+    },
+    {
+      "arm_id": "11",
+      "benchmark": "discoverybench",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M4+M6",
+      "observed_checks": [
+        {
+          "direction": "increase",
+          "direction_consistent": true,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "decrease",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "unchanged",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        }
+      ],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "de6daab772a4399b978932a6d0484870bae8f3be7735c5be4ef15c17a3416c11",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "f14d6f1b05468a16d7aa52fd1942289a80a6eb427c36195082335b698a9b5e9e",
+      "second_review_follows_first": true,
+      "stdout_sha256": "a67f75e07af74c34058d9630140dd8a921cbaa18fb696690a4f5fd64e43d3bc4",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "28a0d7bb44f74e46a8ea1015e18952be705543257a6ba82e2a7e32f2648829eb"
+    },
+    {
+      "arm_id": "00",
+      "benchmark": "blade",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M4+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "0d887845c1fa55e53f69f0a79dd313c684f45dff49b674f8bfe6411b3f199e24",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "ff35bef3385058b9964e2ee50ef129952cae381eef5ca3363ea9a34e1a9fca4d",
+      "second_review_follows_first": true,
+      "stdout_sha256": "abf25e733223acfa5706afec3965213706196f21665b7ffdae659b69e508d12d",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "648bd0bb518159db1371c052a50c189ef2562b346ecab2752922c351dd2ad741"
+    },
+    {
+      "arm_id": "01",
+      "benchmark": "blade",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M4+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "b9027d51a012b23470a64793114e81e7be093f713a09941feece170a3e2a3c20",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "ff35bef3385058b9964e2ee50ef129952cae381eef5ca3363ea9a34e1a9fca4d",
+      "second_review_follows_first": true,
+      "stdout_sha256": "83acae5b6ba615fab52f1dd8edcac55e973a6d5b8557d6b0558785a518ce9eba",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "7b68a8a14776d9894ae6c3b7493c65194067ecd4a91927c5fc25fc097d9e3474"
+    },
+    {
+      "arm_id": "10",
+      "benchmark": "blade",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M4+M6",
+      "observed_checks": [
+        {
+          "direction": "increase",
+          "direction_consistent": true,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "decrease",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "unchanged",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        }
+      ],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "992bd14bdb0a15a8008bef9e241f974d96170c885ca4f9757bb0c6245a30c062",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "ff35bef3385058b9964e2ee50ef129952cae381eef5ca3363ea9a34e1a9fca4d",
+      "second_review_follows_first": true,
+      "stdout_sha256": "d735db0298c60711220db38dfae2b7585dcc2ab1ca265a6dc134fb447d6c4b30",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "66987cba9b1127a72772e11e7ee2dbad55ad3cf1bede5cde4d7ca8bcacea1b3a"
+    },
+    {
+      "arm_id": "11",
+      "benchmark": "blade",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M4+M6",
+      "observed_checks": [
+        {
+          "direction": "increase",
+          "direction_consistent": true,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "decrease",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "unchanged",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        }
+      ],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "5a55fdcdb83cf8b53cbedf0eeef9eefe2b7285932c879f2f2718329de0973a38",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "ff35bef3385058b9964e2ee50ef129952cae381eef5ca3363ea9a34e1a9fca4d",
+      "second_review_follows_first": true,
+      "stdout_sha256": "a67f75e07af74c34058d9630140dd8a921cbaa18fb696690a4f5fd64e43d3bc4",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "eef06681e41632a473cbf61fcc72142c0accd020167e03c1a415365ff4fa4d8a"
+    },
+    {
+      "arm_id": "00",
+      "benchmark": "discoverybench",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "fb562824d6b720941ac902e2f0b9ea2b581a1cc5db2c767eab0cdaa7173a2d52",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "1e1beb6ae90d764954d96e610668bbdb250c016faf24db6b5a4e45a9863348e2",
+      "second_review_follows_first": true,
+      "stdout_sha256": "abf25e733223acfa5706afec3965213706196f21665b7ffdae659b69e508d12d",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "d23f177621a8ec812614441187e688b5658036864343032f25f269509d9b93f3"
+    },
+    {
+      "arm_id": "01",
+      "benchmark": "discoverybench",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "f46d92fb435c5f6a5ace94fd89476f4bba305fc7ae364c5be85c05099b45cc48",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "1e1beb6ae90d764954d96e610668bbdb250c016faf24db6b5a4e45a9863348e2",
+      "second_review_follows_first": true,
+      "stdout_sha256": "83acae5b6ba615fab52f1dd8edcac55e973a6d5b8557d6b0558785a518ce9eba",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "3876ecbdc47acabb61d229ad9ae4cadc04a4904748114cffe95045b752d752cc"
+    },
+    {
+      "arm_id": "10",
+      "benchmark": "discoverybench",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "5cebdfa30ffb40ea536ec0475369fa3a6f7e7baf5d414811cde27a4a8317df8a",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "1e1beb6ae90d764954d96e610668bbdb250c016faf24db6b5a4e45a9863348e2",
+      "second_review_follows_first": false,
+      "stdout_sha256": "87bc3440949fbb127dd6317827b50e7af58a01572e85518583a566d6c492fe83",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "e67ac9ae3bfaf3055e44756c01f38eb4fbdc0301b23c23e0266300a90b75afcb"
+    },
+    {
+      "arm_id": "11",
+      "benchmark": "discoverybench",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "9e5da67245d686c225cf3e04c141bb085bf51d03e175a85c0c252c420f395915",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "1e1beb6ae90d764954d96e610668bbdb250c016faf24db6b5a4e45a9863348e2",
+      "second_review_follows_first": false,
+      "stdout_sha256": "fd771ad1e2382e27b5f04d75b771c4cef1e05a8599ac3715c17e5fae6fb240b0",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "0f2ce026582296e213cc5f8795913fa8fb86e2518a4d1893b9178d1da78994ba"
+    },
+    {
+      "arm_id": "00",
+      "benchmark": "blade",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "d5d3133034dc0b23b9cb78c40f22a9e5ea91763ff6f6f355a059e191542bc3f2",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "f0caf6d74c68a8d1eda382fdac26d09c7a704922605525b2341e9d7d0c43c34e",
+      "second_review_follows_first": true,
+      "stdout_sha256": "abf25e733223acfa5706afec3965213706196f21665b7ffdae659b69e508d12d",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "f0e22066703f80ec8136b9141b29a889921842842c19fdb2b0eab1bcd9b0ff2d"
+    },
+    {
+      "arm_id": "01",
+      "benchmark": "blade",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "2d6cb3728e4f32dafa11a60debc8bc131397cba9adbccc32b544d9673cad14a1",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "f0caf6d74c68a8d1eda382fdac26d09c7a704922605525b2341e9d7d0c43c34e",
+      "second_review_follows_first": true,
+      "stdout_sha256": "83acae5b6ba615fab52f1dd8edcac55e973a6d5b8557d6b0558785a518ce9eba",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "2963d3909d8ad125b4ef3df6b6e4e28be0cd8a3de4630f07ff5ede9f263c5127"
+    },
+    {
+      "arm_id": "10",
+      "benchmark": "blade",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "567db43daeb9b4667080896c42aa6b32eabb46d9b27ee38a6bab9e311d37a8de",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "f0caf6d74c68a8d1eda382fdac26d09c7a704922605525b2341e9d7d0c43c34e",
+      "second_review_follows_first": false,
+      "stdout_sha256": "87bc3440949fbb127dd6317827b50e7af58a01572e85518583a566d6c492fe83",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "14a587a105587f7129fe864f19c20e7e595e4a013f5a6792e0ab46904315a33b"
+    },
+    {
+      "arm_id": "11",
+      "benchmark": "blade",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "pair:M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "5ec023404cf03e46ff393ffc1e1b8beb2bd890c1666bf7eace69a1e815fd4317",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "f0caf6d74c68a8d1eda382fdac26d09c7a704922605525b2341e9d7d0c43c34e",
+      "second_review_follows_first": false,
+      "stdout_sha256": "fd771ad1e2382e27b5f04d75b771c4cef1e05a8599ac3715c17e5fae6fb240b0",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "d1c4cc8f86d9474374d93564b7d00ec362ad338916edd9150625c9d48f7e842f"
+    },
+    {
+      "arm_id": "000",
+      "benchmark": "discoverybench",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "bef930ae609987c1bfa261b5e182b4dcded3562791e7d9f48cb19acd4dfea7d0",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "eb315374ce11620436cb9a48f8fc37fb9ad52b1fa4fbb70e6698cac12084a479",
+      "second_review_follows_first": true,
+      "stdout_sha256": "abf25e733223acfa5706afec3965213706196f21665b7ffdae659b69e508d12d",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "1caeae39e2d6b99fbfd2d7075bea99f7cf79b6441bfb9b96a80bdc3604ced68f"
+    },
+    {
+      "arm_id": "001",
+      "benchmark": "discoverybench",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "3887702881d8dc8ea0ed5d029eb1d1f7861e634a6a65cd3e4744d42442a04f60",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "eb315374ce11620436cb9a48f8fc37fb9ad52b1fa4fbb70e6698cac12084a479",
+      "second_review_follows_first": true,
+      "stdout_sha256": "83acae5b6ba615fab52f1dd8edcac55e973a6d5b8557d6b0558785a518ce9eba",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "e6883f812629288a9262c535c192e504310167f063ec4ac970b0b1a37a95a759"
+    },
+    {
+      "arm_id": "010",
+      "benchmark": "discoverybench",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "fadc14c7bb2a81fc312a1600e808da1c5c628dcaf0dd09fb9534b36cc08839ba",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "eb315374ce11620436cb9a48f8fc37fb9ad52b1fa4fbb70e6698cac12084a479",
+      "second_review_follows_first": false,
+      "stdout_sha256": "87bc3440949fbb127dd6317827b50e7af58a01572e85518583a566d6c492fe83",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "70493d730db5e0d5d4ef31c5cc444de1c0cf377377a03f99839b0c988d50fd1a"
+    },
+    {
+      "arm_id": "011",
+      "benchmark": "discoverybench",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "423d85b442ce01be293e128013242964a5c5edbcccfe5482bfbc9403be804ee5",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "eb315374ce11620436cb9a48f8fc37fb9ad52b1fa4fbb70e6698cac12084a479",
+      "second_review_follows_first": false,
+      "stdout_sha256": "fd771ad1e2382e27b5f04d75b771c4cef1e05a8599ac3715c17e5fae6fb240b0",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "0f12aaf89b01c3172d5058e860a5047062c81398675728b46c74c49e69c4ccee"
+    },
+    {
+      "arm_id": "100",
+      "benchmark": "discoverybench",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [
+        {
+          "direction": "increase",
+          "direction_consistent": true,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "decrease",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "unchanged",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        }
+      ],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "93c5994720ca49cff9c782e0b901ea03507b76a2240585d7adf089f806cb2927",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "eb315374ce11620436cb9a48f8fc37fb9ad52b1fa4fbb70e6698cac12084a479",
+      "second_review_follows_first": true,
+      "stdout_sha256": "d735db0298c60711220db38dfae2b7585dcc2ab1ca265a6dc134fb447d6c4b30",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "234759de6eb996ba23a2f2f0f98f35df2862c6b2c67be90479c9b993e23f3e65"
+    },
+    {
+      "arm_id": "101",
+      "benchmark": "discoverybench",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [
+        {
+          "direction": "increase",
+          "direction_consistent": true,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "decrease",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "unchanged",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        }
+      ],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "11c1647d0373a69d8f8ddd68f95a85f65615208831527fb03080ec772290bde8",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "eb315374ce11620436cb9a48f8fc37fb9ad52b1fa4fbb70e6698cac12084a479",
+      "second_review_follows_first": true,
+      "stdout_sha256": "a67f75e07af74c34058d9630140dd8a921cbaa18fb696690a4f5fd64e43d3bc4",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "0c2f9a20547e0ba512fae98e2609c6f19797eb56c8b884d6d39ebb41748c4aac"
+    },
+    {
+      "arm_id": "110",
+      "benchmark": "discoverybench",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [
+        {
+          "direction": "increase",
+          "direction_consistent": true,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "decrease",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "unchanged",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        }
+      ],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "a043077b074bf0826d547ef51e9d821ca6c36e695c5b8689e77698e790dad2cf",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "eb315374ce11620436cb9a48f8fc37fb9ad52b1fa4fbb70e6698cac12084a479",
+      "second_review_follows_first": false,
+      "stdout_sha256": "be1c0ca54c30efa4394c1db3a155a31479f3e93ad6c219f0113326a0b89c67cc",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "caa1ba0419e69a120bdee204cca96aa413a64a0f6cb6b865e93028fdcc308b56"
+    },
+    {
+      "arm_id": "111",
+      "benchmark": "discoverybench",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [
+        {
+          "direction": "increase",
+          "direction_consistent": true,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "decrease",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "unchanged",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        }
+      ],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "4022e2b832519cfe71d91b6b363053e430c037ba21af85238cd499d5e78d5882",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "eb315374ce11620436cb9a48f8fc37fb9ad52b1fa4fbb70e6698cac12084a479",
+      "second_review_follows_first": false,
+      "stdout_sha256": "d87fc4faf5f7fa6196f97b9d0ff2c306621ed706c1ffc17bff05415961808d7f",
+      "task_digest": "b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d",
+      "trace_sha256": "2946ea696a23301ed1b8ea325dbaa2a4ce4870645bb9788ea3191b255b319918"
+    },
+    {
+      "arm_id": "000",
+      "benchmark": "blade",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "ab9d1a1e92c2ed42860d1e8f2ae0c7dee883f430e11f8d97797be2781660873b",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "3a0331b5d3e3b8d9fdc55b357e2b38f8b4e9eae3b40bcfcd1b56f86a7f364bc5",
+      "second_review_follows_first": true,
+      "stdout_sha256": "abf25e733223acfa5706afec3965213706196f21665b7ffdae659b69e508d12d",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "265522b7c0e0ffc73e8696b73519598d6c8c04356b9f3d22626aea522f57d901"
+    },
+    {
+      "arm_id": "001",
+      "benchmark": "blade",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "af96f848026f7b7ca6b840205c7ea571ca301e0191d1ac30c3b1b1d8b30ddd39",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "3a0331b5d3e3b8d9fdc55b357e2b38f8b4e9eae3b40bcfcd1b56f86a7f364bc5",
+      "second_review_follows_first": true,
+      "stdout_sha256": "83acae5b6ba615fab52f1dd8edcac55e973a6d5b8557d6b0558785a518ce9eba",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "3e0ba2de1a003aab67bf754288b109096db2d38365f4ab13675aac0ae92d4a72"
+    },
+    {
+      "arm_id": "010",
+      "benchmark": "blade",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "2e7eb9e33df8ef30bcf9c90b1df125430f785147fb7b39ae85fa517a90a79321",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "3a0331b5d3e3b8d9fdc55b357e2b38f8b4e9eae3b40bcfcd1b56f86a7f364bc5",
+      "second_review_follows_first": false,
+      "stdout_sha256": "87bc3440949fbb127dd6317827b50e7af58a01572e85518583a566d6c492fe83",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "8cedafc57836b25927c32c439b5dd111e3ccbcae2dec8c402d7073c45cc5579e"
+    },
+    {
+      "arm_id": "011",
+      "benchmark": "blade",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "7cb1290bcb07263d1f31b530dad9d928ef8306c9c639158d9332a80db49c4b8d",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "3a0331b5d3e3b8d9fdc55b357e2b38f8b4e9eae3b40bcfcd1b56f86a7f364bc5",
+      "second_review_follows_first": false,
+      "stdout_sha256": "fd771ad1e2382e27b5f04d75b771c4cef1e05a8599ac3715c17e5fae6fb240b0",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "6b2f9aa6cae734dfd2b28f300e0df0cf78296791e6ef816460babb7592c8a333"
+    },
+    {
+      "arm_id": "100",
+      "benchmark": "blade",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [
+        {
+          "direction": "increase",
+          "direction_consistent": true,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "decrease",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "unchanged",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        }
+      ],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "4340e2cd3d63ac20edbc60049e5a11880d30370a4eb50e8fdcfaaac6217bf500",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "3a0331b5d3e3b8d9fdc55b357e2b38f8b4e9eae3b40bcfcd1b56f86a7f364bc5",
+      "second_review_follows_first": true,
+      "stdout_sha256": "d735db0298c60711220db38dfae2b7585dcc2ab1ca265a6dc134fb447d6c4b30",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "fa0f5c791a4c1bdb015bdba3867586d854ac9efd158c19af8749a90de9daa7de"
+    },
+    {
+      "arm_id": "101",
+      "benchmark": "blade",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [
+        {
+          "direction": "increase",
+          "direction_consistent": true,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "decrease",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "unchanged",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        }
+      ],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "1f97c2fc805e4e1afb4770f273e3a042b508bdc0d80e861af60757dd21efa0e9",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "3a0331b5d3e3b8d9fdc55b357e2b38f8b4e9eae3b40bcfcd1b56f86a7f364bc5",
+      "second_review_follows_first": true,
+      "stdout_sha256": "a67f75e07af74c34058d9630140dd8a921cbaa18fb696690a4f5fd64e43d3bc4",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "0da927e15b4d52d4f745b804a0992acb1c6462f502fb2df85df98ac1b292e9e4"
+    },
+    {
+      "arm_id": "110",
+      "benchmark": "blade",
+      "counter_sources": 0,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [
+        {
+          "direction": "increase",
+          "direction_consistent": true,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "decrease",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "unchanged",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        }
+      ],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "777f7958d2213d26edd748315009f2a56661a24260416c671c7a95ce0e4a597a",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "3a0331b5d3e3b8d9fdc55b357e2b38f8b4e9eae3b40bcfcd1b56f86a7f364bc5",
+      "second_review_follows_first": false,
+      "stdout_sha256": "be1c0ca54c30efa4394c1db3a155a31479f3e93ad6c219f0113326a0b89c67cc",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "2105f85befa9111b435922ab077dbf98f922ee40724d5ad352695141a8e1f0a5"
+    },
+    {
+      "arm_id": "111",
+      "benchmark": "blade",
+      "counter_sources": 1,
+      "docker_attempts": 1,
+      "model_calls": 5,
+      "obligation": "triple:M4+M5+M6",
+      "observed_checks": [
+        {
+          "direction": "increase",
+          "direction_consistent": true,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "decrease",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        },
+        {
+          "direction": "unchanged",
+          "direction_consistent": false,
+          "observable": "x",
+          "observed_mean": 1.0
+        }
+      ],
+      "package_digest": "75db4d6f9d584d0e31609f10f36460bfc87b1ef2e33b555502636eeadfd6851d",
+      "primary_score_receipt_sha256": "ab25f40ddbf4ce80d9a2f1fd63a82cf017a015a48e3425fc0c5f04efaf30cd1a",
+      "provider_calls": 3,
+      "runtime_status": "succeeded",
+      "scenario_digest": "3a0331b5d3e3b8d9fdc55b357e2b38f8b4e9eae3b40bcfcd1b56f86a7f364bc5",
+      "second_review_follows_first": false,
+      "stdout_sha256": "d87fc4faf5f7fa6196f97b9d0ff2c306621ed706c1ffc17bff05415961808d7f",
+      "task_digest": "f3ee5ef159deb13dae12c0f08f413ebcc0d21be32d9b74d6dce3ea0e0762c40a",
+      "trace_sha256": "0442396592b88acaf714fa46d279554e58f657e91a828e16b621ffd298a5fc43"
+    }
+  ],
+  "mechanism_endpoint_independently_scored": false,
+  "primary_score_role": "separate-process constant fixture companion; not calibrated",
+  "programme_complete": false,
+  "qualification": "synthetic engineering fixtures; not scientific source or root independence verification",
+  "schema": "readonly-public-fixture-assertions-v1",
+  "source_commit": "0f94d709018bc1b9f2c8bf5e1ef3c1d4c230d25a"
+}

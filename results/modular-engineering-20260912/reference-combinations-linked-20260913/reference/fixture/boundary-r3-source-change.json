@@ -1,0 +1,25 @@
+{
+  "schema": "development-test-source-change-receipt-v1",
+  "status": "invalid_for_frozen_verification",
+  "process_tool_session_id": 25716,
+  "process_exit_code": 0,
+  "reported_tests": 24,
+  "reported_failures": 0,
+  "junit_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\boundary-r3.xml",
+  "junit_sha256": "9349d8de0162236d0454beb9f628fcaf57effc06b60515f5400ca6645f8be1b4",
+  "started_at": "2026-09-13T16:41:47.474334+08:00",
+  "duration_seconds": 77.739,
+  "source_edit_mtime_utc": "2026-09-13T08:42:36.443242+00:00",
+  "changed_file": "evaluation/modular/primary_reference_bridge.py",
+  "pre_edit_sha256_reconstructed": "2c4f0002e81450de08256849c18d852b573d570c564f2281713fb12baf102632",
+  "pre_edit_hash_provenance": "reconstructed_by_reversing_exact_in_turn_patch_not_independent_pre_run_snapshot",
+  "post_edit_sha256": "b4680d6da87c660c68b6652d5e5efd8e5ff0f129bb08e021aedc9947133f7a4b",
+  "observed_sequence": [
+    "pytest_started",
+    "source_edited_while_process_running",
+    "parent_notified",
+    "pytest_exited_0",
+    "later_test_edits_started"
+  ],
+  "disposition": "retain_original_report_and_repeat_full_suite_after_source_commit_freeze"
+}

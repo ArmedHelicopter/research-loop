@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.538" timestamp="2026-09-13T17:15:51.499497+08:00" hostname="SC-202507131830"><testcase classname="tests.test_prediction_linked_order" name="test_original_rehashed_late_freeze_must_be_rejected" time="0.022"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">def test_original_rehashed_late_freeze_must_be_rejected():
+        root=Path(__file__).resolve().parents[1]/'results/modular-engineering-20260913/prediction-linked-order/original-finding'
+        b=json.loads((root/'replay-input.json').read_text(encoding='utf-8')); c=b['cell']; r=b['runtime']
+        cell=PanelCell(c['coverage_id'],DataIdentity.parse(c['identity']),c['replicate'],c['variant'],c['arm_id'],
+            FrozenRecord.from_dict(c['runtime_arm']),c['task_digest'],c['scenario_digest'],c['package_digest'],c['scorer_digest'])
+        task=PublicTask(DataIdentity.parse(b['task']['identity']),FrozenRecord.from_dict(b['task']['payload']))
+        runtime=RuntimeReceipt(tuple(r['cell_key']),r['status'],root/'late-mechanism/trace.jsonl',r['trace_digest'],r['output_digest'],r['failure_reason'])
+&gt;       with pytest.raises(ContractError,match='prediction chronology'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+tests\test_prediction_linked_order.py:22: Failed</failure></testcase></testsuite></testsuites>

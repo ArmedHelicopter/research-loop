@@ -1,0 +1,7 @@
+# Prediction linked chronology repair
+
+The 8e23551 read-only review reproduced a late-freeze acceptance: valid stage_1 and prediction_artifacts events were moved after the final model response in a copied, correctly rehashed Q5.3 trace. Both provenance extraction and public projection accepted it. Original source and 45-test/20-cell evidence remain immutable; original findings and the exact copied trace are archived here.
+
+The repair checks the actual original RunSession event order before extracting linked prediction provenance. Every Q3.2 plan_1/plan_2/plan_3 request must precede its matching response in that order; Q5.3 has its actual dedup request/response. The current production drivers emit one aggregate stage_1 (or the ordinary arm's operation_m4_control) after all corresponding responses. That event must precede prediction_artifacts, which must precede the final model request. Extra, absent, reordered or delayed stages are rejected. Multiple Q3.2 plan responses are checked individually and must not be collapsed into an unordered set.
+
+No valid public payload or model/solver schedule changes. All 20 legal cells and the 8-success/12-mechanism-failure panel remain preserved. Regression uses synthetic Codex transport and real Docker. Q3.2 remains planning_only: the downstream CSV execution is not three completed plan experiments. No scientific endpoint or qualification is added.

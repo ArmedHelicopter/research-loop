@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.307" timestamp="2026-09-13T16:00:17.442722+08:00" hostname="SC-202507131830"><testcase classname="tests.test_lineage_process_scoring" name="test_lineage_mode_has_separate_frozen_schema" time="0.002"><failure message="TypeError: CodexEvaluatorModelPort.__init__() got an unexpected keyword argument 'rubric_mode'">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lps-red-tmp/test_lineage_mode_has_separate0')
+
+    def test_lineage_mode_has_separate_frozen_schema(tmp_path):
+&gt;       port = CodexEvaluatorModelPort('codex', tmp_path/'port', evaluator_id='fixture',
+            evaluator_version='v2', max_calls=1, max_tokens=20, rubric_mode='lineage_v1',
+            process_runner=lambda *a, **k: None, context_probe_runner=_probe, allow_mock_context=True)
+E       TypeError: CodexEvaluatorModelPort.__init__() got an unexpected keyword argument 'rubric_mode'
+
+tests\test_lineage_process_scoring.py:7: TypeError</failure></testcase></testsuite></testsuites>

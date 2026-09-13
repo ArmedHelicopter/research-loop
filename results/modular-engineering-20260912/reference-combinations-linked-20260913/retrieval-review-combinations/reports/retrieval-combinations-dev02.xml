@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="2" skipped="0" tests="4" time="1.526" timestamp="2026-09-13T16:33:37.738348+08:00" hostname="SC-202507131830"><testcase classname="tests.test_retrieval_review_combinations" name="test_registered_combination_scope" time="0.003" /><testcase classname="tests.test_retrieval_review_combinations" name="test_full_registry_custody_shared_session_grid_real_docker_and_scorer_processes" time="0.230"><error message="failed on setup with &quot;research_loop.ontology.ContractError: process scoring currently supports the train M4/M5 combination only&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/retrieval-combinations-dev02'),...'E:/_ryanDev/AI/research-loop-modular/work/retrieval-combinations-dev02'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        root=tmp_path_factory.mktemp('retrieval-grid')
+        with pytest.MonkeyPatch.context() as patch:
+&gt;           result=run(root,patch)
+                   ^^^^^^^^^^^^^^^
+
+tests\test_retrieval_review_combinations.py:145: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_retrieval_review_combinations.py:127: in run
+    setup=fixture(root); snapshot,custody,config,compiled,args=setup
+          ^^^^^^^^^^^^^
+tests\test_retrieval_review_combinations.py:53: in fixture
+    server = {'schema':'combination-scorer-process-config-v1','panel':serialize_combination_panel(panel),
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+panel = CombinationPanel(stage='public-custody-combination', domain='train', split_digest='558f5f3fe103129a904f6dadd8bee909ae4...='bce01e9b2dfadeda0a87b1ef6f40f52dc72feb6aeb69babda62fda81767d9713')), required_benchmarks=('discoverybench', 'blade'))
+
+    def serialize_combination_panel(panel: CombinationPanel) -&gt; dict[str, object]:
+        """Serialize only the implemented M4/M5 train factorial, with its full design."""
+        if not isinstance(panel, CombinationPanel) or panel.obligation_id != "pair:M4+M5" or panel.domain != "train":
+&gt;           raise ContractError("process scoring currently supports the train M4/M5 combination only")
+E           research_loop.ontology.ContractError: process scoring currently supports the train M4/M5 combination only
+
+evaluation\modular\scorer_process.py:132: ContractError</error></testcase><testcase classname="tests.test_retrieval_review_combinations" name="test_failures_preserve_complete_grid_budget_unknown_cost_and_no_scores[partial_provider]" time="0.080"><failure message="research_loop.ontology.ContractError: process scoring currently supports the train M4/M5 combination only">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/retrieval-combinations-dev02/test_failures_preserve_complet0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000241EC1F9910&gt;
+failure = 'partial_provider'
+
+    @pytest.mark.parametrize('failure',['partial_provider','model'])
+    def test_failures_preserve_complete_grid_budget_unknown_cost_and_no_scores(tmp_path,monkeypatch,failure):
+&gt;       result,port,seen,provider,_=run(tmp_path,monkeypatch,fail_provider=failure=='partial_provider',fail_model=failure=='model')
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_retrieval_review_combinations.py:192: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_retrieval_review_combinations.py:127: in run
+    setup=fixture(root); snapshot,custody,config,compiled,args=setup
+          ^^^^^^^^^^^^^
+tests\test_retrieval_review_combinations.py:53: in fixture
+    server = {'schema':'combination-scorer-process-config-v1','panel':serialize_combination_panel(panel),
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+panel = CombinationPanel(stage='public-custody-combination', domain='train', split_digest='558f5f3fe103129a904f6dadd8bee909ae4...='bce01e9b2dfadeda0a87b1ef6f40f52dc72feb6aeb69babda62fda81767d9713')), required_benchmarks=('discoverybench', 'blade'))
+
+    def serialize_combination_panel(panel: CombinationPanel) -&gt; dict[str, object]:
+        """Serialize only the implemented M4/M5 train factorial, with its full design."""
+        if not isinstance(panel, CombinationPanel) or panel.obligation_id != "pair:M4+M5" or panel.domain != "train":
+&gt;           raise ContractError("process scoring currently supports the train M4/M5 combination only")
+E           research_loop.ontology.ContractError: process scoring currently supports the train M4/M5 combination only
+
+evaluation\modular\scorer_process.py:132: ContractError</failure></testcase><testcase classname="tests.test_retrieval_review_combinations" name="test_failures_preserve_complete_grid_budget_unknown_cost_and_no_scores[model]" time="0.130"><failure message="research_loop.ontology.ContractError: process scoring currently supports the train M4/M5 combination only">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/retrieval-combinations-dev02/test_failures_preserve_complet1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000241EC1FABA0&gt;
+failure = 'model'
+
+    @pytest.mark.parametrize('failure',['partial_provider','model'])
+    def test_failures_preserve_complete_grid_budget_unknown_cost_and_no_scores(tmp_path,monkeypatch,failure):
+&gt;       result,port,seen,provider,_=run(tmp_path,monkeypatch,fail_provider=failure=='partial_provider',fail_model=failure=='model')
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_retrieval_review_combinations.py:192: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_retrieval_review_combinations.py:127: in run
+    setup=fixture(root); snapshot,custody,config,compiled,args=setup
+          ^^^^^^^^^^^^^
+tests\test_retrieval_review_combinations.py:53: in fixture
+    server = {'schema':'combination-scorer-process-config-v1','panel':serialize_combination_panel(panel),
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+panel = CombinationPanel(stage='public-custody-combination', domain='train', split_digest='558f5f3fe103129a904f6dadd8bee909ae4...='bce01e9b2dfadeda0a87b1ef6f40f52dc72feb6aeb69babda62fda81767d9713')), required_benchmarks=('discoverybench', 'blade'))
+
+    def serialize_combination_panel(panel: CombinationPanel) -&gt; dict[str, object]:
+        """Serialize only the implemented M4/M5 train factorial, with its full design."""
+        if not isinstance(panel, CombinationPanel) or panel.obligation_id != "pair:M4+M5" or panel.domain != "train":
+&gt;           raise ContractError("process scoring currently supports the train M4/M5 combination only")
+E           research_loop.ontology.ContractError: process scoring currently supports the train M4/M5 combination only
+
+evaluation\modular\scorer_process.py:132: ContractError</failure></testcase></testsuite></testsuites>

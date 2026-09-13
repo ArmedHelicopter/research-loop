@@ -1,0 +1,525 @@
+{
+  "schema": "reference-combinations-linked-checkpoint-v1",
+  "source_commit": "d1687815d2061df0c79d08f62b10ca4b5a85bc6f",
+  "registered_question_drivers": 43,
+  "separate_Q6_phases": 5,
+  "question_execution_contracts": 48,
+  "generic_linked_benchmark_scopes": [
+    "Q1.1",
+    "Q1.2",
+    "Q1.3",
+    "Q1.4",
+    "Q1.5",
+    "Q3.1",
+    "Q3.2",
+    "Q4.3",
+    "Q5.3",
+    "Q8.2",
+    "Q8.3"
+  ],
+  "wired_pair_controllers": 6,
+  "remaining_pair_controllers": 30,
+  "wired_triple_controllers": 2,
+  "remaining_triple_controllers": 3,
+  "full_loo_and_final_train_selected_bundle": "open",
+  "pruned_combinations": [],
+  "root_reports": {
+    "lineage-process/reports/lps-red.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.307",
+      "timestamp": "2026-09-13T16:00:17.442722+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-process/reports/lps-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "2",
+      "time": "153.228",
+      "timestamp": "2026-09-13T16:07:02.111761+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-process/reports/lps-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "50",
+      "time": "316.872",
+      "timestamp": "2026-09-13T16:13:35.271485+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-process/reports/lps-final.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "52",
+      "time": "328.944",
+      "timestamp": "2026-09-13T16:20:57.076186+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-process/reports/lps-scale-red.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "1",
+      "time": "20.234",
+      "timestamp": "2026-09-13T16:24:03.580871+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-process/reports/lps-scale-green.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.439",
+      "timestamp": "2026-09-13T16:28:35.967316+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-process/reports/lps-213-final.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "36",
+      "time": "260.177",
+      "timestamp": "2026-09-13T16:27:54.704270+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "reference/reports/red-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "1",
+      "time": "1.734",
+      "timestamp": "2026-09-13T16:35:02.295086+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "reference/reports/green-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "11",
+      "time": "5.197",
+      "timestamp": "2026-09-13T16:40:11.377338+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "reference/reports/boundary-r3.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "24",
+      "time": "77.739",
+      "timestamp": "2026-09-13T16:41:47.474334+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "reference/reports/integration-r4.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "29",
+      "time": "95.671",
+      "timestamp": "2026-09-13T16:44:48.645507+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "reference/reports/frozen-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "125",
+      "time": "686.443",
+      "timestamp": "2026-09-13T16:47:55.145484+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "retrieval-review-combinations/reports/retrieval-combinations-dev02.xml": {
+      "name": "pytest",
+      "errors": "1",
+      "failures": "2",
+      "skipped": "0",
+      "tests": "4",
+      "time": "1.526",
+      "timestamp": "2026-09-13T16:33:37.738348+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "retrieval-review-combinations/reports/retrieval-combinations-dev03.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "4",
+      "time": "73.438",
+      "timestamp": "2026-09-13T16:36:32.176943+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "retrieval-review-combinations/reports/retrieval-combinations-dev04.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "24",
+      "time": "123.584",
+      "timestamp": "2026-09-13T16:40:19.037598+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "retrieval-review-combinations/reports/retrieval-combinations-final05.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "80",
+      "time": "228.911",
+      "timestamp": "2026-09-13T16:43:30.246764+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "retrieval-review-combinations/reports/retrieval-combinations-final06.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "81",
+      "time": "313.657",
+      "timestamp": "2026-09-13T16:48:27.818593+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "retrieval-review-combinations/reports/retrieval-combinations-final07.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "81",
+      "time": "330.283",
+      "timestamp": "2026-09-13T16:55:11.362872+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "retrieval-review-combinations/reports/retrieval-combinations-red01.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.156",
+      "timestamp": "2026-09-13T16:26:48.749403+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "prediction-linked-order/reports/pred-order-final03.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "61",
+      "time": "185.827",
+      "timestamp": "2026-09-13T17:19:49.515239+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "prediction-linked-order/reports/pred-order-red01.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.538",
+      "timestamp": "2026-09-13T17:15:51.499497+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "prediction-linked-order/reports/pred-order-repair02.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.137",
+      "timestamp": "2026-09-13T17:19:18.872008+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-linked/reports/lsl-red.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "2",
+      "skipped": "0",
+      "tests": "12",
+      "time": "1.254",
+      "timestamp": "2026-09-13T16:39:07.371938+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-linked/reports/lsl-config.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "2",
+      "time": "1.224",
+      "timestamp": "2026-09-13T16:46:52.646883+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-linked/reports/lsl-grid-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "2",
+      "skipped": "0",
+      "tests": "2",
+      "time": "47.953",
+      "timestamp": "2026-09-13T16:48:50.452458+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-linked/reports/lsl-grid-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "25",
+      "time": "366.312",
+      "timestamp": "2026-09-13T16:51:22.837128+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-linked/reports/lsl-legacy.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "30",
+      "time": "101.113",
+      "timestamp": "2026-09-13T16:58:47.884983+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-linked/reports/lsl-authority-red.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "1",
+      "time": "2.146",
+      "timestamp": "2026-09-13T17:01:04.345883+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-linked/reports/lsl-guards.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "7",
+      "time": "2.089",
+      "timestamp": "2026-09-13T17:02:05.490038+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-linked/reports/lsl-late.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.778",
+      "timestamp": "2026-09-13T17:02:54.822632+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-linked/reports/lsl-final.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "2",
+      "skipped": "0",
+      "tests": "106",
+      "time": "504.319",
+      "timestamp": "2026-09-13T17:03:18.882539+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-linked/reports/lsl-public-field-red.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.407",
+      "timestamp": "2026-09-13T17:12:12.022079+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-linked/reports/lsl-public-field-green.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.400",
+      "timestamp": "2026-09-13T17:12:54.399411+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "lineage-linked/reports/lsl-final-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "107",
+      "time": "546.051",
+      "timestamp": "2026-09-13T17:13:20.182457+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/lps-integrated-root-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "0",
+      "time": "0.001",
+      "timestamp": "2026-09-13T16:38:52.325413+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/lps-integrated-root-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "85",
+      "time": "770.237",
+      "timestamp": "2026-09-13T16:39:11.370453+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/reference-lineage-root-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "52",
+      "time": "200.957",
+      "timestamp": "2026-09-13T17:03:15.849240+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/pred-linked-red-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "1",
+      "time": "1.862",
+      "timestamp": "2026-09-13T16:42:13.488663+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/pred-linked-dev-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "10",
+      "time": "77.060",
+      "timestamp": "2026-09-13T16:46:11.399804+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/pred-linked-frozen-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "45",
+      "time": "428.450",
+      "timestamp": "2026-09-13T16:50:59.616675+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/ret-public-red-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "1",
+      "time": "16.035",
+      "timestamp": "2026-09-13T17:12:16.718822+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/ret-public-frozen-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "29",
+      "time": "152.888",
+      "timestamp": "2026-09-13T17:14:35.584539+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/mrr-lineage-integrated-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "53",
+      "time": "265.841",
+      "timestamp": "2026-09-13T17:16:51.580244+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/retrieval-boundary-integrated-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "29",
+      "time": "97.727",
+      "timestamp": "2026-09-13T17:22:23.932937+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/pred-lineage-integrated-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "104",
+      "time": "338.451",
+      "timestamp": "2026-09-13T17:29:28.685313+08:00",
+      "hostname": "SC-202507131830"
+    }
+  },
+  "synthetic_zip_members": {
+    "lineage-process-run-0": 252,
+    "lineage-process-run-1": 252,
+    "retrieval-review-combinations": 406,
+    "prediction-linked-order": 396,
+    "lineage-linked-normal_groups-0": 332,
+    "lineage-linked-normal_groups-1": 310,
+    "lineage-linked-source_failure_groups-0": 188,
+    "lineage-linked-source_failure_groups-1": 226,
+    "retrieval-public-boundary-grid": 268
+  },
+  "new_primary_reference_items": 4,
+  "primary_reference_attempts": 1,
+  "primary_reference_journal_events": 8,
+  "primary_private_reference_payloads_archived": 0,
+  "new_actual_paid_calls": 0,
+  "retrieval_review_grid": {
+    "cells": 32,
+    "model_calls": 160,
+    "provider_calls": 96,
+    "docker": 32,
+    "primary_process_fixture_scores": 32
+  },
+  "lineage_linked_grid": {
+    "cells": 58,
+    "model_calls": 290,
+    "docker": 58,
+    "primary_process_fixture_scores": 58
+  },
+  "prediction_linked_grid": {
+    "Q3.2": 8,
+    "Q5.3": 12,
+    "docker": 20,
+    "model_calls": 96,
+    "primary_fixture_scores": 20,
+    "succeeded": 20,
+    "total": 20
+  },
+  "Q3.2_mechanism": "planning_only",
+  "earlier_public_input_and_chronology_limitations": "retained_with_original_reports",
+  "scientific_mechanism_effects": "not_measured",
+  "official_primary_score_equivalence": "not_established",
+  "scorer_calibration": "not_measured",
+  "validation_acceptance": "not_run",
+  "primary_validation_stays_sealed": 95,
+  "SAB_validation_records_on_hold": 18,
+  "BLADE_validation_groups": 1
+}

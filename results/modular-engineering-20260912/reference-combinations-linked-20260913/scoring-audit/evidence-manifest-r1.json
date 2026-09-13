@@ -1,0 +1,380 @@
+{
+  "schema": "primary-scoring-calibration-readonly-audit-evidence-v1",
+  "audit_started_head": "0063ca1f08a91658022f87ff4443f32e71c9eefa",
+  "audit_reference_commit": "8d8ff1028db8572431db78018f920c01e35bf47c",
+  "head_at_manifest": "8d8ff1028db8572431db78018f920c01e35bf47c",
+  "integration_was_concurrently_advanced_by_parent": true,
+  "source_files": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\evaluation\\modular\\scoring_service.py",
+      "status": "present",
+      "size_bytes": 28984,
+      "sha256": "72b6c133ef35215355f0c109dd06a3cea163ad2af973a6f8098a12599e00c815",
+      "repository_path": "evaluation/modular/scoring_service.py",
+      "audit_commit_blob_sha256": "a7987b7039d08faf274ab85f2b5cfc46e93cb155caf3d1f7b661db39e3be3c7a",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\evaluation\\modular\\calibration.py",
+      "status": "present",
+      "size_bytes": 9954,
+      "sha256": "ab20cfb96f446b3c512f45c84502421a5ccf81b38b8e5abf77833a4285add799",
+      "repository_path": "evaluation/modular/calibration.py",
+      "audit_commit_blob_sha256": "2518d2f372a191c59456d6d9014676ad5012e6c8f28128a7132f756c6ab31234",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\evaluation\\modular\\custody.py",
+      "status": "present",
+      "size_bytes": 34074,
+      "sha256": "700fefdaa2782cfa837e311c5e66417e6f96c00580872bbc34429b095c0ef2d9",
+      "repository_path": "evaluation/modular/custody.py",
+      "audit_commit_blob_sha256": "84f0be58bb8a755075edc74c47b0792c6f1c47f392bf29a3e6d3c4e6b3dd244f",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\evaluation\\modular\\scorer_process.py",
+      "status": "present",
+      "size_bytes": 38108,
+      "sha256": "07c1c4ea08596b7023deb33f6187497d855b91d3a37ae3258fba912828ae080b",
+      "repository_path": "evaluation/modular/scorer_process.py",
+      "audit_commit_blob_sha256": "db8260d8586fabdf189428dcedb834f9589b63621a3a0b52b62dae7df4975710",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\evaluation\\modular\\evaluator_model_port.py",
+      "status": "present",
+      "size_bytes": 7295,
+      "sha256": "758a0657cd6ae7e2404a754224e05d123f44c375d3a922e84cc3519f12e104a9",
+      "repository_path": "evaluation/modular/evaluator_model_port.py",
+      "audit_commit_blob_sha256": "53c77cf8950bd0ea871779886655599b25da61b43f41891cbc7e6e4914bb6ed7",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\evaluation\\modular\\reference_store.py",
+      "status": "present",
+      "size_bytes": 16377,
+      "sha256": "58710b187affb5ac7a5e41061f7dc72215d84b2761ddfd89fa9d67ce27356557",
+      "repository_path": "evaluation/modular/reference_store.py",
+      "audit_commit_blob_sha256": "201fb655767fa673076a5dbd49c2b068b9aeb76b6f335fc0eb08a67d7a19de8b",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\evaluation\\modular\\primary_reference_bridge.py",
+      "status": "present",
+      "size_bytes": 15444,
+      "sha256": "b3b3df63cb2026c4daa6d965f9a791bf4010fa46cffb4cf6961523073ed4528b",
+      "repository_path": "evaluation/modular/primary_reference_bridge.py",
+      "audit_commit_blob_sha256": "b4680d6da87c660c68b6652d5e5efd8e5ff0f129bb08e021aedc9947133f7a4b",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\evaluation\\modular\\linked_scoring.py",
+      "status": "present",
+      "size_bytes": 20519,
+      "sha256": "50fdf69f5689d49358972f53dff932fcc93621d3cee83b96cbaed17fd63d83ce",
+      "repository_path": "evaluation/modular/linked_scoring.py",
+      "audit_commit_blob_sha256": "f77eadfec31580cb8b689b4bbc39bb1e0115edaa04af4569f5b36444dad3174c",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\evaluation\\modular\\combination_scoring.py",
+      "status": "present",
+      "size_bytes": 19487,
+      "sha256": "94d8b30373944061da47e776cdf080f35d551c6fe1c5907a5260ce39dbeed31b",
+      "repository_path": "evaluation/modular/combination_scoring.py",
+      "audit_commit_blob_sha256": "a8c685c62e048280f7a3ccbe37293dcfcb94c71ba9573cd0ad7537ef02bf9589",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\benchmarks\\scoring.py",
+      "status": "present",
+      "size_bytes": 1668,
+      "sha256": "2d74531fe620c3abd39bfa3570d5bcab1474e71f2dcab46ccaf8fcfd69b12faa",
+      "repository_path": "research_loop/modular/benchmarks/scoring.py",
+      "audit_commit_blob_sha256": "a5fc4b93754b9832e42d639c920bfd34ea87e40baffe461767168413edc8f6df",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\tests\\test_modular_calibration.py",
+      "status": "present",
+      "size_bytes": 8217,
+      "sha256": "809354a16019bffc28bfff93254a010eb6cf9b6cffa1bf24bd0e48bbc128c7cd",
+      "repository_path": "tests/test_modular_calibration.py",
+      "audit_commit_blob_sha256": "165295502099ab0af162e7d2f20e353852b9d20bfee76ff8b3fa001488838b22",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\MODULAR-ADAPTED-SCORING-SERVICE.md",
+      "status": "present",
+      "size_bytes": 3074,
+      "sha256": "36a2b57c7643cc7f9be5d2cd27c1ca246b440d30577764b820c86966e49a9e91",
+      "repository_path": "docs/MODULAR-ADAPTED-SCORING-SERVICE.md",
+      "audit_commit_blob_sha256": "ce11a1f0d2f3bc0f6acc35cdeb5f0cc3b914c9f0404b893fb4da717f76ad4e60",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\MODULAR-EXPERIMENT-PROTOCOL.md",
+      "status": "present",
+      "size_bytes": 23217,
+      "sha256": "19723711f1f2c1471fa40ddfac6cd9d1921e997ca62fa76fe040c07bae78ca51",
+      "repository_path": "docs/MODULAR-EXPERIMENT-PROTOCOL.md",
+      "audit_commit_blob_sha256": "17405a2b0a8e8b64918ccef3c77f213b07941eac274f14cb267ad74c963f5790",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\MODULAR-TRAIN-REFERENCE-STORE.md",
+      "status": "present",
+      "size_bytes": 2495,
+      "sha256": "efa9a864f792c400745896152d0a37e8481631f4cde5fe317002e3c41efad6a9",
+      "repository_path": "docs/MODULAR-TRAIN-REFERENCE-STORE.md",
+      "audit_commit_blob_sha256": "efa9a864f792c400745896152d0a37e8481631f4cde5fe317002e3c41efad6a9",
+      "working_bytes_equal_audit_commit": true
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\MODULAR-LINKED-SCORER-PROCESS.md",
+      "status": "present",
+      "size_bytes": 2000,
+      "sha256": "fd1869c653df4c2a246bad5421a846624a232546a41117fb1799fb6d7ce5c9ac",
+      "repository_path": "docs/MODULAR-LINKED-SCORER-PROCESS.md",
+      "audit_commit_blob_sha256": "f46319b15a2ba044b18a468be3db4c64bb213e168572c84f95817a476ee9cf42",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\MODULAR-IMPLEMENTATION-STATUS.md",
+      "status": "present",
+      "size_bytes": 29775,
+      "sha256": "de5520261be29d31328cd6c66d9f93354fd48ff27ca024ca672accf2d4dba69f",
+      "repository_path": "docs/MODULAR-IMPLEMENTATION-STATUS.md",
+      "audit_commit_blob_sha256": "276ddf1324efd6872a8cbb8d66afa8e40b7e71b3d50631ec459a87d7a0a25e5d",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\MODULAR-SCORING-SCENARIOS.md",
+      "status": "present",
+      "size_bytes": 2888,
+      "sha256": "61bdcb7e8293c3b3fa9973813415d23a8585e7fca6f0b64cf001c8b36c449d16",
+      "repository_path": "docs/MODULAR-SCORING-SCENARIOS.md",
+      "audit_commit_blob_sha256": "5215e1e85dc85ff14eb72a6ff799563a7212309cbdd042311c9e8f3af3a37597",
+      "working_bytes_equal_audit_commit": false
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\MODULAR-CHECKPOINT-20260913-SCORING-RECOVERY.md",
+      "status": "present",
+      "size_bytes": 4195,
+      "sha256": "9949653bdc44400ec0c72c39d365b5dbf03177922e588b93b45d5f850d061161",
+      "repository_path": "docs/MODULAR-CHECKPOINT-20260913-SCORING-RECOVERY.md",
+      "audit_commit_blob_sha256": "9949653bdc44400ec0c72c39d365b5dbf03177922e588b93b45d5f850d061161",
+      "working_bytes_equal_audit_commit": true
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\MODULAR-CHECKPOINT-20260913-SCORER.md",
+      "status": "present",
+      "size_bytes": 3427,
+      "sha256": "c55bed0793d6ff83ab450c4750d72bf074cd8870d760cdefe66bc6be264b07fe",
+      "repository_path": "docs/MODULAR-CHECKPOINT-20260913-SCORER.md",
+      "audit_commit_blob_sha256": "c55bed0793d6ff83ab450c4750d72bf074cd8870d760cdefe66bc6be264b07fe",
+      "working_bytes_equal_audit_commit": true
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\AUDIT-SCORER-READ-SCOPE-DEVIATION-20260913.md",
+      "status": "present",
+      "size_bytes": 4219,
+      "sha256": "12673d13512237ad1e4bf6c1ffe68c2cc62407908e8f1c03aa952d406b04f4b0",
+      "repository_path": "docs/AUDIT-SCORER-READ-SCOPE-DEVIATION-20260913.md",
+      "audit_commit_blob_sha256": "d17606dda080f27182107db5f5caaab570c605a2539626aa7d77da47578e40b3",
+      "working_bytes_equal_audit_commit": false
+    }
+  ],
+  "official_local_code": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\discovery\\upstream\\discovery_eval.py",
+      "status": "present",
+      "size_bytes": 1997,
+      "sha256": "cf6d70e3e3e734a0efc2adc16b6cf0190d832eeac70e0f26ddb9731cf5c5495e"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\discovery\\upstream\\eval\\eval.py",
+      "status": "present",
+      "size_bytes": 19827,
+      "sha256": "fd0d3e3c1a2bbf88c1a40726b916502d169814bc10fbc5c572d9213203bb9450"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\discovery\\upstream\\eval\\new_eval.py",
+      "status": "present",
+      "size_bytes": 19552,
+      "sha256": "83406ddbe6894429cc5012b17cb82a209d5397aa7863b0aba1bb51edf1dd6c65"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\scienceagent\\work\\BLADE\\blade_bench\\eval\\evaluator.py",
+      "status": "present",
+      "size_bytes": 9516,
+      "sha256": "0ad72ca4c4c9d3cbf30995dd3498bc3ca04b687e7045e458911d34708f698af0"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\scienceagent\\work\\BLADE\\blade_bench\\eval\\match\\match_submission.py",
+      "status": "present",
+      "size_bytes": 3956,
+      "sha256": "940d0f2bfd6330d125cf60bcf2e98f9e90f1f583f76d311b1d54bf7fa47ad362"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\scienceagent\\work\\BLADE\\blade_bench\\eval\\match\\conceptual_variable.py",
+      "status": "present",
+      "size_bytes": 3510,
+      "sha256": "6dfcfae38d8d77c8ac5113d60c8744a6df92a1ab9a5d8471e9076ca934bea906"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\scienceagent\\work\\BLADE\\blade_bench\\eval\\match\\model.py",
+      "status": "present",
+      "size_bytes": 6649,
+      "sha256": "237472188a8057eb8ba5a1702d9b1d4dac6117e19432195a33d22d1cbbd217a6"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\scienceagent\\work\\BLADE\\blade_bench\\eval\\match\\transform.py",
+      "status": "present",
+      "size_bytes": 8609,
+      "sha256": "d7874064fe7669bb949cec3b29d45be3683b5c51d05c3e1c222494a20741d33d"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\scienceagent\\work\\BLADE\\blade_bench\\eval\\metrics\\all_metrics.py",
+      "status": "present",
+      "size_bytes": 1453,
+      "sha256": "7e48e8af67d60bebc79c38a7f721406ad37403ac6fe4addda81450d1ad2b701b"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\scienceagent\\work\\BLADE\\blade_bench\\eval\\metrics\\base.py",
+      "status": "present",
+      "size_bytes": 346,
+      "sha256": "3ff9d88969ba174ea948173e784fd8144756074dc2682f65a720023e03c27ba6"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\scienceagent\\work\\BLADE\\blade_bench\\eval\\metrics\\cvar.py",
+      "status": "present",
+      "size_bytes": 788,
+      "sha256": "bf3ce7438aab416e3f59fa373515654aef3bb89fd462cc3a3eea01c73eb4dc10"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\scienceagent\\work\\BLADE\\blade_bench\\eval\\metrics\\model.py",
+      "status": "present",
+      "size_bytes": 1642,
+      "sha256": "a7bff5da5471cc67aef52d3b8bdade782baa83d51d29ff18020a7deda133ddc1"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\scienceagent\\work\\BLADE\\blade_bench\\eval\\metrics\\transform.py",
+      "status": "present",
+      "size_bytes": 3921,
+      "sha256": "f3709e71c32e4769a4b685df2406c4f9727b577a76589e950673c77c6a2a3e49"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-benchmark-20260912\\scienceagent\\work\\BLADE\\blade_bench\\eval\\metrics\\calc_metrics.py",
+      "status": "present",
+      "size_bytes": 11906,
+      "sha256": "571c0d929f2020745a7eace3ee11ac18684fabc75e3c0bf50e310aa6e34eaf3a"
+    }
+  ],
+  "prior_metadata_evidence": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\frozen-r1.xml",
+      "status": "present",
+      "size_bytes": 19206,
+      "sha256": "3962344becb69cdbaf23ff9435afe11d6bcade125110986388981d6f5474418f"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\delivery-verification-r1.json",
+      "status": "present",
+      "size_bytes": 32575,
+      "sha256": "bb910360b95de7f2ad7d45e2c4452104f073a58179c952213ea2a34fa5282f8d"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\actual-four-train-reference-plan-r1.json",
+      "status": "present",
+      "size_bytes": 5046,
+      "sha256": "5e6a79bc55c1385b25f7eb73b61381adffb1a085d6a20b0c9ea68931e7208818"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-reference-checks\\actual-four-train-reference-descriptor-r2.json",
+      "status": "present",
+      "size_bytes": 3087,
+      "sha256": "53b849053d87eb81565c16440f53c2460f800e9bdbbc1e0d568ee47445669f3e"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-reference-live-r1\\delivery-manifest-r1.json",
+      "status": "present",
+      "size_bytes": 5452,
+      "sha256": "1c5b4ad41c2eb834b32d62c2eb85148c9f76f1a6a53996a0029ad92a4717526a"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-reference-live-r1\\actual-result-r1.json",
+      "status": "present",
+      "size_bytes": 3871,
+      "sha256": "22ac8c1b4d533de6947b2a17952d766ad091cb1325c1d34e430f8817a672e385"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-reference-live-r1\\frozen-reference-request-r1.json",
+      "status": "present",
+      "size_bytes": 46248,
+      "sha256": "d7f94a0968c05f0e16ebd7506213746dd621504f7c661e80362e546dfc77efb2"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-reference-live-r1\\attempt-metadata-r1.json",
+      "status": "present",
+      "size_bytes": 1349,
+      "sha256": "4f327b0b417c09a34ecb97ee16cd3ea9590c483a37ba8ce22b6d93ee29198ae0"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-reference-live-r1\\reference-publication-r1.json",
+      "status": "present",
+      "size_bytes": 928,
+      "sha256": "21510b35dc8a70e317b488c4adcf5794f92223e4c58a5ab5440af31b1af0f7e0"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\frozen-request-r1.json",
+      "status": "present",
+      "size_bytes": 2841,
+      "sha256": "8713df0bccbd7dfd499e4461790bb5c983fe0b89b37d3eac98867df250cb6685"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\delivery-manifest-r1.json",
+      "status": "present",
+      "size_bytes": 6900,
+      "sha256": "8f30d619bec9227d1064bf597d580b3a54426a76e3e683205dab50e3f17416d3"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\export-receipt.json",
+      "status": "present",
+      "size_bytes": 5049,
+      "sha256": "b08238bc3fdf9757074d5e64e49ca7b3b5cdc2f58015b0688420cd9f78ad3bb3"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\export-audit\\exports.jsonl",
+      "status": "present",
+      "size_bytes": 7642,
+      "sha256": "0a99c347e1a1f255efb5ca753d9ff7ad67574cd2887bc82d19cf4711e7b3737b"
+    }
+  ],
+  "official_discovery_upstream_revision": "unknown",
+  "official_blade_upstream_revision": "6118fa8d5007b91aa8c91c518182db82446a4547",
+  "scope": {
+    "source_edits": 0,
+    "reference_payload_reads": 0,
+    "validation_payload_reads": 0,
+    "model_calls": 0,
+    "scorer_calls": 0,
+    "docker_calls": 0,
+    "tests_run": 0,
+    "new_validation_leases": 0,
+    "public_web_source_inspection": true,
+    "official_code_executed_or_imported": false,
+    "historical_claims_are_receipt_scoped": true
+  },
+  "source_binding_note": "Discovery source pin remains unknown; local code hashes identify inspected bytes. Current online main is not asserted identical to these bytes. Only scorer_process.py among the six primary endpoint files compared changed during the initial audit interval; read diff adds a separate retrieval combination scope, leaving primary rubric unchanged.",
+  "official_urls": [
+    "https://github.com/allenai/discoverybench/blob/main/discovery_eval.py",
+    "https://github.com/allenai/discoverybench/blob/main/eval/new_eval.py",
+    "https://github.com/behavioral-data/BLADE",
+    "https://blade-bench.github.io/"
+  ],
+  "calibration_claim": "not_measured",
+  "official_metric_equivalence": "not_established",
+  "scientific_effectiveness": "not_measured"
+}

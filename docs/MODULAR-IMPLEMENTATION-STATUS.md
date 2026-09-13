@@ -3,7 +3,34 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current all-question execution and training export checkpoint (2026-09-13)
+## Current reference, combination and linked training checkpoint (2026-09-13)
+
+Source `d168781` passed 104 integrated checks with zero failures, errors or skips;
+all 441 frozen source/document hashes remained unchanged. The 43 registered
+drivers and five separate Q6 phases still cover all 48 engineering execution
+contracts. Generic benchmark linking now supports Q1.1–Q1.5, Q3.1, Q3.2, Q4.3,
+Q5.3, Q8.2 and Q8.3. Q3.2 remains planning-only: downstream solving does not
+execute its three proposed experiments or acquire independent observations.
+
+Six of 36 pair controllers and two of five triple controllers are wired. The new
+M4×M6, M5×M6 and M4×M5×M6 panels executed 32 synthetic cells with independent
+primary scorer processes. Q1.1–Q1.4 linking executed 58 synthetic cells. Review
+also repaired prediction freeze chronology and Q8.2/Q8.3 public metadata leakage;
+the original failures and earlier limited GREEN reports remain archived.
+
+The four fixed primary TRAIN tasks now have independently prepared references.
+Root verified identities, hashes, all eight audit events and unchanged protected
+inputs without parsing reference bodies. No new actual paid call or validation
+call was made. The primary 95 validation items stay sealed and SAB's 18 stay on
+hold; BLADE still has only one validation family.
+
+The archive now contains 1,981 indexed files, preserving all previous 1,680, with
+nine synthetic ZIPs containing 2,630 individually hashed members. Thirty pairs,
+three triples, full/LOO, the final train-selected bundle, scorer calibration,
+actual mechanism effects and validation acceptance remain open. No singleton
+result prunes combinations. See [the checkpoint](MODULAR-CHECKPOINT-20260913-REFERENCE-COMBINATIONS-LINKED.md).
+
+## Previous all-question execution and training export checkpoint (2026-09-13)
 
 Source `b9f7ff4` passed 121 integrated checks with no failures or skips. There are
 now 43 registered question drivers and five separate Q6 training phases, covering

@@ -1,0 +1,197 @@
+{
+  "schema": "lineage-process-root-integration-verification-v1",
+  "source_commit": "62b1ddb7fd58c8c81e692d225cd296bc38555876",
+  "source_bindings": {
+    "docs/LINEAGE-PROCESS-SCORING.md": {
+      "agent_raw_sha256": "86ec0cf63f7e1be1b9a2a8b82d5847841f2a0f45d78b9d473ea33a08febb7832",
+      "integrated_raw_sha256": "6a4c4fdb55bb3351b9774b9623d879b8cf945489334b12244a7fa0152107d9f1",
+      "git_blob_sha256": "981e56a07bb888671f2e13b7f9b34dd7b008ff2f9f6f219538aeac0d2682e56f"
+    },
+    "evaluation/modular/evaluator_model_port.py": {
+      "agent_raw_sha256": "758a0657cd6ae7e2404a754224e05d123f44c375d3a922e84cc3519f12e104a9",
+      "integrated_raw_sha256": "758a0657cd6ae7e2404a754224e05d123f44c375d3a922e84cc3519f12e104a9",
+      "git_blob_sha256": "53c77cf8950bd0ea871779886655599b25da61b43f41891cbc7e6e4914bb6ed7"
+    },
+    "evaluation/modular/lineage_combination_scoring.py": {
+      "agent_raw_sha256": "565feee0b83275d65e6b77cded48e5f204190fd58b6055f9f47fbef0ddb63fe6",
+      "integrated_raw_sha256": "a7dc40d8b9ea35dc3e4f9dace92be5686afa55ee264510d037978e038209027b",
+      "git_blob_sha256": "d896c1105628045695f6416df805ed932d8c5d25c2a479ea39579f699121c833"
+    },
+    "evaluation/modular/lineage_rubric.py": {
+      "agent_raw_sha256": "327de6ee2bad5da98844f43fe50d06a65b101f89da4e6459fa825462653eb389",
+      "integrated_raw_sha256": "242c6596c614ddeed6db9b34ba9fc336453f4bdebd22bf01698089f9701d932b",
+      "git_blob_sha256": "b452d94f338065a10b4d2f02e429e9ef822bd5467a9039758d2a5938dba5bb91"
+    },
+    "evaluation/modular/lineage_scorer_process.py": {
+      "agent_raw_sha256": "3c2755f3e8c9176e04a650d553a0ac9e98b5fcfc2fb763a7e974a6380b1bb108",
+      "integrated_raw_sha256": "d1e217ef54567eeb4caf82d64a81b06a71d2f531fa26a9830917cc3e2037c65a",
+      "git_blob_sha256": "d37226a28cf8a01c246f0e3f9386a5265bbccd710a0e4377c4534ca7cbcf5948"
+    },
+    "evaluation/modular/scorer_process.py": {
+      "agent_raw_sha256": "33b43f6ab8d1961239b3a722d00b68d8c8caa77d1ffbef00cd1b16c99eec7e8e",
+      "integrated_raw_sha256": "33b43f6ab8d1961239b3a722d00b68d8c8caa77d1ffbef00cd1b16c99eec7e8e",
+      "git_blob_sha256": "e0ca8d33377d68fa694c019a2faa8a512cb901c19e13adffb17090434bc821e0"
+    },
+    "research_loop/modular/lineage_combination_controller.py": {
+      "agent_raw_sha256": "d0c121a37cfeeffaec242128eb6a95c4f39ae85b2360b7f06f52a925b73d5d5e",
+      "integrated_raw_sha256": "d0c121a37cfeeffaec242128eb6a95c4f39ae85b2360b7f06f52a925b73d5d5e",
+      "git_blob_sha256": "c339f4316775a13f24cf17c05c132b1380549d89a38e86b2fc9c83ecabf69e0c"
+    },
+    "tests/helpers/lineage_scorer_helper.py": {
+      "agent_raw_sha256": "c52ce8573ad1e72a41cf855162993c1b550fc2a3df3027454f422673507a0186",
+      "integrated_raw_sha256": "1ee3f871b0d7e911d981c6242a55ee73b87411775fff269ea98545071ab72d4b",
+      "git_blob_sha256": "0df8bc090a1401828811c51d71c526bc8e2a73b60aba32695c4677f0db0ada48"
+    },
+    "tests/test_lineage_process_scoring.py": {
+      "agent_raw_sha256": "d58f4361dc3b5ac3000105a5c091c82c035945e50e1810acf206741936efa43e",
+      "integrated_raw_sha256": "bff662ca69f7ed8561f45fd76548f941eb35db2fcc7b9e183936bd782d558cc8",
+      "git_blob_sha256": "98b10dc0649c80c2ad43c523d2727fd501f8520f9d8ece5b8d428fc96abc4ee9"
+    }
+  },
+  "agent_manifest_sha256": "be8106d1a0c8dd2c23d98b466389826bb2f53a297c7b68fc87f9da41b4189e78",
+  "reports": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-red.xml",
+      "sha256": "41a4aadd6d7f67a07005bcf218c9d1166b9b954572148a6882e377d0eeed05f4",
+      "suite": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "1",
+        "skipped": "0",
+        "tests": "1",
+        "time": "0.307",
+        "timestamp": "2026-09-13T16:00:17.442722+08:00",
+        "hostname": "SC-202507131830"
+      }
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-r1.xml",
+      "sha256": "383642163ef5d355aa313b19a3747f84f932ac253b425574bd4253395c5d738f",
+      "suite": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "2",
+        "time": "153.228",
+        "timestamp": "2026-09-13T16:07:02.111761+08:00",
+        "hostname": "SC-202507131830"
+      }
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-r2.xml",
+      "sha256": "99047bc92a5c25987fd17d2666dcdd46d96299be19936821f555112039cf7a61",
+      "suite": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "50",
+        "time": "316.872",
+        "timestamp": "2026-09-13T16:13:35.271485+08:00",
+        "hostname": "SC-202507131830"
+      }
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-final.xml",
+      "sha256": "6cfa4ca026f7fb0b701e77f08021d318bd24f0fc1c7a5fe53f5ca914a364ed77",
+      "suite": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "52",
+        "time": "328.944",
+        "timestamp": "2026-09-13T16:20:57.076186+08:00",
+        "hostname": "SC-202507131830"
+      }
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-scale-red.xml",
+      "sha256": "717df94577a0abded580d9e321d007ef3b6d364a92fb8ceb7f5e8ce739114062",
+      "suite": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "1",
+        "skipped": "0",
+        "tests": "1",
+        "time": "20.234",
+        "timestamp": "2026-09-13T16:24:03.580871+08:00",
+        "hostname": "SC-202507131830"
+      }
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-scale-green.xml",
+      "sha256": "f1e0d0df3ec6a6c6549133881af98e0cf546e9a609b4174a4e2f9b9bc17a2c67",
+      "suite": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "1",
+        "time": "0.439",
+        "timestamp": "2026-09-13T16:28:35.967316+08:00",
+        "hostname": "SC-202507131830"
+      }
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-213-final.xml",
+      "sha256": "3a45539fb79e88964560a8d356181b5340ae17502cc666e8ee61455c22a8e98a",
+      "suite": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "36",
+        "time": "260.177",
+        "timestamp": "2026-09-13T16:27:54.704270+08:00",
+        "hostname": "SC-202507131830"
+      }
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-integrated-root-r1.xml",
+      "sha256": "f80c20e75ce2e18765f81e776ab067cc54034f2c8519ea1b117e5f0120745eae",
+      "suite": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "0",
+        "time": "0.001",
+        "timestamp": "2026-09-13T16:38:52.325413+08:00",
+        "hostname": "SC-202507131830"
+      }
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lps-integrated-root-r2.xml",
+      "sha256": "1cac977ab25aefbb7841ae0ae4a0d9bdf7879b8d45c6a56c3f8e6e719bb3b0fd",
+      "suite": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "85",
+        "time": "770.237",
+        "timestamp": "2026-09-13T16:39:11.370453+08:00",
+        "hostname": "SC-202507131830"
+      }
+    }
+  ],
+  "runtime_metadata_files_verified": 12,
+  "root_invocation_failure": {
+    "report": "lps-integrated-root-r1.xml",
+    "tests": 0,
+    "exit_code": 1,
+    "reason": "Three incorrectly guessed test filenames; corrected using the actual tests file inventory; no experiment started."
+  },
+  "root_final_tests": 85,
+  "root_final_failures": 0,
+  "new_paid_calls": 0,
+  "validation_payload_read": false,
+  "private_reference_payload_read": false,
+  "synthetic_process_transport_only": true,
+  "scientific_effectiveness": "not_established",
+  "root_code_review": "All changed production source and primary evaluator/process seams read; fixed scale and schema repair reviewed.",
+  "root_full_before_test_source_hash_manifest_recorded": false,
+  "root_checkout_unchanged_during_tests": true
+}

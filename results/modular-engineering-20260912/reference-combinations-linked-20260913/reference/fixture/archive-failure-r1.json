@@ -1,0 +1,9 @@
+{
+  "schema": "primary-reference-archive-failure-v1",
+  "phase": "fixture_report_locator",
+  "error_category": "AssertionError",
+  "reason": "pytest_current_symlink_and_concrete_directory_both_match_glob",
+  "source_script_sha256": "33a85c3c426fd5ac08ef2609080feb3bd18e51a92db548e10be28f341b43018d",
+  "production_or_test_failure": false,
+  "frozen_source_changed": false
+}

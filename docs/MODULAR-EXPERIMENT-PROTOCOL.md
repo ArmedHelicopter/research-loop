@@ -102,7 +102,7 @@ P0 分别验证两个 adapter 的输入、数据可识别性、执行回执、�
 
 `CalibrationReceipt` 绑定 scorer code、judge identity/参数、rubric、校准材料 manifest、盲审/仲裁协议、适用 benchmark、混淆矩阵与不确定性。缺任一绑定不发 validation lease。独立制作的校准材料归 train/calibration 权限域，不能从封存验证题提取或据验证表现挑选。
 
-当前实现的 `FrozenBenchmarkRubricEndpoint` 只接收由服务解析的 train task handle 和运行轨迹中绑定的单个匿名候选；resolver 在独立服务内持有 task/reference，solver 不可访问。它将固定 DiscoveryBench（context、variable_f1、relation）或 BLADE（cvars、transform、model；除以 2 后归一化）rubric、严格输出 schema、evaluator id/version、prompt/schema/output/reference digest 写入签名回执。历史 runner 使用的是成对匿名 judge；这个单候选 endpoint 不宣称与其、官方 benchmark 或校准分数等价。生产 resolver/evaluator host 尚未部署，因此该代码也不能签发 validation acceptance。
+当前实现的 `FrozenBenchmarkRubricEndpoint` 只接收由服务解析的 train task handle 和运行轨迹中绑定的单个匿名候选；resolver 在独立服务内持有 task/reference，solver 接口不暴露参考答案。它将固定 DiscoveryBench（context、variable_f1、relation）或 BLADE（cvars、transform、model；除以 2 后归一化）rubric、严格输出 schema、evaluator id/version、prompt/schema/output/reference digest 写入签名回执。历史 runner 使用的是成对匿名 judge；这个单候选 endpoint 不宣称与其、官方 benchmark 或校准分数等价。训练 resolver 和独立 scorer process 已接线，历史固定训练运行已有实际评分，新导出的四个训练项也已完成参考准备；这些证据不证明宿主权限隔离或评分校准。官方量尺等价性、独立机制量尺校准与验证资格仍未建立，当前接线不能据此签发 validation acceptance。具体差异与未完成项见当前检查点归档中的 `scoring-audit/AUDIT.md`。
 
 科学有效性和参考一致性分别输出。Discovery 的常量目标/无法识别关系不应因复述参考关系得到“科学有效”的肯定；BLADE 的合理非参考方法不应自动变成科学错误。保留兼容历史的适配分，并新增预注册的科学有效性/可识别性读数；不靠合成加权总分隐藏冲突。
 

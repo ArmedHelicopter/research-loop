@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="16.035" timestamp="2026-09-13T17:12:16.718822+08:00" hostname="SC-202507131830"><testcase classname="tests.test_retrieval_public_boundary" name="test_actual_24_cell_precursor_requests_exclude_policy_and_pool_metadata" time="15.008"><failure message="AssertionError: assert {'by_lane', '...ualification'} == {'by_lane', '...ualification'}&#10;  &#10;  Extra items in the left set:&#10;  'source_bundle_digest'&#10;  'policy_digest'&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/ret-public-red-r1/test_actual_24_cell_precursor_0')
+
+    def test_actual_24_cell_precursor_requests_exclude_policy_and_pool_metadata(tmp_path):
+        observed = []
+        for benchmark in ('blade', 'discoverybench'):
+            task = _task(benchmark)
+            bundle = freeze_retrieval_bundle(task,
+                query={'task_digest': task.content_hash, 'question': 'fixed train query'},
+                budget={'provider_calls': 3, 'source_cap': 3, 'context_bytes': 4096},
+                materials=_neutral_materials())
+            for experiment, variants in _SCOPE.items():
+                for variant in variants:
+                    for enabled in ((), ('M6',)):
+                        stage, _, _, requests = _run(tmp_path / str(len(observed)), task, bundle,
+                            experiment, variant, enabled)
+                        observed.append((stage.detail.data(), requests[0]))
+        assert len(observed) == 24
+        # The complete original requests are checked, including precursor prompts.
+        # These digests are actual controller metadata, not guessed sentinel values.
+        forbidden_values = {stage[key] for stage, _ in observed
+                            for key in ('policy_digest', 'source_bundle_digest')}
+        for stage, request in observed:
+            public = request['module_context']['retrieval']
+&gt;           assert set(public) == {'by_lane', 'source_qualification', 'scientific_admission'}
+E           AssertionError: assert {'by_lane', '...ualification'} == {'by_lane', '...ualification'}
+E             
+E             Extra items in the left set:
+E             'source_bundle_digest'
+E             'policy_digest'
+E             Use -v to get more diff
+
+tests\test_retrieval_public_boundary.py:29: AssertionError</failure></testcase></testsuite></testsuites>

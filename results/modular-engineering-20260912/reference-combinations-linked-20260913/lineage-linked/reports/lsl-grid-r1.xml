@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="47.953" timestamp="2026-09-13T16:48:50.452458+08:00" hostname="SC-202507131830"><testcase classname="tests.test_lineage_singleton_linked" name="test_full_grid_uses_actual_context_in_solver_and_docker[history]" time="28.107"><failure message="AssertionError: assert ['solver_anal..._failed', ...] == ['linked_succ...cceeded', ...]&#10;  &#10;  At index 0 diff: 'solver_analysis_model_failed' != 'linked_succeeded'&#10;  Use -v to get more diff">linked_grid = (TrainPanelRun(compiled=CompiledTrainPanel(panel=FrozenPanel(stage='public-train-history', domain='train', split_diges...0x000001BD15E3A270&gt;, WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lsl-grid-tmp/lineage-history0'), 'history')
+
+    def test_full_grid_uses_actual_context_in_solver_and_docker(linked_grid):
+        result,port,root,group=linked_grid
+        count=30 if group=='history' else 28
+        assert len(result.linked_results)==len(result.runtimes)==count
+&gt;       assert result.receipt.data()['linked_statuses']==['linked_succeeded']*count
+E       AssertionError: assert ['solver_anal..._failed', ...] == ['linked_succ...cceeded', ...]
+E         
+E         At index 0 diff: 'solver_analysis_model_failed' != 'linked_succeeded'
+E         Use -v to get more diff
+
+tests\test_lineage_singleton_linked.py:130: AssertionError</failure></testcase><testcase classname="tests.test_lineage_singleton_linked" name="test_full_grid_uses_actual_context_in_solver_and_docker[support]" time="19.412"><failure message="AssertionError: assert ['solver_anal..._failed', ...] == ['linked_succ...cceeded', ...]&#10;  &#10;  At index 0 diff: 'solver_analysis_model_failed' != 'linked_succeeded'&#10;  Use -v to get more diff">linked_grid = (TrainPanelRun(compiled=CompiledTrainPanel(panel=FrozenPanel(stage='public-train-support', domain='train', split_diges...0x000001BD15F01250&gt;, WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lsl-grid-tmp/lineage-support0'), 'support')
+
+    def test_full_grid_uses_actual_context_in_solver_and_docker(linked_grid):
+        result,port,root,group=linked_grid
+        count=30 if group=='history' else 28
+        assert len(result.linked_results)==len(result.runtimes)==count
+&gt;       assert result.receipt.data()['linked_statuses']==['linked_succeeded']*count
+E       AssertionError: assert ['solver_anal..._failed', ...] == ['linked_succ...cceeded', ...]
+E         
+E         At index 0 diff: 'solver_analysis_model_failed' != 'linked_succeeded'
+E         Use -v to get more diff
+
+tests\test_lineage_singleton_linked.py:130: AssertionError</failure></testcase></testsuite></testsuites>

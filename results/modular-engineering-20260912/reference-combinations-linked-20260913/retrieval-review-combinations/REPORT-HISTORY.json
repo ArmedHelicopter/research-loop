@@ -1,0 +1,127 @@
+[
+  {
+    "binding_limit": "Preimplementation import RED with the initial test stub and contract. No contemporaneous raw source-byte manifest; do not reinterpret as a frozen full-grid baseline.",
+    "errors": 0,
+    "failures": 1,
+    "full_model_metadata_isolation_checked": false,
+    "junit_sha256": "e3bff5eeef07d561d163ea8d98bca99446fb54c1adb5217b9aa1bc48275ef36a",
+    "round": "red01",
+    "skipped": 0,
+    "source_commit": "0073c9e93d480aaf51e114e0b68253835fbdecce",
+    "tests": 1
+  },
+  {
+    "binding_limit": "Historical development commits bind content; contemporaneous raw source byte manifests exist only for final05/06/07.",
+    "errors": 1,
+    "failures": 2,
+    "full_model_metadata_isolation_checked": false,
+    "git_blob_sha256": {
+      "docs/retrieval-review-combinations-contract.md": "35cfa8fbd9b07937ba78065b379cb34de175447480f0e43dc2cbcfaaf52f7a8b",
+      "evaluation/modular/scorer_process.py": "ec8287875e01f8d69934a25f336555cb48631ade28f29083c3d586bcd441b94c",
+      "research_loop/modular/retrieval_review_combination_controller.py": "f39989da445cf6b53f6b637cabf6d2bc2716553b63fc447ee4f2ac159bb23d21",
+      "research_loop/modular/retrieval_review_combination_driver.py": "0a13815ca0d60b060bf6d0420594d1b7e017ca9b2928fbc20d8a83db5a753aa8",
+      "tests/test_retrieval_review_combinations.py": "68bc0e214d4023183f161b4727c98d9829e28c04de23c78ff2392b213f315fe9"
+    },
+    "junit_sha256": "daf972aaae2e66fe1ae02231ceca6a8683715d5d4c73cf8afc63077723efd95a",
+    "round": "dev02",
+    "skipped": 0,
+    "source_commit": "3d20914e8739c7e429b72ccf585e158b29cc78e6",
+    "source_tree": "8daf009d880da293f9426c17f283715d5fa525bb",
+    "tests": 4
+  },
+  {
+    "binding_limit": "Historical development commits bind content; contemporaneous raw source byte manifests exist only for final05/06/07.",
+    "errors": 0,
+    "failures": 0,
+    "full_model_metadata_isolation_checked": false,
+    "git_blob_sha256": {
+      "docs/retrieval-review-combinations-contract.md": "35cfa8fbd9b07937ba78065b379cb34de175447480f0e43dc2cbcfaaf52f7a8b",
+      "evaluation/modular/scorer_process.py": "254b1d89299f8902b3614f3e8f9fdb8dbcad752a3536c4c70d959387202dbe66",
+      "research_loop/modular/retrieval_review_combination_controller.py": "f39989da445cf6b53f6b637cabf6d2bc2716553b63fc447ee4f2ac159bb23d21",
+      "research_loop/modular/retrieval_review_combination_driver.py": "0a13815ca0d60b060bf6d0420594d1b7e017ca9b2928fbc20d8a83db5a753aa8",
+      "tests/test_retrieval_review_combinations.py": "074dddf891b24dc827a996c8984738068968af813535199e6924945bebe77761"
+    },
+    "junit_sha256": "7883669f605222ed627b565033241e164c5138d59691186f34932155a1df2eae",
+    "round": "dev03",
+    "skipped": 0,
+    "source_commit": "6b47c51542c6bc24610b1be51f1aa1f0d9073f17",
+    "source_tree": "97c6f4406532b02b451a5fdb06b6f7ed1f83c0ab",
+    "tests": 4
+  },
+  {
+    "binding_limit": "Historical development commits bind content; contemporaneous raw source byte manifests exist only for final05/06/07.",
+    "errors": 0,
+    "failures": 1,
+    "full_model_metadata_isolation_checked": false,
+    "git_blob_sha256": {
+      "docs/retrieval-review-combinations-contract.md": "35cfa8fbd9b07937ba78065b379cb34de175447480f0e43dc2cbcfaaf52f7a8b",
+      "evaluation/modular/scorer_process.py": "254b1d89299f8902b3614f3e8f9fdb8dbcad752a3536c4c70d959387202dbe66",
+      "research_loop/modular/retrieval_review_combination_controller.py": "f48bce35733ecdc32476687f04972c81367e6be97a8f1356b6f5766f9315738f",
+      "research_loop/modular/retrieval_review_combination_driver.py": "5fc6607dc3047173e2eb81fab3d6274f0e192777e5bfea33bcaab1919b8beb9f",
+      "tests/test_retrieval_review_combinations.py": "69964adf157b6e3df3429246113c9e7c3ccf823c23ce210ae238b2a164082f4a"
+    },
+    "junit_sha256": "c47c42a741975bf39e8870c351c80f92b822296f0aa8376b58793007880ef48a",
+    "round": "dev04",
+    "skipped": 0,
+    "source_commit": "4f03fbc5b4189d439d45af616397eb3917ddb027",
+    "source_tree": "369bde3ccca4dfee2371caed490ae4417001fd8d",
+    "tests": 24
+  },
+  {
+    "binding_limit": "Historical development commits bind content; contemporaneous raw source byte manifests exist only for final05/06/07.",
+    "errors": 0,
+    "failures": 0,
+    "full_model_metadata_isolation_checked": false,
+    "git_blob_sha256": {
+      "docs/retrieval-review-combinations-contract.md": "35cfa8fbd9b07937ba78065b379cb34de175447480f0e43dc2cbcfaaf52f7a8b",
+      "evaluation/modular/scorer_process.py": "254b1d89299f8902b3614f3e8f9fdb8dbcad752a3536c4c70d959387202dbe66",
+      "research_loop/modular/retrieval_review_combination_controller.py": "43f2a6f04cd9081291b62bb7154895f8f0e38cfe2848725fb759e60cb2e57541",
+      "research_loop/modular/retrieval_review_combination_driver.py": "f2889207202e1773fdea0e5ad1e68379ee61681a0369551fde871bc3ec3ae53f",
+      "tests/test_retrieval_review_combinations.py": "7c1c7cbb6144f989f1e641638153edec76151a89b7a766327ec7afce5539c2e5"
+    },
+    "junit_sha256": "b661c6e662cccb7b04f563314be2fd29721d1ba7a238463ccad6f02883a090bd",
+    "round": "final05",
+    "skipped": 0,
+    "source_commit": "64f2a5526200e42a79d7bf64e85bb3a93a4d4958",
+    "source_tree": "16e5ebbcc46f5d56de94b39d562d675eb0ac4d8d",
+    "tests": 80
+  },
+  {
+    "binding_limit": "Historical development commits bind content; contemporaneous raw source byte manifests exist only for final05/06/07.",
+    "errors": 0,
+    "failures": 0,
+    "full_model_metadata_isolation_checked": false,
+    "git_blob_sha256": {
+      "docs/retrieval-review-combinations-contract.md": "35cfa8fbd9b07937ba78065b379cb34de175447480f0e43dc2cbcfaaf52f7a8b",
+      "evaluation/modular/scorer_process.py": "95ae4505b3325df8b6b0bf75808dcb8905660b8748761a14a959a204d9e98feb",
+      "research_loop/modular/retrieval_review_combination_controller.py": "43f2a6f04cd9081291b62bb7154895f8f0e38cfe2848725fb759e60cb2e57541",
+      "research_loop/modular/retrieval_review_combination_driver.py": "ad6afe7e15ea32e1d0143502bc56cb28a2a1efcca0c9144d4928104c5261f884",
+      "tests/test_retrieval_review_combinations.py": "42e33fa43917b3b7ae280dc81be74a3d43248e91bfb16104d159531dca7cc174"
+    },
+    "junit_sha256": "99d73d1aefac0160e75a5fddc701f44081e56c29f26d734ab3911f7b5bdd941a",
+    "round": "final06",
+    "skipped": 0,
+    "source_commit": "e2a4bf8e870dd26d38fee1d0f019ea4e76c1a305",
+    "source_tree": "8358560c6ba4809620930b53731608c54e719d40",
+    "tests": 81
+  },
+  {
+    "binding_limit": "Historical development commits bind content; contemporaneous raw source byte manifests exist only for final05/06/07.",
+    "errors": 0,
+    "failures": 0,
+    "full_model_metadata_isolation_checked": true,
+    "git_blob_sha256": {
+      "docs/retrieval-review-combinations-contract.md": "35cfa8fbd9b07937ba78065b379cb34de175447480f0e43dc2cbcfaaf52f7a8b",
+      "evaluation/modular/scorer_process.py": "95ae4505b3325df8b6b0bf75808dcb8905660b8748761a14a959a204d9e98feb",
+      "research_loop/modular/retrieval_review_combination_controller.py": "43f2a6f04cd9081291b62bb7154895f8f0e38cfe2848725fb759e60cb2e57541",
+      "research_loop/modular/retrieval_review_combination_driver.py": "305ab46cf51ca421db5d4c0584c81cce6936ae715b1e731586153661b30d34a2",
+      "tests/test_retrieval_review_combinations.py": "7844e2c412bbd79d4e240d8f3a0697cbd621f6fc1aa1ea778d63fc4b384ef8c4"
+    },
+    "junit_sha256": "6df1c16ef2c10afe74b9bee7f5268ddabfcf05be995da2cdcf4262ff6395b817",
+    "round": "final07",
+    "skipped": 0,
+    "source_commit": "0f94d709018bc1b9f2c8bf5e1ef3c1d4c230d25a",
+    "source_tree": "176d917bc969e05e72d2983f2df898802fa273e9",
+    "tests": 81
+  }
+]
