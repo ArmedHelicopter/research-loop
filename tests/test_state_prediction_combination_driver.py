@@ -43,12 +43,12 @@ def test_registered_scope_and_m3_fixed_background():
 
 def test_m2_m4_and_m3_m4_use_actual_registry_then_shared_docker(tmp_path):
     for obligation in ('pair:M2+M4', 'pair:M3+M4'):
-        panel, packets, packages, materials, sources, scenarios = _panel(tmp_path/obligation, obligation)
+        panel, packets, packages, materials, sources, scenarios = _panel(tmp_path/obligation.replace(':', '_'), obligation)
         # Exercise one M4-on and one M4-off cell on the same public task.
         for arm_id in ('00', '01'):
             cell = next(c for c in panel.cells if c.identity.benchmark == 'blade' and c.arm_id == arm_id)
             packet = next(p for p in packets if p.task.content_hash == cell.task_digest)
-            root = tmp_path/obligation/arm_id
+            root = tmp_path/obligation.replace(':', '_')/arm_id
             result = run_state_prediction_combination_cell(panel=panel, cell=cell, task=packet.task,
                 scenario=scenarios[cell.key], package=__import__('research_loop.modular.modules.improvement', fromlist=['CandidatePackage']).CandidatePackage(FrozenRecord.from_dict(packages[cell.runtime_arm.content_hash])),
                 material=__import__('research_loop.modular.lineage_combination_material', fromlist=['FrozenLineageMaterial']).FrozenLineageMaterial(FrozenRecord.from_dict(materials[cell.task_digest])),
