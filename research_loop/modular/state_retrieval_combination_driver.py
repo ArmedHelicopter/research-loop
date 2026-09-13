@@ -31,6 +31,17 @@ from research_loop.ontology import ContractError, canonical
 
 DESIGNS = {'pair:M1+M6': ('M1', 'M6'), 'pair:M2+M6': ('M2', 'M6'), 'pair:M3+M6': ('M3', 'M6')}
 SLOTS = ('analysis_program', 'final_answer')
+# The shared solver seam has two fixed public request contracts. Keep them exact
+# so a rehashed trace cannot replace instructions while preserving its context.
+_INSTRUCTIONS = {
+    'analysis_program': ('Write a Python analysis program for the supplied public task and only the named /input files. '
+        'Use the supplied joint mechanism context only as train-only reasoning context. '
+        'Return exactly analysis and program; the program must print concise task-relevant observations.'),
+    'final_answer': ('Give the benchmark answer using only the public task, joint mechanism context, and recorded execution feedback. '
+        'Return exactly objective_digest, outcome, evidence_ids, conclusion, and programme_complete. '
+        'Copy module_context.required_objective_digest; set outcome to unknown, evidence_ids to [], and programme_complete to false.'),
+}
+
 
 
 def registered_design(obligation, baseline):
@@ -248,7 +259,19 @@ def verify_state_retrieval_cell(result, *, panel, task, scenario, package, mater
                 mode=mode, baseline_summary='').public_data()
             if request['context'] != expected_context:
                 raise ContractError('model evidence context differs from actual post-transition state')
+            if (set(request) != {'schema', 'task', 'lock_digest', 'objective', 'slot', 'instruction', 'context',
+                    'module_context', 'execution_feedback'} or request['schema'] != 'public-model-request-v1'
+                    or request['instruction'] != _INSTRUCTIONS[request['slot']]):
+                raise ContractError('solver request instruction or schema differs from shared solver contract')
             context = request['module_context']
+            common_keys = {'solver', 'public_artifacts', 'panel_cell', 'joint_mechanism', 'joint_mechanism_digest'}
+            final_keys = {'analysis', 'analysis_digest', 'analysis_program_sha256', 'execution_digest', 'execution_status',
+                'execution_input_artifacts', 'execution_feedback', 'required_objective_digest'}
+            if (set(context) != common_keys | (final_keys if request['slot'] == 'final_answer' else set())
+                    or context.get('solver') != 'public-benchmark-solve-v1'
+                    or context.get('panel_cell') != opaque_panel_cell_binding(cell)
+                    or request['slot'] == 'analysis_program' and request['execution_feedback'] != []):
+                raise ContractError('solver request context contains unbound fields or early feedback')
             if context.get('joint_mechanism') != joint.data() or context.get('joint_mechanism_digest') != joint.content_hash:
                 raise ContractError('solver omitted the actual state or retrieval context')
         _verify_solver_files(solver_state, events, path, state)

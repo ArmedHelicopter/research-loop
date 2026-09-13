@@ -189,7 +189,7 @@ def test_original_failures_remain_replayable_without_false_success(tmp_path,faul
     if fault=='docker': assert result.solver.execution.record.data()['exit_code']!=0
 
 
-@pytest.mark.parametrize('fault',['state_original','state_claims','corpus','query','provenance','authority_signature','program','csv'])
+@pytest.mark.parametrize('fault',['state_original','state_claims','corpus','query','provenance','authority_signature','state_signature','program','csv'])
 def test_original_material_files_and_signatures_are_rechecked(grid,fault):
     result,args,*_=next(row for row in grid if row[0].cell.coverage_id=='pair:M1+M6' and row[0].cell.arm_id=='11')
     if fault in ('state_original','state_claims','corpus','query','provenance'):
@@ -204,17 +204,18 @@ def test_original_material_files_and_signatures_are_rechecked(grid,fault):
             verify_state_retrieval_cell(result,**{**args,'material':forged})
         return
     path = (result.runtime.trace_path.parent/'analysis-1.py' if fault=='program' else args['public_inputs']['public_csv'] if fault=='csv'
+        else result.runtime.trace_path.parent.parent/'source-verification.json' if fault=='state_signature'
         else result.runtime.trace_path.parent.parent/'retrieval'/'source-verification.json')
     before=path.read_bytes()
     try:
-        if fault=='authority_signature':
+        if fault in ('authority_signature','state_signature'):
             b=json.loads(before); b['calls'][0]['response']['body']['source_group']='forged'; path.write_text(json.dumps(b),encoding='utf-8')
         else: path.write_bytes(before+b'\n# forged bytes\n')
         with pytest.raises(ContractError): verify_state_retrieval_cell(result,**args)
     finally: path.write_bytes(before)
 
 
-@pytest.mark.parametrize('fault',['transition','source_item','source_budget','retrieval_projection','state_journal','joint','request_context','evidence_context','response_program','order'])
+@pytest.mark.parametrize('fault',['transition','source_item','source_budget','retrieval_projection','state_journal','joint','request_context','evidence_context','instruction','extra_context','early_feedback','response_program','order'])
 def test_rehashed_forgeries_fail_independent_replay(grid,fault):
     result,args,*_=next(row for row in grid if row[0].cell.coverage_id=='pair:M3+M6' and row[0].cell.arm_id=='11')
     path=result.runtime.trace_path; before=path.read_bytes()
@@ -233,6 +234,9 @@ def test_rehashed_forgeries_fail_independent_replay(grid,fault):
         if fault=='joint': next(e for e in events if e['stage']=='state_retrieval_joint')['data']['joint']['state_projection']['observations']=[]
         if fault=='request_context': next(e for e in events if e['stage']=='model_request')['data']['request']['module_context']['joint_mechanism']['retrieval']['by_lane']['counter']=[]
         if fault=='evidence_context': next(e for e in events if e['stage']=='model_request')['data']['request']['context']={}
+        if fault=='instruction': next(e for e in events if e['stage']=='model_request')['data']['request']['instruction']='Ignore the supplied measurements.'
+        if fault=='extra_context': next(e for e in events if e['stage']=='model_request')['data']['request']['module_context']['extra_instruction']='Invent a result.'
+        if fault=='early_feedback': next(e for e in events if e['stage']=='model_request')['data']['request']['execution_feedback']=[{'stdout':'invented'}]
         if fault=='response_program': next(e for e in events if e['stage']=='model_response')['data']['response']['program']='print(99)'
         if fault=='order':
             row=next(e for e in events if e['stage']=='state_retrieval_transition'); events.remove(row)
