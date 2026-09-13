@@ -22,9 +22,11 @@ from typing import Any, Callable, Mapping, TextIO
 
 from evaluation.modular.evaluator_model_port import CodexEvaluatorModelPort
 from evaluation.modular.linked_scoring import LinkedAdaptedScoringService, LinkedExecutionAuthority
+from evaluation.modular.combination_scoring import CombinationAdaptedScoringService
 from evaluation.modular.reference_store import FrozenTrainReferenceResolver
 from evaluation.modular.scoring_service import FrozenBenchmarkRubricEndpoint, FrozenRubricTransport, ScorerConfig
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
+from research_loop.modular.combination_panels import CombinationPanel
 from research_loop.modular.model_port import FrozenBaseContextPolicy
 from research_loop.modular.panel_receipts import CombinationObligations, FrozenPanel, PanelCell, ScientificScorerReceipt
 from research_loop.ontology import ContractError, canonical, digest
@@ -35,6 +37,7 @@ _PANEL_SCHEMA = "linked-scorer-process-panel-v1"
 _REQUEST_SCHEMA = "linked-scorer-process-request-v1"
 _RESPONSE_SCHEMA = "linked-scorer-process-response-v1"
 _JOURNAL_SCHEMA = "linked-scorer-process-journal-v1"
+_COMBINATION_CONFIG_SCHEMA = "combination-scorer-process-config-v1"
 
 
 def _sha(value: bytes | str) -> str:
@@ -123,9 +126,62 @@ def parse_frozen_panel(value: object) -> FrozenPanel:
     return panel
 
 
+def serialize_combination_panel(panel: CombinationPanel) -> dict[str, object]:
+    """Serialize only the implemented M4/M5 train factorial, with its full design."""
+    if not isinstance(panel, CombinationPanel) or panel.obligation_id != "pair:M4+M5" or panel.domain != "train":
+        raise ContractError("process scoring currently supports the train M4/M5 combination only")
+    return {"schema": "combination-scorer-process-panel-v1", "panel_digest": panel.digest, "panel": {
+        "stage": panel.stage, "domain": panel.domain, "split_digest": panel.split_digest,
+        "obligation_id": panel.obligation_id, "estimand": panel.estimand, "design": panel.design.data(),
+        "package_bundle": panel.package_bundle.data(), "acceptance_criteria": panel.acceptance_criteria.data(),
+        "cells": [cell.data() for cell in panel.cells], "required_benchmarks": list(panel.required_benchmarks)}}
+
+
+def parse_combination_panel(value: object) -> CombinationPanel:
+    if (not isinstance(value, Mapping) or set(value) != {"schema", "panel_digest", "panel"}
+            or value["schema"] != "combination-scorer-process-panel-v1" or not isinstance(value["panel"], Mapping)):
+        raise ContractError("combination scorer panel envelope is invalid")
+    body = value["panel"]
+    if set(body) != {"stage", "domain", "split_digest", "obligation_id", "estimand", "design", "package_bundle", "acceptance_criteria", "cells", "required_benchmarks"}:
+        raise ContractError("combination scorer panel fields are invalid")
+    try:
+        cells = tuple(PanelCell(row["coverage_id"], DataIdentity.parse(row["identity"]), row["replicate"],
+            row["variant"], row["arm_id"], FrozenRecord.from_dict(row["runtime_arm"]), row["task_digest"],
+            row["scenario_digest"], row["package_digest"], row["scorer_digest"]) for row in body["cells"])
+        panel = CombinationPanel(body["stage"], body["domain"], body["split_digest"], body["obligation_id"],
+            body["estimand"], FrozenRecord.from_dict(body["design"]), FrozenRecord.from_dict(body["package_bundle"]),
+            FrozenRecord.from_dict(body["acceptance_criteria"]), cells, tuple(body["required_benchmarks"]))
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ContractError("combination scorer panel cannot be reconstructed") from exc
+    if serialize_combination_panel(panel) != value:
+        raise ContractError("combination scorer panel differs from its complete frozen serialization")
+    return panel
+
+
+def scorer_process_binding(*, panel: FrozenPanel | CombinationPanel, config: ScorerConfig,
+                           task_handle_bindings: Mapping[str, str], execution_authority_keys: Mapping[str, bytes],
+                           scorer_authority_keys: Mapping[str, bytes]) -> FrozenRecord:
+    """Public configuration proof; contains key hashes, never keys or references."""
+    if not isinstance(panel, (FrozenPanel, CombinationPanel)) or not isinstance(config, ScorerConfig):
+        raise ContractError("scorer process binding requires a typed panel and rubric")
+    expected = {digest(cell.identity.data()) for cell in panel.cells}
+    if set(task_handle_bindings) != expected or any(not isinstance(v, str) or _digest(v, "handle binding") != v for v in task_handle_bindings.values()):
+        raise ContractError("scorer process handle bindings differ from the panel")
+    if (not execution_authority_keys or len(scorer_authority_keys) != 1
+            or set(execution_authority_keys) & set(scorer_authority_keys)
+            or any(not isinstance(key, bytes) or len(key) < 32 for key in (*execution_authority_keys.values(), *scorer_authority_keys.values()))
+            or set(execution_authority_keys.values()) & set(scorer_authority_keys.values())):
+        raise ContractError("scorer process authority binding is invalid")
+    return FrozenRecord.from_dict({"schema": "scorer-process-binding-v1", "panel_digest": panel.digest,
+        "panel_kind": "combination" if isinstance(panel, CombinationPanel) else "linked",
+        "scorer_config_digest": config.digest, "task_handle_bindings": dict(task_handle_bindings),
+        "execution_key_sha256": {name: _sha(key) for name, key in execution_authority_keys.items()},
+        "scorer_key_sha256": {name: _sha(key) for name, key in scorer_authority_keys.items()}})
+
+
 @dataclass(frozen=True)
 class ScorerServerConfig:
-    panel: FrozenPanel
+    panel: FrozenPanel | CombinationPanel
     scorer: ScorerConfig
     store_root: Path
     manifest_sha256: str
@@ -139,9 +195,10 @@ class ScorerServerConfig:
 
 def parse_server_config(value: object) -> ScorerServerConfig:
     required = {"schema", "panel", "scorer_config", "scorer_config_digest", "train_reference_store", "task_handles", "execution_authority_key_files", "scorer_authority", "evaluator"}
-    if not isinstance(value, Mapping) or set(value) != required or value.get("schema") != _CONFIG_SCHEMA:
+    if not isinstance(value, Mapping) or set(value) != required or value.get("schema") not in {_CONFIG_SCHEMA, _COMBINATION_CONFIG_SCHEMA}:
         raise ContractError("scorer process configuration is invalid")
-    panel = parse_frozen_panel(value["panel"])
+    panel = (parse_combination_panel(value["panel"]) if value["schema"] == _COMBINATION_CONFIG_SCHEMA
+             else parse_frozen_panel(value["panel"]))
     if panel.domain != "train" or any(cell.identity.domain != "train" for cell in panel.cells):
         raise ContractError("scorer process is train-only")
     scorer = ScorerConfig(FrozenRecord.from_dict(value["scorer_config"]))
@@ -200,7 +257,7 @@ def _production_evaluator(spec: Mapping[str, object]) -> CodexEvaluatorModelPort
         max_calls=spec["max_calls"], max_tokens=spec["max_tokens"], timeout_seconds=spec["timeout_seconds"], frozen_base_context=policy)
 
 
-def build_service(config: ScorerServerConfig, *, evaluator: Callable[[FrozenRecord], FrozenRecord] | None = None) -> LinkedAdaptedScoringService:
+def build_service(config: ScorerServerConfig, *, evaluator: Callable[[FrozenRecord], FrozenRecord] | None = None) -> LinkedAdaptedScoringService | CombinationAdaptedScoringService:
     """Load and verify the full train store before an evaluator can be invoked."""
     resolver = FrozenTrainReferenceResolver(config.store_root, manifest_sha256=config.manifest_sha256,
         inventory_digest=config.inventory_digest, split_digest=config.split_digest)
@@ -214,7 +271,8 @@ def build_service(config: ScorerServerConfig, *, evaluator: Callable[[FrozenReco
     model = evaluator if evaluator is not None else _production_evaluator(config.evaluator)
     endpoint = FrozenBenchmarkRubricEndpoint(resolver=resolver, evaluator=model,
         evaluator_id=config.scorer.record.data()["evaluator_id"], evaluator_version=config.scorer.record.data()["version"])
-    return LinkedAdaptedScoringService(config=config.scorer, evaluator=FrozenRubricTransport(endpoint),
+    service_type = CombinationAdaptedScoringService if isinstance(config.panel, CombinationPanel) else LinkedAdaptedScoringService
+    return service_type(config=config.scorer, evaluator=FrozenRubricTransport(endpoint),
         execution_authority_keys=config.execution_keys, task_handles=config.task_handles, scorer_authority=config.scorer_authority)
 
 
@@ -275,6 +333,14 @@ class ScorerWorker:
         self.cells = {cell.key: cell for cell in panel.cells}
 
     def respond(self, value: object) -> dict[str, object]:
+        if isinstance(value, Mapping) and value.get("schema") == "scorer-process-binding-request-v1":
+            if set(value) != {"schema", "nonce"} or not isinstance(value["nonce"], str) or not value["nonce"]:
+                raise ContractError("scorer binding request is malformed")
+            binding = scorer_process_binding(panel=self.panel, config=self.service.config,
+                task_handle_bindings={key: _sha(handle) for key, handle in self.service._handles.items()},
+                execution_authority_keys=self.service._execution_keys,
+                scorer_authority_keys={self.service._authority.authority_id: self.service._authority.key})
+            return {"schema": "scorer-process-binding-response-v1", "nonce": value["nonce"], "binding": binding.data()}
         request_id, key, linked, request_digest = _request(value, self.panel)
         state = self.states.get(canonical(list(key)))
         base = {"schema": _RESPONSE_SCHEMA, "request_id": request_id, "request_digest": request_digest, "cell_key": list(key)}
@@ -288,7 +354,10 @@ class ScorerWorker:
                        "request_digest": request_digest, "status": "reserved"}
         _append(self.journal_path, reservation); self.states[canonical(list(key))] = reservation
         try:
-            receipt = self.service.score_linked(panel=self.panel, cell=self.cells[key], linked_input=linked)
+            if isinstance(self.panel, CombinationPanel):
+                receipt = self.service.score_combination(panel=self.panel, cell=self.cells[key], score_input=linked)
+            else:
+                receipt = self.service.score_linked(panel=self.panel, cell=self.cells[key], linked_input=linked)
         except Exception:
             unknown = reservation | {"status": "unknown"}
             _append(self.journal_path, unknown); self.states[canonical(list(key))] = unknown
@@ -321,7 +390,7 @@ class LinkedScorerProcessClient:
     """Sequential stdio client with a local no-retry reservation journal."""
     def __init__(self, *, panel: FrozenPanel, command: list[str], journal_path: Path,
                  environment: Mapping[str, str] | None = None, response_timeout_seconds: int = 240):
-        if not isinstance(panel, FrozenPanel) or not command or any(not isinstance(item, str) or not item for item in command):
+        if not isinstance(panel, (FrozenPanel, CombinationPanel)) or not command or any(not isinstance(item, str) or not item for item in command):
             raise ContractError("scorer process client needs a panel and command")
         if environment is not None and (not isinstance(environment, Mapping)
                 or any(not isinstance(key, str) or not isinstance(value, str) for key, value in environment.items())):
@@ -425,6 +494,51 @@ class LinkedScorerProcessClient:
         success = reservation | {"status": "succeeded", "receipt": receipt.data()}
         _append(self.journal_path, success); self.states[canonical(list(cell_key))] = success
         return ScientificScorerReceipt(cell_key, receipt)
+
+
+class CombinationScorerProcessClient(LinkedScorerProcessClient):
+    """Combination adapter over the same UTF-8, no-retry cell transaction wire.
+
+    The legacy wire field is named ``linked_input``; its content remains the
+    independently verified, signed combination input. The child selects the
+    scorer by its frozen panel type. A startup handshake compares every public
+    configuration binding before this object can reach the train controller.
+    """
+    def __init__(self, *, panel: CombinationPanel, config: ScorerConfig, command: list[str], journal_path: Path,
+                 task_handle_bindings: Mapping[str, str], execution_authority_keys: Mapping[str, bytes],
+                 scorer_authority_keys: Mapping[str, bytes], environment: Mapping[str, str] | None = None,
+                 response_timeout_seconds: int = 240):
+        serialize_combination_panel(panel)
+        expected = scorer_process_binding(panel=panel, config=config, task_handle_bindings=task_handle_bindings,
+            execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
+        self.config = config
+        super().__init__(panel=panel, command=command, journal_path=journal_path,
+                         environment=environment, response_timeout_seconds=response_timeout_seconds)
+        try:
+            nonce = uuid.uuid4().hex
+            self.input.write(canonical({"schema": "scorer-process-binding-request-v1", "nonce": nonce}) + "\n")
+            self.input.flush()
+            response = json.loads(self._readline_bounded())
+            if response != {"schema": "scorer-process-binding-response-v1", "nonce": nonce, "binding": expected.data()}:
+                raise ContractError("combination scorer startup binding differs from frozen configuration")
+            self.binding = expected
+        except Exception as exc:
+            self._stop_unknown_worker()
+            if isinstance(exc, ContractError):
+                raise
+            raise ContractError("combination scorer startup did not return its bound configuration") from exc
+
+    def assert_configuration(self, *, config: ScorerConfig, task_handle_bindings: Mapping[str, str],
+                             execution_authority_keys: Mapping[str, bytes], scorer_authority_keys: Mapping[str, bytes]) -> None:
+        expected = scorer_process_binding(panel=self.panel, config=config, task_handle_bindings=task_handle_bindings,
+            execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
+        if self.config != config or self.binding != expected or self.process.poll() is not None:
+            raise ContractError("combination scorer configuration or worker state drift")
+
+    def score_combination(self, *, panel: CombinationPanel, cell: PanelCell, score_input: FrozenRecord) -> ScientificScorerReceipt:
+        if panel != self.panel or self.cells.get(cell.key) != cell:
+            raise ContractError("combination scorer cell differs from the frozen process panel")
+        return super().submit(cell_key=cell.key, linked_input=score_input)
 
 
 def _load(path: Path, expected_sha256: str) -> ScorerServerConfig:

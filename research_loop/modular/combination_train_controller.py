@@ -205,14 +205,20 @@ class M4M5TrainRun:
 
 
 def _service_preflight(config, model, service, execution_authority, scorer_keys):
+    from evaluation.modular.scorer_process import CombinationScorerProcessClient
     body = config.data()
-    if not isinstance(model, CodexModelPort) or not isinstance(service, CombinationAdaptedScoringService) or not isinstance(execution_authority, LinkedExecutionAuthority):
+    if not isinstance(model, CodexModelPort) or not isinstance(service, (CombinationAdaptedScoringService, CombinationScorerProcessClient)) or not isinstance(execution_authority, LinkedExecutionAuthority):
         raise ContractError("real model port, independent scoring service and execution authority are required")
     _reviewed_model_policy(model)
     if (model.model != body["model"] or model.effort != body["effort"] or model.max_calls != body["max_calls"]
             or model.max_tokens != body["max_tokens"] or model.schemas != body["schemas"]
             or model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False):
         raise ContractError("live model configuration/schemas or fresh budget ledger drift")
+    if isinstance(service, CombinationScorerProcessClient):
+        service.assert_configuration(config=ScorerConfig(_record(body["scorer"], "scorer")),
+            task_handle_bindings=body["scorer_handle_bindings"],
+            execution_authority_keys={execution_authority.authority_id: execution_authority.key}, scorer_authority_keys=scorer_keys)
+        return
     # These are trusted in-process component dependencies. Checking both key
     # sets prevents a caller from passing a verifier unrelated to the service.
     if (not isinstance(scorer_keys, Mapping) or set(scorer_keys) != {service._authority.authority_id}
@@ -264,6 +270,9 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
         packets = TrainPacketExporter(custody, snapshot, exported).export(body["item_ids"])
         journal["packet_receipts"] = [p.receipt.data() for p in packets]
         compiled = compile_m4_m5_train_panel(config, packets)
+        from evaluation.modular.scorer_process import CombinationScorerProcessClient
+        if isinstance(scoring_service, CombinationScorerProcessClient) and scoring_service.panel != compiled.panel:
+            raise ContractError("combination scorer process differs from the exported frozen panel")
         if len(compiled.panel.cells) != expected_cells:
             raise ContractError("compiled panel does not cover the frozen allocation")
         # Freeze every cell before any provider call, including future failures.
