@@ -7,6 +7,13 @@ a resolver for that bundle and installs Q1.1 and Q1.2 only into a
 caller-owned driver mapping. The production registry remains unchanged until a
 separate integration change chooses to register them.
 
+The resolver must return the exact bundle whose digest is frozen in the
+scenario base evidence. The driver records public observations as unadmitted;
+it does not manufacture a trusted validator or scientific admission.
+When Q1.2's M2 arm needs a claim supported by that observation, the caller
+must supply an admission port and its typed verified receipt. There is no
+default admission path.
+
 Q1.1 schedules `history_baseline`, `history_rebuilt`, and `final` for the
 correct, wrong, and neutral selected public-history materials. The material is bound to
 the current public task identity. Variant labels are committed by hash rather

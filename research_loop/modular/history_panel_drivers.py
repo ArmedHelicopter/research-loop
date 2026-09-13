@@ -47,12 +47,15 @@ def _candidate(value: FrozenRecord, objective: FrozenRecord) -> None:
         raise ContractError("history driver final candidate must remain train-only unknown")
 
 
-def _append(session, material: FrozenRecord, root: str):
+def _append(session, material: FrozenRecord, root: str, receipt: Mapping[str, Any] | None = None):
     return session.evidence.append({"kind": "measurement", "root_material": {"history_id": root},
         "representation": "raw", "content": material.data()["public_evidence"],
         "subject_bindings": {"task": session.task.identity.task_id},
         "independent_group": session.task.identity.group_id},
-        {"trusted_validator": "public-fixture", "validator_verified": True, "admitted": True})
+        # A caller-projected public observation is input material, never an
+        # independently validated scientific admission.  It may inform the
+        # explicit request material below but cannot be promoted by this driver.
+        dict(receipt) if receipt is not None else {"trusted_validator": "unverified-public-observation", "validator_verified": False, "admitted": False})
 
 
 def freeze_history_bundle(task: PublicTask, *, public_evidence: Mapping[str, Any],
@@ -87,7 +90,10 @@ def select_history_material(bundle: FrozenRecord, task: PublicTask, experiment_i
 def _resolve(resolver: Callable[[PublicTask, FrozenRecord], FrozenRecord] | None, task: PublicTask, scenario: FrozenRecord, experiment_id: str, variant: str) -> FrozenRecord:
     if resolver is None:
         raise ContractError("history driver requires caller-supplied frozen history bundle resolver")
-    return select_history_material(resolver(task, scenario), task, experiment_id, variant)
+    bundle = resolver(task, scenario)
+    if not isinstance(bundle, FrozenRecord) or scenario.data().get("base", {}).get("evidence") != bundle.content_hash:
+        raise ContractError("history bundle does not match the scenario frozen evidence")
+    return select_history_material(bundle, task, experiment_id, variant)
 
 
 @dataclass(frozen=True)
@@ -127,13 +133,16 @@ class Q12DependencyDriver:
     execution_limit: int = 0
     docker_execution: str = "not_requested_by_driver"
     material_resolver: Callable[[PublicTask, FrozenRecord], FrozenRecord] | None = None
+    admission_port: Callable[[PublicTask, FrozenRecord], Mapping[str, Any]] | None = None
 
     def run(self, workflow: ModularWorkflow, *, cell: PanelCell, scenario: FrozenRecord, model, package):
         material = _resolve(self.material_resolver, workflow.session.task, scenario, "Q1.2", cell.variant)
         m2, m3 = "M2" in workflow.enabled, "M3" in workflow.enabled
         root = upstream = downstream = None
         if m2:
-            root = _append(workflow.session, material, "q12-upstream")
+            if self.admission_port is None:
+                raise ContractError("Q1.2 M2 requires a caller-supplied verified admission receipt")
+            root = _append(workflow.session, material, "q12-upstream", self.admission_port(workflow.session.task, material))
             upstream = workflow.session.claims.create("typed public upstream observation", subject_bindings={"task": workflow.session.task.identity.task_id})
             upstream = workflow.session.claims.apply(upstream.claim_id, {"supports": [root.root_id], "refutes": [], "subject_bindings": {"task": workflow.session.task.identity.task_id}}, expected_revision=0).claim
             downstream = workflow.session.claims.create("typed public downstream interpretation", subject_bindings={"task": workflow.session.task.identity.task_id})
@@ -156,7 +165,8 @@ class Q12DependencyDriver:
         return workflow._trace("stage_7" if m3 else "operation_m3_control_final", "executed", material_digest=material.content_hash), final, (first, second, final)
 
 
-def install_drivers(target: MutableMapping[str, Any], *, material_resolver: Callable[[PublicTask, FrozenRecord], FrozenRecord] | None = None) -> MutableMapping[str, Any]:
+def install_drivers(target: MutableMapping[str, Any], *, material_resolver: Callable[[PublicTask, FrozenRecord], FrozenRecord] | None = None,
+                    admission_port: Callable[[PublicTask, FrozenRecord], Mapping[str, Any]] | None = None) -> MutableMapping[str, Any]:
     """Install only these drivers into a caller-owned registry mapping."""
-    target.update({"Q1.1": Q11HistoryDriver(material_resolver=material_resolver), "Q1.2": Q12DependencyDriver(material_resolver=material_resolver)})
+    target.update({"Q1.1": Q11HistoryDriver(material_resolver=material_resolver), "Q1.2": Q12DependencyDriver(material_resolver=material_resolver, admission_port=admission_port)})
     return target
