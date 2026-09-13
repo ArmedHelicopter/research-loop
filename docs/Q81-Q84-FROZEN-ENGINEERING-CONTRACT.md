@@ -23,9 +23,10 @@ The four Q8.4 arms deliberately retain the causal ceiling: with neither M6 nor
 M2, all admitted document units reach context; M6 performs source-root selection;
 M2 performs actual ledger append/admission and root selection; both together
 cannot gain more distinct roots than either alone. The M6 increment conditional
-on already functioning M2 de-duplication is structurally non-identifiable here.
-That comparison remains in the grid and is reported, never converted into a
-positive effect by changing only metadata or hashes.
+on already functioning M2 de-duplication is a mechanistically redundant, expected
+zero-increment negative control. With all four arms present the conditional
+increment remains estimable. That comparison stays in the grid and is reported,
+never excluded or converted into a positive effect through metadata or hashes.
 
 Verification must run the real registry/compiler/controller, custody/export,
 CodexModelPort (transport fixture), caller source ports, actual Docker execution,
@@ -58,3 +59,10 @@ intermediate model responses from its aggregate output receipt. Neither failure
 was repaired by increasing call allowance, skipping cells, relaxing P0, or
 discarding the independent receipt verifier. The controller and runtime now use
 the same declared per-variant slot schedule and complete response sequence.
+
+Terminology correction (2026-09-13, independent review): the original frozen
+run used the annotation `structurally_non_identifiable` for this expected null.
+That term was incorrect because the factorial is complete. The preserved run
+and its hashes remain unchanged; subsequent source/authority records use
+`mechanistically_redundant_expected_null`. No cell, contrast, budget, selection
+rule, or outcome is changed, and no non-identifiability mask is introduced.

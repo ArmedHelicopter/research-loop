@@ -168,7 +168,7 @@ def verify_grid(result):
         assert q84[(benchmark,"shared_root",("M2",))] == q84[(benchmark,"shared_root",("M2","M6"))]
     return {"schema": "q81-q84-independent-fixture-grid-v1", "denominator": 64, "verified_cells": len(rows), "q81_cells": 48, "q84_cells": 16,
         "model_transport": "fixture", "docker_execution": "real", "docker_executions": 8, "paid_calls": 0,
-        "m6_increment_given_m2": "structurally_non_identifiable", "scientific_verified": False,
+        "m6_increment_given_m2": "mechanistically_redundant_expected_null", "scientific_verified": False,
         "panel_digest": result.compiled.panel.digest, "p0_control_digest": result.compiled.control.content_hash, "rows": rows}
 
 
@@ -225,3 +225,35 @@ def test_actual_m2_source_admission_cannot_bypass_p0_scientific_evidence(tmp_pat
     terminal = session.finish(candidate).data()
     assert terminal["decision"] == "blocked" and terminal["scientific_validated"] is False
     assert {"missing_validated_evidence", "unbound_evidence"} <= set(terminal["reasons"])
+
+
+def test_complete_q84_factorial_retains_estimable_expected_null(tmp_path):
+    from research_loop.modular.retrieval_stage_panel_drivers import RetrievalStagePanelDriver
+    from research_loop.modular.runtime import RunSession
+    from research_loop.modular.workflow import ModularWorkflow
+    from research_loop.modular.combinations import default_compatibility
+    from test_modular_retrieval_panel_drivers import _task
+    from types import SimpleNamespace
+    task = _task("blade"); rows = []
+    for variant in ("shared_root", "independent_roots"):
+        counts = {}
+        for enabled in ((), ("M6",), ("M2",), ("M2","M6")):
+            session = RunSession(task, package_digest="public", arm=default_compatibility("a"*64).arm(enabled),
+                objective=FrozenRecord.from_dict({"question": "fixed"}), slots=("final",), execution_limit=0,
+                sidecar=tmp_path/variant/("-".join(enabled) or "off"), verifier=AuditVerifier({"a":b"a"*32,"b":b"b"*32}), required_audit=("measurement",))
+            provider = Provider()
+            result = RetrievalStagePanelDriver("Q8.4", provider, admission, Authority())._provenance(
+                ModularWorkflow(session), SimpleNamespace(variant=variant), {"sources": sources(),
+                "query": {"question": "fixed", "task_digest": task.content_hash},
+                "budget": {"provider_calls": 3, "source_cap": 3, "context_bytes": 4096}})
+            counts[enabled] = len(result["units"])
+            accounting = next(event.data()["data"] for event in session._events if event.data()["stage"] == "q84_source_accounting")
+            assert accounting["incremental_m6_given_m2"] == "mechanistically_redundant_expected_null"
+            assert len(provider.calls) == 3
+            rows.append({"variant": variant, "enabled": list(enabled), "context_units": counts[enabled],
+                "provider_calls": len(provider.calls), "annotation": accounting["incremental_m6_given_m2"]})
+        assert len(counts) == 4
+        assert counts[("M2","M6")] - counts[("M2",)] == 0
+        assert counts[("M6",)] - counts[()] == (-2 if variant == "shared_root" else 0)
+    (tmp_path/"expected-null-contrasts.json").write_text(json.dumps({"denominator": 8, "verified_cells": len(rows),
+        "conditional_increment_estimable": True, "excluded_contrasts": [], "rows": rows}, indent=2), encoding="utf-8")

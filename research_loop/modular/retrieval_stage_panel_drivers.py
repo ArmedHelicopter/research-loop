@@ -157,7 +157,7 @@ class RetrievalStagePanelDriver:
             else: result = proposed
         session._record("q84_source_accounting", {"returned_document_count": len(returned), "context_unit_count": len(result["units"]),
             "m2_admitted_records": len(records), "m2_admitted_roots": len(admitted_roots), "ledger_digest": ledger.version,
-            "excluded_context_budget": excluded, "incremental_m6_given_m2": "structurally_non_identifiable", "scientific_verified": False})
+            "excluded_context_budget": excluded, "incremental_m6_given_m2": "mechanistically_redundant_expected_null", "scientific_verified": False})
         session._record("q8_retrieval_budget", {"limits": budget, "provider_calls": port.calls_used, "unused_provider_calls": 3-port.calls_used,
             "sources_returned": port.sources_returned, "unused_source_slots": 3-port.sources_returned,
             "context_bytes": len(FrozenRecord.from_dict(result).encoded.encode("utf-8")), "external_cost": {"units": None, "status": "unknown"}})
