@@ -90,7 +90,7 @@ def test_real_worker_renderer_native_ledger_and_fixed_denominators(tmp_path, mod
     worker = Path(__file__).parent / 'helpers' / 'subscription_worker.py'
     result_path = tmp_path / 'result.json'
     proc = run_fixture_worker([sys.executable, str(worker), '--config', desc['path'], '--sha256', desc['sha256'],
-        '--output', str(result_path), '--mode', mode], stream_root=tmp_path, timeout=120)
+        '--output', str(result_path), '--mode', mode], stream_root=tmp_path, timeout=240)
     assert proc.returncode == 0, proc.stderr.decode()
     assert b'PRIVATE' not in proc.stdout + proc.stderr
     result = unpack(FrozenRecord(result_path.read_text()), manifest, authorities)

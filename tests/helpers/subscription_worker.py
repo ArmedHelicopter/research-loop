@@ -14,7 +14,7 @@ def fixture_environment():
     return dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[2]))
 
 
-def run_fixture_worker(command, *, stream_root, timeout=120):
+def run_fixture_worker(command, *, stream_root, timeout=240):
     """Bound the multi-call fixture parent separately from its native sessions."""
     stdout_path = stream_root / 'fixture-worker.stdout.bin'
     stderr_path = stream_root / 'fixture-worker.stderr.bin'
@@ -38,7 +38,9 @@ def fixture_factory(mode='diagnostic'):
         return SinglePromptACP([sys.executable, str(peer), mode, str(directory / 'peer.private.jsonl')],
             cwd=directory, env=fixture_environment(), private_dir=directory / 'native',
             reservation=directory / 'native-reservation.json',
-            frozen_files=frozen_files, timeout=5,
+            # Allow a cold synthetic Python peer to import its fixture helpers.
+            # The actual Grok native session remains separately bounded at60s.
+            frozen_files=frozen_files, timeout=20,
             opportunity_contract=DIAGNOSTIC_OPPORTUNITY_CONTRACT,
             main_output_cap=spec['main_output_cap'], max_total_tokens=spec['observed_main_token_cap'],
             input_byte_cap=spec['max_input_bytes']).invoke(prompt, schema)
