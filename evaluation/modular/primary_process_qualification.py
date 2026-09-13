@@ -144,6 +144,10 @@ def _source_index(config, reads, state, items, receipt, manifest):
             kind = ("metadata_container" if ((item.benchmark == "blade" and path.name == "info.json") or
                     (item.benchmark == "discoverybench" and path.match("metadata_*.json"))) else
                     "data_artifact" if path.suffix.lower() == ".csv" and path.name != "annotations.csv" else None)
+            # Original canonical extraction uses direct metadata_*.json and
+            # their same-directory CSV declarations, not nested backup copies.
+            if path.parent != directory:
+                kind = None
             if kind:
                 aggregates[item.benchmark][kind].append(sha)
                 source_counts[item.benchmark] += 1

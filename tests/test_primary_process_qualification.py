@@ -22,7 +22,7 @@ def pin(path):
     return {"path": str(path), "sha256": hashlib.sha256(Path(path).read_bytes()).hexdigest()}
 
 
-def source_fixture(tmp_path):
+def source_fixture(tmp_path, nested_duplicate=False):
     root = tmp_path / "snapshot"
     inventory = []
     for source in p.SOURCES:
@@ -34,9 +34,11 @@ def source_fixture(tmp_path):
             metadata = parent / ("metadata_0.json" if source == "discoverybench" else "info.json")
             write(metadata, text)
             write(parent / "data.csv", f"x\n{'shared' if index == 0 else source + str(index)}\n".encode())
+            if nested_duplicate and source == "discoverybench" and index == 3:
+                write(parent / "nested" / "metadata_0.json", metadata.read_bytes())
             task_id = relative.replace("/", ":")
             inventory.append(p.InventoryItem(source, task_id, f"{source}-family{index}", "synth/test" if source == "discoverybench" else "unsplit",
-                                            relative, tuple(pin(path)["sha256"] for path in parent.iterdir()),
+                                            relative, tuple(pin(path)["sha256"] for path in parent.rglob("*") if path.is_file()),
                                             "exposed" if source == "discoverybench" and index == 0 else "unknown").data())
     split = {"inventory_digest": digest(inventory), "rows": [{"item": f"{row['benchmark']}:{row['task_id']}",
               "domain": "train" if row["task_id"].endswith("case0") else "quarantine"} for row in inventory]}
@@ -103,6 +105,13 @@ def test_missing_complete_read_manifest_preserves_primary_aggregate_binding_and_
     audit, _ = p.audit_primary_process(config)
     assert audit["canonical_read_manifest_available"] is False
     assert audit["primary_aggregate_source_hashes_reverified"] is True
+
+
+def test_aggregate_classification_matches_original_direct_child_metadata_contract(tmp_path):
+    config = source_fixture(tmp_path, nested_duplicate=True)
+    del config["inputs"]["canonical_manifest"]
+    audit, _ = p.audit_primary_process(config)
+    assert audit["source_verified_file_counts"]["discoverybench"] == 8
 
 
 @pytest.mark.parametrize("change", ["source", "history", "graph", "inventory", "aggregate"])
