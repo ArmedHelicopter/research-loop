@@ -59,3 +59,14 @@ The actual request is frozen to the lexicographically first two **train** tokens
 from each source, four records total, before any task projection. Selection uses
 only the sealed allocation and never task text or export outcomes. Failed first
 attempts and all test reports remain in the verification archive.
+
+The frozen implementation at `660510a` passed 134 related checks, including the
+real adapter seam and label isolation. The unchanged four-token request then
+exported two SciCode and two SAB public tasks. The append-only journal preserves
+the first failed attempt and the successful retry as ten verified chained events.
+All 25 input pins and the implementation hashes matched before and after the
+retry; the original inventory, process audit, and 164-train/18-sealed allocation
+were unchanged. No validation projection, validation lease, paid model call, or
+network call occurred. Exact request, receipt, journal, source, input, artifact,
+and JUnit paths and SHA-256 values are recorded in
+[`prospective-train-export-verification.json`](prospective-train-export-verification.json).
