@@ -22,7 +22,7 @@ def pin(path):
     return {"path": str(path), "sha256": hashlib.sha256(Path(path).read_bytes()).hexdigest()}
 
 
-def source_fixture(tmp_path, nested_duplicate=False, public_projection=False):
+def source_fixture(tmp_path, nested_duplicate=False, public_projection=False, reference_projection=False):
     root = tmp_path / "snapshot"
     inventory = []
     for source in p.SOURCES:
@@ -34,10 +34,21 @@ def source_fixture(tmp_path, nested_duplicate=False, public_projection=False):
             if public_projection:
                 text.update(queries=[{"question": "Compute the mean of x.", "gold": SECRET}],
                             research_questions=["Compute the mean of x."], data_desc={"dataset_description": "Report the public x mean."})
+            if reference_projection:
+                text["id"] = index
+                text["queries"][0]["qid"] = 0
             metadata = parent / ("metadata_0.json" if source == "discoverybench" else "info.json")
             write(metadata, text)
             value = (0 if index == 0 else index + (10 if source == "blade" else 20)) if public_projection else ('shared' if index == 0 else source + str(index))
             write(parent / "data.csv", f"x\n{value}\n".encode())
+            if reference_projection and source == "blade":
+                import csv, io
+                from evaluation.modular.reference_store import BLADE_REFERENCE_FIELDS
+                stream = io.StringIO(newline="")
+                writer = csv.DictWriter(stream, fieldnames=["spec_id", *BLADE_REFERENCE_FIELDS])
+                writer.writeheader()
+                writer.writerow({"spec_id": "fixture", "conceptual_spec_json": json.dumps({"synthetic": "SYNTHETIC-BLADE-BRIDGE-REFERENCE"})})
+                write(parent / "annotations.csv", stream.getvalue().encode())
             if nested_duplicate and source == "discoverybench" and index == 3:
                 write(parent / "nested" / "metadata_0.json", metadata.read_bytes())
             task_id = relative.replace("/", ":")
