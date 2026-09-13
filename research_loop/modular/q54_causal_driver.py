@@ -63,21 +63,22 @@ def _measurement(x,identity):
  if set(x)!={'source_id','contract_id','discriminator_id','observable','negative_control_id'} or x['source_id']!=identity.group_id: raise ContractError('measurement contract binding drift')
  for val in x.values(): _text(val,'measurement field')
  return x
-def _diagnostics(x,branches):
+def _diagnostics(x,branches,negative_control_id):
  if not isinstance(x,list) or len(x)<2: raise ContractError('two diagnostics required')
  branch_ids={b['hypothesis_id'] for b in branches}; out=[]; seen=set()
  for row in x:
   row=_map(row,'diagnostic')
-  raw_fields={'diagnostic_id','branch_ids','program','program_sha256','image','inputs','cost','preregistered_uncertainty'}
-  frozen_fields={'diagnostic_id','branch_ids','program','canonical_program_sha256','host_program_sha256','host_program_byte_count','image','inputs','cost','preregistered_uncertainty'}
+  raw_fields={'diagnostic_id','branch_ids','program','program_sha256','image','inputs','cost','preregistered_uncertainty','negative_control_id'}
+  frozen_fields={'diagnostic_id','branch_ids','program','canonical_program_sha256','host_program_sha256','host_program_byte_count','image','inputs','cost','preregistered_uncertainty','negative_control_id'}
   if set(row) not in (raw_fields,frozen_fields): raise ContractError('diagnostic fields incomplete')
   did=_text(row['diagnostic_id'],'diagnostic id')
+  if _text(row['negative_control_id'],'negative control id')!=negative_control_id: raise ContractError('diagnostic negative-control binding drift')
   if did in seen or not isinstance(row['branch_ids'],list) or set(row['branch_ids'])!=branch_ids or len(row['branch_ids'])!=len(branch_ids): raise ContractError('diagnostic identity or common branch binding drift')
   seen.add(did)
   if type(row['cost']) not in (int,float) or row['cost']<=0 or type(row['preregistered_uncertainty']) not in (int,float) or row['preregistered_uncertainty']<0: raise ContractError('diagnostic cost or uncertainty invalid')
   program=_program(row['program'],row.get('program_sha256',row.get('canonical_program_sha256')))
   if set(row)==frozen_fields and (row['host_program_sha256']!=program['host_program_sha256'] or row['host_program_byte_count']!=program['host_program_byte_count']): raise ContractError('frozen host program bytes drift')
-  out.append({'diagnostic_id':did,'branch_ids':sorted(_text(item,'branch id') for item in row['branch_ids']),'program':program['text'],'canonical_program_sha256':program['canonical_program_sha256'],'host_program_sha256':program['host_program_sha256'],'host_program_byte_count':program['host_program_byte_count'],'image':_text(row['image'],'image'),'inputs':_inputs(row['inputs']),'cost':row['cost'],'preregistered_uncertainty':row['preregistered_uncertainty']})
+  out.append({'diagnostic_id':did,'branch_ids':sorted(_text(item,'branch id') for item in row['branch_ids']),'program':program['text'],'canonical_program_sha256':program['canonical_program_sha256'],'host_program_sha256':program['host_program_sha256'],'host_program_byte_count':program['host_program_byte_count'],'image':_text(row['image'],'image'),'inputs':_inputs(row['inputs']),'cost':row['cost'],'preregistered_uncertainty':row['preregistered_uncertainty'],'negative_control_id':negative_control_id})
  return out
 def _item(raw,identity):
  raw=_map(raw,'Q5.4 material')
@@ -90,7 +91,7 @@ def _item(raw,identity):
  PredictionRegistry(identity).freeze('caller-frozen diagnostic competition',branches,budget_units=1)
  measurement=_measurement(raw['measurement_contract'],identity)
  if any(not any(p['discriminator_id']==measurement['discriminator_id'] and p['observable']==measurement['observable'] for p in b['predictions']) for b in branches): raise ContractError('measurement discriminator and observable pair does not bind all branches')
- return {'diagnostics':_diagnostics(raw['diagnostics'],branches),'prediction_branches':branches,'measurement_contract':measurement,'authority_contract':_authorities(raw['authority_contract'],identity)}
+ return {'diagnostics':_diagnostics(raw['diagnostics'],branches,measurement['negative_control_id']),'prediction_branches':branches,'measurement_contract':measurement,'authority_contract':_authorities(raw['authority_contract'],identity)}
 
 def freeze_q54_causal_bundle(task:PublicTask,*,variants:Mapping[str,Mapping[str,Any]])->FrozenRecord:
  if not isinstance(task,PublicTask) or set(variants)!=set(_VARIANTS): raise ContractError('Q5.4 bundle variant coverage mismatch')

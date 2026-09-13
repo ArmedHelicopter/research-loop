@@ -25,19 +25,24 @@ def material(t,csv):
  branches=[branch('a','increase'),branch('b','decrease')]
  rows=[]
  for name,cost,u in [('a',2,1),('b',1,9)]:
-  program="import csv\nwith open('/input/data') as handle:\n value=sum(float(row['x']) for row in csv.DictReader(handle))\nprint('measurement='+str(value))"
-  rows.append({'diagnostic_id':name,'branch_ids':['h-a','h-b'],'program':program,'program_sha256':hashlib.sha256(program.encode()).hexdigest(),'image':IMAGE,'inputs':{'data':{'sha256':hashlib.sha256(csv).hexdigest(),'byte_count':len(csv)}},'cost':cost,'preregistered_uncertainty':u})
+  control='0.0' if name=='a' else 'value'
+  program=f"import csv\nwith open('/input/data') as handle:\n value=sum(float(row['x']) for row in csv.DictReader(handle))\nnegative_control={control}\nmeasurement=value\nprint('measurement='+str(measurement))\nprint('negative_control='+str(negative_control))"
+  rows.append({'diagnostic_id':name,'branch_ids':['h-a','h-b'],'program':program,'program_sha256':hashlib.sha256(program.encode()).hexdigest(),'image':IMAGE,'inputs':{'data':{'sha256':hashlib.sha256(csv).hexdigest(),'byte_count':len(csv)}},'cost':cost,'preregistered_uncertainty':u,'negative_control_id':'zero'})
  item={'diagnostics':rows,'prediction_branches':branches,'measurement_contract':{'source_id':t.identity.group_id,'contract_id':'measure','discriminator_id':'disc','observable':'public result','negative_control_id':'zero'},'authority_contract':authority}
  return freeze_q54_causal_bundle(t,variants={'subjective':item,'preregistered_cost':item})
 class Authority:
  def verify_diagnostic(self,subject):
   body=subject.data(); c=body['authority_contract']; receipt=body['execution_receipt']
-  csv_bytes=bytes.fromhex(body['public_input_bytes']['data']); expected=sum(float(row.split(',')[0]) for row in csv_bytes.decode().splitlines()[1:])
-  assert receipt['status']=='succeeded' and ('measurement='+str(expected)) in receipt['record']['stdout']
+  csv_bytes=bytes.fromhex(body['public_input_bytes']['data']); expected=sum(float(row.split(',')[0]) for row in csv_bytes.decode().splitlines()[1:]); stdout=receipt['record']['stdout']
+  assert receipt['status']=='succeeded' and ('measurement='+str(expected)) in stdout and 'negative_control=' in stdout
   assert csv_bytes==b'x\n1\n'
   assert hashlib.sha256(bytes.fromhex(body['public_program_bytes'])).hexdigest()==receipt['artifact']['sha256']
   assert body['measurement_contract']['observable']=='public result'
-  classifications={'h-a':'consistent' if expected==1 else 'failed','h-b':'failed' if expected==1 else 'consistent'}
+  control=float(next(line.split('=',1)[1] for line in stdout.splitlines() if line.startswith('negative_control=')))
+  classifications={}
+  for branch_row in body['prediction_branches']:
+   direction=branch_row['predictions'][0]['direction']
+   classifications[branch_row['hypothesis_id']]='consistent' if ((direction=='increase' and expected>control) or (direction=='decrease' and expected<=control)) else 'failed'
   return FrozenRecord.from_dict({'schema':'q54-causal-authority-receipt-v1','subject_digest':subject.content_hash,'status':'passed','observations':[{'authority_id':x['authority_id'],'source_group':x['source_group'],'contract_id':c['contract_id'],'subject_digest':subject.content_hash,'observation_digest':str(i+1)*64,'status':'passed','signature_verified':True} for i,x in enumerate(c['authorities'])],'cost':{'unit':'verifier_units','units':1},'classifications':classifications})
 
 @pytest.mark.parametrize('variant,expected',[('subjective','a'),('preregistered_cost','b')])
@@ -81,6 +86,12 @@ def test_bundle_rejects_crlf_program_and_measurement_observable_drift():
  raw['subjective']['diagnostics'][0]['program']="print('a')\r\nprint('bad')"
  with pytest.raises(ContractError): freeze_q54_causal_bundle(t,variants=raw)
 
+def test_bundle_rejects_split_discriminator_observable_pair():
+ t=task('blade'); raw=material(t,b'x\n1\n').data()['variants']; predictions=raw['subjective']['prediction_branches'][0]['predictions']
+ predictions[0]['observable']='wrong observable'
+ predictions.append({'prediction_id':'extra','discriminator_id':'other','observable':'public result','direction':'increase','value_range':None,'failure_condition':'authority outcome'})
+ with pytest.raises(ContractError,match='pair'): freeze_q54_causal_bundle(t,variants=raw)
+
 def test_post_execution_input_mutation_is_refused(tmp_path):
  t=task('blade'); csv=b'x\n1\n'; inputs=tmp_path/'inputs'; inputs.mkdir(); path=inputs/'data.csv'; path.write_bytes(csv); bundle=material(t,csv); variant='subjective'
  scenario=FrozenRecord.from_dict({'experiment_id':'Q5.4','variant':variant,'controller_input':q54_causal_injection(variant,task=FrozenRecord.from_dict(t.data()),evidence=bundle),'base':{'task':t.content_hash,'evidence':bundle.content_hash,'budget':'a'*64},'controls':{'same_task':True,'same_evidence':True,'same_budget':True}}); package=CandidatePackage.create(parent_digest=None,manifest=TrainingManifest.freeze([t.identity]),changes={'prompt':{'instructions':'x'}},search_cost=0); arm=default_compatibility('b'*64).arm(('M7',)); cell=PanelCell('Q5.4',t.identity,'r',variant,'a',arm,t.content_hash,scenario.content_hash,package.digest,'a'*64)
@@ -97,3 +108,18 @@ def test_post_execution_input_mutation_is_refused(tmp_path):
  raw=material(t,b'x\n1\n').data()['variants']
  raw['subjective']['measurement_contract']['observable']='different observable'
  with pytest.raises(ContractError): freeze_q54_causal_bundle(t,variants=raw)
+
+def test_unknown_authority_gate_cannot_be_overridden_by_diagnostic_model(tmp_path):
+ t=task('blade'); csv=b'x\n1\n'; inputs=tmp_path/'inputs'; inputs.mkdir(); path=inputs/'data.csv'; path.write_bytes(csv); bundle=material(t,csv); variant='subjective'; arm=default_compatibility('b'*64).arm(('M7',)); package=CandidatePackage.create(parent_digest=None,manifest=TrainingManifest.freeze([t.identity]),changes={'prompt':{'instructions':'x'}},search_cost=0)
+ scenario=FrozenRecord.from_dict({'experiment_id':'Q5.4','variant':variant,'controller_input':q54_causal_injection(variant,task=FrozenRecord.from_dict(t.data()),evidence=bundle),'base':{'task':t.content_hash,'evidence':bundle.content_hash,'budget':'a'*64},'controls':{'same_task':True,'same_evidence':True,'same_budget':True}}); cell=PanelCell('Q5.4',t.identity,'r',variant,'a',arm,t.content_hash,scenario.content_hash,package.digest,'a'*64); session=RunSession(t,package_digest=package.digest,arm=arm,objective=FrozenRecord.from_dict({'o':'x'}),slots=('ranking','diagnostic','final'),execution_limit=1,sidecar=tmp_path/'run',verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}),required_audit=('measurement',))
+ class Unknown(Authority):
+  def verify_diagnostic(self,subject):
+   raw=super().verify_diagnostic(subject).data(); raw['status']='unknown'; raw['classifications']={'h-a':'unknown','h-b':'unknown'}
+   for observation in raw['observations']: observation['status']='unknown'
+   return FrozenRecord.from_dict(raw)
+ def model(request):
+  context=request.data()['module_context']
+  if 'diagnostics' in context: return FrozenRecord.from_dict({'ranking':['a','b'],'rationale':'x'})
+  return FrozenRecord.from_dict({'decision':'continue','rationale':'attempt override'})
+ with pytest.raises(ContractError,match='overrides applied M7 gate'):
+  Q54CausalDriver(DockerExecutionBroker([tmp_path]),lambda _task,_bundle:{'data':path},Unknown()).run(ModularWorkflow(session),cell=cell,scenario=scenario,model=model,package=package)
