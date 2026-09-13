@@ -1,0 +1,75 @@
+{
+  "schema": "linked-runtime-checkpoint-v1",
+  "source_commit": "cc640f79fe258bd27cd0d1d43ac1036f2d8957cf",
+  "reports": {
+    "q43-root-integration-20260913.xml": {
+      "source_commit": "aefcd79e5a8b3bb89dc88c0a177fe4cf08011bd3",
+      "tests": "30",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "29.213"
+    },
+    "solve-score-root-20260913.xml": {
+      "source_commit": "da1bd5b771b67aa68e02d978eeecb96b258e2ed0",
+      "tests": "69",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "144.241"
+    },
+    "q15-root-integration-20260913.xml": {
+      "source_commit": "5d3d64c543d219fead96faf35b8c56e03a721059",
+      "tests": "75",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "21.308"
+    },
+    "frozen-rubric-root-20260913.xml": {
+      "source_commit": "5f92b03f73a243300a634b24add4991bd59c85f6",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "40.727"
+    },
+    "linked-root-20260913.xml": {
+      "source_commit": "cc640f79fe258bd27cd0d1d43ac1036f2d8957cf",
+      "tests": "37",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "78.810"
+    },
+    "integrated-linked-20260913.xml": {
+      "source_commit": "cc640f79fe258bd27cd0d1d43ac1036f2d8957cf",
+      "tests": "854",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1438.961"
+    }
+  },
+  "new_paid_model_calls": 0,
+  "formal_effect": "not_measured",
+  "validation_access": "none",
+  "live_training_pilot": "unchanged earlier checkpoint",
+  "drivers": [
+    "Q1.5",
+    "Q3.1",
+    "Q4.3"
+  ],
+  "linked_wrapper": [
+    "Q3.1",
+    "Q4.3"
+  ],
+  "remaining": [
+    "linked train controller",
+    "linked adapted scoring and train selection",
+    "all remaining Q drivers",
+    "all individual and combination effects",
+    "Q6.3 separate phase",
+    "qualified validation acceptance"
+  ]
+}

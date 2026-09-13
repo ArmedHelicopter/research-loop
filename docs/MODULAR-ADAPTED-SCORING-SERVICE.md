@@ -19,16 +19,22 @@ dimension results and recomputed adapted metric.  `AdaptedMetricReceiptVerifier`
 checks the authority MAC, every binding, exact metric contract and aggregate.
 It can be supplied as `PanelReceiptVerifier(scorer_verifier=...)`.
 
-The production package contains only the typed transport adapter. It does not
-implement a local reference evaluator or invent benchmark dimensions. A
-deployment must connect its transport to the frozen upstream rubric on the
-independent evaluator host. The frozen BLADE source routes `Evaluator` results
-through `CalcSubmissionMetrics`; this repository does not import it or its
-reference material. No equivalent live endpoint was configured for this work,
-so the production scorer remains incomplete. The test-only endpoint uses a synthetic parser and
-comparator to exercise the contract:
+The package now includes `FrozenBenchmarkRubricEndpoint`. Its service-owned
+resolver binds nonempty train references to the task handle, identity and
+benchmark. Its independent model port receives the actual frozen Discovery
+dimensions or full BLADE criterion text, anonymous candidate and protected
+references. The rubric digest covers the rules, schemas and executable prompt
+templates; implementation drift is rejected before resolving a reference or
+calling the evaluator. Values must follow each benchmark's discrete/range
+contract; aggregation is deterministic.
 
-`immutable submission -> service calculation -> signed receipt -> receipt verifier`.
+This endpoint evaluates one candidate at a time, unlike the historical paired
+judge. It does not claim numerical equivalence to that judge or official scorer
+calibration. The references and evaluator transport have not been deployed in
+an independently operated service. Tests use synthetic references and explicit
+model responses to exercise the real endpoint contract:
+
+`actual journal candidate -> frozen rubric endpoint -> service calculation -> signed receipt -> receipt verifier`.
 
 It does not access a benchmark reference, calibrate either benchmark scorer,
 measure a module effect, or demonstrate scientific validity.  `PanelVerdict`

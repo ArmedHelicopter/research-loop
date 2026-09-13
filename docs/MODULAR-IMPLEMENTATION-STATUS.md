@@ -5,6 +5,19 @@ stage, and C1–C5 combination experiments defined in the design documents.
 
 ## Current checkpoint (2026-09-13)
 
+Source `cc640f79fe258bd27cd0d1d43ac1036f2d8957cf` passed the full 854-test suite
+with zero failures/errors/skips (1438.961 seconds). Q1.5/Q3.1/Q4.3 production
+mechanisms, Q3.1/Q4.3 linked benchmark solver, complete protocol terminal checks
+and frozen rubric endpoint are integrated. No module efficacy, scorer
+calibration or validation result is claimed. The archive now has 404 hashed
+files, preserving the previous 395 files byte for byte.
+
+See [MODULAR-CHECKPOINT-20260913-LINKED.md](MODULAR-CHECKPOINT-20260913-LINKED.md)
+for the tested source and remaining obligations. Linked controller, adapted
+train selection and additional Q drivers are the next integration batch.
+
+## Earlier live training checkpoint (2026-09-13)
+
 The tested source is `67b55b07464df9baa4666d4027f3ce376f8fcb2c`: 815 tests passed,
 zero failures/errors/skips (690.571 seconds). The first complete scheduled real
 Q3.1 training transport panel made 23 provider calls, used 208,955 tokens and
@@ -16,7 +29,7 @@ The original 403-item store is unchanged. Combination panels and grouped contras
 calculation now exist, but actual combined module intervention is not connected.
 
 See [MODULAR-CHECKPOINT-20260913.md](MODULAR-CHECKPOINT-20260913.md) and
-`results/modular-engineering-20260912/live-training-20260913/` for current evidence,
+`results/modular-engineering-20260912/live-training-20260913/` for that checkpoint's evidence,
 complete failure denominators and scope. The sections below preserve the earlier
 2026-09-12 checkpoint and do not supersede the newer record.
 
