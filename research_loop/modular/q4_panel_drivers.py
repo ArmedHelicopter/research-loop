@@ -54,29 +54,55 @@ def _review(response: FrozenRecord, *, m4: bool) -> tuple[FrozenRecord, tuple[Ma
     return response, ()
 
 
+def _decision_outputs(decision_material: Mapping[str, Any]) -> list[Mapping[str, Any]]:
+    """Project only response payloads from controller-owned review journal entries."""
+    if decision_material.get("kind") == "pre_registered_control_material":
+        return []
+    records = decision_material.get("records")
+    if records is None:
+        record = decision_material.get("record")
+        if record is None:
+            return []
+        records = [record]
+    if not isinstance(records, list):
+        raise ContractError("review decision records are malformed")
+    outputs = []
+    for record in records:
+        if not isinstance(record, Mapping) or not isinstance(record.get("response"), Mapping):
+            raise ContractError("review decision record lacks a response payload")
+        outputs.append(dict(record["response"]))
+    return outputs
+
+
+def _model_review_context(*, evidence: FrozenRecord, review_context: Mapping[str, Any]) -> FrozenRecord:
+    """Give the model public evidence plus real review products, never arm metadata."""
+    decision_material = review_context.get("decision_material")
+    if not isinstance(decision_material, Mapping):
+        raise ContractError("review decision material is malformed")
+    return FrozenRecord.from_dict({"schema": "public-review-model-projection-v1",
+        "public_evidence": evidence.data(), "review_outputs": _decision_outputs(decision_material),
+        "prediction_plan": review_context.get("prediction_plan")})
+
+
 def _final(workflow: "ModularWorkflow", *, cell: "PanelCell", scenario: FrozenRecord, model: "ModelPort",
-           package: "CandidatePackage", stage: "WorkflowResult", review_context: Mapping[str, Any]) -> FrozenRecord:
+           evidence: FrozenRecord, review_context: Mapping[str, Any]) -> FrozenRecord:
     candidate = workflow.invoke_model("final", model, instruction=(
         "Return the bounded candidate record for this train-only run; unknown is allowed. "
         "Copy required_objective_digest exactly into objective_digest; do not calculate or alter it."),
         module_context=FrozenRecord.from_dict({"panel_cell": _binding(cell, scenario),
-            "candidate_package": package.record.data(), "required_objective_digest": workflow.session.objective.content_hash,
-            "driver_stage": stage.detail.data()["stage"], "review_record": dict(review_context)}))
+            "required_objective_digest": workflow.session.objective.content_hash,
+            "review_record": _model_review_context(evidence=evidence, review_context=review_context).data()}))
     if candidate.data().get("objective_digest") != workflow.session.objective.content_hash:
         raise ContractError("Q4 final must copy required_objective_digest exactly")
     return candidate
 
 
 def _initial_context(*, cell: "PanelCell", scenario: FrozenRecord, evidence: FrozenRecord, question: str,
-                     material: Mapping[str, Any], m5: bool, m4: bool = False) -> FrozenRecord:
+                     material: Mapping[str, Any]) -> FrozenRecord:
     # Deliberately exclude controller data, reviewer/provider identity, variant
     # labels and any response.  The blind call receives only public material.
-    context = {"review_phase": "initial_blind", "public_evidence": evidence.data(), "public_evidence_digest": evidence.content_hash,
-        "assigned_review_material": dict(material), "assigned_question": question,
-        "m5_enabled": m5, "m4_enabled": m4}
-    if not m5:
-        context["control"] = "M5"
-        context["control_notice"] = "M5 review intervention disabled; no peer response is exposed."
+    context = {"panel_cell": _binding(cell, scenario), "public_evidence": evidence.data(), "public_evidence_digest": evidence.content_hash,
+        "assigned_review_material": dict(material), "assigned_question": question}
     return FrozenRecord.from_dict(context)
 
 
@@ -110,7 +136,7 @@ class Q41IndependenceDriver:
                     "prediction_candidates must contain at least two complete operational hypothesis branches with one shared intervention and discriminator.")
             raw = workflow.invoke_model(f"initial_{number}", model, instruction=instruction,
                 module_context=_initial_context(cell=cell, scenario=scenario, evidence=evidence, question=_QUESTIONS[name],
-                    material=material["summary_material"], m5=m5, m4=m4), evidence_only=True)
+                    material=material["summary_material"]), evidence_only=True)
             answer, prediction_candidates = _review(raw, m4=m4); responses.append(raw)
             candidates.extend(prediction_candidates)
             if m5: submissions.append(workflow.reviews.submit(review_id, role_id=f"review_{number}", reviewer_id=f"q41-reviewer-{number}", response=answer.data(), cost_units=1))
@@ -129,7 +155,8 @@ class Q41IndependenceDriver:
             "prediction_plan": prediction.data() if prediction else None,
             "scoring_status": "not_measured", "limitation": "same-model samples and role prompts do not establish independent training priors"}
         stage = workflow._trace("stage_7" if m5 else "operation_m5_control", "executed", **review_context)
-        final = _final(workflow, cell=cell, scenario=scenario, model=model, package=package, stage=stage, review_context=review_context)
+        final = _final(workflow, cell=cell, scenario=scenario, model=model, evidence=evidence,
+                       review_context=review_context)
         return stage, final, tuple(responses + [final])
 
 
@@ -152,7 +179,7 @@ class Q42RoleDriver:
             review_id = review.review_id
         answer = workflow.invoke_model("initial", model, instruction="Answer only the assigned review question from the supplied public evidence.",
             module_context=_initial_context(cell=cell, scenario=scenario, evidence=evidence, question=question,
-                material=material["summary_material"], m5=m5), evidence_only=True)
+                material=material["summary_material"]), evidence_only=True)
         submission = None
         if m5:
             submission = workflow.reviews.submit(review_id, role_id="assigned_review", reviewer_id="q42-reviewer", response=answer.data(), cost_units=1)
@@ -163,7 +190,8 @@ class Q42RoleDriver:
                                   else {"kind": "pre_registered_control_material", "record": material["summary_material"]}),
             "scoring_status": "not_measured"}
         stage = workflow._trace("stage_7" if m5 else "operation_m5_control", "executed", **review_context)
-        final = _final(workflow, cell=cell, scenario=scenario, model=model, package=package, stage=stage, review_context=review_context)
+        final = _final(workflow, cell=cell, scenario=scenario, model=model, evidence=evidence,
+                       review_context=review_context)
         return stage, final, (answer, final)
 
 
@@ -182,7 +210,7 @@ class Q44CounterexampleDriver(Q42RoleDriver):
             review_id = review.review_id
         answer = workflow.invoke_model("initial", model, instruction="Assess only the supplied public evidence for the requested counterexample.",
             module_context=_initial_context(cell=cell, scenario=scenario, evidence=evidence, question=question,
-                material=material["counterexample_material"], m5=m5), evidence_only=True)
+                material=material["counterexample_material"]), evidence_only=True)
         submission = None
         if m5:
             submission = workflow.reviews.submit(review_id, role_id="counterexample", reviewer_id="q44-reviewer", response=answer.data(), cost_units=1)
@@ -193,7 +221,8 @@ class Q44CounterexampleDriver(Q42RoleDriver):
                                   else {"kind": "pre_registered_control_material", "record": material["summary_material"]}),
             "scoring_status": "not_measured"}
         stage = workflow._trace("stage_7" if m5 else "operation_m5_control", "executed", **review_context)
-        final = _final(workflow, cell=cell, scenario=scenario, model=model, package=package, stage=stage, review_context=review_context)
+        final = _final(workflow, cell=cell, scenario=scenario, model=model, evidence=evidence,
+                       review_context=review_context)
         return stage, final, (answer, final)
 
 
@@ -216,7 +245,7 @@ class Q45SelfCorrectionDriver:
         m5, evidence = "M5" in workflow.enabled, FrozenRecord.from_dict(material["public_evidence"])
         names = ("reviewer_one", "reviewer_two") if cell.variant == "heterogeneous" else ("reviewer_one",)
         routes = self._routes(model) if cell.variant == "heterogeneous" else {}
-        review_id, submissions, initials, revisions = None, [], [], []
+        review_id, submissions, initials, revisions, journal_revisions = None, [], [], [], []
         if m5:
             review = workflow.reviews.open(task_binding=workflow.session.task.content_hash, evidence_snapshot=evidence.content_hash,
                 roles=[{"role_id": name, "question": _QUESTIONS["generic"]} for name in names], budget_units=len(names))
@@ -225,26 +254,27 @@ class Q45SelfCorrectionDriver:
             callback = routes[name]["callback"] if routes else model
             answer = workflow.invoke_model(f"initial_{number}", callback, instruction="Independently assess the supplied public evidence; identify a concern only when supported.",
                 module_context=_initial_context(cell=cell, scenario=scenario, evidence=evidence, question=_QUESTIONS["generic"],
-                    material={"blind_review": "public evidence only"}, m5=m5), evidence_only=True)
+                    material={"blind_review": "public evidence only"}), evidence_only=True)
             initials.append(answer)
             if m5: submissions.append(workflow.reviews.submit(review_id, role_id=name, reviewer_id=f"q45-{name}", response=answer.data(), cost_units=1))
         revealed = workflow.reviews.reveal(review_id) if m5 else ()
         for number, name in enumerate(names, 1):
             callback = routes[name]["callback"] if routes else model
-            context = {"panel_cell": _binding(cell, scenario), "review_phase": "post_initial_revision",
+            context = {"panel_cell": _binding(cell, scenario),
                 "public_evidence": evidence.data(), "public_evidence_digest": evidence.content_hash,
-                "initial_answer_material": material["initial_answer_material"], "summary_material": material["summary_material"], "m5_enabled": m5,
-                "visible_reviews": [item.data() for item in revealed] if m5 else [initials[number - 1].data()]}
-            if not m5:
-                context.update({"control": "M5", "control_notice": "M5 review intervention disabled; only the caller's own prior response is supplied."})
+                "initial_answer_material": material["initial_answer_material"], "summary_material": material["summary_material"],
+                "visible_reviews": [item.response.data() for item in revealed] if m5 else [initials[number - 1].data()]}
             response = workflow.invoke_model(f"revision_{number}", callback, instruction="Revise only after considering the supplied prior review material.", module_context=FrozenRecord.from_dict(context))
             revisions.append(response)
-            if m5: workflow.reviews.revise_after_reveal(review_id, role_id=name, reviewer_id=f"q45-{name}", response=response.data())
+            if m5:
+                journal_revisions.append(workflow.reviews.revise_after_reveal(
+                    review_id, role_id=name, reviewer_id=f"q45-{name}", response=response.data()))
         review_context = {"experiment": self.experiment_id, "m5_enabled": m5, "review_id": review_id,
             "public_evidence_digest": evidence.content_hash,
-            "decision_material": ({"kind": "sealed_review_revisions", "records": [item.data() for item in revisions]} if m5
+            "decision_material": ({"kind": "sealed_review_revisions", "records": [item.data() for item in journal_revisions]} if m5
                                   else {"kind": "pre_registered_control_material", "record": material["summary_material"]}),
             "heterogeneous_provider_configured": False, "scoring_status": "not_measured"}
         stage = workflow._trace("stage_7" if m5 else "operation_m5_control", "executed", **review_context)
-        final = _final(workflow, cell=cell, scenario=scenario, model=model, package=package, stage=stage, review_context=review_context)
+        final = _final(workflow, cell=cell, scenario=scenario, model=model, evidence=evidence,
+                       review_context=review_context)
         return stage, final, tuple(initials + revisions + [final])

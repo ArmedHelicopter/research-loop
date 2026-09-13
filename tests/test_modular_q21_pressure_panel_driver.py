@@ -10,6 +10,7 @@ from research_loop.modular.experiments import registry
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.panel_plan import compile_train_panel, executable_arms
 from research_loop.modular.panel_runner import run_train_cell
+from research_loop.modular.panel_receipts import opaque_panel_cell_binding
 from research_loop.modular.pressure_panel_driver import Q21PressureDriver
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.ontology import ContractError
@@ -102,6 +103,7 @@ def test_q21_full_train_grid_projects_caller_material_into_changed_pressure_requ
         results.append((cell, result))
 
     grouped = {}
+    cells_by_binding = {opaque_panel_cell_binding(cell)["cell_digest"]: cell for cell in compiled.panel.cells}
     for cell, result in results:
         key = (cell.identity.benchmark, cell.arm_id)
         grouped.setdefault(key, {})[cell.variant] = _requests(result)
@@ -117,10 +119,15 @@ def test_q21_full_train_grid_projects_caller_material_into_changed_pressure_requ
             binding = request["module_context"]["panel_cell"]
             assert binding["schema"] == "opaque-panel-cell-binding-v1"
             assert set(binding) == {"schema", "cell_digest"}
+            assert cells_by_binding[binding["cell_digest"]] == cell
             encoded = FrozenRecord.from_dict(request).encoded
             assert '"case_id"' not in encoded
             assert "caller-authority" not in encoded and '"validator_verified"' not in encoded
             assert '"required_audit"' not in encoded and '"execution_success"' not in encoded
+            for marker in ('"arm_id"', '"enabled_modules"', '"m1_enabled"', '"m5_enabled"',
+                           '"control"', 'control_notice', '"candidate_package"', '"driver_stage"',
+                           '"review_id"', '"experiment"', '"variant"'):
+                assert marker not in encoded
         for index, request in enumerate(requests[:4], 1):
             # No top-level context or module context may expose another case.
             encoded = FrozenRecord.from_dict(request).encoded
@@ -134,26 +141,33 @@ def test_q21_full_train_grid_projects_caller_material_into_changed_pressure_requ
         stages = [event["data"].get("stage") if event["stage"] == "modular_workflow" else event["stage"] for event in events]
         m1_event = next(event["data"] for event in events if event["stage"] == "modular_workflow"
                         and event["data"].get("stage") in {"stage_1", "operation_m1_control"})
-        assert requests[-1]["module_context"]["q21_review"]["admission_decisions"] == m1_event["decisions"]
+        model_review = requests[-1]["module_context"]["q21_review"]
+        assert set(model_review) == {"schema", "public_case_material", "candidate_judgements", "admission_results", "review_outputs"}
         if "M1" in enabled:
             assert "stage_1" in stages
             assert m1_event["intervention"] == "EvidenceAdmission.decide"
             assert [row["admitted"] for row in m1_event["decisions"]] == [True, True, False, False]
             assert [row["outcome"] for row in m1_event["decisions"]] == ["positive", "negative", "negative", "negative"]
+            assert model_review["admission_results"] == [{"admitted": True, "outcome": "positive"},
+                                                           {"admitted": True, "outcome": "negative"},
+                                                           {"admitted": False, "outcome": "negative"},
+                                                           {"admitted": False, "outcome": "negative"}]
         else:
             assert "operation_m1_control" in stages
             assert m1_event["intervention"] == "not_applied"
             assert all(row["gate"] == "not_applied" for row in m1_event["decisions"])
+            assert model_review["admission_results"] == [None] * 4
         # Q2.1 M1 is an admission decision, not an M2 EvidenceLedger append.
         assert not (result.runtime.trace_path.parent / "evidence.jsonl").read_text(encoding="utf-8")
         if "M5" in enabled:
             assert "stage_7" in stages
             assert len((result.runtime.trace_path.parent / "reviews.jsonl").read_text(encoding="utf-8").splitlines()) >= 5
-            assert requests[-1]["module_context"]["q21_review"]["decision_material"]["kind"] == "sealed_review_submissions"
+            assert len(model_review["review_outputs"]) == 4
         else:
             assert "operation_m5_control" in stages
             assert not (result.runtime.trace_path.parent / "reviews.jsonl").read_text(encoding="utf-8")
-            assert requests[0]["module_context"]["control"] == "M5"
+            assert requests[0]["module_context"]["prior_review_material"] is None
+            assert model_review["review_outputs"] == []
 
     for by_variant in grouped.values():
         assert set(by_variant) == {"neutral", "positive", "negative"}
@@ -171,8 +185,8 @@ def test_q21_full_train_grid_projects_caller_material_into_changed_pressure_requ
         off, on = pair[False]["module_context"]["q21_review"], pair[True]["module_context"]["q21_review"]
         assert off["public_case_material"] == on["public_case_material"]
         assert off["candidate_judgements"] == on["candidate_judgements"]
-        assert off["decision_material"]["kind"] == "raw_unverified_review_responses"
-        assert on["decision_material"]["kind"] == "sealed_review_submissions"
+        assert off["review_outputs"] == []
+        assert len(on["review_outputs"]) == 4
 
 
 def test_q21_bundle_requires_all_caller_cases_and_train_only_runner_rejects_validation(tmp_path: Path):

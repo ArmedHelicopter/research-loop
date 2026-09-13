@@ -41,6 +41,7 @@ Q1.2 的接线必须从 `ClaimRevision` 触发派生 context cache 失效，并�
 Q2.3–Q2.5 的不安全对照只在离线/受限环境重放；不关闭实际宿主权限或科学工具安全边界。既有修复应直接保留，仅对仍缺失的入口补线。
 
 Q2.3/Q2.4 的 caller shadow execution 以冻结程序和命名公开输入的 SHA-256 合约绑定到实际 `ExecutionReceipt`；端口自报摘要不足以通过。模型最终请求只投影执行状态、宿主核验状态和实际准入/未提升状态。完整 M1 处理、双审计材料和独立检查保留在控制器 trace，不能作为 arm、package 或真值线索注入模型。
+Q2.1 与 Q4 的 production review drivers 将 arm、control、review journal identity、package 和阶段标签保留在 controller trace。模型请求只接收 opaque cell binding、公共证据及真实产生的 review/admission/prediction 产物或同形空值；不以模型可见开关决定运行行为或验收期望。
 
 ## Q3. 竞争假说、FIFO 与并行的区别
 

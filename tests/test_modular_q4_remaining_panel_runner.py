@@ -9,7 +9,7 @@ from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.experiments import ControllerInputs, registry, scenario
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
-from research_loop.modular.panel_receipts import CombinationObligations, FrozenPanel, PanelCell, PanelReceiptVerifier
+from research_loop.modular.panel_receipts import CombinationObligations, FrozenPanel, PanelCell, PanelReceiptVerifier, opaque_panel_cell_binding
 from research_loop.modular.panel_plan import compile_train_panel, executable_arms
 from research_loop.modular.panel_runner import run_train_cell
 from research_loop.modular.runtime import AuditVerifier
@@ -99,7 +99,7 @@ class _Transport:
             return FrozenRecord.from_dict({"objective_digest": body["module_context"]["required_objective_digest"], "outcome": "unknown",
                 "evidence_ids": [], "conclusion": "synthetic Q4 candidate", "programme_complete": False})
         review = {"assessment": "concern", "evidence_refs": ["public-observation"], "counterexamples": ["public alternative"], "uncertainty": "synthetic transport"}
-        if body["module_context"].get("m4_enabled"):
+        if "prediction_candidates" in body["instruction"]:
             self.calls += 2
             return FrozenRecord.from_dict({"review": review, "prediction_candidates": [_branch(self.calls - 1), _branch(self.calls)]})
         return FrozenRecord.from_dict(review)
@@ -115,6 +115,7 @@ def _requests(run):
 
 def test_remaining_q4_full_grid_binds_public_material_blindness_revisions_and_m5_controls(tmp_path: Path):
     frozen, scenarios, tasks, package = _panel(); runs = []; seen_counts = {}
+    cells_by_binding = {opaque_panel_cell_binding(cell)["cell_digest"]: cell for cell in frozen.cells}
     for number, cell in enumerate(frozen.cells):
         run = run_train_cell(cell, task=tasks[cell.identity.benchmark], scenario=scenarios[cell.key], package=package,
             objective=FrozenRecord.from_dict({"objective": "q4 remaining"}), sidecar=tmp_path / str(number), model=_Transport(), audit_verifier=_audit())
@@ -128,7 +129,7 @@ def test_remaining_q4_full_grid_binds_public_material_blindness_revisions_and_m5
             assert all(all(label not in FrozenRecord.from_dict(request).encoded for label in
                            ("none_valid", "defective", "right_to_wrong", "wrong_to_right")) for request in requests)
             assert requests[-1]["module_context"]["panel_cell"]["schema"] == "opaque-panel-cell-binding-v1"
-        initial = [request for request in requests if request["module_context"].get("review_phase") == "initial_blind"]
+        initial = [request for request in requests if request["slot"].startswith("initial_") or request["slot"] == "initial"]
         sentinel = "PUBLIC-Q4-EVIDENCE-" + cell.identity.benchmark.upper()
         assert initial and all(sentinel in FrozenRecord.from_dict(request["module_context"]).encoded for request in initial)
         assert all("PACKAGE-PROMPT-SENTINEL" not in FrozenRecord.from_dict(request).encoded
@@ -136,6 +137,13 @@ def test_remaining_q4_full_grid_binds_public_material_blindness_revisions_and_m5
         assert all("scenario_controller_input" not in request["module_context"] and "reviewer_id" not in request["module_context"]
                    and "provider" not in request["module_context"] and "initial_answers" not in request["module_context"]
                    for request in initial)
+        for request in requests:
+            assert cells_by_binding[request["module_context"]["panel_cell"]["cell_digest"]] == cell
+            encoded = FrozenRecord.from_dict(request).encoded
+            for marker in ('"arm_id"', '"enabled_modules"', '"m1_enabled"', '"m4_enabled"', '"m5_enabled"',
+                           '"control"', 'control_notice', '"candidate_package"', '"driver_stage"',
+                           '"experiment"', '"review_id"', '"variant"', '"provider"', '"reviewer_id"'):
+                assert marker not in encoded
         if cell.coverage_id == "Q4.4":
             expected = "Q44-COUNTEREXAMPLE-A" if cell.variant == "none_valid" else "Q44-COUNTEREXAMPLE-B"
             assert all(request["module_context"]["assigned_review_material"]["candidate"] == expected for request in initial)
@@ -143,25 +151,26 @@ def test_remaining_q4_full_grid_binds_public_material_blindness_revisions_and_m5
             expected_initial, expected_summary = {"right_to_wrong": ("INITIAL-ALPHA", "SUMMARY-ALPHA"),
                 "wrong_to_right": ("INITIAL-BETA", "SUMMARY-BETA"), "heterogeneous": ("INITIAL-GAMMA", "SUMMARY-GAMMA")}[cell.variant]
             assert all(expected_initial not in FrozenRecord.from_dict(request).encoded and expected_summary not in FrozenRecord.from_dict(request).encoded for request in initial)
-            revisions = [request for request in requests if request["module_context"].get("review_phase") == "post_initial_revision"]
+            revisions = [request for request in requests if request["slot"].startswith("revision_")]
             assert revisions and all(request["module_context"]["initial_answer_material"]["prior_answer"] == expected_initial
                                      and request["module_context"]["summary_material"]["summary"] == expected_summary for request in revisions)
             final_context = requests[-1]["module_context"]["review_record"]
-            assert "initial_answers" not in final_context and "post_reveal_revisions" not in final_context
+            assert set(final_context) == {"schema", "public_evidence", "review_outputs", "prediction_plan"}
         if cell.coverage_id == "Q4.1" and "M4" in cell.runtime_arm.data()["enabled"]:
             assert all("prediction_candidates" in request["instruction"] for request in initial)
             assert requests[-1]["module_context"]["review_record"]["prediction_plan"] is not None
         if cell.coverage_id in {"Q4.1", "Q4.2", "Q4.4", "Q4.5"}:
-            decision_material = requests[-1]["module_context"]["review_record"]["decision_material"]
+            decision_material = requests[-1]["module_context"]["review_record"]["review_outputs"]
             if "M5" in cell.runtime_arm.data()["enabled"]:
-                assert decision_material["kind"].startswith("sealed_review")
+                assert decision_material
             else:
-                assert decision_material["kind"] == "pre_registered_control_material"
+                assert decision_material == []
         key = (cell.coverage_id, cell.variant, tuple(module for module in cell.runtime_arm.data()["enabled"] if module != "M5"))
         seen_counts.setdefault(key, set()).add(run.call_plan.data()["model_calls"])
     assert all(len(counts) == 1 for counts in seen_counts.values())
     verdict = PanelReceiptVerifier().verify(frozen, tuple(run.runtime for run in runs))
-    assert verdict.engineering_verified and verdict.failures == 4 and verdict.observed_cells == len(frozen.cells)
+    expected_failures = sum(1 for cell in frozen.cells if cell.coverage_id == "Q4.5" and cell.variant == "heterogeneous")
+    assert verdict.engineering_verified and verdict.failures == expected_failures and verdict.observed_cells == len(frozen.cells)
 
 
 def test_q45_heterogeneous_without_configured_provider_fails_closed_and_stays_in_denominator(tmp_path: Path):
@@ -177,7 +186,8 @@ def test_q45_heterogeneous_without_configured_provider_fails_closed_and_stays_in
     assert result.status == "failed"
     assert FrozenRecord(result.trace_path.read_text(encoding="utf-8").splitlines()[-1]).data()["stage"] == "controller_failure"
     verdict = PanelReceiptVerifier().verify(frozen, tuple(runs))
-    assert verdict.engineering_verified and verdict.observed_cells == len(frozen.cells) and verdict.failures == 4
+    expected_failures = sum(1 for current in frozen.cells if current.coverage_id == "Q4.5" and current.variant == "heterogeneous")
+    assert verdict.engineering_verified and verdict.observed_cells == len(frozen.cells) and verdict.failures == expected_failures
     with pytest.raises(ContractError, match="training cells only"):
         validation = PanelCell(cell.coverage_id, DataIdentity(cell.identity.benchmark, cell.identity.task_id, cell.identity.group_id,
             cell.identity.dataset_version, cell.identity.split_id, "validation"), cell.replicate, cell.variant, cell.arm_id,

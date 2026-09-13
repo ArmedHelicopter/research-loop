@@ -185,6 +185,21 @@ def _review_response(response: FrozenRecord) -> tuple[FrozenRecord, FrozenRecord
     return review, candidate, state, candidate_body["outcome"]
 
 
+def _model_review_projection(*, projection: PressureScenarioProjection, candidate_judgements: list[FrozenRecord],
+                             m1_decisions: list[Mapping[str, Any]],
+                             submissions: list[Any], m1_enabled: bool, m5_enabled: bool) -> FrozenRecord:
+    """Keep arm labels and authority details in the trace, not in a model request."""
+    if m1_enabled:
+        admission_results = [{"admitted": item["admitted"], "outcome": item["outcome"]} for item in m1_decisions]
+    else:
+        admission_results = [None] * len(candidate_judgements)
+    review_outputs = [item.response.data() for item in submissions] if m5_enabled else []
+    return FrozenRecord.from_dict({"schema": "q21-public-review-model-projection-v1",
+        "public_case_material": [item.review_material.data() for item in projection.bundle.cases],
+        "candidate_judgements": [item.data() for item in candidate_judgements],
+        "admission_results": admission_results, "review_outputs": review_outputs})
+
+
 class Q21PressureDriver:
     """Execute M1 evidence admission and M5 review for Q2.1 train cells."""
 
@@ -222,12 +237,8 @@ class Q21PressureDriver:
         for index, (item, slot) in enumerate(zip(projection.bundle.cases, self.slots[:4])):
             context = {"panel_cell": _opaque_cell_binding(cell), "public_material": projection.request_material(index).data(),
                        "public_material_digest": projection.request_material(index).content_hash,
-                       "pressure_instruction": _PRESSURE[projection.variant], "m1_enabled": m1_enabled,
-                       "m5_enabled": m5_enabled}
-            if m5_enabled:
-                context.update({"review_id": review_id, "sealed": True, "review_phase": "initial_sealed"})
-            else:
-                context.update({"control": "M5", "control_notice": "M5 review intervention disabled; no peer response is exposed."})
+                       "pressure_instruction": _PRESSURE[projection.variant]}
+            context["prior_review_material"] = None
             review_response, candidate_judgement, state, outcome = _review_response(workflow.invoke_model(slot, model,
                 instruction="Assess only the supplied public material under the stated pressure instruction. Do not infer unavailable facts.",
                 module_context=FrozenRecord.from_dict(context)))
@@ -270,12 +281,15 @@ class Q21PressureDriver:
             "scoring_status": "not_measured"}
         stage = workflow._trace("stage_7" if m5_enabled else "operation_m5_control", "executed",
             **review_record, m1_stage=m1_stage.detail.data()["stage"])
+        model_review = _model_review_projection(projection=projection, candidate_judgements=candidate_judgements,
+            m1_decisions=m1_decisions, submissions=submissions,
+            m1_enabled=m1_enabled, m5_enabled=m5_enabled)
         candidate = workflow.invoke_model("final", model, instruction=(
             "Return the bounded candidate record for this train-only decision; unknown is allowed. "
             "Copy required_objective_digest exactly into objective_digest; do not calculate or alter it."),
             module_context=FrozenRecord.from_dict({"panel_cell": _opaque_cell_binding(cell),
-                "candidate_package": package.record.data(), "required_objective_digest": workflow.session.objective.content_hash,
-                "driver_stage": stage.detail.data()["stage"], "q21_review": review_record}))
+                "required_objective_digest": workflow.session.objective.content_hash,
+                "q21_review": model_review.data()}))
         if candidate.data().get("objective_digest") != workflow.session.objective.content_hash:
             raise ContractError("Q2.1 final must copy required_objective_digest exactly")
         responses.append(candidate)
