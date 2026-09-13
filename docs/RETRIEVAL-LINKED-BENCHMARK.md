@@ -26,3 +26,12 @@ all 24 planned cells: six Q8.2 control cells finish, eighteen source-dependent
 cells fail before their model calls; no failed cell receives replacement trials.
 This path remains train-only. Validation and actual paid-run configuration are
 separate obligations, as are the remaining question-to-benchmark connections.
+
+An independent review after the first frozen passing suite found inherited
+fixture root IDs such as `q82-correct-s` carrying treatment labels. The new linked
+fixtures now map source and root IDs to neutral public identifiers before any
+precursor or solver call, preserving shared-root relationships and source text.
+Tests inspect identifier values as well as projection field names. The original
+passing report remains historical evidence with this review limitation; it is
+not evidence of a fully blinded experiment. Real source preparation likewise
+requires review of identifiers and content before a frozen paid study.

@@ -22,13 +22,26 @@ from test_modular_retrieval_panel_drivers import Provider, _materials, admission
 from test_modular_q82_q83_train_controller import independent_fixture_authority
 
 
+def _neutral_materials():
+    material=_materials()
+    for variants in material.values():
+        for row in variants.values():
+            roots={}
+            for index,doc in enumerate(row['sources']):
+                root=doc['root_source_id']
+                roots.setdefault(root,'public-origin-'+str(len(roots)))
+                doc['source_id']='public-document-'+str(index)
+                doc['root_source_id']=roots[root]
+    return material
+
+
 def _config(tmp_path):
     snapshot, custody = snapshot_and_custody(tmp_path)
     base = config(custody, snapshot, tmp_path).data()
     packets = TrainPacketExporter(custody, snapshot, tmp_path/'materials').export(base['item_ids'])
     evidence = {p.task.content_hash: freeze_retrieval_bundle(p.task,
         query={'task_digest':p.task.content_hash,'question':'fixed public train query'},
-        budget={'provider_calls':3,'source_cap':3,'context_bytes':4096},materials=_materials()).data() for p in packets}
+        budget={'provider_calls':3,'source_cap':3,'context_bytes':4096},materials=_neutral_materials()).data() for p in packets}
     grids = obligation_grids(('Q8.2','Q8.3'),baseline_digest=base['baseline_digest'],p0_control=FrozenRecord.from_dict(base['p0_control']))
     package=next(iter(base['packages_by_arm'].values()))
     frozen=FrozenTrainControllerConfig(FrozenRecord.from_dict({**base,'schema':'train-panel-controller-v1',
@@ -95,6 +108,12 @@ def test_all_24_retrieval_mechanisms_reach_docker_and_both_solver_requests(linke
         verify_linked_benchmark_cell(row,task=task,scenario=scenario,package=result.compiled.packages[row.cell.runtime_arm.content_hash])
         mechanism=[json.loads(line) for line in row.mechanism.runtime.trace_path.read_text(encoding='utf-8').splitlines()]
         actual=next(e['data']['request']['module_context']['retrieval'] for e in mechanism if e['stage']=='model_request')
+        for docs in actual['by_lane'].values():
+            for doc in docs:
+                assert doc['source_id'].startswith('public-document-')
+                assert doc['root_source_id'].startswith('public-origin-')
+                assert all(label not in doc['source_id']+doc['root_source_id'] for label in
+                    ('q82','q83','correct','method','reframe','support_only','neutral','three_lane'))
         expected={k:actual[k] for k in ('by_lane','source_qualification','scientific_admission')}
         solver=[json.loads(line) for line in (row.solver.session.sidecar/'trace.jsonl').read_text(encoding='utf-8').splitlines()]
         requests=[e['data']['request'] for e in solver if e['stage']=='model_request']
@@ -102,6 +121,7 @@ def test_all_24_retrieval_mechanisms_reach_docker_and_both_solver_requests(linke
         for request in requests:
             public=request['module_context']['predecessor_context']
             assert public['mechanism_material']=={'kind':'retrieved_public_sources','retrieval':expected}
+            assert 'q82-' not in FrozenRecord.from_dict(public['mechanism_material']).encoded
             encoded=FrozenRecord.from_dict(public).encoded
             assert all(label not in encoded for label in ('policy_digest','operation_m6_ordinary_baseline','stage_0.5','variant','enabled'))
     (tmp_path/'independent-fixture-authority.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
