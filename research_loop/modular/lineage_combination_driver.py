@@ -19,6 +19,7 @@ from research_loop.modular.modules.review import ReviewEngine
 from research_loop.modular.panel_receipts import PanelReceiptVerifier, opaque_panel_cell_binding
 from research_loop.modular.runtime import RunSession, AuditVerifier
 from research_loop.modular.workflow import ModularWorkflow
+from research_loop.modular.lineage_useful_controls import RECIPE, useful_scenario, review_instruction
 from research_loop.ontology import ContractError, canonical
 
 
@@ -126,6 +127,8 @@ def _validate(panel, cell, task, scenario, package, material):
     expected = {'schema': 'lineage-combination-scenario-v1', 'obligation_id': panel.obligation_id,
         'design_digest': panel.design.content_hash, 'task_digest': task.content_hash,
         'replicate': cell.replicate, 'material_digest': material.record.content_hash}
+    if useful_scenario(scenario):
+        expected.update(schema='lineage-combination-scenario-v2', execution_recipe=RECIPE.data())
     if scenario.data() != expected or material.data()['task_digest'] != task.content_hash or material.data()['identity'] != task.identity.data():
         raise ContractError('scenario must freeze the exact material before execution')
 
@@ -139,23 +142,28 @@ class LineageCombinationResult:
     joint_mechanism: FrozenRecord | None
 
 
-def _review_context(cell, task, transition, index):
+def _review_context(cell, task, transition, index, *, useful=False, prior=()):
     role, question = ROLES[index]
     return FrozenRecord.from_dict({'panel_cell': opaque_panel_cell_binding(cell), 'public_task': task.data(),
-        'review_role': role, 'review_question': question, 'sealed': True, 'material': transition.data()['public']})
+        'review_role': role, 'review_question': question, 'sealed': True, 'material': transition.data()['public'],
+        **({'sealed':'M5' in cell.runtime_arm.data()['enabled'],
+            'earlier_reviews':[] if 'M5' in cell.runtime_arm.data()['enabled'] else [r.data() for r in prior]}
+           if useful else {})})
 
 
-def _joint(cell, transition, responses, package):
+def _joint(cell, transition, responses, package, *, useful=False):
     changes = package.record.data()['changes']
     return FrozenRecord.from_dict({'schema': 'lineage-combination-public-context-v1',
         'panel_cell': opaque_panel_cell_binding(cell), 'material': transition.data()['public'],
-        'review_responses': [r.data() for r in responses] if 'M5' in cell.runtime_arm.data()['enabled'] else None,
-        'candidate_context': {'prompt': changes.get('prompt', {}), 'memory': changes.get('memory', {})}})
+        'review_responses': [r.data() for r in responses] if useful or 'M5' in cell.runtime_arm.data()['enabled'] else None,
+        'candidate_context': {'prompt': changes.get('prompt', {}), 'memory': changes.get('memory', {})},
+        **({'schema':'lineage-combination-public-context-v2'} if useful else {})})
 
 
 def run_lineage_combination_cell(*, panel, cell, task, scenario, package, material, source_verifier,
         objective, sidecar, public_inputs, image, broker, model, audit_verifier, timeout_seconds=20):
     _validate(panel, cell, task, scenario, package, material)
+    useful = useful_scenario(scenario)
     if (not isinstance(source_verifier, DualMaterialVerifier) or not isinstance(objective, FrozenRecord)
             or not isinstance(sidecar, Path) or sidecar.exists() or not callable(model)
             or not isinstance(audit_verifier, AuditVerifier) or type(timeout_seconds) is not int or not 1 <= timeout_seconds <= 120):
@@ -183,8 +191,9 @@ def run_lineage_combination_cell(*, panel, cell, task, scenario, package, materi
             review = workflow.reviews.open(task_binding=task.content_hash, evidence_snapshot=transition.content_hash,
                 roles=[{'role_id': r, 'question': q} for r, q in ROLES], budget_units=2)
         for index, slot in enumerate(SLOTS[:2]):
-            response = workflow.invoke_model(slot, model, instruction='Answer only the assigned public review question.',
-                module_context=_review_context(cell, task, transition, index), baseline_summary=material.data()['ordinary_summary'])
+            response = workflow.invoke_model(slot, model, instruction=review_instruction(workflow.enabled, useful),
+                module_context=_review_context(cell, task, transition, index, useful=useful, prior=responses),
+                baseline_summary=material.data()['ordinary_summary'])
             ReviewEngine._response(response.data())  # Same response contract in every arm.
             responses.append(response)
             if review:
@@ -196,7 +205,7 @@ def run_lineage_combination_cell(*, panel, cell, task, scenario, package, materi
             revealed = workflow.reviews.reveal(review.review_id)
             if [r.response for r in revealed] != responses:
                 raise ContractError('review reveal changed provider responses')
-        joint = _joint(cell, transition, responses, package)
+        joint = _joint(cell, transition, responses, package, useful=useful)
         if len(joint.encoded.encode('utf-8')) > material.data()['context_budget_bytes']:
             raise ContractError('reviewed public context exceeds frozen byte budget')
         session._record('lineage_joint', {'joint': joint.data(), 'transition_digest': transition.content_hash,
@@ -216,6 +225,7 @@ def verify_lineage_combination_cell(result, *, panel, task, scenario, package, m
     if not isinstance(result, LineageCombinationResult):
         raise ContractError('typed lineage result required')
     _validate(panel, result.cell, task, scenario, package, material)
+    useful = useful_scenario(scenario)
     check_material_inputs(material, task, broker, public_inputs)
     PanelReceiptVerifier()._verify_runtime(result.runtime, result.cell)
     path = result.runtime.trace_path; events = _read_events(path)
@@ -243,7 +253,9 @@ def verify_lineage_combination_cell(result, *, panel, task, scenario, package, m
         roles=[{'role_id': r, 'question': q} for r, q in ROLES], budget_units=2) if 'M5' in enabled else None
     actual_responses = []
     for index, request in enumerate(requests[:2]):
-        if request['data']['request']['module_context'] != _review_context(result.cell, task, transition, index).data():
+        if (request['data']['request']['module_context'] != _review_context(
+                result.cell, task, transition, index, useful=useful, prior=actual_responses).data()
+                or useful and request['data']['request']['instruction'] != review_instruction(enabled, useful)):
             raise ContractError('review does not consume actual post-transition state or is not sealed')
         response = responses.get(request['data']['request_digest'])
         if response is None: break
@@ -279,11 +291,11 @@ def verify_lineage_combination_cell(result, *, panel, task, scenario, package, m
     if result.joint_mechanism is None:
         if result.solver is not None or joints or len(requests) > 2 or result.runtime.status != 'failed':
             raise ContractError('missing joint must preserve a pre-solver failure')
-        if (len(actual_responses) == 2 and len(_joint(result.cell, transition, actual_responses, package).encoded.encode('utf-8'))
+        if (len(actual_responses) == 2 and len(_joint(result.cell, transition, actual_responses, package, useful=useful).encoded.encode('utf-8'))
                 <= material.data()['context_budget_bytes']):
             raise ContractError('valid completed reviews cannot invent a pre-solver rejection')
     else:
-        expected_joint = _joint(result.cell, transition, actual_responses, package)
+        expected_joint = _joint(result.cell, transition, actual_responses, package, useful=useful)
         if len(actual_responses) != 2 or expected_joint != result.joint_mechanism or len(joints) != 1:
             raise ContractError('joint context does not consume the original matched reviews')
         expected_event = {'joint': expected_joint.data(), 'transition_digest': transition.content_hash,

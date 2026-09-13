@@ -22,6 +22,7 @@ from research_loop.modular.modules.improvement import CandidatePackage, Training
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier
 from research_loop.modular.runtime import AuditVerifier
+from research_loop.modular.lineage_useful_controls import source_contract_body
 from research_loop.modular.train_controller import _checked_roots, _write
 from research_loop.ontology import ContractError
 
@@ -50,9 +51,10 @@ class FrozenLineageTrainConfig:
         required = {'schema', 'domain', 'stage', 'item_ids', 'task_bindings', 'baseline_digest', 'packages_by_arm',
             'scorer', 'scorer_handle_bindings', 'acceptance_criteria', 'replicates', 'model', 'effort', 'max_calls',
             'max_tokens', 'schemas', 'allocation', 'image', 'timeout_seconds', 'materials_by_task', 'source_verifier_binding'}
-        schema_ok = (source_schema_matches(b, required, schema)
+        source_body = source_contract_body(b, schema)
+        schema_ok = (source_schema_matches(source_body, required, schema)
                      if schema == 'admission-combination-train-config-v1' else
-                     source_schema_matches(b, required, schema, optional=('lineage_reference_binding',)))
+                     source_schema_matches(source_body, required, schema, optional=('lineage_reference_binding',)))
         if (not schema_ok or b['domain'] != 'train'
                 or not isinstance(b['stage'], str) or not b['stage'].strip() or not _names(b['item_ids'])
                 or not _names(b['replicates']) or not _digest(b['baseline_digest'])):
@@ -172,7 +174,9 @@ def compile_lineage_train_panels(config, packets):
             for replicate in b['replicates']:
                 scenario = FrozenRecord.from_dict({'schema': 'lineage-combination-scenario-v1', 'obligation_id': name,
                     'design_digest': design.content_hash, 'task_digest': packet.task.content_hash, 'replicate': replicate,
-                    'material_digest': materials[packet.task.content_hash].record.content_hash})
+                    'material_digest': materials[packet.task.content_hash].record.content_hash,
+                    **({'schema':'lineage-combination-scenario-v2', 'execution_recipe':b['execution_recipe']}
+                       if 'execution_recipe' in b else {})})
                 for arm_id, arm in arms.items():
                     cell = PanelCell(name, packet.task.identity, replicate, 'combination', arm_id, arm,
                         packet.task.content_hash, scenario.content_hash, packages[arm.content_hash].digest,
