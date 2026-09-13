@@ -29,6 +29,20 @@ def _text(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
+def _sha256(value: Any) -> bool:
+    return isinstance(value, str) and len(value) == 64 and all(character in "0123456789abcdef" for character in value)
+
+
+def _validate_shadow_execution(value: Any) -> None:
+    """Accept only a caller-frozen program and public-input hash contract."""
+    if (not isinstance(value, Mapping) or set(value) != {"schema", "program_sha256", "input_sha256"}
+            or value.get("schema") != "frozen-shadow-execution-contract-v1"
+            or not _sha256(value.get("program_sha256"))
+            or not isinstance(value.get("input_sha256"), Mapping) or not value["input_sha256"]
+            or any(not _text(name) or not _sha256(digest) for name, digest in value["input_sha256"].items())):
+        raise ContractError("shadow execution contract is malformed")
+
+
 def _validate_selected(item: Any) -> None:
     if (not isinstance(item, Mapping) or set(item) != {"audit_template", "independent_check"}
             or not isinstance(item["audit_template"], Mapping) or not item["audit_template"]
@@ -54,10 +68,10 @@ def _validate_bundle(task: PublicTask, body: Mapping[str, Any]) -> None:
             or not isinstance(body["subject"], Mapping) or set(body["subject"]) != {"task", "subject"}
             or body["subject"].get("task") != task.identity.task_id or not _text(body["subject"].get("subject"))
             or not isinstance(body["public_evidence"], Mapping) or not body["public_evidence"]
-            or not isinstance(body["shadow_execution"], Mapping) or not body["shadow_execution"]
             or not isinstance(body["q23"], Mapping) or set(body["q23"]) != set(_Q23)
             or not isinstance(body["q24"], Mapping) or set(body["q24"]) != set(_Q24)):
         raise ContractError("audit bundle identity or coverage mismatch")
+    _validate_shadow_execution(body["shadow_execution"])
     for item in tuple(body["q23"].values()) + tuple(body["q24"].values()):
         _validate_selected(item)
 
@@ -154,6 +168,35 @@ def _receipt_binding(port_record: FrozenRecord, *, task: PublicTask, material: F
     return receipts, None
 
 
+def _shadow_execution_binding(execution: Any, material: FrozenRecord) -> None:
+    """Bind the caller port's actual receipt to its frozen executable contract."""
+    plan = material.data()["shadow_execution"]
+    artifact = getattr(execution, "artifact", None)
+    if artifact is None or artifact.sha256 != plan["program_sha256"]:
+        raise ContractError("shadow execution program does not match the frozen contract")
+    record = getattr(execution, "record", None)
+    if not isinstance(record, FrozenRecord):
+        raise ContractError("shadow execution lacks a typed receipt")
+    actual = record.data().get("input_artifacts")
+    expected = plan["input_sha256"]
+    if (not isinstance(actual, Mapping) or set(actual) != set(expected)
+            or any(not isinstance(actual[name], Mapping) or actual[name].get("sha256") != digest
+                   for name, digest in expected.items())):
+        raise ContractError("shadow execution inputs do not match the frozen contract")
+
+
+def _model_processing(*, execution: Any, verified: FrozenRecord | None,
+                      admission: FrozenRecord | None) -> Mapping[str, Any]:
+    """Expose a fixed-shape engineering projection without revealing the arm."""
+    if admission is None:
+        admission_state = "not_promoted"
+    else:
+        admission_state = "admitted" if admission.data().get("admitted") is True else "not_admitted"
+    return {"schema": "audit-model-processing-projection-v1", "execution_status": execution.status,
+            "host_verification": {"status": "verified" if verified else "rejected"},
+            "admission": {"status": admission_state}}
+
+
 @dataclass(frozen=True)
 class _AuditDriver:
     experiment_id: str
@@ -178,6 +221,7 @@ class _AuditDriver:
         execution = self.shadow_execution_port(workflow.session, workflow.session.task, material)
         if getattr(execution, "content_hash", None) not in workflow.session.executions:
             raise ContractError("audit shadow port did not execute through this RunSession")
+        _shadow_execution_binding(execution, material)
         if self.receipt_port is None:
             raise ContractError("audit driver requires a caller-owned dual audit receipt port")
         port_record = self.receipt_port(workflow.session.task, material, workflow.session.objective, execution)
@@ -211,6 +255,7 @@ class _AuditDriver:
             "m1_policy": "applied" if admission else "not_applied_common_p0_rejection" if host_error else "frozen_shadow_control",
             "admission": admission.data() if admission else {"status": "not_promoted", "reason": rejection},
             "independent_check": {"retained_by_controller": True, "scientific_authority": "not_established"}}
+        model_processing = _model_processing(execution=execution, verified=verified, admission=admission)
         stage = workflow._trace("stage_1" if m1_enabled else "operation_m1_shadow_control", "executed",
             host_audit_verifier="always_on", receipt_binding_digest=port_record.content_hash,
             host_verification="verified" if verified else "rejected",
@@ -218,8 +263,8 @@ class _AuditDriver:
         final = workflow.invoke_model("final", model,
             instruction="Return a bounded train-only unknown candidate. The audit processing state is an engineering result, not scientific authority.",
             module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell),
-                "candidate_package": package.record.data(), "required_objective_digest": workflow.session.objective.content_hash,
-                "audit_processing": processing}))
+                "required_objective_digest": workflow.session.objective.content_hash,
+                "audit_processing": model_processing}))
         _candidate(final, workflow.session.objective)
         return stage, final, (initial, final)
 

@@ -25,6 +25,8 @@ SPLIT = "7" * 64
 KEYS = {"synthetic-audit-a": b"a" * 32, "synthetic-audit-b": b"b" * 32}
 Q23 = ("false", "string_false", "empty", "duplicate", "unknown", "missing", "parse_error")
 Q24 = ("one_fail", "both_fail", "disagree", "same_wrong")
+SHADOW_PROGRAM = "print('restricted audit shadow')"
+SHADOW_INPUT = "synthetic-only"
 
 
 def _task(name: str):
@@ -59,16 +61,17 @@ def _bundle(task):
                                 "independent_check": {"fixture_check": "retained-controller-only", "profile": profile}}
     return freeze_audit_bundle(task, subject={"task": task.identity.task_id, "subject": "synthetic-public-subject"},
         public_evidence={"observation": "PUBLIC-AUDIT-" + task.identity.benchmark},
-        shadow_execution={"operation_id": "synthetic-restricted-shadow", "public_input": "synthetic-only"},
+        shadow_execution={"schema": "frozen-shadow-execution-contract-v1",
+            "program_sha256": hashlib.sha256(SHADOW_PROGRAM.encode("utf-8")).hexdigest(),
+            "input_sha256": {"public": hashlib.sha256(SHADOW_INPUT.encode("utf-8")).hexdigest()}},
         q23={name: selected(name) for name in Q23}, q24={name: selected(name) for name in Q24})
 
 
 def _shadow(session, _task, material):
-    plan = material.data()["shadow_execution"]
     public = session.sidecar / "audit-public-input.txt"
-    public.write_text(plan["public_input"], encoding="utf-8")
+    public.write_text(SHADOW_INPUT, encoding="utf-8")
     broker = DockerExecutionBroker([session.sidecar], runner=lambda *args, **kwargs: subprocess.CompletedProcess(args[0], 0, b"shadow-ok", b""))
-    return session.execute("print('restricted audit shadow')", broker=broker,
+    return session.execute(SHADOW_PROGRAM, broker=broker,
         image="fixture@sha256:" + "a" * 64, inputs={"public": public})
 
 
@@ -101,8 +104,11 @@ def _receipt_port(task, material, objective, execution):
 def _model(rows):
     def call(request):
         body = request.data(); rows.append(body)
-        assert "signed_audit_pair" not in FrozenRecord.from_dict(body).encoded
-        assert "controller_only_independent_check" not in body["module_context"]
+        encoded = FrozenRecord.from_dict(body).encoded
+        for hidden in ("signed_audit_pair", "controller_only_independent_check", "arm_id", "enabled_modules",
+                       "frozen_shadow_control", "candidate_package", "same_wrong", "retained-controller-only"):
+            assert hidden not in encoded
+        assert "candidate_package" not in body["module_context"]
         if body["slot"] == "final":
             return FrozenRecord.from_dict({"objective_digest": body["module_context"]["required_objective_digest"],
                 "outcome": "unknown", "evidence_ids": [], "conclusion": "bounded synthetic audit result", "programme_complete": False})
@@ -180,6 +186,9 @@ def test_compiled_q23_q24_grid_runs_real_audit_verifier_and_final_gate(tmp_path:
     assert PanelReceiptVerifier().verify(compiled.panel, tuple(runtimes)).decision == "engineering_verified"
     assert all(row["module_context"]["panel_cell"].keys() == {"schema", "cell_digest"} for row in rows)
     assert all(row["slot"] == "audit_initial" or "audit_processing" in row["module_context"] for row in rows)
+    final_rows = [row for row in rows if row["slot"] == "final"]
+    assert all(row["module_context"]["audit_processing"].keys() ==
+               {"schema", "execution_status", "host_verification", "admission"} for row in final_rows)
 
 
 def test_bundle_is_identity_bound_and_ports_fail_closed_before_audit(tmp_path: Path, monkeypatch):
@@ -188,6 +197,11 @@ def test_bundle_is_identity_bound_and_ports_fail_closed_before_audit(tmp_path: P
     with pytest.raises(ContractError):
         freeze_audit_bundle(task, subject={"task": "other", "subject": "x"}, public_evidence=bundle["public_evidence"],
             shadow_execution=bundle["shadow_execution"], q23=bundle["q23"], q24=bundle["q24"])
+    malformed_shadow = dict(bundle["shadow_execution"])
+    malformed_shadow["unbound_summary"] = "not an execution contract"
+    with pytest.raises(ContractError):
+        freeze_audit_bundle(task, subject=bundle["subject"], public_evidence=bundle["public_evidence"],
+            shadow_execution=malformed_shadow, q23=bundle["q23"], q24=bundle["q24"])
     compiled, tasks = _setup()
     cell = next(item for item in compiled.panel.cells if item.coverage_id == "Q2.3" and item.variant == "false")
     def wrong_binding(*args):
@@ -209,3 +223,29 @@ def test_bundle_is_identity_bound_and_ports_fail_closed_before_audit(tmp_path: P
             sidecar=tmp_path / str(number), model=_model(calls), audit_verifier=AuditVerifier(KEYS))
         assert result.runtime.status == "failed" and result.call_plan.data()["model_calls"] == 1
         assert not any(event["stage"].startswith("host_audit_") for event in _trace(result.runtime))
+
+
+@pytest.mark.parametrize("substitution", ("program", "input"))
+def test_shadow_port_cannot_substitute_an_unbound_program_or_input_before_receipt_verification(tmp_path: Path, monkeypatch,
+                                                                                                 substitution: str):
+    compiled, tasks = _setup()
+    cell = next(item for item in compiled.panel.cells if item.coverage_id == "Q2.3" and item.variant == "false")
+
+    def wrong_shadow(session, _task, _material):
+        public = session.sidecar / "wrong-audit-public-input.txt"
+        public.write_text("unbound public input" if substitution == "input" else SHADOW_INPUT, encoding="utf-8")
+        broker = DockerExecutionBroker([session.sidecar], runner=lambda *args, **kwargs: subprocess.CompletedProcess(args[0], 0, b"wrong", b""))
+        return session.execute("print('unbound shadow program')" if substitution == "program" else SHADOW_PROGRAM, broker=broker,
+            image="fixture@sha256:" + "a" * 64, inputs={"public": public})
+
+    local = dict(panel_runner.DRIVERS)
+    install_drivers(local, receipt_port=_receipt_port, shadow_execution_port=wrong_shadow)
+    monkeypatch.setattr(panel_runner, "DRIVERS", local)
+    calls = []
+    result = panel_runner.run_train_cell(cell, task=tasks[cell.identity.benchmark], scenario=compiled.scenarios[cell.key],
+        package=compiled.packages[cell.runtime_arm.content_hash], objective=FrozenRecord.from_dict({"objective": "bad"}),
+        sidecar=tmp_path / ("wrong-shadow-" + substitution), model=_model(calls), audit_verifier=AuditVerifier(KEYS))
+    assert result.runtime.status == "failed" and result.call_plan.data()["model_calls"] == 1
+    events = _trace(result.runtime)
+    assert any(event["stage"] == "execution_result" for event in events)
+    assert not any(event["stage"].startswith("host_audit_") for event in events)
