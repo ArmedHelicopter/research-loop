@@ -11,13 +11,14 @@ from pathlib import Path
 from typing import Callable, Mapping
 
 from research_loop.modular.benchmark_solver import BenchmarkSolveResult, run_benchmark_solve_in_session
+from research_loop.modular.benchmark_cell import _solver_journal_state, _compare_solver_result
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.combination_panels import CombinationPanel
 from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.modules.improvement import CandidatePackage
 from research_loop.modular.modules.predictions import PredictionRegistry
 from research_loop.modular.modules.review import ReviewEngine
-from research_loop.modular.panel_receipts import PanelCell, RuntimeReceipt
+from research_loop.modular.panel_receipts import PanelCell, RuntimeReceipt, PanelReceiptVerifier
 from research_loop.modular.panel_receipts import opaque_panel_cell_binding
 from research_loop.modular.protocol_trace import verify_protocol_trace
 from research_loop.modular.runtime import AuditVerifier, RunSession, verify_trace
@@ -78,6 +79,7 @@ def verify_m4_m5_combination_benchmark_cell(result: CombinationBenchmarkCellResu
     if not isinstance(result, CombinationBenchmarkCellResult):
         raise ContractError("typed M4/M5 combination result required")
     _validate_panel_inputs(panel, result.cell, task, scenario, package)
+    PanelReceiptVerifier()._verify_runtime(result.runtime, result.cell)
     events = [FrozenRecord(line).data() for line in result.runtime.trace_path.read_text(encoding="utf-8").splitlines()]
     if not events or FrozenRecord.from_dict(events[-1]).content_hash != result.runtime.trace_digest:
         raise ContractError("combination runtime receipt does not bind its trace")
@@ -108,6 +110,12 @@ def verify_m4_m5_combination_benchmark_cell(result: CombinationBenchmarkCellResu
                           == next(item["data"]["request_digest"] for item in events if item["stage"] == "model_request" and item["data"]["request"]["slot"] == "m5_mechanism"))
     if FrozenRecord.from_dict(first_response).encoded in FrozenRecord.from_dict(requests[2]).encoded:
         raise ContractError("second sealed reviewer received the first submission")
+    if result.solver is None:
+        raise ContractError("successful combination mechanism requires an in-trace solver result")
+    state = _solver_journal_state(events)
+    _compare_solver_result(result.solver, state)
+    if result.solver.status != state["status"] or result.runtime.status != ("succeeded" if state["status"] == "execution_succeeded" else "failed"):
+        raise ContractError("combination receipt status is not derived from the shared solver journal")
     solver_requests = [request for request in requests if request["slot"] in {"analysis_program", "final_answer"}]
     if result.solver is not None and (len(solver_requests) and any(request["module_context"].get("joint_mechanism") != joint
                                                                or request["module_context"].get("joint_mechanism_digest") != result.joint_mechanism.content_hash
@@ -131,7 +139,7 @@ def _run_m4(workflow: ModularWorkflow, cell: PanelCell, scenario: FrozenRecord, 
         workflow._trace("operation_m4_control", "executed", response_digest=response.content_hash)
         return None, response
     body = response.data()
-    if set(body) != {"question", "branches", "budget_units"} or body["budget_units"] != 3:
+    if set(body) != {"question", "branches", "budget_units"} or body["budget_units"] != 3 or not isinstance(body["branches"], list) or len(body["branches"]) != 3:
         raise ContractError("M4 combination response requires the frozen three-branch plan")
     plan = workflow.predictions.freeze(body["question"], body["branches"], budget_units=3)
     workflow._trace("stage_1", "executed", plan_id=plan.plan_id, plan_digest=plan.payload.content_hash,
@@ -147,11 +155,9 @@ def _run_m5(workflow: ModularWorkflow, cell: PanelCell, scenario: FrozenRecord, 
                                        roles=[{"role_id": role, "question": question} for role, question in _ROLES], budget_units=2)
     plan_payload = plan.payload.data() if plan is not None else None
     for slot, (role, question) in zip(_SLOTS[1:3], _ROLES):
-        context = {"panel_cell": binding.data(), "combination_scenario": scenario.data(), "mechanism_phase": "sealed_review",
+        context = {"panel_cell": binding.data(), "public_task": workflow.session.task.data(), "mechanism_phase": "sealed_review",
                    "review_role": role, "review_question": question,
                    "prediction_plan": plan_payload, "sealed": True}
-        if review is not None:
-            context["review_id"] = review.review_id
         response = workflow.invoke_model(slot, model, instruction="Answer only the assigned public review question.",
                                          module_context=FrozenRecord.from_dict(context))
         responses.append(response)
