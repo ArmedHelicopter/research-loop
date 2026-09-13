@@ -136,3 +136,17 @@ def test_single_turn_usage_and_event_contract_cannot_hide_additional_work(form):
     result=inspect(rows)
     assert result.response is None and not result.receipt.data()['accepted']
     assert result.receipt.data()['usage']['total_tokens']==9381
+
+
+def test_actual_smoke_primitive_const_contract_remains_strict():
+    schema=copy.deepcopy(SCHEMA);schema['properties']['ok']['const']=True
+    def call(rows):
+        return inspect_grok_stream(('\n'.join(json.dumps(e) for e in rows)+'\n').encode(),
+            schema=schema,session_id=SESSION,max_output_tokens=128,max_total_tokens=20000,process_exit_code=0)
+    assert call(stream()).receipt.data()['accepted']
+    rows=stream();rows[1]['data']='{"ok":false}';rows[-1]['structuredOutput']={'ok':False}
+    assert call(rows).response is None
+    rows[1]['data']='{"ok":1}';rows[-1]['structuredOutput']={'ok':1}
+    assert call(rows).response is None
+    schema['properties']['ok']['enum']=[False]
+    assert call(stream()).response is None

@@ -48,6 +48,26 @@ def _integer(value):
     return type(value) is int and value >= 0
 
 
+def _grok_schema(schema):
+    """Add primitive JSON Schema const without changing legacy Codex schemas."""
+    if not isinstance(schema, Mapping):
+        raise ContractError('invalid Grok output schema')
+    out=dict(schema)
+    if 'properties' in out:
+        if not isinstance(out['properties'], Mapping):
+            raise ContractError('invalid Grok properties')
+        out['properties']={key:_grok_schema(child) for key,child in out['properties'].items()}
+    if 'items' in out:
+        out['items']=_grok_schema(out['items'])
+    if 'const' in out:
+        value=out.pop('const')
+        if out.get('type') not in {'boolean','string','number','integer','null'}:
+            raise ContractError('only primitive Grok const schemas are supported')
+        _validate_schema(out,value)
+        out['enum']=[value]
+    return out
+
+
 def _usage(end):
     usage = end.get('usage')
     if not isinstance(usage, dict) or set(usage) != set(TOKEN_FIELDS):
@@ -201,7 +221,7 @@ def inspect_grok_stream(raw: bytes, *, schema: Mapping, session_id: str,
                 output = _load(''.join(event['data'] for event in texts))
                 if output != end.get('structuredOutput'):
                     raise ValueError('structured output mismatch')
-                _validate_schema(schema, output)
+                _validate_schema(_grok_schema(schema), output)
                 response = FrozenRecord.from_dict(output)
             except (ValueError, TypeError, ContractError):
                 fault('invalid_or_mismatched_response')
