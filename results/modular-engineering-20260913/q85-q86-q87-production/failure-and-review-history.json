@@ -1,0 +1,47 @@
+[
+  {
+    "report": "m6-final-grid01.xml",
+    "status": "RED",
+    "stage": "before model port construction",
+    "runtime_cells": 0,
+    "paid_calls": 0,
+    "reason": "closed model schema did not support nullable frontier empty_reason",
+    "source_archive": "m6-final-grid01-source.zip"
+  },
+  {
+    "report": "m6-final-grid02.xml",
+    "status": "RED",
+    "denominator": 92,
+    "runtime_receipts": 92,
+    "succeeded": 76,
+    "failed": 16,
+    "model_calls": 172,
+    "provider_calls": 54,
+    "real_docker_calls": 16,
+    "reason": "independent fixture authority incorrectly assumed a single LF CSV shape for both benchmarks; actual exported input and execution traces retained",
+    "source_archive": "m6-final-grid02-source.zip",
+    "runtime_archive": "m6-final-grid02-runtime.zip"
+  },
+  {
+    "report": "m6-final-safety02.xml",
+    "status": "RED",
+    "tests": 67,
+    "passed": 66,
+    "failed": 1,
+    "reason": "old closed production registry assertion still expected only Q81-Q84",
+    "source_archive": "m6-final-safety02-source.zip"
+  },
+  {
+    "report": "m6-final-frozen01.xml",
+    "status": "passed_then_superseded_after_review",
+    "source_commit": "1eb30853b179e709d5d6d2589a846ae5705c487c",
+    "tests_passed": 104,
+    "new_grid_denominator": 92,
+    "new_grid_passed": 92,
+    "review_limitations": [
+      "version guard was local and not yet bound to actual runtime I/O",
+      "shared source contained a warning rather than the explicit malicious ignore-rules text"
+    ],
+    "replacement_source_commit": "9580c9de3ccca0da0dc24ce3cd8af2058167dac6"
+  }
+]

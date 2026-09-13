@@ -1,0 +1,246 @@
+{
+  "schema": "q85-q86-q87-final-engineering-verification-v1",
+  "source_commit": "9580c9de3ccca0da0dc24ce3cd8af2058167dac6",
+  "implementation_commit": "1eb30853b179e709d5d6d2589a846ae5705c487c",
+  "base_commit": "c9aeed72f560ad94d9ae170b38de7f3b055e8f34",
+  "scope": [
+    "Q8.5",
+    "Q8.6",
+    "Q8.7"
+  ],
+  "final_tests": {
+    "tests": 118,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "final_grid_denominator": 92,
+  "final_verified_cells": 92,
+  "question_counts": {
+    "Q8.5": 28,
+    "Q8.6": 24,
+    "Q8.7": 40
+  },
+  "model_transport": "CodexModelPort with fixture process transport and reviewed fixture context",
+  "model_calls": 236,
+  "provider_calls": 54,
+  "provider_call_opportunities": 276,
+  "returned_sources": 54,
+  "source_slot_opportunities": 276,
+  "per_cell_context_bytes": 4096,
+  "real_docker_calls": 16,
+  "q87_execution_opportunities": 40,
+  "q87_expected_failed_executions": 8,
+  "independently_frozen_unstarted_children": 2,
+  "legacy_regression_grid_cells": 88,
+  "paid_calls": 0,
+  "scientific_verified": false,
+  "validation_payload_accessed": false,
+  "source_worktree_unchanged_during_final_suite": true,
+  "source_manifest_file_count": 329,
+  "preserved_history": [
+    {
+      "report": "m6-final-grid01.xml",
+      "status": "RED",
+      "stage": "before model port construction",
+      "runtime_cells": 0,
+      "paid_calls": 0,
+      "reason": "closed model schema did not support nullable frontier empty_reason",
+      "source_archive": "m6-final-grid01-source.zip"
+    },
+    {
+      "report": "m6-final-grid02.xml",
+      "status": "RED",
+      "denominator": 92,
+      "runtime_receipts": 92,
+      "succeeded": 76,
+      "failed": 16,
+      "model_calls": 172,
+      "provider_calls": 54,
+      "real_docker_calls": 16,
+      "reason": "independent fixture authority incorrectly assumed a single LF CSV shape for both benchmarks; actual exported input and execution traces retained",
+      "source_archive": "m6-final-grid02-source.zip",
+      "runtime_archive": "m6-final-grid02-runtime.zip"
+    },
+    {
+      "report": "m6-final-safety02.xml",
+      "status": "RED",
+      "tests": 67,
+      "passed": 66,
+      "failed": 1,
+      "reason": "old closed production registry assertion still expected only Q81-Q84",
+      "source_archive": "m6-final-safety02-source.zip"
+    },
+    {
+      "report": "m6-final-frozen01.xml",
+      "status": "passed_then_superseded_after_review",
+      "source_commit": "1eb30853b179e709d5d6d2589a846ae5705c487c",
+      "tests_passed": 104,
+      "new_grid_denominator": 92,
+      "new_grid_passed": 92,
+      "review_limitations": [
+        "version guard was local and not yet bound to actual runtime I/O",
+        "shared source contained a warning rather than the explicit malicious ignore-rules text"
+      ],
+      "replacement_source_commit": "9580c9de3ccca0da0dc24ce3cd8af2058167dac6"
+    }
+  ],
+  "reports": {
+    "m6-final-frozen01.xml": {
+      "tests": 104,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "m6-final-frozen02.xml": {
+      "tests": 118,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "m6-final-grid01.xml": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "m6-final-grid02.xml": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "m6-final-safety01.xml": {
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "m6-final-safety02.xml": {
+      "tests": 67,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "m6-final-safety03.xml": {
+      "tests": 67,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "m6-final-safety04.xml": {
+      "tests": 69,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "limits": [
+    "public synthetic train engineering fixtures only",
+    "no scientific effectiveness or independence claim",
+    "no validation optimization or reference payloads",
+    "no benchmark or queue task admission from frontier"
+  ],
+  "artifacts": {
+    "failure-and-review-history.json": {
+      "sha256": "87ce79bb49b29aba4e0a16aaa8546b37e064449590148345584a582068337577",
+      "bytes": 1588
+    },
+    "frozen01-independent-authority.json": {
+      "sha256": "d26d9956fa6f7294a36847eece94a4a9bc371e3a6b9ff56123627044a11e9443",
+      "bytes": 83122
+    },
+    "frozen01-runtime.zip": {
+      "sha256": "9dd18fc8fd85a5e6019f45179bd74e9db4041e66c332abccc310450d020b2d4d",
+      "bytes": 1265067
+    },
+    "frozen02-independent-authority.json": {
+      "sha256": "14eab8a1add1d5ca101320c1d0a9664acd4ccb77e5b484ee680b876add43fc27",
+      "bytes": 83122
+    },
+    "frozen02-runtime.zip": {
+      "sha256": "3b3272ca86c5e9f01e7b169b94a7714345446e38ac09a2f0c5e5911e2b86fa63",
+      "bytes": 1274054
+    },
+    "m6-final-corrected-source-after.json": {
+      "sha256": "dd92115485d93744ae14d79893ef6ee2f752b5775a84628ec61319e569475104",
+      "bytes": 109663
+    },
+    "m6-final-corrected-source-before.json": {
+      "sha256": "dd92115485d93744ae14d79893ef6ee2f752b5775a84628ec61319e569475104",
+      "bytes": 109663
+    },
+    "m6-final-frozen01.xml": {
+      "sha256": "87ea999aa359f4b28a5e7ddbf3fa7363d891a6e909b5e618cba387c64ed8c4b0",
+      "bytes": 15862
+    },
+    "m6-final-frozen02.xml": {
+      "sha256": "4ef4b51fdd6b215ac69ad35f10fc4d409846adcf4ad3be1b2458e5602d537ce3",
+      "bytes": 17855
+    },
+    "m6-final-grid01-source.zip": {
+      "sha256": "11d4a428def93c335d4086adfb2eb118ae4c0dc70775c4003173f2d9c4df3ce4",
+      "bytes": 966290
+    },
+    "m6-final-grid01.xml": {
+      "sha256": "1aac17ab62adc10a3fc8f84bedc9f001b6a3c3111a9e9a56b4035247f3593dce",
+      "bytes": 3610
+    },
+    "m6-final-grid02-runtime.zip": {
+      "sha256": "f8afb05310f4afd72d02ace4382feed5a359b95eafa19cbe820894efcbaabccc",
+      "bytes": 932892
+    },
+    "m6-final-grid02-source.zip": {
+      "sha256": "516f5482b10a84a7139bfda6fb47e7c5532530a4b28071a4522a8ce93534653c",
+      "bytes": 966447
+    },
+    "m6-final-grid02.xml": {
+      "sha256": "4d051fb00501212b6ebd3428ca6a03f3974809485f587e1f02368dffa9c50e57",
+      "bytes": 3629
+    },
+    "m6-final-safety01.xml": {
+      "sha256": "dd102a5b04c84757605efb45b4f4b94dfaf8ae8cf1f94cf21f509d5b299b691e",
+      "bytes": 3152
+    },
+    "m6-final-safety02-source.zip": {
+      "sha256": "476fc463bfdd574c0e2afd14e340bb03cd1d5f27f61849e073a5cb82af618fa3",
+      "bytes": 967051
+    },
+    "m6-final-safety02.xml": {
+      "sha256": "b398e668c50446b4d02ae19262f0ca774cc38506d9fb26a74aa4b555e4a8235e",
+      "bytes": 10550
+    },
+    "m6-final-safety03.xml": {
+      "sha256": "26722cae786b83acee98763147b598cf40c599b93fabdc29927b7c1313ce87a7",
+      "bytes": 9771
+    },
+    "m6-final-safety04.xml": {
+      "sha256": "b0f8f971482429380d7b574f8c3916680a760abd21180890e45032e6a728b397",
+      "bytes": 10122
+    },
+    "m6-final-source-after.json": {
+      "sha256": "41bee5c6f10e7dfc6be6a0d2ff0714f21073f52ad58229b85b8c10fcb9b4a4d6",
+      "bytes": 109663
+    },
+    "m6-final-source-before.json": {
+      "sha256": "41bee5c6f10e7dfc6be6a0d2ff0714f21073f52ad58229b85b8c10fcb9b4a4d6",
+      "bytes": 109663
+    },
+    "provider-failure-witness.json": {
+      "sha256": "b7e43384942390e27cc746b0ac0581bb0f07d2137c10aecf48333d8406038629",
+      "bytes": 3186
+    },
+    "provider-failure-witness.py": {
+      "sha256": "ac8a275dbadfcf660f118951ab244acc5f9950449a0d03d42b7eba383ad88ffd",
+      "bytes": 3321
+    },
+    "README.md": {
+      "sha256": "79942aea4fa3f768de8e62ef377fec96d8ae130b4d105cb4e15309bfee8d186f",
+      "bytes": 3877
+    },
+    "version-port-negative-witnesses.zip": {
+      "sha256": "2c3a42eb5c6cb79d7e23799ccb0724dacfee87c6f47951f8054ba7773505e76a",
+      "bytes": 7532
+    }
+  }
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="100.998" timestamp="2026-09-13T15:50:30.946521+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_q85_q86_q87_train_controller" name="test_q85_q86_q87_full_production_grid" time="100.743"><failure message="AssertionError: [(('Q8.7', 'discoverybench', 'synth:train:family_1_1', 'discoverybench:synth:train:family_1_1', 'r1', 'failed_check', ...1_1', 'discoverybench:synth:train:family_1_1', 'r1', 'anomaly', ...), 'AssertionError: driver_or_model_rejected'), ...]&#10;assert False&#10; +  where False = all(&lt;generator object test_q85_q86_q87_full_production_grid.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000246AF12FED0&gt;)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m6-final-grid02-temp/test_q85_q86_q87_full_producti0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000246AEFF0A10&gt;
+
+    def test_q85_q86_q87_full_production_grid(tmp_path, monkeypatch):
+        snapshot, custody = snapshot_and_custody(tmp_path); base = config(custody, snapshot, tmp_path).data()
+        from evaluation.modular.train_io import TrainPacketExporter
+        packets = TrainPacketExporter(custody, snapshot, tmp_path/"material").export(base["item_ids"])
+        evidence = {packet.task.content_hash: bundle(packet).data() for packet in packets}
+        grids = obligation_grids(tuple(SCOPE), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"final": FINAL, "review": GOAL_REVIEW, "frontier_review_a": REVIEW, "frontier_review_b": REVIEW, "frontier": FRONTIER}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1", "engineering_scope": "train_only_panel_engineering",
+            "stage": "q85-q86-q87-controller", "scope_ids": list(SCOPE), "evidence_by_task": evidence,
+            "packages_by_arm": {arm.content_hash: package for grid in grids.values() for arm in executable_arms(grid).values()},
+            "budget": {"model_calls": 4, "retrieval_calls": 3, "execution_limit": 1}, "max_calls": 236, "max_tokens": 512, "schemas": schemas}))
+        port = model_port(tmp_path, monkeypatch, max_calls=236, max_tokens=512, schemas=schemas, response_factory=response)
+        provider, authority = Provider(), Authority()
+        result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path/"export", run_root=tmp_path/"run",
+            model=port, audit_verifier=AuditVerifier({"a":b"a"*32,"b":b"b"*32}), retrieval_provider=provider,
+            retrieval_admission_port=admission, retrieval_final_authority=authority)
+        assert len(result.runtimes) == 92
+&gt;       assert all(row.status == "succeeded" for row in result.runtimes), [(row.cell_key,row.failure_reason) for row in result.runtimes if row.status != "succeeded"]
+E       AssertionError: [(('Q8.7', 'discoverybench', 'synth:train:family_1_1', 'discoverybench:synth:train:family_1_1', 'r1', 'failed_check', ...1_1', 'discoverybench:synth:train:family_1_1', 'r1', 'anomaly', ...), 'AssertionError: driver_or_model_rejected'), ...]
+E       assert False
+E        +  where False = all(&lt;generator object test_q85_q86_q87_full_production_grid.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000246AF12FED0&gt;)
+
+tests\test_modular_q85_q86_q87_train_controller.py:126: AssertionError</failure></testcase></testsuite></testsuites>
