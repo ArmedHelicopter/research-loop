@@ -1,0 +1,313 @@
+{
+  "schema": "grok-native-acp-archive-byte-verification-v1",
+  "archive": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\grok-diagnostic-material-authoring",
+  "revision": "986c25c394e32e946527b53c812c9373fe597033",
+  "payload_zip_entries": 58,
+  "archive_files": 60,
+  "disk_manifest_zip_equal": true,
+  "all_index_bytes_equal": true,
+  "all_commit_bytes_equal": true,
+  "private_files_included": false,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 9,
+      "sha256": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992"
+    },
+    {
+      "path": "README.md",
+      "size": 1930,
+      "sha256": "48981f5603961c48b9e2020e08325301e2493a155a356f7f204cfffe05ce67bd"
+    },
+    {
+      "path": "actual/native-observer-receipt.json",
+      "size": 1858,
+      "sha256": "03aed1dc947ba0078b54526a6259b78db571aa7594976ac17abdf2e4107592ba"
+    },
+    {
+      "path": "actual/public-freeze-metadata.json",
+      "size": 3038,
+      "sha256": "42e98f1bb5d1a51a02ae0263475eca9151e821e8e2271321c95efb862c0fafa9"
+    },
+    {
+      "path": "actual/public-outcome.json",
+      "size": 3808,
+      "sha256": "3be9d130e23716a21865fbbaaefda5fba0935c4f30ce1f576ad0251592582a8a"
+    },
+    {
+      "path": "actual/public-parent-closure.json",
+      "size": 904,
+      "sha256": "ef49df9753ca26f113e827de9974064613f1ccdb999aadb0c7a6b83fc71d70a2"
+    },
+    {
+      "path": "actual/public-preparation-receipt.json",
+      "size": 1197,
+      "sha256": "ecf3882ba400679b84b9f54da370d898a02491ab9b1b40e7aeb7087d7b64f8d9"
+    },
+    {
+      "path": "actual/terminal-protocol-metadata.json",
+      "size": 1759,
+      "sha256": "f7afc13fc35b6ddebab25e00d31f5124a9af612083fd6733cc18b391ddb7a165"
+    },
+    {
+      "path": "closure-summary.json",
+      "size": 2286,
+      "sha256": "da5e03697a2322cf5e0be94488dc548f889714d7f9d1f623b9ff25d9c9dfbb83"
+    },
+    {
+      "path": "evidence.zip",
+      "size": 295814,
+      "sha256": "efe47006811b8b02a4838222927c80802e350799fd7ced553ab12cb41c55ae61"
+    },
+    {
+      "path": "frozen-check-r1/after-source-sha256.json",
+      "size": 106311,
+      "sha256": "80097d3554c3bdf86e1cd701974832806c41e806c6d6483ef4382e574cf0485a"
+    },
+    {
+      "path": "frozen-check-r1/before-source-sha256.json",
+      "size": 106311,
+      "sha256": "80097d3554c3bdf86e1cd701974832806c41e806c6d6483ef4382e574cf0485a"
+    },
+    {
+      "path": "frozen-check-r1/pytest.stderr.bin",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "frozen-check-r1/pytest.stdout.bin",
+      "size": 1207,
+      "sha256": "c00c3b1991b3e770d95998488d2a07c97f1e6da68dc5e60bcbc70aaa671ba774"
+    },
+    {
+      "path": "frozen-check-r1/pytest.xml",
+      "size": 20744,
+      "sha256": "00978dbe174ebbda06a421fedbe120b4cb3434fb45eae62cafb8630e3b7be9e7"
+    },
+    {
+      "path": "frozen-check-r1/receipt.json",
+      "size": 1551,
+      "sha256": "eee9234d30e751672216a582cee93df6cdcb578a5be043788327fc5e160368d9"
+    },
+    {
+      "path": "frozen-check-r2/after-source-sha256.json",
+      "size": 106311,
+      "sha256": "2f279410d8e63a1bc9981ac577dad7378799e3daab6fcaa0901fc2136707e022"
+    },
+    {
+      "path": "frozen-check-r2/before-source-sha256.json",
+      "size": 106311,
+      "sha256": "2f279410d8e63a1bc9981ac577dad7378799e3daab6fcaa0901fc2136707e022"
+    },
+    {
+      "path": "frozen-check-r2/pytest.stderr.bin",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "frozen-check-r2/pytest.stdout.bin",
+      "size": 194,
+      "sha256": "9d15ae5aad428822987f5c990388e0918e2827c089f672c23f6aaf9358322cc4"
+    },
+    {
+      "path": "frozen-check-r2/pytest.xml",
+      "size": 4659,
+      "sha256": "308fc19b21aa58483f03d4856e56a66cf48cc38e7b2559ff98d19455c1460b59"
+    },
+    {
+      "path": "frozen-check-r2/receipt.json",
+      "size": 1715,
+      "sha256": "992cdf80f66c0803b65aff8ecdb646307b9cdd6b1b12c8b7084980a43d4437e1"
+    },
+    {
+      "path": "payload-sha256.json",
+      "size": 9762,
+      "sha256": "2981631ff08e70068458b37fa0a80d0f51c0594c21731829148f4d98b8abc919"
+    },
+    {
+      "path": "preliminary-r1/pytest.xml",
+      "size": 2807,
+      "sha256": "234a766abdb64d734c576c66250f0e9f569c5103ccfd7be3044c48132a2fd712"
+    },
+    {
+      "path": "preliminary-r2/pytest.xml",
+      "size": 1395,
+      "sha256": "707f5685af1a15388805a55944b8e6aa53de7f67c51e78bebebdf94a357908f1"
+    },
+    {
+      "path": "procedure/archive_material_authoring_r1.py",
+      "size": 10576,
+      "sha256": "2861988202f2f1b9dd5a4fcc0c1b220f10e2ccd50151bc227265b949548dd12c"
+    },
+    {
+      "path": "procedure/diagnostic-material-authoring-next-scope.md",
+      "size": 4161,
+      "sha256": "7042e1cf55570f43a5b06d67dee0f4c940beace796364fc3782627303709cc5e"
+    },
+    {
+      "path": "procedure/finalize_material_authoring_archive_r1.py",
+      "size": 4155,
+      "sha256": "c0b3fab7d763d01eec1e3ee34aaf9a29f68ae260600c88d430e2ef95673b3650"
+    },
+    {
+      "path": "procedure/material-authoring-root-metadata-review-r1.md",
+      "size": 1949,
+      "sha256": "03510646eacb58b110d0ab6bd7b35a283856010c2f82081e935f7acbc5abb512"
+    },
+    {
+      "path": "procedure/prepare_material_authoring_actual_r1.py",
+      "size": 2590,
+      "sha256": "269ae76ec0f13ed570f548d62368b02217f56875a64ababf17a137e98722592f"
+    },
+    {
+      "path": "procedure/run_material_authoring_actual_once_r1.py",
+      "size": 4423,
+      "sha256": "25f42395b1748ea52f376d088631f5fc8ab2c5c8aa23fcc773a1b849b9b3bc1e"
+    },
+    {
+      "path": "procedure/verify_material_authoring_frozen_r1.py",
+      "size": 3000,
+      "sha256": "90f076a46a9630181dc7c9b307b73edebbb70076b0bf2686ba9694e232b139ad"
+    },
+    {
+      "path": "procedure/verify_material_authoring_frozen_r2.py",
+      "size": 3362,
+      "sha256": "c5094cc40e9641bab751a615d8a7727d65564089b1321a9c91ddae7499cda80a"
+    },
+    {
+      "path": "source/docs/GROK_ACP_PROTOCOL_REVIEW.md",
+      "size": 7144,
+      "sha256": "65d64df8c3bb3899090581900ef20340c68938d628585908231c6dfb839b24e1"
+    },
+    {
+      "path": "source/docs/GROK_ACP_TRANSPORT.md",
+      "size": 7231,
+      "sha256": "b8d193ebb5ed2f3d0ff081b0a6a838c4edd0e973b6b91513fe4e09e30a12a5fb"
+    },
+    {
+      "path": "source/docs/GROK_DIAGNOSTIC_MATERIAL_AUTHORING.md",
+      "size": 5187,
+      "sha256": "b7d172dd64a8c91bca8541c6126de61bb88928820b6382ad86e218e9bb6d1874"
+    },
+    {
+      "path": "source/docs/GROK_SUBSCRIPTION_DIAGNOSTIC.md",
+      "size": 7533,
+      "sha256": "de5ef5dbff0dbe601f2a47037e5895de6aa5f4bb40df45596d68c16b8f138546"
+    },
+    {
+      "path": "source/evaluation/modular/calibration.py",
+      "size": 9954,
+      "sha256": "ab20cfb96f446b3c512f45c84502421a5ccf81b38b8e5abf77833a4285add799"
+    },
+    {
+      "path": "source/evaluation/modular/calibration_pilot.py",
+      "size": 31575,
+      "sha256": "7311f307d7cd58faef337f6216ad408d0f81e18eb69d06b2655e2cf4a584d1cf"
+    },
+    {
+      "path": "source/evaluation/modular/calibration_pilot_process.py",
+      "size": 9915,
+      "sha256": "15b38f8ebf2587148a3693b04502deb3c81d9f16ec2b230c97799aa776667680"
+    },
+    {
+      "path": "source/evaluation/modular/diagnostic_material_authoring.py",
+      "size": 38018,
+      "sha256": "a3e50c8dd37ca10bf214a110aab2e75a6a509e731b5ca2a0f82a50c9f3579824"
+    },
+    {
+      "path": "source/evaluation/modular/diagnostic_private_ports.py",
+      "size": 29458,
+      "sha256": "bea760bf8cc603a721caae249d10e4cc07d9ad91870e9206330cc5b4f5d18ec6"
+    },
+    {
+      "path": "source/evaluation/modular/diagnostic_subscription.py",
+      "size": 31899,
+      "sha256": "0217d1b67dd0308fe306f6bb0c3233eda1704f7e967cd2ff365711cdb98dfb09"
+    },
+    {
+      "path": "source/evaluation/modular/reference_store.py",
+      "size": 16377,
+      "sha256": "58710b187affb5ac7a5e41061f7dc72215d84b2761ddfd89fa9d67ce27356557"
+    },
+    {
+      "path": "source/evaluation/modular/scoring_service.py",
+      "size": 28997,
+      "sha256": "f08d6ac06d0a7bd3371334ea394aad6813f0cddf55a5c0d7c9d4cb4932c40ea8"
+    },
+    {
+      "path": "source/research_loop/modular/contracts.py",
+      "size": 3320,
+      "sha256": "2e6c0d12e864430322329babe569b6244daad6311fa8ddc40a7a2ffb9e4c15bc"
+    },
+    {
+      "path": "source/research_loop/modular/grok_acp_transport.py",
+      "size": 43286,
+      "sha256": "8ef693476977e1e75be1e73fe2a320255f9ebda500acc4899f23cc8baef414ac"
+    },
+    {
+      "path": "source/research_loop/modular/model_port.py",
+      "size": 51557,
+      "sha256": "c56bdaf3818841d0956a647c9e2ae012cc49d4a15dd94a5c91756c53a628d9b6"
+    },
+    {
+      "path": "source/research_loop/ontology.py",
+      "size": 8775,
+      "sha256": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb"
+    },
+    {
+      "path": "source/tests/fixtures/grok_acp_peer.py",
+      "size": 8747,
+      "sha256": "8d145835c7a8ece12ebfbc4a1a5c7d0fae7591c33db0fa417178fbf77fd7114a"
+    },
+    {
+      "path": "source/tests/helpers/material_authoring_fixture.py",
+      "size": 4389,
+      "sha256": "3a0c7b7ba709dbffa6160bd60839d74f2c5aa69b142a39e107ae9771436eb761"
+    },
+    {
+      "path": "source/tests/helpers/material_authoring_worker.py",
+      "size": 960,
+      "sha256": "cce5a86a7a15e13ec2f4828e9a3d8c33d1a81fdeb312b14f1934eb4905b3ccec"
+    },
+    {
+      "path": "source/tests/helpers/subscription_worker.py",
+      "size": 3037,
+      "sha256": "5a702aff28956492e4c62c07c7b38b9832cdaf103993d8777eb540bc58e41114"
+    },
+    {
+      "path": "source/tests/test_calibration_pilot.py",
+      "size": 20818,
+      "sha256": "20e225d6a9381aa4a27dad29375b2bd0a1579da71814f41cf20573666ce0c818"
+    },
+    {
+      "path": "source/tests/test_diagnostic_material_authoring.py",
+      "size": 10209,
+      "sha256": "6ff8343eab0e09c187dbadb8f6d864d4d4791f57242774abf640934ff229dc26"
+    },
+    {
+      "path": "source/tests/test_diagnostic_private_ports.py",
+      "size": 14814,
+      "sha256": "7ce2e47a130cae78d51b83647b7c156cbead398bba5570f0a19b520a520f1401"
+    },
+    {
+      "path": "source/tests/test_diagnostic_subscription.py",
+      "size": 15163,
+      "sha256": "7f7cff961525d660e10c44264c3ad8ad136391245ce3d10ab2fbb3560d410e79"
+    },
+    {
+      "path": "source/tests/test_grok_acp_transport.py",
+      "size": 15574,
+      "sha256": "766843e90c2fb3b30cb1c85487d7850764307e8a9bbffdeec55b19ecadde7ec4"
+    },
+    {
+      "path": "source/tests/test_label_isolation.py",
+      "size": 6277,
+      "sha256": "8a85bb8dbdd0719f231fde7b2640da7bb6c0e5dd76cc89263e608905a01c2c9a"
+    },
+    {
+      "path": "verify_archive.py",
+      "size": 2331,
+      "sha256": "17e887253149aedcfbd8541332fd954d9897b079f5b437f9e9684a0a69e0582d"
+    }
+  ]
+}

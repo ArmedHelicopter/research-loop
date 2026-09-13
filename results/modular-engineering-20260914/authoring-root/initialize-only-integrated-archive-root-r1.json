@@ -1,0 +1,148 @@
+{
+  "schema": "grok-native-acp-archive-byte-verification-v1",
+  "archive": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\grok-initialize-only-r1",
+  "revision": "986c25c394e32e946527b53c812c9373fe597033",
+  "payload_zip_entries": 25,
+  "archive_files": 27,
+  "disk_manifest_zip_equal": true,
+  "all_index_bytes_equal": true,
+  "all_commit_bytes_equal": true,
+  "private_files_included": false,
+  "files": [
+    {
+      "path": "README.md",
+      "size": 1286,
+      "sha256": "93023e85353840c46b9595882b58ef1db20c95cb09d2d52043b8caeca600e1d9"
+    },
+    {
+      "path": "actual/frozen-config.toml",
+      "size": 920,
+      "sha256": "223b0a69981328a1e45a93c88265934b99c9aaaeb2b0ff8c4e3177edeb98264c"
+    },
+    {
+      "path": "actual/frozen-envelope.json",
+      "size": 2834,
+      "sha256": "2edfa6cd28a0ffc30fa861fb6eba46cbfbd68ed8d62a45369f4a6087cc8a14c4"
+    },
+    {
+      "path": "actual/public-result.json",
+      "size": 1486,
+      "sha256": "b1f44818b1b3bfb8242dc8486787b6d0baf6cec476dd79773b789ff0f9139078"
+    },
+    {
+      "path": "actual/public-verification.json",
+      "size": 1452,
+      "sha256": "653222eb794dab01afa5d00957bc3bc4337506fe6da04b99bbdf9776f9b2edf7"
+    },
+    {
+      "path": "checks/frozen-r1/after.json",
+      "size": 1461,
+      "sha256": "089c4bc19105498544344517516886f5f6e57b98a634e08657e1ab4ce9c77768"
+    },
+    {
+      "path": "checks/frozen-r1/before.json",
+      "size": 1461,
+      "sha256": "089c4bc19105498544344517516886f5f6e57b98a634e08657e1ab4ce9c77768"
+    },
+    {
+      "path": "checks/frozen-r1/pytest.xml",
+      "size": 833,
+      "sha256": "91467c4961b20645edd387714bcd6e6e968ad8c6e5fc7182113b8176e1ebb05d"
+    },
+    {
+      "path": "checks/frozen-r1/receipt.json",
+      "size": 377,
+      "sha256": "ef3f270c66c1f262dfb3d9a5520029a229451061bcb77c34359ce0a5dbcfb375"
+    },
+    {
+      "path": "checks/frozen-r1/stderr.bin",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checks/frozen-r1/stdout.bin",
+      "size": 214,
+      "sha256": "06aff0fb80c1e3a5800f673c7797cfe70f1208de427233ce255996ce1d6073b8"
+    },
+    {
+      "path": "checks/preliminary-four-failures.xml",
+      "size": 6275,
+      "sha256": "396eccd8473cc64cc80be05f3236a3984be4c84bfe39bee37453531f2488c9f4"
+    },
+    {
+      "path": "evidence.zip",
+      "size": 51623,
+      "sha256": "ff05065cf9d3d025ec3b5835d1c95ddebc646d49544e44c13ab27f08b45891d0"
+    },
+    {
+      "path": "payload-sha256.json",
+      "size": 3995,
+      "sha256": "3a6e74aa3f3d04a1cd9a2748bc720c329576ccbe3780a86e9f139c2981feabdf"
+    },
+    {
+      "path": "procedure/archive_initialize_only_r1.py",
+      "size": 3878,
+      "sha256": "0ae0587c3be9bf61e4524c89b10596965b839b1ef481fd523924193f24bf9a75"
+    },
+    {
+      "path": "procedure/verify_grok_acp_archive.py",
+      "size": 2331,
+      "sha256": "17e887253149aedcfbd8541332fd954d9897b079f5b437f9e9684a0a69e0582d"
+    },
+    {
+      "path": "protocol/prior-readonly-finding.md",
+      "size": 3268,
+      "sha256": "656421949f66ae96f79112fd17ab94506fe00c629f5d3afe312cd883a3e468d1"
+    },
+    {
+      "path": "protocol/proposal.md",
+      "size": 3214,
+      "sha256": "aab6e4a37f04a2a13ccca3c8b2dbe9a576e90d6d444d780e27e442df29446de5"
+    },
+    {
+      "path": "source/dependencies/research_loop/modular/contracts.py",
+      "size": 3320,
+      "sha256": "2e6c0d12e864430322329babe569b6244daad6311fa8ddc40a7a2ffb9e4c15bc"
+    },
+    {
+      "path": "source/dependencies/research_loop/modular/grok_acp_transport.py",
+      "size": 43286,
+      "sha256": "8ef693476977e1e75be1e73fe2a320255f9ebda500acc4899f23cc8baef414ac"
+    },
+    {
+      "path": "source/dependencies/research_loop/modular/model_port.py",
+      "size": 51557,
+      "sha256": "c56bdaf3818841d0956a647c9e2ae012cc49d4a15dd94a5c91756c53a628d9b6"
+    },
+    {
+      "path": "source/dependencies/research_loop/ontology.py",
+      "size": 8775,
+      "sha256": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb"
+    },
+    {
+      "path": "source/driver.py",
+      "size": 8730,
+      "sha256": "c24712cbf1f25f080123b019c1317ff58b6871bbcbee101aceb15933bbb3fbd2"
+    },
+    {
+      "path": "source/fixture_peer.py",
+      "size": 1005,
+      "sha256": "9992796425ebd9b8c743dd8fb4cd0dee138076607a4cd1680ffda57a221fe597"
+    },
+    {
+      "path": "source/frozen_check.py",
+      "size": 1934,
+      "sha256": "d2cf4bfeef93c41f1701d329ec5cff6d53e6676e4bfe54759203ca0a76ab57c6"
+    },
+    {
+      "path": "source/run_actual_once.py",
+      "size": 3494,
+      "sha256": "f6fcefd524c131d139c91ec9826ac5cff049fd315900b092c7991461867f1a9a"
+    },
+    {
+      "path": "source/test_driver.py",
+      "size": 1671,
+      "sha256": "6c7b797de4e4d71852b185e2a03962733c671f891f6e89480645a84db5d227f2"
+    }
+  ]
+}

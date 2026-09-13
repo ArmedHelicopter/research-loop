@@ -3,6 +3,27 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Merged provisional material-authoring seam (2026-09-14)
+
+Root source `986c25c` passed 36 focused integration checks with all 585 frozen
+source/document hashes unchanged. Four synthetic authoring sessions produce
+signed provisional materials and a complete future review inventory; existing
+diagnostic worker execution, native binding rejection and label isolation also
+pass. All 36 slots and 72 evaluator opportunities remain represented, including
+unsupported categories. Evidence is in
+`results/modular-engineering-20260914/authoring-root/`.
+
+The source authoring and initialize-only archives were independently verified
+after merging, including all committed bytes and ZIP payloads. The M9 cost
+replay archive is also merged and verified. Its checkout normalization mismatch
+and exact committed-byte repair are retained in the root archive.
+
+The real authoring attempt remains a pre-prompt initialization failure with no
+accepted material. An isolated newer Grok CLI is undergoing a separate startup
+check; no model, account, quota or tool property is inferred from its version
+output. No actual generation or validation access occurred in this checkpoint.
+Real calibration, TRAIN effects and final validation acceptance remain open.
+
 ## Complete pair/triple controller engineering coverage (2026-09-14)
 
 Root source `ee8b45a` passed 32 integration checks with all 580 frozen source and

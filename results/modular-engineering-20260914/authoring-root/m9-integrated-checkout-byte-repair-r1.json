@@ -1,0 +1,10 @@
+{
+  "head": "986c25c394e32e946527b53c812c9373fe597033",
+  "path": "results/modular-engineering-20260914/m9-known-cost-replay/archive_evidence.py",
+  "initial_disk_equals_git": false,
+  "initial_disk_sha256": "cb222493f1eecf5ab501fcad8bf16f1d90ddd7ff034fbf3687ce2e8a14faf4d0",
+  "committed_sha256": "145ccac332f803dd6244f8c6c66931d3ffc59b280f420d8fbe0a007ac1558257",
+  "repaired_disk_equals_git": true,
+  "source_edits": false,
+  "cause": "checkout text normalization across archive attribute change"
+}
