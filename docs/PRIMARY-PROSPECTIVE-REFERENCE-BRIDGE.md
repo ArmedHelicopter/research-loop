@@ -32,3 +32,54 @@ partial publication, journal corruption and secret-bearing exceptions.
 This implementation stage does not read actual answers or references. A later
 actual preparation requires review of this contract and an exact four-train-item
 request retaining the already frozen selection. No failed item may be replaced.
+
+## Concrete API
+
+`PrimaryReferenceItem` binds one `PrimaryTrainExportItem` to the task canonical
+digest and raw public-envelope, CSV and packet-receipt hashes. The caller supplies
+the separately pinned original export receipt when constructing
+`PrimaryProspectiveReferenceBridge`. Its `prepare(requests, packets)` returns the
+unchanged `train-reference-publication-v1` metadata and opaque handles.
+
+The bridge calls the prospective exporter's allocation and source-verification
+contracts directly; it does not call its export operation again. The original
+public export is immutable. A caller may prepare a strict subset of a pinned
+export, but every requested member must pass the same full source/hold checks.
+
+`reference_store._discovery` and `_blade` accept an optional bound-byte reader.
+Legacy callers keep their existing default. `publish_train_reference_records`
+only serializes already authorized train records; it grants no source access.
+The bridge invokes the unchanged `FrozenTrainReferenceResolver` on its staged
+store before final publication. No scorer-process or rubric source is changed.
+
+`references.jsonl` retains each attempt, source verification, reserved reference
+read, reserved publication and terminal result. Source inventory/audit verification
+may hash reference-file bytes without interpreting them; the per-member read
+reservation refers to semantic reference extraction. A damaged journal is left
+unchanged and rejected. An interrupted reservation remains unresolved; this is
+not a claim that all OS reads are captured by the journal.
+
+## Evidence scope and actual four-task preflight
+
+The subprocess fixture feeds explicitly synthetic signed candidate inputs to the
+standard scorer worker. It performs no solver/model/Docker run. Its independent
+canned evaluator checks that the correct benchmark reference and public question
+reached its prompt and that an unallocated reference did not. Two successful
+fixture calls establish wiring only, not scientific validity or calibration.
+
+The actual four-task plan is recorded outside the tree at
+`work/primary-reference-checks/actual-four-train-reference-plan-r1.json`, SHA256
+`5e6a79bc55c1385b25f7eb73b61381adffb1a085d6a20b0c9ea68931e7208818`.
+It rechecks the four existing public envelope/CSV/receipt byte pins and preserves
+the original selection. No actual answer or reference was opened. The next
+preparation additionally needs reviewed exact Discovery answer-key path/hash/
+encoding descriptors and explicit root authorization after contract review.
+BLADE annotation paths remain bound to the inventory and source audit; there is
+no loose filename lookup or new allocation.
+
+The original failing source-to-resolver test is preserved as `red-r1.xml`.
+Development run `boundary-r3.xml` reported 24 passing checks, but source was edited
+while that process was active. Its source-change receipt records process session
+25716, the JUnit interval, file modification time and before/after source hashes
+(the before image is explicitly reconstructed from the edit). That run is invalid
+for frozen verification. Full final checks are rerun after a source commit.

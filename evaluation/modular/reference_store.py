@@ -90,7 +90,8 @@ def _allocation(custody: CustodyExportPort, packets: Sequence[PublicTrainPacket]
 
 
 def _discovery(snapshot: Path, row: Mapping, packet: PublicTrainPacket,
-               answer_keys: Mapping[str, Mapping[str, str]]) -> tuple[list[dict], list[dict]]:
+               answer_keys: Mapping[str, Mapping[str, str]], *, read_bound=None) -> tuple[list[dict], list[dict]]:
+    read_bound = _read_bound if read_bound is None else read_bound
     directory = _safe_under(snapshot / "discovery" / "upstream" / "discoverybench", row["relative_path"])
     selector = packet.receipt.data().get("source_selector")
     if (not isinstance(selector, Mapping) or set(selector) != {"metadata_file", "metadata_sha256", "query_index"}
@@ -99,7 +100,7 @@ def _discovery(snapshot: Path, row: Mapping, packet: PublicTrainPacket,
             or type(selector["query_index"]) is not int or selector["query_index"] != 0
             or selector["metadata_sha256"] not in row["content_hashes"]):
         raise ContractError("Discovery reference needs the exported exact source selector")
-    raw, metadata_hash = _read_bound(directory / selector["metadata_file"], {selector["metadata_sha256"]})
+    raw, metadata_hash = read_bound(directory / selector["metadata_file"], {selector["metadata_sha256"]})
     metadata = _object(raw)
     query = metadata.get("queries", [None])[0]
     if (not isinstance(query, Mapping) or query.get("question") != packet.task.payload.data().get("question")
@@ -111,7 +112,7 @@ def _discovery(snapshot: Path, row: Mapping, packet: PublicTrainPacket,
         raise ContractError("Discovery answer key requires an explicitly frozen descriptor")
     if descriptor["encoding"] not in {"utf-8-sig", "cp1252"}:
         raise ContractError("Discovery answer key encoding is not supported")
-    key_raw, key_hash = _read_bound(Path(descriptor["path"]), {descriptor["sha256"]})
+    key_raw, key_hash = read_bound(Path(descriptor["path"]), {descriptor["sha256"]})
     try:
         reader = csv.DictReader(io.StringIO(key_raw.decode(descriptor["encoding"]), newline=""))
         if not {"dataset", "metadataid", "query_id", "gold_hypo"} <= set(reader.fieldnames or ()):
@@ -126,15 +127,16 @@ def _discovery(snapshot: Path, row: Mapping, packet: PublicTrainPacket,
             [{"role": "public_query", "sha256": metadata_hash}, {"role": "answer_key", "sha256": key_hash}])
 
 
-def _blade(snapshot: Path, row: Mapping, packet: PublicTrainPacket) -> tuple[list[dict], list[dict]]:
+def _blade(snapshot: Path, row: Mapping, packet: PublicTrainPacket, *, read_bound=None) -> tuple[list[dict], list[dict]]:
+    read_bound = _read_bound if read_bound is None else read_bound
     directory = _safe_under(snapshot / "scienceagent" / "work" / "BLADE" / "blade_bench" / "datasets", row["relative_path"])
-    public_raw, public_hash = _read_bound(directory / "info.json", set(row["content_hashes"]))
+    public_raw, public_hash = read_bound(directory / "info.json", set(row["content_hashes"]))
     info = _object(public_raw)
     questions = info.get("research_questions", info.get("research_question"))
     question = questions[0] if isinstance(questions, list) and questions else questions
     if question != packet.task.payload.data().get("research_question"):
         raise ContractError("BLADE reference query does not match the exported public task")
-    raw, source_hash = _read_bound(directory / "annotations.csv", set(row["content_hashes"]))
+    raw, source_hash = read_bound(directory / "annotations.csv", set(row["content_hashes"]))
     try:
         reader = csv.DictReader(io.StringIO(raw.decode("utf-8-sig"), newline=""))
         if not {"spec_id", *BLADE_REFERENCE_FIELDS} <= set(reader.fieldnames or ()):
@@ -175,7 +177,7 @@ def prepare_train_reference_store(*, custody: CustodyExportPort, snapshot_root: 
             or any(destination.is_relative_to(packet.packet_path.parent.absolute())
                    or packet.packet_path.parent.absolute().is_relative_to(destination) for packet in packets)):
         raise ContractError("reference store must be separate from source and public solver packets")
-    records, manifest_rows = [], []
+    prepared = []
     for row, packet in zip(rows, packets, strict=True):
         if row["benchmark"] == "discoverybench":
             references, sources = _discovery(snapshot, row, packet, discovery_answer_keys)
@@ -183,10 +185,33 @@ def prepare_train_reference_store(*, custody: CustodyExportPort, snapshot_root: 
             references, sources = _blade(snapshot, row, packet)
         else:
             raise ContractError("reference store supports the frozen core benchmark pair only")
+        prepared.append((packet, references, sources))
+    return publish_train_reference_records(destination, prepared, inventory_digest=custody.state["inventory_digest"],
+        split_digest=custody.state["split"]["digest"])
+
+
+def publish_train_reference_records(destination: Path, prepared: Sequence[tuple], *,
+                                    inventory_digest: str, split_digest: str) -> FrozenRecord:
+    """Serialize already-authorized custodian records into the standard store.
+
+    This function does not grant source access or authorize a partition. Both
+    callers must finish their own complete allocation/source checks first.
+    """
+    destination = _plain(destination)
+    if destination.exists() or not prepared:
+        raise ContractError("reference publication requires new storage and train records")
+    records, manifest_rows, seen = [], [], set()
+    for packet, references, sources in prepared:
+        identity = packet.task.identity
+        identity.require_train()
+        if (identity.dataset_version != inventory_digest or identity.split_id != split_digest
+                or identity in seen or identity.benchmark not in {"discoverybench", "blade"}):
+            raise ContractError("reference publication identity differs from authorized partition")
+        seen.add(identity)
         identity_digest = digest(packet.task.identity.data())
         handle = _hash(os.urandom(32))
         reference = FrozenRecord.from_dict({"schema": "train-only-rubric-reference-v1", "split": "train",
-            "benchmark": row["benchmark"], "task_handle_digest": _hash(handle.encode()),
+            "benchmark": identity.benchmark, "task_handle_digest": _hash(handle.encode()),
             "identity_digest": identity_digest, "task_context": packet.task.payload.data(), "references": references})
         file_name = handle + ".json"
         records.append((file_name, reference))
@@ -194,14 +219,16 @@ def prepare_train_reference_store(*, custody: CustodyExportPort, snapshot_root: 
             "task_digest": packet.task.content_hash, "task_handle": handle, "file": file_name,
             "reference_sha256": _hash(reference.encoded.encode()), "sources": sources})
     manifest = FrozenRecord.from_dict({"schema": "frozen-train-reference-store-v1",
-        "inventory_digest": custody.state["inventory_digest"], "split_digest": custody.state["split"]["digest"],
+        "inventory_digest": inventory_digest, "split_digest": split_digest,
         "rows": manifest_rows, "scope": "train_only", "scientific_validity": "not_measured"})
     destination.mkdir(parents=True, exist_ok=False)
     for file_name, record in records:
-        (destination / file_name).write_bytes(record.encoded.encode())
-    (destination / "manifest.json").write_bytes(manifest.encoded.encode())
+        with (destination / file_name).open("xb") as stream:
+            stream.write(record.encoded.encode()); stream.flush(); os.fsync(stream.fileno())
+    with (destination / "manifest.json").open("xb") as stream:
+        stream.write(manifest.encoded.encode()); stream.flush(); os.fsync(stream.fileno())
     return FrozenRecord.from_dict({"schema": "train-reference-publication-v1", "manifest_sha256": _hash(manifest.encoded.encode()),
-        "inventory_digest": custody.state["inventory_digest"], "split_digest": custody.state["split"]["digest"],
+        "inventory_digest": inventory_digest, "split_digest": split_digest,
         "task_handles": {row["identity_digest"]: row["task_handle"] for row in manifest_rows},
         "reference_count": len(records), "scope": "train_only", "scientific_validity": "not_measured"})
 
