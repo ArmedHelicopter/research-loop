@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="20" time="23.283" timestamp="2026-09-13T20:39:30.240726+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.202" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.013" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.044" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.072" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.070" /><testcase classname="tests.test_lineage_useful_controls" name="test_recipe_frozen_across_all_seven_panels[lineage]" time="1.436"><failure message="research_loop.ontology.ContractError: closed lineage train scope or source list invalid">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lineage-useful-red-r1/test_recipe_frozen_across_all_0')
+kind = 'lineage'
+
+    @pytest.mark.parametrize('kind',['lineage','admission'])
+    def test_recipe_frozen_across_all_seven_panels(tmp_path, kind):
+&gt;       setup = configured(tmp_path,kind)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_lineage_useful_controls.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_lineage_useful_controls.py:25: in configured
+    setup['config'] = type(setup['config'])(FrozenRecord.from_dict(body))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:4: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = FrozenLineageTrainConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"contrast_analysis":{"direction":"higher...d":"case2"},"task_digest":"f57e62469285cd2bd9c9d0c8e064c188c79679b852ebbd071cc58f2c7f93e4b9"}},"timeout_seconds":20}'))
+
+    def __post_init__(self):
+        if not isinstance(self.record, FrozenRecord): raise ContractError('frozen lineage train configuration required')
+        b = self.data()
+        designs, material_type, schema, cell_count = self._contract()
+        required = {'schema', 'domain', 'stage', 'item_ids', 'task_bindings', 'baseline_digest', 'packages_by_arm',
+            'scorer', 'scorer_handle_bindings', 'acceptance_criteria', 'replicates', 'model', 'effort', 'max_calls',
+            'max_tokens', 'schemas', 'allocation', 'image', 'timeout_seconds', 'materials_by_task', 'source_verifier_binding'}
+        schema_ok = (source_schema_matches(b, required, schema)
+                     if schema == 'admission-combination-train-config-v1' else
+                     source_schema_matches(b, required, schema, optional=('lineage_reference_binding',)))
+        if (not schema_ok or b['domain'] != 'train'
+                or not isinstance(b['stage'], str) or not b['stage'].strip() or not _names(b['item_ids'])
+                or not _names(b['replicates']) or not _digest(b['baseline_digest'])):
+&gt;           raise ContractError('closed lineage train scope or source list invalid')
+E           research_loop.ontology.ContractError: closed lineage train scope or source list invalid
+
+research_loop\modular\lineage_combination_controller.py:59: ContractError</failure></testcase><testcase classname="tests.test_lineage_useful_controls" name="test_recipe_frozen_across_all_seven_panels[admission]" time="2.819"><failure message="research_loop.ontology.ContractError: closed lineage train scope or source list invalid">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/lineage-useful-red-r1/test_recipe_frozen_across_all_1')
+kind = 'admission'
+
+    @pytest.mark.parametrize('kind',['lineage','admission'])
+    def test_recipe_frozen_across_all_seven_panels(tmp_path, kind):
+&gt;       setup = configured(tmp_path,kind)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_lineage_useful_controls.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_lineage_useful_controls.py:25: in configured
+    setup['config'] = type(setup['config'])(FrozenRecord.from_dict(body))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\admission_combination_controller.py:8: in __post_init__
+    super().__post_init__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = FrozenAdmissionTrainConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"contrast_analysis":{"direction":"high...d":"case2"},"task_digest":"1c7aad914078a8ee08597048b699f8aaf22f6ee61588d0ac353535f9b951f029"}},"timeout_seconds":20}'))
+
+    def __post_init__(self):
+        if not isinstance(self.record, FrozenRecord): raise ContractError('frozen lineage train configuration required')
+        b = self.data()
+        designs, material_type, schema, cell_count = self._contract()
+        required = {'schema', 'domain', 'stage', 'item_ids', 'task_bindings', 'baseline_digest', 'packages_by_arm',
+            'scorer', 'scorer_handle_bindings', 'acceptance_criteria', 'replicates', 'model', 'effort', 'max_calls',
+            'max_tokens', 'schemas', 'allocation', 'image', 'timeout_seconds', 'materials_by_task', 'source_verifier_binding'}
+        schema_ok = (source_schema_matches(b, required, schema)
+                     if schema == 'admission-combination-train-config-v1' else
+                     source_schema_matches(b, required, schema, optional=('lineage_reference_binding',)))
+        if (not schema_ok or b['domain'] != 'train'
+                or not isinstance(b['stage'], str) or not b['stage'].strip() or not _names(b['item_ids'])
+                or not _names(b['replicates']) or not _digest(b['baseline_digest'])):
+&gt;           raise ContractError('closed lineage train scope or source list invalid')
+E           research_loop.ontology.ContractError: closed lineage train scope or source list invalid
+
+research_loop\modular\lineage_combination_controller.py:59: ContractError</failure></testcase><testcase classname="tests.test_lineage_useful_controls" name="test_closed_configuration_does_not_silently_migrate_old_panels[legacy_flag-lineage]" time="1.916" /><testcase classname="tests.test_lineage_useful_controls" name="test_closed_configuration_does_not_silently_migrate_old_panels[legacy_flag-admission]" time="2.529" /><testcase classname="tests.test_lineage_useful_controls" name="test_closed_configuration_does_not_silently_migrate_old_panels[changed_recipe-lineage]" time="1.826" /><testcase classname="tests.test_lineage_useful_controls" name="test_closed_configuration_does_not_silently_migrate_old_panels[changed_recipe-admission]" time="2.532" /><testcase classname="tests.test_lineage_useful_controls" name="test_closed_configuration_does_not_silently_migrate_old_panels[missing_recipe-lineage]" time="1.741" /><testcase classname="tests.test_lineage_useful_controls" name="test_closed_configuration_does_not_silently_migrate_old_panels[missing_recipe-admission]" time="2.667" /><testcase classname="tests.test_lineage_useful_controls" name="test_closed_configuration_does_not_silently_migrate_old_panels[missing_source-lineage]" time="1.874" /><testcase classname="tests.test_lineage_useful_controls" name="test_closed_configuration_does_not_silently_migrate_old_panels[missing_source-admission]" time="2.707" /></testsuite></testsuites>

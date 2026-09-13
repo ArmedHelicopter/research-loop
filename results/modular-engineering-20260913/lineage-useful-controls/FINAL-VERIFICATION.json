@@ -1,0 +1,43 @@
+{
+  "source_commit": "e03294e238d3e2ed28f679baeb4efdf0908ce890",
+  "reports": {
+    "lineage-useful-red-r1": {
+      "tests": 20,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    "lineage-useful-grid-r1": {
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "lineage-useful-final-r1": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "zips": {
+    "lineage-useful-grid-r1": {
+      "members": 2074,
+      "sha256": "5847d3a2b014be5bccd86bfa24c2ec0f77307a2b366e93819eadbe3120e01f1c"
+    },
+    "lineage-useful-final-r1": {
+      "members": 3363,
+      "sha256": "cf22df9a1c2d021cab81952595f0e4706152cf367ac1efbe4d61af1ee0e71b49"
+    }
+  },
+  "scope": "synthetic engineering only; old and new registered recipes retain distinct panel bindings",
+  "excluded": [
+    "private fixture reference stores",
+    "fixture preparation",
+    "key files",
+    "symlinks"
+  ],
+  "new_paid_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}

@@ -1,0 +1,560 @@
+{
+  "lineage-useful-grid-r1": {
+    "controllers": [
+      {
+        "case": "test_all_58_cells_use_actual_r0",
+        "status": "complete_train_engineering",
+        "planned_cells": 34,
+        "cell_statuses": {
+          "succeeded": 34,
+          "failed": 0,
+          "blocked": 0,
+          "not_started": 0
+        },
+        "model_usage": {
+          "known_model_tokens": 272,
+          "model_calls": 136,
+          "model_usage_incomplete": false
+        },
+        "scorer_calls": 34
+      },
+      {
+        "case": "test_all_58_cells_use_actual_r1",
+        "status": "complete_train_engineering",
+        "planned_cells": 24,
+        "cell_statuses": {
+          "succeeded": 24,
+          "failed": 0,
+          "blocked": 0,
+          "not_started": 0
+        },
+        "model_usage": {
+          "known_model_tokens": 192,
+          "model_calls": 96,
+          "model_usage_incomplete": false
+        },
+        "scorer_calls": 24
+      }
+    ],
+    "replay_faults": [
+      {
+        "case": "test_all_58_cells_use_actual_r0",
+        "mutations": [
+          {
+            "cell": [
+              "pair:M2+M3",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "cell": [
+              "pair:M2+M3",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "cell": [
+              "pair:M2+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "cell": [
+              "pair:M2+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "cell": [
+              "pair:M2+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "cell": [
+              "pair:M2+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "cell": [
+              "pair:M3+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "cell": [
+              "pair:M3+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "cell": [
+              "pair:M3+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "cell": [
+              "pair:M3+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "review_history"
+          }
+        ]
+      },
+      {
+        "case": "test_all_58_cells_use_actual_r1",
+        "mutations": [
+          {
+            "cell": [
+              "pair:M1+M2",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "cell": [
+              "pair:M1+M2",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "cell": [
+              "pair:M1+M2",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "cell": [
+              "pair:M1+M2",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "cell": [
+              "pair:M1+M3",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "cell": [
+              "pair:M1+M3",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "cell": [
+              "pair:M1+M3",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "cell": [
+              "pair:M1+M3",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "cell": [
+              "pair:M1+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "cell": [
+              "pair:M1+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "cell": [
+              "pair:M1+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "cell": [
+              "pair:M1+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "review_history"
+          }
+        ]
+      }
+    ]
+  },
+  "lineage-useful-final-r1": {
+    "controllers": [
+      {
+        "case": "admission-grid0",
+        "status": "complete_train_engineering",
+        "planned_cells": 24,
+        "cell_statuses": {
+          "succeeded": 24,
+          "failed": 0,
+          "blocked": 0,
+          "not_started": 0
+        },
+        "model_usage": {
+          "known_model_tokens": 192,
+          "model_calls": 96,
+          "model_usage_incomplete": false
+        },
+        "scorer_calls": 24
+      },
+      {
+        "case": "lineage-process-grid0",
+        "status": "complete_train_engineering",
+        "planned_cells": 34,
+        "cell_statuses": {
+          "succeeded": 34,
+          "failed": 0,
+          "blocked": 0,
+          "not_started": 0
+        },
+        "model_usage": {
+          "known_model_tokens": 272,
+          "model_calls": 136,
+          "model_usage_incomplete": false
+        },
+        "scorer_calls": 34
+      },
+      {
+        "case": "test_all_58_cells_use_actual_r0",
+        "status": "complete_train_engineering",
+        "planned_cells": 34,
+        "cell_statuses": {
+          "succeeded": 34,
+          "failed": 0,
+          "blocked": 0,
+          "not_started": 0
+        },
+        "model_usage": {
+          "known_model_tokens": 272,
+          "model_calls": 136,
+          "model_usage_incomplete": false
+        },
+        "scorer_calls": 34
+      }
+    ],
+    "replay_faults": [
+      {
+        "case": "test_all_58_cells_use_actual_r0",
+        "mutations": [
+          {
+            "obligation": "pair:M2+M3",
+            "cell": [
+              "pair:M2+M3",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "obligation": "pair:M2+M3",
+            "cell": [
+              "pair:M2+M3",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "obligation": "pair:M2+M5",
+            "cell": [
+              "pair:M2+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "obligation": "pair:M2+M5",
+            "cell": [
+              "pair:M2+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "obligation": "pair:M2+M5",
+            "cell": [
+              "pair:M2+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "obligation": "pair:M2+M5",
+            "cell": [
+              "pair:M2+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "obligation": "pair:M3+M5",
+            "cell": [
+              "pair:M3+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "obligation": "pair:M3+M5",
+            "cell": [
+              "pair:M3+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "00"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "obligation": "pair:M3+M5",
+            "cell": [
+              "pair:M3+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "obligation": "pair:M3+M5",
+            "cell": [
+              "pair:M3+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "01"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "obligation": "triple:M2+M3+M5",
+            "cell": [
+              "triple:M2+M3+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "000"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "obligation": "triple:M2+M3+M5",
+            "cell": [
+              "triple:M2+M3+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "000"
+            ],
+            "fault": "review_history"
+          },
+          {
+            "obligation": "triple:M2+M3+M5",
+            "cell": [
+              "triple:M2+M3+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "001"
+            ],
+            "fault": "discard_reviews"
+          },
+          {
+            "obligation": "triple:M2+M3+M5",
+            "cell": [
+              "triple:M2+M3+M5",
+              "blade",
+              "case2",
+              "5a756f5bddbf78a81c17d4380342bfd7376ba6294c804974da22d44290333030",
+              "r1",
+              "combination",
+              "001"
+            ],
+            "fault": "review_history"
+          }
+        ]
+      }
+    ]
+  }
+}

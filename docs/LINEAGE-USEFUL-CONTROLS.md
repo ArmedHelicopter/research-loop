@@ -32,3 +32,18 @@ The first full prospective integration passed 22 checks on source `429e5e3`,
 with 489 unchanged frozen files. All 58 cells reached independent scorer
 processes and actual Docker using 232 synthetic solver calls. The original
 20-check contract run retained its two expected pre-implementation failures.
+
+Source `e03294e` then passed 13 checks, including the new 34-cell lineage grid,
+the legacy 34-cell lineage process grid and the legacy 24-cell admission grid;
+489 frozen files remained unchanged. The new replay check also covers the
+registered triple. These two closed runs and the original RED report are in
+`results/modular-engineering-20260913/lineage-useful-controls/` (18 files, two
+ZIPs, 5,437 verified members). All payloads in this archive are synthetic.
+
+Independent review subsequently identified an unresolved comparability issue:
+fresh per-cell admission qualifications may differ semantically even for the
+same frozen public material. This source checkpoint does not yet enforce
+qualification parity across arms. Its passing synthetic grids do not establish
+a controlled causal comparison under varying qualifiers. A separate repair
+must freeze or compare the exact consumed qualification state before admitting
+an estimated module contrast; existing scores and costs remain auditable.
