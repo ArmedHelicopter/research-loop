@@ -1,0 +1,190 @@
+"""Actual C4 history preparation/build and target solve with original replay."""
+from dataclasses import dataclass
+from pathlib import Path
+import json
+from research_loop.modular.contracts import FrozenRecord
+from research_loop.modular.full_loo_modules import slots, prepare, joint, select_builder, execute_retrieval, PROPOSAL_INSTRUCTION, REVISION_INSTRUCTION
+from research_loop.modular.full_loo_panel import runtime_arm, OBLIGATION
+from research_loop.modular.metaprogram_training import _exclusive, _sha, _path, _read_record, _checked_build
+from research_loop.modular.state_improvement_build import FrozenProviderLedger, check_history
+from research_loop.modular.admission_combination import AdmissionMaterialVerifier
+from research_loop.modular.lineage_combination_driver import _transition, _source_binding, _read_events, _MemoryLog, _verify_solver_files
+from research_loop.modular.lineage_combination_material import check_material_inputs, DualMaterialVerifier
+from research_loop.modular.modules.evidence import EvidenceLedger, ClaimLedger
+from research_loop.modular.modules.context import ContextCache, ContextBuilder
+from research_loop.modular.modules.predictions import PredictionRegistry
+from research_loop.modular.modules.review import ReviewEngine
+from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest, RestrictedBuilderPort, BuilderRunReceipt
+from research_loop.modular.exploration_scheduler_combination import run_phase, verify_phase, check_inputs
+from research_loop.modular.retrieval_review_combination_driver import _verify_sources, public_retrieval
+from research_loop.modular.benchmark_solver import run_benchmark_solve_in_session
+from research_loop.modular.benchmark_cell import _solver_journal_state, _compare_solver_result
+from research_loop.modular.combination_benchmark_driver import _runtime, _private_arm_marker
+from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier, opaque_panel_cell_binding
+from research_loop.modular.runtime import RunSession, verify_trace
+from research_loop.modular.workflow import ModularWorkflow
+from research_loop.modular.state_retrieval_combination_driver import _INSTRUCTIONS
+from research_loop.ontology import ContractError, canonical
+
+
+def files(root):
+    return {p.relative_to(root).as_posix():_sha(_path(p).read_bytes()) for p in root.rglob('*') if p.is_file() and p.name!='receipt.json'}
+
+
+@dataclass(frozen=True)
+class FullLooResult:
+    root: Path
+    record: FrozenRecord
+    cell: PanelCell
+    runtime: object
+    solver: object
+    joint_mechanism: FrozenRecord | None
+    phase: FrozenRecord | None
+
+
+def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_material,
+              source_verifier, corpus_verifier, provider, broker, inputs, model, audit_verifier, root):
+    """One immutable recipe; exceptions close a charged failed denominator."""
+    root.mkdir(parents=True,exist_ok=False)
+    session=solver=prepared=phase=joined=transition=candidate=None; reason=None
+    try:
+        check_material_inputs(material.state(),task,broker,inputs);check_inputs(phase_material,task,broker,inputs)
+        binding=_source_binding(cell)
+        source=source_verifier.qualify(material.state(),root/'source.json',cell_binding=binding)
+        if any(c['cost_unknown'] for c in json.loads((root/'source.json').read_bytes())['calls']):
+            raise ContractError('unknown qualification cost blocks work')
+        qualification=source_verifier.assessments(material.state(),root/'source.json',cell_binding=binding)
+        nonbaseline=stage=='history_build' or recipe['procedure']!='baseline_b0'
+        corpus=None
+        if nonbaseline:
+            corpus=corpus_verifier.qualify(material,root/'corpus.json',cell_binding=binding)
+            if any(c['cost_unknown'] for c in json.loads((root/'corpus.json').read_bytes())['calls']):
+                raise ContractError('unknown corpus cost blocks work')
+        session=RunSession(task,package_digest=package.digest,arm=cell.runtime_arm,objective=plan.objective(stage),
+            slots=slots(recipe,stage),execution_limit=int(stage=='target'),sidecar=root/'runtime',verifier=audit_verifier,
+            required_audit=('measurement',),context_budget=material.state().data()['context_budget_bytes'])
+        workflow=ModularWorkflow(session)
+        transition=_transition(session.evidence,session.claims,session.cache,material.state(),workflow.enabled,qualification)
+        session._record('c4_state',{'transition':transition.data(),'source_sha256':source,'corpus_sha256':corpus})
+        if nonbaseline:
+            prepared=prepare(cell=cell,task=task,package=package,transition=transition,predictions=workflow.predictions,reviews=workflow.reviews,
+                invoke=lambda slot,instruction,context:session.invoke(slot,model,instruction=instruction,module_context=context),
+                record=session._record,retrieve=lambda:execute_retrieval(session,task,material,provider,'M6' in workflow.enabled),phase_material=phase_material)
+            phase=run_phase(material=phase_material,cell=cell,objective=plan.objective(stage),root=root/'phase',broker=broker,inputs=inputs,
+                image=plan.data()['image'],timeout_seconds=plan.data()['timeout_seconds'],selected_job_id=prepared.data()['choice']['job_id'])
+            session._record('c4_phase',{'phase_digest':phase.content_hash})
+        joined=joint(prepared,phase,cell,task,package)
+        session._record('c4_joint',{'joint':joined.data(),'joint_digest':joined.content_hash})
+        if stage=='history_build':
+            slot=slots(recipe,stage)[-1];instruction=PROPOSAL_INSTRUCTION if recipe['history_build_levels']['M9'] else REVISION_INSTRUCTION
+            response=session.invoke(slot,model,instruction=instruction,module_context=joined)
+            selected=select_builder(response,recipe,plan.fixed_builder)
+            session._record('c4_builder_request',{'builder':selected.record.data(),'parent':package.digest,'search_cost':1})
+            manifest=TrainingManifest(FrozenRecord.from_dict(package.record.data()['training_manifest']))
+            candidate,receipt=RestrictedBuilderPort().execute(selected,manifest,package,expected_builder_digest=selected.digest,
+                expected_entrypoint=selected.entrypoint,search_cost=1)
+            _checked_build(candidate,receipt,selected,package)
+            _exclusive(root/'candidate.json',candidate.record);_exclusive(root/'builder.json',selected.record)
+            _exclusive(root/'builder-receipt.json',receipt.record)
+            session._record('c4_builder_result',{'candidate_digest':candidate.digest,'receipt':receipt.record.data()})
+            session._record('c4_build_terminal',{'candidate_digest':candidate.digest});session._terminal=True
+        else:
+            solver=run_benchmark_solve_in_session(session=session,workflow=workflow,public_inputs=inputs,image=plan.data()['image'],broker=broker,
+                model=model,analysis_slot='analysis_program',final_slot='final_answer',joint_mechanism=joined,
+                panel_cell_binding=FrozenRecord.from_dict(opaque_panel_cell_binding(cell)),driver_id=OBLIGATION,timeout_seconds=plan.data()['timeout_seconds'])
+    except Exception as exc:
+        reason=type(exc).__name__+': '+str(exc)
+        if session is not None and not session._terminal:
+            session.controller_failure(driver_id=OBLIGATION,error_type=type(exc).__name__,panel_cell=opaque_panel_cell_binding(cell))
+    # Explicit separate success predicates prevent an auxiliary success from
+    # promoting a missing common solve or missing restricted build.
+    status='succeeded' if (candidate is not None if stage=='history_build' else solver is not None and solver.status=='execution_succeeded') and reason is None else 'failed'
+    record=FrozenRecord.from_dict({'schema':'c4-stage-receipt-v1','plan_digest':plan.record.content_hash,'recipe':recipe,'stage':stage,
+        'cell':cell.data(),'status':status,'reason':reason,'candidate_digest':candidate.digest if status=='succeeded' and candidate else None,'files':files(root)})
+    _exclusive(root/'receipt.json',record)
+    return FullLooResult(root,record,cell,_runtime(cell,session,joined,status) if session else None,solver,joined,phase)
+
+
+def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_material, source_verifier, corpus_verifier, broker, inputs, ledger):
+    if type(result) is not FullLooResult or type(ledger) is not FrozenProviderLedger:
+        raise ContractError('C4 exact original stage and provider ledger required')
+    root=result.root;cell=result.cell;b=result.record.data()
+    if (_read_record(root/'receipt.json')!=result.record or b!={**b,'plan_digest':plan.record.content_hash,'recipe':recipe,'stage':stage,'cell':cell.data()}
+            or b['status']!='succeeded' or b['files']!=files(root) or cell.task_digest!=task.content_hash or cell.identity!=task.identity
+            or cell.package_digest!=package.digest or cell.runtime_arm!=runtime_arm(plan.composition,recipe,stage)):
+        raise ContractError('C4 original bytes, recipe, task, package or runtime activation drift')
+    check_material_inputs(material.state(),task,broker,inputs);check_inputs(phase_material,task,broker,inputs)
+    if stage=='history_build':check_history(plan.history,material.state(),broker,inputs)
+    path=root/'runtime'/'trace.jsonl';verify_trace(path);events=_read_events(path);lock=events[0]['data']
+    if (lock['task_digest']!=task.content_hash or lock['identity']!=task.identity.data() or lock['package_digest']!=package.digest
+            or lock['arm']!=cell.runtime_arm.data() or lock['objective']!=plan.objective(stage).data() or lock['slots']!=list(slots(recipe,stage))
+            or lock['execution_limit']!=int(stage=='target') or lock['required_audit']!=['measurement'] or lock['context_budget']!=material.state().data()['context_budget_bytes']):
+        raise ContractError('C4 lock allocation drift')
+    ledger.bind_events(events)
+    binding=_source_binding(cell);source=source_verifier.replay(material.state(),root/'source.json',cell_binding=binding)
+    q=source_verifier.assessments(material.state(),root/'source.json',cell_binding=binding)
+    nonbaseline=stage=='history_build' or recipe['procedure']!='baseline_b0'
+    corpus=corpus_verifier.replay(material,root/'corpus.json',cell_binding=binding) if nonbaseline else None
+    for filename in ('source.json','corpus.json') if nonbaseline else ('source.json',):
+        if any(c['cost_unknown'] for c in json.loads((root/filename).read_bytes())['calls']):raise ContractError('unknown qualification cost')
+    evidence=EvidenceLedger(task.identity);claims=ClaimLedger(evidence);cache=ContextCache()
+    evidence._log=_MemoryLog();claims._log=_MemoryLog()
+    transition=_transition(evidence,claims,cache,material.state(),set(cell.runtime_arm.data()['enabled']),q)
+    expected=[]
+    def record(name,data):expected.append((name,data))
+    record('c4_state',{'transition':transition.data(),'source_sha256':source,'corpus_sha256':corpus})
+    requests=[e for e in events if e['stage']=='model_request']; responses=[e for e in events if e['stage']=='model_response'];cursor=0
+    context=ContextBuilder(task.identity,budget_bytes=lock['context_budget']).build(canonical(task.payload.data()),evidence,claims,
+        mode='candidate' if 'M3' in cell.runtime_arm.data()['enabled'] else 'baseline',baseline_summary='').public_data()
+    def invoke(slot,instruction,module):
+        nonlocal cursor
+        request=requests[cursor];response=responses[cursor];cursor+=1
+        body=request['data']['request']
+        wanted={'schema':'public-model-request-v1','task':task.data(),'lock_digest':FrozenRecord.from_dict(lock).content_hash,
+            'objective':plan.objective(stage).data(),'slot':slot,'instruction':instruction,'context':context,'module_context':module.data(),'execution_feedback':[]}
+        if body!=wanted or response['data']['request_digest']!=request['data']['request_digest']:
+            raise ContractError('C4 original model instruction/context differs from reconstructed native pipeline')
+        return FrozenRecord.from_dict(response['data']['response'])
+    predictions=PredictionRegistry(task.identity);reviews=ReviewEngine(task.identity)
+    predictions._log=_MemoryLog();reviews._log=_MemoryLog()
+    prepared=phase=None
+    if nonbaseline:
+        retrieval=_verify_sources(events,task,material.retrieval(),'M6' in cell.runtime_arm.data()['enabled'])
+        prepared=prepare(cell=cell,task=task,package=package,transition=transition,predictions=predictions,reviews=reviews,
+            invoke=invoke,record=record,retrieve=lambda:public_retrieval(retrieval),phase_material=phase_material)
+        phase=verify_phase(material=phase_material,cell=cell,objective=plan.objective(stage),root=root/'phase',image=plan.data()['image'],
+            timeout_seconds=plan.data()['timeout_seconds'],inputs=inputs,selected_job_id=prepared.data()['choice']['job_id'])
+        if result.phase!=phase:raise ContractError('C4 phase result changed')
+        record('c4_phase',{'phase_digest':phase.content_hash})
+    joined=joint(prepared,phase,cell,task,package);record('c4_joint',{'joint':joined.data(),'joint_digest':joined.content_hash})
+    if result.joint_mechanism!=joined:raise ContractError('C4 common solve dropped an actual module output')
+    if stage=='history_build':
+        response=invoke(slots(recipe,stage)[-1],PROPOSAL_INSTRUCTION if recipe['history_build_levels']['M9'] else REVISION_INSTRUCTION,joined)
+        selected=select_builder(response,recipe,plan.fixed_builder)
+        candidate=CandidatePackage(_read_record(root/'candidate.json'));receipt=BuilderRunReceipt(_read_record(root/'builder-receipt.json'))
+        _checked_build(candidate,receipt,selected,package)
+        if _read_record(root/'builder.json')!=selected.record or candidate.digest!=b['candidate_digest']:raise ContractError('C4 selected builder differs')
+        record('c4_builder_request',{'builder':selected.record.data(),'parent':package.digest,'search_cost':1})
+        record('c4_builder_result',{'candidate_digest':candidate.digest,'receipt':receipt.record.data()})
+        record('c4_build_terminal',{'candidate_digest':candidate.digest})
+    else:
+        PanelReceiptVerifier()._verify_runtime(result.runtime,cell)
+        state=_solver_journal_state(events);_compare_solver_result(result.solver,state);_verify_solver_files(state,events,path,material.state())
+        for e in requests[cursor:]:
+            r=e['data']['request'];m=r['module_context']
+            if (r['instruction']!=_INSTRUCTIONS[r['slot']] or r['context']!=context or m.get('joint_mechanism')!=joined.data()
+                    or m.get('joint_mechanism_digest')!=joined.content_hash or m.get('panel_cell')!=opaque_panel_cell_binding(cell)):
+                raise ContractError('C4 solve omitted reconstructed composition')
+    for name,log in [('evidence',evidence._log),('claims',claims._log),('predictions',predictions._log),('reviews',reviews._log)]:
+        if _read_events(root/'runtime'/(name+'.jsonl'))!=log.rows:raise ContractError('C4 native '+name+' journal drift')
+    if ([(e['stage'],e['data']) for e in events if e['stage'].startswith('c4_')]!=expected
+            or tuple(e['data']['request']['slot'] for e in requests)!=slots(recipe,stage)
+            or any(_private_arm_marker(e['data']['request']) for e in requests)):
+        raise ContractError('C4 operation sequence or public label isolation drift')
+    if nonbaseline:
+        positions={name:next(i for i,e in enumerate(events) if e['stage']==name) for name in ('c4_state','c4_prediction_frozen','c4_review_reveal','q8_retrieval_request','c4_choice_frozen','c4_phase','c4_joint')}
+        if list(positions.values())!=sorted(positions.values()):raise ContractError('C4 prospective freeze/reveal/execution order drift')
+        for slot,earlier in [('m4_plan','c4_state'),('review_first','c4_prediction_frozen'),('bounded_choice','c4_review_reveal'),(slots(recipe,stage)[-2 if stage=='target' else -1],'c4_joint')]:
+            if next(i for i,e in enumerate(events) if e['stage']=='model_request' and e['data']['request']['slot']==slot)<=positions[earlier]:
+                raise ContractError('C4 invocation precedes its prerequisite')
+    return FrozenRecord.from_dict({'schema':'c4-stage-verified-v1','stage_digest':result.record.content_hash,'engineering_verified':True,'scientific_effect':'not_measured'})

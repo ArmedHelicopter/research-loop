@@ -103,11 +103,14 @@ def check_inputs(material, task, broker, inputs):
     if public != material.data()['public_artifacts']: raise ContractError('actual complete input bytes differ from frozen material')
 
 
-def selection(material, enabled):
+def selection(material, enabled, selected_job_id=None):
     """Real M7 permit consumes the same reserve as an ordinary main job."""
     b = material.data(); budget = ExplorationBudget(2, 2).reserve(1, 1); permit = None
+    selected_job_id = selected_job_id or b['jobs'][2 if 'M7' in enabled else 1]['id']
+    if selected_job_id not in {j['id'] for j in b['jobs'][1:]}:
+        raise ContractError('choice must select one frozen bounded alternative')
     if 'M7' in enabled:
-        job = b['jobs'][2]
+        job = next(j for j in b['jobs'] if j['id'] == selected_job_id)
         plan = ExplorationPlan(job['id'], DataIdentity.parse(b['identity']), _record(job),
             ResourceClosure(b['identity']['dataset_version'], b['public_artifacts'][0]['artifact']['sha256'],
                 b['jobs'][0]['id'], 1, 1))
@@ -116,7 +119,7 @@ def selection(material, enabled):
         permit = admit_exploration(plan=plan, feasibility=report, budget=budget)
         budget = permit.budget_after
     else: budget = budget.reserve(1, 1)
-    selected = {b['jobs'][0]['id'], b['jobs'][2 if permit else 1]['id']}
+    selected = {b['jobs'][0]['id'], selected_job_id}
     return _record({'selected': [j['id'] for j in b['jobs'] if j['id'] in selected],
         'permit': asdict(permit) if permit else None, 'budget': asdict(budget)})
 
@@ -125,7 +128,7 @@ def _snapshot(material, cell, objective):
     return {'evidence': material.record.content_hash, 'rules': objective.content_hash, 'package': cell.package_digest}
 
 
-def run_phase(*, material, cell, objective, root, broker, inputs, image, timeout_seconds):
+def run_phase(*, material, cell, objective, root, broker, inputs, image, timeout_seconds, selected_job_id=None):
     """A single immutable phase; worker threads only touch their own Docker job."""
     if (type(material) is not FrozenExplorationSchedulerMaterial or type(objective) is not FrozenRecord
             or not isinstance(broker,DockerExecutionBroker) or type(timeout_seconds) is not int or not 1<=timeout_seconds<=120
@@ -136,7 +139,7 @@ def run_phase(*, material, cell, objective, root, broker, inputs, image, timeout
         raise ContractError('data feasibility requires exact actual public bytes before permit')
     if root.exists(): raise ContractError('phase replay path is exclusive; no retry or overwrite')
     root.mkdir(parents=True)
-    enabled = set(cell.runtime_arm.data()['enabled']); chosen = selection(material, enabled)
+    enabled = set(cell.runtime_arm.data()['enabled']); chosen = selection(material, enabled, selected_job_id)
     jobs = {j['id']: j for j in material.data()['jobs'] if j['id'] in chosen.data()['selected']}
     snapshot = _snapshot(material, cell, objective); experiment = _record(cell.data()).content_hash
     events, lock = [], threading.Lock()
@@ -197,14 +200,14 @@ def run_phase(*, material, cell, objective, root, broker, inputs, image, timeout
             emit('claim',job=job['id'],run_id=run_ids[job['id']],attempt=1)
             complete(job['id'],work(job))
             emit('merge',jobs=[job['id']])
-    report = _phase_projection(material,cell,objective,root,image,timeout_seconds,inputs)
+    report = _phase_projection(material,cell,objective,root,image,timeout_seconds,inputs,selected_job_id)
     _write_new(root/'receipt.json',report.data())
     return report
 
 
-def _phase_projection(material,cell,objective,root,image,timeout_seconds,inputs):
+def _phase_projection(material,cell,objective,root,image,timeout_seconds,inputs,selected_job_id=None):
     """Replay actual files and state; no model calls or mutation of the database."""
-    enabled=set(cell.runtime_arm.data()['enabled']); chosen=selection(material,enabled)
+    enabled=set(cell.runtime_arm.data()['enabled']); chosen=selection(material,enabled,selected_job_id)
     expected={'cell':cell.data(),'material_digest':material.record.content_hash,'objective':objective.data(),
         'selection':chosen.data(),'image':image,'timeout_seconds':timeout_seconds,'docker_limit':2,
         'input_paths':{k:str(v.absolute()) for k,v in inputs.items()}}
@@ -308,8 +311,8 @@ def _phase_projection(material,cell,objective,root,image,timeout_seconds,inputs)
         'status':'succeeded' if succeeded and not residual else 'failed','public':{'observations':public}})
 
 
-def verify_phase(*,material,cell,objective,root,image,timeout_seconds,inputs):
-    expected=_phase_projection(material,cell,objective,root,image,timeout_seconds,inputs)
+def verify_phase(*,material,cell,objective,root,image,timeout_seconds,inputs,selected_job_id=None):
+    expected=_phase_projection(material,cell,objective,root,image,timeout_seconds,inputs,selected_job_id)
     if json.loads(_read(root/'receipt.json'))!=expected.data(): raise ContractError('phase receipt differs from actual replay')
     return expected
 
