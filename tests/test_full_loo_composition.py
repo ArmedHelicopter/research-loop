@@ -20,7 +20,7 @@ def test_c4_freezes_full_loo_controls_boundaries_and_actual_recipe_budget():
     assert body["allocation"] == {"target_count": 2, "executable_arm_procedures": 11,
         "structural_arm_procedures": 1, "unique_canonical_builds": 9, "builder_proposals": 9,
         "builder_executions": 9, "history_model_calls": 45, "target_cells": 22, "target_model_calls": 124, "model_calls": 169,
-        "independent_source_qualification_calls": 62, "retrieval_requests": 87,
+        "independent_source_qualification_calls": 62, "corpus_qualification_calls": 58, "retrieval_requests": 87,
         "history_auxiliary_docker_attempts": 18, "target_auxiliary_docker_attempts": 40,
         "auxiliary_docker_attempts": 58, "solver_docker_attempts": 22, "docker_attempts": 80,
         "scorer_calls": 22, "paid_calls": 0}

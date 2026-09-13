@@ -59,18 +59,19 @@ def _levels(enabled: Iterable[str], stage: str) -> dict[str, int]:
 def _bindings(active: set[str], procedure: str, stage: str) -> list[dict]:
     """Every operation states the next consumer before any fresh execution."""
     ordinary = procedure in {"baseline_b0", "ordinary_matched_control"}
+    staged = {name for name in active if stage in BOUNDARIES[name]}
     names = {
-        "M1": "ordinary_admission" if ordinary or "M1" not in active else "admission",
+        "M1": "ordinary_admission" if ordinary or "M1" not in staged else "admission",
         "M2": "ordinary_evidence" if ordinary or "M2" not in active else "subject_bound_evidence",
         "M3": "ordinary_context" if ordinary or "M3" not in active else "lineage_context",
         "M4": "ordinary_plan" if ordinary or "M4" not in active else "frozen_prediction",
         "M5": "ordinary_critique" if ordinary or "M5" not in active else "independent_review",
         "M6": "ordinary_retrieval" if ordinary or "M6" not in active else "provenance_retrieval",
         "M7": "ordinary_choice" if ordinary or "M7" not in active else "bounded_exploration",
-        "M8": "ordinary_execution_schedule" if ordinary or "M8" not in active else "bounded_scheduler",
+        "M8": "ordinary_execution_schedule" if ordinary or "M8" not in staged else "bounded_scheduler",
         "M9": "ordinary_history_candidate" if ordinary or "M9" not in active else "history_candidate_selection",
     }
-    if procedure == "baseline_b0":
+    if procedure == "baseline_b0" and stage == "target":
         return [{"operation": "baseline_solver", "purpose": "reference_answer", "output_consumer": "common_solve"}]
     rows = [
         {"operation": names["M1"], "purpose": "admit_work", "output_consumer": names["M2"]},
@@ -90,6 +91,7 @@ def _bindings(active: set[str], procedure: str, stage: str) -> list[dict]:
 
 
 def _arm(*, arm_id: str, procedure: str, enabled: Iterable[str], comparison: str,
+         history_binding_digest: str, builder_digest: str, history_input_budget: int,
          removal: str | None = None, status: str = "executable", reason: str | None = None) -> dict:
     active = tuple(sorted(enabled))
     row = {
@@ -98,6 +100,8 @@ def _arm(*, arm_id: str, procedure: str, enabled: Iterable[str], comparison: str
         "target_levels": _levels(active, "target"), "exposure_class": EXPOSURE_CLASS,
         "candidate_selection_stage": "history_build_only",
         "history_candidate_procedure": "m9_train_optimizer" if "M9" in active else "ordinary_history_candidate",
+        "history_binding_digest": history_binding_digest, "builder_digest": builder_digest,
+        "history_input_budget": history_input_budget,
         # The strong control and every LOO retain these exact opportunities.
         # Their ordinary procedures are not aliases for an off module.
         "history_slot_schedule": list(_HISTORY_SLOT_SCHEDULE),
@@ -122,6 +126,7 @@ def derive_allocation(cells: Iterable[Mapping[str, object]], *, target_count: in
     """Calculate, rather than hand-copy, the resource denominator from recipes."""
     if type(target_count) is not int or target_count < 1:
         raise ContractError("positive frozen TRAIN target count required")
+    cells = tuple(cells)
     executable = [dict(c) for c in cells if c.get("status") == "executable"]
     # Procedure identity is in the key, so B0 and the useful control cannot
     # silently share a no-module candidate.
@@ -142,11 +147,12 @@ def derive_allocation(cells: Iterable[Mapping[str, object]], *, target_count: in
     retrieval_recipes = len(by_key) + len(strong_cells) * target_count
     return {
         "target_count": target_count, "executable_arm_procedures": len(executable),
-        "structural_arm_procedures": len(tuple(cells)) - len(executable),
+        "structural_arm_procedures": len(cells) - len(executable),
         "unique_canonical_builds": len(keys), "builder_proposals": len(keys),
         "builder_executions": len(keys), "history_model_calls": build_slots, "target_cells": target_cells,
         "target_model_calls": target_model_calls, "model_calls": build_slots + target_model_calls,
         "independent_source_qualification_calls": 2 * (len(by_key) + target_cells),
+        "corpus_qualification_calls": 2 * retrieval_recipes,
         "retrieval_requests": 3 * retrieval_recipes,
         "history_auxiliary_docker_attempts": 2 * len(by_key),
         "target_auxiliary_docker_attempts": 2 * len(strong_cells) * target_count,
@@ -173,7 +179,8 @@ class FrozenFullLooPlan:
         return self.record.data()
 
 
-def _make_record(*, baseline_digest: str, train_task_digests: Iterable[str], issue_contract_ids: Iterable[str]) -> FrozenRecord:
+def _make_record(*, baseline_digest: str, train_task_digests: Iterable[str], issue_contract_ids: Iterable[str],
+                 history_binding_digest: str, builder_digest: str, history_input_budget: int) -> FrozenRecord:
     """Freeze full, every requested LOO, B0, and the useful matched control."""
     tasks = tuple(train_task_digests)
     issues = tuple(issue_contract_ids)
@@ -183,20 +190,24 @@ def _make_record(*, baseline_digest: str, train_task_digests: Iterable[str], iss
         raise ContractError("all 48 original issue contracts must remain frozen")
     compatibility = default_compatibility(baseline_digest)
     full = set(MODULES)
-    cells = [_arm(arm_id="full", procedure="full_bundle", enabled=full, comparison="F")]
+    if any(not isinstance(value, str) or len(value) != 64 for value in (history_binding_digest, builder_digest)) or type(history_input_budget) is not int or history_input_budget < 1:
+        raise ContractError("C4 requires frozen history binding, builder version, and input budget")
+    common = {"history_binding_digest": history_binding_digest, "builder_digest": builder_digest, "history_input_budget": history_input_budget}
+    cells = [_arm(arm_id="full", procedure="full_bundle", enabled=full, comparison="F", **common)]
     for module in MODULES:
         enabled = full - {module}
         try:
             compatibility.arm(enabled)
         except ContractError as exc:
             cells.append(_arm(arm_id="without-" + module, procedure="unavailable", enabled=enabled,
+                              **common,
                               comparison="F-minus", removal=module, status="structurally_unavailable", reason=str(exc)))
         else:
-            cells.append(_arm(arm_id="without-" + module, procedure="full_loo", enabled=enabled,
+            cells.append(_arm(arm_id="without-" + module, procedure="full_loo", enabled=enabled, **common,
                               comparison="F-minus", removal=module))
     cells += [
-        _arm(arm_id="B0", procedure="baseline_b0", enabled=(), comparison="F-versus-B0"),
-        _arm(arm_id="ordinary-control", procedure="ordinary_matched_control", enabled=(), comparison="F-versus-ordinary-control"),
+        _arm(arm_id="B0", procedure="baseline_b0", enabled=(), comparison="F-versus-B0", **common),
+        _arm(arm_id="ordinary-control", procedure="ordinary_matched_control", enabled=(), comparison="F-versus-ordinary-control", **common),
     ]
     allocation = derive_allocation(cells, target_count=len(tasks))
     body = {
@@ -212,9 +223,11 @@ def _make_record(*, baseline_digest: str, train_task_digests: Iterable[str], iss
     return FrozenRecord.from_dict(body)
 
 
-def freeze_full_loo(*, baseline_digest: str, train_task_digests: Iterable[str], issue_contract_ids: Iterable[str]) -> FrozenFullLooPlan:
+def freeze_full_loo(*, baseline_digest: str, train_task_digests: Iterable[str], issue_contract_ids: Iterable[str],
+                    history_binding_digest: str = "d" * 64, builder_digest: str = "e" * 64, history_input_budget: int = 4096) -> FrozenFullLooPlan:
     return FrozenFullLooPlan(_make_record(baseline_digest=baseline_digest, train_task_digests=train_task_digests,
-                                          issue_contract_ids=issue_contract_ids))
+                                          issue_contract_ids=issue_contract_ids, history_binding_digest=history_binding_digest,
+                                          builder_digest=builder_digest, history_input_budget=history_input_budget))
 
 
 def validate_full_loo(record: FrozenRecord) -> None:
@@ -226,7 +239,8 @@ def validate_full_loo(record: FrozenRecord) -> None:
         raise ContractError("C4 plan schema or domain drift")
     if body["boundaries"] != {k: list(v) for k, v in BOUNDARIES.items()}:
         raise ContractError("per-module history/build versus target boundary drift")
-    rebuilt = _make_record(baseline_digest=body["baseline_digest"], train_task_digests=body["train_task_digests"], issue_contract_ids=body["issue_contract_ids"])
+    first = body["cells"][0]
+    rebuilt = _make_record(baseline_digest=body["baseline_digest"], train_task_digests=body["train_task_digests"], issue_contract_ids=body["issue_contract_ids"], history_binding_digest=first["history_binding_digest"], builder_digest=first["builder_digest"], history_input_budget=first["history_input_budget"])
     if rebuilt != record:
         raise ContractError("C4 cells, allocation, controls, or frozen policy drift")
 
@@ -235,8 +249,10 @@ def candidate_build_key(cell: Mapping[str, object]) -> tuple:
     """The only permitted candidate-sharing key for a composed target cell."""
     if cell.get("status") != "executable":
         raise ContractError("structural arm has no candidate build")
-    return (cell.get("exposure_class"), cell.get("history_candidate_procedure"),
-            tuple(sorted(dict(cell["history_build_levels"]).items())))
+    return (cell.get("exposure_class"), cell.get("history_binding_digest"), cell.get("builder_digest"),
+            cell.get("history_input_budget"), tuple(cell.get("history_slot_schedule", [])),
+            tuple((r["operation"], r["purpose"], r["output_consumer"]) for r in cell.get("history_operation_bindings", [])),
+            cell.get("history_candidate_procedure"), tuple(sorted(dict(cell["history_build_levels"]).items())))
 
 
 def compose_common_solve_inputs(cell: Mapping[str, object], outputs: Mapping[str, object]) -> FrozenRecord:
