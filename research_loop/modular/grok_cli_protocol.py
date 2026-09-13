@@ -97,6 +97,9 @@ def inspect_grok_stream(raw: bytes, *, schema: Mapping, session_id: str,
             events.append(event)
         except (ValueError, TypeError, ContractError):
             fault('invalid_or_unknown_event')
+    if any(event['type']=='thought' and (set(event)!={'type','data'}
+            or not isinstance(event['data'],str)) for event in events):
+        fault('invalid_thought_event')
     ends = [event for event in events if event['type'] == 'end']
     inventories = [event for event in events if event['type'] == 'available_commands']
     tool_events = sum(event['type'] in ('tool_call','tool_call_update') for event in events)
@@ -121,6 +124,11 @@ def inspect_grok_stream(raw: bytes, *, schema: Mapping, session_id: str,
         fault('end_count')
     else:
         end = ends[0]
+        end_fields = {'type','stopReason','sessionId','requestId','usage','num_turns',
+                      'modelUsage','structuredOutput','total_cost_usd','total_cost_usd_ticks',
+                      'cost_is_partial','usage_is_incomplete'}
+        if set(end)-end_fields:
+            fault('unknown_end_fields')
         if events[-1] is not end:
             fault('events_after_end')
         if end.get('sessionId') != session_id:
@@ -136,6 +144,18 @@ def inspect_grok_stream(raw: bytes, *, schema: Mapping, session_id: str,
             fault('usage_incomplete_or_invalid')
         elif usage['output_tokens'] > max_output_tokens or usage['total_tokens'] > max_total_tokens:
             fault('observed_token_budget_breach')
+        usage_events = [event for event in events if event['type']=='usage']
+        if len(usage_events)!=1:
+            fault('usage_event_count')
+        else:
+            event=usage_events[0]
+            expected_fields=set(TOKEN_FIELDS)-{'total_tokens'}
+            if (set(event)!={'type','usage','signature'} or not isinstance(event['signature'],str)
+                    or not isinstance(event['usage'],dict) or set(event['usage'])!=expected_fields
+                    or any(not _integer(v) for v in event['usage'].values())):
+                fault('invalid_usage_event')
+            elif usage is not None and any(event['usage'][k]!=usage[k] for k in expected_fields):
+                fault('contradictory_usage_event')
         models = end.get('modelUsage')
         if not isinstance(models, dict) or len(models) != 1 or next(iter(models)) not in ACCOUNTING_MODELS:
             fault('model_accounting_mismatch')

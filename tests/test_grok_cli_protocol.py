@@ -15,6 +15,8 @@ def stream():
     return [
         {'type':'available_commands','tools':[],'commands':['context']},
         {'type':'text','data':'{"ok":true}'},
+        {'type':'usage','usage':{'input_tokens':9335,'output_tokens':46,'cache_read_input_tokens':0,
+                               'cache_creation_input_tokens':0,'reasoning_tokens':37},'signature':'synthetic'},
         {'type':'end','stopReason':'end_turn','sessionId':SESSION,'requestId':'synthetic-request',
          'usage':{'input_tokens':9335,'cache_read_input_tokens':0,'cache_creation_input_tokens':0,
                   'output_tokens':46,'reasoning_tokens':37,'total_tokens':9381},
@@ -61,7 +63,9 @@ def test_protocol_failures_are_terminal_but_keep_available_usage(fault):
     elif fault=='usage_flag':end['usage_is_incomplete']=True
     elif fault=='mismatched_total':end['usage']['total_tokens']+=1
     elif fault=='mismatched_model_usage':model['inputTokens']+=1
-    elif fault=='budget_breach':end['usage'].update(output_tokens=129,total_tokens=9464);model['outputTokens']=129
+    elif fault=='budget_breach':
+        end['usage'].update(output_tokens=129,total_tokens=9464);model['outputTokens']=129
+        rows[-2]['usage']['output_tokens']=129
     elif fault=='response_mismatch':end['structuredOutput']={'ok':False}
     elif fault=='invalid_schema':end['structuredOutput']={'ok':1};rows[1]['data']='{"ok":1}'
     elif fault=='provider_error':rows.insert(1,{'type':'error','message':'synthetic quota exhausted'})
@@ -104,6 +108,7 @@ def test_failed_process_retains_complete_reported_usage_without_returning_respon
 def test_cached_tokens_are_counted_once_and_contradictory_cost_is_rejected():
     rows=stream();end=rows[-1]
     end['usage'].update(cache_read_input_tokens=100,cache_creation_input_tokens=200,total_tokens=9681)
+    rows[-2]['usage'].update(cache_read_input_tokens=100,cache_creation_input_tokens=200)
     end['modelUsage']['grok-4.6-build'].update(cacheReadInputTokens=100,cacheCreationInputTokens=200)
     assert inspect(rows).receipt.data()['usage']['total_tokens']==9681
     end['total_cost_usd_ticks']+=1
@@ -117,3 +122,17 @@ def test_invalid_utf8_and_truncated_json_never_invent_complete_usage():
         result=inspect(raw=raw);body=result.receipt.data()
         assert result.response is None and body['usage'] is None
         assert body['server_reported_usd'] is None and body['cost_status']=='unknown'
+
+
+@pytest.mark.parametrize('form',['missing','duplicated','contradictory','boolean','end_extension','thought_payload'])
+def test_single_turn_usage_and_event_contract_cannot_hide_additional_work(form):
+    rows=stream()
+    if form=='missing':rows.pop(-2)
+    elif form=='duplicated':rows.insert(-1,copy.deepcopy(rows[-2]))
+    elif form=='contradictory':rows[-2]['usage']['input_tokens']+=1
+    elif form=='boolean':rows[-2]['usage']['reasoning_tokens']=True
+    elif form=='end_extension':rows[-1]['untracked_side_model_calls']=1
+    elif form=='thought_payload':rows.insert(1,{'type':'thought','toolResult':'hidden'})
+    result=inspect(rows)
+    assert result.response is None and not result.receipt.data()['accepted']
+    assert result.receipt.data()['usage']['total_tokens']==9381
