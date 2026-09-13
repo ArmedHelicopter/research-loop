@@ -1,0 +1,79 @@
+{
+  "schema": "linked-train-terminal-checkpoint-v1",
+  "attempt_source_commit": "c3a4b21040e419692a74382c973104d5fe5cf7e1",
+  "attempt_summary": {
+    "calibration": "not_measured",
+    "cells": 12,
+    "execution_status": "execution_incomplete",
+    "linked_statuses": [
+      "solver_execution_failed",
+      "linked_succeeded",
+      "linked_succeeded",
+      "solver_execution_failed",
+      "linked_succeeded",
+      "linked_succeeded",
+      "linked_succeeded",
+      "linked_succeeded",
+      "linked_succeeded",
+      "linked_succeeded",
+      "linked_succeeded",
+      "linked_succeeded"
+    ],
+    "mechanism_effect": "not_measured",
+    "scientific_validity": "not_measured",
+    "scores": 10,
+    "selection_status": "inconclusive",
+    "solver_calls": 48,
+    "solver_tokens": 714850,
+    "source_commit": "c3a4b21040e419692a74382c973104d5fe5cf7e1",
+    "usage_incomplete": false,
+    "validation_items": 0
+  },
+  "provider_calls": {
+    "solver": 48,
+    "evaluator": 10,
+    "total": 58
+  },
+  "tokens": {
+    "solver": 714850,
+    "evaluator": 220193,
+    "total": 935043
+  },
+  "money_cost": "not_measured",
+  "reports": {
+    "full-suite-c3a4b21.xml": {
+      "tests": "928",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1443.735"
+    },
+    "q31-q43-opaque-a111e1c.xml": {
+      "tests": "26",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "113.714"
+    },
+    "history-context-collection-failure-718fc84.xml": {
+      "tests": "0",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.002"
+    },
+    "history-context-root-718fc84.xml": {
+      "tests": "61",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "226.549"
+    }
+  },
+  "diagnostic_limit": "All 12 cells exposed controller arm metadata in dynamic requests. This is not a clean module-effect study.",
+  "selection": "inconclusive; no selected arm, no combination pruning, no deployment or validation acceptance",
+  "private_evaluator_payloads_included": false,
+  "private_keys_included": false,
+  "all_48_questions_and_combinations_still_required": true,
+  "archive_note": "Raw solver events/programs/journals and numeric signed score receipts retained; private evaluator prompts and reference text remain in custody."
+}

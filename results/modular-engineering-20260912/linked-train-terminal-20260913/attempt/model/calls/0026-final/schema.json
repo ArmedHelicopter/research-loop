@@ -1,0 +1,1 @@
+{"additionalProperties":false,"properties":{"conclusion":{"type":"string"},"evidence_ids":{"items":{"type":"string"},"type":"array"},"objective_digest":{"type":"string"},"outcome":{"enum":["unknown"],"type":"string"},"programme_complete":{"enum":[false],"type":"boolean"}},"required":["objective_digest","outcome","evidence_ids","conclusion","programme_complete"],"type":"object"}

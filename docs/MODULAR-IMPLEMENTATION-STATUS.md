@@ -3,7 +3,24 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current checkpoint (2026-09-13)
+## Current terminal training checkpoint (2026-09-13)
+
+The frozen `c3a4b21` linked train attempt is closed: 12 cells, 10 successful
+restricted-Docker executions with independent adapted scores, and 2 retained
+execution failures. There were 58 provider calls and 935,043 tokens. Selection
+is `inconclusive`; dynamic controller metadata affected all 12 cells, so this
+attempt is engineering wiring evidence and does not qualify a clean module
+effect. No combination pruning, validation acceptance or deployment occurred.
+The full 928-test result belongs only to `c3a4b21`. Subsequent focused suites
+passed 26 (`a111e1c`), 61 (`718fc84`), 83 (`b59bb3e`) and 70 (`7aa349d`) tests.
+
+Production drivers cover Q1.1–Q1.7, Q2.1/Q2.3/Q2.4, Q3.1 and Q4.1–Q4.5.
+All 48 obligations, combinations and the separate Q6.3 phase remain required.
+See [MODULAR-CHECKPOINT-20260913-TRAIN-TERMINAL.md](MODULAR-CHECKPOINT-20260913-TRAIN-TERMINAL.md)
+for the terminal attempt, failure denominator, public-context repairs and
+source-specific evidence. The archive now contains 852 hash-indexed files.
+
+## Previous scorer checkpoint (2026-09-13)
 
 Source `c3a4b21040e419692a74382c973104d5fe5cf7e1` adds production Q1.1–Q1.4 and
 Q2.1 wiring, frozen train-reference extraction, a separate evaluator provider

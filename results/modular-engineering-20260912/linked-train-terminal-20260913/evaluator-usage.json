@@ -1,0 +1,280 @@
+{
+  "schema": "private-evaluator-usage-projection-v1",
+  "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\linked-scorer-runtime-20260913-01\\evaluator-model\\ledger.json",
+  "source_sha256": "2ee892acfba080f243193b7757495a452b57de40d7c26e570ad386e954f48864",
+  "calls": [
+    {
+      "id": 1,
+      "status": "succeeded",
+      "slot": "frozen-rubric.discoverybench",
+      "purpose": "frozen-independent-evaluator-call-v1",
+      "provider": {
+        "id": "codex-cli",
+        "model": "gpt-5.6-luna"
+      },
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 7755,
+        "output_tokens": 253,
+        "reasoning_output_tokens": 192,
+        "total_tokens": 8008
+      },
+      "request_hash": "c56719535c6c3eece7a89653d33425f73483a167b87577abff6b4680c7d06bca",
+      "prompt_hash": "26bbdbaee70c39f03f86ebf15f498bdd67a5c03125beb583db5e428ba9ccc859",
+      "output_hash": "b919214eae22a645b001c317f6bdbc88821b5e27fbdd3de64f67449741be69ea",
+      "events_hash": "98e6fa1076163df9a5d88549cac9a5fa850755368da69f3a3f8b6b0a527b1532",
+      "stderr_hash": "ce61599b88d4021a021e47fdbbbc9c4660b6b60e1540e3cb2a7ef5f94f37fab9",
+      "schema_hash": "e6582ee19e714857063fce4b6828bf8bff202e32c5a8d7d26937fdaa27c86e57",
+      "context_policy_sha256": "16f83e4c8cd78cb024fffcc6949090caeba939a56b1037e58264a57ed03da89b",
+      "environment_sha256": "b03d92cceabf79f9ca24b29366278e2a80b50b001a8b30196059d8fc336a455b",
+      "exit_code": 0
+    },
+    {
+      "id": 2,
+      "status": "succeeded",
+      "slot": "frozen-rubric.discoverybench",
+      "purpose": "frozen-independent-evaluator-call-v1",
+      "provider": {
+        "id": "codex-cli",
+        "model": "gpt-5.6-luna"
+      },
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 7835,
+        "output_tokens": 213,
+        "reasoning_output_tokens": 161,
+        "total_tokens": 8048
+      },
+      "request_hash": "678056bb1cb568cc5e4bc1b4e19bfbe1de75b37cc94dbd9563e116b827179ad4",
+      "prompt_hash": "7c843280be3008e54dec8ef76d3dd63084c200b48ad86f3cfef31e0ad6fa3f8a",
+      "output_hash": "3e8bdc73cf6a4bd2e0b868c55bb3b60feaa07c9a3e837e40ac873fe792310ff9",
+      "events_hash": "2bab9c62b91904f0955b9edb3ff1947fc6b40efa872c29e2abd6baee933999dc",
+      "stderr_hash": "f1c84f55410c474154470f348e12782c7834ce9baaa3854fb39a7d2032f82408",
+      "schema_hash": "e6582ee19e714857063fce4b6828bf8bff202e32c5a8d7d26937fdaa27c86e57",
+      "context_policy_sha256": "16f83e4c8cd78cb024fffcc6949090caeba939a56b1037e58264a57ed03da89b",
+      "environment_sha256": "b03d92cceabf79f9ca24b29366278e2a80b50b001a8b30196059d8fc336a455b",
+      "exit_code": 0
+    },
+    {
+      "id": 3,
+      "status": "succeeded",
+      "slot": "frozen-rubric.discoverybench",
+      "purpose": "frozen-independent-evaluator-call-v1",
+      "provider": {
+        "id": "codex-cli",
+        "model": "gpt-5.6-luna"
+      },
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 7908,
+        "output_tokens": 260,
+        "reasoning_output_tokens": 200,
+        "total_tokens": 8168
+      },
+      "request_hash": "bcabf7f5bb5c9df9e6985ca3f9dcf562ae94cfce68dddb644cb1b73fbfbea4b6",
+      "prompt_hash": "54c3ea3d3344aee6f079d9f81270cf49ed28c5405667a1f32babc49ce5e47712",
+      "output_hash": "049ec042b897d287706d6499a18420267088ad2f5cb34ba54dcb715df2b52ae3",
+      "events_hash": "0be30f638678947643992a081c991846791f9272d35cca271948ada1a6753187",
+      "stderr_hash": "de9641f3c8c9551a6442d1cb614ad48cc4e626587101c3321f2c71ccfeaf917a",
+      "schema_hash": "e6582ee19e714857063fce4b6828bf8bff202e32c5a8d7d26937fdaa27c86e57",
+      "context_policy_sha256": "16f83e4c8cd78cb024fffcc6949090caeba939a56b1037e58264a57ed03da89b",
+      "environment_sha256": "b03d92cceabf79f9ca24b29366278e2a80b50b001a8b30196059d8fc336a455b",
+      "exit_code": 0
+    },
+    {
+      "id": 4,
+      "status": "succeeded",
+      "slot": "frozen-rubric.discoverybench",
+      "purpose": "frozen-independent-evaluator-call-v1",
+      "provider": {
+        "id": "codex-cli",
+        "model": "gpt-5.6-luna"
+      },
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 8477,
+        "output_tokens": 281,
+        "reasoning_output_tokens": 221,
+        "total_tokens": 8758
+      },
+      "request_hash": "3cd7029a197bb48233694585402e0d5c9eb8b34c594537e1e0c4389b672b0377",
+      "prompt_hash": "9592b6f724e35cf7b6a3c43e99b4d7feed2fc6d37c4c4f50ee0c76a003fa7b48",
+      "output_hash": "b45ebd1d3f9ba9978126c2952a69afc62d75403120db2c7b387b12cd9a9b08b3",
+      "events_hash": "04c7da2aa14a330f41491d1680d5e0625eb1ec01372cde56792341d58d94a253",
+      "stderr_hash": "a9bf7f5efc065430279e607cab56925a7e51b61f1b66031adf8ac6f173622e18",
+      "schema_hash": "e6582ee19e714857063fce4b6828bf8bff202e32c5a8d7d26937fdaa27c86e57",
+      "context_policy_sha256": "16f83e4c8cd78cb024fffcc6949090caeba939a56b1037e58264a57ed03da89b",
+      "environment_sha256": "b03d92cceabf79f9ca24b29366278e2a80b50b001a8b30196059d8fc336a455b",
+      "exit_code": 0
+    },
+    {
+      "id": 5,
+      "status": "succeeded",
+      "slot": "frozen-rubric.blade",
+      "purpose": "frozen-independent-evaluator-call-v1",
+      "provider": {
+        "id": "codex-cli",
+        "model": "gpt-5.6-luna"
+      },
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 31018,
+        "output_tokens": 270,
+        "reasoning_output_tokens": 186,
+        "total_tokens": 31288
+      },
+      "request_hash": "3c1bdaf960de22ba6e0d676855cdc37e9322b7982cdee92ed63f98d9012e53ca",
+      "prompt_hash": "1d52742e9c8b77fdb67641418d540ba13e9d81286ccdf35aeb0639bce8200e35",
+      "output_hash": "5128f71051046a732b1cea376c3c285eba3cf7f647e299fa8f1bafd31d0b5c96",
+      "events_hash": "48a7e526c7991cf37735e136ac18b6a42fc325ffd1aa469b3aebe6ee5475ccaf",
+      "stderr_hash": "9a2d0bf8b471e8b641b6df8bf7c73f3fd78716858ab2c28cd42c86ae926ede3e",
+      "schema_hash": "c9982ac58785df4db66894907faa50e5f138e549f925b3bb80b2afe2370a84aa",
+      "context_policy_sha256": "16f83e4c8cd78cb024fffcc6949090caeba939a56b1037e58264a57ed03da89b",
+      "environment_sha256": "b03d92cceabf79f9ca24b29366278e2a80b50b001a8b30196059d8fc336a455b",
+      "exit_code": 0
+    },
+    {
+      "id": 6,
+      "status": "succeeded",
+      "slot": "frozen-rubric.blade",
+      "purpose": "frozen-independent-evaluator-call-v1",
+      "provider": {
+        "id": "codex-cli",
+        "model": "gpt-5.6-luna"
+      },
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 30727,
+        "output_tokens": 83,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 30810
+      },
+      "request_hash": "6f9ec67c5be45b9645604571ee8918dfdd7971d439bdacebc55530db47d63646",
+      "prompt_hash": "66d211e64e158f480dfb237dfcbf72d642411a0f4f30d569f3b8f08f2c9f085c",
+      "output_hash": "b194792433e113f5fdbd678dbc5d21602428ff4aaa92841f18c5faa6ea389b29",
+      "events_hash": "35edf885d49f2c40bd6f70138a4f99713033f1a53d7775870c648744774e63f8",
+      "stderr_hash": "208ba894ebd4d249c7df043bfdfdcca2c93f8aa742a190f2ed6d7c47bbc037f0",
+      "schema_hash": "c9982ac58785df4db66894907faa50e5f138e549f925b3bb80b2afe2370a84aa",
+      "context_policy_sha256": "16f83e4c8cd78cb024fffcc6949090caeba939a56b1037e58264a57ed03da89b",
+      "environment_sha256": "b03d92cceabf79f9ca24b29366278e2a80b50b001a8b30196059d8fc336a455b",
+      "exit_code": 0
+    },
+    {
+      "id": 7,
+      "status": "succeeded",
+      "slot": "frozen-rubric.blade",
+      "purpose": "frozen-independent-evaluator-call-v1",
+      "provider": {
+        "id": "codex-cli",
+        "model": "gpt-5.6-luna"
+      },
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 30965,
+        "output_tokens": 343,
+        "reasoning_output_tokens": 244,
+        "total_tokens": 31308
+      },
+      "request_hash": "043f4f374689d3bf08a9819ea801ca7e35e641990c3c3527e64f1630ce0acc2f",
+      "prompt_hash": "88f050a7bccd43a37683568c88bc5aade2cf5734fcfbeb6db1e13bc649696bad",
+      "output_hash": "2e304b3bfe333ef573d3e3d6a8683f29883de4de6738fcbb2d9d29e31439d40f",
+      "events_hash": "bcea9ce281cbbfd2dcd5e3e51599e30341c85e17837c2fdbff8bf19c364825d1",
+      "stderr_hash": "78c976612fa58cb6be0eb0d4ed554f666316095622aa1fb98d3e8bcb72d4ccb5",
+      "schema_hash": "c9982ac58785df4db66894907faa50e5f138e549f925b3bb80b2afe2370a84aa",
+      "context_policy_sha256": "16f83e4c8cd78cb024fffcc6949090caeba939a56b1037e58264a57ed03da89b",
+      "environment_sha256": "b03d92cceabf79f9ca24b29366278e2a80b50b001a8b30196059d8fc336a455b",
+      "exit_code": 0
+    },
+    {
+      "id": 8,
+      "status": "succeeded",
+      "slot": "frozen-rubric.blade",
+      "purpose": "frozen-independent-evaluator-call-v1",
+      "provider": {
+        "id": "codex-cli",
+        "model": "gpt-5.6-luna"
+      },
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 4864,
+        "input_tokens": 31182,
+        "output_tokens": 203,
+        "reasoning_output_tokens": 128,
+        "total_tokens": 31385
+      },
+      "request_hash": "89901e049e96913717ba28b1f9609c8017fb7970a78d806a6f2b286450755afb",
+      "prompt_hash": "6151e4349ce4ea89d2faa6e12a856b99af29c2bab5eefef026ed13195a28c3b6",
+      "output_hash": "0e087a3b6f72d4e3daecdc332a89256082b0326e3a54498e0b661102a60e9967",
+      "events_hash": "27113d5bbdc2d93d8948a67e7b8694583dbbd44c4de36bde675116d332479638",
+      "stderr_hash": "327f8bec1b02b178deaeeddfb2fa6bd5724a2b671e3d990b572333a71b471a85",
+      "schema_hash": "c9982ac58785df4db66894907faa50e5f138e549f925b3bb80b2afe2370a84aa",
+      "context_policy_sha256": "16f83e4c8cd78cb024fffcc6949090caeba939a56b1037e58264a57ed03da89b",
+      "environment_sha256": "b03d92cceabf79f9ca24b29366278e2a80b50b001a8b30196059d8fc336a455b",
+      "exit_code": 0
+    },
+    {
+      "id": 9,
+      "status": "succeeded",
+      "slot": "frozen-rubric.blade",
+      "purpose": "frozen-independent-evaluator-call-v1",
+      "provider": {
+        "id": "codex-cli",
+        "model": "gpt-5.6-luna"
+      },
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 30809,
+        "output_tokens": 384,
+        "reasoning_output_tokens": 292,
+        "total_tokens": 31193
+      },
+      "request_hash": "e3eaf49409645712297ef19d26b44e9a00c254b423722b218d036e157ee0d663",
+      "prompt_hash": "704e1d5218da2e8afaceb30e6357f718a9a2007d4a4210561a4df13282665af6",
+      "output_hash": "5f34551a5a3d5a45789e42ff69ab2a595768701449499a4cb535cc3ac4e8eee1",
+      "events_hash": "046b45a5876a51c5930d8cc8f547c7d51b8814a13e2311e9d924ae3209ad1cbc",
+      "stderr_hash": "9ff8783228cb1e55f01a17e3701427c1dac3a3bf6e0a9bb128be27f4238e9831",
+      "schema_hash": "c9982ac58785df4db66894907faa50e5f138e549f925b3bb80b2afe2370a84aa",
+      "context_policy_sha256": "16f83e4c8cd78cb024fffcc6949090caeba939a56b1037e58264a57ed03da89b",
+      "environment_sha256": "b03d92cceabf79f9ca24b29366278e2a80b50b001a8b30196059d8fc336a455b",
+      "exit_code": 0
+    },
+    {
+      "id": 10,
+      "status": "succeeded",
+      "slot": "frozen-rubric.blade",
+      "purpose": "frozen-independent-evaluator-call-v1",
+      "provider": {
+        "id": "codex-cli",
+        "model": "gpt-5.6-luna"
+      },
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 30925,
+        "output_tokens": 302,
+        "reasoning_output_tokens": 190,
+        "total_tokens": 31227
+      },
+      "request_hash": "bfbe72de0618cc80c87f269e9833e79c0169eeb55025e7232eb78df75d2709e4",
+      "prompt_hash": "cf5bfd9dc8bb1ccc00d4ed6d29eb0136db90dde983bbc3678da60731f69be22e",
+      "output_hash": "7b330e1b446cc470e640705a313c5d3f604c07ee1c2c0ddfbf052421ef64a00e",
+      "events_hash": "7bb5ef4ad5b73f85fa91c43d85690b37fcfd3e9ade0a4c474bc8ab4c383a10b1",
+      "stderr_hash": "0d3d419fa77c06187e64eeb413e696b0169628cdd4c51cf8b49bc89aa913f34e",
+      "schema_hash": "c9982ac58785df4db66894907faa50e5f138e549f925b3bb80b2afe2370a84aa",
+      "context_policy_sha256": "16f83e4c8cd78cb024fffcc6949090caeba939a56b1037e58264a57ed03da89b",
+      "environment_sha256": "b03d92cceabf79f9ca24b29366278e2a80b50b001a8b30196059d8fc336a455b",
+      "exit_code": 0
+    }
+  ],
+  "tokens": 220193,
+  "usage_incomplete": false,
+  "private_prompt_reference_and_keys_exported": false
+}

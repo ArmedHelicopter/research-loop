@@ -1,0 +1,5 @@
+{"type":"thread.started","thread_id":"01a0988c-a307-7f13-bb05-aab6a3df129c"}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."}}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"{\"conclusion\":\"Unknown: no public-data observations or evaluation material were supplied, so the fish-caught-per-hour rate and factor effects cannot be determined.\",\"evidence_ids\":[],\"objective_digest\":\"383cd2e361abf194809b539ddd5ad9dd558d24efbbcbf82bde2d9da2669bd93c\",\"outcome\":\"unknown\",\"programme_complete\":false}"}}
+{"type":"turn.completed","usage":{"input_tokens":19274,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":95,"reasoning_output_tokens":0}}

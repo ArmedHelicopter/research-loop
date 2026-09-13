@@ -1,0 +1,5 @@
+{"type":"thread.started","thread_id":"01a09887-f888-72e3-8f69-ed0ce6867e77"}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Code Mode is unavailable because code-mode host is disabled. Code mode will fail closed; enable `features.code_mode_host` and install `codex-code-mode-host`."}}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"{\"conclusion\":\"The supplied material contains no public-data observations or analysis results, so the fish-caught-per-hour rate and livebait effect are unknown.\",\"evidence_ids\":[],\"objective_digest\":\"383cd2e361abf194809b539ddd5ad9dd558d24efbbcbf82bde2d9da2669bd93c\",\"outcome\":\"unknown\",\"programme_complete\":false}"}}
+{"type":"turn.completed","usage":{"input_tokens":7892,"cached_input_tokens":4864,"cache_write_input_tokens":0,"output_tokens":127,"reasoning_output_tokens":30}}

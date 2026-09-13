@@ -65,12 +65,15 @@ complete task × variant × arm × replicate grid for any or all 48 obligations.
 P0-only obligations have one fixed control arm bound to a source/protocol hash;
 P0 is always enabled. Compiling a grid does not qualify its driver or scoring.
 
-`panel_runner.run_train_cell()` supports Q1.1–Q1.5, Q2.1, Q3.1 and Q4.1–Q4.5.
-Q1.1–Q1.4 require typed caller material and the record-bound
+`panel_runner.run_train_cell()` supports Q1.1–Q1.7, Q2.1/Q2.3/Q2.4, Q3.1 and Q4.1–Q4.5.
+Q1.1–Q1.4 and Q1.6/Q1.7 require typed caller material and the record-bound
 `history_admission_port`, which the train controller forwards. Q2.1 and the Q4
 family require their typed per-task material bundles. Planning fixtures cannot
 substitute for these runtime inputs. Q4.5 heterogeneous routing still fails
 without the required independent route evidence and remains in the denominator.
+Q2.3/Q2.4 require `audit_receipt_port` and `shadow_execution_port`, with actual
+program/input hashes matching the frozen shadow contract. Fixed host checks
+remain common to both arms; only M1-on admits the evidence.
 Typed runtime and optional scorer receipts pass to `PanelReceiptVerifier`.
 
 The controller's explicit `linked_benchmark_solve` mode currently supports
@@ -93,3 +96,13 @@ SciCode and ScienceAgentBench accept restricted public projections through their
 adapters. They do not acquire source data or accept complete Hugging Face rows.
 See [MODULAR-EXTENDED-INGESTION.md](MODULAR-EXTENDED-INGESTION.md) for the pinned
 source schema, private-field boundary and pending custody work.
+
+## Terminal linked training attempt and new runs
+
+The first scored linked attempt is preserved, closed and inconclusive; see
+[MODULAR-CHECKPOINT-20260913-TRAIN-TERMINAL.md](MODULAR-CHECKPOINT-20260913-TRAIN-TERMINAL.md).
+Do not resume or overwrite its directories. Its clean base context did not
+prevent dynamic request metadata leakage. A subsequent attempt needs a new
+frozen source/configuration, directory, reviewed dynamic public projections
+and explicit training-only scoring allocation. Full controller provenance is
+retained for verification; the solver receives only the typed public projection.
