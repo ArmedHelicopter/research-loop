@@ -69,3 +69,53 @@ declarations are handled separately by the integration owner. Lineage's latest
 synthetic suite passed 23 tests before r4, including dynamic-key/exception
 suppression, five-source ingestion, frozen-byte tampering, normalization gaps,
 and cross-source exclusion of local labels.
+
+## Bounded static preparation-script supplement
+
+Commit `e92f9f9` adds a separately sealed supplement. Only the exact top-level
+`prepare.py` and `evaluate_prepare.py` columns of the same SHA-bound received CSV
+are parsed with Python's AST. `evaluate.py`, dynamic file maps, and arbitrary
+nested code slots are excluded. The custodian never executes or imports upstream
+code and never exports code, parameter text, dynamic names, or exception text.
+
+Rules were fixed and tested before the actual run: top-level explicit import
+bindings for `datasets.load_dataset`, `sklearn.datasets.fetch_openml`, and
+`kagglehub.dataset_download`; direct literal provider identifiers, revisions, and
+data-file URLs only. Import aliases and unshadowed closures are recognized;
+rebindings anywhere in the script, attribute mutation, escaped import aliases,
+dynamic namespace calls, starred arguments, and nonliteral identity inputs remain
+unresolved. A bare local/legacy label is not promoted to an HF identifier. Nested
+imports and APIs outside the fixed set are outside coverage. Syntax evidence does
+not verify runtime module resolution or actual execution.
+
+The API argument rules were checked against primary documentation:
+[Hugging Face loading methods](https://huggingface.co/docs/datasets/package_reference/loading_methods),
+[scikit-learn fetch_openml](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_openml.html),
+and [KaggleHub dataset download](https://github.com/Kaggle/kagglehub#download-dataset).
+These define a bounded extraction vocabulary; they are not evidence about any
+private task or upstream dataset license.
+
+Actual static r1: 40/40 fixed slots present, no syntax errors, and zero recognized
+calls under these rules. Consequently zero provider references or revisions were
+added, all 20 records retain incomplete global comparison coverage, and the 14
+local declaration groups are unchanged. Five bound files were rehashed unchanged.
+No broader call-name or script diagnostic was performed after the zero result.
+The tracked static receipt is byte-identical to the public runtime receipt:
+SHA-256 `3fb64ba6d6bfbd352a465a1fbef2811f15efb458fd39996a31398d2e1c029267`.
+
+Static preflight first had a synthetic-test collection syntax error, preserved
+in `work/fresh-airs-custodian-checks/static-prefetch-junit.xml`; it was repaired
+before private preparation-slot parsing. The corrected extractor suite passed
+18 tests and the full static file seam suite passed 21 tests before the real run.
+
+No absolute claim about a model's lifetime or pretraining exposure is required or
+established here. Unknown historical exposure is reported separately from known
+current-process output controls, missing lineage coverage, unresolved dataset
+terms, and unverified execution adaptation. This supplement neither grants nor
+changes any validation qualification, lease, or existing split.
+
+The frozen lineage, static-supplement, and inherited AIRS custodian regression
+set passed 69 tests under the declared independent environment; JUnit is
+`work/fresh-airs-custodian-checks/lineage-final-junit.xml`. The integration owner
+separately identified and is repairing ancestor-repository leakage in `_git_pin`;
+the preserved original receipts are not silently rewritten by that follow-up.
