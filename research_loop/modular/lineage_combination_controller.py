@@ -266,6 +266,7 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
         'scorer_usage_unknown': journal['actual_scorer_calls'] > 0,
         'source_calls': sum(len(r.get('source_verification', {}).get('calls', [])) for r in journal['cells']),
         'contrasts': [c.data() for c in contrasts], 'pruned_cells': [], 'scientific_effectiveness_proven': False, 'validation_opened': False,
-        'status': 'complete_train_engineering' if len(scores)==len(results) else 'inconclusive'})
+        'status': 'complete_train_engineering' if len(scores)==len(results)
+            and all(c.data()['status'] in {'estimated', 'not_identifiable'} for c in contrasts) else 'inconclusive'})
     _write(root/'controller-receipt.json', receipt.data()); journal['status'] = receipt.data()['status']; persist()
     return LineageTrainRun(compiled, tuple(results), tuple(scores), tuple(FrozenRecord.from_dict(r) for r in journal['cells']), tuple(contrasts), receipt)

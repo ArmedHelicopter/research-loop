@@ -142,3 +142,15 @@ existing solver contract; the narrow failed-final recognizer is only for a
 strict integer nonzero exit. Replay assumes immutable original host artifacts;
 it does not protect against a privileged concurrent writer replacing the whole
 artifact tree and its trusted external pins.
+
+This delivery stops at the caller-provided `FrozenRubricTransport` adapter.
+The existing `CodexEvaluatorModelPort` has only the primary benchmark response
+schema/template, and the scorer process client/server do not support the new
+lineage wrapper. A real independent process scorer, its protected expanded
+schema and frozen rubric endpoint remain a separate implementation obligation;
+this delivery is not ready for paid evaluation. Endpoint accuracy additionally
+needs source-bound train references: the public joint context alone cannot
+calibrate correct root attribution or withdrawal truth. The current tests use
+explicit synthetic endpoint rules only. If any contrast verification fails,
+the global run stays inconclusive even when all 34 primary cells were scored;
+their scores and the failure record remain retained.

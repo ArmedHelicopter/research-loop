@@ -237,11 +237,23 @@ def test_readonly_replay_rejects_consistently_rehashed_public_artifact_forgery(g
         for path,data in saved.items(): path.write_bytes(data)
 
 
-@pytest.mark.parametrize('fault', ['unknown','exception','scorer','solver_transport'])
+@pytest.mark.parametrize('fault', ['unknown','exception','scorer','solver_transport','contrast'])
 def test_closed_controller_preserves_failed_cells_usage_and_full_denominator(tmp_path,monkeypatch,fault):
+    if fault=='contrast':
+        original=controller.estimate_grouped_contrast; estimates=[]
+        def fail_first(*args,**kwargs):
+            estimates.append(1)
+            if len(estimates)==1: raise ContractError('synthetic contrast verification failure')
+            return original(*args,**kwargs)
+        monkeypatch.setattr(controller,'estimate_grouped_contrast',fail_first)
     result,port,calls,scores,source_calls,_=_run(tmp_path,monkeypatch,fault)
     assert len(result.results)==len(result.attempts)==result.receipt.data()['expected_cells']==34
     assert result.receipt.data()['pruned_cells']==[] and result.receipt.data()['status']=='inconclusive'
+    if fault=='contrast':
+        assert len(result.scores)==len(scores)==34 and len(calls)==136
+        assert result.contrasts[0].data()['status']=='inconclusive'
+        assert result.contrasts[1].data()['status']=='estimated'
+        return
     first=result.attempts[0].data(); assert first['status']=='failed'
     assert first['model_usage_after']['model_calls']>=first['model_usage_before']['model_calls']
     if fault in {'unknown','exception'}:
