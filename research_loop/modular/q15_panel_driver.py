@@ -4,6 +4,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from research_loop.modular.contracts import FrozenRecord
+from research_loop.modular.scenarios_history import Q15ReviewMaterial
 from research_loop.ontology import ContractError
 
 if TYPE_CHECKING:
@@ -30,12 +31,14 @@ class Q15HistoryReviewDriver:
         material = controller.get("q15_review_material")
         material_digest = controller.get("q15_review_material_digest")
         if (not isinstance(material, dict) or not isinstance(material_digest, str)
-                or scenario_body["base"].get("evidence") != material_digest):
+                or scenario_body["base"].get("evidence") != material_digest
+                or FrozenRecord.from_dict(material).content_hash != material_digest):
             raise ContractError("Q1.5 scenario lacks material bound to base evidence")
-        if material.get("identity") != workflow.session.task.identity.data():
-            raise ContractError("Q1.5 review material identity differs from run task")
+        Q15ReviewMaterial(FrozenRecord.from_dict(material), task_identity=workflow.session.task.identity.data())
         public_evidence = FrozenRecord.from_dict(material["public_evidence"])
         history_summary = material["historical_summary"]
+        controller_projection = {"fixture_only": controller.get("fixture_only"),
+            "auxiliary": controller.get("auxiliary"), "q15_review_material_digest": material_digest}
         m5_enabled = "M5" in workflow.enabled
         first_has_summary = cell.variant == "summary_first"
         review_id = None
@@ -45,7 +48,7 @@ class Q15HistoryReviewDriver:
                 evidence_snapshot=public_evidence.content_hash,
                 roles=[{"role_id": "evidence", "question": "What does the supplied public evidence justify?"}], budget_units=1)
             review_id = review.review_id
-        initial_context = {"panel_cell": binding, "scenario_controller_input": controller,
+        initial_context = {"panel_cell": binding, "scenario_controller_input": controller_projection,
             "candidate_package": package.record.data(), "review_phase": "initial",
             "public_evidence": public_evidence.data(), "public_evidence_digest": public_evidence.content_hash,
             "historical_summary": history_summary if first_has_summary else None,
@@ -62,7 +65,10 @@ class Q15HistoryReviewDriver:
             revealed = workflow.reviews.reveal(review_id)[0]
         else:
             revealed = None
-        reveal_context = {"panel_cell": binding, "scenario_controller_input": controller,
+        # ``summary_first`` consumed the only historical-summary exposure in
+        # its first pass. The follow-up sees the sealed response and identical
+        # evidence, but does not receive the prose again.
+        reveal_context = {"panel_cell": binding, "scenario_controller_input": controller_projection,
             "candidate_package": package.record.data(), "review_phase": "after_initial_review",
             "public_evidence": public_evidence.data(), "public_evidence_digest": public_evidence.content_hash,
             "historical_summary": history_summary if not first_has_summary else None,

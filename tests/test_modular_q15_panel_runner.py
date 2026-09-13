@@ -35,8 +35,8 @@ def _panel():
         review_material = FrozenRecord.from_dict({"schema": "q15-review-material-v1", "identity": task.identity.data(),
             "public_evidence": {"measurement_id": "public-measurement-" + name,
                 "observation": "Raw public measurement changed after the intervention.", "value": 1.5},
-            "historical_summary": ("Incorrect historical summary: no change was measured." if name == "discoverybench"
-                                   else "Correct historical summary: the public measurement changed.")})
+            "historical_summary": ("Q15-SENTINEL-INCORRECT: no change was measured." if name == "discoverybench"
+                                   else "Q15-SENTINEL-CORRECT: the public measurement changed.")})
         for variant in spec.variants:
             material = scenario(spec, variant, inputs=ControllerInputs(FrozenRecord.from_dict(task.data()), review_material, FrozenRecord.from_dict({"budget": "fixed"})))
             for arm_id, arm in arms.items():
@@ -76,9 +76,14 @@ def test_q15_complete_grid_binds_order_visibility_sealed_content_final_and_m5_co
             assert initial["module_context"]["historical_summary"] is not None
             assert followup["module_context"]["historical_summary"] is None
         assert initial["module_context"]["public_evidence_digest"] == followup["module_context"]["public_evidence_digest"]
-        expected_summary = "Incorrect historical summary: no change was measured." if cell.identity.benchmark == "discoverybench" else "Correct historical summary: the public measurement changed."
+        expected_summary = "Q15-SENTINEL-INCORRECT: no change was measured." if cell.identity.benchmark == "discoverybench" else "Q15-SENTINEL-CORRECT: the public measurement changed."
         visible_summary = followup if cell.variant == "blind_first" else initial
         assert visible_summary["module_context"]["historical_summary"] == expected_summary
+        if cell.variant == "blind_first":
+            assert expected_summary not in initial["module_context"].__str__()
+            assert expected_summary not in initial["context"].__str__()
+            assert expected_summary not in initial["task"].__str__()
+            assert expected_summary not in FrozenRecord.from_dict(initial).encoded
         assert initial["context"]["mode"] == "evidence_only"
         if enabled:
             assert initial["module_context"]["sealed"] is True

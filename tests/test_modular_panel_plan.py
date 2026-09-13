@@ -32,7 +32,9 @@ def inputs(scope_ids=tuple(registry())):
         changes={"prompt": {"instructions": "Use public observations; report uncertainty."}}, search_cost=0)
     packages = {arm.content_hash: package for grid in grids.values() for arm in executable_arms(grid).values()}
     return dict(stage="engineering-planning", scope_ids=scope_ids, tasks=tasks,
-        evidence_by_task={task.content_hash: FrozenRecord.from_dict({"observations": []}) for task in tasks},
+        evidence_by_task={task.content_hash: FrozenRecord.from_dict({"schema": "q15-review-material-v1",
+            "identity": task.identity.data(), "public_evidence": {"measurement": "synthetic public observation"},
+            "historical_summary": "Synthetic historical summary for frozen planning."}) for task in tasks},
         budget=FrozenRecord.from_dict({"schema": "fixture-budget", "model_calls": 2, "execution_limit": 0}),
         baseline_digest=HEX, p0_control=control, packages_by_arm=packages,
         scorer=FrozenRecord.from_dict({"schema": "fixture-scorer", "qualification": "none"}),
