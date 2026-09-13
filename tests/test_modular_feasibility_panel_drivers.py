@@ -73,6 +73,7 @@ class _Authority:
                 status = 'unknown'
             if self.fault == 'unknown': status = 'unknown'
             if self.fault == 'failed': status = 'failed'
+            if self.fault in ('data_unknown', 'data_failed') and row['stage'] == 'data': status = self.fault.removeprefix('data_')
             observation = {'authority_id': authority['authority_id'], 'source_group': authority['source_group'],
                 'observation_digest': FrozenRecord.from_dict(proof).content_hash,
                 'contract_id': contract['contract_id'], 'subject_digest': subject.content_hash, 'status': status}
@@ -162,7 +163,10 @@ def _model(seen, wrong=False):
         row = request.data(); seen.append(row); encoded = FrozenRecord.from_dict(row).encoded
         for marker in ('"variant"', '"arm_id"', '"enabled_modules"', '"argv"', '"path"', 'feasibility-repair', 'M7_ON_SECRET'):
             assert marker not in encoded
-        if row['slot'] == 'subjective': return FrozenRecord.from_dict({'feasibility': 'feasible', 'rationale': 'synthetic subjective input'})
+        if row['slot'] == 'subjective':
+            assert row['execution_feedback'] == [] and 'execution' not in row['module_context']
+            assert 'program' in row['module_context']['public_material']
+            return FrozenRecord.from_dict({'feasibility': 'feasible', 'rationale': 'synthetic subjective input'})
         if row['slot'] == 'diagnostic':
             return FrozenRecord.from_dict({'decision': 'continue' if wrong else _expected(row['module_context']['observation']), 'rationale': 'public observations control diagnostic'})
         decision = row['module_context']['diagnostic']['decision']
@@ -227,13 +231,13 @@ def test_verifier_failures_keep_attempts_costs_and_close_before_final(tmp_path,m
     if fault!='transport': assert all(e['data']['reported_cost']['units']==1 for e in failures)
 
 
-@pytest.mark.parametrize('status',['unknown','failed'])
+@pytest.mark.parametrize('status',['unknown','failed','data_unknown','data_failed'])
 def test_nonpassed_measurement_never_definitely_classifies(tmp_path,monkeypatch,status):
     compiled,tasks,authority,_,_=_compile(tmp_path,monkeypatch); authority.fault=status; seen=[]
     result=_run(compiled,tasks,_cell(compiled),tmp_path/'run',seen)
     assert result.runtime.status=='succeeded'
     assert seen[1]['module_context']['observation']['prediction']['classifications']=={'h1':'unknown','h2':'unknown'}
-    assert seen[2]['module_context']['diagnostic']['decision']==('stop' if status=='failed' else 'defer')
+    assert seen[2]['module_context']['diagnostic']['decision']==('stop' if status.endswith('failed') else 'defer')
 
 
 @pytest.mark.parametrize('mutation',['branches','boolean_budget','budget_limit','unpinned_image','measurement','program_hash','authority','independent_source'])
@@ -279,7 +283,7 @@ def test_execution_receipt_csv_drift_is_rejected_after_real_attempt(tmp_path,mon
         return execute(request)
     monkeypatch.setattr(broker,'execute',changed); seen=[]
     result=_run(compiled,tasks,_cell(compiled),tmp_path/'run',seen)
-    assert result.runtime.status=='failed' and not seen and not authority.calls
+    assert result.runtime.status=='failed' and len(seen)==1 and not authority.calls
     assert result.call_plan.data()['execution_attempts']==1
     actual=next(e['data']['receipt'] for e in _events(result) if e['stage']=='execution_result')
     assert actual['record']['input_artifacts']['data_csv']['sha256']==sha256(csv.read_bytes()).hexdigest()
@@ -299,3 +303,55 @@ def test_prediction_receipt_cannot_replay_to_changed_subject(tmp_path,monkeypatc
     subject=response['subject']; subject[field]='foreign'
     with pytest.raises(ContractError,match='subject'):
         _verified(FrozenRecord.from_dict(response['receipt']),FrozenRecord.from_dict(subject),prediction=True)
+
+
+@pytest.mark.parametrize('mutation',['csv_preflight','controls_false','controls_string','controls_extra','budget'])
+def test_preflight_precedes_subjective_and_execution(tmp_path,monkeypatch,mutation):
+    compiled,tasks,authority,broker,csv=_compile(tmp_path,monkeypatch); cell=_cell(compiled)
+    body=compiled.scenarios[cell.key].data()
+    if mutation=='csv_preflight': csv.write_text('x\n2',encoding='utf-8')
+    elif mutation=='controls_false': body['controls']['same_budget']=False
+    elif mutation=='controls_string': body['controls']['same_task']='true'
+    elif mutation=='controls_extra': body['controls']['extra']=True
+    elif mutation=='budget': body['base']['budget']='not-a-digest'
+    scenario=FrozenRecord.from_dict(body); changed=replace(cell,scenario_digest=scenario.content_hash)
+    compiled=replace(compiled,scenarios={**compiled.scenarios,changed.key:scenario}); seen=[]
+    result=_run(compiled,tasks,changed,tmp_path/'run',seen)
+    assert result.runtime.status=='failed' and not seen and not authority.calls
+    assert result.call_plan.data()['execution_attempts']==result.call_plan.data()['model_calls']==0
+
+
+def test_subjective_is_prospective_and_execution_failure_preserves_its_cost(tmp_path,monkeypatch):
+    compiled,tasks,authority,broker,_=_compile(tmp_path,monkeypatch); cell=_cell(compiled); seen=[]; order=[]
+    model=_model(seen)
+    def checked_model(request):
+        if request.data()['slot']=='subjective':
+            assert not order
+            assert request.data()['execution_feedback']==[]
+            assert 'execution' not in request.data()['module_context']
+            order.append('subjective')
+        return model(request)
+    def failed_execution(request):
+        assert order==['subjective']
+        order.append('execution')
+        raise OSError('controlled execution infrastructure failure')
+    monkeypatch.setattr(broker,'execute',failed_execution)
+    result=panel_runner.run_train_cell(cell,task=tasks[cell.identity.benchmark],scenario=compiled.scenarios[cell.key],package=compiled.packages[cell.runtime_arm.content_hash],
+        objective=FrozenRecord.from_dict({'objective':'public feasibility'}),sidecar=tmp_path/'run',model=checked_model,audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}))
+    assert result.runtime.status=='failed' and order==['subjective','execution'] and not authority.calls
+    assert result.call_plan.data()['model_calls']==result.call_plan.data()['execution_attempts']==1
+    events=_events(result)
+    assert next(i for i,e in enumerate(events) if e['stage']=='model_response') < next(i for i,e in enumerate(events) if e['stage']=='execution_request')
+
+def test_q51_gate_failure_changes_actual_final_with_matched_work(tmp_path,monkeypatch):
+    compiled,tasks,authority,_,_=_compile(tmp_path,monkeypatch); authority.fault='failed'; outcomes={}
+    cells=[c for c in compiled.panel.cells if c.coverage_id=='Q5.1' and c.variant=='independent' and c.identity.benchmark=='blade']
+    for index,cell in enumerate(cells):
+        seen=[]; before=len(authority.calls)
+        result=_run(compiled,tasks,cell,tmp_path/str(index),seen)
+        assert result.runtime.status=='succeeded' and len(authority.calls)-before==4
+        assert result.call_plan.data()['model_calls']==3 and result.call_plan.data()['execution_attempts']==1
+        enabled='M7' in cell.runtime_arm.data()['enabled']
+        outcomes[enabled]=_events(result)[-1]['data']['decision']
+        assert seen[2]['module_context']['diagnostic']['decision']==('stop' if enabled else 'continue')
+    assert outcomes=={True:'invalid',False:'unknown'}

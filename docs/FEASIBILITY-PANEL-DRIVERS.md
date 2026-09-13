@@ -16,6 +16,13 @@ restricted `DockerExecutionBroker`, a public input resolver, and a trusted
 `verify_prediction_outcome(subject)` for Q5.2. Install both drivers in the target
 registry; the common production registry and train controller are unchanged.
 
+Typed bundle reconstruction, strict fixed-control booleans, budget digest and
+actual CSV byte preflight precede the first model call. The subjective slot is
+prospective: it sees only planned public program, resources and measurement
+material, before any Docker execution or outcome. Execution then runs once,
+followed by receipt byte checks and verification. A later execution failure
+retains the already spent subjective call.
+
 Every arm has the exact same three model slots: `subjective`, `diagnostic`,
 `final`, and one Docker allocation. Subjective returns `{feasibility,rationale}`
 with feasibility feasible/infeasible/unknown. Diagnostic returns
@@ -69,7 +76,8 @@ source, stage, authority contract, measurement contract, literal program hash,
 actual execution input artifacts, execution digest/status and public execution
 observation. Q5.2 stage subjects also include the caller prediction specification.
 Prediction subjects additionally bind the full frozen caller prediction plan,
-its digest, discriminator, measurement receipt digest/status and the same actual
+its digest, discriminator, measurement receipt digest, raw observation status,
+sequential gate digest/effective measurement status and the same actual
 execution. Runtime M4 plans and prediction updates are separately bound in the
 controller trace to the caller plan and verified prediction subject.
 
@@ -88,7 +96,9 @@ either is unknown, otherwise passed. Success of the actual execution is a
 necessary condition for minimal_run and later passing gates, never sufficient
 for measurement or independent_result. Equal declared predictions cannot pass
 discriminating_measurement. Failed/unknown measurement, failed/unknown outcome,
-or equal predictions require all prediction classifications unknown; none can
+or equal predictions require all prediction classifications unknown; earlier
+failed/unknown gates also prevent definite classification even if a later raw
+measurement receipt says passed; none can
 create a definite consistent/failed hypothesis update.
 
 Each verifier call is journaled before I/O with limits, used calls, full subject

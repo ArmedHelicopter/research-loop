@@ -207,6 +207,10 @@ def _material(task: PublicTask, scenario: FrozenRecord, experiment_id: str, vari
     if (bundle.content_hash != remade.content_hash or set(base) != {"task", "evidence", "budget"}
             or base["task"] != task.content_hash or base["evidence"] != bundle.content_hash):
         raise ContractError("feasibility caller material does not bind this scenario task")
+    _hex(base["budget"], "scenario budget digest")
+    controls = _map(body["controls"], "scenario controls")
+    if set(controls) != {"same_task", "same_evidence", "same_budget"} or not all(strict_bool(v, k) for k, v in controls.items()):
+        raise ContractError("scenario controls must be fixed literal booleans")
     key = "q51" if experiment_id == "Q5.1" else "q52"
     return bundle, raw[key][variant]
 
@@ -308,7 +312,7 @@ class _VerificationLedger:
             return None, None
 
 
-def _execute(workflow, *, bundle, item, broker, resolver):
+def _prepare_inputs(workflow, *, bundle, item, broker, resolver):
     inputs = resolver(workflow.session.task, bundle)
     if not isinstance(inputs, Mapping) or set(inputs) != set(item['inputs']):
         raise ContractError('public input resolver set mismatch')
@@ -316,6 +320,12 @@ def _execute(workflow, *, bundle, item, broker, resolver):
     expected = {key: {'artifact_id': key, **value} for key, value in item['inputs'].items()}
     if {x.artifact_id: x.record.data() for x in artifacts} != expected:
         raise ContractError('actual public input bytes differ from frozen material')
+    return inputs, artifacts
+
+
+def _execute(workflow, *, item, broker, prepared):
+    inputs, artifacts = prepared
+    expected = {key: {'artifact_id': key, **value} for key, value in item['inputs'].items()}
     receipt = workflow.session.execute(item['program'], broker=broker, image=item['image'], inputs=inputs)
     if (receipt.identity != workflow.session.task.identity or receipt.artifact is None
             or receipt.artifact.identity != workflow.session.task.identity
@@ -353,11 +363,12 @@ def _invoke(workflow, cell, model, slot, instruction, context):
         **context}))
 
 
-def _subjective(workflow, cell, model, item, execution):
+def _subjective(workflow, cell, model, item):
     response = _invoke(workflow, cell, model, 'subjective',
         'Assess only the public diagnostic material. Return feasibility and rationale; this is not scientific admission.',
-        {'public_material': {'program_sha256': item['program_sha256'], 'inputs': item['inputs'],
-            'measurement_contract': item['measurement_contract']}, 'execution': _execution_public(execution)})
+        {'public_material': {'program': item['program'], 'program_sha256': item['program_sha256'],
+            'inputs': item['inputs'], 'resource_closure': item['closure'],
+            'measurement_contract': item['measurement_contract']}})
     row = response.data()
     if set(row) != {'feasibility', 'rationale'} or row['feasibility'] not in ('feasible', 'infeasible', 'unknown'):
         raise ContractError('invalid subjective assessment')
@@ -410,6 +421,7 @@ def _run(driver, workflow, *, cell, scenario, model):
     # Validate port availability before any execution or model attempt.
     if not callable(getattr(driver.authority, 'verify_stage', None)) or (prediction and not callable(getattr(driver.authority, 'verify_prediction_outcome', None))):
         raise ContractError('both configured verification capabilities are required')
+    prepared = _prepare_inputs(workflow, bundle=bundle, item=item, broker=driver.broker, resolver=driver.input_resolver)
     ledger = _VerificationLedger(workflow, item)
     runtime_plan = None
     if prediction and 'M4' in workflow.enabled:
@@ -423,8 +435,8 @@ def _run(driver, workflow, *, cell, scenario, model):
                 workflow._trace('m4_prediction_rejected', 'rejected', reason='identical_declared_predictions')
             else:
                 raise ContractError('same-prediction plan unexpectedly admitted')
-    execution, artifacts = _execute(workflow, bundle=bundle, item=item, broker=driver.broker, resolver=driver.input_resolver)
-    subjective = _subjective(workflow, cell, model, item, execution)
+    subjective = _subjective(workflow, cell, model, item)
+    execution, artifacts = _execute(workflow, item=item, broker=driver.broker, prepared=prepared)
     observations = {}; rows = {}; bindings = {}
     for stage in _STAGES:
         subject = _stage_subject(workflow, bundle, item, stage=stage, execution=execution, artifacts=artifacts)
@@ -432,6 +444,8 @@ def _run(driver, workflow, *, cell, scenario, model):
         rows[stage] = row; bindings[stage] = binding
         group = item['stage_contracts'][stage]['authorities'][0]['source_group'] if stage == 'independent_result' else None
         observations[stage] = FeasibilityObservation(stage, row['status'] if row else 'unknown', binding or subject.content_hash, group)
+    report = assess_feasibility(ExplorationPlan('feasibility-' + bundle.content_hash, workflow.session.task.identity,
+        bundle, ResourceClosure(**item['closure'])), observations)
     prediction_row = None; prediction_binding = None
     if prediction:
         frozen_plan = FrozenRecord.from_dict({'identity': workflow.session.task.identity.data(),
@@ -440,7 +454,9 @@ def _run(driver, workflow, *, cell, scenario, model):
         subject_body.update({'schema': 'prediction-outcome-subject-v2', 'prediction_plan': frozen_plan.data(),
             'prediction_plan_digest': frozen_plan.content_hash, 'discriminator_id': item['measurement_contract']['discriminator_id'],
             'measurement_receipt_digest': bindings['discriminating_measurement'],
-            'measurement_status': observations['discriminating_measurement'].status})
+            'measurement_observation_status': observations['discriminating_measurement'].status,
+            'measurement_gate_digest': FrozenRecord.from_dict(dict(report.stages)).content_hash,
+            'measurement_status': 'unknown' if report.stages['discriminating_measurement'] == 'blocked' else report.stages['discriminating_measurement']})
         prediction_row, prediction_binding = ledger.call(driver.authority, FrozenRecord.from_dict(subject_body), prediction=True)
         if runtime_plan is not None and prediction_row is not None:
             update = workflow.predictions.record_outcome(runtime_plan.plan_id, item['measurement_contract']['discriminator_id'],
@@ -451,8 +467,6 @@ def _run(driver, workflow, *, cell, scenario, model):
                 outcome_digest=prediction_binding, update=update.data())
     if ledger.errors:
         raise ContractError('one or more verification attempts failed their frozen contract')
-    report = assess_feasibility(ExplorationPlan('feasibility-' + bundle.content_hash, workflow.session.task.identity,
-        bundle, ResourceClosure(**item['closure'])), observations)
     public = {'schema': 'public-feasibility-observation-v2', 'execution': _execution_public(execution),
         'subjective': subjective.data(),
         'stages': {stage: {'status': report.stages[stage], 'binding': bindings[stage]} if 'M7' in workflow.enabled else None for stage in _STAGES},
