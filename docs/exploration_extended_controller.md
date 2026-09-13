@@ -59,3 +59,14 @@ The public controller manifest is:
 
 All raw artifacts are public synthetic fixtures. The machine receipt supplies
 the exact per-cell paths rather than relying on directory-name reconstruction.
+
+## Failure-cost review supplement
+
+Independent review found that a malformed typed exception cost could be lost
+when its unit/amount schema was rejected. Commit `31813c5` now persists that raw
+Mapping/FrozenRecord report before validation, records its validation status,
+and keeps verified cost unknown. The separate known/unknown partial-cost and two
+malformed-cost representation checks passed (4 tests). This changes only the
+failed verifier path; the earlier 102-test/88-cell frozen run remains archived
+at `2628ec3` and was not relabeled as a run of the later source. Exact hashes and
+JUnit are in `exploration_extended_cost_review.json`.
