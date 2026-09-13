@@ -98,6 +98,11 @@ def verify_lineage_score(receipt, *, authority_keys, config, panel, cell, score_
     if config.record.data()['rubric_digest'] == FrozenLineageRubricEndpoint.rubric_digest():
         if expected_reference_digest is None or response.data().get('lineage_reference_digest') != expected_reference_digest:
             raise ContractError('lineage score did not bind the predeclared independent reference')
+        if any(value not in (0, .5, 1) for value in body['endpoints'].values()):
+            raise ContractError('lineage endpoint is outside its fixed discrete rubric')
+        schema = FrozenRecord.from_dict(FrozenLineageRubricEndpoint._output_schema(cell.identity.benchmark))
+        if response.data().get('evidence', {}).get('schema_digest') != schema.content_hash:
+            raise ContractError('lineage response did not bind the frozen evaluator output schema')
     elif expected_reference_digest is not None:
         raise ContractError('legacy lineage scoring cannot claim source-reference binding')
     primary = ScientificScorerReceipt(cell.key, FrozenRecord.from_dict(body['primary']))

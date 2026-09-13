@@ -145,6 +145,9 @@ def test_worker_failure_no_retry_actual_usage_and_all_panel_cells_retained(tmp_p
         assert len(usage['calls'])==1 and usage['usage_incomplete'] is True
         assert usage['tokens']==(5 if fault in ('schema','refusal') else 0)
         assert usage['calls'][0]['usage'] is None if fault in ('timeout','exception') else usage['calls'][0]['usage']['total_tokens']==5
+        if fault in ('schema','refusal'):
+            output=json.loads(next((tmp_path/'worker0'/'evaluator'/'calls').glob('*/output.json')).read_text(encoding='utf-8'))
+            assert output['lineage_endpoints']['root_attribution'] is True if fault=='schema' else output=={'refusal':'synthetic refusal'}
         with pytest.raises(ContractError,match='unresolved'):client.score_lineage(panel=compiled.panels[0],cell=compiled.panels[0].cells[0],score_input=FrozenRecord.from_dict(by_key[compiled.panels[0].cells[0].key]))
     finally:client.close()
     rows=[json.loads(line) for line in (tmp_path/'worker0'/'server.jsonl').read_text(encoding='utf-8').splitlines()]
@@ -228,3 +231,27 @@ def test_real_hung_child_is_terminated_with_reserved_unknown_cost(tmp_path,proce
         rows=[json.loads(line) for line in (tmp_path/'worker0'/'server.jsonl').read_text(encoding='utf-8').splitlines()]
         assert [r['status'] for r in rows]==['reserved']
     finally:client.close()
+
+
+@pytest.mark.parametrize('fault',['off_grid','schema'])
+def test_independent_receipt_verifier_rejects_resigned_rubric_contract_drift(process_grid,fault):
+    from evaluation.modular.lineage_combination_scoring import verify_lineage_score
+    from research_loop.modular.panel_receipts import ScientificScorerReceipt
+    root,grid,_=process_grid
+    server=json.loads((root/'worker0'/'server.json').read_text(encoding='utf-8'))
+    panel=grid.compiled.panels[0];cell=panel.cells[0]
+    row=grid.attempts[0].data();body=row['scorer_receipt']['body']
+    if fault=='off_grid':
+        body['endpoints']['root_attribution']=.25
+        body['rubric_response']['lineage_endpoints']['root_attribution']=.25
+    else:
+        body['rubric_response']['evidence']['schema_digest']='0'*64
+        primary=body['primary']['body'];primary['evaluator_evidence']['schema_digest']='0'*64
+        body['primary']=SCORER.issue(primary).data()
+    body['rubric_response_digest']=digest(body['rubric_response'])
+    forged=ScientificScorerReceipt(cell.key,SCORER.issue(body))
+    with pytest.raises(ContractError):
+        verify_lineage_score(forged,authority_keys={SCORER.authority_id:SCORER.key},
+            config=ScorerConfig(FrozenRecord.from_dict(server['base']['scorer_config'])),panel=panel,cell=cell,
+            score_input=FrozenRecord.from_dict(row['score_input']),execution_authority_keys={EXECUTION.authority_id:EXECUTION.key},
+            expected_reference_digest=server['lineage_references']['references'][digest(cell.identity.data())])
