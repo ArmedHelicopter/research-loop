@@ -33,7 +33,11 @@ def _append(workflow: ModularWorkflow, record: FrozenRecord, receipt: Mapping[st
         "independent_group":workflow.session.task.identity.group_id}, {k:receipt[k] for k in ("trusted_validator","validator_verified","admitted")})
 
 def _record(identity: Mapping[str,Any], kind: str, evidence: Mapping[str,Any]) -> FrozenRecord:
-    return FrozenRecord.from_dict({"schema":"typed-withdrawal-public-record-v1","identity":dict(identity),"kind":kind,"evidence":dict(evidence)})
+    model_evidence=dict(evidence)
+    if kind in {"before","current"}:
+        # Sufficiency is a controller-side eligibility fact, never a model cue.
+        model_evidence.pop("evidence_sufficient",None)
+    return FrozenRecord.from_dict({"schema":"typed-withdrawal-public-record-v1","identity":dict(identity),"kind":kind,"evidence":model_evidence})
 def _action_record(identity: Mapping[str,Any], evidence: Mapping[str,Any], action: Mapping[str,Any]) -> FrozenRecord:
     return FrozenRecord.from_dict({"schema":"typed-withdrawal-invalidation-action-v1","identity":dict(identity),"invalidation_evidence":dict(evidence),"action":dict(action)})
 
@@ -56,6 +60,10 @@ def _validate_bundle(task: PublicTask, body: Mapping[str,Any]) -> None:
         if action["target_old_record_digest"]!=expected: raise ContractError("Q1.6 invalidation action target does not bind old record")
         if variant=="replacement" and (not isinstance(item["alternative_material"],Mapping) or not item["alternative_material"]): raise ContractError("replacement requires concrete caller alternative material")
         if variant=="high_score" and (not isinstance(item["historical_score"],Mapping) or set(item["historical_score"])!={"score","source","recorded_at"} or type(item["historical_score"]["score"]) not in {int,float} or not all(isinstance(item["historical_score"][k],str) and item["historical_score"][k].strip() for k in ("source","recorded_at"))): raise ContractError("high_score requires a concrete caller historical score")
+    reference=q16["none"]
+    shared=("initial_answer","historical_summary","old_evidence","old_claim","invalidation_evidence","invalidation_action")
+    if any(canonical(item[field])!=canonical(reference[field]) for item in q16.values() for field in shared):
+        raise ContractError("Q1.6 main variants must share the frozen old record and invalidation action")
     q17=body["q17"]
     if not isinstance(q17,Mapping) or set(q17)!={"irrelevant","causal","unknown"}: raise ContractError("q17 bundle lacks complete frozen variants")
     for variant,item in q17.items():
@@ -67,7 +75,7 @@ def _validate_bundle(task: PublicTask, body: Mapping[str,Any]) -> None:
             if value["event_order"]!=sorted(value["event_ids"],key=lambda key:value["event_times"][key]): raise ContractError("Q1.7 event order must match caller timestamps")
         before,current=item["before_evidence"],item["current_evidence"]
         if variant=="irrelevant" and (before["observation"]!=current["observation"] or before["event_ids"]!=current["event_ids"] or before["event_times"]!=current["event_times"] or before["event_order"]!=current["event_order"] or before["evidence_sufficient"]!=current["evidence_sufficient"] or before["narrative"]==current["narrative"]): raise ContractError("irrelevant variant must preserve observation, events, time and sufficiency")
-        if variant=="causal" and (before["event_ids"]!=current["event_ids"] or before["event_order"]==current["event_order"]): raise ContractError("causal variant requires same events with a changed time order")
+        if variant=="causal" and (before["observation"]!=current["observation"] or before["event_ids"]!=current["event_ids"] or before["event_order"]==current["event_order"] or before["evidence_sufficient"]!=current["evidence_sufficient"]): raise ContractError("causal variant requires the same observation and events with a changed time order")
         if variant=="unknown" and current["evidence_sufficient"] is not False: raise ContractError("unknown variant requires caller-declared insufficient evidence")
 
 def freeze_withdrawal_bundle(task: PublicTask, *, public_evidence: Mapping[str,Any], q16: Mapping[str,Mapping[str,Any]], q17: Mapping[str,Mapping[str,Any]]) -> FrozenRecord:
