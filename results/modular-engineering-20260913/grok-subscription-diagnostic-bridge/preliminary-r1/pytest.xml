@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="8" failures="0" skipped="0" tests="60" time="28.427" timestamp="2026-09-13T23:26:32.658098" hostname="SC-202507131830"><testcase classname="tests.test_diagnostic_subscription" name="test_new_manifest_never_weakens_old_monetary_contract" time="0.000"><error message="failed on setup with &quot;TypeError: unsupported operand type(s) for /: 'module' and 'str'&quot;">root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def setup(root, *, all_ready=False, byte_cap=100000):
+&gt;       old, materials, authorities, config = build_fixture(root)
+
+tests\test_diagnostic_subscription.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def build_fixture(root):
+        authorities = {role: DiagnosticAuthority(role, hashlib.sha256(role.encode()).digest())
+                       for role in ('material', 'reviewer1', 'reviewer2', 'arbitrator', 'capacity', 'diagnostic')}
+&gt;       store = root / 'store'
+E       TypeError: unsupported operand type(s) for /: 'module' and 'str'
+
+tests\helpers\calibration_pilot_fixture.py:56: TypeError</error></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_real_worker_renderer_native_ledger_and_fixed_denominators[diagnostic-8-4]" time="0.000"><error message="failed on setup with &quot;TypeError: unsupported operand type(s) for /: 'module' and 'str'&quot;">root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def setup(root, *, all_ready=False, byte_cap=100000):
+&gt;       old, materials, authorities, config = build_fixture(root)
+
+tests\test_diagnostic_subscription.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def build_fixture(root):
+        authorities = {role: DiagnosticAuthority(role, hashlib.sha256(role.encode()).digest())
+                       for role in ('material', 'reviewer1', 'reviewer2', 'arbitrator', 'capacity', 'diagnostic')}
+&gt;       store = root / 'store'
+E       TypeError: unsupported operand type(s) for /: 'module' and 'str'
+
+tests\helpers\calibration_pilot_fixture.py:56: TypeError</error></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_real_worker_renderer_native_ledger_and_fixed_denominators[diagnostic_unknown_main-1-0]" time="0.000"><error message="failed on setup with &quot;TypeError: unsupported operand type(s) for /: 'module' and 'str'&quot;">root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def setup(root, *, all_ready=False, byte_cap=100000):
+&gt;       old, materials, authorities, config = build_fixture(root)
+
+tests\test_diagnostic_subscription.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def build_fixture(root):
+        authorities = {role: DiagnosticAuthority(role, hashlib.sha256(role.encode()).digest())
+                       for role in ('material', 'reviewer1', 'reviewer2', 'arbitrator', 'capacity', 'diagnostic')}
+&gt;       store = root / 'store'
+E       TypeError: unsupported operand type(s) for /: 'module' and 'str'
+
+tests\helpers\calibration_pilot_fixture.py:56: TypeError</error></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_complete_reference_byte_cap_rejects_before_any_transport" time="0.000"><error message="failed on setup with &quot;TypeError: unsupported operand type(s) for /: 'module' and 'str'&quot;">root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def setup(root, *, all_ready=False, byte_cap=100000):
+&gt;       old, materials, authorities, config = build_fixture(root)
+
+tests\test_diagnostic_subscription.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def build_fixture(root):
+        authorities = {role: DiagnosticAuthority(role, hashlib.sha256(role.encode()).digest())
+                       for role in ('material', 'reviewer1', 'reviewer2', 'arbitrator', 'capacity', 'diagnostic')}
+&gt;       store = root / 'store'
+E       TypeError: unsupported operand type(s) for /: 'module' and 'str'
+
+tests\helpers\calibration_pilot_fixture.py:56: TypeError</error></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_changed_request_inventory_rejected_before_io" time="0.000"><error message="failed on setup with &quot;TypeError: unsupported operand type(s) for /: 'module' and 'str'&quot;">root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def setup(root, *, all_ready=False, byte_cap=100000):
+&gt;       old, materials, authorities, config = build_fixture(root)
+
+tests\test_diagnostic_subscription.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def build_fixture(root):
+        authorities = {role: DiagnosticAuthority(role, hashlib.sha256(role.encode()).digest())
+                       for role in ('material', 'reviewer1', 'reviewer2', 'arbitrator', 'capacity', 'diagnostic')}
+&gt;       store = root / 'store'
+E       TypeError: unsupported operand type(s) for /: 'module' and 'str'
+
+tests\helpers\calibration_pilot_fixture.py:56: TypeError</error></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_source_drift_after_main_retains_receipt_and_blocks_later_io" time="0.000"><error message="failed on setup with &quot;TypeError: unsupported operand type(s) for /: 'module' and 'str'&quot;">root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def setup(root, *, all_ready=False, byte_cap=100000):
+&gt;       old, materials, authorities, config = build_fixture(root)
+
+tests\test_diagnostic_subscription.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def build_fixture(root):
+        authorities = {role: DiagnosticAuthority(role, hashlib.sha256(role.encode()).digest())
+                       for role in ('material', 'reviewer1', 'reviewer2', 'arbitrator', 'capacity', 'diagnostic')}
+&gt;       store = root / 'store'
+E       TypeError: unsupported operand type(s) for /: 'module' and 'str'
+
+tests\helpers\calibration_pilot_fixture.py:56: TypeError</error></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_unknown_title_does_not_invent_zero_or_block_known_main" time="0.000"><error message="failed on setup with &quot;TypeError: unsupported operand type(s) for /: 'module' and 'str'&quot;">root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def setup(root, *, all_ready=False, byte_cap=100000):
+&gt;       old, materials, authorities, config = build_fixture(root)
+
+tests\test_diagnostic_subscription.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def build_fixture(root):
+        authorities = {role: DiagnosticAuthority(role, hashlib.sha256(role.encode()).digest())
+                       for role in ('material', 'reviewer1', 'reviewer2', 'arbitrator', 'capacity', 'diagnostic')}
+&gt;       store = root / 'store'
+E       TypeError: unsupported operand type(s) for /: 'module' and 'str'
+
+tests\helpers\calibration_pilot_fixture.py:56: TypeError</error></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_duplicate_native_identity_retained_and_halts" time="0.000"><error message="failed on setup with &quot;TypeError: unsupported operand type(s) for /: 'module' and 'str'&quot;">root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def setup(root, *, all_ready=False, byte_cap=100000):
+&gt;       old, materials, authorities, config = build_fixture(root)
+
+tests\test_diagnostic_subscription.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = &lt;module 'test_diagnostic_subscription' from 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-acp-transport\\tests\\test_diagnostic_subscription.py'&gt;
+
+    def build_fixture(root):
+        authorities = {role: DiagnosticAuthority(role, hashlib.sha256(role.encode()).digest())
+                       for role in ('material', 'reviewer1', 'reviewer2', 'arbitrator', 'capacity', 'diagnostic')}
+&gt;       store = root / 'store'
+E       TypeError: unsupported operand type(s) for /: 'module' and 'str'
+
+tests\helpers\calibration_pilot_fixture.py:56: TypeError</error></testcase><testcase classname="tests.test_grok_acp_transport" name="test_native_acp_binding_and_preflight_order" time="0.514" /><testcase classname="tests.test_grok_acp_transport" name="test_gate_rejection_cannot_dispatch[tools-runtime_tools_not_empty]" time="0.526" /><testcase classname="tests.test_grok_acp_transport" name="test_gate_rejection_cannot_dispatch[paid-paid_fallback_available]" time="0.411" /><testcase classname="tests.test_grok_acp_transport" name="test_gate_rejection_cannot_dispatch[bool_money-billing_money_shape]" time="0.347" /><testcase classname="tests.test_grok_acp_transport" name="test_gate_rejection_cannot_dispatch[topup-auto_topup_present_or_unknown]" time="0.627" /><testcase classname="tests.test_grok_acp_transport" name="test_gate_rejection_cannot_dispatch[topup_error-rpc_error]" time="0.341" /><testcase classname="tests.test_grok_acp_transport" name="test_gate_rejection_cannot_dispatch[malformed-malformed_json]" time="0.270" /><testcase classname="tests.test_grok_acp_transport" name="test_gate_rejection_cannot_dispatch[unknown-unknown_notification]" time="0.302" /><testcase classname="tests.test_grok_acp_transport" name="test_gate_rejection_cannot_dispatch[new_binding-session_binding]" time="0.331" /><testcase classname="tests.test_grok_acp_transport" name="test_gate_rejection_cannot_dispatch[model-selected_model_mismatch]" time="0.501" /><testcase classname="tests.test_grok_acp_transport" name="test_dispatched_failure_is_terminal[prompt_binding-result_binding]" time="0.822" /><testcase classname="tests.test_grok_acp_transport" name="test_dispatched_failure_is_terminal[result_session-result_binding]" time="0.763" /><testcase classname="tests.test_grok_acp_transport" name="test_dispatched_failure_is_terminal[extra_work-result_extra_work_or_failure]" time="0.984" /><testcase classname="tests.test_grok_acp_transport" name="test_dispatched_failure_is_terminal[schema-structured_text_disagreement]" time="0.699" /><testcase classname="tests.test_grok_acp_transport" name="test_dispatched_failure_is_terminal[multi_call-usage_incomplete_or_extra_calls]" time="0.799" /><testcase classname="tests.test_grok_acp_transport" name="test_dispatched_failure_is_terminal[incomplete-usage_incomplete_or_extra_calls]" time="0.537" /><testcase classname="tests.test_grok_acp_transport" name="test_dispatched_failure_is_terminal[tokens-observed_token_limit]" time="0.571" /><testcase classname="tests.test_grok_acp_transport" name="test_dispatched_failure_is_terminal[post_paid-paid_fallback_available]" time="0.533" /><testcase classname="tests.test_grok_acp_transport" name="test_dispatched_failure_is_terminal[tool_event-tool_activity]" time="0.557" /><testcase classname="tests.test_grok_acp_transport" name="test_dispatched_failure_is_terminal[server_request-server_request_disallowed]" time="0.574" /><testcase classname="tests.test_grok_acp_transport" name="test_unknown_cost_not_invented[unknown_cost]" time="0.882" /><testcase classname="tests.test_grok_acp_transport" name="test_unknown_cost_not_invented[partial]" time="1.095" /><testcase classname="tests.test_grok_acp_transport" name="test_timeout_kills_subprocess_tree_without_retry[pre_timeout-False]" time="1.612" /><testcase classname="tests.test_grok_acp_transport" name="test_timeout_kills_subprocess_tree_without_retry[timeout-True]" time="1.542" /><testcase classname="tests.test_grok_acp_transport" name="test_existing_reservation_blocks_new_peer" time="0.106" /><testcase classname="tests.test_grok_acp_transport" name="test_frozen_file_change_blocks_process" time="0.055" /><testcase classname="tests.test_grok_acp_transport" name="test_billing_zero_is_typed_and_current" time="0.001" /><testcase classname="tests.test_grok_acp_transport" name="test_acp_input_includes_cache_and_reasoning_is_subset" time="0.000" /><testcase classname="tests.test_grok_acp_transport" name="test_native_entry_point_requires_explicit_revised_contract" time="0.000" /><testcase classname="tests.test_grok_acp_transport" name="test_receipt_cannot_claim_main_usage_is_total" time="1.099" /><testcase classname="tests.test_grok_acp_transport" name="test_native_startup_pins_config_and_excludes_api_environment" time="0.034" /><testcase classname="tests.test_grok_acp_transport" name="test_bound_native_queue_display_does_not_expose_prompt_or_add_dispatch" time="1.114" /><testcase classname="tests.test_grok_acp_transport" name="test_queue_repair_still_rejects_other_work[queue_wrong-queue_prompt_binding]" time="1.034" /><testcase classname="tests.test_grok_acp_transport" name="test_queue_repair_still_rejects_other_work[queue_extra-extra_queued_work]" time="0.796" /><testcase classname="tests.test_grok_acp_transport" name="test_queue_repair_still_rejects_other_work[queue_unknown-unknown_queue_field]" time="0.946" /><testcase classname="tests.test_grok_acp_transport" name="test_optional_intermediate_stop_requires_bound_terminal_success" time="1.056" /><testcase classname="tests.test_grok_acp_transport" name="test_missing_intermediate_stop_does_not_allow_bad_terminal" time="1.101" /><testcase classname="tests.test_grok_acp_transport" name="test_source_optional_metadata_and_terminal_notification[optional_usage]" time="0.896" /><testcase classname="tests.test_grok_acp_transport" name="test_source_optional_metadata_and_terminal_notification[prompt_complete]" time="0.856" /><testcase classname="tests.test_grok_acp_transport" name="test_source_optional_review_keeps_binding_and_types[prompt_complete_wrong-prompt_complete_binding]" time="0.630" /><testcase classname="tests.test_grok_acp_transport" name="test_source_optional_review_keeps_binding_and_types[context_count-terminal_context_count_shape]" time="1.018" /><testcase classname="tests.test_grok_acp_transport" name="test_rejected_rpc_retains_already_received_partial_usage" time="0.792" /><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.010" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.003" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.019" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.005" /></testsuite></testsuites>

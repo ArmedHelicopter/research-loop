@@ -1,0 +1,127 @@
+{
+  "schema": "subscription-bridge-engineering-closure-v1",
+  "tested_source_commit": "e6c8abd764ee85bb4eaaac555ef27b66b871c5b4",
+  "frozen_check": {
+    "schema": "subscription-bridge-frozen-check-v1",
+    "commit": "e6c8abd764ee85bb4eaaac555ef27b66b871c5b4",
+    "source_count": 676,
+    "source_hashes_unchanged": true,
+    "clean_before": true,
+    "clean_after": true,
+    "commit_unchanged": true,
+    "pytest_exit": 0,
+    "tests": 123,
+    "failures": 0,
+    "errors": 0,
+    "label_isolation_included": true,
+    "legacy_http_positive_monetary_contract_included": true,
+    "renderer_worker_native_provider_budget_seam_included": true,
+    "all_runtime_model_requests_synthetic_fixture_only": true,
+    "real_model_generation_requests": 0,
+    "prior_preliminary_checks": [
+      {
+        "number": 1,
+        "tests": 60,
+        "errors": 8,
+        "failures": 0,
+        "frozen": false
+      },
+      {
+        "number": 2,
+        "tests": 8,
+        "errors": 0,
+        "failures": 0,
+        "frozen": false
+      },
+      {
+        "number": 3,
+        "tests": 117,
+        "errors": 0,
+        "failures": 0,
+        "frozen": false
+      },
+      {
+        "number": 4,
+        "tests": 10,
+        "errors": 0,
+        "failures": 0,
+        "frozen": false
+      }
+    ],
+    "command": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "--disable-warnings",
+      "tests/test_diagnostic_subscription.py",
+      "tests/test_grok_acp_transport.py",
+      "tests/test_calibration_pilot.py",
+      "tests/test_diagnostic_private_ports.py",
+      "tests/test_label_isolation.py",
+      "--basetemp",
+      "E:\\_ryanDev\\AI\\research-loop-modular\\work\\subscription-bridge-frozen-check-r1\\pytest-temp",
+      "--junitxml",
+      "E:\\_ryanDev\\AI\\research-loop-modular\\work\\subscription-bridge-frozen-check-r1\\pytest.xml"
+    ]
+  },
+  "preliminary_checks_are_not_frozen": true,
+  "archive_build_initial_failure": "temporary fixture directory prefix truncated by pytest; resumed only after checking existing copied bytes",
+  "initial_setup_errors_preserved": 8,
+  "preliminary_stdout_separate_capture": false,
+  "preliminary_original_xml_preserved": true,
+  "real_model_generation_requests": 0,
+  "real_diagnostic_materials_prepared": false,
+  "actual_deployment_tokenizer_capacity": null,
+  "actual_deployment_context_capacity": null,
+  "synthetic_worker_examples": [
+    {
+      "material_availability": {
+        "not_applicable": 0,
+        "ready": 2,
+        "unresolved_material": 34
+      },
+      "slot_count": 36,
+      "evaluator_opportunity_count": 72,
+      "reserved_main_opportunities": 8,
+      "reserved_possible_title_opportunities": 8,
+      "further_io_blocked": false,
+      "scored_observations": 4,
+      "all_opportunity_tokens": null,
+      "all_opportunity_cost_usd": null
+    },
+    {
+      "material_availability": {
+        "not_applicable": 0,
+        "ready": 2,
+        "unresolved_material": 34
+      },
+      "slot_count": 36,
+      "evaluator_opportunity_count": 72,
+      "reserved_main_opportunities": 1,
+      "reserved_possible_title_opportunities": 1,
+      "further_io_blocked": true,
+      "scored_observations": 0,
+      "all_opportunity_tokens": null,
+      "all_opportunity_cost_usd": null
+    }
+  ],
+  "full_ready_synthetic_grid": {
+    "ready": 36,
+    "unresolved_material": 0,
+    "not_applicable": 0,
+    "frozen_request_mappings": 180,
+    "main_budget_in_fixture": 1,
+    "possible_title_budget_in_fixture": 1
+  },
+  "old_http_manifest_and_positive_monetary_policy_preserved": true,
+  "old_native_smoke_defaults_preserved": true,
+  "native_smoke_repeated": false,
+  "private_files_excluded": [
+    "raw native streams",
+    "reference bodies",
+    "candidate bodies",
+    "authority key files",
+    "native auth and profiles"
+  ]
+}

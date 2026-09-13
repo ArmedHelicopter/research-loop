@@ -1,0 +1,64 @@
+{
+  "schema": "subscription-bridge-frozen-check-v1",
+  "commit": "e6c8abd764ee85bb4eaaac555ef27b66b871c5b4",
+  "source_count": 676,
+  "source_hashes_unchanged": true,
+  "clean_before": true,
+  "clean_after": true,
+  "commit_unchanged": true,
+  "pytest_exit": 0,
+  "tests": 123,
+  "failures": 0,
+  "errors": 0,
+  "label_isolation_included": true,
+  "legacy_http_positive_monetary_contract_included": true,
+  "renderer_worker_native_provider_budget_seam_included": true,
+  "all_runtime_model_requests_synthetic_fixture_only": true,
+  "real_model_generation_requests": 0,
+  "prior_preliminary_checks": [
+    {
+      "number": 1,
+      "tests": 60,
+      "errors": 8,
+      "failures": 0,
+      "frozen": false
+    },
+    {
+      "number": 2,
+      "tests": 8,
+      "errors": 0,
+      "failures": 0,
+      "frozen": false
+    },
+    {
+      "number": 3,
+      "tests": 117,
+      "errors": 0,
+      "failures": 0,
+      "frozen": false
+    },
+    {
+      "number": 4,
+      "tests": 10,
+      "errors": 0,
+      "failures": 0,
+      "frozen": false
+    }
+  ],
+  "command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "--disable-warnings",
+    "tests/test_diagnostic_subscription.py",
+    "tests/test_grok_acp_transport.py",
+    "tests/test_calibration_pilot.py",
+    "tests/test_diagnostic_private_ports.py",
+    "tests/test_label_isolation.py",
+    "--basetemp",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\subscription-bridge-frozen-check-r1\\pytest-temp",
+    "--junitxml",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\subscription-bridge-frozen-check-r1\\pytest.xml"
+  ]
+}
