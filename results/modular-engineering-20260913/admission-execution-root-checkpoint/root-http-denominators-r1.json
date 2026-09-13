@@ -1,0 +1,242 @@
+{
+  "synthetic_only": true,
+  "runs": [
+    {
+      "run": "root-r1",
+      "journals": [
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r1\\test_evidence_drift_or_foreign0\\transport\\transport.jsonl",
+          "sha256": "2d36c80f712b2f3ad3c4ccb9c2f8eeb08d85afc0f103b6912ec1c8767c5aff8a",
+          "calls": {},
+          "last_chain_digest": "094c94bcbab616fefda7f547a1636445ad9287e0fac3156d960cb427aa6066f1"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r1\\test_full_36_slot_real_http_gr0\\transport\\transport.jsonl",
+          "sha256": "2706a1d13b9316ea43572ca6c42baef0d8e33df891f91cbf61910d988452cbf3",
+          "calls": {
+            "reviewer1": 4,
+            "reviewer2": 3
+          },
+          "last_chain_digest": "e1a8f4185a0bfe85ccce1169527e213a992b8faa10728158e789284391cba854"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r1\\test_full_36_slot_real_http_gr1\\transport\\transport.jsonl",
+          "sha256": "36ef10d3197cff8df06c542aa8a27cce3eff533f6fdd43a446928725a2864f9a",
+          "calls": {
+            "reviewer1": 4,
+            "reviewer2": 3,
+            "arbitrator": 1
+          },
+          "last_chain_digest": "e8bd3fe74d9ddd66c9f07cfcd696b165944f638d215fe9a0ffa9274d54747630"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r1\\test_http_failure_keeps_partia0\\transport\\transport.jsonl",
+          "sha256": "5417189803c858ea174948b1b6379dabfc051ad53e79fa56f537a807bb19cb63",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "80e9101af30c2f56e2b658e9525ff588eb644296f2a953f113b1cdd60f738849"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r1\\test_http_failure_keeps_partia1\\transport\\transport.jsonl",
+          "sha256": "8e8bb98aacaf4f26ea4a017da27942edeb3654b2ccbc826a2e606016344ed566",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "2e85862f2589642bb93093c7c84f70a2b7e350027950571d02e0e3ea3b1dbdc9"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r1\\test_http_failure_keeps_partia2\\transport\\transport.jsonl",
+          "sha256": "dad74ec5c76b822f86ec4009134732fa22cb1d5ec61d2b2f62dd480d4a7dab42",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "091f895c5a1885b2ca98135e739b76f9a5992c3d1e22f2a4735f61ae368c15b3"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r1\\test_http_failure_keeps_partia3\\transport\\transport.jsonl",
+          "sha256": "9890c341c3ee96f4201805c3c1f487074469c84bc5e5ce531f07311d0b504c25",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "5878418d402c991a5d0ead8e029653a081f6b364a4fad96fc587e83477576fa5"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r1\\test_http_failure_keeps_partia4\\transport\\transport.jsonl",
+          "sha256": "ef09237d2a0ccf7248836c6a52ec38ab7be5749c2a57175d6b687e11ffeddcb0",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "366888257106d2c19aa513731c4c19edc617c0c5b8e65ec31bae793a95782ba3"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r1\\test_real_http_serialization_r0\\transport\\transport.jsonl",
+          "sha256": "94d31294b4e33092b7b33771c73b70d805d5325dcaab6d7ea0e2944a0a86e62d",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "70c2b10c4667d1b3deb3a3e8a81488e70bfc1efd9171799693f5b49f0287b140"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r1\\test_reused_provider_usage_acr0\\transport\\transport.jsonl",
+          "sha256": "a6b653e859df0e85832dc115499702a9250f72ec7283a6e01b5070b8825f35ad",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "dc4967a29c0ae3191cdae2474eed6a0b7b95105444c477ccd57dc976b9c61cbb"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r1\\test_source_drift_after_respon0\\transport\\transport.jsonl",
+          "sha256": "8b39fe2481e84681d46c1d996c1b1f8a34ae80cb3633be94a4bf17ee6ffdda2b",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "823bd2cb75fba4fc09ef5899f1f021a62c2a9e03f2940da40a2be5441f8454e9"
+        }
+      ],
+      "calls": {
+        "reviewer1": 16,
+        "reviewer2": 6,
+        "arbitrator": 1
+      },
+      "http_opportunities": 23
+    },
+    {
+      "run": "root-r2",
+      "journals": [
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r2\\test_evidence_drift_or_foreign0\\transport\\transport.jsonl",
+          "sha256": "08cb7c412c1f300fbf101b90cb932841a7a145dbac239bf0671c6779cf2edcb8",
+          "calls": {},
+          "last_chain_digest": "ae1c8292f32072fb5061b987c7af6ae267045d11252cb744ffa336ac759300d1"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r2\\test_full_36_slot_real_http_gr0\\transport\\transport.jsonl",
+          "sha256": "c8b40037383c1779355f1148ab4b0ffd3410a72ad3de83b51fe86d50449aa95a",
+          "calls": {
+            "reviewer1": 36,
+            "reviewer2": 36,
+            "evaluator": 72
+          },
+          "last_chain_digest": "8daf280d4bd7876d80d18716e34faf70c071bbf0216e3f41d810c11007f00a4f"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r2\\test_full_36_slot_real_http_gr1\\transport\\transport.jsonl",
+          "sha256": "26da04e6e49bcc482314855fecc88007c8e77a8df34510b899419d3194bf858f",
+          "calls": {
+            "reviewer1": 36,
+            "reviewer2": 36,
+            "arbitrator": 28,
+            "evaluator": 72
+          },
+          "last_chain_digest": "a3dd050b71272375371dd09162ed63424e3373283da71fb57d706e3d4c7a3d47"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r2\\test_http_failure_keeps_partia0\\transport\\transport.jsonl",
+          "sha256": "9a71eeef6c1f5683f7747726059bde40eada7c6a33935e9de325014a257fa1e8",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "3419f95202e27227c27944d7bfc2ce4f9c0d9aa3d02f947825d11c9ff6fd2e77"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r2\\test_http_failure_keeps_partia1\\transport\\transport.jsonl",
+          "sha256": "a77474b5ae2a31958f4fcb7d2ccf0b3a266edbc1744496e0b246b8eba1a58911",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "6e598b91fc5af945b9778f0d6589d8cb268d2a7374f026be860b7fc59efd86f2"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r2\\test_http_failure_keeps_partia2\\transport\\transport.jsonl",
+          "sha256": "47cc124addef0cea00fa52a4ee631d59f1322932c993d69324f736eb05d97fca",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "bab7f69a391e19fc44522f29990e965208d2c9c59796e2d7f0907dd1b0c9bcbf"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r2\\test_http_failure_keeps_partia3\\transport\\transport.jsonl",
+          "sha256": "b0413f9b36d68a5b11ebfe7076cff61ce9377a16884d65928f7512924555cced",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "8219f821a10872f7213092ef8aaad0d535be3fa6bc1b15cbf2f73bbf3fac451e"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r2\\test_http_failure_keeps_partia4\\transport\\transport.jsonl",
+          "sha256": "866794ad158074bcf0f75d3b889df563fae786056a21719ecdc1a4e0e4f85ef1",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "c18e8a3532511380084832ef45bbc8a1d826dbfb729df57332efe368643010a8"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r2\\test_real_http_serialization_r0\\transport\\transport.jsonl",
+          "sha256": "c0bf18823986bc1433503984f60c1aaaf13d9f341e05e483a293b81e1a58d05d",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "3831c647cf6bd42e70eae9a666adee31bb43f71ff479cd37a78337245a6d8602"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r2\\test_reused_provider_usage_acr0\\transport\\transport.jsonl",
+          "sha256": "dbb0ad250f72f1144a0c42683eb5d7faead154142720de805c9b791ced2930a4",
+          "calls": {
+            "reviewer1": 1,
+            "reviewer2": 1
+          },
+          "last_chain_digest": "7ce69ac66f7219ed4efaad34732ee824b987aad76f27f66f96bc273aa6d4e580"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\root-r2\\test_source_drift_after_respon0\\transport\\transport.jsonl",
+          "sha256": "cdc4e933ec013626cf9d1ee7406f2ceef2733f1b92430316c906806cef0a60e2",
+          "calls": {
+            "reviewer1": 1
+          },
+          "last_chain_digest": "b5295a45146020e3fa18679daf879ab1db6f3205f01c5343e4d3db42009217e7"
+        }
+      ],
+      "calls": {
+        "reviewer1": 80,
+        "reviewer2": 73,
+        "evaluator": 144,
+        "arbitrator": 28
+      },
+      "http_opportunities": 325
+    },
+    {
+      "run": "worker-r1",
+      "journals": [
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\worker-r1\\test_actual_private_worker_ent0\\private-journal.jsonl.http\\transport.jsonl",
+          "sha256": "d9b7d44a3a88abdfbc946ead956cb3ca85b0f29297dbb0a8dff63554dd587ef1",
+          "calls": {
+            "reviewer1": 2,
+            "reviewer2": 2,
+            "evaluator": 4
+          },
+          "last_chain_digest": "9bddab6d27bb5b68e49b6a1420e3ee86649a8d53bd5cff62e574ac38641b9c67"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\worker-r1\\test_actual_private_worker_ent0\\transport\\transport.jsonl",
+          "sha256": "d7a9b007bb1b8755847d1a803736ed3e3fe4cb16763a0a905d54a33066a2ebef",
+          "calls": {},
+          "last_chain_digest": "70b58520a7b214fd4340a06d230faa707be8782f48df61960dfc00f8d599967e"
+        },
+        {
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-ports-checks\\worker-r1\\test_actual_private_worker_ent1\\transport\\transport.jsonl",
+          "sha256": "9a33a6da8ee4a0ef46e6fe4ed43b73f77a300ee508bee9c5e0eb4110cb3c1885",
+          "calls": {},
+          "last_chain_digest": "5f983d6d3450e298bc2e66d74bccaf85abfacc7475889f7bae085d1070ab089a"
+        }
+      ],
+      "calls": {
+        "reviewer1": 2,
+        "reviewer2": 2,
+        "evaluator": 4
+      },
+      "http_opportunities": 8
+    }
+  ]
+}

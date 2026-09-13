@@ -1,0 +1,60 @@
+{
+  "commit": "e7a50129cd44c7d0deb4b2cb1b658e718aa1995e",
+  "unchanged_source_files": 453,
+  "archive_files": 21,
+  "verified_zip_members": 3177,
+  "junit": {
+    "final01": {
+      "errors": "0",
+      "failures": "0",
+      "hostname": "SC-202507131830",
+      "name": "pytest",
+      "skipped": "0",
+      "tests": "7",
+      "time": "43.394",
+      "timestamp": "2026-09-13T18:17:35.601662+08:00"
+    },
+    "final02": {
+      "errors": "0",
+      "failures": "0",
+      "hostname": "SC-202507131830",
+      "name": "pytest",
+      "skipped": "0",
+      "tests": "59",
+      "time": "92.314",
+      "timestamp": "2026-09-13T18:21:22.743041+08:00"
+    },
+    "final03": {
+      "errors": "0",
+      "failures": "0",
+      "hostname": "SC-202507131830",
+      "name": "pytest",
+      "skipped": "0",
+      "tests": "18",
+      "time": "27.918",
+      "timestamp": "2026-09-13T18:24:40.923174+08:00"
+    },
+    "preflight": {
+      "errors": "0",
+      "failures": "0",
+      "hostname": "SC-202507131830",
+      "name": "pytest",
+      "skipped": "0",
+      "tests": "10",
+      "time": "0.519",
+      "timestamp": "2026-09-13T18:17:23.142105+08:00"
+    },
+    "red": {
+      "errors": "1",
+      "failures": "0",
+      "hostname": "SC-202507131830",
+      "name": "pytest",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.232",
+      "timestamp": "2026-09-13T18:10:28.416144+08:00"
+    }
+  },
+  "new_paid_calls": 0,
+  "scientific_validated": false
+}

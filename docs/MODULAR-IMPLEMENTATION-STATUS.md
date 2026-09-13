@@ -3,7 +3,31 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current reference, combination and linked training checkpoint (2026-09-13)
+## Current admission, execution and private transport checkpoint (2026-09-13)
+
+Source `a70482a` passed 81 integrated checks with no failures, errors or skips;
+all 463 frozen source/document hashes remained unchanged. The preceding
+prospective-source integration passed 123 checks with 451 unchanged files.
+
+Ten of 36 pair controllers and two of five triple controllers are now wired.
+M1 contributes three panels totalling 24 cells; M7×M8 adds an eight-cell actual
+Docker and independent-primary-scoring grid. Q3.2 also has an explicit four-cell
+prospective execution phase, while its original planning-only ablation remains.
+The three existing combination families support an audited primary TRAIN
+exporter through explicit v2 configuration; admission v1 remains closed.
+
+The four-TRAIN diagnostic pilot and private HTTP worker execute with synthetic
+references, blinded requests and retained usage/failure evidence. Real model
+calibration, scientific measurement qualification, actual TRAIN effects and
+validation acceptance are still incomplete. Twenty-six pairs, three triples,
+full/leave-one-out and the final TRAIN-selected bundle remain required. No new
+actual paid model call or validation export occurred in this checkpoint.
+
+See [checkpoint and limits](MODULAR-CHECKPOINT-20260913-ADMISSION-PROSPECTIVE-EXECUTION.md).
+Three agents stopped on account usage limits; root finished their local checks,
+repairs and integration. No successful fixture result is promoted to efficacy.
+
+## Historical reference, combination and linked training checkpoint (2026-09-13)
 
 Source `d168781` passed 104 integrated checks with zero failures, errors or skips;
 all 441 frozen source/document hashes remained unchanged. The 43 registered
