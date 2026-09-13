@@ -134,6 +134,21 @@ def run(setup, monkeypatch, *, fault=None):
     if fault=='swapped_tokens':
         left,right=b['item_ids'];b['task_bindings'][left],b['task_bindings'][right]=b['task_bindings'][right],b['task_bindings'][left]
         config=type(config)(FrozenRecord.from_dict(b))
+    if fault in ('export_receipt','completion_anchor'):
+        original=exporter.export_controller_packets
+        def corrupt(tokens):
+            packets=original(tokens)
+            if fault=='export_receipt':
+                packet=packets[0];receipt={**packet.receipt.data(),'eligibility_sha256':'0'*64}
+                packet.packet_path.write_text(canonical({'task':packet.task.data(),'receipt':receipt}),encoding='utf-8')
+                (packet.packet_path.parent/'receipt.json').write_text(canonical(receipt),encoding='utf-8')
+                batch_path=exporter.output_root/'export-receipt.json';batch=json.loads(batch_path.read_text())
+                batch['packets'][0]=receipt;batch_path.write_text(canonical(batch),encoding='utf-8')
+                return (replace(packet,receipt=FrozenRecord.from_dict(receipt)),*packets[1:])
+            journal=exporter.audit_root/'exports.jsonl';rows=journal.read_bytes().splitlines()
+            journal.write_bytes(b'\n'.join(rows[:-1])+b'\n')
+            return packets
+        monkeypatch.setattr(exporter,'export_controller_packets',corrupt)
     with ExitStack() as stack:
         if kind=='lineage':
             kwargs.update(source_verifier=setup['sources'],scoring_service=module._service(ScorerConfig(FrozenRecord.from_dict(b['scorer'])),setup['handles'],scores))
@@ -147,10 +162,11 @@ def run(setup, monkeypatch, *, fault=None):
             with pytest.raises((ContractError,CustodyError)): execute(config,**kwargs)
             assert not seen and not scores and not setup['source_calls']
             assert all(not p.exists() for p in root.glob('worker-*.jsonl'))
-            if fault=='swapped_tokens':
+            if fault in ('swapped_tokens','export_receipt','completion_anchor'):
                 assert exporter.output_root.exists()
                 journal=json.loads((root/'run/controller-attempt.json').read_text())
-                assert journal['status']=='blocked_before_execution' and len(journal['packet_receipts'])==2
+                assert journal['status']=='blocked_before_execution'
+                if fault=='swapped_tokens': assert len(journal['packet_receipts'])==2
                 assert sum(r['event']=='exposure_reserved' for r in events(exporter))==2
             else:
                 assert not exporter.output_root.exists()
@@ -173,7 +189,7 @@ def test_all_three_actual_controllers_consume_primary_packets(tmp_path,monkeypat
 
 
 @pytest.mark.parametrize('kind',KINDS)
-@pytest.mark.parametrize('fault',('both','wrong_port','roots','split','validation','swapped_tokens'))
+@pytest.mark.parametrize('fault',('both','wrong_port','roots','split','validation','swapped_tokens','export_receipt','completion_anchor'))
 def test_rejection_precedes_all_downstream_io_and_preserves_export(tmp_path,monkeypatch,kind,fault):
     run(prepare(tmp_path,kind),monkeypatch,fault=fault)
 
@@ -191,3 +207,12 @@ def test_explicit_configuration_and_serialized_packet_cannot_be_relabelled(tmp_p
         with pytest.raises(ContractError): setup['compile_fn'](config,(changed,packets[1]))
     packet.packet_path.write_text(canonical({'task':packet.task.data(),'receipt':{}}),encoding='utf-8')
     with pytest.raises(ContractError): setup['compile_fn'](config,packets)
+
+
+@pytest.mark.parametrize('kind',KINDS)
+@pytest.mark.parametrize('field,value', [('csv_byte_count',-1),('input_bindings_digest','0'*64),('eligibility_sha256','0'*64)])
+def test_independent_false_source_receipt_counterexamples(tmp_path,kind,field,value):
+    setup=prepare(tmp_path,kind);packet,other=setup['packets']
+    receipt=FrozenRecord.from_dict({**packet.receipt.data(),field:value})
+    packet.packet_path.write_text(canonical({'task':packet.task.data(),'receipt':receipt.data()}),encoding='utf-8')
+    with pytest.raises(ContractError): setup['compile_fn'](setup['config'],(replace(packet,receipt=receipt),other))

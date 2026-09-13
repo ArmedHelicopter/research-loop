@@ -34,3 +34,12 @@ normal grids. Its synthetic final-response callback incorrectly required
 `status/stdout/stderr`. Each controller retained its first failed call and all
 later blocked cells. The corrected callback checks the existing `succeeded`
 status; no production behavior or acceptance threshold was relaxed.
+
+Independent review subsequently reproduced nine metadata forgeries accepted by
+the three compilers: synchronized changes to the in-memory receipt and
+`public.json` could misstate byte count, input binding or eligibility. This was a
+provenance gap; it did not demonstrate validation access. The repair checks exact
+packet schema and actual bytes, the original per-packet and batch receipts, the
+frozen request, and, at the live source entry, the concrete exporter's eligibility,
+audit binding and original completed exposure chain. Raw failed probes remain
+retained; mutually consistent local JSON alone is not independent authorization.
