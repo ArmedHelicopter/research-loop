@@ -1,5 +1,10 @@
 [
   {
+    "path": ".gitattributes",
+    "bytes": 9,
+    "sha256": "48747480eddba024928d03be9bf83dc579e5515768647507a767e8187a85c9ab"
+  },
+  {
     "path": "complete-panel/client-0.jsonl",
     "bytes": 21872,
     "sha256": "0ff9e90dea194c636089419303c4cc934e3fc42c2a40c8ef79e71f7a2303242a"
@@ -3996,8 +4001,8 @@
   },
   {
     "path": "verification/build_archive.py",
-    "bytes": 5821,
-    "sha256": "cc7a04a6e6232d2cd11bd9555a3a13a1706d42fe666c4e852baf04c7e3756236"
+    "bytes": 5924,
+    "sha256": "4987ea113a1040c60c18747d2792bc9b4a1fd4da3164dba3084f64ba8d1e0672"
   },
   {
     "path": "verification/run_frozen_check.py",

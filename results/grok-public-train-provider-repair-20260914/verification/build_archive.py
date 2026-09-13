@@ -4,6 +4,7 @@ repo=Path('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair');work=repo
 head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip();check=work/('grok-provider-repair-frozen-'+head[:7])
 closure=json.loads((check/'closure.json').read_text());assert closure['exit_code']==0 and closure['source_unchanged']
 archive=repo/'results/grok-public-train-provider-repair-20260914';archive.mkdir(exist_ok=False)
+(archive/'.gitattributes').write_bytes(b'** -text\n')
 index={}
 def copy(source,target):
  source=Path(source);target=archive/target;target.parent.mkdir(parents=True,exist_ok=True)
