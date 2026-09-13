@@ -364,7 +364,7 @@ def audit_base_context(executable: Path, fixed_cwd: Path, audit_root: Path, *,
 
 def _validate_schema(schema: Any, value: Any) -> None:
     """Small closed JSON Schema subset used for model response slots."""
-    if not isinstance(schema, Mapping) or set(schema) - {"type", "properties", "required", "additionalProperties", "items", "enum"}:
+    if not isinstance(schema, Mapping) or set(schema) - {"type", "properties", "required", "additionalProperties", "items", "enum", "minimum", "maximum"}:
         raise ContractError("unsupported output schema")
     kind = schema.get("type")
     if kind not in {"object", "array", "string", "number", "integer", "boolean", "null"}:
@@ -393,6 +393,17 @@ def _validate_schema(schema: Any, value: Any) -> None:
         raise ContractError("model output violates boolean schema")
     elif kind == "null" and value is not None:
         raise ContractError("model output violates null schema")
+    if "minimum" in schema or "maximum" in schema:
+        if kind not in {"number", "integer"}:
+            raise ContractError("numeric bounds require a numeric output schema")
+        for name in ("minimum", "maximum"):
+            if name in schema and (type(schema[name]) not in {int, float} or isinstance(schema[name], bool)
+                    or not math.isfinite(float(schema[name]))):
+                raise ContractError("output schema has invalid numeric bounds")
+        if "minimum" in schema and value < schema["minimum"]:
+            raise ContractError("model output violates minimum schema")
+        if "maximum" in schema and value > schema["maximum"]:
+            raise ContractError("model output violates maximum schema")
     if "enum" in schema and (not isinstance(schema["enum"], list) or value not in schema["enum"]):
         raise ContractError("model output violates enum schema")
 
@@ -405,7 +416,8 @@ class CodexModelPort:
                  schema_by_slot: Mapping[str, Mapping[str, Any]], timeout_seconds: int = 180,
                  process_runner: ProcessRunner | None = None, context_probe_runner: ProcessRunner | None = None,
                  frozen_base_context: FrozenBaseContextPolicy | None = None,
-                 allow_mock_context: bool = False, environment: Mapping[str, str] | None = None) -> None:
+                 allow_mock_context: bool = False, environment: Mapping[str, str] | None = None,
+                 _ledger_purpose: str | None = None, _ledger_request_contract: str | None = None) -> None:
         if not isinstance(model, str) or not model or not isinstance(effort, str) or not effort:
             raise ContractError("model and effort must be nonempty")
         if type(max_calls) is not int or max_calls < 1 or type(max_tokens) is not int or max_tokens < 1:
@@ -424,6 +436,12 @@ class CodexModelPort:
             raise ContractError("Codex executable cannot be resolved")
         self.executable = str(Path(resolved_executable).resolve())
         self.root = Path(work_root).expanduser().resolve()
+        if (_ledger_purpose is None) != (_ledger_request_contract is None):
+            raise ContractError("ledger purpose and request contract must be supplied together")
+        if _ledger_purpose is not None and (not isinstance(_ledger_purpose, str) or not _ledger_purpose
+                or not isinstance(_ledger_request_contract, str) or not _ledger_request_contract):
+            raise ContractError("ledger purpose and request contract must be nonempty")
+        self._ledger_purpose, self._ledger_request_contract = _ledger_purpose, _ledger_request_contract
         self.model, self.effort = model, effort
         self.max_calls, self.max_tokens = max_calls, max_tokens
         self.schemas = json.loads(canonical(schema_by_slot))
@@ -463,6 +481,9 @@ class CodexModelPort:
                                      "binding": self.context_binding, "allowed_startup_notices": self.allowed_startup_notices} if frozen_base_context else None,
                   "shared_argv": self.shared, "fixed_cwd": str(self.fixed_cwd),
                   "environment_sha256": _sha(canonical(self.environment).encode())}
+        if self._ledger_purpose is not None:
+            config["purpose"] = self._ledger_purpose
+            config["request_contract"] = self._ledger_request_contract
         if self.ledger_path.exists():
             self.ledger = json.loads(self.ledger_path.read_text(encoding="utf-8"))
             if self.ledger.get("config") != config:
@@ -480,28 +501,42 @@ class CodexModelPort:
         required = {"schema", "task", "lock_digest", "objective", "slot", "instruction", "context", "module_context", "execution_feedback"}
         if set(body) != required or body.get("schema") != "public-model-request-v1" or body["slot"] not in self.schemas:
             raise ContractError("unexpected RunSession model request")
+        prompt = "Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n" + request.encoded
+        return self._invoke_protected(request, slot=body["slot"], schema=self.schemas[body["slot"]], prompt=prompt)
+
+    def _invoke_protected(self, request: FrozenRecord, *, slot: str, schema: Mapping[str, Any], prompt: str) -> FrozenRecord:
+        """Run a prevalidated frozen request through the shared no-tools path.
+
+        Subclasses may use this only after validating their distinct request
+        contract. Public RunSession requests continue through ``__call__``.
+        """
+        if (not isinstance(request, FrozenRecord) or not isinstance(slot, str) or not slot
+                or not isinstance(schema, Mapping) or schema != self.schemas.get(slot)
+                or not isinstance(prompt, str) or not prompt):
+            raise ContractError("protected model invocation has an invalid frozen contract")
         if self.ledger["usage_incomplete"] or len(self.ledger["calls"]) >= self.max_calls or self.ledger["tokens"] >= self.max_tokens:
             raise ContractError("model budget exhausted or usage incomplete")
         self._require_frozen_context()
         call_id = len(self.ledger["calls"]) + 1
-        call_dir = self.call_root / f"{call_id:04d}-{body['slot']}"
+        call_dir = self.call_root / f"{call_id:04d}-{slot}"
         call_dir.mkdir()
-        schema = self.schemas[body["slot"]]
         schema_path, output_path = call_dir / "schema.json", call_dir / "output.json"
         schema_path.write_text(canonical(schema), encoding="utf-8")
-        prompt = "Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n" + request.encoded
         prompt_path = call_dir / "prompt.txt"
         prompt_path.write_text(prompt, encoding="utf-8")
         argv = [self.executable, "exec", *self.shared, "--ephemeral", "--skip-git-repo-check",
                 "--json", "--output-schema", str(schema_path), "-o", str(output_path), "-"]
-        reservation = {"id": call_id, "slot": body["slot"], "request_hash": request.content_hash,
+        reservation = {"id": call_id, "slot": slot, "request_hash": request.content_hash,
                        "prompt_hash": _sha(prompt.encode()), "status": "reserved", "provider": {"id": "codex-cli", "model": self.model}, "argv": argv,
                        "cwd": str(self.fixed_cwd), "environment_sha256": _sha(canonical(self.environment).encode()),
                        "context_policy_sha256": self.frozen_base_context.sha256 if self.frozen_base_context else None,
                        "context_probe": len(self.ledger["context_probes"]), "schema_hash": _sha(schema_path.read_bytes())}
-        self._verify_context_binding()  # Recheck after probe/artifact preparation, before paid I/O.
+        if self._ledger_purpose is not None:
+            reservation["purpose"] = self._ledger_purpose
+            reservation["request_contract"] = self._ledger_request_contract
+        self._verify_context_binding()
         self.ledger["calls"].append(reservation)
-        _atomic(self.ledger_path, self.ledger)  # Reservation precedes all provider I/O.
+        _atomic(self.ledger_path, self.ledger)
         try:
             result = self.runner(argv, input=prompt, text=True, encoding="utf-8", capture_output=True,
                                  timeout=self.timeout_seconds, cwd=str(self.fixed_cwd), env=dict(self.environment))
@@ -750,8 +785,8 @@ def _schema_witness(schema: Mapping[str, Any]) -> Any:
     if kind == "array":
         return []
     if kind == "string": return "x"
-    if kind == "number": return 0
-    if kind == "integer": return 0
+    if kind == "number": return schema.get("minimum", 0)
+    if kind == "integer": return schema.get("minimum", 0)
     if kind == "boolean": return False
     if kind == "null": return None
     return None
