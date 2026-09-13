@@ -1,0 +1,15 @@
+{
+  "schema": "controlled-source-acquisition-metadata-v1",
+  "source": "corebench",
+  "repository": "siegelz/core-bench",
+  "revision": "e32a2980e72fe6eb04ee04eb749458f570625663",
+  "official_license": {"path": "LICENSE", "sha256": "fa800fc3033ad315e2bf2949afca5c6bcb9f19ad6331d1db996e7dfca1e0eeb8", "declared_license": "MIT"},
+  "received_artifact_hashes": ["fa800fc3033ad315e2bf2949afca5c6bcb9f19ad6331d1db996e7dfca1e0eeb8", "3df47f1b3fa1cb60045018eb1a0f1ad4ecf6a53f72318c845a879ce0313b0730"],
+  "receipt_location": "E:/_ryanDev/AI/research-loop-modular/work/corebench-controlled-acquisition-r1/acquisition-receipt.json",
+  "receipt_sha256": "4925170ae599892d0d4b012e4ec46a38f17404c3eb50a8d4b6f1d935e9ffeec9",
+  "acquisition_process": "fixed official GitHub revision streamed into a new private directory; receipt exported hashes, opaque metadata, and events only",
+  "overlap_comparison": "no equality among available opaque artifact/family fingerprints; this is not provenance-independence proof",
+  "current_context_qualification": "ineligible_for_unseen_claim_due_to_recorded_schema_diagnostic_exposure_failure",
+  "runtime_adapter_status": "catalog_only_no_runtime_adapter",
+  "validation_status": "not_eligible"
+}

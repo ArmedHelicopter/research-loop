@@ -3,6 +3,10 @@
   "canonical_id": "corebench",
   "collection_scope": "official repository metadata only; no benchmark, task, answer, reference, annotation, or dataset content was opened or downloaded",
   "official_repository_url": "https://github.com/siegelz/core-bench",
+  "controlled_acquisition": {
+    "metadata_record": "corebench-controlled-acquisition.json",
+    "status": "quarantine; current context has a recorded exposure failure and cannot claim unseen status"
+  },
   "pinned_commit": "e32a2980e72fe6eb04ee04eb749458f570625663",
   "commit_evidence_url": "https://github.com/siegelz/core-bench/commit/HEAD.patch",
   "commit_hash_kind": "Git commit SHA-1 from the official repository HEAD patch header",
