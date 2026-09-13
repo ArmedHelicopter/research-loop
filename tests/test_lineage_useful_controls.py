@@ -171,5 +171,10 @@ def test_v3_admission_qualification_drift_keeps_all_cells_but_blocks_contrasts(t
 def test_v3_admission_uniform_qualification_semantics_remain_comparable(tmp_path):
     setup = configured(tmp_path, 'admission')
     panel = setup['compiled'].panels[0]
-    rows = [{'cell': cell.data(), 'qualification_semantics_digest': 'a' * 64} for cell in panel.cells]
+    rows = [{'cell': cell.data(), 'status': 'succeeded', 'qualification_semantics_digest': 'a' * 64}
+            for cell in panel.cells]
+    assert _v3_admission_qualification_drift(setup['config'], panel, rows) is None
+    rows[0]['status'] = 'failed'
+    rows[0].pop('qualification_semantics_digest')
+    # Missing/unknown source outcomes retain the existing incomplete-cell path.
     assert _v3_admission_qualification_drift(setup['config'], panel, rows) is None

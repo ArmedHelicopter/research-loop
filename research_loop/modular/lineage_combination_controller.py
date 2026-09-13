@@ -240,6 +240,8 @@ def _v3_admission_qualification_drift(config, panel, rows):
     for (task_digest, replicate), group in groups.items():
         if len(group) != len([cell for cell in panel.cells if cell.task_digest == task_digest and cell.replicate == replicate]):
             continue  # Existing incomplete-cell handling determines this outcome.
+        if any(row.get('status') != 'succeeded' for row in group):
+            continue  # Do not relabel unknown/failed source handling as drift.
         by_arm = {row['cell']['arm_id']: row.get('qualification_semantics_digest') for row in group}
         if None in by_arm.values() or len(set(by_arm.values())) != 1:
             drift.append({'task_digest': task_digest, 'replicate': replicate, 'arm_semantics': by_arm})
