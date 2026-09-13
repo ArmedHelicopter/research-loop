@@ -320,7 +320,11 @@ class PanelReceiptVerifier:
     def __init__(self, *, scorer_verifier: Callable[[ScientificScorerReceipt, PanelCell, FrozenPanel], None] | None = None,
                  custody_keys: Mapping[str, bytes] | None = None,
                  acceptance_keys: Mapping[str, bytes] | None = None,
-                 calibration_keys: Mapping[str, bytes] | None = None):
+                 calibration_keys: Mapping[str, bytes] | None = None,
+                 post_runtime_verifier: Callable[[RuntimeReceipt, PanelCell, FrozenPanel], FrozenRecord] | None = None):
+        if post_runtime_verifier is not None and not callable(post_runtime_verifier):
+            raise ContractError("post-runtime verifier must be a trusted callable")
+        self._post_runtime_verifier = post_runtime_verifier
         self._scorer_verifier = scorer_verifier
         self._custody_keys = dict(custody_keys or {})
         self._acceptance_keys = dict(acceptance_keys or {})
@@ -344,6 +348,11 @@ class PanelReceiptVerifier:
         for key, row in actual.items():
             grid = panel.legal_arm_grids[expected[key].coverage_id].data()
             self._verify_runtime(row, expected[key], p0_control_digest=grid.get("p0_control_digest"))
+            if expected[key].coverage_id == "Q2.7" and row.status == "succeeded":
+                if self._post_runtime_verifier is None:
+                    raise ContractError("Q2.7 success requires a trusted post-runtime verifier")
+                finding = self._post_runtime_verifier(row, expected[key], panel)
+                require_protocol_refusal(finding, row, expected[key])
         scored = tuple(scorer_receipts)
         if len({row.cell_key for row in scored}) != len(scored) or not set(row.cell_key for row in scored) <= set(expected):
             raise ContractError("duplicate or unexpected scorer receipt")
@@ -394,6 +403,9 @@ class PanelReceiptVerifier:
         blocked = sum(row.status == "blocked" for row in rows)
         accepted = acceptance_decision == "accepted"
         decision = acceptance_decision or ("evidence_verified" if scientific else "adapted_score_verified" if adapted_score else "engineering_verified")
+        if (not scientific and not adapted_score and any(c.coverage_id == "Q2.7" for c in panel.cells)
+                and (failed or unscored or blocked)):
+            decision = "engineering_incomplete"
         limitation = ("combination routing_only: no contrast matrix was measured" if not accepted else None)
         if not scientific:
             limitation = ("adapted score calculation is authenticated; calibration and scientific validity are not measured"
@@ -417,20 +429,23 @@ class PanelReceiptVerifier:
         if lock.get("task_digest") != expected.task_digest or lock.get("package_digest") != expected.package_digest or lock.get("arm") != expected.runtime_arm.data():
             raise ContractError("runtime trace package or legal-arm binding mismatch")
         requests = [event["data"].get("request", {}) for event in events if event["stage"] == "model_request"]
-        if p0_control_digest is not None and (not requests or any(
-                request.get("module_context", {}).get("p0_control_digest") != p0_control_digest
-                for request in requests)):
-            raise ContractError("runtime request lacks the frozen P0 control binding")
         expected_binding = {"experiment_id": expected.coverage_id, "variant": expected.variant,
                             "replicate": expected.replicate, "arm_id": expected.arm_id,
                             "scenario_digest": expected.scenario_digest}
+        protocol_bindings = [e["data"] for e in events if e["stage"] == "q27_panel_binding"]
+        bound_protocol_failure = (expected.coverage_id == "Q2.7" and not requests
+            and events[-1]["stage"] in {"controller_failure", "execution_failure", "execution_terminal"}
+            and protocol_bindings == [{"panel_cell": expected_binding, "p0_control_digest": p0_control_digest}])
+        if p0_control_digest is not None and not bound_protocol_failure and (not requests or any(
+                request.get("module_context", {}).get("p0_control_digest") != p0_control_digest for request in requests)):
+            raise ContractError("runtime request lacks the frozen P0 control binding")
         expected_opaque_binding = opaque_panel_cell_binding(expected)
         bound_request = any(request.get("task", {}).get("identity") == expected.identity.data()
                             and request.get("module_context", {}).get("panel_cell") in (expected_binding, expected_opaque_binding)
                             for request in requests)
         bound_early_failure = (not requests and events[-1].get("stage") == "controller_failure"
                                and events[-1].get("data", {}).get("panel_cell") == expected_binding)
-        if not bound_request and not bound_early_failure:
+        if not bound_request and not bound_early_failure and not bound_protocol_failure:
             raise ContractError("runtime trace lacks a bound task and scenario request")
         pending = None
         slots = []
@@ -470,7 +485,7 @@ class PanelReceiptVerifier:
             if terminal["stage"] != "final_decision" or terminal["data"].get("decision") not in {"proceed", "closed_negative", "unknown", "invalid", "withdrawn"} or any(event["stage"] == "model_failure" for event in events) or not responses or receipt.output_digest != observed:
                 raise ContractError("successful receipt lacks terminal runtime output evidence")
         elif receipt.status == "failed":
-            if not (terminal["stage"] in {"model_failure", "driver_failure", "controller_failure"} and receipt.output_digest is None) and not (
+            if not (terminal["stage"] in {"model_failure", "driver_failure", "controller_failure", "execution_failure", "execution_terminal"} and receipt.output_digest is None) and not (
                     terminal["stage"] == "final_decision" and terminal["data"].get("decision") == "blocked"
                     and has_model_failure and receipt.output_digest == observed):
                 raise ContractError("failed receipt does not match terminal runtime evidence")
@@ -521,3 +536,20 @@ class PanelReceiptVerifier:
     def _runtime_data(row: RuntimeReceipt) -> dict[str, Any]:
         return {"cell_key": list(row.cell_key), "status": row.status, "trace_digest": row.trace_digest,
                 "output_digest": row.output_digest, "failure_reason": row.failure_reason}
+
+
+
+def require_protocol_refusal(finding: FrozenRecord, runtime: RuntimeReceipt, cell: PanelCell) -> None:
+    """Check the closed result of a trusted material-verifying callback, not a status flag."""
+    required = {'schema', 'cell_key', 'scenario_digest', 'source_sha256', 'source_trace_digest',
+        'source_decision', 'candidate_digest', 'allocation', 'eligible', 'status', 'inconclusive',
+        'source_structure_digest', 'fault', 'replay', 'replay_refusal', 'eligibility_reason', 'actual', 'limitation'}
+    row = finding.data() if isinstance(finding, FrozenRecord) else {}
+    terminal = FrozenRecord(runtime.trace_path.read_text(encoding='utf-8').splitlines()[-1]).data()['data']
+    if (set(row) != required or row['schema'] != 'q27-protocol-replay-finding-v2' or row['status'] != 'refused'
+            or row['eligible'] is not True or row['inconclusive'] is not False
+            or row['cell_key'] != list(cell.key) or row['scenario_digest'] != cell.scenario_digest
+            or row['source_trace_digest'] != runtime.trace_digest or row['source_decision'] != terminal.get('decision')
+            or row['candidate_digest'] != terminal.get('candidate_digest') or row['fault'] != cell.variant
+            or not isinstance(row['replay'], dict) or not row['replay_refusal']):
+        raise ContractError('trusted post-runtime verification did not qualify this exact Q2.7 source and fault')

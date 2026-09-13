@@ -105,7 +105,9 @@ def test_all_protocol_faults_block_actual_gate_or_receipt(tmp_path, benchmark, e
         assert controller["bundle"]["q26"][variant]["public_material"]["source_id"] == task.identity.group_id
         assert "fixture_only" not in FrozenRecord.from_dict(controller).encoded
     else:
-        assert scenario(registry()[experiment], variant, inputs=old_inputs).data()["controller_input"]["fault"] == variant
+        # Legacy replay fixtures remain independent of the typed production path.
+        with pytest.raises(ContractError, match="P0|typed"):
+            scenario(registry()[experiment], variant, inputs=old_inputs)
 
 
 def test_q26_actual_model_can_preserve_unknown_without_accepting_the_proposed_pivot(tmp_path):

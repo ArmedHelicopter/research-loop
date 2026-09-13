@@ -110,7 +110,7 @@ def compile_train_panel(*, stage: str, scope_ids: Sequence[str], tasks: Sequence
         for task in sorted(tasks, key=lambda task: task.content_hash):
             inputs = ControllerInputs(FrozenRecord.from_dict(task.data()), evidence_by_task[task.content_hash], budget)
             for variant in specs[coverage].variants:
-                extra = {"p0_fixed_control": grids[coverage]} if coverage in {"Q2.2", "Q6.4"} else {}
+                extra = {"p0_fixed_control": grids[coverage]} if coverage in {"Q2.2", "Q2.7", "Q6.4"} else {}
                 material = scenario(specs[coverage], variant, inputs=inputs, **extra)
                 for arm_id, arm in executable_arms(grids[coverage]).items():
                     package = packages_by_arm[arm.content_hash]

@@ -114,13 +114,42 @@ as incomplete experiments, not successful checks. A caller must require
 configured replay issuer establishes host provenance; it does not independently
 reauthenticate the scientific auditors' keys or prove their science.
 
-The common runner/registry is deliberately unchanged here. Its integration must
-register this read-only verifier and must not report success without it. When a
-source terminal already exists, a hook exception/ineligible result must not
-fabricate a failed or blocked source terminal: retain the original trace/output
-digest and use an unscored/incomplete cell result with the explicit reason.
-Keep every allocated cell in the denominator. Only source qualification plus a
-strictly verified refused replay can count as successful structural evidence.
+The production registry and `run_train_panel` now compile this typed scenario
+against the actual P0 grid. The Python entry point requires caller-owned
+`protocol_audit_port` and `protocol_replay_authority`, and allocates an internal
+Docker broker constrained to the new run root. Dependencies, reviewed model
+schema equality, exact one-Docker/one-audit/one-model per-cell budget, total model
+capacity and separate paths are checked before export/model execution. Broker
+construction occurs after the controller attempt record exists and before export.
+Authority keys and host paths remain outside the frozen public configuration.
+The generic CLI cannot manufacture an audit authority and fails closed for Q2.7.
+
+The controller compares every bundle CSV with the actual custody-exported path,
+identity/packet metadata, complete named input set (`public_csv`), SHA-256 and
+byte count. Inline CSV is only the frozen byte commitment to that same export,
+not an alternate data source. The driver separately checks actual Docker receipt
+artifacts. A pre-execution cell/P0 journal binding supports real failures before
+any model request; it cannot replace the ordinary successful model binding.
+
+Only after the genuine source finish does the runner call the replay hook. It
+exclusively persists `protocol-post-runtime.json` and `call-plan.json`, whose
+protocol record binds the actual replay receipt path and digest. The controller's
+`protocol_post_runtime_verifier(compiled, authority)` closure independently rereads
+these sidecars and the actual signed receipt, verifies cell/scenario/source/P0
+bindings and calls the strict read-only material verifier. A Q2.7 succeeded
+receipt passed to `PanelReceiptVerifier` without a trusted callback is rejected.
+A callback returning only a status flag is also rejected.
+
+Source unknown/blocked, hook exceptions, malformed verification and sidecar
+persistence failure retain the original final journal and output digest as an
+unscored cell with a bounded reason code. If a sidecar cannot be persisted, the
+returned call plan is retained in the controller attempt record; it cannot
+qualify success. Source execution/audit/model failures retain their real failure
+terminal and allocation. No failure retries. All allocated cells remain in the
+denominator, and any such cell yields `engineering_incomplete` with the controller
+receipt `execution_incomplete`. A total failure of controller storage itself may
+still interrupt execution and requires operational recovery; this code does not
+claim filesystem durability across a lost storage device.
 
 ## Tests and limits
 
@@ -129,12 +158,17 @@ mean computation in pinned Docker, and an independent fixture audit function
 that checks literal artifact hashes, input rows, output and registered public
 mean contract before signing. Both audit signatures bind the full material and
 runtime execution. This is a deterministic synthetic measurement check, not a
-benchmark scientific evaluator. Model calls are deterministic local fixtures;
-there are no paid providers, private references or validation data.
+benchmark scientific evaluator. Production integration uses actual custody export, reviewed-context CodexModelPort
+with a mocked local process transport, real pinned Docker execution and a host
+fixture audit. There are no paid providers, private references or validation data.
 
 The eight source/fault cells are complemented by source unknown/blocked,
 transport/partial/signature/nonboolean audit failures, actual program/CSV drift,
 forged terminal/candidate/scenario/P0 inputs, replay reuse, byte tampering and
 path alias counterexamples. Existing original commits/reports and failed local
-verification attempts remain preserved. Full custody/CodexModelPort/scoring
-production wiring remains the integrating controller's separate obligation.
+verification attempts remain preserved. The full eight-cell custody/CodexModelPort/Docker/finish/replay/controller path is
+covered, including unknown/blocked sources, audit failures and unknown costs,
+preflight refusal, post-hook storage failures and actual sidecar tampering.
+Independent benchmark scoring, scientific validation, source-lineage
+qualification and OS authority isolation remain outside these synthetic
+engineering checks.

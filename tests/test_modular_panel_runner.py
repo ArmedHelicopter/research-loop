@@ -131,12 +131,12 @@ def test_runner_rejects_validation_identity_scenario_package_and_unsupported_dri
                            cell.task_digest, cell.scenario_digest, cell.package_digest, cell.scorer_digest)
     with pytest.raises(ContractError, match="training cells only"):
         run_train_cell(validation, **kwargs)
-    q27 = scenario(registry()["Q2.7"], "missing_lock", inputs=ControllerInputs(FrozenRecord.from_dict(task.data()),
+    q61 = scenario(registry()["Q6.1"], "change_rule", inputs=ControllerInputs(FrozenRecord.from_dict(task.data()),
                    FrozenRecord.from_dict({"evidence": "public"}), FrozenRecord.from_dict({"budget": "fixed"})))
-    unsupported = PanelCell("Q2.7", cell.identity, cell.replicate, "missing_lock", cell.arm_id, cell.runtime_arm,
-                            cell.task_digest, q27.content_hash, cell.package_digest, cell.scorer_digest)
+    unsupported = PanelCell("Q6.1", cell.identity, cell.replicate, "change_rule", cell.arm_id, cell.runtime_arm,
+                            cell.task_digest, q61.content_hash, cell.package_digest, cell.scorer_digest)
     with pytest.raises(ContractError, match="no production panel driver"):
-        run_train_cell(unsupported, **{**kwargs, "scenario": q27})
+        run_train_cell(unsupported, **{**kwargs, "scenario": q61})
 
 
 def test_scorer_port_must_return_trace_and_scorer_bound_typed_receipt(tmp_path: Path) -> None:

@@ -80,8 +80,10 @@ def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs,
         from research_loop.modular.polarity_goal_panel_drivers import polarity_goal_injection
         injection=dict(polarity_goal_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
     elif spec.experiment_id == "Q2.7":
-        from research_loop.modular.scenarios_protocol import protocol_injection
-        injection=protocol_injection(spec.experiment_id, variant)
+        from research_loop.modular.protocol_panel_driver import protocol_panel_injection
+        if not isinstance(p0_fixed_control, FrozenRecord):
+            raise ContractError("protocol scenario requires the actual compiled P0 control")
+        injection=dict(protocol_panel_injection(variant, task=inputs.task, evidence=inputs.evidence, p0_fixed_control=p0_fixed_control))
     elif spec.experiment_id in {"Q2.2", "Q6.4"}:
         from research_loop.modular.semantic_panel_drivers import semantic_panel_injection
         if not isinstance(p0_fixed_control, FrozenRecord):

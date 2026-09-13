@@ -14,7 +14,7 @@ from typing import Callable, Protocol
 from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.experiments import registry
 from research_loop.modular.modules.improvement import CandidatePackage
-from research_loop.modular.panel_receipts import PanelCell, RuntimeReceipt, ScientificScorerReceipt, opaque_panel_cell_binding
+from research_loop.modular.panel_receipts import PanelCell, RuntimeReceipt, ScientificScorerReceipt, opaque_panel_cell_binding, require_protocol_refusal
 from research_loop.modular.runtime import AuditVerifier, RunSession
 from research_loop.modular.workflow import ModularWorkflow, WorkflowResult
 from research_loop.ontology import ContractError
@@ -183,6 +183,8 @@ from research_loop.modular.scheduler_panel_drivers import M8SchedulerDriver
 from research_loop.modular.semantic_panel_drivers import Q22CompletionSemanticsDriver, Q64ScorerRepairDriver
 from research_loop.modular.feasibility_panel_drivers import (
     Q51FeasibilityDriver, Q52DistinguishabilityDriver, FeasibilityAuthorityPort, PublicInputResolver)
+from research_loop.modular.protocol_panel_driver import (Q27ProtocolDriver, ProtocolAuditPort, ProtocolReplayAuthority,
+    verify_after_finish, verify_protocol_replay_receipt, _exclusive_record)
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 
 
@@ -190,7 +192,7 @@ DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12Dep
     "Q1.3": Q13RepresentationDriver(), "Q1.4": Q14SupportDriver(),
     "Q1.5": Q15HistoryReviewDriver(), "Q1.6": Q16WithdrawalDriver(), "Q1.7": Q17TimeInformationDriver(),
     "Q2.1": Q21PressureDriver(), "Q2.3": Q23AuditFaultDriver(), "Q2.4": Q24AuditPairDriver(),
-    "Q2.5": Q25EvidencePolarityDriver(), "Q2.6": Q26GoalLockDriver(),
+    "Q2.5": Q25EvidencePolarityDriver(), "Q2.6": Q26GoalLockDriver(), "Q2.7": Q27ProtocolDriver(),
     "Q2.2": Q22CompletionSemanticsDriver(), "Q6.4": Q64ScorerRepairDriver(),
     "Q3.1": Q31PredictionDriver(), "Q3.2": Q32JointSeparateDriver(), "Q5.3": Q53DedupDriver(),
     "Q5.1": Q51FeasibilityDriver(None, None, None), "Q5.2": Q52DistinguishabilityDriver(None, None, None),
@@ -208,7 +210,10 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
                    p0_control: FrozenRecord | None = None,
                    feasibility_broker: DockerExecutionBroker | None = None,
                    feasibility_input_resolver: PublicInputResolver | None = None,
-                   feasibility_authority: FeasibilityAuthorityPort | None = None) -> TrainCellResult:
+                   feasibility_authority: FeasibilityAuthorityPort | None = None,
+                   protocol_broker: DockerExecutionBroker | None = None,
+                   protocol_audit_port: ProtocolAuditPort | None = None,
+                   protocol_replay_authority: ProtocolReplayAuthority | None = None) -> TrainCellResult:
     """Run one predeclared training cell and return only trace-bound receipts.
 
     Validation is deliberately absent.  Driver selection is closed, so fixture
@@ -231,6 +236,12 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
     driver = DRIVERS.get(cell.coverage_id)
     if driver is None:
         raise ContractError("registered scenario has no production panel driver")
+    if isinstance(driver, Q27ProtocolDriver):
+        if (not isinstance(protocol_broker, DockerExecutionBroker) or not callable(protocol_audit_port)
+                or not isinstance(protocol_replay_authority, ProtocolReplayAuthority) or not isinstance(p0_control, FrozenRecord)):
+            raise ContractError("Q2.7 requires a broker, audit port, replay authority and trusted P0 control")
+        driver = replace(driver, broker=protocol_broker, audit_port=protocol_audit_port,
+                         expected_p0_control_digest=p0_control.content_hash)
     if isinstance(driver, (Q51FeasibilityDriver, Q52DistinguishabilityDriver)):
         driver = replace(driver,
             broker=feasibility_broker if feasibility_broker is not None else driver.broker,
@@ -265,6 +276,11 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
     session = RunSession(task, package_digest=package.digest, arm=cell.runtime_arm,
                          objective=objective, slots=slots, execution_limit=driver.execution_limit,
                          sidecar=sidecar, verifier=audit_verifier, required_audit=("measurement",))
+    if isinstance(driver, Q27ProtocolDriver):
+        session._record("q27_panel_binding", {"panel_cell": {
+            "experiment_id": cell.coverage_id, "variant": cell.variant, "replicate": cell.replicate,
+            "arm_id": cell.arm_id, "scenario_digest": scenario.content_hash},
+            "p0_control_digest": p0_control.content_hash})
     workflow = ModularWorkflow(session)
     try:
         stage, candidate, responses = driver.run(workflow, cell=cell, scenario=scenario, model=model, package=package)
@@ -301,6 +317,33 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
     runtime = RuntimeReceipt(cell.key, "blocked" if decision == "blocked" else "succeeded", trace_path,
                              trace_digest, output_digest,
                              "terminal decision blocked" if decision == "blocked" else None)
+    protocol_post = None
+    if isinstance(driver, Q27ProtocolDriver):
+        protocol_post = {"schema": "q27-post-runtime-check-v1", "status": "failed", "reason": None,
+            "receipt_path": None, "receipt_digest": None, "source_trace_digest": trace_digest,
+            "source_output_digest": output_digest, "cell_key": list(cell.key), "scenario_digest": scenario.content_hash}
+        try:
+            replay = verify_after_finish(cell=cell, scenario=scenario, session=session, candidate=candidate,
+                terminal=terminal, replay_authority=protocol_replay_authority,
+                expected_p0_control_digest=p0_control.content_hash)
+            protocol_post.update(receipt_path="q27-replay/receipt.json", receipt_digest=replay.content_hash)
+            finding = verify_protocol_replay_receipt(replay, cell=cell, scenario=scenario, source_trace_path=trace_path,
+                replay_authority=protocol_replay_authority, expected_p0_control_digest=p0_control.content_hash)
+            if isinstance(finding, FrozenRecord) and finding.data().get("status") == "ineligible":
+                protocol_post.update(status="ineligible", reason="source_ineligible_for_registered_fault")
+                runtime = replace(runtime, status="unscored", failure_reason=protocol_post["reason"])
+            else:
+                require_protocol_refusal(finding, runtime, cell)
+                protocol_post.update(status="refused")
+        except Exception as exc:
+            # The genuine source final decision and output stay untouched.
+            protocol_post.update(reason="post_runtime_verification_failed", error_type=type(exc).__name__)
+            runtime = replace(runtime, status="unscored", failure_reason="post_runtime_verification_failed")
+        try:
+            _exclusive_record(sidecar / "protocol-post-runtime.json", FrozenRecord.from_dict(protocol_post))
+        except Exception as exc:
+            protocol_post.update(status="failed", reason="post_runtime_sidecar_persistence_failed", error_type=type(exc).__name__)
+            runtime = replace(runtime, status="unscored", failure_reason=protocol_post["reason"])
     plan = FrozenRecord.from_dict({"schema": "train-panel-call-plan-v1", "driver": driver.experiment_id,
         "cell_key": list(cell.key), "scenario_digest": scenario.content_hash,
         "enabled_modules": cell.runtime_arm.data()["enabled"], "package_digest": package.digest,
@@ -308,9 +351,18 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
         "package_binding": "frozen_session_lock_only_unless_explicitly_deployed", "schema_slots": list(driver.slots), "slots": list(session.slots),
         "workflow_stage": stage.detail.data()["stage"], "execution_attempts": session._attempts,
         "model_calls": session._next_call, "docker_execution": driver.docker_execution,
-        "actual_token_measurement": "not_measured"})
+        "actual_token_measurement": "not_measured", **({"protocol_replay": protocol_post} if protocol_post else {})})
+    if protocol_post is not None:
+        try:
+            _exclusive_record(sidecar / "call-plan.json", plan)
+        except Exception as exc:
+            protocol_post.update(status="failed", reason="post_runtime_sidecar_persistence_failed", error_type=type(exc).__name__)
+            runtime = replace(runtime, status="unscored", failure_reason=protocol_post["reason"])
+            # The controller persists this returned plan in its attempt record.
+            # An unwritable cell sidecar cannot qualify a successful replay.
+            plan = FrozenRecord.from_dict({**plan.data(), "protocol_replay": protocol_post})
     scored = None
-    if scorer is not None:
+    if scorer is not None and (not isinstance(driver, Q27ProtocolDriver) or runtime.status == "succeeded"):
         scored = scorer(cell, runtime)
         if (not isinstance(scored, ScientificScorerReceipt) or scored.cell_key != cell.key
                 or not isinstance(scored.receipt, FrozenRecord)):

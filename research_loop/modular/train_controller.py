@@ -28,6 +28,8 @@ from research_loop.modular.audit_panel_drivers import AuditReceiptPort, ShadowEx
 from research_loop.modular.feasibility_panel_drivers import FeasibilityAuthorityPort
 from research_loop.modular.benchmark_cell import LinkedBenchmarkCellResult, run_benchmark_cell, verify_linked_benchmark_cell
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
+from research_loop.modular.protocol_panel_driver import (ProtocolAuditPort, ProtocolReplayAuthority,
+    verify_protocol_replay_receipt, _no_links)
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.ontology import ContractError, canonical, digest
 
@@ -85,7 +87,10 @@ class FrozenTrainControllerConfig:
                     raise ContractError("task objectives must be nonempty")
         for name in ("budget", "p0_control", "scorer", "acceptance_criteria"):
             _record(data[name], name)
-        if set(scope) & {"Q2.2", "Q6.4"}:
+        if "Q2.7" in scope and any(type(data["budget"].get(key)) is not int or data["budget"][key] != 1
+                for key in ("docker_attempts", "audit_calls", "model_calls")):
+            raise ContractError("protocol budget must freeze one Docker, audit batch and model call per cell")
+        if set(scope) & {"Q2.2", "Q6.4", "Q2.7"}:
             from research_loop.modular.p0_panel import fixed_control_design
             expected_grid = fixed_control_design(data["baseline_digest"], _record(data["p0_control"], "P0 control").content_hash)
             if any(value.get("p0_fixed_control") != expected_grid.data() for value in data["evidence_by_task"].values()):
@@ -157,13 +162,18 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                         history_admission_port: AdmissionPort | None = None,
                         audit_receipt_port: AuditReceiptPort | None = None,
                         shadow_execution_port: ShadowExecutionPort | None = None,
-                        feasibility_authority: FeasibilityAuthorityPort | None = None) -> TrainPanelRun:
+                        feasibility_authority: FeasibilityAuthorityPort | None = None,
+                        protocol_audit_port: ProtocolAuditPort | None = None,
+                        protocol_replay_authority: ProtocolReplayAuthority | None = None) -> TrainPanelRun:
     """Export and execute every cell selected by closed production drivers."""
     if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
         raise ContractError("trusted typed controller inputs required")
     if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
         raise ContractError("controller requires the real model port and trusted audit verifier")
     data = config.data()
+    protocol = "Q2.7" in data["scope_ids"]
+    if protocol and (not callable(protocol_audit_port) or not isinstance(protocol_replay_authority, ProtocolReplayAuthority)):
+        raise ContractError("protocol controller requires trusted audit and replay authorities before export")
     feasibility = bool(set(data["scope_ids"]) & {"Q5.1", "Q5.2"})
     if feasibility and (not callable(getattr(feasibility_authority, "verify_stage", None))
             or ("Q5.2" in data["scope_ids"] and not callable(getattr(feasibility_authority, "verify_prediction_outcome", None)))):
@@ -191,6 +201,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
     _write(root / "controller-attempt.json", attempt)
     try:
+        protocol_broker = DockerExecutionBroker([root]) if protocol else None
         packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
         attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
         _write(root / "controller-attempt.json", attempt)
@@ -204,6 +215,8 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
             p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
             scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
             replicates=tuple(data["replicates"]))
+        if protocol:
+            _bind_protocol_custody_inputs(packets, compiled, exported)
         attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
                         "compiled_manifest": compiled.manifest.data(),
                         "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
@@ -257,17 +270,20 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                 audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
                 p0_control=compiled.control, feasibility_broker=feasibility_broker,
                 feasibility_input_resolver=feasibility_inputs if feasibility else None,
-                feasibility_authority=feasibility_authority)
+                feasibility_authority=feasibility_authority, protocol_broker=protocol_broker,
+                protocol_audit_port=protocol_audit_port, protocol_replay_authority=protocol_replay_authority)
             runtimes.append(result.runtime)
+            attempt.setdefault("runtime_call_plans", []).append(result.call_plan.data())
             attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.runtime))
             attempt["runtime_trace_digests"].append(result.runtime.trace_digest)
             _write(root / "controller-attempt.json", attempt)
-        verdict = PanelReceiptVerifier().verify(compiled.panel, tuple(runtimes))
+        post_verifier = protocol_post_runtime_verifier(compiled, protocol_replay_authority) if protocol else None
+        verdict = PanelReceiptVerifier(post_runtime_verifier=post_verifier).verify(compiled.panel, tuple(runtimes))
     except Exception as exc:
         attempt.update({"status": "execution_interrupted", "error_type": type(exc).__name__})
         _write(root / "controller-attempt.json", attempt)
         raise
-    if verdict.decision != "engineering_verified" or verdict.scientific_verified:
+    if verdict.decision not in {"engineering_verified", "engineering_incomplete"} or verdict.scientific_verified:
         raise ContractError("production controller cannot claim scientific measurement")
     linked_complete = (data.get("execution_mode") != "linked_benchmark_solve"
                        or (len(linked_results) == len(compiled.panel.cells)
@@ -289,6 +305,61 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                     "linked_statuses": [result.status for result in linked_results]})
     _write(root / "controller-attempt.json", attempt)
     return TrainPanelRun(compiled, tuple(packets), tuple(runtimes), verdict, receipt, tuple(linked_results))
+
+
+def _bind_protocol_custody_inputs(packets, compiled, exported: Path) -> None:
+    """Bind the one complete named input set to actual custody-export bytes."""
+    for packet in packets:
+        path = Path(packet.csv_path)
+        _no_links(path)
+        if not path.is_file() or exported not in path.resolve().parents:
+            raise ContractError("protocol custody CSV path is outside the actual export")
+        raw = path.read_bytes()
+        metadata = packet.receipt.data()
+        spec = next(compiled.scenarios[cell.key].data()["controller_input"]["bundle"]["execution"]
+                    for cell in compiled.panel.cells if cell.coverage_id == "Q2.7" and cell.task_digest == packet.task.content_hash)
+        if (metadata.get("identity") != packet.task.identity.data()
+                or metadata.get("packet_hash") != packet.task.content_hash
+                or metadata.get("csv_sha256") != hashlib.sha256(raw).hexdigest()
+                or spec["csv_sha256"] != metadata["csv_sha256"]
+                or spec["csv_byte_count"] != len(raw) or bytes.fromhex(spec["csv_bytes_hex"]) != raw):
+            raise ContractError("protocol custody CSV differs from frozen literal input set")
+
+
+def protocol_post_runtime_verifier(compiled: CompiledTrainPanel, authority: ProtocolReplayAuthority):
+    """Configured read-only verifier of source, immutable sidecars and fault material.
+
+    The authority authenticates host provenance; it does not establish science.
+    """
+    if not isinstance(compiled, CompiledTrainPanel) or not isinstance(authority, ProtocolReplayAuthority):
+        raise ContractError("typed compiled panel and replay authority required")
+    def verify(runtime, cell, panel):
+        if panel.digest != compiled.panel.digest or cell not in compiled.panel.cells:
+            raise ContractError("post-runtime verifier received a foreign panel cell")
+        sidecar = runtime.trace_path.parent
+        post_path = sidecar / "protocol-post-runtime.json"
+        plan_path = sidecar / "call-plan.json"
+        _no_links(post_path); _no_links(plan_path)
+        post = FrozenRecord(post_path.read_text(encoding="utf-8").strip()).data()
+        plan = FrozenRecord(plan_path.read_text(encoding="utf-8").strip()).data()
+        required = {"schema", "status", "reason", "receipt_path", "receipt_digest", "source_trace_digest",
+                    "source_output_digest", "cell_key", "scenario_digest"}
+        if (set(post) != required or post["schema"] != "q27-post-runtime-check-v1"
+                or post["status"] != "refused" or post["reason"] is not None
+                or post["receipt_path"] != "q27-replay/receipt.json"
+                or post["source_trace_digest"] != runtime.trace_digest or post["source_output_digest"] != runtime.output_digest
+                or post["cell_key"] != list(cell.key) or post["scenario_digest"] != cell.scenario_digest
+                or plan.get("protocol_replay") != post):
+            raise ContractError("post-runtime immutable sidecar binding mismatch")
+        receipt_path = sidecar / post["receipt_path"]
+        _no_links(receipt_path)
+        receipt = FrozenRecord(receipt_path.read_text(encoding="utf-8").strip())
+        if receipt.content_hash != post["receipt_digest"]:
+            raise ContractError("post-runtime actual replay receipt digest mismatch")
+        return verify_protocol_replay_receipt(receipt, cell=cell, scenario=compiled.scenarios[cell.key],
+            source_trace_path=runtime.trace_path, replay_authority=authority,
+            expected_p0_control_digest=compiled.control.content_hash)
+    return verify
 
 
 # Stable compatibility entry point for pre-existing frozen Q3.1 configurations.
