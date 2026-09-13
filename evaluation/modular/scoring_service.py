@@ -234,6 +234,8 @@ class AdaptedMetricReceiptVerifier:
                     "metric", "status", "scientific_validity", "calibration"}
         if set(body) != required or body["schema"] != "independent-scored-cell-v2" or body["status"] != "scored":
             raise ContractError("invalid adapted scorer receipt contract")
+        if body["scientific_validity"] != "not_measured" or body["calibration"] != "not_measured":
+            raise ContractError("adapted receipt cannot assert scientific validity or calibration")
         if (body["panel_digest"] != panel.digest or body["cell_key"] != list(cell.key)
                 or body["scorer_digest"] != cell.scorer_digest or body["scorer_config_digest"] != self._config.digest
                 or body["benchmark"] != cell.identity.benchmark or body["benchmark"] not in self._config.benchmarks):

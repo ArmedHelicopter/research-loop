@@ -112,3 +112,21 @@ def test_fixture_endpoint_rejects_missing_values_instead_of_none_equals_none(tmp
     with pytest.raises(ContractError, match="lacks a required"):
         endpoint(request)
     assert service.score(panel=frozen, cell=cell, runtime=row).cell_key == cell.key
+
+
+@pytest.mark.parametrize("field", ["runtime_output_digest", "submission_digest", "scientific_validity", "calibration"])
+def test_authenticated_but_inconsistent_receipt_cannot_change_the_executed_submission_or_claim_science(tmp_path, field):
+    frozen, runtime, _ = _panel_with_config(tmp_path, "discoverybench")
+    config = ScorerConfig.create(benchmark="core_pair", evaluator_id="frozen-rubric-transport", rubric_digest="b" * 64, version="v1")
+    frozen = FrozenPanel(frozen.stage, frozen.domain, frozen.split_digest, frozen.candidate_digest, frozen.scope_ids,
+        frozen.legal_arm_grids, frozen.acceptance_criteria, tuple(replace(cell, scorer_digest=config.digest) for cell in frozen.cells), frozen.combinations)
+    cells = {cell.key: cell for cell in frozen.cells}
+    service = _service(frozen, config)
+    scores = [service.score(panel=frozen, cell=cells[row.cell_key], runtime=row) for row in runtime]
+    body = scores[0].receipt.data()["body"]
+    body[field] = "f" * 64 if field.endswith("digest") else "validated"
+    # A trusted issuer can still contain a bug. Authentication must not bypass
+    # comparison with the separately verified actual runtime and candidate.
+    scores[0] = ScientificScorerReceipt(scores[0].cell_key, ScoringAuthority("independent-test", b"s" * 32).issue(body))
+    with pytest.raises(ContractError, match="verified runtime output|cannot assert scientific"):
+        PanelReceiptVerifier(scorer_verifier=AdaptedMetricReceiptVerifier(authority_keys={"independent-test": b"s" * 32}, config=config)).verify(frozen, runtime, scorer_receipts=scores)

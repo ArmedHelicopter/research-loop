@@ -365,6 +365,11 @@ class PanelReceiptVerifier:
                         or body.get("runtime_trace_digest") != actual[key].trace_digest
                         or body.get("scorer_digest") != expected[key].scorer_digest):
                     raise ContractError("scorer receipt lacks typed runtime and scorer binding")
+                if body.get("schema") == "independent-scored-cell-v2":
+                    terminal = FrozenRecord(actual[key].trace_path.read_text(encoding="utf-8").splitlines()[-1]).data()
+                    if (body.get("runtime_output_digest") != actual[key].output_digest
+                            or body.get("submission_digest") != terminal["data"].get("candidate_digest")):
+                        raise ContractError("adapted scorer receipt does not bind the verified runtime output and candidate")
             # Adapted benchmark scores authenticate the configured calculation,
             # but their receipts explicitly say calibration and scientific
             # validity are unmeasured.  They must not promote a panel through
