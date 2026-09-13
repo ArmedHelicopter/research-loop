@@ -1,0 +1,1 @@
+{"additionalProperties":false,"properties":{"assessment":{"enum":["accept","concern","unknown"],"type":"string"},"counterexamples":{"items":{"type":"string"},"type":"array"},"evidence_refs":{"items":{"type":"string"},"type":"array"},"uncertainty":{"type":"string"}},"required":["assessment","evidence_refs","counterexamples","uncertainty"],"type":"object"}

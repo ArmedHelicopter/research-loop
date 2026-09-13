@@ -1,0 +1,48 @@
+disable_web_search = true
+[cli]
+auto_update = false
+[models]
+default = "grok-4.6"
+session_summary = "grok-4.6"
+max_completion_tokens = 2048
+max_retries = 0
+[model."grok-4.6"]
+max_completion_tokens = 2048
+max_retries = 0
+[features]
+title_refresh = false
+turn_summary = false
+[skills]
+disabled = []
+[plugins]
+enabled = []
+disabled = []
+[memory]
+enabled = false
+[workflows]
+enabled = false
+[managed_mcps]
+enabled = false
+gateway_tools_enabled = false
+[subagents]
+enabled = false
+[goal]
+enabled = false
+[compat.claude]
+agents = false
+hooks = false
+mcps = false
+rules = false
+skills = false
+[compat.cursor]
+agents = false
+hooks = false
+mcps = false
+rules = false
+skills = false
+[marketplace]
+default_skills_installs_purged = true
+official_marketplace_auto_installed = true
+[[marketplace.sources]]
+name = "xAI Official"
+git = "https://github.com/xai-org/plugin-marketplace.git"

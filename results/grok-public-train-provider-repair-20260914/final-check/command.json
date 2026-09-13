@@ -1,0 +1,15 @@
+[
+  "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+  "-m",
+  "pytest",
+  "tests/test_grok_train_solver.py",
+  "tests/test_grok_acp_transport.py",
+  "tests/test_label_isolation.py",
+  "tests/test_m4_m5_useful_controls.py::test_eight_cell_useful_output_grid",
+  "tests/test_modular_combination_train_controller.py::test_real_custody_complete_eight_cells_port_docker_signed_scorer_and_contrast",
+  "-q",
+  "--basetemp",
+  "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-provider-repair-frozen-79249ac\\pytest",
+  "--junitxml",
+  "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-provider-repair-frozen-79249ac\\junit.xml"
+]

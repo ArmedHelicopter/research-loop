@@ -1,0 +1,4007 @@
+[
+  {
+    "path": "complete-panel/client-0.jsonl",
+    "bytes": 21872,
+    "sha256": "0ff9e90dea194c636089419303c4cc934e3fc42c2a40c8ef79e71f7a2303242a"
+  },
+  {
+    "path": "complete-panel/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+    "bytes": 5,
+    "sha256": "a03ee9e888b907f64a30915cf5d04520078779a38422a89e02ed1718c30b8f40"
+  },
+  {
+    "path": "complete-panel/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+    "bytes": 1656,
+    "sha256": "9b62ab0543ce71fc0c7498fcb9b64c85f2490e991f1b89a91ced0ca6cd364f52"
+  },
+  {
+    "path": "complete-panel/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+    "bytes": 1121,
+    "sha256": "1f8e20ae322009d8b196e2e8c5885c767dd53ada5457058eed8dd303dc1deaf1"
+  },
+  {
+    "path": "complete-panel/export/export-receipt.json",
+    "bytes": 2929,
+    "sha256": "f2364fdfa5be1a28ae1562712f6edfcc9b198958508024e54dea54f9c183ba5b"
+  },
+  {
+    "path": "complete-panel/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/data.csv",
+    "bytes": 5,
+    "sha256": "e99561343117bad50b537bcf4f4f3ccd592ece4a9506669ea383464784314cf2"
+  },
+  {
+    "path": "complete-panel/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/public.json",
+    "bytes": 1478,
+    "sha256": "dcedd0ca00b02d6c57aa46599f94d7f720da20ef7fcb0206d7fca8a8496d63fe"
+  },
+  {
+    "path": "complete-panel/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/receipt.json",
+    "bytes": 943,
+    "sha256": "5c0527df55982d8d6a132af71dac915512b423fcfdc5f50ca89f41d61df22426"
+  },
+  {
+    "path": "complete-panel/export-audit/exports.jsonl",
+    "bytes": 5121,
+    "sha256": "ea3ec5522756432f3276adbaa0b58fd945ea44cd6b27f32a06ee247696f1a545"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "96414d0bc4e2e027789b058185d1e0d5dbd7d1fd1bdfde0a856e49b2c4285842"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 5678,
+    "sha256": "480c9ecd69eba543c617be46bb341cf91a31800ba8cd37817a2dd7a4cd2883f2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 5580,
+    "sha256": "8cc74f99b29dda029f63947a2f0decb68cb2956b4b494d69d4a606489ae6cba1"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0001-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "e9926c701906576660a0c4488d3d85fea352581b18f5d0b48f09966c30d80ae3"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0001-m4_plan/peer.jsonl",
+    "bytes": 5685,
+    "sha256": "dacc04b533f8b7c676f332c1c6d1e621add30a878a7e5f7497ac129dd17c039e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+    "bytes": 2705,
+    "sha256": "3f93eb5e525da98e653502f6cd7b187d1a27d577ae0dda2d22ce82258bf61555"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0001-m4_plan/request.private.json",
+    "bytes": 2576,
+    "sha256": "b73db1a2730199956e9893e5ea68f9572985f05949846f22981ab02e3019f2f2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0001-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "fa4b1e44d1d452d88d8ca51830a169e8800a65e96683604231c711743cc77540"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0001-m4_plan/response.private.json",
+    "bytes": 989,
+    "sha256": "f0b71adc4341f0f11d1f98e5483a5532eb949d3b8f7035d9d655892a53659e65"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0001-m4_plan/schema.private.json",
+    "bytes": 963,
+    "sha256": "09d6d16493c22ac9bf79a6f17964c594077d013d9b706127a2aa7d061528db4e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "d90024e51143d04124db3a378911dd311e9b47611fb902bda1365dc7875385ca"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-private/requests.private.jsonl",
+    "bytes": 6362,
+    "sha256": "a01bb653b8f132faa205908dd74a552dfcaf724be829b13925310c9cc42d5fa4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "0dbf200e18fe6f3d8a77040b98aa16ecc2244411dc8e2175368bf6aef3f7cf78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "4fd1520b8a11953cf7632ba4b5be620dc75a5f67d39d9a350da9ebf2efb20849"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/peer.jsonl",
+    "bytes": 6369,
+    "sha256": "54b42db4ea3c5bf8c38c9bfb7a6fbb696cd3e131251684e7f244beb4f6214dec"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/prompt.private.txt",
+    "bytes": 3842,
+    "sha256": "f44f81edc730c826071234af81e6283e73a04107a011083d9c2e2b1c0a9e5a91"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/request.private.json",
+    "bytes": 3713,
+    "sha256": "8f0d41f9a0eac4a26ef9be8756e92d15e32f2d9c08761dfec88fe0b91e352184"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/reservation.private.json",
+    "bytes": 518,
+    "sha256": "00d20114704329dcdc197c3af217a727182bf50bc4c7d6787bb3d3b8a9aebbe1"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "31974a77cd921352134ec5b4b76c244f953c5a17e4c9bb452713bf956a8a8aaf"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-private/requests.private.jsonl",
+    "bytes": 6469,
+    "sha256": "4d0192248274ae5608b351ad81ef577b3c37ca7b2f81357aeb5046c7d8cea9d9"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "31f127005e93cd69670bb60768b7090d39388598e3db479e6e7c0a35c6f5e600"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0003-m5_measurement/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "ff0b8c11a14b654a93513bb176ac5c53d44f12c005aa6a3086049d2c41344e89"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0003-m5_measurement/peer.jsonl",
+    "bytes": 6476,
+    "sha256": "96322077ff458bb0e2215b7c4e186551a05889717bb74bf214e5875b049fac44"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0003-m5_measurement/prompt.private.txt",
+    "bytes": 3937,
+    "sha256": "128ab99689d4fe8bdb7348c90df24afdd2a7bf4776b4ab542c63f4791c101241"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0003-m5_measurement/request.private.json",
+    "bytes": 3808,
+    "sha256": "66a3f279aaf46203a37c0569ae685cd19acf0d7e00951d55657fd43445183ab3"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0003-m5_measurement/reservation.private.json",
+    "bytes": 518,
+    "sha256": "2f07603f5ef9993e8bac10cf45f7dedcfc2c27908e7e3f5b652f5bc5f28b7d6c"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0003-m5_measurement/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0003-m5_measurement/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "06095595817b8be9ee9d52a158eedc7796ec466a4d23d4a4758e4fd978b5bae5"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-private/requests.private.jsonl",
+    "bytes": 6410,
+    "sha256": "9553e9630f25b82f18268c6c326ca37bd511bf660943509aaaaf46b150be131d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-private/stdout.private.jsonl",
+    "bytes": 3699,
+    "sha256": "888c09deede16649e4a1118dd0f100da9f4812af65676053763dcc2e5e1aa30f"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0004-analysis_program/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "9c920bf675b2220b242a232dd973c401a10f381d6e47917349b060bd13a421ba"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0004-analysis_program/peer.jsonl",
+    "bytes": 6417,
+    "sha256": "1dba64320c8baee0972f2cc313444873955439c8f1213dc3edd599efb957cfb6"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0004-analysis_program/prompt.private.txt",
+    "bytes": 4088,
+    "sha256": "ccc91e45991a6044648e47b7bfa44cec03638730c282176bcd96646eb4a559eb"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0004-analysis_program/request.private.json",
+    "bytes": 3959,
+    "sha256": "2c8ba9b857268ef675eb9060145d330fa8420e57f3f87815e8a216c3d521f835"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0004-analysis_program/reservation.private.json",
+    "bytes": 518,
+    "sha256": "92e7bc66d0a43d24b63536246a70e2714f48309c8e8ce1cd16fd282786a6338f"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0004-analysis_program/response.private.json",
+    "bytes": 183,
+    "sha256": "1ff6f825a0ec67215c1fa6aa8a088d70786da1344b43f8ffcbac1d86fdb83ed5"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0004-analysis_program/schema.private.json",
+    "bytes": 152,
+    "sha256": "fd0c444a2e3b004a5c3232ec3ceef3017d2aefd685c0ef412e442f84f5ade689"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0005-final_answer/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0005-final_answer/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "394d0452a0441af24102d4e16ff5086b3f126588538f7ae33fcbf79e0137d144"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0005-final_answer/native-private/requests.private.jsonl",
+    "bytes": 7898,
+    "sha256": "148145ec5a75f7a4453fc57a77cec5c1cc339c128fd44be6bcfb874c7e6280d9"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0005-final_answer/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0005-final_answer/native-private/stdout.private.jsonl",
+    "bytes": 3732,
+    "sha256": "78afc3b969f7a610085b810049929c5940e28c1d88bb4158bad97b7f72c1adc5"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0005-final_answer/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "ca74d22ed061a6ae78710bb1499a8d43956bfbcfe93575f7917caa4af1821314"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0005-final_answer/peer.jsonl",
+    "bytes": 7905,
+    "sha256": "2af286c18be2e4c17014d6685ce8e5b4e93ca706bf72f6a8b21a2542b3f94aa0"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0005-final_answer/prompt.private.txt",
+    "bytes": 5261,
+    "sha256": "f6658fea6b28a0c3eed2c10b2e8dd56bc4b1112d3fa5218590df216d764630ae"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0005-final_answer/request.private.json",
+    "bytes": 5132,
+    "sha256": "95570beeb629ea01c73c94434347eac3f19288a05618c6898318d60be142ce0e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0005-final_answer/reservation.private.json",
+    "bytes": 518,
+    "sha256": "20bf820d453b85c02a83a0b26479d9eac90f9f1d4eaaa2c3069e12ad6032d2d2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0005-final_answer/response.private.json",
+    "bytes": 191,
+    "sha256": "dd7ac9bb7ddeaa13ca8dc5d67566f0734ae8b6e555e9f6b4123524bc8ba0bef4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0005-final_answer/schema.private.json",
+    "bytes": 380,
+    "sha256": "99a5b8ec8e592c7ca8c4c31223dc7637b403e05a7ce6567f6d42c22a437bf3d6"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "007b9d5057b2721ef2dcca734efc50e86912c693a7b0ddd6db2026677b8ea2f3"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 5678,
+    "sha256": "c642b7c7f75bc603fd6849119b20bd8d572c1e646fdad733d426a39594bbd963"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 5580,
+    "sha256": "20f5c40fa5b9de6e0d3702de69cc2d2fd39f68558c1b309e4a8ad2e287ca64fc"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0006-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "73fbcf8a244459762739e4c6a0497716b6cb0babbccf746332a69afa1ab18350"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0006-m4_plan/peer.jsonl",
+    "bytes": 5685,
+    "sha256": "caaa150b549413213c7566854c8490e8ce98a51c059c3ef37e9640a60bcfcb32"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0006-m4_plan/prompt.private.txt",
+    "bytes": 2705,
+    "sha256": "8e5a30aa1534b4c5ee0d7bda1c428d57fbc4b116d53dc49689bc9ed4e28afdc3"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0006-m4_plan/request.private.json",
+    "bytes": 2576,
+    "sha256": "9e9cc68b7d2159b0fdca0c3b7a4184a01ad08c7ad2d0c871307ae75206bab761"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0006-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "21f157dcd8d2dcd4b755bb91750953610c9e0995c6e86ccd8321b4adc1b67d3d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0006-m4_plan/response.private.json",
+    "bytes": 989,
+    "sha256": "f0b71adc4341f0f11d1f98e5483a5532eb949d3b8f7035d9d655892a53659e65"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0006-m4_plan/schema.private.json",
+    "bytes": 963,
+    "sha256": "09d6d16493c22ac9bf79a6f17964c594077d013d9b706127a2aa7d061528db4e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "a22f9890f3e36c0e96a724f12730c41b348da4f23ae2181152d700b8d7b4c37d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-private/requests.private.jsonl",
+    "bytes": 6226,
+    "sha256": "779b4385e673bc447c170f0278a1571131c0b9d83e1a8b82b89dec126a5ba549"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "9c7129928f06b2fec9653b47f03fd7ec5437c0fae4afae3c208ed5300028c606"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "057b08058e7cb245687ede645e86be506f1826208f6a20b1896f171249dd0177"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/peer.jsonl",
+    "bytes": 6233,
+    "sha256": "3500a48ce2b294bb650ae6a94b3c389c098ce4b8aecf207a2d9256c8eaa59d69"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/prompt.private.txt",
+    "bytes": 3706,
+    "sha256": "e20ee97931b35bea942412c72f4a781e8563d5dcedf2bf42c439dc858dd18905"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/request.private.json",
+    "bytes": 3577,
+    "sha256": "12fe8ef54af02571cce810a100e5f88eca7c80b0347479b8f160a474195843d4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/reservation.private.json",
+    "bytes": 518,
+    "sha256": "3413c258e2348802e0d06b47e66f00baa45de6bfead2be1593b13800bcefc644"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "4b3646b44156ffc5feb3c8787a038decb8034615cbda361088a7397dcc99a9fa"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-private/requests.private.jsonl",
+    "bytes": 6231,
+    "sha256": "a7ce39ffb1eb19986798f37a7c2623322fe44150d624474ca013129717f3fd24"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "acdf38a1ebc3a060328ac0733ea71c94418eac7601b2ccd0f6066a3dea9c8c79"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0008-m5_measurement/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "efe585dd9dc063ad3073c7a9fc1717b844b56427410683f5e13e19c26afe660b"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0008-m5_measurement/peer.jsonl",
+    "bytes": 6238,
+    "sha256": "3171283043fa0894f6de7ad09d19a0926f85267ea21e768894e7c4fc6a59d5fe"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0008-m5_measurement/prompt.private.txt",
+    "bytes": 3711,
+    "sha256": "7b55e3cd12fa65ccef01e001b2af07da5bed773fabd12b3bd35f11d5f3bf5b1a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0008-m5_measurement/request.private.json",
+    "bytes": 3582,
+    "sha256": "fac1b352921c665d3f4c6c23b03e757331b67202dc93f1558930aa976bfcc01b"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0008-m5_measurement/reservation.private.json",
+    "bytes": 518,
+    "sha256": "87bcdcde9591fd9f5280a6febdc7f92e4368a193e374a93f4a9d36bba159507c"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0008-m5_measurement/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0008-m5_measurement/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "19db7a5b4354ff783cc6b626d98c6470984b3dbd751b1a2093aa143c13182c54"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-private/requests.private.jsonl",
+    "bytes": 6410,
+    "sha256": "c62fc67228108f7181d0646de007eeabe4ffe3a6aa319caa0e50d5948e3d786c"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-private/stdout.private.jsonl",
+    "bytes": 3699,
+    "sha256": "dc18fcf3bbd03901c5afd3d950220510fba3eae2600e3d0d6ab0b1e14125796b"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0009-analysis_program/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "42f4d123a8b644c65a2ac675953c40e5f84e3fd92f83290fb0aeb56b16d1e45a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0009-analysis_program/peer.jsonl",
+    "bytes": 6417,
+    "sha256": "6c122bcac9f51c1037a73ad81429589e561da24b77249fb1f09375d12721f963"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0009-analysis_program/prompt.private.txt",
+    "bytes": 4088,
+    "sha256": "b4cec3d7e0a05ca801d86df8507eb21417ccac8392dd11cde04e01e9cd40ec62"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0009-analysis_program/request.private.json",
+    "bytes": 3959,
+    "sha256": "14baca939f4327ea72b8c2ead449257886d6c4cd7e4b9186f4b2bea21b5245c8"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0009-analysis_program/reservation.private.json",
+    "bytes": 518,
+    "sha256": "f5d182a2a22a7c8d047c810dfcd3790a51644e14974fcf1a6c73eb01f920c489"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0009-analysis_program/response.private.json",
+    "bytes": 183,
+    "sha256": "1ff6f825a0ec67215c1fa6aa8a088d70786da1344b43f8ffcbac1d86fdb83ed5"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0009-analysis_program/schema.private.json",
+    "bytes": 152,
+    "sha256": "fd0c444a2e3b004a5c3232ec3ceef3017d2aefd685c0ef412e442f84f5ade689"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0010-final_answer/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0010-final_answer/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "754ad73b4a2a0cdadccda4872869d16762023141b183519b3e9062fd09e4fbfb"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0010-final_answer/native-private/requests.private.jsonl",
+    "bytes": 7898,
+    "sha256": "161726439daf0c06797cbb4926b23662733269abdbfb746566c87f5eb3ecdca2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0010-final_answer/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0010-final_answer/native-private/stdout.private.jsonl",
+    "bytes": 3732,
+    "sha256": "fa5d1c63ca372c07dc11385f54f4a2529f75a7bb87e41697acc8266845dfe149"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0010-final_answer/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "6880d7afe4d9d30437700ceb6a295de91b36eedadf49b8f994edd23ae5de11bd"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0010-final_answer/peer.jsonl",
+    "bytes": 7905,
+    "sha256": "7392ab2dfd11f7f9bd601cdf08e4c60998942a66ac7b7a264d2437634688ced4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0010-final_answer/prompt.private.txt",
+    "bytes": 5261,
+    "sha256": "79a97166c671aa40e20e4efd9299edcf01cf44543231b5496223089a4792e731"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0010-final_answer/request.private.json",
+    "bytes": 5132,
+    "sha256": "39482578022279eccb2dd1b325b4019db240cd3a16b722caedf7011cab7ef0c7"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0010-final_answer/reservation.private.json",
+    "bytes": 518,
+    "sha256": "8e6f5342f63c6e94a55efc2ccfb89773b7d28f3864ef9d4efdf53101d0762a46"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0010-final_answer/response.private.json",
+    "bytes": 191,
+    "sha256": "dd7ac9bb7ddeaa13ca8dc5d67566f0734ae8b6e555e9f6b4123524bc8ba0bef4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0010-final_answer/schema.private.json",
+    "bytes": 380,
+    "sha256": "99a5b8ec8e592c7ca8c4c31223dc7637b403e05a7ce6567f6d42c22a437bf3d6"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "db2e6f6b0a5a82799ac399538be0bb676963f688d034f0b72374029ab8354c64"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 5669,
+    "sha256": "e14cbe7f8327667228223b6a6978b26497664360343f1a0285afc3bdd327501d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 5580,
+    "sha256": "aecde66a5f5eff79b76a29362e6265d94c0bd0eb176a730c7b382f3fd9391b6b"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0011-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "86feadb30e2f3f4086a0a730b8d8293eba4b6aaa5a26966c6b975167dabd8c34"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0011-m4_plan/peer.jsonl",
+    "bytes": 5676,
+    "sha256": "1be4f5a5def44404180dfb6ed96c0de3f4f0ca97277bed05440fea6c84c7461f"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0011-m4_plan/prompt.private.txt",
+    "bytes": 2696,
+    "sha256": "c26ace025222ae81b50c5891aa670ea6d8a16de123e45861aae8ff3d40695b36"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0011-m4_plan/request.private.json",
+    "bytes": 2567,
+    "sha256": "5684ec54711ba9507ee401acba37947baa7f1acba9a0d921be8b8f09be4acfd1"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0011-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "c34cb5142fc9713a1fd02a8f069debdb5d8873913b352cc994a7d02c5f9d8a05"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0011-m4_plan/response.private.json",
+    "bytes": 989,
+    "sha256": "f0b71adc4341f0f11d1f98e5483a5532eb949d3b8f7035d9d655892a53659e65"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0011-m4_plan/schema.private.json",
+    "bytes": 963,
+    "sha256": "09d6d16493c22ac9bf79a6f17964c594077d013d9b706127a2aa7d061528db4e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "7618c2cc140bbc2467d69144781f889fedc21459bae5ed5167e95aa325364612"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-private/requests.private.jsonl",
+    "bytes": 6362,
+    "sha256": "344ef7e84f7c92493164dd5548e4c82d4878c25c0b8c28bab5a6ef6fb6231dac"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "8db74e9d427772c18c7f8c3ee3b8ae1a2590c9d10d0450a55ace84b487ff9b9b"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "cbfd69199c3484281c7548386889886c3bf006f7f93a31a892fa38507ba3d2cf"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/peer.jsonl",
+    "bytes": 6369,
+    "sha256": "7e611b3c757e499432ef6873ae642217d98bdcb508f0cf127ed6486c69f99d42"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/prompt.private.txt",
+    "bytes": 3842,
+    "sha256": "ddda1ccd31cf6646ee6779a7c15247b889124aa8c046825b139fc899aac1cb3e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/request.private.json",
+    "bytes": 3713,
+    "sha256": "56ee60c8c0bdf419bb244efb24ae95a2944c207a228cc7c78c254c5bcfd2793d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/reservation.private.json",
+    "bytes": 518,
+    "sha256": "1b04a7569bf7f810619d603fa7aed7071d564af8aabd3ddd674a0228143a1976"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "ecb14da5f531454524981c96e2109d571c956ccf03bfbee3cc0deb4118b21e26"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-private/requests.private.jsonl",
+    "bytes": 6469,
+    "sha256": "93b49406ba4c8e5fccb345ea1aecb1f7a2848e7c1d03efe9301ebd3a6a79d0ad"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "f7850aad281f986542d44067f1571fb37d3d4da175f4b45b36f15327273b12c1"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0013-m5_measurement/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "2095453e65f145d87d05dbc5b77f5d097697bd88aef9c89343641a1f47608e45"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0013-m5_measurement/peer.jsonl",
+    "bytes": 6476,
+    "sha256": "d4b09f8200707aa81e7e50937db1e03e044b964553d186de929dad4f79a44e0e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0013-m5_measurement/prompt.private.txt",
+    "bytes": 3937,
+    "sha256": "0356c6cbe655d98eea059d2b5382c278e724648f4e8dfe4b70b62ba7536162bd"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0013-m5_measurement/request.private.json",
+    "bytes": 3808,
+    "sha256": "60e76415216d87407f2b8e180fe518fbed70b268297da1dc132a0f8131c1640b"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0013-m5_measurement/reservation.private.json",
+    "bytes": 518,
+    "sha256": "b6d11bddb4c9812efb595dcbcfa7aec9acfe07f5a004db04a3c3f44c35dca1e1"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0013-m5_measurement/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0013-m5_measurement/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "be57cb0a8e02d31abdaa93faf9ab6d038e5301b020d074b3fbe550fd7a5e2192"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-private/requests.private.jsonl",
+    "bytes": 6410,
+    "sha256": "59fa049799bb397c8d8196fc28c918b2170ad8c17f65749fac4a8c30957f6443"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-private/stdout.private.jsonl",
+    "bytes": 3699,
+    "sha256": "f7bcd5fff686483bf449d2fa87772c4bdd4e01ad4bfdffb58fb923b103409d8e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0014-analysis_program/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "616c5bd4866cfafc24da945961c3939d79df193b57376c9ad2a28c92c460dd37"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0014-analysis_program/peer.jsonl",
+    "bytes": 6417,
+    "sha256": "6134d6ed9429376a814475f59a268641b864c08e53243ef44ff94809c4a29282"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0014-analysis_program/prompt.private.txt",
+    "bytes": 4088,
+    "sha256": "6b9648baa52c73655f1f91ad50860b019114502bf9baa2e2c448325e143b09c2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0014-analysis_program/request.private.json",
+    "bytes": 3959,
+    "sha256": "12dd83627e8c793f845e951728105b7f9bd4cf1db834e396c0e109e5eadc14fe"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0014-analysis_program/reservation.private.json",
+    "bytes": 518,
+    "sha256": "26d34944d46425b74a0392b00f7d3447258d470e0baa3735166b23685d5965f8"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0014-analysis_program/response.private.json",
+    "bytes": 183,
+    "sha256": "1ff6f825a0ec67215c1fa6aa8a088d70786da1344b43f8ffcbac1d86fdb83ed5"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0014-analysis_program/schema.private.json",
+    "bytes": 152,
+    "sha256": "fd0c444a2e3b004a5c3232ec3ceef3017d2aefd685c0ef412e442f84f5ade689"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0015-final_answer/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0015-final_answer/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "284a388dd16d36404d8ec73b61f0814f55909c22afe7e1683bad5c51d7203d75"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0015-final_answer/native-private/requests.private.jsonl",
+    "bytes": 7898,
+    "sha256": "a2ac3835b837eeaeb6bca9d41666a83a5cd41a502547c11d7692ecf8ca9bd86d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0015-final_answer/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0015-final_answer/native-private/stdout.private.jsonl",
+    "bytes": 3732,
+    "sha256": "df4e5a20bb101f70e7116a47b4eb193aeb599269e63e8248793f954766398e2a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0015-final_answer/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "2581f6ce14e0ee718fc6d255f197867f28e76452ccfd4f3f0c67558c6e21b4ea"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0015-final_answer/peer.jsonl",
+    "bytes": 7905,
+    "sha256": "ec88cba9b4bc544d0a2e71392a638ceab7c29b77d934920a715eb3443ac4b289"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0015-final_answer/prompt.private.txt",
+    "bytes": 5261,
+    "sha256": "19e3b44e8bac2d21c6daeabd4a7bdccf1321eb0d2a6489f359f66fc7df79d394"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0015-final_answer/request.private.json",
+    "bytes": 5132,
+    "sha256": "e0ec43b6be198d652438baacc1ff2a58261059cc9ca1ef8956a9ce4f80492056"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0015-final_answer/reservation.private.json",
+    "bytes": 518,
+    "sha256": "d6ce79295be747cf6ddf9568ea9ce09084202a1447d42f1c4976ed73dad30c72"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0015-final_answer/response.private.json",
+    "bytes": 191,
+    "sha256": "dd7ac9bb7ddeaa13ca8dc5d67566f0734ae8b6e555e9f6b4123524bc8ba0bef4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0015-final_answer/schema.private.json",
+    "bytes": 380,
+    "sha256": "99a5b8ec8e592c7ca8c4c31223dc7637b403e05a7ce6567f6d42c22a437bf3d6"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "812e3df7c4911184e521f027eae332104a4f3a7d2aed0399f43a7190f16c4476"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 5669,
+    "sha256": "b646482e03fede8bdd06d814df3fecf7f8320c0ee3a969a51a12b25f492c4ae7"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 5580,
+    "sha256": "204a58a9bf9c5957e481847e451213058a79e2d5565d3e66d12187d453556311"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0016-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "da2785d8b8cb3700459c59f7de7a9db29d61c8f48f56c4b154b557eec01a05cd"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0016-m4_plan/peer.jsonl",
+    "bytes": 5676,
+    "sha256": "e7f4a88bf5919d5339f5d81509b8bcac17d2d06c58f23e492e713e6d9c1cb638"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0016-m4_plan/prompt.private.txt",
+    "bytes": 2696,
+    "sha256": "db80a25e65bf84bb943f3c22390b18c774cff58840d4a673806903afa0167b00"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0016-m4_plan/request.private.json",
+    "bytes": 2567,
+    "sha256": "d22730c2a3e2d3accf9e72cfa2febabc92b0508640960f6b7e079bd61a2ab2ca"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0016-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "8b39a45b14b060b2de0668e87c2f7b2812a47e57a095ce535caf852248a1c8cc"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0016-m4_plan/response.private.json",
+    "bytes": 989,
+    "sha256": "f0b71adc4341f0f11d1f98e5483a5532eb949d3b8f7035d9d655892a53659e65"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0016-m4_plan/schema.private.json",
+    "bytes": 963,
+    "sha256": "09d6d16493c22ac9bf79a6f17964c594077d013d9b706127a2aa7d061528db4e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "1791ca3acf930e738b3a4f97205b8f02ee2a82d7cc310765e90297819af6f01c"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-private/requests.private.jsonl",
+    "bytes": 6226,
+    "sha256": "a2060f4976f934a35f9200d00cf7545cd8b58b67a89c08401a155bc14abfa7b5"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "9c57bca9c80914992002eb50e259727ebb0f92f5e362334eb77ac5838abc4e3a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "8f048f47537839ed38ae4acff23b17702251967f021dd9031165023db342f9d1"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/peer.jsonl",
+    "bytes": 6233,
+    "sha256": "f5e8ab5e365024ff40ca023addb5711e2e1d13645a79444c189be3321a7c4938"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/prompt.private.txt",
+    "bytes": 3706,
+    "sha256": "9750eba27abea09b95e16712307958b0223ddb6d6eb07c693673b097037239dd"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/request.private.json",
+    "bytes": 3577,
+    "sha256": "e40e16327942bebcf990d8eef7f9f8ca02310de573243bc3fd7ad74bbb23284c"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/reservation.private.json",
+    "bytes": 518,
+    "sha256": "ac234a4548ef42e25bb63ad5db4805f1e6a6c27c4447d9e36c2b9e516e1b25b7"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "613da93f5a669358c500eb531b9f284f7194b32102d9d32ee7a6bdcb26ef663d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-private/requests.private.jsonl",
+    "bytes": 6231,
+    "sha256": "cff34127398608a7ba4ccbc48ccd667a22a2a3f0c7afaca131405dfcf16b214b"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "541e290134c3ba02c03673311e8750dfaf0d6646bc5777db82916e50c7369124"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0018-m5_measurement/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "5ad49fc51618dcd94d1ab474a441ed09c5a6e38f1978822927e7d20768073354"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0018-m5_measurement/peer.jsonl",
+    "bytes": 6238,
+    "sha256": "8e108ad33f2c45ad886639d23522d98fcf32d8378040f27e838b175efa530466"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0018-m5_measurement/prompt.private.txt",
+    "bytes": 3711,
+    "sha256": "3d1958b36d34ed13e751c8c47f4318126f7386e5ca6e7a47e67ce82fc0cc7c4c"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0018-m5_measurement/request.private.json",
+    "bytes": 3582,
+    "sha256": "b5194dd84b65708ccd1f5d21da00c173972abb2f941108c263db5fe4fe8a858d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0018-m5_measurement/reservation.private.json",
+    "bytes": 518,
+    "sha256": "77258e4926bad116a55a5cd0fb972a06801d32c1f7474279e9157c981343c877"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0018-m5_measurement/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0018-m5_measurement/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "ce4abcd135cd834a6743e4a66202d86f8bb017ee8bdbc99fe4a80be7fde932f9"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-private/requests.private.jsonl",
+    "bytes": 6410,
+    "sha256": "48d5c09fb8ae26049dbc9b4f239203fad992a121bc92112852bc0b54b15a8aa3"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-private/stdout.private.jsonl",
+    "bytes": 3699,
+    "sha256": "ae1cf66fce05723979ebca4148d6cb39bbedb9950a1220ab2390fc2476272aeb"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0019-analysis_program/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "3a29a2f5460e6f04925e3fdcb892786052065d9979c013f0674616ec92a9051f"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0019-analysis_program/peer.jsonl",
+    "bytes": 6417,
+    "sha256": "e87fc5221b5999670ac320f070f6ee4bf7e64128b9fa9600a04afa0010e9cb8a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0019-analysis_program/prompt.private.txt",
+    "bytes": 4088,
+    "sha256": "96b2080365bb47a82ec27c5902df13f9882abb3cc35d80aec3ddc393d68c71bd"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0019-analysis_program/request.private.json",
+    "bytes": 3959,
+    "sha256": "0803772a13b7499286608305209b2177e482da7fc1f075dd4cc1be7a404685e0"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0019-analysis_program/reservation.private.json",
+    "bytes": 518,
+    "sha256": "e4eb1ec0f3269cf144e2d12740c622abadb2de1aa635f925bdc579da42891a8a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0019-analysis_program/response.private.json",
+    "bytes": 183,
+    "sha256": "1ff6f825a0ec67215c1fa6aa8a088d70786da1344b43f8ffcbac1d86fdb83ed5"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0019-analysis_program/schema.private.json",
+    "bytes": 152,
+    "sha256": "fd0c444a2e3b004a5c3232ec3ceef3017d2aefd685c0ef412e442f84f5ade689"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0020-final_answer/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0020-final_answer/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "278d3fe3df4edabadc5151812d4bc97ba84c862b71d878cd208687da4db0aa50"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0020-final_answer/native-private/requests.private.jsonl",
+    "bytes": 7898,
+    "sha256": "9321c78b0f80d2307e42cf4b7c9c62745c91089fe2732003272badfbf650d01d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0020-final_answer/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0020-final_answer/native-private/stdout.private.jsonl",
+    "bytes": 3732,
+    "sha256": "3d2dd53069dd11debc111edc12af47c89639cf2470f5cf1a96e96173ffe37a76"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0020-final_answer/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "d119ecc4ed305fe531fc6cbcfbb4d450a913b8b44033c082156ac51ffe5a7d41"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0020-final_answer/peer.jsonl",
+    "bytes": 7905,
+    "sha256": "1964c18cd3d93d61507f44ef0612322dbbc095d50f1f14d5f2b6bd9454fe879d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0020-final_answer/prompt.private.txt",
+    "bytes": 5261,
+    "sha256": "96f24bd626867428425a048972e3f50d6f3772686e1718b787bd24901477ff1a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0020-final_answer/request.private.json",
+    "bytes": 5132,
+    "sha256": "a8d73d10ade190f7d3a605057fb540fd8166fe0072dfa70c71723b3765466610"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0020-final_answer/reservation.private.json",
+    "bytes": 518,
+    "sha256": "03bf76bd565630e580ed03f62883ddcccf51e3206b38e43358655d739c2a7cce"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0020-final_answer/response.private.json",
+    "bytes": 191,
+    "sha256": "dd7ac9bb7ddeaa13ca8dc5d67566f0734ae8b6e555e9f6b4123524bc8ba0bef4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0020-final_answer/schema.private.json",
+    "bytes": 380,
+    "sha256": "99a5b8ec8e592c7ca8c4c31223dc7637b403e05a7ce6567f6d42c22a437bf3d6"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "18d20bebdee174a7dd3e37affdd8249fea7a6ded3f7e7db7531947a4b1244954"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 5688,
+    "sha256": "e09e607487230cca791585ca17726b5422e4fa73627f5c85045839159af8ba18"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 5580,
+    "sha256": "c4530acbe4431cd161836b3e96823bb2b4828048827a72fc888d0941858449a3"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0021-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "c8ee9f72efb722daf53e9f9e6b610ebbe7c75e5457fcaafd8fca210e2e2d925b"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0021-m4_plan/peer.jsonl",
+    "bytes": 5695,
+    "sha256": "572e77f1dc5693b57387286e361c5d853d6d7fea43a5df20bc788dd5f73bcd2f"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0021-m4_plan/prompt.private.txt",
+    "bytes": 2707,
+    "sha256": "4ee96d3a3bd08a403dcf877b538ddc8b979f09eceaabb06cb560ffcc6943f1b7"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0021-m4_plan/request.private.json",
+    "bytes": 2578,
+    "sha256": "86fd6676efce4a8a76746a478d46828cf3fe1ff3f14ee8083eb96e9446d75877"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0021-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "d1781897e39dbafa68572c56f89a75b4baa9ed5d8593ba59d39969de2932103e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0021-m4_plan/response.private.json",
+    "bytes": 989,
+    "sha256": "f0b71adc4341f0f11d1f98e5483a5532eb949d3b8f7035d9d655892a53659e65"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0021-m4_plan/schema.private.json",
+    "bytes": 963,
+    "sha256": "09d6d16493c22ac9bf79a6f17964c594077d013d9b706127a2aa7d061528db4e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "2b2347f16950d906bd727e87e7bfa6e38b39b1863998e0f615935d23d10dc0ea"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-private/requests.private.jsonl",
+    "bytes": 6372,
+    "sha256": "537905ea17f7eec0d4f660ca5b87b25390590be3e06f261e10e8aa1cba073f89"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "09c174bc7aaaa0e98d58467c3d9fcafa5389ff163759f43e9639e602caf320bd"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "5884bf1110faf8cbdc42e9ea10023156fe520038facce0afc6620f58164c9a04"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/peer.jsonl",
+    "bytes": 6379,
+    "sha256": "3e42c0a07467ba25e4c9f26c786f2bbf3cb821e564c45fa0f618da142c2a3208"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/prompt.private.txt",
+    "bytes": 3844,
+    "sha256": "3bcd39ebf797fe84fc218b0ed6b4c1d73654110dd9549bc3de7b262f0efdf6a0"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/request.private.json",
+    "bytes": 3715,
+    "sha256": "abfc08889304e1d90564a6107e63e64ee5e47d0e621bd13f53d7eb6ac046fb76"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/reservation.private.json",
+    "bytes": 518,
+    "sha256": "414d6facc40c3803cfeca237b4f8b763b8331d34e3cb3d462ca62a76544ab708"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "4a21ce817c430cc5e8dec95f385dc05c0f73f514aaf6c30ae5c0255ba84382bc"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-private/requests.private.jsonl",
+    "bytes": 6479,
+    "sha256": "e29671be66058c96bb91d05ecac39c55d6a748686f723b92734c23478a33594a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "050944e051c24838aa83478b3ce589edb55b88b7e12fea4ceb9f5c96fb0f1176"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0023-m5_measurement/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "5f093bdaf1f341431327c01a2e28ed9115bfd1dc7df4ec2d634f224147c3329a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0023-m5_measurement/peer.jsonl",
+    "bytes": 6486,
+    "sha256": "d30c2a18859e6c7f840a01424467565802b4a702c782dc581a8d9cf812f6488d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0023-m5_measurement/prompt.private.txt",
+    "bytes": 3939,
+    "sha256": "7d4183f97f1eb27a9c6635eaaeed2abfb09c93f420b76e65cc67e0a82d0c56fd"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0023-m5_measurement/request.private.json",
+    "bytes": 3810,
+    "sha256": "c08d5effea4c78628ac86ae97366c73bb27ff5a60b178ef1b6fde162e77187df"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0023-m5_measurement/reservation.private.json",
+    "bytes": 518,
+    "sha256": "b4e5db77d31a1119c3c82fab20789587d829ecd91181de08c2b57bc2ae167ab8"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0023-m5_measurement/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0023-m5_measurement/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "9b06012117457770569f03ede747ba5a9e744be09eda2d4028404f56f22eb683"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-private/requests.private.jsonl",
+    "bytes": 6418,
+    "sha256": "30e95cf6ec93ca115e98e52452708eb05f84b6a3a21ae78b979051e3cc6949cb"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-private/stdout.private.jsonl",
+    "bytes": 3699,
+    "sha256": "132aa1750653619fd5dec82eea21d3f586da9db444c708ae14f14c5528470a39"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0024-analysis_program/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "702ebd4144546a93f89b53e7c577cc81f8ab71bdbf493f85d97b96cedf06e981"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0024-analysis_program/peer.jsonl",
+    "bytes": 6425,
+    "sha256": "4a58685c8f849001f48b3bd6473988ba4225c32b03df4b45cf30e16a07db3d12"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0024-analysis_program/prompt.private.txt",
+    "bytes": 4090,
+    "sha256": "8848d8cb85875a58a6b67bb9114ea6ff148f4b6bc0d425267b6f2f422048d702"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0024-analysis_program/request.private.json",
+    "bytes": 3961,
+    "sha256": "55c8607970d7ff3b6d3bfc447b3820874fc75cd56988c832c3fa9c2d0c59709e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0024-analysis_program/reservation.private.json",
+    "bytes": 518,
+    "sha256": "14de61126a8cfbfd39b004b0b71f66e116c97a16f3f6a6f0e69527aec983b06d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0024-analysis_program/response.private.json",
+    "bytes": 183,
+    "sha256": "1ff6f825a0ec67215c1fa6aa8a088d70786da1344b43f8ffcbac1d86fdb83ed5"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0024-analysis_program/schema.private.json",
+    "bytes": 152,
+    "sha256": "fd0c444a2e3b004a5c3232ec3ceef3017d2aefd685c0ef412e442f84f5ade689"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0025-final_answer/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0025-final_answer/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "34576b1e26ee31ee376cc3d33ffafe7b38676c07d4151e5bc9002b34ee9ab459"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0025-final_answer/native-private/requests.private.jsonl",
+    "bytes": 7906,
+    "sha256": "8dedbe9591f9620e0608d3e4639f2e4cc6c15ae157fc7f35c6bfd6bd46394274"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0025-final_answer/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0025-final_answer/native-private/stdout.private.jsonl",
+    "bytes": 3732,
+    "sha256": "9b14415128b97a6acee451e2e43d98f3cc640cd068f71e26d72ba591972fb01f"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0025-final_answer/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "14b64a3854e05a660dee192a0e78643649494ff338f5d9a6fb9de6cb54a16d7a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0025-final_answer/peer.jsonl",
+    "bytes": 7913,
+    "sha256": "34517f3c80b2d89500d9d6bc810f8cd8cdce0a8c9c4b387d69237672af5283d5"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0025-final_answer/prompt.private.txt",
+    "bytes": 5263,
+    "sha256": "6eb40ddc967e0cbaa4de553a656a1bb8b06ebae6e0afb9667bdd293feac82e75"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0025-final_answer/request.private.json",
+    "bytes": 5134,
+    "sha256": "5920f8f39ddc6b0ffd78c8a65fa9e10b84231cce6dfb9f75012d3f96c5c7d8a8"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0025-final_answer/reservation.private.json",
+    "bytes": 518,
+    "sha256": "9e2f32b67d72bfc55b77953c44bb1130462d32adfed6d02e1a335d23917b1b6e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0025-final_answer/response.private.json",
+    "bytes": 191,
+    "sha256": "dd7ac9bb7ddeaa13ca8dc5d67566f0734ae8b6e555e9f6b4123524bc8ba0bef4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0025-final_answer/schema.private.json",
+    "bytes": 380,
+    "sha256": "99a5b8ec8e592c7ca8c4c31223dc7637b403e05a7ce6567f6d42c22a437bf3d6"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "8509d7c12a4285f186bb91327b4522a59160a8d7843df27730d497307a0d8e5d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 5688,
+    "sha256": "60ea6db946fa4c423f178d412a8c3ba2d312989ecf99e46043f11e5501ad9cfb"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 5580,
+    "sha256": "55c6ca9d2dc6d3ef74e729bc1cef6d325d5e552bd87247c07f13203a2aa45055"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0026-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "e4d025f7a882003abf58c5644874b2680d6905ba93e14ca76bf103342a419fa6"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0026-m4_plan/peer.jsonl",
+    "bytes": 5695,
+    "sha256": "bf9b4f15bfa89f24c4e544c5e18de1cbc487853305bffaccb9b66cfdab6620e3"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0026-m4_plan/prompt.private.txt",
+    "bytes": 2707,
+    "sha256": "96eb77c42e727da2acf748dc5cbfd2587caa91815f6aa0c6f1d4f87b964396be"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0026-m4_plan/request.private.json",
+    "bytes": 2578,
+    "sha256": "645df79e070bbd61808b137f7a69a3c7003e3b413846a69145fd44637eb4892a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0026-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "1a7997c15304e5e3fe2e763f661bd0b69ac8113ac3b039bde60724c1148df4f2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0026-m4_plan/response.private.json",
+    "bytes": 989,
+    "sha256": "f0b71adc4341f0f11d1f98e5483a5532eb949d3b8f7035d9d655892a53659e65"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0026-m4_plan/schema.private.json",
+    "bytes": 963,
+    "sha256": "09d6d16493c22ac9bf79a6f17964c594077d013d9b706127a2aa7d061528db4e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "ad2bb2ddbcc6435d140a1c0f9439c1af888f3005148db06369ad2ebf486429be"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-private/requests.private.jsonl",
+    "bytes": 6236,
+    "sha256": "a0790e5b003aec8d424f3ce815df3a0f65906c31f454a2e214b0f306efdc8617"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "48d990064897a52b503b7a51e7c04b048e6159a46197fa60d44c9e1132739505"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "28ef646da01da709315db5bbb576b47b69e075d480243bf8c576155af1cc1f0b"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/peer.jsonl",
+    "bytes": 6243,
+    "sha256": "c6cf78aa252970ab6aeb81228c3d6c96a7802a10971a02db1e0f7bfa113fd435"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/prompt.private.txt",
+    "bytes": 3708,
+    "sha256": "58b459432f6bca13c1a6aa4eb5f675c65133c68229dce0f13e6483df4e078e00"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/request.private.json",
+    "bytes": 3579,
+    "sha256": "2427a44185f9c6e9ff19ddd2b71325bd79de798646b31a054a34bcd9746486aa"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/reservation.private.json",
+    "bytes": 518,
+    "sha256": "a66f0fb15c7c592a5f5942d500064d542c1ce9760a3c87e6cfbbf021393d8d24"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "b9e78d1807264cc26aac1d32adc55bc10337a39bda7b4129fc4ff5a7d913065c"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-private/requests.private.jsonl",
+    "bytes": 6241,
+    "sha256": "e280ab13f207ef463a938d80206e83044c71ff8fd2f8ae8d1f35e3b4e2d0c82d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "5935029d661f37a3db7093d66087a8fbb701ee4ca6607a3ba224064d386817a3"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0028-m5_measurement/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "b2b2c21901c95ac8edd3788ca3f7772cfeb60567b0c145ac85f8b39f1d78d6b4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0028-m5_measurement/peer.jsonl",
+    "bytes": 6248,
+    "sha256": "a3ecb8ed50b15a2112000e5f740ed12d1d4277711ffb9a55ff99feb09c232aa9"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0028-m5_measurement/prompt.private.txt",
+    "bytes": 3713,
+    "sha256": "e92322b7d07528595e2c105cc75acef65e8173219bf1b777ef84e8f8c79b7b67"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0028-m5_measurement/request.private.json",
+    "bytes": 3584,
+    "sha256": "9411cea22fe963a3d526ffdd9bb72512af1a881726eede0742f4a59030ed35df"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0028-m5_measurement/reservation.private.json",
+    "bytes": 518,
+    "sha256": "63658049377adc2fa80725893dbeaf9ad628419772f37bfded8332b4fa4e0cae"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0028-m5_measurement/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0028-m5_measurement/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "f99fd0fb692062b7cf899795ec5d327ffa00917dc2e09ebbc30aabca5163f014"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-private/requests.private.jsonl",
+    "bytes": 6418,
+    "sha256": "aed7df42b81b386c0ac5c778ddfaf4fac6a41741409c6bab7fc7b8483ed499de"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-private/stdout.private.jsonl",
+    "bytes": 3699,
+    "sha256": "01eea116c875eec872b8b21b9088c7f7be8ff7809cf03accb2f71de1a45e3ec7"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0029-analysis_program/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "21fb74be90ee544b712b75571b96a7125f17ca8a43aade15d479009a1009fd9d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0029-analysis_program/peer.jsonl",
+    "bytes": 6425,
+    "sha256": "072b009a3d13e3030db782253353723d0e00c629656be78c42b65f905a047640"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0029-analysis_program/prompt.private.txt",
+    "bytes": 4090,
+    "sha256": "bc751958d646ad578d0457556c8bf00c3e2e0743465692c449df26d3212b8702"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0029-analysis_program/request.private.json",
+    "bytes": 3961,
+    "sha256": "58a6de38e41d23f7d04262ca980e9840016e00434a0b1642d4e69aa555658033"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0029-analysis_program/reservation.private.json",
+    "bytes": 518,
+    "sha256": "71e6e92bd7e9cac8cead0739a3d1e672c092fbeec1b9be0da24715d232bbde51"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0029-analysis_program/response.private.json",
+    "bytes": 183,
+    "sha256": "1ff6f825a0ec67215c1fa6aa8a088d70786da1344b43f8ffcbac1d86fdb83ed5"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0029-analysis_program/schema.private.json",
+    "bytes": 152,
+    "sha256": "fd0c444a2e3b004a5c3232ec3ceef3017d2aefd685c0ef412e442f84f5ade689"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0030-final_answer/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0030-final_answer/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "796f9656a87e9e071af60a74b08fc4e4db280e8c930754fca0232bb0f654b931"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0030-final_answer/native-private/requests.private.jsonl",
+    "bytes": 7906,
+    "sha256": "917465199bff6f452bb1e8954deea5031d77a3a0a7281f146036d50ad0b863db"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0030-final_answer/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0030-final_answer/native-private/stdout.private.jsonl",
+    "bytes": 3732,
+    "sha256": "5fd2a4874e08e8285c50bdd8a25f776422a5e915a4f058c8400d885606b4f322"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0030-final_answer/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "cdc14893d0d1cddcbb53d982701b2828ae50783e49016fecd21fae8146babfe9"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0030-final_answer/peer.jsonl",
+    "bytes": 7913,
+    "sha256": "7a085f0371e5dc4cfc3d771de2e47e91469c4884fbe3f2151335bb1a52b31408"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0030-final_answer/prompt.private.txt",
+    "bytes": 5263,
+    "sha256": "efe6e33bd9fe16633f9732a2754d7d8e13d6710d45cc966deee74d9d705a85e3"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0030-final_answer/request.private.json",
+    "bytes": 5134,
+    "sha256": "9c33815dff92f3b7dae569bae3b71a9c1c2d46b653ca4d6304403f070d1e3cf4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0030-final_answer/reservation.private.json",
+    "bytes": 518,
+    "sha256": "d62b9fa3789092b0c319605875044d5735b1aaa1d9aebbd53cf4df0675bb8c0d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0030-final_answer/response.private.json",
+    "bytes": 191,
+    "sha256": "dd7ac9bb7ddeaa13ca8dc5d67566f0734ae8b6e555e9f6b4123524bc8ba0bef4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0030-final_answer/schema.private.json",
+    "bytes": 380,
+    "sha256": "99a5b8ec8e592c7ca8c4c31223dc7637b403e05a7ce6567f6d42c22a437bf3d6"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0031-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0031-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "6e382f700688bbde776c043075d1d652b73d61bc9558ae4e06a11d0d7c79e363"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0031-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 5679,
+    "sha256": "e1083d99b8f2b4755f01db1f764fab0446eadb00cd8d0a7bc32b7e5d70687109"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0031-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0031-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 5580,
+    "sha256": "dffb68bb1b9a647f99112ca397a22699153d8db3d87c96da1f57125f37059080"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0031-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "daa1e326bc426e617f128d84962ca20185325a20b00b56b12703bbe02495bded"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0031-m4_plan/peer.jsonl",
+    "bytes": 5686,
+    "sha256": "fe8ff78f55bcf6e67569421bfda92cf1931d79be7a6cdc62ca473058dcf5df7a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0031-m4_plan/prompt.private.txt",
+    "bytes": 2698,
+    "sha256": "1d166075b4546a70c7f4843ea6eb7c81727a4f01e01f4bc8dec9e53ec0f54270"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0031-m4_plan/request.private.json",
+    "bytes": 2569,
+    "sha256": "e2bef2c1635d8b2fcfd2af335f6d09a1f8b1e111c049ab634e6866c49671a288"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0031-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "8a17783e16fb5c19d647dddc3205eb196eae2502dc5353071e96ce349e19c376"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0031-m4_plan/response.private.json",
+    "bytes": 989,
+    "sha256": "f0b71adc4341f0f11d1f98e5483a5532eb949d3b8f7035d9d655892a53659e65"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0031-m4_plan/schema.private.json",
+    "bytes": 963,
+    "sha256": "09d6d16493c22ac9bf79a6f17964c594077d013d9b706127a2aa7d061528db4e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0032-m5_mechanism/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0032-m5_mechanism/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "5fd06cda5426c3943f56c339e4f464434ee9b88f4bb715b684a0c0f5979c5c5c"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0032-m5_mechanism/native-private/requests.private.jsonl",
+    "bytes": 6372,
+    "sha256": "579dc15f95bc1fb3c0e122dc8b41a52cd1fbae2436349dc1e683a025132fb0ae"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0032-m5_mechanism/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0032-m5_mechanism/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "0758f367e0ec79831f21d0c9683b3d324861722efc57b2fa3a137caa3a7de62e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0032-m5_mechanism/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "7130e42cf0e06b741c1f1997ae00e0d2ee1c16e268da1239170c4b58b92ac98e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0032-m5_mechanism/peer.jsonl",
+    "bytes": 6379,
+    "sha256": "8dc4ab2e5ec7e8b022e867e4fabaf0015b35184444d7ff476dc6cd252afb1588"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0032-m5_mechanism/prompt.private.txt",
+    "bytes": 3844,
+    "sha256": "a1a0d00869a055a98185ce8113d79d80e8f455f1809f66bad181f3cd388fc86e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0032-m5_mechanism/request.private.json",
+    "bytes": 3715,
+    "sha256": "a0e0e05c37b72a6c017370ced088b9803c56c02d2f4ab9177bdcae01a700bc13"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0032-m5_mechanism/reservation.private.json",
+    "bytes": 518,
+    "sha256": "9eb8a6acabb5b653f831d55ff3f7b2642c075d491a0a003857e57385e8a69c85"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0032-m5_mechanism/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0032-m5_mechanism/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0033-m5_measurement/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0033-m5_measurement/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "8aefa72cc032d2ec95ee3d004dfb8de79b19b6549e956428aa9c817252c9873d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0033-m5_measurement/native-private/requests.private.jsonl",
+    "bytes": 6479,
+    "sha256": "aeb3a17e1b707cd28cdeff76a21810eb6484b8cf29fe46ba26f2d9205c2ce29e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0033-m5_measurement/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0033-m5_measurement/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "f192eb693cf27b5d76dd1903845951b09b9e4352a3322b4817ab04a063dad46e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0033-m5_measurement/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "a71ec4e1688d8236c83ac43310c89768a0bb70695f5c3847c711809521668e91"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0033-m5_measurement/peer.jsonl",
+    "bytes": 6486,
+    "sha256": "8dcb8d11b96c5c9ab825a075092694621eb070b6c2a752929d1475e71c77da61"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0033-m5_measurement/prompt.private.txt",
+    "bytes": 3939,
+    "sha256": "7569c84ee85f7327d74010e892e1b7e31643934778b96e480af8d8ab535229ee"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0033-m5_measurement/request.private.json",
+    "bytes": 3810,
+    "sha256": "807996c7f4411643bd9ce4596eca9c742f879d60534f5b56ff8902f8af3d9b43"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0033-m5_measurement/reservation.private.json",
+    "bytes": 518,
+    "sha256": "0f190de7c3e3c7b0577c12f6b9125d125c294c2bb239c0a80e96ea5a5c043219"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0033-m5_measurement/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0033-m5_measurement/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0034-analysis_program/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0034-analysis_program/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "b15d2d82ed58b530ac4669a8420312824d0592201bfac5d2d2d655db73608eac"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0034-analysis_program/native-private/requests.private.jsonl",
+    "bytes": 6418,
+    "sha256": "6f0ddad9bb2a473cacf7b389e5e9a7664667b408a3dce3f8aa77cb1b7e4fec61"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0034-analysis_program/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0034-analysis_program/native-private/stdout.private.jsonl",
+    "bytes": 3699,
+    "sha256": "0fc1da08f6deedf8e7587e8c496ae6b1608716be333a1b69779288502b36a949"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0034-analysis_program/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "c40faa42162274597f65fe57699ad3d7df5d1812a8f534336d7c58e842ec84aa"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0034-analysis_program/peer.jsonl",
+    "bytes": 6425,
+    "sha256": "208e644202bfef68f515657f60e866af260f3efa4a51955e8abf7d5d7e198c96"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0034-analysis_program/prompt.private.txt",
+    "bytes": 4090,
+    "sha256": "4cf6bfe7e81c7d14a5abdd835240ac6ca2f65a0bd32505a69747c6f5baaf2335"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0034-analysis_program/request.private.json",
+    "bytes": 3961,
+    "sha256": "3d0d2208e1a969f62e707bbcb68f3f983674fcc9388911c8b9530e800429e113"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0034-analysis_program/reservation.private.json",
+    "bytes": 518,
+    "sha256": "6f7e7df0aba284eb4f36ba3bf63ed321a2c150ecb25a298d6b8181521f0bd3ce"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0034-analysis_program/response.private.json",
+    "bytes": 183,
+    "sha256": "1ff6f825a0ec67215c1fa6aa8a088d70786da1344b43f8ffcbac1d86fdb83ed5"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0034-analysis_program/schema.private.json",
+    "bytes": 152,
+    "sha256": "fd0c444a2e3b004a5c3232ec3ceef3017d2aefd685c0ef412e442f84f5ade689"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0035-final_answer/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0035-final_answer/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "60f6906a3d3d88001461e08006232a28dab148102fd1cb0a8bbc026269d3b241"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0035-final_answer/native-private/requests.private.jsonl",
+    "bytes": 7906,
+    "sha256": "d1bcf0ba349de46560f5ac37c3882d3df814c6380c8ab39e9b613d234951e29b"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0035-final_answer/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0035-final_answer/native-private/stdout.private.jsonl",
+    "bytes": 3732,
+    "sha256": "390d13c1f06f0224259d7c7de9e18063f68c960fcc9e4bb2a33394b8b871c277"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0035-final_answer/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "b3b0030e9a4bc4ffa8fc995e7879e729f316bb68c380ef9d923d4a8eeb32c613"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0035-final_answer/peer.jsonl",
+    "bytes": 7913,
+    "sha256": "c1d4c3dcdfcfdd224dd11eed3c1eaf55a6c0fb251f125f2184a31caec7badd10"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0035-final_answer/prompt.private.txt",
+    "bytes": 5263,
+    "sha256": "62916a4bcc654101f8d8321d4deabf460f6025a0c8c597be1139d3958c940e51"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0035-final_answer/request.private.json",
+    "bytes": 5134,
+    "sha256": "e9bba5bf49d46b75fed60335195f2dba583cb464e738b24911a1e35f6bdfc19e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0035-final_answer/reservation.private.json",
+    "bytes": 518,
+    "sha256": "73adcea5cbf750b6b159dff047b6fb9209710e66bf07875c009bf8bea6bb67eb"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0035-final_answer/response.private.json",
+    "bytes": 191,
+    "sha256": "dd7ac9bb7ddeaa13ca8dc5d67566f0734ae8b6e555e9f6b4123524bc8ba0bef4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0035-final_answer/schema.private.json",
+    "bytes": 380,
+    "sha256": "99a5b8ec8e592c7ca8c4c31223dc7637b403e05a7ce6567f6d42c22a437bf3d6"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0036-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0036-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "5cb64c9419ada0a2ac5f1df4f983ae199e2e86cb22a4a12940cca475fac1ae58"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0036-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 5679,
+    "sha256": "f7637fa2aef9e446e560f7d820cdacbede691b9109920ca7fa41de3b4cdcc507"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0036-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0036-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 5580,
+    "sha256": "cf0adeefb91958d475fde36ce5b0c9ea35ea5d727c815fd465d21625743c785e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0036-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "a7a420678878c781980eb1f6a6f6973b662c1a4a8ef7172e604ea71266f0bb9a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0036-m4_plan/peer.jsonl",
+    "bytes": 5686,
+    "sha256": "f9c73b8e2ba9cb62c6f6562549a9aeb6efab90fbae52377dffccaebbfd827156"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0036-m4_plan/prompt.private.txt",
+    "bytes": 2698,
+    "sha256": "5166f15c846f2fb753f00cd005708c359d2ae528f94d9fa72495b8614eae7e60"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0036-m4_plan/request.private.json",
+    "bytes": 2569,
+    "sha256": "d57f27e2bef3cc0bed32ae987797ed1576e93dfe9becc6ae18e1cad4fa919829"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0036-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "5dbaa50b0a2b2672965737737a436b7f4d95e00dfeffc3420cb17073cd3ce352"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0036-m4_plan/response.private.json",
+    "bytes": 989,
+    "sha256": "f0b71adc4341f0f11d1f98e5483a5532eb949d3b8f7035d9d655892a53659e65"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0036-m4_plan/schema.private.json",
+    "bytes": 963,
+    "sha256": "09d6d16493c22ac9bf79a6f17964c594077d013d9b706127a2aa7d061528db4e"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0037-m5_mechanism/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0037-m5_mechanism/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "a1b8c10d5a9168d83d9775069f57cc66c738129b7eb8dc2b09575b4856365688"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0037-m5_mechanism/native-private/requests.private.jsonl",
+    "bytes": 6236,
+    "sha256": "41180f368f1d66cf5913a4c46db598ad202116d1d75bbf558abd06be03d873c2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0037-m5_mechanism/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0037-m5_mechanism/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "5d18c74cd6c81c98a5d38b0ce5c45581a0e48651b8afa29a9017a8404f297211"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0037-m5_mechanism/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "cbd8027c3930a9c3e4ca1a7f5b4b7bd6edb94fa6b7a013c0a3110a744e878009"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0037-m5_mechanism/peer.jsonl",
+    "bytes": 6243,
+    "sha256": "0ecfc7b311c90f97ee3bfef3e353d68c26e56c1c913a4848c66d9de57bf458dd"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0037-m5_mechanism/prompt.private.txt",
+    "bytes": 3708,
+    "sha256": "0faf0bde8cddd48cd53c7aa1ab33b80f9dd0a92c39b60b17c101cc56e0fe14a2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0037-m5_mechanism/request.private.json",
+    "bytes": 3579,
+    "sha256": "3101079ba98c2ac6a3d3d924bebb399944a0830c94e307b3093357661e9febbd"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0037-m5_mechanism/reservation.private.json",
+    "bytes": 518,
+    "sha256": "2dd8f815f941e8606b8c297be4097269dd78b64944350179ec72feaa6d25c8e2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0037-m5_mechanism/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0037-m5_mechanism/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0038-m5_measurement/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0038-m5_measurement/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "04667ae5194badb9c467faac38f9c940f40134ef4e90b92e8170d6118b538682"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0038-m5_measurement/native-private/requests.private.jsonl",
+    "bytes": 6241,
+    "sha256": "df3c1efd4483b9d7b5eeec7ce50e0677a370be6985c6595f951c3705a0c960e4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0038-m5_measurement/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0038-m5_measurement/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "1285b9e01e5383e171bc41c6e5ad212aa7d19c89eb355dc1dc69741e2fca44a2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0038-m5_measurement/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "d30b0f529227667c55bcaa868233dc62bb2bb857ed165734cacbb1d6dd929ab7"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0038-m5_measurement/peer.jsonl",
+    "bytes": 6248,
+    "sha256": "b10845a4f2b797b07d9ab02743233bcd1b0845e18950930c90336cb6a57cb9c6"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0038-m5_measurement/prompt.private.txt",
+    "bytes": 3713,
+    "sha256": "ca395c8e4ef5a3b5dd5e106e99e1664c9390532c77aa03968f3d66e6361329a7"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0038-m5_measurement/request.private.json",
+    "bytes": 3584,
+    "sha256": "3c6d35153774eb05c911112f4ff8c656828542a09e563c2ef68f09b8049bbbbf"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0038-m5_measurement/reservation.private.json",
+    "bytes": 518,
+    "sha256": "745ce047e01747d88fbcde9cde74b28c49dfcb6f64d621d828312863a31faa12"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0038-m5_measurement/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0038-m5_measurement/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0039-analysis_program/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0039-analysis_program/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "e9d8d3f1e33fc685641680765bbc985c4dd22aefbc5065b2dbccff86cf256c3f"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0039-analysis_program/native-private/requests.private.jsonl",
+    "bytes": 6418,
+    "sha256": "6e8aef6d74a7d275c018ffd18dbcd19d6782f2d12137eb68aaaa07a4f91ffbf1"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0039-analysis_program/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0039-analysis_program/native-private/stdout.private.jsonl",
+    "bytes": 3699,
+    "sha256": "a7d970843d2ef7a145af089289c680b4a2a0ef0efc8a04aaf1b6d69814aa10c2"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0039-analysis_program/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "3f044a4d7c4533a5096c4bea3e1566b235e1c6efc4709807ae43c41d01c21e1b"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0039-analysis_program/peer.jsonl",
+    "bytes": 6425,
+    "sha256": "c8e4e1f05d2013ba965a3c75554a6dd17ca80af7a2f3b52a95cd7cde643f85e4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0039-analysis_program/prompt.private.txt",
+    "bytes": 4090,
+    "sha256": "99822bdbd7562b0eabcc4b7401383ee7183ebd6a4f50024a97e21a84fa39be40"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0039-analysis_program/request.private.json",
+    "bytes": 3961,
+    "sha256": "35faca4e54ec4f3b346fef4335e5624f8f8c9b36cb76354c146ebc791f1b217d"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0039-analysis_program/reservation.private.json",
+    "bytes": 518,
+    "sha256": "b8418abba68bdc100f18287628c94c85b2c4a4df9afbfda57b4ab7d8c639ee2f"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0039-analysis_program/response.private.json",
+    "bytes": 183,
+    "sha256": "1ff6f825a0ec67215c1fa6aa8a088d70786da1344b43f8ffcbac1d86fdb83ed5"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0039-analysis_program/schema.private.json",
+    "bytes": 152,
+    "sha256": "fd0c444a2e3b004a5c3232ec3ceef3017d2aefd685c0ef412e442f84f5ade689"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0040-final_answer/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0040-final_answer/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "6f6211c813eca0593705e4ccab73747381f3f25b590af607fe869f3807cb2b9a"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0040-final_answer/native-private/requests.private.jsonl",
+    "bytes": 7906,
+    "sha256": "d2b9c62ce87eb442c03da5a7c2145dfcac9ba96d9fe35030a488c5f6d8dc3278"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0040-final_answer/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0040-final_answer/native-private/stdout.private.jsonl",
+    "bytes": 3732,
+    "sha256": "46ea334df421c2e7a2f3583badbcacfd5366d54969f4d2e1ca95dcbc493ebbb6"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0040-final_answer/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "ef369b41b6efd32638630e7c376f8da9bf6b716317446342eef2c036def92015"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0040-final_answer/peer.jsonl",
+    "bytes": 7913,
+    "sha256": "dad0649f7bb9d7a8d8cff55407011724a6859465628c740deab86d7bb5d1cec8"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0040-final_answer/prompt.private.txt",
+    "bytes": 5263,
+    "sha256": "542f1da7fd0f0e4c7a51a45ff9efce6aaf9342e598470768ba421b4fb65236d4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0040-final_answer/request.private.json",
+    "bytes": 5134,
+    "sha256": "937fd4958d497528fbe8bdc8b1f790299a291111f8fb83046ca72469a3eb4137"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0040-final_answer/reservation.private.json",
+    "bytes": 518,
+    "sha256": "36a053a72f18a96711434439c813bd32cf8cbc2bab337ee0ed7d19705473a478"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0040-final_answer/response.private.json",
+    "bytes": 191,
+    "sha256": "dd7ac9bb7ddeaa13ca8dc5d67566f0734ae8b6e555e9f6b4123524bc8ba0bef4"
+  },
+  {
+    "path": "complete-panel/native-ledger/calls/0040-final_answer/schema.private.json",
+    "bytes": 380,
+    "sha256": "99a5b8ec8e592c7ca8c4c31223dc7637b403e05a7ce6567f6d42c22a437bf3d6"
+  },
+  {
+    "path": "complete-panel/native-ledger/ledger.json",
+    "bytes": 121845,
+    "sha256": "81667744cc831310b0d2603f3d6a1136edcaa526adb0b91535f3e22aa004a79c"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/2a5658c22d5996569433a09f52d4aaff05984c48e50c18efe95c1d57186f66c6/analysis-1.py",
+    "bytes": 142,
+    "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/2a5658c22d5996569433a09f52d4aaff05984c48e50c18efe95c1d57186f66c6/claims.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/2a5658c22d5996569433a09f52d4aaff05984c48e50c18efe95c1d57186f66c6/evidence.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/2a5658c22d5996569433a09f52d4aaff05984c48e50c18efe95c1d57186f66c6/predictions.jsonl",
+    "bytes": 1413,
+    "sha256": "1792136541055c1bfba9cf43a25b61c625760497124b129dbb95d3b868ceb84f"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/2a5658c22d5996569433a09f52d4aaff05984c48e50c18efe95c1d57186f66c6/reviews.jsonl",
+    "bytes": 2218,
+    "sha256": "6f4e3e7b9a4f117cd02e4d90b7af41baa948a6efbe3889710519df442641cd1c"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/2a5658c22d5996569433a09f52d4aaff05984c48e50c18efe95c1d57186f66c6/trace.jsonl",
+    "bytes": 35308,
+    "sha256": "54d56e75e61ce04551e34fead848b9b1fee4e4ca43c07c6d8fdf4f10fc0eaae1"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/5a6f06149c941d072b93723583a0cfddf2c4ce2412736c19172a199290def0e5/analysis-1.py",
+    "bytes": 142,
+    "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/5a6f06149c941d072b93723583a0cfddf2c4ce2412736c19172a199290def0e5/claims.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/5a6f06149c941d072b93723583a0cfddf2c4ce2412736c19172a199290def0e5/evidence.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/5a6f06149c941d072b93723583a0cfddf2c4ce2412736c19172a199290def0e5/predictions.jsonl",
+    "bytes": 1393,
+    "sha256": "ec6ca3178074e0796498402c12d2d33f47225809de1e74f50aab3187befe7fed"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/5a6f06149c941d072b93723583a0cfddf2c4ce2412736c19172a199290def0e5/reviews.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/5a6f06149c941d072b93723583a0cfddf2c4ce2412736c19172a199290def0e5/trace.jsonl",
+    "bytes": 34561,
+    "sha256": "786c39141c5f5b709e7d82ca42846eab378499be76a1e496d3287c43a5dd140a"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/74676809d2181f4ad94475d0e217181586b112cb6deeb19f47b4278ccef248e3/analysis-1.py",
+    "bytes": 142,
+    "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/74676809d2181f4ad94475d0e217181586b112cb6deeb19f47b4278ccef248e3/claims.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/74676809d2181f4ad94475d0e217181586b112cb6deeb19f47b4278ccef248e3/evidence.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/74676809d2181f4ad94475d0e217181586b112cb6deeb19f47b4278ccef248e3/predictions.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/74676809d2181f4ad94475d0e217181586b112cb6deeb19f47b4278ccef248e3/reviews.jsonl",
+    "bytes": 2158,
+    "sha256": "888d241b2baafcd2cd757e757c649916e1708f994059dba4af86c5991f48359d"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/74676809d2181f4ad94475d0e217181586b112cb6deeb19f47b4278ccef248e3/trace.jsonl",
+    "bytes": 33989,
+    "sha256": "75546da919ec7e731a2a8548464440c7777678e267f7710d48fa4e4213556111"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/aa61584a228b91ef373241316c78d47c91da73fae5b4ccaa4578963ac58cbf5d/analysis-1.py",
+    "bytes": 142,
+    "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/aa61584a228b91ef373241316c78d47c91da73fae5b4ccaa4578963ac58cbf5d/claims.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/aa61584a228b91ef373241316c78d47c91da73fae5b4ccaa4578963ac58cbf5d/evidence.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/aa61584a228b91ef373241316c78d47c91da73fae5b4ccaa4578963ac58cbf5d/predictions.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/aa61584a228b91ef373241316c78d47c91da73fae5b4ccaa4578963ac58cbf5d/reviews.jsonl",
+    "bytes": 2218,
+    "sha256": "6f4e3e7b9a4f117cd02e4d90b7af41baa948a6efbe3889710519df442641cd1c"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/aa61584a228b91ef373241316c78d47c91da73fae5b4ccaa4578963ac58cbf5d/trace.jsonl",
+    "bytes": 34059,
+    "sha256": "7f9b32e357986f564cf87400ae8bd391144e940cc8232a507fe54942761137ef"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/c2ea3dc13d8e23597e406b54c78223f41040df18e495a5a035d57a9c4f4398f7/analysis-1.py",
+    "bytes": 142,
+    "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/c2ea3dc13d8e23597e406b54c78223f41040df18e495a5a035d57a9c4f4398f7/claims.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/c2ea3dc13d8e23597e406b54c78223f41040df18e495a5a035d57a9c4f4398f7/evidence.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/c2ea3dc13d8e23597e406b54c78223f41040df18e495a5a035d57a9c4f4398f7/predictions.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/c2ea3dc13d8e23597e406b54c78223f41040df18e495a5a035d57a9c4f4398f7/reviews.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/c2ea3dc13d8e23597e406b54c78223f41040df18e495a5a035d57a9c4f4398f7/trace.jsonl",
+    "bytes": 33383,
+    "sha256": "a4f53728a6cbb6e7119a1bd7a801e56f64f1dee7486af9f64f8b468c99c84557"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/df82fd0ec8b2d699c42361e1580cef5a0c614b654275f705b9f3705b133a11f6/analysis-1.py",
+    "bytes": 142,
+    "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/df82fd0ec8b2d699c42361e1580cef5a0c614b654275f705b9f3705b133a11f6/claims.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/df82fd0ec8b2d699c42361e1580cef5a0c614b654275f705b9f3705b133a11f6/evidence.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/df82fd0ec8b2d699c42361e1580cef5a0c614b654275f705b9f3705b133a11f6/predictions.jsonl",
+    "bytes": 1393,
+    "sha256": "ec6ca3178074e0796498402c12d2d33f47225809de1e74f50aab3187befe7fed"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/df82fd0ec8b2d699c42361e1580cef5a0c614b654275f705b9f3705b133a11f6/reviews.jsonl",
+    "bytes": 2158,
+    "sha256": "888d241b2baafcd2cd757e757c649916e1708f994059dba4af86c5991f48359d"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/df82fd0ec8b2d699c42361e1580cef5a0c614b654275f705b9f3705b133a11f6/trace.jsonl",
+    "bytes": 35238,
+    "sha256": "13f3e39d7753dc1e42ec758ef0a66ba4d7f1cee9e26b8b3791adb114b5b930d2"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/e4a91497c10fd99ec1edcf3faa1cc8c86051abbfe23bba9b40661399d106fdc0/analysis-1.py",
+    "bytes": 142,
+    "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/e4a91497c10fd99ec1edcf3faa1cc8c86051abbfe23bba9b40661399d106fdc0/claims.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/e4a91497c10fd99ec1edcf3faa1cc8c86051abbfe23bba9b40661399d106fdc0/evidence.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/e4a91497c10fd99ec1edcf3faa1cc8c86051abbfe23bba9b40661399d106fdc0/predictions.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/e4a91497c10fd99ec1edcf3faa1cc8c86051abbfe23bba9b40661399d106fdc0/reviews.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/e4a91497c10fd99ec1edcf3faa1cc8c86051abbfe23bba9b40661399d106fdc0/trace.jsonl",
+    "bytes": 33313,
+    "sha256": "56fec3ede405854b75fc9574ab06669775e95b6cc955e5789e80ecba8af4b8a3"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/ee41104b09a4a30949715fec0693042707996ea166ed83bf43e9236dc715e52f/analysis-1.py",
+    "bytes": 142,
+    "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/ee41104b09a4a30949715fec0693042707996ea166ed83bf43e9236dc715e52f/claims.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/ee41104b09a4a30949715fec0693042707996ea166ed83bf43e9236dc715e52f/evidence.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/ee41104b09a4a30949715fec0693042707996ea166ed83bf43e9236dc715e52f/predictions.jsonl",
+    "bytes": 1413,
+    "sha256": "1792136541055c1bfba9cf43a25b61c625760497124b129dbb95d3b868ceb84f"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/ee41104b09a4a30949715fec0693042707996ea166ed83bf43e9236dc715e52f/reviews.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "complete-panel/run-v4/cells/ee41104b09a4a30949715fec0693042707996ea166ed83bf43e9236dc715e52f/trace.jsonl",
+    "bytes": 34633,
+    "sha256": "78b9a17580d21a6c6bbe207f18ed839e72f767020ceabb671823b5fce938a065"
+  },
+  {
+    "path": "complete-panel/run-v4/controller-attempt.json",
+    "bytes": 76822,
+    "sha256": "43eca9ca96406772175acb5c90651d04856f9b71fc68c96795caa18f5eaf30f5"
+  },
+  {
+    "path": "complete-panel/run-v4/controller-receipt.json",
+    "bytes": 5610,
+    "sha256": "f35b66dec26d45b77c0fb0f809b326d5e73f771847fc49c931814aeea5143911"
+  },
+  {
+    "path": "complete-panel/run-v4/panel.json",
+    "bytes": 10137,
+    "sha256": "008939fbbfffacc6a35ae5926e864ab0067048b4eef459cefd146ae00498cf0b"
+  },
+  {
+    "path": "complete-panel/synthetic-grok.exe",
+    "bytes": 34,
+    "sha256": "a3315676c7eef4e36782da6119eb29ed18ffd79df30e95ec1c1cf1f66e5a445c"
+  },
+  {
+    "path": "complete-panel/worker-0.jsonl",
+    "bytes": 21872,
+    "sha256": "0ff9e90dea194c636089419303c4cc934e3fc42c2a40c8ef79e71f7a2303242a"
+  },
+  {
+    "path": "final-check/closure.json",
+    "bytes": 71239,
+    "sha256": "6b42a7927e6e2e13ec66a64b7e3ba545c1bb2c1e94d437301323da4a833ab2b4"
+  },
+  {
+    "path": "final-check/command.json",
+    "bytes": 684,
+    "sha256": "9d6f0faf0fc8d2286948253a4bf8253aef29560dbd76e955a0018ba2a850920c"
+  },
+  {
+    "path": "final-check/junit.xml",
+    "bytes": 10274,
+    "sha256": "341f8ecbca210da6627d4ad3d0d44ebd07d8d2cf1615904f7fc4350d95338522"
+  },
+  {
+    "path": "final-check/source-before.json",
+    "bytes": 70878,
+    "sha256": "a313300cf007b4faae23a8586be2045d8a5248da406dfe46d36438c117d6ca23"
+  },
+  {
+    "path": "final-check/stdout.txt",
+    "bytes": 275,
+    "sha256": "4442dee31df1b2759e8c2315a2ecee3412005ea6b4cc06f117e71002aa06c681"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "fd7398e7bc80410e2c92dcc69746192c08d2fc7c71936dc0010d09bf32686209"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 1889,
+    "sha256": "9b9fab156ec965e9e41fba6cf35a17aa17abee12efbb1f894135e954100d34b0"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 3342,
+    "sha256": "79cc6e47c33bc37ba2a1eb85f8ef9f35e3e8b8da55fadf7e38426359a8b525e1"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "321847c0327ec6b81c03466196e91b8b60b46aef9b95b6d006427c0fb337421e"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/peer.jsonl",
+    "bytes": 2260,
+    "sha256": "95acc63cc9358eb12057ed047941ce49ffee91d6619e7e0222f3aacd0a3f8e28"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+    "bytes": 368,
+    "sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/request.private.json",
+    "bytes": 239,
+    "sha256": "1b2042ad428d19fc4d82dff8302bcdd5c4bee00abd629303dbba6c2e60dd66cb"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "f97c0d0c7d7df6b4b111cc5c0a2fcabe7c42dd6700ed0311aea185704009d539"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/response.private.json",
+    "bytes": 11,
+    "sha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/schema.private.json",
+    "bytes": 103,
+    "sha256": "4528a3c79c4aaee242a31e586366657f8e9a3f11cc8d2cb040d9bf61ab1bbb63"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut0/native-ledger/ledger.json",
+    "bytes": 4706,
+    "sha256": "fbd17f78284fca48144e53c13b118207ce1929196719a90f9ea80bc1ecdfd7e1"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3838,
+    "sha256": "319ce25c1c27ed916b7c407e21ca9c3e3b8b539c8971c82f36f39d8c5928da78"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 1889,
+    "sha256": "b53ef3eefa89addf2db72ba813097ba9810b72d7fbd96c76824ffc747f759b98"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 3342,
+    "sha256": "3375042e1f19a79b721b19800bc0637a946b0272be74dfa9062d69607823bace"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "319ce25c1c27ed916b7c407e21ca9c3e3b8b539c8971c82f36f39d8c5928da78"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/peer.jsonl",
+    "bytes": 2260,
+    "sha256": "1b79e0496a2dc64d30db91708ae5c7622d60428744b665602da54e43daffa647"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+    "bytes": 368,
+    "sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/request.private.json",
+    "bytes": 239,
+    "sha256": "1b2042ad428d19fc4d82dff8302bcdd5c4bee00abd629303dbba6c2e60dd66cb"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "fe1c12d1a26c771a836b8f68327fe938ca50090904a75a450af76db172345775"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/response.private.json",
+    "bytes": 11,
+    "sha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/schema.private.json",
+    "bytes": 103,
+    "sha256": "4528a3c79c4aaee242a31e586366657f8e9a3f11cc8d2cb040d9bf61ab1bbb63"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut1/native-ledger/ledger.json",
+    "bytes": 4706,
+    "sha256": "007f5dc79186e0360b80cecb1e4c2cfe5fd5ec915fa8bb93815a6c4e8f785774"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "7ae141c3ed3da36fbb43bb8086057c8664e997c37489cc0665c9ecb9f0957455"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 2253,
+    "sha256": "d2d9cfb99c52a0be0f39e7be9d249ce523c44cb8d8e9b08ca3e8659b1ea313ee"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 3342,
+    "sha256": "bd29b6dc0dc44b13537efe134200105c7f3f5d18598e9271c542b78f3470ef26"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "62a7feec990c73458807d86c6d02f8999158c29ae49ce396334bd61fae6e7208"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/peer.jsonl",
+    "bytes": 2260,
+    "sha256": "a70896927e440d6a4a0320806f3a68dc620e7f02e209d0ea770e1c4b17727ade"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+    "bytes": 368,
+    "sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/request.private.json",
+    "bytes": 259,
+    "sha256": "2694f1b68433d9f4ca6986f7d293f9e091d061526cafa33bb36659baca183cd7"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "104c9541f3ab7e0e570d0ac7b24de2feb69ad1304fba29ba636d5e1163e03270"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/response.private.json",
+    "bytes": 11,
+    "sha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/schema.private.json",
+    "bytes": 103,
+    "sha256": "4528a3c79c4aaee242a31e586366657f8e9a3f11cc8d2cb040d9bf61ab1bbb63"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut2/native-ledger/ledger.json",
+    "bytes": 4706,
+    "sha256": "41f52cf39b0378c47ca1d240a202df681168d9278196ec83ebf1fabd1e8f8f99"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "b3f8e356fe062d8d40f5b9f83be8766a5a7cafff1a9842c58718c3e088fa98fb"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 2253,
+    "sha256": "f1d98f39e41e397dee9508c74b5bff398d603651fe5b1d807dcdb4f323214026"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 3342,
+    "sha256": "26642125b11141143eaac7b200677184bcf90ff7a2b7d203bc3cefe1aed30496"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "0b3577f59ebe6dd37e3fe8973947aa04c8dae7149871d19cbb9cd99b46238418"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/peer.jsonl",
+    "bytes": 2260,
+    "sha256": "c5b661f1c48587a4cc1fdf1849d33973db40dea74fdb55234642e42521ad4392"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+    "bytes": 368,
+    "sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/request.private.json",
+    "bytes": 239,
+    "sha256": "1b2042ad428d19fc4d82dff8302bcdd5c4bee00abd629303dbba6c2e60dd66cb"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "f657dbd2c15609b361343a72d256b139f847f38d2154dff7c53d4f6aa6577c61"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/response.private.json",
+    "bytes": 11,
+    "sha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/schema.private.json",
+    "bytes": 103,
+    "sha256": "4528a3c79c4aaee242a31e586366657f8e9a3f11cc8d2cb040d9bf61ab1bbb63"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut3/native-ledger/ledger.json",
+    "bytes": 4706,
+    "sha256": "9e47186d4ce723ce6af97d795f793aeb1613cd7f8a0ed8882ccb0abce6feceef"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3838,
+    "sha256": "70a68cc5c12bd125408bae045e0d2e8932f5d558d13bab3675c133cfd619e852"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 2253,
+    "sha256": "12dc982cbd61145f028a19290179ea66f9457dc85ae4db72b934d76c246467ba"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 3342,
+    "sha256": "f5fd6cd43c3799f5536ef9bb6274b0d30c716b6cf2cfd8ebd0715af89fd777dc"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "70a68cc5c12bd125408bae045e0d2e8932f5d558d13bab3675c133cfd619e852"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/peer.jsonl",
+    "bytes": 2260,
+    "sha256": "65a0ad4291171eea69787a299db094ea10f5caa0830eab8e070f95174fcf7629"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+    "bytes": 368,
+    "sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/request.private.json",
+    "bytes": 239,
+    "sha256": "1b2042ad428d19fc4d82dff8302bcdd5c4bee00abd629303dbba6c2e60dd66cb"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "871b5312aa81f76ad0f450328aaa240dcf4d63c65fcdbdb50915df7909365677"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/response.private.json",
+    "bytes": 11,
+    "sha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/schema.private.json",
+    "bytes": 103,
+    "sha256": "4528a3c79c4aaee242a31e586366657f8e9a3f11cc8d2cb040d9bf61ab1bbb63"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut4/native-ledger/ledger.json",
+    "bytes": 4706,
+    "sha256": "0fc457d2d29433f26c24b423e5fbe87bd2f4ca4dd6e0ec3603f580680301f4f8"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "fb54d59e8b029ad59231f393e3e59498be3b08ba9eb1b01e8118219031ef5e1d"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 2253,
+    "sha256": "04e90529aedef22bc77d91ea593499a370a0c086fe0b3a39f46a9c2ef26fbd4e"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 3342,
+    "sha256": "d937b4f3e508b81d1d1ef12c26c12c2dc56c121ab7fd70585703636537217f6d"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "2ed9cefe167f0fd63cfd0a3c160799ec69ac75eb2e2b8b974e210ba4c89488ca"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/peer.jsonl",
+    "bytes": 2260,
+    "sha256": "34763914f891a3a0b0a1b752fcde705179572b9eff0508e42fc676884c750687"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+    "bytes": 368,
+    "sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/request.private.json",
+    "bytes": 239,
+    "sha256": "1b2042ad428d19fc4d82dff8302bcdd5c4bee00abd629303dbba6c2e60dd66cb"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "19fed6f2397ab41a93b3bca2f9a60e4b404d39ffe8b07677c5fd46a6b230cb82"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/response.private.json",
+    "bytes": 12,
+    "sha256": "38667e60226bf99701916900a2a265233dcc014e1206c173ade921d608824b53"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/schema.private.json",
+    "bytes": 103,
+    "sha256": "4528a3c79c4aaee242a31e586366657f8e9a3f11cc8d2cb040d9bf61ab1bbb63"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut5/native-ledger/ledger.json",
+    "bytes": 4706,
+    "sha256": "50b8c3b1d1cdce28c37e8c834a29f55b5bba7b0e1826c0f3f1d45dbfb3e3f763"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3838,
+    "sha256": "ce5f4b5f405135b25d5db18b9efd103d59deca7fc49b0253cd6a4071011785d8"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 2253,
+    "sha256": "16925246613054af767a7ab74276310dd2812e07e6a360b98ce4812b76c6dcbd"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 3342,
+    "sha256": "96beeed186dd03cced4e1b82b4cb98ee9099cfd69b7312a680bc849540eebc9e"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "ce5f4b5f405135b25d5db18b9efd103d59deca7fc49b0253cd6a4071011785d8"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/peer.jsonl",
+    "bytes": 2260,
+    "sha256": "4ea12f3b0d5ff51f857f00886e02ef544aeca6f72f416609442af13bb1c5f03a"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+    "bytes": 368,
+    "sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/request.private.json",
+    "bytes": 239,
+    "sha256": "1b2042ad428d19fc4d82dff8302bcdd5c4bee00abd629303dbba6c2e60dd66cb"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "842b1668957a70d8c2e08d0c62e7f035fbd6e7cee9fb25c4c8daf649b03be1aa"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/response.private.json",
+    "bytes": 12,
+    "sha256": "38667e60226bf99701916900a2a265233dcc014e1206c173ade921d608824b53"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/schema.private.json",
+    "bytes": 103,
+    "sha256": "4528a3c79c4aaee242a31e586366657f8e9a3f11cc8d2cb040d9bf61ab1bbb63"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut6/native-ledger/ledger.json",
+    "bytes": 4706,
+    "sha256": "0229c73605d5adbd28d79e1361e6625d86c66352f55c4c4567ab0f20efc581c2"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+    "bytes": 920,
+    "sha256": "223b0a69981328a1e45a93c88265934b99c9aaaeb2b0ff8c4e3177edeb98264c"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "a7fb5b9b121e26433ff73b0913d4ca948af6edd7952b3bbcd4b18861938b0812"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 2253,
+    "sha256": "ddddeac66cb1fd60889078dac7e34363943d59696675828c90c6477672f190bc"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 3342,
+    "sha256": "96e09c98870c32a47de762659aa76b52e4d82ce9f48c45f27961ecc1ffa0313e"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "bb2b341c5edaa94589840a03c4a6aae09ac9a95e0b7186ad4a41438a8f010c32"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/peer.jsonl",
+    "bytes": 2260,
+    "sha256": "d75a5ca0e91ffda9f821876cad8ce32b8bc8e6e13de99e04d84bf4dd50ccdb48"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+    "bytes": 368,
+    "sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/request.private.json",
+    "bytes": 239,
+    "sha256": "1b2042ad428d19fc4d82dff8302bcdd5c4bee00abd629303dbba6c2e60dd66cb"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "741613f97e3db71b4924ca25541ff23322df74c2777dbd2ee212d0c1a0aafd3f"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/response.private.json",
+    "bytes": 11,
+    "sha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/schema.private.json",
+    "bytes": 103,
+    "sha256": "4528a3c79c4aaee242a31e586366657f8e9a3f11cc8d2cb040d9bf61ab1bbb63"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut7/native-ledger/ledger.json",
+    "bytes": 4706,
+    "sha256": "cbd3de912eeff977d603072abf39e76267becddaddfd919f79ec4ba4ab79dfe9"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3838,
+    "sha256": "a453f1c8e60075e931e7d3ceea1dcc3dbd9b8e4ee7e2cc6662ccaa56404230a6"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 2253,
+    "sha256": "194b0e1918654d6da6e0f4501df6ac4b463111e99f7a9544cd2b90546ef83d62"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 3342,
+    "sha256": "279236397b7fbeb9abb266792f098baf265fc4bdfa052df66c4a1e266eeb79a3"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "a453f1c8e60075e931e7d3ceea1dcc3dbd9b8e4ee7e2cc6662ccaa56404230a6"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/peer.jsonl",
+    "bytes": 2260,
+    "sha256": "15336446da3181beb85353d34408e34ee919dd7218a9ef1b120641a65f3f6100"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+    "bytes": 368,
+    "sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/request.private.json",
+    "bytes": 239,
+    "sha256": "1b2042ad428d19fc4d82dff8302bcdd5c4bee00abd629303dbba6c2e60dd66cb"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "9a99ebcefff0a6e095e02abbe4f73b2841f4dcca08c0a265b2e595f6e4c979ce"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/response.private.json",
+    "bytes": 11,
+    "sha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/schema.private.json",
+    "bytes": 103,
+    "sha256": "4528a3c79c4aaee242a31e586366657f8e9a3f11cc8d2cb040d9bf61ab1bbb63"
+  },
+  {
+    "path": "negative-originals/test_native_original_substitut8/native-ledger/ledger.json",
+    "bytes": 4706,
+    "sha256": "b7a63b77bc4b36a2d73e3461250c6779047c1510fe8efe6e9f171c5323f008fe"
+  },
+  {
+    "path": "original-14-test-checkpoint.zip",
+    "bytes": 677059,
+    "sha256": "946af412c5014be1a9a86a696269997cd39cbf3029267c57880e45c7b6da1ce6"
+  },
+  {
+    "path": "ORIGINAL_PATHS.json",
+    "bytes": 225363,
+    "sha256": "760278800fab81b6a6105caba5685e3ef75039710f6fea4f1f6999f90e0b8979"
+  },
+  {
+    "path": "prior-provider-checks/grok-solver-provider-bind-closure-20260914-before.json",
+    "bytes": 65879,
+    "sha256": "9ad5698b728a7c3d5c275e5d51989d0af525d028ca08434dbba03f020927324a"
+  },
+  {
+    "path": "prior-provider-checks/grok-solver-provider-bind-closure-20260914-closed.json",
+    "bytes": 65935,
+    "sha256": "edde68408729d81efad91584e9cd7ca4b602bcce0bce527c503340a764ba13d9"
+  },
+  {
+    "path": "prior-provider-checks/grok-solver-provider-bind-closure-20260914.xml",
+    "bytes": 1945,
+    "sha256": "1d44673f742e16e1937e4e2143ddf2ba14b85f3d02e6feba3ff8c2d165cda4d9"
+  },
+  {
+    "path": "prior-provider-checks/grok-solver-provider-closure-20260914-before.json",
+    "bytes": 65879,
+    "sha256": "483ef9426ee94925cd9e2dfdb10403c40d524c5266f1f4f81a032dcc9876c477"
+  },
+  {
+    "path": "prior-provider-checks/grok-solver-provider-closure-20260914-closed.json",
+    "bytes": 65936,
+    "sha256": "db41eb5f0c76b268fa1d49e8f185d3d66d71387357e97260888d88ea554dd431"
+  },
+  {
+    "path": "prior-provider-checks/grok-solver-provider-closure-20260914.xml",
+    "bytes": 1946,
+    "sha256": "ad93948aeeb5472fcf523ce331dc42b0646c361a44c45b8fd808181ae39920ff"
+  },
+  {
+    "path": "prior-provider-checks/grok-solver-provider-final-20260914-before.json",
+    "bytes": 65879,
+    "sha256": "97436d8974b3bdbc84a79f6d1f6e6d4356843b2d6e87ed978c7901d67213bd70"
+  },
+  {
+    "path": "prior-provider-checks/grok-solver-provider-final-20260914-closed.json",
+    "bytes": 65936,
+    "sha256": "a70e4fcd53d0a008caaffb72b34d69afc452a619a25c2b3402343b37805e67f6"
+  },
+  {
+    "path": "prior-provider-checks/grok-solver-provider-final-20260914.xml",
+    "bytes": 14534,
+    "sha256": "25628d09bfee01fea15dbaa41291af333940f306df7dcac48194112ff0595c52"
+  },
+  {
+    "path": "prior-provider-checks/grok-solver-provider-frozen-20260914-before.json",
+    "bytes": 65748,
+    "sha256": "4b891583d23e28f7c5b552ab11c89c74386feed8d5b3b3f87a53e2fdb012a44c"
+  },
+  {
+    "path": "prior-provider-checks/grok-solver-provider-frozen-20260914-closed.json",
+    "bytes": 65936,
+    "sha256": "bbbbdeee900016af5539740429b8be3994a79db0aa5c2220a64518297a147b53"
+  },
+  {
+    "path": "prior-provider-checks/grok-solver-provider-frozen-20260914.xml",
+    "bytes": 400,
+    "sha256": "4d966ebebce9e9f9cd1257a68d387a1859c35d83ae7af9b62aa1b66067791966"
+  },
+  {
+    "path": "prior-repair-checks/failed-9ad2fd9/junit.xml",
+    "bytes": 87691,
+    "sha256": "fab02e7bce31f7bd31d47384690f54096a75f56642041878c5a5efb55bd83264"
+  },
+  {
+    "path": "prior-repair-checks/failed-9ad2fd9/stdout.txt",
+    "bytes": 86613,
+    "sha256": "a47bf289d6362f7f833aae20e339a02c7e861e8c4bdf05a8d1ab6986d009e07c"
+  },
+  {
+    "path": "prior-repair-checks/passed-a23fb2a/junit.xml",
+    "bytes": 1825,
+    "sha256": "413f0f134b57bceee8ce84c4b613d272438fbadaabbbe5c3075b79d6828068f2"
+  },
+  {
+    "path": "prior-repair-checks/passed-a23fb2a/stdout.txt",
+    "bytes": 193,
+    "sha256": "5d7f54d863992aa5c62096b6f15d73fec1c0fea510c9bfba1b2c8824ca25335f"
+  },
+  {
+    "path": "provenance-fault/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+    "bytes": 5,
+    "sha256": "a03ee9e888b907f64a30915cf5d04520078779a38422a89e02ed1718c30b8f40"
+  },
+  {
+    "path": "provenance-fault/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+    "bytes": 1656,
+    "sha256": "c7ab288963320cf5a568f8ef8d17827a898fe6500145967e3abef703dae7b791"
+  },
+  {
+    "path": "provenance-fault/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+    "bytes": 1121,
+    "sha256": "3382508354405351414767da2b48be7a343b10108d6ef01a1cf412135e951a3c"
+  },
+  {
+    "path": "provenance-fault/export/export-receipt.json",
+    "bytes": 2929,
+    "sha256": "ea9e976500407c8324c1068e5bcb7ba1f942f6a22974fd4f134b997b0100a002"
+  },
+  {
+    "path": "provenance-fault/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/data.csv",
+    "bytes": 5,
+    "sha256": "e99561343117bad50b537bcf4f4f3ccd592ece4a9506669ea383464784314cf2"
+  },
+  {
+    "path": "provenance-fault/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/public.json",
+    "bytes": 1478,
+    "sha256": "b832980c7f4045b032305e2b4cdf9502dac2ffa8f2074f98d0a7ed3697c8d4ff"
+  },
+  {
+    "path": "provenance-fault/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/receipt.json",
+    "bytes": 943,
+    "sha256": "1221acb653f187b695013ea95cc1b69c459e74a4ef23a3a24ebc7833fe4dede7"
+  },
+  {
+    "path": "provenance-fault/export-audit/exports.jsonl",
+    "bytes": 5121,
+    "sha256": "ae073fa4f352c07a15af3d7b6f5938007ddafb4772adf4ab20f1c18512619e68"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "5afd096227c5ad183e61a2e9d2efe3423f3c06282d5bcdce0ea28289731acdf2"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 5678,
+    "sha256": "e3b273f40ea73fbeda677f1f077eec16abd05c8aa6c985c5627997fc8483ce4b"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0001-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0001-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 5580,
+    "sha256": "438f0df12b03c58f1849528af0f6174408499b2952ee98baba6b747d99e6c0d3"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0001-m4_plan/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "261972a5a3e46d0bd327ad813f898b431ceb2f04d91191b9d0d31b1850196e3a"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0001-m4_plan/peer.jsonl",
+    "bytes": 5685,
+    "sha256": "03f6c684231caa76fb9b59a886f1d2ce92e882283981b70398300f87df21a62e"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+    "bytes": 2705,
+    "sha256": "7454bde9c18f0c8cf20bb735d98c0834b9d2ac356f83ef3dfcd95629efcc6be9"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0001-m4_plan/request.private.json",
+    "bytes": 2576,
+    "sha256": "30b65ecd7767ac3a13b6e05b18419995fb5a81405a34ce430ffad85021c5cd57"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0001-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "255625c7131325296260be5d9005f9e23c3ae9462b271f04e1be0ec89c646ed2"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0001-m4_plan/response.private.json",
+    "bytes": 16,
+    "sha256": "f5c6e9f1aadfa016821bedb5f4a16c3637477187c4a5df5200a3594b151eef19"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0001-m4_plan/schema.private.json",
+    "bytes": 963,
+    "sha256": "09d6d16493c22ac9bf79a6f17964c594077d013d9b706127a2aa7d061528db4e"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0002-m5_mechanism/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0002-m5_mechanism/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "9d4f5feecc848d41a8b2cb09925c7b50c1587fbfa290eda54aedcb3124deb307"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0002-m5_mechanism/native-private/requests.private.jsonl",
+    "bytes": 6362,
+    "sha256": "aa82ac3e2d8f187c17aafb34409ee52f9889ebf275edeb15022049a32a4f920b"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0002-m5_mechanism/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0002-m5_mechanism/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "981377b634765b99af1b4cabd946f51ea849636cdd59223920a6b6403b76f104"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0002-m5_mechanism/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "19ad821cd2c796565dc993c673427f85f84b5561d1fab7db59eb5f288e738e70"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0002-m5_mechanism/peer.jsonl",
+    "bytes": 6369,
+    "sha256": "a5b7a7727b5f31f231475b55d3a594625555bf1bce211fbd64af4aab63d8bb4f"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0002-m5_mechanism/prompt.private.txt",
+    "bytes": 3842,
+    "sha256": "c24c035844fe182e3c415b07052147ea4562e7e318ff6b06dcf0b60bf786ec95"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0002-m5_mechanism/request.private.json",
+    "bytes": 3713,
+    "sha256": "9706cc19657eeca8a48e7eb166639a46b2a153169b7b07da9756a71e06c24ed9"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0002-m5_mechanism/reservation.private.json",
+    "bytes": 518,
+    "sha256": "2197f82f7eb9685b5c99ff9015db32263464c57f1d49b33127096c2ee4302321"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0002-m5_mechanism/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0002-m5_mechanism/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0003-m5_measurement/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0003-m5_measurement/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "6704bd6b2c1e1463ae540f659e72129b2ce6d89b67ceb16301b23ac5f48d0222"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0003-m5_measurement/native-private/requests.private.jsonl",
+    "bytes": 6469,
+    "sha256": "487edfaa4a3b4f7fc8710d2c81e576834d8380bfd649c769debc97f99d090e54"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0003-m5_measurement/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0003-m5_measurement/native-private/stdout.private.jsonl",
+    "bytes": 3522,
+    "sha256": "970ac6c7329b1d4e36cb1639858b2d7bb802a48a181ebfa3056dae27bea7889f"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0003-m5_measurement/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "0f51dd18490bb2cffef787e2c631f2919ae4424766e93b6a540f7fa94b3dd6aa"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0003-m5_measurement/peer.jsonl",
+    "bytes": 6476,
+    "sha256": "279bc91f064e7d5f84657bbac3c98ac4726ae0b3db79949040df55047d351e8e"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0003-m5_measurement/prompt.private.txt",
+    "bytes": 3937,
+    "sha256": "5e347262b50a1cbd1009811b007cdab52eab17f054c247c2997e57f9233ee356"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0003-m5_measurement/request.private.json",
+    "bytes": 3808,
+    "sha256": "5067535f30a914d20f4a8f063f877fafacd8685db1df9f92fe6d3b833d565c5a"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0003-m5_measurement/reservation.private.json",
+    "bytes": 518,
+    "sha256": "e0417900cee5320870a5c2675d42c66fe10af2f926a64399da0c306acaa8e5e2"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0003-m5_measurement/response.private.json",
+    "bytes": 90,
+    "sha256": "d8276157bae4da1c3f71d0b0f8050979300565db819b2462a21e138d94bab117"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0003-m5_measurement/schema.private.json",
+    "bytes": 356,
+    "sha256": "39e825f4c6ff1ce9fdf63d5e9dda8ebf0f9908e9b00be00325a1b4a06831fe78"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0004-analysis_program/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0004-analysis_program/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "461ca18b431f29771637dbd67574611d8db75d9ea87a376750f1d7280073e26b"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0004-analysis_program/native-private/requests.private.jsonl",
+    "bytes": 6410,
+    "sha256": "ac571e8d78a3f744620409a6d7b00b0c2a6027f7aec6e494e8a7e32d4f7561e2"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0004-analysis_program/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0004-analysis_program/native-private/stdout.private.jsonl",
+    "bytes": 3699,
+    "sha256": "f7a18930c29ea09f8f9807f6d381c441cfe20c303330f9b44d047e2f27e16697"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0004-analysis_program/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "ab1de8c272555b907d0468781e8feaddc86dd9c06d258af3bb622e799234bbf5"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0004-analysis_program/peer.jsonl",
+    "bytes": 6417,
+    "sha256": "3178f64055780721beecc81fcff802dd59d5d787b90ebb886010520d6d222ab6"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0004-analysis_program/prompt.private.txt",
+    "bytes": 4088,
+    "sha256": "2318fade167bea5ce9a985c5fa8b6daff034bbb658d42a1177c1ff56250f3f0a"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0004-analysis_program/request.private.json",
+    "bytes": 3959,
+    "sha256": "c6b684415c559d6ddb0e271c1865d5e6576499449c64270d1999a552f48ba786"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0004-analysis_program/reservation.private.json",
+    "bytes": 518,
+    "sha256": "559986eadfcd926a33a8abbe54c357764fd0ca0a12dde35b25dafaaed6b054f2"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0004-analysis_program/response.private.json",
+    "bytes": 183,
+    "sha256": "1ff6f825a0ec67215c1fa6aa8a088d70786da1344b43f8ffcbac1d86fdb83ed5"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0004-analysis_program/schema.private.json",
+    "bytes": 152,
+    "sha256": "fd0c444a2e3b004a5c3232ec3ceef3017d2aefd685c0ef412e442f84f5ade689"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0005-final_answer/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0005-final_answer/native-private/observer-receipt.json",
+    "bytes": 3839,
+    "sha256": "2c667eb1b7508efa964d41451ae0f2833e2a97147297c01bd5c1b8dd21de7e68"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0005-final_answer/native-private/requests.private.jsonl",
+    "bytes": 7898,
+    "sha256": "174fda127e9aa799b94b2578109990a9a25876827ebc6f8f6c9516ca61de8ede"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0005-final_answer/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0005-final_answer/native-private/stdout.private.jsonl",
+    "bytes": 3732,
+    "sha256": "c82f5e3894d06cd87e4788f997a1bc05e46dd0dc23e9d4b57f2a1400836dc1e5"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0005-final_answer/observer-receipt.private.json",
+    "bytes": 3838,
+    "sha256": "311567930eecd1e594625cf7bfc3f8925aaf4e7c66be683ff56e8819b73e84b8"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0005-final_answer/peer.jsonl",
+    "bytes": 7905,
+    "sha256": "f72670771632c9fe6d6cb7e82e8328eb36c8fcc08d6f12e194888f570097ded5"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0005-final_answer/prompt.private.txt",
+    "bytes": 5261,
+    "sha256": "52ad4b6d4af834a51e06fbff111e4128fee609a011a32ff196a4946f4d832c3d"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0005-final_answer/request.private.json",
+    "bytes": 5132,
+    "sha256": "e81c4a0a356f5eba3939e165510ee094bc1805d829b933a1e5b51c1cd426bf77"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0005-final_answer/reservation.private.json",
+    "bytes": 518,
+    "sha256": "922c3fea68212bd287321c124e38a926002f597c1276a13082b8e787fea483e0"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0005-final_answer/response.private.json",
+    "bytes": 191,
+    "sha256": "7914fc219b5ebea76aade58867f7bc235729bce0cb5268379c1167dfb4cffcd6"
+  },
+  {
+    "path": "provenance-fault/native-ledger/calls/0005-final_answer/schema.private.json",
+    "bytes": 380,
+    "sha256": "99a5b8ec8e592c7ca8c4c31223dc7637b403e05a7ce6567f6d42c22a437bf3d6"
+  },
+  {
+    "path": "provenance-fault/native-ledger/ledger.json",
+    "bytes": 18859,
+    "sha256": "ba62b331269f4d23d48f4853051461e640c3058193edc2c773c8cfe680b92038"
+  },
+  {
+    "path": "provenance-fault/run-v4/cells/83aed8444e358bdb3018fa03804d44ed91b13ff705e0df038048b249ee0ab1b8/analysis-1.py",
+    "bytes": 142,
+    "sha256": "9a4f3c9bad43f1e2b12aad1915baae3b31310ff8d1b9b7b2777ab832f9a44756"
+  },
+  {
+    "path": "provenance-fault/run-v4/cells/83aed8444e358bdb3018fa03804d44ed91b13ff705e0df038048b249ee0ab1b8/claims.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "provenance-fault/run-v4/cells/83aed8444e358bdb3018fa03804d44ed91b13ff705e0df038048b249ee0ab1b8/evidence.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "provenance-fault/run-v4/cells/83aed8444e358bdb3018fa03804d44ed91b13ff705e0df038048b249ee0ab1b8/predictions.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "provenance-fault/run-v4/cells/83aed8444e358bdb3018fa03804d44ed91b13ff705e0df038048b249ee0ab1b8/reviews.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "provenance-fault/run-v4/cells/83aed8444e358bdb3018fa03804d44ed91b13ff705e0df038048b249ee0ab1b8/trace.jsonl",
+    "bytes": 33383,
+    "sha256": "a4a8668a6d7a7462fad91db50b6d38bcf84ce655fda646070cf3db46dbb1e3a3"
+  },
+  {
+    "path": "provenance-fault/run-v4/controller-attempt.json",
+    "bytes": 17474,
+    "sha256": "fcea943f6d1ca5dcf73c87d9400a355959a5556afad2cb2dae0d02c1b2e9fdbb"
+  },
+  {
+    "path": "provenance-fault/run-v4/controller-receipt.json",
+    "bytes": 1249,
+    "sha256": "41afc368f847b13773d06c68a2d5b14fc00641c7c5f8b04c94de1479a1f6be9a"
+  },
+  {
+    "path": "provenance-fault/run-v4/panel.json",
+    "bytes": 10137,
+    "sha256": "5cd7a7fed8a6f4b76d4b6b712d8bd45e2179fbf98c09d01588d7514b3cdc27d7"
+  },
+  {
+    "path": "provenance-fault/synthetic-grok.exe",
+    "bytes": 34,
+    "sha256": "a3315676c7eef4e36782da6119eb29ed18ffd79df30e95ec1c1cf1f66e5a445c"
+  },
+  {
+    "path": "README.txt",
+    "bytes": 1041,
+    "sha256": "320da25b4abaf14bcbc75774799aef7935855243786084fdff12a32f9a176d29"
+  },
+  {
+    "path": "source/docs/GROK-PUBLIC-TRAIN-PROVIDER.md",
+    "bytes": 2438,
+    "sha256": "ff88107145dace3b1a1ce216f9498a66e4ed8732fd2771efce03c4d7441a1653"
+  },
+  {
+    "path": "source/research_loop/modular/combination_train_controller.py",
+    "bytes": 30950,
+    "sha256": "d17345447ce6d536fdac4d8703bc1f7ff3fb5f62ab5fb6c79e35419a655fb535"
+  },
+  {
+    "path": "source/research_loop/modular/grok_acp_transport.py",
+    "bytes": 45629,
+    "sha256": "a916af987d1e3169c61724a0d6ed7417489ecb5a79f02ba701afadde03d2aa8e"
+  },
+  {
+    "path": "source/research_loop/modular/grok_train_solver.py",
+    "bytes": 21987,
+    "sha256": "3c08d38b1655c74ed3363ab9d6a886afc7d42d4964df57de50da366a77e4c1e7"
+  },
+  {
+    "path": "source/tests/fixtures/grok_acp_peer.py",
+    "bytes": 10505,
+    "sha256": "6fd3fab946babdbd5d1bd1c5f3912f038ce19b1f41f1d5a3e5d8bae590128bc6"
+  },
+  {
+    "path": "source/tests/test_grok_train_solver.py",
+    "bytes": 13996,
+    "sha256": "6ad90e24dd24626baa906ac27511ed8146287e82f9d823539fca0a427cff852b"
+  },
+  {
+    "path": "SUMMARY.json",
+    "bytes": 1878,
+    "sha256": "e6b60517305d80fcfc7fd3d0b2b96c806d0fffdf562857aeab61f0f195530cfa"
+  },
+  {
+    "path": "unknown-main/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+    "bytes": 5,
+    "sha256": "a03ee9e888b907f64a30915cf5d04520078779a38422a89e02ed1718c30b8f40"
+  },
+  {
+    "path": "unknown-main/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+    "bytes": 1656,
+    "sha256": "7235212ea91d80312adbaacea736481cf198a1d29eddaf34c74ca6c5efa456b9"
+  },
+  {
+    "path": "unknown-main/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+    "bytes": 1121,
+    "sha256": "7c5c15d0b7e29d393f4c3ff9bcee8923353a535678b7a24f1cd6d095c7cf245a"
+  },
+  {
+    "path": "unknown-main/export/export-receipt.json",
+    "bytes": 2929,
+    "sha256": "a36e124e7a328a850302e2e1676019c407a1460968f7cdfd6205b3e2e3870d21"
+  },
+  {
+    "path": "unknown-main/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/data.csv",
+    "bytes": 5,
+    "sha256": "e99561343117bad50b537bcf4f4f3ccd592ece4a9506669ea383464784314cf2"
+  },
+  {
+    "path": "unknown-main/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/public.json",
+    "bytes": 1478,
+    "sha256": "4ef255782dd4fe9993e3c9554626c067c519e353e78057e2ea09164b79372988"
+  },
+  {
+    "path": "unknown-main/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/receipt.json",
+    "bytes": 943,
+    "sha256": "35aea747da19483cc38061c4ffa65704f6712b59ae59efade0caa4fef0af492a"
+  },
+  {
+    "path": "unknown-main/export-audit/exports.jsonl",
+    "bytes": 5121,
+    "sha256": "8ad2b4f69367d6abef7f02b439721768cb46940ab2ee8bddb5d587a9a4563ec3"
+  },
+  {
+    "path": "unknown-main/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+    "bytes": 872,
+    "sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+  },
+  {
+    "path": "unknown-main/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+    "bytes": 3806,
+    "sha256": "c404953310b60e50fecaeb785fcc5f06ac0094abef7b3eb683c00799c3f809ee"
+  },
+  {
+    "path": "unknown-main/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+    "bytes": 5678,
+    "sha256": "b8fa9ddc71128adee2c22750cc959d59af920834aef0b3d874e3506663e905fd"
+  },
+  {
+    "path": "unknown-main/native-ledger/calls/0001-m4_plan/native-private/stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "unknown-main/native-ledger/calls/0001-m4_plan/native-private/stdout.private.jsonl",
+    "bytes": 5634,
+    "sha256": "e772e22793691bf8bb1c77979cc8377b226fa8afdabd704156053f0bd5397e00"
+  },
+  {
+    "path": "unknown-main/native-ledger/calls/0001-m4_plan/observer-receipt.private.json",
+    "bytes": 3805,
+    "sha256": "db8cafd39dfe06aeeb02790363f921446c6ec28b8f4c4d0afc447588107d50cc"
+  },
+  {
+    "path": "unknown-main/native-ledger/calls/0001-m4_plan/peer.jsonl",
+    "bytes": 5685,
+    "sha256": "6b39573edcc5f26437b74f61b5cb85be7c484e9a1115aa6fa90ef0c2fa83bc31"
+  },
+  {
+    "path": "unknown-main/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+    "bytes": 2705,
+    "sha256": "719b593bd492a5577db0e647e6cbd1f5eeaa1dfbd4081bc3499827210efb3ade"
+  },
+  {
+    "path": "unknown-main/native-ledger/calls/0001-m4_plan/request.private.json",
+    "bytes": 2576,
+    "sha256": "18e1a9dae6e94f18d3ab0bf7c69ace84fb696c947f6a130792ea43d4a8dfa873"
+  },
+  {
+    "path": "unknown-main/native-ledger/calls/0001-m4_plan/reservation.private.json",
+    "bytes": 518,
+    "sha256": "e349e15c29169c911bc09a1541e5901a46b74f55ef2db867ef44590bfd20e560"
+  },
+  {
+    "path": "unknown-main/native-ledger/calls/0001-m4_plan/schema.private.json",
+    "bytes": 963,
+    "sha256": "09d6d16493c22ac9bf79a6f17964c594077d013d9b706127a2aa7d061528db4e"
+  },
+  {
+    "path": "unknown-main/native-ledger/ledger.json",
+    "bytes": 6881,
+    "sha256": "72039f4bf322c4737bf2135e975414891f33af1233c177c0147b7065bcbd0528"
+  },
+  {
+    "path": "unknown-main/run-v4/cells/8ca08d99f071dd7aa67fc808b4b9ba45eda0bee47ba190dd54e1006505978301/claims.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "unknown-main/run-v4/cells/8ca08d99f071dd7aa67fc808b4b9ba45eda0bee47ba190dd54e1006505978301/evidence.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "unknown-main/run-v4/cells/8ca08d99f071dd7aa67fc808b4b9ba45eda0bee47ba190dd54e1006505978301/predictions.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "unknown-main/run-v4/cells/8ca08d99f071dd7aa67fc808b4b9ba45eda0bee47ba190dd54e1006505978301/reviews.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "unknown-main/run-v4/cells/8ca08d99f071dd7aa67fc808b4b9ba45eda0bee47ba190dd54e1006505978301/trace.jsonl",
+    "bytes": 4340,
+    "sha256": "e8df08890cd2dfb82bba8145cec71a4d513ad4dae0a6743f5a6bc7d31e4d5cf3"
+  },
+  {
+    "path": "unknown-main/run-v4/controller-attempt.json",
+    "bytes": 15022,
+    "sha256": "81a0d8dec5f63d921a5f3fab6eb2d7ce6d9a7411f2ce0427d3079a452c68c904"
+  },
+  {
+    "path": "unknown-main/run-v4/controller-receipt.json",
+    "bytes": 1249,
+    "sha256": "5a64742a8ce4468d106b4a22bbd95568f8416cb93e2aa42413e61d9996934b4c"
+  },
+  {
+    "path": "unknown-main/run-v4/panel.json",
+    "bytes": 10137,
+    "sha256": "37ddfb980437ff2c1203e0ca47f9dbbfa84bdbcc32bc3d14fa3ec9f6e4b6cc77"
+  },
+  {
+    "path": "unknown-main/synthetic-grok.exe",
+    "bytes": 34,
+    "sha256": "a3315676c7eef4e36782da6119eb29ed18ffd79df30e95ec1c1cf1f66e5a445c"
+  },
+  {
+    "path": "verification/build_archive.py",
+    "bytes": 5821,
+    "sha256": "cc7a04a6e6232d2cd11bd9555a3a13a1706d42fe666c4e852baf04c7e3756236"
+  },
+  {
+    "path": "verification/run_frozen_check.py",
+    "bytes": 2173,
+    "sha256": "a40242a90c209275d6ab040a7063e067ebab8859a773401a75a3fa209850b187"
+  }
+]

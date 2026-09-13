@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="14" time="270.465" timestamp="2026-09-14T06:57:48.087707+08:00" hostname="SC-202507131830"><testcase classname="tests.test_grok_train_solver" name="test_public_train_ledger_preserves_native_identity_and_closes_unknown_usage" time="0.039"><failure message="research_loop.ontology.ContractError: Grok native request is terminal; do not retry">self = &lt;research_loop.modular.grok_train_solver.GrokTrainModelPort object at 0x000001C419DC2D20&gt;
+request = FrozenRecord(encoded='{"context":{},"execution_feedback":[],"instruction":"public","lock_digest":"aaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaa","module_context":{},"objective":{},"schema":"public-model-request-v1","slot":"m4_plan","task":{}}')
+
+    def __call__(self, request: FrozenRecord) -&gt; FrozenRecord:
+        if not isinstance(request, FrozenRecord): raise ContractError('Grok TRAIN port accepts frozen requests only')
+        body=request.data(); slot=body.get('slot')
+        if (set(body) != {'schema','task','lock_digest','objective','slot','instruction','context','module_context','execution_feedback'}
+                or body.get('schema') != 'public-model-request-v1' or slot not in self.schemas):
+            raise ContractError('unexpected public TRAIN solver request')
+        if self.ledger['usage_incomplete'] or len(self.ledger['calls']) &gt;= self.max_calls:
+            raise ContractError('Grok TRAIN ledger is closed')
+        prompt='Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n'+request.encoded
+        raw=prompt.encode('utf-8'); cap=self.slot_input_byte_caps[slot]
+        if len(raw)&gt;cap: raise ContractError('public TRAIN prompt exceeds frozen complete input-byte bound')
+        number=len(self.ledger['calls'])+1; call_dir=self.calls_root/f'{number:04d}-{slot}'; call_dir.mkdir()
+        prompt_path=call_dir/'prompt.private.txt'; schema_path=call_dir/'schema.private.json'
+        prompt_path.write_bytes(raw); schema_path.write_bytes(canonical(self.schemas[slot]).encode())
+        request_path=call_dir/'request.private.json'; request_path.write_bytes(request.encoded.encode())
+        reservation=call_dir/'reservation.private.json'; private=call_dir/'native-private'
+        row={'id':number,'slot':slot,'request_sha256':request.content_hash,'prompt_sha256':_sha(raw),
+             'schema_sha256':_sha(schema_path.read_bytes()),'status':'reserved','reservation_path':str(reservation),
+             'native_private_path':str(private),'main_opportunity':1,'possible_initial_title_opportunity':1}
+        self.ledger['calls'].append(row); _write(self.ledger_path,self.ledger)
+        try:
+            result=self.native_invoke(opportunity_contract=TRAIN_OPPORTUNITY_CONTRACT, executable=self.executable,
+                cwd=str(self.public_cwd), private_home=str(self.private_home), private_profile=str(self.private_profile),
+                private_dir=str(private), reservation=str(reservation), frozen_files=self.frozen_files, prompt=prompt,
+                schema=self.schemas[slot], main_output_cap=self.slot_output_caps[slot],
+                observed_main_token_cap=self.observed_main_token_cap, input_byte_cap=cap)
+            receipt=result.receipt.data(); response=result.response
+            receipt_path=call_dir/'observer-receipt.private.json'; receipt_path.write_bytes(result.receipt.encoded.encode())
+            binding=receipt.get('public_train_binding')
+            billing=receipt.get('billing_before')
+            valid = (receipt.get('schema') == 'grok-native-acp-public-train-receipt-v1'
+                and receipt.get('accepted') is True and receipt.get('requested_model') == MODEL
+                and receipt.get('opportunity_contract') == TRAIN_OPPORTUNITY_CONTRACT
+                and receipt.get('runtime_empty_inventory_count', 0) &gt;= 1
+                and isinstance(billing, Mapping) and billing.get('route') == 'grok_com_unified_subscription'
+                and billing.get('on_demand_cap') == billing.get('on_demand_used') == billing.get('prepaid_balance') == 0
+                and billing.get('auto_topup_rule_present') is False and isinstance(binding, Mapping)
+                and binding.get('prompt_sha256') == _sha(raw) and binding.get('schema_sha256') == _sha(schema_path.read_bytes())
+                and binding.get('source_manifest_sha256') == _sha(canonical(self.frozen_files).encode())
+                and binding.get('input_byte_cap') == cap and binding.get('observed_main_token_cap') == self.observed_main_token_cap)
+            row.update(native_receipt_sha256=_sha(receipt_path.read_bytes()), reservation_sha256=_sha(reservation.read_bytes()) if reservation.exists() else None,
+                       response_sha256=response.content_hash if response else None, known_main_usage=receipt.get('known_usage'),
+                       accepted=receipt.get('accepted') is True)
+            usage=receipt.get('known_usage')
+            if not valid or not response or not isinstance(usage, Mapping) or type(usage.get('totalTokens')) is not int or binding.get('response_sha256') != response.content_hash:
+&gt;               raise ContractError('native main dispatch or usage is unknown; ledger closed')
+E               research_loop.ontology.ContractError: native main dispatch or usage is unknown; ledger closed
+
+research_loop\modular\grok_train_solver.py:111: ContractError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/grok-solver-provider-final-20260914/test_public_train_ledger_prese0')
+
+    def test_public_train_ledger_preserves_native_identity_and_closes_unknown_usage(tmp_path):
+        seen=[]
+        def native(**kwargs):
+            seen.append(kwargs)
+            reservation=Path(kwargs['reservation']); reservation.write_text('{"native":true}', encoding='utf-8')
+            receipt=FrozenRecord.from_dict({'accepted':True,'known_usage':{'totalTokens':7},'opportunity_contract':kwargs['opportunity_contract'],
+                'prompt_id':'p','session_id':'s','initial_title_usage':None,'total_tokens_all_opportunities':None})
+            return AcpResult(receipt, FrozenRecord.from_dict({'ok':True}))
+        (tmp_path/'grok.exe').write_bytes(b'fixture')
+        port=GrokTrainModelPort(executable=tmp_path/'grok.exe', work_root=tmp_path/'ledger', private_home=tmp_path/'home', private_profile=tmp_path/'profile', public_cwd=tmp_path,
+            frozen_files={'x':'0'*64},max_calls=1,schemas={'m4_plan':SCHEMA},slot_output_caps={'m4_plan':2048},slot_input_byte_caps={'m4_plan':262144},observed_main_token_cap=131072,native_invoke=native)
+&gt;       assert port(REQUEST).data()=={'ok':True}; replay_grok_train_ledger(port)
+               ^^^^^^^^^^^^^
+
+tests\test_grok_train_solver.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.grok_train_solver.GrokTrainModelPort object at 0x000001C419DC2D20&gt;
+request = FrozenRecord(encoded='{"context":{},"execution_feedback":[],"instruction":"public","lock_digest":"aaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaa","module_context":{},"objective":{},"schema":"public-model-request-v1","slot":"m4_plan","task":{}}')
+
+    def __call__(self, request: FrozenRecord) -&gt; FrozenRecord:
+        if not isinstance(request, FrozenRecord): raise ContractError('Grok TRAIN port accepts frozen requests only')
+        body=request.data(); slot=body.get('slot')
+        if (set(body) != {'schema','task','lock_digest','objective','slot','instruction','context','module_context','execution_feedback'}
+                or body.get('schema') != 'public-model-request-v1' or slot not in self.schemas):
+            raise ContractError('unexpected public TRAIN solver request')
+        if self.ledger['usage_incomplete'] or len(self.ledger['calls']) &gt;= self.max_calls:
+            raise ContractError('Grok TRAIN ledger is closed')
+        prompt='Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n'+request.encoded
+        raw=prompt.encode('utf-8'); cap=self.slot_input_byte_caps[slot]
+        if len(raw)&gt;cap: raise ContractError('public TRAIN prompt exceeds frozen complete input-byte bound')
+        number=len(self.ledger['calls'])+1; call_dir=self.calls_root/f'{number:04d}-{slot}'; call_dir.mkdir()
+        prompt_path=call_dir/'prompt.private.txt'; schema_path=call_dir/'schema.private.json'
+        prompt_path.write_bytes(raw); schema_path.write_bytes(canonical(self.schemas[slot]).encode())
+        request_path=call_dir/'request.private.json'; request_path.write_bytes(request.encoded.encode())
+        reservation=call_dir/'reservation.private.json'; private=call_dir/'native-private'
+        row={'id':number,'slot':slot,'request_sha256':request.content_hash,'prompt_sha256':_sha(raw),
+             'schema_sha256':_sha(schema_path.read_bytes()),'status':'reserved','reservation_path':str(reservation),
+             'native_private_path':str(private),'main_opportunity':1,'possible_initial_title_opportunity':1}
+        self.ledger['calls'].append(row); _write(self.ledger_path,self.ledger)
+        try:
+            result=self.native_invoke(opportunity_contract=TRAIN_OPPORTUNITY_CONTRACT, executable=self.executable,
+                cwd=str(self.public_cwd), private_home=str(self.private_home), private_profile=str(self.private_profile),
+                private_dir=str(private), reservation=str(reservation), frozen_files=self.frozen_files, prompt=prompt,
+                schema=self.schemas[slot], main_output_cap=self.slot_output_caps[slot],
+                observed_main_token_cap=self.observed_main_token_cap, input_byte_cap=cap)
+            receipt=result.receipt.data(); response=result.response
+            receipt_path=call_dir/'observer-receipt.private.json'; receipt_path.write_bytes(result.receipt.encoded.encode())
+            binding=receipt.get('public_train_binding')
+            billing=receipt.get('billing_before')
+            valid = (receipt.get('schema') == 'grok-native-acp-public-train-receipt-v1'
+                and receipt.get('accepted') is True and receipt.get('requested_model') == MODEL
+                and receipt.get('opportunity_contract') == TRAIN_OPPORTUNITY_CONTRACT
+                and receipt.get('runtime_empty_inventory_count', 0) &gt;= 1
+                and isinstance(billing, Mapping) and billing.get('route') == 'grok_com_unified_subscription'
+                and billing.get('on_demand_cap') == billing.get('on_demand_used') == billing.get('prepaid_balance') == 0
+                and billing.get('auto_topup_rule_present') is False and isinstance(binding, Mapping)
+                and binding.get('prompt_sha256') == _sha(raw) and binding.get('schema_sha256') == _sha(schema_path.read_bytes())
+                and binding.get('source_manifest_sha256') == _sha(canonical(self.frozen_files).encode())
+                and binding.get('input_byte_cap') == cap and binding.get('observed_main_token_cap') == self.observed_main_token_cap)
+            row.update(native_receipt_sha256=_sha(receipt_path.read_bytes()), reservation_sha256=_sha(reservation.read_bytes()) if reservation.exists() else None,
+                       response_sha256=response.content_hash if response else None, known_main_usage=receipt.get('known_usage'),
+                       accepted=receipt.get('accepted') is True)
+            usage=receipt.get('known_usage')
+            if not valid or not response or not isinstance(usage, Mapping) or type(usage.get('totalTokens')) is not int or binding.get('response_sha256') != response.content_hash:
+                raise ContractError('native main dispatch or usage is unknown; ledger closed')
+            self.ledger['tokens'] += usage['totalTokens']; _validate_schema(self.schemas[slot], response.data())
+            (call_dir/'response.private.json').write_bytes(response.encoded.encode())
+            row['status']='succeeded'; _write(self.ledger_path,self.ledger); return response
+        except Exception as exc:
+            row.update(status='unknown_or_failed', error_type=type(exc).__name__); self.ledger['usage_incomplete']=True
+&gt;           _write(self.ledger_path,self.ledger); raise ContractError('Grok native request is terminal; do not retry') from exc
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           research_loop.ontology.ContractError: Grok native request is terminal; do not retry
+
+research_loop\modular\grok_train_solver.py:117: ContractError</failure></testcase><testcase classname="tests.test_grok_train_solver" name="test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer" time="259.478" /><testcase classname="tests.test_grok_acp_transport" name="test_timeout_kills_subprocess_tree_without_retry[pre_timeout-False]" time="5.419" /><testcase classname="tests.test_grok_acp_transport" name="test_timeout_kills_subprocess_tree_without_retry[timeout-True]" time="5.224" /><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.006" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.009" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.003" /></testsuite></testsuites>

@@ -1,0 +1,72 @@
+{
+  "source_commit": "79249ac543041f0490a8f089e317288c2d23848a",
+  "base_commit": "c02e4b8d2d0b10e6741167b84ee2b6c0199df218",
+  "cases": [
+    {
+      "case": "complete-panel",
+      "main_opportunities": 40,
+      "possible_title_opportunities": 40,
+      "known_main_tokens": 480,
+      "usage_incomplete": false,
+      "planned_cells": 8,
+      "scorer_calls": 8,
+      "docker_receipts": 8,
+      "statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ]
+    },
+    {
+      "case": "unknown-main",
+      "main_opportunities": 1,
+      "possible_title_opportunities": 1,
+      "known_main_tokens": 12,
+      "usage_incomplete": true,
+      "planned_cells": 8,
+      "scorer_calls": 0,
+      "docker_receipts": 0,
+      "statuses": [
+        "failed",
+        "blocked",
+        "blocked",
+        "blocked",
+        "blocked",
+        "blocked",
+        "blocked",
+        "blocked"
+      ]
+    },
+    {
+      "case": "provenance-fault",
+      "main_opportunities": 5,
+      "possible_title_opportunities": 5,
+      "known_main_tokens": 60,
+      "usage_incomplete": true,
+      "planned_cells": 8,
+      "scorer_calls": 0,
+      "docker_receipts": 1,
+      "statuses": [
+        "failed",
+        "blocked",
+        "blocked",
+        "blocked",
+        "blocked",
+        "blocked",
+        "blocked",
+        "blocked"
+      ]
+    }
+  ],
+  "real_model_or_api_calls": 0,
+  "native_version_contract": "v1.0.13",
+  "dispatch_scope": "M4/M5 useful-control v4 only",
+  "historical_failure_stdout": "not found; original failing XML with detailed traceback and matching recorded hash is included",
+  "auth_files_included": false,
+  "actual_private_references_included": false
+}

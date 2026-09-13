@@ -1,0 +1,968 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="10" skipped="0" tests="11" time="15.051" timestamp="2026-09-14T07:24:38.327662+08:00" hostname="SC-202507131830"><testcase classname="tests.test_grok_train_solver" name="test_invented_native_receipt_closes_ledger" time="0.085" /><testcase classname="tests.test_grok_train_solver" name="test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer[None]" time="6.220"><failure message="research_loop.ontology.ContractError: export, run, and model roots must be outside label-containing ancestors">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023BB20C0D40&gt;
+fault = None
+
+    @pytest.mark.parametrize('fault', [None, 'unknown_main', 'provenance'])
+    def test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer(tmp_path, monkeypatch, fault):
+        """All 40 public slots use an ACP peer; Docker and rubric stay real seams."""
+        from contextlib import ExitStack
+        from evaluation.modular.scoring_service import ScorerConfig
+        from research_loop.modular import combination_train_controller as controller
+        from research_loop.modular.runtime import AuditVerifier
+        from test_combination_prospective_train_source import prepare, processes
+        from test_m4_m5_useful_controls import RECIPE
+    
+        setup = prepare(tmp_path, 'm4')
+        body = setup['config'].data()
+        provider = {'kind':'grok-acp-public-train-v1','model':'grok-4.6','opportunity_contract':'public-train-main-and-initial-title-v1',
+            'included_only':True,'api_key_route_permitted':False,'main_calls':40,'possible_initial_title_calls':40,
+            'main_output_caps':{'m4_plan':2048,'m5_mechanism':2048,'m5_measurement':2048,'analysis_program':8192,'final_answer':2048},
+            'input_byte_cap_per_request':262144,'observed_main_token_cap':131072,'title_requested_output_cap':100,
+            'wall_timeout_seconds':60,'max_retries':0,'title_usage_and_all_call_totals':'unknown'}
+        body.update(schema='m4-m5-train-controller-config-v4', execution_recipe=RECIPE, provider=provider,
+            model='grok-4.6', effort='native_acp', max_tokens=131072*40, timeout_seconds=60)
+        config = controller.FrozenM4M5TrainConfig(FrozenRecord.from_dict(body))
+        setup['config'] = config
+        setup['compiled'] = controller.compile_m4_m5_train_panel(config, setup['packets'])
+        assert len(setup['compiled'].panel.cells) == 8
+        port, logs = default_port(tmp_path, monkeypatch, schemas=body['schemas'],
+            caps=provider['main_output_caps'], max_calls=40,
+            scenario='train_unknown_main' if fault=='unknown_main' else 'train_panel')
+        if fault=='provenance':
+            verify=controller.verify_m4_m5_combination_benchmark_cell
+            def drift(*args, **kwargs):
+                result=verify(*args, **kwargs)
+                (port.calls_root/'0001-m4_plan/response.private.json').write_text('{"foreign":true}')
+                return result
+            monkeypatch.setattr(controller,'verify_m4_m5_combination_benchmark_cell',drift)
+        with ExitStack() as stack:
+            service=processes(setup, stack)
+&gt;           result=controller.run_m4_m5_train_panel(config, custody=None, prospective_exporter=setup['exporter'],
+                snapshot_root=Path(setup['exporter'].config['snapshot_root']), export_root=setup['exporter'].output_root,
+                run_root=tmp_path/'run-v4', model=port, audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}),
+                execution_authority=setup['module'].EXECUTION, scoring_service=service,
+                scorer_authority_keys={setup['module'].SCORER.authority_id:setup['module'].SCORER.key})
+
+tests\test_grok_train_solver.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\combination_train_controller.py:300: in run_m4_m5_train_panel
+    snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model.root)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+snapshot_root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell0/primary/snapshot')
+export_root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell0/export')
+run_root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell0/run-v4')
+model_root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell0/native-ledger')
+
+    def _checked_roots(snapshot_root: Path, export_root: Path, run_root: Path, model_root: Path) -&gt; tuple[Path, Path, Path, Path]:
+        snapshot = Path(snapshot_root).resolve(strict=True)
+        roots = tuple(Path(path).resolve() for path in (export_root, run_root, model_root))
+        if any(_label_ancestor(path) for path in roots):
+&gt;           raise ContractError("export, run, and model roots must be outside label-containing ancestors")
+E           research_loop.ontology.ContractError: export, run, and model roots must be outside label-containing ancestors
+
+research_loop\modular\train_controller.py:531: ContractError</failure></testcase><testcase classname="tests.test_grok_train_solver" name="test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer[unknown_main]" time="3.130"><failure message="research_loop.ontology.ContractError: export, run, and model roots must be outside label-containing ancestors">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023BB2E1B650&gt;
+fault = 'unknown_main'
+
+    @pytest.mark.parametrize('fault', [None, 'unknown_main', 'provenance'])
+    def test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer(tmp_path, monkeypatch, fault):
+        """All 40 public slots use an ACP peer; Docker and rubric stay real seams."""
+        from contextlib import ExitStack
+        from evaluation.modular.scoring_service import ScorerConfig
+        from research_loop.modular import combination_train_controller as controller
+        from research_loop.modular.runtime import AuditVerifier
+        from test_combination_prospective_train_source import prepare, processes
+        from test_m4_m5_useful_controls import RECIPE
+    
+        setup = prepare(tmp_path, 'm4')
+        body = setup['config'].data()
+        provider = {'kind':'grok-acp-public-train-v1','model':'grok-4.6','opportunity_contract':'public-train-main-and-initial-title-v1',
+            'included_only':True,'api_key_route_permitted':False,'main_calls':40,'possible_initial_title_calls':40,
+            'main_output_caps':{'m4_plan':2048,'m5_mechanism':2048,'m5_measurement':2048,'analysis_program':8192,'final_answer':2048},
+            'input_byte_cap_per_request':262144,'observed_main_token_cap':131072,'title_requested_output_cap':100,
+            'wall_timeout_seconds':60,'max_retries':0,'title_usage_and_all_call_totals':'unknown'}
+        body.update(schema='m4-m5-train-controller-config-v4', execution_recipe=RECIPE, provider=provider,
+            model='grok-4.6', effort='native_acp', max_tokens=131072*40, timeout_seconds=60)
+        config = controller.FrozenM4M5TrainConfig(FrozenRecord.from_dict(body))
+        setup['config'] = config
+        setup['compiled'] = controller.compile_m4_m5_train_panel(config, setup['packets'])
+        assert len(setup['compiled'].panel.cells) == 8
+        port, logs = default_port(tmp_path, monkeypatch, schemas=body['schemas'],
+            caps=provider['main_output_caps'], max_calls=40,
+            scenario='train_unknown_main' if fault=='unknown_main' else 'train_panel')
+        if fault=='provenance':
+            verify=controller.verify_m4_m5_combination_benchmark_cell
+            def drift(*args, **kwargs):
+                result=verify(*args, **kwargs)
+                (port.calls_root/'0001-m4_plan/response.private.json').write_text('{"foreign":true}')
+                return result
+            monkeypatch.setattr(controller,'verify_m4_m5_combination_benchmark_cell',drift)
+        with ExitStack() as stack:
+            service=processes(setup, stack)
+&gt;           result=controller.run_m4_m5_train_panel(config, custody=None, prospective_exporter=setup['exporter'],
+                snapshot_root=Path(setup['exporter'].config['snapshot_root']), export_root=setup['exporter'].output_root,
+                run_root=tmp_path/'run-v4', model=port, audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}),
+                execution_authority=setup['module'].EXECUTION, scoring_service=service,
+                scorer_authority_keys={setup['module'].SCORER.authority_id:setup['module'].SCORER.key})
+
+tests\test_grok_train_solver.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\combination_train_controller.py:300: in run_m4_m5_train_panel
+    snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model.root)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+snapshot_root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell1/primary/snapshot')
+export_root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell1/export')
+run_root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell1/run-v4')
+model_root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell1/native-ledger')
+
+    def _checked_roots(snapshot_root: Path, export_root: Path, run_root: Path, model_root: Path) -&gt; tuple[Path, Path, Path, Path]:
+        snapshot = Path(snapshot_root).resolve(strict=True)
+        roots = tuple(Path(path).resolve() for path in (export_root, run_root, model_root))
+        if any(_label_ancestor(path) for path in roots):
+&gt;           raise ContractError("export, run, and model roots must be outside label-containing ancestors")
+E           research_loop.ontology.ContractError: export, run, and model roots must be outside label-containing ancestors
+
+research_loop\modular\train_controller.py:531: ContractError</failure></testcase><testcase classname="tests.test_grok_train_solver" name="test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer[provenance]" time="3.487"><failure message="research_loop.ontology.ContractError: export, run, and model roots must be outside label-containing ancestors">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023BB2EE7020&gt;
+fault = 'provenance'
+
+    @pytest.mark.parametrize('fault', [None, 'unknown_main', 'provenance'])
+    def test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer(tmp_path, monkeypatch, fault):
+        """All 40 public slots use an ACP peer; Docker and rubric stay real seams."""
+        from contextlib import ExitStack
+        from evaluation.modular.scoring_service import ScorerConfig
+        from research_loop.modular import combination_train_controller as controller
+        from research_loop.modular.runtime import AuditVerifier
+        from test_combination_prospective_train_source import prepare, processes
+        from test_m4_m5_useful_controls import RECIPE
+    
+        setup = prepare(tmp_path, 'm4')
+        body = setup['config'].data()
+        provider = {'kind':'grok-acp-public-train-v1','model':'grok-4.6','opportunity_contract':'public-train-main-and-initial-title-v1',
+            'included_only':True,'api_key_route_permitted':False,'main_calls':40,'possible_initial_title_calls':40,
+            'main_output_caps':{'m4_plan':2048,'m5_mechanism':2048,'m5_measurement':2048,'analysis_program':8192,'final_answer':2048},
+            'input_byte_cap_per_request':262144,'observed_main_token_cap':131072,'title_requested_output_cap':100,
+            'wall_timeout_seconds':60,'max_retries':0,'title_usage_and_all_call_totals':'unknown'}
+        body.update(schema='m4-m5-train-controller-config-v4', execution_recipe=RECIPE, provider=provider,
+            model='grok-4.6', effort='native_acp', max_tokens=131072*40, timeout_seconds=60)
+        config = controller.FrozenM4M5TrainConfig(FrozenRecord.from_dict(body))
+        setup['config'] = config
+        setup['compiled'] = controller.compile_m4_m5_train_panel(config, setup['packets'])
+        assert len(setup['compiled'].panel.cells) == 8
+        port, logs = default_port(tmp_path, monkeypatch, schemas=body['schemas'],
+            caps=provider['main_output_caps'], max_calls=40,
+            scenario='train_unknown_main' if fault=='unknown_main' else 'train_panel')
+        if fault=='provenance':
+            verify=controller.verify_m4_m5_combination_benchmark_cell
+            def drift(*args, **kwargs):
+                result=verify(*args, **kwargs)
+                (port.calls_root/'0001-m4_plan/response.private.json').write_text('{"foreign":true}')
+                return result
+            monkeypatch.setattr(controller,'verify_m4_m5_combination_benchmark_cell',drift)
+        with ExitStack() as stack:
+            service=processes(setup, stack)
+&gt;           result=controller.run_m4_m5_train_panel(config, custody=None, prospective_exporter=setup['exporter'],
+                snapshot_root=Path(setup['exporter'].config['snapshot_root']), export_root=setup['exporter'].output_root,
+                run_root=tmp_path/'run-v4', model=port, audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}),
+                execution_authority=setup['module'].EXECUTION, scoring_service=service,
+                scorer_authority_keys={setup['module'].SCORER.authority_id:setup['module'].SCORER.key})
+
+tests\test_grok_train_solver.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\combination_train_controller.py:300: in run_m4_m5_train_panel
+    snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model.root)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+snapshot_root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell2/primary/snapshot')
+export_root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell2/export')
+run_root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell2/run-v4')
+model_root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_v4_full_useful_eight_cell2/native-ledger')
+
+    def _checked_roots(snapshot_root: Path, export_root: Path, run_root: Path, model_root: Path) -&gt; tuple[Path, Path, Path, Path]:
+        snapshot = Path(snapshot_root).resolve(strict=True)
+        roots = tuple(Path(path).resolve() for path in (export_root, run_root, model_root))
+        if any(_label_ancestor(path) for path in roots):
+&gt;           raise ContractError("export, run, and model roots must be outside label-containing ancestors")
+E           research_loop.ontology.ContractError: export, run, and model roots must be outside label-containing ancestors
+
+research_loop\modular\train_controller.py:531: ContractError</failure></testcase><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[wire]" time="0.343"><failure message="research_loop.ontology.ContractError: Grok native request is terminal; do not retry">command = ('E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_sub...er-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_substitut0\\public-contexts\\call-0001', 'agent', 'stdio')
+cwd = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_native_original_substitut0/public-contexts/call-0001')
+env = {'APPDATA': 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_o...pytest\\test_native_original_substitut0\\native-ledger\\calls\\0001-m4_plan\\native-home', 'GROK_MEMORY': 'false', ...}
+stderr = &lt;_io.BufferedWriter name='E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_substitut0\\native-ledger\\calls\\0001-m4_plan\\native-private\\stderr.private.txt'&gt;
+
+    def process_tree(command,cwd,env,stderr):
+&gt;       assert command==[str(exe.resolve()),'--no-auto-update','--cwd',str(cwd),'agent','stdio']
+E       AssertionError: assert ('E:\\_ryanDe...ent', 'stdio') == ['E:\\_ryanDe...ent', 'stdio']
+E         
+E         Use -v to get more diff
+
+tests\test_grok_train_solver.py:102: AssertionError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_native_original_substitut0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023BB2E972C0&gt;
+substitution = 'wire'
+
+    @pytest.mark.parametrize('substitution',['wire','coherent_wire','reservation','response','config','observer_billing'])
+    def test_native_original_substitution_closes_before_later_io(tmp_path,monkeypatch,substitution):
+&gt;       port,logs=default_port(tmp_path,monkeypatch);port(REQUEST)
+                                                     ^^^^^^^^^^^^^
+
+tests\test_grok_train_solver.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.grok_train_solver.GrokTrainModelPort object at 0x0000023BB2E96360&gt;
+request = FrozenRecord(encoded='{"context":{},"execution_feedback":[],"instruction":"public","lock_digest":"aaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaa","module_context":{},"objective":{},"schema":"public-model-request-v1","slot":"m4_plan","task":{}}')
+
+    def __call__(self, request: FrozenRecord) -&gt; FrozenRecord:
+        if not isinstance(request, FrozenRecord): raise ContractError('Grok TRAIN port accepts frozen requests only')
+        body=request.data(); slot=body.get('slot')
+        if (set(body) != {'schema','task','lock_digest','objective','slot','instruction','context','module_context','execution_feedback'}
+                or body.get('schema') != 'public-model-request-v1' or slot not in self.schemas):
+            raise ContractError('unexpected public TRAIN solver request')
+        if self.ledger['usage_incomplete'] or len(self.ledger['calls']) &gt;= self.max_calls:
+            raise ContractError('Grok TRAIN ledger is closed')
+        replay_grok_train_ledger(self)
+        identities={(row.get('session_id'), row.get('prompt_id')) for row in self.ledger['calls'] if row.get('status') == 'succeeded'}
+        if len(identities) != sum(row.get('status') == 'succeeded' for row in self.ledger['calls']) or any(not all(identity) for identity in identities):
+            self.ledger['usage_incomplete']=True; _write(self.ledger_path,self.ledger)
+            raise ContractError('prior native identity is missing or duplicated; ledger closed')
+        prompt='Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n'+request.encoded
+        raw=prompt.encode('utf-8'); cap=self.slot_input_byte_caps[slot]
+        if len(raw)&gt;cap: raise ContractError('public TRAIN prompt exceeds frozen complete input-byte bound')
+        number=len(self.ledger['calls'])+1; call_dir=self.calls_root/f'{number:04d}-{slot}'; call_dir.mkdir()
+        prompt_path=call_dir/'prompt.private.txt'; schema_path=call_dir/'schema.private.json'
+        prompt_path.write_bytes(raw); schema_path.write_bytes(canonical(self.schemas[slot]).encode())
+        request_path=call_dir/'request.private.json'; request_path.write_bytes(request.encoded.encode())
+        reservation=call_dir/'reservation.private.json'; private=call_dir/'native-private'
+        row={'id':number,'slot':slot,'request_sha256':request.content_hash,'prompt_sha256':_sha(raw),
+             'schema_sha256':_sha(schema_path.read_bytes()),'status':'reserved','reservation_path':str(reservation),
+             'native_private_path':str(private),'main_opportunity':1,'possible_initial_title_opportunity':1}
+        self.ledger['calls'].append(row); _write(self.ledger_path,self.ledger)
+        try:
+            # Each opportunity owns a fresh native context and exact slot config.
+            # Copy the already-approved login opaquely; never parse or log it.
+            home=call_dir/'native-home'; home.mkdir()
+            shutil.copyfile(self.private_home/'auth.json', home/'auth.json')
+            configuration=home/'config.toml'
+            configuration.write_bytes(diagnostic_config(self.slot_output_caps[slot]).encode('utf-8'))
+            user=self.private_profile/f'call-{number:04d}'; user.mkdir(parents=True, exist_ok=False)
+            cwd=self.public_cwd/f'call-{number:04d}'; cwd.mkdir(parents=True, exist_ok=False)
+            sources={**self.frozen_files, str(configuration):_sha(configuration.read_bytes())}
+            row.update(frozen_files=sources, private_profile=str(user), public_cwd=str(cwd),
+                       config_path=str(configuration), config_sha256=sources[str(configuration)])
+            _write(self.ledger_path,self.ledger)
+            result=self.native_invoke(opportunity_contract=TRAIN_OPPORTUNITY_CONTRACT, executable=self.executable,
+                cwd=str(cwd), private_home=str(home), private_profile=str(user),
+                private_dir=str(private), reservation=str(reservation), frozen_files=sources, prompt=prompt,
+                schema=self.schemas[slot], main_output_cap=self.slot_output_caps[slot],
+                observed_main_token_cap=self.observed_main_token_cap, input_byte_cap=cap)
+            receipt=result.receipt.data(); response=result.response
+            receipt_path=call_dir/'observer-receipt.private.json'; receipt_path.write_bytes(result.receipt.encoded.encode())
+            binding=receipt.get('public_train_binding')
+            billing=receipt.get('billing_before')
+            valid = (receipt.get('schema') == 'grok-native-acp-public-train-receipt-v1'
+                and receipt.get('accepted') is True and receipt.get('requested_model') == MODEL
+                and receipt.get('opportunity_contract') == TRAIN_OPPORTUNITY_CONTRACT
+                and receipt.get('runtime_empty_inventory_count', 0) &gt;= 1
+                and isinstance(billing, Mapping) and billing.get('route') == 'grok_com_unified_subscription'
+                and billing.get('on_demand_cap') == billing.get('on_demand_used') == billing.get('prepaid_balance') == 0
+                and billing.get('auto_topup_rule_present') is False and isinstance(binding, Mapping)
+                and binding.get('prompt_sha256') == _sha(raw) and binding.get('schema_sha256') == _sha(schema_path.read_bytes())
+                and binding.get('source_manifest_sha256') == _sha(canonical(sources).encode())
+                and binding.get('input_byte_cap') == cap and binding.get('observed_main_token_cap') == self.observed_main_token_cap)
+            row.update(native_receipt_sha256=_sha(receipt_path.read_bytes()), reservation_sha256=_sha(reservation.read_bytes()) if reservation.exists() else None,
+                       response_sha256=response.content_hash if response else None, known_main_usage=receipt.get('known_usage'),
+                       accepted=receipt.get('accepted') is True)
+            usage=known_usage(receipt.get('known_usage'))
+            if usage is not None:
+                self.ledger['tokens'] += usage['totalTokens']
+            if not valid or not response or not isinstance(usage, Mapping) or type(usage.get('totalTokens')) is not int or binding.get('response_sha256') != response.content_hash:
+                raise ContractError('native main dispatch or usage is unknown; ledger closed')
+            reserved=json.loads(reservation.read_text(encoding='utf-8'))
+            if (reserved.get('session_id') != receipt.get('session_id') or reserved.get('prompt_id') != receipt.get('prompt_id')
+                    or (receipt.get('session_id'),receipt.get('prompt_id')) in identities):
+                raise ContractError('native reservation/session/prompt binding failed')
+            row.update(session_id=receipt['session_id'], prompt_id=receipt['prompt_id'])
+            _validate_schema(self.schemas[slot], response.data())
+            (call_dir/'response.private.json').write_bytes(response.encoded.encode())
+            row['status']='succeeded'; _write(self.ledger_path,self.ledger)
+            replay_grok_train_ledger(self)
+            return response
+        except Exception as exc:
+            row.update(status='unknown_or_failed', error_type=type(exc).__name__); self.ledger['usage_incomplete']=True
+&gt;           _write(self.ledger_path,self.ledger); raise ContractError('Grok native request is terminal; do not retry') from exc
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           research_loop.ontology.ContractError: Grok native request is terminal; do not retry
+
+research_loop\modular\grok_train_solver.py:149: ContractError</failure></testcase><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[coherent_wire]" time="0.159"><failure message="research_loop.ontology.ContractError: Grok native request is terminal; do not retry">command = ('E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_sub...er-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_substitut1\\public-contexts\\call-0001', 'agent', 'stdio')
+cwd = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_native_original_substitut1/public-contexts/call-0001')
+env = {'APPDATA': 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_o...pytest\\test_native_original_substitut1\\native-ledger\\calls\\0001-m4_plan\\native-home', 'GROK_MEMORY': 'false', ...}
+stderr = &lt;_io.BufferedWriter name='E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_substitut1\\native-ledger\\calls\\0001-m4_plan\\native-private\\stderr.private.txt'&gt;
+
+    def process_tree(command,cwd,env,stderr):
+&gt;       assert command==[str(exe.resolve()),'--no-auto-update','--cwd',str(cwd),'agent','stdio']
+E       AssertionError: assert ('E:\\_ryanDe...ent', 'stdio') == ['E:\\_ryanDe...ent', 'stdio']
+E         
+E         Use -v to get more diff
+
+tests\test_grok_train_solver.py:102: AssertionError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_native_original_substitut1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023BB2DFF140&gt;
+substitution = 'coherent_wire'
+
+    @pytest.mark.parametrize('substitution',['wire','coherent_wire','reservation','response','config','observer_billing'])
+    def test_native_original_substitution_closes_before_later_io(tmp_path,monkeypatch,substitution):
+&gt;       port,logs=default_port(tmp_path,monkeypatch);port(REQUEST)
+                                                     ^^^^^^^^^^^^^
+
+tests\test_grok_train_solver.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.grok_train_solver.GrokTrainModelPort object at 0x0000023BB2DFE4B0&gt;
+request = FrozenRecord(encoded='{"context":{},"execution_feedback":[],"instruction":"public","lock_digest":"aaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaa","module_context":{},"objective":{},"schema":"public-model-request-v1","slot":"m4_plan","task":{}}')
+
+    def __call__(self, request: FrozenRecord) -&gt; FrozenRecord:
+        if not isinstance(request, FrozenRecord): raise ContractError('Grok TRAIN port accepts frozen requests only')
+        body=request.data(); slot=body.get('slot')
+        if (set(body) != {'schema','task','lock_digest','objective','slot','instruction','context','module_context','execution_feedback'}
+                or body.get('schema') != 'public-model-request-v1' or slot not in self.schemas):
+            raise ContractError('unexpected public TRAIN solver request')
+        if self.ledger['usage_incomplete'] or len(self.ledger['calls']) &gt;= self.max_calls:
+            raise ContractError('Grok TRAIN ledger is closed')
+        replay_grok_train_ledger(self)
+        identities={(row.get('session_id'), row.get('prompt_id')) for row in self.ledger['calls'] if row.get('status') == 'succeeded'}
+        if len(identities) != sum(row.get('status') == 'succeeded' for row in self.ledger['calls']) or any(not all(identity) for identity in identities):
+            self.ledger['usage_incomplete']=True; _write(self.ledger_path,self.ledger)
+            raise ContractError('prior native identity is missing or duplicated; ledger closed')
+        prompt='Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n'+request.encoded
+        raw=prompt.encode('utf-8'); cap=self.slot_input_byte_caps[slot]
+        if len(raw)&gt;cap: raise ContractError('public TRAIN prompt exceeds frozen complete input-byte bound')
+        number=len(self.ledger['calls'])+1; call_dir=self.calls_root/f'{number:04d}-{slot}'; call_dir.mkdir()
+        prompt_path=call_dir/'prompt.private.txt'; schema_path=call_dir/'schema.private.json'
+        prompt_path.write_bytes(raw); schema_path.write_bytes(canonical(self.schemas[slot]).encode())
+        request_path=call_dir/'request.private.json'; request_path.write_bytes(request.encoded.encode())
+        reservation=call_dir/'reservation.private.json'; private=call_dir/'native-private'
+        row={'id':number,'slot':slot,'request_sha256':request.content_hash,'prompt_sha256':_sha(raw),
+             'schema_sha256':_sha(schema_path.read_bytes()),'status':'reserved','reservation_path':str(reservation),
+             'native_private_path':str(private),'main_opportunity':1,'possible_initial_title_opportunity':1}
+        self.ledger['calls'].append(row); _write(self.ledger_path,self.ledger)
+        try:
+            # Each opportunity owns a fresh native context and exact slot config.
+            # Copy the already-approved login opaquely; never parse or log it.
+            home=call_dir/'native-home'; home.mkdir()
+            shutil.copyfile(self.private_home/'auth.json', home/'auth.json')
+            configuration=home/'config.toml'
+            configuration.write_bytes(diagnostic_config(self.slot_output_caps[slot]).encode('utf-8'))
+            user=self.private_profile/f'call-{number:04d}'; user.mkdir(parents=True, exist_ok=False)
+            cwd=self.public_cwd/f'call-{number:04d}'; cwd.mkdir(parents=True, exist_ok=False)
+            sources={**self.frozen_files, str(configuration):_sha(configuration.read_bytes())}
+            row.update(frozen_files=sources, private_profile=str(user), public_cwd=str(cwd),
+                       config_path=str(configuration), config_sha256=sources[str(configuration)])
+            _write(self.ledger_path,self.ledger)
+            result=self.native_invoke(opportunity_contract=TRAIN_OPPORTUNITY_CONTRACT, executable=self.executable,
+                cwd=str(cwd), private_home=str(home), private_profile=str(user),
+                private_dir=str(private), reservation=str(reservation), frozen_files=sources, prompt=prompt,
+                schema=self.schemas[slot], main_output_cap=self.slot_output_caps[slot],
+                observed_main_token_cap=self.observed_main_token_cap, input_byte_cap=cap)
+            receipt=result.receipt.data(); response=result.response
+            receipt_path=call_dir/'observer-receipt.private.json'; receipt_path.write_bytes(result.receipt.encoded.encode())
+            binding=receipt.get('public_train_binding')
+            billing=receipt.get('billing_before')
+            valid = (receipt.get('schema') == 'grok-native-acp-public-train-receipt-v1'
+                and receipt.get('accepted') is True and receipt.get('requested_model') == MODEL
+                and receipt.get('opportunity_contract') == TRAIN_OPPORTUNITY_CONTRACT
+                and receipt.get('runtime_empty_inventory_count', 0) &gt;= 1
+                and isinstance(billing, Mapping) and billing.get('route') == 'grok_com_unified_subscription'
+                and billing.get('on_demand_cap') == billing.get('on_demand_used') == billing.get('prepaid_balance') == 0
+                and billing.get('auto_topup_rule_present') is False and isinstance(binding, Mapping)
+                and binding.get('prompt_sha256') == _sha(raw) and binding.get('schema_sha256') == _sha(schema_path.read_bytes())
+                and binding.get('source_manifest_sha256') == _sha(canonical(sources).encode())
+                and binding.get('input_byte_cap') == cap and binding.get('observed_main_token_cap') == self.observed_main_token_cap)
+            row.update(native_receipt_sha256=_sha(receipt_path.read_bytes()), reservation_sha256=_sha(reservation.read_bytes()) if reservation.exists() else None,
+                       response_sha256=response.content_hash if response else None, known_main_usage=receipt.get('known_usage'),
+                       accepted=receipt.get('accepted') is True)
+            usage=known_usage(receipt.get('known_usage'))
+            if usage is not None:
+                self.ledger['tokens'] += usage['totalTokens']
+            if not valid or not response or not isinstance(usage, Mapping) or type(usage.get('totalTokens')) is not int or binding.get('response_sha256') != response.content_hash:
+                raise ContractError('native main dispatch or usage is unknown; ledger closed')
+            reserved=json.loads(reservation.read_text(encoding='utf-8'))
+            if (reserved.get('session_id') != receipt.get('session_id') or reserved.get('prompt_id') != receipt.get('prompt_id')
+                    or (receipt.get('session_id'),receipt.get('prompt_id')) in identities):
+                raise ContractError('native reservation/session/prompt binding failed')
+            row.update(session_id=receipt['session_id'], prompt_id=receipt['prompt_id'])
+            _validate_schema(self.schemas[slot], response.data())
+            (call_dir/'response.private.json').write_bytes(response.encoded.encode())
+            row['status']='succeeded'; _write(self.ledger_path,self.ledger)
+            replay_grok_train_ledger(self)
+            return response
+        except Exception as exc:
+            row.update(status='unknown_or_failed', error_type=type(exc).__name__); self.ledger['usage_incomplete']=True
+&gt;           _write(self.ledger_path,self.ledger); raise ContractError('Grok native request is terminal; do not retry') from exc
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           research_loop.ontology.ContractError: Grok native request is terminal; do not retry
+
+research_loop\modular\grok_train_solver.py:149: ContractError</failure></testcase><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[reservation]" time="0.181"><failure message="research_loop.ontology.ContractError: Grok native request is terminal; do not retry">command = ('E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_sub...er-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_substitut2\\public-contexts\\call-0001', 'agent', 'stdio')
+cwd = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_native_original_substitut2/public-contexts/call-0001')
+env = {'APPDATA': 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_o...pytest\\test_native_original_substitut2\\native-ledger\\calls\\0001-m4_plan\\native-home', 'GROK_MEMORY': 'false', ...}
+stderr = &lt;_io.BufferedWriter name='E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_substitut2\\native-ledger\\calls\\0001-m4_plan\\native-private\\stderr.private.txt'&gt;
+
+    def process_tree(command,cwd,env,stderr):
+&gt;       assert command==[str(exe.resolve()),'--no-auto-update','--cwd',str(cwd),'agent','stdio']
+E       AssertionError: assert ('E:\\_ryanDe...ent', 'stdio') == ['E:\\_ryanDe...ent', 'stdio']
+E         
+E         Use -v to get more diff
+
+tests\test_grok_train_solver.py:102: AssertionError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_native_original_substitut2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023BB20C0290&gt;
+substitution = 'reservation'
+
+    @pytest.mark.parametrize('substitution',['wire','coherent_wire','reservation','response','config','observer_billing'])
+    def test_native_original_substitution_closes_before_later_io(tmp_path,monkeypatch,substitution):
+&gt;       port,logs=default_port(tmp_path,monkeypatch);port(REQUEST)
+                                                     ^^^^^^^^^^^^^
+
+tests\test_grok_train_solver.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.grok_train_solver.GrokTrainModelPort object at 0x0000023BB2E11580&gt;
+request = FrozenRecord(encoded='{"context":{},"execution_feedback":[],"instruction":"public","lock_digest":"aaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaa","module_context":{},"objective":{},"schema":"public-model-request-v1","slot":"m4_plan","task":{}}')
+
+    def __call__(self, request: FrozenRecord) -&gt; FrozenRecord:
+        if not isinstance(request, FrozenRecord): raise ContractError('Grok TRAIN port accepts frozen requests only')
+        body=request.data(); slot=body.get('slot')
+        if (set(body) != {'schema','task','lock_digest','objective','slot','instruction','context','module_context','execution_feedback'}
+                or body.get('schema') != 'public-model-request-v1' or slot not in self.schemas):
+            raise ContractError('unexpected public TRAIN solver request')
+        if self.ledger['usage_incomplete'] or len(self.ledger['calls']) &gt;= self.max_calls:
+            raise ContractError('Grok TRAIN ledger is closed')
+        replay_grok_train_ledger(self)
+        identities={(row.get('session_id'), row.get('prompt_id')) for row in self.ledger['calls'] if row.get('status') == 'succeeded'}
+        if len(identities) != sum(row.get('status') == 'succeeded' for row in self.ledger['calls']) or any(not all(identity) for identity in identities):
+            self.ledger['usage_incomplete']=True; _write(self.ledger_path,self.ledger)
+            raise ContractError('prior native identity is missing or duplicated; ledger closed')
+        prompt='Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n'+request.encoded
+        raw=prompt.encode('utf-8'); cap=self.slot_input_byte_caps[slot]
+        if len(raw)&gt;cap: raise ContractError('public TRAIN prompt exceeds frozen complete input-byte bound')
+        number=len(self.ledger['calls'])+1; call_dir=self.calls_root/f'{number:04d}-{slot}'; call_dir.mkdir()
+        prompt_path=call_dir/'prompt.private.txt'; schema_path=call_dir/'schema.private.json'
+        prompt_path.write_bytes(raw); schema_path.write_bytes(canonical(self.schemas[slot]).encode())
+        request_path=call_dir/'request.private.json'; request_path.write_bytes(request.encoded.encode())
+        reservation=call_dir/'reservation.private.json'; private=call_dir/'native-private'
+        row={'id':number,'slot':slot,'request_sha256':request.content_hash,'prompt_sha256':_sha(raw),
+             'schema_sha256':_sha(schema_path.read_bytes()),'status':'reserved','reservation_path':str(reservation),
+             'native_private_path':str(private),'main_opportunity':1,'possible_initial_title_opportunity':1}
+        self.ledger['calls'].append(row); _write(self.ledger_path,self.ledger)
+        try:
+            # Each opportunity owns a fresh native context and exact slot config.
+            # Copy the already-approved login opaquely; never parse or log it.
+            home=call_dir/'native-home'; home.mkdir()
+            shutil.copyfile(self.private_home/'auth.json', home/'auth.json')
+            configuration=home/'config.toml'
+            configuration.write_bytes(diagnostic_config(self.slot_output_caps[slot]).encode('utf-8'))
+            user=self.private_profile/f'call-{number:04d}'; user.mkdir(parents=True, exist_ok=False)
+            cwd=self.public_cwd/f'call-{number:04d}'; cwd.mkdir(parents=True, exist_ok=False)
+            sources={**self.frozen_files, str(configuration):_sha(configuration.read_bytes())}
+            row.update(frozen_files=sources, private_profile=str(user), public_cwd=str(cwd),
+                       config_path=str(configuration), config_sha256=sources[str(configuration)])
+            _write(self.ledger_path,self.ledger)
+            result=self.native_invoke(opportunity_contract=TRAIN_OPPORTUNITY_CONTRACT, executable=self.executable,
+                cwd=str(cwd), private_home=str(home), private_profile=str(user),
+                private_dir=str(private), reservation=str(reservation), frozen_files=sources, prompt=prompt,
+                schema=self.schemas[slot], main_output_cap=self.slot_output_caps[slot],
+                observed_main_token_cap=self.observed_main_token_cap, input_byte_cap=cap)
+            receipt=result.receipt.data(); response=result.response
+            receipt_path=call_dir/'observer-receipt.private.json'; receipt_path.write_bytes(result.receipt.encoded.encode())
+            binding=receipt.get('public_train_binding')
+            billing=receipt.get('billing_before')
+            valid = (receipt.get('schema') == 'grok-native-acp-public-train-receipt-v1'
+                and receipt.get('accepted') is True and receipt.get('requested_model') == MODEL
+                and receipt.get('opportunity_contract') == TRAIN_OPPORTUNITY_CONTRACT
+                and receipt.get('runtime_empty_inventory_count', 0) &gt;= 1
+                and isinstance(billing, Mapping) and billing.get('route') == 'grok_com_unified_subscription'
+                and billing.get('on_demand_cap') == billing.get('on_demand_used') == billing.get('prepaid_balance') == 0
+                and billing.get('auto_topup_rule_present') is False and isinstance(binding, Mapping)
+                and binding.get('prompt_sha256') == _sha(raw) and binding.get('schema_sha256') == _sha(schema_path.read_bytes())
+                and binding.get('source_manifest_sha256') == _sha(canonical(sources).encode())
+                and binding.get('input_byte_cap') == cap and binding.get('observed_main_token_cap') == self.observed_main_token_cap)
+            row.update(native_receipt_sha256=_sha(receipt_path.read_bytes()), reservation_sha256=_sha(reservation.read_bytes()) if reservation.exists() else None,
+                       response_sha256=response.content_hash if response else None, known_main_usage=receipt.get('known_usage'),
+                       accepted=receipt.get('accepted') is True)
+            usage=known_usage(receipt.get('known_usage'))
+            if usage is not None:
+                self.ledger['tokens'] += usage['totalTokens']
+            if not valid or not response or not isinstance(usage, Mapping) or type(usage.get('totalTokens')) is not int or binding.get('response_sha256') != response.content_hash:
+                raise ContractError('native main dispatch or usage is unknown; ledger closed')
+            reserved=json.loads(reservation.read_text(encoding='utf-8'))
+            if (reserved.get('session_id') != receipt.get('session_id') or reserved.get('prompt_id') != receipt.get('prompt_id')
+                    or (receipt.get('session_id'),receipt.get('prompt_id')) in identities):
+                raise ContractError('native reservation/session/prompt binding failed')
+            row.update(session_id=receipt['session_id'], prompt_id=receipt['prompt_id'])
+            _validate_schema(self.schemas[slot], response.data())
+            (call_dir/'response.private.json').write_bytes(response.encoded.encode())
+            row['status']='succeeded'; _write(self.ledger_path,self.ledger)
+            replay_grok_train_ledger(self)
+            return response
+        except Exception as exc:
+            row.update(status='unknown_or_failed', error_type=type(exc).__name__); self.ledger['usage_incomplete']=True
+&gt;           _write(self.ledger_path,self.ledger); raise ContractError('Grok native request is terminal; do not retry') from exc
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           research_loop.ontology.ContractError: Grok native request is terminal; do not retry
+
+research_loop\modular\grok_train_solver.py:149: ContractError</failure></testcase><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[response]" time="0.178"><failure message="research_loop.ontology.ContractError: Grok native request is terminal; do not retry">command = ('E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_sub...er-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_substitut3\\public-contexts\\call-0001', 'agent', 'stdio')
+cwd = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_native_original_substitut3/public-contexts/call-0001')
+env = {'APPDATA': 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_o...pytest\\test_native_original_substitut3\\native-ledger\\calls\\0001-m4_plan\\native-home', 'GROK_MEMORY': 'false', ...}
+stderr = &lt;_io.BufferedWriter name='E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_substitut3\\native-ledger\\calls\\0001-m4_plan\\native-private\\stderr.private.txt'&gt;
+
+    def process_tree(command,cwd,env,stderr):
+&gt;       assert command==[str(exe.resolve()),'--no-auto-update','--cwd',str(cwd),'agent','stdio']
+E       AssertionError: assert ('E:\\_ryanDe...ent', 'stdio') == ['E:\\_ryanDe...ent', 'stdio']
+E         
+E         Use -v to get more diff
+
+tests\test_grok_train_solver.py:102: AssertionError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_native_original_substitut3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023BB2E17650&gt;
+substitution = 'response'
+
+    @pytest.mark.parametrize('substitution',['wire','coherent_wire','reservation','response','config','observer_billing'])
+    def test_native_original_substitution_closes_before_later_io(tmp_path,monkeypatch,substitution):
+&gt;       port,logs=default_port(tmp_path,monkeypatch);port(REQUEST)
+                                                     ^^^^^^^^^^^^^
+
+tests\test_grok_train_solver.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.grok_train_solver.GrokTrainModelPort object at 0x0000023BB2E16CF0&gt;
+request = FrozenRecord(encoded='{"context":{},"execution_feedback":[],"instruction":"public","lock_digest":"aaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaa","module_context":{},"objective":{},"schema":"public-model-request-v1","slot":"m4_plan","task":{}}')
+
+    def __call__(self, request: FrozenRecord) -&gt; FrozenRecord:
+        if not isinstance(request, FrozenRecord): raise ContractError('Grok TRAIN port accepts frozen requests only')
+        body=request.data(); slot=body.get('slot')
+        if (set(body) != {'schema','task','lock_digest','objective','slot','instruction','context','module_context','execution_feedback'}
+                or body.get('schema') != 'public-model-request-v1' or slot not in self.schemas):
+            raise ContractError('unexpected public TRAIN solver request')
+        if self.ledger['usage_incomplete'] or len(self.ledger['calls']) &gt;= self.max_calls:
+            raise ContractError('Grok TRAIN ledger is closed')
+        replay_grok_train_ledger(self)
+        identities={(row.get('session_id'), row.get('prompt_id')) for row in self.ledger['calls'] if row.get('status') == 'succeeded'}
+        if len(identities) != sum(row.get('status') == 'succeeded' for row in self.ledger['calls']) or any(not all(identity) for identity in identities):
+            self.ledger['usage_incomplete']=True; _write(self.ledger_path,self.ledger)
+            raise ContractError('prior native identity is missing or duplicated; ledger closed')
+        prompt='Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n'+request.encoded
+        raw=prompt.encode('utf-8'); cap=self.slot_input_byte_caps[slot]
+        if len(raw)&gt;cap: raise ContractError('public TRAIN prompt exceeds frozen complete input-byte bound')
+        number=len(self.ledger['calls'])+1; call_dir=self.calls_root/f'{number:04d}-{slot}'; call_dir.mkdir()
+        prompt_path=call_dir/'prompt.private.txt'; schema_path=call_dir/'schema.private.json'
+        prompt_path.write_bytes(raw); schema_path.write_bytes(canonical(self.schemas[slot]).encode())
+        request_path=call_dir/'request.private.json'; request_path.write_bytes(request.encoded.encode())
+        reservation=call_dir/'reservation.private.json'; private=call_dir/'native-private'
+        row={'id':number,'slot':slot,'request_sha256':request.content_hash,'prompt_sha256':_sha(raw),
+             'schema_sha256':_sha(schema_path.read_bytes()),'status':'reserved','reservation_path':str(reservation),
+             'native_private_path':str(private),'main_opportunity':1,'possible_initial_title_opportunity':1}
+        self.ledger['calls'].append(row); _write(self.ledger_path,self.ledger)
+        try:
+            # Each opportunity owns a fresh native context and exact slot config.
+            # Copy the already-approved login opaquely; never parse or log it.
+            home=call_dir/'native-home'; home.mkdir()
+            shutil.copyfile(self.private_home/'auth.json', home/'auth.json')
+            configuration=home/'config.toml'
+            configuration.write_bytes(diagnostic_config(self.slot_output_caps[slot]).encode('utf-8'))
+            user=self.private_profile/f'call-{number:04d}'; user.mkdir(parents=True, exist_ok=False)
+            cwd=self.public_cwd/f'call-{number:04d}'; cwd.mkdir(parents=True, exist_ok=False)
+            sources={**self.frozen_files, str(configuration):_sha(configuration.read_bytes())}
+            row.update(frozen_files=sources, private_profile=str(user), public_cwd=str(cwd),
+                       config_path=str(configuration), config_sha256=sources[str(configuration)])
+            _write(self.ledger_path,self.ledger)
+            result=self.native_invoke(opportunity_contract=TRAIN_OPPORTUNITY_CONTRACT, executable=self.executable,
+                cwd=str(cwd), private_home=str(home), private_profile=str(user),
+                private_dir=str(private), reservation=str(reservation), frozen_files=sources, prompt=prompt,
+                schema=self.schemas[slot], main_output_cap=self.slot_output_caps[slot],
+                observed_main_token_cap=self.observed_main_token_cap, input_byte_cap=cap)
+            receipt=result.receipt.data(); response=result.response
+            receipt_path=call_dir/'observer-receipt.private.json'; receipt_path.write_bytes(result.receipt.encoded.encode())
+            binding=receipt.get('public_train_binding')
+            billing=receipt.get('billing_before')
+            valid = (receipt.get('schema') == 'grok-native-acp-public-train-receipt-v1'
+                and receipt.get('accepted') is True and receipt.get('requested_model') == MODEL
+                and receipt.get('opportunity_contract') == TRAIN_OPPORTUNITY_CONTRACT
+                and receipt.get('runtime_empty_inventory_count', 0) &gt;= 1
+                and isinstance(billing, Mapping) and billing.get('route') == 'grok_com_unified_subscription'
+                and billing.get('on_demand_cap') == billing.get('on_demand_used') == billing.get('prepaid_balance') == 0
+                and billing.get('auto_topup_rule_present') is False and isinstance(binding, Mapping)
+                and binding.get('prompt_sha256') == _sha(raw) and binding.get('schema_sha256') == _sha(schema_path.read_bytes())
+                and binding.get('source_manifest_sha256') == _sha(canonical(sources).encode())
+                and binding.get('input_byte_cap') == cap and binding.get('observed_main_token_cap') == self.observed_main_token_cap)
+            row.update(native_receipt_sha256=_sha(receipt_path.read_bytes()), reservation_sha256=_sha(reservation.read_bytes()) if reservation.exists() else None,
+                       response_sha256=response.content_hash if response else None, known_main_usage=receipt.get('known_usage'),
+                       accepted=receipt.get('accepted') is True)
+            usage=known_usage(receipt.get('known_usage'))
+            if usage is not None:
+                self.ledger['tokens'] += usage['totalTokens']
+            if not valid or not response or not isinstance(usage, Mapping) or type(usage.get('totalTokens')) is not int or binding.get('response_sha256') != response.content_hash:
+                raise ContractError('native main dispatch or usage is unknown; ledger closed')
+            reserved=json.loads(reservation.read_text(encoding='utf-8'))
+            if (reserved.get('session_id') != receipt.get('session_id') or reserved.get('prompt_id') != receipt.get('prompt_id')
+                    or (receipt.get('session_id'),receipt.get('prompt_id')) in identities):
+                raise ContractError('native reservation/session/prompt binding failed')
+            row.update(session_id=receipt['session_id'], prompt_id=receipt['prompt_id'])
+            _validate_schema(self.schemas[slot], response.data())
+            (call_dir/'response.private.json').write_bytes(response.encoded.encode())
+            row['status']='succeeded'; _write(self.ledger_path,self.ledger)
+            replay_grok_train_ledger(self)
+            return response
+        except Exception as exc:
+            row.update(status='unknown_or_failed', error_type=type(exc).__name__); self.ledger['usage_incomplete']=True
+&gt;           _write(self.ledger_path,self.ledger); raise ContractError('Grok native request is terminal; do not retry') from exc
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           research_loop.ontology.ContractError: Grok native request is terminal; do not retry
+
+research_loop\modular\grok_train_solver.py:149: ContractError</failure></testcase><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[config]" time="0.211"><failure message="research_loop.ontology.ContractError: Grok native request is terminal; do not retry">command = ('E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_sub...er-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_substitut4\\public-contexts\\call-0001', 'agent', 'stdio')
+cwd = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_native_original_substitut4/public-contexts/call-0001')
+env = {'APPDATA': 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_o...pytest\\test_native_original_substitut4\\native-ledger\\calls\\0001-m4_plan\\native-home', 'GROK_MEMORY': 'false', ...}
+stderr = &lt;_io.BufferedWriter name='E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_substitut4\\native-ledger\\calls\\0001-m4_plan\\native-private\\stderr.private.txt'&gt;
+
+    def process_tree(command,cwd,env,stderr):
+&gt;       assert command==[str(exe.resolve()),'--no-auto-update','--cwd',str(cwd),'agent','stdio']
+E       AssertionError: assert ('E:\\_ryanDe...ent', 'stdio') == ['E:\\_ryanDe...ent', 'stdio']
+E         
+E         Use -v to get more diff
+
+tests\test_grok_train_solver.py:102: AssertionError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_native_original_substitut4')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023BB2DFFC50&gt;
+substitution = 'config'
+
+    @pytest.mark.parametrize('substitution',['wire','coherent_wire','reservation','response','config','observer_billing'])
+    def test_native_original_substitution_closes_before_later_io(tmp_path,monkeypatch,substitution):
+&gt;       port,logs=default_port(tmp_path,monkeypatch);port(REQUEST)
+                                                     ^^^^^^^^^^^^^
+
+tests\test_grok_train_solver.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.grok_train_solver.GrokTrainModelPort object at 0x0000023BB2DFEF30&gt;
+request = FrozenRecord(encoded='{"context":{},"execution_feedback":[],"instruction":"public","lock_digest":"aaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaa","module_context":{},"objective":{},"schema":"public-model-request-v1","slot":"m4_plan","task":{}}')
+
+    def __call__(self, request: FrozenRecord) -&gt; FrozenRecord:
+        if not isinstance(request, FrozenRecord): raise ContractError('Grok TRAIN port accepts frozen requests only')
+        body=request.data(); slot=body.get('slot')
+        if (set(body) != {'schema','task','lock_digest','objective','slot','instruction','context','module_context','execution_feedback'}
+                or body.get('schema') != 'public-model-request-v1' or slot not in self.schemas):
+            raise ContractError('unexpected public TRAIN solver request')
+        if self.ledger['usage_incomplete'] or len(self.ledger['calls']) &gt;= self.max_calls:
+            raise ContractError('Grok TRAIN ledger is closed')
+        replay_grok_train_ledger(self)
+        identities={(row.get('session_id'), row.get('prompt_id')) for row in self.ledger['calls'] if row.get('status') == 'succeeded'}
+        if len(identities) != sum(row.get('status') == 'succeeded' for row in self.ledger['calls']) or any(not all(identity) for identity in identities):
+            self.ledger['usage_incomplete']=True; _write(self.ledger_path,self.ledger)
+            raise ContractError('prior native identity is missing or duplicated; ledger closed')
+        prompt='Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n'+request.encoded
+        raw=prompt.encode('utf-8'); cap=self.slot_input_byte_caps[slot]
+        if len(raw)&gt;cap: raise ContractError('public TRAIN prompt exceeds frozen complete input-byte bound')
+        number=len(self.ledger['calls'])+1; call_dir=self.calls_root/f'{number:04d}-{slot}'; call_dir.mkdir()
+        prompt_path=call_dir/'prompt.private.txt'; schema_path=call_dir/'schema.private.json'
+        prompt_path.write_bytes(raw); schema_path.write_bytes(canonical(self.schemas[slot]).encode())
+        request_path=call_dir/'request.private.json'; request_path.write_bytes(request.encoded.encode())
+        reservation=call_dir/'reservation.private.json'; private=call_dir/'native-private'
+        row={'id':number,'slot':slot,'request_sha256':request.content_hash,'prompt_sha256':_sha(raw),
+             'schema_sha256':_sha(schema_path.read_bytes()),'status':'reserved','reservation_path':str(reservation),
+             'native_private_path':str(private),'main_opportunity':1,'possible_initial_title_opportunity':1}
+        self.ledger['calls'].append(row); _write(self.ledger_path,self.ledger)
+        try:
+            # Each opportunity owns a fresh native context and exact slot config.
+            # Copy the already-approved login opaquely; never parse or log it.
+            home=call_dir/'native-home'; home.mkdir()
+            shutil.copyfile(self.private_home/'auth.json', home/'auth.json')
+            configuration=home/'config.toml'
+            configuration.write_bytes(diagnostic_config(self.slot_output_caps[slot]).encode('utf-8'))
+            user=self.private_profile/f'call-{number:04d}'; user.mkdir(parents=True, exist_ok=False)
+            cwd=self.public_cwd/f'call-{number:04d}'; cwd.mkdir(parents=True, exist_ok=False)
+            sources={**self.frozen_files, str(configuration):_sha(configuration.read_bytes())}
+            row.update(frozen_files=sources, private_profile=str(user), public_cwd=str(cwd),
+                       config_path=str(configuration), config_sha256=sources[str(configuration)])
+            _write(self.ledger_path,self.ledger)
+            result=self.native_invoke(opportunity_contract=TRAIN_OPPORTUNITY_CONTRACT, executable=self.executable,
+                cwd=str(cwd), private_home=str(home), private_profile=str(user),
+                private_dir=str(private), reservation=str(reservation), frozen_files=sources, prompt=prompt,
+                schema=self.schemas[slot], main_output_cap=self.slot_output_caps[slot],
+                observed_main_token_cap=self.observed_main_token_cap, input_byte_cap=cap)
+            receipt=result.receipt.data(); response=result.response
+            receipt_path=call_dir/'observer-receipt.private.json'; receipt_path.write_bytes(result.receipt.encoded.encode())
+            binding=receipt.get('public_train_binding')
+            billing=receipt.get('billing_before')
+            valid = (receipt.get('schema') == 'grok-native-acp-public-train-receipt-v1'
+                and receipt.get('accepted') is True and receipt.get('requested_model') == MODEL
+                and receipt.get('opportunity_contract') == TRAIN_OPPORTUNITY_CONTRACT
+                and receipt.get('runtime_empty_inventory_count', 0) &gt;= 1
+                and isinstance(billing, Mapping) and billing.get('route') == 'grok_com_unified_subscription'
+                and billing.get('on_demand_cap') == billing.get('on_demand_used') == billing.get('prepaid_balance') == 0
+                and billing.get('auto_topup_rule_present') is False and isinstance(binding, Mapping)
+                and binding.get('prompt_sha256') == _sha(raw) and binding.get('schema_sha256') == _sha(schema_path.read_bytes())
+                and binding.get('source_manifest_sha256') == _sha(canonical(sources).encode())
+                and binding.get('input_byte_cap') == cap and binding.get('observed_main_token_cap') == self.observed_main_token_cap)
+            row.update(native_receipt_sha256=_sha(receipt_path.read_bytes()), reservation_sha256=_sha(reservation.read_bytes()) if reservation.exists() else None,
+                       response_sha256=response.content_hash if response else None, known_main_usage=receipt.get('known_usage'),
+                       accepted=receipt.get('accepted') is True)
+            usage=known_usage(receipt.get('known_usage'))
+            if usage is not None:
+                self.ledger['tokens'] += usage['totalTokens']
+            if not valid or not response or not isinstance(usage, Mapping) or type(usage.get('totalTokens')) is not int or binding.get('response_sha256') != response.content_hash:
+                raise ContractError('native main dispatch or usage is unknown; ledger closed')
+            reserved=json.loads(reservation.read_text(encoding='utf-8'))
+            if (reserved.get('session_id') != receipt.get('session_id') or reserved.get('prompt_id') != receipt.get('prompt_id')
+                    or (receipt.get('session_id'),receipt.get('prompt_id')) in identities):
+                raise ContractError('native reservation/session/prompt binding failed')
+            row.update(session_id=receipt['session_id'], prompt_id=receipt['prompt_id'])
+            _validate_schema(self.schemas[slot], response.data())
+            (call_dir/'response.private.json').write_bytes(response.encoded.encode())
+            row['status']='succeeded'; _write(self.ledger_path,self.ledger)
+            replay_grok_train_ledger(self)
+            return response
+        except Exception as exc:
+            row.update(status='unknown_or_failed', error_type=type(exc).__name__); self.ledger['usage_incomplete']=True
+&gt;           _write(self.ledger_path,self.ledger); raise ContractError('Grok native request is terminal; do not retry') from exc
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           research_loop.ontology.ContractError: Grok native request is terminal; do not retry
+
+research_loop\modular\grok_train_solver.py:149: ContractError</failure></testcase><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[observer_billing]" time="0.448"><failure message="research_loop.ontology.ContractError: Grok native request is terminal; do not retry">command = ('E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_sub...er-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_substitut5\\public-contexts\\call-0001', 'agent', 'stdio')
+cwd = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_native_original_substitut5/public-contexts/call-0001')
+env = {'APPDATA': 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_o...pytest\\test_native_original_substitut5\\native-ledger\\calls\\0001-m4_plan\\native-home', 'GROK_MEMORY': 'false', ...}
+stderr = &lt;_io.BufferedWriter name='E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_native_original_substitut5\\native-ledger\\calls\\0001-m4_plan\\native-private\\stderr.private.txt'&gt;
+
+    def process_tree(command,cwd,env,stderr):
+&gt;       assert command==[str(exe.resolve()),'--no-auto-update','--cwd',str(cwd),'agent','stdio']
+E       AssertionError: assert ('E:\\_ryanDe...ent', 'stdio') == ['E:\\_ryanDe...ent', 'stdio']
+E         
+E         Use -v to get more diff
+
+tests\test_grok_train_solver.py:102: AssertionError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_native_original_substitut5')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023BB2E94350&gt;
+substitution = 'observer_billing'
+
+    @pytest.mark.parametrize('substitution',['wire','coherent_wire','reservation','response','config','observer_billing'])
+    def test_native_original_substitution_closes_before_later_io(tmp_path,monkeypatch,substitution):
+&gt;       port,logs=default_port(tmp_path,monkeypatch);port(REQUEST)
+                                                     ^^^^^^^^^^^^^
+
+tests\test_grok_train_solver.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.grok_train_solver.GrokTrainModelPort object at 0x0000023BB2E97320&gt;
+request = FrozenRecord(encoded='{"context":{},"execution_feedback":[],"instruction":"public","lock_digest":"aaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaa","module_context":{},"objective":{},"schema":"public-model-request-v1","slot":"m4_plan","task":{}}')
+
+    def __call__(self, request: FrozenRecord) -&gt; FrozenRecord:
+        if not isinstance(request, FrozenRecord): raise ContractError('Grok TRAIN port accepts frozen requests only')
+        body=request.data(); slot=body.get('slot')
+        if (set(body) != {'schema','task','lock_digest','objective','slot','instruction','context','module_context','execution_feedback'}
+                or body.get('schema') != 'public-model-request-v1' or slot not in self.schemas):
+            raise ContractError('unexpected public TRAIN solver request')
+        if self.ledger['usage_incomplete'] or len(self.ledger['calls']) &gt;= self.max_calls:
+            raise ContractError('Grok TRAIN ledger is closed')
+        replay_grok_train_ledger(self)
+        identities={(row.get('session_id'), row.get('prompt_id')) for row in self.ledger['calls'] if row.get('status') == 'succeeded'}
+        if len(identities) != sum(row.get('status') == 'succeeded' for row in self.ledger['calls']) or any(not all(identity) for identity in identities):
+            self.ledger['usage_incomplete']=True; _write(self.ledger_path,self.ledger)
+            raise ContractError('prior native identity is missing or duplicated; ledger closed')
+        prompt='Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n'+request.encoded
+        raw=prompt.encode('utf-8'); cap=self.slot_input_byte_caps[slot]
+        if len(raw)&gt;cap: raise ContractError('public TRAIN prompt exceeds frozen complete input-byte bound')
+        number=len(self.ledger['calls'])+1; call_dir=self.calls_root/f'{number:04d}-{slot}'; call_dir.mkdir()
+        prompt_path=call_dir/'prompt.private.txt'; schema_path=call_dir/'schema.private.json'
+        prompt_path.write_bytes(raw); schema_path.write_bytes(canonical(self.schemas[slot]).encode())
+        request_path=call_dir/'request.private.json'; request_path.write_bytes(request.encoded.encode())
+        reservation=call_dir/'reservation.private.json'; private=call_dir/'native-private'
+        row={'id':number,'slot':slot,'request_sha256':request.content_hash,'prompt_sha256':_sha(raw),
+             'schema_sha256':_sha(schema_path.read_bytes()),'status':'reserved','reservation_path':str(reservation),
+             'native_private_path':str(private),'main_opportunity':1,'possible_initial_title_opportunity':1}
+        self.ledger['calls'].append(row); _write(self.ledger_path,self.ledger)
+        try:
+            # Each opportunity owns a fresh native context and exact slot config.
+            # Copy the already-approved login opaquely; never parse or log it.
+            home=call_dir/'native-home'; home.mkdir()
+            shutil.copyfile(self.private_home/'auth.json', home/'auth.json')
+            configuration=home/'config.toml'
+            configuration.write_bytes(diagnostic_config(self.slot_output_caps[slot]).encode('utf-8'))
+            user=self.private_profile/f'call-{number:04d}'; user.mkdir(parents=True, exist_ok=False)
+            cwd=self.public_cwd/f'call-{number:04d}'; cwd.mkdir(parents=True, exist_ok=False)
+            sources={**self.frozen_files, str(configuration):_sha(configuration.read_bytes())}
+            row.update(frozen_files=sources, private_profile=str(user), public_cwd=str(cwd),
+                       config_path=str(configuration), config_sha256=sources[str(configuration)])
+            _write(self.ledger_path,self.ledger)
+            result=self.native_invoke(opportunity_contract=TRAIN_OPPORTUNITY_CONTRACT, executable=self.executable,
+                cwd=str(cwd), private_home=str(home), private_profile=str(user),
+                private_dir=str(private), reservation=str(reservation), frozen_files=sources, prompt=prompt,
+                schema=self.schemas[slot], main_output_cap=self.slot_output_caps[slot],
+                observed_main_token_cap=self.observed_main_token_cap, input_byte_cap=cap)
+            receipt=result.receipt.data(); response=result.response
+            receipt_path=call_dir/'observer-receipt.private.json'; receipt_path.write_bytes(result.receipt.encoded.encode())
+            binding=receipt.get('public_train_binding')
+            billing=receipt.get('billing_before')
+            valid = (receipt.get('schema') == 'grok-native-acp-public-train-receipt-v1'
+                and receipt.get('accepted') is True and receipt.get('requested_model') == MODEL
+                and receipt.get('opportunity_contract') == TRAIN_OPPORTUNITY_CONTRACT
+                and receipt.get('runtime_empty_inventory_count', 0) &gt;= 1
+                and isinstance(billing, Mapping) and billing.get('route') == 'grok_com_unified_subscription'
+                and billing.get('on_demand_cap') == billing.get('on_demand_used') == billing.get('prepaid_balance') == 0
+                and billing.get('auto_topup_rule_present') is False and isinstance(binding, Mapping)
+                and binding.get('prompt_sha256') == _sha(raw) and binding.get('schema_sha256') == _sha(schema_path.read_bytes())
+                and binding.get('source_manifest_sha256') == _sha(canonical(sources).encode())
+                and binding.get('input_byte_cap') == cap and binding.get('observed_main_token_cap') == self.observed_main_token_cap)
+            row.update(native_receipt_sha256=_sha(receipt_path.read_bytes()), reservation_sha256=_sha(reservation.read_bytes()) if reservation.exists() else None,
+                       response_sha256=response.content_hash if response else None, known_main_usage=receipt.get('known_usage'),
+                       accepted=receipt.get('accepted') is True)
+            usage=known_usage(receipt.get('known_usage'))
+            if usage is not None:
+                self.ledger['tokens'] += usage['totalTokens']
+            if not valid or not response or not isinstance(usage, Mapping) or type(usage.get('totalTokens')) is not int or binding.get('response_sha256') != response.content_hash:
+                raise ContractError('native main dispatch or usage is unknown; ledger closed')
+            reserved=json.loads(reservation.read_text(encoding='utf-8'))
+            if (reserved.get('session_id') != receipt.get('session_id') or reserved.get('prompt_id') != receipt.get('prompt_id')
+                    or (receipt.get('session_id'),receipt.get('prompt_id')) in identities):
+                raise ContractError('native reservation/session/prompt binding failed')
+            row.update(session_id=receipt['session_id'], prompt_id=receipt['prompt_id'])
+            _validate_schema(self.schemas[slot], response.data())
+            (call_dir/'response.private.json').write_bytes(response.encoded.encode())
+            row['status']='succeeded'; _write(self.ledger_path,self.ledger)
+            replay_grok_train_ledger(self)
+            return response
+        except Exception as exc:
+            row.update(status='unknown_or_failed', error_type=type(exc).__name__); self.ledger['usage_incomplete']=True
+&gt;           _write(self.ledger_path,self.ledger); raise ContractError('Grok native request is terminal; do not retry') from exc
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           research_loop.ontology.ContractError: Grok native request is terminal; do not retry
+
+research_loop\modular\grok_train_solver.py:149: ContractError</failure></testcase><testcase classname="tests.test_grok_train_solver" name="test_unknown_reserved_opportunity_stays_closed_after_restart" time="0.151"><failure message="research_loop.ontology.ContractError: Grok native request is terminal; do not retry">command = ('E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_unknown_reserved_op...er-repair\\work\\check-9ad2fd9\\pytest\\test_unknown_reserved_opportun0\\public-contexts\\call-0001', 'agent', 'stdio')
+cwd = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_unknown_reserved_opportun0/public-contexts/call-0001')
+env = {'APPDATA': 'E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_unknown_...pytest\\test_unknown_reserved_opportun0\\native-ledger\\calls\\0001-m4_plan\\native-home', 'GROK_MEMORY': 'false', ...}
+stderr = &lt;_io.BufferedWriter name='E:\\_ryanDev\\AI\\research-loop-modular\\grok-provider-repair\\work\\check-9ad2fd9\\pytest\\test_unknown_reserved_opportun0\\native-ledger\\calls\\0001-m4_plan\\native-private\\stderr.private.txt'&gt;
+
+    def process_tree(command,cwd,env,stderr):
+&gt;       assert command==[str(exe.resolve()),'--no-auto-update','--cwd',str(cwd),'agent','stdio']
+E       AssertionError: assert ('E:\\_ryanDe...ent', 'stdio') == ['E:\\_ryanDe...ent', 'stdio']
+E         
+E         Use -v to get more diff
+
+tests\test_grok_train_solver.py:102: AssertionError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/grok-provider-repair/work/check-9ad2fd9/pytest/test_unknown_reserved_opportun0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023BB2E94920&gt;
+
+    def test_unknown_reserved_opportunity_stays_closed_after_restart(tmp_path,monkeypatch):
+&gt;       port,logs=default_port(tmp_path,monkeypatch);port(REQUEST)
+                                                     ^^^^^^^^^^^^^
+
+tests\test_grok_train_solver.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.grok_train_solver.GrokTrainModelPort object at 0x0000023BB2E975C0&gt;
+request = FrozenRecord(encoded='{"context":{},"execution_feedback":[],"instruction":"public","lock_digest":"aaaaaaaaaaaaaaaaaaaa...aaaaaaaaaaaaaaaaaa","module_context":{},"objective":{},"schema":"public-model-request-v1","slot":"m4_plan","task":{}}')
+
+    def __call__(self, request: FrozenRecord) -&gt; FrozenRecord:
+        if not isinstance(request, FrozenRecord): raise ContractError('Grok TRAIN port accepts frozen requests only')
+        body=request.data(); slot=body.get('slot')
+        if (set(body) != {'schema','task','lock_digest','objective','slot','instruction','context','module_context','execution_feedback'}
+                or body.get('schema') != 'public-model-request-v1' or slot not in self.schemas):
+            raise ContractError('unexpected public TRAIN solver request')
+        if self.ledger['usage_incomplete'] or len(self.ledger['calls']) &gt;= self.max_calls:
+            raise ContractError('Grok TRAIN ledger is closed')
+        replay_grok_train_ledger(self)
+        identities={(row.get('session_id'), row.get('prompt_id')) for row in self.ledger['calls'] if row.get('status') == 'succeeded'}
+        if len(identities) != sum(row.get('status') == 'succeeded' for row in self.ledger['calls']) or any(not all(identity) for identity in identities):
+            self.ledger['usage_incomplete']=True; _write(self.ledger_path,self.ledger)
+            raise ContractError('prior native identity is missing or duplicated; ledger closed')
+        prompt='Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n'+request.encoded
+        raw=prompt.encode('utf-8'); cap=self.slot_input_byte_caps[slot]
+        if len(raw)&gt;cap: raise ContractError('public TRAIN prompt exceeds frozen complete input-byte bound')
+        number=len(self.ledger['calls'])+1; call_dir=self.calls_root/f'{number:04d}-{slot}'; call_dir.mkdir()
+        prompt_path=call_dir/'prompt.private.txt'; schema_path=call_dir/'schema.private.json'
+        prompt_path.write_bytes(raw); schema_path.write_bytes(canonical(self.schemas[slot]).encode())
+        request_path=call_dir/'request.private.json'; request_path.write_bytes(request.encoded.encode())
+        reservation=call_dir/'reservation.private.json'; private=call_dir/'native-private'
+        row={'id':number,'slot':slot,'request_sha256':request.content_hash,'prompt_sha256':_sha(raw),
+             'schema_sha256':_sha(schema_path.read_bytes()),'status':'reserved','reservation_path':str(reservation),
+             'native_private_path':str(private),'main_opportunity':1,'possible_initial_title_opportunity':1}
+        self.ledger['calls'].append(row); _write(self.ledger_path,self.ledger)
+        try:
+            # Each opportunity owns a fresh native context and exact slot config.
+            # Copy the already-approved login opaquely; never parse or log it.
+            home=call_dir/'native-home'; home.mkdir()
+            shutil.copyfile(self.private_home/'auth.json', home/'auth.json')
+            configuration=home/'config.toml'
+            configuration.write_bytes(diagnostic_config(self.slot_output_caps[slot]).encode('utf-8'))
+            user=self.private_profile/f'call-{number:04d}'; user.mkdir(parents=True, exist_ok=False)
+            cwd=self.public_cwd/f'call-{number:04d}'; cwd.mkdir(parents=True, exist_ok=False)
+            sources={**self.frozen_files, str(configuration):_sha(configuration.read_bytes())}
+            row.update(frozen_files=sources, private_profile=str(user), public_cwd=str(cwd),
+                       config_path=str(configuration), config_sha256=sources[str(configuration)])
+            _write(self.ledger_path,self.ledger)
+            result=self.native_invoke(opportunity_contract=TRAIN_OPPORTUNITY_CONTRACT, executable=self.executable,
+                cwd=str(cwd), private_home=str(home), private_profile=str(user),
+                private_dir=str(private), reservation=str(reservation), frozen_files=sources, prompt=prompt,
+                schema=self.schemas[slot], main_output_cap=self.slot_output_caps[slot],
+                observed_main_token_cap=self.observed_main_token_cap, input_byte_cap=cap)
+            receipt=result.receipt.data(); response=result.response
+            receipt_path=call_dir/'observer-receipt.private.json'; receipt_path.write_bytes(result.receipt.encoded.encode())
+            binding=receipt.get('public_train_binding')
+            billing=receipt.get('billing_before')
+            valid = (receipt.get('schema') == 'grok-native-acp-public-train-receipt-v1'
+                and receipt.get('accepted') is True and receipt.get('requested_model') == MODEL
+                and receipt.get('opportunity_contract') == TRAIN_OPPORTUNITY_CONTRACT
+                and receipt.get('runtime_empty_inventory_count', 0) &gt;= 1
+                and isinstance(billing, Mapping) and billing.get('route') == 'grok_com_unified_subscription'
+                and billing.get('on_demand_cap') == billing.get('on_demand_used') == billing.get('prepaid_balance') == 0
+                and billing.get('auto_topup_rule_present') is False and isinstance(binding, Mapping)
+                and binding.get('prompt_sha256') == _sha(raw) and binding.get('schema_sha256') == _sha(schema_path.read_bytes())
+                and binding.get('source_manifest_sha256') == _sha(canonical(sources).encode())
+                and binding.get('input_byte_cap') == cap and binding.get('observed_main_token_cap') == self.observed_main_token_cap)
+            row.update(native_receipt_sha256=_sha(receipt_path.read_bytes()), reservation_sha256=_sha(reservation.read_bytes()) if reservation.exists() else None,
+                       response_sha256=response.content_hash if response else None, known_main_usage=receipt.get('known_usage'),
+                       accepted=receipt.get('accepted') is True)
+            usage=known_usage(receipt.get('known_usage'))
+            if usage is not None:
+                self.ledger['tokens'] += usage['totalTokens']
+            if not valid or not response or not isinstance(usage, Mapping) or type(usage.get('totalTokens')) is not int or binding.get('response_sha256') != response.content_hash:
+                raise ContractError('native main dispatch or usage is unknown; ledger closed')
+            reserved=json.loads(reservation.read_text(encoding='utf-8'))
+            if (reserved.get('session_id') != receipt.get('session_id') or reserved.get('prompt_id') != receipt.get('prompt_id')
+                    or (receipt.get('session_id'),receipt.get('prompt_id')) in identities):
+                raise ContractError('native reservation/session/prompt binding failed')
+            row.update(session_id=receipt['session_id'], prompt_id=receipt['prompt_id'])
+            _validate_schema(self.schemas[slot], response.data())
+            (call_dir/'response.private.json').write_bytes(response.encoded.encode())
+            row['status']='succeeded'; _write(self.ledger_path,self.ledger)
+            replay_grok_train_ledger(self)
+            return response
+        except Exception as exc:
+            row.update(status='unknown_or_failed', error_type=type(exc).__name__); self.ledger['usage_incomplete']=True
+&gt;           _write(self.ledger_path,self.ledger); raise ContractError('Grok native request is terminal; do not retry') from exc
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           research_loop.ontology.ContractError: Grok native request is terminal; do not retry
+
+research_loop\modular\grok_train_solver.py:149: ContractError</failure></testcase></testsuite></testsuites>
