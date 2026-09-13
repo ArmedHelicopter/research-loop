@@ -287,7 +287,8 @@ class RunSession:
 
     def invoke(self, slot: str, model: Callable[[FrozenRecord], FrozenRecord], *, instruction: str,
                baseline_summary: str = "", module_context: FrozenRecord | None = None,
-               evidence_only: bool = False, reporting_only: bool = False) -> FrozenRecord:
+               evidence_only: bool = False, reporting_only: bool = False,
+               context_projection: Callable[[FrozenRecord], FrozenRecord] | None = None) -> FrozenRecord:
         self.check_research_access(operation="model", slot=slot, reporting_only=reporting_only)
         if self._terminal or self._next_call >= len(self.slots) or slot != self.slots[self._next_call]:
             raise ContractError("call does not match frozen schedule")
@@ -308,6 +309,12 @@ class RunSession:
             bundle = self.cache.get_or_build(ContextBuilder(self.task.identity, budget_bytes=self.context_budget),
                 canonical(self.task.payload.data()), self.evidence, self.claims, mode=mode, baseline_summary=baseline_summary)
             context = FrozenRecord.from_dict(bundle.public_data())
+        if context_projection is not None:
+            original_context = context
+            context = context_projection(context)
+            if not isinstance(context, FrozenRecord): raise ContractError('public evidence projection must be frozen')
+            self._record('q8_public_evidence_context', {'slot': slot, 'controller_context': original_context.data(),
+                'public_context': context.data(), 'public_digest': context.content_hash})
         request = FrozenRecord.from_dict({"schema": "public-model-request-v1", "task": self.task.data(),
             "lock_digest": self.lock.content_hash, "objective": self.objective.data(), "slot": slot,
             "instruction": required_text(instruction, "instruction"), "context": context.data(),

@@ -43,7 +43,7 @@ def _catalog_item(row):
         if trace['stage'] == 'execution_result':
             return {'kind': kind, 'execution': _execution(trace['data']['receipt'])}
         # These are actual failed operations, with their literal failure reasons.
-        return {'kind': kind, 'failure': _fields(trace['data'], ('reason', 'error', 'failure_reason'))}
+        return {'kind': kind, 'failure': _fields(trace['data'], ('reason', 'error', 'error_type', 'failure_reason'))}
     raise ContractError('unsupported public frontier origin')
 
 
@@ -53,6 +53,25 @@ class M6PublicInputBoundary:
             raise ContractError('public M6 boundary has a closed scope')
         self.coverage, self.variant = coverage, variant
         self.frontier_refs = {}
+
+    def project_evidence_context(self, context):
+        """Preserve observed anomalies without repeating controller receipts.
+
+        evidence_only deliberately includes unadmitted roots in RunSession.
+        Keep that scientific uncertainty and the actual output in this scope.
+        """
+        row = context.data()
+        if 'records' in row:
+            public = []
+            for root in row['records']:
+                content = root['payload']['content']
+                if set(content) != {'execution', 'expected_observation', 'qualification'}:
+                    raise ContractError('M6 public evidence requires its declared execution observation')
+                public.append({'identity': root['identity'], 'root_id': root['root_id'],
+                    'subject_bindings': root['subject_bindings'], 'scientific_admission': root['admitted'],
+                    'execution': _execution(content['execution']), 'expected_observation': content['expected_observation']})
+            row['records'] = public
+        return FrozenRecord.from_dict(row)
 
     def _frontier_result(self, row):
         result = _fields(row, ('empty_reason', 'programme_complete', 'authority', 'benchmark_admission',

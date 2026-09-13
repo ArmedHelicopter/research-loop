@@ -32,11 +32,29 @@ def test_observation_words_are_not_filtered():
     assert public['execution']['record']['stdout']=='review_mode policy_digest'
 
 
+def test_all_sixteen_late_context_records_preserve_observations():
+    rows=json.loads((ROOT.parent/'late-finding/fallback-context-requests.json').read_text(encoding='utf-8'))['requests']
+    assert len(rows)==16
+    for row in rows:
+        original=row['request']['context']
+        public=M6PublicInputBoundary('Q8.7','anomaly').project_evidence_context(FrozenRecord.from_dict(original)).data()
+        assert len(public['records'])==len(original['records'])
+        for before,after in zip(original['records'],public['records']):
+            content=before['payload']['content']
+            assert after['expected_observation']==content['expected_observation']
+            assert after['execution']['record']['stdout']==content['execution']['record']['stdout']
+            assert after['execution']['record']['stderr']==content['execution']['record']['stderr']
+            assert after['scientific_admission']==before['admitted']
+            assert 'qualification' not in after
+
+
 def verify_actual_public_requests(events):
     """Read-only independent key/value and source-binding checks on real I/O."""
     records=[e['data'] for e in events if e['stage']=='q8_public_model_context']
     requests=[e['data']['request'] for e in events if e['stage']=='model_request']
+    evidence_records=[e['data'] for e in events if e['stage']=='q8_public_evidence_context']
     assert len(records)==len(requests)
+    assert len(evidence_records)==len(requests)
     forbidden_digests=set()
     def digests(row):
         if isinstance(row,dict):
@@ -46,7 +64,7 @@ def verify_actual_public_requests(events):
         elif isinstance(row,list):
             for value in row:digests(value)
     for record in records:digests(record['controller_context'])
-    for record,request in zip(records,requests):
+    for record,evidence_record,request in zip(records,evidence_records,requests):
         raw=record['controller_context'];public=request['module_context']
         assert record['slot']==request['slot']
         assert {k:v for k,v in public.items() if k!='deployment'}==record['public_context']
@@ -54,6 +72,30 @@ def verify_actual_public_requests(events):
         encoded=FrozenRecord.from_dict(request).encoded
         assert all(digest not in encoded for digest in forbidden_digests)
         assert 'shared-experiment' not in encoded
+        assert evidence_record['slot']==request['slot']
+        assert evidence_record['public_context']==request['context']
+        assert FrozenRecord.from_dict(request['context']).content_hash==evidence_record['public_digest']
+        original_context=evidence_record['controller_context']
+        if 'records' in original_context:
+            assert len(request['context']['records'])==len(original_context['records'])
+            for original,public_root in zip(original_context['records'],request['context']['records']):
+                content=original['payload']['content']
+                assert public_root['expected_observation']==content['expected_observation']
+                assert public_root['execution']['status']==content['execution']['status']
+                assert public_root['execution']['record']=={k:content['execution']['record'][k] for k in ('stdout','stderr','exit_code','status') if k in content['execution']['record']}
+                assert public_root['scientific_admission']==original['admitted']
+        else:assert request['context']==original_context
+        def scan(value,path=''):
+            if isinstance(value,dict):
+                for key,child in value.items():
+                    # These are scientific data, not metadata schemas.
+                    if key in {'expected_observation','text','branches'}:continue
+                    assert key not in {'policy_digest','source_bundle_digest','review_mode','caller_authorized','qualification','control','unit_basis','review_id','sealed','freeze_receipt'},(path,key)
+                    if key=='method':assert path.endswith('by_lane')
+                    scan(child,path+'.'+key)
+            elif isinstance(value,list):
+                for child in value:scan(child,path+'[]')
+        scan(request)
         # The generic runtime context is a second input surface. Unadmitted
         # frontier observations belong to the explicit public catalog only.
         for evidence in request['context'].get('records', []):
@@ -92,7 +134,6 @@ def verify_actual_public_requests(events):
                 assert b['execution']=={'status':a['execution']['status'],'record':{k:a['execution']['record'][k] for k in ('stdout','stderr','exit_code','status') if k in a['execution']['record']}}
                 assert b['expected_observation']==a['expected_observation']
         if slot=='frontier':
-            assert request['context'].get('records') == []
             assert 'catalog_digest' not in public
             assert list(public['frontier_catalog'])==['origin-'+str(i) for i in range(len(raw['frontier_catalog']))]
             if 'review_context' in raw:assert public['review_context']=={'responses':raw['review_context']['responses']}
