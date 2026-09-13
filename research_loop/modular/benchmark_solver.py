@@ -93,7 +93,7 @@ def run_benchmark_solve(*, task: PublicTask, public_inputs: Mapping[str, Path], 
     workflow = ModularWorkflow(session)
     common = {
         "solver": "public-benchmark-solve-v1",
-        "public_artifacts": [artifact.record.data() for artifact in artifacts],
+        "public_artifacts": _model_public_artifacts(artifacts),
         "predecessor_context": predecessor_context.data() if predecessor_context else None,
         "panel_cell": panel_cell_binding.data() if panel_cell_binding else None,
         "mechanism_provenance": mechanism_provenance.data() if mechanism_provenance else None,
@@ -173,6 +173,102 @@ def run_benchmark_solve(*, task: PublicTask, public_inputs: Mapping[str, Path], 
         return BenchmarkSolveResult(session, artifacts, analysis, execution, answer, None, "answer_rejected")
     decision = session.finish(answer)
     return BenchmarkSolveResult(session, artifacts, analysis, execution, answer, decision,
+                                 "execution_" + execution.status)
+
+
+def run_benchmark_solve_in_session(*, session: RunSession, workflow: ModularWorkflow,
+                                   public_inputs: Mapping[str, Path], image: str,
+                                   broker: DockerExecutionBroker, model: ModelPort,
+                                   analysis_slot: str, final_slot: str,
+                                   joint_mechanism: FrozenRecord,
+                                   panel_cell_binding: FrozenRecord,
+                                   driver_id: str = "combination_benchmark_solver",
+                                   timeout_seconds: int = 20) -> BenchmarkSolveResult:
+    """Run the public solve as the final two slots of an existing session.
+
+    Combination drivers use this narrow seam so their actual module state and
+    the benchmark solve share one immutable run lock and trace.  It is not a
+    generic resume API and never creates a second ``RunSession``.
+    """
+    if (not isinstance(session, RunSession) or not isinstance(workflow, ModularWorkflow)
+            or workflow.session is not session or not isinstance(joint_mechanism, FrozenRecord)
+            or not isinstance(panel_cell_binding, FrozenRecord) or not isinstance(driver_id, str) or not driver_id):
+        raise ContractError("in-session solve requires its active workflow and frozen bindings")
+    if (not isinstance(broker, DockerExecutionBroker) or not callable(model)
+            or not isinstance(timeout_seconds, int) or not 1 <= timeout_seconds <= 120):
+        raise ContractError("in-session solve needs a restricted broker, model, and bounded timeout")
+    if session._terminal or session.slots[session._next_call:] != (analysis_slot, final_slot):
+        raise ContractError("in-session solve must own the remaining two frozen slots")
+    if session.execution_limit != session._attempts + 1:
+        raise ContractError("in-session solve requires exactly one remaining execution")
+    try:
+        artifacts = _public_artifacts(broker, session.task.identity, public_inputs)
+    except Exception as exc:
+        session.controller_failure(driver_id=driver_id, error_type=type(exc).__name__)
+        return BenchmarkSolveResult(session, (), None, None, None, None, "input_preflight_failed")
+    common = {
+        "solver": "public-benchmark-solve-v1",
+        "public_artifacts": _model_public_artifacts(artifacts),
+        "panel_cell": panel_cell_binding.data(),
+        "joint_mechanism": joint_mechanism.data(),
+        "joint_mechanism_digest": joint_mechanism.content_hash,
+    }
+    try:
+        analysis = workflow.invoke_model(analysis_slot, model, instruction=(
+            "Write a Python analysis program for the supplied public task and only the named /input files. "
+            "Use the supplied joint mechanism context only as train-only reasoning context. "
+            "Return exactly analysis and program; the program must print concise task-relevant observations."),
+            module_context=FrozenRecord.from_dict(common))
+    except Exception as exc:
+        if not session._terminal:
+            session.controller_failure(driver_id=driver_id, error_type=type(exc).__name__)
+        return BenchmarkSolveResult(session, artifacts, None, None, None, None, "analysis_model_failed")
+    try:
+        program = _program_from(analysis)
+    except ContractError as exc:
+        session.driver_failure(driver_id=driver_id, response=analysis, error_type=type(exc).__name__)
+        return BenchmarkSolveResult(session, artifacts, analysis, None, None, None, "analysis_rejected")
+    try:
+        execution = session.execute(program, broker=broker, image=image, inputs=public_inputs,
+                                    timeout_seconds=timeout_seconds)
+    except Exception as exc:
+        if not session._terminal:
+            session.controller_failure(driver_id=driver_id, error_type=type(exc).__name__)
+        return BenchmarkSolveResult(session, artifacts, analysis, None, None, None, "execution_setup_failed")
+    if execution.status in {"unavailable", "rejected"}:
+        return BenchmarkSolveResult(session, artifacts, analysis, execution, None, None,
+                                    "execution_" + execution.status)
+    if not _execution_inputs_match(artifacts, execution):
+        session.controller_failure(driver_id=driver_id, error_type="InputArtifactDrift")
+        return BenchmarkSolveResult(session, artifacts, analysis, execution, None, None, "input_artifact_drift")
+    program_sha256 = hashlib.sha256((session.sidecar / f"analysis-{session._attempts}.py").read_bytes()).hexdigest()
+    if execution.artifact is None or execution.artifact.sha256 != program_sha256:
+        session.controller_failure(driver_id=driver_id, error_type="ExecutionProgramDrift")
+        return BenchmarkSolveResult(session, artifacts, analysis, execution, None, None, "execution_program_drift")
+    final_context = {**common, "analysis": analysis.data(), "analysis_digest": analysis.content_hash,
+        "analysis_program_sha256": program_sha256, "execution_digest": execution.content_hash,
+        "execution_status": execution.status, "execution_input_artifacts": execution.record.data()["input_artifacts"],
+        "execution_feedback": [{"execution_digest": execution.content_hash, "status": execution.status,
+            "stdout": execution.record.data().get("stdout", ""), "stderr": execution.record.data().get("stderr", ""),
+            "program_sha256": execution.artifact.sha256}],
+        "required_objective_digest": session.objective.content_hash}
+    try:
+        answer = workflow.invoke_model(final_slot, model, instruction=(
+            "Give the benchmark answer using only the public task, joint mechanism context, and recorded execution feedback. "
+            "Return exactly objective_digest, outcome, evidence_ids, conclusion, and programme_complete. "
+            "Copy module_context.required_objective_digest; set outcome to unknown, evidence_ids to [], and programme_complete to false."),
+            module_context=FrozenRecord.from_dict(final_context))
+    except Exception as exc:
+        if not session._terminal:
+            session.controller_failure(driver_id=driver_id, error_type=type(exc).__name__)
+        return BenchmarkSolveResult(session, artifacts, analysis, execution, None, None, "answer_model_failed")
+    try:
+        _candidate_from(answer, session.objective)
+    except ContractError as exc:
+        session.driver_failure(driver_id=driver_id, response=answer, error_type=type(exc).__name__)
+        return BenchmarkSolveResult(session, artifacts, analysis, execution, answer, None, "answer_rejected")
+    decision = session.finish(answer)
+    return BenchmarkSolveResult(session, artifacts, analysis, execution, answer, decision,
                                 "execution_" + execution.status)
 
 
@@ -181,6 +277,12 @@ def _public_artifacts(broker: DockerExecutionBroker, identity: DataIdentity,
     if not isinstance(public_inputs, Mapping) or not public_inputs:
         raise ContractError("benchmark solve needs named public input artifacts")
     return broker.validate_inputs(identity, public_inputs)
+
+
+def _model_public_artifacts(artifacts: tuple[ArtifactReceipt, ...]) -> list[dict[str, object]]:
+    """Expose the broker's exact read-only container paths to the solver."""
+    return [{"artifact": artifact.record.data(), "container_path": "/input/" + artifact.artifact_id}
+            for artifact in artifacts]
 
 
 def _program_from(response: FrozenRecord) -> str:
