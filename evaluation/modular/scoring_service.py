@@ -152,6 +152,8 @@ class FrozenBenchmarkRubricEndpoint:
     def rubric_digest(cls) -> str:
         return _sha({"discoverybench": cls._DISCOVERY_RUBRIC, "blade": cls._BLADE_RUBRIC,
                      "discovery_prompt": cls._discovery_rules(), "blade_prompt": cls._blade_rules(),
+                     "prompt_templates": {benchmark: cls._prompt(benchmark, rubric, "<TASK>", "<REFERENCE>", "<CANDIDATE>")
+                                          for benchmark, rubric in (("discoverybench", cls._DISCOVERY_RUBRIC), ("blade", cls._BLADE_RUBRIC))},
                      "discovery_schema": cls._output_schema("discoverybench"), "blade_schema": cls._output_schema("blade"),
                      "mode": "single_candidate_train_only_v1"})
 
@@ -162,8 +164,11 @@ class FrozenBenchmarkRubricEndpoint:
         self._resolver, self._evaluator = resolver, evaluator
         self._evaluator_id = required_text(evaluator_id, "evaluator id")
         self._evaluator_version = required_text(evaluator_version, "evaluator version")
+        self._frozen_contract_digest = self.rubric_digest()
 
     def __call__(self, request: FrozenRecord) -> FrozenRecord:
+        if self.rubric_digest() != self._frozen_contract_digest:
+            raise ContractError("frozen rubric implementation drift before evaluator invocation")
         body = request.data()
         required = {"schema", "panel_digest", "scorer_config_digest", "benchmark", "task_handle", "identity_digest", "candidate", "candidate_digest"}
         if set(body) != required or body["schema"] != "adapted-rubric-evaluation-request-v1":

@@ -71,6 +71,19 @@ def _service(panel, config, output):
     return service, endpoint, model
 
 
+def test_prompt_template_change_changes_contract_and_is_rejected_before_model_call(tmp_path, monkeypatch):
+    frozen, runtime, config = _panel_with_config(tmp_path, "blade")
+    service, _, model = _service(frozen, config, {"cvars": 2, "transform": 2, "model": 2, "reason": "synthetic"})
+    original = FrozenBenchmarkRubricEndpoint._prompt
+    monkeypatch.setattr(FrozenBenchmarkRubricEndpoint, "_prompt", classmethod(lambda cls, *args: original(*args) + " Changed evaluator instruction."))
+    assert FrozenBenchmarkRubricEndpoint.rubric_digest() != config.record.data()["rubric_digest"]
+    cell = next(cell for cell in frozen.cells if cell.identity.benchmark == "blade")
+    row = next(row for row in runtime if row.cell_key == cell.key)
+    with pytest.raises(ContractError, match="implementation drift"):
+        service.score(panel=frozen, cell=cell, runtime=row)
+    assert model.calls == []
+
+
 @pytest.mark.parametrize("benchmark,output,expected", [
     ("discoverybench", {"context": 1, "variable_f1": 0.5, "relation": 1, "reason": "synthetic"}, 0.5),
     ("blade", {"cvars": 2, "transform": 1, "model": 1, "reason": "synthetic"}, 2 / 3),
