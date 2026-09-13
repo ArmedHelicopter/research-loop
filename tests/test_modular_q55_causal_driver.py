@@ -88,7 +88,7 @@ class PublicAuthority:
             observation = {"authority_id": item["authority_id"], "source_group": item["source_group"],
                            "contract_id": contract["contract_id"], "subject_digest": subject.content_hash,
                            "observation_digest": hashlib.sha256((item["authority_id"] + subject.content_hash).encode()).hexdigest(),
-                           "status": self.status, "signature_verified": True}
+                           "status": self.status, "signature_verified": True, "resolution": resolution}
             observation["signature"] = hmac.new(AUTHORITY_KEYS[item["authority_id"]], canonical(observation).encode(), hashlib.sha256).hexdigest()
             observations.append(observation)
         return FrozenRecord.from_dict({"schema": "q55-causal-authority-receipt-v1", "subject_digest": subject.content_hash,
@@ -161,7 +161,7 @@ def test_q55_failed_or_inconsistent_authority_never_resolves_or_executes(tmp_pat
         def verify_closure(self, subject):
             receipt = super().verify_closure(subject).data(); receipt["status"] = "passed"; receipt["observations"][1]["status"] = "failed"; receipt["resolution"] = {name: True for name in ("data", "method", "budget", "control")}
             changed = receipt["observations"][1]
-            signed = {key: changed[key] for key in ("authority_id", "source_group", "contract_id", "subject_digest", "observation_digest", "status", "signature_verified")}
+            signed = {key: changed[key] for key in ("authority_id", "source_group", "contract_id", "subject_digest", "observation_digest", "status", "signature_verified", "resolution")}
             changed["signature"] = hmac.new(AUTHORITY_KEYS[changed["authority_id"]], canonical(signed).encode(), hashlib.sha256).hexdigest()
             return FrozenRecord.from_dict(receipt)
     driver = Q55Driver(DockerExecutionBroker([tmp_path]), PublicProvider(), Inconsistent(), lambda _task, _bundle: {"data_csv": csv_path}, AUTHORITY_KEYS)
@@ -185,6 +185,34 @@ def test_q55_rejects_bad_authority_signature_before_docker(tmp_path):
     with pytest.raises(ContractError):
         Q55Driver(DockerExecutionBroker([tmp_path]), PublicProvider(), BadSignature(), lambda _task, _bundle: {"data_csv": csv_path}, AUTHORITY_KEYS).run(ModularWorkflow(session), cell=cell, scenario=sc, model=model, package=package)
     assert not any(event["stage"] == "execution_request" for event in events(sidecar))
+
+
+def test_q55_rejects_outer_resolution_tamper_without_new_signatures(tmp_path):
+    t = task("blade"); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, "missing_data")
+    package = candidate(t); cell = cell_for(t, sc, package, "missing_data", ("M6",)); sidecar = tmp_path / "run"
+    class Tampered(PublicAuthority):
+        def verify_closure(self, subject):
+            receipt = super().verify_closure(subject).data(); receipt["resolution"] = {name: True for name in ("data", "method", "budget", "control")}
+            return FrozenRecord.from_dict(receipt)
+    session = RunSession(t, package_digest=package.digest, arm=cell.runtime_arm, objective=FrozenRecord.from_dict({"objective": "public synthetic"}), slots=("diagnostic", "final"), execution_limit=1, sidecar=sidecar, verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}), required_audit=("measurement",))
+    with pytest.raises(ContractError):
+        Q55Driver(DockerExecutionBroker([tmp_path]), PublicProvider(), Tampered(), lambda _task, _bundle: {"data_csv": csv_path}, AUTHORITY_KEYS).run(ModularWorkflow(session), cell=cell, scenario=sc, model=model, package=package)
+    assert not any(event["stage"] == "execution_request" for event in events(sidecar))
+
+
+def test_q55_bounded_provider_stops_after_limit_and_journals_each_yield(tmp_path):
+    t = task("blade"); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, "missing_data")
+    package = candidate(t); cell = cell_for(t, sc, package, "missing_data", ("M6",)); sidecar = tmp_path / "run"
+    class TooMany:
+        def search(self, **kwargs):
+            doc = next(document for document in kwargs["source_bundle"].documents if document.lane == kwargs["lane"])
+            while True: yield doc
+    session = RunSession(t, package_digest=package.digest, arm=cell.runtime_arm, objective=FrozenRecord.from_dict({"objective": "public synthetic"}), slots=("diagnostic", "final"), execution_limit=1, sidecar=sidecar, verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}), required_audit=("measurement",))
+    with pytest.raises(ContractError, match="exceeded"):
+        Q55Driver(DockerExecutionBroker([tmp_path]), TooMany(), PublicAuthority(), lambda _task, _bundle: {"data_csv": csv_path}, AUTHORITY_KEYS).run(ModularWorkflow(session), cell=cell, scenario=sc, model=model, package=package)
+    trace = events(sidecar)
+    assert sum(event["stage"] == "q55_retrieval_item" for event in trace) == 8
+    assert any(event["stage"] == "q55_retrieval_failure" for event in trace)
 
 
 def test_q55_resolver_drift_rejects_before_provider_or_model(tmp_path):

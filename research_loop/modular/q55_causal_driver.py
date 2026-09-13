@@ -71,6 +71,13 @@ def _cost(value: Any, field: str = "cost") -> dict[str, Any]:
     return value
 
 
+def _reported(value: Any) -> Any:
+    """Retain a typed raw port value before validation; never stringify it."""
+    if isinstance(value, FrozenRecord):
+        return value.data()
+    return dict(value) if isinstance(value, Mapping) else None
+
+
 def _image(value: Any) -> str:
     value = _text(value, "image")
     marker = "@sha256:"
@@ -217,7 +224,7 @@ def _closure_receipt(value: FrozenRecord, subject: FrozenRecord, authority_keys:
     statuses: list[str] = []
     seen: set[str] = set()
     for observation in observations:
-        if not isinstance(observation, Mapping) or set(observation) != {"authority_id", "source_group", "contract_id", "subject_digest", "observation_digest", "status", "signature_verified", "signature"}:
+        if not isinstance(observation, Mapping) or set(observation) != {"authority_id", "source_group", "contract_id", "subject_digest", "observation_digest", "status", "signature_verified", "resolution", "signature"}:
             raise ContractError("closure observation schema drift")
         authority_id = observation["authority_id"]
         if authority_id not in expected or authority_id in seen or observation["source_group"] != expected[authority_id] or observation["contract_id"] != contract["contract_id"] or observation["subject_digest"] != subject.content_hash or observation["signature_verified"] is not True or observation["status"] not in {"passed", "failed", "unknown"}:
@@ -225,7 +232,10 @@ def _closure_receipt(value: FrozenRecord, subject: FrozenRecord, authority_keys:
         _sha256(observation["observation_digest"], "observation digest")
         if not isinstance(observation["signature"], str):
             raise ContractError("closure observation signature must be text")
-        signed = {key: observation[key] for key in ("authority_id", "source_group", "contract_id", "subject_digest", "observation_digest", "status", "signature_verified")}
+        observed_resolution = _mapping(observation["resolution"], "authority observation resolution")
+        if set(observed_resolution) != set(_REQUIREMENTS) or any(type(item) is not bool for item in observed_resolution.values()):
+            raise ContractError("authority observation resolution is invalid")
+        signed = {key: observation[key] for key in ("authority_id", "source_group", "contract_id", "subject_digest", "observation_digest", "status", "signature_verified", "resolution")}
         expected_signature = hmac.new(authority_keys[authority_id], canonical(signed).encode("utf-8"), hashlib.sha256).hexdigest()
         if not hmac.compare_digest(observation["signature"], expected_signature):
             raise ContractError("closure observation signature mismatch")
@@ -240,6 +250,8 @@ def _closure_receipt(value: FrozenRecord, subject: FrozenRecord, authority_keys:
         raise ContractError("closure resolution must contain literal booleans")
     if aggregate != "passed" and any(resolution.values()):
         raise ContractError("failed or unknown authority result cannot resolve resources")
+    if any(_mapping(observation["resolution"], "authority observation resolution") != resolution for observation in observations):
+        raise ContractError("outer closure resolution is not signed by both authorities")
     row["cost"] = _cost(row["cost"])
     return row
 
@@ -270,18 +282,31 @@ class _RecordedProvider:
     def search(self, **kwargs: Any) -> Iterable[SourceDocument]:
         self.session._record("q55_retrieval_request", {"lane": kwargs["lane"], "query_digest": kwargs["query"].content_hash,
             "call_limit": kwargs["call_limit"], "source_limit": kwargs["source_limit"], "cost": {"unit": "retrieval_calls", "units": 1}})
+        result: list[SourceDocument] = []
         try:
-            result = tuple(self.provider.search(**kwargs))
+            iterator = iter(self.provider.search(**kwargs))
+            for index in range(kwargs["source_limit"] + 1):
+                try:
+                    document = next(iterator)
+                except StopIteration:
+                    break
+                if index == kwargs["source_limit"]:
+                    raise ContractError("provider exceeded frozen source budget")
+                if not isinstance(document, SourceDocument):
+                    raise ContractError("provider returned a non-source document")
+                self.session._record("q55_retrieval_item", {"lane": kwargs["lane"], "ordinal": index,
+                    "source": document.data(), "source_digest": FrozenRecord.from_dict(document.data()).content_hash})
+                result.append(document)
         except Exception as exc:
             partial = getattr(exc, "partial_response", None)
             if isinstance(partial, FrozenRecord):
                 self.session._record("q55_retrieval_partial_response", {"lane": kwargs["lane"], "response": partial.data(), "response_digest": partial.content_hash})
             reported = getattr(exc, "cost", None)
             self.session._record("q55_retrieval_failure", {"lane": kwargs["lane"], "error_type": type(exc).__name__,
-                "reported_cost": reported if isinstance(reported, Mapping) else None, "verified_cost": {"unit": "retrieval_calls", "units": None}})
+                "reported_cost": _reported(reported), "verified_cost": {"unit": "retrieval_calls", "units": None}})
             raise
         self.session._record("q55_retrieval_result", {"lane": kwargs["lane"], "returned": len(result), "actual_cost": {"unit": "retrieval_calls", "units": 1}})
-        return result
+        return tuple(result)
 
 
 def _selected_document(*, retrieved: Any, source_id: str) -> SourceDocument:
@@ -344,7 +369,7 @@ class Q55Driver:
             if isinstance(partial, FrozenRecord):
                 session._record("q55_authority_partial_response", {"subject_digest": subject.content_hash, "response": partial.data(), "response_digest": partial.content_hash})
             reported = getattr(exc, "cost", None)
-            session._record("q55_authority_failure", {"subject_digest": subject.content_hash, "error_type": type(exc).__name__, "reported_cost": reported if isinstance(reported, Mapping) else None, "verified_cost": {"unit": "verifier_units", "units": None}})
+            session._record("q55_authority_failure", {"subject_digest": subject.content_hash, "error_type": type(exc).__name__, "reported_cost": _reported(reported), "verified_cost": {"unit": "verifier_units", "units": None}})
             raise
         if not isinstance(response, FrozenRecord):
             session._record("q55_authority_failure", {"subject_digest": subject.content_hash, "error_type": "non_frozen_response", "reported_cost": None, "verified_cost": {"unit": "verifier_units", "units": None}})
@@ -354,7 +379,7 @@ class Q55Driver:
             row = _closure_receipt(response, subject, self.authority_keys)
         except Exception as exc:
             raw_cost = response.data().get("cost")
-            session._record("q55_authority_failure", {"subject_digest": subject.content_hash, "error_type": type(exc).__name__, "reported_cost": raw_cost if isinstance(raw_cost, Mapping) else None, "verified_cost": {"unit": "verifier_units", "units": None}})
+            session._record("q55_authority_failure", {"subject_digest": subject.content_hash, "error_type": type(exc).__name__, "reported_cost": _reported(raw_cost), "verified_cost": {"unit": "verifier_units", "units": None}})
             raise
         session._record("q55_authority_result", {"subject_digest": subject.content_hash, "receipt_digest": response.content_hash, "status": row["status"], "cost": row["cost"], "resolution": row["resolution"]})
         return row
