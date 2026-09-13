@@ -72,7 +72,10 @@ def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs) ->
     elif spec.experiment_id in {"Q1.6","Q1.7"}:
         from research_loop.modular.withdrawal_panel_drivers import withdrawal_panel_injection
         injection=dict(withdrawal_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
-    elif spec.experiment_id in {"Q2.3", "Q2.4", "Q2.5"}:
+    elif spec.experiment_id in {"Q2.3", "Q2.4"}:
+        from research_loop.modular.audit_panel_drivers import audit_panel_injection
+        injection = dict(audit_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
+    elif spec.experiment_id == "Q2.5":
         from research_loop.modular.scenarios_audit import audit_injection
         injection=dict(audit_injection(spec.experiment_id, variant))
     elif spec.experiment_id in {"Q2.6", "Q2.7"}:
