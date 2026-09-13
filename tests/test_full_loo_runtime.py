@@ -30,7 +30,7 @@ from test_modular_combination_benchmark_driver import _plan, _rewrite_trace
 def prepare(root, patch, fault=None):
     setup=prepare_history(root,patch);old=setup['plan'];history=old.history
     state_calls=[];corpus_calls=[];retrieval_calls=[];seen=[]
-    source=sources(state_calls,'unknown_cost' if fault=='source_unknown' else None)
+    source=sources(state_calls,'unknown_cost' if fault=='source_unknown' else 'source_cell_drift' if fault=='source_drift' else None)
     corpus=provenance(corpus_calls,corpus=True)
     hcsv=dict(old.history_inputs)['public_csv'];items=[(history.task,hcsv)]+[(p.task,p.csv_path) for p in setup['packets']]
     materials={};phases={}
@@ -44,8 +44,9 @@ def prepare(root, patch, fault=None):
         materials[task.content_hash]=freeze_material(task,material,docs,'Which current public measurement is informative?').data()
         phases[task.content_hash]=phase_material(task,csv,'auxiliary_failed' if fault=='auxiliary_failed' else None).data()
     fixed=FrozenBuilderVersion(FrozenRecord.from_dict({'entrypoint':'emit_literal_change_v1','surface':'prompt','key':'instructions','value':'Use a public numerical check.'}))
+    from research_loop.modular.experiments import registry
     composition=freeze_full_loo(baseline_digest='a'*64,train_task_digests=[p.task.content_hash for p in setup['packets']],
-        issue_contract_ids=['original-issue-'+str(i) for i in range(48)],history_binding_digest=history.binding.content_hash,
+        issue_contract_ids=list(registry()),history_binding_digest=history.binding.content_hash,
         builder_digest=fixed.digest,history_input_budget=24000)
     def respond(request):
         b=request.data();seen.append(b);slot=b['slot'];m=b['module_context']
@@ -72,7 +73,7 @@ def prepare(root, patch, fault=None):
             return FrozenRecord.from_dict({'job_id':chosen['id'],'rationale':'Check the spread after the forecast and two critiques.'})
         if slot in ('builder_proposal','ordinary_revision'):
             values=[json.loads(r['stdout'])['statistic'] for r in m['execution_observations']]
-            count=len(m['state_projection']['observations'])+len(m['retrieval']['by_lane']['counter'])
+            count=len(m['state_projection']['observations'])+len(m['retrieval']['by_lane']['counter'])-sum(r.get('needs_review') is True for r in m['state_projection']['memory'])
             value='Apply public adjustment='+str(sum(values)+count)
             return FrozenRecord.from_dict({'entrypoint':'emit_literal_change_v1','surface':'prompt','key':'instructions','value':value}
                 if slot=='builder_proposal' else {'instructions':value+'; check arithmetic directly.'})
@@ -83,9 +84,10 @@ def prepare(root, patch, fault=None):
             state=[next(iter(v['content'].values())) for v in joint.get('state_projection',{}).get('observations',[])]
             reviews=joint.get('reviews',[]);branches=joint.get('prediction_proposal',{}).get('branches',[])
             counter=len(joint.get('retrieval',{}).get('by_lane',{}).get('counter',[]))
+            memory_checks=sum(r.get('needs_review') is True for r in joint.get('state_projection',{}).get('memory',[]))
             observed={'candidate':adjustment,'auxiliary':values,'state':state,'review_checks':[r['counterexamples'] for r in reviews],
-                'directions':[r['predictions'][0]['direction'] for r in branches],'counter_count':counter,'choice':joint.get('choice')}
-            program="import csv,json\nwith open('/input/public_csv') as f: xs=[float(r['x']) for r in csv.DictReader(f)]\nresult="+repr(observed)+"\nresult['statistic']=sum(xs)/len(xs)+sum(result['auxiliary'])+sum(result['state'])+result['candidate']-result['counter_count']\nprint(json.dumps(result))"
+                'directions':[r['predictions'][0]['direction'] for r in branches],'counter_count':counter,'choice':joint.get('choice'),'memory_checks':memory_checks}
+            program="import csv,json\nwith open('/input/public_csv') as f: xs=[float(r['x']) for r in csv.DictReader(f)]\nresult="+repr(observed)+"\nresult['statistic']=sum(xs)/len(xs)+sum(result['auxiliary'])+sum(result['state'])+result['candidate']-result['counter_count']-result['memory_checks']\nprint(json.dumps(result))"
             if fault=='solver_failed':program="raise RuntimeError('synthetic solver failure')"
             return FrozenRecord.from_dict({'analysis':'Execute the candidate, qualified state, forecast checks, critiques, retrieved counter-source and selected measurements.','program':program})
         return FrozenRecord.from_dict({'objective_digest':m['required_objective_digest'],'outcome':'unknown','evidence_ids':[],
@@ -144,7 +146,7 @@ def test_actual_complete_22_cell_composition(grid):
         'retrieval_requests':87,'auxiliary_docker_attempts':58,'solver_docker_attempts':22,'docker_attempts':80,'scorer_calls':22}
     assert not any(b['unused'].values()) and len(setup['seen'])==169 and len(setup['state_calls'])==62 and len(setup['corpus_calls'])==58
     assert len(setup['retrieval_calls'])==87
-    assert b['active_package_digest']==setup['plan'].parent.digest and b['candidate_activation']=='none_offline_experiment'
+    assert b['unchanged_parent_package_digest']==setup['plan'].parent.digest and b['candidate_activation']=='none_offline_experiment'
     recipes=setup['plan'].composition.data()['cells'];by_id={r['id']:r for r in recipes}
     assert run.barrier.package(by_id['full'])==run.barrier.package(by_id['without-M8'])
     assert run.barrier.package(by_id['B0'])==run.barrier.package(by_id['ordinary-control'])
@@ -182,12 +184,12 @@ def test_closed_scorer_scope_and_history_removal(grid):
         assert bool((build.root/'runtime/reviews.jsonl').read_bytes())==('M5' in active)
 
 
-@pytest.mark.parametrize('fault',['source_unknown','model_unknown','builder_failed','auxiliary_failed'])
+@pytest.mark.parametrize('fault',['source_unknown','model_unknown','builder_failed','auxiliary_failed','source_drift'])
 def test_failure_denominators_no_candidate_activation(tmp_path,monkeypatch,fault):
     setup=prepare(tmp_path,monkeypatch,fault);run=invoke(setup,monkeypatch,fault);b=run.receipt.data()
     assert b['status']=='inconclusive' and len(b['targets'])==22 and len(b['structural'])==2 and len(b['builds'])==9
     assert all(r['status']=='blocked' for r in b['targets']) and not run.scores
-    assert b['active_package_digest']==setup['plan'].parent.digest and b['actual']['scorer_calls']==0
+    assert b['unchanged_parent_package_digest']==setup['plan'].parent.digest and b['actual']['scorer_calls']==0
     assert all(v>=0 for v in b['unused'].values())
     if fault in ('source_unknown','model_unknown'):assert len(run.builds)==1
 
@@ -198,8 +200,54 @@ def test_coherently_rehashed_prediction_after_choice_rejected(grid):
         rows=[json.loads(x) for x in raw.splitlines()]
         pred=next(e for e in rows if e['stage']=='c4_prediction_frozen');rows.remove(pred)
         rows.insert(next(i for i,e in enumerate(rows) if e['stage']=='c4_choice_frozen')+1,pred)
-        _rewrite_trace(path,rows);verify_trace(path)
+        _rewrite_trace(path,lambda existing:existing.__setitem__(slice(None),rows));verify_trace(path)
         # Generic hash replay passes; the C4 immutable original and causal
         # replay must still reject rehashed stage substitutions.
         with pytest.raises(ContractError):verify_full_loo_cell(r,barrier=run.barrier,panel=run.panel,ledger=run.ledger)
     finally:path.write_bytes(raw)
+
+
+@pytest.mark.parametrize('fault',['solver_failed','scorer_failed'])
+def test_target_and_independent_scorer_failures_remain_in_denominator(tmp_path,monkeypatch,fault):
+    setup=prepare(tmp_path,monkeypatch,fault);run=invoke(setup,monkeypatch,fault);b=run.receipt.data()
+    assert b['status']=='inconclusive' and len(run.builds)==9 and len(b['targets'])==22 and len(b['structural'])==2
+    assert b['actual']['docker_attempts']==80 and len(run.scores)==0
+    assert all(r['status']=='failed' for r in b['targets'])
+    assert b['actual']['scorer_calls']==(22 if fault=='scorer_failed' else 0)
+    assert all(p['difference'] is None for contrast in b['contrasts'] for p in contrast['paired_rows'])
+
+
+def test_composed_candidate_whole_package_durable_rollback(grid,tmp_path):
+    """Host authority fixture only: this is not C5 validation or acceptance."""
+    from research_loop.modular.deployment import FileDeploymentPort
+    from research_loop.modular.modules.improvement import ExecutionRuntime
+    from test_modular_improvement import authority, signed_validation, candidate_box
+    setup,run=grid;parent=setup['plan'].parent
+    candidate=run.barrier.package(setup['plan'].composition.data()['cells'][0])
+    deployment=FileDeploymentPort(tmp_path/'deployment.json',parent)
+    candidate_box.update(candidate=candidate,active=parent.digest);auth=authority()
+    runtime=ExecutionRuntime(tmp_path/'runtime.sqlite',deployment,auth,parent)
+    try:
+        initial=(tmp_path/'deployment.json').read_bytes()
+        runtime.activate(auth.validate(candidate,parent.digest,signed_validation()),candidate)
+        assert runtime.run_task(setup['plan'].history.task.identity,lambda _,p:p.record.data()).data()['result']==candidate.record.data()
+        runtime.rollback(auth.authorize_rollback(candidate.digest,parent.digest,'synthetic whole-package recovery'))
+        assert (tmp_path/'deployment.json').read_bytes()==initial
+        assert runtime.active()==parent and deployment.current().active_digest==parent.digest
+    finally:runtime.close()
+    reopened=ExecutionRuntime(tmp_path/'runtime.sqlite',deployment,auth,parent)
+    try:assert reopened.run_task(setup['plan'].history.task.identity,lambda _,p:p.record.data()).data()['result']==parent.record.data()
+    finally:reopened.close()
+
+
+def test_original_input_and_candidate_barrier_bytes_replayed(grid):
+    _,run=grid;r=run.results[0];csv=run.barrier.packets[0].csv_path;raw=csv.read_bytes()
+    try:
+        csv.write_bytes(raw+b' ')
+        with pytest.raises(ContractError):verify_full_loo_cell(r,barrier=run.barrier,panel=run.panel,ledger=run.ledger)
+    finally:csv.write_bytes(raw)
+    barrier=run.barrier.root/'candidate-barrier.json';raw=barrier.read_bytes()
+    try:
+        b=json.loads(raw);b['candidate_selections']['full']='0'*64;barrier.write_text(canonical(b)+'\n',encoding='utf-8')
+        with pytest.raises(ContractError):verify_full_loo_cell(r,barrier=run.barrier,panel=run.panel,ledger=run.ledger)
+    finally:barrier.write_bytes(raw)

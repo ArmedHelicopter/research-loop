@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 import json
+import re
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.full_loo_modules import slots, prepare, joint, select_builder, execute_retrieval, PROPOSAL_INSTRUCTION, REVISION_INSTRUCTION
 from research_loop.modular.full_loo_panel import runtime_arm, OBLIGATION
@@ -24,6 +25,7 @@ from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier
 from research_loop.modular.runtime import RunSession, verify_trace
 from research_loop.modular.workflow import ModularWorkflow
 from research_loop.modular.state_retrieval_combination_driver import _INSTRUCTIONS
+from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.ontology import ContractError, canonical
 
 
@@ -173,6 +175,18 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
     else:
         PanelReceiptVerifier()._verify_runtime(result.runtime,cell)
         state=_solver_journal_state(events);_compare_solver_result(result.solver,state);_verify_solver_files(state,events,path,material.state())
+        execution=state['execution']
+        if execution is None:raise ContractError('C4 target lacks actual restricted solver execution')
+        argv=execution.record.data().get('argv')
+        if not isinstance(argv,list) or len(argv)<6 or not re.fullmatch('research-loop-[0-9a-f]{20}',argv[5]):
+            raise ContractError('C4 solver requires the actual bounded Docker invocation')
+        expected_argv=['docker','run','--pull','never','--name',argv[5],'--rm','--network','none','--read-only',
+            '--user','1000:1000','--tmpfs','/tmp:rw,noexec,nosuid,size=64m','--pids-limit','128','--memory','1g',
+            '--cpus','1.0','--cap-drop','ALL','--security-opt','no-new-privileges']
+        for key in sorted(inputs):expected_argv.extend(['-v',DockerExecutionBroker._mount_source(inputs[key].absolute())+':/input/'+key+':ro'])
+        expected_argv.extend(['-v',DockerExecutionBroker._mount_source((path.parent/'analysis-1.py').absolute())+':/task/analysis.py:ro',
+            plan.data()['image'],'python3','/task/analysis.py'])
+        if argv!=expected_argv:raise ContractError('C4 solver Docker limits or exact program/input mounts drift')
         for e in requests[cursor:]:
             r=e['data']['request'];m=r['module_context']
             if (r['instruction']!=_INSTRUCTIONS[r['slot']] or r['context']!=context or m.get('joint_mechanism')!=joined.data()

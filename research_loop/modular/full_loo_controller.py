@@ -57,6 +57,8 @@ class FrozenFullLooRuntimePlan:
                 or type(self.history) is not FrozenTrainHistory or b['history_binding']!=self.history.binding.data()):
             raise ContractError('exact C4 prospective TRAIN runtime plan required')
         self.history.verify();c=self.composition.data();_builder(self.fixed_builder)
+        from research_loop.modular.experiments import registry
+        if set(c['issue_contract_ids'])!=set(registry()):raise ContractError('C4 must retain all 48 original issue contracts by identity')
         if (c['cells'][0]['history_binding_digest']!=self.history.binding.content_hash or c['cells'][0]['builder_digest']!=self.fixed_builder.digest
                 or set(TrainingManifest(FrozenRecord.from_dict(self.parent.record.data()['training_manifest'])).identities())!={self.history.task.identity}):
             raise ContractError('C4 candidate recipe must bind only the original fixed history')
@@ -125,6 +127,8 @@ class FullLooBarrier:
     def verify(self):
         if type(self) is not FullLooBarrier or len(self.builds)!=len(recipes(self.plan)):raise ContractError('complete original C4 candidate barrier required')
         self.plan.check_packets(self.packets);self.ledger.verify()
+        for verifier,key in [(self.source_verifier,'source_verifier_binding'),(self.corpus_verifier,'corpus_verifier_binding')]:
+            if verifier.binding().data()!=self.plan.data()[key]:raise ContractError('C4 replay source authority drift')
         if _read_record(self.root/'plan.json')!=self.plan.record or _read_record(self.root/'candidate-barrier.json')!=self.record:
             raise ContractError('original C4 plan/barrier replaced')
         expected={'schema':'c4-candidate-barrier-v1','plan_digest':self.plan.record.content_hash,
@@ -167,6 +171,22 @@ class FullLooBarrier:
             verify_stage(r,plan=self.plan,recipe=recipe,stage='history_build',task=self.plan.history.task,package=self.plan.parent,
                 material=self.plan.material(self.plan.history.task.content_hash),phase_material=self.plan.phase_material(self.plan.history.task.content_hash),
                 source_verifier=self.source_verifier,corpus_verifier=self.corpus_verifier,broker=self.broker,inputs=dict(self.plan.history_inputs),ledger=self.ledger)
+        # Two agreeing signatures within one cell do not establish comparable
+        # qualification across arms. Bind every identical subject to the same
+        # independently signed assessment before any contrast may be scored.
+        from research_loop.modular.lineage_combination_driver import _source_binding
+        observations={}
+        candidates=[(r.cell,r.root) for r in self.builds]
+        panel,_=compile_panel(self)
+        candidates.extend((cell,self.root/'targets'/FrozenRecord.from_dict(cell.data()).content_hash) for cell in panel.cells)
+        for cell,folder in candidates:
+            source=folder/'source/source.json'
+            if not source.exists():continue
+            q=self.source_verifier.assessments(self.plan.material(cell.task_digest).state(),source,cell_binding=_source_binding(cell))
+            digest=FrozenRecord.from_dict(q).content_hash
+            if cell.task_digest in observations and observations[cell.task_digest]!=digest:
+                raise ContractError('C4 same-subject qualification differs across matched arms')
+            observations[cell.task_digest]=digest
 
 
 def compile_panel(barrier):
@@ -328,7 +348,10 @@ def run_full_loo_train(plan, *, prospective_exporter, snapshot_root, export_root
         'unused':{k:allocation[k]-v for k,v in actual.items()},'builds':buildrows,'targets':rows,'structural':structural,'contrasts':contrasts,
         'model_usage':_usage(model),'source_cost_unknown':any(c.get('cost_unknown',True) for c in sourcecalls+corpuscalls),
         'known_source_cost_units':sum(c.get('cost_units') or 0 for c in sourcecalls+corpuscalls),
-        'candidate_activation':'none_offline_experiment','active_package_digest':plan.parent.digest,'validation_opened':False,'scientific_effectiveness_proven':False,
+        'retrieval_external_cost_unknown':bool(retrievalcalls),
+        'history_acquisition':{'binding_digest':plan.history.binding.content_hash,
+            'model_requests':len(plan.history.binding.data()['request_digests']),'cost':'inherited_unknown_excluded_from_current_recipe'},
+        'candidate_activation':'none_offline_experiment','unchanged_parent_package_digest':plan.parent.digest,'validation_opened':False,'scientific_effectiveness_proven':False,
         'status':'complete_train_engineering' if len(scores)==22 else 'inconclusive'})
     _exclusive(root/'controller-receipt.json',receipt)
     return FullLooRun(root,barrier,panel,tuple(builds),tuple(results),ledger,tuple(scores),receipt)

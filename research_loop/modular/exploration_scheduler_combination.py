@@ -106,7 +106,7 @@ def check_inputs(material, task, broker, inputs):
 def selection(material, enabled, selected_job_id=None):
     """Real M7 permit consumes the same reserve as an ordinary main job."""
     b = material.data(); budget = ExplorationBudget(2, 2).reserve(1, 1); permit = None
-    selected_job_id = selected_job_id or b['jobs'][2 if 'M7' in enabled else 1]['id']
+    selected_job_id = b['jobs'][2 if 'M7' in enabled else 1]['id'] if selected_job_id is None else selected_job_id
     if selected_job_id not in {j['id'] for j in b['jobs'][1:]}:
         raise ContractError('choice must select one frozen bounded alternative')
     if 'M7' in enabled:
