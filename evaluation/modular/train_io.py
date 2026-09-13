@@ -1,7 +1,7 @@
 """Train-only public packet export.  It never enumerates validation identities."""
 from __future__ import annotations
 
-import csv, hashlib, json, os, stat
+import csv, hashlib, io, json, os, stat
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping, Protocol, Sequence
@@ -64,6 +64,46 @@ class PublicTrainPacket:
     receipt: FrozenRecord
 
 
+def prepare_primary_public_task(identity: DataIdentity, row: Mapping[str, Any], raw: Mapping[str, Any], csv_bytes: bytes) -> PublicTask:
+    """Shared pure allowlist projection from a caller-verified source buffer."""
+    if identity.benchmark == "discoverybench":
+        query = raw.get("queries", [None])[0]
+        datasets = raw.get("datasets")
+        if not isinstance(query, Mapping) or not isinstance(datasets, list) or not datasets:
+            raise ContractError("Discovery public metadata is incomplete")
+        public_datasets = []
+        for dataset in datasets:
+            if not isinstance(dataset, Mapping):
+                raise ContractError("Discovery dataset descriptor is invalid")
+            columns = dataset.get("columns", [])
+            if not isinstance(columns, list):
+                raise ContractError("Discovery columns are invalid")
+            dataset_name = dataset.get("name")
+            if not isinstance(dataset_name, str) or not dataset_name:
+                raise ContractError("Discovery dataset descriptor has no public name")
+            public_datasets.append({"name": dataset_name, "description": dataset.get("description") if isinstance(dataset.get("description"), str) else None,
+                                    "columns": [{"name": col.get("name"), "description": col.get("description") if isinstance(col.get("description"), str) else None} for col in columns if isinstance(col, Mapping) and isinstance(col.get("name"), str) and col.get("name")]})
+        kind = row["official_split"].split("/", 1)[0]
+        question, difficulty = query.get("question"), query.get("difficulty")
+        if not isinstance(question, str) or not question:
+            raise ContractError("Discovery public query is incomplete")
+        return DiscoveryBenchAdapter().prepare(identity, {"task_id": identity.task_id, "question": question,
+            "difficulty": difficulty if isinstance(difficulty, str) else None,
+            "source_kind": "synthetic" if kind == "synth" else "real", "dataset": public_datasets})
+    if identity.benchmark == "blade":
+        questions = raw.get("research_questions", raw.get("research_question"))
+        question = questions[0] if isinstance(questions, list) and questions else questions
+        data_desc = raw.get("data_desc")
+        description = data_desc.get("dataset_description") if isinstance(data_desc, Mapping) else data_desc
+        header = next(csv.reader(io.StringIO(csv_bytes.decode("utf-8"), newline="")), [])
+        if not isinstance(question, str) or not isinstance(description, str) or not header or any(not isinstance(value, str) or not value for value in header):
+            raise ContractError("BLADE public metadata is incomplete")
+        return BladeAdapter().prepare(identity, {"task_id": identity.task_id, "dataset_id": identity.task_id,
+            "research_question": question, "data_schema": [{"name": name, "description": None, "dtype": None} for name in header],
+            "task_instructions": description})
+    raise ContractError("unsupported benchmark in custody export")
+
+
 class TrainPacketExporter:
     def __init__(self, custody: CustodyExportPort, snapshot_root: Path, output_root: Path) -> None:
         self.custody, self.snapshot_root, self.output_root = custody, snapshot_root, output_root
@@ -103,52 +143,26 @@ class TrainPacketExporter:
             metadata = _public_file(next(iter(sorted(source.glob("metadata_*.json")))), expected)
             raw = json.loads(metadata.read_text(encoding="utf-8"))
             source_selector = {"metadata_file": metadata.name, "metadata_sha256": _sha(metadata), "query_index": 0}
-            query = raw.get("queries", [None])[0]
             datasets = raw.get("datasets")
-            if not isinstance(query, Mapping) or not isinstance(datasets, list) or not datasets:
+            if not isinstance(datasets, list) or not datasets:
                 raise ContractError("Discovery public metadata is incomplete")
             data_name = datasets[0].get("name") if isinstance(datasets[0], Mapping) else None
             if not isinstance(data_name, str) or Path(data_name).name != data_name:
                 raise ContractError("Discovery public dataset name is unsafe")
             data = _public_file(source / data_name, expected)
-            public_datasets = []
-            for dataset in datasets:
-                if not isinstance(dataset, Mapping):
-                    raise ContractError("Discovery dataset descriptor is invalid")
-                columns = dataset.get("columns", [])
-                if not isinstance(columns, list):
-                    raise ContractError("Discovery columns are invalid")
-                dataset_name = dataset.get("name")
-                if not isinstance(dataset_name, str) or not dataset_name:
-                    raise ContractError("Discovery dataset descriptor has no public name")
-                public_datasets.append({"name": dataset_name, "description": dataset.get("description") if isinstance(dataset.get("description"), str) else None,
-                                        "columns": [{"name": col.get("name"), "description": col.get("description") if isinstance(col.get("description"), str) else None} for col in columns if isinstance(col, Mapping) and isinstance(col.get("name"), str) and col.get("name")]})
-            kind = row["official_split"].split("/", 1)[0]
-            question = query.get("question")
-            if not isinstance(question, str) or not question:
-                raise ContractError("Discovery public query is incomplete")
-            difficulty = query.get("difficulty")
-            task = DiscoveryBenchAdapter().prepare(identity, {"task_id": identity.task_id, "question": question, "difficulty": difficulty if isinstance(difficulty, str) else None, "source_kind": "synthetic" if kind == "synth" else "real", "dataset": public_datasets})
         elif identity.benchmark == "blade":
             source = _safe_under(self.snapshot_root / "scienceagent" / "work" / "BLADE" / "blade_bench" / "datasets", row["relative_path"])
             info = _public_file(source / "info.json", expected)
             data = _public_file(source / "data.csv", expected)
             raw = json.loads(info.read_text(encoding="utf-8"))
-            questions = raw.get("research_questions", raw.get("research_question"))
-            question = questions[0] if isinstance(questions, list) and questions else questions
-            data_desc = raw.get("data_desc")
-            description = data_desc.get("dataset_description") if isinstance(data_desc, Mapping) else data_desc
-            with data.open("r", encoding="utf-8", newline="") as stream:
-                header = next(csv.reader(stream), [])
-            if not isinstance(question, str) or not isinstance(description, str) or not header or any(not isinstance(value, str) or not value for value in header):
-                raise ContractError("BLADE public metadata is incomplete")
-            task = BladeAdapter().prepare(identity, {"task_id": identity.task_id, "dataset_id": identity.task_id, "research_question": question, "data_schema": [{"name": name, "description": None, "dtype": None} for name in header], "task_instructions": description})
         else:
             raise ContractError("unsupported benchmark in custody export")
+        csv_bytes = data.read_bytes()
+        task = prepare_primary_public_task(identity, row, raw, csv_bytes)
         destination = self.output_root / identity.benchmark / digest(identity.data())
         destination.mkdir(parents=True, exist_ok=False)
         csv_target = destination / "data.csv"
-        csv_target.write_bytes(data.read_bytes())
+        csv_target.write_bytes(csv_bytes)
         receipt = FrozenRecord.from_dict({"identity": identity.data(), "source_group": identity.group_id, "official_split": row["official_split"], "split_digest": split_digest, "csv_sha256": _sha(data), "packet_hash": task.content_hash})
         if source_selector is not None:
             receipt = FrozenRecord.from_dict({**receipt.data(), "source_selector": source_selector})

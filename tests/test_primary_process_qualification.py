@@ -22,7 +22,7 @@ def pin(path):
     return {"path": str(path), "sha256": hashlib.sha256(Path(path).read_bytes()).hexdigest()}
 
 
-def source_fixture(tmp_path, nested_duplicate=False):
+def source_fixture(tmp_path, nested_duplicate=False, public_projection=False):
     root = tmp_path / "snapshot"
     inventory = []
     for source in p.SOURCES:
@@ -31,9 +31,13 @@ def source_fixture(tmp_path, nested_duplicate=False):
             parent = root / ("discovery/upstream/discoverybench" if source == "discoverybench" else "scienceagent/work/BLADE/blade_bench/datasets") / relative
             text = {"source_url": f"10.1234/{'shared' if index == 0 else source + str(index)}",
                     "datasets": [{"name": "data.csv"}], "question": SECRET, SECRET: {SECRET: SECRET}}
+            if public_projection:
+                text.update(queries=[{"question": "Compute the mean of x.", "gold": SECRET}],
+                            research_questions=["Compute the mean of x."], data_desc={"dataset_description": "Report the public x mean."})
             metadata = parent / ("metadata_0.json" if source == "discoverybench" else "info.json")
             write(metadata, text)
-            write(parent / "data.csv", f"x\n{'shared' if index == 0 else source + str(index)}\n".encode())
+            value = (0 if index == 0 else index + (10 if source == "blade" else 20)) if public_projection else ('shared' if index == 0 else source + str(index))
+            write(parent / "data.csv", f"x\n{value}\n".encode())
             if nested_duplicate and source == "discoverybench" and index == 3:
                 write(parent / "nested" / "metadata_0.json", metadata.read_bytes())
             task_id = relative.replace("/", ":")
@@ -73,7 +77,7 @@ def source_fixture(tmp_path, nested_duplicate=False):
         file = state_path if key == "custody" else tmp_path / (key + ".json")
         write(file, value)
         inputs[key] = pin(file)
-    return {"inputs": inputs, "snapshot_root": str(root), "expected_counts": {s: 4 for s in p.SOURCES},
+    return {"schema": "primary-process-qualification-inputs-v1", "inputs": inputs, "snapshot_root": str(root), "expected_counts": {s: 4 for s in p.SOURCES},
             "runs": [{"attempt": "later_attempt", "ledger": "later_ledger"}],
             "blade_call_receipts": [{"task_id": "case0", "input": "blade_call"}]}
 

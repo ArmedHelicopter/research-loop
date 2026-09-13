@@ -16,6 +16,7 @@ from typing import Any, Mapping, Sequence
 
 from evaluation.modular.custody import CustodyStore
 from evaluation.modular.train_io import TrainPacketExporter
+from evaluation.modular.primary_prospective_exporter import PrimaryProspectiveTrainExporter
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.experiments import registry
 from research_loop.modular.model_port import CodexModelPort, FrozenBaseContextPolicy
@@ -176,7 +177,7 @@ def _driver_plan(scope_ids: Sequence[str], *, baseline_digest: str, p0_control: 
     return item_count * cells_per_task * len(replicates), item_count * calls_per_task * len(replicates)
 
 
-def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore | None,
                         snapshot_root: Path, export_root: Path, run_root: Path,
                         model: CodexModelPort, audit_verifier: AuditVerifier,
                         history_admission_port: AdmissionPort | None = None,
@@ -193,9 +194,12 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                         retrieval_stage_authority=None,
                         retrieval_final_authority=None,
                         protocol_audit_port: ProtocolAuditPort | None = None,
-                        protocol_replay_authority: ProtocolReplayAuthority | None = None) -> TrainPanelRun:
+                        protocol_replay_authority: ProtocolReplayAuthority | None = None,
+                        prospective_exporter: PrimaryProspectiveTrainExporter | None = None) -> TrainPanelRun:
     """Export and execute every cell selected by closed production drivers."""
-    if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+    legacy_export = isinstance(custody, CustodyStore) and prospective_exporter is None
+    prospective_export = custody is None and type(prospective_exporter) is PrimaryProspectiveTrainExporter
+    if not isinstance(config, FrozenTrainControllerConfig) or not (legacy_export or prospective_export):
         raise ContractError("trusted typed controller inputs required")
     if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
         raise ContractError("controller requires the real model port and trusted audit verifier")
@@ -228,6 +232,9 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
             or ("Q5.2" in data["scope_ids"] and not callable(getattr(feasibility_authority, "verify_prediction_outcome", None)))):
         raise ContractError("feasibility controller requires its caller-owned verification ports before export")
     snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+    if prospective_export and (snapshot != Path(prospective_exporter.config["snapshot_root"]).resolve()
+                               or exported != prospective_exporter.output_root):
+        raise ContractError("prospective exporter roots differ from the frozen controller roots")
     policy = _reviewed_model_policy(model)
     if (model.model != data["model"] or model.effort != data["effort"]
             or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]
@@ -251,11 +258,14 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     _write(root / "controller-attempt.json", attempt)
     try:
         protocol_broker = DockerExecutionBroker([root]) if protocol else None
-        packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+        packets = (prospective_exporter.export_controller_packets(data["item_ids"]) if prospective_export
+                   else TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"]))
         attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
         _write(root / "controller-attempt.json", attempt)
         tasks = [packet.task for packet in packets]
-        if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+        returned_ids = ({packet.receipt.data().get("export_token") for packet in packets} if prospective_export
+                        else {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks})
+        if returned_ids != set(data["item_ids"]):
             raise ContractError("export did not return the frozen allowlist")
         packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
         compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,

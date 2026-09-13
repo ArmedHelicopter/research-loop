@@ -71,12 +71,16 @@ class TrainExport:
 
 
 class ProspectiveTrainExporter:
+    sources = SOURCES
+    item_type = TrainExportItem
+    max_items = 164
+
     def __init__(self, config: Mapping, sealed_root: Path, *, expected_split_digest: str,
                  expected_audit_digest: str, output_root: Path, audit_root: Path):
         _check({"split": expected_split_digest, "audit": expected_audit_digest}, {"split": "sha", "audit": "sha"})
         self.config = json.loads(json.dumps(config))
         self.sealed_root, self.output_root, self.audit_root = map(_concrete, (sealed_root, output_root, audit_root))
-        private = _concrete(self.config["extended_private_root"])
+        private = _concrete(self._private_root())
         for left, right in ((self.output_root, private), (self.audit_root, private),
                             (self.output_root, self.sealed_root), (self.audit_root, self.sealed_root),
                             (self.output_root, self.audit_root)):
@@ -84,6 +88,9 @@ class ProspectiveTrainExporter:
                 raise CustodyError()
         self.expected_split_digest, self.expected_audit_digest = expected_split_digest, expected_audit_digest
         self._previous, self._sequence = ZERO, 0
+
+    def _private_root(self):
+        return self.config["extended_private_root"]
 
     def _open_journal(self):
         path = self.audit_root / "exports.jsonl"
@@ -107,7 +114,7 @@ class ProspectiveTrainExporter:
                "previous_sha256": self._previous, "split_sha256": self.expected_split_digest,
                "audit_sha256": self.expected_audit_digest, "event": event, "attempt": attempt,
                "request_sha256": request_sha, "phase": phase, "possibly_exposed_tokens": sorted(possible),
-               "source_receipt_digests": source_digests or {source: ZERO for source in SOURCES},
+               "source_receipt_digests": source_digests or {source: ZERO for source in self.sources},
                "error": error, "receipt_sha256": receipt_sha, "model_calls": 0, "network_calls": 0,
                "known_cost_units": 0, "cost_status": "local_export_no_model_or_network_io"}
         entry_sha = digest(row)
@@ -227,6 +234,24 @@ class ProspectiveTrainExporter:
             raise CustodyError()
         return result
 
+    def _prepare_task(self, item, material):
+        task_id, public = material
+        identity = DataIdentity(item.source, task_id, item.group_sha256,
+            source_ingestion.SOURCE_SNAPSHOTS[item.source].revision, self.expected_split_digest, "train")
+        return prepare_extended_public_task(identity, public)
+
+    def _write_public_packet(self, target, item, task, material):
+        _write_new(target / "public.json", task.data())
+        return {"source": item.source, "token": item.token, "group_sha256": item.group_sha256,
+                "task_sha256": task.content_hash, "identity_sha256": digest(task.identity.data()),
+                "public_file_sha256": hashlib.sha256((target / "public.json").read_bytes()).hexdigest()}
+
+    def _before_exposure(self):
+        pass
+
+    def _before_publish(self):
+        pass
+
     def export(self, item_allowlist: Sequence[TrainExportItem]) -> TrainExport:
         self.audit_root.mkdir(parents=True, exist_ok=True)
         _concrete(self.audit_root)
@@ -242,7 +267,7 @@ class ProspectiveTrainExporter:
                 self._open_journal()
                 attempt = self._sequence + 1
                 items = tuple(item_allowlist)
-                valid = bool(items) and len(items) <= 164 and all(type(item) is TrainExportItem for item in items)
+                valid = bool(items) and len(items) <= self.max_items and all(type(item) is self.item_type for item in items)
                 if valid:
                     request_sha = digest([item.data() for item in items])
                 self._event("export_reserved", request_sha=request_sha, attempt=attempt, phase=phase)
@@ -259,10 +284,7 @@ class ProspectiveTrainExporter:
                 material = self._read_selected(items, indexes, receipts)
                 tasks = []
                 for item in items:
-                    task_id, public = material[item.token]
-                    identity = DataIdentity(item.source, task_id, item.group_sha256,
-                        source_ingestion.SOURCE_SNAPSHOTS[item.source].revision, self.expected_split_digest, "train")
-                    tasks.append(prepare_extended_public_task(identity, public))
+                    tasks.append(self._prepare_task(item, material[item.token]))
                 self._verify_audit_inputs(audit)
                 if self._verify_source_receipts(split, audit) != receipts:
                     raise CustodyError()
@@ -271,15 +293,13 @@ class ProspectiveTrainExporter:
                 staging.mkdir(parents=True, exist_ok=False)
                 packets = []
                 for item, task in zip(items, tasks):
+                    self._before_exposure()
                     possible.append(item.token)
                     # Reserve exposure *before* the first task byte is written.
                     self._event("exposure_reserved", request_sha=request_sha, attempt=attempt, phase=phase,
                                 possible=possible, source_digests=source_digests)
                     target = staging / item.token
-                    _write_new(target / "public.json", task.data())
-                    packet = {"source": item.source, "token": item.token, "group_sha256": item.group_sha256,
-                              "task_sha256": task.content_hash, "identity_sha256": digest(task.identity.data()),
-                              "public_file_sha256": hashlib.sha256((target / "public.json").read_bytes()).hexdigest()}
+                    packet = self._write_public_packet(target, item, task, material[item.token])
                     _write_new(target / "receipt.json", packet)
                     packets.append(packet)
                 receipt = FrozenRecord.from_dict({"schema": "prospective-train-export-receipt-v1",
@@ -291,6 +311,7 @@ class ProspectiveTrainExporter:
                     "model_calls": 0, "network_calls": 0, "known_cost_units": 0,
                     "output_root_locator_sha256": digest(str(self.output_root))})
                 _write_new(staging / "export-receipt.json", receipt.data())
+                self._before_publish()
                 self.output_root.parent.mkdir(parents=True, exist_ok=True)
                 _concrete(self.output_root)
                 if self.output_root.exists():
