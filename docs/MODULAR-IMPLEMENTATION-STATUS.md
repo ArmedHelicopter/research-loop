@@ -3,7 +3,39 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current state/prediction integration checkpoint (2026-09-13)
+## Current state/retrieval integration checkpoint (2026-09-13)
+
+Source `a98f580` passed 50 root checks with all 504 frozen source/document files
+unchanged. M1×M6, M2×M6 and M3×M6 now have complete prospective TRAIN
+controllers and explicit independent process scoring. The complete 24-cell
+grid used 48 scripted model calls, 96 separately bound state/corpus
+qualification calls, 72 retrieval calls, 24 actual Docker executions and
+24 independent scores. M3 retains M2 as fixed background. Both M6 levels
+retrieve useful material with the same three reserved opportunities; M6-on
+changes the actual query intents to support, counterevidence and methods.
+
+The root checks retain all 24 scores under M1 qualification drift but block
+its contrast, preserve all planned rows under source/provider failures, and
+stop a poisoned model ledger without retry. Persistent replay and score
+issuance reject modified state, retrieval, program and request bindings.
+The isolated source passed 78 checks; independent read-only review found no
+concrete blocking defect. Mutation coverage selects BLADE arm 11, and separate
+state/corpus request bindings do not require four globally distinct authority
+keys. Scripted retrieval, solver responses and fixed synthetic scores establish
+engineering behavior only.
+
+The source archive has 26 files, 25 indexed artifacts and 1,766 ZIP members,
+verified against committed Git bytes. Root closure and independent review are
+under `results/modular-engineering-20260913/state-retrieval-root/`. Original
+failed driver attempts remain preserved in the source archive.
+
+Coverage is now 16/36 pair controllers and 2/5 triple controllers. Actual TRAIN
+effects, calibration, the remaining combinations, the final frozen bundle and
+validation acceptance remain unfinished. This checkpoint used no actual model
+generation and did not open validation. The separate Grok transport smoke is
+recorded separately and is not part of these synthetic test counts.
+
+## Prior state/prediction integration checkpoint (2026-09-13)
 
 Source `9b18e47` passed 32 root integration checks with 498 unchanged frozen
 source/document files. M1×M4, M2×M4 and M3×M4 now have complete prospective

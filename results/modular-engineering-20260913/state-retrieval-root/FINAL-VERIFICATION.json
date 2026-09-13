@@ -1,0 +1,30 @@
+{
+  "source_commit": "a98f580f76908d81f961b02296d58aeb3236bb31",
+  "source_files": 504,
+  "source_unchanged": true,
+  "junit": {
+    "tests": 50,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "junit_sha256": "027b391938e34d61fe580133bb686031f13f7ebc9633c2af702607105c6bcf24",
+  "source_archive": {
+    "total_files": 26,
+    "indexed_files": 25,
+    "zip_members": 1766,
+    "disk_equals_git": true,
+    "index_hashes_match": true,
+    "zip_hashes_match": true
+  },
+  "scope": "state/retrieval controller full grid, failure and replay integration; state/prediction strict process scope and label isolation",
+  "coverage": "16 of 36 pair controllers; 2 of 5 triple controllers; synthetic engineering only",
+  "limitations": [
+    "scripted provider and solver; fixed synthetic rubric scores",
+    "mutation tests select BLADE arm 11; not all arms and tasks",
+    "separately bound state/corpus requests may share the same two qualified authority keys"
+  ],
+  "new_paid_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}
