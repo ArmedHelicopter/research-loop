@@ -54,7 +54,7 @@ def _model(seen):
 
 
 def _bundle(task, _scenario):
-    return freeze_history_bundle(task, public_evidence={"measurement_id": "public-" + task.identity.benchmark, "observation": "Public grouped measurement changed.", "value": 1.5},
+    return freeze_history_bundle(task, before_evidence={"measurement_id": "before-" + task.identity.benchmark, "observation": "BEFORE-SENTINEL public grouped measurement.", "value": 1.5}, current_evidence={"measurement_id": "current-" + task.identity.benchmark, "observation": "CURRENT-SENTINEL public grouped measurement after update.", "value": 1.6}, transition={"action": "replace_public_measurement", "reason": "frozen public correction"},
         q11={"correct": {"historical_summary": "Earlier report says treatment exceeded control.", "withdrawal": False, "dependency": False},
              "wrong": {"historical_summary": "Earlier report says treatment was below control.", "withdrawal": False, "dependency": False},
              "neutral": {"historical_summary": "Earlier report has no interpretation.", "withdrawal": False, "dependency": False}},
@@ -82,14 +82,36 @@ def test_full_public_grid_records_real_m2_m3_material_and_final_payload(tmp_path
     assert all(row["slot"] != "final" or row["module_context"]["reconstructed_context"]["entries"] is not None for row in requests)
     if coverage == "Q1.1":
         q11 = [row for row in requests if row["slot"] != "final"]
-        assert all("correct" not in FrozenRecord.from_dict(row).encoded and "wrong" not in FrozenRecord.from_dict(row).encoded and "neutral" not in FrozenRecord.from_dict(row).encoded for row in q11)
-        assert len({FrozenRecord.from_dict(row["module_context"]["history_material"]).content_hash for row in q11}) == 6
+        assert all(row["module_context"]["panel_cell"].keys() == {"schema", "cell_digest"} for row in q11)
+        assert all(set(row["module_context"]["history_material"]) == {"schema", "identity", "public_evidence", "transition", "historical_summary", "withdrawal", "dependency"} for row in q11)
+        before = [row for row in requests if row["slot"] == "history_baseline"]
+        after = [row for row in requests if row["slot"] == "history_rebuilt"]
+        assert all("BEFORE-SENTINEL" in FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).encoded for row in before)
+        assert all("CURRENT-SENTINEL" not in FrozenRecord.from_dict(row["module_context"]["history_material"]).encoded for row in before)
+        assert any("CURRENT-SENTINEL" in FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).encoded for row in after if row["module_context"]["m3"] == "enabled")
+        assert all("BEFORE-SENTINEL" in FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).encoded for row in after if row["module_context"]["m3"] == "frozen_control")
+        assert {FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).content_hash for row in before} != {FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).content_hash for row in after if row["module_context"]["m3"] == "enabled"}
+        finals = [row for row in requests if row["slot"] == "final"]
+        assert any("CURRENT-SENTINEL" in FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).encoded and row["module_context"]["reconstructed_context"]["mode"] == "candidate" for row in finals)
+        assert all("BEFORE-SENTINEL" in FrozenRecord.from_dict(row["module_context"]["active_public_evidence"]).encoded for row in finals if row["module_context"]["reconstructed_context"]["mode"] == "baseline")
     else:
         after = [row for row in requests if row["slot"] == "downstream_after_withdrawal"]
         assert any(row["module_context"]["withdrawal_applied"] for row in after)
         assert any(row["module_context"]["m2"] == "frozen_control" and row["module_context"]["m3"] == "frozen_control" for row in after)
+        first_by_binding = {row["module_context"]["panel_cell"]["cell_digest"]: row for row in requests if row["slot"] == "upstream_before_withdrawal"}
+        for row in after:
+            if row["module_context"]["m3"] == "frozen_control":
+                assert row["module_context"]["reconstructed_context"] == first_by_binding[row["module_context"]["panel_cell"]["cell_digest"]]["module_context"]["claim_context"]
         withdrawn = next(row for row in after if row["module_context"]["withdrawal_applied"])
         assert withdrawn["module_context"]["reconstructed_context"]["entries"]["entries"] != []
+        enabled = [row for row in after if row["module_context"]["m2"] == "enabled" and row["module_context"]["m3"] == "enabled"]
+        summary = next(row for row in enabled if "lacks a registered" in row["module_context"]["history_material"]["historical_summary"])
+        registered = next(row for row in enabled if "is registered" in row["module_context"]["history_material"]["historical_summary"])
+        withdrawn = next(row for row in enabled if row["module_context"]["withdrawal_applied"])
+        claims = lambda row: [entry for entry in row["module_context"]["reconstructed_context"]["entries"]["entries"] if entry["kind"] == "claim"]
+        assert all(not claim["depends_on"] for claim in claims(summary))
+        assert any(claim["depends_on"] and claim["needs_review"] and claim["revision"] == 1 for claim in claims(registered))
+        assert any(claim["depends_on"] and claim["needs_review"] and not claim["support_roots"] for claim in claims(withdrawn))
     trace = (tmp_path / "0" / "trace.jsonl").read_text(encoding="utf-8")
     assert "operation_m3_" in trace
 

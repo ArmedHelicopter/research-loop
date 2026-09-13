@@ -1,8 +1,9 @@
 # Q1.1 and Q1.2 history panel drivers
 
-`freeze_history_bundle()` accepts caller-supplied public evidence and complete
-Q1.1/Q1.2 historical records, verifies the task identity and variant coverage,
-then freezes one bundle for all variants of that task. `install_drivers()` takes
+`freeze_history_bundle()` accepts caller-supplied before/current public records,
+a frozen replacement transition, and complete Q1.1/Q1.2 historical records.
+It verifies the task identity and variant coverage, then freezes one bundle for
+all variants of that task. `install_drivers()` takes
 a resolver for that bundle and installs Q1.1 and Q1.2 only into a
 caller-owned driver mapping. The production registry remains unchanged until a
 separate integration change chooses to register them.
@@ -15,10 +16,15 @@ must supply an admission port and its typed verified receipt. There is no
 default admission path.
 
 Q1.1 schedules `history_baseline`, `history_rebuilt`, and `final` for the
-correct, wrong, and neutral selected public-history materials. The material is bound to
-the current public task identity. Variant labels are committed by hash rather
-than exposed to the model. M3 creates a journaled rebuild after public evidence
-changes; M3-off uses a frozen baseline control.
+selected public-history material. The first request contains the frozen
+before-record; an enabled M3 transition journals its withdrawal/replacement and
+the second and final requests contain the current-record. M3-off retains the
+before-record and frozen baseline control. Variant labels are committed by hash
+rather than exposed to the model.
+
+Each request receives a projection containing only its active public record and
+the selected historical material. The full frozen bundle, including other
+variants and the inactive record, remains outside the model payload.
 
 Q1.2 schedules `upstream_before_withdrawal`,
 `downstream_after_withdrawal`, and `final`. M2 creates revisioned claims and,

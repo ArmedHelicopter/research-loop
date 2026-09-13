@@ -24,13 +24,25 @@ def _question(task: PublicTask) -> str:
     return str(body.get("research_question", body.get("question", task.identity.task_id)))
 
 
-def _final(workflow: ModularWorkflow, cell: PanelCell, scenario: FrozenRecord, model, package, material: FrozenRecord) -> FrozenRecord:
+def _request_material(material: FrozenRecord, evidence: Mapping[str, Any]) -> dict[str, Any]:
+    """Project one selected history record into a model-visible payload."""
+    body = material.data()
+    return {"schema": "typed-public-history-request-v1", "identity": body["identity"],
+            "public_evidence": dict(evidence), "transition": body["transition"],
+            "historical_summary": body["historical_summary"], "withdrawal": body["withdrawal"],
+            "dependency": body["dependency"]}
+
+
+def _final(workflow: ModularWorkflow, cell: PanelCell, scenario: FrozenRecord, model, package,
+           material: FrozenRecord, active_evidence: Mapping[str, Any]) -> FrozenRecord:
     return workflow.invoke_model("final", model, instruction=(
         "Return the bounded train-only candidate. Copy required_objective_digest exactly; "
         "use outcome unknown, no evidence_ids, and programme_complete false."), module_context=FrozenRecord.from_dict({
             "panel_cell": _binding(cell, scenario), "candidate_package": package.record.data(),
             "required_objective_digest": workflow.session.objective.content_hash,
-            "history_material": material.data(), "reconstructed_context": ContextBuilder(
+            "history_material": _request_material(material, active_evidence),
+            "active_public_evidence": dict(active_evidence),
+            "reconstructed_context": ContextBuilder(
                 workflow.session.task.identity, budget_bytes=workflow.session.context_budget).build(
                     _question(workflow.session.task), workflow.session.evidence, workflow.session.claims,
                     mode="candidate" if "M3" in workflow.enabled else "baseline",
@@ -45,9 +57,9 @@ def _candidate(value: FrozenRecord, objective: FrozenRecord) -> None:
         raise ContractError("history driver final candidate must remain train-only unknown")
 
 
-def _append(session, material: FrozenRecord, root: str, receipt: Mapping[str, Any] | None = None):
+def _append(session, material: FrozenRecord, root: str, receipt: Mapping[str, Any] | None = None, evidence: Mapping[str, Any] | None = None):
     return session.evidence.append({"kind": "measurement", "root_material": {"history_id": root},
-        "representation": "raw", "content": material.data()["public_evidence"],
+        "representation": "raw", "content": dict(evidence if evidence is not None else material.data()["public_evidence"]),
         "subject_bindings": {"task": session.task.identity.task_id},
         "independent_group": session.task.identity.group_id},
         # A caller-projected public observation is input material, never an
@@ -56,11 +68,12 @@ def _append(session, material: FrozenRecord, root: str, receipt: Mapping[str, An
         dict(receipt) if receipt is not None else {"trusted_validator": "unverified-public-observation", "validator_verified": False, "admitted": False})
 
 
-def freeze_history_bundle(task: PublicTask, *, public_evidence: Mapping[str, Any],
+def freeze_history_bundle(task: PublicTask, *, before_evidence: Mapping[str, Any], current_evidence: Mapping[str, Any], transition: Mapping[str, Any],
                           q11: Mapping[str, Mapping[str, Any]], q12: Mapping[str, Mapping[str, Any]]) -> FrozenRecord:
     """Freeze caller-supplied public records; this function never invents facts."""
-    if not isinstance(task, PublicTask) or not isinstance(public_evidence, Mapping):
-        raise ContractError("history bundle needs a typed task and public evidence")
+    if (not isinstance(task, PublicTask) or not isinstance(before_evidence, Mapping) or not isinstance(current_evidence, Mapping)
+            or not isinstance(transition, Mapping) or set(transition) != {"action", "reason"}):
+        raise ContractError("history bundle needs a typed task, before/current public evidence, and transition")
     if set(q11) != {"correct", "wrong", "neutral"} or set(q12) != {"summary_only", "registered", "withdraw"}:
         raise ContractError("history bundle needs complete Q1.1 and Q1.2 variant coverage")
     for records in (q11, q12):
@@ -68,13 +81,13 @@ def freeze_history_bundle(task: PublicTask, *, public_evidence: Mapping[str, Any
             if not isinstance(value, Mapping) or set(value) != {"historical_summary", "withdrawal", "dependency"} or not isinstance(value["historical_summary"], str) or not isinstance(value["withdrawal"], bool) or not isinstance(value["dependency"], bool):
                 raise ContractError("history bundle variant material is malformed")
     return FrozenRecord.from_dict({"schema": "typed-history-panel-bundle-v1", "identity": task.identity.data(),
-        "public_evidence": dict(public_evidence), "q11": {key: dict(value) for key, value in q11.items()},
+        "before_evidence": dict(before_evidence), "current_evidence": dict(current_evidence), "transition": dict(transition), "q11": {key: dict(value) for key, value in q11.items()},
         "q12": {key: dict(value) for key, value in q12.items()}})
 
 
 def select_history_material(bundle: FrozenRecord, task: PublicTask, experiment_id: str, variant: str) -> FrozenRecord:
     body = bundle.data()
-    if (set(body) != {"schema", "identity", "public_evidence", "q11", "q12"}
+    if (set(body) != {"schema", "identity", "before_evidence", "current_evidence", "transition", "q11", "q12"}
             or body["schema"] != "typed-history-panel-bundle-v1" or body["identity"] != task.identity.data()):
         raise ContractError("history bundle identity or schema mismatch")
     table = body["q11"] if experiment_id == "Q1.1" else body["q12"] if experiment_id == "Q1.2" else None
@@ -82,7 +95,7 @@ def select_history_material(bundle: FrozenRecord, task: PublicTask, experiment_i
         raise ContractError("history bundle lacks selected variant material")
     selected = table[variant]
     return FrozenRecord.from_dict({"schema": "typed-public-history-material-v1", "identity": task.identity.data(),
-        "public_evidence": body["public_evidence"], "historical_summary": selected["historical_summary"], "withdrawal": selected["withdrawal"], "dependency": selected["dependency"]})
+        "before_evidence": body["before_evidence"], "current_evidence": body["current_evidence"], "transition": body["transition"], "historical_summary": selected["historical_summary"], "withdrawal": selected["withdrawal"], "dependency": selected["dependency"]})
 
 
 def _resolve(resolver: Callable[[PublicTask, FrozenRecord], FrozenRecord] | None, task: PublicTask, scenario: FrozenRecord, experiment_id: str, variant: str) -> FrozenRecord:
@@ -109,18 +122,19 @@ class Q11HistoryDriver:
             _question(workflow.session.task), workflow.session.evidence, workflow.session.claims,
             mode="candidate" if enabled else "baseline", baseline_summary=material.data()["historical_summary"])
         first = workflow.invoke_model("history_baseline", model, instruction="Assess the typed public history without treating it as truth.",
-            baseline_summary=material.data()["historical_summary"], module_context=FrozenRecord.from_dict({"panel_cell": _binding(cell, scenario), "history_material": material.data(), "m3": "enabled" if enabled else "frozen_control", "context_material": before.data()}))
+            baseline_summary=material.data()["historical_summary"], module_context=FrozenRecord.from_dict({"panel_cell": _binding(cell, scenario), "history_material": _request_material(material, material.data()["before_evidence"]), "active_public_evidence": material.data()["before_evidence"], "m3": "enabled" if enabled else "frozen_control", "context_material": before.data()}))
         if enabled:
-            old = _append(workflow.session, material, "q11-prior")
-            workflow.session.evidence.withdraw(old.root_id, "public history superseded by current public material")
-            _append(workflow.session, material, "q11-current")
+            old = _append(workflow.session, material, "q11-prior", evidence=material.data()["before_evidence"])
+            workflow.session.evidence.withdraw(old.root_id, material.data()["transition"]["reason"])
+            _append(workflow.session, material, "q11-current", evidence=material.data()["current_evidence"])
             after = ContextBuilder(workflow.session.task.identity, budget_bytes=workflow.session.context_budget).build(_question(workflow.session.task), workflow.session.evidence, workflow.session.claims)
             workflow._trace("operation_m3_context_rebuild", "executed", before_context=before.data(), after_context=after.data(), invalidated_evidence_root=old.root_id)
         else:
             after = before; workflow._trace("operation_m3_control", "executed", frozen_context=before.data())
         second = workflow.invoke_model("history_rebuilt", model, instruction="Assess the current typed public material after the declared context operation.",
-            baseline_summary=material.data()["historical_summary"], module_context=FrozenRecord.from_dict({"panel_cell": _binding(cell, scenario), "history_material": material.data(), "m3": "enabled" if enabled else "frozen_control", "context_material": after.data()}))
-        final = _final(workflow, cell, scenario, model, package, material); _candidate(final, workflow.session.objective)
+            baseline_summary=material.data()["historical_summary"], module_context=FrozenRecord.from_dict({"panel_cell": _binding(cell, scenario), "history_material": _request_material(material, material.data()["current_evidence"] if enabled else material.data()["before_evidence"]), "active_public_evidence": material.data()["current_evidence"] if enabled else material.data()["before_evidence"], "m3": "enabled" if enabled else "frozen_control", "context_material": after.data()}))
+        final = _final(workflow, cell, scenario, model, package, material,
+                       material.data()["current_evidence"] if enabled else material.data()["before_evidence"]); _candidate(final, workflow.session.objective)
         return workflow._trace("stage_7" if enabled else "operation_m3_control_final", "executed", material_digest=material.content_hash), final, (first, second, final)
 
 
@@ -140,7 +154,7 @@ class Q12DependencyDriver:
         if m2:
             if self.admission_port is None:
                 raise ContractError("Q1.2 M2 requires a caller-supplied verified admission receipt")
-            root = _append(workflow.session, material, "q12-upstream", self.admission_port(workflow.session.task, material))
+            root = _append(workflow.session, material, "q12-upstream", self.admission_port(workflow.session.task, material), material.data()["before_evidence"])
             upstream = workflow.session.claims.create("typed public upstream observation", subject_bindings={"task": workflow.session.task.identity.task_id})
             upstream = workflow.session.claims.apply(upstream.claim_id, {"supports": [root.root_id], "refutes": [], "subject_bindings": {"task": workflow.session.task.identity.task_id}}, expected_revision=0).claim
             downstream = workflow.session.claims.create("typed public downstream interpretation", subject_bindings={"task": workflow.session.task.identity.task_id})
@@ -150,16 +164,26 @@ class Q12DependencyDriver:
         else:
             workflow._trace("operation_m2_control", "executed", frozen_history_material=material.data())
         before = ContextBuilder(workflow.session.task.identity, budget_bytes=workflow.session.context_budget).build(_question(workflow.session.task), workflow.session.evidence, workflow.session.claims, mode="candidate" if m3 else "baseline", baseline_summary=material.data()["historical_summary"])
-        first = workflow.invoke_model("upstream_before_withdrawal", model, instruction="Assess typed upstream public material and its declared dependency state.", baseline_summary=material.data()["historical_summary"], module_context=FrozenRecord.from_dict({"panel_cell": _binding(cell, scenario), "history_material": material.data(), "claim_context": before.data(), "m2": "enabled" if m2 else "frozen_control", "m3": "enabled" if m3 else "frozen_control"}))
+        first = workflow.invoke_model("upstream_before_withdrawal", model, instruction="Assess typed upstream public material and its declared dependency state.", baseline_summary=material.data()["historical_summary"], module_context=FrozenRecord.from_dict({"panel_cell": _binding(cell, scenario), "history_material": _request_material(material, material.data()["before_evidence"]), "active_public_evidence": material.data()["before_evidence"], "claim_context": before.data(), "m2": "enabled" if m2 else "frozen_control", "m3": "enabled" if m3 else "frozen_control"}))
         revisions = ()
         if m2 and material.data()["withdrawal"]:
             workflow.session.evidence.withdraw(root.root_id, "typed public upstream withdrawal")
             revisions = workflow.session.claims.refresh_after_withdrawal()
             workflow._trace("operation_m2_dependency_invalidated", "executed", withdrawn_root=root.root_id, revisions=[item.claim.data() for item in revisions])
-        after = ContextBuilder(workflow.session.task.identity, budget_bytes=workflow.session.context_budget).build(_question(workflow.session.task), workflow.session.evidence, workflow.session.claims, mode="candidate" if m3 else "baseline", baseline_summary=material.data()["historical_summary"])
-        workflow._trace("operation_m3_context_rebuild" if m3 else "operation_m3_control", "executed", before_context=before.data(), after_context=after.data(), revised_claims=[item.claim.data() for item in revisions])
-        second = workflow.invoke_model("downstream_after_withdrawal", model, instruction="Assess the current typed dependency material after any upstream withdrawal.", baseline_summary=material.data()["historical_summary"], module_context=FrozenRecord.from_dict({"panel_cell": _binding(cell, scenario), "history_material": material.data(), "reconstructed_context": after.data(), "withdrawal_applied": bool(revisions), "m2": "enabled" if m2 else "frozen_control", "m3": "enabled" if m3 else "frozen_control"}))
-        final = _final(workflow, cell, scenario, model, package, material); _candidate(final, workflow.session.objective)
+        if m3:
+            after = ContextBuilder(workflow.session.task.identity, budget_bytes=workflow.session.context_budget).build(
+                _question(workflow.session.task), workflow.session.evidence, workflow.session.claims,
+                mode="candidate", baseline_summary=material.data()["historical_summary"])
+            workflow._trace("operation_m3_context_rebuild", "executed", before_context=before.data(),
+                            after_context=after.data(), revised_claims=[item.claim.data() for item in revisions])
+        else:
+            after = before
+            workflow._trace("operation_m3_control", "executed", frozen_context=before.data(),
+                            revised_claims=[item.claim.data() for item in revisions])
+        active_evidence = material.data()["current_evidence"] if m3 else material.data()["before_evidence"]
+        second = workflow.invoke_model("downstream_after_withdrawal", model, instruction="Assess the current typed dependency material after any upstream withdrawal.", baseline_summary=material.data()["historical_summary"], module_context=FrozenRecord.from_dict({"panel_cell": _binding(cell, scenario), "history_material": _request_material(material, active_evidence), "active_public_evidence": active_evidence, "reconstructed_context": after.data(), "withdrawal_applied": bool(revisions), "m2": "enabled" if m2 else "frozen_control", "m3": "enabled" if m3 else "frozen_control"}))
+        final = _final(workflow, cell, scenario, model, package, material,
+                       material.data()["current_evidence"] if m3 else material.data()["before_evidence"]); _candidate(final, workflow.session.objective)
         return workflow._trace("stage_7" if m3 else "operation_m3_control_final", "executed", material_digest=material.content_hash), final, (first, second, final)
 
 
