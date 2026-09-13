@@ -173,3 +173,60 @@ def test_full_36_slot_real_http_grid_and_optional_arbitration(tmp_path, disagree
         assert result['calibration_eligible'] is False and result['validation_eligible'] is False
         assert result['source_task_count'] == 4
         (tmp_path/'http-grid-result.json').write_text(receipt.encoded)
+
+
+@pytest.mark.parametrize('missing_credential', [False, True])
+def test_actual_private_worker_entry_and_parent_boundary(tmp_path, monkeypatch, missing_credential):
+    import evaluation.modular.diagnostic_private_ports as adapter
+    with LocalProvider() as server:
+        ports, _, _, original, manifest, authorities = setup_http(tmp_path, server)
+        b, c = manifest.data(), original.data()
+        materials = json.loads(Path(c['materials']['path']).read_bytes())
+        retained = set()
+        tasks = {digest(t['identity']): t for t in b['tasks']}
+        for slot in b['slots']:
+            benchmark = tasks[slot['identity_digest']]['identity']['benchmark']
+            if benchmark not in retained:
+                retained.add(benchmark)
+                continue
+            payload = {'status': 'unresolved_material', 'candidate': None,
+                'expected': {'state': 'unknown', 'dimensions': None}, 'support_digest': digest({'fixture': slot['slot_id']})}
+            signed = authorities['material'].issue('material', slot['slot_id'], payload)
+            slot.update(status='unresolved_material', candidate_digest=None, material_digest=signed.content_hash)
+            materials[slot['slot_id']] = signed.data()
+        def input_pin(name, descriptor):
+            c['input_files'][name] = descriptor['path']; b['input_pins'][name] = descriptor['sha256']
+        entry = {'schema': 'private-diagnostic-http-worker-v1', 'deployments': {}, 'credential_env': {}}
+        for role, deployment in ports.deployments.items():
+            desc = write(tmp_path / ('deployment-' + role + '.json'), deployment.spec.data())
+            entry['deployments'][role] = desc; input_pin('deployment_' + role, desc)
+            env_name = 'DIAGNOSTIC_FIXTURE_' + role.upper()
+            entry['credential_env'][role] = env_name
+            if missing_credential: monkeypatch.delenv(env_name, raising=False)
+            else: monkeypatch.setenv(env_name, 'synthetic-worker-secret')
+        input_pin('private_http_config', write(tmp_path / 'private-http-entry.json', entry))
+        worker = Path(adapter.__file__).absolute()
+        input_pin('private_ports_code', {'path': str(worker), 'sha256': hash_file(worker)})
+        c['materials'] = write(tmp_path / 'worker-materials.json', materials)
+        c['manifest'] = write(tmp_path / 'worker-manifest.json', b)
+        desc = write(tmp_path / 'worker-config.json', c)
+        monkeypatch.setenv('PYTHONPATH', str(Path(__file__).resolve().parents[1]))
+        result_path = tmp_path / 'worker-result.json'; parent = tmp_path / 'parent.jsonl'
+        command = [sys.executable, str(worker), '--config', desc['path'], '--sha256', desc['sha256'], '--output', str(result_path)]
+        kwargs = dict(command=command, executable_sha256=hash_file(Path(sys.executable)), worker_sha256=hash_file(worker),
+            config_descriptor=desc, result_path=result_path, parent_journal_path=parent, timeout_seconds=180)
+        if missing_credential:
+            with pytest.raises(ContractError, match='subprocess failed'): launch_once(**kwargs)
+            assert server.calls == [] and not result_path.exists()
+        else:
+            receipt = launch_once(**kwargs)
+            result = verify(receipt, role='diagnostic', subject=record(b).content_hash,
+                authority_id=authorities['diagnostic'].authority_id, key=authorities['diagnostic'].key)
+            assert len(result['observations']) == 72
+            assert sum(o['status'] == 'scored_diagnostic' for o in result['observations']) == 4
+            assert sum(o['status'] == 'unresolved_material' for o in result['observations']) == 68
+            assert len(server.calls) == server.cap_checks == 8
+            assert result['calibration_eligible'] is False and result['validation_eligible'] is False
+        for suffix in ('.stdout.bin', '.stderr.bin'):
+            raw = Path(str(parent) + suffix).read_bytes()
+            assert b'PRIVATE_SYNTHETIC_REFERENCE_SENTINEL' not in raw and b'synthetic-worker-secret' not in raw
