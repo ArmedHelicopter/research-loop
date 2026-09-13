@@ -1,0 +1,39 @@
+{
+  "artifact_count_before_manifest": 33,
+  "artifact_manifest_sha256": "2177ec5a49c8987c3a2ad9eb5768751570ac9273aab1d52e1da2ef6f6aa6e0f6",
+  "docker_calls": 24,
+  "docker_failed": 8,
+  "docker_succeeded": 16,
+  "final_tests": {
+    "binding_limit": "Frozen 156-cell source with all request fields checked, original record/observation counts preserved, and neutral public references.",
+    "errors": 0,
+    "failures": 0,
+    "junit_sha256": "090af74c92c392d2e769e878e2eff9ce1f584cefd95e18a687548a709c075586",
+    "round": "final08",
+    "seconds": 278.321,
+    "skipped": 0,
+    "source_commit": "1f8e9ffae0744ca068ba5fcbe30a3d0c4b9308c7",
+    "tests": 77
+  },
+  "grid": {
+    "Q8.1": 48,
+    "Q8.4": 16,
+    "Q8.5": 28,
+    "Q8.6": 24,
+    "Q8.7": 40,
+    "total": 156
+  },
+  "junit_sha256": "090af74c92c392d2e769e878e2eff9ce1f584cefd95e18a687548a709c075586",
+  "model_calls": 364,
+  "original_archive_bytes_unchanged": true,
+  "original_blinding_limit_preserved": true,
+  "provider_calls": 114,
+  "pruned_cells": [],
+  "scientific_effectiveness_proven": false,
+  "source_after_sha256": "184d8c72e94fd7368caff4daf73646eb3447810e8ff095f5c2cec56a00f61426",
+  "source_before_sha256": "184d8c72e94fd7368caff4daf73646eb3447810e8ff095f5c2cec56a00f61426",
+  "source_bytes_unchanged": true,
+  "source_commit": "1f8e9ffae0744ca068ba5fcbe30a3d0c4b9308c7",
+  "source_file_count": 688,
+  "validation_opened": false
+}

@@ -1,0 +1,119 @@
+{
+  "failure_erased": false,
+  "items_probed": 2,
+  "limit_plus_one": [
+    [
+      "q8_retrieval_request",
+      {
+        "call_limit": 1,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "lane": "support",
+        "query": {
+          "question": "q"
+        },
+        "query_digest": "9896cd290376017b9444f19283ec3e2db6cce836680ab9f352bb374693da81cb",
+        "remaining": {
+          "provider_calls": 0,
+          "source_slots": 0
+        },
+        "reservation": {
+          "provider_calls": 1,
+          "source_slots": 1
+        },
+        "source_limit": 1
+      }
+    ],
+    [
+      "q8_retrieval_item",
+      {
+        "lane": "support",
+        "ordinal": 0,
+        "source_digest": "10419dda543ecdbc20bf62f359d1998cd0b0154fe30eb6dd18a7109ffe0c348c",
+        "within_reservation": true
+      }
+    ],
+    [
+      "q8_retrieval_item",
+      {
+        "lane": "support",
+        "ordinal": 1,
+        "source_digest": "10419dda543ecdbc20bf62f359d1998cd0b0154fe30eb6dd18a7109ffe0c348c",
+        "within_reservation": false
+      }
+    ],
+    [
+      "q8_retrieval_failure",
+      {
+        "error_type": "ContractError",
+        "lane": "support",
+        "reported_cost": null,
+        "reserved_provider_calls": 1,
+        "reserved_source_slots": 1,
+        "returned_before_failure": 1,
+        "verified_external_cost": {
+          "status": "unknown",
+          "units": null
+        }
+      }
+    ]
+  ],
+  "paid_calls": 0,
+  "partial_failure": [
+    [
+      "q8_retrieval_request",
+      {
+        "call_limit": 1,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "lane": "support",
+        "query": {
+          "question": "q"
+        },
+        "query_digest": "9896cd290376017b9444f19283ec3e2db6cce836680ab9f352bb374693da81cb",
+        "remaining": {
+          "provider_calls": 0,
+          "source_slots": 0
+        },
+        "reservation": {
+          "provider_calls": 1,
+          "source_slots": 2
+        },
+        "source_limit": 2
+      }
+    ],
+    [
+      "q8_retrieval_item",
+      {
+        "lane": "support",
+        "ordinal": 0,
+        "source_digest": "10419dda543ecdbc20bf62f359d1998cd0b0154fe30eb6dd18a7109ffe0c348c",
+        "within_reservation": true
+      }
+    ],
+    [
+      "q8_retrieval_failure",
+      {
+        "error_type": "Failure",
+        "lane": "support",
+        "reported_cost": {
+          "status": "provider_reported",
+          "usd": 0.25
+        },
+        "reserved_provider_calls": 1,
+        "reserved_source_slots": 2,
+        "returned_before_failure": 1,
+        "verified_external_cost": {
+          "status": "unknown",
+          "units": null
+        }
+      }
+    ]
+  ],
+  "provider_source_sha256": "6740bc6dc92e0262c46b159c16809bbb55a9dda198aaa9819532883729c4ac26",
+  "source_commit": "1f8e9ffae0744ca068ba5fcbe30a3d0c4b9308c7"
+}

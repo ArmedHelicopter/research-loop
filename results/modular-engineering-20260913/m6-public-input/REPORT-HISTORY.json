@@ -1,0 +1,90 @@
+[
+  {
+    "binding_limit": "Frozen missing public-boundary module RED.",
+    "errors": 1,
+    "failures": 0,
+    "junit_sha256": "9849e605eb17c86cf3e37836e285920ff0a61e8faae48e4978a6385e912db590",
+    "round": "red01",
+    "seconds": 0.131,
+    "skipped": 0,
+    "source_commit": "072a9541dc836202681c169377d40cdda61e38d5",
+    "tests": 1
+  },
+  {
+    "binding_limit": "Development sanity before source commit; no whole-source contemporaneous manifest.",
+    "errors": 0,
+    "failures": 0,
+    "junit_sha256": "16ddd8c857870822bef8cb7551ddf8bce39b969dbe37d66931aa359e0d80d504",
+    "later_source_snapshot": "181c9c0aa490eba37ceb821e183304eefa228445",
+    "round": "unit02",
+    "seconds": 0.512,
+    "skipped": 0,
+    "tests": 12
+  },
+  {
+    "binding_limit": "Development sanity before source commit; no whole-source contemporaneous manifest.",
+    "errors": 0,
+    "failures": 0,
+    "junit_sha256": "3d731c8057b0704b284a20ae31eff0124600094831f1e74f3e8bf3c33bf9c7b7",
+    "later_source_snapshot": "181c9c0aa490eba37ceb821e183304eefa228445",
+    "round": "unit03",
+    "seconds": 0.195,
+    "skipped": 0,
+    "tests": 13
+  },
+  {
+    "binding_limit": "Frozen 156-cell source; Q84 old root name shared-experiment retained, not fully neutral identifiers.",
+    "errors": 0,
+    "failures": 0,
+    "junit_sha256": "4662900f32154f052b30c945468dee4366c1a2a6acba391d82d9530aa6fd16d0",
+    "round": "final04",
+    "seconds": 327.294,
+    "skipped": 0,
+    "source_commit": "181c9c0aa490eba37ceb821e183304eefa228445",
+    "tests": 76
+  },
+  {
+    "binding_limit": "Full 156-cell grid passed; one old hardcoded duplicate-root test ceased to create a duplicate after neutral ID mapping and correctly remained RED.",
+    "errors": 0,
+    "failures": 1,
+    "junit_sha256": "39e8ea70dd77dc80d9bc39b32b6e171825505a7bad1390389634b06a93f488cd",
+    "round": "final05",
+    "seconds": 312.373,
+    "skipped": 0,
+    "source_commit": "b0d3dd6c1b6b4c248566d11a6c9d529f688a2892",
+    "tests": 76
+  },
+  {
+    "binding_limit": "76 tests passed; later full-request scan found 16 generic evidence-context qualification wrappers. This GREEN is not complete input isolation.",
+    "errors": 0,
+    "failures": 0,
+    "junit_sha256": "e97c790087271c5eda1701cca48175e653312c33df868889aabf507fe479a895",
+    "round": "final06",
+    "seconds": 308.557,
+    "skipped": 0,
+    "source_commit": "0340e9f659ccd92aa046ad009dd761ee44bda330",
+    "tests": 76
+  },
+  {
+    "binding_limit": "Development sanity of the scoped evidence projection before final source commit; no whole-source contemporaneous manifest.",
+    "errors": 0,
+    "failures": 0,
+    "junit_sha256": "07c9a8f325ca729daa59a5086eee7d9aa38708b730512b21fc1d72e32e867718",
+    "later_source_snapshot": "1f8e9ffae0744ca068ba5fcbe30a3d0c4b9308c7",
+    "round": "unit07",
+    "seconds": 0.264,
+    "skipped": 0,
+    "tests": 13
+  },
+  {
+    "binding_limit": "Frozen 156-cell source with all request fields checked, original record/observation counts preserved, and neutral public references.",
+    "errors": 0,
+    "failures": 0,
+    "junit_sha256": "090af74c92c392d2e769e878e2eff9ce1f584cefd95e18a687548a709c075586",
+    "round": "final08",
+    "seconds": 278.321,
+    "skipped": 0,
+    "source_commit": "1f8e9ffae0744ca068ba5fcbe30a3d0c4b9308c7",
+    "tests": 77
+  }
+]

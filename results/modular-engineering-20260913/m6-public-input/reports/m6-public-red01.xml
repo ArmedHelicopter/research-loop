@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="0.131" timestamp="2026-09-13T17:30:12.394747+08:00" hostname="SC-202507131830"><testcase classname="" name="tests.test_m6_public_input_boundary" time="0.000"><error message="collection failure">ImportError while importing test module 'E:\_ryanDev\AI\research-loop-modular\m6-public\tests\test_m6_public_input_boundary.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_m6_public_input_boundary.py:6: in &lt;module&gt;
+    from research_loop.modular.m6_public_inputs import M6PublicInputBoundary
+E   ModuleNotFoundError: No module named 'research_loop.modular.m6_public_inputs'</error></testcase></testsuite></testsuites>
