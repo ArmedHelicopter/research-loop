@@ -75,13 +75,13 @@ class ModularWorkflow:
         if set(body)!={"question","branches","budget_units"}:raise ContractError("M4 proposal lacks operational prediction plan")
         plan=self.predictions.freeze(body["question"],body["branches"],budget_units=body["budget_units"])
         return self._trace("stage_1","executed",plan_digest=plan.payload.content_hash)
-    def independent_review(self,roles:Sequence[tuple[str,str,str,str]],model:Callable[[FrozenRecord],FrozenRecord],*,evidence_snapshot:str)->WorkflowResult:
+    def independent_review(self,roles:Sequence[tuple[str,str,str,str]],model:Callable[[FrozenRecord],FrozenRecord],*,evidence_snapshot:str,origin_context:FrozenRecord|None=None)->WorkflowResult:
         if "M5" not in self.enabled:
             for slot, role, question, _reviewer in roles: self.invoke_model(slot,model,instruction="Answer the assigned review question.",module_context=FrozenRecord.from_dict({"control":"M5","role":role,"question":question}))
             return self._trace("operation_m5_control","executed",roles=[role for _,role,_,_ in roles])
         review=self.reviews.open(task_binding=self.session.task.identity.task_id,evidence_snapshot=required_text(evidence_snapshot,"evidence snapshot"),roles=[{"role_id":r,"question":q}for _,r,q,_ in roles],budget_units=len(roles))
         for slot,role,question,reviewer in roles:
-            response=self.invoke_model(slot,model,instruction="Answer only the assigned review question.",module_context=FrozenRecord.from_dict({"review_id":review.review_id,"sealed":True,"role":role,"question":question}))
+            response=self.invoke_model(slot,model,instruction="Answer only the assigned review question.",module_context=FrozenRecord.from_dict({"review_id":review.review_id,"sealed":True,"role":role,"question":question,**({"origin":origin_context.data()} if origin_context is not None else {})}))
             self.reviews.submit(review.review_id,role_id=role,reviewer_id=reviewer,response=response.data(),cost_units=1)
         revealed=self.reviews.reveal(review.review_id); self.revealed=FrozenRecord.from_dict({"review_id":review.review_id,"submissions":[x.data()for x in revealed]})
         return self._trace("stage_7","executed",review_digest=self.revealed.content_hash)
@@ -150,7 +150,8 @@ class ModularWorkflow:
             slots=[blind_slot, reveal_slot], correctness="requires_independent_scoring")
 
     def frontier_audit(self, slot: str, model: Callable[[FrozenRecord], FrozenRecord],
-                       *, plan_ids: Sequence[str] = ()) -> WorkflowResult:
+                       *, plan_ids: Sequence[str] = (), control_plan_event_digests: Sequence[str] = (),
+                       review_context: FrozenRecord | None = None) -> WorkflowResult:
         """Audit current gaps into proposals, with no benchmark or queue authority."""
         from research_loop.modular.frontier import validate_frontier
         catalog: dict[str, Any] = {"boundary:objective": {"kind": "boundary", "objective": self.session.objective.data()}}
@@ -170,10 +171,22 @@ class ModularWorkflow:
             updates = self.predictions.updates(plan_id)
             catalog["plan:" + plan_id] = {"kind": "remaining" if updates else "untested", "plan": plan.data(),
                                           "updates": [update.data() for update in updates]}
+        if isinstance(control_plan_event_digests, (str, bytes)) or len(set(control_plan_event_digests)) != len(control_plan_event_digests):
+            raise ContractError("frontier control plans must be unique trace references")
+        events = {event.content_hash: event.data() for event in self.session._events}
+        for event_digest in control_plan_event_digests:
+            event = events.get(event_digest)
+            if event is None or event["stage"] != "unregistered_prediction_plan" or event["data"].get("identity") != self.session.task.identity.data() or event["data"].get("task_digest") != self.session.task.content_hash:
+                raise ContractError("frontier control plan does not bind this task journal")
+            catalog["candidate-plan:" + event_digest] = {"kind": "untested", "registered": False, "trace": event}
         frozen_catalog = FrozenRecord.from_dict(catalog)
+        context = {"frontier_catalog": catalog, "catalog_digest": frozen_catalog.content_hash,
+            "authority": "proposals_only", "queue_admission": False, "benchmark_admission": False}
+        if review_context is not None:
+            if not isinstance(review_context, FrozenRecord): raise ContractError("frontier review context must be frozen")
+            context["review_context"] = review_context.data()
         response = self.invoke_model(slot, model, instruction="Audit the remaining research frontier. Proposals must cite supplied origins and describe a discriminating observation. An empty frontier does not complete the research programme. Never generate or admit this experiment's evaluation tasks.",
-            module_context=FrozenRecord.from_dict({"frontier_catalog": catalog, "catalog_digest": frozen_catalog.content_hash,
-                "authority": "proposals_only", "queue_admission": False, "benchmark_admission": False}))
+            module_context=FrozenRecord.from_dict(context))
         try:
             result = validate_frontier(response, frozen_catalog, self.session.task.identity)
         except ContractError as exc:

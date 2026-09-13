@@ -367,6 +367,12 @@ def _validate_schema(schema: Any, value: Any) -> None:
     if not isinstance(schema, Mapping) or set(schema) - {"type", "properties", "required", "additionalProperties", "items", "enum", "minimum", "maximum", "minItems", "maxItems"}:
         raise ContractError("unsupported output schema")
     kind = schema.get("type")
+    if isinstance(kind, list):
+        if kind != ["string", "null"] or set(schema) != {"type"}:
+            raise ContractError("only the closed nullable string schema is supported")
+        if value is not None and not isinstance(value, str):
+            raise ContractError("model output violates nullable string schema")
+        return
     if kind not in {"object", "array", "string", "number", "integer", "boolean", "null"}:
         raise ContractError("output schema requires a supported type")
     if kind == "object":

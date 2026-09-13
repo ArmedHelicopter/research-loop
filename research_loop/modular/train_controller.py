@@ -191,6 +191,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                         retrieval_provider=None,
                         retrieval_admission_port=None,
                         retrieval_stage_authority=None,
+                        retrieval_final_authority=None,
                         protocol_audit_port: ProtocolAuditPort | None = None,
                         protocol_replay_authority: ProtocolReplayAuthority | None = None) -> TrainPanelRun:
     """Export and execute every cell selected by closed production drivers."""
@@ -205,7 +206,10 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     q55 = "Q5.5" in data["scope_ids"]
     if q55 and (not callable(getattr(q55_authority, "verify_closure", None)) or not isinstance(q55_authority_keys, Mapping) or not callable(getattr(q55_provider, "search", None))):
         raise ContractError("Q5.5 controller requires dual closure authority and keys before export")
-    retrieval = bool(set(data["scope_ids"]) & {"Q8.1", "Q8.2", "Q8.3", "Q8.4"})
+    retrieval = bool(set(data["scope_ids"]) & {"Q8.1", "Q8.2", "Q8.3", "Q8.4", "Q8.5", "Q8.6"})
+    retrieval_final = bool(set(data["scope_ids"]) & {"Q8.5", "Q8.6", "Q8.7"})
+    if retrieval_final and not all(callable(getattr(retrieval_final_authority, name, None)) for name in ("qualify_origin", "freeze_version")):
+        raise ContractError("final retrieval requires caller origin and version authority before export")
     retrieval_stage = bool(set(data["scope_ids"]) & {"Q8.1", "Q8.4"})
     if retrieval_stage and not all(callable(getattr(retrieval_stage_authority, name, None)) for name in ("verify_execution", "verify_provenance")):
         raise ContractError("retrieval stages require caller execution and provenance authority before export")
@@ -278,6 +282,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
         diagnostic_broker = DockerExecutionBroker([exported, root]) if diagnostic else None
         q55_broker = DockerExecutionBroker([exported, root]) if q55 else None
         retrieval_stage_broker = DockerExecutionBroker([exported, root]) if "Q8.1" in data["scope_ids"] else None
+        retrieval_final_broker = DockerExecutionBroker([exported, root]) if "Q8.7" in data["scope_ids"] else None
         packets_by_digest = {packet.task.content_hash: packet for packet in packets}
         def retrieval_stage_inputs(task, bundle):
             packet = packets_by_digest.get(task.content_hash)
@@ -388,6 +393,9 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                 q55_authority=q55_authority, q55_authority_keys=q55_authority_keys, q55_provider=q55_provider,
                 retrieval_provider=retrieval_provider,
                 retrieval_admission_port=retrieval_admission_port,
+                retrieval_final_authority=retrieval_final_authority,
+                retrieval_final_broker=retrieval_final_broker,
+                retrieval_final_input_resolver=retrieval_stage_inputs if retrieval_final else None,
                 retrieval_stage_authority=retrieval_stage_authority,
                 retrieval_stage_broker=retrieval_stage_broker,
                 retrieval_stage_input_resolver=retrieval_stage_inputs if retrieval_stage else None,

@@ -130,8 +130,8 @@ def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs,
         from research_loop.modular.retrieval_stage_panel_drivers import retrieval_stage_injection
         injection = dict(retrieval_stage_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
     elif spec.experiment_id in {"Q8.5", "Q8.6", "Q8.7"}:
-        from research_loop.modular.scenarios_retrieval import retrieval_injection
-        injection=retrieval_injection(spec.experiment_id, variant).data()
+        from research_loop.modular.retrieval_final_panel_drivers import retrieval_final_injection
+        injection = dict(retrieval_final_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
     else: raise ContractError(f"blocked_endpoint_not_implemented:{spec.endpoint}")
     return FrozenRecord.from_dict({"experiment_id":spec.experiment_id,"variant":variant,"controller_input":injection,"base":base,"controls":{"same_task":True,"same_evidence":True,"same_budget":True}})
 
