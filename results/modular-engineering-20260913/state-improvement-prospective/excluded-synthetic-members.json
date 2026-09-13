@@ -1,0 +1,3302 @@
+[
+  {
+    "path": "state-improvement-r1/state-improvement0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/state-improvement0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/state-improvement0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/state-improvement0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "7151972ffa8f8332f31b2b7f000b1c80e11a63167b5370ad5db5d37c71fdba5e",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "0069d281d73af647b7f7d3d8d5fa1e872c71ad2981a63064570ee943e9c9eadb",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/state-improvement0/private-scorer-store/manifest.json",
+    "sha256": "1845a58d1443babf86660fbe86705abb91e1eb7c0420914535874c3d029c4f3d",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "3178dee6ded69ddb9068e9e27e64e387a2ab9fe93f65145991cb27fbd79be55f",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "bb811ce1d8b59ab7110c4cca8989773f86e5076836a75cd826db094a9e8bf804",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_0/private-scorer-store/manifest.json",
+    "sha256": "ae88d5b6f529b4eb616efa66f03e8e8fc62b1ff8e5da52ff19eb0e01d443120a",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_1/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_1/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_1/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_1/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "dc79f5f1860f5efb963c54667b78594165bdc177fc93afac23a1b3b6e44c3fbe",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "cc69495bed7d2cb8aac9447d54fcbd750866266fdccf57584ec71e6bee9a4675",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_1/private-scorer-store/manifest.json",
+    "sha256": "d1a018e5c0d020f5bfd24d1c1af0b853be7dd2da855215a6c76bacdd5d5a32a3",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_2/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_2/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_2/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_2/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "ee39e0fb0ccab31c066835943614c7d1f6beac2025ccbb9cceda770c228b1b70",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "69a458809b84d66f1f720eac1dfbeb543f7533a823bdcc30779962a52f1c5cf4",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_2/private-scorer-store/manifest.json",
+    "sha256": "bf63f732b515c8810d26a9d1db0f66aad9d7bfb78e14f9211468983aa15cbea9",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_3/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_3/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_3/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_3/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "96cfd13499099fa099e88853941e97623f85bfeab7e2dad5af543fac66afe26e",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "5d2dcf3c8c512780fb8c38d5ff7ad0aa52f82340c029289c28d6f8ca7459c689",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_3/private-scorer-store/manifest.json",
+    "sha256": "de5f0cd3faf3deaacdbbc3d013ac80fcc68dc53e77ac2b91638a15c7baae70e1",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_4/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_4/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_4/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_4/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "5885bc7b2c9e02e6a92528313eaaa4fcaf2761d11b81a689a1ae5956ef80135b",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "68011482440b6ae37d8d36c9d32e0914028078d1989b2c26a7f9bc7d10f239df",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_4/private-scorer-store/manifest.json",
+    "sha256": "0580465f3eb87ada9d8c8fad0b3b10c85dc877f86a80be6b87e389421371aa8c",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_5/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_5/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_5/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_5/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "e392951f1ca32637acf61bbd96fdf8d0776977b5072add299ef29cded2435b77",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "d71e2cea2bcc372856a3042224aa041c1db594bd98eaf7a85aa0965a4f6504b1",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_5/private-scorer-store/manifest.json",
+    "sha256": "ed3479af4fa65f8f25bbb4e751702ee35e0e302a9d60da555204efb22d5c00ed",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_6/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_6/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_6/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_6/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_6/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "02c9117d5efe35c710dc7355b7aa24f8159c24cba98debb96ac83189826ac926",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_6/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "587ab264da5d5324413094a0ea148cbdddfb2624288c7a2fe8bb4b85abffe994",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_failed_and_unknown_costs_6/private-scorer-store/manifest.json",
+    "sha256": "970bc6ccbd5f7413e5e3ea930dff50936b91469a9870b3883f11061089985779",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "d5630fa78969ea64ed47975d2e436330fac78cbe75d7dbf84b8cea9d9c5704b0",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "c3566d4c2d4b6057854c0b4da7b188b875889a89551cbed9ecb3141f53bef46a",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all0/private-scorer-store/manifest.json",
+    "sha256": "5041fa650ffc99c7c80cae58782830c5b9497b7b51a48cc974318095981228e9",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all1/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all1/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all1/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all1/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "2cb888722292f6ace45d4e81f4c5e4896db26182291c8904b17ce94c1beb8373",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "64d1d1e73e9353f38c6d4f686f78f5fb7dde7bd85287cb76b6abe6ca329ec4f4",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all1/private-scorer-store/manifest.json",
+    "sha256": "37e2e9885c13879f8116d780c586382272d3b856d17e5c57f4c4aee553761ff2",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all2/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all2/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all2/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all2/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "60a50c819057acc1c1a41549df9daf157b83e40f4e029489ff9c2958fae38374",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "2fdf0b39e67af2066fe23a6b29d6b03f6d258c0b392e393507bd75d3fdcee4ac",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all2/private-scorer-store/manifest.json",
+    "sha256": "d5bd66c9ebe681c324f24a0a7a568fa8ca1a1ff8f1445e806b9969717cf65021",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all3/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all3/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all3/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all3/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "2cbad9dd0e27042bd92494e5c18af04201aac2f8582b740732e18eb791aec9e0",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "a3db744f7f2b8b40657315a2594e20cac3f27019de42a29376ae2e4318b29105",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all3/private-scorer-store/manifest.json",
+    "sha256": "c6b23b07eef3d34f7f6480bc930701d4e82c97e95a951f9ef19f532568391b53",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all4/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all4/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all4/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all4/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "c8d88b97cf2f5cda0b73332ee4a14c1130a1ea91d446e2b69c0240ec7acf1f6c",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "c6dda28298a79fd921957477daa0b6eb652ef9ec5b8205476da2fcca42564d3d",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r1/test_source_faults_precede_all4/private-scorer-store/manifest.json",
+    "sha256": "e79c104e85deaa819c1d7b88ea59b40e50429a73b979a846b7e343515f739596",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r2/state-improvement0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r2/state-improvement0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r2/state-improvement0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r2/state-improvement0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r2/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "9ad744d6e83de606949a7116c81b313f9d8eabb53ffbe9d37cc6ea03f0302c2a",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r2/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "2d2ad1c2c05ca9b372951e8d892b4d7a2dc426abd88fef11f1077f92e49c6094",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r2/state-improvement0/private-scorer-store/manifest.json",
+    "sha256": "ee7360e3a722fb2ee1e345ec20986fe482babed87a3780844c025fc0f677238e",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/state-improvement0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r3/state-improvement0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/state-improvement0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/state-improvement0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/state-improvement0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "998170e5c8f7368d11d0bdf3ceb1844b6870f7c44653971e95b2d02aaddf9b05",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "a7c5f9e0e5ce3bf6dd5902e7f286cfe38c9e253837a6a1e00b9e69ae428087b9",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/state-improvement0/private-scorer-store/manifest.json",
+    "sha256": "696f43d042a0ed5c4e9f819ce705a136a3a0f0491bd8a39346a380e4b740bc0b",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/state-improvement0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r3/state-improvement0/server-0.json",
+    "sha256": "fd97e310fe65e4a2e00fe434c132eae3ae399aba4378fc1e76341784729a7713",
+    "bytes": 16166,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r3/state-improvement0/server-1.json",
+    "sha256": "fff6959029185b9a064a3b61810857f07654c76d4c72a65d04e944b76fe90ca8",
+    "bytes": 13211,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r3/state-improvement0/server-2.json",
+    "sha256": "7f7a6a08744a1400a0a7a7b1b65baa2c24e0196a57f816148d065b0271f708a8",
+    "bytes": 16167,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "2118aec6ff83ee6ecc1aa631492c6ba40daf16fc12ba92c08e61442b956abafe",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "e0d11614615dcf2abc9815c12ac7f324324102d23ed2036f66d23d300aed52a9",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_0/private-scorer-store/manifest.json",
+    "sha256": "22100a27c032d234b4e400659feef7a057c105fa670044d1ade2f59e7953fd10",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_1/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_1/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_1/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_1/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "eb10bf24abbf4f5b8b9ea32cf39e940d3b7ecbc43e6c0d30cc431c11b43b3a32",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "dffc1d37dd9d6eedc56f1b531a923860b2d0e4f9fbe906c4ff7d6ed116cf9372",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_1/private-scorer-store/manifest.json",
+    "sha256": "31efb0342d0e2580fa3c505d6c06558b74429ec20cf95d9b9610db1c923fdb7a",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_2/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_2/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_2/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_2/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "3002ae923052994a9ce72238e6c7606ba755b6879cd9e3eb9b03a041400bdebb",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "d6753e0085e7d877856510e4e757bac6e93398bc19ca1b55394d67ddbbb049a8",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_2/private-scorer-store/manifest.json",
+    "sha256": "2d71f33513bcd33efde9f5194954c7576f7fd0e5e4095f5fc92f81601098cb84",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_3/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_3/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_3/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_3/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "70c881704541db5a83b5b6e19ccb493a37e65632d4372328db08872f03f5a422",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "d8c659cf426495bb491de61663445e6205286c45b098a13f2130a3d4b0ec98fc",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_3/private-scorer-store/manifest.json",
+    "sha256": "250e1c67ee85d1a3d00cd9e6b05eb5aec89fc7e64e1653f68a15fc73e78538a2",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_4/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_4/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_4/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_4/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "9faa0b8e32a04f79c7ca1630901ba3da6893fc356e62b413865af646efd2a17c",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "a954a7ba74bef057ffd778e43c2dd86be3bf0302103d24fc4a8618641c2ce05c",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_4/private-scorer-store/manifest.json",
+    "sha256": "3fc0859122415aebfaab03de0c7a03a161b8d8230313a95f5710ff9ff7a9e831",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_5/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_5/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_5/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_5/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_5/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "bb07a95900555f0f4ac7f21714b85c5f0d596c0ea19a383baeda92ec7239d987",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "c14b92732caecd0108a123508adc85111f4999eaa5d8654c9d1dc8be52746866",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_5/private-scorer-store/manifest.json",
+    "sha256": "2709d088651092cdd8c96774484ccf1d344d16a89f48f8413db8a979b3c75ee0",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_5/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_5/server-0.json",
+    "sha256": "eca56a65b930d8e6e2103bd1d6b5c4a1a0de937ffdfac1bc79a6b8c47d2bab5b",
+    "bytes": 16205,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_5/server-1.json",
+    "sha256": "9932e9931bbb345e57c19eedfba3a900eb10bcdca59a0ff25768134c0985b60f",
+    "bytes": 13250,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_5/server-2.json",
+    "sha256": "cb605691d48f3a779fbe0fe36173ed5cfb384b560cf2d0f502399b37c75c8e9c",
+    "bytes": 16206,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_6/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_6/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_6/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_6/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_6/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_6/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "adf44b58a1fcf0f61b578ba7883380233a2c9101f563b4ebcec3469c06f1570f",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_6/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "b5fc53d8fa0fee09465875767ddaa4774d6c8f67ca24f914c6bbd1cb4460db5e",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_6/private-scorer-store/manifest.json",
+    "sha256": "9bffd0824e1a8976737f6e8c190ddcc2198e85f2d4d13384c0642ffb9c11d626",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_6/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_6/server-0.json",
+    "sha256": "ae79380e6b665b88dd4e1490b7cd4c47e8fc12294486f877870ee9c6f00645f4",
+    "bytes": 16205,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_6/server-1.json",
+    "sha256": "c8a3cc8c72b587d07e29163a94f16a06794fd55a4d4f92fe4e09460daf5cd425",
+    "bytes": 13250,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_failed_and_unknown_costs_6/server-2.json",
+    "sha256": "747a1541645abceb2d458797c0ce1c5e1da11c3d0603cc6eca6a520f056c98ba",
+    "bytes": 16206,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "657fee86d106c38cb3ad79f78d478f98b6458b80d41a9fcdb4a8463eeb7f8c38",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "6551ab94cae09c7e300b745d1fbeefed2dec6ceb70c401f98e8b836acd721815",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all0/private-scorer-store/manifest.json",
+    "sha256": "0dc3755834f4c265b4de3165b152d573034234e2460b1e8aba956a4abf789761",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all1/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all1/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all1/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all1/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "2107a0ace162caf59b8f020fd3bf2d2b451885547c008632eaba399dcb8a972a",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "28831437a9ecaf16b61d87cb549626cff48a3f1fcbccc31f75a6e14332e890a4",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all1/private-scorer-store/manifest.json",
+    "sha256": "0a24eb98d1f9da78c890e2b98c3b94ab001a4fa4be5eaa644eeaae004d322a88",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all2/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all2/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all2/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all2/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "629cc381f2e2c03696990e860860aa2019b14757af6ecdc5f49c10e1d2021f3d",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "76675fa2610ce16908e6a38248f1e6993961b2c3c253693de5eb27c872e492c3",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all2/private-scorer-store/manifest.json",
+    "sha256": "26f4828d8fd8ee79a900d944fd780bd47add49ce57624a12e371f21650733c6e",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all3/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all3/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all3/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all3/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "b9060a553b2019e17b6877f8fc571ae5a9e24af3a97095c1f329053fa598346c",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "0440f9db43dc6914aacfaa70e3dc8f207b8cc3c2c0f92a03c095b471901d1bcf",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all3/private-scorer-store/manifest.json",
+    "sha256": "bfb271f11405eb38c47508f6e05ecbfba0f6448a37c874d5580550233dabea49",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all4/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all4/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all4/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all4/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "29d1cbc18fb262859545bf7b29ab1644efd65cd63d06d9e0fce8481b7a68f1ff",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "9e18e737df72c1a66a224f6205fdc15658e1086d7083580240e1f870eec94a0c",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r3/test_source_faults_precede_all4/private-scorer-store/manifest.json",
+    "sha256": "603caf19278b96ba140af618895356ab715d89e87e9181e9fc08d9a4a9a28c98",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/state-improvement0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r4/state-improvement0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/state-improvement0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/state-improvement0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/state-improvement0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "3107e1fc27be885011c3477f43be8f0d492d2a474b9fb61d3bff92050ff4b0fe",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "837fa42e8b5b6a8a962576657236459d6404cd190ab92c3a80d14cb905242471",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/state-improvement0/private-scorer-store/manifest.json",
+    "sha256": "75b0bc16c72a4aea8208f4184974aaa22c47205e50ec98816a3fea4701d20e43",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/state-improvement0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r4/state-improvement0/server-0.json",
+    "sha256": "d0eed11e545ededaa22dad3422356bd2bdb9b42b4c3f9e17268548e18e6caef0",
+    "bytes": 16166,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r4/state-improvement0/server-1.json",
+    "sha256": "a1fba6ae7d3371e5066d47727ce38ca688c60e069e865b40703dcf380a3d7f86",
+    "bytes": 13211,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r4/state-improvement0/server-2.json",
+    "sha256": "0230f277522c3be4fb2719368ebf850d10082ac7c8d165d52ef4829bfaa02676",
+    "bytes": 16167,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "58764e74c081531aea707966e28659103330e72d0762a6205a2a5bdb09fb1106",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "7f29e8bd869857ba820c72a6f1fef91f5f13e79e8030196a36f0408ac0d89224",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_0/private-scorer-store/manifest.json",
+    "sha256": "5830838f5534ee9fe33264c3766739381f95423ae71f251cfd668cdfee3e208a",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_1/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_1/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_1/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_1/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "06ec745ac0cea3c08196af8f9e107f92d94b9a3192e97b48d0a564b5c6f1c513",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "d1065d02580cafef413a1d3d598924a55b5240d72f61048d82555964b643f302",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_1/private-scorer-store/manifest.json",
+    "sha256": "e0f3950fb1a2ae90b77015a585cf673bc157d8ba924941ff192f5e4e64f1507c",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_2/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_2/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_2/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_2/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "46ec05b943b90cdf9c98739838b7adeb3a4698e035fe96b7f1df43daa0242462",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "33170e0435d310eb1bc81b51780e8139ddec7d83a775a8050c3573eefdce98a8",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_2/private-scorer-store/manifest.json",
+    "sha256": "2497d7d360a4a0197c98f1a4fcaf5c450b9f98a31ae9e69cf1105a04fe76760a",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_3/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_3/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_3/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_3/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "022ebb92cdb115dbde54060eb790e967b61ec446d51321363b9ae586e6ac1b6d",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "07fbc1146d4b29010a037c33957dee03dfe3edd6ef70befdeaff1781c4a1fbf3",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_3/private-scorer-store/manifest.json",
+    "sha256": "c38af6e420948a41a6fa41aec7e4d360720b720fa5e685ac9107518ccbc534ac",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_4/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_4/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_4/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_4/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "2b7ce9d078ac8e0b41a60a16bbc78c6b0fa00fb4e05580529349313889df606a",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "a9f85fb07c9fbd96f05fd8e5c6adca4edbc6760395585b373499a9160798a785",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_4/private-scorer-store/manifest.json",
+    "sha256": "ccd5cbd7382dfb0e580336eabdb5fc0c204f4e393ddb59cbf8e450f876a9a3ee",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_5/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_5/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_5/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_5/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_5/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "4581a294fb9d6f3b20656171d7d64255cc6992ba042e0fabbf4aceeceef94d2b",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "d3ba287d2841804dc8a65e163665e4ba153ba64b9440104a5d5c43e28ff1f2c1",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_5/private-scorer-store/manifest.json",
+    "sha256": "becffa4da15dc767059b7a334535a42da7ce2dd81f45c5bd406c6ab030b6df05",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_5/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_5/server-0.json",
+    "sha256": "c8e3fdab729e9f80dee9cd5a18bf3ad02b76b1d81ff64a638962bebbf762273a",
+    "bytes": 16205,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_5/server-1.json",
+    "sha256": "3c908ae93b0329b8b86c5d637f841946d5e4792c9d28ab5c1c44c7538b4c3210",
+    "bytes": 13250,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_5/server-2.json",
+    "sha256": "bb8eb407c5c62297739f9474180737b97b80fa1f58c9452267e02cc14b998e3f",
+    "bytes": 16206,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_6/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_6/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_6/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_6/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_6/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_6/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "723e933fdc84040407c319929d03bc139ace62c5824b307b2be8ad6804ee28e6",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_6/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "c0330cf2ed35f99b1db8339d9de61926be6e243cc939318039c95022e0731a76",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_6/private-scorer-store/manifest.json",
+    "sha256": "c08973829da8fdfc9cfeee8c01dab811da139bcff55229cc3580e47528009ba4",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_6/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_6/server-0.json",
+    "sha256": "b7703357d3673a85950ccb33aec5fd418c2b034ce0056546ea82451018df5619",
+    "bytes": 16205,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_6/server-1.json",
+    "sha256": "6075bda421922c67ff75be06db70b3a166ac20b515214a20afbc79137d681265",
+    "bytes": 13250,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_failed_and_unknown_costs_6/server-2.json",
+    "sha256": "cbafd2e9e0c82361a1404978c387b2129083d9a8bfc72385bf1c99ad907a5e21",
+    "bytes": 16206,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "95cdb93ab753a2cfefaf3b4b8115adb77629097bdab85d1a946b19aa17367335",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "2392234569187ee4c65597844be806a10e2cd21963a754dc6973a81b114c705f",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all0/private-scorer-store/manifest.json",
+    "sha256": "fd1fb7dfdb4b949b16ccf47250a495e47417484bc30be9a46a0d64fc575813ac",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all1/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all1/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all1/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all1/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "d651fc81d50b1bd98a68991be530f7f25db7a884af107d45a2a08021de602403",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "da8564c9208246a42737e1679a0a290ebd0b14d0d96e3f9d80d7b65682a8f5a4",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all1/private-scorer-store/manifest.json",
+    "sha256": "73856f69c111f9d7b2d655a66b38919b493cf595b55d9045944f237015e5585f",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all2/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all2/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all2/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all2/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "62f356df5ed0b6086078c41b9bda8231dca3ff4d2fe3d91539d70903861cef88",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "760b44f1b89ff2e93d56bc799aab5a6aad200575efcad336a2aade535c6c3542",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all2/private-scorer-store/manifest.json",
+    "sha256": "81dc7b90973fb107bd57ce865ad46904295eaf9c5b31b041ca331e7287087e31",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all3/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all3/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all3/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all3/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "e849ca89e1c607069ae71af8564dbdd7883cbc1ea1fba83c22efbec6aa8cb0d7",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "36012f456de52e09e303e9a01c276a35f7fa5eb6825cd1d8214155ff99a2c326",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all3/private-scorer-store/manifest.json",
+    "sha256": "5ca639a00e2ec3868a3dfb3a847fa1babb6497d022d96a14156c7bcc908c9d4c",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all4/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all4/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all4/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all4/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "54d9f863476de486f5cb76002731c831a0a3a064e61b3155c0a95ad57ad9828d",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "4d035958a262b844b878eda16bd0dce2df965a5c5be4cbbaf16ad32185755533",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r4/test_source_faults_precede_all4/private-scorer-store/manifest.json",
+    "sha256": "a2f3eb8209f25015eadc3e2ae4b7ef6037a7f565f3f3ea6a8f5e564e95d7dab2",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_actual_state_prediction_w0/server/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_actual_state_prediction_w0/server/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_actual_state_prediction_w0/server/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_actual_state_prediction_w0/server/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_actual_state_prediction_w0/server/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_actual_state_prediction_w0/server.json",
+    "sha256": "0c530d96cff73bcb0674df57350ad05858d4953511c9f2c5146d89c0784f69d7",
+    "bytes": 15626,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_actual_stdio_worker_score0/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_actual_stdio_worker_score0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "24bea7b093766a9339807855dc3dab23eb461830e09b0f860e13a62a04d62944",
+    "bytes": 553,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_actual_stdio_worker_score0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_actual_stdio_worker_score0/private-scorer-store/manifest.json",
+    "sha256": "ae2397b6e553df756e9d9d57e55552f9a207afeb05b7c53d8c23ef695e5d9bac",
+    "bytes": 1756,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_actual_stdio_worker_score0/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-0/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-0/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-1/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-1/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-1/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-2/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-2/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_exact_state_prediction_sc0/server-2/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_eight_cell_custody_c0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_eight_cell_custody_c0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_eight_cell_custody_c0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_eight_cell_custody_c0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_eight_cell_custody_c0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_eight_cell_custody_c0/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_eight_cell_custody_c0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_eight_cell_custody_c0/server.json",
+    "sha256": "d2eda081b0d9ac625855ee51aecfb5b9d4d4f4a71433fdd1bada35ba0de8d706",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont0/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont0/server.json",
+    "sha256": "2f9ac85a0c7e0da24feb1d9a68c212f00c9a2454bf2fd827ffc1aa7433969b17",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont1/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont1/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont1/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont1/server.json",
+    "sha256": "a5b2ae7ea6bc591bc8ca7eed46acf3b6023798c79927f88a34677d5ab536e3c1",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont2/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont2/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont2/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont2/server.json",
+    "sha256": "ff3f6e91f2338f3882cdea7a0e7eb283b2ac6192274d6c3ae791020d864c266c",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont3/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont3/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont3/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont3/server.json",
+    "sha256": "77bdb6495d9881516ab83ab04c07b03db064b701bc15df1b5e41412a2c1438b9",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont4/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont4/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont4/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont4/server.json",
+    "sha256": "c27ca02fa81d1779ff1845544748d787a0d9d9b501daaa335f3b24c3eedf5a02",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont5/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont5/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont5/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_full_panel_and_store_cont5/server.json",
+    "sha256": "bd703489d4dffa0299d8596721cdb9e6f762932560d270701b3f2dc78e18766e",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes0/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes0/server.json",
+    "sha256": "da67d6707b00c756b1334b20757e18917b923e9746eec78c79f0bb52e05eed25",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes1/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes1/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes1/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes1/server.json",
+    "sha256": "4d00910120a5d3dc84d099a41a7c5241b23fe4cd10bfbf65d2e58c98900bf50d",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes2/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes2/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes2/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes2/server.json",
+    "sha256": "a27c7caf690778a37140e656cf113c687102ea7a95f68cae96c48511431091e1",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes3/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes3/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes3/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes3/server.json",
+    "sha256": "ea790d281012130638b2510d2d3e5b82031afe19e38cf3080f0a2654977dbfcb",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes4/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes4/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes4/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes4/server.json",
+    "sha256": "0061665cf760a5ffdefe78e512fcfab35da166f8f71fd55173cb4acb3fe1c290",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes5/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes5/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes5/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes5/server.json",
+    "sha256": "afb2e9905d71161906840004b2522556c82ef52ed8b653186ff0e983dee792cd",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes6/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes6/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes6/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes6/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes6/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes6/server.json",
+    "sha256": "def2fe297916974b6d0f8cfeeb36929499ed0c8d272c182eabb8eef9e3187b9d",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes7/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes7/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes7/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes7/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes7/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_merged_combination_scopes7/server.json",
+    "sha256": "b8e1d489da4510fc4a1e4546ceee82fbdbd06fceb2364fef2bcc6740402aacda",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis0/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "24bea7b093766a9339807855dc3dab23eb461830e09b0f860e13a62a04d62944",
+    "bytes": 553,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis0/private-scorer-store/manifest.json",
+    "sha256": "ae2397b6e553df756e9d9d57e55552f9a207afeb05b7c53d8c23ef695e5d9bac",
+    "bytes": 1756,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis0/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis1/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "24bea7b093766a9339807855dc3dab23eb461830e09b0f860e13a62a04d62944",
+    "bytes": 553,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis1/private-scorer-store/manifest.json",
+    "sha256": "ae2397b6e553df756e9d9d57e55552f9a207afeb05b7c53d8c23ef695e5d9bac",
+    "bytes": 1756,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis1/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis2/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "24bea7b093766a9339807855dc3dab23eb461830e09b0f860e13a62a04d62944",
+    "bytes": 553,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis2/private-scorer-store/manifest.json",
+    "sha256": "ae2397b6e553df756e9d9d57e55552f9a207afeb05b7c53d8c23ef695e5d9bac",
+    "bytes": 1756,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis2/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis3/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "89fbdaf2739e2c2617ac537d73a899cb4990792dba703b4845651464454ad2a0",
+    "bytes": 553,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis3/private-scorer-store/manifest.json",
+    "sha256": "9de35d447723d790108d04a63f422107837f8ce6cb68b567b3d3ed67e55314c2",
+    "bytes": 1756,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_rejects_validation_or_mis3/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be0/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be0/server.json",
+    "sha256": "dcddcfdab2f2dec4fa03b24ffac1679f5ec6cbf93cae998457b110c6db31ad7b",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be1/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be1/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be1/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be1/server.json",
+    "sha256": "74fc344145b379b7d13250ff6da472f5a1fb3be74574128f5d3b3e3debdf3a7c",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be2/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be2/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be2/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_startup_mismatch_fails_be2/server.json",
+    "sha256": "635a775a06ca11af8a2ae282ffebf712961d81d1cbd88769fa8f778916022a0e",
+    "bytes": 15500,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-default-r4/test_unknown_server_reservatio0/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_unknown_server_reservatio0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "24bea7b093766a9339807855dc3dab23eb461830e09b0f860e13a62a04d62944",
+    "bytes": 553,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_unknown_server_reservatio0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_unknown_server_reservatio0/private-scorer-store/manifest.json",
+    "sha256": "ae2397b6e553df756e9d9d57e55552f9a207afeb05b7c53d8c23ef695e5d9bac",
+    "bytes": 1756,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_unknown_server_reservatio0/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_utf8_signed_candidate_sur0/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-default-r4/test_utf8_signed_candidate_sur0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "24bea7b093766a9339807855dc3dab23eb461830e09b0f860e13a62a04d62944",
+    "bytes": 553,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_utf8_signed_candidate_sur0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_utf8_signed_candidate_sur0/private-scorer-store/manifest.json",
+    "sha256": "ae2397b6e553df756e9d9d57e55552f9a207afeb05b7c53d8c23ef695e5d9bac",
+    "bytes": 1756,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-default-r4/test_utf8_signed_candidate_sur0/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r5/state-improvement0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r5/state-improvement0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/state-improvement0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/state-improvement0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/state-improvement0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "d01da55d954a1a50fe850b64e6c53b79d133d06842d4e2d087d81e9f502c912e",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "701e9d59f57be104902430687e6f8af3bf4304c44d7063c129a2f61de10d0f32",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/state-improvement0/private-scorer-store/manifest.json",
+    "sha256": "2f119b22117d625f34f07562a665a3bdeac27b6a6fbd6da0fb526aa7a70dea40",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/state-improvement0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r5/state-improvement0/server-0.json",
+    "sha256": "059eac4470198b0d2ea5566603303eea36cd65a6e3cb4928f60a7c3be605b6cb",
+    "bytes": 16166,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r5/state-improvement0/server-1.json",
+    "sha256": "4f9361f338d0cf5e97e831ca7cf5831609aaa1c91742bb9d843a096eed630b18",
+    "bytes": 13211,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r5/state-improvement0/server-2.json",
+    "sha256": "7b899c5b1a038260ca0687765cacca759213d06172f6327c07017128e612952e",
+    "bytes": 16167,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "54ef0cdc3dcd2630b4c061ca13ef067868642f858d4881eafab8f6a4971f6e3e",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "f1cf58f3f1dab14df697d9bcb96747854f9bc5461c2bc900157a91f3d86241b9",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n0/private-scorer-store/manifest.json",
+    "sha256": "02850f5567e6d18e9a5730612fd3202fbe977420401e63fb20d8b69a3b2f3169",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n0/server-0.json",
+    "sha256": "1ebb9a9ff6c12d93a43f637ea0f27eddaf60feb3c2819967e957ef0df1d8d708",
+    "bytes": 16203,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n0/server-1.json",
+    "sha256": "2dd52831beba2c2a1943c3c5ba6dc1a1d54d8a5cbd62dbd94c5f7c8bba849a74",
+    "bytes": 13248,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n0/server-2.json",
+    "sha256": "b5506a5a76e8ea679e893fd7b372b785b3fb6b824416b5bd0b7019cedba9dcee",
+    "bytes": 16204,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n1/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n1/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n1/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n1/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n1/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "6cf6a79646374c27bf6d5683a34ee62450c5d7bd38d91b4e789cb9eaec7a46d1",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "faa726e9726434ff625d63e821d79f1738c27d0e3b3561a968f5b1a055b12872",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n1/private-scorer-store/manifest.json",
+    "sha256": "98c94961aba52f1996087e4a2bdbae1fbf8f2142c45434c99e29b067db8a0044",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n1/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n1/server-0.json",
+    "sha256": "f83c282304bca296b2fdccf883cb46fea91020b09c66bcd7cca9acb815971cc6",
+    "bytes": 16205,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n1/server-1.json",
+    "sha256": "b662306c92f69a4e6246871a3e011c60f79b5547f2301f3fde5e5f3b2f9a11ec",
+    "bytes": 13250,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_complete_execution_does_n1/server-2.json",
+    "sha256": "1a3c529a9f795dfddfcb6dee0b29072d9fd33876d27013d27efbd0440429fdbc",
+    "bytes": 16206,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "aeb80018bc0fea4303745c31a4f6739e92426bb26c201c38f5d02325746ea82a",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "151e810e1a341c5c3416729dcfba92fd217c534e511985190dda513762b2a57e",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an0/private-scorer-store/manifest.json",
+    "sha256": "6827795729a433610430f01691ced803a87fd3378907050442289bd4341f0eb3",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an1/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an1/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an1/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an1/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "17cd147c83f8478dfb8a909e79a47cb48284e536b2687bb3f28f9bf755a0167c",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "760f50d627a86c2ccc86e9fd9815e254a0e97d5d55e0e8149810ca191c4391ca",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r5/test_known_source_rejection_an1/private-scorer-store/manifest.json",
+    "sha256": "8a91266c091dd8951a81819cd786ea42f0c78ad579e875bd5b19100716570fcc",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r6-red/state-improvement0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r6-red/state-improvement0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r6-red/state-improvement0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r6-red/state-improvement0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r6-red/state-improvement0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r6-red/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "c4dda261e2277c7647df2c8349089b06cbf42861beb6ddb67c96cdacaf219e6c",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r6-red/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "fd1d246e30b3028019022b289c47ee1b1ae7bd7fa1637fa5af03c69c0dcc77fd",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r6-red/state-improvement0/private-scorer-store/manifest.json",
+    "sha256": "865fb35046762088c4639a26420daa9f69fffe1f0d8408e29bacc4432beff599",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r6-red/state-improvement0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r6-red/state-improvement0/server-0.json",
+    "sha256": "a0573431f53ea81b994e57f69b4777354b0675fb7248e572be5b917e4c247b03",
+    "bytes": 16178,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r6-red/state-improvement0/server-1.json",
+    "sha256": "68660d77bd4821e4bd8ef8e4b6b714d4069217f01b4f24a09e724cac615b998f",
+    "bytes": 13223,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r6-red/state-improvement0/server-2.json",
+    "sha256": "40eb8649d000af22a79a36a59d6104c5bbedc58722e50df73450b8ad38e61860",
+    "bytes": 16179,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r7/state-improvement0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r7/state-improvement0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r7/state-improvement0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r7/state-improvement0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r7/state-improvement0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport stub or runtime configuration"
+  },
+  {
+    "path": "state-improvement-r7/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "41adfe2dbde37bee9c1979e9471ae011b9e88867107d2a416cfd92010e2cdda6",
+    "bytes": 520,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r7/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "6b390ec447c33d0d9261cf6a0db588d7f8d11b8650dfe7480c6e89477b53290e",
+    "bytes": 509,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r7/state-improvement0/private-scorer-store/manifest.json",
+    "sha256": "5878abf39f953f9d9a5ac2856bd380bccb193787788340f5d03a22d46894f3dc",
+    "bytes": 1983,
+    "reason": "synthetic scorer reference fixture"
+  },
+  {
+    "path": "state-improvement-r7/state-improvement0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "state-improvement-r7/state-improvement0/server-0.json",
+    "sha256": "0573180bff7b9e808e382363597175dd16ea114befae055fdb21e3ed364f1532",
+    "bytes": 16166,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r7/state-improvement0/server-1.json",
+    "sha256": "10729e85dcb692036e89f11e0721a9005c62a6d4288b7ceca7f0f1525bca2e04",
+    "bytes": 13211,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "state-improvement-r7/state-improvement0/server-2.json",
+    "sha256": "36ab8f0ad98b39e4cb37dda3770eefa4a3fd05505aef6b49e3d50dbc91f38e36",
+    "bytes": 16167,
+    "reason": "synthetic scorer server configuration"
+  }
+]

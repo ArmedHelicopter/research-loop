@@ -1,0 +1,2670 @@
+{
+  "source_commit": "e99ffb0e580762c310fec73b16aaf392a15c4c4a",
+  "closures": [
+    {
+      "name": "state-improvement-r1",
+      "closure": {
+        "commit": "41171aa9d5534cdfc585f45d1f91e9fce33b582a",
+        "source_unchanged": true,
+        "source_count": 512,
+        "exit_code": 1,
+        "wall_seconds": 81.38999999999942,
+        "new_paid_calls": 0,
+        "report_sha256": "02a3526e0a7f6bc4c3c0a38efb32624c18e4e11034bcdedbf87f8bc98c4b8eff",
+        "junit": {
+          "tests": 38,
+          "failures": 22,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "controller_attempts": [
+        {
+          "path": "state-improvement0/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_0/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_1/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_2/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_3/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_4/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_5/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_6/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_source_faults_precede_all0/run/controller-attempt.json",
+          "status": "blocked_before_execution",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_source_faults_precede_all2/run/controller-attempt.json",
+          "status": "blocked_before_execution",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_source_faults_precede_all3/run/controller-attempt.json",
+          "status": "blocked_before_execution",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_source_faults_precede_all4/run/controller-attempt.json",
+          "status": "blocked_before_execution",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        }
+      ],
+      "original_provider_ledgers": [
+        {
+          "path": "state-improvement0/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "state-improvement0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_0/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_failed_and_unknown_costs_0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_1/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_failed_and_unknown_costs_1/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_2/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_failed_and_unknown_costs_2/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_3/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_failed_and_unknown_costs_3/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_4/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_failed_and_unknown_costs_4/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_5/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_failed_and_unknown_costs_5/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_6/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_failed_and_unknown_costs_6/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all0/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all1/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all1/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all2/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all2/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all3/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all3/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all4/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all4/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        }
+      ],
+      "files": 1381
+    },
+    {
+      "name": "state-improvement-r2",
+      "closure": {
+        "commit": "0396aa0d5b2204927f05556ca4ae07fe5e42aa88",
+        "source_unchanged": true,
+        "source_count": 512,
+        "exit_code": 1,
+        "wall_seconds": 28.70300000000134,
+        "new_paid_calls": 0,
+        "report_sha256": "820592b8e57ba56464f786d0bd9d35a459738b373df6d1e1a556de43da3f0eac",
+        "junit": {
+          "tests": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "controller_attempts": [
+        {
+          "path": "state-improvement0/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 22,
+            "model_calls": 11,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        }
+      ],
+      "original_provider_ledgers": [
+        {
+          "path": "state-improvement0/port/model/ledger.json",
+          "calls": 11,
+          "tokens": 22,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "state-improvement0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        }
+      ],
+      "files": 286
+    },
+    {
+      "name": "state-improvement-r3",
+      "closure": {
+        "commit": "60d59f1569360e9c37ad1efe9cfbd810377b9bfd",
+        "source_unchanged": true,
+        "source_count": 512,
+        "exit_code": 0,
+        "wall_seconds": 298.0940000000046,
+        "new_paid_calls": 0,
+        "report_sha256": "dfd37756907a3633c6cfc18c04d2f0e2ed4debe2bdb4addaf27a52c0a4d01d93",
+        "junit": {
+          "tests": 33,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "controller_attempts": [
+        {
+          "path": "state-improvement0/run/controller-attempt.json",
+          "status": "complete_train_engineering",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 110,
+            "model_calls": 55,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_0/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 1,
+            "model_usage_incomplete": true
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_1/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_2/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_3/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 22,
+            "model_calls": 11,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_4/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 22,
+            "model_calls": 11,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_5/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 22,
+            "model_calls": 12,
+            "model_usage_incomplete": true
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_6/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 66,
+            "model_calls": 33,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_source_faults_precede_all0/run/controller-attempt.json",
+          "status": "blocked_before_execution",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_source_faults_precede_all2/run/controller-attempt.json",
+          "status": "blocked_before_execution",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_source_faults_precede_all3/run/controller-attempt.json",
+          "status": "blocked_before_execution",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_source_faults_precede_all4/run/controller-attempt.json",
+          "status": "blocked_before_execution",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        }
+      ],
+      "original_provider_ledgers": [
+        {
+          "path": "state-improvement0/port/model/ledger.json",
+          "calls": 55,
+          "tokens": 110,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "state-improvement0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_0/port/model/ledger.json",
+          "calls": 1,
+          "tokens": 0,
+          "usage_incomplete": true,
+          "statuses": [
+            "failed"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_1/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_failed_and_unknown_costs_1/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_2/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_failed_and_unknown_costs_2/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_3/port/model/ledger.json",
+          "calls": 11,
+          "tokens": 22,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_3/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_4/port/model/ledger.json",
+          "calls": 11,
+          "tokens": 22,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_4/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_5/port/model/ledger.json",
+          "calls": 12,
+          "tokens": 22,
+          "usage_incomplete": true,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "failed"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_5/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_6/port/model/ledger.json",
+          "calls": 33,
+          "tokens": 66,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_6/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all0/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all1/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all1/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all2/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all2/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all3/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all3/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all4/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all4/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        }
+      ],
+      "files": 2817
+    },
+    {
+      "name": "state-improvement-r4",
+      "closure": {
+        "commit": "68dcfa8272b33e3f6e6ac83d107669ff12187361",
+        "source_unchanged": true,
+        "source_count": 512,
+        "exit_code": 1,
+        "wall_seconds": 377.484000000004,
+        "new_paid_calls": 0,
+        "report_sha256": "10399554f2eada713382c7a77968b64b24dee608577deef1bdd9c9b52ad9c695",
+        "junit": {
+          "tests": 37,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "controller_attempts": [
+        {
+          "path": "state-improvement0/run/controller-attempt.json",
+          "status": "complete_train_engineering",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 110,
+            "model_calls": 55,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_0/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 1,
+            "model_usage_incomplete": true
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_1/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_2/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_3/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 22,
+            "model_calls": 11,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_4/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 22,
+            "model_calls": 11,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_5/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 22,
+            "model_calls": 12,
+            "model_usage_incomplete": true
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_failed_and_unknown_costs_6/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 66,
+            "model_calls": 33,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_source_faults_precede_all0/run/controller-attempt.json",
+          "status": "blocked_before_execution",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_source_faults_precede_all2/run/controller-attempt.json",
+          "status": "blocked_before_execution",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_source_faults_precede_all3/run/controller-attempt.json",
+          "status": "blocked_before_execution",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_source_faults_precede_all4/run/controller-attempt.json",
+          "status": "blocked_before_execution",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 0,
+            "model_calls": 0,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        }
+      ],
+      "original_provider_ledgers": [
+        {
+          "path": "state-improvement0/port/model/ledger.json",
+          "calls": 55,
+          "tokens": 110,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "state-improvement0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_0/port/model/ledger.json",
+          "calls": 1,
+          "tokens": 0,
+          "usage_incomplete": true,
+          "statuses": [
+            "failed"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_1/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_failed_and_unknown_costs_1/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_2/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_failed_and_unknown_costs_2/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_3/port/model/ledger.json",
+          "calls": 11,
+          "tokens": 22,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_3/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_4/port/model/ledger.json",
+          "calls": 11,
+          "tokens": 22,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_4/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_5/port/model/ledger.json",
+          "calls": 12,
+          "tokens": 22,
+          "usage_incomplete": true,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "failed"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_5/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_6/port/model/ledger.json",
+          "calls": 33,
+          "tokens": 66,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_failed_and_unknown_costs_6/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all0/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all1/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all1/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all2/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all2/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all3/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all3/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_source_faults_precede_all4/port/model/ledger.json",
+          "calls": 0,
+          "tokens": 0,
+          "usage_incomplete": false,
+          "statuses": []
+        },
+        {
+          "path": "test_source_faults_precede_all4/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        }
+      ],
+      "files": 2817
+    },
+    {
+      "name": "state-improvement-default-r4",
+      "closure": {
+        "commit": "68dcfa8272b33e3f6e6ac83d107669ff12187361",
+        "source_unchanged": true,
+        "source_count": 512,
+        "exit_code": 0,
+        "wall_seconds": 277.9380000000019,
+        "new_paid_calls": 0,
+        "report_sha256": "a1c54937c19389350c13ea8999110849d57f889bffa72d9d6e0ae5601e5ecb2d",
+        "junit": {
+          "tests": 52,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "controller_attempts": [
+        {
+          "path": "test_full_eight_cell_custody_c0/run/controller-attempt.json",
+          "status": "estimated",
+          "allocation": null,
+          "model_usage": {
+            "known_model_tokens": 80,
+            "model_calls": 40,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 0,
+          "target_rows": 8,
+          "structural_rows": 0
+        }
+      ],
+      "original_provider_ledgers": [
+        {
+          "path": "test_full_eight_cell_custody_c0/port/model/ledger.json",
+          "calls": 40,
+          "tokens": 80,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        }
+      ],
+      "files": 3036
+    },
+    {
+      "name": "state-improvement-r5",
+      "closure": {
+        "commit": "a43f5eac9d49f77a8848d0e7ef4ce2566936fda3",
+        "source_unchanged": true,
+        "source_count": 512,
+        "exit_code": 0,
+        "wall_seconds": 308.54699999999866,
+        "new_paid_calls": 0,
+        "report_sha256": "3eb3e08db9aba1ffa825fbb837e4bd61bde92681caf6071f51e98b1f90641708",
+        "junit": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "controller_attempts": [
+        {
+          "path": "state-improvement0/run/controller-attempt.json",
+          "status": "complete_train_engineering",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 110,
+            "model_calls": 55,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_complete_execution_does_n0/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 110,
+            "model_calls": 55,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_complete_execution_does_n1/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 110,
+            "model_calls": 55,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_known_source_rejection_an0/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 14,
+            "model_calls": 7,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        },
+        {
+          "path": "test_known_source_rejection_an1/run/controller-attempt.json",
+          "status": "inconclusive",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 2,
+            "model_calls": 1,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        }
+      ],
+      "original_provider_ledgers": [
+        {
+          "path": "state-improvement0/port/model/ledger.json",
+          "calls": 55,
+          "tokens": 110,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "state-improvement0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_complete_execution_does_n0/port/model/ledger.json",
+          "calls": 55,
+          "tokens": 110,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_complete_execution_does_n0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_complete_execution_does_n1/port/model/ledger.json",
+          "calls": 55,
+          "tokens": 110,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_complete_execution_does_n1/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_known_source_rejection_an0/port/model/ledger.json",
+          "calls": 7,
+          "tokens": 14,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_known_source_rejection_an0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_known_source_rejection_an1/port/model/ledger.json",
+          "calls": 1,
+          "tokens": 2,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded"
+          ]
+        },
+        {
+          "path": "test_known_source_rejection_an1/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        }
+      ],
+      "files": 2477
+    },
+    {
+      "name": "state-improvement-r6-red",
+      "closure": {
+        "commit": "137bfe65c6aa69f11349fe7f45a3dbf028579db9",
+        "source_unchanged": true,
+        "source_count": 512,
+        "exit_code": 1,
+        "wall_seconds": 89.25,
+        "new_paid_calls": 0,
+        "report_sha256": "a0aa3ccb2a12447cdb063b76243fa364e7b9315911d02bcee8aa34145e4f3775",
+        "junit": {
+          "tests": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "controller_attempts": [
+        {
+          "path": "state-improvement0/run/controller-attempt.json",
+          "status": "complete_train_engineering",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 110,
+            "model_calls": 55,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        }
+      ],
+      "original_provider_ledgers": [
+        {
+          "path": "state-improvement0/port/model/ledger.json",
+          "calls": 55,
+          "tokens": 110,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "state-improvement0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        }
+      ],
+      "files": 716
+    },
+    {
+      "name": "state-improvement-r7",
+      "closure": {
+        "commit": "e99ffb0e580762c310fec73b16aaf392a15c4c4a",
+        "source_unchanged": true,
+        "source_count": 512,
+        "exit_code": 0,
+        "wall_seconds": 94.4539999999979,
+        "new_paid_calls": 0,
+        "report_sha256": "0e6c6731ba5e3f544e401b9f8c4de9755c3cc1d13f82da6b8d3b552d75247f22",
+        "junit": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "controller_attempts": [
+        {
+          "path": "state-improvement0/run/controller-attempt.json",
+          "status": "complete_train_engineering",
+          "allocation": {
+            "build_recipes": 11,
+            "builder_executions": 11,
+            "builder_proposals": 11,
+            "docker_attempts": 22,
+            "model_calls": 55,
+            "scorer_calls": 22,
+            "source_calls": 66,
+            "structural_exclusions": 2,
+            "target_cells": 22,
+            "target_model_calls": 44
+          },
+          "model_usage": {
+            "known_model_tokens": 110,
+            "model_calls": 55,
+            "model_usage_incomplete": false
+          },
+          "build_rows": 11,
+          "target_rows": 22,
+          "structural_rows": 2
+        }
+      ],
+      "original_provider_ledgers": [
+        {
+          "path": "state-improvement0/port/model/ledger.json",
+          "calls": 55,
+          "tokens": 110,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded",
+            "succeeded"
+          ]
+        },
+        {
+          "path": "state-improvement0/prior-port/model/ledger.json",
+          "calls": 2,
+          "tokens": 4,
+          "usage_incomplete": false,
+          "statuses": [
+            "succeeded",
+            "succeeded"
+          ]
+        }
+      ],
+      "files": 715
+    }
+  ],
+  "distinct_passed_checks": 95,
+  "family_checks": 43,
+  "default_checks": 52,
+  "all_source_unchanged": true,
+  "coverage_basis": "Accumulated passing cases across source corrections; final pin reruns only repaired proxy boundary with full normal grid fixture."
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="88.771" timestamp="2026-09-13T22:59:51.722858+08:00" hostname="SC-202507131830"><testcase classname="tests.test_state_improvement_train_controller" name="test_barrier_proxy_cannot_bypass_corrupted_build_replay_without_new_io" time="88.434"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...d_model_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002522DA6A270&gt;
+
+    def test_barrier_proxy_cannot_bypass_corrupted_build_replay_without_new_io(grid,monkeypatch):
+        from types import SimpleNamespace
+        setup,run=grid;result=run.results[0];args=replay_args(setup,run,result)
+        barrier=run.barrier;path=run.builds[0].root/'candidate.json';raw=path.read_bytes()
+        before=(len(setup['seen']),len(setup['calls']),len(setup['port'].ledger['calls']))
+        def forbidden(*a,**k):raise AssertionError('replay attempted new external I/O')
+        monkeypatch.setattr(DockerExecutionBroker,'execute',forbidden)
+        monkeypatch.setattr(RestrictedBuilderPort,'execute',forbidden)
+        monkeypatch.setattr(type(setup['port']),'__call__',forbidden)
+        for qualifier_type in {type(q) for q in setup['verifiers'].values()}:
+            monkeypatch.setattr(qualifier_type,'qualify',forbidden)
+        issue_state_improvement_score_input(authority=EXECUTION,result=result,**args)
+        proxy=SimpleNamespace(root=barrier.root,record=barrier.record,plan=barrier.plan,
+            verify=lambda:None,package=lambda *a:args['package'],provenance=lambda:barrier.provenance())
+        try:
+            path.write_bytes(raw+b' ')
+            with pytest.raises(ContractError):barrier.verify()
+&gt;           with pytest.raises(ContractError):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+tests\test_state_improvement_train_controller.py:259: Failed</failure></testcase></testsuite></testsuites>

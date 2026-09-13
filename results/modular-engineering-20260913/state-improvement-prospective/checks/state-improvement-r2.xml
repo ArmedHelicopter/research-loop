@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="28.259" timestamp="2026-09-13T22:30:57.398218+08:00" hostname="SC-202507131830"><testcase classname="tests.test_state_improvement_train_controller" name="test_11_builds_frozen_before_22_actual_target_docker_and_process_scores" time="27.948"><failure message="AssertionError: {'actual_builder_executions': 11, 'actual_docker_attempts': 0, 'actual_model_usage': {'known_model_tokens': 22, 'model_calls': 11, 'model_usage_incomplete': False}, 'actual_scorer_calls': 0, ...}&#10;assert 'inconclusive' == 'complete_train_engineering'&#10;  &#10;  - complete_train_engineering&#10;  + inconclusive">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...,"successful_builds":11,"unused_model_opportunities":44,"unused_source_opportunities":44,"validation_opened":false}')))
+
+    def test_11_builds_frozen_before_22_actual_target_docker_and_process_scores(grid):
+        setup,run=grid;b=run.receipt.data()
+&gt;       assert b['status']=='complete_train_engineering',b
+E       AssertionError: {'actual_builder_executions': 11, 'actual_docker_attempts': 0, 'actual_model_usage': {'known_model_tokens': 22, 'model_calls': 11, 'model_usage_incomplete': False}, 'actual_scorer_calls': 0, ...}
+E       assert 'inconclusive' == 'complete_train_engineering'
+E         
+E         - complete_train_engineering
+E         + inconclusive
+
+tests\test_state_improvement_train_controller.py:161: AssertionError</failure></testcase></testsuite></testsuites>

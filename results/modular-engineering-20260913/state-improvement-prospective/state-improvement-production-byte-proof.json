@@ -1,0 +1,17 @@
+{
+  "baseline_commit": "68dcfa8272b33e3f6e6ac83d107669ff12187361",
+  "final_commit": "a43f5eac9d49f77a8848d0e7ef4ce2566936fda3",
+  "source_files": 512,
+  "changed_files": [
+    "tests/test_state_improvement_train_controller.py"
+  ],
+  "production_bytes_identical": true,
+  "scope": "Historical 68dcfa8 to a43f5ea fixture-only proof; superseded by exact barrier type repair",
+  "repaired_commit": "e99ffb0e580762c310fec73b16aaf392a15c4c4a",
+  "repair_changed_files": [
+    "research_loop/modular/state_improvement_build.py",
+    "research_loop/modular/state_improvement_combination_controller.py",
+    "research_loop/modular/state_improvement_combination_driver.py",
+    "tests/test_state_improvement_train_controller.py"
+  ]
+}

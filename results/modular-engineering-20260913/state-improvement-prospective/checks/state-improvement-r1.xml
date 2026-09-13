@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="22" skipped="0" tests="38" time="80.960" timestamp="2026-09-13T22:28:53.361291+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.109" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.114" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.015" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.046" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.044" /><testcase classname="tests.test_state_improvement_train_controller" name="test_11_builds_frozen_before_22_actual_target_docker_and_process_scores" time="6.120"><failure message="AssertionError: {'actual_builder_executions': 0, 'actual_docker_attempts': 0, 'actual_model_usage': {'known_model_tokens': 0, 'model_calls': 0, 'model_usage_incomplete': False}, 'actual_scorer_calls': 0, ...}&#10;assert 'inconclusive' == 'complete_train_engineering'&#10;  &#10;  - complete_train_engineering&#10;  + inconclusive">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+
+    def test_11_builds_frozen_before_22_actual_target_docker_and_process_scores(grid):
+        setup,run=grid;b=run.receipt.data()
+&gt;       assert b['status']=='complete_train_engineering',b
+E       AssertionError: {'actual_builder_executions': 0, 'actual_docker_attempts': 0, 'actual_model_usage': {'known_model_tokens': 0, 'model_calls': 0, 'model_usage_incomplete': False}, 'actual_scorer_calls': 0, ...}
+E       assert 'inconclusive' == 'complete_train_engineering'
+E         
+E         - complete_train_engineering
+E         + inconclusive
+
+tests\test_state_improvement_train_controller.py:161: AssertionError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_versioned_process_scope_and_legacy_exact_manifest_unchanged" time="0.000" /><testcase classname="tests.test_state_improvement_train_controller" name="test_failed_and_unknown_costs_preserve_build_and_target_denominators[model_unknown]" time="8.353"><failure message="assert 0 == 1&#10; +  where 0 = len([])">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/test_failed_and_unknown_costs_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001ACB438D430&gt;
+fault = 'model_unknown'
+
+    @pytest.mark.parametrize('fault',['model_unknown','source_exception','unknown_cost','proposal','builder','target_unknown','analysis'])
+    def test_failed_and_unknown_costs_preserve_build_and_target_denominators(tmp_path,monkeypatch,fault):
+        setup=prepare(tmp_path,monkeypatch,fault);run=invoke(setup,monkeypatch,fault);b=run.receipt.data()
+        assert b['status']=='inconclusive' and len(run.attempts)==22 and len(b['structural_exclusions'])==2 and b['pruned_cells']==[]
+        assert all(c['status']=='inconclusive' for c in b['contrasts'])
+        if fault in {'model_unknown','source_exception','unknown_cost'}:
+            assert b['blocked_cells']==22 and b['actual_docker_attempts']==b['actual_scorer_calls']==0
+&gt;           assert len(setup['seen'])==(1 if fault=='model_unknown' else 0)
+E           assert 0 == 1
+E            +  where 0 = len([])
+
+tests\test_state_improvement_train_controller.py:201: AssertionError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_failed_and_unknown_costs_preserve_build_and_target_denominators[source_exception]" time="7.675"><failure message="assert 0 == 2&#10; +  where 0 = len([])">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/test_failed_and_unknown_costs_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001ACB42EDE50&gt;
+fault = 'source_exception'
+
+    @pytest.mark.parametrize('fault',['model_unknown','source_exception','unknown_cost','proposal','builder','target_unknown','analysis'])
+    def test_failed_and_unknown_costs_preserve_build_and_target_denominators(tmp_path,monkeypatch,fault):
+        setup=prepare(tmp_path,monkeypatch,fault);run=invoke(setup,monkeypatch,fault);b=run.receipt.data()
+        assert b['status']=='inconclusive' and len(run.attempts)==22 and len(b['structural_exclusions'])==2 and b['pruned_cells']==[]
+        assert all(c['status']=='inconclusive' for c in b['contrasts'])
+        if fault in {'model_unknown','source_exception','unknown_cost'}:
+            assert b['blocked_cells']==22 and b['actual_docker_attempts']==b['actual_scorer_calls']==0
+            assert len(setup['seen'])==(1 if fault=='model_unknown' else 0)
+&gt;           assert len(setup['calls'])==2
+E           assert 0 == 2
+E            +  where 0 = len([])
+
+tests\test_state_improvement_train_controller.py:202: AssertionError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_failed_and_unknown_costs_preserve_build_and_target_denominators[unknown_cost]" time="7.929"><failure message="assert 0 == 2&#10; +  where 0 = len([])">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/test_failed_and_unknown_costs_2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001ACB43153D0&gt;
+fault = 'unknown_cost'
+
+    @pytest.mark.parametrize('fault',['model_unknown','source_exception','unknown_cost','proposal','builder','target_unknown','analysis'])
+    def test_failed_and_unknown_costs_preserve_build_and_target_denominators(tmp_path,monkeypatch,fault):
+        setup=prepare(tmp_path,monkeypatch,fault);run=invoke(setup,monkeypatch,fault);b=run.receipt.data()
+        assert b['status']=='inconclusive' and len(run.attempts)==22 and len(b['structural_exclusions'])==2 and b['pruned_cells']==[]
+        assert all(c['status']=='inconclusive' for c in b['contrasts'])
+        if fault in {'model_unknown','source_exception','unknown_cost'}:
+            assert b['blocked_cells']==22 and b['actual_docker_attempts']==b['actual_scorer_calls']==0
+            assert len(setup['seen'])==(1 if fault=='model_unknown' else 0)
+&gt;           assert len(setup['calls'])==2
+E           assert 0 == 2
+E            +  where 0 = len([])
+
+tests\test_state_improvement_train_controller.py:202: AssertionError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_failed_and_unknown_costs_preserve_build_and_target_denominators[proposal]" time="7.973"><failure message="assert (0 == 11)&#10; +  where 0 = len([])">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/test_failed_and_unknown_costs_3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001ACB42F6ED0&gt;
+fault = 'proposal'
+
+    @pytest.mark.parametrize('fault',['model_unknown','source_exception','unknown_cost','proposal','builder','target_unknown','analysis'])
+    def test_failed_and_unknown_costs_preserve_build_and_target_denominators(tmp_path,monkeypatch,fault):
+        setup=prepare(tmp_path,monkeypatch,fault);run=invoke(setup,monkeypatch,fault);b=run.receipt.data()
+        assert b['status']=='inconclusive' and len(run.attempts)==22 and len(b['structural_exclusions'])==2 and b['pruned_cells']==[]
+        assert all(c['status']=='inconclusive' for c in b['contrasts'])
+        if fault in {'model_unknown','source_exception','unknown_cost'}:
+            assert b['blocked_cells']==22 and b['actual_docker_attempts']==b['actual_scorer_calls']==0
+            assert len(setup['seen'])==(1 if fault=='model_unknown' else 0)
+            assert len(setup['calls'])==2
+        elif fault in {'proposal','builder'}:
+&gt;           assert len(setup['seen'])==11 and b['blocked_cells']==22 and b['actual_docker_attempts']==0
+E           assert (0 == 11)
+E            +  where 0 = len([])
+
+tests\test_state_improvement_train_controller.py:204: AssertionError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_failed_and_unknown_costs_preserve_build_and_target_denominators[builder]" time="8.414"><failure message="assert (0 == 11)&#10; +  where 0 = len([])">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/test_failed_and_unknown_costs_4')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001ACB43032C0&gt;
+fault = 'builder'
+
+    @pytest.mark.parametrize('fault',['model_unknown','source_exception','unknown_cost','proposal','builder','target_unknown','analysis'])
+    def test_failed_and_unknown_costs_preserve_build_and_target_denominators(tmp_path,monkeypatch,fault):
+        setup=prepare(tmp_path,monkeypatch,fault);run=invoke(setup,monkeypatch,fault);b=run.receipt.data()
+        assert b['status']=='inconclusive' and len(run.attempts)==22 and len(b['structural_exclusions'])==2 and b['pruned_cells']==[]
+        assert all(c['status']=='inconclusive' for c in b['contrasts'])
+        if fault in {'model_unknown','source_exception','unknown_cost'}:
+            assert b['blocked_cells']==22 and b['actual_docker_attempts']==b['actual_scorer_calls']==0
+            assert len(setup['seen'])==(1 if fault=='model_unknown' else 0)
+            assert len(setup['calls'])==2
+        elif fault in {'proposal','builder'}:
+&gt;           assert len(setup['seen'])==11 and b['blocked_cells']==22 and b['actual_docker_attempts']==0
+E           assert (0 == 11)
+E            +  where 0 = len([])
+
+tests\test_state_improvement_train_controller.py:204: AssertionError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_failed_and_unknown_costs_preserve_build_and_target_denominators[target_unknown]" time="7.777"><failure message="assert (0 == 12)&#10; +  where 0 = len([])">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/test_failed_and_unknown_costs_5')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001ACB42EE9F0&gt;
+fault = 'target_unknown'
+
+    @pytest.mark.parametrize('fault',['model_unknown','source_exception','unknown_cost','proposal','builder','target_unknown','analysis'])
+    def test_failed_and_unknown_costs_preserve_build_and_target_denominators(tmp_path,monkeypatch,fault):
+        setup=prepare(tmp_path,monkeypatch,fault);run=invoke(setup,monkeypatch,fault);b=run.receipt.data()
+        assert b['status']=='inconclusive' and len(run.attempts)==22 and len(b['structural_exclusions'])==2 and b['pruned_cells']==[]
+        assert all(c['status']=='inconclusive' for c in b['contrasts'])
+        if fault in {'model_unknown','source_exception','unknown_cost'}:
+            assert b['blocked_cells']==22 and b['actual_docker_attempts']==b['actual_scorer_calls']==0
+            assert len(setup['seen'])==(1 if fault=='model_unknown' else 0)
+            assert len(setup['calls'])==2
+        elif fault in {'proposal','builder'}:
+            assert len(setup['seen'])==11 and b['blocked_cells']==22 and b['actual_docker_attempts']==0
+            assert b['actual_builder_executions']==(11 if fault=='builder' else 0)
+        elif fault=='target_unknown':
+&gt;           assert len(setup['seen'])==12 and b['failed_cells']==1 and b['blocked_cells']==21 and b['source_calls']==24
+E           assert (0 == 12)
+E            +  where 0 = len([])
+
+tests\test_state_improvement_train_controller.py:207: AssertionError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_failed_and_unknown_costs_preserve_build_and_target_denominators[analysis]" time="7.808"><failure message="assert (0 == 22)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/test_failed_and_unknown_costs_6')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001ACB438F680&gt;
+fault = 'analysis'
+
+    @pytest.mark.parametrize('fault',['model_unknown','source_exception','unknown_cost','proposal','builder','target_unknown','analysis'])
+    def test_failed_and_unknown_costs_preserve_build_and_target_denominators(tmp_path,monkeypatch,fault):
+        setup=prepare(tmp_path,monkeypatch,fault);run=invoke(setup,monkeypatch,fault);b=run.receipt.data()
+        assert b['status']=='inconclusive' and len(run.attempts)==22 and len(b['structural_exclusions'])==2 and b['pruned_cells']==[]
+        assert all(c['status']=='inconclusive' for c in b['contrasts'])
+        if fault in {'model_unknown','source_exception','unknown_cost'}:
+            assert b['blocked_cells']==22 and b['actual_docker_attempts']==b['actual_scorer_calls']==0
+            assert len(setup['seen'])==(1 if fault=='model_unknown' else 0)
+            assert len(setup['calls'])==2
+        elif fault in {'proposal','builder'}:
+            assert len(setup['seen'])==11 and b['blocked_cells']==22 and b['actual_docker_attempts']==0
+            assert b['actual_builder_executions']==(11 if fault=='builder' else 0)
+        elif fault=='target_unknown':
+            assert len(setup['seen'])==12 and b['failed_cells']==1 and b['blocked_cells']==21 and b['source_calls']==24
+        else:
+&gt;           assert b['failed_cells']==22 and b['actual_docker_attempts']==0 and len(setup['seen'])==33
+E           assert (0 == 22)
+
+tests\test_state_improvement_train_controller.py:209: AssertionError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_source_faults_precede_all_qualification_and_model_calls[csv]" time="2.806" /><testcase classname="tests.test_state_improvement_train_controller" name="test_source_faults_precede_all_qualification_and_model_calls[history]" time="2.617" /><testcase classname="tests.test_state_improvement_train_controller" name="test_source_faults_precede_all_qualification_and_model_calls[receipt]" time="3.923" /><testcase classname="tests.test_state_improvement_train_controller" name="test_source_faults_precede_all_qualification_and_model_calls[completion]" time="4.107" /><testcase classname="tests.test_state_improvement_train_controller" name="test_source_faults_precede_all_qualification_and_model_calls[material]" time="4.043" /><testcase classname="tests.test_state_improvement_train_controller" name="test_original_build_barrier_and_provider_files_replay_bound[candidate-barrier.json]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-improvement-r1\\state-improvement0\\run\\candidate-barrier.json'">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+relative = 'candidate-barrier.json'
+
+    @pytest.mark.parametrize('relative',['candidate-barrier.json','plan.json','build-provider-ledger.json','target-provider-ledger.json',
+        'builds/0/candidate.json','builds/0/builder.json','builds/0/builder-receipt.json','builds/0/proposal/evidence.jsonl',
+        'builds/0/source/source-verification.json','controller.jsonl'])
+    def test_original_build_barrier_and_provider_files_replay_bound(grid,relative):
+&gt;       setup,run=grid;path=run.root/relative;raw=path.read_bytes()
+                                                  ^^^^^^^^^^^^^^^^^
+
+tests\test_state_improvement_train_controller.py:232: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/state-improvement0/run/candidate-barrier.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-improvement-r1\\state-improvement0\\run\\candidate-barrier.json'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_original_build_barrier_and_provider_files_replay_bound[plan.json]" time="0.007"><failure message="StopIteration">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+relative = 'plan.json'
+
+    @pytest.mark.parametrize('relative',['candidate-barrier.json','plan.json','build-provider-ledger.json','target-provider-ledger.json',
+        'builds/0/candidate.json','builds/0/builder.json','builds/0/builder-receipt.json','builds/0/proposal/evidence.jsonl',
+        'builds/0/source/source-verification.json','controller.jsonl'])
+    def test_original_build_barrier_and_provider_files_replay_bound(grid,relative):
+        setup,run=grid;path=run.root/relative;raw=path.read_bytes()
+        try:
+            path.write_bytes(raw+b' ')
+&gt;           with pytest.raises(ContractError):issue_state_improvement_score_input(authority=EXECUTION,result=run.results[0],**replay_args(setup,run,run.results[0]))
+                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_improvement_train_controller.py:235: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+setup = {'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b950...00c654acedca4476b2979a21b31634470d377b130e6': '0000000000000000000000000000000000000000000000000000000000000001'}, ...}
+run = StateImprovementRun(root=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/state-improvement...}],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}'))
+result = None
+
+    def replay_args(setup,run,result):
+&gt;       panel=next(p for p in run.panels if result.cell in p.cells);packet=next(p for p in run.barrier.packets if p.task.content_hash==result.cell.task_digest)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       StopIteration
+
+tests\test_state_improvement_train_controller.py:153: StopIteration</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_original_build_barrier_and_provider_files_replay_bound[build-provider-ledger.json]" time="0.007"><failure message="StopIteration">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+relative = 'build-provider-ledger.json'
+
+    @pytest.mark.parametrize('relative',['candidate-barrier.json','plan.json','build-provider-ledger.json','target-provider-ledger.json',
+        'builds/0/candidate.json','builds/0/builder.json','builds/0/builder-receipt.json','builds/0/proposal/evidence.jsonl',
+        'builds/0/source/source-verification.json','controller.jsonl'])
+    def test_original_build_barrier_and_provider_files_replay_bound(grid,relative):
+        setup,run=grid;path=run.root/relative;raw=path.read_bytes()
+        try:
+            path.write_bytes(raw+b' ')
+&gt;           with pytest.raises(ContractError):issue_state_improvement_score_input(authority=EXECUTION,result=run.results[0],**replay_args(setup,run,run.results[0]))
+                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_improvement_train_controller.py:235: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+setup = {'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b950...00c654acedca4476b2979a21b31634470d377b130e6': '0000000000000000000000000000000000000000000000000000000000000001'}, ...}
+run = StateImprovementRun(root=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/state-improvement...}],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}'))
+result = None
+
+    def replay_args(setup,run,result):
+&gt;       panel=next(p for p in run.panels if result.cell in p.cells);packet=next(p for p in run.barrier.packets if p.task.content_hash==result.cell.task_digest)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       StopIteration
+
+tests\test_state_improvement_train_controller.py:153: StopIteration</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_original_build_barrier_and_provider_files_replay_bound[target-provider-ledger.json]" time="0.007"><failure message="StopIteration">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+relative = 'target-provider-ledger.json'
+
+    @pytest.mark.parametrize('relative',['candidate-barrier.json','plan.json','build-provider-ledger.json','target-provider-ledger.json',
+        'builds/0/candidate.json','builds/0/builder.json','builds/0/builder-receipt.json','builds/0/proposal/evidence.jsonl',
+        'builds/0/source/source-verification.json','controller.jsonl'])
+    def test_original_build_barrier_and_provider_files_replay_bound(grid,relative):
+        setup,run=grid;path=run.root/relative;raw=path.read_bytes()
+        try:
+            path.write_bytes(raw+b' ')
+&gt;           with pytest.raises(ContractError):issue_state_improvement_score_input(authority=EXECUTION,result=run.results[0],**replay_args(setup,run,run.results[0]))
+                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_improvement_train_controller.py:235: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+setup = {'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b950...00c654acedca4476b2979a21b31634470d377b130e6': '0000000000000000000000000000000000000000000000000000000000000001'}, ...}
+run = StateImprovementRun(root=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/state-improvement...}],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}'))
+result = None
+
+    def replay_args(setup,run,result):
+&gt;       panel=next(p for p in run.panels if result.cell in p.cells);packet=next(p for p in run.barrier.packets if p.task.content_hash==result.cell.task_digest)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       StopIteration
+
+tests\test_state_improvement_train_controller.py:153: StopIteration</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_original_build_barrier_and_provider_files_replay_bound[builds/0/candidate.json]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-improvement-r1\\state-improvement0\\run\\builds\\0\\candidate.json'">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+relative = 'builds/0/candidate.json'
+
+    @pytest.mark.parametrize('relative',['candidate-barrier.json','plan.json','build-provider-ledger.json','target-provider-ledger.json',
+        'builds/0/candidate.json','builds/0/builder.json','builds/0/builder-receipt.json','builds/0/proposal/evidence.jsonl',
+        'builds/0/source/source-verification.json','controller.jsonl'])
+    def test_original_build_barrier_and_provider_files_replay_bound(grid,relative):
+&gt;       setup,run=grid;path=run.root/relative;raw=path.read_bytes()
+                                                  ^^^^^^^^^^^^^^^^^
+
+tests\test_state_improvement_train_controller.py:232: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/state-improvement0/run/builds/0/candidate.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-improvement-r1\\state-improvement0\\run\\builds\\0\\candidate.json'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_original_build_barrier_and_provider_files_replay_bound[builds/0/builder.json]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-improvement-r1\\state-improvement0\\run\\builds\\0\\builder.json'">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+relative = 'builds/0/builder.json'
+
+    @pytest.mark.parametrize('relative',['candidate-barrier.json','plan.json','build-provider-ledger.json','target-provider-ledger.json',
+        'builds/0/candidate.json','builds/0/builder.json','builds/0/builder-receipt.json','builds/0/proposal/evidence.jsonl',
+        'builds/0/source/source-verification.json','controller.jsonl'])
+    def test_original_build_barrier_and_provider_files_replay_bound(grid,relative):
+&gt;       setup,run=grid;path=run.root/relative;raw=path.read_bytes()
+                                                  ^^^^^^^^^^^^^^^^^
+
+tests\test_state_improvement_train_controller.py:232: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/state-improvement0/run/builds/0/builder.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-improvement-r1\\state-improvement0\\run\\builds\\0\\builder.json'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_original_build_barrier_and_provider_files_replay_bound[builds/0/builder-receipt.json]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-improvement-r1\\state-improvement0\\run\\builds\\0\\builder-receipt.json'">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+relative = 'builds/0/builder-receipt.json'
+
+    @pytest.mark.parametrize('relative',['candidate-barrier.json','plan.json','build-provider-ledger.json','target-provider-ledger.json',
+        'builds/0/candidate.json','builds/0/builder.json','builds/0/builder-receipt.json','builds/0/proposal/evidence.jsonl',
+        'builds/0/source/source-verification.json','controller.jsonl'])
+    def test_original_build_barrier_and_provider_files_replay_bound(grid,relative):
+&gt;       setup,run=grid;path=run.root/relative;raw=path.read_bytes()
+                                                  ^^^^^^^^^^^^^^^^^
+
+tests\test_state_improvement_train_controller.py:232: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/state-improvement0/run/builds/0/builder-receipt.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-improvement-r1\\state-improvement0\\run\\builds\\0\\builder-receipt.json'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_original_build_barrier_and_provider_files_replay_bound[builds/0/proposal/evidence.jsonl]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-improvement-r1\\state-improvement0\\run\\builds\\0\\proposal\\evidence.jsonl'">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+relative = 'builds/0/proposal/evidence.jsonl'
+
+    @pytest.mark.parametrize('relative',['candidate-barrier.json','plan.json','build-provider-ledger.json','target-provider-ledger.json',
+        'builds/0/candidate.json','builds/0/builder.json','builds/0/builder-receipt.json','builds/0/proposal/evidence.jsonl',
+        'builds/0/source/source-verification.json','controller.jsonl'])
+    def test_original_build_barrier_and_provider_files_replay_bound(grid,relative):
+&gt;       setup,run=grid;path=run.root/relative;raw=path.read_bytes()
+                                                  ^^^^^^^^^^^^^^^^^
+
+tests\test_state_improvement_train_controller.py:232: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/state-improvement0/run/builds/0/proposal/evidence.jsonl')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-improvement-r1\\state-improvement0\\run\\builds\\0\\proposal\\evidence.jsonl'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_original_build_barrier_and_provider_files_replay_bound[builds/0/source/source-verification.json]" time="0.001"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-improvement-r1\\state-improvement0\\run\\builds\\0\\source\\source-verification.json'">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+relative = 'builds/0/source/source-verification.json'
+
+    @pytest.mark.parametrize('relative',['candidate-barrier.json','plan.json','build-provider-ledger.json','target-provider-ledger.json',
+        'builds/0/candidate.json','builds/0/builder.json','builds/0/builder-receipt.json','builds/0/proposal/evidence.jsonl',
+        'builds/0/source/source-verification.json','controller.jsonl'])
+    def test_original_build_barrier_and_provider_files_replay_bound(grid,relative):
+&gt;       setup,run=grid;path=run.root/relative;raw=path.read_bytes()
+                                                  ^^^^^^^^^^^^^^^^^
+
+tests\test_state_improvement_train_controller.py:232: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/state-improvement0/run/builds/0/source/source-verification.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-improvement-r1\\state-improvement0\\run\\builds\\0\\source\\source-verification.json'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_original_build_barrier_and_provider_files_replay_bound[controller.jsonl]" time="0.006"><failure message="StopIteration">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+relative = 'controller.jsonl'
+
+    @pytest.mark.parametrize('relative',['candidate-barrier.json','plan.json','build-provider-ledger.json','target-provider-ledger.json',
+        'builds/0/candidate.json','builds/0/builder.json','builds/0/builder-receipt.json','builds/0/proposal/evidence.jsonl',
+        'builds/0/source/source-verification.json','controller.jsonl'])
+    def test_original_build_barrier_and_provider_files_replay_bound(grid,relative):
+        setup,run=grid;path=run.root/relative;raw=path.read_bytes()
+        try:
+            path.write_bytes(raw+b' ')
+&gt;           with pytest.raises(ContractError):issue_state_improvement_score_input(authority=EXECUTION,result=run.results[0],**replay_args(setup,run,run.results[0]))
+                                                                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_improvement_train_controller.py:235: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+setup = {'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b950...00c654acedca4476b2979a21b31634470d377b130e6': '0000000000000000000000000000000000000000000000000000000000000001'}, ...}
+run = StateImprovementRun(root=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-improvement-r1/state-improvement...}],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}'))
+result = None
+
+    def replay_args(setup,run,result):
+&gt;       panel=next(p for p in run.panels if result.cell in p.cells);packet=next(p for p in run.barrier.packets if p.task.content_hash==result.cell.task_digest)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       StopIteration
+
+tests\test_state_improvement_train_controller.py:153: StopIteration</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_rehashed_target_trace_cannot_change_provider_response_or_candidate[program]" time="0.001"><failure message="AttributeError: 'NoneType' object has no attribute 'runtime'">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+field = 'program'
+
+    @pytest.mark.parametrize('field',['program','context','instruction','joint'])
+    def test_rehashed_target_trace_cannot_change_provider_response_or_candidate(grid,field):
+&gt;       setup,run=grid;result=run.results[0];path=result.runtime.trace_path;raw=path.read_bytes()
+                                                  ^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'runtime'
+
+tests\test_state_improvement_train_controller.py:241: AttributeError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_rehashed_target_trace_cannot_change_provider_response_or_candidate[context]" time="0.000"><failure message="AttributeError: 'NoneType' object has no attribute 'runtime'">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+field = 'context'
+
+    @pytest.mark.parametrize('field',['program','context','instruction','joint'])
+    def test_rehashed_target_trace_cannot_change_provider_response_or_candidate(grid,field):
+&gt;       setup,run=grid;result=run.results[0];path=result.runtime.trace_path;raw=path.read_bytes()
+                                                  ^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'runtime'
+
+tests\test_state_improvement_train_controller.py:241: AttributeError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_rehashed_target_trace_cannot_change_provider_response_or_candidate[instruction]" time="0.001"><failure message="AttributeError: 'NoneType' object has no attribute 'runtime'">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+field = 'instruction'
+
+    @pytest.mark.parametrize('field',['program','context','instruction','joint'])
+    def test_rehashed_target_trace_cannot_change_provider_response_or_candidate(grid,field):
+&gt;       setup,run=grid;result=run.results[0];path=result.runtime.trace_path;raw=path.read_bytes()
+                                                  ^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'runtime'
+
+tests\test_state_improvement_train_controller.py:241: AttributeError</failure></testcase><testcase classname="tests.test_state_improvement_train_controller" name="test_rehashed_target_trace_cannot_change_provider_response_or_candidate[joint]" time="0.001"><failure message="AttributeError: 'NoneType' object has no attribute 'runtime'">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...],"successful_builds":0,"unused_model_opportunities":55,"unused_source_opportunities":66,"validation_opened":false}')))
+field = 'joint'
+
+    @pytest.mark.parametrize('field',['program','context','instruction','joint'])
+    def test_rehashed_target_trace_cannot_change_provider_response_or_candidate(grid,field):
+&gt;       setup,run=grid;result=run.results[0];path=result.runtime.trace_path;raw=path.read_bytes()
+                                                  ^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'runtime'
+
+tests\test_state_improvement_train_controller.py:241: AttributeError</failure></testcase></testsuite></testsuites>
