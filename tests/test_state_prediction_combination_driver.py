@@ -6,12 +6,25 @@ from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.panel_receipts import PanelCell
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
+from research_loop.modular.modules.improvement import CandidatePackage
+from research_loop.modular.lineage_combination_material import FrozenLineageMaterial
 from research_loop.modular.state_prediction_combination_driver import (
     DESIGNS, registered_design, run_state_prediction_combination_cell,
     verify_state_prediction_combination_cell,
 )
 from test_lineage_combination_controller import _fixture, _sources
-from test_modular_combination_benchmark_driver import _model, IMAGE
+from test_modular_combination_benchmark_driver import _plan, IMAGE
+
+
+def _model(_seen):
+    def respond(request):
+        body = request.data()
+        if body['slot'] == 'm4_plan': return FrozenRecord.from_dict(_plan())
+        if body['slot'] == 'analysis_program':
+            return FrozenRecord.from_dict({'analysis':'public mean', 'program':"import csv\nwith open('/input/public_csv', newline='') as f: print(sum(float(r['x']) for r in csv.DictReader(f)))"})
+        return FrozenRecord.from_dict({'objective_digest':body['module_context']['required_objective_digest'],
+            'outcome':'unknown','evidence_ids':[],'conclusion':'synthetic public output retained','programme_complete':False})
+    return respond
 
 
 def _panel(root, obligation):
@@ -51,15 +64,15 @@ def test_m2_m4_and_m3_m4_use_actual_registry_then_shared_docker(tmp_path):
             packet = next(p for p in packets if p.task.content_hash == cell.task_digest)
             root = tmp_path/obligation.replace(':', '_')/arm_id
             result = run_state_prediction_combination_cell(panel=panel, cell=cell, task=packet.task,
-                scenario=scenarios[cell.key], package=__import__('research_loop.modular.modules.improvement', fromlist=['CandidatePackage']).CandidatePackage(FrozenRecord.from_dict(packages[cell.runtime_arm.content_hash])),
-                material=__import__('research_loop.modular.lineage_combination_material', fromlist=['FrozenLineageMaterial']).FrozenLineageMaterial(FrozenRecord.from_dict(materials[cell.task_digest])),
+                scenario=scenarios[cell.key], package=CandidatePackage(FrozenRecord.from_dict(packages[cell.runtime_arm.content_hash])),
+                material=FrozenLineageMaterial(FrozenRecord.from_dict(materials[cell.task_digest])),
                 source_verifier=sources, objective=FrozenRecord.from_dict({'scope':'synthetic state prediction'}), sidecar=root,
                 public_inputs={'public_csv':packet.csv_path}, image=IMAGE, broker=DockerExecutionBroker([tmp_path]), model=_model([]),
                 audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}))
             assert result.runtime.status == 'succeeded'
             verified = verify_state_prediction_combination_cell(result, panel=panel, task=packet.task,
-                scenario=scenarios[cell.key], package=__import__('research_loop.modular.modules.improvement', fromlist=['CandidatePackage']).CandidatePackage(FrozenRecord.from_dict(packages[cell.runtime_arm.content_hash])),
-                material=__import__('research_loop.modular.lineage_combination_material', fromlist=['FrozenLineageMaterial']).FrozenLineageMaterial(FrozenRecord.from_dict(materials[cell.task_digest])),
+                scenario=scenarios[cell.key], package=CandidatePackage(FrozenRecord.from_dict(packages[cell.runtime_arm.content_hash])),
+                material=FrozenLineageMaterial(FrozenRecord.from_dict(materials[cell.task_digest])),
                 source_verifier=sources, public_inputs={'public_csv':packet.csv_path}, broker=DockerExecutionBroker([tmp_path]))
             assert verified.data()['scientific_effect'] == 'not_measured'
             logs = result.runtime.trace_path.parent
