@@ -1,5 +1,8 @@
 """52-cell public synthetic grid; real Docker, no provider or validation I/O."""
 from hashlib import sha256
+import base64
+import csv as csv_module
+import io
 import hmac
 import json
 import os
@@ -8,7 +11,7 @@ import pytest
 
 from research_loop.modular import panel_plan, panel_runner
 from research_loop.modular.benchmarks import BladeAdapter, DiscoveryBenchAdapter
-from research_loop.modular.benchmarks.execution import DockerExecutionBroker
+from research_loop.modular.benchmarks.execution import DockerExecutionBroker, ExecutionReceipt
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.experiments import scenario as base_scenario
 from research_loop.modular.exploration_panel_drivers import (
@@ -48,6 +51,13 @@ class Authority:
         body = subject.data(); self.calls.append(body)
         if self.fault == 'transport':
             raise OSError('synthetic verification unavailable')
+        if self.fault in ('partial_known', 'partial_unknown'):
+            cost = {'unit': 'verifier_units', 'units': 3 if self.fault == 'partial_known' else None}
+            error = OSError('synthetic partial transport')
+            error.partial_response = FrozenRecord.from_dict({'schema': 'synthetic-partial-response-v1',
+                'subject_digest': subject.content_hash, 'cost': cost})
+            error.cost = FrozenRecord.from_dict(cost)
+            raise error
         diagnostic = body['diagnostic']; contract = body['authority_contract']; proofs = []; documents = []
         for declared in contract['authorities']:
             proof = self.documents[(contract['contract_id'], declared['authority_id'], diagnostic['diagnostic_id'])]
@@ -73,6 +83,23 @@ class Authority:
             'block_status': 'blocked' if d['requires_repair'] else 'unknown'}
         audits = []
         if observed:
+            material = body['trusted_execution_material']
+            receipt = ExecutionReceipt.parse(material['execution_receipt'])
+            assert receipt.content_hash == body['execution_digest']
+            program_bytes = base64.b64decode(material['program_bytes_b64'], validate=True)
+            assert sha256(program_bytes).hexdigest() == diagnostic['program_sha256'] == receipt.artifact.sha256
+            assert len(program_bytes) == receipt.artifact.byte_count
+            assert material['public_input_bytes'].keys() == diagnostic['inputs'].keys()
+            for artifact_id, supplied in material['public_input_bytes'].items():
+                content = base64.b64decode(supplied['bytes_b64'], validate=True)
+                expected_input = diagnostic['inputs'][artifact_id]
+                assert supplied['sha256'] == sha256(content).hexdigest() == expected_input['sha256']
+                assert supplied['byte_count'] == len(content) == expected_input['byte_count']
+                assert receipt.record.data()['input_artifacts'][artifact_id] == {'artifact_id': artifact_id, **expected_input}
+            received_csv = base64.b64decode(material['public_input_bytes']['data_csv']['bytes_b64']).decode()
+            numeric = [float(x['x']) for x in csv_module.DictReader(io.StringIO(received_csv))]
+            assert sum(numeric) / len(numeric) == -1.0
+            assert receipt.record.data()['stdout'] == body['execution_observation']['stdout']
             output = json.loads(body['execution_observation']['stdout']) if body['execution_status'] == 'succeeded' else None
             observed_pair = [(doc['expected_mean'], doc['expected_control']) for doc in documents]
             conflict = len(set(observed_pair)) != 1
@@ -178,7 +205,8 @@ def _model(seen, *, overclaim=False):
     def call(request):
         row = request.data(); seen.append(row)
         encoded = request.encoded
-        for forbidden in ('"variant"', '"arm_id"', '"enabled_modules"', 'independent-fixture-', '"expected_mean"', '"authorities"'):
+        for forbidden in ('"variant"', '"arm_id"', '"enabled_modules"', 'independent-fixture-', '"expected_mean"', '"authorities"',
+                          '"trusted_execution_material"', '"program_bytes_b64"', '"public_input_bytes"', '"execution_receipt"'):
             assert forbidden not in encoded
         if row['slot'] == 'prospective':
             assert row['execution_feedback'] == []
@@ -307,3 +335,58 @@ def test_unknown_cost_and_unchanged_candidate_reach_fixed_p0_gate(tmp_path, monk
     assert all(e['data']['cost']['units'] is None for e in events if e['stage'] == 'exploration_verifier_result')
     response = next(e['data']['response'] for e in reversed(events) if e['stage'] == 'model_response')
     assert events[-1]['data']['candidate_digest'] == FrozenRecord.from_dict(response).content_hash
+
+
+def test_bad_actual_source_spends_no_model_or_verifier_opportunity(tmp_path, monkeypatch):
+    compiled, tasks, authority, bundles = _compile(tmp_path, monkeypatch)
+    (tmp_path / 'data.csv').write_text('x\n777\n')
+    cell = compiled.panel.cells[0]; seen = []
+    result = _run(compiled, tasks, cell, tmp_path / 'run', seen)
+    assert result.runtime.status == 'failed' and seen == [] and authority.calls == []
+    assert result.call_plan.data()['model_calls'] == result.call_plan.data()['execution_attempts'] == 0
+
+
+def test_both_candidates_checked_even_if_bad_second_one_not_proposed(tmp_path, monkeypatch):
+    compiled, tasks, authority, bundles = _compile(tmp_path, monkeypatch)
+    cell = compiled.panel.cells[0]
+    driver = panel_runner.DRIVERS[cell.coverage_id]
+    original = driver.broker.validate_inputs
+    calls = []
+    def checking(identity, inputs):
+        calls.append(identity)
+        if len(calls) == 2:
+            raise ContractError('second candidate input drift')
+        return original(identity, inputs)
+    monkeypatch.setattr(driver.broker, 'validate_inputs', checking)
+    seen = []; result = _run(compiled, tasks, cell, tmp_path / 'run', seen)
+    assert result.runtime.status == 'failed' and len(calls) == 2 and seen == [] and authority.calls == []
+
+
+@pytest.mark.parametrize('kind', ['input', 'program'])
+def test_actual_bytes_drift_after_docker_never_reaches_observation_verifier(tmp_path, monkeypatch, kind):
+    compiled, tasks, authority, bundles = _compile(tmp_path, monkeypatch)
+    cell = compiled.panel.cells[0]; broker = panel_runner.DRIVERS[cell.coverage_id].broker
+    original = broker.execute
+    def drift(request):
+        receipt = original(request)
+        target = tmp_path / 'data.csv' if kind == 'input' else request.program
+        target.write_text('mutated after Docker')
+        return receipt
+    monkeypatch.setattr(broker, 'execute', drift)
+    seen = []; result = _run(compiled, tasks, cell, tmp_path / 'run', seen)
+    assert result.runtime.status == 'failed' and len(seen) == 1 and len(authority.calls) == 1
+    assert result.call_plan.data()['execution_attempts'] == 1
+
+
+@pytest.mark.parametrize('fault', ['partial_known', 'partial_unknown'])
+def test_partial_transport_receipt_and_cost_are_persisted_before_failure(tmp_path, monkeypatch, fault):
+    compiled, tasks, authority, bundles = _compile(tmp_path, monkeypatch); authority.fault = fault
+    seen = []; result = _run(compiled, tasks, compiled.panel.cells[0], tmp_path / 'run', seen); events = _events(result)
+    assert result.runtime.status == 'failed' and len(seen) == len(authority.calls) == 1
+    partial = next(e for e in events if e['stage'] == 'exploration_verifier_partial_response')
+    failure = next(e for e in events if e['stage'] == 'exploration_verifier_failure')
+    assert events.index(partial) < events.index(failure)
+    assert failure['data']['partial_response_digest'] == partial['data']['receipt_digest']
+    expected = 3 if fault == 'partial_known' else None
+    assert failure['data']['reported_cost']['units'] == failure['data']['exception_reported_cost']['units'] == expected
+    assert failure['data']['cost']['units'] is None

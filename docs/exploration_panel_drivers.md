@@ -27,6 +27,12 @@ authority documents, variant label, enabled-module flag or declared scientific
 qualification. Public executable plans and their prospective estimates are
 available equally to both arms.
 
+Both available candidate input sets are validated against their frozen actual
+hashes and sizes before any model/verifier I/O. Explicit resource/authorization
+missing cases bypass those reads and retain a blocked, nonexecuting denominator.
+The chosen inputs are revalidated at execution and again before observation
+verification to catch drift after the first preflight.
+
 M7 executes the existing bounded diagnostic selector and exploration policy;
 Q7.2 also executes `review_appeal`. The selected literal diagnostic is the one
 actually sent to Docker. The control executes its model-selected diagnostic
@@ -65,6 +71,19 @@ issuing them. The synthetic test authority compares actual Docker stdout with
 two frozen observation documents, including numeric mean and negative control,
 and separately verifies program/input/source/version contracts.
 
+The trusted observation subject additionally includes the complete
+`ExecutionReceipt.data()`, actual program bytes, and actual public CSV bytes,
+encoded losslessly as base64 and rechecked for exact frozen SHA-256/size. The
+fixture verifier reconstructs the full execution receipt, checks its digest,
+matches the bytes to both the received execution artifacts and frozen measurement
+contracts, and computes the public CSV statistic independently. None of these
+host paths, full receipts, or byte payloads enters the final-model whitelist.
+
+Scientific status preserves `unknown`, `data_unknown`, `measurement_repair`,
+`qualified_negative`, `qualified_positive`, and `conflict`. Qualified statuses
+must agree with the verified scientific state/outcome; unresolved or conflicting
+statuses cannot claim valid admission.
+
 The controller durably records allocations and each verifier request with
 unknown cost before I/O, followed by every raw response, measured-or-unknown cost,
 failure and selected execution reservation. RunSession independently reserves
@@ -72,6 +91,12 @@ model slots and execution attempts before their I/O. Blocked opportunities remai
 reserved in the denominator; unused calls are not represented as executions.
 There are no paid providers, network-enabled containers, validation reads,
 deployments, or changes to old custody state in this bounded verification.
+
+Transport exceptions may carry a typed `partial_response: FrozenRecord` and a
+typed `cost` record/mapping. Partial responses are persisted before failure;
+returned/exception-reported costs remain separate from unknown verified cost.
+Unknown cost is never converted to zero, and an unvalidated partial response is
+never used as an observation.
 
 The prospective synthetic grid is 52 cells: two benchmark adapter types × five
 Q7.1 variants × four M1/M7 combinations, plus two adapters × three Q7.2 variants

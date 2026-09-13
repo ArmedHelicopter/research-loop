@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import base64
+import hashlib
+from pathlib import Path
 from typing import Any, Mapping, MutableMapping, Protocol
 
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask, required_text, strict_bool
@@ -217,8 +220,23 @@ class _Ledger:
             self.workflow.session._record('exploration_verifier_result', {**common, 'cost': row['cost'], 'receipt_digest': raw.content_hash})
             return row, raw.content_hash
         except Exception as exc:
+            partial = getattr(exc, 'partial_response', None)
+            if isinstance(partial, FrozenRecord):
+                self.workflow.session._record('exploration_verifier_partial_response', {
+                    **common, 'receipt': partial.data(), 'receipt_digest': partial.content_hash})
+            exception_cost = getattr(exc, 'cost', None)
+            if isinstance(exception_cost, FrozenRecord):
+                exception_cost = exception_cost.data()
+            if not isinstance(exception_cost, Mapping) or set(exception_cost) != {'unit', 'units'}:
+                exception_cost = None
+            elif (exception_cost['unit'] != 'verifier_units' or (exception_cost['units'] is not None
+                    and (type(exception_cost['units']) is not int or exception_cost['units'] < 0))):
+                exception_cost = None
             self.workflow.session._record('exploration_verifier_failure', {**common, 'error_type': type(exc).__name__,
-                'reported_cost': raw.data().get('cost') if isinstance(raw, FrozenRecord) else None})
+                'reported_cost': raw.data().get('cost') if isinstance(raw, FrozenRecord) else
+                    partial.data().get('cost') if isinstance(partial, FrozenRecord) else None,
+                'exception_reported_cost': dict(exception_cost) if exception_cost is not None else None,
+                'partial_response_digest': partial.content_hash if isinstance(partial, FrozenRecord) else None})
             raise
 
 
@@ -232,10 +250,38 @@ def _subject(workflow, bundle, item, chosen, prospective):
         'prospective_digest': prospective.content_hash})
 
 
+def _trusted_execution_material(workflow, bundle, chosen, driver, execution):
+    """Complete evidence for the trusted port; never part of model context.
+
+    Read bytes only after path/root validation; require exact pre-frozen bytes
+    again after execution so drift cannot be laundered through stale receipts.
+    """
+    prepared = _prepare_inputs(workflow, bundle=bundle, item=chosen, broker=driver.broker, resolver=driver.input_resolver)
+    program = Path(execution.artifact.path).read_bytes()
+    if hashlib.sha256(program).hexdigest() != chosen['program_sha256'] or len(program) != execution.artifact.byte_count:
+        raise ContractError('actual executed program bytes drifted')
+    payloads = {}
+    for artifact_id, path in prepared[0].items():
+        content = path.read_bytes(); expected = chosen['inputs'][artifact_id]
+        if hashlib.sha256(content).hexdigest() != expected['sha256'] or len(content) != expected['byte_count']:
+            raise ContractError('actual public input bytes drifted')
+        payloads[artifact_id] = {'sha256': expected['sha256'], 'byte_count': expected['byte_count'],
+                                 'bytes_b64': base64.b64encode(content).decode('ascii')}
+    return {'execution_receipt': execution.data(), 'program_bytes_b64': base64.b64encode(program).decode('ascii'),
+            'public_input_bytes': payloads}
+
+
 def _run(driver, workflow, *, cell, scenario, model):
     bundle, item = _material(workflow, cell, scenario)
     if not all(callable(getattr(driver.authority, method, None)) for method in ('verify_preflight', 'verify_observation')):
         raise ContractError('caller trusted verification ports are required')
+    hard = item['hard_constraint'] in ('authorization', 'resource')
+    # Both potential selections are validated before any model/verifier I/O.
+    # Explicit hard missing conditions retain their denominator without reading
+    # unavailable or unauthorized data, and can never execute either candidate.
+    if not hard:
+        for diagnostic in item['diagnostics']:
+            _prepare_inputs(workflow, bundle=bundle, item=diagnostic, broker=driver.broker, resolver=driver.input_resolver)
     ledger = _Ledger(workflow)
     public = {key: item[key] for key in ('public_issue', 'diagnostic_scope', 'original_requirements', 'diagnostics', 'hard_constraint')}
     if 'veto' in item:
@@ -268,7 +314,6 @@ def _run(driver, workflow, *, cell, scenario, model):
     subject = _subject(workflow, bundle, item, chosen, prospective)
     pre, pre_digest = ledger.call(driver.authority, subject)
     facts = pre['facts']
-    hard = item['hard_constraint'] in ('authorization', 'resource')
     host_allowed = not hard and all(facts[k] for k in ('safe', 'authorized', 'resources_available', 'diagnostic_inputs_available'))
     disposition = None
     if 'M7' in workflow.enabled:
@@ -297,7 +342,8 @@ def _run(driver, workflow, *, cell, scenario, model):
         execution, artifacts = _execute(workflow, item=chosen, broker=driver.broker, prepared=prepared)
         post_subject = FrozenRecord.from_dict({**subject.data(), 'preflight_receipt_digest': pre_digest,
             'execution_digest': execution.content_hash, 'execution_status': execution.status,
-            'execution_observation': _execution_public(execution)})
+            'execution_observation': _execution_public(execution),
+            'trusted_execution_material': _trusted_execution_material(workflow, bundle, chosen, driver, execution)})
         post, post_digest = ledger.call(driver.authority, post_subject, observation=True)
         # P0 is identical in both arms. Actual signed scientific evidence and
         # execution provenance are necessary for any final positive/negative.
