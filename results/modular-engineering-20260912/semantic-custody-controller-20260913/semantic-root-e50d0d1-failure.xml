@@ -1,0 +1,1822 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="16" skipped="0" tests="109" time="31.213" timestamp="2026-09-13T11:51:45.340554+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_semantic_train_controller" name="test_semantic_driver_runs_all_cells_with_compiled_p0_control[Q2.2-10-slots0]" time="0.280"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_semantic_driver_runs_all_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C2366BAAB0&gt;
+coverage = 'Q2.2', expected_cells = 10
+slots = ('semantic_judgement', 'alternative_analysis', 'final')
+
+    @pytest.mark.parametrize("coverage,expected_cells,slots", [
+        ("Q2.2", 10, ("semantic_judgement", "alternative_analysis", "final")),
+        ("Q6.4", 6, ("first_semantic_judgement", "first_alternative_analysis", "second_semantic_judgement", "second_alternative_analysis", "final")),
+    ])
+    def test_semantic_driver_runs_all_cells_with_compiled_p0_control(tmp_path, monkeypatch, coverage, expected_cells, slots):
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "material-export").export(base["item_ids"])
+        grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        semantic = _closed_shape(_semantic_response("The programme is complete."))
+        alternative = _closed_shape({"scientific_acceptability": "unknown", "rationale": "synthetic assessment"})
+        schemas = {slot: FINAL if slot == "final" else alternative if slot.endswith("alternative_analysis") else semantic for slot in slots}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-semantic-controller", "scope_ids": [coverage],
+            "evidence_by_task": {packet.task.content_hash: _bundle(packet.task, grids[coverage]).data() for packet in packets},
+            "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+            "budget": {"model_calls": len(slots), "execution_limit": 0}, "max_calls": expected_cells * len(slots), "schemas": schemas}))
+        drifted = frozen.data(); drifted["p0_control"] = {"p0": "different trusted control"}
+        with pytest.raises(ContractError, match="controller's frozen P0"):
+            FrozenTrainControllerConfig(FrozenRecord.from_dict(drifted))
+        seen = []
+        port = model_port(tmp_path, monkeypatch, max_calls=expected_cells * len(slots), schemas=schemas, response_factory=_model(seen))
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+            run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+
+tests\test_modular_semantic_train_controller.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...ype":"object"}},"scope_ids":["Q2.2"],"scorer":{"identity":"not-configured"},"stage":"synthetic-semantic-controller"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_semantic_train_controller" name="test_semantic_driver_runs_all_cells_with_compiled_p0_control[Q6.4-6-slots1]" time="0.239"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_semantic_driver_runs_all_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C238B278C0&gt;
+coverage = 'Q6.4', expected_cells = 6
+slots = ('first_semantic_judgement', 'first_alternative_analysis', 'second_semantic_judgement', 'second_alternative_analysis', 'final')
+
+    @pytest.mark.parametrize("coverage,expected_cells,slots", [
+        ("Q2.2", 10, ("semantic_judgement", "alternative_analysis", "final")),
+        ("Q6.4", 6, ("first_semantic_judgement", "first_alternative_analysis", "second_semantic_judgement", "second_alternative_analysis", "final")),
+    ])
+    def test_semantic_driver_runs_all_cells_with_compiled_p0_control(tmp_path, monkeypatch, coverage, expected_cells, slots):
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "material-export").export(base["item_ids"])
+        grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        semantic = _closed_shape(_semantic_response("The programme is complete."))
+        alternative = _closed_shape({"scientific_acceptability": "unknown", "rationale": "synthetic assessment"})
+        schemas = {slot: FINAL if slot == "final" else alternative if slot.endswith("alternative_analysis") else semantic for slot in slots}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-semantic-controller", "scope_ids": [coverage],
+            "evidence_by_task": {packet.task.content_hash: _bundle(packet.task, grids[coverage]).data() for packet in packets},
+            "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+            "budget": {"model_calls": len(slots), "execution_limit": 0}, "max_calls": expected_cells * len(slots), "schemas": schemas}))
+        drifted = frozen.data(); drifted["p0_control"] = {"p0": "different trusted control"}
+        with pytest.raises(ContractError, match="controller's frozen P0"):
+            FrozenTrainControllerConfig(FrozenRecord.from_dict(drifted))
+        seen = []
+        port = model_port(tmp_path, monkeypatch, max_calls=expected_cells * len(slots), schemas=schemas, response_factory=_model(seen))
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+            run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+
+tests\test_modular_semantic_train_controller.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...ype":"object"}},"scope_ids":["Q6.4"],"scorer":{"identity":"not-configured"},"stage":"synthetic-semantic-controller"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_semantic_panel_drivers" name="test_full_two_benchmark_grid_runs_real_semantic_and_alternative_calls" time="12.223" /><testcase classname="tests.test_modular_semantic_panel_drivers" name="test_malformed_semantic_response_keeps_a_failed_cell_in_the_full_denominator" time="11.567" /><testcase classname="tests.test_modular_semantic_panel_drivers" name="test_bad_source_or_label_cue_is_rejected_before_any_semantic_model_call" time="0.415" /><testcase classname="tests.test_modular_semantic_panel_drivers" name="test_projection_rejects_different_p0_grid_and_noncanonical_caller_bundle" time="0.145" /><testcase classname="tests.test_modular_semantic_panel_drivers" name="test_payload_controller_cell_and_package_binding_fail_before_model_call" time="0.378" /><testcase classname="tests.test_modular_semantic_panel_drivers" name="test_missing_trusted_p0_control_configuration_fails_before_model_call" time="0.179" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q22_all_declared_minimal_pairs_use_actual_judge_response[affirm-True-blade]" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q22_all_declared_minimal_pairs_use_actual_judge_response[affirm-True-discovery]" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q22_all_declared_minimal_pairs_use_actual_judge_response[negate-False-blade]" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q22_all_declared_minimal_pairs_use_actual_judge_response[negate-False-discovery]" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q22_all_declared_minimal_pairs_use_actual_judge_response[quote-False-blade]" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q22_all_declared_minimal_pairs_use_actual_judge_response[quote-False-discovery]" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q22_all_declared_minimal_pairs_use_actual_judge_response[counterfactual-False-blade]" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q22_all_declared_minimal_pairs_use_actual_judge_response[counterfactual-False-discovery]" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q22_all_declared_minimal_pairs_use_actual_judge_response[local-False-blade]" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q22_all_declared_minimal_pairs_use_actual_judge_response[local-False-discovery]" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q64_creates_new_version_for_both_arms_and_keeps_legacy_only_diagnostic" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q64_every_declared_repair_case_changes_public_answer_material_but_uses_same_v2[negation]" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q64_every_declared_repair_case_changes_public_answer_material_but_uses_same_v2[quotation]" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_q64_every_declared_repair_case_changes_public_answer_material_but_uses_same_v2[alternative]" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_abstention_and_reference_contract_are_strict" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_default_fixture_judge_abstains_instead_of_inventing_a_completion_call" time="0.001" /><testcase classname="tests.test_modular_scoring_scenarios" name="test_score_revalidates_the_original_request_response_and_exact_rubric_binding" time="0.001" /><testcase classname="tests.test_modular_train_controller" name="test_actual_custody_export_port_runner_and_receipt_are_engineering_only" time="0.172"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_actual_custody_export_por0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C238B32BD0&gt;
+
+    def test_actual_custody_export_port_runner_and_receipt_are_engineering_only(tmp_path: Path, monkeypatch) -&gt; None:
+        snapshot, custody = snapshot_and_custody(tmp_path)
+&gt;       result = run_q31_train_panel(config(custody, snapshot, tmp_path), custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=model_port(tmp_path, monkeypatch),
+            audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+
+tests\test_modular_train_controller.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...","branches"],"type":"object"}},"scope_ids":["Q3.1"],"scorer":{"identity":"not-configured"},"stage":"synthetic-q31"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_train_controller" name="test_support_drivers_reach_production_controller_without_registry_patch[Q1.3-slots0-16]" time="0.288"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_support_drivers_reach_pro0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C238B9A720&gt;
+coverage = 'Q1.3'
+slots = ('representation_initial', 'representation_next', 'final')
+expected_cells = 16
+
+    @pytest.mark.parametrize("coverage,slots,expected_cells", [
+        ("Q1.3", ("representation_initial", "representation_next", "final"), 16),
+        ("Q1.4", ("support_initial", "support_rechecked", "final"), 12),
+    ])
+    def test_support_drivers_reach_production_controller_without_registry_patch(tmp_path, monkeypatch, coverage, slots, expected_cells):
+        from test_modular_support_panel_drivers import _bundle, _admit
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "support-material").export(base["item_ids"])
+        control = FrozenRecord.from_dict(base["p0_control"])
+        grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=control)
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {slot: FINAL if slot == "final" else REVIEW for slot in slots}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-support-controller",
+            "scope_ids": [coverage], "evidence_by_task": {packet.task.content_hash: _bundle(packet.task).data() for packet in packets},
+            "packages_by_arm": {arm.content_hash: package for grid in grids.values() for arm in executable_arms(grid).values()},
+            "budget": {"model_calls": 3, "execution_limit": 0}, "max_calls": expected_cells * 3, "schemas": schemas}))
+        admissions = []
+        def caller_admit(task, record):
+            receipt = _admit(task, record)
+            admissions.append(receipt["record_digest"])
+            return receipt
+        model = model_port(tmp_path, monkeypatch, max_calls=expected_cells * 3, schemas=schemas)
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=model,
+            audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}), history_admission_port=caller_admit)
+
+tests\test_modular_train_controller.py:152: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...type":"object"}},"scope_ids":["Q1.3"],"scorer":{"identity":"not-configured"},"stage":"synthetic-support-controller"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_train_controller" name="test_support_drivers_reach_production_controller_without_registry_patch[Q1.4-slots1-12]" time="0.228"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_support_drivers_reach_pro1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C23805FC80&gt;
+coverage = 'Q1.4', slots = ('support_initial', 'support_rechecked', 'final')
+expected_cells = 12
+
+    @pytest.mark.parametrize("coverage,slots,expected_cells", [
+        ("Q1.3", ("representation_initial", "representation_next", "final"), 16),
+        ("Q1.4", ("support_initial", "support_rechecked", "final"), 12),
+    ])
+    def test_support_drivers_reach_production_controller_without_registry_patch(tmp_path, monkeypatch, coverage, slots, expected_cells):
+        from test_modular_support_panel_drivers import _bundle, _admit
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "support-material").export(base["item_ids"])
+        control = FrozenRecord.from_dict(base["p0_control"])
+        grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=control)
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {slot: FINAL if slot == "final" else REVIEW for slot in slots}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-support-controller",
+            "scope_ids": [coverage], "evidence_by_task": {packet.task.content_hash: _bundle(packet.task).data() for packet in packets},
+            "packages_by_arm": {arm.content_hash: package for grid in grids.values() for arm in executable_arms(grid).values()},
+            "budget": {"model_calls": 3, "execution_limit": 0}, "max_calls": expected_cells * 3, "schemas": schemas}))
+        admissions = []
+        def caller_admit(task, record):
+            receipt = _admit(task, record)
+            admissions.append(receipt["record_digest"])
+            return receipt
+        model = model_port(tmp_path, monkeypatch, max_calls=expected_cells * 3, schemas=schemas)
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=model,
+            audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}), history_admission_port=caller_admit)
+
+tests\test_modular_train_controller.py:152: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...type":"object"}},"scope_ids":["Q1.4"],"scorer":{"identity":"not-configured"},"stage":"synthetic-support-controller"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_train_controller" name="test_withdrawal_drivers_reach_custody_controller_with_caller_admission[Q1.6-slots0]" time="0.288"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_withdrawal_drivers_reach_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C238C800B0&gt;
+coverage = 'Q1.6', slots = ('initial', 'invalidation', 'final')
+
+    @pytest.mark.parametrize("coverage,slots", [
+        ("Q1.6", ("initial", "invalidation", "final")),
+        ("Q1.7", ("initial", "reconstructed", "final")),
+    ])
+    def test_withdrawal_drivers_reach_custody_controller_with_caller_admission(tmp_path, monkeypatch, coverage, slots):
+        from test_modular_withdrawal_panel_drivers import bundle, admission
+        from research_loop.modular.experiments import registry
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "withdrawal-material").export(base["item_ids"])
+        grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        expected_cells = 2 * len(registry()[coverage].variants) * len(executable_arms(grids[coverage]))
+        judgment = {"type": "object", "properties": {"mechanism_judgment": {
+            "type": "object", "properties": {"decision": {"type": "string", "enum": ["positive", "negative", "unknown"]},
+                "reason": {"type": "string"}, "evidence_ids": {"type": "array", "items": {"type": "string"}}},
+            "required": ["decision", "reason", "evidence_ids"], "additionalProperties": False}},
+            "required": ["mechanism_judgment"], "additionalProperties": False}
+        schemas = {slot: FINAL if slot == "final" else judgment if slot == "reconstructed" else REVIEW for slot in slots}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-withdrawal-controller", "scope_ids": [coverage],
+            "evidence_by_task": {packet.task.content_hash: bundle(packet.task).data() for packet in packets},
+            "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+            "budget": {"model_calls": 3, "execution_limit": 0}, "max_calls": expected_cells * 3, "schemas": schemas}))
+        port = model_port(tmp_path, monkeypatch, max_calls=expected_cells * 3, schemas=schemas)
+        admitted = []
+        def caller(task, record):
+            admitted.append(record.content_hash)
+            return admission(task, record)
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=port,
+            audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}), history_admission_port=caller)
+
+tests\test_modular_train_controller.py:189: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...e":"object"}},"scope_ids":["Q1.6"],"scorer":{"identity":"not-configured"},"stage":"synthetic-withdrawal-controller"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_train_controller" name="test_withdrawal_drivers_reach_custody_controller_with_caller_admission[Q1.7-slots1]" time="0.174"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_withdrawal_drivers_reach_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C238C81C70&gt;
+coverage = 'Q1.7', slots = ('initial', 'reconstructed', 'final')
+
+    @pytest.mark.parametrize("coverage,slots", [
+        ("Q1.6", ("initial", "invalidation", "final")),
+        ("Q1.7", ("initial", "reconstructed", "final")),
+    ])
+    def test_withdrawal_drivers_reach_custody_controller_with_caller_admission(tmp_path, monkeypatch, coverage, slots):
+        from test_modular_withdrawal_panel_drivers import bundle, admission
+        from research_loop.modular.experiments import registry
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "withdrawal-material").export(base["item_ids"])
+        grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        expected_cells = 2 * len(registry()[coverage].variants) * len(executable_arms(grids[coverage]))
+        judgment = {"type": "object", "properties": {"mechanism_judgment": {
+            "type": "object", "properties": {"decision": {"type": "string", "enum": ["positive", "negative", "unknown"]},
+                "reason": {"type": "string"}, "evidence_ids": {"type": "array", "items": {"type": "string"}}},
+            "required": ["decision", "reason", "evidence_ids"], "additionalProperties": False}},
+            "required": ["mechanism_judgment"], "additionalProperties": False}
+        schemas = {slot: FINAL if slot == "final" else judgment if slot == "reconstructed" else REVIEW for slot in slots}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-withdrawal-controller", "scope_ids": [coverage],
+            "evidence_by_task": {packet.task.content_hash: bundle(packet.task).data() for packet in packets},
+            "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+            "budget": {"model_calls": 3, "execution_limit": 0}, "max_calls": expected_cells * 3, "schemas": schemas}))
+        port = model_port(tmp_path, monkeypatch, max_calls=expected_cells * 3, schemas=schemas)
+        admitted = []
+        def caller(task, record):
+            admitted.append(record.content_hash)
+            return admission(task, record)
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=port,
+            audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}), history_admission_port=caller)
+
+tests\test_modular_train_controller.py:189: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...e":"object"}},"scope_ids":["Q1.7"],"scorer":{"identity":"not-configured"},"stage":"synthetic-withdrawal-controller"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_train_controller" name="test_prediction_drivers_reach_custody_controller_without_registry_patch[Q3.2-8-slots0]" time="0.334"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_prediction_drivers_reach_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C23805C4A0&gt;
+coverage = 'Q3.2', expected_cells = 8
+slots = ('plan_1', 'plan_2', 'plan_3', 'final')
+
+    @pytest.mark.parametrize("coverage,expected_cells,slots", [
+        ("Q3.2", 8, ("plan_1", "plan_2", "plan_3", "final")),
+        ("Q5.3", 12, ("dedup", "final")),
+    ])
+    def test_prediction_drivers_reach_custody_controller_without_registry_patch(tmp_path, monkeypatch, coverage, expected_cells, slots):
+        from test_modular_prediction_panel_drivers import material
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "prediction-material").export(base["item_ids"])
+        grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        dedup = {"type": "object", "properties": {"kept_proposal_ids": {"type": "array", "items": {"type": "string"}}},
+                 "required": ["kept_proposal_ids"], "additionalProperties": False}
+        schemas = {slot: FINAL if slot == "final" else dedup if slot == "dedup" else SCENARIO for slot in slots}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-prediction-controller", "scope_ids": [coverage],
+            "evidence_by_task": {packet.task.content_hash: material(packet.task).data() for packet in packets},
+            "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+            "budget": {"model_calls": len(slots), "execution_limit": 0}, "max_calls": expected_cells * len(slots), "schemas": schemas}))
+        port = model_port(tmp_path, monkeypatch, max_calls=expected_cells * len(slots), schemas=schemas)
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=port,
+            audit_verifier=AuditVerifier({"a": b"a"*32, "b": b"b"*32}))
+
+tests\test_modular_train_controller.py:217: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...e":"object"}},"scope_ids":["Q3.2"],"scorer":{"identity":"not-configured"},"stage":"synthetic-prediction-controller"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_train_controller" name="test_prediction_drivers_reach_custody_controller_without_registry_patch[Q5.3-12-slots1]" time="0.404"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_prediction_drivers_reach_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C238C23230&gt;
+coverage = 'Q5.3', expected_cells = 12, slots = ('dedup', 'final')
+
+    @pytest.mark.parametrize("coverage,expected_cells,slots", [
+        ("Q3.2", 8, ("plan_1", "plan_2", "plan_3", "final")),
+        ("Q5.3", 12, ("dedup", "final")),
+    ])
+    def test_prediction_drivers_reach_custody_controller_without_registry_patch(tmp_path, monkeypatch, coverage, expected_cells, slots):
+        from test_modular_prediction_panel_drivers import material
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "prediction-material").export(base["item_ids"])
+        grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        dedup = {"type": "object", "properties": {"kept_proposal_ids": {"type": "array", "items": {"type": "string"}}},
+                 "required": ["kept_proposal_ids"], "additionalProperties": False}
+        schemas = {slot: FINAL if slot == "final" else dedup if slot == "dedup" else SCENARIO for slot in slots}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-prediction-controller", "scope_ids": [coverage],
+            "evidence_by_task": {packet.task.content_hash: material(packet.task).data() for packet in packets},
+            "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+            "budget": {"model_calls": len(slots), "execution_limit": 0}, "max_calls": expected_cells * len(slots), "schemas": schemas}))
+        port = model_port(tmp_path, monkeypatch, max_calls=expected_cells * len(slots), schemas=schemas)
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=port,
+            audit_verifier=AuditVerifier({"a": b"a"*32, "b": b"b"*32}))
+
+tests\test_modular_train_controller.py:217: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...e":"object"}},"scope_ids":["Q5.3"],"scorer":{"identity":"not-configured"},"stage":"synthetic-prediction-controller"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_train_controller" name="test_polarity_and_goal_drivers_use_frozen_task_objectives_in_actual_controller[Q2.5]" time="0.453"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_polarity_and_goal_drivers0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C238C8E9C0&gt;
+coverage = 'Q2.5'
+
+    @pytest.mark.parametrize("coverage", ["Q2.5", "Q2.6"])
+    def test_polarity_and_goal_drivers_use_frozen_task_objectives_in_actual_controller(tmp_path, monkeypatch, coverage):
+        from test_modular_polarity_goal_panel_drivers import _bundle, _model, KEYS
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "goal-material").export(base["item_ids"])
+        materials = {packet.task.content_hash: _bundle(packet.task) for packet in packets}
+        grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        fields = ["validity", "support", "novelty", "investment", "outcome"]
+        if coverage == "Q2.6": fields.append("selected_objective_digest")
+        assessment = {"type": "object", "properties": {name: {"type": "string"} for name in fields},
+                      "required": fields, "additionalProperties": False}
+        final = {**FINAL, "properties": {**FINAL["properties"], "outcome": {"type": "string", "enum": ["positive", "negative", "unknown", "invalid", "withdrawn"]}}}
+        schemas = {"assessment": assessment, "final": final}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-polarity-goal-controller", "scope_ids": [coverage],
+            "evidence_by_task": {key: item[0].data() for key, item in materials.items()},
+            "objective_by_task": {key: {"objective": "registered primary endpoint"} for key in materials},
+            "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+            "budget": {"model_calls": 2, "execution_limit": 0}, "max_calls": 24, "schemas": schemas}))
+        seen = []
+        secondary = {packet.task.identity.group_id: materials[packet.task.content_hash][1] for packet in packets}
+        port = model_port(tmp_path, monkeypatch, schemas=schemas, response_factory=_model(seen, secondary))
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier(KEYS))
+
+tests\test_modular_train_controller.py:250: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline..."object"}},"scope_ids":["Q2.5"],"scorer":{"identity":"not-configured"},"stage":"synthetic-polarity-goal-controller"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_train_controller" name="test_polarity_and_goal_drivers_use_frozen_task_objectives_in_actual_controller[Q2.6]" time="0.241"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_polarity_and_goal_drivers1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C238CF74D0&gt;
+coverage = 'Q2.6'
+
+    @pytest.mark.parametrize("coverage", ["Q2.5", "Q2.6"])
+    def test_polarity_and_goal_drivers_use_frozen_task_objectives_in_actual_controller(tmp_path, monkeypatch, coverage):
+        from test_modular_polarity_goal_panel_drivers import _bundle, _model, KEYS
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "goal-material").export(base["item_ids"])
+        materials = {packet.task.content_hash: _bundle(packet.task) for packet in packets}
+        grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        fields = ["validity", "support", "novelty", "investment", "outcome"]
+        if coverage == "Q2.6": fields.append("selected_objective_digest")
+        assessment = {"type": "object", "properties": {name: {"type": "string"} for name in fields},
+                      "required": fields, "additionalProperties": False}
+        final = {**FINAL, "properties": {**FINAL["properties"], "outcome": {"type": "string", "enum": ["positive", "negative", "unknown", "invalid", "withdrawn"]}}}
+        schemas = {"assessment": assessment, "final": final}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-polarity-goal-controller", "scope_ids": [coverage],
+            "evidence_by_task": {key: item[0].data() for key, item in materials.items()},
+            "objective_by_task": {key: {"objective": "registered primary endpoint"} for key in materials},
+            "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+            "budget": {"model_calls": 2, "execution_limit": 0}, "max_calls": 24, "schemas": schemas}))
+        seen = []
+        secondary = {packet.task.identity.group_id: materials[packet.task.content_hash][1] for packet in packets}
+        port = model_port(tmp_path, monkeypatch, schemas=schemas, response_factory=_model(seen, secondary))
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier(KEYS))
+
+tests\test_modular_train_controller.py:250: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline..."object"}},"scope_ids":["Q2.6"],"scorer":{"identity":"not-configured"},"stage":"synthetic-polarity-goal-controller"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_train_controller" name="test_audit_drivers_reach_controller_with_bound_execution_and_receipt_ports[Q2.3-28]" time="0.272"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_audit_drivers_reach_contr0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C238B9AF00&gt;
+coverage = 'Q2.3', expected_cells = 28
+
+    @pytest.mark.parametrize("coverage,expected_cells", [("Q2.3", 28), ("Q2.4", 16)])
+    def test_audit_drivers_reach_controller_with_bound_execution_and_receipt_ports(tmp_path, monkeypatch, coverage, expected_cells):
+        from test_modular_audit_panel_drivers import _bundle, _shadow, _receipt_port, KEYS
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "audit-material").export(base["item_ids"])
+        grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"audit_initial": REVIEW, "final": FINAL}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-audit-controller", "scope_ids": [coverage],
+            "evidence_by_task": {packet.task.content_hash: _bundle(packet.task).data() for packet in packets},
+            "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+            "budget": {"model_calls": 2, "execution_limit": 1}, "max_calls": expected_cells * 2, "schemas": schemas}))
+        port = model_port(tmp_path, monkeypatch, max_calls=expected_cells * 2, schemas=schemas)
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=port,
+            audit_verifier=AuditVerifier(KEYS), audit_receipt_port=_receipt_port, shadow_execution_port=_shadow)
+
+tests\test_modular_train_controller.py:280: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...,"type":"object"}},"scope_ids":["Q2.3"],"scorer":{"identity":"not-configured"},"stage":"synthetic-audit-controller"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_train_controller" name="test_audit_drivers_reach_controller_with_bound_execution_and_receipt_ports[Q2.4-16]" time="0.357"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_audit_drivers_reach_contr1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C238C828A0&gt;
+coverage = 'Q2.4', expected_cells = 16
+
+    @pytest.mark.parametrize("coverage,expected_cells", [("Q2.3", 28), ("Q2.4", 16)])
+    def test_audit_drivers_reach_controller_with_bound_execution_and_receipt_ports(tmp_path, monkeypatch, coverage, expected_cells):
+        from test_modular_audit_panel_drivers import _bundle, _shadow, _receipt_port, KEYS
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "audit-material").export(base["item_ids"])
+        grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"audit_initial": REVIEW, "final": FINAL}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-audit-controller", "scope_ids": [coverage],
+            "evidence_by_task": {packet.task.content_hash: _bundle(packet.task).data() for packet in packets},
+            "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+            "budget": {"model_calls": 2, "execution_limit": 1}, "max_calls": expected_cells * 2, "schemas": schemas}))
+        port = model_port(tmp_path, monkeypatch, max_calls=expected_cells * 2, schemas=schemas)
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=port,
+            audit_verifier=AuditVerifier(KEYS), audit_receipt_port=_receipt_port, shadow_execution_port=_shadow)
+
+tests\test_modular_train_controller.py:280: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...,"type":"object"}},"scope_ids":["Q2.4"],"scorer":{"identity":"not-configured"},"stage":"synthetic-audit-controller"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_train_controller" name="test_q43_closed_driver_runs_through_custody_export_and_frozen_policy" time="0.221"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_q43_closed_driver_runs_th0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C238C80D70&gt;
+
+    def test_q43_closed_driver_runs_through_custody_export_and_frozen_policy(tmp_path: Path, monkeypatch) -&gt; None:
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        frozen = config(custody, snapshot, tmp_path)
+        task_package = next(iter(frozen.data()["packages_by_arm"].values()))
+        control = FrozenRecord.from_dict(frozen.data()["p0_control"])
+        grids = obligation_grids(("Q4.3",), baseline_digest="a" * 64, p0_control=control)
+        packages = {arm.content_hash: task_package for grid in grids.values() for arm in executable_arms(grid).values()}
+        schemas = {slot: REVIEW for slot in ("mechanism_initial", "measurement_initial", "mechanism_revision", "measurement_revision")}
+        schemas["final"] = FINAL
+        q43 = FrozenTrainControllerConfig(FrozenRecord.from_dict({**frozen.data(), "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-q43", "scope_ids": ["Q4.3"],
+            "packages_by_arm": packages, "budget": {"model_calls": 5, "execution_limit": 0}, "max_calls": 48, "schemas": schemas}))
+        port = model_port(tmp_path, monkeypatch, max_calls=48, schemas=schemas)
+&gt;       result = run_train_panel(q43, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "q43-export",
+            run_root=tmp_path / "q43-run", model=port, audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+
+tests\test_modular_train_controller.py:305: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...uncertainty"],"type":"object"}},"scope_ids":["Q4.3"],"scorer":{"identity":"not-configured"},"stage":"synthetic-q43"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_train_controller" name="test_rejects_config_drift_reused_root_and_unreviewed_policy" time="0.200" /><testcase classname="tests.test_modular_train_controller" name="test_rejects_non_train_allowlist_and_evidence_task_mismatch_before_model" time="0.317" /><testcase classname="tests.test_modular_train_controller" name="test_failed_cells_keep_the_complete_denominator_and_are_not_completed" time="0.401"><failure message="AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/semantic-controller-root-20260913-r2/test_failed_cells_keep_the_com0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C23805EE10&gt;
+
+    def test_failed_cells_keep_the_complete_denominator_and_are_not_completed(tmp_path: Path, monkeypatch) -&gt; None:
+        snapshot, custody = snapshot_and_custody(tmp_path)
+&gt;       result = run_q31_train_panel(config(custody, snapshot, tmp_path), custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=model_port(tmp_path, monkeypatch, valid_plan=False),
+            audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+
+tests\test_modular_train_controller.py:342: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...","branches"],"type":"object"}},"scope_ids":["Q3.1"],"scorer":{"identity":"not-configured"},"stage":"synthetic-q31"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+            raise ContractError("frozen model call capacity cannot cover complete panel")
+        # The root and attempt receipt exist before export because export itself is
+        # an irreversible materialization.  A subsequent rejection therefore has
+        # an auditable blocked controller record rather than pretending no action.
+        root.mkdir(parents=True, exist_ok=False)
+        attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+                   "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
+                   "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
+                   "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+                   "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
+        _write(root / "controller-attempt.json", attempt)
+        try:
+            packets = TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"])
+            attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
+            _write(root / "controller-attempt.json", attempt)
+            tasks = [packet.task for packet in packets]
+            if {f"{task.identity.benchmark}:{task.identity.task_id}" for task in tasks} != set(data["item_ids"]):
+                raise ContractError("export did not return the frozen allowlist")
+            packages = {arm: CandidatePackage(_record(value, "candidate package")) for arm, value in data["packages_by_arm"].items()}
+            compiled = compile_train_panel(stage=data["stage"], scope_ids=tuple(data["scope_ids"]), tasks=tasks,
+                evidence_by_task={key: _record(value, "evidence") for key, value in data["evidence_by_task"].items()},
+                budget=_record(data["budget"], "budget"), baseline_digest=data["baseline_digest"],
+                p0_control=_record(data["p0_control"], "p0 control"), packages_by_arm=packages,
+                scorer=_record(data["scorer"], "scorer"), acceptance_criteria=_record(data["acceptance_criteria"], "criteria"),
+                replicates=tuple(data["replicates"]))
+            attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
+                            "compiled_manifest": compiled.manifest.data(),
+                            "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+            _write(root / "controller-attempt.json", attempt)
+        except Exception as exc:
+            attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
+            _write(root / "controller-attempt.json", attempt)
+            raise
+        runtimes = []
+        linked_results = []
+        try:
+            for cell in compiled.panel.cells:
+                objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                if data.get("execution_mode") == "linked_benchmark_solve":
+                    packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                    result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                        solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                        public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                        broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                    verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                        scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                    if verification.data().get("engineering_verified") is not True:
+                        raise ContractError("linked cell verification did not establish engineering provenance")
+                    linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                    attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                    attempt.setdefault("linked_verifications", []).append(verification.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                    attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt); continue
+                result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                    audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+&gt;                   p0_control=compiled.p0_control)
+                               ^^^^^^^^^^^^^^^^^^^
+E                   AttributeError: 'CompiledTrainPanel' object has no attribute 'p0_control'. Did you mean: 'control'?
+
+research_loop\modular\train_controller.py:236: AttributeError</failure></testcase><testcase classname="tests.test_modular_train_controller" name="test_refuses_a_reused_ledger_before_export_or_run_side_effects" time="0.346" /><testcase classname="tests.test_modular_experiments" name="test_registry_keeps_all_48_obligations_designed_and_emits_controlled_scenarios" time="0.004" /><testcase classname="tests.test_modular_experiments" name="test_q15_requires_actual_identity_bound_review_material" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_legacy_two_benchmark_hashes_cannot_claim_measurement" time="0.002" /><testcase classname="tests.test_modular_experiments" name="test_blocked_status_cannot_skip_measurement_or_validation" time="0.002" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.1]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.3]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.6]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.7]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.1]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.3]" time="0.003" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.7]" time="0.002" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q3.1]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.1]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.3]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q5.1]" time="0.002" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q5.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q5.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q5.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.1]" time="0.003" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.3]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.6]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q7.1]" time="0.003" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q7.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q7.3]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q7.4]" time="0.000" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q7.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q7.6]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.1]" time="0.003" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.3]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.6]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.7]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_every_obligation_gets_all_variants_and_all_legal_paired_arms" time="0.138"><failure message="KeyError: 'Q2.2'">def test_every_obligation_gets_all_variants_and_all_legal_paired_arms():
+        # These scopes have distinct caller-supplied material contracts,
+        # so they compile as dedicated panels instead of coercing Q1.5 material.
+        caller_bound = {"Q2.1", "Q2.2", "Q2.5", "Q2.6", "Q3.2", "Q3.3", "Q3.4", "Q3.5", "Q5.3", "Q6.4"}
+        values = inputs(tuple(name for name in registry() if name not in caller_bound))
+        compiled = compile_train_panel(**values)
+        panel = compiled.panel
+        assert set(panel.scope_ids) == set(registry()) - caller_bound
+        assert len(panel.combinations.pairs) == 36 and len(panel.combinations.triples) == 5
+        assert set(panel.combinations.leave_one_out) == {f"M{i}" for i in range(1, 10)}
+        for coverage, spec in registry().items():
+            if coverage in caller_bound:
+                continue
+            arms = executable_arms(panel.legal_arm_grids[coverage])
+            for task in values["tasks"]:
+                rows = [cell for cell in panel.cells if cell.coverage_id == coverage and cell.identity == task.identity]
+                assert {(row.variant, row.arm_id) for row in rows} == {(variant, arm_id) for variant in spec.variants for arm_id in arms}
+                for cell in rows:
+                    material = compiled.scenarios[cell.key]
+                    assert material.content_hash == cell.scenario_digest
+                    assert material.data()["base"]["task"] == task.content_hash
+                    assert compiled.packages[cell.runtime_arm.content_hash].digest == cell.package_digest
+        assert compiled.manifest.data()["status"] == "planned_only"
+        assert compiled.manifest.data()["scientific_status"] == "not_measured"
+&gt;       assert all(len(executable_arms(panel.legal_arm_grids[q])) == 1 for q in ("Q2.2", "Q2.7", "Q6.4"))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_panel_plan.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+.0 = &lt;tuple_iterator object at 0x000001C236947F70&gt;
+
+&gt;   assert all(len(executable_arms(panel.legal_arm_grids[q])) == 1 for q in ("Q2.2", "Q2.7", "Q6.4"))
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^
+E   KeyError: 'Q2.2'
+
+tests\test_modular_panel_plan.py:81: KeyError</failure></testcase><testcase classname="tests.test_modular_panel_plan" name="test_actual_package_or_scorer_or_budget_change_changes_frozen_panel" time="0.014" /><testcase classname="tests.test_modular_panel_plan" name="test_package_manifest_cannot_cross_or_silently_change_training_panel[foreign_split]" time="0.002" /><testcase classname="tests.test_modular_panel_plan" name="test_package_manifest_cannot_cross_or_silently_change_training_panel[foreign_task]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_package_manifest_cannot_cross_or_silently_change_training_panel[partial]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_package_manifest_cannot_cross_or_silently_change_training_panel[extra]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[validation]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[duplicate_task]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[split]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[missing_benchmark]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[missing_package]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[wrong_package]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[missing_evidence]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[duplicate_replicate]" time="0.001" /><testcase classname="tests.test_modular_panel_plan" name="test_compiler_fails_before_execution_for_invalid_frozen_inputs[unknown_scope]" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.010" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.006" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.005" /></testsuite></testsuites>

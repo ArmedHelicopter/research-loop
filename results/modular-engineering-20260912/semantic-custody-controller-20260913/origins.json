@@ -1,0 +1,107 @@
+{
+  "semantic-root-collection-failure.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\work\\semantic-controller-root-20260913-r1.xml",
+    "sha256": "e3c583131ddfa27d0be8b8601f172b288f60a580e0e3bfef1a6c87149479f45f",
+    "qualification": "e50d0d1: nonexistent test filename; exit 1; zero tests is not pass"
+  },
+  "semantic-root-e50d0d1-failure.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\work\\semantic-controller-root-20260913-r2.xml",
+    "sha256": "8f74f9905e095480e1551a3213f9f99c6108e211d32d77fb90e34a0eead762ef",
+    "qualification": "e50d0d1: 16 failures; wrong compiled field and stale fixture scope"
+  },
+  "semantic-root-0b146a4.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\work\\semantic-controller-root-20260913-r3.xml",
+    "sha256": "ca6172c34e7ff3b810c9b0eb8275c8541fe8a59a5980245d90e423cd3c2a0fcd",
+    "qualification": "0b146a4: 109 passed after repair"
+  },
+  "semantic-agent-8cb5eac.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\semantic-panel-regression-junit.xml",
+    "sha256": "5f8e72793101ef6e2f01c3e914c482a95a36893de89bc39baf4a975fddd48ec5",
+    "qualification": "agent original driver report; overlaps root coverage"
+  },
+  "semantic-review-ce43cfc.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\semantic-panel-review-final.xml",
+    "sha256": "e663a41129051ad632aab481ef8ffd05f39e4db6139671c847ce51a9dcc94a66",
+    "qualification": "agent trusted P0 review report; overlaps root coverage"
+  },
+  "full-fd985fa-failure.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\modular-full-check-fd985fa-r1.xml",
+    "sha256": "3a72363ad2fe6b812446e302ea1f0dc1480309fa9b76cef7fca4840f6e77d479",
+    "qualification": "fd985fa: 989 tests, 7 failures; earlier source predates M8 and semantic drivers"
+  },
+  "custody-controller-root-collection-failure.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cc-root-a14f618-r1.xml",
+    "sha256": "40b5a37bf3b9c0725d3a162e59fb38a7599946005be93136f6a0db729d4077e9",
+    "qualification": "a14f618: nonexistent test filename; exit 1; zero tests is not pass"
+  },
+  "custody-controller-root-a14f618-failure.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cc-root-a14f618-r2.xml",
+    "sha256": "42aacd7b6827b654afdbdb5d0963b2f9c7a9bfc3308736ea21d3b4d93d81a797",
+    "qualification": "a14f618: 70 tests, 11 AIRS failures from missing PyYAML; all 42 non-AIRS checks passed"
+  },
+  "m4m5-agent-5635e7d.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-5635e7d-20260913.xml",
+    "sha256": "a5a114bea5942b024f8f10e555d3bd25bb9abe3392b20ea54e785dff4d72fc06",
+    "qualification": "5635e7d frozen source; agent 47 checks overlap root coverage"
+  },
+  "m4m5-agent-verification.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-5635e7d-verification.json",
+    "sha256": "3fa35302ee35e7616d4802578743d6a8001b08dd1e7f9f07e4a307a8b7d499ad",
+    "qualification": "agent source hashes, interpreter and report qualification"
+  },
+  "airs-agent-20bdd2e.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\fresh-airs-custodian-checks\\final-hf-r2-junit.xml",
+    "sha256": "bf66b704687fe0e1bfc9f0a67c02746b3b782eb2bf99c96361616caa2750aa7c",
+    "qualification": "20bdd2e agent 28 checks used globally installed PyYAML; dependency omission retained"
+  },
+  "compat-agent-main.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\regression-compat-tests-2.xml",
+    "sha256": "d71a38cc97b451ccc61193133a18dea195f9760705d8be2b0c84926f1195a13a",
+    "qualification": "agent targeted tests before 6d5b80c; current root source tested separately"
+  },
+  "compat-agent-related.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\regression-compat-related-1.xml",
+    "sha256": "6ff436d9a76833652f3bd35b5ebc20974be27d9a983585067c3acd9c6ad1b3a7",
+    "qualification": "agent related tests before 6d5b80c; current root source tested separately"
+  },
+  "custody-compat-root-global-pytest7.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\yaml-compat-root-286f5b1-r1.xml",
+    "sha256": "6ae3f0947b174229381f6b69ecd43798d0a6558249fd995352c28c8c7c4d5913",
+    "qualification": "286f5b1; existing global pytest 7.2.2 below declared dev requirement; retained but not final declared-environment check"
+  },
+  "custody-compat-root-286f5b1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\yaml-compat-root-286f5b1-r2.xml",
+    "sha256": "c3ae40bd1d7ef88d4ed2129d14884b7ca08df0eb152a98d2c813e271e26ac523",
+    "qualification": "286f5b1; separate environment with pytest 8.4.2 and PyYAML 6.0.3 copied from installed distributions; not a fresh PyPI installation"
+  },
+  "environment.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\semantic-custody-environment-20260913.json",
+    "sha256": "bdb087b6c4f6586685815191a3b71761274249cee9171d877cd6a06b9941364a",
+    "qualification": "measured runtime versions and explicit TLS installation failure"
+  },
+  "offline-dependency-copy.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-offline-dependency-copy.json",
+    "sha256": "4f8b7c7ff8d6c16fcc53b8bd446f5b3a8fd50e5718e41c5f1a5d6dc7d71c7795",
+    "qualification": "exact copied local installed distribution files and SHA256; original official wheel provenance unknown"
+  },
+  "airs-github-acquisition-attempt.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\data-source-metadata\\airsbench-controlled-acquisition-attempt.json",
+    "sha256": "e4d5d0f03502e76bf9bfbe957db285c344c94197ed73c7e7d69dc507765cf84e",
+    "qualification": "fixed-schema metadata only; failed archive and license acquisitions"
+  },
+  "airs-hf-acquisition.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\data-source-metadata\\airsbench-hf-controlled-acquisition.json",
+    "sha256": "1918d0651c95d7c919c0b42b9325c06f1fb337f6513d819cd883fd2aec0eda35",
+    "qualification": "fixed-schema metadata only; controlled official HF acquisition"
+  },
+  "airs-hf-receipt.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\data-source-metadata\\airsbench-hf-controlled-receipt.json",
+    "sha256": "146db5fbf84dbc45dda40139a1849ebb549d6c80ed5211a1a17d69b3d6fcc8c2",
+    "qualification": "20 source records; no validation eligible records"
+  },
+  "publish_semantic_custody_checkpoint_20260913.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\publish_semantic_custody_checkpoint_20260913.py",
+    "sha256": "8a1e0125fe6d8d27b1d7b58ac4ee164fb0e6c8f66cbb333448f81345d6535ea8",
+    "qualification": "append-only publisher"
+  }
+}

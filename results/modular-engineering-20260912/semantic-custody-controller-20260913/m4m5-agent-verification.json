@@ -1,0 +1,32 @@
+{
+  "schema": "m4-m5-train-controller-verification-v1",
+  "commit": "5635e7d09215f349015bde7c62ff51385094b362",
+  "source_hashes": {
+    "docs/MODULAR-M4M5-TRAIN-CONTROLLER.md": "86CFB17DD5B4FB3A558AB7201083B7DF20EB788F59FAD1B8ED4010F3023FBC01",
+    "tests/test_modular_combination_train_controller.py": "866E503A2F5CBE6BB9FA88D0B5642FDD6B00B30A22B1342C96FBF10E5B878D1E",
+    "research_loop/modular/combination_train_controller.py": "4DE47E9AB40BFDBA378140BD22013A8C075AB9AF597FC6CB21B4984372985101"
+  },
+  "source_unchanged_during_run": true,
+  "clean_worktree": true,
+  "junit_path": "E:/_ryanDev/AI/research-loop-modular/work/m4m5-train-5635e7d-20260913.xml",
+  "junit_sha256": "A5A114BEA5942B024F8F10E555D3BD25BB9ABE3392B20EA54E785DFF4D72FC06",
+  "tests": 47,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "junit_seconds": 291.92,
+  "paid_model_calls": 0,
+  "model_transport": "mocked process transport through real CodexModelPort",
+  "execution": "real pinned Docker execution over synthetic public CSV fixtures",
+  "scoring": "independent synthetic frozen rubric transport",
+  "scorer_token_accounting": "transport_not_provided",
+  "scientific_effectiveness_proven": false,
+  "validation_opened": false,
+  "scope": "pair:M4+M5 train controller only; full combination obligations unchanged",
+  "limitations": [
+    "Synthetic integration evidence, not benchmark scientific effect.",
+    "Independent component keys do not prove separate operating-system processes.",
+    "Global model token allocation; actual per-cell use may differ.",
+    "Scorer token usage unavailable and never represented as zero."
+  ]
+}

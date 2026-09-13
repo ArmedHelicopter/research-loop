@@ -1,0 +1,46 @@
+{
+  "schema": "semantic-custody-runtime-environment-v1",
+  "earlier_failed_runtime": {
+    "executable": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\work\\venv\\Scripts\\python.exe",
+    "missing_distribution": "PyYAML",
+    "affected_report": "cc-root-a14f618-r2.xml",
+    "failures": 11
+  },
+  "isolated_installation_attempt": {
+    "environment": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv",
+    "status": "failed",
+    "pip_error_class": "SSLError/SSLEOFError",
+    "native_curl_exit_code": 35,
+    "tls_verification_disabled": false,
+    "new_dependencies_installed": false
+  },
+  "qualification": "Existing local distributions; original wheel provenance unavailable; not a fresh installation proof.",
+  "intermediate_global_runtime": {
+    "executable": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "version": "3.12.6 (tags/v3.12.6:a4a2d2b, Sep  6 2024, 20:11:23) [MSC v.1940 64 bit (AMD64)]",
+    "packages": {
+      "pytest": {
+        "version": "7.2.2",
+        "distribution_root": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages",
+        "installer": "pip\n",
+        "direct_url_present": false
+      },
+      "PyYAML": {
+        "version": "6.0.3",
+        "distribution_root": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages",
+        "installer": "pip\n",
+        "direct_url_present": false
+      }
+    },
+    "qualification": "pytest 7.2.2 does not satisfy declared dev>=8; not final dependency-compliant verification"
+  },
+  "final_check_runtime": {
+    "executable": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+    "version": "3.12.6 (tags/v3.12.6:a4a2d2b, Sep  6 2024, 20:11:23) [MSC v.1940 64 bit (AMD64)]",
+    "packages": {
+      "pytest": "8.4.2",
+      "PyYAML": "6.0.3"
+    },
+    "dependency_provisioning": "offline copy of installed distributions; full source/destination file SHA256 in offline-dependency-copy.json"
+  }
+}
