@@ -484,3 +484,68 @@ def test_coherently_rehashed_final_response_cannot_replace_original_provider_out
         PanelReceiptVerifier()._verify_runtime(forged.runtime,forged.cell)
         with pytest.raises(ContractError,match='provider'):issue_lineage_retrieval_improvement_score_input(authority=EXECUTION,result=forged,**replay_args(setup,run,forged))
     finally:path.write_bytes(raw)
+
+
+@pytest.mark.parametrize('kind',['state','corpus'])
+def test_rehashed_verified_unknown_source_cost_cannot_issue_successful_target(grid,kind):
+    from research_loop.modular.panel_receipts import PanelReceiptVerifier
+    setup,run=grid;result=run.results[0];trace=result.runtime.trace_path
+    source=trace.parent.parent/('source-verification.json' if kind=='state' else 'retrieval/source-verification.json')
+    original_trace=trace.read_bytes();original_source=source.read_bytes()
+    verifier=setup['verifiers'][result.cell.coverage_id] if kind=='state' else setup['corpus']
+    b=json.loads(original_source)
+    for row,authority in zip(b['calls'],verifier.authorities,strict=True):
+        response=row['response']['body'];response['cost_units']=None
+        row['response']=authority.authority.issue({k:v for k,v in response.items() if k!='authority'}).data()
+        row['cost_units']=None;row['cost_unknown']=True
+    try:
+        source.write_text(canonical(b)+'\n',encoding='utf-8',newline='\n')
+        digest=hashlib.sha256(source.read_bytes()).hexdigest()
+        def mutate(rows):
+            event=next(e for e in rows if e['stage']=='lineage_retrieval_improvement_transition')
+            event['data']['source_sha256' if kind=='state' else 'retrieval_source_sha256']=digest
+        tail=_rewrite_trace(trace,mutate);forged=replace(result,runtime=replace(result.runtime,trace_digest=tail))
+        PanelReceiptVerifier()._verify_runtime(forged.runtime,forged.cell)
+        with pytest.raises(ContractError,match='unknown.*cost'):
+            issued=issue_lineage_retrieval_improvement_score_input(authority=EXECUTION,result=forged,**replay_args(setup,run,forged))
+            proof=setup['root']/('cost-'+kind+'-counterexample.json')
+            proof.write_text(canonical({'generic_replay_passed':True,'score_input_issued':True,'score_input':issued.data(),
+                'forged_source_sha256':digest,'forged_trace_digest':tail,'original_source_sha256':hashlib.sha256(original_source).hexdigest(),
+                'original_trace_sha256':hashlib.sha256(original_trace).hexdigest()})+'\n',encoding='utf-8')
+            (setup['root']/('cost-'+kind+'-forged-source.json')).write_bytes(source.read_bytes())
+            (setup['root']/('cost-'+kind+'-forged-trace.jsonl')).write_bytes(trace.read_bytes())
+    finally:
+        source.write_bytes(original_source);trace.write_bytes(original_trace)
+
+
+
+def test_rehashed_build_unknown_source_cost_cannot_pass_canonical_replay(grid):
+    setup,run=grid;build=run.builds[1];root=build.root;source=root/'source/source-verification.json';trace=root/'proposal/trace.jsonl'
+    before={p:p.read_bytes() for p in root.rglob('*') if p.is_file()}
+    b=json.loads(source.read_bytes());verifier=setup['verifiers'][build.record.data()['recipe']['pair']]
+    for row,authority in zip(b['calls'],verifier.authorities,strict=True):
+        response=row['response']['body'];response['cost_units']=None
+        row['response']=authority.authority.issue({k:v for k,v in response.items() if k!='authority'}).data()
+        row['cost_units']=None;row['cost_unknown']=True
+    try:
+        source.write_text(canonical(b)+'\n',encoding='utf-8',newline='\n')
+        digest=hashlib.sha256(source.read_bytes()).hexdigest()
+        def mutate(rows):
+            next(e for e in rows if e['stage']=='state_improvement_history')['data']['source_sha256']=digest
+        _rewrite_trace(trace,mutate)
+        metadata=build.record.data();metadata['files']={p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in before if p!=root/'build-receipt.json'}
+        forged=replace(build,record=FrozenRecord.from_dict(metadata))
+        (root/'build-receipt.json').write_text(forged.record.encoded+'\n',encoding='utf-8',newline='\n')
+        verify_trace(trace)
+        from research_loop.modular.metaprogram_training import _phase_rows
+        _phase_rows(root/'phase.jsonl')
+        with pytest.raises(ContractError,match='unknown.*cost'):
+            candidate=verify_build(forged,**build_args(setup,run,forged))
+            (setup['root']/'cost-build-counterexample.json').write_text(canonical({'generic_trace_passed':True,
+                'generic_phase_passed':True,'canonical_build_replay_passed':True,'candidate_digest':candidate.digest,
+                'forged_build':forged.record.data(),'original_build_digest':build.record.content_hash})+'\n',encoding='utf-8')
+            (setup['root']/'cost-build-forged-source.json').write_bytes(source.read_bytes())
+            (setup['root']/'cost-build-forged-trace.jsonl').write_bytes(trace.read_bytes())
+    finally:
+        for p,raw in before.items():p.write_bytes(raw)
