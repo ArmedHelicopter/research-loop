@@ -4,6 +4,7 @@ from __future__ import annotations
 from dataclasses import replace
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -93,6 +94,30 @@ def test_actual_stdio_worker_scores_two_benchmark_cells_without_exposing_private
     assert len(journal_rows) == 4
     with pytest.raises(ContractError, match="hash mismatch"):
         _load(path, "0" * 64)
+
+
+def test_utf8_signed_candidate_survives_a_gbk_worker_locale(tmp_path):
+    args, _ = _material(tmp_path)
+    value = _config(tmp_path, args)
+    path = tmp_path / "worker.json"
+    path.write_text(canonical(value), encoding="utf-8")
+    cell = args["panel"].cells[0]
+    # This fixture exercises the signed transport contract, not a claim about
+    # the scientific quality or provenance of generated benchmark answers.
+    body = args["linked_inputs"][cell.key].data()["body"]
+    body["candidate"]["answer"] = "中文观测：均值 α = 1；保留阴性结果 🔬"
+    body["candidate_digest"] = digest(body["candidate"])
+    linked = EXEC.issue(body)
+    worker = tmp_path / "worker.jsonl"
+    client = LinkedScorerProcessClient(panel=args["panel"], command=_command(path, worker),
+        journal_path=tmp_path / "client.jsonl", environment={**os.environ, "PYTHONIOENCODING":"gbk"})
+    try:
+        receipt = client.submit(cell_key=cell.key, linked_input=linked)
+    finally:
+        client.close()
+    verify_linked_adapted_receipt(receipt, authority_keys={SCORER.authority_id:SCORER.key}, config=args["config"],
+        panel=args["panel"], cell=cell, linked_input=linked, execution_authority_keys={EXEC.authority_id:EXEC.key})
+    assert [json.loads(line)["status"] for line in worker.read_text(encoding="utf-8").splitlines()] == ["reserved","succeeded"]
 
 
 @pytest.mark.parametrize("fault", ["validation", "scorer", "handles", "store_row"])

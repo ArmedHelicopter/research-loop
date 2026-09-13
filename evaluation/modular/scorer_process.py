@@ -298,7 +298,16 @@ class ScorerWorker:
         return base | {"status": "succeeded", "receipt": receipt.receipt.data()}
 
 
-def serve(worker: ScorerWorker, input_stream: TextIO = sys.stdin, output_stream: TextIO = sys.stdout) -> int:
+def serve(worker: ScorerWorker, input_stream: TextIO | None = None, output_stream: TextIO | None = None) -> int:
+    # The signed JSON wire format is UTF-8. A client-side encoding argument
+    # does not configure the child's stdin/stdout on Windows (often GBK).
+    # Preserve explicit caller-owned test streams; configure only real stdio.
+    if input_stream is None:
+        input_stream = sys.stdin
+        input_stream.reconfigure(encoding="utf-8", errors="strict")
+    if output_stream is None:
+        output_stream = sys.stdout
+        output_stream.reconfigure(encoding="utf-8", errors="strict", newline="\n")
     for line in input_stream:
         try:
             response = worker.respond(json.loads(line))
