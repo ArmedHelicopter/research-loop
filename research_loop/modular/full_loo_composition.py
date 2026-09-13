@@ -17,7 +17,8 @@ from research_loop.ontology import ContractError
 
 
 MODULES = ("M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9")
-SCHEMA = "c4-full-loo-composition-v1"
+SCHEMA = "c4-full-loo-composition-v2"
+LEGACY_SCHEMA = "c4-full-loo-composition-v1"
 EXPOSURE_CLASS = "c4-history-build-target-boundary-v1"
 
 # An on level must be removed at both stages for a whole-pipeline F-Mi.  M9 is
@@ -56,7 +57,7 @@ def _levels(enabled: Iterable[str], stage: str) -> dict[str, int]:
     return {name: int(name in active and stage in BOUNDARIES[name]) for name in MODULES}
 
 
-def _bindings(active: set[str], procedure: str, stage: str) -> list[dict]:
+def _bindings(active: set[str], procedure: str, stage: str, schema: str) -> list[dict]:
     """Every operation states the next consumer before any fresh execution."""
     ordinary = procedure in {"baseline_b0", "ordinary_matched_control"}
     staged = {name for name in active if stage in BOUNDARIES[name]}
@@ -87,12 +88,19 @@ def _bindings(active: set[str], procedure: str, stage: str) -> list[dict]:
     ]
     if stage == "history_build":
         rows.append({"operation": names["M9"], "purpose": "freeze_train_candidate", "output_consumer": "candidate_package"})
+    if schema == SCHEMA:
+        if "M4" not in staged:
+            rows[3]["purpose"] = "ordinary_plan_before_measurement"
+        if "M5" not in staged:
+            rows[4].update(purpose="ordinary_first_critique", output_consumer=names["M5"] + "_b")
+            rows[5]["purpose"] = "ordinary_sequential_critique_with_first_response"
+            rows[6]["purpose"] = "assemble_ordinary_revision_context"
     return rows
 
 
 def _arm(*, arm_id: str, procedure: str, enabled: Iterable[str], comparison: str,
          history_binding_digest: str, builder_digest: str, history_input_budget: int,
-         removal: str | None = None, status: str = "executable", reason: str | None = None) -> dict:
+         schema: str, removal: str | None = None, status: str = "executable", reason: str | None = None) -> dict:
     active = tuple(sorted(enabled))
     row = {
         "id": arm_id, "status": status, "procedure": procedure, "comparison": comparison,
@@ -107,8 +115,8 @@ def _arm(*, arm_id: str, procedure: str, enabled: Iterable[str], comparison: str
         "history_slot_schedule": list(_HISTORY_SLOT_SCHEDULE),
         "target_slot_schedule": (["solver_analysis", "solver_final"] if procedure == "baseline_b0"
                                  else list(_TARGET_SLOT_SCHEDULE)),
-        "history_operation_bindings": ([] if status != "executable" else _bindings(active, procedure, "history_build")),
-        "target_operation_bindings": ([] if status != "executable" else _bindings(active, procedure, "target")),
+        "history_operation_bindings": ([] if status != "executable" else _bindings(active, procedure, "history_build", schema)),
+        "target_operation_bindings": ([] if status != "executable" else _bindings(active, procedure, "target", schema)),
         "operations": ([] if status != "executable" else
                        list(_CONTROL_OPERATIONS) if procedure == "ordinary_matched_control" else
                        [] if procedure == "baseline_b0" else
@@ -180,7 +188,7 @@ class FrozenFullLooPlan:
 
 
 def _make_record(*, baseline_digest: str, train_task_digests: Iterable[str], issue_contract_ids: Iterable[str],
-                 history_binding_digest: str, builder_digest: str, history_input_budget: int) -> FrozenRecord:
+                 history_binding_digest: str, builder_digest: str, history_input_budget: int, schema: str = SCHEMA) -> FrozenRecord:
     """Freeze full, every requested LOO, B0, and the useful matched control."""
     tasks = tuple(train_task_digests)
     issues = tuple(issue_contract_ids)
@@ -192,16 +200,22 @@ def _make_record(*, baseline_digest: str, train_task_digests: Iterable[str], iss
     full = set(MODULES)
     if any(not isinstance(value, str) or len(value) != 64 for value in (history_binding_digest, builder_digest)) or type(history_input_budget) is not int or history_input_budget < 1:
         raise ContractError("C4 requires frozen history binding, builder version, and input budget")
-    common = {"history_binding_digest": history_binding_digest, "builder_digest": builder_digest, "history_input_budget": history_input_budget}
+    common = {"history_binding_digest": history_binding_digest, "builder_digest": builder_digest, "history_input_budget": history_input_budget, "schema": schema}
     cells = [_arm(arm_id="full", procedure="full_bundle", enabled=full, comparison="F", **common)]
     for module in MODULES:
         enabled = full - {module}
         try:
             compatibility.arm(enabled)
         except ContractError as exc:
+            # A process-local set iteration error is not a canonical structural
+            # reason. v2 records every missing direct dependency in fixed order.
+            reason = str(exc) if schema == LEGACY_SCHEMA else "; ".join(
+                spec['id'] + ' requires ' + ','.join(sorted(set(spec['requires']) - enabled))
+                for spec in compatibility.manifest().data()['modules']
+                if spec['id'] in enabled and set(spec['requires']) - enabled)
             cells.append(_arm(arm_id="without-" + module, procedure="unavailable", enabled=enabled,
                               **common,
-                              comparison="F-minus", removal=module, status="structurally_unavailable", reason=str(exc)))
+                              comparison="F-minus", removal=module, status="structurally_unavailable", reason=reason))
         else:
             cells.append(_arm(arm_id="without-" + module, procedure="full_loo", enabled=enabled, **common,
                               comparison="F-minus", removal=module))
@@ -211,12 +225,13 @@ def _make_record(*, baseline_digest: str, train_task_digests: Iterable[str], iss
     ]
     allocation = derive_allocation(cells, target_count=len(tasks))
     body = {
-        "schema": SCHEMA, "domain": "train", "baseline_digest": baseline_digest,
+        "schema": schema, "domain": "train", "baseline_digest": baseline_digest,
         "compatibility": compatibility.manifest().data(), "modules": list(MODULES),
         "boundaries": {k: list(v) for k, v in BOUNDARIES.items()}, "cells": cells,
         "train_task_digests": list(tasks), "issue_contract_ids": list(issues), "allocation": allocation,
         "candidate_sharing_rule": "same exposure class and identical complete history/build factor settings only",
-        "prediction_review_order": "freeze_predictions_before_fresh_measurements_and_seal_reviews_before_cross_review_reveal",
+        "prediction_review_order": ("freeze_predictions_before_fresh_measurements_and_seal_reviews_before_cross_review_reveal" if schema == LEGACY_SCHEMA else
+            "freeze_before_fresh_measurements; independent_reviews_seal_both_before_reveal; ordinary_critiques_are_sequential"),
         "scorer_scope": "independent_synthetic_train_only_v1", "validation_opened": False,
         "scientific_effectiveness_proven": False,
     }
@@ -235,12 +250,19 @@ def validate_full_loo(record: FrozenRecord) -> None:
     required = {"schema", "domain", "baseline_digest", "compatibility", "modules", "boundaries", "cells",
                 "train_task_digests", "issue_contract_ids", "allocation", "candidate_sharing_rule",
                 "prediction_review_order", "scorer_scope", "validation_opened", "scientific_effectiveness_proven"}
-    if set(body) != required or body["schema"] != SCHEMA or body["domain"] != "train" or body["modules"] != list(MODULES):
+    if set(body) != required or body["schema"] not in {SCHEMA, LEGACY_SCHEMA} or body["domain"] != "train" or body["modules"] != list(MODULES):
         raise ContractError("C4 plan schema or domain drift")
     if body["boundaries"] != {k: list(v) for k, v in BOUNDARIES.items()}:
         raise ContractError("per-module history/build versus target boundary drift")
     first = body["cells"][0]
-    rebuilt = _make_record(baseline_digest=body["baseline_digest"], train_task_digests=body["train_task_digests"], issue_contract_ids=body["issue_contract_ids"], history_binding_digest=first["history_binding_digest"], builder_digest=first["builder_digest"], history_input_budget=first["history_input_budget"])
+    rebuilt = _make_record(baseline_digest=body["baseline_digest"], train_task_digests=body["train_task_digests"], issue_contract_ids=body["issue_contract_ids"], history_binding_digest=first["history_binding_digest"], builder_digest=first["builder_digest"], history_input_budget=first["history_input_budget"], schema=body['schema'])
+    if body['schema'] == LEGACY_SCHEMA:
+        old = next(row for row in body['cells'] if row['id'] == 'without-M2')
+        if old['reason'] not in {'M3 requires M2', 'M9 requires M2'}:
+            raise ContractError('unknown legacy structural dependency reason')
+        data = rebuilt.data()
+        next(row for row in data['cells'] if row['id'] == 'without-M2')['reason'] = old['reason']
+        rebuilt = FrozenRecord.from_dict(data)
     if rebuilt != record:
         raise ContractError("C4 cells, allocation, controls, or frozen policy drift")
 

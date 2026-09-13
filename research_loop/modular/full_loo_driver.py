@@ -110,8 +110,11 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
 def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_material, source_verifier, corpus_verifier, broker, inputs, ledger):
     if type(result) is not FullLooResult or type(ledger) is not FrozenProviderLedger:
         raise ContractError('C4 exact original stage and provider ledger required')
+    if type(source_verifier) is not AdmissionMaterialVerifier or type(corpus_verifier) is not DualMaterialVerifier:
+        raise ContractError('C4 replay requires exact source authority verifiers')
     root=result.root;cell=result.cell;b=result.record.data()
-    if (_read_record(root/'receipt.json')!=result.record or b!={**b,'plan_digest':plan.record.content_hash,'recipe':recipe,'stage':stage,'cell':cell.data()}
+    if (set(b)!={'schema','plan_digest','recipe','stage','cell','status','reason','candidate_digest','files'} or b['schema']!='c4-stage-receipt-v1'
+            or _read_record(root/'receipt.json')!=result.record or b!={**b,'plan_digest':plan.record.content_hash,'recipe':recipe,'stage':stage,'cell':cell.data()}
             or b['status']!='succeeded' or b['files']!=files(root) or cell.task_digest!=task.content_hash or cell.identity!=task.identity
             or cell.package_digest!=package.digest or cell.runtime_arm!=runtime_arm(plan.composition,recipe,stage)):
         raise ContractError('C4 original bytes, recipe, task, package or runtime activation drift')
@@ -175,6 +178,9 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
     else:
         PanelReceiptVerifier()._verify_runtime(result.runtime,cell)
         state=_solver_journal_state(events);_compare_solver_result(result.solver,state);_verify_solver_files(state,events,path,material.state())
+        decision=result.solver.decision.data()
+        if decision['decision']!='unknown' or decision['scientific_validated'] is not False or decision['programme_complete'] is not False:
+            raise ContractError('C4 engineering solve cannot claim P0-qualified scientific execution')
         execution=state['execution']
         if execution is None:raise ContractError('C4 target lacks actual restricted solver execution')
         argv=execution.record.data().get('argv')

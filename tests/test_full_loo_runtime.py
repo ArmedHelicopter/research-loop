@@ -103,6 +103,8 @@ def prepare(root, patch, fault=None):
 
 
 def service(setup,stack,panel,fault=None):
+    setup['scorer_factory_calls']=setup.get('scorer_factory_calls',0)+1
+    if fault=='scorer_startup':raise OSError('synthetic scorer factory startup outage')
     root=setup['root'];b=setup['plan'].data();rubric=ScorerConfig(FrozenRecord.from_dict(b['scorer']))
     (root/'execution.key').write_bytes(EXECUTION.key);(root/'score.key').write_bytes(SCORER.key)
     server={'schema':'c4-full-loo-scorer-process-config-v1','panel':serialize_combination_panel(panel,full_loo=True),
@@ -116,7 +118,9 @@ def service(setup,stack,panel,fault=None):
     client=CombinationScorerProcessClient(panel=panel,config=rubric,full_loo=True,command=command,journal_path=root/'c4-client.jsonl',
         task_handle_bindings=b['scorer_handle_bindings'],execution_authority_keys={EXECUTION.authority_id:EXECUTION.key},
         scorer_authority_keys={SCORER.authority_id:SCORER.key},environment={**os.environ,'PYTHONIOENCODING':'gbk'})
-    stack.callback(client.close);return client
+    setup.setdefault('clients',[]).append(client)
+    if fault=='scorer_scope':client.full_loo=False
+    return client
 
 
 def invoke(setup,patch,fault=None):
@@ -145,6 +149,9 @@ def test_actual_complete_22_cell_composition(grid):
     assert b['actual']=={'model_calls':169,'builder_executions':9,'independent_source_qualification_calls':62,'corpus_qualification_calls':58,
         'retrieval_requests':87,'auxiliary_docker_attempts':58,'solver_docker_attempts':22,'docker_attempts':80,'scorer_calls':22}
     assert not any(b['unused'].values()) and len(setup['seen'])==169 and len(setup['state_calls'])==62 and len(setup['corpus_calls'])==58
+    assert b['scorer_process']['closed'] is True and b['scorer_process']['close_attempts']==1
+    assert all(c.process.poll() is not None for c in setup['clients'])
+    assert b['p0']['required'] is True and b['p0']['scientific_execution_qualified'] is False
     assert len(setup['retrieval_calls'])==87
     assert b['unchanged_parent_package_digest']==setup['plan'].parent.digest and b['candidate_activation']=='none_offline_experiment'
     recipes=setup['plan'].composition.data()['cells'];by_id={r['id']:r for r in recipes}
@@ -251,3 +258,15 @@ def test_original_input_and_candidate_barrier_bytes_replayed(grid):
         b=json.loads(raw);b['candidate_selections']['full']='0'*64;barrier.write_text(canonical(b)+'\n',encoding='utf-8')
         with pytest.raises(ContractError):verify_full_loo_cell(r,barrier=run.barrier,panel=run.panel,ledger=run.ledger)
     finally:barrier.write_bytes(raw)
+
+
+@pytest.mark.parametrize('fault',['scorer_startup','scorer_scope'])
+def test_scorer_startup_rejection_closes_22_executed_rows_without_rpc(tmp_path,monkeypatch,fault):
+    setup=prepare(tmp_path,monkeypatch,fault);run=invoke(setup,monkeypatch,fault);b=run.receipt.data()
+    assert len(run.results)==22 and all(r.record.data()['status']=='succeeded' for r in run.results)
+    assert b['status']=='inconclusive' and all(r['status']=='scoring_blocked' for r in b['targets'])
+    assert b['scorer_process']['startup_attempts']==1 and b['scorer_process']['startup_status']=='failed'
+    assert b['actual']['scorer_calls']==0 and b['unused']['scorer_calls']==22 and not run.scores
+    if fault=='scorer_scope':
+        assert b['scorer_process']['closed'] is True
+        assert all(c.process.poll() is not None and c.states=={} for c in setup['clients'])

@@ -41,3 +41,28 @@ def test_c4_rejects_mutation_and_module_smuggling():
         compose_common_solve_inputs(control, {"provenance_retrieval": {}})
     result = compose_common_solve_inputs(control, {name: {} for name in control["operations"]})
     assert result.data()["procedure"] == "ordinary_matched_control"
+
+
+def test_v2_declares_sequential_ordinary_critique_and_canonical_dependencies():
+    body=plan().data();cells={r['id']:r for r in body['cells']}
+    assert body['schema']=='c4-full-loo-composition-v2'
+    assert cells['without-M2']['reason']=='M3 requires M2; M9 requires M2'
+    for name in ('B0','ordinary-control','without-M5'):
+        rows=cells[name]['history_operation_bindings']
+        assert rows[4]['output_consumer']=='ordinary_critique_b'
+        assert rows[5]['purpose']=='ordinary_sequential_critique_with_first_response'
+    assert cells['full']['history_operation_bindings'][5]['purpose']=='sealed_independent_review'
+
+
+def test_v2_roundtrip_is_independent_of_process_hash_seed(tmp_path):
+    import os
+    import subprocess
+    import sys
+    record=plan().record;path=tmp_path/'composition.json';path.write_text(record.encoded,encoding='utf-8')
+    code=('import sys; from pathlib import Path; from research_loop.modular.contracts import FrozenRecord; '
+        'from research_loop.modular.full_loo_composition import FrozenFullLooPlan; '
+        'print(FrozenFullLooPlan(FrozenRecord(Path(sys.argv[1]).read_text())).digest)')
+    for seed in ('1','2','17','99'):
+        result=subprocess.run([sys.executable,'-c',code,str(path)],capture_output=True,text=True,env={**os.environ,'PYTHONHASHSEED':seed})
+        assert result.returncode==0,result.stderr
+        assert result.stdout.strip()==record.content_hash

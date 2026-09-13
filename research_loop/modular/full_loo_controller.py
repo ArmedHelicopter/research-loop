@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 import json
 from research_loop.modular.contracts import FrozenRecord, DataIdentity
-from research_loop.modular.full_loo_composition import FrozenFullLooPlan, candidate_build_key
+from research_loop.modular.full_loo_composition import FrozenFullLooPlan, candidate_build_key, SCHEMA
 from research_loop.modular.full_loo_panel import FullLooPanel, OBLIGATION, runtime_arm
 from research_loop.modular.full_loo_modules import model_schemas
 from research_loop.modular.full_loo_driver import run_stage, verify_stage, files
@@ -57,6 +57,7 @@ class FrozenFullLooRuntimePlan:
                 or type(self.history) is not FrozenTrainHistory or b['history_binding']!=self.history.binding.data()):
             raise ContractError('exact C4 prospective TRAIN runtime plan required')
         self.history.verify();c=self.composition.data();_builder(self.fixed_builder)
+        if c['schema']!=SCHEMA:raise ContractError('C4 execution requires the v2 prospective procedure freeze')
         from research_loop.modular.experiments import registry
         if set(c['issue_contract_ids'])!=set(registry()):raise ContractError('C4 must retain all 48 original issue contracts by identity')
         if (c['cells'][0]['history_binding_digest']!=self.history.binding.content_hash or c['cells'][0]['builder_digest']!=self.fixed_builder.digest
@@ -125,7 +126,7 @@ class FullLooBarrier:
         return CandidatePackage(_read_record(match.root/'candidate.json'))
 
     def verify(self):
-        if type(self) is not FullLooBarrier or len(self.builds)!=len(recipes(self.plan)):raise ContractError('complete original C4 candidate barrier required')
+        if type(self) is not FullLooBarrier or type(self.plan) is not FrozenFullLooRuntimePlan or type(self.ledger) is not FrozenProviderLedger or len(self.builds)!=len(recipes(self.plan)):raise ContractError('complete original C4 candidate barrier required')
         self.plan.check_packets(self.packets);self.ledger.verify()
         for verifier,key in [(self.source_verifier,'source_verifier_binding'),(self.corpus_verifier,'corpus_verifier_binding')]:
             if verifier.binding().data()!=self.plan.data()[key]:raise ContractError('C4 replay source authority drift')
@@ -145,7 +146,7 @@ class FullLooBarrier:
         if suffix and (suffix[0]['stage']!='candidate_barrier' or suffix[0]['data']!={'digest':self.record.content_hash}):
             raise ContractError('C4 target work precedes candidate barrier')
         planned=[(r['id'],p.task.content_hash) for r in self.plan.composition.data()['cells'] if r['status']=='executable' for p in self.packets]
-        reserved=[];active=None;sealed=False;scorer=None;scored=set();completed={}
+        reserved=[];active=None;sealed=False;scorer=None;scored=set();completed={};startup=None;closed=False
         for e in suffix[1:]:
             d=e['data'];stage=e['stage']
             if stage in {'target_reserved','target_blocked'}:
@@ -161,11 +162,20 @@ class FullLooBarrier:
                 sealed=True
             elif stage=='scorer_reserved':
                 key=(d['arm_id'],d['task_digest'])
-                if not sealed or scorer is not None or key in scored or completed.get(key,{}).get('status')!='succeeded':raise ContractError('C4 scorer before all targets sealed')
+                if not sealed or startup!='ready' or closed or scorer is not None or key in scored or completed.get(key,{}).get('status')!='succeeded':raise ContractError('C4 scorer before all targets sealed or after rejected startup')
                 scored.add(key);scorer=key
             elif stage=='scorer_completed':
                 if scorer!=(d['arm_id'],d['task_digest']):raise ContractError('C4 unmatched scorer completion')
                 scorer=None
+            elif stage=='scorer_startup_reserved':
+                if not sealed or startup is not None:raise ContractError('C4 scorer startup is not a unique sealed opportunity')
+                startup='reserved'
+            elif stage=='scorer_startup_completed':
+                if startup!='reserved' or d['status'] not in {'ready','failed'}:raise ContractError('C4 scorer startup completion drift')
+                startup=d['status']
+            elif stage=='scorer_closed':
+                if startup not in {'ready','failed'} or scorer is not None or closed:raise ContractError('C4 scorer cleanup order drift')
+                closed=True
             else:raise ContractError('unknown C4 controller side effect')
         for r,recipe in zip(self.builds,recipes(self.plan),strict=True):
             verify_stage(r,plan=self.plan,recipe=recipe,stage='history_build',task=self.plan.history.task,package=self.plan.parent,
@@ -304,25 +314,47 @@ def run_full_loo_train(plan, *, prospective_exporter, snapshot_root, export_root
         results.append(r);row.update(status=r.record.data()['status'],reason=r.record.data()['reason']);poison=poison or unknown(r)
         journal.append('target_completed',{**key,'digest':r.record.content_hash,'status':row['status']});persist()
     ledger=FrozenProviderLedger.freeze(model,root/'target-provider-ledger.json');journal.append('target_ledger_sealed',{'digest':ledger.record.content_hash})
-    if panel is not None and not poison:
-        service=scorer_factory(panel)
-        if type(service) is not CombinationScorerProcessClient or service.full_loo is not True or service.panel!=panel:raise ContractError('exact closed C4 independent process scorer required')
-        service.assert_configuration(config=ScorerConfig(FrozenRecord.from_dict(b['scorer'])),task_handle_bindings=b['scorer_handle_bindings'],
-            execution_authority_keys={execution_authority.authority_id:execution_authority.key},scorer_authority_keys=scorer_authority_keys)
-    for row,r in zip(rows,results,strict=True):
-        if r is None or row['status']!='succeeded' or service is None:continue
-        key={'arm_id':row['arm_id'],'task_digest':row['task_digest']}
-        try:
-            verify_full_loo_cell(r,barrier=barrier,panel=panel,ledger=ledger)
-            scoreinput=execution_authority.issue(_score_input_payload(panel,r).data())
-            row['scorer_calls']=1;journal.append('scorer_reserved',{**key,'input_digest':scoreinput.content_hash})
-            score=service.score_combination(panel=panel,cell=r.cell,score_input=scoreinput)
-            verify_combination_adapted_receipt(score,authority_keys=scorer_authority_keys,config=service.config,panel=panel,cell=r.cell,
-                score_input=scoreinput,execution_authority_keys={execution_authority.authority_id:execution_authority.key})
-            scores.append(score);row.update(status='scored',score=score.receipt.data())
-        except Exception as exc:row.update(status='failed',reason=type(exc).__name__+': '+str(exc))
-        if row['scorer_calls']:journal.append('scorer_completed',{**key,'status':row['status']})
-        persist()
+    process_state={'startup_attempts':0,'startup_status':'not_started','close_attempts':0,'closed':None,'error':None}
+    ready=False
+    try:
+        if panel is not None and not poison:
+            process_state.update(startup_attempts=1,startup_status='reserved')
+            journal.append('scorer_startup_reserved',{'panel_digest':panel.digest});persist()
+            try:
+                service=scorer_factory(panel)
+                if type(service) is not CombinationScorerProcessClient or service.full_loo is not True or service.panel!=panel:
+                    raise ContractError('exact closed C4 independent process scorer required')
+                service.assert_configuration(config=ScorerConfig(FrozenRecord.from_dict(b['scorer'])),task_handle_bindings=b['scorer_handle_bindings'],
+                    execution_authority_keys={execution_authority.authority_id:execution_authority.key},scorer_authority_keys=scorer_authority_keys)
+                process_state['startup_status']='ready';ready=True
+            except Exception as exc:
+                process_state.update(startup_status='failed',error=type(exc).__name__+': '+str(exc))
+                for row in rows:
+                    if row['status']=='succeeded':row.update(execution_status='succeeded',status='scoring_blocked',reason='scorer_startup: '+process_state['error'])
+            journal.append('scorer_startup_completed',{'status':process_state['startup_status'],'error':process_state['error']});persist()
+        for row,r in zip(rows,results,strict=True):
+            if r is None or row['status']!='succeeded' or not ready:continue
+            key={'arm_id':row['arm_id'],'task_digest':row['task_digest']}
+            try:
+                verify_full_loo_cell(r,barrier=barrier,panel=panel,ledger=ledger)
+                scoreinput=execution_authority.issue(_score_input_payload(panel,r).data())
+                row['scorer_calls']=1;journal.append('scorer_reserved',{**key,'input_digest':scoreinput.content_hash})
+                score=service.score_combination(panel=panel,cell=r.cell,score_input=scoreinput)
+                verify_combination_adapted_receipt(score,authority_keys=scorer_authority_keys,config=service.config,panel=panel,cell=r.cell,
+                    score_input=scoreinput,execution_authority_keys={execution_authority.authority_id:execution_authority.key})
+                scores.append(score);row.update(status='scored',score=score.receipt.data())
+            except Exception as exc:row.update(status='failed',reason=type(exc).__name__+': '+str(exc))
+            if row['scorer_calls']:journal.append('scorer_completed',{**key,'status':row['status']})
+            persist()
+    finally:
+        if service is not None:
+            process_state['close_attempts']=1
+            try:
+                service.close()
+                process_state['closed']=(service.process.poll() is not None) if isinstance(service,CombinationScorerProcessClient) else True
+            except Exception as exc:
+                process_state.update(closed=False,close_error=type(exc).__name__+': '+str(exc))
+            journal.append('scorer_closed',{'closed':process_state['closed']});persist()
     stages=[*builds,*[r for r in results if r is not None]]
     sourcecalls=[];corpuscalls=[];aux=solvercalls=retrievalcalls=buildercalls=0
     for r in stages:
@@ -346,12 +378,13 @@ def run_full_loo_train(plan, *, prospective_exporter, snapshot_root, export_root
         'docker_attempts':aux+solvercalls,'scorer_calls':sum(r['scorer_calls'] for r in rows)}
     receipt=FrozenRecord.from_dict({'schema':'c4-run-receipt-v1','plan_digest':plan.record.content_hash,'allocation':allocation,'actual':actual,
         'unused':{k:allocation[k]-v for k,v in actual.items()},'builds':buildrows,'targets':rows,'structural':structural,'contrasts':contrasts,
-        'model_usage':_usage(model),'source_cost_unknown':any(c.get('cost_unknown',True) for c in sourcecalls+corpuscalls),
+        'model_usage':_usage(model),'scorer_process':process_state,'scorer_usage_unknown':bool(actual['scorer_calls']),'source_cost_unknown':any(c.get('cost_unknown',True) for c in sourcecalls+corpuscalls),
         'known_source_cost_units':sum(c.get('cost_units') or 0 for c in sourcecalls+corpuscalls),
         'retrieval_external_cost_unknown':bool(retrievalcalls),
         'history_acquisition':{'binding_digest':plan.history.binding.content_hash,
             'model_requests':len(plan.history.binding.data()['request_digests']),'cost':'inherited_unknown_excluded_from_current_recipe'},
+        'p0':{'control_plane':'RunSession.finish','required':True,'scientific_execution_qualified':False,'promotion_allowed':False},
         'candidate_activation':'none_offline_experiment','unchanged_parent_package_digest':plan.parent.digest,'validation_opened':False,'scientific_effectiveness_proven':False,
-        'status':'complete_train_engineering' if len(scores)==22 else 'inconclusive'})
+        'status':'complete_train_engineering' if len(scores)==22 and process_state['closed'] is True else 'inconclusive'})
     _exclusive(root/'controller-receipt.json',receipt)
     return FullLooRun(root,barrier,panel,tuple(builds),tuple(results),ledger,tuple(scores),receipt)
