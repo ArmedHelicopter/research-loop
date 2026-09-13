@@ -1,0 +1,153 @@
+{
+  "schema": "grok-native-acp-archive-byte-verification-v1",
+  "archive": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\grok-subscription-diagnostic-bridge",
+  "revision": "HEAD",
+  "payload_zip_entries": 26,
+  "archive_files": 28,
+  "disk_manifest_zip_equal": true,
+  "all_index_bytes_equal": true,
+  "all_commit_bytes_equal": true,
+  "private_files_included": false,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "size": 9,
+      "sha256": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992"
+    },
+    {
+      "path": "README.md",
+      "size": 2147,
+      "sha256": "e2d424c960acb24a5610bac9947e42a38f5ba2a6bef899b2a6c0de39434b966e"
+    },
+    {
+      "path": "closure-summary.json",
+      "size": 4026,
+      "sha256": "c62d4e1514a3cd16d59399ae740324791a0ab52b855825dc48224ad36df2ecbe"
+    },
+    {
+      "path": "evidence.zip",
+      "size": 160340,
+      "sha256": "4692b7aeb4908d457bcc525a2c871460f12cd164718ca2b4d8856c7b53fe84fb"
+    },
+    {
+      "path": "frozen-check-r1/after-source-sha256.json",
+      "size": 105715,
+      "sha256": "403a3d6dfffbf71e3f64f6e2df292fc1028e81c3438f979611a2c2a4bde870a7"
+    },
+    {
+      "path": "frozen-check-r1/before-source-sha256.json",
+      "size": 105715,
+      "sha256": "403a3d6dfffbf71e3f64f6e2df292fc1028e81c3438f979611a2c2a4bde870a7"
+    },
+    {
+      "path": "frozen-check-r1/pytest.stderr.bin",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "frozen-check-r1/pytest.stdout.bin",
+      "size": 276,
+      "sha256": "05414c188e20681349fb5c5b16c76bc4b2644bcfd28ef3b8d263aed20280b126"
+    },
+    {
+      "path": "frozen-check-r1/pytest.xml",
+      "size": 17230,
+      "sha256": "365b17ea97050a7a9dc5e0b436f466356d133fe88b2e5d4a513465472782ca55"
+    },
+    {
+      "path": "frozen-check-r1/receipt.json",
+      "size": 1738,
+      "sha256": "e837ea3c1d4ffa40bf203b1b870b4298c2332baad2577ef9bb13e77243c1c1f4"
+    },
+    {
+      "path": "payload-sha256.json",
+      "size": 4274,
+      "sha256": "6d9693f29c9bdf92d60fc2be0bd2b28ba9ade353f93432d5eb8665cbb807744c"
+    },
+    {
+      "path": "preliminary-r1/pytest.xml",
+      "size": 17362,
+      "sha256": "d7f1f9d300efda11e1312ad8c1cffed89267da51d937e1598d54e5716389d86c"
+    },
+    {
+      "path": "preliminary-r2/pytest.xml",
+      "size": 1375,
+      "sha256": "edd5db6328cce4926b26aed7f240b059f60199432d745019b3c7ba4076bd863b"
+    },
+    {
+      "path": "preliminary-r3/pytest.xml",
+      "size": 16310,
+      "sha256": "a0f0791de7fec4c84f89ed9b06fb7cec4966b7d729780b9e39d86583d8ae8e9c"
+    },
+    {
+      "path": "preliminary-r4/pytest.xml",
+      "size": 1760,
+      "sha256": "a19ae63aad521ee55c8974fb21e6786f2b36b634dbc5afd803e91d830b90abef"
+    },
+    {
+      "path": "source/docs/GROK_SUBSCRIPTION_DIAGNOSTIC.md",
+      "size": 7426,
+      "sha256": "03031fc977e3cbf61efa32825915a2bb90fece93801fe9760e033c03134164c8"
+    },
+    {
+      "path": "source/evaluation/modular/calibration_pilot.py",
+      "size": 31569,
+      "sha256": "e2a7f11958b2af2408cf05d3efbdeee38f03b1d24a6f8369ee11e73c9da89eee"
+    },
+    {
+      "path": "source/evaluation/modular/diagnostic_private_ports.py",
+      "size": 29458,
+      "sha256": "bea760bf8cc603a721caae249d10e4cc07d9ad91870e9206330cc5b4f5d18ec6"
+    },
+    {
+      "path": "source/evaluation/modular/diagnostic_subscription.py",
+      "size": 31423,
+      "sha256": "e129336b993a64853c7dcd7ddfdcb160f1c7fd0de582ae1d7825b9d8e3fca03e"
+    },
+    {
+      "path": "source/research_loop/modular/grok_acp_transport.py",
+      "size": 42516,
+      "sha256": "777e30ebf32cfd2dcb170033ccad82b8196b788a3ac149014d89a4c64a58cd98"
+    },
+    {
+      "path": "source/tests/fixtures/grok_acp_peer.py",
+      "size": 8327,
+      "sha256": "6846b33dbc6ec6b2c9cae84c2bd7af7a7e77a4a1785084fd089a55ceca8ef18f"
+    },
+    {
+      "path": "source/tests/helpers/subscription_worker.py",
+      "size": 1821,
+      "sha256": "d989274944e91edd2a21238526e7cdf87fe0075e8d14b7fcd94b1c0ae4c454b8"
+    },
+    {
+      "path": "source/tests/test_diagnostic_subscription.py",
+      "size": 15035,
+      "sha256": "bcb30737f8d3ed1eacc4856c26f4805387007f62d20ecb18f06561799884fa90"
+    },
+    {
+      "path": "source/tests/test_grok_acp_transport.py",
+      "size": 15277,
+      "sha256": "8dbc1dd4f37fe183666d84137db07c54e2905f9a6aeba917ab5dfd7ac87380f0"
+    },
+    {
+      "path": "synthetic-only/full-grid-manifest.json",
+      "size": 17735,
+      "sha256": "5ae4b911b23fe416fc67b344e12dc21225936d664b3298e7b7369fd2150513d0"
+    },
+    {
+      "path": "synthetic-only/full-grid-request-inventory.json",
+      "size": 98007,
+      "sha256": "394c58976137518f247c77b7ec4a5379912eb24d920767ae3057bff032fb79d8"
+    },
+    {
+      "path": "synthetic-only/large-reference-request-inventory.json",
+      "size": 5683,
+      "sha256": "8c0c040b4db633355df20933efd64b4ca27c08012936b4127d36b24f7363f3a5"
+    },
+    {
+      "path": "verify_archive.py",
+      "size": 2331,
+      "sha256": "17e887253149aedcfbd8541332fd954d9897b079f5b437f9e9684a0a69e0582d"
+    }
+  ]
+}

@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="11" skipped="0" tests="37" time="597.785" timestamp="2026-09-14T00:08:04.496583+08:00" hostname="SC-202507131830"><testcase classname="tests.test_diagnostic_subscription" name="test_new_manifest_never_weakens_old_monetary_contract" time="2.296" /><testcase classname="tests.test_diagnostic_subscription" name="test_real_worker_renderer_native_ledger_and_fixed_denominators[diagnostic-8-4]" time="62.116"><failure message="subprocess.TimeoutExpired: Command '['E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe', 'E:\\_ryanDev\\AI\\research-loop-modular\\integration\\tests\\helpers\\subscription_worker.py', '--config', 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-subscription-bridge-integrated-r1\\test_real_worker_renderer_nati0\\subscription-config.json', '--sha256', '000557008336c41de0b68fc73373290d98962129362a9bfd86e50feb9eedf727', '--output', 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-subscription-bridge-integrated-r1\\test_real_worker_renderer_nati0\\result.json', '--mode', 'diagnostic']' timed out after 60 seconds">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/grok-subscription-bridge-integrated-r1/test_real_worker_renderer_nati0')
+mode = 'diagnostic', expected_calls = 8, scored = 4
+
+    @pytest.mark.parametrize('mode,expected_calls,scored', [('diagnostic', 8, 4), ('diagnostic_unknown_main', 1, 0)])
+    def test_real_worker_renderer_native_ledger_and_fixed_denominators(tmp_path, mode, expected_calls, scored):
+        desc, manifest, authorities, _ = setup_subscription(tmp_path)
+        worker = Path(__file__).parent / 'helpers' / 'subscription_worker.py'
+        result_path = tmp_path / 'result.json'
+&gt;       proc = subprocess.run([sys.executable, str(worker), '--config', desc['path'], '--sha256', desc['sha256'],
+            '--output', str(result_path), '--mode', mode], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            timeout=60, env=dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[1])))
+
+tests\test_diagnostic_subscription.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\subprocess.py:550: in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\subprocess.py:1209: in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;Popen: returncode: 1 args: ['E:\\_ryanDev\\AI\\research-loop-modular\\work\...&gt;
+input = None, endtime = 60945.046, orig_timeout = 60
+
+    def _communicate(self, input, endtime, orig_timeout):
+        # Start reader threads feeding into a list hanging off of this
+        # object, unless they've already been started.
+        if self.stdout and not hasattr(self, "_stdout_buff"):
+            self._stdout_buff = []
+            self.stdout_thread = \
+                    threading.Thread(target=self._readerthread,
+                                     args=(self.stdout, self._stdout_buff))
+            self.stdout_thread.daemon = True
+            self.stdout_thread.start()
+        if self.stderr and not hasattr(self, "_stderr_buff"):
+            self._stderr_buff = []
+            self.stderr_thread = \
+                    threading.Thread(target=self._readerthread,
+                                     args=(self.stderr, self._stderr_buff))
+            self.stderr_thread.daemon = True
+            self.stderr_thread.start()
+    
+        if self.stdin:
+            self._stdin_write(input)
+    
+        # Wait for the reader threads, or time out.  If we time out, the
+        # threads remain reading and the fds left open in case the user
+        # calls communicate again.
+        if self.stdout is not None:
+            self.stdout_thread.join(self._remaining_time(endtime))
+            if self.stdout_thread.is_alive():
+&gt;               raise TimeoutExpired(self.args, orig_timeout)
+E               subprocess.TimeoutExpired: Command '['E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe', 'E:\\_ryanDev\\AI\\research-loop-modular\\integration\\tests\\helpers\\subscription_worker.py', '--config', 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-subscription-bridge-integrated-r1\\test_real_worker_renderer_nati0\\subscription-config.json', '--sha256', '000557008336c41de0b68fc73373290d98962129362a9bfd86e50feb9eedf727', '--output', 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-subscription-bridge-integrated-r1\\test_real_worker_renderer_nati0\\result.json', '--mode', 'diagnostic']' timed out after 60 seconds
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\subprocess.py:1630: TimeoutExpired</failure></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_real_worker_renderer_native_ledger_and_fixed_denominators[diagnostic_unknown_main-1-0]" time="32.371" /><testcase classname="tests.test_diagnostic_subscription" name="test_complete_reference_byte_cap_rejects_before_any_transport" time="1.047" /><testcase classname="tests.test_diagnostic_subscription" name="test_changed_request_inventory_rejected_before_io" time="1.817" /><testcase classname="tests.test_diagnostic_subscription" name="test_source_drift_after_main_retains_receipt_and_blocks_later_io" time="27.641"><failure message="TypeError: 'NoneType' object is not subscriptable">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/grok-subscription-bridge-integrated-r1/test_source_drift_after_main_r0')
+
+    def test_source_drift_after_main_retains_receipt_and_blocks_later_io(tmp_path):
+        desc, manifest, authorities, _ = setup_subscription(tmp_path)
+        original = fixture_factory(); calls = []
+        def drift(*args):
+            result = original(*args); calls.append(result)
+            (tmp_path / 'source-pin.json').write_text('drift')
+            return result
+        result = unpack(run_private(desc, fixture_factory=drift), manifest, authorities)
+        assert len(calls) == 1 and result['budget']['further_io_blocked']
+&gt;       assert result['budget']['records'][0]['known_main_usage']['totalTokens'] == 12
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not subscriptable
+
+tests\test_diagnostic_subscription.py:148: TypeError</failure></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_unknown_title_does_not_invent_zero_or_block_known_main" time="25.830"><failure message="assert 1 == 8">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/grok-subscription-bridge-integrated-r1/test_unknown_title_does_not_in0')
+
+    def test_unknown_title_does_not_invent_zero_or_block_known_main(tmp_path):
+        desc, manifest, authorities, _ = setup_subscription(tmp_path, ready_kind='uncertain')
+        result = unpack(run_private(desc, fixture_factory=fixture_factory()), manifest, authorities)
+&gt;       assert result['budget']['reserved_main_opportunities'] == 8
+E       assert 1 == 8
+
+tests\test_diagnostic_subscription.py:154: AssertionError</failure></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_duplicate_native_identity_retained_and_halts" time="35.367"><failure message="assert 1 == 2">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/grok-subscription-bridge-integrated-r1/test_duplicate_native_identity0')
+
+    def test_duplicate_native_identity_retained_and_halts(tmp_path):
+        from research_loop.modular.grok_acp_transport import AcpResult
+        desc, manifest, authorities, _ = setup_subscription(tmp_path)
+        original = fixture_factory(); first = []
+        def duplicate(*args):
+            result = original(*args)
+            if not first: first.append(result.receipt.data()['session_id'])
+            receipt = result.receipt.data(); receipt['session_id'] = first[0]
+            return AcpResult(record(receipt), result.response)
+        result = unpack(run_private(desc, fixture_factory=duplicate), manifest, authorities)
+&gt;       assert result['budget']['reserved_main_opportunities'] == 2
+E       assert 1 == 2
+
+tests\test_diagnostic_subscription.py:170: AssertionError</failure></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_all_materials_frozen_and_opportunity_budget_stops_before_second_call" time="29.136" /><testcase classname="tests.test_diagnostic_subscription" name="test_native_fault_at_provider_seam_never_permits_later_request[paid]" time="30.407" /><testcase classname="tests.test_diagnostic_subscription" name="test_native_fault_at_provider_seam_never_permits_later_request[tools]" time="24.408" /><testcase classname="tests.test_diagnostic_subscription" name="test_native_fault_at_provider_seam_never_permits_later_request[malformed]" time="28.378" /><testcase classname="tests.test_diagnostic_subscription" name="test_native_fault_at_provider_seam_never_permits_later_request[tool_event]" time="23.791" /><testcase classname="tests.test_diagnostic_subscription" name="test_native_fault_at_provider_seam_never_permits_later_request[optional_stop_bad_terminal]" time="29.179" /><testcase classname="tests.test_diagnostic_subscription" name="test_invalid_review_keeps_accepted_native_main_receipt" time="25.557"><failure message="TypeError: 'NoneType' object is not subscriptable">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/grok-subscription-bridge-integrated-r1/test_invalid_review_keeps_acce0')
+
+    def test_invalid_review_keeps_accepted_native_main_receipt(tmp_path):
+        from research_loop.modular.grok_acp_transport import AcpResult
+        desc, manifest, authorities, _ = setup_subscription(tmp_path)
+        native = fixture_factory()
+        def invalid(*args):
+            result = native(*args)
+            return AcpResult(result.receipt, record({'state': 'known', 'dimensions': {'cvars': .3, 'transform': 1, 'model': 1}}))
+        result = unpack(run_private(desc, fixture_factory=invalid), manifest, authorities)
+        row = result['budget']['records'][0]
+&gt;       assert row['known_main_usage']['totalTokens'] == 12
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not subscriptable
+
+tests\test_diagnostic_subscription.py:210: TypeError</failure></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_native_execution_cannot_use_unprovisioned_profile_or_fixture_fallback" time="1.431" /><testcase classname="tests.test_diagnostic_subscription" name="test_coherent_native_binding_swaps_keep_main_usage_but_stop_io[valid_response]" time="26.598"><failure message="TypeError: 'NoneType' object is not subscriptable">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/grok-subscription-bridge-integrated-r1/test_coherent_native_binding_s0')
+swap = 'valid_response'
+
+    @pytest.mark.parametrize('swap', ['valid_response', 'prompt', 'schema', 'reservation', 'source'])
+    def test_coherent_native_binding_swaps_keep_main_usage_but_stop_io(tmp_path, swap):
+        from research_loop.modular.grok_acp_transport import AcpResult
+        desc, manifest, authorities, _ = setup_subscription(tmp_path)
+        native = fixture_factory()
+        def swapped(entry, prompt, schema, directory, frozen_files, spec):
+            actual_prompt = prompt
+            if swap == 'prompt':
+                messages = json.loads(prompt)
+                messages['messages'][0]['content'] += ' Synthetic changed instruction.'
+                actual_prompt = json.dumps(messages)
+            # Keep a coherent native schema/answer, but make it differ from frozen schema.
+            actual_schema = copy.deepcopy(schema)
+            if swap == 'schema':
+                actual_schema['properties']['state']['enum'] = ['known']
+            actual_files = frozen_files | {str(Path(__file__).absolute()): sha(__file__)} if swap == 'source' else frozen_files
+            result = native(entry, actual_prompt, actual_schema, directory, actual_files, spec)
+            assert result.receipt.data()['accepted']
+            if swap == 'valid_response':
+                replacement = result.response.data()
+                replacement['dimensions'] = {name: 0 for name in replacement['dimensions']}
+                return AcpResult(result.receipt, record(replacement))
+            if swap == 'reservation':
+                path = directory / 'native-reservation.json'
+                reservation = json.loads(path.read_text()); reservation['prompt_id'] = 'different-synthetic-prompt'
+                path.write_text(json.dumps(reservation))
+            return result
+        result = unpack(run_private(desc, fixture_factory=swapped), manifest, authorities)
+        assert result['budget']['reserved_main_opportunities'] == 1
+        assert result['budget']['further_io_blocked']
+        row = result['budget']['records'][0]
+&gt;       assert row['known_main_usage']['totalTokens'] == 12 and row['native_accepted']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not subscriptable
+
+tests\test_diagnostic_subscription.py:251: TypeError</failure></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_coherent_native_binding_swaps_keep_main_usage_but_stop_io[prompt]" time="21.106"><failure message="TypeError: 'NoneType' object is not subscriptable">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/grok-subscription-bridge-integrated-r1/test_coherent_native_binding_s1')
+swap = 'prompt'
+
+    @pytest.mark.parametrize('swap', ['valid_response', 'prompt', 'schema', 'reservation', 'source'])
+    def test_coherent_native_binding_swaps_keep_main_usage_but_stop_io(tmp_path, swap):
+        from research_loop.modular.grok_acp_transport import AcpResult
+        desc, manifest, authorities, _ = setup_subscription(tmp_path)
+        native = fixture_factory()
+        def swapped(entry, prompt, schema, directory, frozen_files, spec):
+            actual_prompt = prompt
+            if swap == 'prompt':
+                messages = json.loads(prompt)
+                messages['messages'][0]['content'] += ' Synthetic changed instruction.'
+                actual_prompt = json.dumps(messages)
+            # Keep a coherent native schema/answer, but make it differ from frozen schema.
+            actual_schema = copy.deepcopy(schema)
+            if swap == 'schema':
+                actual_schema['properties']['state']['enum'] = ['known']
+            actual_files = frozen_files | {str(Path(__file__).absolute()): sha(__file__)} if swap == 'source' else frozen_files
+            result = native(entry, actual_prompt, actual_schema, directory, actual_files, spec)
+            assert result.receipt.data()['accepted']
+            if swap == 'valid_response':
+                replacement = result.response.data()
+                replacement['dimensions'] = {name: 0 for name in replacement['dimensions']}
+                return AcpResult(result.receipt, record(replacement))
+            if swap == 'reservation':
+                path = directory / 'native-reservation.json'
+                reservation = json.loads(path.read_text()); reservation['prompt_id'] = 'different-synthetic-prompt'
+                path.write_text(json.dumps(reservation))
+            return result
+        result = unpack(run_private(desc, fixture_factory=swapped), manifest, authorities)
+        assert result['budget']['reserved_main_opportunities'] == 1
+        assert result['budget']['further_io_blocked']
+        row = result['budget']['records'][0]
+&gt;       assert row['known_main_usage']['totalTokens'] == 12 and row['native_accepted']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not subscriptable
+
+tests\test_diagnostic_subscription.py:251: TypeError</failure></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_coherent_native_binding_swaps_keep_main_usage_but_stop_io[schema]" time="24.953"><failure message="TypeError: 'NoneType' object is not subscriptable">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/grok-subscription-bridge-integrated-r1/test_coherent_native_binding_s2')
+swap = 'schema'
+
+    @pytest.mark.parametrize('swap', ['valid_response', 'prompt', 'schema', 'reservation', 'source'])
+    def test_coherent_native_binding_swaps_keep_main_usage_but_stop_io(tmp_path, swap):
+        from research_loop.modular.grok_acp_transport import AcpResult
+        desc, manifest, authorities, _ = setup_subscription(tmp_path)
+        native = fixture_factory()
+        def swapped(entry, prompt, schema, directory, frozen_files, spec):
+            actual_prompt = prompt
+            if swap == 'prompt':
+                messages = json.loads(prompt)
+                messages['messages'][0]['content'] += ' Synthetic changed instruction.'
+                actual_prompt = json.dumps(messages)
+            # Keep a coherent native schema/answer, but make it differ from frozen schema.
+            actual_schema = copy.deepcopy(schema)
+            if swap == 'schema':
+                actual_schema['properties']['state']['enum'] = ['known']
+            actual_files = frozen_files | {str(Path(__file__).absolute()): sha(__file__)} if swap == 'source' else frozen_files
+            result = native(entry, actual_prompt, actual_schema, directory, actual_files, spec)
+            assert result.receipt.data()['accepted']
+            if swap == 'valid_response':
+                replacement = result.response.data()
+                replacement['dimensions'] = {name: 0 for name in replacement['dimensions']}
+                return AcpResult(result.receipt, record(replacement))
+            if swap == 'reservation':
+                path = directory / 'native-reservation.json'
+                reservation = json.loads(path.read_text()); reservation['prompt_id'] = 'different-synthetic-prompt'
+                path.write_text(json.dumps(reservation))
+            return result
+        result = unpack(run_private(desc, fixture_factory=swapped), manifest, authorities)
+        assert result['budget']['reserved_main_opportunities'] == 1
+        assert result['budget']['further_io_blocked']
+        row = result['budget']['records'][0]
+&gt;       assert row['known_main_usage']['totalTokens'] == 12 and row['native_accepted']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not subscriptable
+
+tests\test_diagnostic_subscription.py:251: TypeError</failure></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_coherent_native_binding_swaps_keep_main_usage_but_stop_io[reservation]" time="27.399"><failure message="TypeError: 'NoneType' object is not subscriptable">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/grok-subscription-bridge-integrated-r1/test_coherent_native_binding_s3')
+swap = 'reservation'
+
+    @pytest.mark.parametrize('swap', ['valid_response', 'prompt', 'schema', 'reservation', 'source'])
+    def test_coherent_native_binding_swaps_keep_main_usage_but_stop_io(tmp_path, swap):
+        from research_loop.modular.grok_acp_transport import AcpResult
+        desc, manifest, authorities, _ = setup_subscription(tmp_path)
+        native = fixture_factory()
+        def swapped(entry, prompt, schema, directory, frozen_files, spec):
+            actual_prompt = prompt
+            if swap == 'prompt':
+                messages = json.loads(prompt)
+                messages['messages'][0]['content'] += ' Synthetic changed instruction.'
+                actual_prompt = json.dumps(messages)
+            # Keep a coherent native schema/answer, but make it differ from frozen schema.
+            actual_schema = copy.deepcopy(schema)
+            if swap == 'schema':
+                actual_schema['properties']['state']['enum'] = ['known']
+            actual_files = frozen_files | {str(Path(__file__).absolute()): sha(__file__)} if swap == 'source' else frozen_files
+            result = native(entry, actual_prompt, actual_schema, directory, actual_files, spec)
+            assert result.receipt.data()['accepted']
+            if swap == 'valid_response':
+                replacement = result.response.data()
+                replacement['dimensions'] = {name: 0 for name in replacement['dimensions']}
+                return AcpResult(result.receipt, record(replacement))
+            if swap == 'reservation':
+                path = directory / 'native-reservation.json'
+                reservation = json.loads(path.read_text()); reservation['prompt_id'] = 'different-synthetic-prompt'
+                path.write_text(json.dumps(reservation))
+            return result
+        result = unpack(run_private(desc, fixture_factory=swapped), manifest, authorities)
+        assert result['budget']['reserved_main_opportunities'] == 1
+        assert result['budget']['further_io_blocked']
+        row = result['budget']['records'][0]
+&gt;       assert row['known_main_usage']['totalTokens'] == 12 and row['native_accepted']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not subscriptable
+
+tests\test_diagnostic_subscription.py:251: TypeError</failure></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_coherent_native_binding_swaps_keep_main_usage_but_stop_io[source]" time="23.329"><failure message="TypeError: 'NoneType' object is not subscriptable">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/grok-subscription-bridge-integrated-r1/test_coherent_native_binding_s4')
+swap = 'source'
+
+    @pytest.mark.parametrize('swap', ['valid_response', 'prompt', 'schema', 'reservation', 'source'])
+    def test_coherent_native_binding_swaps_keep_main_usage_but_stop_io(tmp_path, swap):
+        from research_loop.modular.grok_acp_transport import AcpResult
+        desc, manifest, authorities, _ = setup_subscription(tmp_path)
+        native = fixture_factory()
+        def swapped(entry, prompt, schema, directory, frozen_files, spec):
+            actual_prompt = prompt
+            if swap == 'prompt':
+                messages = json.loads(prompt)
+                messages['messages'][0]['content'] += ' Synthetic changed instruction.'
+                actual_prompt = json.dumps(messages)
+            # Keep a coherent native schema/answer, but make it differ from frozen schema.
+            actual_schema = copy.deepcopy(schema)
+            if swap == 'schema':
+                actual_schema['properties']['state']['enum'] = ['known']
+            actual_files = frozen_files | {str(Path(__file__).absolute()): sha(__file__)} if swap == 'source' else frozen_files
+            result = native(entry, actual_prompt, actual_schema, directory, actual_files, spec)
+            assert result.receipt.data()['accepted']
+            if swap == 'valid_response':
+                replacement = result.response.data()
+                replacement['dimensions'] = {name: 0 for name in replacement['dimensions']}
+                return AcpResult(result.receipt, record(replacement))
+            if swap == 'reservation':
+                path = directory / 'native-reservation.json'
+                reservation = json.loads(path.read_text()); reservation['prompt_id'] = 'different-synthetic-prompt'
+                path.write_text(json.dumps(reservation))
+            return result
+        result = unpack(run_private(desc, fixture_factory=swapped), manifest, authorities)
+        assert result['budget']['reserved_main_opportunities'] == 1
+        assert result['budget']['further_io_blocked']
+        row = result['budget']['records'][0]
+&gt;       assert row['known_main_usage']['totalTokens'] == 12 and row['native_accepted']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: 'NoneType' object is not subscriptable
+
+tests\test_diagnostic_subscription.py:251: TypeError</failure></testcase><testcase classname="tests.test_diagnostic_subscription" name="test_large_synthetic_reference_compiles_complete_with_explicit_byte_limit" time="2.273" /><testcase classname="tests.test_calibration_pilot" name="test_real_subprocess_36_slot_standard_resolver_endpoint" time="61.112"><failure message="research_loop.ontology.ContractError: pilot subprocess outcome unknown">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/grok-subscription-bridge-integrated-r1/test_real_subprocess_36_slot_s0')
+
+    def test_real_subprocess_36_slot_standard_resolver_endpoint(tmp_path):
+        manifest, _, authorities, config = build_fixture(tmp_path)
+        config_desc = write(tmp_path/'config.json',config.data())
+        output = tmp_path/'diagnostic-result.json'
+        helper = Path(__file__).parent/'helpers/calibration_pilot_worker.py'
+&gt;       receipt = launch_once(command=[sys.executable,str(helper),'--config',config_desc['path'],
+            '--sha256',config_desc['sha256'],'--output',str(output)], executable_sha256=hash_file(Path(sys.executable)),
+            worker_sha256=hash_file(helper),
+            config_descriptor=config_desc,result_path=output,parent_journal_path=tmp_path/'parent.jsonl',timeout_seconds=60)
+
+tests\test_calibration_pilot.py:195: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def launch_once(*, command: list[str], executable_sha256: str, worker_sha256: str, config_descriptor,
+                    result_path: Path, parent_journal_path: Path, timeout_seconds: int):
+        """Caller supplies its pinned worker deployment. No shell or auto-retry.
+    
+        The command must include the frozen config and output arguments supplied by
+        the deployment. The signed diagnostic receipt still needs caller verification.
+        This boundary deliberately does not claim OS isolation.
+        """
+        if not command or any(not isinstance(arg, str) or not arg for arg in command):
+            raise ContractError('pilot subprocess command is invalid')
+        if len(command) != 8 or command[2:] != ['--config', config_descriptor['path'], '--sha256', config_descriptor['sha256'], '--output', str(result_path)]:
+            raise ContractError('pilot subprocess command does not bind exact config and output')
+        if not Path(command[0]).is_absolute() or not Path(command[1]).is_absolute():
+            raise ContractError('pilot executable and worker must be absolute')
+        _read_bound(Path(command[0]), {pin(executable_sha256)})
+        _read_bound(Path(command[1]), {pin(worker_sha256)})
+        config = load_record(config_descriptor).data()
+        manifest = load_record(config['manifest'])
+        manifest_body, _, _ = validate_manifest(manifest)
+        key_descriptor = config['key_files']['diagnostic']
+        key, _ = _read_bound(Path(key_descriptor['path']), {pin(key_descriptor['sha256'])})
+        if type(timeout_seconds) is not int or timeout_seconds &lt;= 0:
+            raise ContractError('pilot process timeout must be explicit')
+        if _plain(result_path).exists():
+            raise ContractError('pilot subprocess result exists')
+        journal = PrivateJournal(parent_journal_path)
+        journal.append('process_reserved', {'config_sha256': config_descriptor['sha256'],
+            'executable_sha256': executable_sha256, 'command_digest': FrozenRecord.from_dict({'command': command}).content_hash})
+        try:
+            result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                timeout=timeout_seconds, check=False, shell=False)
+            for suffix, raw in (('.stdout.bin', result.stdout), ('.stderr.bin', result.stderr)):
+                with _plain(Path(str(parent_journal_path) + suffix)).open('xb') as stream:
+                    stream.write(raw)
+            journal.append('process_closed', {'exit_code': result.returncode,
+                'stdout_sha256': hashlib.sha256(result.stdout).hexdigest(), 'stderr_sha256': hashlib.sha256(result.stderr).hexdigest()})
+            if result.returncode != 0:
+                raise ContractError('pilot subprocess failed')
+            receipt = FrozenRecord(_plain(result_path).read_text(encoding='utf-8'))
+            body = verify(receipt, role='diagnostic', subject=manifest.content_hash,
+                authority_id=manifest_body['authorities']['diagnostic'], key=key)
+            if (body.get('schema') != 'four-train-diagnostic-observation-v1' or body.get('validation_eligible') is not False
+                    or body.get('calibration_eligible') is not False or body.get('manifest_digest') != manifest.content_hash
+                    or body.get('evaluator_opportunity_count') != 72 or len(body.get('observations', [])) != 72):
+                raise ContractError('pilot subprocess emitted non-diagnostic receipt')
+            _read_bound(Path(command[1]), {worker_sha256})
+            load_record(config_descriptor)
+            return receipt
+        except subprocess.TimeoutExpired as exc:
+            captured = {}
+            for suffix, raw in (('.timeout-stdout.bin', exc.stdout), ('.timeout-stderr.bin', exc.stderr)):
+                if isinstance(raw, str):
+                    raw = raw.encode('utf-8')
+                if raw is not None:
+                    with _plain(Path(str(parent_journal_path) + suffix)).open('xb') as stream:
+                        stream.write(raw)
+                    captured[suffix] = {'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw), 'complete': False}
+                else:
+                    captured[suffix] = {'sha256': None, 'bytes': None, 'complete': False}
+            journal.append('process_unknown', {'reason': 'timeout', 'automatic_retry': False, 'captured_partial_streams': captured,
+                'child_call_count': None, 'child_tokens': None, 'child_microusd': None,
+                'child_cost_status': 'unknown_requires_private_journal_reconciliation'})
+&gt;           raise ContractError('pilot subprocess outcome unknown') from None
+E           research_loop.ontology.ContractError: pilot subprocess outcome unknown
+
+evaluation\modular\calibration_pilot_process.py:161: ContractError</failure></testcase><testcase classname="tests.test_calibration_pilot" name="test_unknown_reviewer_cost_blocks_entire_global_budget" time="23.173" /><testcase classname="tests.test_grok_acp_transport" name="test_diagnostic_entry_uses_separate_explicit_caps_without_changing_smoke" time="2.080" /><testcase classname="tests.test_grok_acp_transport" name="test_native_nullable_diagnostic_dimensions_leave_legacy_schema_unchanged" time="0.001" /><testcase classname="tests.test_grok_acp_transport" name="test_native_acp_binding_and_preflight_order" time="2.460" /><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.009" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.004" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.004" /></testsuite></testsuites>

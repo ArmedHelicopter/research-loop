@@ -3,6 +3,30 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Included-subscription diagnostic bridge checkpoint (2026-09-14)
+
+The separately versioned Grok4.6 native diagnostic bridge preserves all36
+material slots,72 evaluator opportunities and the maximum180 review/arbitration/
+evaluation main calls. Possible initial title calls are separate; known main
+usage does not establish title totals or final settlement. Complete private
+references, original native receipts and request/reservation/source bindings
+are checked before review signing. Unknown main usage stops later calls.
+
+Root source `2533276` passed20 focused checks with560 source hashes unchanged.
+This repaired all3 failures in the preceding37-test checkpoint; coverage of
+all37 cases is accumulated across the two checkpoints, not a fresh final37 run.
+The initial11-failure checkpoint is also retained. Root repairs changed only
+synthetic peer import environments, process-tree ownership and fixture time
+bounds; the actual native60-second limit and acceptance rules did not change.
+The old timed-out pilot retains132/144 closed calls and60/72 closed evaluation
+opportunities. Its repaired integration run completes the original full scope.
+
+Evidence is in `results/modular-engineering-20260913/grok-subscription-bridge-root/`.
+This checkpoint made no actual generation calls and prepared no actual materials.
+Private provisional material authoring is a separate pending4-main/4-possible-title
+phase. Real calibration, TRAIN effects, remaining combinations, full/LOO and
+independent validation acceptance remain unfinished; validation stays sealed.
+
 ## Current mechanism/improvement and triple integration checkpoint (2026-09-14)
 
 Source `8f9b16c` passed 50 root integration checks, with all 556 frozen
