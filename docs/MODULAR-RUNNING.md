@@ -1,7 +1,11 @@
 # Running the modular implementation
 
 Use an isolated checkout and Python 3.11 or later with the project's development
-dependencies. Existing production pause and historical study protocols are separate.
+dependencies, including the custody extra for the bounded YAML metadata parsers:
+`python -m pip install -e ".[dev,custody]"`. Existing production pause and historical
+study protocols are separate. Record the interpreter and resolved dependency
+versions with each source-qualified run; a globally installed package is not a
+declared project dependency.
 Solver exports and test temporary roots must be outside every ancestor containing
 `data/labels`. Create a task work directory beside the source checkout, then use
 a new absolute subdirectory for each pytest run. Do not relax the label-isolation
