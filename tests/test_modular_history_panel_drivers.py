@@ -55,12 +55,12 @@ def _model(seen):
 
 def _bundle(task, _scenario):
     return freeze_history_bundle(task, public_evidence={"measurement_id": "public-" + task.identity.benchmark, "observation": "Public grouped measurement changed.", "value": 1.5},
-        q11={"correct": {"historical_summary": "Earlier report says treatment exceeded control.", "withdrawal": False},
-             "wrong": {"historical_summary": "Earlier report says treatment was below control.", "withdrawal": False},
-             "neutral": {"historical_summary": "Earlier report has no interpretation.", "withdrawal": False}},
-        q12={"summary_only": {"historical_summary": "Historical summary lacks a registered source dependency.", "withdrawal": False},
-             "registered": {"historical_summary": "Historical upstream revision is registered.", "withdrawal": False},
-             "withdraw": {"historical_summary": "Historical upstream source is withdrawn.", "withdrawal": True}})
+        q11={"correct": {"historical_summary": "Earlier report says treatment exceeded control.", "withdrawal": False, "dependency": False},
+             "wrong": {"historical_summary": "Earlier report says treatment was below control.", "withdrawal": False, "dependency": False},
+             "neutral": {"historical_summary": "Earlier report has no interpretation.", "withdrawal": False, "dependency": False}},
+        q12={"summary_only": {"historical_summary": "Historical summary lacks a registered source dependency.", "withdrawal": False, "dependency": False},
+             "registered": {"historical_summary": "Historical upstream revision is registered.", "withdrawal": False, "dependency": True},
+             "withdraw": {"historical_summary": "Historical upstream source is withdrawn.", "withdrawal": True, "dependency": True}})
 
 
 def _admit(_task, _material):
@@ -82,7 +82,7 @@ def test_full_public_grid_records_real_m2_m3_material_and_final_payload(tmp_path
     assert all(row["slot"] != "final" or row["module_context"]["reconstructed_context"]["entries"] is not None for row in requests)
     if coverage == "Q1.1":
         q11 = [row for row in requests if row["slot"] != "final"]
-        assert all("truth" not in row["module_context"]["history_material"] and "label" not in row["module_context"]["history_material"] for row in q11)
+        assert all("correct" not in FrozenRecord.from_dict(row).encoded and "wrong" not in FrozenRecord.from_dict(row).encoded and "neutral" not in FrozenRecord.from_dict(row).encoded for row in q11)
         assert len({FrozenRecord.from_dict(row["module_context"]["history_material"]).content_hash for row in q11}) == 6
     else:
         after = [row for row in requests if row["slot"] == "downstream_after_withdrawal"]

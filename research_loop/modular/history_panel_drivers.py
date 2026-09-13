@@ -12,13 +12,11 @@ from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.modules.context import ContextBuilder
 from research_loop.modular.panel_receipts import PanelCell
 from research_loop.modular.workflow import ModularWorkflow, WorkflowResult
-from research_loop.ontology import ContractError
+from research_loop.ontology import ContractError, digest
 
 
 def _binding(cell: PanelCell, scenario: FrozenRecord) -> dict[str, Any]:
-    return {"experiment_id": cell.coverage_id, "variant": cell.variant,
-            "replicate": cell.replicate, "arm_id": cell.arm_id,
-            "scenario_digest": scenario.content_hash}
+    return {"schema": "opaque-panel-cell-binding-v1", "cell_digest": digest(cell.data())}
 
 
 def _question(task: PublicTask) -> str:
@@ -67,7 +65,7 @@ def freeze_history_bundle(task: PublicTask, *, public_evidence: Mapping[str, Any
         raise ContractError("history bundle needs complete Q1.1 and Q1.2 variant coverage")
     for records in (q11, q12):
         for value in records.values():
-            if not isinstance(value, Mapping) or set(value) != {"historical_summary", "withdrawal"} or not isinstance(value["historical_summary"], str) or not isinstance(value["withdrawal"], bool):
+            if not isinstance(value, Mapping) or set(value) != {"historical_summary", "withdrawal", "dependency"} or not isinstance(value["historical_summary"], str) or not isinstance(value["withdrawal"], bool) or not isinstance(value["dependency"], bool):
                 raise ContractError("history bundle variant material is malformed")
     return FrozenRecord.from_dict({"schema": "typed-history-panel-bundle-v1", "identity": task.identity.data(),
         "public_evidence": dict(public_evidence), "q11": {key: dict(value) for key, value in q11.items()},
@@ -84,7 +82,7 @@ def select_history_material(bundle: FrozenRecord, task: PublicTask, experiment_i
         raise ContractError("history bundle lacks selected variant material")
     selected = table[variant]
     return FrozenRecord.from_dict({"schema": "typed-public-history-material-v1", "identity": task.identity.data(),
-        "public_evidence": body["public_evidence"], "historical_summary": selected["historical_summary"], "withdrawal": selected["withdrawal"]})
+        "public_evidence": body["public_evidence"], "historical_summary": selected["historical_summary"], "withdrawal": selected["withdrawal"], "dependency": selected["dependency"]})
 
 
 def _resolve(resolver: Callable[[PublicTask, FrozenRecord], FrozenRecord] | None, task: PublicTask, scenario: FrozenRecord, experiment_id: str, variant: str) -> FrozenRecord:
@@ -146,7 +144,7 @@ class Q12DependencyDriver:
             upstream = workflow.session.claims.create("typed public upstream observation", subject_bindings={"task": workflow.session.task.identity.task_id})
             upstream = workflow.session.claims.apply(upstream.claim_id, {"supports": [root.root_id], "refutes": [], "subject_bindings": {"task": workflow.session.task.identity.task_id}}, expected_revision=0).claim
             downstream = workflow.session.claims.create("typed public downstream interpretation", subject_bindings={"task": workflow.session.task.identity.task_id})
-            if cell.variant != "summary_only":
+            if material.data()["dependency"]:
                 downstream = workflow.session.claims.link_dependencies(downstream.claim_id, [upstream.claim_id], expected_revision=0).claim
             workflow._trace("operation_m2_claim_revision", "executed", upstream=upstream.data(), downstream=downstream.data(), history_material=material.data())
         else:
@@ -154,7 +152,7 @@ class Q12DependencyDriver:
         before = ContextBuilder(workflow.session.task.identity, budget_bytes=workflow.session.context_budget).build(_question(workflow.session.task), workflow.session.evidence, workflow.session.claims, mode="candidate" if m3 else "baseline", baseline_summary=material.data()["historical_summary"])
         first = workflow.invoke_model("upstream_before_withdrawal", model, instruction="Assess typed upstream public material and its declared dependency state.", baseline_summary=material.data()["historical_summary"], module_context=FrozenRecord.from_dict({"panel_cell": _binding(cell, scenario), "history_material": material.data(), "claim_context": before.data(), "m2": "enabled" if m2 else "frozen_control", "m3": "enabled" if m3 else "frozen_control"}))
         revisions = ()
-        if m2 and cell.variant == "withdraw":
+        if m2 and material.data()["withdrawal"]:
             workflow.session.evidence.withdraw(root.root_id, "typed public upstream withdrawal")
             revisions = workflow.session.claims.refresh_after_withdrawal()
             workflow._trace("operation_m2_dependency_invalidated", "executed", withdrawn_root=root.root_id, revisions=[item.claim.data() for item in revisions])
