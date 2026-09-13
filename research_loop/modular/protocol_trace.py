@@ -16,6 +16,8 @@ from research_loop.ontology import ContractError
 
 def verify_protocol_trace(path: Path) -> FrozenRecord:
     chain = verify_trace(path)
+    if not chain.data()["terminal"]:
+        raise ContractError("protocol trace is incomplete without a terminal event")
     events = [FrozenRecord(line).data() for line in path.read_text(encoding="utf-8").splitlines()]
     lock = events[0]["data"]
     if FrozenRecord.from_dict(lock).content_hash != chain.data()["lock_digest"]:
