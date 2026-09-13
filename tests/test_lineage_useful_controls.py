@@ -113,7 +113,7 @@ def test_all_58_cells_use_actual_reviews_and_independent_process_scores(tmp_path
         assert requests[1]['module_context']['earlier_reviews']==([] if 'M5' in enabled else [responses[0]])
         for r in requests[2:]: assert r['module_context']['joint_mechanism']['review_responses']==responses[:2]
         assert bool((path.parent/'reviews.jsonl').read_text(encoding='utf-8').strip())==('M5' in enabled)
-        if executed.cell.identity.benchmark!='blade' or executed.cell.arm_id not in ('00','01'): continue
+        if executed.cell.identity.benchmark!='blade' or executed.cell.arm_id not in ('00','01','000','001'): continue
         panel=next(p for p in result.compiled.panels if executed.cell in p.cells)
         packet=next(p for p in result.compiled.packets if p.task.content_hash==executed.cell.task_digest)
         args=dict(panel=panel,task=packet.task,scenario=result.compiled.scenarios[executed.cell.key],
@@ -142,7 +142,7 @@ def test_all_58_cells_use_actual_reviews_and_independent_process_scores(tmp_path
                 with pytest.raises(ContractError,match='joint context|review does not consume'):
                     verify_lineage_combination_cell(replace(executed,joint_mechanism=FrozenRecord.from_dict(joint),
                         runtime=replace(executed.runtime,trace_digest=tail)),**args)
-                mutated.append({'cell':list(executed.cell.key),'fault':fault})
+                mutated.append({'obligation':panel.obligation_id,'cell':list(executed.cell.key),'fault':fault})
             finally:path.write_bytes(original)
-    assert mutated
+    assert {m['obligation'] for m in mutated}=={p.obligation_id for p in result.compiled.panels}
     (tmp_path/'replay-mutations.json').write_text(json.dumps(mutated),encoding='utf-8')

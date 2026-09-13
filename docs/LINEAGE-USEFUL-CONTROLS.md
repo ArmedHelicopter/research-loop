@@ -24,3 +24,11 @@ preserve missing-cell and unknown-usage handling. References stay in scorer
 processes. No actual effectiveness, calibration or validation acceptance follows
 from these engineering grids; all remaining pair/triple/full/LOO obligations stay
 open.
+
+The solver/scorer public-context wire format is unchanged: it already permits
+both actual review records. The new recipe is bound by the v2 scenario and v3
+configuration, which change the panel digest without altering scorer criteria.
+The first full prospective integration passed 22 checks on source `429e5e3`,
+with 489 unchanged frozen files. All 58 cells reached independent scorer
+processes and actual Docker using 232 synthetic solver calls. The original
+20-check contract run retained its two expected pre-implementation failures.
