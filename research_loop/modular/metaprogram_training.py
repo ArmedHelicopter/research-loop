@@ -295,6 +295,10 @@ class FrozenMetaTrainingPlan:
         if cell['variant'] in {'train_proposed','automatic_train'}: return proposed
         return self.fixed_builder
 
+    def execution_material(self,candidate,cell,root,phase,*,replay=False):
+        """Default generated package consumed by the actual successor solver."""
+        return candidate,_projection(candidate)
+
 
 def _exclusive(path,record):
     _path(path,exists=False)
@@ -442,12 +446,16 @@ def _run_cell(plan,cell,target,root,model,broker,audit_verifier):
         _exclusive(root/'candidate.json',candidate.record);_exclusive(root/'builder-receipt.json',build_receipt.record)
         phase.append('builder_result',{'candidate_digest':candidate.digest,'receipt_digest':build_receipt.record.content_hash,
             'public_projection':projection.data()})
+        stage='train_operation'
+        execution_material=plan.execution_material(candidate,cell,root,phase)
+        if execution_material is None: raise ContractError('train operation blocks successor execution')
+        execution_candidate,projection=execution_material
         stage='solver_preflight';plan.verify_sources()
         stage='benchmark_solve'
-        phase.append('solver_request',{'candidate_digest':candidate.digest,'projection':projection.data(),
+        phase.append('solver_request',{'candidate_digest':execution_candidate.digest,'projection':projection.data(),
             'allocation':{'model_calls':2,'docker_attempts':1}})
         solver=run_benchmark_solve(task=target.task,public_inputs=target.public_inputs,image=plan.record.data()['image'],
-            package_digest=candidate.digest,arm=FrozenRecord.from_dict(cell['arm']),objective=target.objective,sidecar=root/'solver',
+            package_digest=execution_candidate.digest,arm=FrozenRecord.from_dict(cell['arm']),objective=target.objective,sidecar=root/'solver',
             broker=broker,model=charged_model,audit_verifier=audit_verifier,timeout_seconds=plan.record.data()['timeout_seconds'],
             predecessor_context=projection)
         phase.append('solver_result',{'status':solver.status,'record':solver.record.data()})
@@ -587,6 +595,13 @@ def _verify_cell(result,plan,cell,target,ledger):
                     or builder_results[0]['data']!={'candidate_digest':candidate.digest,'receipt_digest':receipt.record.content_hash,'public_projection':projection.data()}):
                 raise ContractError('generated candidate receipt is not actual restricted builder output')
     elif row['selected_builder_digest'] is not None or builder_results: raise ContractError('unexecuted builder cannot produce a candidate')
+    if candidate is not None:
+        execution_material=plan.execution_material(candidate,cell,root,phase,replay=True)
+        if execution_material is None:
+            if row['solver_trace'] is not None or row['status']!='failed':
+                raise ContractError('blocked train operation cannot execute a successor')
+            candidate=None
+        else: candidate,projection=execution_material
     if row['solver_trace'] is not None:
         if candidate is None: raise ContractError('solver lacks actual generated package')
         path=root/'solver'/'trace.jsonl';_check_trace_proof(path,row['solver_trace']);verify_benchmark_solve_trace(path,target.task)
