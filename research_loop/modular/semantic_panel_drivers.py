@@ -9,8 +9,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping, MutableMapping
 
-from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask, required_text
+from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask, required_text, strict_bool
+from research_loop.modular.experiments import registry
+from research_loop.modular.modules.improvement import TrainingManifest
 from research_loop.modular.panel_receipts import opaque_panel_cell_binding
+from research_loop.modular.p0_panel import validate_fixed_control_design
 from research_loop.modular.semantics import (
     alternative_request,
     assess_alternatives,
@@ -67,6 +70,12 @@ def _semantics(value: Any | None) -> FrozenRecord:
     return value
 
 
+def _p0_grid(value: Any) -> FrozenRecord:
+    """Require the actual frozen P0 grid, rather than a caller-selected hash."""
+    record = value if isinstance(value, FrozenRecord) else FrozenRecord.from_dict(dict(_mapping(value, "P0 fixed-control grid")))
+    return validate_fixed_control_design(record)
+
+
 def _q64_item(value: Any, identity: DataIdentity) -> dict[str, Any]:
     body = dict(_mapping(value, "Q6.4 caller material"))
     if set(body) != {"first", "second", "legacy_diagnostic"}:
@@ -81,7 +90,7 @@ def _q64_item(value: Any, identity: DataIdentity) -> dict[str, Any]:
 
 def freeze_semantic_panel_bundle(task: PublicTask, *, q22: Mapping[str, Mapping[str, Any]],
                                  q64: Mapping[str, Mapping[str, Any]],
-                                 p0_control_digest: str, semantics: FrozenRecord | None = None) -> FrozenRecord:
+                                 p0_fixed_control: FrozenRecord, semantics: FrozenRecord | None = None) -> FrozenRecord:
     """Freeze caller-provided, source-bound public scorer material.
 
     No answer carries an expected semantic interpretation, outcome, arm, or
@@ -92,50 +101,72 @@ def freeze_semantic_panel_bundle(task: PublicTask, *, q22: Mapping[str, Mapping[
         raise ContractError("semantic panel bundle needs a public task and variant mappings")
     if set(q22) != set(_Q22) or set(q64) != set(_Q64):
         raise ContractError("semantic panel bundle variant coverage mismatch")
-    frozen = _semantics(semantics)
+    frozen, p0_grid = _semantics(semantics), _p0_grid(p0_fixed_control)
     answers = {name: _answer(row, task.identity) for name, row in q22.items()}
     reassessments = {name: _q64_item(row, task.identity) for name, row in q64.items()}
     # Reject an arbitrary lookalike rubric before any future model request.
     for answer in [*answers.values(), *(row[side] for row in reassessments.values() for side in ("first", "second"))]:
         semantic_request(task, frozen, raw_answer=answer["raw_answer"], public_evidence=answer["public_evidence"])
-    return FrozenRecord.from_dict({"schema": "semantic-panel-bundle-v1", "identity": task.identity.data(),
-        "payload_digest": task.payload.content_hash, "p0_control_digest": _digest(p0_control_digest, "P0 control digest"),
+    return FrozenRecord.from_dict({"schema": "semantic-panel-bundle-v2", "identity": task.identity.data(),
+        "payload_digest": task.payload.content_hash, "p0_fixed_control": p0_grid.data(),
         "semantics": frozen.data(), "q22": answers, "q64": reassessments})
 
 
 def semantic_panel_injection(experiment_id: str, variant: str, *, task: FrozenRecord,
-                             evidence: FrozenRecord) -> Mapping[str, Any]:
+                             evidence: FrozenRecord, p0_fixed_control: FrozenRecord) -> Mapping[str, Any]:
     """Project a previously frozen caller bundle into a controller scenario."""
     if experiment_id not in {"Q2.2", "Q6.4"}:
         raise ContractError("semantic panel injection only covers Q2.2 and Q6.4")
     public = PublicTask(DataIdentity.parse(task.data()["identity"]), FrozenRecord.from_dict(task.data()["payload"]))
     body = evidence.data()
-    if body.get("schema") != "semantic-panel-bundle-v1":
+    if body.get("schema") != "semantic-panel-bundle-v2":
         raise ContractError("semantic panel requires caller-frozen semantic material")
-    bundle = freeze_semantic_panel_bundle(public, q22=body.get("q22", {}), q64=body.get("q64", {}),
-        p0_control_digest=body.get("p0_control_digest"),
+    bundle = FrozenRecord.from_dict(body)
+    remade = freeze_semantic_panel_bundle(public, q22=body.get("q22", {}), q64=body.get("q64", {}),
+        p0_fixed_control=FrozenRecord.from_dict(_mapping(body.get("p0_fixed_control"), "P0 fixed-control grid")),
         semantics=FrozenRecord.from_dict(_mapping(body.get("semantics"), "completion semantics")))
+    if remade.content_hash != bundle.content_hash:
+        raise ContractError("semantic caller bundle is not a canonical closed reconstruction")
+    actual_grid = _p0_grid(p0_fixed_control)
+    if actual_grid.content_hash != _p0_grid(body["p0_fixed_control"]).content_hash:
+        raise ContractError("semantic caller bundle P0 control differs from the actual fixed-control grid")
     variants = bundle.data()["q22" if experiment_id == "Q2.2" else "q64"]
     if variant not in variants:
         raise ContractError("semantic panel variant is not registered")
-    return {"schema": "semantic-panel-controller-v1", "bundle": bundle.data()}
+    return {"schema": "semantic-panel-controller-v2", "bundle": bundle.data(),
+            "p0_fixed_control": actual_grid.data()}
 
 
-def _material(task: PublicTask, scenario: FrozenRecord, *, experiment_id: str, variant: str) -> tuple[FrozenRecord, Any, str]:
-    controller = _mapping(scenario.data().get("controller_input"), "controller input")
-    if controller.get("schema") != "semantic-panel-controller-v1":
+def _material(task: PublicTask, scenario: FrozenRecord, *, experiment_id: str, variant: str) -> tuple[FrozenRecord, Any, FrozenRecord]:
+    scenario_body = scenario.data()
+    if set(scenario_body) != {"experiment_id", "variant", "controller_input", "base", "controls"}:
+        raise ContractError("semantic scenario has unexpected top-level fields")
+    if scenario_body["experiment_id"] != experiment_id or scenario_body["variant"] != variant:
+        raise ContractError("semantic scenario experiment or variant drift")
+    controller = _mapping(scenario_body["controller_input"], "controller input")
+    if set(controller) != {"schema", "bundle", "p0_fixed_control"} or controller.get("schema") != "semantic-panel-controller-v2":
         raise ContractError("typed semantic panel material is required")
     bundle = FrozenRecord.from_dict(dict(_mapping(controller.get("bundle"), "semantic bundle")))
     body = bundle.data()
     remade = freeze_semantic_panel_bundle(task, q22=body.get("q22", {}), q64=body.get("q64", {}),
-        p0_control_digest=body.get("p0_control_digest"),
+        p0_fixed_control=FrozenRecord.from_dict(_mapping(body.get("p0_fixed_control"), "P0 fixed-control grid")),
         semantics=FrozenRecord.from_dict(_mapping(body.get("semantics"), "completion semantics")))
-    if remade.content_hash != bundle.content_hash or scenario.data().get("base", {}).get("evidence") != bundle.content_hash:
+    base = _mapping(scenario_body["base"], "semantic scenario base")
+    if (set(base) != {"task", "evidence", "budget"} or base["task"] != task.content_hash
+            or base["evidence"] != bundle.content_hash or remade.content_hash != bundle.content_hash):
         raise ContractError("scenario does not bind its caller semantic material")
+    _digest(base["budget"], "semantic scenario budget digest")
+    actual_grid = _p0_grid(controller["p0_fixed_control"])
+    if actual_grid.content_hash != _p0_grid(body["p0_fixed_control"]).content_hash:
+        raise ContractError("semantic scenario P0 control differs from its caller bundle")
+    controls = _mapping(scenario_body["controls"], "semantic scenario controls")
+    if set(controls) != {"same_task", "same_evidence", "same_budget"} or not all(
+            strict_bool(controls[name], name) for name in controls):
+        raise ContractError("semantic scenario controls are not fixed")
     key = "q22" if experiment_id == "Q2.2" else "q64"
     if variant not in body[key]:
         raise ContractError("semantic material variant is not registered")
-    return FrozenRecord.from_dict(body["semantics"]), body[key][variant], body["p0_control_digest"]
+    return FrozenRecord.from_dict(body["semantics"]), body[key][variant], actual_grid
 
 
 def _candidate(response: FrozenRecord, objective_digest: str) -> FrozenRecord:
@@ -150,6 +181,40 @@ def _candidate(response: FrozenRecord, objective_digest: str) -> FrozenRecord:
             or body.get("programme_complete") is not False):
         raise ContractError("semantic panel final candidate has an invalid bounded schema")
     return response
+
+
+def _verify_run_binding(workflow, *, cell, scenario: FrozenRecord, package, experiment_id: str,
+                        p0_grid: FrozenRecord, slots: tuple[str, ...],
+                        expected_p0_control_digest: str | None) -> str:
+    """Bind all caller material to the concrete session before a model call."""
+    if (cell.coverage_id != experiment_id or cell.variant not in registry()[experiment_id].variants
+            or set(registry()[experiment_id].modules) != {"P0"} or cell.arm_id != "p0-fixed"
+            or cell.scenario_digest != scenario.content_hash):
+        raise ContractError("semantic cell does not bind the registered P0 scenario")
+    session = workflow.session
+    lock = session.lock.data()
+    if (session.task.identity != cell.identity or session.task.content_hash != cell.task_digest
+            or session.arm != cell.runtime_arm or lock.get("identity") != cell.identity.data()
+            or lock.get("task_digest") != cell.task_digest or lock.get("package_digest") != cell.package_digest
+            or lock.get("arm") != cell.runtime_arm.data() or tuple(lock.get("slots", ())) != slots
+            or package.digest != cell.package_digest):
+        raise ContractError("semantic session, cell, or package binding drift")
+    try:
+        manifest = TrainingManifest(FrozenRecord.from_dict(package.record.data()["training_manifest"]))
+    except (AttributeError, KeyError, TypeError) as exc:
+        raise ContractError("semantic package lacks a valid training manifest") from exc
+    if session.task.identity not in manifest.identities():
+        raise ContractError("semantic package training manifest omits this task")
+    if expected_p0_control_digest is None:
+        raise ContractError("semantic driver requires a trusted expected P0 control digest")
+    expected = _digest(expected_p0_control_digest, "trusted expected P0 control digest")
+    grid = validate_fixed_control_design(p0_grid).data()
+    if (grid["runtime_arm"] != cell.runtime_arm.data()
+            or grid["baseline_digest"] != cell.runtime_arm.data().get("baseline_digest")):
+        raise ContractError("semantic P0 fixed-control grid does not match this cell arm")
+    if grid["p0_control_digest"] != expected:
+        raise ContractError("semantic material P0 control differs from the trusted expected control")
+    return grid["p0_control_digest"]
 
 
 def _semantic_score(workflow, *, slot: str, alternative_slot: str, model, task: PublicTask,
@@ -177,12 +242,16 @@ class Q22CompletionSemanticsDriver:
     slots: tuple[str, ...] = ("semantic_judgement", "alternative_analysis", "final")
     execution_limit: int = 0
     docker_execution: str = "not_requested_by_driver"
+    expected_p0_control_digest: str | None = None
 
     def slots_for(self, cell) -> tuple[str, ...]:
         return self.slots
 
     def run(self, workflow, *, cell, scenario: FrozenRecord, model, package):
-        semantics, answer, p0_control_digest = _material(workflow.session.task, scenario, experiment_id=self.experiment_id, variant=cell.variant)
+        semantics, answer, p0_grid = _material(workflow.session.task, scenario, experiment_id=self.experiment_id, variant=cell.variant)
+        p0_control_digest = _verify_run_binding(workflow, cell=cell, scenario=scenario, package=package,
+            experiment_id=self.experiment_id, p0_grid=p0_grid, slots=self.slots,
+            expected_p0_control_digest=self.expected_p0_control_digest)
         binding = opaque_panel_cell_binding(cell)
         score, judgement, assessment, response, alternative_response = _semantic_score(workflow, slot="semantic_judgement", alternative_slot="alternative_analysis",
             model=model, task=workflow.session.task, semantics=semantics, answer=answer, binding=binding, p0_control_digest=p0_control_digest)
@@ -205,12 +274,16 @@ class Q64ScorerRepairDriver:
                               "second_alternative_analysis", "final")
     execution_limit: int = 0
     docker_execution: str = "not_requested_by_driver"
+    expected_p0_control_digest: str | None = None
 
     def slots_for(self, cell) -> tuple[str, ...]:
         return self.slots
 
     def run(self, workflow, *, cell, scenario: FrozenRecord, model, package):
-        semantics, material, p0_control_digest = _material(workflow.session.task, scenario, experiment_id=self.experiment_id, variant=cell.variant)
+        semantics, material, p0_grid = _material(workflow.session.task, scenario, experiment_id=self.experiment_id, variant=cell.variant)
+        p0_control_digest = _verify_run_binding(workflow, cell=cell, scenario=scenario, package=package,
+            experiment_id=self.experiment_id, p0_grid=p0_grid, slots=self.slots,
+            expected_p0_control_digest=self.expected_p0_control_digest)
         binding = opaque_panel_cell_binding(cell)
         first, first_judgement, first_assessment, first_response, first_alternative_response = _semantic_score(workflow, slot="first_semantic_judgement",
             alternative_slot="first_alternative_analysis", model=model, task=workflow.session.task, semantics=semantics,
@@ -236,7 +309,8 @@ class Q64ScorerRepairDriver:
             first_response, first_alternative_response, second_response, second_alternative_response, final)
 
 
-def install_drivers(target: MutableMapping[str, Any]):
+def install_drivers(target: MutableMapping[str, Any], *, expected_p0_control_digest: str | None = None):
     """Explicit registration hook for the owning integration change."""
-    target.update({"Q2.2": Q22CompletionSemanticsDriver(), "Q6.4": Q64ScorerRepairDriver()})
+    target.update({"Q2.2": Q22CompletionSemanticsDriver(expected_p0_control_digest=expected_p0_control_digest),
+                   "Q6.4": Q64ScorerRepairDriver(expected_p0_control_digest=expected_p0_control_digest)})
     return target

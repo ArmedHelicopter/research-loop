@@ -5,7 +5,7 @@ drivers for Q2.2 completion semantics and Q6.4 scorer repair. It replaces no
 scorer service and does not make a calibration, validation, or scientific
 completion claim.
 
-The caller freezes one `semantic-panel-bundle-v1` per prepared `PublicTask`:
+The caller freezes one `semantic-panel-bundle-v2` per prepared `PublicTask`:
 
 ```python
 bundle = freeze_semantic_panel_bundle(
@@ -25,17 +25,24 @@ bundle = freeze_semantic_panel_bundle(
         },
         # quotation and alternative have the same closed Q6.4 shape
     },
-    p0_control_digest=p0_control.content_hash,
+    p0_fixed_control=compiled.panel.legal_arm_grids["Q2.2"],
 )
 ```
 
-The bundle binds the task identity and public payload digest, requires every
-registered variant, and rejects extra answer fields. In particular, expected
-semantic labels, outcomes, arms, and historical scores cannot be inserted into
-the answer material. `semantic_panel_injection()` checks the caller record
-again while constructing the scenario. The exact P0 digest is carried in all
-three or five model requests; the panel receipt verifier checks it against the
-frozen P0 grid after execution.
+The `semantic-panel-bundle-v2` binds the task identity and public payload
+digest, requires every registered variant, and rejects extra answer fields. In
+particular, expected semantic labels, outcomes, arms, and historical scores
+cannot be inserted into the answer material. The bundle carries the complete
+validated P0 fixed-control grid rather than a caller-selected digest.
+`semantic_panel_injection(..., p0_fixed_control=compiled.panel.legal_arm_grids[experiment_id])`
+rejects a grid that differs from this bundle or a noncanonical reconstructed
+bundle. The driver requires that grid's runtime arm and baseline match the
+actual cell. Since the P0 control digest is not carried in `runtime_arm`, this
+does not authenticate the digest by itself. Integration must install both
+drivers with `expected_p0_control_digest=compiled.control.content_hash` (the
+trusted control supplied to `run_train_cell`); an unconfigured driver rejects
+the cell before any model request. Every P0 digest in model requests is then
+checked against that trusted value.
 
 Q2.2 uses the fixed schedule `semantic_judgement`, `alternative_analysis`, and
 `final`. The first two model responses are validated by
@@ -51,7 +58,10 @@ only in the session trace as diagnostic provenance. It is excluded from all
 model contexts and cannot alter either new score. Both scores must therefore
 carry the same semantics digest.
 
-All semantic and alternative model requests contain only the public task,
+Before the first call, the driver validates exact scenario and controller
+top-level schemas, task identity and payload, base task/evidence bindings,
+fixed controls, cell scenario/task/arm/package digests, RunSession lock, and
+the package training manifest. All semantic and alternative model requests contain only the public task,
 public evidence, raw submitted answer, frozen semantics schema, opaque cell
 binding, and P0 digest. The final request also contains the validated new
 semantic score records. It contains no variant identifier, arm metadata,
