@@ -83,7 +83,8 @@ def _runtime(cell, session, joint, status):
     trace = session.sidecar / "trace.jsonl"
     lines = trace.read_text(encoding="utf-8").splitlines()
     digest = FrozenRecord(lines[-1]).content_hash
-    output = None if status == "failed" else FrozenRecord.from_dict({"terminal": session._events[-1].data()}).content_hash
+    responses = [event.data()["data"]["response"] for event in session._events if event.data()["stage"] == "model_response"]
+    output = None if status == "failed" else FrozenRecord.from_dict({"responses": responses, "terminal": session._events[-1].data()["data"]}).content_hash
     return RuntimeReceipt(cell.key, status, trace, digest, output, None if status == "succeeded" else "state/prediction or solve failed")
 
 
