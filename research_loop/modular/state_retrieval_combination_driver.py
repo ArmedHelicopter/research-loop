@@ -106,11 +106,12 @@ def _validate(panel, cell, task, scenario, package, material, source_verifier, r
         'retrieval_verifier_binding': retrieval_verifier.binding().data(),
         'objective': scenario.data().get('objective'), 'image': scenario.data().get('image'),
         'timeout_seconds': scenario.data().get('timeout_seconds')}
-    from research_loop.modular.benchmarks.execution import ExecutionRequest
+    from research_loop.modular.benchmarks.execution import _IMAGE
     if not isinstance(expected['objective'], dict) or not expected['objective']:
         raise ContractError('scenario must freeze the public solver objective')
-    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
-    if type(expected['timeout_seconds']) is not int or scenario.data() != expected:
+    if not isinstance(expected['image'], str) or not _IMAGE.fullmatch(expected['image']):
+        raise ContractError('scenario requires a digest-pinned image')
+    if type(expected['timeout_seconds']) is not int or not 1 <= expected['timeout_seconds'] <= 120 or scenario.data() != expected:
         raise ContractError('scenario must freeze exact material and configured authority keys')
     docs = check_retrieval(material.retrieval(), task)
     if freeze_material(task, state, material.retrieval().data()['original_sources'], material.retrieval().data()['query']['question']) != material:
@@ -257,3 +258,4 @@ def verify_state_retrieval_cell(result, *, panel, task, scenario, package, mater
                 raise ContractError('Docker execution image differs from frozen scenario')
     return FrozenRecord.from_dict({'schema': 'state-retrieval-verification-v1', 'engineering_verified': True,
         'cell_key': list(cell.key), 'status': result.runtime.status, 'scientific_effect': 'not_measured'})
+
