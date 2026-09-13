@@ -1,0 +1,175 @@
+{
+  "schema": "state-prediction-fixture-evidence-v1",
+  "tested_commit": "1cfee61e33b70de8ec15f095ae9351affb27dfe3",
+  "source_count": 498,
+  "source_unchanged": true,
+  "tests": {
+    "tests": 45,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "paid_model_calls": 0,
+  "scope": "synthetic prospective TRAIN engineering only",
+  "model_transport": "CodexModelPort with fixture process runner",
+  "scorer_transport": "actual independent stdio worker; synthetic fixed rubric outputs",
+  "cases": {
+    "complete-grid": {
+      "status": "complete_train_engineering",
+      "expected_cells": 24,
+      "observed_cells": 24,
+      "scored_cells": 24,
+      "failed_cells": 0,
+      "blocked_cells": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 144,
+        "model_calls": 72,
+        "model_usage_incomplete": false
+      },
+      "actual_docker_attempts": 24,
+      "actual_scorer_calls": 24,
+      "source_calls": 48,
+      "unused_model_opportunities": 0,
+      "unused_docker_opportunities": 0,
+      "unused_scorer_opportunities": 0,
+      "pruned_cells": [],
+      "validation_opened": false,
+      "scientific_effectiveness_proven": false,
+      "contrasts": [
+        {
+          "status": "estimated",
+          "reason": null
+        },
+        {
+          "status": "estimated",
+          "reason": null
+        },
+        {
+          "status": "estimated",
+          "reason": null
+        }
+      ]
+    },
+    "qualification-drift": {
+      "status": "inconclusive",
+      "expected_cells": 24,
+      "observed_cells": 24,
+      "scored_cells": 24,
+      "failed_cells": 0,
+      "blocked_cells": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 144,
+        "model_calls": 72,
+        "model_usage_incomplete": false
+      },
+      "actual_docker_attempts": 24,
+      "actual_scorer_calls": 24,
+      "source_calls": 48,
+      "unused_model_opportunities": 0,
+      "unused_docker_opportunities": 0,
+      "unused_scorer_opportunities": 0,
+      "pruned_cells": [],
+      "validation_opened": false,
+      "scientific_effectiveness_proven": false,
+      "contrasts": [
+        {
+          "status": "inconclusive",
+          "reason": "admission_qualification_semantic_drift"
+        },
+        {
+          "status": "estimated",
+          "reason": null
+        },
+        {
+          "status": "estimated",
+          "reason": null
+        }
+      ]
+    },
+    "source-outage": {
+      "status": "inconclusive",
+      "expected_cells": 24,
+      "observed_cells": 24,
+      "scored_cells": 16,
+      "failed_cells": 8,
+      "blocked_cells": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 96,
+        "model_calls": 48,
+        "model_usage_incomplete": false
+      },
+      "actual_docker_attempts": 16,
+      "actual_scorer_calls": 16,
+      "source_calls": 48,
+      "unused_model_opportunities": 24,
+      "unused_docker_opportunities": 8,
+      "unused_scorer_opportunities": 8,
+      "pruned_cells": [],
+      "validation_opened": false,
+      "scientific_effectiveness_proven": false,
+      "contrasts": [
+        {
+          "status": "inconclusive",
+          "reason": "incomplete_or_failed_cell"
+        },
+        {
+          "status": "estimated",
+          "reason": null
+        },
+        {
+          "status": "estimated",
+          "reason": null
+        }
+      ]
+    },
+    "poisoned-ledger": {
+      "status": "inconclusive",
+      "expected_cells": 24,
+      "observed_cells": 24,
+      "scored_cells": 0,
+      "failed_cells": 1,
+      "blocked_cells": 23,
+      "actual_model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 1,
+        "model_usage_incomplete": true
+      },
+      "actual_docker_attempts": 0,
+      "actual_scorer_calls": 0,
+      "source_calls": 2,
+      "unused_model_opportunities": 71,
+      "unused_docker_opportunities": 24,
+      "unused_scorer_opportunities": 24,
+      "pruned_cells": [],
+      "validation_opened": false,
+      "scientific_effectiveness_proven": false,
+      "contrasts": [
+        {
+          "status": "inconclusive",
+          "reason": "incomplete_or_failed_cell"
+        },
+        {
+          "status": "inconclusive",
+          "reason": "incomplete_or_failed_cell"
+        },
+        {
+          "status": "inconclusive",
+          "reason": "incomplete_or_failed_cell"
+        }
+      ]
+    }
+  },
+  "initial_failures": [
+    {
+      "attempt": "first",
+      "observed": "WinError 5 during atomic controller journal replacement after 27 fixture calls",
+      "cause_status": "Windows read-sharing interference was plausible but not established"
+    },
+    {
+      "attempt": "second",
+      "observed": "Source-failure fixture assertion incorrectly assumed first model call occurs in cell zero",
+      "effect": "Assertion poisoned model usage after eight intended source failures; nine failed and fifteen blocked rows retained",
+      "repair": "Assert remaining planned cells after the actual running cell"
+    }
+  ]
+}

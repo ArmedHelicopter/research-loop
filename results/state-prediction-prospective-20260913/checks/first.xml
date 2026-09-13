@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="11" time="61.404" timestamp="2026-09-13T21:23:47.721854+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.005" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.003" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.002" /><testcase classname="tests.test_state_prediction_train_controller" name="test_all_24_prospective_cells_actual_modules_docker_and_scorer" time="59.698"><error message="failed on setup with &quot;PermissionError: [WinError 5] 拒绝访问。: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-prediction-first\\state-prediction-grid0\\run\\controller-attempt.json.tmp' -&gt; 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-prediction-first\\state-prediction-grid0\\run\\controller-attempt.json'&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-prediction-first'), _trac...sPath('E:/_ryanDev/AI/research-loop-modular/work/state-prediction-first'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        root=tmp_path_factory.mktemp('state-prediction-grid');setup=prepare(root)
+        with pytest.MonkeyPatch.context() as patch:
+&gt;           result,port,seen=invoke(setup,patch)
+                             ^^^^^^^^^^^^^^^^^^^
+
+tests\test_state_prediction_train_controller.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_state_prediction_train_controller.py:171: in invoke
+    result=run_state_prediction_train_panels(config,**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\state_prediction_combination_controller.py:310: in run_state_prediction_train_panels
+    results.append(result); persist()
+                            ^^^^^^^^^
+research_loop\modular\state_prediction_combination_controller.py:235: in persist
+    journal['actual_model_usage'] = _usage(model); _write(root/'controller-attempt.json', journal)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/state-prediction-first/state-prediction-grid0/run/controller-attempt.json')
+value = {'actual_model_usage': {'known_model_tokens': 54, 'model_calls': 27, 'model_usage_incomplete': False}, 'actual_scorer_..., 'model_usage_after': {'known_model_tokens': 36, 'model_calls': 18, 'model_usage_incomplete': False}, ...}, ...], ...}
+
+    def _write(path: Path, value: Mapping[str, Any]) -&gt; None:
+        temporary = path.with_suffix(path.suffix + ".tmp")
+        temporary.write_text(canonical(dict(value)), encoding="utf-8")
+&gt;       os.replace(temporary, path)
+E       PermissionError: [WinError 5] 拒绝访问。: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-prediction-first\\state-prediction-grid0\\run\\controller-attempt.json.tmp' -&gt; 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\state-prediction-first\\state-prediction-grid0\\run\\controller-attempt.json'
+
+research_loop\modular\train_controller.py:519: PermissionError</error></testcase></testsuite></testsuites>
