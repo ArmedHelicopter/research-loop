@@ -1,0 +1,34 @@
+{
+  "source_commit": "ed4098c72c50ad2415758fb672025df86eda906b",
+  "source_files": 517,
+  "source_unchanged": true,
+  "junit": {
+    "tests": 34,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "junit_sha256": "73f0391e3db90e963b965658a69bd440ddd96bf1dd8a2752d11d30d2fb1a66d7",
+  "coverage": "22 of 36 pair controllers; 2 of 5 triple controllers; synthetic engineering only",
+  "complete_grid": {
+    "cells": 24,
+    "scripted_model_calls": 48,
+    "actual_docker": 72,
+    "actual_primary_scorer_process_calls": 24,
+    "source_qualifications": 48
+  },
+  "root_scope": "full prospective grid; actual dependency, conflict, reverse-order, timeout and container-overlap variants; strict family and existing prediction scorer scopes; label isolation",
+  "source_archive": {
+    "files": 16,
+    "indexed": 15,
+    "zip_members": 4315
+  },
+  "limitations": [
+    "synthetic solver/source/scorer responses",
+    "selected-cell attack coverage",
+    "no throughput estimate under concurrent workload"
+  ],
+  "new_generation_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}

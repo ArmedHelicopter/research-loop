@@ -3,7 +3,35 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current state/exploration integration checkpoint (2026-09-13)
+## Current state/scheduling integration checkpoint (2026-09-13)
+
+Source `ed4098c` passed 34 root integration checks with all 517 frozen
+source/document files unchanged. M1×M8, M2×M8 and M3×M8 now have complete
+prospective TRAIN controllers and independent primary scorer processes. The
+24-cell grid used 48 scripted model calls, 48 source qualifications, 72 actual
+Docker executions and 24 independent scores. M3 fixes M2 as background.
+
+M7 is disabled. Both scheduler levels execute the same two literal jobs and
+cost units. M8-on uses actual FIFO leases, immutable snapshots and the complete
+merge barrier; M8-off runs serially. Actual container timestamps establish
+overlap in the focused independent-job fixture. Dependency/resource conflicts
+serialize, reversed completion retains FIFO output order, and timeout cleanup
+is verified. These fixtures do not estimate scientific workload throughput.
+
+The isolated source passed 102 checks. All original failure, unknown and unused
+opportunities remain recorded, and M1 qualification drift blocks its contrast.
+Root review found no concrete blocking source defect. The source archive has
+16 files, 15 indexed artifacts and 4,315 verified ZIP members. Root closure and
+source review are under
+`results/modular-engineering-20260913/state-scheduling-root/`.
+
+Coverage is now 22/36 pair controllers and 2/5 triple controllers. These are
+engineering checks with synthetic model/source/scorer responses. Actual TRAIN
+effects, calibration, remaining combinations, the frozen final bundle and
+validation acceptance remain unfinished. This checkpoint used no actual model
+generation or validation access; Grok transport probes are recorded separately.
+
+## Prior state/exploration integration checkpoint (2026-09-13)
 
 Source `694d126` passed 40 root integration checks with all 512 frozen
 source/document files unchanged. M1×M7, M2×M7 and M3×M7 now have complete
