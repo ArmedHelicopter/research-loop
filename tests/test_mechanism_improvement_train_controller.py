@@ -105,7 +105,11 @@ def prepare(root,patch,fault=None):
         assert all(marker not in request.encoded for marker in ('"arm_id"','"enabled"','PRIVATE-REFERENCE-SENTINEL','private-origin-'))
         if b['slot']=='m4_plan':
             assert b['execution_feedback']==[]
-            proposal=_plan()
+            proposal=_plan();proposal['question']='What will the fresh target statistic show?'
+            if fault=='nondiscriminating':
+                for branch in proposal['branches']:
+                    branch['elimination_condition']='Fresh target statistic does not increase'
+                    for prediction in branch['predictions']:prediction.update(direction='increase',failure_condition='not increase')
             for branch in proposal['branches']:
                 for prediction in branch['predictions']:
                     prediction.update(observable=MEASUREMENT['observable'],discriminator_id=MEASUREMENT['discriminator_id'])
@@ -285,16 +289,37 @@ def test_rehashed_target_module_and_solver_attacks_are_rejected(grid,attack):
     finally:path.write_bytes(raw)
 
 
-@pytest.mark.parametrize('field',['--network','--memory','--user','-v'])
-def test_rehashed_docker_cannot_relax_limits_or_mounts(grid,field):
-    setup,run=grid;result=run.results[-1];path=result.runtime.trace_path;raw=path.read_bytes()
-    def mutate(rows):
-        row=next(r for r in rows if r['stage']=='execution_result');argv=row['data']['receipt']['record']['argv']
-        argv[argv.index(field)+1]={'--network':'host','--memory':'4g','--user':'0:0','-v':'/wrong:/input/public_csv:rw'}[field]
+@pytest.mark.parametrize('field,value',[('--network','host'),('--memory','4g'),('--cpus','8.0'),('--user','0:0'),('-v','/wrong:/input/public_csv:rw')])
+def test_rehashed_solver_execution_cannot_relax_docker_limits_or_mounts(grid,field,value):
+    from research_loop.modular.panel_receipts import PanelReceiptVerifier
+    from research_loop.modular.mechanism_improvement_combination_driver import verify_mechanism_improvement_cell
+    setup,run=grid;executed=next(r for r in run.results if r.cell.coverage_id=='pair:M6+M9' and r.cell.arm_id=='11')
+    args=replay_args(setup,run,executed);path=executed.runtime.trace_path;before=path.read_bytes()
+    record=executed.solver.execution.record.data();record['argv'][record['argv'].index(field)+1]=value
+    receipt=replace(executed.solver.execution,record=FrozenRecord.from_dict(record))
+    old_hash=executed.solver.execution.content_hash;new_hash=receipt.content_hash
+    def substitute(value):
+        if isinstance(value,dict):return {k:substitute(v) for k,v in value.items()}
+        if isinstance(value,list):return [substitute(v) for v in value]
+        return new_hash if value==old_hash else value
+    def mutate(events):
+        for event in events:event['data']=substitute(event['data'])
+        execution=next(e for e in events if e['stage']=='execution_result')['data']
+        execution['record']=receipt.record.data();execution['receipt']=receipt.data()
+        for event in events:
+            if event['stage']=='model_request':
+                old=event['data']['request_digest'];new=FrozenRecord.from_dict(event['data']['request']).content_hash
+                event['data']['request_digest']=new
+                for other in events:
+                    if other['stage']=='model_response' and other['data']['request_digest']==old:other['data']['request_digest']=new
     try:
-        digest=_rewrite_trace(path,mutate);forged=replace(result,runtime=replace(result.runtime,trace_digest=digest))
-        with pytest.raises(ContractError):issue_mechanism_improvement_score_input(authority=EXECUTION,result=forged,**replay_args(setup,run,forged))
-    finally:path.write_bytes(raw)
+        tail=_rewrite_trace(path,mutate)
+        forged=replace(executed,runtime=replace(executed.runtime,trace_digest=tail),solver=replace(executed.solver,execution=receipt))
+        PanelReceiptVerifier()._verify_runtime(forged.runtime,forged.cell)
+        with pytest.raises(ContractError,match='Docker limits'):verify_mechanism_improvement_cell(forged,**args)
+        with pytest.raises(ContractError):issue_mechanism_improvement_score_input(authority=EXECUTION,result=forged,**args)
+    finally:path.write_bytes(before)
+    verify_mechanism_improvement_cell(executed,**args)
 
 
 def test_proxy_cannot_skip_original_barrier_replay(grid):
@@ -346,3 +371,23 @@ def test_failures_and_unknown_costs_keep_all_recipe_target_denominators(tmp_path
     elif fault=='corpus_unknown':assert b['failed_cells']==1 and b['blocked_cells']==7 and b['scored_cells']==16
 
 
+
+
+def test_useful_nondiscriminating_forecasts_are_consumed_off_but_rejected_on(tmp_path,monkeypatch):
+    setup=prepare(tmp_path,monkeypatch,'nondiscriminating');run=invoke(setup,monkeypatch,'nondiscriminating')
+    b=run.receipt.data()
+    assert b['scored_cells']==20 and b['failed_cells']==4 and b['blocked_cells']==0
+    assert b['actual_model_usage']['model_calls']==70 and not b['actual_model_usage']['model_usage_incomplete']
+    assert b['actual_builder_executions']==6 and b['actual_docker_attempts']==b['actual_scorer_calls']==20
+    for result in run.results:
+        if result.cell.coverage_id!='pair:M4+M9':continue
+        events=[FrozenRecord(line).data() for line in result.runtime.trace_path.read_text().splitlines()]
+        if 'M4' in result.cell.runtime_arm.data()['enabled']:
+            assert result.runtime.status=='failed' and result.solver is None
+            assert not any(e['stage']=='execution_request' or e['stage']=='model_request' and e['data']['request']['slot']=='analysis_program' for e in events)
+        else:
+            assert result.runtime.status=='succeeded' and result.joint_mechanism.data()['prediction_plan'] is None
+            assert (result.runtime.trace_path.parent/'predictions.jsonl').read_bytes()==b''
+            measured=json.loads(result.solver.execution.record.data()['stdout'])
+            assert set(measured['forecast_checks'])=={'increase'}
+            assert measured['forecast_checks']['increase']==(measured['target_statistic']>0)

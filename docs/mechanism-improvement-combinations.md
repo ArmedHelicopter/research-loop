@@ -24,8 +24,10 @@ proposal in both arms, and on registers its operational competing predictions
 before the fresh target program executes. The observable `target_statistic`
 is measured by that execution. Already-observed historical quantities are
 conditioning information, not prospective outcomes. Forecast agreement or
-successful registration cannot establish causal validity. Matched useful
-off proposals may produce the same result as registered plans.
+successful registration cannot establish causal validity. The ordinary off instruction accepts useful forecast alternatives that agree;
+off does not invoke prediction-registry validation or require discrimination.
+On requires actual operational competing predictions and native registration.
+Matched useful off proposals may produce the same result as registered plans.
 
 M5 uses two useful reviews of the same candidate and public task. Off gives
 the second reviewer the first response; on uses the native sealed review

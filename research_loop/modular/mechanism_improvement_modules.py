@@ -1,7 +1,6 @@
 """Target-only native predictions, reviews and retrieval after candidate freeze."""
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.metaprogram_training import metaprogram_schemas, _projection
-from research_loop.modular.modules.predictions import PredictionRegistry
 from research_loop.modular.modules.review import ReviewEngine
 from research_loop.modular.modules.retrieval import FrozenSourceBundle
 from research_loop.modular.panel_receipts import opaque_panel_cell_binding
@@ -13,6 +12,9 @@ MEASUREMENT={'phase':'future_target_execution','observable':'target_statistic','
 PREDICTION_INSTRUCTION=('Forecast the supplied fresh target execution measurement using the public task and frozen candidate. '
     'Return question, three competing branches, and budget_units=3. Use the declared observable and discriminator in every prediction. '
     'Historical observations are conditioning information, never prospective outcomes.')
+ORDINARY_INSTRUCTION=('Give three useful ordinary forecast alternatives for the supplied fresh target execution measurement. '
+    'Return question, branches and budget_units=3 with the declared observable and discriminator. Alternatives may agree; '
+    'do not claim that historical observations are future outcomes.')
 REVIEW_INSTRUCTION='Review the frozen candidate guidance and public task for the assigned measurement question; give useful bounded checks.'
 ROLES=(('mechanism','Which executable check would distinguish the candidate guidance from the public alternative?'),
        ('measurement','Which measurement or implementation error should the shared target program check?'))
@@ -55,14 +57,21 @@ def apply_target_module(*,cell,task,package,transition,predictions,reviews,invok
     enabled=factor in cell.runtime_arm.data()['enabled']
     result={'prediction_proposal':None,'prediction_plan':None,'reviews':[],'retrieval':retrieval}
     if factor=='M4':
-        response=invoke('m4_plan',PREDICTION_INSTRUCTION,FrozenRecord.from_dict({**context,'measurement':MEASUREMENT}))
+        response=invoke('m4_plan',PREDICTION_INSTRUCTION if enabled else ORDINARY_INSTRUCTION,FrozenRecord.from_dict({**context,'measurement':MEASUREMENT}))
         b=response.data()
         if (set(b)!={'question','branches','budget_units'} or b['budget_units']!=3 or len(b['branches'])!=3
                 or any(p['observable']!=MEASUREMENT['observable'] or p['discriminator_id']!=MEASUREMENT['discriminator_id']
                     for branch in b['branches'] for p in branch['predictions'])):
             raise ContractError('predictions must address the declared fresh target measurement')
-        # Validate operational usefulness in both arms; only on persists a registry.
-        checked=PredictionRegistry(task.identity).freeze(b['question'],b['branches'],budget_units=3)
+        # Off checks useful ordinary shape, never registry or discrimination constraints.
+        for branch in b['branches']:
+            if any(not isinstance(branch.get(k),str) or not branch[k].strip() for k in
+                    ('hypothesis_id','mechanism_key','mechanism','intervention','elimination_condition')):
+                raise ContractError('ordinary forecast alternatives require useful nonempty content')
+            for prediction in branch['predictions']:
+                if any(not isinstance(prediction.get(k),str) or not prediction[k].strip() for k in
+                        ('prediction_id','discriminator_id','observable','direction','failure_condition')):
+                    raise ContractError('ordinary forecasts require an executable measurement statement')
         plan=predictions.freeze(b['question'],b['branches'],budget_units=3) if enabled else None
         result.update(prediction_proposal=b,prediction_plan=plan.payload.data() if plan else None)
         record('mechanism_improvement_prediction',{'proposal_digest':response.content_hash,'measurement':MEASUREMENT,
