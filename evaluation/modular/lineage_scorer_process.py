@@ -46,7 +46,8 @@ def load_lineage_service(path, expected_sha256, *, evaluator=None):
         ref, _, _ = resolver.resolve(config.task_handles[digest(cell.identity.data())], cell.identity.benchmark,
             identity_digest=digest(cell.identity.data()), task_digest=cell.task_digest)
     model = evaluator if evaluator is not None else _production_evaluator(config.evaluator, rubric_mode='lineage_v1')
-    if getattr(model, 'rubric_digest', None) != FrozenLineageRubricEndpoint.rubric_digest():
+    from evaluation.modular.evaluator_model_port import CodexEvaluatorModelPort
+    if not isinstance(model, CodexEvaluatorModelPort) or model.rubric_digest != FrozenLineageRubricEndpoint.rubric_digest():
         raise ContractError('lineage service requires protected Codex evaluator mode')
     limits = spec['limits']
     if (not isinstance(limits, dict) or set(limits) != {'model', 'effort', 'tokens_per_cell', 'timeout_seconds'}
@@ -75,7 +76,7 @@ class LineageScorerProcessClient(CombinationScorerProcessClient):
         serialize_combination_panel(panel, lineage=True)
         expected = scorer_process_binding(panel=panel, config=config, task_handle_bindings=task_handle_bindings,
             execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
-        self.reference_binding = reference_binding
+        self.reference_binding = FrozenRecord.from_dict(reference_binding).data()
         expected = FrozenRecord.from_dict({**expected.data(), 'lineage_references': reference_binding})
         self.config = config
         self._scorer_keys = dict(scorer_authority_keys)
@@ -108,6 +109,29 @@ class LineageScorerProcessClient(CombinationScorerProcessClient):
             if (body.get('schema') != 'lineage-scorer-usage-v1' or body.get('nonce') != nonce
                     or body.get('panel_digest') != self.panel.digest or body.get('scorer_digest') != self.config.digest):
                 raise ContractError('lineage usage subject mismatch')
+            if (set(body) != {'schema', 'authority', 'nonce', 'panel_digest', 'scorer_digest', 'ledger_sha256',
+                             'calls', 'tokens', 'usage_incomplete', 'limits', 'max_calls', 'max_tokens'}
+                    or body['limits'] != self.reference_binding['limits']
+                    or type(body['tokens']) is not int or body['tokens'] < 0
+                    or type(body['usage_incomplete']) is not bool or not isinstance(body['calls'], list)
+                    or body['max_calls'] != len(self.panel.cells)
+                    or body['max_tokens'] != len(self.panel.cells)*body['limits']['tokens_per_cell']):
+                raise ContractError('lineage usage accounting contract mismatch')
+            known = 0
+            for index, call in enumerate(body['calls'], 1):
+                if (not isinstance(call, dict) or set(call) != {'id', 'status', 'usage'} or call['id'] != index
+                        or call['status'] not in {'reserved', 'succeeded', 'failed', 'unknown', 'over_budget'}):
+                    raise ContractError('lineage usage call contract mismatch')
+                usage = call['usage']
+                if usage is not None:
+                    if (not isinstance(usage, dict) or set(usage) != {'input_tokens', 'output_tokens', 'cached_input_tokens',
+                            'cache_write_input_tokens', 'reasoning_output_tokens', 'total_tokens'}
+                            or any(type(v) is not int or v < 0 for v in usage.values())
+                            or usage['total_tokens'] != usage['input_tokens']+usage['output_tokens']):
+                        raise ContractError('lineage usage token contract mismatch')
+                    known += usage['total_tokens']
+            if known != body['tokens'] or len(body['calls']) > body['max_calls']:
+                raise ContractError('lineage usage cumulative total mismatch')
             return response.data()
         except Exception:
             return {'status':'unknown', 'cost_unknown':True}
@@ -146,6 +170,8 @@ class LineageScorerWorker(ScorerWorker):
                 raise ContractError('invalid lineage usage query')
             model = self.service.evaluator_port
             ledger = model.ledger
+            if json.loads(model.ledger_path.read_text(encoding='utf-8')) != ledger:
+                raise ContractError('lineage evaluator ledger bytes changed externally')
             return self.service._authority.issue({'schema':'lineage-scorer-usage-v1', 'nonce':value['nonce'],
                 'panel_digest':self.panel.digest, 'scorer_digest':self.service.config.digest,
                 'ledger_sha256':_sha(model.ledger_path.read_bytes()),

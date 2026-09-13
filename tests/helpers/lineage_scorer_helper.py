@@ -32,6 +32,9 @@ def main():
         assert 'lineage-execution' not in input and 'lineage-scoring' not in input
         assert 'arm_id' not in input and 'runtime_arm' not in input
         (root/'child-pid.txt').write_text(str(os.getpid()), encoding='utf-8')
+        if args.fault == 'hang' and count == 1:
+            import time
+            time.sleep(30)  # The bounded client must terminate this actual child.
         if args.fault == 'timeout' and count == 1:
             raise subprocess.TimeoutExpired(argv, 1)
         if args.fault == 'exception' and count == 1: raise RuntimeError('fixture transport failure')

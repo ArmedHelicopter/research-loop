@@ -208,3 +208,23 @@ def test_full_controller_keeps_failed_scorer_denominator(tmp_path,monkeypatch):
     assert len(result.scores)==28 and result.receipt.data()['status']=='inconclusive'
     assert result.receipt.data()['actual_docker_attempts']==34 and result.receipt.data()['actual_scorer_calls']==34
     assert sum(r.data()['status']=='failed' for r in result.attempts)==6
+
+
+def test_real_hung_child_is_terminated_with_reserved_unknown_cost(tmp_path,process_grid):
+    _,grid,_=process_grid
+    _,_,_,compiled,_,specs=fixture(tmp_path)
+    spec=specs[0];spec['command'] += ['--fault','hang']
+    client=LineageScorerProcessClient(**spec)
+    client.response_timeout_seconds=2
+    cell=compiled.panels[0].cells[0]
+    try:
+        with pytest.raises(ContractError,match='timed out'):
+            client.score_lineage(panel=compiled.panels[0],cell=cell,
+                score_input=FrozenRecord.from_dict(grid.attempts[0].data()['score_input']))
+        assert client.process.poll() is not None
+        assert client.usage()=={'status':'unknown','cost_unknown':True}
+        ledger=json.loads((tmp_path/'worker0'/'evaluator'/'ledger.json').read_text(encoding='utf-8'))
+        assert len(ledger['calls'])==1 and ledger['calls'][0]['status']=='reserved'
+        rows=[json.loads(line) for line in (tmp_path/'worker0'/'server.jsonl').read_text(encoding='utf-8').splitlines()]
+        assert [r['status'] for r in rows]==['reserved']
+    finally:client.close()

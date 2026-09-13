@@ -6,7 +6,7 @@ truth or OS independence. Nothing in a public joint is used as its own answer ke
 import hashlib
 from pathlib import Path
 
-from evaluation.modular.reference_store import _plain
+from evaluation.modular.reference_store import _plain, FrozenTrainReferenceResolver
 from evaluation.modular.scoring_service import FrozenBenchmarkRubricEndpoint
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.ontology import ContractError, canonical, digest
@@ -35,6 +35,8 @@ class FrozenLineageReferenceResolver:
     decides source qualification; this resolver verifies exact bytes and subjects.
     """
     def __init__(self, root, *, manifest_sha256, bindings, primary_resolver):
+        if not isinstance(primary_resolver, FrozenTrainReferenceResolver) or not isinstance(bindings, dict):
+            raise ContractError('lineage reference requires the actual pinned primary store resolver')
         self.root = _plain(Path(root)).resolve(strict=True)
         self._primary = primary_resolver
         raw = _plain(self.root/'manifest.json').read_bytes()
@@ -50,7 +52,8 @@ class FrozenLineageReferenceResolver:
         self.subjects = {}
         self.manifest_sha256 = manifest_sha256
         for row in b['rows']:
-            if not isinstance(row, dict) or set(row) != {'identity', 'task_handle', 'reference'}:
+            if (not isinstance(row, dict) or set(row) != {'identity', 'task_handle', 'reference'}
+                    or not isinstance(row['reference'], dict) or not isinstance(row['task_handle'], str)):
                 raise ContractError('lineage reference row is invalid')
             identity = DataIdentity.parse(row['identity']); identity.require_train()
             key = digest(identity.data())
