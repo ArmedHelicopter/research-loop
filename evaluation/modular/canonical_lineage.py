@@ -18,7 +18,7 @@ from research_loop.ontology import canonical, digest
 SCHEMA = "canonical-source-reference-v1"
 SOURCES = ("discoverybench", "blade", "scicode", "scienceagentbench", "airsbench")
 KINDS = ("doi", "github_repository", "hf_dataset", "source_url", "data_artifact_sha256")
-RELATIONS = KINDS + ("legacy_group_constraint",)
+RELATIONS = KINDS + ("source_scoped_dataset_declaration", "legacy_group_constraint")
 HEX = re.compile(r"[0-9a-f]{64}\Z")
 DOI = re.compile(r"10\.[0-9]{4,9}/[-._;()/:a-z0-9]+\Z", re.I)
 GITHUB_PART = re.compile(r"[A-Za-z0-9_.-]+\Z")
@@ -96,6 +96,7 @@ class Record:
     legacy_group: str | None = field(default=None, repr=False)
     unresolved_reference_values: int = 0
     record_license_declared: bool = False
+    local_dataset_declarations: frozenset[str] = field(default_factory=frozenset, repr=False)
 
     def __post_init__(self):
         if self.source not in SOURCES or not HEX.fullmatch(self.token):
@@ -105,6 +106,8 @@ class Record:
         if any(not HEX.fullmatch(value) for values in self.references.values() for value in values):
             raise CustodyError()
         if self.legacy_group is not None and not HEX.fullmatch(self.legacy_group):
+            raise CustodyError()
+        if any(not HEX.fullmatch(value) for value in self.local_dataset_declarations):
             raise CustodyError()
 
 
@@ -137,6 +140,9 @@ def match_records(records):
                 by_ref[kind].setdefault(reference, []).append(record.token)
         if record.legacy_group is not None:
             by_ref["legacy_group_constraint"].setdefault(record.legacy_group, []).append(record.token)
+        for reference in record.local_dataset_declarations:
+            scoped = digest({"source": record.source, "declaration_sha256": reference})
+            by_ref["source_scoped_dataset_declaration"].setdefault(scoped, []).append(record.token)
     shared = {kind: [] for kind in RELATIONS}
     for kind, refs in by_ref.items():
         for reference, members in sorted(refs.items()):
@@ -158,6 +164,7 @@ def match_records(records):
                        "source_counts": {source: sum(by_token[token].source == source for token in members) for source in SOURCES},
                        "supported_relation_counts": {kind: sum(bool(member_set.intersection(entry["member_tokens"])) for entry in shared[kind]) for kind in RELATIONS},
                        "members_without_canonical_reference": sum(not any(by_token[token].references.values()) for token in members),
+                       "members_with_local_dataset_declaration": sum(bool(by_token[token].local_dataset_declarations) for token in members),
                        "independent_family_qualification": "unknown"})
     summary = {}
     for source in SOURCES:
@@ -168,6 +175,9 @@ def match_records(records):
             "records_without_canonical_reference": sum(not any(record.references.values()) for record in chosen),
             "unresolved_reference_value_count": sum(record.unresolved_reference_values for record in chosen),
             "record_license_declaration_count": sum(record.record_license_declared for record in chosen),
+            "local_dataset_declaration_record_count": sum(bool(record.local_dataset_declarations) for record in chosen),
+            "local_dataset_declaration_unique_count": len(set().union(*(record.local_dataset_declarations for record in chosen))),
+            "local_dataset_declaration_fingerprints": sorted(set().union(*(record.local_dataset_declarations for record in chosen))),
             "canonical_reference_record_counts": {kind: sum(bool(record.references[kind]) for record in chosen) for kind in KINDS},
             "canonical_reference_unique_counts": {kind: len(set().union(*(record.references[kind] for record in chosen))) for kind in KINDS},
             "canonical_fingerprints": {kind: sorted(set().union(*(record.references[kind] for record in chosen))) for kind in KINDS},
@@ -189,12 +199,15 @@ def validate_graph(value):
     source_spec = {"record_count": "count", "records_with_any_canonical_reference": "count",
                    "records_without_canonical_reference": "count", "unresolved_reference_value_count": "count",
                    "record_license_declaration_count": "count", "canonical_reference_record_counts": kind_counts,
+                   "local_dataset_declaration_record_count": "count", "local_dataset_declaration_unique_count": "count",
+                   "local_dataset_declaration_fingerprints": ["sha"],
                    "canonical_reference_unique_counts": kind_counts,
                    "canonical_fingerprints": {kind: ["sha"] for kind in KINDS},
                    "per_record_license_qualification": "not_established"}
     group_spec = {"group_sha256": "sha", "member_tokens": ["sha"], "member_count": "count", "source_counts": counts,
                   "supported_relation_counts": {kind: "count" for kind in RELATIONS},
                   "members_without_canonical_reference": "count", "independent_family_qualification": "unknown"}
+    group_spec["members_with_local_dataset_declaration"] = "count"
     spec = {"schema": "canonical-lineage-graph-v1", "reference_schema": SCHEMA,
             "sources": {source: source_spec for source in SOURCES}, "groups": [group_spec],
             "shared_references": {kind: [{"reference_sha256": "sha", "member_tokens": ["sha"], "source_counts": counts}] for kind in RELATIONS},

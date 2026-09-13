@@ -21,7 +21,7 @@ from evaluation.modular.custody import InventoryItem, SCHEMA as CUSTODY_SCHEMA
 from evaluation.modular.extended_ingestion import _inside, _receipt
 from evaluation.modular.fresh_airs_custodian import CustodyError, _check, _write_new
 from evaluation.modular.fresh_airs_hf_custodian import metadata_contract, safe_error, validate_public as validate_airs
-from evaluation.modular.lineage_metadata_fields import CONTAINERS, REFERENCE_FIELDS, extract_metadata_references
+from evaluation.modular.lineage_metadata_fields import CONTAINERS, REFERENCE_FIELDS, extract_local_dataset_declarations, extract_metadata_references
 from evaluation.modular.train_io import _public_file, _safe_under, _sha
 from research_loop.modular.source_ingestion import SOURCE_SNAPSHOTS
 from research_loop.ontology import digest
@@ -150,6 +150,8 @@ def primary_records(config, audit):
         directory = _safe_under(roots[source], item.relative_path)
         allowed = set(item.content_hashes)
         refs, unresolved, license_declared = empty_references(), 0, False
+        local_declarations = set()
+        pin = pins[source] or {"unresolved_pin_inventory_binding": state["inventory_digest"]}
         data_paths = set()
         if source == "discoverybench":
             metadata_paths = sorted(directory.glob("metadata_*.json"))
@@ -158,6 +160,7 @@ def primary_records(config, audit):
                 audit.metadata(source, path)
                 metadata = _primary_json(path, source, audit)
                 count, declared = _merge_refs(refs, metadata)
+                local_declarations.update(extract_local_dataset_declarations(metadata, source, pin))
                 unresolved += count
                 license_declared |= declared
                 datasets = metadata.get("datasets", [])
@@ -177,7 +180,9 @@ def primary_records(config, audit):
             for path in metadata_paths:
                 _public_file(path, allowed)
                 audit.metadata(source, path)
-                count, declared = _merge_refs(refs, _primary_json(path, source, audit))
+                metadata = _primary_json(path, source, audit)
+                count, declared = _merge_refs(refs, metadata)
+                local_declarations.update(extract_local_dataset_declarations(metadata, source, pin))
                 unresolved += count
                 license_declared |= declared
             if (directory / "data.csv").is_file():
@@ -188,10 +193,10 @@ def primary_records(config, audit):
             audit.bindings[source]["records_without_received_data_artifact"] += 1
         for path in sorted(data_paths):
             audit.artifact(source, path, refs)
-        pin = pins[source] or {"unresolved_pin_inventory_binding": state["inventory_digest"]}
         result.append(Record(source, record_token(source, pin, item.task_id),
                              {kind: frozenset(values) for kind, values in refs.items()},
-                             digest({"source": source, "legacy_group": item.source_group}), unresolved, license_declared))
+                             digest({"source": source, "legacy_group": item.source_group}), unresolved, license_declared,
+                             frozenset(local_declarations)))
     return result, state["inventory_digest"]
 
 
@@ -231,7 +236,8 @@ def extended_records(config, audit):
         for index, row in enumerate(rows):
             refs, unresolved, declared = extract_metadata_references(row)
             # A full main problem (including its dependent substeps) is atomic.
-            result.append(Record(source, record_token(source, spec.revision, index), refs, None, unresolved, declared))
+            result.append(Record(source, record_token(source, spec.revision, index), refs, None, unresolved, declared,
+                                 extract_local_dataset_declarations(row, source, spec.revision)))
     return result
 
 
@@ -267,7 +273,8 @@ def airs_records(config, audit):
     result = []
     for index, row in enumerate(rows):
         refs, unresolved, declared = extract_metadata_references(row)
-        result.append(Record("airsbench", record_token("airsbench", revision, index), refs, None, unresolved, declared))
+        result.append(Record("airsbench", record_token("airsbench", revision, index), refs, None, unresolved, declared,
+                             extract_local_dataset_declarations(row, "airsbench", revision)))
     return result
 
 

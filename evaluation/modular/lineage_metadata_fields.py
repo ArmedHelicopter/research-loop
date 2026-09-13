@@ -4,6 +4,7 @@ from __future__ import annotations
 import re
 
 from evaluation.modular.canonical_lineage import empty_references, normalize_reference
+from research_loop.ontology import digest
 
 # These are parser constants, never a schema inferred from task-bearing keys.
 # Arbitrary task/gold/code/background strings are not visited or regex-scanned.
@@ -111,3 +112,40 @@ def extract_metadata_references(row):
 
     visit(row)
     return {kind: frozenset(values) for kind, values in references.items()}, unresolved, declared
+
+
+def extract_local_dataset_declarations(row, source, pin):
+    """Conservative same-source metadata-equality constraints, not global IDs.
+
+    Keep local declarations visible as typed opaque support without laundering
+    their values into provider-qualified dataset identifiers. File-name fields
+    such as datasets[*].name are intentionally excluded.
+    """
+    result, visited = set(), {}
+    def visit(value):
+        if not isinstance(value, dict) or id(value) in visited:
+            return
+        visited[id(value)] = value
+        for key in ("dataset", "dataset_id", "dataset_name"):
+            child = value.get(key)
+            if isinstance(child, str) and child.strip() and child.isascii():
+                if normalize_reference(child) is None:
+                    result.add(digest({"schema": "source-scoped-dataset-declaration-v1", "source": source,
+                                       "pin": pin, "field_class": key, "value": child.strip()}))
+            elif isinstance(child, dict):
+                visit(child)
+        for name in (*CONTAINERS, "metadata.yaml"):
+            child = value.get(name)
+            if isinstance(child, str) and name == "metadata.yaml":
+                import yaml
+                visit(yaml.safe_load(child))
+            elif isinstance(child, dict):
+                visit(child)
+            elif isinstance(child, list):
+                for entry in child:
+                    visit(entry)
+        if isinstance(value.get("sub_steps"), list):
+            for child in value["sub_steps"]:
+                visit(child)
+    visit(row)
+    return frozenset(result)

@@ -55,3 +55,12 @@ def test_unmapped_serialized_object_remains_in_coverage_gap():
     refs, unresolved, _ = extract_metadata_references({"dataset": "{'PRIVATE_DYNAMIC': 'PRIVATE_VALUE'}"})
     assert not any(refs.values())
     assert unresolved == 1
+
+
+def test_local_declaration_namespace_does_not_fabricate_global_dataset_id():
+    from evaluation.modular.lineage_metadata_fields import extract_local_dataset_declarations
+    raw = {"dataset": "PRIVATE_LOCAL_DATASET", "datasets": [{"name": "data.csv"}]}
+    a = extract_local_dataset_declarations(raw, "airsbench", "fixed")
+    b = extract_local_dataset_declarations(raw, "blade", "fixed")
+    assert len(a) == len(b) == 1
+    assert a != b

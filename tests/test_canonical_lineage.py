@@ -98,6 +98,18 @@ def test_legacy_constraint_kept_separate_from_scientific_reference_support():
     assert graph["groups"][0]["members_without_canonical_reference"] == 2
 
 
+def test_same_local_declaration_only_constrains_same_source():
+    from dataclasses import replace
+    local = frozenset(["a" * 64])
+    a = replace(record("airsbench", "a"), local_dataset_declarations=local)
+    b = replace(record("airsbench", "b"), local_dataset_declarations=local)
+    c = replace(record("blade", "c"), local_dataset_declarations=local)
+    graph = match_records([a, b, c])
+    assert sorted(group["member_count"] for group in graph["groups"]) == [1, 2]
+    assert graph["sources"]["airsbench"]["records_with_any_canonical_reference"] == 0
+    assert graph["sources"]["airsbench"]["local_dataset_declaration_record_count"] == 2
+
+
 @pytest.mark.parametrize("mutation", ["top", "nested", "scalar"])
 def test_public_graph_rejects_dynamic_schema_keys_and_string_channels(mutation):
     graph = match_records([record("airsbench", SECRET)])
