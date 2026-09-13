@@ -1,0 +1,2232 @@
+[
+  {
+    "path": "closure-9f6b718.json",
+    "sha256": "EDDE68408729D81EFAD91584E9CD7CA4B602BCCE0BCE527C503340A764BA13D9",
+    "bytes": 65935
+  },
+  {
+    "path": "closure-9f6b718.xml",
+    "sha256": "1D44673F742E16E1937E4E2143DDF2BA14B85F3D02E6FEBA3FF8C2D165CDA4D9",
+    "bytes": 1945
+  },
+  {
+    "path": "closure-ad89775.json",
+    "sha256": "DB41EB5F0C76B268FA1D49E8F185D3D66D71387357E97260888D88EA554DD431",
+    "bytes": 65936
+  },
+  {
+    "path": "mixed-failure-fc58ab0.json",
+    "sha256": "A70E4FCD53D0A008CAAFFB72B34D69AFC452A619A25C2B3402343B37805E67F6",
+    "bytes": 65936
+  },
+  {
+    "path": "README.txt",
+    "sha256": "E0F63BAA45FE916A859DCF7D3E86FFAF5004F5F7EE37E720D89D9060C282EA92",
+    "bytes": 726
+  },
+  {
+    "path": "native-ledger\\ledger.json",
+    "sha256": "C421F2F9D87D6A9EEA81C29509EE6687614BF9D375D7A6DF0518449871457ABC",
+    "bytes": 69929
+  },
+  {
+    "path": "native-ledger\\calls\\0001-m4_plan\\observer-receipt.private.json",
+    "sha256": "60445B223EB107C36858C1F65388DE9FD58EDA1252CAE447C9E0B4F65D99E349",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0001-m4_plan\\peer.jsonl",
+    "sha256": "61DB6DC80E4F5B70ED8CEFD7DF50BCFD061D5C1D5D8D8642586FD5966C95DAF2",
+    "bytes": 5656
+  },
+  {
+    "path": "native-ledger\\calls\\0001-m4_plan\\prompt.private.txt",
+    "sha256": "FBAE18E07090716BA9BC64D6DCBE537BDAC4AB82C86B73AB64AEE74F960D4A08",
+    "bytes": 2705
+  },
+  {
+    "path": "native-ledger\\calls\\0001-m4_plan\\request.private.json",
+    "sha256": "7DBDE00DA7101A566ACB612E36356E6AD2B40805C26121F0584BFBEB13B5CAB8",
+    "bytes": 2576
+  },
+  {
+    "path": "native-ledger\\calls\\0001-m4_plan\\reservation.private.json",
+    "sha256": "8C8F5B829025C6B8075D83896DBE1EA1C4F5836CD4EA723071D5F0E0010EBFDF",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0001-m4_plan\\response.private.json",
+    "sha256": "F0B71ADC4341F0F11D1F98E5483A5532EB949D3B8F7035D9D655892A53659E65",
+    "bytes": 989
+  },
+  {
+    "path": "native-ledger\\calls\\0001-m4_plan\\schema.private.json",
+    "sha256": "09D6D16493C22AC9BF79A6F17964C594077D013D9B706127A2AA7D061528DB4E",
+    "bytes": 963
+  },
+  {
+    "path": "native-ledger\\calls\\0001-m4_plan\\native-private\\observer-receipt.json",
+    "sha256": "412DA3677DBB28C6E44F07D0AD67FBB1527F45F0FE8F45F328B1AAF2452D4FE1",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0001-m4_plan\\native-private\\requests.private.jsonl",
+    "sha256": "6A890C8AF3B89032ACF7E885886F66B2A2548BC038DDC3B42787817BA6A5928A",
+    "bytes": 5649
+  },
+  {
+    "path": "native-ledger\\calls\\0001-m4_plan\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0001-m4_plan\\native-private\\stdout.private.jsonl",
+    "sha256": "7A5FB0C8C59BB5646A55BDD31A0044718A02F2A392C0C5E920884401A34E43F0",
+    "bytes": 5580
+  },
+  {
+    "path": "native-ledger\\calls\\0002-m5_mechanism\\observer-receipt.private.json",
+    "sha256": "88BA5E0708875C09CB5C12AB38DFE0F5674197ED6772DD70FF438C98D1569E69",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0002-m5_mechanism\\peer.jsonl",
+    "sha256": "96A17D57F22AFFB7734213DF5846F65C7F69B3D2996670BA2C9D80EC8DC0C66A",
+    "bytes": 6340
+  },
+  {
+    "path": "native-ledger\\calls\\0002-m5_mechanism\\prompt.private.txt",
+    "sha256": "8EEE8027B9F78D1DFF01F5632E4D5D7727D19A0893AECD38B7998D8E5EE62DDD",
+    "bytes": 3842
+  },
+  {
+    "path": "native-ledger\\calls\\0002-m5_mechanism\\request.private.json",
+    "sha256": "7055A03E8CB4890835F785A8519A6A582FE9604C57C28E29BB3E5E486AE65EF4",
+    "bytes": 3713
+  },
+  {
+    "path": "native-ledger\\calls\\0002-m5_mechanism\\reservation.private.json",
+    "sha256": "D26AEB85835DA82BEB876FBF2A0FE87F2E2965A19DADC3EC66696152EF09674F",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0002-m5_mechanism\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0002-m5_mechanism\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0002-m5_mechanism\\native-private\\observer-receipt.json",
+    "sha256": "50C91C685AD4E760EEBFDBD8C861F47B901C3E69C3596E8ACABEA8B6AA06CEC3",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0002-m5_mechanism\\native-private\\requests.private.jsonl",
+    "sha256": "1CDD49EB5FFD337EE7524E1306592F997D6480A4E3CD962EC3AEAAD6641321F8",
+    "bytes": 6333
+  },
+  {
+    "path": "native-ledger\\calls\\0002-m5_mechanism\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0002-m5_mechanism\\native-private\\stdout.private.jsonl",
+    "sha256": "27B505E1BB2FA7B0EC3BC3E00858BB35D1753FACC37A090C66060F8B367F901B",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0003-m5_measurement\\observer-receipt.private.json",
+    "sha256": "3AD62E6B5C31DC27766F8C9FCFEE5938B5CFCA5CA85C1FCF9C24577A0201D6B0",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0003-m5_measurement\\peer.jsonl",
+    "sha256": "3C27319175A675A750DCEB08E12514F294C19713D6F1697541C5279DBE3E1B37",
+    "bytes": 6447
+  },
+  {
+    "path": "native-ledger\\calls\\0003-m5_measurement\\prompt.private.txt",
+    "sha256": "CDA04B1C71F5F3410BE57138C79F8FE67D0844710C9B8090BD43EE1ADB7406B8",
+    "bytes": 3937
+  },
+  {
+    "path": "native-ledger\\calls\\0003-m5_measurement\\request.private.json",
+    "sha256": "BD2C6EF0D3A70FA07EA608BA29AF10C47163BAC44FB3D7BB149CD224959A0CFC",
+    "bytes": 3808
+  },
+  {
+    "path": "native-ledger\\calls\\0003-m5_measurement\\reservation.private.json",
+    "sha256": "114D6A6E3AB8F6304D1C7C62BFAC5E8E6A3448A998386E4323DC20928419DFD5",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0003-m5_measurement\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0003-m5_measurement\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0003-m5_measurement\\native-private\\observer-receipt.json",
+    "sha256": "DB720E7C9142D071AA640774DA93B8C542A17A4C691D30BE9DBE9F3B559A2A4B",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0003-m5_measurement\\native-private\\requests.private.jsonl",
+    "sha256": "429AD0B086EEC1319A9141FEA85D6667D901411B2C27C56285D77F495A97C13B",
+    "bytes": 6440
+  },
+  {
+    "path": "native-ledger\\calls\\0003-m5_measurement\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0003-m5_measurement\\native-private\\stdout.private.jsonl",
+    "sha256": "EA716944792E24CCBD0AA6DC09FB14AF460F778C289F247179B28F75C2A7F785",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0004-analysis_program\\observer-receipt.private.json",
+    "sha256": "211F33CF50CC7BF96DEE477B7317BDBFCF24C5BBE04D549327B4F6E7AFD79B6E",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0004-analysis_program\\peer.jsonl",
+    "sha256": "25E6FF4D10E29C495BFFCA1CAFCF38700466D8F36E55276419A839A13E38EED3",
+    "bytes": 6388
+  },
+  {
+    "path": "native-ledger\\calls\\0004-analysis_program\\prompt.private.txt",
+    "sha256": "2E1C6BDABC6BED804B4DDB7382C37187358F729ED3E828AE2FA02BE325BABD3C",
+    "bytes": 4088
+  },
+  {
+    "path": "native-ledger\\calls\\0004-analysis_program\\request.private.json",
+    "sha256": "151A5D11B65ED7176D338366DF252B3407C5A8277E3ED020D2220DDF069FB170",
+    "bytes": 3959
+  },
+  {
+    "path": "native-ledger\\calls\\0004-analysis_program\\reservation.private.json",
+    "sha256": "3884E94C2FB14D08496562EAD547C880A73EC92DF9D38935CDB72A79BED71214",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0004-analysis_program\\response.private.json",
+    "sha256": "1FF6F825A0EC67215C1FA6AA8A088D70786DA1344B43F8FFCBAC1D86FDB83ED5",
+    "bytes": 183
+  },
+  {
+    "path": "native-ledger\\calls\\0004-analysis_program\\schema.private.json",
+    "sha256": "FD0C444A2E3B004A5C3232EC3CEEF3017D2AEFD685C0EF412E442F84F5ADE689",
+    "bytes": 152
+  },
+  {
+    "path": "native-ledger\\calls\\0004-analysis_program\\native-private\\observer-receipt.json",
+    "sha256": "A75394323FBE09B9941D94FADCB36C4395AB423109D2FA185BA5E26C568E0C49",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0004-analysis_program\\native-private\\requests.private.jsonl",
+    "sha256": "FBFCADA085B3430DDA8DEA0630C4400AA7639887165011C1350C2CBE300A46F7",
+    "bytes": 6381
+  },
+  {
+    "path": "native-ledger\\calls\\0004-analysis_program\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0004-analysis_program\\native-private\\stdout.private.jsonl",
+    "sha256": "69A8F65C05BAFADC42C3B446BB74E575914912A9EC620349CCC603671A206812",
+    "bytes": 3699
+  },
+  {
+    "path": "native-ledger\\calls\\0005-final_answer\\observer-receipt.private.json",
+    "sha256": "FFE99E31E0B091A893432F4556C74EBDF9D8BCBEFBA181B82A41E7B559D1BB48",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0005-final_answer\\peer.jsonl",
+    "sha256": "54D3ABE89BB3D5F6C6A0C50781AEEE135F15ADDB093F52BBBE74F70C799EBA4B",
+    "bytes": 7876
+  },
+  {
+    "path": "native-ledger\\calls\\0005-final_answer\\prompt.private.txt",
+    "sha256": "B9CF9CC75B44817D104633AB456BCDA03DCBFE2579FCE2F27FA07DB7BD48CA55",
+    "bytes": 5261
+  },
+  {
+    "path": "native-ledger\\calls\\0005-final_answer\\request.private.json",
+    "sha256": "90E4196F409B9E1822C78BD4AD6636186B6CE6762E0DBE605A94C39F0D2EC62D",
+    "bytes": 5132
+  },
+  {
+    "path": "native-ledger\\calls\\0005-final_answer\\reservation.private.json",
+    "sha256": "4675878D83ACEB62DBB5C296AC4EF63945938083D21C408FA63E0DA085FCAC13",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0005-final_answer\\response.private.json",
+    "sha256": "5873E8EE150371BAF31BD08D644D3AD27E87B2073FF6063DECC2CF61CBF42CC5",
+    "bytes": 191
+  },
+  {
+    "path": "native-ledger\\calls\\0005-final_answer\\schema.private.json",
+    "sha256": "99A5B8EC8E592C7CA8C4C31223DC7637B403E05A7CE6567F6D42C22A437BF3D6",
+    "bytes": 380
+  },
+  {
+    "path": "native-ledger\\calls\\0005-final_answer\\native-private\\observer-receipt.json",
+    "sha256": "82C9C36BB59911DCEE7B606D9AF78A5082D00A7D6960C2FD8F95085A3104CA0C",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0005-final_answer\\native-private\\requests.private.jsonl",
+    "sha256": "F6B12C7E73937911128E7E5D2E4845C188584F52DC382CDC927D8B32D54E3181",
+    "bytes": 7869
+  },
+  {
+    "path": "native-ledger\\calls\\0005-final_answer\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0005-final_answer\\native-private\\stdout.private.jsonl",
+    "sha256": "CC36FDF3512E49EA763DF76CFDE5FD0F9EC59E5CF4B1D666EC4C2279E55F6B4F",
+    "bytes": 3732
+  },
+  {
+    "path": "native-ledger\\calls\\0006-m4_plan\\observer-receipt.private.json",
+    "sha256": "559DA3F5D01C60913959C6040741D56D5D3227D26CB4CE946D0D21C5E81D6FF5",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0006-m4_plan\\peer.jsonl",
+    "sha256": "97C22242CB4A84C7E5F961F3982660034FDA1BACFAA3871B2982D14A781BA881",
+    "bytes": 5656
+  },
+  {
+    "path": "native-ledger\\calls\\0006-m4_plan\\prompt.private.txt",
+    "sha256": "C23DA3457099220B13D0A6EB046CC56876D4BC661F65624FC937A2CDCD707104",
+    "bytes": 2705
+  },
+  {
+    "path": "native-ledger\\calls\\0006-m4_plan\\request.private.json",
+    "sha256": "0764656650B703F942BE9A61A3805346AA40562C3DBC4641EE93496262A6211C",
+    "bytes": 2576
+  },
+  {
+    "path": "native-ledger\\calls\\0006-m4_plan\\reservation.private.json",
+    "sha256": "0481809960D5C3C64495430FA6BCD4CCFD196D0AADD582ACA075893A67EC55BF",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0006-m4_plan\\response.private.json",
+    "sha256": "F0B71ADC4341F0F11D1F98E5483A5532EB949D3B8F7035D9D655892A53659E65",
+    "bytes": 989
+  },
+  {
+    "path": "native-ledger\\calls\\0006-m4_plan\\schema.private.json",
+    "sha256": "09D6D16493C22AC9BF79A6F17964C594077D013D9B706127A2AA7D061528DB4E",
+    "bytes": 963
+  },
+  {
+    "path": "native-ledger\\calls\\0006-m4_plan\\native-private\\observer-receipt.json",
+    "sha256": "C448CB38EABCBA84F9E3CF1E86D09EECB21F893ED17B0FFDE22B1CE302057D80",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0006-m4_plan\\native-private\\requests.private.jsonl",
+    "sha256": "458AABB1994AF15B2C853BFB08DD845FDBEF29A6406A976D6BDE8516B7FACD6E",
+    "bytes": 5649
+  },
+  {
+    "path": "native-ledger\\calls\\0006-m4_plan\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0006-m4_plan\\native-private\\stdout.private.jsonl",
+    "sha256": "203DFFFF6A4B4422111A05BF39DA5A726775216C3319E0D0B5945DFA8252D61A",
+    "bytes": 5580
+  },
+  {
+    "path": "native-ledger\\calls\\0007-m5_mechanism\\observer-receipt.private.json",
+    "sha256": "27C8F675C65F81BD9BCE9D5E2F536BC61E11E02494C1FED0531383FA614BAEFE",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0007-m5_mechanism\\peer.jsonl",
+    "sha256": "4447E96C64AE5B259C4C5A243A8A0FF9FDD39378F5485DFEF7B5D6F873B73292",
+    "bytes": 6204
+  },
+  {
+    "path": "native-ledger\\calls\\0007-m5_mechanism\\prompt.private.txt",
+    "sha256": "FC0D0AB5C4E3E025CB79F166B1FA805A264D9B139480C387982A7EE734932A89",
+    "bytes": 3706
+  },
+  {
+    "path": "native-ledger\\calls\\0007-m5_mechanism\\request.private.json",
+    "sha256": "0DD402EC542176731B04FD5054443271A89A36077CA905300466A515FFFD9B55",
+    "bytes": 3577
+  },
+  {
+    "path": "native-ledger\\calls\\0007-m5_mechanism\\reservation.private.json",
+    "sha256": "7ADB8AC1A77A9CD2157514F02F6E33FC5BAB2B47FB505C54C362E07DBEB72DB9",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0007-m5_mechanism\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0007-m5_mechanism\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0007-m5_mechanism\\native-private\\observer-receipt.json",
+    "sha256": "BED82DF5BC8CCBA190A67C5172930EEA3591B76E9A566F38D529E5DDF5DE4769",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0007-m5_mechanism\\native-private\\requests.private.jsonl",
+    "sha256": "FE44D9148AE8BD7DA925A69C289EF7BE31EF7AFE2E92E1C92E6118A05F3D3801",
+    "bytes": 6197
+  },
+  {
+    "path": "native-ledger\\calls\\0007-m5_mechanism\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0007-m5_mechanism\\native-private\\stdout.private.jsonl",
+    "sha256": "8E79042104C95CF7B372C1026F7F3102D92107636893AC18DA801F6B822A8200",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0008-m5_measurement\\observer-receipt.private.json",
+    "sha256": "DF5AAD0AFFF520A02B9A3DE85DAC0707B458BB0E4E964E7F39C7060C5220CC77",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0008-m5_measurement\\peer.jsonl",
+    "sha256": "4A2769F3070BC9490D6BEABD041525352EF6B3AB9A4C93BEC3AD8DDC5168BBD5",
+    "bytes": 6209
+  },
+  {
+    "path": "native-ledger\\calls\\0008-m5_measurement\\prompt.private.txt",
+    "sha256": "D24CD4D398F5132B362131C2A082AFE59BFC5FC41D6BE36D1EC269C582F84E52",
+    "bytes": 3711
+  },
+  {
+    "path": "native-ledger\\calls\\0008-m5_measurement\\request.private.json",
+    "sha256": "918106174984FFC82E97FC58E6B14062F90271675C2D713A3FB7AD6783D0E752",
+    "bytes": 3582
+  },
+  {
+    "path": "native-ledger\\calls\\0008-m5_measurement\\reservation.private.json",
+    "sha256": "4AD7EF779E4C9529CA4ED88B7A851063EB620ADE328C3723001FAF32B43B94F0",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0008-m5_measurement\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0008-m5_measurement\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0008-m5_measurement\\native-private\\observer-receipt.json",
+    "sha256": "17EB1843AB58A71D483B23EEE5343A77DD4A9A8CC612AAFEBF0904DBD90F5BD0",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0008-m5_measurement\\native-private\\requests.private.jsonl",
+    "sha256": "A7BF8BC028AF91B602356DF2685EF734CBE20F73C11D9D4C9321ED259EA47B1C",
+    "bytes": 6202
+  },
+  {
+    "path": "native-ledger\\calls\\0008-m5_measurement\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0008-m5_measurement\\native-private\\stdout.private.jsonl",
+    "sha256": "C65FDA6005CF90F11447330862978C7E7CF319DC032DD1B23C639B58CF7ADD2A",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0009-analysis_program\\observer-receipt.private.json",
+    "sha256": "F88F1A8683BD33D396C1EE61F018D438F2911AB7F688016E5C2BCB6E417E4592",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0009-analysis_program\\peer.jsonl",
+    "sha256": "41C1227A4AC05A814DECC0E14E99893A43E321F8F9029681B7550A721F86AF5E",
+    "bytes": 6388
+  },
+  {
+    "path": "native-ledger\\calls\\0009-analysis_program\\prompt.private.txt",
+    "sha256": "4D9AD21F8727EEA94F85ABAE2BB8891339BBBF9FE555B377E53F0EB3669A1153",
+    "bytes": 4088
+  },
+  {
+    "path": "native-ledger\\calls\\0009-analysis_program\\request.private.json",
+    "sha256": "181A9550E3DBF87802D94A3AB03C5BB66429379AD9779F793FE4A202680E598B",
+    "bytes": 3959
+  },
+  {
+    "path": "native-ledger\\calls\\0009-analysis_program\\reservation.private.json",
+    "sha256": "4E85243D26738654CD760B79C86B71269EE45FFAC90BD4E1BEAAA777E8D84C81",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0009-analysis_program\\response.private.json",
+    "sha256": "1FF6F825A0EC67215C1FA6AA8A088D70786DA1344B43F8FFCBAC1D86FDB83ED5",
+    "bytes": 183
+  },
+  {
+    "path": "native-ledger\\calls\\0009-analysis_program\\schema.private.json",
+    "sha256": "FD0C444A2E3B004A5C3232EC3CEEF3017D2AEFD685C0EF412E442F84F5ADE689",
+    "bytes": 152
+  },
+  {
+    "path": "native-ledger\\calls\\0009-analysis_program\\native-private\\observer-receipt.json",
+    "sha256": "4655D371361B66E0BEEA679BDE74DCCED8F0A426B4A7CC93BD66530E1F145225",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0009-analysis_program\\native-private\\requests.private.jsonl",
+    "sha256": "9E5BDB6A22F2A59EBC52E3547259765CBAC3D1B18F7CFD209888380A122BE395",
+    "bytes": 6381
+  },
+  {
+    "path": "native-ledger\\calls\\0009-analysis_program\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0009-analysis_program\\native-private\\stdout.private.jsonl",
+    "sha256": "509107369266558DC6D0540519F61F0DD1CA65F6DDD3A390BF0E21EBD4DFD66E",
+    "bytes": 3699
+  },
+  {
+    "path": "native-ledger\\calls\\0010-final_answer\\observer-receipt.private.json",
+    "sha256": "CF31D9F670518DC5A6C61C920D805B752717BE09DEC9ED61917F19D793D79B6B",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0010-final_answer\\peer.jsonl",
+    "sha256": "E89217D488F2B14C053AF2A43D72D59D23E0838998C22D6AD9B28D9F439D704B",
+    "bytes": 7876
+  },
+  {
+    "path": "native-ledger\\calls\\0010-final_answer\\prompt.private.txt",
+    "sha256": "CFC5A1540963337BB3E15A18DB33663450F5D191F157582DE17A92CB718D3447",
+    "bytes": 5261
+  },
+  {
+    "path": "native-ledger\\calls\\0010-final_answer\\request.private.json",
+    "sha256": "0B63ECB1CFD29B0C3A43A0808ACEE6837D444B696F1ED65EEC163E2C59E10BC7",
+    "bytes": 5132
+  },
+  {
+    "path": "native-ledger\\calls\\0010-final_answer\\reservation.private.json",
+    "sha256": "2AE91DC5E1308D149D95569242A2B87D110DC87198AE567F9D66D76C6DCEC96C",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0010-final_answer\\response.private.json",
+    "sha256": "5873E8EE150371BAF31BD08D644D3AD27E87B2073FF6063DECC2CF61CBF42CC5",
+    "bytes": 191
+  },
+  {
+    "path": "native-ledger\\calls\\0010-final_answer\\schema.private.json",
+    "sha256": "99A5B8EC8E592C7CA8C4C31223DC7637B403E05A7CE6567F6D42C22A437BF3D6",
+    "bytes": 380
+  },
+  {
+    "path": "native-ledger\\calls\\0010-final_answer\\native-private\\observer-receipt.json",
+    "sha256": "065E6523CDF486193E43B20D4B1CED5FBD7D32ABDE851C0B3D0BCE88A357D20A",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0010-final_answer\\native-private\\requests.private.jsonl",
+    "sha256": "E4A32F40EDF570781DB9DE900EF37BCD42084E218E8FFFC84C416C75CC31D34A",
+    "bytes": 7869
+  },
+  {
+    "path": "native-ledger\\calls\\0010-final_answer\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0010-final_answer\\native-private\\stdout.private.jsonl",
+    "sha256": "4000FAD8BC3246342B08F04775C4FF05975354A526BF7C1732A221B4D49EF997",
+    "bytes": 3732
+  },
+  {
+    "path": "native-ledger\\calls\\0011-m4_plan\\observer-receipt.private.json",
+    "sha256": "2A7C770E48CD71F30D7D06DC44D6D5FF888C109A9FD8AC76A31E35AACC37E0E8",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0011-m4_plan\\peer.jsonl",
+    "sha256": "5363907D2819DDB106F50DE87481F121AEBBA275A0A9638EB30F5DA2E9FFB154",
+    "bytes": 5647
+  },
+  {
+    "path": "native-ledger\\calls\\0011-m4_plan\\prompt.private.txt",
+    "sha256": "0A8768AEFE70990BFCE11E53CA3FEF5204A6C009E32FA55528D11DAF614DFB17",
+    "bytes": 2696
+  },
+  {
+    "path": "native-ledger\\calls\\0011-m4_plan\\request.private.json",
+    "sha256": "AE19B4A0B1023EFC38D6C6849F4DFEBA2D2796D62B46A6EDB625CB395667C836",
+    "bytes": 2567
+  },
+  {
+    "path": "native-ledger\\calls\\0011-m4_plan\\reservation.private.json",
+    "sha256": "6E311E84526903B7DCD4EA2766978D7E1F80BB1201F1786D21E1E2209460EB5A",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0011-m4_plan\\response.private.json",
+    "sha256": "F0B71ADC4341F0F11D1F98E5483A5532EB949D3B8F7035D9D655892A53659E65",
+    "bytes": 989
+  },
+  {
+    "path": "native-ledger\\calls\\0011-m4_plan\\schema.private.json",
+    "sha256": "09D6D16493C22AC9BF79A6F17964C594077D013D9B706127A2AA7D061528DB4E",
+    "bytes": 963
+  },
+  {
+    "path": "native-ledger\\calls\\0011-m4_plan\\native-private\\observer-receipt.json",
+    "sha256": "1726025BE18C7718EE8685725E3FD658AABFD50F7D399FA6DEDB7A07E17F8432",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0011-m4_plan\\native-private\\requests.private.jsonl",
+    "sha256": "EB8DDDB14277B6D961B9FD6D4A68611411D1152F9C9F3CA1D6BCE10E0F0F2B3E",
+    "bytes": 5640
+  },
+  {
+    "path": "native-ledger\\calls\\0011-m4_plan\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0011-m4_plan\\native-private\\stdout.private.jsonl",
+    "sha256": "4AD60EBAC4889B6437929C0B627580D91F9A970D28C584C19CD54D679C6B94D2",
+    "bytes": 5580
+  },
+  {
+    "path": "native-ledger\\calls\\0012-m5_mechanism\\observer-receipt.private.json",
+    "sha256": "EF57EF1FCE5A4B5F7DE4BFCDD30AA0875357657B145E7427B277984DD4F59C4F",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0012-m5_mechanism\\peer.jsonl",
+    "sha256": "516E40A4B7C9E1980C47A31914AC6C58FB77E5B838552263E311E79A59931F26",
+    "bytes": 6340
+  },
+  {
+    "path": "native-ledger\\calls\\0012-m5_mechanism\\prompt.private.txt",
+    "sha256": "E2B148AA6902694FB83D0CE73232CC02A663CEE4C9F2150A8042664F11D38303",
+    "bytes": 3842
+  },
+  {
+    "path": "native-ledger\\calls\\0012-m5_mechanism\\request.private.json",
+    "sha256": "DE71C4BB518447952C8C218B934B00E18D4C625A3DF91B6CEDB9E9D6AB23964B",
+    "bytes": 3713
+  },
+  {
+    "path": "native-ledger\\calls\\0012-m5_mechanism\\reservation.private.json",
+    "sha256": "8DF6606A7053D778575D9625148DF336F3D17054966C71B3666D2EFD838F4739",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0012-m5_mechanism\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0012-m5_mechanism\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0012-m5_mechanism\\native-private\\observer-receipt.json",
+    "sha256": "52BB7026E5AEEEC1D766D196877F9A57C275C36996BDAD75FAB8D7DFF00D1ADD",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0012-m5_mechanism\\native-private\\requests.private.jsonl",
+    "sha256": "AEB781E17A5CEDA1AC626DC13A598A4EF3F94D9D7B843705C82027E1B135DCF5",
+    "bytes": 6333
+  },
+  {
+    "path": "native-ledger\\calls\\0012-m5_mechanism\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0012-m5_mechanism\\native-private\\stdout.private.jsonl",
+    "sha256": "AA6719B5D9E0A2AFB1F519AD5EF1CB0EF6341E531B98F3B398F96B0AFFD37698",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0013-m5_measurement\\observer-receipt.private.json",
+    "sha256": "B9E78FFCD37135DD3E624A1B44A05AEB9F972D0DD0F92470AD91E23777156E28",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0013-m5_measurement\\peer.jsonl",
+    "sha256": "3DCE01B29493F029356354AE0B5422F25B06593BB178BA78213FD5FD81281105",
+    "bytes": 6447
+  },
+  {
+    "path": "native-ledger\\calls\\0013-m5_measurement\\prompt.private.txt",
+    "sha256": "DA5303579284E170E4A7BCC018EB2B0935D967C4B0238016BEB4F6C702C5B8B2",
+    "bytes": 3937
+  },
+  {
+    "path": "native-ledger\\calls\\0013-m5_measurement\\request.private.json",
+    "sha256": "728836574992EB2EE785DFCED8F42B6CE623F14F2CDF3699B8D1C43456A41627",
+    "bytes": 3808
+  },
+  {
+    "path": "native-ledger\\calls\\0013-m5_measurement\\reservation.private.json",
+    "sha256": "16B18CA63CE5001B545966EC656A4332E17C3B18F2945E667369E552FC1AD5BF",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0013-m5_measurement\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0013-m5_measurement\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0013-m5_measurement\\native-private\\observer-receipt.json",
+    "sha256": "FB7887C64CA99354C7F31A823740A1F714E24623DAE7A92E010A6BA504E2186B",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0013-m5_measurement\\native-private\\requests.private.jsonl",
+    "sha256": "9D198DE252B0E9F4390DA54D7F856C219924E38140CE51B528D8AB8A888321F2",
+    "bytes": 6440
+  },
+  {
+    "path": "native-ledger\\calls\\0013-m5_measurement\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0013-m5_measurement\\native-private\\stdout.private.jsonl",
+    "sha256": "E4EF8117D89AA970FE8243F4F2CF70B3044505974759D46703894E233D51E610",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0014-analysis_program\\observer-receipt.private.json",
+    "sha256": "E692206B811819A5FFB078FE8576E2A8FCFA292F0741EF5C2DE07822068B137F",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0014-analysis_program\\peer.jsonl",
+    "sha256": "376AFCA80401D76B327E10FC1AD81744C932DC17891DE0B9A789FCDF388B6E3D",
+    "bytes": 6388
+  },
+  {
+    "path": "native-ledger\\calls\\0014-analysis_program\\prompt.private.txt",
+    "sha256": "BA835F2B2E78F71A7A144346AD87381CDF98DDEF4BEB86DA80C05128793FB5B2",
+    "bytes": 4088
+  },
+  {
+    "path": "native-ledger\\calls\\0014-analysis_program\\request.private.json",
+    "sha256": "9897958F94E2BB4EC356E1AAB07A9EFA373169A64E8B14703C9F134ECCA983E6",
+    "bytes": 3959
+  },
+  {
+    "path": "native-ledger\\calls\\0014-analysis_program\\reservation.private.json",
+    "sha256": "3282812FD4F3C58740972DDDC3E532F27ABB05EDEC56D3701360BC19521C267A",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0014-analysis_program\\response.private.json",
+    "sha256": "1FF6F825A0EC67215C1FA6AA8A088D70786DA1344B43F8FFCBAC1D86FDB83ED5",
+    "bytes": 183
+  },
+  {
+    "path": "native-ledger\\calls\\0014-analysis_program\\schema.private.json",
+    "sha256": "FD0C444A2E3B004A5C3232EC3CEEF3017D2AEFD685C0EF412E442F84F5ADE689",
+    "bytes": 152
+  },
+  {
+    "path": "native-ledger\\calls\\0014-analysis_program\\native-private\\observer-receipt.json",
+    "sha256": "51DEA09345D646CF27880DE9EEC314A59A9764810F9D916D7F815C011FF5BA26",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0014-analysis_program\\native-private\\requests.private.jsonl",
+    "sha256": "A162CCF01490BDCF28739E46545D8E4B25CEB13EE2ED1462AD7AA93F5319A4CD",
+    "bytes": 6381
+  },
+  {
+    "path": "native-ledger\\calls\\0014-analysis_program\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0014-analysis_program\\native-private\\stdout.private.jsonl",
+    "sha256": "F8C2D0CF5D65E420666C5D8F7E7230EE5FC18BA917AF3B01A7B362E8CB75C3E8",
+    "bytes": 3699
+  },
+  {
+    "path": "native-ledger\\calls\\0015-final_answer\\observer-receipt.private.json",
+    "sha256": "4ACC66161FA5695CBBABAE74384A5D20F11E46FA50A4B2C063398B493B10D91C",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0015-final_answer\\peer.jsonl",
+    "sha256": "7DE04F19F058DDBA342B80EF003961EF84318753049C5641F4E5C5EBC80D4A53",
+    "bytes": 7876
+  },
+  {
+    "path": "native-ledger\\calls\\0015-final_answer\\prompt.private.txt",
+    "sha256": "58B89E1332D074510214FB0CC82C0A05323117735E4CBE3F59CA1771EAE92419",
+    "bytes": 5261
+  },
+  {
+    "path": "native-ledger\\calls\\0015-final_answer\\request.private.json",
+    "sha256": "FC1753DA8B905E096F5EA94AFD26A3F8877830084C12BEC6A9D6BA54D0318BA0",
+    "bytes": 5132
+  },
+  {
+    "path": "native-ledger\\calls\\0015-final_answer\\reservation.private.json",
+    "sha256": "2098D9505C89D6927D02951A13153D2BACB727D367BA69CC8831BDF47F98BC2C",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0015-final_answer\\response.private.json",
+    "sha256": "5873E8EE150371BAF31BD08D644D3AD27E87B2073FF6063DECC2CF61CBF42CC5",
+    "bytes": 191
+  },
+  {
+    "path": "native-ledger\\calls\\0015-final_answer\\schema.private.json",
+    "sha256": "99A5B8EC8E592C7CA8C4C31223DC7637B403E05A7CE6567F6D42C22A437BF3D6",
+    "bytes": 380
+  },
+  {
+    "path": "native-ledger\\calls\\0015-final_answer\\native-private\\observer-receipt.json",
+    "sha256": "857995F5E91131B5C8002237632EA82FCCEDF4C97640458F6609FC4E2B555FFD",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0015-final_answer\\native-private\\requests.private.jsonl",
+    "sha256": "D8A5D569B7E3061FFF13A525130F50C47312F018C46263D4F1BE249B74880C26",
+    "bytes": 7869
+  },
+  {
+    "path": "native-ledger\\calls\\0015-final_answer\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0015-final_answer\\native-private\\stdout.private.jsonl",
+    "sha256": "005E478EA038054068B4B3A31A08BD531C68AAC8E131DFD03CC1BD19FFEDFD71",
+    "bytes": 3732
+  },
+  {
+    "path": "native-ledger\\calls\\0016-m4_plan\\observer-receipt.private.json",
+    "sha256": "AE3F5F0E8D1A5C48CD0FCB2DB13D866E49A722BA6C0A32BEA678CDA875E6F504",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0016-m4_plan\\peer.jsonl",
+    "sha256": "8C243DD81C5A88E76020E75B370D82E66D5D9A26958D5D78C8994843E2933D64",
+    "bytes": 5647
+  },
+  {
+    "path": "native-ledger\\calls\\0016-m4_plan\\prompt.private.txt",
+    "sha256": "F9D2970AF39C966648D6F1420943CEF2A685444B294D28470D2985C848924841",
+    "bytes": 2696
+  },
+  {
+    "path": "native-ledger\\calls\\0016-m4_plan\\request.private.json",
+    "sha256": "711F3B89C7E4A7E7B3D84FCFAA2B71B29864E61B8DEDD57BEF8E9B6572C9124D",
+    "bytes": 2567
+  },
+  {
+    "path": "native-ledger\\calls\\0016-m4_plan\\reservation.private.json",
+    "sha256": "B916CCA773DC20F8F2B4AAD49FFDBFE7C298EB5B72BF805780C0FB5B99513E01",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0016-m4_plan\\response.private.json",
+    "sha256": "F0B71ADC4341F0F11D1F98E5483A5532EB949D3B8F7035D9D655892A53659E65",
+    "bytes": 989
+  },
+  {
+    "path": "native-ledger\\calls\\0016-m4_plan\\schema.private.json",
+    "sha256": "09D6D16493C22AC9BF79A6F17964C594077D013D9B706127A2AA7D061528DB4E",
+    "bytes": 963
+  },
+  {
+    "path": "native-ledger\\calls\\0016-m4_plan\\native-private\\observer-receipt.json",
+    "sha256": "557F068F0ECE6F039D97D82CA05261C3897386E06F2F21441013A62EF8F4C224",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0016-m4_plan\\native-private\\requests.private.jsonl",
+    "sha256": "451F824690D1A4E24197A87D0401C381DFF1CF64693E9989DF7BF2FFCD480F21",
+    "bytes": 5640
+  },
+  {
+    "path": "native-ledger\\calls\\0016-m4_plan\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0016-m4_plan\\native-private\\stdout.private.jsonl",
+    "sha256": "414D536423AFAF6C383F19D6E068CA87FC1530CBA63619DD036E4020C3DAFB5E",
+    "bytes": 5580
+  },
+  {
+    "path": "native-ledger\\calls\\0017-m5_mechanism\\observer-receipt.private.json",
+    "sha256": "D864E5FE393008E95EBB5DC3213F1F07ECA55AF3EE7C011F7CAB3B85E49C9126",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0017-m5_mechanism\\peer.jsonl",
+    "sha256": "1478A4775FEFC0BF321DFE5E1A707EB737BF3798C8976E995D5F8ADB090ED1C6",
+    "bytes": 6204
+  },
+  {
+    "path": "native-ledger\\calls\\0017-m5_mechanism\\prompt.private.txt",
+    "sha256": "8601AD7306802D3B61AC8C9D65BA9CC4554B109D96398EEC0F8A58EEF0619D4B",
+    "bytes": 3706
+  },
+  {
+    "path": "native-ledger\\calls\\0017-m5_mechanism\\request.private.json",
+    "sha256": "095C5AEC84A81B39A4448059A7E0534AAFA5972B6BC379399A3C7A30E2B33C46",
+    "bytes": 3577
+  },
+  {
+    "path": "native-ledger\\calls\\0017-m5_mechanism\\reservation.private.json",
+    "sha256": "AC74544A4CE5B5A78C4DCDB159FBA3BBDEBE7BC2E4E9351F31C3932A95AD5D84",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0017-m5_mechanism\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0017-m5_mechanism\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0017-m5_mechanism\\native-private\\observer-receipt.json",
+    "sha256": "7C8AC64307DBDFDF2E2B68302F9E749270177E19EE785B81FCAEFDD99305B739",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0017-m5_mechanism\\native-private\\requests.private.jsonl",
+    "sha256": "874DDED61ECF12E374C7AE15F88891D8F23F43B7C8C4880CE897833219548FBA",
+    "bytes": 6197
+  },
+  {
+    "path": "native-ledger\\calls\\0017-m5_mechanism\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0017-m5_mechanism\\native-private\\stdout.private.jsonl",
+    "sha256": "54A1A6B3C41300A2A871A734E94C6C28DA8C1F1A300297D6D765F64092DA452B",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0018-m5_measurement\\observer-receipt.private.json",
+    "sha256": "0E947E762ED05806A6DE92A8971FD1D0F12824DD00A2DA58FFDD482A5BDE0308",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0018-m5_measurement\\peer.jsonl",
+    "sha256": "DBFA66F931BD9DF7B0322FFDFA796209F27D99795EDCEE580111FE1364D0EECC",
+    "bytes": 6209
+  },
+  {
+    "path": "native-ledger\\calls\\0018-m5_measurement\\prompt.private.txt",
+    "sha256": "79B9A2A5703B60DE5449ADEDDE9BD6B8123416A332CBE9B606A9F8305E66AC5B",
+    "bytes": 3711
+  },
+  {
+    "path": "native-ledger\\calls\\0018-m5_measurement\\request.private.json",
+    "sha256": "76B67A4A40C89C8749DD649CFA1331F7D434067E9E3D83AC5B63436234D07B79",
+    "bytes": 3582
+  },
+  {
+    "path": "native-ledger\\calls\\0018-m5_measurement\\reservation.private.json",
+    "sha256": "CE9576B4BBD264B586648AB646493C10C2B0B35707B983CB05B1667D800611F8",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0018-m5_measurement\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0018-m5_measurement\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0018-m5_measurement\\native-private\\observer-receipt.json",
+    "sha256": "D9E399B3A09BAB2EE6C87F5162EC13C105A7AC35376182015ACC5F91AB73A6F4",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0018-m5_measurement\\native-private\\requests.private.jsonl",
+    "sha256": "82CF7082E38388FC358E8D0049DA517A3C99A513875DBAA7E4EAEFD1D09780DE",
+    "bytes": 6202
+  },
+  {
+    "path": "native-ledger\\calls\\0018-m5_measurement\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0018-m5_measurement\\native-private\\stdout.private.jsonl",
+    "sha256": "E408462906DA27131A583A3E18790ADA138F745EE32D01EB7BD726292002589E",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0019-analysis_program\\observer-receipt.private.json",
+    "sha256": "1BB571DCF2ABE2D6516EDA720237F942110E1F88E23B73ED99670F20A1E5A4C9",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0019-analysis_program\\peer.jsonl",
+    "sha256": "335A71F9C1D29DF08DD5E0B71C25C66951E990150506AC3740612878C132F405",
+    "bytes": 6388
+  },
+  {
+    "path": "native-ledger\\calls\\0019-analysis_program\\prompt.private.txt",
+    "sha256": "7A4B0877DFF26952F80DD8084A1829253CA4FAB0C0847E9830C12C2F9A05EDB5",
+    "bytes": 4088
+  },
+  {
+    "path": "native-ledger\\calls\\0019-analysis_program\\request.private.json",
+    "sha256": "5A1804681A1CB153A42DA486266F3CB76D7E32D0C44356C537FC0477CC6610A3",
+    "bytes": 3959
+  },
+  {
+    "path": "native-ledger\\calls\\0019-analysis_program\\reservation.private.json",
+    "sha256": "17F69DE22859FC26302B3EF475B813048B94B44D8C975F482A9999862B1C7576",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0019-analysis_program\\response.private.json",
+    "sha256": "1FF6F825A0EC67215C1FA6AA8A088D70786DA1344B43F8FFCBAC1D86FDB83ED5",
+    "bytes": 183
+  },
+  {
+    "path": "native-ledger\\calls\\0019-analysis_program\\schema.private.json",
+    "sha256": "FD0C444A2E3B004A5C3232EC3CEEF3017D2AEFD685C0EF412E442F84F5ADE689",
+    "bytes": 152
+  },
+  {
+    "path": "native-ledger\\calls\\0019-analysis_program\\native-private\\observer-receipt.json",
+    "sha256": "E554D83F71BC4A52AE2A672A2739695472DE2F7F23AFBA9B044B385123151140",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0019-analysis_program\\native-private\\requests.private.jsonl",
+    "sha256": "D4FF289348D29564FE1E71013D100FBE9561169D32350644411053B6B15BD5AC",
+    "bytes": 6381
+  },
+  {
+    "path": "native-ledger\\calls\\0019-analysis_program\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0019-analysis_program\\native-private\\stdout.private.jsonl",
+    "sha256": "4337A0F46A54A4A4C94B852FEF17F752624F01410B4D860E0BCC8D68F232E81E",
+    "bytes": 3699
+  },
+  {
+    "path": "native-ledger\\calls\\0020-final_answer\\observer-receipt.private.json",
+    "sha256": "B8A1ED4997F96ED1B54D4A9F1C91B34EDC8A1B8321D5EDD882F7717264FCBC98",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0020-final_answer\\peer.jsonl",
+    "sha256": "88169EE1E402D2FB1DD265369FDC79E4752D3CC9BF4F94C4CCEAD0C3F145BAD3",
+    "bytes": 7876
+  },
+  {
+    "path": "native-ledger\\calls\\0020-final_answer\\prompt.private.txt",
+    "sha256": "035D4B1D5472BD5B633552341F5CCDBCC3D8EF4771269AF64E64A5E8DEA899AD",
+    "bytes": 5261
+  },
+  {
+    "path": "native-ledger\\calls\\0020-final_answer\\request.private.json",
+    "sha256": "7EFA3FE98284BE6950F5731B1339DA69EE0B13984B613C430B6300052B1C63BC",
+    "bytes": 5132
+  },
+  {
+    "path": "native-ledger\\calls\\0020-final_answer\\reservation.private.json",
+    "sha256": "69D93315E6D7ABFC1C4244E94DF0A4B7918E8FD5A48B365DD00F5364E8956AD5",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0020-final_answer\\response.private.json",
+    "sha256": "5873E8EE150371BAF31BD08D644D3AD27E87B2073FF6063DECC2CF61CBF42CC5",
+    "bytes": 191
+  },
+  {
+    "path": "native-ledger\\calls\\0020-final_answer\\schema.private.json",
+    "sha256": "99A5B8EC8E592C7CA8C4C31223DC7637B403E05A7CE6567F6D42C22A437BF3D6",
+    "bytes": 380
+  },
+  {
+    "path": "native-ledger\\calls\\0020-final_answer\\native-private\\observer-receipt.json",
+    "sha256": "E2CC96C32DDD8CCB922EE143FAD1A21DF67D971540AE109F560DEFFF4D34947A",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0020-final_answer\\native-private\\requests.private.jsonl",
+    "sha256": "0D5F8BE381EAE68066015EF834600B8436E2607ACE272D4F5564906BA93E53C7",
+    "bytes": 7869
+  },
+  {
+    "path": "native-ledger\\calls\\0020-final_answer\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0020-final_answer\\native-private\\stdout.private.jsonl",
+    "sha256": "F18C66BF7AF88FE9EAB034047249F04C41304A1BF35E559E2D7B8C2D92F1322B",
+    "bytes": 3732
+  },
+  {
+    "path": "native-ledger\\calls\\0021-m4_plan\\observer-receipt.private.json",
+    "sha256": "C8F5C7C9CB421E798641B02A6E2A40CAF9A1E26101CD595DFE3BC01A859835F9",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0021-m4_plan\\peer.jsonl",
+    "sha256": "707175CA2C6A41D580676114E66DF7A47739B2F8619DCAB0A6E2C92F529B2B94",
+    "bytes": 5666
+  },
+  {
+    "path": "native-ledger\\calls\\0021-m4_plan\\prompt.private.txt",
+    "sha256": "A600F69AB1BC4DB17DCF423591182185049B2372FD3855BB71D83AF011652E72",
+    "bytes": 2707
+  },
+  {
+    "path": "native-ledger\\calls\\0021-m4_plan\\request.private.json",
+    "sha256": "1BF4DAF007D9BF247CEC80CA26C854F75C750BD15620FD183FAC12FC7ECC9613",
+    "bytes": 2578
+  },
+  {
+    "path": "native-ledger\\calls\\0021-m4_plan\\reservation.private.json",
+    "sha256": "DAD7441EABBEACA0C710F4A703C00220CE65D221601F0E76F910B811B0C945CE",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0021-m4_plan\\response.private.json",
+    "sha256": "F0B71ADC4341F0F11D1F98E5483A5532EB949D3B8F7035D9D655892A53659E65",
+    "bytes": 989
+  },
+  {
+    "path": "native-ledger\\calls\\0021-m4_plan\\schema.private.json",
+    "sha256": "09D6D16493C22AC9BF79A6F17964C594077D013D9B706127A2AA7D061528DB4E",
+    "bytes": 963
+  },
+  {
+    "path": "native-ledger\\calls\\0021-m4_plan\\native-private\\observer-receipt.json",
+    "sha256": "2C1C09194B12FAF85010B2DAD393B5D5CC5A3721E8CCCE647D85D393275E8CBF",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0021-m4_plan\\native-private\\requests.private.jsonl",
+    "sha256": "EDE881D4510FBD441CF4A07B3A9D18B93C69F8FC64F751CE20886AC92E9D69D0",
+    "bytes": 5659
+  },
+  {
+    "path": "native-ledger\\calls\\0021-m4_plan\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0021-m4_plan\\native-private\\stdout.private.jsonl",
+    "sha256": "FAB0443A764B2471F28DF268391B9DCA049168799553C0437304090E95C47F9B",
+    "bytes": 5580
+  },
+  {
+    "path": "native-ledger\\calls\\0022-m5_mechanism\\observer-receipt.private.json",
+    "sha256": "0352B17803B629A2915AF27FAE145758E7F40B5689567C6806C853971A8C08C9",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0022-m5_mechanism\\peer.jsonl",
+    "sha256": "FFA5E09789A3ECC0BB9658AF5F8CFFDFB83E8E8CBAFCA266292E6A3CB6C0A77F",
+    "bytes": 6350
+  },
+  {
+    "path": "native-ledger\\calls\\0022-m5_mechanism\\prompt.private.txt",
+    "sha256": "0AAD0EA81A14B4F5ADD2523D613DAD563C38813CADF5EDFEAEADB3C09E24DF23",
+    "bytes": 3844
+  },
+  {
+    "path": "native-ledger\\calls\\0022-m5_mechanism\\request.private.json",
+    "sha256": "D297168DA45B5D64E97B0FE6713396A5AFDE5B9B19A68307F5E481A1BC68A608",
+    "bytes": 3715
+  },
+  {
+    "path": "native-ledger\\calls\\0022-m5_mechanism\\reservation.private.json",
+    "sha256": "BCB92D559C2E2C59E3830923EF2E8ABFF8ADE1327ABD2B3267F0418BD1992B6B",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0022-m5_mechanism\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0022-m5_mechanism\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0022-m5_mechanism\\native-private\\observer-receipt.json",
+    "sha256": "788334F63FA591A50684E64F06175A27178874D7F205EF08542A2E4CDCC72975",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0022-m5_mechanism\\native-private\\requests.private.jsonl",
+    "sha256": "759778C0D17B6C513742994770ED594FFA88D3A6CD6021ADC4324CF319BCE7C8",
+    "bytes": 6343
+  },
+  {
+    "path": "native-ledger\\calls\\0022-m5_mechanism\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0022-m5_mechanism\\native-private\\stdout.private.jsonl",
+    "sha256": "D135802E5DE559DCDF727DD6BBDA8562E9C9DD8F531E1ED0454F54BBB35B16CE",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0023-m5_measurement\\observer-receipt.private.json",
+    "sha256": "A3D0AC76B0ABF2910BE6086418653A8955E231971F36B8CC636D871DA4E0512F",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0023-m5_measurement\\peer.jsonl",
+    "sha256": "C49E0EA008CD7180D54CBCBA123DDE7F66ECF63A767E073145A94DC34CB03E08",
+    "bytes": 6457
+  },
+  {
+    "path": "native-ledger\\calls\\0023-m5_measurement\\prompt.private.txt",
+    "sha256": "48CFD8FEE6306E4DD7F0B0C99C57EBA4948AD4DDBE8810BB7165ADB64FBBFE68",
+    "bytes": 3939
+  },
+  {
+    "path": "native-ledger\\calls\\0023-m5_measurement\\request.private.json",
+    "sha256": "4289BFBE22CCB346A80884BCBF23942BB938EF896CE03D93D69FEE3DA280C36A",
+    "bytes": 3810
+  },
+  {
+    "path": "native-ledger\\calls\\0023-m5_measurement\\reservation.private.json",
+    "sha256": "EDEDED0D7D8D53FF872205ED51C2ECACEE377F6C72CFE79B6061F927B5AA8A6F",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0023-m5_measurement\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0023-m5_measurement\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0023-m5_measurement\\native-private\\observer-receipt.json",
+    "sha256": "7F92C6605D79DF55408A1FE8FF55A5695623C4CC904ABFD1FA46A35215B50CBF",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0023-m5_measurement\\native-private\\requests.private.jsonl",
+    "sha256": "6A29D8D7A5B9C305914DDACF748209DFB65DE4C30FE58305AE7BDD343A4353C8",
+    "bytes": 6450
+  },
+  {
+    "path": "native-ledger\\calls\\0023-m5_measurement\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0023-m5_measurement\\native-private\\stdout.private.jsonl",
+    "sha256": "10FD2D2ECE2938EFD2B829A4A08D903029350EB2B7F81CFA03DDDDF4E62F1458",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0024-analysis_program\\observer-receipt.private.json",
+    "sha256": "4D56344C610C738A6D1D8124E029D524FF4DFE0AD28EBFB1C1680C71C5F509F0",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0024-analysis_program\\peer.jsonl",
+    "sha256": "8C49FC3D961D12DDF2CBDD01B5A60B8B7CCCB7001E960CDF226DCA4336895D2D",
+    "bytes": 6396
+  },
+  {
+    "path": "native-ledger\\calls\\0024-analysis_program\\prompt.private.txt",
+    "sha256": "ECB9B22B31F85E843DF407B82771AED1FD3BA36272260FF32D0606F38C641FFD",
+    "bytes": 4090
+  },
+  {
+    "path": "native-ledger\\calls\\0024-analysis_program\\request.private.json",
+    "sha256": "77991D865A3FE42CE0C8BA2CFB463E3AC8DEFB31301426357F9C63292177006D",
+    "bytes": 3961
+  },
+  {
+    "path": "native-ledger\\calls\\0024-analysis_program\\reservation.private.json",
+    "sha256": "A10D13C5210B91059E2BF3C7BA2D72027F6E50FC9B26E67C27AB6D12F9D8E55E",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0024-analysis_program\\response.private.json",
+    "sha256": "1FF6F825A0EC67215C1FA6AA8A088D70786DA1344B43F8FFCBAC1D86FDB83ED5",
+    "bytes": 183
+  },
+  {
+    "path": "native-ledger\\calls\\0024-analysis_program\\schema.private.json",
+    "sha256": "FD0C444A2E3B004A5C3232EC3CEEF3017D2AEFD685C0EF412E442F84F5ADE689",
+    "bytes": 152
+  },
+  {
+    "path": "native-ledger\\calls\\0024-analysis_program\\native-private\\observer-receipt.json",
+    "sha256": "8D4C51BA39A4F34FB1CEE2ED4C471F920ED58A7CC701825CAC78D84AFF63E866",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0024-analysis_program\\native-private\\requests.private.jsonl",
+    "sha256": "F847D7A74212AA9D3E2AA070AA5EFACC9CD0C26AFEDABA0AC0470E5ED045F607",
+    "bytes": 6389
+  },
+  {
+    "path": "native-ledger\\calls\\0024-analysis_program\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0024-analysis_program\\native-private\\stdout.private.jsonl",
+    "sha256": "6CD3432B733CA96BE3706C7B591E929B98A1EA9D55D6153469B8609BAA399DA8",
+    "bytes": 3699
+  },
+  {
+    "path": "native-ledger\\calls\\0025-final_answer\\observer-receipt.private.json",
+    "sha256": "77F0882BB65C047FC0DA3B01390F7A07043DDE91A2438298B762B449ACD673A9",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0025-final_answer\\peer.jsonl",
+    "sha256": "ABC11671C273B5CAF16245336E12D52C924A9C453F55C4729B634E35773C7E16",
+    "bytes": 7884
+  },
+  {
+    "path": "native-ledger\\calls\\0025-final_answer\\prompt.private.txt",
+    "sha256": "1B4D635902188D9CA9ADC21FD445229FEF94AA56F911B106E76196B81EBFBCDB",
+    "bytes": 5263
+  },
+  {
+    "path": "native-ledger\\calls\\0025-final_answer\\request.private.json",
+    "sha256": "E3EF5C97FDD6A5D316868C7077D3673711CF64E6B58149FED633790602694527",
+    "bytes": 5134
+  },
+  {
+    "path": "native-ledger\\calls\\0025-final_answer\\reservation.private.json",
+    "sha256": "4618F9E65589C03609733B4DF8A2B1F41DEF7CBF0CE9B95D6B2E71FC73209B75",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0025-final_answer\\response.private.json",
+    "sha256": "5873E8EE150371BAF31BD08D644D3AD27E87B2073FF6063DECC2CF61CBF42CC5",
+    "bytes": 191
+  },
+  {
+    "path": "native-ledger\\calls\\0025-final_answer\\schema.private.json",
+    "sha256": "99A5B8EC8E592C7CA8C4C31223DC7637B403E05A7CE6567F6D42C22A437BF3D6",
+    "bytes": 380
+  },
+  {
+    "path": "native-ledger\\calls\\0025-final_answer\\native-private\\observer-receipt.json",
+    "sha256": "7F5B4F0CFE235B53683C21E2ECA2DD6C93187B28B65E3C1CA1F1774BA2361DBA",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0025-final_answer\\native-private\\requests.private.jsonl",
+    "sha256": "D2D9E874B335FD8A4D5DE9CE2C657CA671BE08D12B69E2FAA733557C402C3CF5",
+    "bytes": 7877
+  },
+  {
+    "path": "native-ledger\\calls\\0025-final_answer\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0025-final_answer\\native-private\\stdout.private.jsonl",
+    "sha256": "FA6AC3A9C024E4F295B07975E46DE121EE03B85BC5901BD2BFF75C9A54EC9782",
+    "bytes": 3732
+  },
+  {
+    "path": "native-ledger\\calls\\0026-m4_plan\\observer-receipt.private.json",
+    "sha256": "D235318790EB933B2E4DF3880FB9246E8970E61E69718C115DEFCFD9A62F22F1",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0026-m4_plan\\peer.jsonl",
+    "sha256": "F59844A599C843A4EB17A51A597FAC5827D76F004F4970B9EA6BDEDF75677CC0",
+    "bytes": 5666
+  },
+  {
+    "path": "native-ledger\\calls\\0026-m4_plan\\prompt.private.txt",
+    "sha256": "0EEF9B63D2365F1FF84EF55AF7AA6E4BEAA6DE3C03E9649A4F2D3E9530453262",
+    "bytes": 2707
+  },
+  {
+    "path": "native-ledger\\calls\\0026-m4_plan\\request.private.json",
+    "sha256": "FD1181326613054D58888A127F5A1AB042EBB40802DD15E0F38B58FF6A0FEB0F",
+    "bytes": 2578
+  },
+  {
+    "path": "native-ledger\\calls\\0026-m4_plan\\reservation.private.json",
+    "sha256": "E5B37F4E3A3F74EC65C77F60D5F100163B9C9D4FD8CEDAF60577D99084D159DD",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0026-m4_plan\\response.private.json",
+    "sha256": "F0B71ADC4341F0F11D1F98E5483A5532EB949D3B8F7035D9D655892A53659E65",
+    "bytes": 989
+  },
+  {
+    "path": "native-ledger\\calls\\0026-m4_plan\\schema.private.json",
+    "sha256": "09D6D16493C22AC9BF79A6F17964C594077D013D9B706127A2AA7D061528DB4E",
+    "bytes": 963
+  },
+  {
+    "path": "native-ledger\\calls\\0026-m4_plan\\native-private\\observer-receipt.json",
+    "sha256": "846AA09EF4A5D38056BAE3CDF0F705FA086F8504F5E77A0602DE917750B5B129",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0026-m4_plan\\native-private\\requests.private.jsonl",
+    "sha256": "977A5629EE0C2740D30EAA622DC36186E98E1F84B45DFEF3C5AD9876CB7D4A91",
+    "bytes": 5659
+  },
+  {
+    "path": "native-ledger\\calls\\0026-m4_plan\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0026-m4_plan\\native-private\\stdout.private.jsonl",
+    "sha256": "2F4A18544CB730A9F4C85E7D4CF1FFCCE9360FC798D7C6F22EC178880537C505",
+    "bytes": 5580
+  },
+  {
+    "path": "native-ledger\\calls\\0027-m5_mechanism\\observer-receipt.private.json",
+    "sha256": "789835335A37636E112A108BFC743F49408B29E8722375DC90BBA816A15B492D",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0027-m5_mechanism\\peer.jsonl",
+    "sha256": "7511B1706E75CF5C4A9CE9C635F4C3B84B658AB847A09FC2EBC3AA965A5002AF",
+    "bytes": 6214
+  },
+  {
+    "path": "native-ledger\\calls\\0027-m5_mechanism\\prompt.private.txt",
+    "sha256": "FBC5ABE89AA4117DF642E905B76AC589541A5DE902DED386C0024709A376BD2C",
+    "bytes": 3708
+  },
+  {
+    "path": "native-ledger\\calls\\0027-m5_mechanism\\request.private.json",
+    "sha256": "B5F92D5E5838B59A03173B99E3788159412DAFC677FFDD146A5809264C5EECA4",
+    "bytes": 3579
+  },
+  {
+    "path": "native-ledger\\calls\\0027-m5_mechanism\\reservation.private.json",
+    "sha256": "E8C303F3553143C946FFFB0623E78F9E7571AC188EEAE359174A720FFA39DF5D",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0027-m5_mechanism\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0027-m5_mechanism\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0027-m5_mechanism\\native-private\\observer-receipt.json",
+    "sha256": "DB8A3D4B61EB3F3F74F181821DB5961B52B910CCC95ABF8A4A9B802C82DB4358",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0027-m5_mechanism\\native-private\\requests.private.jsonl",
+    "sha256": "95630F95354C02BD415498D64E094629A1CF65B2C7885ED228303880C2FF3D45",
+    "bytes": 6207
+  },
+  {
+    "path": "native-ledger\\calls\\0027-m5_mechanism\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0027-m5_mechanism\\native-private\\stdout.private.jsonl",
+    "sha256": "648B050B4F7C18EC476A1EDED31711EB8CF0C490ACDF6B1411FB6661B2843526",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0028-m5_measurement\\observer-receipt.private.json",
+    "sha256": "EA5D314038FA2023EA7FA19D8B9694FA2E61F54FD2FE288E4EA62BDD5D76F394",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0028-m5_measurement\\peer.jsonl",
+    "sha256": "9E63A4160FC8475D549F3E817CAD2F8795310A75494AFADEA4FB6B32CE264839",
+    "bytes": 6219
+  },
+  {
+    "path": "native-ledger\\calls\\0028-m5_measurement\\prompt.private.txt",
+    "sha256": "FEA51C254130FCC8E7D547FD9E5D523D0CDE9C8C928C091C0CCDAC46E41783E6",
+    "bytes": 3713
+  },
+  {
+    "path": "native-ledger\\calls\\0028-m5_measurement\\request.private.json",
+    "sha256": "6D2BE76514910C1A9738FF889B1738FECE54797EBE7778D043D82856502AFE71",
+    "bytes": 3584
+  },
+  {
+    "path": "native-ledger\\calls\\0028-m5_measurement\\reservation.private.json",
+    "sha256": "F6165A88CC351C9AC96952799AD5227AF340170118B14E42B8C57E357E1192B0",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0028-m5_measurement\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0028-m5_measurement\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0028-m5_measurement\\native-private\\observer-receipt.json",
+    "sha256": "EF2BBB01B94FAA5ABB0E7F42340E139D8B9C91BD8343F2E80025017A85F032F3",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0028-m5_measurement\\native-private\\requests.private.jsonl",
+    "sha256": "453CAC470720465B4D325ED81D98AC15CF6FA8AE73679C102A634CF3E2239B4A",
+    "bytes": 6212
+  },
+  {
+    "path": "native-ledger\\calls\\0028-m5_measurement\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0028-m5_measurement\\native-private\\stdout.private.jsonl",
+    "sha256": "D26A8C92005B84EADEDB0E46B3349B43BC4057D3850EBDC2321E7E4FC478FD15",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0029-analysis_program\\observer-receipt.private.json",
+    "sha256": "883C9BE4251AA2BCC56DC5B42B4424D3A3C44E37D3AD5CC028AA95F6ACBF3506",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0029-analysis_program\\peer.jsonl",
+    "sha256": "B18A1062154B569851E8343AE17BAEDA1BD851F08BB71FA7448467E5E822B3F8",
+    "bytes": 6396
+  },
+  {
+    "path": "native-ledger\\calls\\0029-analysis_program\\prompt.private.txt",
+    "sha256": "59237BBC7A5332683DA9489D8238D25A8BAB945FA5D40F209DEFFB069E5C214A",
+    "bytes": 4090
+  },
+  {
+    "path": "native-ledger\\calls\\0029-analysis_program\\request.private.json",
+    "sha256": "4A6CDF3AED0834A5E4DC8F1D4DA68ECA1CA1E55F9E33823AC00B9E3DCC9D44FD",
+    "bytes": 3961
+  },
+  {
+    "path": "native-ledger\\calls\\0029-analysis_program\\reservation.private.json",
+    "sha256": "86C1B31C63E57596393BE663FED743213254B01EAFFC7FADFA5200963CD271C9",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0029-analysis_program\\response.private.json",
+    "sha256": "1FF6F825A0EC67215C1FA6AA8A088D70786DA1344B43F8FFCBAC1D86FDB83ED5",
+    "bytes": 183
+  },
+  {
+    "path": "native-ledger\\calls\\0029-analysis_program\\schema.private.json",
+    "sha256": "FD0C444A2E3B004A5C3232EC3CEEF3017D2AEFD685C0EF412E442F84F5ADE689",
+    "bytes": 152
+  },
+  {
+    "path": "native-ledger\\calls\\0029-analysis_program\\native-private\\observer-receipt.json",
+    "sha256": "147F754826D4D1C0F107B078ABF80AC9AC1C5D8F334F79480FB3C08372719F31",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0029-analysis_program\\native-private\\requests.private.jsonl",
+    "sha256": "404559EEE849C5F9FABDD69A369EF2B68923D35FD9A3BC81519C251BD2FF8336",
+    "bytes": 6389
+  },
+  {
+    "path": "native-ledger\\calls\\0029-analysis_program\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0029-analysis_program\\native-private\\stdout.private.jsonl",
+    "sha256": "E098BACAA408572A3F8434184A85D98FEADCA5B988207CA29711E6452D257FEA",
+    "bytes": 3699
+  },
+  {
+    "path": "native-ledger\\calls\\0030-final_answer\\observer-receipt.private.json",
+    "sha256": "FC01F94F6A902259BF48AF35BA1BF05EB2832D1DEE311E75F9A9E0F74F109923",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0030-final_answer\\peer.jsonl",
+    "sha256": "905C5AB1C358E6CD92532512ABBDEB5E469891FDC3D0B099CCC4CE9CC35A64CB",
+    "bytes": 7884
+  },
+  {
+    "path": "native-ledger\\calls\\0030-final_answer\\prompt.private.txt",
+    "sha256": "D384B475E0F025EDAF3499DC0CF825C7924BA5595209883F6EA212B9B6141B49",
+    "bytes": 5263
+  },
+  {
+    "path": "native-ledger\\calls\\0030-final_answer\\request.private.json",
+    "sha256": "FF5F0A5F822C40494266A0F519EE8AED8C84DBB8E10F4ABD15004D728880558E",
+    "bytes": 5134
+  },
+  {
+    "path": "native-ledger\\calls\\0030-final_answer\\reservation.private.json",
+    "sha256": "8F287D7E79D8260A548C0BB90328E9624631D41DA4B920425AC33FE3E8310D41",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0030-final_answer\\response.private.json",
+    "sha256": "5873E8EE150371BAF31BD08D644D3AD27E87B2073FF6063DECC2CF61CBF42CC5",
+    "bytes": 191
+  },
+  {
+    "path": "native-ledger\\calls\\0030-final_answer\\schema.private.json",
+    "sha256": "99A5B8EC8E592C7CA8C4C31223DC7637B403E05A7CE6567F6D42C22A437BF3D6",
+    "bytes": 380
+  },
+  {
+    "path": "native-ledger\\calls\\0030-final_answer\\native-private\\observer-receipt.json",
+    "sha256": "816DDA5E35CC753BBEE4658BEB9922F37635F0F5F558F357AA5101172AFA82D4",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0030-final_answer\\native-private\\requests.private.jsonl",
+    "sha256": "996B5D51DBCA6A444E30A7166D20100E961D0828610B158B9C3F88B0E756654C",
+    "bytes": 7877
+  },
+  {
+    "path": "native-ledger\\calls\\0030-final_answer\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0030-final_answer\\native-private\\stdout.private.jsonl",
+    "sha256": "46611BFDD64948DFAF1B3B62F1BBD711B7EEF4A8B6CD217DE61EE7B8BD56189A",
+    "bytes": 3732
+  },
+  {
+    "path": "native-ledger\\calls\\0031-m4_plan\\observer-receipt.private.json",
+    "sha256": "4285F48B750F4DA810F62C14C3080F31D759EEF2E34147E577CBE3CC71A95C6E",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0031-m4_plan\\peer.jsonl",
+    "sha256": "4795F072E666626D300466A4EFB2632ECF7576E22748CD7D6669C656E94C56E5",
+    "bytes": 5657
+  },
+  {
+    "path": "native-ledger\\calls\\0031-m4_plan\\prompt.private.txt",
+    "sha256": "0FE3781BEF69899F4EB2C3537C29810A5947A78B64CAB4D54EBC193E2E1E647C",
+    "bytes": 2698
+  },
+  {
+    "path": "native-ledger\\calls\\0031-m4_plan\\request.private.json",
+    "sha256": "45B0084B34E6F08808C55006650DFAD1C5456C17CE73A534EE60BDA04E377601",
+    "bytes": 2569
+  },
+  {
+    "path": "native-ledger\\calls\\0031-m4_plan\\reservation.private.json",
+    "sha256": "34A99C73D77B99146CD203EBD3598E6F14A538771E666F31CEE431DDE45B4099",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0031-m4_plan\\response.private.json",
+    "sha256": "F0B71ADC4341F0F11D1F98E5483A5532EB949D3B8F7035D9D655892A53659E65",
+    "bytes": 989
+  },
+  {
+    "path": "native-ledger\\calls\\0031-m4_plan\\schema.private.json",
+    "sha256": "09D6D16493C22AC9BF79A6F17964C594077D013D9B706127A2AA7D061528DB4E",
+    "bytes": 963
+  },
+  {
+    "path": "native-ledger\\calls\\0031-m4_plan\\native-private\\observer-receipt.json",
+    "sha256": "99F465C5A4B782FFB49F2B024B0430D369CFB47145BB824FF7EB7AE09BB48316",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0031-m4_plan\\native-private\\requests.private.jsonl",
+    "sha256": "36B1C0D155D3FEFE56B661AB0444BC6CD88FD528A64667AE636EB3909784B473",
+    "bytes": 5650
+  },
+  {
+    "path": "native-ledger\\calls\\0031-m4_plan\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0031-m4_plan\\native-private\\stdout.private.jsonl",
+    "sha256": "2D91CF043EFF25F67843F86DF9448DCA2171299505851143FDBE5E0951A84DDC",
+    "bytes": 5580
+  },
+  {
+    "path": "native-ledger\\calls\\0032-m5_mechanism\\observer-receipt.private.json",
+    "sha256": "61E708441948D6F91E9DD035B9FEDF9272B0D3895804823994BBE58225E3AA50",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0032-m5_mechanism\\peer.jsonl",
+    "sha256": "4998DD0EF31F9C8CB791BA184D4DE206AB19917A7FB0652AE6AB05DC378D6A2B",
+    "bytes": 6350
+  },
+  {
+    "path": "native-ledger\\calls\\0032-m5_mechanism\\prompt.private.txt",
+    "sha256": "53B4F2D192B6D4AC8297924BA2530000DB52A4401676949E700FD2F7A8FEBC5E",
+    "bytes": 3844
+  },
+  {
+    "path": "native-ledger\\calls\\0032-m5_mechanism\\request.private.json",
+    "sha256": "DC978893267B8DC9847E3AE31CBB7B25CA2E7CC9C037B2CCBEFBF3C046AEDE78",
+    "bytes": 3715
+  },
+  {
+    "path": "native-ledger\\calls\\0032-m5_mechanism\\reservation.private.json",
+    "sha256": "66C6F154B8CC22E1E5BD179FFD9234D7E6CF96CB8476C6A8CCACAA56096DE2B3",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0032-m5_mechanism\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0032-m5_mechanism\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0032-m5_mechanism\\native-private\\observer-receipt.json",
+    "sha256": "DFDA37C143FC5866B3917DF672929BC0B3C91D2A443505E23A5C170CDD44C709",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0032-m5_mechanism\\native-private\\requests.private.jsonl",
+    "sha256": "3BD8EA3C02BB0887B1ECDDD7CBE1A9732173E01E2070594CED72EACA69345F0C",
+    "bytes": 6343
+  },
+  {
+    "path": "native-ledger\\calls\\0032-m5_mechanism\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0032-m5_mechanism\\native-private\\stdout.private.jsonl",
+    "sha256": "5E32C4F2670F4A5BA959531E03F003CC516856DF67244E6D13D29111F7BE845C",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0033-m5_measurement\\observer-receipt.private.json",
+    "sha256": "F99BBB4BF91C48219A64244E1B2068B3DEED8CAACEEFF1C16F993AD6DF48FF2D",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0033-m5_measurement\\peer.jsonl",
+    "sha256": "27F5581FD91F1B028B4ADC21BDAA9E8D8B108C0ECFB103DA923BDA6E4C19D92C",
+    "bytes": 6457
+  },
+  {
+    "path": "native-ledger\\calls\\0033-m5_measurement\\prompt.private.txt",
+    "sha256": "C328F766888900F93E1069880EB0C4FA7DC167D66382755AB50ABBFBAC7CE9F6",
+    "bytes": 3939
+  },
+  {
+    "path": "native-ledger\\calls\\0033-m5_measurement\\request.private.json",
+    "sha256": "31800DAF9CA13091FB37B2DF91A5159B90535C2BC6BF633E932FC6B1BA5C7C4F",
+    "bytes": 3810
+  },
+  {
+    "path": "native-ledger\\calls\\0033-m5_measurement\\reservation.private.json",
+    "sha256": "6CFE7D4739D701D2B522BD7BF0444B926390A9542EA0CADCAAC5B5B6EF8D95C6",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0033-m5_measurement\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0033-m5_measurement\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0033-m5_measurement\\native-private\\observer-receipt.json",
+    "sha256": "06E84C7B82153B649E0E1E52BDF1FEF60310BA22B6D204DA785B64126129A6D7",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0033-m5_measurement\\native-private\\requests.private.jsonl",
+    "sha256": "D1BF03C074493EDDAEA9B95E28B1CDEBAF4B1B65639C7459B37351DF68C886D4",
+    "bytes": 6450
+  },
+  {
+    "path": "native-ledger\\calls\\0033-m5_measurement\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0033-m5_measurement\\native-private\\stdout.private.jsonl",
+    "sha256": "B8199372B797552EE11D2BBDCB499928B18CD1E88F1E288079776DD767E4974B",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0034-analysis_program\\observer-receipt.private.json",
+    "sha256": "DEB9240C1341121D8D71CF36E8DF17796842EC5C5FBC273DBA9B00E91FBC8502",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0034-analysis_program\\peer.jsonl",
+    "sha256": "0B026F922EFDB6DCF3620CFFFA4BE5F4E3501DF38A450C691D327FBA4ACA3F84",
+    "bytes": 6396
+  },
+  {
+    "path": "native-ledger\\calls\\0034-analysis_program\\prompt.private.txt",
+    "sha256": "6B4E437E4F089350E95A7AD4BEC6E2448BA3DE5BB1FA48F958167CFF64E3C52C",
+    "bytes": 4090
+  },
+  {
+    "path": "native-ledger\\calls\\0034-analysis_program\\request.private.json",
+    "sha256": "74D234C4BFFFCD6AC6234B8C70904D2E9ED47434CFBB7B5673268B94B8019818",
+    "bytes": 3961
+  },
+  {
+    "path": "native-ledger\\calls\\0034-analysis_program\\reservation.private.json",
+    "sha256": "38443E06657842388742B2E1157F5D98FEC3046A93126DF9572CB8905A9E1A44",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0034-analysis_program\\response.private.json",
+    "sha256": "1FF6F825A0EC67215C1FA6AA8A088D70786DA1344B43F8FFCBAC1D86FDB83ED5",
+    "bytes": 183
+  },
+  {
+    "path": "native-ledger\\calls\\0034-analysis_program\\schema.private.json",
+    "sha256": "FD0C444A2E3B004A5C3232EC3CEEF3017D2AEFD685C0EF412E442F84F5ADE689",
+    "bytes": 152
+  },
+  {
+    "path": "native-ledger\\calls\\0034-analysis_program\\native-private\\observer-receipt.json",
+    "sha256": "E0E914C6E8BA8BD56F1C6B88E0E92C668007A1B7B3BA313AAC78174B3E310D43",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0034-analysis_program\\native-private\\requests.private.jsonl",
+    "sha256": "95DD5A0E7C0AC64A8F498020803C6D81177F218E102195E278B4BCE8AE6AF69B",
+    "bytes": 6389
+  },
+  {
+    "path": "native-ledger\\calls\\0034-analysis_program\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0034-analysis_program\\native-private\\stdout.private.jsonl",
+    "sha256": "C12A91E85143EB403F8593FD372EAAD022AC36BF0C9A43F9889CA844149BEC79",
+    "bytes": 3699
+  },
+  {
+    "path": "native-ledger\\calls\\0035-final_answer\\observer-receipt.private.json",
+    "sha256": "B40A9F1B0C42F650041C4206C68FEC4C6D08827BBCB7CA9BC4D47DD220764BC7",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0035-final_answer\\peer.jsonl",
+    "sha256": "500D6AF12CB0EBBA2B97CC7E8B65E405F1E5E20C8A2892AFBB322D26AA2F55FE",
+    "bytes": 7884
+  },
+  {
+    "path": "native-ledger\\calls\\0035-final_answer\\prompt.private.txt",
+    "sha256": "E7FB91C6F86E90D15B7CC9B9BAC349F5982BE521F2001E5C71382B9C97049526",
+    "bytes": 5263
+  },
+  {
+    "path": "native-ledger\\calls\\0035-final_answer\\request.private.json",
+    "sha256": "1FE7312028B10D81836D3978B41FFC6A4184C66978A7A09A6C65E17009E6F319",
+    "bytes": 5134
+  },
+  {
+    "path": "native-ledger\\calls\\0035-final_answer\\reservation.private.json",
+    "sha256": "307F04E57EC2536F093140C55B2E3ECA147BA2FFE78331AB26D2392F48A9AC27",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0035-final_answer\\response.private.json",
+    "sha256": "5873E8EE150371BAF31BD08D644D3AD27E87B2073FF6063DECC2CF61CBF42CC5",
+    "bytes": 191
+  },
+  {
+    "path": "native-ledger\\calls\\0035-final_answer\\schema.private.json",
+    "sha256": "99A5B8EC8E592C7CA8C4C31223DC7637B403E05A7CE6567F6D42C22A437BF3D6",
+    "bytes": 380
+  },
+  {
+    "path": "native-ledger\\calls\\0035-final_answer\\native-private\\observer-receipt.json",
+    "sha256": "61229CA598429806E8305D7737D528FA77BA985A2BCB4D6E8AB3A59A7918A4B2",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0035-final_answer\\native-private\\requests.private.jsonl",
+    "sha256": "ED5892D01D779BB06F54BB852DCF594615F7321CB49F60AD96315E5E3FB789AA",
+    "bytes": 7877
+  },
+  {
+    "path": "native-ledger\\calls\\0035-final_answer\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0035-final_answer\\native-private\\stdout.private.jsonl",
+    "sha256": "15587FAA68871D03DBDD61B3229DAE5D4B19BB6B0B72CE8911E868CFF66504E1",
+    "bytes": 3732
+  },
+  {
+    "path": "native-ledger\\calls\\0036-m4_plan\\observer-receipt.private.json",
+    "sha256": "3650279B438FB75B33B8CD5931B7202F41BDD2888316867E254B3BF1B8A6ECC7",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0036-m4_plan\\peer.jsonl",
+    "sha256": "2F6288D29B3866A8192A1607B8D22C115B7AD9CF0A13988C1C3B6B6202A621C2",
+    "bytes": 5657
+  },
+  {
+    "path": "native-ledger\\calls\\0036-m4_plan\\prompt.private.txt",
+    "sha256": "9096FA496B9FA2B3BEF17255372477EA3BC305BBB1981734FA0AE204D321061F",
+    "bytes": 2698
+  },
+  {
+    "path": "native-ledger\\calls\\0036-m4_plan\\request.private.json",
+    "sha256": "14C73C74A3F84839530ACD53B08F3B4C35804316E6982DD8ABC0E10DC4BCA93D",
+    "bytes": 2569
+  },
+  {
+    "path": "native-ledger\\calls\\0036-m4_plan\\reservation.private.json",
+    "sha256": "5E961011847D29B2C95BC25F14337F70E03940C8E9CE9DD876E8BA85C296DA54",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0036-m4_plan\\response.private.json",
+    "sha256": "F0B71ADC4341F0F11D1F98E5483A5532EB949D3B8F7035D9D655892A53659E65",
+    "bytes": 989
+  },
+  {
+    "path": "native-ledger\\calls\\0036-m4_plan\\schema.private.json",
+    "sha256": "09D6D16493C22AC9BF79A6F17964C594077D013D9B706127A2AA7D061528DB4E",
+    "bytes": 963
+  },
+  {
+    "path": "native-ledger\\calls\\0036-m4_plan\\native-private\\observer-receipt.json",
+    "sha256": "32BCC123EA710FDD50427CCE204410DF00EF66526BD944A21C65F2231C5A4510",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0036-m4_plan\\native-private\\requests.private.jsonl",
+    "sha256": "5B2256CC88ECAAE7CE894FF3013D56AB12E14D2D1B62BBCEEA86C27F5B7C8C96",
+    "bytes": 5650
+  },
+  {
+    "path": "native-ledger\\calls\\0036-m4_plan\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0036-m4_plan\\native-private\\stdout.private.jsonl",
+    "sha256": "8EDCD288E9B47764A6151F0EAEAC510241739B258CD5D3146B654497A65A46C2",
+    "bytes": 5580
+  },
+  {
+    "path": "native-ledger\\calls\\0037-m5_mechanism\\observer-receipt.private.json",
+    "sha256": "CF813ACB3D8AC1F711A71DA0820059ECC7E42503599F1E01634B658F47032443",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0037-m5_mechanism\\peer.jsonl",
+    "sha256": "0F75427DE06E67E4A03DE4FE4B5173E69FA78B1759785C98BF06CBC3C1E3B158",
+    "bytes": 6214
+  },
+  {
+    "path": "native-ledger\\calls\\0037-m5_mechanism\\prompt.private.txt",
+    "sha256": "227B03FEF705492336CA6A38CA19A4E5DCE65CFE8C1C3C4C9C03E8DEB3338690",
+    "bytes": 3708
+  },
+  {
+    "path": "native-ledger\\calls\\0037-m5_mechanism\\request.private.json",
+    "sha256": "FDABB6D3024CE54D600A215E641414E9509586CE826724A13038EF3B4E998ECF",
+    "bytes": 3579
+  },
+  {
+    "path": "native-ledger\\calls\\0037-m5_mechanism\\reservation.private.json",
+    "sha256": "704430AC982034C9B31BA843698F64937025A2433F19DE4C12FD9AEF7E6765F3",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0037-m5_mechanism\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0037-m5_mechanism\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0037-m5_mechanism\\native-private\\observer-receipt.json",
+    "sha256": "8586D68FD072F5C1837CD64E7FC9A14AA8EFD68E1DA3DF0BED6B080F1231D6CF",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0037-m5_mechanism\\native-private\\requests.private.jsonl",
+    "sha256": "81A3642AB6B21D13F61A06AC5497F5AA82CB66E8A1EFBD347A79B071901E99F0",
+    "bytes": 6207
+  },
+  {
+    "path": "native-ledger\\calls\\0037-m5_mechanism\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0037-m5_mechanism\\native-private\\stdout.private.jsonl",
+    "sha256": "D016469C369CF3DF753E6374FFAE4B1D34A0412DD8AB7D59BAC1FA74F3DA23C7",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0038-m5_measurement\\observer-receipt.private.json",
+    "sha256": "36ED9CA1A2E63801962A3AC0715DD275725B0059071F563E6465C4919D935476",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0038-m5_measurement\\peer.jsonl",
+    "sha256": "9A62154F4AF85A5EFB082789F6C7842FD0ED6F0E6063945793E9F3BAF229D033",
+    "bytes": 6219
+  },
+  {
+    "path": "native-ledger\\calls\\0038-m5_measurement\\prompt.private.txt",
+    "sha256": "4DAC61B7503BBF835BF60D3669AC245D0785AD908F4C237389E5A5643C1CB33F",
+    "bytes": 3713
+  },
+  {
+    "path": "native-ledger\\calls\\0038-m5_measurement\\request.private.json",
+    "sha256": "5C6BD1CD53101AE38BE0DFF9F1A7FCC177D1C67C34A19106F34AD17A15FC3C3E",
+    "bytes": 3584
+  },
+  {
+    "path": "native-ledger\\calls\\0038-m5_measurement\\reservation.private.json",
+    "sha256": "4D96742D115596EA9F3E911E2C871EEEB565CCBFF4C676E1FC69C1E48DB4E8BE",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0038-m5_measurement\\response.private.json",
+    "sha256": "D8276157BAE4DA1C3F71D0B0F8050979300565DB819B2462A21E138D94BAB117",
+    "bytes": 90
+  },
+  {
+    "path": "native-ledger\\calls\\0038-m5_measurement\\schema.private.json",
+    "sha256": "39E825F4C6FF1CE9FDF63D5E9DDA8EBF0F9908E9B00BE00325A1B4A06831FE78",
+    "bytes": 356
+  },
+  {
+    "path": "native-ledger\\calls\\0038-m5_measurement\\native-private\\observer-receipt.json",
+    "sha256": "4B9ED7818200C8BAB09F91CF8CD8A90547BA9891890BFA52AEEA1FD9AC28E841",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0038-m5_measurement\\native-private\\requests.private.jsonl",
+    "sha256": "D97F17081F33348AC8F2D7C06CC467BEE34CEF1140BE61D371B66AE6FD4ECAD6",
+    "bytes": 6212
+  },
+  {
+    "path": "native-ledger\\calls\\0038-m5_measurement\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0038-m5_measurement\\native-private\\stdout.private.jsonl",
+    "sha256": "2DDFAAB5EAAD7A450FF71209C2D0AD367F47F4C2D3391DC54C9DE4039E326D1D",
+    "bytes": 3522
+  },
+  {
+    "path": "native-ledger\\calls\\0039-analysis_program\\observer-receipt.private.json",
+    "sha256": "E6D8A3D466B32702A8E0E4C7DA9B4E5CE2CAB6EB367DCA3233DB934343416FBB",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0039-analysis_program\\peer.jsonl",
+    "sha256": "85A47F64A153AAD0BA88E4F7C1732704E380BFB849DBE4474EA535C7307E9E61",
+    "bytes": 6396
+  },
+  {
+    "path": "native-ledger\\calls\\0039-analysis_program\\prompt.private.txt",
+    "sha256": "BCF019380755B7DFF7332558F55E498D9690897AF994FBDFF495279FC921974A",
+    "bytes": 4090
+  },
+  {
+    "path": "native-ledger\\calls\\0039-analysis_program\\request.private.json",
+    "sha256": "5DBF08751344D1AEB31375ED57EB58E35844C1403265F1829D0E25E31FEDE3C3",
+    "bytes": 3961
+  },
+  {
+    "path": "native-ledger\\calls\\0039-analysis_program\\reservation.private.json",
+    "sha256": "5846FB0A845E0AA7B3CFAFD12ACB7EA0B3EC4CF99C1D99D704B3EA41663356AB",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0039-analysis_program\\response.private.json",
+    "sha256": "1FF6F825A0EC67215C1FA6AA8A088D70786DA1344B43F8FFCBAC1D86FDB83ED5",
+    "bytes": 183
+  },
+  {
+    "path": "native-ledger\\calls\\0039-analysis_program\\schema.private.json",
+    "sha256": "FD0C444A2E3B004A5C3232EC3CEEF3017D2AEFD685C0EF412E442F84F5ADE689",
+    "bytes": 152
+  },
+  {
+    "path": "native-ledger\\calls\\0039-analysis_program\\native-private\\observer-receipt.json",
+    "sha256": "A8D8F6B413FCBBB95F75E00DF1B3D30993260C21CFC563A54C54DA019D5EB1F1",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0039-analysis_program\\native-private\\requests.private.jsonl",
+    "sha256": "377D05385EA36828F334D8D9429C2D3619E743CD1C02E1320A1829F2C65F7A10",
+    "bytes": 6389
+  },
+  {
+    "path": "native-ledger\\calls\\0039-analysis_program\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0039-analysis_program\\native-private\\stdout.private.jsonl",
+    "sha256": "6097049A0B2246D4C4655BDC9AF30A47123E546D8CA8887F3FAC8DFC0E553BA0",
+    "bytes": 3699
+  },
+  {
+    "path": "native-ledger\\calls\\0040-final_answer\\observer-receipt.private.json",
+    "sha256": "CEFA35F098C5EEE42BCF6CC72DEC237A7DCCFCDED364CCC4665870D64230C203",
+    "bytes": 3747
+  },
+  {
+    "path": "native-ledger\\calls\\0040-final_answer\\peer.jsonl",
+    "sha256": "87B91DE7488CD9EC9DBF87762110256BC4AC542B697A02122EF1EAFAB4F9506D",
+    "bytes": 7884
+  },
+  {
+    "path": "native-ledger\\calls\\0040-final_answer\\prompt.private.txt",
+    "sha256": "AB12721C5CAF97D848D10287BDE3D8C4A40146DDDF486D3A32BEDCEBE19ED0FB",
+    "bytes": 5263
+  },
+  {
+    "path": "native-ledger\\calls\\0040-final_answer\\request.private.json",
+    "sha256": "78E21C9DAFCBF8E5C747E1688A117DC4BC753DEB8053B52A0688873B94D1DF37",
+    "bytes": 5134
+  },
+  {
+    "path": "native-ledger\\calls\\0040-final_answer\\reservation.private.json",
+    "sha256": "C24E208DDED7000E9A96DDE4B4A12E3FA50BCFC047744AF800DAC407585DCE84",
+    "bytes": 518
+  },
+  {
+    "path": "native-ledger\\calls\\0040-final_answer\\response.private.json",
+    "sha256": "5873E8EE150371BAF31BD08D644D3AD27E87B2073FF6063DECC2CF61CBF42CC5",
+    "bytes": 191
+  },
+  {
+    "path": "native-ledger\\calls\\0040-final_answer\\schema.private.json",
+    "sha256": "99A5B8EC8E592C7CA8C4C31223DC7637B403E05A7CE6567F6D42C22A437BF3D6",
+    "bytes": 380
+  },
+  {
+    "path": "native-ledger\\calls\\0040-final_answer\\native-private\\observer-receipt.json",
+    "sha256": "594ADF1DF38090E7141B81337CB6DE0CBB9E464F8A3B29070E91B542832EBD36",
+    "bytes": 3748
+  },
+  {
+    "path": "native-ledger\\calls\\0040-final_answer\\native-private\\requests.private.jsonl",
+    "sha256": "97C556BC2438220BE8866E4FCC46DFE1B0873A57EF247F3342752885A06CA6C1",
+    "bytes": 7877
+  },
+  {
+    "path": "native-ledger\\calls\\0040-final_answer\\native-private\\stderr.private.txt",
+    "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+    "bytes": 0
+  },
+  {
+    "path": "native-ledger\\calls\\0040-final_answer\\native-private\\stdout.private.jsonl",
+    "sha256": "31FADA5373593A0987C8708B4276C1C394590E7BE37963C1B312105AC8913303",
+    "bytes": 3732
+  }
+]

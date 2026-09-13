@@ -1,0 +1,1 @@
+{"analysis":"mean public x","program":"import csv\nwith open('/input/public_csv', newline='') as f:\n rows=list(csv.DictReader(f))\nprint(sum(float(r['x']) for r in rows)/len(rows))"}
