@@ -2,8 +2,9 @@
 
 `research_loop.modular.benchmark_cell.run_benchmark_cell` composes one actual
 train-only Q1.5, Q3.1, or Q4.3 `run_train_cell` journal with the shared
-`run_benchmark_solve` journal. It is an independent adapter; it is not wired
-into `train_controller`, a scorer, or formal acceptance.
+`run_benchmark_solve` journal. The train controller invokes this adapter in its
+explicit linked mode. A separate signed scoring component consumes verified
+linked results; formal acceptance remains outside this path.
 
 The mechanism receipt is first replayed by `PanelReceiptVerifier` and the
 common protocol validator. The wrapper then derives
@@ -42,3 +43,8 @@ two additional model calls per cell. The controller takes only custody-exported
 packet CSV files, uses the pinned Docker image, replays every linked receipt
 before recording it, and includes every linked status in completion. Mechanism
 and solver failures remain denominator rows.
+
+`TrainPanelRun.linked_results` returns those same verified objects to the
+trusted scoring orchestrator, avoiding a second solve or a mechanism-only
+substitute. A missing solver after a successful mechanism is accepted only if
+the claimed mechanism-provenance rejection can be reproduced from its journal.

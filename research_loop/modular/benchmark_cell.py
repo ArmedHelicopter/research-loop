@@ -116,9 +116,16 @@ def verify_linked_benchmark_cell(result: LinkedBenchmarkCellResult, *, task: Pub
     if result.solver is None:
         terminal = _events(result.mechanism.runtime.trace_path)[-1]["stage"]
         expected = "mechanism_" + result.mechanism.runtime.status
-        if result.status == "mechanism_receipt_rejected":
-            if result.mechanism.runtime.status != "succeeded" or result.provenance is not None:
-                raise ContractError("mechanism receipt rejection does not match a successful precursor")
+        if result.mechanism.runtime.status == "succeeded":
+            if result.status != "mechanism_receipt_rejected" or result.provenance is not None:
+                raise ContractError("mechanism-only result requires a reproducible receipt rejection after a successful precursor")
+            try:
+                verified_mechanism_provenance(cell=result.cell, task=task, scenario=scenario,
+                    package=package, mechanism=result.mechanism)
+            except ContractError:
+                pass
+            else:
+                raise ContractError("mechanism-only receipt rejection cannot be reproduced from the journal")
         elif result.provenance is not None or result.status != expected or terminal not in {"model_failure", "driver_failure", "controller_failure", "final_decision"}:
             raise ContractError("mechanism-only linked result has contradictory solver material")
     else:

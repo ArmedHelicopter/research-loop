@@ -96,17 +96,19 @@ def test_linked_controller_runs_custody_export_real_port_live_docker_and_replays
         audit_verifier=AuditVerifier(AUDIT))
     assert len(result.packets) == 2 and len(result.runtimes) == len(result.compiled.panel.cells) == 12
     assert len(seen) == len(captured) == 12
+    assert result.linked_results == tuple(captured)
     assert result.receipt.data()["execution_status"] == "engineering_complete"
     assert result.receipt.data()["linked_statuses"] == ["linked_succeeded"] * 12
     assert all(item.solver and item.solver.execution and item.solver.execution.status == "succeeded" for item in captured)
     attempt = json.loads((tmp_path / "run" / "controller-attempt.json").read_text(encoding="utf-8"))
     assert len(attempt["linked_receipts"]) == len(attempt["linked_verifications"]) == 12
-    forged = replace(captured[0], solver=None, provenance=None, status="mechanism_failed")
-    forged = replace(forged, receipt=benchmark_cell._receipt(forged.cell, forged.mechanism, None, None, forged.status))
-    with pytest.raises(ContractError, match="mechanism-only"):
-        verify_linked_benchmark_cell(forged, task=result.packets[0].task,
-                                      scenario=result.compiled.scenarios[captured[0].cell.key],
-                                      package=result.compiled.packages[captured[0].cell.runtime_arm.content_hash])
+    for status in ("mechanism_failed", "mechanism_succeeded", "mechanism_receipt_rejected"):
+        forged = replace(captured[0], solver=None, provenance=None, status=status)
+        forged = replace(forged, receipt=benchmark_cell._receipt(forged.cell, forged.mechanism, None, None, forged.status))
+        with pytest.raises(ContractError, match="mechanism-only"):
+            verify_linked_benchmark_cell(forged, task=result.compiled.tasks[forged.cell.task_digest],
+                                          scenario=result.compiled.scenarios[forged.cell.key],
+                                          package=result.compiled.packages[forged.cell.runtime_arm.content_hash])
 
 
 def _docker_outcome(monkeypatch, outcome: str) -> None:

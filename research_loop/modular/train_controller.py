@@ -23,7 +23,7 @@ from research_loop.modular.modules.improvement import CandidatePackage
 from research_loop.modular.panel_plan import CompiledTrainPanel, compile_train_panel, executable_arms, obligation_grids
 from research_loop.modular.panel_receipts import PanelReceiptVerifier, PanelVerdict, RuntimeReceipt
 from research_loop.modular.panel_runner import DRIVERS, run_train_cell
-from research_loop.modular.benchmark_cell import run_benchmark_cell, verify_linked_benchmark_cell
+from research_loop.modular.benchmark_cell import LinkedBenchmarkCellResult, run_benchmark_cell, verify_linked_benchmark_cell
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.ontology import ContractError, canonical, digest
@@ -119,6 +119,7 @@ class TrainPanelRun:
     runtimes: tuple[RuntimeReceipt, ...]
     verdict: PanelVerdict
     receipt: FrozenRecord
+    linked_results: tuple[LinkedBenchmarkCellResult, ...] = ()
 
 
 def _driver_plan(scope_ids: Sequence[str], *, baseline_digest: str, p0_control: FrozenRecord,
@@ -240,7 +241,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                     "runtime_trace_digests": [runtime.trace_digest for runtime in runtimes],
                     "linked_statuses": [result.status for result in linked_results]})
     _write(root / "controller-attempt.json", attempt)
-    return TrainPanelRun(compiled, tuple(packets), tuple(runtimes), verdict, receipt)
+    return TrainPanelRun(compiled, tuple(packets), tuple(runtimes), verdict, receipt, tuple(linked_results))
 
 
 # Stable compatibility entry point for pre-existing frozen Q3.1 configurations.
