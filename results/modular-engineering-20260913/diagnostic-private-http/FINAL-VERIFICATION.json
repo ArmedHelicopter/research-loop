@@ -1,0 +1,71 @@
+{
+  "source_commit": "d343b704152de3427be467592a84da9acfe63de8",
+  "base_commit": "4cbfe2c",
+  "source_files": {
+    "source/docs/MODULAR-DIAGNOSTIC-PRIVATE-PORTS.md": "55cc40d22f27bf9b3dcb058e09f13877441855ed938a9a4b9e1af31207a1d47d",
+    "source/evaluation/modular/diagnostic_private_ports.py": "8e316de2d101e1e2b614d6764a9f6b62ae7119b1da1c29bb0d8a7c3154cd6916",
+    "source/tests/helpers/private_http_fixture.py": "ed356db530ae8a940054cd690bc2d3821c1ea1a89e91c096da515b1ca76b6424",
+    "source/tests/test_diagnostic_private_ports.py": "b62573bdee8f76b7f16aeb179ef2b20ce8447387664e343c69b4d1e4652ffd5f"
+  },
+  "reports": {
+    "red-r1.xml": {
+      "name": "pytest",
+      "errors": "1",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.159",
+      "timestamp": "2026-09-13T18:21:05.853607+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "5",
+      "skipped": "0",
+      "tests": "23",
+      "time": "57.621",
+      "timestamp": "2026-09-13T19:34:33.065855+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "13",
+      "time": "328.804",
+      "timestamp": "2026-09-13T19:37:30.004964+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "worker-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "2",
+      "time": "9.074",
+      "timestamp": "2026-09-13T19:44:11.189955+08:00",
+      "hostname": "SC-202507131830"
+    }
+  },
+  "synthetic_archives": {
+    "root-r1": {
+      "sha256": "4a43affb3698e37e40d64d29f0fc80f640500d7c10f9829a5e8ff4395a35bdcc",
+      "members": 196
+    },
+    "root-r2": {
+      "sha256": "d19a86c999ff2fdf9c14787186857243951f6d7c3f5af227f2442c63d342d239",
+      "members": 1405
+    },
+    "worker-r1": {
+      "sha256": "ff5a896b57a2e4f334fc80fe79f2285b8f03a1f5991aa0689ddc462daadde27d",
+      "members": 75
+    }
+  },
+  "actual_paid_calls": 0,
+  "actual_private_reference_payloads_copied": false,
+  "validation_accessed": false,
+  "scientific_effectiveness_proven": false,
+  "scope": "Named local synthetic fixtures only; complete original failures retained. Source after interrupted agent was committed and checked by root."
+}

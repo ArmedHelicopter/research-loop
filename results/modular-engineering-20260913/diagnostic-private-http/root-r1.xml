@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="23" time="57.621" timestamp="2026-09-13T19:34:33.065855+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.262" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.031" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.037" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.112" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.100" /><testcase classname="tests.test_diagnostic_private_ports" name="test_renderer_resolves_train_reference_and_blinds_labels" time="0.076"><failure message="assert ('&quot;kind&quot;' not in '{&quot;messages&quot;...e&quot;:&quot;user&quot;}]}'&#10;  &#10;  '&quot;kind&quot;' is contained here:&#10;    &quot;:&quot;user&quot;}]} and '&quot;slot_token&quot;' in '{&quot;messages&quot;:[{&quot;content&quot;:&quot;Independently assess this anonymous candidate against the supplied task and reference. Retur...ed by one reference spec\\&quot;}},\\&quot;task\\&quot;:{\\&quot;index\\&quot;:0,\\&quot;question\\&quot;:\\&quot;Synthetic public task\\&quot;}}&quot;,&quot;role&quot;:&quot;user&quot;}]}')&#10; +  where '{&quot;messages&quot;:[{&quot;content&quot;:&quot;Independently assess this anonymous candidate against the supplied task and reference. Retur...ed by one reference spec\\&quot;}},\\&quot;task\\&quot;:{\\&quot;index\\&quot;:0,\\&quot;question\\&quot;:\\&quot;Synthetic public task\\&quot;}}&quot;,&quot;role&quot;:&quot;user&quot;}]}' = FrozenRecord(encoded='{&quot;messages&quot;:[{&quot;content&quot;:&quot;Independently assess this anonymous candidate against the supplied task...d by one reference spec\\&quot;}},\\&quot;task\\&quot;:{\\&quot;index\\&quot;:0,\\&quot;question\\&quot;:\\&quot;Synthetic public task\\&quot;}}&quot;,&quot;role&quot;:&quot;user&quot;}]}').encoded">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/cal-ports-checks/root-r1/test_renderer_resolves_train_r0')
+
+    def test_renderer_resolves_train_reference_and_blinds_labels(tmp_path):
+        renderer, manifest, materials, _, _ = setup_renderer(tmp_path)
+        slot = manifest.data()['slots'][0]
+        task = manifest.data()['tasks'][0]
+        request = blind_request(manifest, slot, task, materials[slot['slot_id']]['body']['payload'])
+        rendered = renderer.render('reviewer1', request)
+        assert 'PRIVATE_SYNTHETIC_REFERENCE_SENTINEL' in rendered.encoded
+        assert 'support_digest' not in rendered.encoded and '"expected"' not in rendered.encoded
+&gt;       assert '"kind"' not in rendered.encoded and '"slot_token"' in rendered.encoded
+E       assert ('"kind"' not in '{"messages"...e":"user"}]}'
+E         
+E         '"kind"' is contained here:
+E           ":"user"}]} and '"slot_token"' in '{"messages":[{"content":"Independently assess this anonymous candidate against the supplied task and reference. Retur...ed by one reference spec\\"}},\\"task\\":{\\"index\\":0,\\"question\\":\\"Synthetic public task\\"}}","role":"user"}]}')
+E        +  where '{"messages":[{"content":"Independently assess this anonymous candidate against the supplied task and reference. Retur...ed by one reference spec\\"}},\\"task\\":{\\"index\\":0,\\"question\\":\\"Synthetic public task\\"}}","role":"user"}]}' = FrozenRecord(encoded='{"messages":[{"content":"Independently assess this anonymous candidate against the supplied task...d by one reference spec\\"}},\\"task\\":{\\"index\\":0,\\"question\\":\\"Synthetic public task\\"}}","role":"user"}]}').encoded
+
+tests\test_diagnostic_private_ports.py:37: AssertionError</failure></testcase><testcase classname="tests.test_diagnostic_private_ports" name="test_foreign_handle_rejected_before_resolver_payload_read" time="0.145" /><testcase classname="tests.test_diagnostic_private_ports" name="test_real_http_serialization_reservation_usage_and_blinding" time="1.011"><failure message="AssertionError: assert ('transport_failed' == 'received'&#10;  &#10;  - received&#10;  + transport_failed)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/cal-ports-checks/root-r1/test_real_http_serialization_r0')
+
+    def test_real_http_serialization_reservation_usage_and_blinding(tmp_path):
+        with LocalProvider() as server:
+            ports, budget, request, _, manifest, authorities = setup_http(tmp_path, server)
+            output, status = budget.call('reviewer1', request, ports.kwargs()['reviewer1'])
+&gt;           assert status == 'received' and len(server.calls) == server.cap_checks == 1
+E           AssertionError: assert ('transport_failed' == 'received'
+E             
+E             - received
+E             + transport_failed)
+
+tests\test_diagnostic_private_ports.py:93: AssertionError</failure></testcase><testcase classname="tests.test_diagnostic_private_ports" name="test_http_failure_keeps_partial_usage_and_stops[timeout]" time="1.936" /><testcase classname="tests.test_diagnostic_private_ports" name="test_http_failure_keeps_partial_usage_and_stops[http_error]" time="1.014" /><testcase classname="tests.test_diagnostic_private_ports" name="test_http_failure_keeps_partial_usage_and_stops[missing_usage]" time="1.097" /><testcase classname="tests.test_diagnostic_private_ports" name="test_http_failure_keeps_partial_usage_and_stops[invalid_content]" time="1.320" /><testcase classname="tests.test_diagnostic_private_ports" name="test_http_failure_keeps_partial_usage_and_stops[cap_breach]" time="2.059" /><testcase classname="tests.test_diagnostic_private_ports" name="test_reused_provider_usage_across_roles_is_unknown_not_new_receipt" time="0.968"><failure message="AssertionError: assert 'transport_failed' == 'received'&#10;  &#10;  - received&#10;  + transport_failed">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/cal-ports-checks/root-r1/test_reused_provider_usage_acr0')
+
+    def test_reused_provider_usage_across_roles_is_unknown_not_new_receipt(tmp_path):
+        with LocalProvider('duplicate') as server:
+            ports, budget, request, _, _, _ = setup_http(tmp_path, server)
+&gt;           assert budget.call('reviewer1', request, ports.kwargs()['reviewer1'])[1] == 'received'
+E           AssertionError: assert 'transport_failed' == 'received'
+E             
+E             - received
+E             + transport_failed
+
+tests\test_diagnostic_private_ports.py:131: AssertionError</failure></testcase><testcase classname="tests.test_diagnostic_private_ports" name="test_source_drift_after_response_preserves_paid_usage_but_no_review" time="1.549" /><testcase classname="tests.test_diagnostic_private_ports" name="test_evidence_drift_or_foreign_request_has_zero_http_calls" time="1.019" /><testcase classname="tests.test_diagnostic_private_ports" name="test_full_36_slot_real_http_grid_and_optional_arbitration[False]" time="21.271"><failure message="assert 0 == 72&#10; +  where 0 = sum(&lt;generator object test_full_36_slot_real_http_grid_and_optional_arbitration.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000197BD0B9560&gt;)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/cal-ports-checks/root-r1/test_full_36_slot_real_http_gr0')
+disagree = False
+
+    @pytest.mark.parametrize('disagree', [False, True])
+    def test_full_36_slot_real_http_grid_and_optional_arbitration(tmp_path, disagree):
+        with LocalProvider('disagree' if disagree else 'normal') as server:
+            ports, _, _, config, manifest, authorities = setup_http(tmp_path, server)
+            receipt = run_config(config, **ports.kwargs())
+            result = verify(receipt, role='diagnostic', subject=manifest.content_hash,
+                authority_id=authorities['diagnostic'].authority_id, key=authorities['diagnostic'].key)
+            assert len(result['observations']) == 72
+&gt;           assert sum(o['status']=='scored_diagnostic' for o in result['observations']) == 72
+E           assert 0 == 72
+E            +  where 0 = sum(&lt;generator object test_full_36_slot_real_http_grid_and_optional_arbitration.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000197BD0B9560&gt;)
+
+tests\test_diagnostic_private_ports.py:166: AssertionError</failure></testcase><testcase classname="tests.test_diagnostic_private_ports" name="test_full_36_slot_real_http_grid_and_optional_arbitration[True]" time="22.920"><failure message="assert 0 == 72&#10; +  where 0 = sum(&lt;generator object test_full_36_slot_real_http_grid_and_optional_arbitration.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000197BD186330&gt;)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/cal-ports-checks/root-r1/test_full_36_slot_real_http_gr1')
+disagree = True
+
+    @pytest.mark.parametrize('disagree', [False, True])
+    def test_full_36_slot_real_http_grid_and_optional_arbitration(tmp_path, disagree):
+        with LocalProvider('disagree' if disagree else 'normal') as server:
+            ports, _, _, config, manifest, authorities = setup_http(tmp_path, server)
+            receipt = run_config(config, **ports.kwargs())
+            result = verify(receipt, role='diagnostic', subject=manifest.content_hash,
+                authority_id=authorities['diagnostic'].authority_id, key=authorities['diagnostic'].key)
+            assert len(result['observations']) == 72
+&gt;           assert sum(o['status']=='scored_diagnostic' for o in result['observations']) == 72
+E           assert 0 == 72
+E            +  where 0 = sum(&lt;generator object test_full_36_slot_real_http_grid_and_optional_arbitration.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000197BD186330&gt;)
+
+tests\test_diagnostic_private_ports.py:166: AssertionError</failure></testcase></testsuite></testsuites>
