@@ -78,7 +78,9 @@ def verify_useful_inputs(*, joint, requests, responses, enabled, roles, task, bi
             or joint.get('review_responses') != [r.data() for r in responses[1:]]):
         raise ContractError('useful joint context must retain every actual module response')
     sealed = 'M5' in enabled
-    if requests[0]['instruction'] != (PLAN_INSTRUCTION if 'M4' in enabled else ORDINARY_INSTRUCTION):
+    first_context = {k: v for k, v in requests[0]['module_context'].items() if k != 'deployment'}
+    if (requests[0]['instruction'] != (PLAN_INSTRUCTION if 'M4' in enabled else ORDINARY_INSTRUCTION)
+            or first_context != {'panel_cell': binding, 'public_task': task, 'mechanism_phase': 'proposal'}):
         raise ContractError('proposal instruction differs from frozen useful-output recipe')
     for i, (role, question) in enumerate(roles):
         context = review_context(binding=binding, task=task, role=role, question=question,

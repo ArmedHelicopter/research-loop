@@ -8,6 +8,12 @@ from research_loop.modular import combination_train_controller as controller
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.ontology import ContractError
 from test_combination_prospective_train_source import prepare, run
+from research_loop.modular.combination_benchmark_driver import (
+    run_m4_m5_combination_benchmark_cell, verify_m4_m5_combination_benchmark_cell,
+)
+from research_loop.modular.benchmarks.execution import DockerExecutionBroker
+from research_loop.modular.runtime import AuditVerifier
+from test_modular_combination_benchmark_driver import _model, _rewrite_trace, IMAGE
 
 
 RECIPE = {
@@ -77,3 +83,86 @@ def test_eight_cell_useful_output_grid(tmp_path, monkeypatch):
         logs = executed.runtime.trace_path.parent
         assert bool((logs/'predictions.jsonl').read_text(encoding='utf-8').strip()) == ('M4' in enabled)
         assert bool((logs/'reviews.jsonl').read_text(encoding='utf-8').strip()) == ('M5' in enabled)
+
+
+def test_replay_rejects_useful_output_substitution_and_review_contamination(tmp_path):
+    setup = configured(tmp_path)
+    compiled = setup['compiled']; panel = compiled.panel
+    # Two actual executions supply both the sequential and sealed replay paths.
+    source = tmp_path/'synthetic.csv'; source.write_text('x\n1\n3\n', encoding='utf-8')
+    for arm in ('00', '01'):
+        cell = next(c for c in panel.cells if c.arm_id == arm and c.identity.benchmark == 'blade')
+        task = next(p.task for p in compiled.packets if p.task.content_hash == cell.task_digest)
+        args = dict(panel=panel, task=task, scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash])
+        result = run_m4_m5_combination_benchmark_cell(**args, cell=cell,
+            objective=FrozenRecord.from_dict({'scope': 'synthetic replay'}), sidecar=tmp_path/('cell-'+arm),
+            public_inputs={'public_csv':source}, image=IMAGE, broker=DockerExecutionBroker([tmp_path]),
+            model=_model([]), audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}))
+        assert result.runtime.status == 'succeeded'
+        verify_m4_m5_combination_benchmark_cell(result, **args)
+        path = result.runtime.trace_path; original = path.read_bytes()
+        failures = []
+        for fault in ('discard_proposal', 'substitute_proposal', 'discard_reviews', 'substitute_review',
+                      'changed_recipe', 'downgrade_joint', 'review_history', 'proposal_task', 'proposal_instruction'):
+            joint = result.joint_mechanism.data()
+            def change(events):
+                if fault in ('review_history', 'proposal_task', 'proposal_instruction'):
+                    target_slot = 'm5_measurement' if fault == 'review_history' else 'm4_plan'
+                    row = next(e for e in events if e['stage'] == 'model_request' and e['data']['request']['slot'] == target_slot)
+                    old = row['data']['request_digest']; request = row['data']['request']
+                    if fault == 'review_history':
+                        request['module_context']['earlier_reviews'] = ([{'injected': True}] if arm == '01' else [])
+                    elif fault == 'proposal_task': request['module_context']['public_task'] = {'foreign': True}
+                    else: request['instruction'] = 'A different unregistered recipe.'
+                    new = FrozenRecord.from_dict(request).content_hash; row['data']['request_digest'] = new
+                    for e in events:
+                        if e['stage'] == 'model_response' and e['data']['request_digest'] == old:
+                            e['data']['request_digest'] = new
+                    return
+                if fault == 'discard_proposal': joint['proposal'] = None
+                elif fault == 'substitute_proposal': joint['proposal']['question'] = 'Unobserved alternate proposal'
+                elif fault == 'discard_reviews': joint['review_responses'] = []
+                elif fault == 'substitute_review': joint['review_responses'][0]['uncertainty'] = 'Unobserved review'
+                elif fault == 'changed_recipe': joint['execution_recipe']['solver_context'] = 'discard_off_responses'
+                elif fault == 'downgrade_joint': joint['schema'] = 'm4-m5-joint-mechanism-v1'
+                row = next(e for e in events if e['stage'] == 'combination_mechanism')
+                row['data']['joint'] = joint
+                row['data']['joint_digest'] = FrozenRecord.from_dict(joint).content_hash
+            try:
+                tail = _rewrite_trace(path, change)
+                forged = replace(result, joint_mechanism=FrozenRecord.from_dict(joint),
+                                 runtime=replace(result.runtime, trace_digest=tail))
+                message = ('review input differs' if fault == 'review_history' else
+                           'proposal instruction differs' if fault.startswith('proposal_') else 'useful joint context')
+                with pytest.raises(ContractError, match=message):
+                    verify_m4_m5_combination_benchmark_cell(forged, **args)
+                failures.append(fault)
+            finally:
+                path.write_bytes(original)
+        (tmp_path/('replay-faults-'+arm+'.json')).write_text(json.dumps(failures), encoding='utf-8')
+
+
+def test_malformed_reviews_keep_all_eight_failed_cells(tmp_path, monkeypatch):
+    setup = configured(tmp_path); ordinary = setup['module']._model
+    def factory(seen):
+        original = ordinary(seen)
+        def respond(request):
+            if request.data()['slot'] == 'm5_mechanism':
+                seen.append(request.data())
+                return FrozenRecord.from_dict({'invalid_review': True})
+            return original(request)
+        return respond
+    monkeypatch.setattr(setup['module'], '_model', factory)
+    result, port, seen, _ = run(setup, monkeypatch)
+    assert len(result.attempts) == 8 and not result.scores
+    assert result.receipt.data()['status'] == 'inconclusive'
+    assert result.receipt.data()['pruned_cells'] == []
+    assert len(port.ledger['calls']) == len(seen) == 16
+    assert all(r.solver is None for r in result.results)
+    assert not list((tmp_path/'run').rglob('execution-*.json'))
+
+
+@pytest.mark.parametrize('fault', ['validation', 'swapped_tokens', 'export_receipt', 'completion_anchor'])
+def test_new_recipe_keeps_primary_source_fail_closed(tmp_path, monkeypatch, fault):
+    run(configured(tmp_path), monkeypatch, fault=fault)
