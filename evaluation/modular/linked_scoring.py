@@ -114,6 +114,8 @@ def verify_linked_score_input(receipt: FrozenRecord, *, authority_keys: Mapping[
     required = {"schema", "authority", "panel_digest", "cell_key", "identity", "panel_cell_digest", "task_digest", "scenario_digest", "package_digest", "arm_digest", "objective_digest", "mechanism_trace_digest", "mechanism_output_digest", "solver_trace_digest", "linked_receipt_digest", "analysis_digest", "answer_digest", "execution_digest", "executed_program_sha256", "candidate", "candidate_digest", "status", "scientific_validity"}
     if set(body) != required or body["schema"] != "linked-benchmark-score-input-v1" or body["status"] != "linked_execution_succeeded" or body["scientific_validity"] != "not_measured":
         raise ContractError("linked score input contract drift")
+    if {item.key: item for item in panel.cells}.get(cell.key) != cell:
+        raise ContractError("linked score input cell is not an exact frozen panel member")
     if panel.domain != "train" or cell.identity.domain != "train" or body["panel_digest"] != panel.digest or body["cell_key"] != list(cell.key) or body["identity"] != cell.identity.data():
         raise ContractError("linked score input is not bound to this train cell")
     if body["task_digest"] != cell.task_digest or body["scenario_digest"] != cell.scenario_digest or body["package_digest"] != cell.package_digest or body["arm_digest"] != cell.runtime_arm.content_hash:
@@ -122,7 +124,10 @@ def verify_linked_score_input(receipt: FrozenRecord, *, authority_keys: Mapping[
     if body["panel_cell_digest"] != expected_cell:
         raise ContractError("linked score input panel cell digest drift")
     candidate = body["candidate"]
-    if not isinstance(candidate, Mapping) or set(candidate) != {"analysis", "program", "answer", "execution_feedback"} or any(key in canonical(candidate) for key in ("package_digest", "arm_id", "mechanism_provenance", "sidecar")):
+    if (not isinstance(candidate, Mapping) or set(candidate) != {"analysis", "program", "answer", "execution_feedback"}
+            or not all(isinstance(candidate[key], str) and candidate[key] for key in ("analysis", "program", "answer"))
+            or not isinstance(candidate["execution_feedback"], Mapping)
+            or set(candidate["execution_feedback"]) != {"status", "exit_code", "stdout", "stderr"}):
         raise ContractError("linked evaluator candidate exposes forbidden controller material")
     if hashlib.sha256(canonical(candidate).encode()).hexdigest() != body["candidate_digest"]:
         raise ContractError("linked evaluator candidate digest drift")
@@ -154,8 +159,15 @@ class LinkedAdaptedScoringService:
             "identity_digest": identity_digest, "candidate": source["candidate"], "candidate_digest": source["candidate_digest"]})
         response = self._evaluator(request).data()
         required = {"schema", "panel_digest", "scorer_config_digest", "benchmark", "task_handle_digest", "candidate_digest", "dimensions", "evidence"}
-        if set(response) != required or response["panel_digest"] != panel.digest or response["scorer_config_digest"] != self.config.digest or response["benchmark"] != cell.identity.benchmark or response["candidate_digest"] != source["candidate_digest"] or response["task_handle_digest"] != _sha_text(handle):
+        if set(response) != required or response["schema"] != "adapted-rubric-evaluation-response-v1" or response["panel_digest"] != panel.digest or response["scorer_config_digest"] != self.config.digest or response["benchmark"] != cell.identity.benchmark or response["candidate_digest"] != source["candidate_digest"] or response["task_handle_digest"] != _sha_text(handle):
             raise ContractError("linked rubric response does not bind the signed candidate")
+        evidence = response["evidence"]
+        expected_evidence = {"schema", "evaluator_id", "evaluator_version", "prompt_digest", "schema_digest", "output_digest", "reference_digest", "rubric_digest", "mode"}
+        frozen = self.config.record.data()
+        if (not isinstance(evidence, Mapping) or set(evidence) != expected_evidence
+                or evidence.get("evaluator_id") != frozen["evaluator_id"] or evidence.get("evaluator_version") != frozen["version"]
+                or evidence.get("rubric_digest") != frozen["rubric_digest"]):
+            raise ContractError("linked rubric evaluator contract drift")
         dimensions = response["dimensions"]
         names = _DIMENSIONS[cell.identity.benchmark]
         if not isinstance(dimensions, Mapping) or set(dimensions) != set(names) or any(type(dimensions[name]) not in (int, float) or not math.isfinite(dimensions[name]) or not 0 <= dimensions[name] <= 1 for name in names):
@@ -166,7 +178,7 @@ class LinkedAdaptedScoringService:
             "linked_input_digest": linked_input.content_hash, "linked_receipt_digest": source["linked_receipt_digest"],
             "mechanism_trace_digest": source["mechanism_trace_digest"], "solver_trace_digest": source["solver_trace_digest"], "candidate_digest": source["candidate_digest"],
             "metric": {"name": _METRICS[cell.identity.benchmark], "dimensions": dict(dimensions), "value": metric["adapted_score"], "direction": "higher_better", "value_range": [0.0, 1.0], "scale": "unit"},
-            "evaluator_evidence": response["evidence"], "scientific_validity": "not_measured", "calibration": "not_measured"}
+            "evaluator_evidence": evidence, "scientific_validity": "not_measured", "calibration": "not_measured"}
         return ScientificScorerReceipt(cell.key, self._authority.issue(body))
 
 
@@ -183,6 +195,8 @@ def verify_linked_adapted_receipt(receipt: ScientificScorerReceipt, *, authority
     key = authority_keys.get(authority) if isinstance(authority_keys, Mapping) else None
     if not isinstance(key, bytes) or not hmac.compare_digest(envelope["mac"], hmac.new(key, canonical(body).encode(), hashlib.sha256).hexdigest()):
         raise ContractError("linked adapted receipt signature is untrusted")
+    if authority in execution_authority_keys or any(key == execution_key for execution_key in execution_authority_keys.values()):
+        raise ContractError("linked execution and scorer authorities must be distinct")
     required = {"schema", "authority", "cell_key", "panel_digest", "scorer_digest", "scorer_config_digest", "benchmark", "linked_input_digest", "linked_receipt_digest", "mechanism_trace_digest", "solver_trace_digest", "candidate_digest", "metric", "evaluator_evidence", "scientific_validity", "calibration"}
     if set(body) != required or body["schema"] != "linked-adapted-scored-cell-v1" or body["scientific_validity"] != "not_measured" or body["calibration"] != "not_measured":
         raise ContractError("linked adapted receipt contract drift")
@@ -203,6 +217,10 @@ def verify_linked_adapted_receipt(receipt: ScientificScorerReceipt, *, authority
     if (not isinstance(metric, Mapping) or set(metric) != {"name", "dimensions", "value", "direction", "value_range", "scale"}
             or metric["name"] != _METRICS[cell.identity.benchmark] or metric["direction"] != "higher_better"
             or metric["value_range"] != [0.0, 1.0] or metric["scale"] != "unit" or not isinstance(metric["dimensions"], Mapping)
-            or set(metric["dimensions"]) != set(names) or type(metric["value"]) not in (int, float) or not 0 <= metric["value"] <= 1):
+            or set(metric["dimensions"]) != set(names) or type(metric["value"]) not in (int, float) or not math.isfinite(metric["value"]) or not 0 <= metric["value"] <= 1
+            or any(type(metric["dimensions"][name]) not in (int, float) or not math.isfinite(metric["dimensions"][name]) or not 0 <= metric["dimensions"][name] <= 1 for name in names)):
         raise ContractError("linked adapted metric drift")
+    actual = (discovery_adapted_score if cell.identity.benchmark == "discoverybench" else blade_adapted_score)(canonical(source["candidate"]), metric["dimensions"])["adapted_score"]
+    if not math.isclose(metric["value"], actual, rel_tol=0.0, abs_tol=1e-12):
+        raise ContractError("linked adapted metric aggregate drift")
     return FrozenRecord.from_dict(body)
