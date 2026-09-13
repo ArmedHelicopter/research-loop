@@ -17,6 +17,7 @@ from test_modular_train_controller import model_port
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.modular.lineage_combination_controller import run_lineage_train_panels
 from research_loop.modular.lineage_combination_driver import verify_lineage_combination_cell
+from research_loop.modular.lineage_combination_controller import _v3_admission_qualification_drift
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from test_modular_combination_benchmark_driver import _rewrite_trace
 import test_admission_combination as admission
@@ -165,3 +166,10 @@ def test_v3_admission_qualification_drift_keeps_all_cells_but_blocks_contrasts(t
     assert all(c['qualification_drift'] for c in contrasts)
     assert result.receipt.data()['failed_cells'] == result.receipt.data()['blocked_cells'] == 0
     assert result.receipt.data()['pruned_cells'] == []
+
+
+def test_v3_admission_uniform_qualification_semantics_remain_comparable(tmp_path):
+    setup = configured(tmp_path, 'admission')
+    panel = setup['compiled'].panels[0]
+    rows = [{'cell': cell.data(), 'qualification_semantics_digest': 'a' * 64} for cell in panel.cells]
+    assert _v3_admission_qualification_drift(setup['config'], panel, rows) is None
