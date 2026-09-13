@@ -173,20 +173,15 @@ def metadata_contract(path):
 
 
 def read_rows(path, suffix):
-    if suffix == ".parquet":
-        import pyarrow.parquet as pq
-        rows = pq.read_table(path).to_pylist()
-    elif suffix == ".jsonl":
+    if suffix == ".jsonl":
         rows = [json.loads(line) for line in path.read_bytes().splitlines() if line.strip()]
-    elif suffix == ".json":
-        rows = json.loads(path.read_bytes())
-        if isinstance(rows, dict):
-            rows = rows.get("data", rows.get("tasks", rows.get("records")))
-    else:
+    elif suffix == ".csv":
         import csv
         csv.field_size_limit(MAX_BYTES)
         with path.open(encoding="utf-8", newline="") as stream:
             rows = list(csv.DictReader(stream))
+    else:
+        raise CustodyError()
     if not isinstance(rows, list) or not rows or any(not isinstance(row, dict) for row in rows):
         raise CustodyError()
     return rows
@@ -266,6 +261,10 @@ def acquire(*, private_store, output, overlap_baseline, transport=None, expected
         if expected_revision is not None and revision != expected_revision:
             raise CustodyError()
         if expected_contract is not None and digest(artifacts) != expected_contract:
+            raise CustodyError()
+        if any(item["suffix"] not in {".jsonl", ".csv"} for item in artifacts):
+            # Metadata can disclose unsupported format counts without fetching
+            # payload; only the two exercised parser seams are executable.
             raise CustodyError()
         events.revision = revision
         events.add("fixed_revision_bound_before_payload_fetch", metadata_sha256=metadata_sha)

@@ -148,3 +148,29 @@ def test_csv_transport_large_private_fields_remain_behind_public_allowlist(tmp_p
     assert receipt["task_count"] == 2
     assert receipt["metadata_components"][0]["member_count"] == 2
     assert SECRET not in out.read_text()
+
+
+def test_live_qualification_binds_safe_receipt_and_does_not_promote_validation():
+    from pathlib import Path
+    root = Path("docs/data-source-metadata")
+    manifest = json.loads((root / "airsbench-hf-controlled-acquisition.json").read_text())
+    raw = (root / manifest["receipt_file"]).read_bytes()
+    receipt = h.validate_public(json.loads(raw))
+    assert hashlib.sha256(raw).hexdigest() == manifest["receipt_sha256"]
+    assert receipt["revision"] == manifest["revision"]
+    assert receipt["task_count"] == manifest["record_count"] == 20
+    assert len(receipt["metadata_components"]) == manifest["metadata_component_count"] == 14
+    assert receipt["validation_eligible_count"] == manifest["validation_eligible_records"] == 0
+    assert manifest["primary_benchmark_validation_gap_resolved"] is False
+
+
+def test_unverified_parser_format_is_refused_before_payload_fetch(tmp_path):
+    transport = Transport()
+    transport.name = f"data/{SECRET}.parquet"
+    probe = h.metadata_probe(private_store=tmp_path / "probe-private", output=tmp_path / "probe-public" / "metadata.json", transport=transport)
+    assert probe["parquet_artifacts"] == 1
+    transport.calls.clear()
+    with pytest.raises(CustodyError):
+        h.acquire(private_store=tmp_path / "private", output=tmp_path / "public" / "receipt.json",
+                  overlap_baseline=baseline(tmp_path), transport=transport)
+    assert transport.calls == [h.API_URL]
