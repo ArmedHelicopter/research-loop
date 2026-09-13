@@ -40,6 +40,8 @@ Q1.2 的接线必须从 `ClaimRevision` 触发派生 context cache 失效，并�
 
 Q2.3–Q2.5 的不安全对照只在离线/受限环境重放；不关闭实际宿主权限或科学工具安全边界。既有修复应直接保留，仅对仍缺失的入口补线。
 
+Q2.5/Q2.6 的 caller-bound panel drivers 保持 host checks 和 P0 基线于两臂；仅 M1-on 计算真实 `EvidenceAdmission` disposition。公开模型请求不含 arm、variant、truth 或 package。Q2.6 在模型调用前将 session objective 与 caller-frozen primary objective 哈希绑定；secondary、maintenance 和 pivot 报告不能替换该锁。生产 registry 接线仍由训练侧完成，局部安装测试只验证该 driver seam。
+
 Q2.3/Q2.4 的 caller shadow execution 以冻结程序和命名公开输入的 SHA-256 合约绑定到实际 `ExecutionReceipt`；端口自报摘要不足以通过。模型最终请求只投影执行状态、宿主核验状态和实际准入/未提升状态。完整 M1 处理、双审计材料和独立检查保留在控制器 trace，不能作为 arm、package 或真值线索注入模型。
 Q2.1 与 Q4 的 production review drivers 将 arm、control、review journal identity、package 和阶段标签保留在 controller trace。模型请求只接收 opaque cell binding、公共证据及真实产生的 review/admission/prediction 产物或同形空值；不以模型可见开关决定运行行为或验收期望。
 
