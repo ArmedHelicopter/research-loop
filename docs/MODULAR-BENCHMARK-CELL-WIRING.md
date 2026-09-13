@@ -34,3 +34,10 @@ The synthetic integration suite is
 adapters, Q3.1 and Q4.3, the pinned local image, synthetic CSV input, and a
 model callback that asserts real mechanism content reaches both solver calls
 and Docker stdout reaches the final answer.
+
+`FrozenTrainControllerConfig.execution_mode` may be
+`linked_benchmark_solve` for the closed Q1.5/Q3.1/Q4.3 scope. Its frozen
+schemas include `analysis_program` and `final_answer`, and preflight budgets
+two additional model calls per cell. The controller takes only custody-exported
+packet CSV files, uses the pinned Docker image, and records each linked receipt
+in its attempt journal. Mechanism and solver failures remain denominator rows.
