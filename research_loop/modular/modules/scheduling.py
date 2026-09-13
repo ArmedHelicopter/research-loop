@@ -173,6 +173,15 @@ class FifoScheduler:
                 raise ContractError("only a current lease may complete")
             if cost_units != row["cost_units"]:
                 raise ContractError("receipt cost must equal the reserved task cost")
+            if receipt.get("schema") == "m8-public-work-receipt-v2":
+                # The panel worker's typed artifact is bound to this precise
+                # attempt. Generic legacy receipts keep their existing contract.
+                if (receipt.get("run_id") != run_id or receipt.get("task_id") != row["task_id"]
+                        or receipt.get("attempt") != row["attempt"]
+                        or receipt.get("snapshot_digest") != row["snapshot_hash"]
+                        or receipt.get("cost_units") != cost_units
+                        or receipt_id != frozen.content_hash):
+                    raise ContractError("typed work receipt belongs to another run, snapshot, or cost")
             try:
                 conn.execute("UPDATE runs SET status='completed_waiting',worker_id=NULL,lease_until=NULL,receipt_id=?,receipt=? WHERE run_id=?",
                              (receipt_id, frozen.encoded, run_id))
@@ -238,6 +247,19 @@ class FifoScheduler:
         with closing(self._connect()) as conn:
             return tuple(RunState(row["run_id"], row["experiment_id"], row["task_id"], row["attempt"], row["status"], row["snapshot_hash"], row["receipt_id"])
                          for row in conn.execute("SELECT * FROM runs WHERE experiment_id=? ORDER BY fifo", (experiment_id,)))
+
+    def receipt(self, run_id: str) -> FrozenRecord:
+        """Read the persisted completion artifact for audit or a barrier merge."""
+        with closing(self._connect()) as conn:
+            row = self._row(conn, required_text(run_id, "run id"))
+            if row["receipt"] is None:
+                raise ContractError("run has no persisted receipt")
+            return FrozenRecord(row["receipt"])
+
+    def reserved_cost_units(self) -> int:
+        """Cumulative attempt reservations; failed work does not refund budget."""
+        with closing(self._connect()) as conn:
+            return conn.execute("SELECT reserved FROM budget WHERE id=1").fetchone()[0]
 
     @contextmanager
     def _tx(self):
