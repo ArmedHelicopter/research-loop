@@ -77,6 +77,13 @@ def test_controller_only_metadata_does_not_output_dynamic_prompt_and_preserves_u
     assert controller_metadata(attempt, ledger)["target_projection_observed"] is True
 
 
+@pytest.mark.parametrize("schema", ["q31-train-controller-attempt-v1", "m4-m5-train-controller-attempt-v1"])
+def test_fixed_historical_controller_schemas_preserve_identity_denominator(schema):
+    attempt = {"schema": schema, "packet_receipts": [{"identity": {"benchmark": "blade"}}]}
+    ledger = {"config": {"schema": "codex-model-port-v1"}, "calls": [], "tokens": 0, "usage_incomplete": False}
+    assert controller_metadata(attempt, ledger)["benchmark_counts"]["blade"] == 1
+
+
 def test_storage_container_does_not_merge_sab_but_missing_fallback_and_actual_tree_equality_do(tmp_path, monkeypatch):
     monkeypatch.setattr("evaluation.modular.process_source_qualification._receipt", lambda *args: {"verified_fixture": True})
     for source, spec in SOURCE_SNAPSHOTS.items():

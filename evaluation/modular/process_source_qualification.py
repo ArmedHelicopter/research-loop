@@ -18,6 +18,7 @@ from research_loop.modular.source_ingestion import SOURCE_SNAPSHOTS
 from research_loop.ontology import digest
 
 SOURCES = ("scicode", "scienceagentbench")
+CONTROLLERS = ("train-panel-controller-attempt-v1", "q31-train-controller-attempt-v1", "m4-m5-train-controller-attempt-v1")
 GAPS = ("os_access_not_audited", "unlogged_historical_access_not_established",
         "model_pretraining_not_assessed", "cross_source_independence_not_proven",
         "upstream_scientific_data_terms_require_artifact_binding")
@@ -45,7 +46,7 @@ class BoundReads:
 
 
 def controller_metadata(attempt, ledger):
-    if (attempt.get("schema") != "train-panel-controller-attempt-v1"
+    if (attempt.get("schema") not in CONTROLLERS
             or ledger.get("config", {}).get("schema") != "codex-model-port-v1"):
         raise CustodyError()
     receipts = attempt.get("packet_receipts")
@@ -112,9 +113,20 @@ def process_audit(config):
         ledger, ledger_sha = reads.read(entry["ledger"])
         # Controller ownership of the ledger is verified without reading any
         # prompt, model response, request text, argv, or startup context.
-        if Path(attempt.get("model_root", "")).resolve() != Path(entry["ledger"]).resolve().parent:
-            raise CustodyError()
+        if attempt.get("schema") == "m4-m5-train-controller-attempt-v1":
+            expected = {"model_calls": len(ledger.get("calls", [])), "known_model_tokens": ledger.get("tokens"),
+                        "model_usage_incomplete": ledger.get("usage_incomplete")}
+            policy_sha = ledger.get("config", {}).get("context_policy", {}).get("sha256")
+            if (attempt.get("actual_model_usage") != expected or not isinstance(policy_sha, str)
+                    or attempt.get("model_policy_sha256") != policy_sha):
+                raise CustodyError()
+            binding_kind = "scope_review_pair_and_usage_policy_equality"
+        else:
+            if Path(attempt.get("model_root", "")).resolve() != Path(entry["ledger"]).resolve().parent:
+                raise CustodyError()
+            binding_kind = "controller_declared_model_root"
         runs.append({"attempt_sha256": attempt_sha, "ledger_sha256": ledger_sha,
+                     "controller_ledger_binding": binding_kind,
                      **controller_metadata(attempt, ledger)})
     if not runs or any(row["target_projection_observed"] for row in runs):
         raise CustodyError()
@@ -122,6 +134,7 @@ def process_audit(config):
     if (review.get("schema") != "process-access-scope-review-v1"
             or review.get("decision") != "observed_process_scope_and_conservative_grouping"
             or review.get("run_locator_sha256") != sorted(digest(str(Path(row["attempt"]).resolve())) for row in config["runs"])
+            or review.get("ledger_locator_sha256") != sorted(digest(str(Path(row["ledger"]).resolve())) for row in config["runs"])
             or review.get("gaps") != list(GAPS)):
         raise CustodyError()
     canonical, canonical_sha = reads.read(config["canonical_receipt"])
@@ -276,6 +289,11 @@ def seal_new_split(destination, config, *, seed):
     # audit or caller-invented family membership. Re-read all evidence here.
     audit = process_audit(config)
     groups, source_receipts = metadata_groups(config["extended_private_root"])
+    for source in SOURCES:
+        raw = Path(config["acquisition_receipts"][source]).read_bytes()
+        if (hashlib.sha256(raw).hexdigest() != audit["start_boundary_acquisition_receipts"][source]
+                or digest(json.loads(raw)) != source_receipts[source]):
+            raise CustodyError()
     canonical_raw = Path(config["canonical_receipt"]).read_bytes()
     if hashlib.sha256(canonical_raw).hexdigest() != audit["canonical_receipt_sha256"]:
         raise CustodyError()
