@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.735" timestamp="2026-09-13T13:34:44.217830+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_metaprogram_training" name="test_eight_cells_execute_real_builder_changes_in_subsequent_analysis_and_docker[prompt]" time="0.134"><failure message="research_loop.ontology.ContractError: two registered audit authorities required">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/meta-r2/test_eight_cells_execute_real_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D715A97BF0&gt;
+surface = 'prompt'
+
+    @pytest.mark.parametrize('surface',['prompt','memory'])
+    def test_eight_cells_execute_real_builder_changes_in_subsequent_analysis_and_docker(tmp_path,monkeypatch,surface):
+&gt;       plan,args,seen,history=fixture(tmp_path,monkeypatch,surface=surface)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_metaprogram_training.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_metaprogram_training.py:48: in fixture
+    broker=broker,model=history_port,audit_verifier=AuditVerifier({}))
+                                                    ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.runtime.AuditVerifier object at 0x000001D715A96E40&gt;
+keys = {}
+
+    def __init__(self, keys: Mapping[str, bytes]):
+        if len(keys) != 2 or any(not isinstance(key, bytes) or len(key) &lt; 32 for key in keys.values()):
+&gt;           raise ContractError("two registered audit authorities required")
+E           research_loop.ontology.ContractError: two registered audit authorities required
+
+research_loop\modular\runtime.py:90: ContractError</failure></testcase></testsuite></testsuites>

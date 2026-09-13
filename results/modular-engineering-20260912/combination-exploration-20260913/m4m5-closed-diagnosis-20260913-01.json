@@ -1,0 +1,138 @@
+{
+  "schema": "closed-m4m5-replay-diagnosis-v1",
+  "source_commit": "60cc333965c75d0d493afab3ac63dec1f5b12d9a",
+  "original_file_count": 302,
+  "original_files_unchanged": true,
+  "model_calls": 0,
+  "docker_calls": 0,
+  "scorer_calls": 0,
+  "rows": [
+    {
+      "benchmark": "blade",
+      "arm": "00",
+      "trial_phase": "verified",
+      "trial_status": "succeeded",
+      "solver_status": "execution_succeeded",
+      "terminal": "final_decision",
+      "execution_status": "succeeded",
+      "replay": "verified"
+    },
+    {
+      "benchmark": "blade",
+      "arm": "01",
+      "trial_phase": "verified",
+      "trial_status": "succeeded",
+      "solver_status": "execution_succeeded",
+      "terminal": "final_decision",
+      "execution_status": "succeeded",
+      "replay": "verified"
+    },
+    {
+      "benchmark": "blade",
+      "arm": "10",
+      "trial_phase": "verified",
+      "trial_status": "succeeded",
+      "solver_status": "execution_succeeded",
+      "terminal": "final_decision",
+      "execution_status": "succeeded",
+      "replay": "verified"
+    },
+    {
+      "benchmark": "blade",
+      "arm": "11",
+      "trial_phase": "execution",
+      "trial_status": "failed",
+      "solver_status": "answer_rejected",
+      "terminal": "driver_failure",
+      "execution_status": "succeeded",
+      "replay": "verified",
+      "candidate_protocol": {
+        "error": "benchmark conclusion must be bounded nonempty text",
+        "fields": [
+          "conclusion",
+          "evidence_ids",
+          "objective_digest",
+          "outcome",
+          "programme_complete"
+        ],
+        "objective_matches": true,
+        "outcome": "unknown",
+        "evidence_count": 0,
+        "programme_complete": false
+      }
+    },
+    {
+      "benchmark": "discoverybench",
+      "arm": "00",
+      "trial_phase": "verified",
+      "trial_status": "succeeded",
+      "solver_status": "execution_succeeded",
+      "terminal": "final_decision",
+      "execution_status": "succeeded",
+      "replay": "verified"
+    },
+    {
+      "benchmark": "discoverybench",
+      "arm": "01",
+      "trial_phase": "source_verification",
+      "trial_status": "failed",
+      "solver_status": "execution_failed",
+      "terminal": "final_decision",
+      "execution_status": "failed",
+      "replay": "rejected",
+      "error_type": "ContractError",
+      "error": "failed receipt does not match terminal runtime evidence",
+      "frames": [
+        {
+          "file": "diagnose_m4m5_closed_20260913.py",
+          "line": 41,
+          "function": "<module>"
+        },
+        {
+          "file": "combination_benchmark_driver.py",
+          "line": 82,
+          "function": "verify_m4_m5_combination_benchmark_cell"
+        },
+        {
+          "file": "panel_receipts.py",
+          "line": 491,
+          "function": "_verify_runtime"
+        }
+      ]
+    },
+    {
+      "benchmark": "discoverybench",
+      "arm": "10",
+      "trial_phase": "execution",
+      "trial_status": "failed",
+      "solver_status": "answer_rejected",
+      "terminal": "driver_failure",
+      "execution_status": "succeeded",
+      "replay": "verified",
+      "candidate_protocol": {
+        "error": "benchmark conclusion must be bounded nonempty text",
+        "fields": [
+          "conclusion",
+          "evidence_ids",
+          "objective_digest",
+          "outcome",
+          "programme_complete"
+        ],
+        "objective_matches": true,
+        "outcome": "unknown",
+        "evidence_count": 0,
+        "programme_complete": false
+      }
+    },
+    {
+      "benchmark": "discoverybench",
+      "arm": "11",
+      "trial_phase": "verified",
+      "trial_status": "succeeded",
+      "solver_status": "execution_succeeded",
+      "terminal": "final_decision",
+      "execution_status": "succeeded",
+      "replay": "verified"
+    }
+  ]
+}

@@ -34,6 +34,15 @@ A separate paid training run is frozen on that source at
 Its two original training tasks, full eight-cell denominator, five solver slots
 per cell, 40-call solver cap, 750,000-token solver cap, eight-call evaluator cap,
 and 700,000-token evaluator cap were fixed before execution. The incomplete-reject
-contrast rule is unchanged. The run is still open at this documentation
-checkpoint, so no outcome, completed cost, interaction effect, or acceptance is
-claimed. No validation content is used and no singleton result prunes a pair.
+contrast rule is unchanged. It closed with five scored cells and three failed
+cells: two empty final conclusions and one generated Python syntax error. The
+40 solver calls used 364,228 tokens; five evaluator calls used 112,562 tokens,
+for 45 calls and 476,790 tokens with no unknown usage. The frozen result is
+inconclusive. No validation content was used and no singleton result prunes a pair.
+
+The syntax-error cell also exposed a verifier defect: the shared runtime
+verifier rejected a failed program followed by a protocol-valid unknown answer.
+A separate read-only diagnosis preserved all 302 original trial files. Initial
+repair `cf571b0` passed 29 checks; independent review then found additional
+program/input/exit-status binding gaps. That repair remains under review and
+is not a reason to remove any original failed cell or rerun the paid trial.

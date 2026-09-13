@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="24.403" timestamp="2026-09-13T14:01:37.687340+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_metaprogram_training" name="test_successor_invalid_responses_keep_original_driver_failure_and_all_costs[analysis_schema]" time="12.391"><failure message="assert 9 == 2">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/meta-successor-red/test_successor_invalid_respons0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000276C7377B90&gt;
+fault = 'analysis_schema'
+
+    @pytest.mark.parametrize('fault',['analysis_schema','answer_schema'])
+    def test_successor_invalid_responses_keep_original_driver_failure_and_all_costs(tmp_path,monkeypatch,fault):
+        plan,args,seen,_=fixture(tmp_path,monkeypatch,fault=fault)
+        run=run_metaprogram_training(plan,**args)
+        assert len(run.cells)==8 and run.receipt.data()['status']=='engineering_incomplete'
+        actual=run.receipt.data()['actual'];calls=16 if fault=='analysis_schema' else 24
+&gt;       assert actual['model_requests']==actual['provider_calls']==calls
+E       assert 9 == 2
+
+tests\test_modular_metaprogram_training.py:144: AssertionError</failure></testcase><testcase classname="tests.test_modular_metaprogram_training" name="test_successor_invalid_responses_keep_original_driver_failure_and_all_costs[answer_schema]" time="10.657"><failure message="assert 10 == 3">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/meta-successor-red/test_successor_invalid_respons1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000276C741A120&gt;
+fault = 'answer_schema'
+
+    @pytest.mark.parametrize('fault',['analysis_schema','answer_schema'])
+    def test_successor_invalid_responses_keep_original_driver_failure_and_all_costs(tmp_path,monkeypatch,fault):
+        plan,args,seen,_=fixture(tmp_path,monkeypatch,fault=fault)
+        run=run_metaprogram_training(plan,**args)
+        assert len(run.cells)==8 and run.receipt.data()['status']=='engineering_incomplete'
+        actual=run.receipt.data()['actual'];calls=16 if fault=='analysis_schema' else 24
+&gt;       assert actual['model_requests']==actual['provider_calls']==calls
+E       assert 10 == 3
+
+tests\test_modular_metaprogram_training.py:144: AssertionError</failure></testcase></testsuite></testsuites>

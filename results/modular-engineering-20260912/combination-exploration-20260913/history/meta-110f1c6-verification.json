@@ -1,0 +1,162 @@
+{
+  "commit": "110f1c655e285a9ff6eafea31acc7fca5aaaa1e6",
+  "git_status": "",
+  "source_frozen": true,
+  "source_sha256": {
+    "research_loop/modular/metaprogram_training.py": "adf23f0c2bc88d21e917d0e9be5c920ebd380dbc23b74be033f473d980443353",
+    "tests/test_modular_metaprogram_training.py": "995b00a0da3301d720ed231ba4503185a9bed04884193681e3e6a8b13c469feb",
+    "docs/Q63-METAPROGRAM-TRAINING.md": "d00121b097bc7e9aaaebcaaa80ccb4991d4c0721726ad3410cf105bfb89fa45d"
+  },
+  "reports": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-label-1.xml",
+      "sha256": "8a5f027cc3499d74ca609f01365fa4bfea2f33e1974b43ba621a7d8c527d79c5",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "10",
+        "time": "0.586",
+        "timestamp": "2026-09-13T13:23:29.834963+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "failures": []
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-red-1.xml",
+      "sha256": "09ca28383349725eed896dc2c0ac2fef64288bf55b4a35920ab66b85e788a20f",
+      "summary": {
+        "name": "pytest",
+        "errors": "1",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "1",
+        "time": "0.472",
+        "timestamp": "2026-09-13T13:25:44.415887+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "failures": [
+        {
+          "classname": "",
+          "name": "tests.test_modular_metaprogram_training",
+          "time": "0.000"
+        }
+      ]
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-r2.xml",
+      "sha256": "6538e569d85a03efeffdff97904fde8123df621158f5b636ba8547872d1865ab",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "1",
+        "skipped": "0",
+        "tests": "1",
+        "time": "0.735",
+        "timestamp": "2026-09-13T13:34:44.217830+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "failures": [
+        {
+          "classname": "tests.test_modular_metaprogram_training",
+          "name": "test_eight_cells_execute_real_builder_changes_in_subsequent_analysis_and_docker[prompt]",
+          "time": "0.134"
+        }
+      ]
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-r3.xml",
+      "sha256": "58c74d43546530a45bcd063736a9a8d322ff3062262a1d6bd487566e317c179a",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "1",
+        "skipped": "0",
+        "tests": "1",
+        "time": "16.052",
+        "timestamp": "2026-09-13T13:35:04.492541+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "failures": [
+        {
+          "classname": "tests.test_modular_metaprogram_training",
+          "name": "test_eight_cells_execute_real_builder_changes_in_subsequent_analysis_and_docker[prompt]",
+          "time": "15.698"
+        }
+      ]
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-r4.xml",
+      "sha256": "d4ce70d81953fa08378680c601324da8ee5a42ba45029bbe5c26c5667bbf7944",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "13",
+        "time": "93.077",
+        "timestamp": "2026-09-13T13:37:42.325171+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "failures": []
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-a9554d2.xml",
+      "sha256": "8eb51e04f4f0f45e2a5e52d4b279d405e441915df81abd47342946f17299fb45",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "42",
+        "time": "280.166",
+        "timestamp": "2026-09-13T13:44:20.297893+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "failures": []
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-edge-red.xml",
+      "sha256": "32793b8947cd86caba95a65cffee7e2672e3d1365829c4d7dbe79f862baddb06",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "2",
+        "skipped": "0",
+        "tests": "2",
+        "time": "5.229",
+        "timestamp": "2026-09-13T13:52:53.521674+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "failures": [
+        {
+          "classname": "tests.test_modular_metaprogram_training",
+          "name": "test_history_annotations_cannot_duplicate_one_actual_source_in_the_whitelist",
+          "time": "2.018"
+        },
+        {
+          "classname": "tests.test_modular_metaprogram_training",
+          "name": "test_original_driver_failure_from_invalid_response_is_retained_as_failed_history",
+          "time": "2.885"
+        }
+      ]
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-110f1c6.xml",
+      "sha256": "92c854cc15b6a1458b314ea74583f4d57a2877f0115803915e40ce2d6a2c2440",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "29",
+        "time": "201.185",
+        "timestamp": "2026-09-13T13:54:14.606853+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "failures": []
+    }
+  ],
+  "scope": "Synthetic public custody fixtures, mocked Codex transport, actual Docker, no paid/private/validation calls; no 01/02 history consumed. Engineering causal wiring only; scoring, scientific meta improvement, transfer and activation not established."
+}

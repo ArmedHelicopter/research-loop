@@ -1,0 +1,67 @@
+{
+  "commit": "e1f0da02cb75f355efe546acf94035e2c97cc29e",
+  "source_frozen": true,
+  "git_status": "",
+  "source_hashes": [
+    {
+      "Algorithm": "SHA256",
+      "Hash": "6C770B44B8CC49BAA1CA1DA248C94479507246B8DE765088123EEB4239E9327A",
+      "Path": "E:\\_ryanDev\\AI\\research-loop-modular\\metaprogram-training\\research_loop\\modular\\metaprogram_training.py"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "C3DCCAA7926C9C94BEF8DDDD4BA8A03E6AB3CE4DA789583709D823E6B5ED0AF2",
+      "Path": "E:\\_ryanDev\\AI\\research-loop-modular\\metaprogram-training\\tests\\test_modular_metaprogram_training.py"
+    },
+    {
+      "Algorithm": "SHA256",
+      "Hash": "DA2EE15614AA94A7344589E82EFDD5CDBA86C88E1D4DEF59C253244BF90E2FE9",
+      "Path": "E:\\_ryanDev\\AI\\research-loop-modular\\metaprogram-training\\docs\\Q63-METAPROGRAM-TRAINING.md"
+    }
+  ],
+  "reports": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-successor-red.xml",
+      "sha256": "e95ce9a9fc27fc7c991abcdb958b8aa060f9784db8e1a23d0022461962706b14",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "2",
+        "skipped": "0",
+        "tests": "2",
+        "time": "24.403",
+        "timestamp": "2026-09-13T14:01:37.687340+08:00",
+        "hostname": "SC-202507131830"
+      }
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-successor-red2.xml",
+      "sha256": "a1a6d391c83bc7a2a3e961bf7a0cd6b5c565f074904afb7a3f8b1da66a36ef55",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "1",
+        "skipped": "0",
+        "tests": "2",
+        "time": "29.475",
+        "timestamp": "2026-09-13T14:02:47.147532+08:00",
+        "hostname": "SC-202507131830"
+      }
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-successor-final.xml",
+      "sha256": "156443f4e8e7f89c5dca06a582b630b7d87d0547cdf0127bc3465c411e058edb",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "5",
+        "time": "128.194",
+        "timestamp": "2026-09-13T14:04:21.253548+08:00",
+        "hostname": "SC-202507131830"
+      }
+    }
+  ],
+  "qualification": "Synthetic public train custody, mocked Codex provider, real Docker. No paid models, private/gold/validation, or actual 01/02 histories consumed."
+}

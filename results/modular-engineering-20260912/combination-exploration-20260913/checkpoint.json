@@ -1,0 +1,292 @@
+{
+  "schema": "combination-exploration-checkpoint-v1",
+  "source_commit": "cf571b0512d682378a45eb00df41462a50da7de0",
+  "production_question_drivers": 36,
+  "separate_meta_phase": "Q6.3",
+  "reports": {
+    "reports/meta-root-integrated-r1.xml": {
+      "tests": "77",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "327.355"
+    },
+    "reports/extended-exploration-root-r1.xml": {
+      "tests": "69",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "622.836"
+    },
+    "reports/combination-process-r1.xml": {
+      "tests": "55",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "142.170"
+    },
+    "reports/q55-controller-verifier-committed.xml": {
+      "tests": "52",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "282.508"
+    },
+    "reports/resource-combo-root-r1.xml": {
+      "tests": "95",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "238.230"
+    },
+    "reports/resource-combo-root-classification-r2.xml": {
+      "tests": "43",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.170"
+    },
+    "reports/combination-failed-terminal-red-r1.xml": {
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.332"
+    },
+    "reports/combination-failed-terminal-green-r1.xml": {
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.930"
+    },
+    "reports/combination-failed-terminal-frozen-r2.xml": {
+      "tests": "29",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "88.917"
+    },
+    "history/meta-110f1c6.xml": {
+      "tests": "29",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "201.185"
+    },
+    "history/meta-a9554d2.xml": {
+      "tests": "42",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "280.166"
+    },
+    "history/meta-edge-red.xml": {
+      "tests": "2",
+      "failures": "2",
+      "errors": "0",
+      "skipped": "0",
+      "time": "5.229"
+    },
+    "history/meta-label-1.xml": {
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.586"
+    },
+    "history/meta-r2.xml": {
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.735"
+    },
+    "history/meta-r3.xml": {
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "16.052"
+    },
+    "history/meta-r4.xml": {
+      "tests": "13",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "93.077"
+    },
+    "history/meta-red-1.xml": {
+      "tests": "1",
+      "failures": "0",
+      "errors": "1",
+      "skipped": "0",
+      "time": "0.472"
+    },
+    "history/meta-root-integrated-r1.xml": {
+      "tests": "77",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "327.355"
+    },
+    "history/meta-successor-final.xml": {
+      "tests": "5",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "128.194"
+    },
+    "history/meta-successor-red.xml": {
+      "tests": "2",
+      "failures": "2",
+      "errors": "0",
+      "skipped": "0",
+      "time": "24.403"
+    },
+    "history/meta-successor-red2.xml": {
+      "tests": "2",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "29.475"
+    },
+    "history/q55-causal-final.xml": {
+      "tests": "37",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "51.929"
+    },
+    "history/q55-causal-final2.xml": {
+      "tests": "38",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "39.299"
+    },
+    "history/q55-causal-final3.xml": {
+      "tests": "38",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "36.073"
+    },
+    "history/q55-causal-initial.xml": {
+      "tests": "35",
+      "failures": "35",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.172"
+    },
+    "history/q55-causal.xml": {
+      "tests": "35",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "42.644"
+    },
+    "history/q55-controller-final.xml": {
+      "tests": "2",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "68.964"
+    },
+    "history/q55-controller-final2.xml": {
+      "tests": "2",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "36.833"
+    },
+    "history/q55-controller-verifier-baseline.xml": {
+      "tests": "2",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "28.597"
+    },
+    "history/q55-controller-verifier-committed.xml": {
+      "tests": "52",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "282.508"
+    },
+    "history/q55-controller-verifier-final.xml": {
+      "tests": "52",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "246.289"
+    },
+    "history/q55-controller-verifier-r1.xml": {
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "52.095"
+    },
+    "history/q55-controller.xml": {
+      "tests": "2",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "2.531"
+    },
+    "history/q55-repair-final.xml": {
+      "tests": "40",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "99.288"
+    },
+    "exploration/preflight-r1.xml": {
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "3.575"
+    },
+    "exploration/frozen-r1.xml": {
+      "tests": "102",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "674.145"
+    }
+  },
+  "training": {
+    "blocked_cells": 0,
+    "calibration": "not_measured",
+    "cells": 8,
+    "evaluator_calls": 5,
+    "evaluator_tokens": 112562,
+    "failed_cells": 3,
+    "pruned_combinations": [],
+    "schema": "m4m5-train-process-summary-v1",
+    "scientific_validity": "not_measured",
+    "scored_cells": 5,
+    "solver_calls": 40,
+    "solver_tokens": 364228,
+    "source_commit": "60cc333965c75d0d493afab3ac63dec1f5b12d9a",
+    "status": "inconclusive",
+    "usage_incomplete": false,
+    "validation_items": 0
+  },
+  "combined_calls": 45,
+  "combined_tokens": 476790,
+  "failure_details": {
+    "empty_conclusion": 2,
+    "program_syntax_error": 1
+  },
+  "source_verifier_issue": "Failed program plus valid unknown final answer rejected by original generic verifier; original trial remains unchanged",
+  "paid_reruns": 0,
+  "validation_used": 0,
+  "scientific_efficacy": false,
+  "calibration": false,
+  "current_head_full_suite": false,
+  "pruned_combinations": [],
+  "all_48_scientific_obligations_and_required_combinations_remain_open": true
+}

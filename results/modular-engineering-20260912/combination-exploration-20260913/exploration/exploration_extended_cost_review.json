@@ -1,0 +1,14 @@
+{
+  "schema": "extended-exploration-cost-review-v1",
+  "frozen_source_commit": "31813c5",
+  "source_after_sha256": "6d73ee51035741f46dce48f9b845105b520d5de8519288da8599bdf2c0df8ae7",
+  "junit_path": "E:/_ryanDev/AI/research-loop-modular/work/exploration-extended-controller-checks/cost-review-r1.xml",
+  "junit_sha256": "5b37e19d1b2d02806244be514c3f033f9a6971e531b19c52066fc63736001501",
+  "tests": 4,
+  "failures": 0,
+  "errors": 0,
+  "seconds": 7.334,
+  "scope": "Two malformed typed cost representations plus known and unknown partial transport costs; no Docker or paid provider calls",
+  "prior_full_suite": "2628ec3: 102 passed, unchanged archived receipt",
+  "full_suite_repeated": false
+}

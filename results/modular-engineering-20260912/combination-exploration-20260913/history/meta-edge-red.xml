@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="5.229" timestamp="2026-09-13T13:52:53.521674+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_metaprogram_training" name="test_history_annotations_cannot_duplicate_one_actual_source_in_the_whitelist" time="2.018"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/meta-edge-red/test_history_annotations_canno0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000022239BE7BC0&gt;
+
+    def test_history_annotations_cannot_duplicate_one_actual_source_in_the_whitelist(tmp_path,monkeypatch):
+        plan,args,seen,_=fixture(tmp_path,monkeypatch)
+        source=plan.histories[0]
+        duplicate=FrozenTrainHistory.freeze(source.task,source.trace_path,expected_sha256=sha(source.trace_path),
+            source_notes=FrozenRecord.from_dict({'different_note':'does not create another source'}))
+&gt;       with pytest.raises(ContractError,match='history.*whitelist|duplicate'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+tests\test_modular_metaprogram_training.py:243: Failed</failure></testcase><testcase classname="tests.test_modular_metaprogram_training" name="test_original_driver_failure_from_invalid_response_is_retained_as_failed_history" time="2.885"><failure message="research_loop.ontology.ContractError: analysis must be bounded nonempty text">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/meta-edge-red/test_original_driver_failure_f0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002223931F050&gt;
+
+    def test_original_driver_failure_from_invalid_response_is_retained_as_failed_history(tmp_path,monkeypatch):
+        plan,args,seen,_=fixture(tmp_path,monkeypatch)
+        target=plan.targets[0]
+        def invalid_analysis(request): return FrozenRecord.from_dict({'analysis':'','program':''})
+        port=model_port(tmp_path/'invalid-history-port',monkeypatch,max_calls=2,
+            schemas={k:v for k,v in metaprogram_schemas().items() if k!='builder_proposal'},response_factory=invalid_analysis)
+        source_root=tmp_path/'invalid-history';source_root.mkdir()
+        broker=DockerExecutionBroker([tmp_path/'export',source_root])
+        actual=run_benchmark_solve(task=target.task,public_inputs=target.public_inputs,image=IMAGE,
+            package_digest=plan.parent.digest,arm=FrozenRecord.from_dict(plan.record.data()['cells'][0]['arm']),
+            objective=target.objective,sidecar=source_root/'run',broker=broker,model=port,
+            audit_verifier=AuditVerifier({'unused-a':b'a'*32,'unused-b':b'b'*32}))
+        assert actual.status=='analysis_rejected' and len(port.ledger['calls'])==1
+        path=actual.session.sidecar/'trace.jsonl'
+&gt;       history=FrozenTrainHistory.freeze(target.task,path,expected_sha256=sha(path))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_metaprogram_training.py:265: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\metaprogram_training.py:124: in freeze
+    return cls(task,trace_path,_history_material(task,trace_path,expected_sha256,notes))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\metaprogram_training.py:84: in _history_material
+    _program_from(response);analysis=response
+    ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = FrozenRecord(encoded='{"analysis":"","program":""}')
+
+    def _program_from(response: FrozenRecord) -&gt; str:
+        body = response.data()
+        if set(body) != {"analysis", "program"}:
+            raise ContractError("analysis response must contain exactly analysis and program")
+        analysis, program = body["analysis"], body["program"]
+        if not isinstance(analysis, str) or not analysis.strip() or len(analysis.encode("utf-8")) &gt; _MAX_TEXT_BYTES:
+&gt;           raise ContractError("analysis must be bounded nonempty text")
+E           research_loop.ontology.ContractError: analysis must be bounded nonempty text
+
+research_loop\modular\benchmark_solver.py:294: ContractError</failure></testcase></testsuite></testsuites>

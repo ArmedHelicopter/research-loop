@@ -1,0 +1,2125 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="35" skipped="0" tests="35" time="1.172" timestamp="2026-09-13T13:48:34.457502+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled0-missing_data-blade]" time="0.002"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa0')
+benchmark = 'blade', variant = 'missing_data', enabled = ()
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled0-missing_data-discoverybench]" time="0.087"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa1')
+benchmark = 'discoverybench', variant = 'missing_data', enabled = ()
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled0-missing_method-blade]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa2')
+benchmark = 'blade', variant = 'missing_method', enabled = ()
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled0-missing_method-discoverybench]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa3')
+benchmark = 'discoverybench', variant = 'missing_method', enabled = ()
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled0-missing_budget-blade]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa4')
+benchmark = 'blade', variant = 'missing_budget', enabled = ()
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled0-missing_budget-discoverybench]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa5')
+benchmark = 'discoverybench', variant = 'missing_budget', enabled = ()
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled0-missing_control-blade]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa6')
+benchmark = 'blade', variant = 'missing_control', enabled = ()
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled0-missing_control-discoverybench]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa7')
+benchmark = 'discoverybench', variant = 'missing_control', enabled = ()
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled1-missing_data-blade]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa8')
+benchmark = 'blade', variant = 'missing_data', enabled = ('M6',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled1-missing_data-discoverybench]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa9')
+benchmark = 'discoverybench', variant = 'missing_data', enabled = ('M6',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled1-missing_method-blade]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa10')
+benchmark = 'blade', variant = 'missing_method', enabled = ('M6',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled1-missing_method-discoverybench]" time="0.002"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa11')
+benchmark = 'discoverybench', variant = 'missing_method', enabled = ('M6',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled1-missing_budget-blade]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa12')
+benchmark = 'blade', variant = 'missing_budget', enabled = ('M6',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled1-missing_budget-discoverybench]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa13')
+benchmark = 'discoverybench', variant = 'missing_budget', enabled = ('M6',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled1-missing_control-blade]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa14')
+benchmark = 'blade', variant = 'missing_control', enabled = ('M6',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled1-missing_control-discoverybench]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa15')
+benchmark = 'discoverybench', variant = 'missing_control', enabled = ('M6',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled2-missing_data-blade]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa16')
+benchmark = 'blade', variant = 'missing_data', enabled = ('M7',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled2-missing_data-discoverybench]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa17')
+benchmark = 'discoverybench', variant = 'missing_data', enabled = ('M7',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled2-missing_method-blade]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa18')
+benchmark = 'blade', variant = 'missing_method', enabled = ('M7',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled2-missing_method-discoverybench]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa19')
+benchmark = 'discoverybench', variant = 'missing_method', enabled = ('M7',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled2-missing_budget-blade]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa20')
+benchmark = 'blade', variant = 'missing_budget', enabled = ('M7',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled2-missing_budget-discoverybench]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa21')
+benchmark = 'discoverybench', variant = 'missing_budget', enabled = ('M7',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled2-missing_control-blade]" time="0.002"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa22')
+benchmark = 'blade', variant = 'missing_control', enabled = ('M7',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled2-missing_control-discoverybench]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa23')
+benchmark = 'discoverybench', variant = 'missing_control', enabled = ('M7',)
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled3-missing_data-blade]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa24')
+benchmark = 'blade', variant = 'missing_data', enabled = ('M6', 'M7')
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled3-missing_data-discoverybench]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa25')
+benchmark = 'discoverybench', variant = 'missing_data', enabled = ('M6', 'M7')
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled3-missing_method-blade]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa26')
+benchmark = 'blade', variant = 'missing_method', enabled = ('M6', 'M7')
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled3-missing_method-discoverybench]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa27')
+benchmark = 'discoverybench', variant = 'missing_method', enabled = ('M6', 'M7')
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled3-missing_budget-blade]" time="0.002"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa28')
+benchmark = 'blade', variant = 'missing_budget', enabled = ('M6', 'M7')
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled3-missing_budget-discoverybench]" time="0.074"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa29')
+benchmark = 'discoverybench', variant = 'missing_budget', enabled = ('M6', 'M7')
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled3-missing_control-blade]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa30')
+benchmark = 'blade', variant = 'missing_control', enabled = ('M6', 'M7')
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker[enabled3-missing_control-discoverybench]" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_full_two_benchmark_fa31')
+benchmark = 'discoverybench', variant = 'missing_control'
+enabled = ('M6', 'M7')
+
+    @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
+    @pytest.mark.parametrize("variant", VARIANTS)
+    @pytest.mark.parametrize("enabled", [(), ("M6",), ("M7",), ("M6", "M7")])
+    def test_q55_full_two_benchmark_factorial_uses_same_pool_and_real_docker(tmp_path, benchmark, variant, enabled):
+&gt;       t = task(benchmark); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, variant)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='q55-discoverybench', group_id='discoverybench:pu...iculty":null,"question":"measure a public synthetic value","source_kind":"synthetic","task_id":"q55-discoverybench"}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_failed_or_inconsistent_authority_never_resolves_or_executes" time="0.007"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_failed_or_inconsisten0')
+
+    def test_q55_failed_or_inconsistent_authority_never_resolves_or_executes(tmp_path):
+&gt;       t = task("blade"); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, "missing_data")
+                                                                        ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:149: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_resolver_drift_rejects_before_provider_or_model" time="0.023"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_resolver_drift_reject0')
+
+    def test_q55_resolver_drift_rejects_before_provider_or_model(tmp_path):
+&gt;       t = task("blade"); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); csv_path.write_bytes(b"x\n99\n")
+                                                                        ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:166: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase><testcase classname="tests.test_modular_q55_causal_driver" name="test_q55_provider_partial_is_durable_before_failure" time="0.001"><failure message="research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-causal-tests/test_q55_provider_partial_is_d0')
+
+    def test_q55_provider_partial_is_durable_before_failure(tmp_path):
+&gt;       t = task("blade"); csv_path = tmp_path / "public.csv"; bundle = material(t, csv_path); sc = scenario(t, bundle, "missing_data")
+                                                                        ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_causal_driver.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q55_causal_driver.py:60: in material
+    return freeze_q55_causal_bundle(t, items=rows, sources=source_rows())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+task = PublicTask(identity=DataIdentity(benchmark='blade', task_id='q55-blade', group_id='blade:public', dataset_version='syn...hetic-public","research_question":"measure a public synthetic value","task_id":"q55-blade","task_instructions":null}'))
+
+    def freeze_q55_causal_bundle(task: PublicTask, *, items: Mapping[str, Mapping[str, Any]],
+                                 sources: list[Mapping[str, Any]]) -&gt; FrozenRecord:
+        """Freeze public inputs before retrieval, model, authority, or Docker I/O."""
+        if not isinstance(task, PublicTask) or set(items) != set(_VARIANTS):
+            raise ContractError("Q5.5 caller bundle must cover each declared fault")
+        task.identity.require_train()
+        documents = _source_documents(sources)
+        known_ids = {document.source_id for document in documents}
+        frozen: dict[str, Any] = {}
+        for variant in _VARIANTS:
+            raw = _mapping(items[variant], "closure item")
+            required = {"availability", "program", "program_sha256", "image", "inputs",
+                        "authority_contract", "closure_source_id", "ordinary_source_id"}
+            if set(raw) != required:
+                raise ContractError("closure item fields incomplete")
+            availability = _mapping(raw["availability"], "availability")
+            if set(availability) != set(_REQUIREMENTS) or any(type(value) is not bool for value in availability.values()):
+                raise ContractError("availability must contain literal prerequisite booleans")
+            if availability[variant.removeprefix("missing_")]:
+                raise ContractError("fault variant must declare its named prerequisite unavailable")
+            program = _text(raw["program"], "program")
+            if "\r" in program:
+                raise ContractError("program must use canonical LF")
+            program_sha256 = _sha256(raw["program_sha256"], "program sha256")
+            if hashlib.sha256(program.encode("utf-8")).hexdigest() != program_sha256:
+                raise ContractError("canonical program binding drift")
+            inputs = _mapping(raw["inputs"], "input declarations")
+            if not inputs:
+                raise ContractError("at least one public input is required")
+            parsed_inputs: dict[str, Any] = {}
+            for input_id, declaration in inputs.items():
+                declaration = _mapping(declaration, "input declaration")
+                if set(declaration) != {"sha256", "byte_count"} or type(declaration["byte_count"]) is not int or declaration["byte_count"] &lt; 0:
+                    raise ContractError("input declaration must bind SHA-256 and byte count")
+                parsed_inputs[_text(input_id, "input id")] = {"sha256": _sha256(declaration["sha256"], "input sha256"),
+                                                                 "byte_count": declaration["byte_count"]}
+            closure_source_id = _text(raw["closure_source_id"], "closure source id")
+            ordinary_source_id = _text(raw["ordinary_source_id"], "ordinary source id")
+            if closure_source_id not in known_ids or ordinary_source_id not in known_ids or closure_source_id == ordinary_source_id:
+&gt;               raise ContractError("closure and ordinary source ids must be distinct frozen documents")
+E               research_loop.ontology.ContractError: closure and ordinary source ids must be distinct frozen documents
+
+research_loop\modular\q55_causal_driver.py:166: ContractError</failure></testcase></testsuite></testsuites>

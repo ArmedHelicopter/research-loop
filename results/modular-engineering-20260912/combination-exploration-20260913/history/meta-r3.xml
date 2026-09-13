@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="16.052" timestamp="2026-09-13T13:35:04.492541+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_metaprogram_training" name="test_eight_cells_execute_real_builder_changes_in_subsequent_analysis_and_docker[prompt]" time="15.698"><failure message="research_loop.ontology.ContractError: actual provider ledger differs from retained costs">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/meta-r3/test_eight_cells_execute_real_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000257EE78FA70&gt;
+surface = 'prompt'
+
+    @pytest.mark.parametrize('surface',['prompt','memory'])
+    def test_eight_cells_execute_real_builder_changes_in_subsequent_analysis_and_docker(tmp_path,monkeypatch,surface):
+        plan,args,seen,history=fixture(tmp_path,monkeypatch,surface=surface)
+&gt;       run=run_metaprogram_training(plan,**args)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_metaprogram_training.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\metaprogram_training.py:464: in run_metaprogram_training
+    verify_metaprogram_training(result,plan=plan)
+research_loop\modular\metaprogram_training.py:599: in verify_metaprogram_training
+    for cell,actual in zip(declared,result.cells): used.extend(_verify_cell(actual,plan,cell,targets[cell['task_digest']],ledger))
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+result = MetaTrainingCell(root=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/meta-r3/test_eight_cells_execute_real_0/s...:"8519079909f5e2b4a0452f9ead7879dd32cba7f199d7154dacc160bd6e990879"},"stage":"benchmark_solve","status":"succeeded"}'))
+plan = FrozenMetaTrainingPlan(record=FrozenRecord(encoded='{"allocation_per_cell":{"analysis_program_calls":1,"builder_execut...ncoded='{"entrypoint":"emit_literal_change_v1","key":"instructions","surface":"prompt","value":"Use statistic=sum"}')))
+cell = {'arm': {'baseline_digest': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'compatibility_digest'..., 'arm_id': '0', 'cell_id': '5b88a1f4ececf4d9d3bbf5dfbe08e6c8d0d77eedc022d801a9db4a01e8ddf845', 'replicate': 'r1', ...}
+target = FrozenMetaTarget(task=PublicTask(identity=DataIdentity(benchmark='discoverybench', task_id='synth:train:family_1_1', g...hema":"q63-frozen-train-target-v1","task_digest":"b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"}'))
+ledger = {'calls': [{'argv': ['E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-r3\\test_eight_cells_execute_real_0\\stage-p...environment_sha256': '6ea9008e145aa96fd0a9eee600ed740c3a85e3ea38fd31675fc2fc05d82be2e5', ...}, ...], 'tokens': 48, ...}
+
+    def _verify_cell(result,plan,cell,target,ledger):
+        root=result.root;record=result.record;row=record.data()
+        _path(root/'cell-receipt.json')
+        if FrozenRecord((root/'cell-receipt.json').read_text(encoding='utf-8').strip())!=record:
+            raise ContractError('cell receipt differs from immutable sidecar')
+        if (row.get('schema')!='q63-training-cell-receipt-v1' or row.get('cell_id')!=cell['cell_id']
+                or row.get('plan_digest')!=plan.record.content_hash or row.get('allocation')!=_ALLOCATION):
+            raise ContractError('foreign meta-training cell receipt')
+        _check_trace_proof(root/'phase.jsonl',row['phase_trace']);phase=_phase_rows(root/'phase.jsonl')
+        if phase[0]['data']!={'plan_digest':plan.record.content_hash,'cell':cell,'allocation':_ALLOCATION}:
+            raise ContractError('phase original lock differs from complete allocated cell')
+        if phase[-1]['stage']!='stage_result' or phase[-1]['data']!={k:row[k] for k in ('status','stage','reason')}:
+            raise ContractError('phase status contradicts actual terminal')
+        if row['status'] not in {'succeeded','failed'} or (row['status']=='succeeded')!=(row['reason'] is None):
+            raise ContractError('invalid phase completion status')
+        proposed=None;proposal_rows=[];solver_rows=[]
+        if row['proposal_trace'] is not None:
+            proposed,proposal_rows=_verify_proposal(root/'proposal'/'trace.jsonl',row['proposal_trace'],plan,cell,target)
+        elif row['stage']!='preflight' or row['status']=='succeeded': raise ContractError('phase lacks its actual proposal source')
+        builder_requests=[e for e in phase if e['stage']=='builder_request'];builder_results=[e for e in phase if e['stage']=='builder_result']
+        candidate=None;projection=None
+        if builder_requests:
+            if proposed is None or len(builder_requests)!=1: raise ContractError('builder execution lacks valid original proposal')
+            selected=proposed if cell['variant']=='train_proposed' and 'M9' in cell['arm']['enabled'] else plan.fixed_builder
+            if (FrozenRecord((root/'builder.json').read_text(encoding='utf-8').strip())!=selected.record
+                    or row['selected_builder_digest']!=selected.digest or builder_requests[0]['data']!={
+                        'builder_digest':selected.digest,'entrypoint':selected.entrypoint,'parent_digest':plan.parent.digest,'search_cost':1,'allocation':1}):
+                raise ContractError('selected builder does not follow the frozen M9 intervention')
+            if builder_results:
+                if len(builder_results)!=1: raise ContractError('builder was executed more than once')
+                candidate=CandidatePackage(FrozenRecord((root/'candidate.json').read_text(encoding='utf-8').strip()))
+                receipt=BuilderRunReceipt(FrozenRecord((root/'builder-receipt.json').read_text(encoding='utf-8').strip()))
+                projection=_checked_build(candidate,receipt,selected,plan.parent)
+                if (row['candidate_digest']!=candidate.digest or row['builder_receipt_digest']!=receipt.record.content_hash
+                        or builder_results[0]['data']!={'candidate_digest':candidate.digest,'receipt_digest':receipt.record.content_hash,'public_projection':projection.data()}):
+                    raise ContractError('generated candidate receipt is not actual restricted builder output')
+        elif row['selected_builder_digest'] is not None or builder_results: raise ContractError('unexecuted builder cannot produce a candidate')
+        if row['solver_trace'] is not None:
+            if candidate is None: raise ContractError('solver lacks actual generated package')
+            path=root/'solver'/'trace.jsonl';_check_trace_proof(path,row['solver_trace']);verify_benchmark_solve_trace(path,target.task)
+            solver_rows=_events(path);lock=solver_rows[0]['data']
+            if (lock.get('package_digest')!=candidate.digest or lock.get('arm')!=cell['arm'] or lock.get('objective')!=target.objective.data()):
+                raise ContractError('successor solver does not lock the generated candidate')
+            for event in solver_rows:
+                if event['stage']=='model_request':
+                    request=event['data']['request']
+                    if request.get('task')!=target.task.data() or request.get('module_context',{}).get('predecessor_context')!=projection.data():
+                        raise ContractError('actual solver prompt did not consume generated public changes')
+                elif event['stage']=='execution_result':
+                    execution=ExecutionReceipt.parse(event['data']['receipt'])
+                    if execution.status not in {'unavailable','rejected'} and execution.record.data()['input_artifacts']!=target.binding.data()['input_artifacts']:
+                        raise ContractError('actual successor execution used different frozen public inputs')
+            if row['status']=='succeeded' and (solver_rows[-1]['stage']!='final_decision' or execution.status!='succeeded'):
+                raise ContractError('successful phase lacks a completed actual Docker solve')
+        elif row['status']=='succeeded': raise ContractError('successful phase cannot omit its solver')
+        requests=[e['data']['request_digest'] for e in (*proposal_rows,*solver_rows) if e['stage']=='model_request']
+        reservations=[e['data'] for e in phase if e['stage']=='model_reservation'];charges=[e['data'] for e in phase if e['stage']=='model_charge']
+        if ([r['request_digest'] for r in reservations]!=requests or [r['request_digest'] for r in charges]!=requests
+                or any(r['limits']!=plan.record.data()['model_config'] or r['cost']!='reported_or_unknown' for r in reservations)):
+            raise ContractError('model charge schedule differs from actual source requests')
+        used=[]
+        for charge in charges:
+            actual=[_safe_call(c) for c in ledger['calls'] if c['request_hash']==charge['request_digest']]
+&gt;           if len(actual)&gt;1 or charge['provider_calls']!=actual: raise ContractError('actual provider ledger differs from retained costs')
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           research_loop.ontology.ContractError: actual provider ledger differs from retained costs
+
+research_loop\modular\metaprogram_training.py:567: ContractError</failure></testcase></testsuite></testsuites>

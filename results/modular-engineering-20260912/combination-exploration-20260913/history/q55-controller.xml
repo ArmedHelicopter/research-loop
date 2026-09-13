@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="2.531" timestamp="2026-09-13T14:11:03.045702+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_q55_train_controller" name="test_q55_full_32_cells_custody_model_docker_authority" time="0.788"><failure message="AttributeError: 'Q55Driver' object has no attribute 'docker_execution'">cell = PanelCell(coverage_id='Q5.5', identity=DataIdentity(benchmark='discoverybench', task_id='synth:train:family_1_1', grou...18a51a673b35331a3cffb68c05db8958579', scorer_digest='630f02ff0bbc4150d4fdc03039808d377af73f1870325a2b272750d6085e2a6c')
+
+    def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
+                       package: CandidatePackage, objective: FrozenRecord, sidecar: Path,
+                       model: ModelPort, audit_verifier: AuditVerifier,
+                       scorer: ScorerPort | None = None, history_admission_port: AdmissionPort | None = None,
+                       audit_receipt_port: AuditReceiptPort | None = None,
+                       shadow_execution_port: ShadowExecutionPort | None = None,
+                       p0_control: FrozenRecord | None = None,
+                       feasibility_broker: DockerExecutionBroker | None = None,
+                       feasibility_input_resolver: PublicInputResolver | None = None,
+                       feasibility_authority: FeasibilityAuthorityPort | None = None,
+                       exploration_broker: DockerExecutionBroker | None = None,
+                       exploration_input_resolver: PublicInputResolver | None = None,
+                       exploration_authority: ExplorationAuthorityPort | None = None,
+                       diagnostic_broker: DockerExecutionBroker | None = None,
+                       diagnostic_input_resolver: PublicInputResolver | None = None,
+                       diagnostic_authority: DiagnosticAuthority | None = None,
+                       q55_broker: DockerExecutionBroker | None = None,
+                       q55_input_resolver: PublicInputResolver | None = None,
+                       q55_authority: Q55Authority | None = None,
+                       q55_authority_keys: Mapping[str, bytes] | None = None,
+                       protocol_broker: DockerExecutionBroker | None = None,
+                       protocol_audit_port: ProtocolAuditPort | None = None,
+                       protocol_replay_authority: ProtocolReplayAuthority | None = None) -&gt; TrainCellResult:
+        """Run one predeclared training cell and return only trace-bound receipts.
+    
+        Validation is deliberately absent.  Driver selection is closed, so fixture
+        injection text cannot be treated as an executed intervention.
+        """
+        if not isinstance(cell, PanelCell) or cell.identity.domain != "train":
+            raise ContractError("panel runner accepts training cells only")
+        if not isinstance(task, PublicTask) or task.identity != cell.identity or task.content_hash != cell.task_digest:
+            raise ContractError("public task does not bind this panel cell")
+        if not isinstance(scenario, FrozenRecord) or scenario.content_hash != cell.scenario_digest:
+            raise ContractError("scenario digest does not bind this panel cell")
+        body = scenario.data()
+        if body.get("experiment_id") != cell.coverage_id or body.get("variant") != cell.variant:
+            raise ContractError("scenario experiment or variant differs from panel cell")
+        if not isinstance(body.get("base"), dict) or body["base"].get("task") != task.content_hash:
+            raise ContractError("scenario base task does not bind this public task")
+        spec = registry().get(cell.coverage_id)
+        if spec is None or cell.variant not in spec.variants:
+            raise ContractError("panel cell is not a registered scenario variant")
+        driver = DRIVERS.get(cell.coverage_id)
+        if driver is None:
+            raise ContractError("registered scenario has no production panel driver")
+        if isinstance(driver, Q27ProtocolDriver):
+            if (not isinstance(protocol_broker, DockerExecutionBroker) or not callable(protocol_audit_port)
+                    or not isinstance(protocol_replay_authority, ProtocolReplayAuthority) or not isinstance(p0_control, FrozenRecord)):
+                raise ContractError("Q2.7 requires a broker, audit port, replay authority and trusted P0 control")
+            driver = replace(driver, broker=protocol_broker, audit_port=protocol_audit_port,
+                             expected_p0_control_digest=p0_control.content_hash)
+        if isinstance(driver, (Q51FeasibilityDriver, Q52DistinguishabilityDriver)):
+            driver = replace(driver,
+                broker=feasibility_broker if feasibility_broker is not None else driver.broker,
+                input_resolver=feasibility_input_resolver if feasibility_input_resolver is not None else driver.input_resolver,
+                authority=feasibility_authority if feasibility_authority is not None else driver.authority)
+        if isinstance(driver, Q71ExplorationAdmissionDriver):
+            driver = replace(driver,
+                broker=exploration_broker if exploration_broker is not None else driver.broker,
+                input_resolver=exploration_input_resolver if exploration_input_resolver is not None else driver.input_resolver,
+                authority=exploration_authority if exploration_authority is not None else driver.authority)
+        if isinstance(driver, Q54CausalDriver):
+            driver = replace(driver,
+                broker=diagnostic_broker if diagnostic_broker is not None else driver.broker,
+                input_resolver=diagnostic_input_resolver if diagnostic_input_resolver is not None else driver.input_resolver,
+                authority=diagnostic_authority if diagnostic_authority is not None else driver.authority)
+        if isinstance(driver, Q55Driver):
+            driver = replace(driver, broker=q55_broker if q55_broker is not None else driver.broker,
+                resolver=q55_input_resolver if q55_input_resolver is not None else driver.resolver,
+                authority=q55_authority if q55_authority is not None else driver.authority,
+                authority_keys=q55_authority_keys if q55_authority_keys is not None else driver.authority_keys)
+        if p0_control is not None:
+            if not isinstance(p0_control, FrozenRecord):
+                raise ContractError("P0 control must be a caller-trusted frozen record")
+            if isinstance(driver, (Q22CompletionSemanticsDriver, Q64ScorerRepairDriver)):
+                driver = replace(driver, expected_p0_control_digest=p0_control.content_hash)
+        if history_admission_port is not None:
+            if not callable(history_admission_port):
+                raise ContractError("history admission must be a caller-owned verification port")
+            if isinstance(driver, (Q11HistoryDriver, Q12DependencyDriver, Q13RepresentationDriver, Q14SupportDriver,
+                                   Q16WithdrawalDriver, Q17TimeInformationDriver)):
+                driver = replace(driver, admission_port=history_admission_port)
+        for port in (audit_receipt_port, shadow_execution_port):
+            if port is not None and not callable(port):
+                raise ContractError("audit dependencies must be caller-owned ports")
+        if isinstance(driver, (Q23AuditFaultDriver, Q24AuditPairDriver)):
+            driver = replace(driver,
+                receipt_port=audit_receipt_port if audit_receipt_port is not None else driver.receipt_port,
+                shadow_execution_port=shadow_execution_port if shadow_execution_port is not None else driver.shadow_execution_port)
+        if not isinstance(package, CandidatePackage) or package.digest != cell.package_digest:
+            raise ContractError("package digest differs from panel cell")
+        if not isinstance(objective, FrozenRecord) or not callable(model):
+            raise ContractError("runner needs frozen objective and model port")
+        slots_for = getattr(driver, "slots_for", None)
+        slots = slots_for(cell) if callable(slots_for) else driver.slots
+        if (not isinstance(slots, tuple) or not slots or any(slot not in driver.slots for slot in slots)):
+            raise ContractError("driver variant schedule must be a nonempty subset of its frozen schema slots")
+        session = RunSession(task, package_digest=package.digest, arm=cell.runtime_arm,
+                             objective=objective, slots=slots, execution_limit=driver.execution_limit,
+                             sidecar=sidecar, verifier=audit_verifier, required_audit=("measurement",))
+        if isinstance(driver, Q27ProtocolDriver):
+            session._record("q27_panel_binding", {"panel_cell": {
+                "experiment_id": cell.coverage_id, "variant": cell.variant, "replicate": cell.replicate,
+                "arm_id": cell.arm_id, "scenario_digest": scenario.content_hash},
+                "p0_control_digest": p0_control.content_hash})
+        workflow = ModularWorkflow(session)
+        try:
+&gt;           stage, candidate, responses = driver.run(workflow, cell=cell, scenario=scenario, model=model, package=package)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+research_loop\modular\panel_runner.py:319: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\q55_causal_driver.py:400: in run
+    retrieved = retrieve(provider=_RecordedProvider(self.provider, session), query=query, source_bundle=source_bundle, policy=policy, signals=RetrievalSignals(dependency_unknown=True))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\modules\retrieval.py:143: in retrieve
+    returned = list(provider.search(lane=lane, query=query, source_bundle=source_bundle,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.q55_causal_driver._RecordedProvider object at 0x000001C5ECFD54C0&gt;
+kwargs = {'call_limit': 1, 'lane': 'support', 'query': FrozenRecord(encoded='{"query":"Assess declared public resource prerequi...d='ordinary-root-04', lane='counter', text=FrozenRecord(encoded='{"text":"ordinary public control material"}')))), ...}
+result = [], partial = None, reported = None
+
+    def search(self, **kwargs: Any) -&gt; Iterable[SourceDocument]:
+        self.session._record("q55_retrieval_request", {"lane": kwargs["lane"], "query_digest": kwargs["query"].content_hash,
+            "call_limit": kwargs["call_limit"], "source_limit": kwargs["source_limit"], "cost": {"unit": "retrieval_calls", "units": 1}})
+        result: list[SourceDocument] = []
+        try:
+&gt;           iterator = iter(self.provider.search(**kwargs))
+                            ^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: 'NoneType' object has no attribute 'search'
+
+research_loop\modular\q55_causal_driver.py:287: AttributeError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q55-controller-tests/test_q55_full_32_cells_custody0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C5ECF89550&gt;
+
+    def test_q55_full_32_cells_custody_model_docker_authority(tmp_path,monkeypatch):
+     snap,custody,frozen=_config(tmp_path); seen=[]
+     def response(request):
+      row=request.data(); seen.append(row)
+      if row['slot']=='diagnostic': return FrozenRecord.from_dict({'assessment':'public'})
+      return FrozenRecord.from_dict({'objective_digest':row['module_context']['required_objective_digest'],'outcome':'unknown','evidence_ids':[],'conclusion':'bounded closure','programme_complete':False})
+     port=model_port(tmp_path,monkeypatch,max_calls=64,schemas=frozen.data()['schemas'],response_factory=response)
+&gt;    result=run_train_panel(frozen,custody=custody,snapshot_root=snap,export_root=tmp_path/'export',run_root=tmp_path/'run',model=port,audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}),q55_authority=PublicAuthority(),q55_authority_keys=AUTHORITY_KEYS)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q55_train_controller.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\train_controller.py:339: in run_train_panel
+    result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cell = PanelCell(coverage_id='Q5.5', identity=DataIdentity(benchmark='discoverybench', task_id='synth:train:family_1_1', grou...18a51a673b35331a3cffb68c05db8958579', scorer_digest='630f02ff0bbc4150d4fdc03039808d377af73f1870325a2b272750d6085e2a6c')
+
+    def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
+                       package: CandidatePackage, objective: FrozenRecord, sidecar: Path,
+                       model: ModelPort, audit_verifier: AuditVerifier,
+                       scorer: ScorerPort | None = None, history_admission_port: AdmissionPort | None = None,
+                       audit_receipt_port: AuditReceiptPort | None = None,
+                       shadow_execution_port: ShadowExecutionPort | None = None,
+                       p0_control: FrozenRecord | None = None,
+                       feasibility_broker: DockerExecutionBroker | None = None,
+                       feasibility_input_resolver: PublicInputResolver | None = None,
+                       feasibility_authority: FeasibilityAuthorityPort | None = None,
+                       exploration_broker: DockerExecutionBroker | None = None,
+                       exploration_input_resolver: PublicInputResolver | None = None,
+                       exploration_authority: ExplorationAuthorityPort | None = None,
+                       diagnostic_broker: DockerExecutionBroker | None = None,
+                       diagnostic_input_resolver: PublicInputResolver | None = None,
+                       diagnostic_authority: DiagnosticAuthority | None = None,
+                       q55_broker: DockerExecutionBroker | None = None,
+                       q55_input_resolver: PublicInputResolver | None = None,
+                       q55_authority: Q55Authority | None = None,
+                       q55_authority_keys: Mapping[str, bytes] | None = None,
+                       protocol_broker: DockerExecutionBroker | None = None,
+                       protocol_audit_port: ProtocolAuditPort | None = None,
+                       protocol_replay_authority: ProtocolReplayAuthority | None = None) -&gt; TrainCellResult:
+        """Run one predeclared training cell and return only trace-bound receipts.
+    
+        Validation is deliberately absent.  Driver selection is closed, so fixture
+        injection text cannot be treated as an executed intervention.
+        """
+        if not isinstance(cell, PanelCell) or cell.identity.domain != "train":
+            raise ContractError("panel runner accepts training cells only")
+        if not isinstance(task, PublicTask) or task.identity != cell.identity or task.content_hash != cell.task_digest:
+            raise ContractError("public task does not bind this panel cell")
+        if not isinstance(scenario, FrozenRecord) or scenario.content_hash != cell.scenario_digest:
+            raise ContractError("scenario digest does not bind this panel cell")
+        body = scenario.data()
+        if body.get("experiment_id") != cell.coverage_id or body.get("variant") != cell.variant:
+            raise ContractError("scenario experiment or variant differs from panel cell")
+        if not isinstance(body.get("base"), dict) or body["base"].get("task") != task.content_hash:
+            raise ContractError("scenario base task does not bind this public task")
+        spec = registry().get(cell.coverage_id)
+        if spec is None or cell.variant not in spec.variants:
+            raise ContractError("panel cell is not a registered scenario variant")
+        driver = DRIVERS.get(cell.coverage_id)
+        if driver is None:
+            raise ContractError("registered scenario has no production panel driver")
+        if isinstance(driver, Q27ProtocolDriver):
+            if (not isinstance(protocol_broker, DockerExecutionBroker) or not callable(protocol_audit_port)
+                    or not isinstance(protocol_replay_authority, ProtocolReplayAuthority) or not isinstance(p0_control, FrozenRecord)):
+                raise ContractError("Q2.7 requires a broker, audit port, replay authority and trusted P0 control")
+            driver = replace(driver, broker=protocol_broker, audit_port=protocol_audit_port,
+                             expected_p0_control_digest=p0_control.content_hash)
+        if isinstance(driver, (Q51FeasibilityDriver, Q52DistinguishabilityDriver)):
+            driver = replace(driver,
+                broker=feasibility_broker if feasibility_broker is not None else driver.broker,
+                input_resolver=feasibility_input_resolver if feasibility_input_resolver is not None else driver.input_resolver,
+                authority=feasibility_authority if feasibility_authority is not None else driver.authority)
+        if isinstance(driver, Q71ExplorationAdmissionDriver):
+            driver = replace(driver,
+                broker=exploration_broker if exploration_broker is not None else driver.broker,
+                input_resolver=exploration_input_resolver if exploration_input_resolver is not None else driver.input_resolver,
+                authority=exploration_authority if exploration_authority is not None else driver.authority)
+        if isinstance(driver, Q54CausalDriver):
+            driver = replace(driver,
+                broker=diagnostic_broker if diagnostic_broker is not None else driver.broker,
+                input_resolver=diagnostic_input_resolver if diagnostic_input_resolver is not None else driver.input_resolver,
+                authority=diagnostic_authority if diagnostic_authority is not None else driver.authority)
+        if isinstance(driver, Q55Driver):
+            driver = replace(driver, broker=q55_broker if q55_broker is not None else driver.broker,
+                resolver=q55_input_resolver if q55_input_resolver is not None else driver.resolver,
+                authority=q55_authority if q55_authority is not None else driver.authority,
+                authority_keys=q55_authority_keys if q55_authority_keys is not None else driver.authority_keys)
+        if p0_control is not None:
+            if not isinstance(p0_control, FrozenRecord):
+                raise ContractError("P0 control must be a caller-trusted frozen record")
+            if isinstance(driver, (Q22CompletionSemanticsDriver, Q64ScorerRepairDriver)):
+                driver = replace(driver, expected_p0_control_digest=p0_control.content_hash)
+        if history_admission_port is not None:
+            if not callable(history_admission_port):
+                raise ContractError("history admission must be a caller-owned verification port")
+            if isinstance(driver, (Q11HistoryDriver, Q12DependencyDriver, Q13RepresentationDriver, Q14SupportDriver,
+                                   Q16WithdrawalDriver, Q17TimeInformationDriver)):
+                driver = replace(driver, admission_port=history_admission_port)
+        for port in (audit_receipt_port, shadow_execution_port):
+            if port is not None and not callable(port):
+                raise ContractError("audit dependencies must be caller-owned ports")
+        if isinstance(driver, (Q23AuditFaultDriver, Q24AuditPairDriver)):
+            driver = replace(driver,
+                receipt_port=audit_receipt_port if audit_receipt_port is not None else driver.receipt_port,
+                shadow_execution_port=shadow_execution_port if shadow_execution_port is not None else driver.shadow_execution_port)
+        if not isinstance(package, CandidatePackage) or package.digest != cell.package_digest:
+            raise ContractError("package digest differs from panel cell")
+        if not isinstance(objective, FrozenRecord) or not callable(model):
+            raise ContractError("runner needs frozen objective and model port")
+        slots_for = getattr(driver, "slots_for", None)
+        slots = slots_for(cell) if callable(slots_for) else driver.slots
+        if (not isinstance(slots, tuple) or not slots or any(slot not in driver.slots for slot in slots)):
+            raise ContractError("driver variant schedule must be a nonempty subset of its frozen schema slots")
+        session = RunSession(task, package_digest=package.digest, arm=cell.runtime_arm,
+                             objective=objective, slots=slots, execution_limit=driver.execution_limit,
+                             sidecar=sidecar, verifier=audit_verifier, required_audit=("measurement",))
+        if isinstance(driver, Q27ProtocolDriver):
+            session._record("q27_panel_binding", {"panel_cell": {
+                "experiment_id": cell.coverage_id, "variant": cell.variant, "replicate": cell.replicate,
+                "arm_id": cell.arm_id, "scenario_digest": scenario.content_hash},
+                "p0_control_digest": p0_control.content_hash})
+        workflow = ModularWorkflow(session)
+        try:
+            stage, candidate, responses = driver.run(workflow, cell=cell, scenario=scenario, model=model, package=package)
+        except Exception as exc:
+            if not session._terminal:
+                last = session._events[-1].data()
+                if last["stage"] == "model_response":
+                    session.driver_failure(driver_id=driver.experiment_id,
+                                           response=FrozenRecord.from_dict(last["data"]["response"]),
+                                           error_type=type(exc).__name__)
+                else:
+                    session.controller_failure(driver_id=driver.experiment_id, error_type=type(exc).__name__, panel_cell={
+                        "experiment_id": cell.coverage_id, "variant": cell.variant, "replicate": cell.replicate,
+                        "arm_id": cell.arm_id, "scenario_digest": scenario.content_hash})
+            trace_path = sidecar / "trace.jsonl"
+            trace_digest = FrozenRecord(trace_path.read_text(encoding="utf-8").splitlines()[-1]).content_hash
+            runtime = RuntimeReceipt(cell.key, "failed", trace_path, trace_digest, None,
+                                     f"{type(exc).__name__}: driver_or_model_rejected")
+            plan = FrozenRecord.from_dict({"schema": "train-panel-call-plan-v1", "driver": driver.experiment_id,
+                "cell_key": list(cell.key), "scenario_digest": scenario.content_hash,
+                "enabled_modules": cell.runtime_arm.data()["enabled"], "package_digest": package.digest,
+                "package_record_digest": package.record.content_hash, "package_changes": package.record.data()["changes"],
+                "schema_slots": list(driver.slots), "slots": list(session.slots), "model_calls": session._next_call,
+&gt;               "execution_attempts": session._attempts, "docker_execution": driver.docker_execution,
+                                                                             ^^^^^^^^^^^^^^^^^^^^^^^
+                "actual_token_measurement": "not_measured",
+                "terminal": session._events[-1].data()["stage"]})
+E           AttributeError: 'Q55Driver' object has no attribute 'docker_execution'
+
+research_loop\modular\panel_runner.py:340: AttributeError</failure></testcase><testcase classname="tests.test_modular_q55_train_controller" name="test_q55_foreign_csv_rejected_before_provider_model_authority" time="0.794" /></testsuite></testsuites>

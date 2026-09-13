@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.332" timestamp="2026-09-13T14:45:49.983387+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_combination_benchmark_driver" name="test_real_failed_docker_solve_retains_failed_runtime_after_valid_answer" time="3.087"><failure message="research_loop.ontology.ContractError: failed receipt does not match terminal runtime evidence">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/combination-failed-terminal-red-r1/test_real_failed_docker_solve_0')
+
+    def test_real_failed_docker_solve_retains_failed_runtime_after_valid_answer(tmp_path):
+        catalogue = _catalogue(); panel = catalogue.panels["pair:M4+M5"]
+        cell = next(c for c in panel.cells if c.arm_id == "01" and c.identity.benchmark == "discoverybench")
+        seen = []; ordinary = _model(seen)
+        def failed_program(request):
+            body = request.data()
+            if body["slot"] == "analysis_program":
+                seen.append(body)
+                return FrozenRecord.from_dict({"analysis": "Preserved public program failure.",
+                                              "program": "raise ValueError('public synthetic execution failure')"})
+            if body["slot"] == "final_answer":
+                seen.append(body)
+                return FrozenRecord.from_dict({"objective_digest": body["module_context"]["required_objective_digest"],
+                    "outcome": "unknown", "evidence_ids": [], "conclusion": "The public program failed; no result is established.",
+                    "programme_complete": False})
+            return ordinary(request)
+        result = _run(panel, cell, catalogue, tmp_path, failed_program)
+        assert result.runtime.status == "failed" and result.runtime.output_digest is None
+        assert result.solver.status == "execution_failed" and result.solver.execution.status == "failed"
+&gt;       verified = verify_m4_m5_combination_benchmark_cell(result, panel=panel, task=catalogue.tasks[cell.task_digest],
+            scenario=catalogue.scenarios[cell.key], package=catalogue.packages[cell.runtime_arm.content_hash])
+
+tests\test_modular_combination_benchmark_driver.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\combination_benchmark_driver.py:82: in verify_m4_m5_combination_benchmark_cell
+    PanelReceiptVerifier()._verify_runtime(result.runtime, result.cell)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.panel_receipts.PanelReceiptVerifier object at 0x0000023E32D8C7D0&gt;
+receipt = RuntimeReceipt(cell_key=('pair:M4+M5', 'discoverybench', 'combination-discoverybench', 'discoverybench:combination', '...dc930fa1d8f98e1e21190c8bf7b9cca1a8c05f43f', output_digest=None, failure_reason='combination mechanism or solve failed')
+expected = PanelCell(coverage_id='pair:M4+M5', identity=DataIdentity(benchmark='discoverybench', task_id='combination-discoverybe...e76503701c9dac36172f08f1b3854ccbd1b', scorer_digest='0558f20e4e83cf534f1b8d5be13e8aea7bc618017afa6ee845c818ebce5bf3c1')
+
+    def _verify_runtime(self, receipt: RuntimeReceipt, expected: PanelCell, *, p0_control_digest: str | None = None) -&gt; None:
+        if receipt.cell_key != expected.key:
+            raise ContractError("runtime receipt cell key does not match the frozen panel cell")
+        verify_protocol_trace(receipt.trace_path)
+        trace = verify_trace(receipt.trace_path).data()
+        if trace["trace_digest"] != receipt.trace_digest:
+            raise ContractError("runtime trace digest does not match the hash-chained journal")
+        events = [FrozenRecord(line).data() for line in receipt.trace_path.read_text(encoding="utf-8").splitlines()]
+        lock = events[0].get("data")
+        if events[0].get("lock_digest") != FrozenRecord.from_dict(lock).content_hash:
+            raise ContractError("objective lock event does not bind its own lock")
+        if not isinstance(lock, dict) or lock.get("identity") != expected.identity.data():
+            raise ContractError("runtime trace task binding mismatch")
+        if lock.get("task_digest") != expected.task_digest or lock.get("package_digest") != expected.package_digest or lock.get("arm") != expected.runtime_arm.data():
+            raise ContractError("runtime trace package or legal-arm binding mismatch")
+        requests = [event["data"].get("request", {}) for event in events if event["stage"] == "model_request"]
+        expected_binding = {"experiment_id": expected.coverage_id, "variant": expected.variant,
+                            "replicate": expected.replicate, "arm_id": expected.arm_id,
+                            "scenario_digest": expected.scenario_digest}
+        protocol_bindings = [e["data"] for e in events if e["stage"] == "q27_panel_binding"]
+        bound_protocol_failure = (expected.coverage_id == "Q2.7" and not requests
+            and events[-1]["stage"] in {"controller_failure", "execution_failure", "execution_terminal"}
+            and protocol_bindings == [{"panel_cell": expected_binding, "p0_control_digest": p0_control_digest}])
+        if p0_control_digest is not None and not bound_protocol_failure and (not requests or any(
+                request.get("module_context", {}).get("p0_control_digest") != p0_control_digest for request in requests)):
+            raise ContractError("runtime request lacks the frozen P0 control binding")
+        expected_opaque_binding = opaque_panel_cell_binding(expected)
+        bound_request = any(request.get("task", {}).get("identity") == expected.identity.data()
+                            and request.get("module_context", {}).get("panel_cell") in (expected_binding, expected_opaque_binding)
+                            for request in requests)
+        bound_early_failure = (not requests and events[-1].get("stage") == "controller_failure"
+                               and events[-1].get("data", {}).get("panel_cell") == expected_binding)
+        if not bound_request and not bound_early_failure and not bound_protocol_failure:
+            raise ContractError("runtime trace lacks a bound task and scenario request")
+        pending = None
+        slots = []
+        for event in events[1:]:
+            data = event["data"]
+            if event["stage"] == "model_request":
+                request = data.get("request")
+                if pending is not None or not isinstance(request, dict):
+                    raise ContractError("runtime request sequence is incomplete")
+                pending = FrozenRecord.from_dict(request).content_hash
+                if data.get("request_digest") != pending or request.get("lock_digest") != trace["lock_digest"]:
+                    raise ContractError("runtime request digest is not bound to its frozen lock")
+                if (FrozenRecord.from_dict(request.get("task", {})).content_hash != expected.task_digest
+                        or request.get("objective") != lock.get("objective")):
+                    raise ContractError("runtime request task or objective drift")
+                slots.append(request.get("slot"))
+                if slots != lock.get("slots", [])[:len(slots)]:
+                    raise ContractError("runtime request violates the frozen call schedule")
+            elif event["stage"] in {"model_response", "model_failure"}:
+                if pending is None or data.get("request_digest") != pending:
+                    raise ContractError("runtime response is not bound to a pending request")
+                pending = None
+        terminal = events[-1]
+        if terminal["stage"] in {"driver_failure", "controller_failure"} and terminal["data"].get("driver_id") != expected.coverage_id:
+            raise ContractError("terminal driver failure does not bind this panel obligation")
+        responses = [event["data"]["response"] for event in events if event["stage"] == "model_response"]
+        observed = FrozenRecord.from_dict({"responses": responses, "terminal": terminal["data"]}).content_hash
+        has_model_failure = any(event["stage"] == "model_failure" for event in events)
+        if terminal["stage"] == "final_decision":
+            closing_failure = terminal["data"].get("decision") == "blocked" and has_model_failure
+            if (pending is not None or (not closing_failure and (slots != lock.get("slots") or not responses
+                    or terminal["data"].get("candidate_digest") != FrozenRecord.from_dict(responses[-1]).content_hash))
+                    or terminal["data"].get("lock_digest") != trace["lock_digest"]
+                    or terminal["data"].get("identity") != expected.identity.data()):
+                raise ContractError("final decision lacks a complete response-bound candidate")
+        if receipt.status == "succeeded":
+            if terminal["stage"] != "final_decision" or terminal["data"].get("decision") not in {"proceed", "closed_negative", "unknown", "invalid", "withdrawn"} or any(event["stage"] == "model_failure" for event in events) or not responses or receipt.output_digest != observed:
+                raise ContractError("successful receipt lacks terminal runtime output evidence")
+        elif receipt.status == "failed":
+            if not (terminal["stage"] in {"model_failure", "driver_failure", "controller_failure", "execution_failure", "execution_terminal"} and receipt.output_digest is None) and not (
+                    terminal["stage"] == "final_decision" and terminal["data"].get("decision") == "blocked"
+                    and has_model_failure and receipt.output_digest == observed):
+&gt;               raise ContractError("failed receipt does not match terminal runtime evidence")
+E               research_loop.ontology.ContractError: failed receipt does not match terminal runtime evidence
+
+research_loop\modular\panel_receipts.py:491: ContractError</failure></testcase></testsuite></testsuites>

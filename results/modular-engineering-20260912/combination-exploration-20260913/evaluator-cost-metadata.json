@@ -1,0 +1,90 @@
+{
+  "schema": "combination-evaluator-cost-metadata-v1",
+  "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\m4m5-scorer-process-20260913-01\\evaluator-model\\ledger.json",
+  "source_sha256": "ca51162792444ab3f9b40ed37be58229b651a14b7d85e64fe08845e497796961",
+  "calls": 5,
+  "tokens": 112562,
+  "usage_incomplete": false,
+  "reservations": [
+    {
+      "id": 1,
+      "slot": "frozen-rubric.blade",
+      "status": "succeeded",
+      "request_hash": "2d15e7139ffc965ffb181628e933415c3a58f83eeea16ebd72ec29acaa7d24d4",
+      "output_hash": "fe4da09a6bb8c03e585d6559fde24e33f6538c72b26e6410c21191dc922cce64",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 31558,
+        "output_tokens": 270,
+        "reasoning_output_tokens": 184,
+        "total_tokens": 31828
+      },
+      "error_type": null
+    },
+    {
+      "id": 2,
+      "slot": "frozen-rubric.blade",
+      "status": "succeeded",
+      "request_hash": "0064e754fb33ae92528894d2219c06b49aeebd3fdabf184f041f8b0a4dfee557",
+      "output_hash": "93fcb2393bb51c4c3aa2afcee9d27c6effe76bb293b38eef8914cf7bf6cb479d",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 31520,
+        "output_tokens": 247,
+        "reasoning_output_tokens": 173,
+        "total_tokens": 31767
+      },
+      "error_type": null
+    },
+    {
+      "id": 3,
+      "slot": "frozen-rubric.blade",
+      "status": "succeeded",
+      "request_hash": "1237645fbafb0d07efa8f1a5e570845dfe022b919b0406afef4af6cbbbb0dca1",
+      "output_hash": "7e6da318d710dbac73c7839cf07244885fbb13ef756339a9c8e85f746af4599c",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 31428,
+        "output_tokens": 334,
+        "reasoning_output_tokens": 247,
+        "total_tokens": 31762
+      },
+      "error_type": null
+    },
+    {
+      "id": 4,
+      "slot": "frozen-rubric.discoverybench",
+      "status": "succeeded",
+      "request_hash": "bd42b751b22aa926cf424bed990e7d73c4571d794a6db3309614d1b81a8274ec",
+      "output_hash": "6ac183f91b9da287c656ddbbc509ff5da072c17e73247d210240961a45e47b9a",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 8509,
+        "output_tokens": 173,
+        "reasoning_output_tokens": 105,
+        "total_tokens": 8682
+      },
+      "error_type": null
+    },
+    {
+      "id": 5,
+      "slot": "frozen-rubric.discoverybench",
+      "status": "succeeded",
+      "request_hash": "37dcb4f7800d3f09844f460e01fccc6fd3b9ae470f1f64c730b158c523dc4433",
+      "output_hash": "dfd9b7c6c743287ba69c0448d1343387299d09958c391f2017aa3e89477a849f",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 8323,
+        "output_tokens": 200,
+        "reasoning_output_tokens": 125,
+        "total_tokens": 8523
+      },
+      "error_type": null
+    }
+  ]
+}

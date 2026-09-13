@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="29.475" timestamp="2026-09-13T14:02:47.147532+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_metaprogram_training" name="test_successor_invalid_responses_keep_original_driver_failure_and_all_costs[analysis_schema]" time="12.683"><failure message="research_loop.ontology.ContractError: program must be bounded nonempty text">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/meta-successor-red2/test_successor_invalid_respons0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002305EFB3770&gt;
+fault = 'analysis_schema'
+
+    @pytest.mark.parametrize('fault',['analysis_schema','answer_schema'])
+    def test_successor_invalid_responses_keep_original_driver_failure_and_all_costs(tmp_path,monkeypatch,fault):
+        plan,args,seen,_=fixture(tmp_path,monkeypatch,fault=fault)
+&gt;       run=run_metaprogram_training(plan,**args)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_metaprogram_training.py:142: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\metaprogram_training.py:487: in run_metaprogram_training
+    verify_metaprogram_training(result,plan=plan)
+research_loop\modular\metaprogram_training.py:647: in verify_metaprogram_training
+    for cell,actual in zip(declared,result.cells): used.extend(_verify_cell(actual,plan,cell,targets[cell['task_digest']],ledger))
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\metaprogram_training.py:580: in _verify_cell
+    analysis=FrozenRecord.from_dict(event['data']['response']);_program_from(analysis)
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+response = FrozenRecord(encoded='{"analysis":"retained invalid successor analysis","program":""}')
+
+    def _program_from(response: FrozenRecord) -&gt; str:
+        body = response.data()
+        if set(body) != {"analysis", "program"}:
+            raise ContractError("analysis response must contain exactly analysis and program")
+        analysis, program = body["analysis"], body["program"]
+        if not isinstance(analysis, str) or not analysis.strip() or len(analysis.encode("utf-8")) &gt; _MAX_TEXT_BYTES:
+            raise ContractError("analysis must be bounded nonempty text")
+        if not isinstance(program, str) or not program.strip() or len(program.encode("utf-8")) &gt; _MAX_PROGRAM_BYTES:
+&gt;           raise ContractError("program must be bounded nonempty text")
+E           research_loop.ontology.ContractError: program must be bounded nonempty text
+
+research_loop\modular\benchmark_solver.py:296: ContractError</failure></testcase><testcase classname="tests.test_modular_metaprogram_training" name="test_successor_invalid_responses_keep_original_driver_failure_and_all_costs[answer_schema]" time="16.261" /></testsuite></testsuites>

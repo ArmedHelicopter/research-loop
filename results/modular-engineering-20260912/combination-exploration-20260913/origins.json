@@ -1,0 +1,992 @@
+{
+  "reports/meta-root-integrated-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-root-integrated-r1.xml",
+    "sha256": "424e3d47e27d97c579c5ee53430f32251abaa1b8ba3e85818d26157224d00c68",
+    "qualification": "c725086: 77 root checks; separate Q6.3 phase and rejected successor/history preservation"
+  },
+  "reports/extended-exploration-root-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\extended-exploration-root-r1.xml",
+    "sha256": "9ee972faaccc78534ab4306fd06010d0d1b71d48886742dcf5ef1fbaac66bc35",
+    "qualification": "c03e2eb: 69 root checks; complete 88-cell actual controller seam"
+  },
+  "reports/combination-process-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combination-process-r1.xml",
+    "sha256": "d48f0f251ad2c23cb376ec0a36f5704ef65a9974b03fc09ba46cb821987d42e9",
+    "qualification": "60cc333: 55 process and controller checks, including actual eight-cell synthetic Docker grid"
+  },
+  "reports/q55-controller-verifier-committed.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-controller-verifier-committed.xml",
+    "sha256": "ce0d0916bae7674ad0e5d73a1ff5689fdef83807e8597f3a73d1727b203bbc20",
+    "qualification": "a0beade: 52 independent committed-source checks; actual 32-cell Q5.5 controller"
+  },
+  "reports/resource-combo-root-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\resource-combo-root-r1.xml",
+    "sha256": "3c9d2a1cc31f469c050fbd1920e91aa9d9581864fceb4b75d83cff5877ce79d9",
+    "qualification": "64568e0: 94 pass and one stale Q5.5 fixture-classification failure; no all-green claim"
+  },
+  "reports/resource-combo-root-classification-r2.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\resource-combo-root-classification-r2.xml",
+    "sha256": "a85e207e8c42f213fe8bcb7583158665e72344abbc52ab49d8d343f1adfbd3df",
+    "qualification": "9e2d942: 43 pass; only test-classification changed after the preceding report"
+  },
+  "reports/combination-failed-terminal-red-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combination-failed-terminal-red-r1.xml",
+    "sha256": "cfb6a602ecd71886af5f700b56d91c9857d1685a2637109a9521b4cf595a3a50",
+    "qualification": "9e2d942 plus new test: actual failed Docker followed by valid unknown answer was incorrectly rejected"
+  },
+  "reports/combination-failed-terminal-green-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combination-failed-terminal-green-r1.xml",
+    "sha256": "80b2ef2c4cce59d5eb4c988dfca8e5dd5fd2c00c7d68b2b6cf8cd4c5eb462441",
+    "qualification": "intermediate working source: one counterexample passes; final committed report follows"
+  },
+  "reports/combination-failed-terminal-frozen-r2.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combination-failed-terminal-frozen-r2.xml",
+    "sha256": "803e1a6599e1c1f75a6f7226b9736912f78bef0cc6de2d5b53a2771ee9d7738a",
+    "qualification": "cf571b0: frozen failed-terminal repair checks, actual failed/successful Docker and forged binding refusals"
+  },
+  "history/meta-110f1c6.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-110f1c6.xml",
+    "sha256": "92c854cc15b6a1458b314ea74583f4d57a2877f0115803915e40ce2d6a2c2440",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-a9554d2.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-a9554d2.xml",
+    "sha256": "8eb51e04f4f0f45e2a5e52d4b279d405e441915df81abd47342946f17299fb45",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-edge-red.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-edge-red.xml",
+    "sha256": "32793b8947cd86caba95a65cffee7e2672e3d1365829c4d7dbe79f862baddb06",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-label-1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-label-1.xml",
+    "sha256": "8a5f027cc3499d74ca609f01365fa4bfea2f33e1974b43ba621a7d8c527d79c5",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-r2.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-r2.xml",
+    "sha256": "6538e569d85a03efeffdff97904fde8123df621158f5b636ba8547872d1865ab",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-r3.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-r3.xml",
+    "sha256": "58c74d43546530a45bcd063736a9a8d322ff3062262a1d6bd487566e317c179a",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-r4.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-r4.xml",
+    "sha256": "d4ce70d81953fa08378680c601324da8ee5a42ba45029bbe5c26c5667bbf7944",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-red-1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-red-1.xml",
+    "sha256": "09ca28383349725eed896dc2c0ac2fef64288bf55b4a35920ab66b85e788a20f",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-root-integrated-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-root-integrated-r1.xml",
+    "sha256": "424e3d47e27d97c579c5ee53430f32251abaa1b8ba3e85818d26157224d00c68",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-successor-final.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-successor-final.xml",
+    "sha256": "156443f4e8e7f89c5dca06a582b630b7d87d0547cdf0127bc3465c411e058edb",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-successor-red.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-successor-red.xml",
+    "sha256": "e95ce9a9fc27fc7c991abcdb958b8aa060f9784db8e1a23d0022461962706b14",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-successor-red2.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-successor-red2.xml",
+    "sha256": "a1a6d391c83bc7a2a3e961bf7a0cd6b5c565f074904afb7a3f8b1da66a36ef55",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-110f1c6-before.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-110f1c6-before.json",
+    "sha256": "523817e0a2ea62cb663c684398f0527c18de901f39d22adf17a810d045401d60",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-110f1c6-verification.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-110f1c6-verification.json",
+    "sha256": "e8f8760adce2107d4eb64d55f3e480b6300db6a6bb65f290a41b7ce8652a020d",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-a9554d2-before.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-a9554d2-before.json",
+    "sha256": "76ddbfb4b2553154df1acdf879b758915c427a108f8950526f7d54e53c853352",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-successor-frozen-before.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-successor-frozen-before.json",
+    "sha256": "4f5c927dead137f1e8cdffbc17c15c10c217ddfe9987bb282fab65f53fbe910f",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/meta-successor-verification.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\meta-successor-verification.json",
+    "sha256": "b782e9b3e8d5bd89194e2bc05bb166dd373666289cca9d3278bbc205869318ff",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/q55-causal-final.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-causal-final.xml",
+    "sha256": "84ef138de2d6be2cb483cefe7e8dd72574125d56870a85ee76c9ebfa89946548",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/q55-causal-final2.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-causal-final2.xml",
+    "sha256": "a58eec12582479552a3f0094b34633c27638f91688abf8cb4ea48e133e3d4ac9",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/q55-causal-final3.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-causal-final3.xml",
+    "sha256": "a272c5bbf5fee5a6b0090e36235a99e8a3adcc62ddc6937d7ab6cf8fb98435c3",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/q55-causal-initial.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-causal-initial.xml",
+    "sha256": "7bce93501498bfac7a8ff2e81255bcfd870be430598a30d48effc995af72003c",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/q55-causal.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-causal.xml",
+    "sha256": "33c5cc3c48453c6d6f9a6d9cd7766a109c64f8ed0a60edbe5541bf82574cf612",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/q55-controller-final.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-controller-final.xml",
+    "sha256": "37ae80b02044e7eddc07d3840e0896b80e96d58e9e66380499870c44fffe5ebe",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/q55-controller-final2.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-controller-final2.xml",
+    "sha256": "77c48f2c5e43729da6a82471d914d7cede8eb1a59f41d57be72905c91864f9ea",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/q55-controller-verifier-baseline.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-controller-verifier-baseline.xml",
+    "sha256": "fc91d6aa50736cac0681b025c0c1df289bbe4856300dfa35a4774106671bd229",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/q55-controller-verifier-committed.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-controller-verifier-committed.xml",
+    "sha256": "ce0d0916bae7674ad0e5d73a1ff5689fdef83807e8597f3a73d1727b203bbc20",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/q55-controller-verifier-final.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-controller-verifier-final.xml",
+    "sha256": "d5b5c10c7f662a7a81205793e09f985fa3343f6216b5a0b7f26dfdb338133613",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/q55-controller-verifier-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-controller-verifier-r1.xml",
+    "sha256": "80b409f1a3f0c1ae38e0ee2192e5d09d5eb78c2f45f101932355fa263bc6974a",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/q55-controller.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-controller.xml",
+    "sha256": "1607175bf2d249f3db72dabbf4a3cad7809abb57eaaf980879aa10602d93902d",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "history/q55-repair-final.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q55-repair-final.xml",
+    "sha256": "725db4a36a5a296be82e8ad92828661a90703508536871a6641165c79b3f46f9",
+    "qualification": "Retained agent/intermediate evidence; overlapping reports are not independent replications"
+  },
+  "exploration/exploration_extended_verification.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\exploration_extended_verification.json",
+    "sha256": "386a128b9abc9d6868d6cb4a304d047d31516cd2aa74a8e6a168fcc6225a770b",
+    "qualification": "Source-qualified synthetic verification manifest; no efficacy claim"
+  },
+  "exploration/exploration_extended_controller_verification.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\exploration_extended_controller_verification.json",
+    "sha256": "6088493af14d0dc6e1a0a386a6c33d39b55a19b60d5d437f3e23180a8650bfb3",
+    "qualification": "Source-qualified synthetic verification manifest; no efficacy claim"
+  },
+  "exploration/exploration_extended_cost_review.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\exploration_extended_cost_review.json",
+    "sha256": "d4780996557b5851811e052e5a20b5cb7aeddb88308fc6b0ce09782ebbc379cb",
+    "qualification": "Source-qualified synthetic verification manifest; no efficacy claim"
+  },
+  "exploration/preflight-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\preflight-r1.xml",
+    "sha256": "9063761c82c7df9f4db6af3efd4c626d85887cae1d1aaea926c0bd9d9a5d5ce3",
+    "qualification": "Preserved formal controller report"
+  },
+  "exploration/frozen-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1.xml",
+    "sha256": "13d401b1b3a95f89cab8a9f5de9f8fa64a6831bb94d791ce40ff2f468096ec00",
+    "qualification": "Preserved formal controller report"
+  },
+  "exploration/traces/000.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\dcf092f3afaf0145d1a16becf7b6f1fc5176af57aaa6b5a806f28bb4b689000b\\trace.jsonl",
+    "sha256": "a22a4026aac7412b6ff762f2d7374adcd4bb3d3ffcad98715d176b665cccdd44",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/001.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\1c557cab612d0934c13786b3ef90bcc3adb803860753ef8dc4e919cf9d2bc879\\trace.jsonl",
+    "sha256": "629c053a83d6bf916d9acd303156faaec11dac9a85e3fc538d1f8a94e83c419e",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/002.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\cb28fa62a2635c001a2bbc3c47e81f2a525fe5048635d5f8d8fada734009ecaa\\trace.jsonl",
+    "sha256": "0a0f2a3ab106989ded353862886c3fe0befea00ce006ceec5632aa23af68b3e2",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/003.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\fa48a80731f864aacce19eea66e178dc775cd28a188cffd001cbd8a1b19c617d\\trace.jsonl",
+    "sha256": "c227e1a4c0a1860ce5ec7b40f453adb7e0d315b08d34e49b7e2f8d61d0c7dea9",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/004.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\8661d8227937619bcf6ec4dc4d125a9a3af702d55f4ae16161e2b73ce90e5b01\\trace.jsonl",
+    "sha256": "e1d204eeba944360f21c76ab33217f83254b3d1cede7732aa3c9e388c81801fb",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/005.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\516e45b7581d5f025f3224eeafbe8dec2bfb308b8dcf2a681e85cf670dd84b47\\trace.jsonl",
+    "sha256": "e11c4685f0c6732154a6640318d46f4fe347de5f265054781f5a04890550c9af",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/006.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\6be8a60a40acdb41e502d74d70ae63f6d3b9a37a88f5272d1c074748b43d1905\\trace.jsonl",
+    "sha256": "23288188c1cca9ac219263ada2afb144973e8acead123a9027c08ca138774086",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/007.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\d16bf04bf85df1b6c6a9cc457c54cf69a21b48f5d12443f9f5cfb850dc28880f\\trace.jsonl",
+    "sha256": "670bf2cb739228ed7ea151a8760e855368b1d6a31540570b95bcf78dba29dd37",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/008.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\78dbd0d5e34717f80ad2ae7b1d12ec076f868babeb90a46f9ca40b9ddc51d0b9\\trace.jsonl",
+    "sha256": "eb344d07f7fc63b731475fbf41b8a34ab560699262721d2e2b7f982a259b12e3",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/009.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\18a734877298d08ea16a123c46b1366d3264aa2891de1b5acc0fa04525695b21\\trace.jsonl",
+    "sha256": "e5e4f906862ab09aa52a9417c436040bd6adc630b78beeb9270ec32fbe98b3d1",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/010.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\5299fc54a33b08d63fb7dc57ec476145d8c767e5bb57717597ea235428fb4de3\\trace.jsonl",
+    "sha256": "66c83d24d4be48d86c5b3aa721cd8550f622b4848c0e6caf95172002640e34ad",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/011.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\62386afab5dc3abf065f02265206905c682f0b127b114e3009eb2c2d687ad20f\\trace.jsonl",
+    "sha256": "41a6d6551fa97ae7f613fa6ec93d6ac956dfcc3750c14d79b07ca1be1d163489",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/012.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\929715593fb8bc4d5d73a068ed44f1e3fbb4c02f4655fa15f24946fbcb97787e\\trace.jsonl",
+    "sha256": "f120ac8331ba44b972292c3ba18d430eb5e1f726d27799e6b873e20d382f18b9",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/013.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\d89552b9ec4519dd58bced4b35e4ee6ff0503a2c43e457fd9870e5fd6c59f780\\trace.jsonl",
+    "sha256": "59bf78d57a95c246222a015e2ec18166424cfd19b4302b16b90b47a9385bbc20",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/014.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\9f2556deebf4e971345b1ca2638e6de4a3ab031a4a7c73fce417018be2c9b7fd\\trace.jsonl",
+    "sha256": "3a2431ef91b069bfb87ffaa26d79268a467406eb0fca33d69ba62a283f906f98",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/015.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\5529e388ed188567f07bdc71d72c2c5fcd6717b49baee1f37cfc9c097271b4c5\\trace.jsonl",
+    "sha256": "6053c4afbc2216d42b5e1f9714c023ecfd2f49b8653e66b51324c2c87dce8a71",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/016.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\4b15c5269e0f9cbc25666af9c90a150dbf1cf1f7229c9d142856b2ae6c1c1b3d\\trace.jsonl",
+    "sha256": "48841ea222592ca06240bcf0f64f857473ec983098d69c2be93f8b39e5abc984",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/017.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\8124b3cad5be77a94112da2ea350677805358efddb2b6329a066cd734f3b8486\\trace.jsonl",
+    "sha256": "6ff9d429e0afbdc65dd507fb83080b943c57fe92409f8c773fb8fdaf7eac4fe6",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/018.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\44f729fb6a1522d84d823e3691bb7cf1da932bc0c420c2252154283842918643\\trace.jsonl",
+    "sha256": "1f3ce44d3ff075ae9eb35eab3e3bdfede60dc83e62f0abae897a2511b5143db5",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/019.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\a61032b61e3fa87441b80ff3624d2d8f469ed497a754400f2b158707330a0071\\trace.jsonl",
+    "sha256": "1528e2168ebaa8c4f6384b74838f1db68db347d23e5892c408ef5eff0fdd2d2d",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/020.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\3603012dd365c707afbe74414aa7e808c36cd29c5cbb4cb56773ef60d9f375aa\\trace.jsonl",
+    "sha256": "ea46117e0c0ee020dd4944202ef909fe2eec617948a9251eb80a07b46b63eb69",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/021.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\b2268c2d91830d8cb3342585eb35d9c890b2090d2e67b025b95295551b90e2a5\\trace.jsonl",
+    "sha256": "c95c484f1434f3d01e37b2a39e5574128247ab8a2fc1ae9280543f71f497e2fc",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/022.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\fd6e04f2fa262f58902c04cf36fa3f50edfadc14f2934854e3870b7d22a15eed\\trace.jsonl",
+    "sha256": "ac32dd142f6a24545102caaf6c9652b4a1b557f4975940d43123d0501e14bf47",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/023.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\5d7891a3b90992dd77d34b64e70ac0a1a77fbaf3d07fbfa279e0a295dfd84f93\\trace.jsonl",
+    "sha256": "5c06c8868514fde6e3ff6044436ef4ee9d6aa6cd7256ed0112cb0521d73381a3",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/024.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\437d484f95f9f1c754a033c7395ad9f00cf4837c8788a0c1c482fb29a5ff1466\\trace.jsonl",
+    "sha256": "a60537910beff568cb63722f9eff14cfc9e0439db34ca4fec7dd3ee2980860c1",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/025.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\e77ca35fce342bcf0c8afc4c929d5c574669a373baca0ef0da31a2c3357f91d9\\trace.jsonl",
+    "sha256": "4b1c339e34ea5be8f5a1f17b22e13ea62c453a0cd596e7541fcf94dde32d3393",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/026.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\cf7f2d5d31e9894f5e9ce6af94b29e04db9dd1fadc8e9c9483a8cdc1c7e0551a\\trace.jsonl",
+    "sha256": "6b1e01df7198f8db28038a2c7b04c5368cb4a760ddd14944db7dc2538321fd7e",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/027.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\4d644b148f711320c24a30231ac282e62ca4c8379ebcf6b95603cdd95073aa4a\\trace.jsonl",
+    "sha256": "556c5cd842e97a9ae756c7525d3d45e379941c3b23ceb06aa5926c1feb43218e",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/028.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\0c6fc4c147d5f84513a18024785e5635d8a78c81306599a7755e55ec46606038\\trace.jsonl",
+    "sha256": "d7a908c3eb5ba5e2a9a2d34c1b4cd5170ce82377f27c3c98f7bf3e27e15d3afa",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/029.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\afac684799e9f99d78bdd74df43b8db518391c0be61306aec6c6f2d0c5b870cc\\trace.jsonl",
+    "sha256": "fbcf6056e4d88e20f523b28c1b87ff1cf456b32bba49cccdf1f5a732b3257450",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/030.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\b81f5359eab107b33750b2f1d6676052791e22c535cffe464d7c3a31a47086e1\\trace.jsonl",
+    "sha256": "bade279b1b2192ee0ab14ee5672fc17bb3a82e4b92bc0f021e0d3b1449ba1439",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/031.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\7152677bb004c2ba7dc49f3bb699d7a1f719eab2b681ab1fb04d71a898974244\\trace.jsonl",
+    "sha256": "0cc761b2e3631406e3a23ee4d10d8741093b83ff09b78d69cca024d1aeaf65cf",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/032.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\218917498abf939c903bb380cbfc5f0fb4cf8ba995869d8bfe4a7fda47f13c52\\trace.jsonl",
+    "sha256": "e6a874e76c48897e3be27e795efd3ab41044dcd0de53bc168046f1e398a2c034",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/033.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\bc5b297ffa4de2c8edea6603023152b8829e6de2e6b05626c93619514639d40f\\trace.jsonl",
+    "sha256": "98b842d128598f6b44ee3a1b0f1d4f0ec6d95290daa996001dee0fd3d4ed5e6d",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/034.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\3ce2c8bc251ac82e0dc618af232e6d684834352900c7eb62c224d2ac938ac64a\\trace.jsonl",
+    "sha256": "969aef8c563824b2d18f0c428bcebd26df246246760806b6e69c01a9c4979cb2",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/035.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\c45f65eb28a9d9f91bb084f4ceabf453bec9cc6416764e0b818ab7dbcd957510\\trace.jsonl",
+    "sha256": "4e9ce2fe8e81728bc255a9ea9397c0b27361d02860c9b3d3cd01b99638ca1caf",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/036.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\5626f36e9e5c50a27c322006ee14dff460c9a275408314ff33d17a85b0a38e6e\\trace.jsonl",
+    "sha256": "4348d7e171ef084c5a405186937559c68fe98a2006498b0584150919b909b709",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/037.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\038c592712a67b5f5af15cc7ad4f490404427c62630f82c37c2df45bc0c517ca\\trace.jsonl",
+    "sha256": "766dd57b141778fc6c115d4ee3aab0fd082440399c882bd339c45d1a9aa7bed2",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/038.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\3cc969f329eadfad94d5a1fb1fd42d70531db0afd9d5e9ccdaeeaa7b5c82bafe\\trace.jsonl",
+    "sha256": "58855c81f73c2625669048afd98ea434f810682a3d9c791f5fc439ec1752be4c",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/039.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\7b252c73bb38110b7cef1a82a16c2a67c7d638b95a7b1242db1ae855b1358043\\trace.jsonl",
+    "sha256": "19b17822024d75ef7f6d07ddeac552114185134a9ecdbcebae5f63fd96f51d15",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/040.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\397a5ac5623b20d0f0f732a5b0c7ea28b29a5b15a060039d79ba1f5078bbd7a9\\trace.jsonl",
+    "sha256": "db7ae6ce36cb20db818c1bc346015c3160b1924bf26f3002a3e8b8330643bb58",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/041.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\1aad4acf66f34cd3eb44a3cab99b3ca04a92fa96b9fe0ccc2b758bc1459c7f6a\\trace.jsonl",
+    "sha256": "90778e6ca89a793724c1f7ecdaec7eff61b5bc03c85b88b23b039a37293436bf",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/042.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\857de13af5afdf1d6ae70de52e6d3ee2f6261903943c30195a5fbe2ab88dc311\\trace.jsonl",
+    "sha256": "f3eb80cea3ccf001f5fc4bec3123f796643531ec0fe196feba4879e4e6fab945",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/043.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\ea351150ffe1f4f04e4e83d583d78e62912152fff65303c871b86585b9b3c088\\trace.jsonl",
+    "sha256": "acd412c2a22ef2070ef3b7b7d381cfdfde4a497cdb018d7264fa44ebe3f0bdb0",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/044.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\6597da32825bbdf05a1ec683c749d13d673e8faeccc6d9c13e4ed4f9b7ea1e69\\trace.jsonl",
+    "sha256": "5535de05d2b7e7ea17acb94f0eb94d9b65254e61ac1989034d934c1528baa9db",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/045.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\8d30b1badbd8c2f7900dcb5d00a7f49e9c0d6c8e76a22162cbfb73f6383c7bd5\\trace.jsonl",
+    "sha256": "08668235abba16f946bf5247e5482b4202ac122094956946f7b749c4a5c8c103",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/046.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\fb6ceeeed076be6a52550dfc5dea6347c142e35ea04e9fe12ea6b267fee28f17\\trace.jsonl",
+    "sha256": "dff86e9dbc088f73983295e07527e9115448b778a85ab455d705e8c3baa3e5d7",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/047.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\1b663e4b338d2b6b7c35b47a959c992e5873ba87fefb1db16309a75d6d8a04cb\\trace.jsonl",
+    "sha256": "eb8b97d92968059b323afc2248c1f4645f11ff269db7c3bd6d5ca2f44c612c79",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/048.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\7bef3fabdd1407c212ed266f890bbca498795d9248463eaeb890268c10840c31\\trace.jsonl",
+    "sha256": "70dc816758570823e6c808087ea4c4971392d49bf72ca23b15c6f73633f94836",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/049.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\38abc5a3a4bb708a309e81028b4ceb0cf860e3148de20a93fe9d0ea1fe3795fe\\trace.jsonl",
+    "sha256": "9edc38608f576e6450d8b1c9873d204842bfc9a73274f27afe9c2fde525f2224",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/050.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\2959d08a91b944bb43c74f08fccebdd21e1a898a2594858262c76b0b7e9af858\\trace.jsonl",
+    "sha256": "aeffc314a8ef7e7be74115b91795eb5c7fb907eff7ed0fd599296fda31d60b79",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/051.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\8abda45d8a7e4776eb3fa4d9eaac96363a37ce74f5e5a2df2b7d26a7719f7420\\trace.jsonl",
+    "sha256": "d8722b14f2bc75ec0b6f380cc06ec647c92356748b24d850a4e66cdfe911e6ac",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/052.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\e4922b3a01a8cb243a5939fe39672b90ca91f349079ceb95f0012c0b5ecb0db6\\trace.jsonl",
+    "sha256": "2a77fd79dade7442dbdf066a8bfc2aec6859624a08019c37433c962de89d167a",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/053.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\69e3cfc297247b5740048027c9ea90e82b412e07961d5b6ca3fb42b20ded3993\\trace.jsonl",
+    "sha256": "566dd6c548f736b02bf8563cb5c8f6a144d461591818201c0680980b9eedc082",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/054.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\22058e93c4180d05907f12b884e362821dcaf471d8763b75cfa96b1866faac83\\trace.jsonl",
+    "sha256": "edf35f418e378b352432b14aeeeb9072017a0e63b9e517921273249f6ef12d63",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/055.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\736b7ad53d7e3dcfd1eb85612b72894b63819c3e6976fb35c5398ba0ed032931\\trace.jsonl",
+    "sha256": "e982745b03b46c52e9c73ce6e04ff7ef914da1f5bc542b4f74b9cfdc228fb3a8",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/056.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\52bb60ff9f66e4c32e5dfaac8ca9e453c5cf7727e86c682f4b54c929e7bf0639\\trace.jsonl",
+    "sha256": "c42030987c5d361a7961f3d5e1111d3e3e24ace2657c850010ebc53f2aacb0c8",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/057.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\f1e3ee8af44330fc585132bba2df99cdcc89b5c075eb9bba92d63a80143db962\\trace.jsonl",
+    "sha256": "faea314a0f30cf5698cb506f3f0c8f26434c24f625bc9c81e235841382919070",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/058.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\f2a25bee5db714cefce89d236517ea2646714fb429565dae0442bcae867a69e4\\trace.jsonl",
+    "sha256": "f8ec13bd98020bb3abfdc70cb86eefca78e89881618a1381a4038ebdbcb09fde",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/059.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\be4d08663c4a250d265d6ac730c130b849895191281901290cfe8f588fa2260f\\trace.jsonl",
+    "sha256": "ebc3d69fc83e0edc15c56161bc2090a1c0bf1da8972f4b4a7e14cbaa63c5aeb5",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/060.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\d90ba769a938ffe2a8e3bb6d34c5c5e304e22453d1148c54be0c13a8212692f4\\trace.jsonl",
+    "sha256": "542b87a706869d5bf4363d0ddf60e2be8593fea9ca2b480074f3bce37a679abe",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/061.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\df7f83cc4a0d3d8beb76c90188c2acff09da716d91fce3f11d9a8650b796a2e9\\trace.jsonl",
+    "sha256": "1fbe1e20df2d0ed182e8f8affd44a414324fe9fe97383824ddf587ee75c35c4a",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/062.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\de0a9370cc3f9f447f7aab5ad537aaa7ff9df69ab12aa5f94e4e0ba146c4baaf\\trace.jsonl",
+    "sha256": "1290e1896fd2dd9f45fb3b342d2e7bf30e14d6ce7319b931fa6e61a9e50f250c",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/063.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\9091954d06be96e79ad646e0ff3b4609a54448b8ed96e71cc68835d8678116e2\\trace.jsonl",
+    "sha256": "e5bdedd03f653a2f0d8365ed8ca8fcc37f5395f6286581d653e4f7871fe802ee",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/064.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\d9e76470bbef334c322176c3bccfac74dab18df1d2fd058c7a4e6dd9f3c22f52\\trace.jsonl",
+    "sha256": "4300e8c3657a0a98a14b4466a617d44fb83222cea62223a2eb54d1039a98f90d",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/065.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\03daff956edc4b1e29f40d91e3201ba78a33299c2f6929e6823a7ce03de5df18\\trace.jsonl",
+    "sha256": "0596db7ae6be620d6a909e44f150d9632f41cabbe3b8c8f7efe12e7992a5dbd0",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/066.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\71a22998d9cc9918216d700eb33e0491f84e29efa05807de6246b5045ae89ddd\\trace.jsonl",
+    "sha256": "29a4699142bab11dc6502d91b792754fba2fd90bb209f61f3e6a505e0d9d170e",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/067.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\b4658a1a8eed1872a70db751cc846ed6fb60ed58f6e83f8ef80f32b6766c50e3\\trace.jsonl",
+    "sha256": "6944ab75d13c1cfa33f9f7ca63621f872a98b3dd5737202dd967a08f5170b124",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/068.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\c0aaf497f8a8f5458095e8ea780345545740299591165ee75045d53ee488f90c\\trace.jsonl",
+    "sha256": "d5cd37532d3464ceb8c77764947da5386ad378ddb84ca4eaa37f4e2d106c16bc",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/069.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\1fa091364b96aa065ae79eb3645dfa560796ad662416eb3003079314b8ef1133\\trace.jsonl",
+    "sha256": "d7270b456a438aa1f295a5e0d32fc360f0e273c48a6af753409e8ba42702bf18",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/070.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\57e2a2560ea5b6fd63cd78b0bf2d912b1bd2c1aab6c5015a323321ac0ee62b22\\trace.jsonl",
+    "sha256": "bdf265d0b6ce374b457ae5a0438640ab9bd26abba30d1dadb7bbaf995250ea45",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/071.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\abec51e841fea21cda0b0af703747008857624d31fadaba2845fa0abc10ac0b9\\trace.jsonl",
+    "sha256": "c2e3bce3334ae45e54272040614e401e2ebc992d32426624d95a0f4b9cff0837",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/072.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\26fb328f3c60600f003d343ab3ada1d448899304a64d1a01b68dcc5484c750c9\\trace.jsonl",
+    "sha256": "4661336f7369d6236c7d15ec6e14bf475ed69ae4307ffbac844c3b50b6cf2d16",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/073.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\33d1e0950527cc28ed762a11d42885eaa348e3d486dada28104f4bec581881fe\\trace.jsonl",
+    "sha256": "5305bd397f75245dcb1549140fbf97a776a05c88163a585d2c6b95b7de7b109f",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/074.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\5057c382d265a0daba953ab1b685dd1c30fad0b4561c9502bbffcee831953cb9\\trace.jsonl",
+    "sha256": "101b84568104248516d74997b04e3f45af6dd1e289d0d4cdcfa4ba7425dd1170",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/075.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\62f86c7212199dce9fb3a51bbcd417f537c29ec68c2cabbe04c4dacf34a67053\\trace.jsonl",
+    "sha256": "9bc2cbc6cb0e44889019ad8d35e07c14161b2af9e79e0d13332846b8837fae20",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/076.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\981aac20410c4a0f458508d0c88467d8478b26978e6bca66c6f5129db3c4bd86\\trace.jsonl",
+    "sha256": "b810a1aae730f48134b87cc3cb615e1d742044b1c075a7286ee261118698358e",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/077.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\85c36ba2562376859a2b6b972deb557d9873164b3fe844e5bd76330f840c89a5\\trace.jsonl",
+    "sha256": "8e7cf4f85d3937a058de8720e6f48fb59525a5b4e0cdadab717c228c58471cea",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/078.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\cc07ce4b1f3566ff9754ebaeb49837561c6e18ee3833cca20ec9d2cb412e47ff\\trace.jsonl",
+    "sha256": "f629e85a016d46c191aa4ed6fc1856c21483b69316db1477ea2c2b4d3f04187d",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/079.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\90f6d6f346a996417e1b2605e272374745f0b8b29d5a57fad979ba5f03faf10e\\trace.jsonl",
+    "sha256": "0c4e90908ee0cac3d5560536173b30f98a6567cc425257c46e6f8e8f4577aa39",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/080.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\3563e1097d649722567ecd5c95cc7119b401f94fea3cb735dfde11dcf887352f\\trace.jsonl",
+    "sha256": "0317cce9f1b89c98aefa54c17f59e44c1d197b7414b7a7524b8785997278b886",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/081.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\23d377e568bc0c99495a732b23ba1df5c085379ccaff459c00847903a49e6e62\\trace.jsonl",
+    "sha256": "3082cbff55e41d859a98d1d77dfae0e35b22306744be2ff473c4dcd511f8b742",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/082.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\8697ee5a319c6b9e7679be4e1b4d9115c369eac6440f32a331d767501b69f236\\trace.jsonl",
+    "sha256": "ab9d7cdc5983b26e06f87ae404315619f1e62aa4fb121f1cfcc8d3ce90548a7b",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/083.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\d3ff63a470f87eb65d204511265c6ec66a7211ccec1efdbae172e2711e6bd00d\\trace.jsonl",
+    "sha256": "13324798554a4438afce2c30b60bd6d11f2509b15d81ac95cd5cf1a08c9f81c9",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/084.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\5057de72c54bef4e1cb10ca5ce072603f67fb19916a674ddb577dd0ca8893c0d\\trace.jsonl",
+    "sha256": "0a79b7448714f04e8a957daa030ca56b25602e3a6e8d54a77cfe5bc8acf5b1b5",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/085.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\8d992400de5010880751ddac6841b1995f1e2db380e0937ab3a689596e7c12e6\\trace.jsonl",
+    "sha256": "c45c4b73c402e9d70bc741c71f7a91065cf933aa61e1b6967c4ae80be03cf628",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/086.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\bb8bc8405c412fa6ac0923b9fdb2cf94c4278b60ffb781f7800cb91c40bba63e\\trace.jsonl",
+    "sha256": "4e093c957869aead8d6d6a63dc052ce53de534e0749821af8e1a2c995715893f",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "exploration/traces/087.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-controller-checks\\frozen-r1\\test_complete_88_cell_export_m0\\run\\cells\\3402a7d9558886ea121cb90c4aad1f0cf08511c1ac7ed51aa7ffded6fed09e77\\trace.jsonl",
+    "sha256": "aec470b44ad8f425498f8d46a86bcab9754ab42c6faa5d9aa2f2dba1ba86d123",
+    "qualification": "Actual frozen synthetic controller trace, not a paid benchmark score"
+  },
+  "trial/export/blade/d90d6fb37453f6592fe9f0cb76384ac2778f60758d7b94a06728f725196ccad0/data.csv": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\export\\blade\\d90d6fb37453f6592fe9f0cb76384ac2778f60758d7b94a06728f725196ccad0\\data.csv",
+    "sha256": "234fd6eea20ee3c5f20f11c6ed2f3b12a0bf028b623fe5abaecc331ebeefb3b9",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/export/blade/d90d6fb37453f6592fe9f0cb76384ac2778f60758d7b94a06728f725196ccad0/public.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\export\\blade\\d90d6fb37453f6592fe9f0cb76384ac2778f60758d7b94a06728f725196ccad0\\public.json",
+    "sha256": "1a94c588929785093d2c6b642537a9b87b955a0dc1dd67fa64907ea5b6cd98cb",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/export/discoverybench/5802f466a6416fbe9409bbb6bd4466c87308fb8c3c7daa549c4a8baa6e5dea8a/data.csv": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\export\\discoverybench\\5802f466a6416fbe9409bbb6bd4466c87308fb8c3c7daa549c4a8baa6e5dea8a\\data.csv",
+    "sha256": "c41271115ad19cae3486ddd70cde054520537dae71387af8f02ae1aa4257ac58",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/export/discoverybench/5802f466a6416fbe9409bbb6bd4466c87308fb8c3c7daa549c4a8baa6e5dea8a/public.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\export\\discoverybench\\5802f466a6416fbe9409bbb6bd4466c87308fb8c3c7daa549c4a8baa6e5dea8a\\public.json",
+    "sha256": "a978187f74bf37caa2e8022489dcdf14699151d5d2ac2e32e86c27b6d3705309",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/18f4fa33998115d04d889c4541a83397987966d72afbc7e45738b2ec1c08e635/analysis-1.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\18f4fa33998115d04d889c4541a83397987966d72afbc7e45738b2ec1c08e635\\analysis-1.py",
+    "sha256": "d8f2df96f7f792a6db9e8322456bb6adfa5a47658d0a5a133b4c064fb71af398",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/18f4fa33998115d04d889c4541a83397987966d72afbc7e45738b2ec1c08e635/claims.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\18f4fa33998115d04d889c4541a83397987966d72afbc7e45738b2ec1c08e635\\claims.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/18f4fa33998115d04d889c4541a83397987966d72afbc7e45738b2ec1c08e635/evidence.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\18f4fa33998115d04d889c4541a83397987966d72afbc7e45738b2ec1c08e635\\evidence.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/18f4fa33998115d04d889c4541a83397987966d72afbc7e45738b2ec1c08e635/predictions.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\18f4fa33998115d04d889c4541a83397987966d72afbc7e45738b2ec1c08e635\\predictions.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/18f4fa33998115d04d889c4541a83397987966d72afbc7e45738b2ec1c08e635/reviews.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\18f4fa33998115d04d889c4541a83397987966d72afbc7e45738b2ec1c08e635\\reviews.jsonl",
+    "sha256": "012495abef83420df33b4126622695a687bd59b0bff37d91df3a553badc1e7ed",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/18f4fa33998115d04d889c4541a83397987966d72afbc7e45738b2ec1c08e635/trace.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\18f4fa33998115d04d889c4541a83397987966d72afbc7e45738b2ec1c08e635\\trace.jsonl",
+    "sha256": "0d77d680f33870b6db3631aac83a39b7f007050a305c090d7d6e4f47b009d865",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/2694e9ef1e675bdac98ee4afabd10d2691c08c62e1796b1fe9e4949b22e73c98/analysis-1.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\2694e9ef1e675bdac98ee4afabd10d2691c08c62e1796b1fe9e4949b22e73c98\\analysis-1.py",
+    "sha256": "727efae73ad1acc6def1d22029018be3758af6381d72f7ee3c455cd5682094ce",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/2694e9ef1e675bdac98ee4afabd10d2691c08c62e1796b1fe9e4949b22e73c98/claims.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\2694e9ef1e675bdac98ee4afabd10d2691c08c62e1796b1fe9e4949b22e73c98\\claims.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/2694e9ef1e675bdac98ee4afabd10d2691c08c62e1796b1fe9e4949b22e73c98/evidence.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\2694e9ef1e675bdac98ee4afabd10d2691c08c62e1796b1fe9e4949b22e73c98\\evidence.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/2694e9ef1e675bdac98ee4afabd10d2691c08c62e1796b1fe9e4949b22e73c98/predictions.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\2694e9ef1e675bdac98ee4afabd10d2691c08c62e1796b1fe9e4949b22e73c98\\predictions.jsonl",
+    "sha256": "d878d090d38e4d068de500aa3f5704b3164bbd9846c48e97eda561efd7de5a03",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/2694e9ef1e675bdac98ee4afabd10d2691c08c62e1796b1fe9e4949b22e73c98/reviews.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\2694e9ef1e675bdac98ee4afabd10d2691c08c62e1796b1fe9e4949b22e73c98\\reviews.jsonl",
+    "sha256": "44e9326c4fe7c76b1845d508653d738d3a8f3097a1365572bba6ca3b3910792b",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/2694e9ef1e675bdac98ee4afabd10d2691c08c62e1796b1fe9e4949b22e73c98/trace.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\2694e9ef1e675bdac98ee4afabd10d2691c08c62e1796b1fe9e4949b22e73c98\\trace.jsonl",
+    "sha256": "ec6d7e8d7fe43f466d7b35cae70c3b2ff03cef21f891b14f101507ef6ca99183",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/3430982c72cd87b290957bdacdffc18e6fbd7d3a8aca13b2b56862a4ded262b5/analysis-1.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\3430982c72cd87b290957bdacdffc18e6fbd7d3a8aca13b2b56862a4ded262b5\\analysis-1.py",
+    "sha256": "552b5df610112a33229f8b03997a676f0541f909ff1f43db8217c7d2fbf07be6",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/3430982c72cd87b290957bdacdffc18e6fbd7d3a8aca13b2b56862a4ded262b5/claims.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\3430982c72cd87b290957bdacdffc18e6fbd7d3a8aca13b2b56862a4ded262b5\\claims.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/3430982c72cd87b290957bdacdffc18e6fbd7d3a8aca13b2b56862a4ded262b5/evidence.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\3430982c72cd87b290957bdacdffc18e6fbd7d3a8aca13b2b56862a4ded262b5\\evidence.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/3430982c72cd87b290957bdacdffc18e6fbd7d3a8aca13b2b56862a4ded262b5/predictions.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\3430982c72cd87b290957bdacdffc18e6fbd7d3a8aca13b2b56862a4ded262b5\\predictions.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/3430982c72cd87b290957bdacdffc18e6fbd7d3a8aca13b2b56862a4ded262b5/reviews.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\3430982c72cd87b290957bdacdffc18e6fbd7d3a8aca13b2b56862a4ded262b5\\reviews.jsonl",
+    "sha256": "c1bc82e950e92efbf3924659b930e58177f14a58dc1f63b21a05caec4da2f48e",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/3430982c72cd87b290957bdacdffc18e6fbd7d3a8aca13b2b56862a4ded262b5/trace.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\3430982c72cd87b290957bdacdffc18e6fbd7d3a8aca13b2b56862a4ded262b5\\trace.jsonl",
+    "sha256": "89278f1286fc954c3e4a5dc207486ff6095dce85d4391e6b9f7ae247979c4d20",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/3d8bfd05ca921341f84ac54967fb047bd820e21fc76857721065c9a11472177f/analysis-1.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\3d8bfd05ca921341f84ac54967fb047bd820e21fc76857721065c9a11472177f\\analysis-1.py",
+    "sha256": "0e4aed1089a5d65b4f76d626b773afee72a32c23d5733062840ad5f544561b1d",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/3d8bfd05ca921341f84ac54967fb047bd820e21fc76857721065c9a11472177f/claims.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\3d8bfd05ca921341f84ac54967fb047bd820e21fc76857721065c9a11472177f\\claims.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/3d8bfd05ca921341f84ac54967fb047bd820e21fc76857721065c9a11472177f/evidence.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\3d8bfd05ca921341f84ac54967fb047bd820e21fc76857721065c9a11472177f\\evidence.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/3d8bfd05ca921341f84ac54967fb047bd820e21fc76857721065c9a11472177f/predictions.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\3d8bfd05ca921341f84ac54967fb047bd820e21fc76857721065c9a11472177f\\predictions.jsonl",
+    "sha256": "096a6a254a997c90bed5bba9e88001e047afad121cf36efd5bb246a6b9860ff3",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/3d8bfd05ca921341f84ac54967fb047bd820e21fc76857721065c9a11472177f/reviews.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\3d8bfd05ca921341f84ac54967fb047bd820e21fc76857721065c9a11472177f\\reviews.jsonl",
+    "sha256": "b3019ca4a2af95116633e6f3d00b1ec696a0f9d29453fe6c7b8f7a6a49cb2c40",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/3d8bfd05ca921341f84ac54967fb047bd820e21fc76857721065c9a11472177f/trace.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\3d8bfd05ca921341f84ac54967fb047bd820e21fc76857721065c9a11472177f\\trace.jsonl",
+    "sha256": "15b1ff2ed31a011438952e07565e1683d63f6f7cb4ea24adada05d3b70158068",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/55c4eb5e7440afa98e1953284ddac9888f7cd3923d449b59bb37f57acb25c328/analysis-1.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\55c4eb5e7440afa98e1953284ddac9888f7cd3923d449b59bb37f57acb25c328\\analysis-1.py",
+    "sha256": "7f3e9676a57d334e1381991e877f4778910ae080765299af36299208591cc518",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/55c4eb5e7440afa98e1953284ddac9888f7cd3923d449b59bb37f57acb25c328/claims.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\55c4eb5e7440afa98e1953284ddac9888f7cd3923d449b59bb37f57acb25c328\\claims.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/55c4eb5e7440afa98e1953284ddac9888f7cd3923d449b59bb37f57acb25c328/evidence.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\55c4eb5e7440afa98e1953284ddac9888f7cd3923d449b59bb37f57acb25c328\\evidence.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/55c4eb5e7440afa98e1953284ddac9888f7cd3923d449b59bb37f57acb25c328/predictions.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\55c4eb5e7440afa98e1953284ddac9888f7cd3923d449b59bb37f57acb25c328\\predictions.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/55c4eb5e7440afa98e1953284ddac9888f7cd3923d449b59bb37f57acb25c328/reviews.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\55c4eb5e7440afa98e1953284ddac9888f7cd3923d449b59bb37f57acb25c328\\reviews.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/55c4eb5e7440afa98e1953284ddac9888f7cd3923d449b59bb37f57acb25c328/trace.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\55c4eb5e7440afa98e1953284ddac9888f7cd3923d449b59bb37f57acb25c328\\trace.jsonl",
+    "sha256": "de2ec798ff9da9ebc17fcc1ed7cedeb9a716224d4e545fbe73498cbb6831b75a",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/79e9c4db5946b7dd4c9b247c136bc4e1eff9c21960436fd9819daa35b977a3eb/analysis-1.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\79e9c4db5946b7dd4c9b247c136bc4e1eff9c21960436fd9819daa35b977a3eb\\analysis-1.py",
+    "sha256": "56c49feaa9342e7665e839cf04ba8592ce0da326e582db6ce2f22c8d472c4ad2",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/79e9c4db5946b7dd4c9b247c136bc4e1eff9c21960436fd9819daa35b977a3eb/claims.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\79e9c4db5946b7dd4c9b247c136bc4e1eff9c21960436fd9819daa35b977a3eb\\claims.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/79e9c4db5946b7dd4c9b247c136bc4e1eff9c21960436fd9819daa35b977a3eb/evidence.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\79e9c4db5946b7dd4c9b247c136bc4e1eff9c21960436fd9819daa35b977a3eb\\evidence.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/79e9c4db5946b7dd4c9b247c136bc4e1eff9c21960436fd9819daa35b977a3eb/predictions.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\79e9c4db5946b7dd4c9b247c136bc4e1eff9c21960436fd9819daa35b977a3eb\\predictions.jsonl",
+    "sha256": "184981b2d70733f145fa99e5cd3b47a6f90a0d02f90c88682653dec2845b0481",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/79e9c4db5946b7dd4c9b247c136bc4e1eff9c21960436fd9819daa35b977a3eb/reviews.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\79e9c4db5946b7dd4c9b247c136bc4e1eff9c21960436fd9819daa35b977a3eb\\reviews.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/79e9c4db5946b7dd4c9b247c136bc4e1eff9c21960436fd9819daa35b977a3eb/trace.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\79e9c4db5946b7dd4c9b247c136bc4e1eff9c21960436fd9819daa35b977a3eb\\trace.jsonl",
+    "sha256": "1a7a3b0abda6208b9bfb7d8a06a2ca276e2a186b15e678fd87fe41f87a4d7cb1",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/8a37844509ef3ea34c4a411f0118f62b97e917d69be0fe8c56bb94dba6447952/analysis-1.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\8a37844509ef3ea34c4a411f0118f62b97e917d69be0fe8c56bb94dba6447952\\analysis-1.py",
+    "sha256": "e78d2e05b4173e6adb77a83cec64b64c52390161e6e15e3ae628cd5b2d6d2983",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/8a37844509ef3ea34c4a411f0118f62b97e917d69be0fe8c56bb94dba6447952/claims.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\8a37844509ef3ea34c4a411f0118f62b97e917d69be0fe8c56bb94dba6447952\\claims.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/8a37844509ef3ea34c4a411f0118f62b97e917d69be0fe8c56bb94dba6447952/evidence.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\8a37844509ef3ea34c4a411f0118f62b97e917d69be0fe8c56bb94dba6447952\\evidence.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/8a37844509ef3ea34c4a411f0118f62b97e917d69be0fe8c56bb94dba6447952/predictions.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\8a37844509ef3ea34c4a411f0118f62b97e917d69be0fe8c56bb94dba6447952\\predictions.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/8a37844509ef3ea34c4a411f0118f62b97e917d69be0fe8c56bb94dba6447952/reviews.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\8a37844509ef3ea34c4a411f0118f62b97e917d69be0fe8c56bb94dba6447952\\reviews.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/8a37844509ef3ea34c4a411f0118f62b97e917d69be0fe8c56bb94dba6447952/trace.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\8a37844509ef3ea34c4a411f0118f62b97e917d69be0fe8c56bb94dba6447952\\trace.jsonl",
+    "sha256": "c041992c0c856d57c27928c2b4ccc1cda4059c2132c375e4804a3792a3e453cd",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/a2516c889108cacb8036bf2e1cbc0eb95b2f054807b3130eaaed5d2e9ab47176/analysis-1.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\a2516c889108cacb8036bf2e1cbc0eb95b2f054807b3130eaaed5d2e9ab47176\\analysis-1.py",
+    "sha256": "f28bcc0f68f5f2e7a7a4368753679f797e304e80bf9287f36e8b64781ae7a95f",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/a2516c889108cacb8036bf2e1cbc0eb95b2f054807b3130eaaed5d2e9ab47176/claims.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\a2516c889108cacb8036bf2e1cbc0eb95b2f054807b3130eaaed5d2e9ab47176\\claims.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/a2516c889108cacb8036bf2e1cbc0eb95b2f054807b3130eaaed5d2e9ab47176/evidence.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\a2516c889108cacb8036bf2e1cbc0eb95b2f054807b3130eaaed5d2e9ab47176\\evidence.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/a2516c889108cacb8036bf2e1cbc0eb95b2f054807b3130eaaed5d2e9ab47176/predictions.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\a2516c889108cacb8036bf2e1cbc0eb95b2f054807b3130eaaed5d2e9ab47176\\predictions.jsonl",
+    "sha256": "98fb97956b637f70db36174d1489d7c06049d5d881f14a5b0f3bc78dbfacf094",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/a2516c889108cacb8036bf2e1cbc0eb95b2f054807b3130eaaed5d2e9ab47176/reviews.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\a2516c889108cacb8036bf2e1cbc0eb95b2f054807b3130eaaed5d2e9ab47176\\reviews.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/cells/a2516c889108cacb8036bf2e1cbc0eb95b2f054807b3130eaaed5d2e9ab47176/trace.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\cells\\a2516c889108cacb8036bf2e1cbc0eb95b2f054807b3130eaaed5d2e9ab47176\\trace.jsonl",
+    "sha256": "f709d1a2086b2f857657ac675982fa49b9a783907f325cd37fff76f26d84df7d",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/controller-attempt.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\controller-attempt.json",
+    "sha256": "a3f342464d72ed1e144db29ef95e95ef429b0bcf07454637b38bbc8a9d02df37",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/controller-receipt.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\controller-receipt.json",
+    "sha256": "2fa5249913d2ffb079caa663c3af31e099650c49e69c42358217cf349b5eacdf",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/run/panel.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\run\\panel.json",
+    "sha256": "0b89d888420560d03cce0fd41d21c93f5683338dfcc25e576e345097a3c0ed65",
+    "qualification": "Closed original training run; all failure cells retained"
+  },
+  "trial/controller.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\controller.json",
+    "sha256": "e1fe2fe40228e728bf19d5ac46a3172fa4ef15e4a7d381539fb40174b1e26c79",
+    "qualification": "Closed frozen training controls, cost metadata or authenticated scorer journal"
+  },
+  "trial/preflight.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\preflight.json",
+    "sha256": "49168d744e657996f558008ebafc68cc80363027a6d61439f6e7dec240764c1d",
+    "qualification": "Closed frozen training controls, cost metadata or authenticated scorer journal"
+  },
+  "trial/startup.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\startup.json",
+    "sha256": "67efda61f5f03b6db3c04fda37204bcfc2a5e17c6dae967f584b416b7fd0af80",
+    "qualification": "Closed frozen training controls, cost metadata or authenticated scorer journal"
+  },
+  "trial/summary.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\summary.json",
+    "sha256": "b1cd3330a52d0606506334de051ebd53bdcf1b4bdfee5b49c6928b5e2a9e2d97",
+    "qualification": "Closed frozen training controls, cost metadata or authenticated scorer journal"
+  },
+  "trial/scorer-client.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\scorer-client.jsonl",
+    "sha256": "266358f955e816ca258e62e68ccb4a53368b96fecc3d81d8bed4b44933cd480d",
+    "qualification": "Closed frozen training controls, cost metadata or authenticated scorer journal"
+  },
+  "trial/model/ledger.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-train-process-20260913-01\\model\\ledger.json",
+    "sha256": "18c97c396d0b0dc49565407d10a1930fc4ca3dc0d2e3c165cd0af91a95fca1f0",
+    "qualification": "Closed frozen training controls, cost metadata or authenticated scorer journal"
+  },
+  "trial/scorer-worker-journal.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\m4m5-scorer-process-20260913-01\\server.jsonl",
+    "sha256": "266358f955e816ca258e62e68ccb4a53368b96fecc3d81d8bed4b44933cd480d",
+    "qualification": "Closed scorer reservations and signed numeric results; no reference text"
+  },
+  "run_m4m5_train_20260913.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_m4m5_train_20260913.py",
+    "sha256": "4de37fdaa460289686cfc0ac656449296aa44bef2c087ec741838d02bf0f5d8b",
+    "qualification": "Frozen trial or separate read-only diagnosis; original files unchanged"
+  },
+  "diagnose_m4m5_closed_20260913.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\diagnose_m4m5_closed_20260913.py",
+    "sha256": "7d6be1212c8e73346757e8fe9b13956c1db96b46dafde521e5189c6b1bcacff2",
+    "qualification": "Frozen trial or separate read-only diagnosis; original files unchanged"
+  },
+  "m4m5-closed-diagnosis-20260913-01.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4m5-closed-diagnosis-20260913-01.json",
+    "sha256": "1a79b4607ad3bbad7a39d4a5663f83aa89dacde884fb054235180b1c3293e7cc",
+    "qualification": "Frozen trial or separate read-only diagnosis; original files unchanged"
+  },
+  "publish_combination_exploration_checkpoint_20260913.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\publish_combination_exploration_checkpoint_20260913.py",
+    "sha256": "78f213750e624472e78d99ca7b7581324254e49f9ce655f52a77e2622439b62c",
+    "qualification": "Append-only publisher"
+  }
+}

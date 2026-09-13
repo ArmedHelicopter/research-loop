@@ -3,7 +3,22 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current scoring recovery and resource checkpoint (2026-09-13)
+## Current combination and exploration checkpoint (2026-09-13)
+
+The production registry has 36 question drivers plus the separate Q6.3 train
+phase. Extended exploration passed 69 root checks including its full 88-cell
+controller grid; Q5.5's formal 32-cell controller is integrated. The archive
+contains 1,396 indexed files with the earlier 1,194 entries preserved.
+
+The first complete M4/M5 training factorial is closed: eight cells, five scores,
+three failures, 45 provider calls and 476,790 tokens. Its frozen result is
+inconclusive. An execution-failure verifier repair remains under independent
+review; the original failure denominator and all paid-run files are unchanged.
+No validation or scientific acceptance is claimed. The separate prospective
+extended-data split and remaining Q6/M6 controllers are under root review.
+See [the current checkpoint](MODULAR-CHECKPOINT-20260913-COMBINATION-EXPLORATION.md).
+
+## Previous scoring recovery and resource checkpoint (2026-09-13)
 
 The production registry has 31 question drivers. Q5.4's actual custody/export/
 controller/diagnostic/authority path passed 97 root checks on `f41982d`. Shared
