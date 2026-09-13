@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 from research_loop.modular.q32_execution import (Q32ExecutionStage, compile_q32_execution,
-    run_q32_execution_panel, PROGRAM_SCHEMA, SLOTS)
+    run_q32_execution_panel, PROGRAM_SCHEMA, SLOTS, BUDGET)
 from evaluation.modular.q32_execution_verifier import verify_q32_execution
 from evaluation.modular.train_io import TrainPacketExporter
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
@@ -96,11 +96,16 @@ def test_actual_four_cell_grid_with_independent_csv_authority(tmp_path, monkeypa
     def transport(request):
         requests.append(request.data())
         return fixture_response(request, failure=failure)
-    port = model_port(tmp_path, monkeypatch, max_calls=16, schemas={s: FINAL if s == "final" else PROGRAM_SCHEMA for s in SLOTS}, response_factory=transport)
+    ports = []
+    def factory(i):
+        port = model_port(tmp_path / f"port-{i}", monkeypatch, max_calls=4, max_tokens=BUDGET["model_token_stop_threshold"],
+            schemas={s: FINAL if s == "final" else PROGRAM_SCHEMA for s in SLOTS}, response_factory=transport)
+        ports.append(port)
+        return port
     result = run_q32_execution_panel(custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
-        run_root=tmp_path / "run", item_ids=ITEMS, material_by_task=materials, image=IMAGE, model=port, verifier=verifier).data()
+        run_root=tmp_path / "run", item_ids=ITEMS, material_by_task=materials, image=IMAGE, model_factory=factory, verifier=verifier).data()
     assert result["cell_count"] == 4 and result["measurement_denominator"] == 12
-    assert len(requests) == len(port.ledger["calls"]) == 16
+    assert len(requests) == sum(len(port.ledger["calls"]) for port in ports) == 16
     compiled = FrozenRecord((tmp_path / "run" / "compiled.json").read_text(encoding="utf-8"))
     forbidden = {"joint", "separate", "M4", "variant", "arm", "fixed_modules", "source_qualification", "scientific_admission", "compiled_digest", "plan_digest", "policy_digest", "source_bundle_digest", "controller_truth", "reference", "review_mode"}
     forbidden.update(cell["cell_id"] for cell in compiled.data()["cells"])
@@ -123,7 +128,7 @@ def test_actual_four_cell_grid_with_independent_csv_authority(tmp_path, monkeypa
         assert [r["status"] for r in cell["rows"]] == ["succeeded", "failed" if failure else "succeeded", "succeeded"]
         if failure:
             assert set(cell["rows"][1]["range_membership"].values()) == {"unknown"}
-        assert cell["independent_data_units"] == 1
+        assert cell["distinct_public_input_artifacts"] == 1 and cell["independent_data_qualification"] == "not_established"
         events = trace(tmp_path / "run" / str(i) / "trace.jsonl")
         seal = next(e for e in events if e["stage"] == "q32_execution_seal")
         assert max(e["sequence"] for e in events if e["stage"] == "model_response" and e["sequence"] < seal["sequence"]) < seal["sequence"]
@@ -158,6 +163,7 @@ def make_stage(tmp_path):
 
 
 def test_before_io_guards_for_early_observation_and_replacements(tmp_path):
+    from dataclasses import replace
     stage, packet, _ = make_stage(tmp_path)
     class NeverBroker:
         def execute(self, request):
@@ -176,6 +182,11 @@ def test_before_io_guards_for_early_observation_and_replacements(tmp_path):
     with pytest.raises(ContractError, match="input"):
         stage.execute_next(broker=broker, plan_id=job["plan_id"], program=job["program"], csv_path=packet.csv_path)
     packet.csv_path.write_bytes(original)
+    original_plan = stage._registry.plan(job["plan_id"])
+    stage._registry._plans[job["plan_id"]] = replace(original_plan, question="Changed after freezing")
+    with pytest.raises(ContractError, match="substitution"):
+        stage.execute_next(broker=broker, plan_id=job["plan_id"], program=job["program"], csv_path=packet.csv_path)
+    stage._registry._plans[job["plan_id"]] = original_plan
     (stage._session.sidecar / "execution-seal.json").write_text("{}", encoding="utf-8")
     with pytest.raises(ContractError, match="seal"):
         stage.execute_next(broker=broker, plan_id=job["plan_id"], program=job["program"], csv_path=packet.csv_path)
@@ -194,6 +205,11 @@ def test_producer_failure_preserves_all_slots_and_no_execution(tmp_path, monkeyp
     assert len(result["rows"]) == 3 and all(r["status"] == "blocked" for r in result["rows"])
     assert len(port.ledger["calls"]) == 2
     assert verify_q32_execution(stage._session.sidecar / "trace.jsonl", compiled).data()["verified"]
+    events = trace(stage._session.sidecar / "trace.jsonl")
+    next(e for e in events if e["stage"] == "q32_phase_result")["data"]["rows"][2]["plan_id"] = "replacement"
+    rechain(events, tmp_path / "replaced-failure-denominator.jsonl")
+    with pytest.raises(ContractError, match="unexecuted"):
+        verify_q32_execution(tmp_path / "replaced-failure-denominator.jsonl", compiled)
 
 
 @pytest.mark.parametrize("mode", ["invalid_output", "positive"])

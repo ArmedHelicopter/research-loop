@@ -22,6 +22,12 @@ task bind the same exported CSV bytes. All three programs, plan IDs, measurement
 IDs and input receipts are sealed before the first execution. Runtime failure
 consumes its opportunity and retains an unknown observation in the three-row
 denominator. Terminal failures retain blocked rows and unused opportunities.
+Each cell has its own fresh CodexModelPort ledger, the same model/effort, four
+calls, 180-second per-call timeout and a 12,000-token stop threshold. The threshold
+is checked using returned usage; it is not a promise of a hard token ceiling
+inside an already-issued external call. Overshoot and unknown/failed usage are
+retained and prevent further calls in that cell. No cell spends another cell's
+model allocation. Model contexts and programs have equal 12,000-byte bounds.
 
 Only actual successful receipt stdout can become a numeric observation. It must
 name the exact frozen observable. A read-only verifier replays original event

@@ -23,7 +23,8 @@ from research_loop.ontology import ContractError, canonical, digest
 
 SLOTS = ("program_1", "program_2", "program_3", "final")
 BUDGET = {"model_calls": 4, "execution_opportunities": 3, "timeout_seconds": 20,
-          "cpus": 1, "memory_gib": 1, "max_program_bytes": 12000}
+          "cpus": 1, "memory_gib": 1, "max_program_bytes": 12000,
+          "model_token_stop_threshold": 12000, "model_timeout_seconds": 180, "module_context_bytes": 12000}
 PROGRAM_SCHEMA = {"type": "object", "properties": {"program": {"type": "string"}},
                   "required": ["program"], "additionalProperties": False}
 
@@ -91,7 +92,8 @@ def compile_q32_execution(packets, material_by_task: dict, *, image: str) -> Fro
     return FrozenRecord.from_dict({"schema": "q32-prospective-execution-v1", "registry": spec.record.data(),
         "fixed_modules": ["M4"], "budget": BUDGET, "slots": list(SLOTS), "image": image,
         "tasks": tasks, "cells": cells, "scientific_validated": False,
-        "independent_data_units_per_task": 1, "measurement_calibration": "unverified_caller_definition"})
+        "distinct_public_input_artifacts_per_task": 1, "independent_data_qualification": "not_established",
+        "model": "gpt-5.6-luna", "effort": "low", "measurement_calibration": "unverified_caller_definition"})
 
 
 def _public_plan(plan):
@@ -153,7 +155,7 @@ class Q32ExecutionStage:
         self._programs, self._rows, self._seal = [], [], None
 
     def _invoke(self, slot, model, context):
-        if len(canonical(context).encode()) > 12000:
+        if len(canonical(context).encode()) > BUDGET["module_context_bytes"]:
             raise ContractError("public measurement context exceeds frozen equal allocation")
         def projected(request):
             visible = FrozenRecord.from_dict(public_request(request.data()))
@@ -236,7 +238,10 @@ class Q32ExecutionStage:
         result = FrozenRecord.from_dict({"cell": self.cell.data(), "rows": rows, "decision": decision.data(),
             "failure": failure, "allocated": BUDGET, "model_attempts": self._session._next_call,
             "execution_attempts": self._session._attempts, "unattempted_executions": 3 - self._session._attempts,
-            "scientific_validated": False, "programme_complete": False, "independent_data_units": 1,
+            "scientific_validated": False, "programme_complete": False, "distinct_public_input_artifacts": 1,
+            "independent_data_qualification": "not_established",
+            "model_usage": ({"tokens": model.ledger["tokens"], "usage_incomplete": model.ledger["usage_incomplete"],
+                "calls": model.ledger["calls"]} if hasattr(model, "ledger") else None),
             "measurement_calibration": "unverified_caller_definition"})
         self._session._record("q32_phase_result", result.data())
         (self._session.sidecar / "result.json").write_text(result.encoded, encoding="utf-8")
@@ -244,7 +249,7 @@ class Q32ExecutionStage:
 
 
 def run_q32_execution_panel(*, custody, snapshot_root: Path, export_root: Path, run_root: Path,
-                            item_ids, material_by_task, image, model, verifier):
+                            item_ids, material_by_task, image, model_factory, verifier):
     """Explicit exporter -> compiler -> owned sessions -> real broker entry."""
     if run_root.exists() and any(run_root.iterdir()):
         raise ContractError("execution panel output already used")
@@ -254,8 +259,22 @@ def run_q32_execution_panel(*, custody, snapshot_root: Path, export_root: Path, 
     (run_root / "compiled.json").write_text(compiled.encoded, encoding="utf-8")
     packet_by_task = {p.task.content_hash: p for p in packets}
     broker = DockerExecutionBroker([export_root, run_root])
-    results = []
+    models = []
     for i, cell in enumerate(compiled.data()["cells"]):
+        # Each cell owns an equal independent ledger. A failed arm cannot spend
+        # another arm's allocation. Factory setup must not issue model calls.
+        from research_loop.modular.model_port import CodexModelPort
+        model = model_factory(i)
+        if (not isinstance(model, CodexModelPort) or model.max_calls != 4
+                or model.max_tokens != BUDGET["model_token_stop_threshold"]
+                or model.model != compiled.data()["model"] or model.effort != compiled.data()["effort"]
+                or model.timeout_seconds != BUDGET["model_timeout_seconds"] or model.ledger["calls"]):
+            raise ContractError("each cell needs a fresh equally budgeted frozen model port")
+        models.append(model)
+    if len({m.root for m in models}) != len(models):
+        raise ContractError("model ledgers may not be shared across cells")
+    results = []
+    for i, (cell, model) in enumerate(zip(compiled.data()["cells"], models)):
         stage = Q32ExecutionStage(compiled, cell, packet_by_task[cell["task_digest"]], sidecar=run_root / str(i), verifier=verifier)
         results.append(stage.run(model, broker))
     result = FrozenRecord.from_dict({"compiled_digest": compiled.content_hash, "cell_count": len(results),

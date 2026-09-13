@@ -129,8 +129,17 @@ def verify_q32_execution(path: Path, compiled: FrozenRecord) -> FrozenRecord:
     final = finals[0]
     if final["model_attempts"] != len(requests) or final["execution_attempts"] != len(executions) or final["scientific_validated"] is not False:
         raise ContractError("final cost or scientific claim differs")
-    for row in final["rows"][len(observations):]:
-        if row["status"] != "blocked" or row["observation"] is not None or any(v != "unknown" for v in row["range_membership"].values()):
+    for i, row in enumerate(final["rows"][len(observations):], len(observations)):
+        expected = {"ordinal": i, "plan_id": expected_plans[i]["plan_id"], "measurement": task["measurements"][i],
+            "status": "blocked", "execution_digest": None, "receipt": None, "observation": None,
+            "range_membership": {b["hypothesis_id"]: "unknown" for b in expected_plans[i]["branches"]}}
+        if row != expected:
             raise ContractError("unexecuted measurement promoted or omitted")
+    decisions = [e["data"] for e in events if e["stage"] == "final_decision"]
+    if (len(decisions) != 1 or final["decision"] != decisions[0] or final["allocated"] != compiled.data()["budget"]
+            or final["unattempted_executions"] != 3 - len(executions) or final["cell"] != frozen["cell"]
+            or final["programme_complete"] is not False or final["decision"]["scientific_validated"] is not False
+            or final["distinct_public_input_artifacts"] != 1 or final["independent_data_qualification"] != "not_established"):
+        raise ContractError("final budget, P0, denominator or qualification differs")
     return FrozenRecord.from_dict({"verified": True, "cells": 1, "measurements": 3, "model_attempts": len(requests),
         "execution_attempts": len(executions), "scientific_validated": False})
