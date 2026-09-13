@@ -6,6 +6,7 @@ issued by numeric range matching or successful execution.
 """
 from __future__ import annotations
 
+from dataclasses import dataclass
 import hashlib
 import json
 import math
@@ -289,9 +290,13 @@ def _run_q32_compiled(packets, compiled, export_root, run_root, model_factory, v
     return result
 
 
+@dataclass(frozen=True)
 class FrozenQ32ProspectiveConfig:
     """Exact public TRAIN bindings and caller plans, frozen before source I/O."""
-    def __init__(self, record):
+    record: FrozenRecord
+
+    def __post_init__(self):
+        record = self.record
         from research_loop.modular.contracts import DataIdentity
         from research_loop.modular.combination_train_source import source_item_matches
         if type(record) is not FrozenRecord:
@@ -319,7 +324,6 @@ class FrozenQ32ProspectiveConfig:
         if ({i.benchmark for i in identities} != {'blade', 'discoverybench'} or len({i.split_id for i in identities}) != 1
                 or not isinstance(b['material_by_task'], dict) or set(b['material_by_task']) != set(tasks)):
             raise ContractError('Q3.2 requires both tasks in one TRAIN split and complete materials')
-        self.record = record
 
     def data(self):
         return self.record.data()
