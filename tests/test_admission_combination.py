@@ -60,6 +60,11 @@ def sources(calls, fault=None, root=None):
             if fault == 'source_foreign': assessments['before']['old']['subject_digest']='0'*64
             if fault == 'source_bool': assessments['before']['old']['execution_success']=1
             if fault == 'source_disagree' and group.endswith('1'): assessments['before']['old']['state']['validity']='unknown'
+            # Both authorities agree within a cell, but a later valid cell may
+            # observe a different qualification.  This is a synthetic
+            # comparability fixture, not an authority disagreement.
+            if fault == 'source_cell_drift' and ((len(calls)-1)//2) % 2:
+                assessments['before']['old']['state']['validity']='invalid'
             return key.issue({'schema':'admission-material-response-v1','request_digest':request.content_hash,
                 'material_digest':b['material_digest'],'identity':b['material']['identity'],'source_group':group,
                 'verdict':'unknown' if fault=='source_unknown' else 'verified','cost_units':None if fault=='unknown_cost' else 1,

@@ -19,6 +19,7 @@ from research_loop.modular.lineage_combination_controller import run_lineage_tra
 from research_loop.modular.lineage_combination_driver import verify_lineage_combination_cell
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from test_modular_combination_benchmark_driver import _rewrite_trace
+import test_admission_combination as admission
 
 
 RECIPE = {'schema':'lineage-useful-review-recipe-v1',
@@ -146,3 +147,21 @@ def test_all_58_cells_use_actual_reviews_and_independent_process_scores(tmp_path
             finally:path.write_bytes(original)
     assert {m['obligation'] for m in mutated}=={p.obligation_id for p in result.compiled.panels}
     (tmp_path/'replay-mutations.json').write_text(json.dumps(mutated),encoding='utf-8')
+
+
+def test_v3_admission_qualification_drift_keeps_all_cells_but_blocks_contrasts(tmp_path, monkeypatch):
+    setup = configured(tmp_path, 'admission')
+    calls = []
+    # The replacement has the same frozen authority policy binding as the
+    # config, while issuing valid, mutually agreeing but cell-varying results.
+    setup['qualifier'] = admission.sources(calls, fault='source_cell_drift', root=tmp_path/'run')
+    assert setup['qualifier'].binding().data() == setup['config'].data()['source_verifier_binding']
+    result, seen = invoke_controller(setup, monkeypatch)
+    assert len(result.scores) == len(result.attempts) == 24
+    assert len(seen) == 24 * 4 and all(a.data()['status'] == 'succeeded' for a in result.attempts)
+    contrasts = result.receipt.data()['contrasts']
+    assert all(c['status'] == 'inconclusive' and c['reason'] == 'v3_admission_qualification_semantic_drift'
+               for c in contrasts)
+    assert all(c['qualification_drift'] for c in contrasts)
+    assert result.receipt.data()['failed_cells'] == result.receipt.data()['blocked_cells'] == 0
+    assert result.receipt.data()['pruned_cells'] == []

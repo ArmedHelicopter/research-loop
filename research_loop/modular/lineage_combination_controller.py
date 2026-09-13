@@ -199,6 +199,53 @@ class LineageTrainRun:
     receipt: FrozenRecord
 
 
+def _v3_admission_qualification_semantics(config, cell, material, qualifier, path):
+    """Return only the signed qualification fields the admission transition consumes.
+
+    A source receipt cannot be compared byte-for-byte across matched arms: its
+    request binds a distinct cell and its signature/call bookkeeping is also
+    intentionally distinct.  This projection keeps the before/after
+    assessments separate and excludes that incidental receipt metadata.
+    """
+    from research_loop.modular.admission_combination_controller import FrozenAdmissionTrainConfig
+    if type(config) is not FrozenAdmissionTrainConfig or 'execution_recipe' not in config.data():
+        return None
+    binding = FrozenRecord.from_dict({'cell_digest': FrozenRecord.from_dict(cell.data()).content_hash,
+                                      'scenario_digest': cell.scenario_digest})
+    assessments = qualifier.assessments(material, path, cell_binding=binding)
+    consumed = {}
+    for phase in ('before', 'after'):
+        consumed[phase] = {}
+        for key in material.subjects()[phase]:
+            value = assessments[phase][key]
+            consumed[phase][key] = {field: value[field] for field in
+                                    ('subject_digest', 'state', 'outcome', 'execution_success', 'audit')}
+    return FrozenRecord.from_dict({'schema': 'v3-admission-qualification-semantics-v1',
+        'task_digest': cell.task_digest, 'material_digest': material.record.content_hash,
+        'source_verifier_binding': config.data()['source_verifier_binding'], 'assessments': consumed})
+
+
+def _v3_admission_qualification_drift(config, panel, rows):
+    """Return compact, non-sensitive evidence when comparable v3 arms differ."""
+    from research_loop.modular.admission_combination_controller import FrozenAdmissionTrainConfig
+    if type(config) is not FrozenAdmissionTrainConfig or 'execution_recipe' not in config.data():
+        return None
+    expected = {FrozenRecord.from_dict(cell.data()).content_hash for cell in panel.cells}
+    comparable = [row for row in rows if FrozenRecord.from_dict(row['cell']).content_hash in expected]
+    groups = {}
+    for row in comparable:
+        cell = row['cell']; key = (cell['task_digest'], cell['replicate'])
+        groups.setdefault(key, []).append(row)
+    drift = []
+    for (task_digest, replicate), group in groups.items():
+        if len(group) != len([cell for cell in panel.cells if cell.task_digest == task_digest and cell.replicate == replicate]):
+            continue  # Existing incomplete-cell handling determines this outcome.
+        by_arm = {row['cell']['arm_id']: row.get('qualification_semantics_digest') for row in group}
+        if None in by_arm.values() or len(set(by_arm.values())) != 1:
+            drift.append({'task_digest': task_digest, 'replicate': replicate, 'arm_semantics': by_arm})
+    return drift or None
+
+
 def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run_root, model, audit_verifier,
         source_verifier, execution_authority, scoring_service, scorer_authority_keys, prospective_exporter=None):
     from evaluation.modular.lineage_scorer_process import LineageScorerProcessPool
@@ -290,6 +337,10 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
             if result.cell != cell or result.runtime.cell_key != cell.key: raise ContractError('foreign executor cell')
             verified = verify_lineage_combination_cell(result, **args)
             row['verification'] = verified.data(); runtime_by_panel.setdefault(panel.digest, []).append(result.runtime)
+            semantics = _v3_admission_qualification_semantics(config, cell, compiled.materials[cell.task_digest],
+                source_verifier, cell_root/'source-verification.json')
+            if semantics is not None:
+                row['qualification_semantics_digest'] = semantics.content_hash
             if result.runtime.status != 'succeeded':
                 row.update(status='failed', phase='execution', reason='original_execution_failure'); continue
             source = source_issuer(authority=execution_authority, result=result, **args); score_inputs[cell.key] = source
@@ -320,13 +371,19 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
         def verify_score(score, cell, owner):
             score_verifier(score, authority_keys=scorer_authority_keys, config=service.config, panel=owner,
                 cell=cell, score_input=score_inputs[cell.key], execution_authority_keys={execution_authority.authority_id: execution_authority.key}, **reference_options(cell))
-        try:
-            contrast = estimate_grouped_contrast(panel, runtime=runtime_by_panel.get(panel.digest, []),
-                scorer_receipts=[s for s in scores if s.cell_key in {c.key for c in panel.cells}],
-                verifier=CombinationPanelVerifier(scorer_verifier=verify_score))
-        except Exception as exc:
+        drift = _v3_admission_qualification_drift(config, panel, journal['cells'])
+        if drift is not None:
             contrast = FrozenRecord.from_dict({'schema': 'lineage-inconclusive-contrast-v1', 'panel_digest': panel.digest,
-                'status': 'inconclusive', 'reason': 'incomplete_or_failed_cell', 'error_type': type(exc).__name__})
+                'status': 'inconclusive', 'reason': 'v3_admission_qualification_semantic_drift',
+                'qualification_drift': drift, 'scientific_status': 'not_measured'})
+        else:
+            try:
+                contrast = estimate_grouped_contrast(panel, runtime=runtime_by_panel.get(panel.digest, []),
+                    scorer_receipts=[s for s in scores if s.cell_key in {c.key for c in panel.cells}],
+                    verifier=CombinationPanelVerifier(scorer_verifier=verify_score))
+            except Exception as exc:
+                contrast = FrozenRecord.from_dict({'schema': 'lineage-inconclusive-contrast-v1', 'panel_digest': panel.digest,
+                    'status': 'inconclusive', 'reason': 'incomplete_or_failed_cell', 'error_type': type(exc).__name__})
         contrasts.append(contrast)
     receipt = FrozenRecord.from_dict({'schema': 'lineage-train-receipt-v1', 'config_digest': config.record.content_hash,
         'expected_cells': len(journal['cells']), 'observed_cells': len(results), 'scored_cells': len(scores),
