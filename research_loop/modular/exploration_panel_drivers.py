@@ -112,7 +112,8 @@ def _item(raw, task, appeal):
 
 
 def freeze_exploration_panel_bundle(task: PublicTask, *, q71: Mapping, q72: Mapping, budget: FrozenRecord) -> FrozenRecord:
-    if not isinstance(task, PublicTask) or not isinstance(budget, FrozenRecord) or budget.data() != BUDGET:
+    if (not isinstance(task, PublicTask) or not isinstance(budget, FrozenRecord) or budget.data() != BUDGET
+            or any(type(value) is not int for value in budget.data().values())):
         raise ContractError('exploration requires caller-bound public task and matched opportunity budget')
     task.identity.require_train()
     if set(q71) != set(Q71_VARIANTS) or set(q72) != set(Q72_VARIANTS):

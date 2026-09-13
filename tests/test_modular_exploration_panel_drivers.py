@@ -216,6 +216,15 @@ def test_freeze_complete_grid_without_any_external_call(tmp_path, monkeypatch):
         freeze_exploration_panel_bundle(task, q71=bundle['q71'], q72=bundle['q72'], budget=FrozenRecord.from_dict(BUDGET))
 
 
+def test_boolean_budget_cannot_impersonate_integer_opportunity(tmp_path, monkeypatch):
+    compiled, tasks, authority, bundles = _compile(tmp_path, monkeypatch)
+    task = next(iter(tasks.values())); bundle = bundles[task.content_hash].data()
+    with pytest.raises(ContractError):
+        freeze_exploration_panel_bundle(task, q71=bundle['q71'], q72=bundle['q72'],
+            budget=FrozenRecord.from_dict({**BUDGET, 'execution_opportunities': True}))
+    assert authority.calls == []
+
+
 def test_full_52_cell_real_docker_grid_keeps_prospective_and_actual_denominators(tmp_path, monkeypatch):
     compiled, tasks, authority, bundles = _compile(tmp_path, monkeypatch); runs = []; results = {}
     for index, cell in enumerate(compiled.panel.cells):
