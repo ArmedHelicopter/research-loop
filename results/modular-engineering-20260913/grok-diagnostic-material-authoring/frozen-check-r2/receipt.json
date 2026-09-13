@@ -1,0 +1,40 @@
+{
+  "schema": "material-authoring-frozen-repair-check-v1",
+  "commit": "5704c53db0ab3d0ade2e033f5fb4ef155d7a44dc",
+  "source_count": 681,
+  "source_hashes_unchanged": true,
+  "clean_before": true,
+  "clean_after": true,
+  "commit_unchanged": true,
+  "pytest_exit": 0,
+  "tests": 32,
+  "failures": 0,
+  "errors": 0,
+  "all_original_failures_included": [
+    "tests/test_diagnostic_subscription.py::test_unknown_title_does_not_invent_zero_or_block_known_main"
+  ],
+  "all_new_authoring_tests_included": true,
+  "native_timeout_tree_and_label_isolation_included": true,
+  "prior_full_check": {
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\material-authoring-frozen-check-r1\\receipt.json",
+    "sha256": "eee9234d30e751672216a582cee93df6cdcb578a5be043788327fc5e160368d9"
+  },
+  "repair_scope": "test fixtures only: Python peer20s, parent240s, legacy caller360s; production native60s unchanged",
+  "parent_pythonpath_removed": true,
+  "real_model_generation_requests": 0,
+  "command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "--disable-warnings",
+    "tests/test_diagnostic_material_authoring.py",
+    "tests/test_diagnostic_subscription.py::test_unknown_title_does_not_invent_zero_or_block_known_main",
+    "tests/test_grok_acp_transport.py::test_timeout_kills_subprocess_tree_without_retry",
+    "tests/test_label_isolation.py",
+    "--basetemp",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\material-authoring-frozen-check-r2\\pytest-temp",
+    "--junitxml",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\material-authoring-frozen-check-r2\\pytest.xml"
+  ]
+}

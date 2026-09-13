@@ -1,0 +1,63 @@
+{
+  "accepted_authoring_responses": 0,
+  "actual_auth_and_authority_key_material_excluded": true,
+  "actual_prompt_reference_candidate_support_raw_stream_bodies_excluded": true,
+  "all_expected_targets_unknown": true,
+  "all_opportunity_cost_usd": null,
+  "all_opportunity_tokens": null,
+  "authoring_envelope_sha256": "d922de6b0755cf1f6953a6cf3096808f6f97c44d7b415d882f8a0cc3ba229f02",
+  "evaluator_opportunity_count": 72,
+  "expert_certification": false,
+  "known_main_usage": null,
+  "known_response_usage": [],
+  "material_availability": {
+    "not_applicable": 0,
+    "ready": 0,
+    "unresolved_material": 36
+  },
+  "model_prompt_requests": 0,
+  "native_account_model_and_empty_tools_gates_completed": false,
+  "native_process_attempts": 1,
+  "native_prompt_reservations": 0,
+  "native_request_methods": [
+    "initialize"
+  ],
+  "original_frozen_check": {
+    "failure": "synthetic peer timeout; retained unknown usage and blocked later fixture calls",
+    "failures": 1,
+    "passed": 141,
+    "tests": 142
+  },
+  "planned_main_opportunities": 4,
+  "planned_possible_title_opportunities": 4,
+  "preliminary_checks_not_frozen": [
+    17,
+    8
+  ],
+  "preliminary_separate_stdout_capture": false,
+  "private_integrity_manifest": {
+    "file_count": 26,
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\material-authoring-private-integrity-r1.json",
+    "sha256": "aba21bdbe6e09a955e366777cb16a827d0d5f21fa14d36c7b3734cd521eaf0f2"
+  },
+  "production_commit": "5826fa3fd3a855d57e4dc4d684bb1ec1ea3bda1b",
+  "ready_review_request_count": 0,
+  "remaining_authoring_tasks_blocked": 3,
+  "repaired_frozen_check": {
+    "failures": 0,
+    "passed": 32,
+    "source_hashes_unchanged": 681,
+    "tests": 32
+  },
+  "retry_allowed": false,
+  "review_dispatch_blocked": true,
+  "review_evaluator_requests_dispatched": 0,
+  "schema": "provisional-train-authoring-terminal-closure-v1",
+  "separate_review_evaluator_main_allocation": 180,
+  "settled_additional_charge_usd": null,
+  "slot_count": 36,
+  "terminal_failure": "native initialize timed out without stdout/stderr or session creation",
+  "tested_source_commit": "5704c53db0ab3d0ade2e033f5fb4ef155d7a44dc",
+  "title_usage": null,
+  "validation_eligible": false
+}

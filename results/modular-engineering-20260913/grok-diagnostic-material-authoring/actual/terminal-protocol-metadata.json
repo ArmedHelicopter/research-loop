@@ -1,0 +1,51 @@
+{
+  "error_classes": [
+    "timeout"
+  ],
+  "filesystem_timestamps_utc": {
+    "native_initialize_request_stream": {
+      "created": "2026-09-13T22:34:00.796681+00:00",
+      "last_write": "2026-09-13T22:34:01.433817+00:00"
+    },
+    "native_terminal_receipt": {
+      "created": "2026-09-13T22:35:01.108598+00:00",
+      "last_write": "2026-09-13T22:35:01.108598+00:00"
+    },
+    "parent_reservation": {
+      "created": "2026-09-13T22:33:55.171448+00:00",
+      "last_write": "2026-09-13T22:33:55.171448+00:00"
+    },
+    "parent_terminal_closure": {
+      "created": "2026-09-13T22:35:09.389816+00:00",
+      "last_write": "2026-09-13T22:35:09.389816+00:00"
+    }
+  },
+  "handshake": {
+    "account_gates_reached": false,
+    "initialize_response_received": false,
+    "initialize_written": true,
+    "same_session_empty_tools_verified": false,
+    "selected_model_verified": false,
+    "session_new_reached": false
+  },
+  "native_exit_code_not_recorded_by_original_transport": true,
+  "native_process_exit_code": null,
+  "native_tree_cleanup_failure_reported": false,
+  "outbound_method_counts": {
+    "_x.ai/auto-topup-rule": 0,
+    "_x.ai/billing": 0,
+    "initialize": 1,
+    "session/new": 0,
+    "session/prompt": 0
+  },
+  "owned_native_processes_remaining_observed": 0,
+  "parent_elapsed_seconds": 70.875,
+  "parent_tree_closed": true,
+  "process_observation_method": "Win32_Process Name=grok.exe and exact preparation directory in command line",
+  "received_stderr_bytes": 0,
+  "received_stdout_bytes": 0,
+  "retry_allowed": false,
+  "schema": "authoring-safe-terminal-protocol-metadata-v1",
+  "timestamps_are_filesystem_observations_not_rpc_server_timestamps": true,
+  "worker_exit_code": 0
+}

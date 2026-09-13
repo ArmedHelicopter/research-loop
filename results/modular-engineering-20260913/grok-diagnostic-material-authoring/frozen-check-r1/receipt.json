@@ -1,0 +1,49 @@
+{
+  "schema": "material-authoring-frozen-check-v1",
+  "commit": "5826fa3fd3a855d57e4dc4d684bb1ec1ea3bda1b",
+  "source_count": 681,
+  "source_hashes_unchanged": true,
+  "clean_before": true,
+  "clean_after": true,
+  "commit_unchanged": true,
+  "pytest_exit": 1,
+  "tests": 142,
+  "failures": 1,
+  "errors": 0,
+  "label_isolation_included": true,
+  "legacy_positive_monetary_contract_included": true,
+  "authoring_material_renderer_inventory_seam_included": true,
+  "renderer_worker_native_provider_budget_seam_included": true,
+  "all_model_requests_synthetic_fixture_only": true,
+  "real_model_generation_requests": 0,
+  "parent_pythonpath_removed": true,
+  "prior_preliminary_checks": [
+    {
+      "number": 1,
+      "tests": 17,
+      "frozen": false
+    },
+    {
+      "number": 2,
+      "tests": 8,
+      "frozen": false
+    }
+  ],
+  "command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "--disable-warnings",
+    "tests/test_diagnostic_material_authoring.py",
+    "tests/test_diagnostic_subscription.py",
+    "tests/test_grok_acp_transport.py",
+    "tests/test_calibration_pilot.py",
+    "tests/test_diagnostic_private_ports.py",
+    "tests/test_label_isolation.py",
+    "--basetemp",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\material-authoring-frozen-check-r1\\pytest-temp",
+    "--junitxml",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\material-authoring-frozen-check-r1\\pytest.xml"
+  ]
+}

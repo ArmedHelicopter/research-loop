@@ -1,0 +1,17 @@
+.........................F.............................................. [ 50%]
+......................................................................   [100%]
+================================== FAILURES ===================================
+_________ test_unknown_title_does_not_invent_zero_or_block_known_main _________
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/material-authoring-frozen-check-r1/pytest-temp/test_unknown_title_does_not_in0')
+
+    def test_unknown_title_does_not_invent_zero_or_block_known_main(tmp_path):
+        desc, manifest, authorities, _ = setup_subscription(tmp_path, ready_kind='uncertain')
+        result = unpack(run_private(desc, fixture_factory=fixture_factory()), manifest, authorities)
+>       assert result['budget']['reserved_main_opportunities'] == 8
+E       assert 7 == 8
+
+tests\test_diagnostic_subscription.py:159: AssertionError
+- generated xml file: E:\_ryanDev\AI\research-loop-modular\work\material-authoring-frozen-check-r1\pytest.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_diagnostic_subscription.py::test_unknown_title_does_not_invent_zero_or_block_known_main
