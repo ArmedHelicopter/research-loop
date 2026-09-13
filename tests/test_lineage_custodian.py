@@ -2,6 +2,7 @@ import csv
 import hashlib
 import io
 import json
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -12,6 +13,25 @@ from research_loop.modular.source_ingestion import ArtifactSpec, SourceSnapshot
 from research_loop.ontology import digest
 
 SECRET = "PRIVATE_DYNAMIC_TASK_GOLD_CODE"
+
+
+def test_git_pin_binds_exact_checkout_and_supports_worktrees(tmp_path):
+    root = tmp_path / "source repo"
+    root.mkdir()
+    def git(*args):
+        return subprocess.check_output(["git", "-C", str(root), *args], stderr=subprocess.DEVNULL).decode().strip()
+    git("init", "--quiet")
+    assert c._git_pin(root) is None
+    git("-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+        "commit", "--allow-empty", "--quiet", "-m", "fixture")
+    expected = git("rev-parse", "HEAD")
+    assert c._git_pin(root) == expected
+    child = root / "received snapshot"
+    child.mkdir()
+    assert c._git_pin(child) is None  # Parent HEAD is not the received source pin.
+    linked = tmp_path / "source worktree"
+    git("worktree", "add", "--quiet", "--detach", str(linked), expected)
+    assert c._git_pin(linked) == expected
 
 
 def write(path, value):

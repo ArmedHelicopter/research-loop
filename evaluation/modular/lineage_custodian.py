@@ -121,9 +121,20 @@ def _primary_json(path, source, audit):
 def _git_pin(root):
     # Only the fixed checkout's HEAD is queried; stderr and arbitrary text stay
     # private. A missing .git is a pin gap, not permission to guess a revision.
-    result = subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"], capture_output=True, timeout=15)
-    value = result.stdout.decode("ascii", errors="ignore").strip()
-    return value if result.returncode == 0 and len(value) == 40 and all(c in "0123456789abcdef" for c in value) else None
+    root = Path(root).resolve()
+    if not (root / ".git").exists():
+        return None
+    result = subprocess.run(["git", "-C", str(root), "rev-parse", "--show-toplevel", "HEAD"],
+                            capture_output=True, timeout=15)
+    if result.returncode != 0:
+        return None
+    try:
+        checkout, value = result.stdout.decode("utf-8").splitlines()
+        if Path(checkout).resolve() != root:
+            return None
+    except (ValueError, OSError):
+        return None
+    return value if len(value) == 40 and all(c in "0123456789abcdef" for c in value) else None
 
 
 def primary_records(config, audit):
