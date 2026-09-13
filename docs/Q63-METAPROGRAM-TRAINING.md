@@ -113,3 +113,9 @@ preflight rejection, provider usage unknown, Docker failure and independently
 rebound ledger/source tampering. There are no paid calls, private references or
 validation inputs. Scoring, meta improvement, transfer, provider authenticity
 and scientific validity remain unmeasured.
+
+Rejected successor analysis and final answers remain original failed cells.
+The verifier accepts an invalid response only when the replayed protocol ends
+immediately in its matching request/response-bound driver failure and the cell
+records the corresponding rejection. Original response bytes, provider output
+digests, consumed calls, and any completed Docker attempt remain in evidence.

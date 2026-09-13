@@ -71,6 +71,8 @@ def fixture(tmp_path,monkeypatch,*,fault=None,surface='prompt',history_failure=F
             return FrozenRecord.from_dict({'entrypoint':'emit_literal_change_v1','surface':surface,
                 'key':'lesson' if surface=='memory' or fault=='proposal' else 'instructions','value':value})
         if body['slot']=='analysis_program':
+            if fault=='analysis_schema':
+                return FrozenRecord.from_dict({'analysis':'retained invalid successor analysis','program':''})
             context=body['module_context']['predecessor_context']
             value=context['instructions'] or context['memory_lesson']
             statistic=value.split('=')[1]
@@ -78,6 +80,9 @@ def fixture(tmp_path,monkeypatch,*,fault=None,surface='prompt',history_failure=F
                 +("raise RuntimeError('controlled synthetic failure')" if fault=='docker' else
                   "print(json.dumps({'statistic':"+repr(statistic)+",'value':sum(xs)"+('/len(xs)' if statistic=='mean' else '')+"}))"))
             return FrozenRecord.from_dict({'analysis':'Apply supplied public training instruction: '+value,'program':program})
+        if fault=='answer_schema':
+            return FrozenRecord.from_dict({'objective_digest':body['module_context']['required_objective_digest'],
+                'outcome':'unknown','evidence_ids':[],'conclusion':'','programme_complete':False})
         return FrozenRecord.from_dict({'objective_digest':body['module_context']['required_objective_digest'],
             'outcome':'unknown','evidence_ids':[],
             'conclusion':body['module_context']['execution_feedback'][0]['stdout'] or 'Execution failed; unresolved',
@@ -129,6 +134,27 @@ def test_failures_keep_full_eight_cell_denominator_and_actual_cost(tmp_path,monk
     assert run.receipt.data()['actual']['reported_tokens']==count*2
     assert run.receipt.data()['actual']['docker_attempts']==(8 if fault=='docker' else 0)
     assert run.receipt.data()['actual']['builder_attempts']==(0 if fault=='proposal' else 8)
+
+
+@pytest.mark.parametrize('fault',['analysis_schema','answer_schema'])
+def test_successor_invalid_responses_keep_original_driver_failure_and_all_costs(tmp_path,monkeypatch,fault):
+    plan,args,seen,_=fixture(tmp_path,monkeypatch,fault=fault)
+    run=run_metaprogram_training(plan,**args)
+    assert len(run.cells)==8 and run.receipt.data()['status']=='engineering_incomplete'
+    actual=run.receipt.data()['actual'];calls=16 if fault=='analysis_schema' else 24
+    assert actual['model_requests']==actual['provider_calls']==calls
+    assert actual['reported_tokens']==calls*2 and actual['builder_attempts']==8
+    assert actual['docker_attempts']==(0 if fault=='analysis_schema' else 8)
+    assert verify_metaprogram_training(run,plan=plan).data()['observed_cells']==8
+    for cell in run.cells:
+        assert cell.record.data()['status']=='failed'
+        rows=[json.loads(x) for x in (cell.root/'solver'/'trace.jsonl').read_text(encoding='utf-8').splitlines()]
+        assert rows[-1]['stage']=='driver_failure' and rows[-2]['stage']=='model_response'
+        response=FrozenRecord.from_dict(rows[-2]['data']['response'])
+        assert rows[-1]['data']['response_digest']==response.content_hash
+        assert rows[-1]['data']['request_digest']==rows[-2]['data']['request_digest']
+        if fault=='analysis_schema': assert response.data()=={'analysis':'retained invalid successor analysis','program':''}
+        else: assert response.data()['conclusion']==''
 
 
 @pytest.mark.parametrize('fault',['history_bytes','history_response','input_bytes','model_schema','budget','fake_history','validation_history'])

@@ -568,16 +568,29 @@ def _verify_cell(result,plan,cell,target,ledger):
     if row['solver_trace'] is not None:
         if candidate is None: raise ContractError('solver lacks actual generated package')
         path=root/'solver'/'trace.jsonl';_check_trace_proof(path,row['solver_trace']);verify_benchmark_solve_trace(path,target.task)
-        solver_rows=_events(path);lock=solver_rows[0]['data'];analysis=None;execution=None
+        solver_rows=_events(path);lock=solver_rows[0]['data'];analysis=None;execution=None;slot=None
         if (lock.get('package_digest')!=candidate.digest or lock.get('arm')!=cell['arm'] or lock.get('objective')!=target.objective.data()):
             raise ContractError('successor solver does not lock the generated candidate')
         for event in solver_rows:
             if event['stage']=='model_request':
                 request=event['data']['request']
+                slot=request['slot']
                 if request.get('task')!=target.task.data() or request.get('module_context',{}).get('predecessor_context')!=projection.data():
                     raise ContractError('actual solver prompt did not consume generated public changes')
-            elif event['stage']=='model_response' and analysis is None:
-                analysis=FrozenRecord.from_dict(event['data']['response']);_program_from(analysis)
+            elif event['stage']=='model_response':
+                response=FrozenRecord.from_dict(event['data']['response'])
+                try:
+                    if slot=='analysis_program': _program_from(response);analysis=response
+                    elif slot=='final_answer': _candidate_from(response,target.objective)
+                    else: raise ContractError('successor response has an unexpected slot')
+                except ContractError:
+                    terminal=solver_rows[-1]
+                    expected_reason={'analysis_program':'solver_analysis_rejected','final_answer':'solver_answer_rejected'}.get(slot)
+                    if (expected_reason is None or event!=solver_rows[-2] or terminal['stage']!='driver_failure'
+                            or terminal['data'].get('response_digest')!=response.content_hash
+                            or terminal['data'].get('request_digest')!=event['data']['request_digest']
+                            or row['status']!='failed' or row['reason']!=expected_reason):
+                        raise
             elif event['stage']=='execution_result':
                 execution=ExecutionReceipt.parse(event['data']['receipt'])
                 if analysis is None: raise ContractError('solver execution lacks the actual analysis response')
