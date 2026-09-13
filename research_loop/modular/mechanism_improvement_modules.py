@@ -26,8 +26,16 @@ def slots(pair):
 
 def model_schemas():
     result=metaprogram_schemas()
+    prediction_fields={'prediction_id':{'type':'string'},'discriminator_id':{'type':'string'},
+        'observable':{'type':'string'},'direction':{'type':'string'},'value_range':{'type':['string','null']},
+        'failure_condition':{'type':'string'}}
+    prediction={'type':'object','required':list(prediction_fields),'additionalProperties':False,'properties':prediction_fields}
+    branch_fields={k:{'type':'string'} for k in ('hypothesis_id','mechanism_key','mechanism','intervention','elimination_condition')}
+    branch_fields['predictions']={'type':'array','items':prediction,'minItems':1,'maxItems':3}
+    branch={'type':'object','required':list(branch_fields),'additionalProperties':False,'properties':branch_fields}
     result['m4_plan']={'type':'object','required':['question','branches','budget_units'],'additionalProperties':False,
-        'properties':{'question':{'type':'string'},'branches':{'type':'array','items':{'type':'object'}},'budget_units':{'type':'integer'}}}
+        'properties':{'question':{'type':'string'},'branches':{'type':'array','items':branch,'minItems':3,'maxItems':3},
+            'budget_units':{'type':'integer','minimum':3,'maximum':3}}}
     review={'type':'object','required':['assessment','evidence_refs','counterexamples','uncertainty'],'additionalProperties':False,
         'properties':{'assessment':{'type':'string','enum':['accept','concern','unknown']},
             'evidence_refs':{'type':'array','items':{'type':'string'}},'counterexamples':{'type':'array','items':{'type':'string'}},
