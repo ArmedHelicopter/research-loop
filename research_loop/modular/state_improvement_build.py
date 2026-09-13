@@ -35,6 +35,10 @@ def check_history(history, material, broker, inputs):
     if type(history) is not FrozenTrainHistory or type(material) not in (FrozenAdmissionMaterial, FrozenLineageMaterial):
         raise ContractError('exact frozen history and state types required')
     history.verify(); check_material_inputs(material, history.task, broker, inputs)
+    executions=[r['data']['receipt'] for r in _read_events(history.trace_path) if r['stage']=='execution_result']
+    expected={r['artifact']['artifact_id']:r['artifact'] for r in material.data()['public_artifacts']}
+    if len(executions)!=1 or executions[0]['record'].get('input_artifacts')!=expected:
+        raise ContractError('history material CSV differs from the original executed history inputs')
     try: observations = json.loads(history.binding.data()['public']['observations']['stdout'])
     except (ValueError, TypeError) as exc: raise ContractError('history must expose bounded keyed observations from its actual execution') from exc
     if not isinstance(observations, dict): raise ContractError('history observation map required')
@@ -51,8 +55,8 @@ def qualifier_check(pair, material, qualifier):
 
 
 def build_binding(plan_digest, recipe):
-    return FrozenRecord.from_dict({'schema':'state-improvement-build-binding-v1', 'plan_digest':plan_digest,
-        'recipe':recipe})
+    return FrozenRecord.from_dict({'cell_digest':FrozenRecord.from_dict({'schema':'state-improvement-build-binding-v1',
+        'plan_digest':plan_digest,'recipe':recipe}).content_hash,'scenario_digest':plan_digest})
 
 
 def proposal_context(history, transition):
