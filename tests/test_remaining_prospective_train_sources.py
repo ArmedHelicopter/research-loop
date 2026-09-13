@@ -37,6 +37,7 @@ from contextlib import ExitStack
 from dataclasses import replace
 from pathlib import Path
 from evaluation.modular.primary_prospective_exporter import PrimaryProspectiveTrainExporter
+from evaluation.modular.fresh_airs_custodian import CustodyError
 from evaluation.modular.scorer_process import CombinationScorerProcessClient, serialize_combination_panel
 from evaluation.modular.scoring_service import ScorerConfig
 from research_loop.modular.combination_train_source import packet_index
@@ -134,13 +135,23 @@ def invoke_controller(setup, monkeypatch, *, fault=None):
         execution_authority=adm.EXECUTION,scorer_authority_keys={adm.SCORER.authority_id:adm.SCORER.key})
     if fault=='both':kwargs['custody']=setup['custody']
     if fault=='roots':kwargs['export_root']=root/'wrong-export'
+    config=setup['config']
+    if fault=='wrong_port':kwargs.update(custody=setup['custody'],prospective_exporter=None)
+    if fault=='split':exporter.expected_split_digest='f'*64
+    if fault in ('validation','swapped_tokens'):
+        config=changed_source_config(config,setup['all_items'],fault)
+    if fault in ('export_receipt','completion_anchor'):corrupt_export(monkeypatch,exporter,fault)
+
     with ExitStack() as stack:
         kwargs['scoring_service']=actual_services(setup,stack)
         if kind=='admission':kwargs['source_verifier']=setup['qualifier'];run=adm.run_admission_train_panels
         else:run=es.run_exploration_scheduler_train_panel
         if fault:
-            with pytest.raises(ContractError):run(setup['config'],**kwargs)
+            with pytest.raises((ContractError,CustodyError)):run(config,**kwargs)
             assert not seen and not setup['source_calls'] and not port.ledger['calls']
+            if fault in ('swapped_tokens','export_receipt','completion_anchor'):
+                assert sum(e['event']=='exposure_reserved' for e in events(exporter))==2
+                assert json.loads((root/'run/controller-attempt.json').read_text(encoding='utf-8'))['status']=='blocked_before_execution'
             return
         result=run(setup['config'],**kwargs)
     return result,seen
@@ -157,25 +168,69 @@ def test_real_prospective_combination_controllers(tmp_path,monkeypatch,kind):
 
 
 @pytest.mark.parametrize('kind',['admission','scheduler'])
-@pytest.mark.parametrize('fault',['both','roots'])
+@pytest.mark.parametrize('fault',['both','wrong_port','roots','split','validation','swapped_tokens','export_receipt','completion_anchor'])
 def test_prospective_source_fault_precedes_all_downstream_io(tmp_path,monkeypatch,kind,fault):
     invoke_controller(prepare_controller(tmp_path,kind),monkeypatch,fault=fault)
 
 
-def test_actual_q32_prospective_packets_reach_all_twelve_measurements(tmp_path,monkeypatch):
+@pytest.mark.parametrize('fault',[None,'wrong_port','roots','split','validation','swapped_tokens','export_receipt','completion_anchor','material'])
+def test_actual_q32_prospective_packets_reach_all_twelve_measurements(tmp_path,monkeypatch,fault):
     from research_loop.modular.q32_execution import FrozenQ32ProspectiveConfig,run_q32_prospective_execution_panel
-    exporter,selected,_,packets=prepared_primary(tmp_path)
+    exporter,selected,all_items,packets=prepared_primary(tmp_path)
     config=FrozenQ32ProspectiveConfig(FrozenRecord.from_dict({'schema':'q32-prospective-source-config-v2','domain':'train','export_mode':'primary_prospective',
         'item_ids':[i.token for i in selected], 'task_bindings':{i.token:{'identity':p.task.identity.data(),'task_digest':p.task.content_hash,
             'csv_sha256':hashlib.sha256(p.csv_path.read_bytes()).hexdigest(),'csv_byte_count':p.csv_path.stat().st_size} for i,p in zip(selected,packets,strict=True)},
         'material_by_task':{p.task.content_hash:q32.material() for p in packets},'image':q32.IMAGE}))
-    calls=[]
+    if fault in ('validation','swapped_tokens'):config=changed_source_config(config,all_items,fault)
+    if fault=='material':
+        bad=config.data();next(iter(bad['material_by_task'].values()))['measurements']=[]
+        config=type(config)(FrozenRecord.from_dict(bad))
+    if fault=='split':exporter.expected_split_digest='f'*64
+    if fault in ('export_receipt','completion_anchor'):corrupt_export(monkeypatch,exporter,fault)
+    calls=[];factories=[]
     def response(request):calls.append(request.data());return q32.fixture_response(request)
-    def factory(i):return model_port(tmp_path/f'port-{i}',monkeypatch,max_calls=4,max_tokens=q32.BUDGET['model_token_stop_threshold'],
-        schemas={s:FINAL if s=='final' else q32.PROGRAM_SCHEMA for s in q32.SLOTS},response_factory=response)
-    result=run_q32_prospective_execution_panel(config,prospective_exporter=exporter,snapshot_root=Path(exporter.config['snapshot_root']),
-        export_root=exporter.output_root,run_root=tmp_path/'run',model_factory=factory,verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}))
+    def factory(i):
+        factories.append(i)
+        return model_port(tmp_path/f'port-{i}',monkeypatch,max_calls=4,max_tokens=q32.BUDGET['model_token_stop_threshold'],
+            schemas={s:FINAL if s=='final' else q32.PROGRAM_SCHEMA for s in q32.SLOTS},response_factory=response)
+    kwargs=dict(prospective_exporter=object() if fault=='wrong_port' else exporter,snapshot_root=Path(exporter.config['snapshot_root']),
+        export_root=tmp_path/'wrong-root' if fault=='roots' else exporter.output_root,run_root=tmp_path/'run',model_factory=factory,
+        verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}))
+    if fault:
+        with pytest.raises((ContractError,CustodyError)):run_q32_prospective_execution_panel(config,**kwargs)
+        assert not calls and not factories
+        if fault in ('swapped_tokens','export_receipt','completion_anchor','material'):
+            assert sum(e['event']=='exposure_reserved' for e in events(exporter))==2
+            assert json.loads((tmp_path/'run/source-attempt.json').read_text(encoding='utf-8'))['status']=='blocked_before_execution'
+        return
+    result=run_q32_prospective_execution_panel(config,**kwargs)
     body=result.data()['result'];assert body['cell_count']==4 and body['measurement_denominator']==12 and len(calls)==16
     assert all(row['status']=='succeeded' for cell in body['results'] for row in cell['rows'])
     compiled=FrozenRecord((tmp_path/'run/compiled.json').read_text(encoding='utf-8'))
     for i in range(4):q32.verify_q32_execution(tmp_path/'run'/str(i)/'trace.jsonl',compiled)
+
+
+
+def changed_source_config(config, items, fault):
+    b=config.data()
+    if fault=='validation':
+        new=items['validation'][0].token;old=b['item_ids'][0]
+        b['item_ids'][0]=new;b['task_bindings'][new]=b['task_bindings'].pop(old)
+    else:
+        left,right=b['item_ids'];b['task_bindings'][left],b['task_bindings'][right]=b['task_bindings'][right],b['task_bindings'][left]
+    return type(config)(FrozenRecord.from_dict(b))
+
+
+def corrupt_export(monkeypatch, exporter, fault):
+    original=exporter.export_controller_packets
+    def corrupt(tokens):
+        packets=original(tokens)
+        if fault=='completion_anchor':
+            p=exporter.audit_root/'exports.jsonl';p.write_bytes(b'\n'.join(p.read_bytes().splitlines()[:-1])+b'\n');return packets
+        packet=packets[0];receipt={**packet.receipt.data(),'eligibility_sha256':'0'*64}
+        packet.packet_path.write_text(canonical({'task':packet.task.data(),'receipt':receipt}),encoding='utf-8')
+        (packet.packet_path.parent/'receipt.json').write_text(canonical(receipt),encoding='utf-8')
+        p=exporter.output_root/'export-receipt.json';batch=json.loads(p.read_text(encoding='utf-8'));batch['packets'][0]=receipt
+        p.write_text(canonical(batch),encoding='utf-8')
+        return (replace(packet,receipt=FrozenRecord.from_dict(receipt)),*packets[1:])
+    monkeypatch.setattr(exporter,'export_controller_packets',corrupt)

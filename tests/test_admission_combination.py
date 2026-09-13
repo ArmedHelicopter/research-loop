@@ -325,5 +325,6 @@ def test_shared_source_merge_keeps_admission_v1_closed(tmp_path, fault):
     if fault.startswith('v2'): body['schema'] = 'admission-combination-train-config-v2'
     if fault.endswith('flag'): body['export_mode'] = 'primary_prospective'
     if fault == 'lineage_reference': body['lineage_reference_binding'] = {}
-    with pytest.raises(ContractError, match='closed lineage train scope'):
+    error = 'source binding types' if fault == 'v2_flag' else 'closed lineage train scope'
+    with pytest.raises(ContractError, match=error):
         FrozenAdmissionTrainConfig(FrozenRecord.from_dict(body))

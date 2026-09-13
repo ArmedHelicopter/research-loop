@@ -294,7 +294,7 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
             if model.ledger["usage_incomplete"]:
                 row.update(phase="model_allocation", status="blocked", reason="prior_model_usage_incomplete")
                 continue
-            binding = body["task_bindings"][f"{cell.identity.benchmark}:{cell.identity.task_id}"]
+            binding = next(v for v in body["task_bindings"].values() if v["identity"] == cell.identity.data())
             if (packet.task.content_hash != binding["task_digest"]
                     or hashlib.sha256(packet.csv_path.read_bytes()).hexdigest() != binding["csv_sha256"]):
                 raise ContractError("public source changed after compilation")
