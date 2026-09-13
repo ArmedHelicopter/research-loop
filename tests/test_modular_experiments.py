@@ -59,5 +59,10 @@ def test_added_runners_match_every_authoritative_variant(coverage):
         result = scenario(spec, variant, inputs=inputs()).data()
         assert result["experiment_id"] == coverage and result["variant"] == variant
         controller = result["controller_input"]
+        if coverage == "Q5.5":
+            assert controller == {"schema": "q55-causal-injection-v1",
+                                  "task": inputs().task.data(),
+                                  "evidence": inputs().evidence.data()}
+            continue
         projection = controller["q21_pressure_projection"] if coverage == "Q2.1" else controller
         assert projection["fixture_only"] is True
