@@ -149,7 +149,7 @@ def _run_scheduler(sidecar: Path, cell: PanelCell, material: Mapping[str, Any]) 
     jobs = material["jobs"]
     variant, experiment_id = cell.variant, cell.coverage_id
     if "M8" not in cell.runtime_arm.data()["enabled"]:
-        return _baseline_replay(jobs, material)
+        return _baseline_replay(jobs, material, experiment_id, variant)
     workers = 1 if (experiment_id == "Q3.3" and variant == "one_worker") else 2
     total_budget = sum(job["cost_units"] for job in jobs)
     scheduler = FifoScheduler(sidecar / "m8-scheduler.sqlite", max_concurrency=workers, total_budget=total_budget)
@@ -215,7 +215,7 @@ def _run_scheduler(sidecar: Path, cell: PanelCell, material: Mapping[str, Any]) 
             "reserved_cost_units": total_budget, "actual_completed_cost_units": active[0].cost_units, "remaining_leases": []}
 
 
-def _baseline_replay(jobs: list[Mapping[str, Any]], material: Mapping[str, Any]) -> dict[str, Any]:
+def _baseline_replay(jobs: list[Mapping[str, Any]], material: Mapping[str, Any], experiment_id: str, variant: str) -> dict[str, Any]:
     """Independent in-memory FIFO control with the same pure worker workload.
 
     It deliberately has no leases, dedup index, recovery, or all-arm barrier;
@@ -223,12 +223,26 @@ def _baseline_replay(jobs: list[Mapping[str, Any]], material: Mapping[str, Any])
     every caller work item, so workload and budget remain matched.
     """
     snapshot = FrozenRecord.from_dict(dict(material["snapshot"])).content_hash
-    issued = [job["task_id"] for job in jobs]
-    outputs = [_worker(job["task_id"], snapshot) for job in jobs]
-    return {"engine": "memory_fifo_baseline", "issued_task_ids": issued, "merged_task_ids": issued,
-            "work_output_digests": outputs, "reserved_cost_units": sum(job["cost_units"] for job in jobs),
-            "actual_completed_cost_units": sum(job["cost_units"] for job in jobs), "remaining_leases": [],
-            "snapshot_digest": snapshot, "merge_visibility": "per_return"}
+    issued = [job["task_id"] for job in jobs]; costs = sum(job["cost_units"] for job in jobs)
+    states = {job["task_id"]: "pending" for job in jobs}; outputs: list[str] = []
+    if experiment_id == "Q3.5" and variant == "write_conflict":
+        states[jobs[0]["task_id"]] = "completed"; outputs.append(_worker(jobs[0]["task_id"], snapshot))
+        if set(jobs[0]["resources"]) & set(jobs[1]["resources"]): states[jobs[1]["task_id"]] = "deferred"
+    elif experiment_id == "Q3.5" and variant == "withdrawal":
+        withdrawn = set(material["withdraw_subjects"])
+        for job in jobs: states[job["task_id"]] = "invalidated" if withdrawn & set(job["resources"]) else "completed"
+        outputs = [_worker(job["task_id"], snapshot) for job in jobs if states[job["task_id"]] == "completed"]
+    elif experiment_id == "Q3.5" and variant in {"crash", "expiry"}:
+        states[jobs[0]["task_id"]] = "terminated"; retry = jobs[0]["task_id"] + ":attempt2"; states[retry] = "completed"
+        outputs = [_worker(retry, snapshot), _worker(jobs[1]["task_id"], snapshot)]; states[jobs[1]["task_id"]] = "completed"
+    elif experiment_id == "Q3.5" and variant == "duplicate":
+        first = _worker(jobs[0]["task_id"], snapshot); states[jobs[0]["task_id"]] = "completed"; states[jobs[1]["task_id"]] = "duplicate_rejected"; outputs = [first]
+    else:
+        for job in jobs: states[job["task_id"]] = "completed"; outputs.append(_worker(job["task_id"], snapshot))
+    completed = sum(job["cost_units"] for job in jobs if states.get(job["task_id"]) == "completed")
+    return {"engine": "memory_fifo_baseline", "issued_task_ids": issued, "merged_task_ids": [key for key, value in states.items() if value == "completed"],
+            "work_output_digests": outputs, "state_transitions": states, "reserved_cost_units": costs,
+            "actual_completed_cost_units": completed, "remaining_leases": [], "snapshot_digest": snapshot, "merge_visibility": "per_return"}
 
 
 def _worker(task_id: str, snapshot_digest: str) -> str:

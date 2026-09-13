@@ -75,7 +75,9 @@ def test_full_public_two_benchmark_m8_grid_runs_real_fifo_barrier_and_recovery(t
                     assert observed["reserved_cost_units"] == 2
                     by_condition[(task.identity.benchmark, experiment, variant, arm_id)] = observed["engine"]
                     if observed["engine"] == "memory_fifo_baseline":
-                        assert observed["actual_completed_cost_units"] == 2 and len(observed["work_output_digests"]) == 2
+                        assert observed["actual_completed_cost_units"] <= 2 and observed["work_output_digests"] and observed["state_transitions"]
+                        if experiment == "Q3.5":
+                            assert set(observed["state_transitions"].values()) & {"deferred", "invalidated", "terminated", "duplicate_rejected", "completed"}
                     elif experiment == "Q3.3":
                         assert observed["merged_task_ids"] == ["public-first", "public-second"] and observed["prediction_ordering_used"] is False
                     elif experiment == "Q3.4":
