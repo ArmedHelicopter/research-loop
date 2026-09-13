@@ -62,4 +62,3 @@ def test_q16_q17_full_compiled_grid_uses_actual_material_without_blind_leaks(tmp
 def test_bundle_and_caller_receipt_fail_closed(tmp_path,monkeypatch):
  compiled,tasks=setup(); cell=next(c for c in compiled.panel.cells if c.coverage_id=='Q1.6'); monkeypatch.setitem(panel_runner.DRIVERS,'Q1.6',Q16WithdrawalDriver(admission_port=lambda *_:{'record_digest':'0'*64,'trusted_validator':'x','validator_verified':False,'admitted':True}))
  result=panel_runner.run_train_cell(cell,task=tasks[cell.identity.benchmark],scenario=compiled.scenarios[cell.key],package=compiled.packages[cell.runtime_arm.content_hash],objective=FrozenRecord.from_dict({'objective':'bad'}),sidecar=tmp_path/'bad',model=model,audit_verifier=AUDIT); assert result.runtime.status=='failed'
-
