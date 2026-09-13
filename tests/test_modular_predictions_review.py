@@ -39,12 +39,22 @@ def test_q31_q32_operational_competitors_shared_discriminator_and_updates(tmp_pa
 def test_q31_q53_reject_title_diversity_and_non_discriminating_predictions():
     duplicate = branches()
     duplicate[1]["mechanism_key"] = "real-effect"
+    duplicate[1]["predictions"] = duplicate[0]["predictions"]
     with pytest.raises(ContractError):
         PredictionRegistry(identity()).freeze("q", duplicate, budget_units=2)
     same = branches()
     same[1]["predictions"][0].update({"direction": "positive", "value_range": None, "failure_condition": "delta nonpositive"})
     with pytest.raises(ContractError):
         PredictionRegistry(identity()).freeze("q", same, budget_units=2)
+
+
+def test_same_mechanism_with_opposite_predictions_remains_a_competitor(tmp_path: Path):
+    candidates = branches()
+    candidates[1]["mechanism_key"] = candidates[0]["mechanism_key"]
+    registry = PredictionRegistry(identity(), storage_path=tmp_path / "same-mechanism.jsonl")
+    plan = registry.freeze("same mechanism under competing predictions", candidates, budget_units=2)
+    assert len(plan.branches) == 2
+    assert PredictionRegistry(identity(), storage_path=tmp_path / "same-mechanism.jsonl").plan(plan.plan_id) == plan
 
 
 def test_q41_q42_q43_sealed_barrier_concrete_roles_and_revision(tmp_path: Path):

@@ -67,8 +67,8 @@ def material(t):
            "separate": {"plans": [q32_plan(t, "public separate one", [a, b], 1, "one"),
                                   q32_plan(t, "public separate two", [a, c], 1, "two"),
                                   q32_plan(t, "public separate three", [b, c], 1, "three")]}}
-    same_a, same_b = branch("same-a", "candidate-a", "positive"), branch("same-b", "candidate-b", "positive")
-    opposite_a, opposite_b = branch("opposite-a", "candidate-a", "positive"), branch("opposite-b", "candidate-b", "negative")
+    same_a, same_b = branch("same-a", "shared-mechanism", "positive"), branch("same-b", "shared-mechanism", "positive")
+    opposite_a, opposite_b = branch("opposite-a", "shared-mechanism", "positive"), branch("opposite-b", "shared-mechanism", "negative")
     title_a, title_b = branch("title-a", "candidate-a", "positive"), branch("title-b", "candidate-b", "null")
     q53 = {
         "same_mechanism": {"proposals": [proposal(same_a, "shared-root", "first"), proposal(same_b, "shared-root", "second")],
@@ -90,12 +90,7 @@ def model(seen: list[dict], *, fail_dedup: bool = False):
             plan = row["module_context"]["plan_material"]
             return FrozenRecord.from_dict({name: plan[name] for name in ("question", "branches", "budget_units")})
         if slot == "dedup":
-            proposals = row["module_context"]["proposals"]
-            kept, signatures = [], set()
-            for item in proposals:
-                marker = (item["root_id"], item["prediction_signature"])
-                if marker not in signatures:
-                    kept.append(item["proposal_id"]); signatures.add(marker)
+            kept = row["module_context"]["retained_proposal_ids"]
             return FrozenRecord.from_dict({"kept_proposal_ids": ["wrong"] if fail_dedup else kept})
         if slot == "final":
             return FrozenRecord.from_dict({"objective_digest": row["module_context"]["required_objective_digest"],
@@ -121,8 +116,8 @@ def _events(path: Path) -> list[dict]:
 
 
 def _artifact(events: list[dict]) -> dict:
-    final_request = next(row["data"]["request"] for row in events if row["stage"] == "model_request" and row["data"]["request"]["slot"] == "final")
-    return final_request["module_context"]["prediction_artifacts"]
+    return next(row["data"]["artifacts"] for row in events if row["stage"] == "modular_workflow"
+                and row["data"]["stage"] == "prediction_artifacts")
 
 
 def test_full_prediction_grid_has_actual_planning_artifacts_and_matched_calls(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -138,10 +133,18 @@ def test_full_prediction_grid_has_actual_planning_artifacts_and_matched_calls(tm
             sidecar=tmp_path / str(index), model=model(seen), audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
         assert run.runtime.status == "succeeded" and run.call_plan.data()["model_calls"] == (4 if cell.coverage_id == "Q3.2" else 2)
         assert all("same_wrong" not in FrozenRecord.from_dict(request).encoded for request in seen)
+        for request in seen:
+            encoded = FrozenRecord.from_dict(request).encoded
+            assert all(key not in encoded for key in ('"planning_status"', '"not_applied"', '"controller_truth"',
+                '"caller_admission_receipt"', '"candidate_package"', '"arm_id"', '"variant"'))
         events = _events(run.runtime.trace_path); artifact = _artifact(events)
         records = (run.runtime.trace_path.parent / "predictions.jsonl").read_text(encoding="utf-8").splitlines()
         if "M4" not in cell.runtime_arm.data()["enabled"]:
             assert not records and next(row["data"] for row in events if row["stage"] == "modular_workflow")["stage"] == "operation_m4_control"
+            if cell.coverage_id == "Q5.3":
+                result = artifact["deduplication"]
+                assert result["kept"] == (["title-a"] if cell.variant == "title" else
+                    ["same-a", "same-b"] if cell.variant == "same_mechanism" else ["opposite-a", "opposite-b"])
         elif cell.coverage_id == "Q3.2":
             plans = artifact["joint_or_separate"]
             budgets = [item["plan"]["budget_units"] for item in plans]
@@ -163,6 +166,33 @@ def test_full_prediction_grid_has_actual_planning_artifacts_and_matched_calls(tm
                     assert result["kept"] == ["opposite-a", "opposite-b"]
         runs.append(run.runtime)
     assert PanelReceiptVerifier().verify(compiled.panel, tuple(runs)).decision == "engineering_verified"
+
+
+def test_dedup_uses_mechanism_not_source_and_preserves_opposite_forecasts(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setitem(panel_runner.DRIVERS, "Q5.3", Q53DedupDriver())
+    compiled, tasks = _compiled(tmp_path)
+    for variant in ("same_mechanism", "opposite_prediction"):
+        cell = next(item for item in compiled.panel.cells if item.coverage_id == "Q5.3" and item.variant == variant
+                    and "M4" in item.runtime_arm.data()["enabled"])
+        public = tasks[cell.identity.benchmark]; raw = material(public).data()
+        row = raw["q53"][variant]
+        if variant == "same_mechanism":
+            row["proposals"][1]["root_id"] = "independent-source-with-same-declared-mechanism"
+        else:
+            extra = branch("other", "different-mechanism", "positive")
+            row["plan"]["branches"].append(extra)
+            row["proposals"].append(proposal(extra, "shared-root", "other title"))
+        bundle = freeze_prediction_bundle(public, **{name: raw[name] for name in ("public_evidence", "controller_truth", "q32", "q53")})
+        body = compiled.scenarios[cell.key].data()
+        body["controller_input"] = dict(prediction_panel_injection("Q5.3", variant, task=FrozenRecord.from_dict(public.data()), evidence=bundle))
+        body["base"]["evidence"] = bundle.content_hash
+        scenario = FrozenRecord.from_dict(body); selected = replace(cell, scenario_digest=scenario.content_hash)
+        run = panel_runner.run_train_cell(selected, task=public, scenario=scenario,
+            package=compiled.packages[cell.runtime_arm.content_hash], objective=FrozenRecord.from_dict({"o": "semantics"}),
+            sidecar=tmp_path / variant, model=model([]), audit_verifier=AuditVerifier({"a": b"a"*32, "b": b"b"*32}))
+        assert run.runtime.status == "succeeded"
+        artifact = _artifact(_events(run.runtime.trace_path))["deduplication"]
+        assert artifact["kept"] == (["same-a"] if variant == "same_mechanism" else ["opposite-a", "opposite-b", "other"])
 
 
 @pytest.mark.parametrize("bad", [True, "3"])

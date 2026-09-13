@@ -173,8 +173,7 @@ class PredictionRegistry:
                                            required_text(value["mechanism"], "mechanism"),
                                            required_text(value["intervention"], "intervention"), predictions,
                                            required_text(value["elimination_condition"], "elimination condition")))
-        if len({item.hypothesis_id for item in parsed}) != len(parsed) or len({item.mechanism_key for item in parsed}) != len(parsed):
-            raise ContractError("hypothesis ids and declared mechanism keys must be distinct")
+        self._validate_branch_identities(parsed)
         self._validate_shared_discriminators(parsed)
         question = required_text(question, "research question")
         payload = FrozenRecord.from_dict({"question": question, "branches": [item.data() for item in parsed], "budget_units": budget_units})
@@ -224,6 +223,18 @@ class PredictionRegistry:
             if len(set(signatures)) == 1:
                 raise ContractError("shared discriminator has identical declared predictions")
 
+    @staticmethod
+    def _validate_branch_identities(branches: Sequence[HypothesisBranch]) -> None:
+        if len({item.hypothesis_id for item in branches}) != len(branches):
+            raise ContractError("hypothesis ids must be distinct")
+        # The same declared mechanism can make opposite predictions. Retain
+        # those branches; only identical operational alternatives are duplicates.
+        signatures = [(item.mechanism_key, canonical(sorted(
+            ({key: value for key, value in prediction.data().items() if key != "prediction_id"}
+             for prediction in item.predictions), key=canonical))) for item in branches]
+        if len(set(signatures)) != len(signatures):
+            raise ContractError("duplicate mechanism and prediction alternative")
+
     def _apply(self, event: Mapping[str, Any], *, persist: bool) -> PredictionPlan | PredictionUpdate:
         _same_identity(event.get("identity"), self.identity)
         if event.get("event") == "freeze":
@@ -238,6 +249,7 @@ class PredictionRegistry:
                 parsed.append(HypothesisBranch(required_text(item.get("hypothesis_id"), "hypothesis id"), required_text(item.get("mechanism_key"), "mechanism key"), required_text(item.get("mechanism"), "mechanism"), required_text(item.get("intervention"), "intervention"), tuple(_prediction(x) for x in item.get("predictions", [])), required_text(item.get("elimination_condition"), "elimination condition")))
             if len(parsed) < 2:
                 raise ContractError("persisted plan needs competitors")
+            self._validate_branch_identities(parsed)
             self._validate_shared_discriminators(parsed)
             budget = event.get("budget_units")
             if type(budget) is not int or budget <= 0:

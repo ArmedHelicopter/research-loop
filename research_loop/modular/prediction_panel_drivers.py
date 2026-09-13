@@ -85,8 +85,8 @@ def _validate_branches(branches: Any, *, field: str) -> list[dict[str, Any]]:
     if not isinstance(branches, list) or len(branches) < 2:
         raise ContractError(f"{field} needs at least two competing branches")
     parsed = [_branch(item) for item in branches]
-    if len({item["hypothesis_id"] for item in parsed}) != len(parsed) or len({item["mechanism_key"] for item in parsed}) != len(parsed):
-        raise ContractError(f"{field} needs unique hypothesis and candidate mechanism keys")
+    if len({item["hypothesis_id"] for item in parsed}) != len(parsed):
+        raise ContractError(f"{field} needs unique hypothesis ids")
     common: set[str] | None = None
     for branch in parsed:
         for name in ("hypothesis_id", "mechanism_key", "mechanism", "intervention", "elimination_condition"):
@@ -161,6 +161,7 @@ def _q32_variant(task: PublicTask, key: str, value: Any) -> dict[str, Any]:
 def _prediction_signature(branch: Mapping[str, Any]) -> str:
     semantic = [{name: prediction[name] for name in ("discriminator_id", "observable", "direction", "value_range", "failure_condition")}
                 for prediction in branch["predictions"]]
+    semantic.sort(key=lambda item: FrozenRecord.from_dict(item).encoded)
     return FrozenRecord.from_dict({"predictions": semantic}).content_hash
 
 
@@ -249,10 +250,19 @@ def _material(task: PublicTask, scenario: FrozenRecord, experiment: str, variant
 
 
 def _final(workflow: Any, cell: PanelCell, model: Any, material: Mapping[str, Any]) -> FrozenRecord:
+    workflow._trace("prediction_artifacts", "executed", artifacts=dict(material))
+    if "joint_or_separate" in material:
+        public = {"plans": [{"prediction_plan": item["plan"], "assessment": item["response"],
+            "observations": [{key: row[key] for key in ("source_id", "observation_id", "public_observation", "branch_ids")}
+                             for row in item["support_records"]]} for item in material["joint_or_separate"]]}
+    else:
+        item = material["deduplication"]
+        public = {"retained_branches": item["retained_branches"], "prediction_plan": item["plan"],
+                  "assessment": item["response"]}
     return workflow.invoke_model("final", model, instruction="Return bounded train-only candidate. Copy required_objective_digest exactly.",
         module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell),
             "required_objective_digest": workflow.session.objective.content_hash,
-            "prediction_artifacts": dict(material)}))
+            "prediction_artifacts": public}))
 
 
 def _response_plan(response: FrozenRecord, plan: Mapping[str, Any]) -> dict[str, Any]:
@@ -264,7 +274,7 @@ def _response_plan(response: FrozenRecord, plan: Mapping[str, Any]) -> dict[str,
 
 
 def _dedup_inputs(proposals: Sequence[Mapping[str, Any]]) -> list[dict[str, str]]:
-    return [{"proposal_id": item["proposal_id"], "mechanism_key": item["root_id"],
+    return [{"proposal_id": item["proposal_id"], "mechanism_key": item["mechanism_key"],
              "prediction_signature": item["prediction_signature"], "title": item["title"]}
             for item in proposals]
 
@@ -274,7 +284,7 @@ def _kept_response(response: FrozenRecord, expected: Sequence[str]) -> tuple[str
     if set(body) != {"kept_proposal_ids"} or not isinstance(body["kept_proposal_ids"], list):
         raise ContractError("Q5.3 model response requires retained proposal ids")
     if body["kept_proposal_ids"] != list(expected):
-        raise ContractError("Q5.3 model response does not match the mechanism-prediction deduplication")
+        raise ContractError("Q5.3 model response does not confirm the retained proposals")
     return tuple(body["kept_proposal_ids"])
 
 
@@ -296,10 +306,13 @@ class Q32JointSeparateDriver:
         joint_plan = None
         for index in range(3):
             plan = plans[0] if cell.variant == "joint" else plans[index]
+            public_plan = {name: plan[name] for name in ("question", "branches", "budget_units")}
+            public_plan["observations"] = [{key: row[key] for key in
+                ("source_id", "observation_id", "public_observation", "branch_ids")} for row in plan["support_records"]]
             response = workflow.invoke_model(f"plan_{index + 1}", model,
                 instruction="Return exactly the supplied public operational prediction plan.",
                 module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell),
-                    "public_evidence": evidence, "plan_material": plan}))
+                    "public_evidence": evidence, "plan_material": public_plan}))
             responses.append(response)
             if "M4" in workflow.enabled:
                 confirmed = _response_plan(response, plan)
@@ -338,16 +351,19 @@ class Q53DedupDriver:
         evidence, data = _material(workflow.session.task, scenario, "Q5.3", cell.variant)
         proposals, plan = data["proposals"], data["plan"]
         dedup_input = _dedup_inputs(proposals)
-        expected_kept, removed = deduplicate_mechanism_predictions(dedup_input)
+        mechanism_kept, mechanism_removed = deduplicate_mechanism_predictions(dedup_input)
         title_kept, title_removed = deduplicate_titles(dedup_input)
+        expected_kept, removed = ((mechanism_kept, mechanism_removed) if "M4" in workflow.enabled
+                                  else (title_kept, title_removed))
         response = workflow.invoke_model("dedup", model,
-            instruction="Return the retained proposal ids after mechanism-root and prediction-signature deduplication.",
+            instruction="Return exactly kept_proposal_ids confirming the supplied retained proposal ids.",
             module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell),
-                "public_evidence": evidence, "proposals": proposals, "plan_material": plan}))
+                "public_evidence": evidence, "proposals": proposals, "plan_material": plan,
+                "retained_proposal_ids": list(expected_kept)}))
+        kept = _kept_response(response, expected_kept)
+        branches_by_id = {branch["hypothesis_id"]: branch for branch in plan["branches"]}
+        retained = [branches_by_id[item] for item in kept]
         if "M4" in workflow.enabled:
-            kept = _kept_response(response, expected_kept)
-            branches_by_id = {branch["hypothesis_id"]: branch for branch in plan["branches"]}
-            retained = [branches_by_id[item] for item in kept]
             if len(retained) < 2:
                 artifact = {"kept": list(kept), "removed": list(removed),
                     "title_baseline": {"kept": list(title_kept), "removed": list(title_removed)},
@@ -361,8 +377,10 @@ class Q53DedupDriver:
                     "plan": frozen.payload.data(), "response": response.data(),
                     "planning_status": "planning_only", "execution_status": "not_measured"}
         else:
-            artifact = {"kept": None, "removed": None, "title_baseline": None, "plan": None,
-                "response": response.data(), "planning_status": "not_applied", "execution_status": "not_measured"}
+            artifact = {"kept": list(kept), "removed": list(removed),
+                "title_baseline": {"kept": list(title_kept), "removed": list(title_removed)}, "plan": None,
+                "response": response.data(), "planning_status": "title_baseline", "execution_status": "not_measured"}
+        artifact["retained_branches"] = retained
         stage = workflow._trace("stage_1" if "M4" in workflow.enabled else "operation_m4_control", "executed",
             dedup_applied="M4" in workflow.enabled, planning_status=artifact["planning_status"],
             execution_status="not_measured")
