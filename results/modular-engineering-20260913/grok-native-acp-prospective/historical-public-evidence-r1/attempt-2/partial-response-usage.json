@@ -1,0 +1,25 @@
+{
+  "schema": "grok-acp-partial-response-usage-v1",
+  "source_stream_sha256": "b3007618595fc67dde710d9963a7473ad05de7d52b90ddbebb3caa10b51eef29",
+  "source_main_receipt_sha256": "dca35b3b0cae6860f195c1bff46593f72decc524593b8ce87a0ac85cbd82023e",
+  "source_session_binding_matches": true,
+  "observed_response_boundaries": 1,
+  "response_usage": {
+    "input_tokens": 1360,
+    "output_tokens": 44,
+    "cache_read_input_tokens": 896,
+    "cache_creation_input_tokens": 0,
+    "reasoning_tokens": 35
+  },
+  "observed_response_input_including_cache": 2256,
+  "observed_response_total_tokens": 2300,
+  "text_matches_constant_json": true,
+  "rpc_prompt_result_received": false,
+  "terminal_main_usage": null,
+  "initial_title_usage": null,
+  "all_opportunity_total_usage": null,
+  "cost_usd": null,
+  "accepted": false,
+  "original_receipt_unchanged": true,
+  "source_optional_stop_reason_present": false
+}

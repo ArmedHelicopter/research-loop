@@ -1,0 +1,33 @@
+{
+  "schema": "grok-acp-public-evidence-v1",
+  "source_commit": "2586228b933c6e576bd2ed1290751639e4611337",
+  "final_frozen_tests": 52,
+  "final_frozen_failures": 0,
+  "final_source_files_unchanged": 667,
+  "preserved_failed_frozen_check": {
+    "check": 4,
+    "tests": 52,
+    "failures": 38,
+    "cause": "partial response projection local NameError; fixed before any further generation"
+  },
+  "native_attempts": 2,
+  "accepted_native_attempts": 0,
+  "main_prompt_reservations": 2,
+  "attempt_1": "unknown queue notification; terminal main/title usage unknown",
+  "attempt_2": "optional intermediate stop reason absent; known response total2300, terminal main/title usage unknown",
+  "known_response_tokens": 2300,
+  "all_opportunity_total_tokens": null,
+  "all_opportunity_total_cost_usd": null,
+  "attempt_2_postbilling_first": "billing succeeded with cap/used/prepaid0; topup RPC -32603",
+  "attempt_2_postbilling_refresh": "successful included-only snapshot; no account mutation",
+  "generation_after_attempt_2": false,
+  "further_generation_on_hold_for_root_review": true,
+  "benchmark_generation_requests": 0,
+  "prior_headless_r5_unchanged": true,
+  "private_excluded": [
+    "native requests/stdout/stderr",
+    "private homes/profiles",
+    "auth files",
+    "native session content"
+  ]
+}

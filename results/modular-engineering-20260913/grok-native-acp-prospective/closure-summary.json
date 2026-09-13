@@ -1,0 +1,85 @@
+{
+  "accepted_attempts": 1,
+  "all_attempts_all_opportunity_cost_usd": null,
+  "all_attempts_all_opportunity_tokens": null,
+  "attempt_1_terminal_main_usage": null,
+  "attempt_2_known_response_tokens": 2300,
+  "attempt_2_terminal_main_usage": null,
+  "attempt_3_known_main_usage": {
+    "apiDurationMs": 1741,
+    "cacheCreationTokens": 0,
+    "cachedReadTokens": 896,
+    "costIsPartial": false,
+    "costUsdTicks": 11689200,
+    "inputTokens": 2256,
+    "modelCalls": 1,
+    "modelUsage": {
+      "grok-4.6-build": {
+        "apiDurationMs": 1741,
+        "cacheCreationTokens": 0,
+        "cachedReadTokens": 896,
+        "costIsPartial": false,
+        "costUsdTicks": 11689200,
+        "inputTokens": 2256,
+        "modelCalls": 1,
+        "outputTokens": 45,
+        "reasoningTokens": 36,
+        "totalTokens": 2301,
+        "usageIsIncomplete": false
+      }
+    },
+    "numTurns": 1,
+    "outputTokens": 45,
+    "reasoningTokens": 36,
+    "totalTokens": 2301,
+    "usageIsIncomplete": false
+  },
+  "attempt_3_reported_main_cost_usd": 0.00116892,
+  "benchmark_generation_requests": 0,
+  "billing_after": {
+    "atomic_per_request_spending_lock": false,
+    "auto_topup_rule_present": false,
+    "observed_at": "2026-09-13T15:12:28.123071+00:00",
+    "on_demand_cap": 0,
+    "on_demand_used": 0,
+    "prepaid_balance": 0,
+    "remaining_percentage": null,
+    "route": "grok_com_unified_subscription"
+  },
+  "billing_before": {
+    "atomic_per_request_spending_lock": false,
+    "auto_topup_rule_present": false,
+    "observed_at": "2026-09-13T15:12:23.947836+00:00",
+    "on_demand_cap": 0,
+    "on_demand_used": 0,
+    "prepaid_balance": 0,
+    "remaining_percentage": null,
+    "route": "grok_com_unified_subscription"
+  },
+  "final_frozen_check": {
+    "failures": 0,
+    "number": 5,
+    "tests": 52,
+    "unchanged_source_files": 667
+  },
+  "frozen_checks": 5,
+  "historical_allowlist_payload_files": 37,
+  "historical_summary_preserved_as_of_before_attempt_3": true,
+  "main_prompt_reservations": 3,
+  "max_initial_title_opportunities_per_attempt": 1,
+  "native_acp_attempts": 3,
+  "no_atomic_account_settings_lock": true,
+  "old_headless_r5_modified": false,
+  "preserved_failed_check": {
+    "failures": 38,
+    "number": 4,
+    "tests": 52
+  },
+  "private_streams_profiles_auth_excluded": true,
+  "rejected_attempts": 2,
+  "remaining_percentage": null,
+  "schema": "grok-native-acp-prospective-archive-v1",
+  "settled_additional_charge_usd": null,
+  "tested_source_commit": "2586228b933c6e576bd2ed1290751639e4611337",
+  "title_usage_and_cost": null
+}
