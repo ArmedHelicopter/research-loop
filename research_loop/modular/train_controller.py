@@ -23,6 +23,8 @@ from research_loop.modular.modules.improvement import CandidatePackage
 from research_loop.modular.panel_plan import CompiledTrainPanel, compile_train_panel, executable_arms, obligation_grids
 from research_loop.modular.panel_receipts import PanelReceiptVerifier, PanelVerdict, RuntimeReceipt
 from research_loop.modular.panel_runner import DRIVERS, run_train_cell
+from research_loop.modular.benchmark_cell import run_benchmark_cell
+from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.ontology import ContractError, canonical, digest
 
@@ -50,7 +52,7 @@ class FrozenTrainControllerConfig:
                     "evidence_by_task", "budget", "baseline_digest", "p0_control",
                     "packages_by_arm", "scorer", "acceptance_criteria", "replicates",
                     "model", "effort", "max_calls", "max_tokens", "schemas"}
-        if set(data) != required or data["schema"] not in {_LEGACY_SCHEMA, _SCHEMA}:
+        if set(data) not in (required, required | {"execution_mode"}) or data["schema"] not in {_LEGACY_SCHEMA, _SCHEMA}:
             raise ContractError("unexpected train controller config schema")
         scope = tuple(data["scope_ids"]) if isinstance(data["scope_ids"], list) else ()
         if (not scope or len(set(scope)) != len(scope) or set(scope) - set(DRIVERS)
@@ -86,7 +88,11 @@ class FrozenTrainControllerConfig:
                 or type(data["max_calls"]) is not int or data["max_calls"] < 1
                 or type(data["max_tokens"]) is not int or data["max_tokens"] < 1):
             raise ContractError("production controller requires frozen Luna/low budgets")
+        mode = data.get("execution_mode", "mechanism_pilot")
+        if mode not in {"mechanism_pilot", "linked_benchmark_solve"} or (mode == "linked_benchmark_solve" and set(scope) - {"Q1.5", "Q3.1", "Q4.3"}):
+            raise ContractError("controller linked mode has an unsupported scope")
         expected_slots = {slot for coverage in scope for slot in DRIVERS[coverage].slots}
+        if mode == "linked_benchmark_solve": expected_slots |= {"analysis_program", "final_answer"}
         if not isinstance(data["schemas"], Mapping) or set(data["schemas"]) != expected_slots:
             raise ContractError("controller requires exact production-driver response schemas")
 
@@ -116,13 +122,13 @@ class TrainPanelRun:
 
 
 def _driver_plan(scope_ids: Sequence[str], *, baseline_digest: str, p0_control: FrozenRecord,
-                 item_count: int, replicates: Sequence[str]) -> tuple[int, int]:
+                 item_count: int, replicates: Sequence[str], linked: bool = False) -> tuple[int, int]:
     """Return frozen complete-cell and model-call obligations before export."""
     grids = obligation_grids(scope_ids, baseline_digest=baseline_digest, p0_control=p0_control)
     cells_per_task = sum(len(registry().get(coverage).variants) * len(executable_arms(grids[coverage]))
                          for coverage in scope_ids)
     calls_per_task = sum(len(registry().get(coverage).variants) * len(executable_arms(grids[coverage]))
-                         * len(DRIVERS[coverage].slots) for coverage in scope_ids)
+                         * (len(DRIVERS[coverage].slots) + (2 if linked else 0)) for coverage in scope_ids)
     return item_count * cells_per_task * len(replicates), item_count * calls_per_task * len(replicates)
 
 
@@ -143,7 +149,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
         raise ContractError("controller requires a fresh empty model ledger")
     expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
-        p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"])
+        p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
     if model.max_calls < expected_calls:
         raise ContractError("frozen model call capacity cannot cover complete panel")
     # The root and attempt receipt exist before export because export itself is
@@ -179,8 +185,20 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
         _write(root / "controller-attempt.json", attempt)
         raise
     runtimes = []
+    linked_receipts = []
     try:
         for cell in compiled.panel.cells:
+            if data.get("execution_mode") == "linked_benchmark_solve":
+                packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=_record({"panel_digest": compiled.panel.digest}, "objective"),
+                    mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                    solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                    public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                    broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
+                linked_receipts.append(result.receipt.data()); runtimes.append(result.mechanism.runtime)
+                attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                _write(root / "controller-attempt.json", attempt); continue
             result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
                 package=compiled.packages[cell.runtime_arm.content_hash], objective=_record({"panel_digest": compiled.panel.digest}, "objective"),
                 sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,

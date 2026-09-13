@@ -113,7 +113,12 @@ def verify_linked_benchmark_cell(result: LinkedBenchmarkCellResult, *, task: Pub
     _validate_inputs(result.cell, task, scenario, package, FrozenRecord.from_dict({"purpose": "binding"}), lambda _: FrozenRecord.from_dict({}))
     PanelReceiptVerifier()._verify_runtime(result.mechanism.runtime, result.cell)
     if result.solver is None:
-        if result.provenance is not None or not result.status.startswith("mechanism_"):
+        terminal = _events(result.mechanism.runtime.trace_path)[-1]["stage"]
+        expected = "mechanism_" + result.mechanism.runtime.status
+        if result.status == "mechanism_receipt_rejected":
+            if result.mechanism.runtime.status != "succeeded" or result.provenance is not None:
+                raise ContractError("mechanism receipt rejection does not match a successful precursor")
+        elif result.provenance is not None or result.status != expected or terminal not in {"model_failure", "driver_failure", "controller_failure", "final_decision"}:
             raise ContractError("mechanism-only linked result has contradictory solver material")
     else:
         if result.provenance is None:
