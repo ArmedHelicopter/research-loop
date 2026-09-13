@@ -179,10 +179,20 @@ class _Ledger:
                 self.workflow.session._record('extended_verifier_partial_response', {**common, 'receipt': partial.data()})
             reported = getattr(exc, 'cost', None)
             if isinstance(reported, FrozenRecord): reported = reported.data()
+            raw_reported = dict(reported) if isinstance(reported, Mapping) else None
+            if raw_reported is not None:
+                # Preserve typed transport reporting before checking its unit,
+                # fields or amount. A malformed report is still failure evidence.
+                self.workflow.session._record('extended_verifier_exception_cost', {
+                    **common, 'raw_exception_reported_cost': raw_reported})
+            cost_status = 'absent' if reported is None else 'not_typed' if raw_reported is None else 'valid'
             if not isinstance(reported, Mapping) or set(reported) != {'unit', 'units'} or reported['unit'] != 'verifier_units' or (reported['units'] is not None and (type(reported['units']) is not int or reported['units'] < 0)):
+                if raw_reported is not None: cost_status = 'invalid'
                 reported = None
             self.workflow.session._record('extended_verifier_failure', {**common, 'error_type': type(exc).__name__,
                 'reported_cost': raw.data().get('cost') if isinstance(raw, FrozenRecord) else partial.data().get('cost') if isinstance(partial, FrozenRecord) else None,
+                'raw_exception_reported_cost': raw_reported,
+                'exception_cost_validation_status': cost_status,
                 'exception_reported_cost': dict(reported) if reported is not None else None})
             raise
 

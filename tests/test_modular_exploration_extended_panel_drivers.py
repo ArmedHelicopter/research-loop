@@ -301,6 +301,25 @@ def test_partial_transport_cost_is_persisted_before_failure(tmp_path,monkeypatch
     assert failure['cost']['units'] is None and failure['exception_reported_cost']['units']==(2 if fault=='partial_known' else None)
 
 
+@pytest.mark.parametrize('frozen',[False,True])
+def test_malformed_typed_exception_cost_is_preserved_before_validation(tmp_path,monkeypatch,frozen):
+    compiled,tasks,authority,bundles=_compile(tmp_path,monkeypatch)
+    malformed={'unit':'unexpected_fixture_unit','units':-9,'extra':'retained synthetic error report'}
+    def fail(subject):
+        error=OSError('synthetic typed malformed cost')
+        error.cost=FrozenRecord.from_dict(malformed) if frozen else dict(malformed)
+        raise error
+    monkeypatch.setattr(authority,'verify_preflight',fail)
+    seen=[]; result=_run(compiled,tasks,compiled.panel.cells[0],tmp_path/'run',seen); events=_events(result)
+    assert result.runtime.status=='failed' and len(seen)==1 and result.call_plan.data()['execution_attempts']==0
+    original=next(e for e in events if e['stage']=='extended_verifier_exception_cost')
+    failure=next(e for e in events if e['stage']=='extended_verifier_failure')
+    assert events.index(original)<events.index(failure)
+    assert original['data']['raw_exception_reported_cost']==failure['data']['raw_exception_reported_cost']==malformed
+    assert failure['data']['exception_cost_validation_status']=='invalid'
+    assert failure['data']['exception_reported_cost'] is None and failure['data']['cost']['units'] is None
+
+
 def test_full_88_cell_real_docker_grid(tmp_path,monkeypatch):
     compiled,tasks,authority,bundles=_compile(tmp_path,monkeypatch); runs=[]; measurements=[]
     for index,cell in enumerate(compiled.panel.cells):
