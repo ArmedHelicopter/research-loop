@@ -24,8 +24,8 @@ from research_loop.modular.train_controller import _checked_roots, _write
 from research_loop.ontology import ContractError
 
 
-def _arms(baseline):
-    return {row['arm_digest']: FrozenRecord.from_dict(row['arm']) for name in DESIGNS
+def _arms(baseline, designs=DESIGNS):
+    return {row['arm_digest']: FrozenRecord.from_dict(row['arm']) for name in designs
             for row in registered_design(name, baseline).data()['cells'] if row['status'] == 'executable'}
 
 
@@ -33,13 +33,23 @@ def _arms(baseline):
 class FrozenLineageTrainConfig:
     record: FrozenRecord
 
+    def _contract(self):
+        from research_loop.modular.admission_combination_controller import FrozenAdmissionTrainConfig
+        from research_loop.modular.admission_combination import DESIGNS as ADMISSION_DESIGNS, FrozenAdmissionMaterial
+        if type(self) is FrozenAdmissionTrainConfig:
+            return ADMISSION_DESIGNS, FrozenAdmissionMaterial, 'admission-combination-train-config-v1', 12
+        if type(self) is not FrozenLineageTrainConfig: raise ContractError('closed train configuration type required')
+        return DESIGNS, FrozenLineageMaterial, 'lineage-combination-train-config-v1', 17
+
     def __post_init__(self):
         if not isinstance(self.record, FrozenRecord): raise ContractError('frozen lineage train configuration required')
         b = self.data()
+        designs, material_type, schema, cell_count = self._contract()
         required = {'schema', 'domain', 'stage', 'item_ids', 'task_bindings', 'baseline_digest', 'packages_by_arm',
             'scorer', 'scorer_handle_bindings', 'acceptance_criteria', 'replicates', 'model', 'effort', 'max_calls',
             'max_tokens', 'schemas', 'allocation', 'image', 'timeout_seconds', 'materials_by_task', 'source_verifier_binding'}
-        if (set(b) not in (required, required | {'lineage_reference_binding'}) or b['schema'] != 'lineage-combination-train-config-v1' or b['domain'] != 'train'
+        allowed_fields = (required,) if schema == 'admission-combination-train-config-v1' else (required, required | {'lineage_reference_binding'})
+        if (set(b) not in allowed_fields or b['schema'] != schema or b['domain'] != 'train'
                 or not isinstance(b['stage'], str) or not b['stage'].strip() or not _names(b['item_ids'])
                 or not _names(b['replicates']) or not _digest(b['baseline_digest'])):
             raise ContractError('closed lineage train scope or source list invalid')
@@ -60,12 +70,12 @@ class FrozenLineageTrainConfig:
         if not isinstance(b['materials_by_task'], dict) or set(b['materials_by_task']) != set(task_digests):
             raise ContractError('material must exactly cover every prepared task')
         for row in bindings.values():
-            material = FrozenLineageMaterial(FrozenRecord.from_dict(b['materials_by_task'][row['task_digest']]))
+            material = material_type(FrozenRecord.from_dict(b['materials_by_task'][row['task_digest']]))
             if (material.data()['identity'] != row['identity'] or material.data()['task_digest'] != row['task_digest']
                     or material.data()['public_artifacts'] != [{'artifact': {'artifact_id': 'public_csv',
                         'sha256': row['csv_sha256'], 'byte_count': row['csv_byte_count']}, 'container_path': '/input/public_csv'}]):
                 raise ContractError('controller material must use exact custody CSV source')
-        arms = _arms(b['baseline_digest'])
+        arms = _arms(b['baseline_digest'], designs)
         if not isinstance(b['packages_by_arm'], dict) or set(b['packages_by_arm']) != set(arms):
             raise ContractError('packages must exactly cover all legal arms across the four designs')
         packages = [CandidatePackage(FrozenRecord.from_dict(p)) for p in b['packages_by_arm'].values()]
@@ -95,7 +105,7 @@ class FrozenLineageTrainConfig:
                 raise ContractError('lineage scorer subject or per-cell budget drift')
         if not isinstance(b['acceptance_criteria'], dict) or b['acceptance_criteria'].get('contrast_analysis') != _ANALYSIS:
             raise ContractError('registered incomplete-reject contrast criteria required')
-        n = len(identities) * len(b['replicates']) * 17
+        n = len(identities) * len(b['replicates']) * cell_count
         allocation = {'model_slots_per_cell': list(SLOTS), 'docker_attempts_per_cell': 1, 'scorer_calls_per_cell': 1,
             'scorer_call_limit': n, 'scorer_token_accounting': 'transport_not_provided', 'source_calls_per_cell': 2}
         if FrozenRecord.from_dict(b['allocation']) != FrozenRecord.from_dict(allocation):
@@ -136,6 +146,7 @@ def compile_lineage_train_panels(config, packets):
     if not isinstance(config, FrozenLineageTrainConfig) or not isinstance(packets, tuple) or any(not isinstance(p, PublicTrainPacket) for p in packets):
         raise ContractError('typed frozen configuration and exported custody packets required')
     b = config.data(); by_item = {f'{p.task.identity.benchmark}:{p.task.identity.task_id}': p for p in packets}
+    designs, material_type, _, _ = config._contract()
     if len(by_item) != len(packets) or set(by_item) != set(b['item_ids']): raise ContractError('missing or duplicate exported task')
     for item, packet in by_item.items():
         binding = b['task_bindings'][item]
@@ -147,9 +158,9 @@ def compile_lineage_train_panels(config, packets):
                 or packet.receipt.data().get('packet_hash') != binding['task_digest']):
             raise ContractError('exported task or exact CSV bytes drifted')
     packages = {k: CandidatePackage(FrozenRecord.from_dict(v)) for k,v in b['packages_by_arm'].items()}
-    materials = {k: FrozenLineageMaterial(FrozenRecord.from_dict(v)) for k,v in b['materials_by_task'].items()}
+    materials = {k: material_type(FrozenRecord.from_dict(v)) for k,v in b['materials_by_task'].items()}
     panels, scenarios = [], {}
-    for name in DESIGNS:
+    for name in designs:
         design = registered_design(name, b['baseline_digest']); cells = []
         arms = {r['id']: FrozenRecord.from_dict(r['arm']) for r in design.data()['cells'] if r['status'] == 'executable'}
         for item in b['item_ids']:
@@ -183,9 +194,23 @@ class LineageTrainRun:
 def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run_root, model, audit_verifier,
         source_verifier, execution_authority, scoring_service, scorer_authority_keys):
     from evaluation.modular.lineage_scorer_process import LineageScorerProcessPool
+    from research_loop.modular.admission_combination_controller import FrozenAdmissionTrainConfig
+    from research_loop.modular.admission_combination import AdmissionMaterialVerifier, issue_admission_score_input, DESIGNS as ADMISSION_DESIGNS
+    from evaluation.modular.scorer_process import CombinationScorerProcessClient
+    from evaluation.modular.combination_scoring import verify_combination_adapted_receipt
+    admission = type(config) is FrozenAdmissionTrainConfig
+    if admission:
+        if (type(source_verifier) is not AdmissionMaterialVerifier or not isinstance(scoring_service, dict)
+                or set(scoring_service) != set(ADMISSION_DESIGNS)
+                or any(type(s) is not CombinationScorerProcessClient for s in scoring_service.values())):
+            raise ContractError('admission controller requires dual qualifiers and three independent scorer processes')
+        if (not hasattr(execution_authority, 'key') or not isinstance(scorer_authority_keys, dict)
+                or any(a.authority.key in {execution_authority.key, *scorer_authority_keys.values()}
+                       for a in source_verifier.authorities)):
+            raise ContractError('source, execution and scorer authority roles require independent keys')
     if (not isinstance(config, FrozenLineageTrainConfig) or not isinstance(custody, CustodyStore)
             or not isinstance(audit_verifier, AuditVerifier) or not isinstance(source_verifier, DualMaterialVerifier)
-            or not isinstance(scoring_service, (LineageCombinationScoringService, LineageScorerProcessPool))
+            or (not admission and not isinstance(scoring_service, (LineageCombinationScoringService, LineageScorerProcessPool)))
             or source_verifier.binding().data() != config.data()['source_verifier_binding']):
         raise ContractError('closed lineage train dependencies or source authorities drifted')
     if isinstance(scoring_service, LineageScorerProcessPool):
@@ -193,7 +218,13 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
             raise ContractError('lineage process references not frozen in train configuration')
     elif 'lineage_reference_binding' in config.data():
         raise ContractError('reference-bound lineage configuration requires the process pool')
-    _service_preflight(config, model, scoring_service, execution_authority, scorer_authority_keys)
+    for service in scoring_service.values() if admission else (scoring_service,):
+        _service_preflight(config, model, service, execution_authority, scorer_authority_keys)
+    score_verifier = verify_combination_adapted_receipt if admission else verify_lineage_score
+    source_issuer = issue_admission_score_input if admission else issue_lineage_score_input
+    def reference_options(cell):
+        return {} if admission else {'expected_reference_digest': config.data().get('lineage_reference_binding', {}).get('references', {}).get(
+            FrozenRecord.from_dict(cell.identity.data()).content_hash)}
     snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model.root)
     if root.exists() or exported.exists(): raise ContractError('closed controller requires unused roots and no retry')
     b = config.data(); train_ids = {f'{i.benchmark}:{i.task_id}': i for i in custody.export_train()}
@@ -211,6 +242,8 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
         if isinstance(scoring_service, LineageScorerProcessPool) and any(
                 scoring_service.clients[p.obligation_id].panel != p for p in compiled.panels):
             raise ContractError('lineage process panel differs from actual compiled panel')
+        if admission and any(scoring_service[p.obligation_id].panel != p for p in compiled.panels):
+            raise ContractError('scorer process panel differs from actual custody compiler')
         broker = DockerExecutionBroker([exported, root])
         by_task = {p.task.content_hash: p for p in packets}
         # Check all deterministic materials and bytes before any external authority/model call.
@@ -221,7 +254,8 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
             for cell in panel.cells:
                 material = compiled.materials[cell.task_digest]; task = by_task[cell.task_digest].task
                 check_material_inputs(material, task, broker, {'public_csv': by_task[cell.task_digest].csv_path})
-                e = EvidenceLedger(task.identity); _transition(e, ClaimLedger(e), ContextCache(), material, set(cell.runtime_arm.data()['enabled']))
+                if not admission:
+                    e = EvidenceLedger(task.identity); _transition(e, ClaimLedger(e), ContextCache(), material, set(cell.runtime_arm.data()['enabled']))
         journal.update(status='executing', panels=[{'digest': p.digest, 'design': p.design.data(), 'cells': [c.data() for c in p.cells]} for p in compiled.panels],
             packet_receipts=[p.receipt.data() for p in packets],
             cells=[{'cell': c.data(), 'status': 'not_started', 'phase': 'planned', 'scorer_calls': 0} for p in compiled.panels for c in p.cells])
@@ -230,6 +264,7 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
         journal.update(status='blocked_before_execution', error_type=type(exc).__name__); persist(); raise
     results, scores, score_inputs, runtime_by_panel = [], [], {}, {}
     for index, (panel, cell) in enumerate((p,c) for p in compiled.panels for c in p.cells):
+        service = scoring_service[panel.obligation_id] if admission else scoring_service
         row = journal['cells'][index]; result = None
         row.update(status='running', phase='material_verification', model_usage_before=_usage(model)); persist()
         cell_root = root/'cells'/FrozenRecord.from_dict(cell.data()).content_hash
@@ -248,14 +283,12 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
             row['verification'] = verified.data(); runtime_by_panel.setdefault(panel.digest, []).append(result.runtime)
             if result.runtime.status != 'succeeded':
                 row.update(status='failed', phase='execution', reason='original_execution_failure'); continue
-            source = issue_lineage_score_input(authority=execution_authority, result=result, **args); score_inputs[cell.key] = source
+            source = source_issuer(authority=execution_authority, result=result, **args); score_inputs[cell.key] = source
             row.update(phase='scoring', scorer_calls=1, score_input=source.data()); journal['actual_scorer_calls'] += 1; persist()
-            score = scoring_service.score_lineage(panel=panel, cell=cell, score_input=source)
+            score = (service.score_combination if admission else service.score_lineage)(panel=panel, cell=cell, score_input=source)
             row.update(phase='score_verification', scorer_receipt=score.receipt.data())
-            verify_lineage_score(score, authority_keys=scorer_authority_keys, config=scoring_service.config, panel=panel,
-                cell=cell, score_input=source, execution_authority_keys={execution_authority.authority_id: execution_authority.key},
-                expected_reference_digest=(b.get('lineage_reference_binding', {}).get('references', {}).get(
-                    FrozenRecord.from_dict(cell.identity.data()).content_hash)))
+            score_verifier(score, authority_keys=scorer_authority_keys, config=service.config, panel=panel,
+                cell=cell, score_input=source, execution_authority_keys={execution_authority.authority_id: execution_authority.key}, **reference_options(cell))
             scores.append(score); row.update(status='succeeded', phase='verified')
         except Exception as exc:
             row.update(status='failed', error_type=type(exc).__name__)
@@ -274,11 +307,10 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
             results.append(result); persist()
     contrasts = []
     for panel in compiled.panels:
+        service = scoring_service[panel.obligation_id] if admission else scoring_service
         def verify_score(score, cell, owner):
-            verify_lineage_score(score, authority_keys=scorer_authority_keys, config=scoring_service.config, panel=owner,
-                cell=cell, score_input=score_inputs[cell.key], execution_authority_keys={execution_authority.authority_id: execution_authority.key},
-                expected_reference_digest=(b.get('lineage_reference_binding', {}).get('references', {}).get(
-                    FrozenRecord.from_dict(cell.identity.data()).content_hash)))
+            score_verifier(score, authority_keys=scorer_authority_keys, config=service.config, panel=owner,
+                cell=cell, score_input=score_inputs[cell.key], execution_authority_keys={execution_authority.authority_id: execution_authority.key}, **reference_options(cell))
         try:
             contrast = estimate_grouped_contrast(panel, runtime=runtime_by_panel.get(panel.digest, []),
                 scorer_receipts=[s for s in scores if s.cell_key in {c.key for c in panel.cells}],

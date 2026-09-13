@@ -35,6 +35,9 @@ class _MemoryLog:
 
 
 def registered_design(obligation, baseline):
+    from research_loop.modular.admission_combination import DESIGNS as ADMISSION_DESIGNS
+    if obligation in ADMISSION_DESIGNS:
+        return default_compatibility(baseline).conditional_factorial(ADMISSION_DESIGNS[obligation])
     if obligation not in DESIGNS:
         raise ContractError('unimplemented lineage combination obligation')
     return default_compatibility(baseline).conditional_factorial(DESIGNS[obligation])
@@ -51,7 +54,10 @@ def _read_events(path):
     return [FrozenRecord(line).data() for line in path.read_text(encoding='utf-8').splitlines()]
 
 
-def _transition(evidence, claims, cache, material, enabled):
+def _transition(evidence, claims, cache, material, enabled, qualification=None):
+    from research_loop.modular.admission_combination import FrozenAdmissionMaterial, transition
+    if type(material) is FrozenAdmissionMaterial:
+        return transition(evidence, claims, cache, material, enabled, qualification)
     b = material.data(); roots, relations = {}, {}
     source = {row['key']: row for row in b['originals']}
     observation_rows = [(row['key'], row, 'raw', row['content']) for row in b['originals']]
@@ -107,6 +113,9 @@ def _transition(evidence, claims, cache, material, enabled):
 
 
 def _validate(panel, cell, task, scenario, package, material):
+    from research_loop.modular.admission_combination import DESIGNS as ADMISSION_DESIGNS, FrozenAdmissionMaterial
+    if (panel.obligation_id in ADMISSION_DESIGNS) != (type(material) is FrozenAdmissionMaterial):
+        raise ContractError('combination obligation requires its exact material type')
     if (not isinstance(panel, CombinationPanel) or cell not in panel.cells
             or panel.design != registered_design(panel.obligation_id, cell.runtime_arm.data()['baseline_digest'])
             or not isinstance(task, PublicTask) or task.identity != cell.identity or task.content_hash != cell.task_digest
@@ -152,15 +161,20 @@ def run_lineage_combination_cell(*, panel, cell, task, scenario, package, materi
             or not isinstance(audit_verifier, AuditVerifier) or type(timeout_seconds) is not int or not 1 <= timeout_seconds <= 120):
         raise ContractError('lineage runtime needs typed unused dependencies')
     check_material_inputs(material, task, broker, public_inputs)  # Before authority and model calls.
+    from research_loop.modular.admission_combination import FrozenAdmissionMaterial, AdmissionMaterialVerifier
+    admission = type(material) is FrozenAdmissionMaterial
+    if admission and type(source_verifier) is not AdmissionMaterialVerifier:
+        raise ContractError('admission requires actual dual qualification receipts')
     # Exercise the complete deterministic material contract before reserving external calls.
     e = EvidenceLedger(task.identity); c = ClaimLedger(e)
-    _transition(e, c, ContextCache(), material, set(cell.runtime_arm.data()['enabled']))
+    if not admission: _transition(e, c, ContextCache(), material, set(cell.runtime_arm.data()['enabled']))
     source_hash = source_verifier.qualify(material, sidecar / 'source-verification.json', cell_binding=_source_binding(cell))
+    qualification = source_verifier.assessments(material, sidecar/'source-verification.json', cell_binding=_source_binding(cell)) if admission else None
     session = RunSession(task, package_digest=package.digest, arm=cell.runtime_arm, objective=objective,
         slots=SLOTS, execution_limit=1, sidecar=sidecar / 'runtime', verifier=audit_verifier,
         required_audit=('measurement',), context_budget=material.data()['context_budget_bytes'])
     workflow = ModularWorkflow(session)
-    transition = _transition(session.evidence, session.claims, session.cache, material, workflow.enabled)
+    transition = _transition(session.evidence, session.claims, session.cache, material, workflow.enabled, qualification)
     session._record('lineage_transition', {'transition': transition.data(), 'source_sha256': source_hash})
     responses, solver, joint = [], None, None
     try:
@@ -206,9 +220,13 @@ def verify_lineage_combination_cell(result, *, panel, task, scenario, package, m
     PanelReceiptVerifier()._verify_runtime(result.runtime, result.cell)
     path = result.runtime.trace_path; events = _read_events(path)
     source_hash = source_verifier.replay(material, path.parent.parent / 'source-verification.json', cell_binding=_source_binding(result.cell))
+    from research_loop.modular.admission_combination import FrozenAdmissionMaterial, AdmissionMaterialVerifier
+    if type(material) is FrozenAdmissionMaterial and type(source_verifier) is not AdmissionMaterialVerifier:
+        raise ContractError('admission replay requires the configured qualifier')
+    qualification = source_verifier.assessments(material, path.parent.parent/'source-verification.json', cell_binding=_source_binding(result.cell)) if type(material) is FrozenAdmissionMaterial else None
     enabled = set(result.cell.runtime_arm.data()['enabled'])
     e = EvidenceLedger(task.identity); c = ClaimLedger(e); e._log = _MemoryLog(); c._log = _MemoryLog()
-    transition = _transition(e, c, ContextCache(), material, enabled)
+    transition = _transition(e, c, ContextCache(), material, enabled, qualification)
     if transition != result.transition or _read_events(path.parent/'evidence.jsonl') != e._log.rows or _read_events(path.parent/'claims.jsonl') != c._log.rows:
         raise ContractError('actual lineage events differ from replayed original and withdrawal operations')
     transition_events = [v for v in events if v['stage'] == 'lineage_transition']
