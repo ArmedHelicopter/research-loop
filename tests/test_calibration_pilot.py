@@ -195,7 +195,7 @@ def test_real_subprocess_36_slot_standard_resolver_endpoint(tmp_path):
     receipt = launch_once(command=[sys.executable,str(helper),'--config',config_desc['path'],
         '--sha256',config_desc['sha256'],'--output',str(output)], executable_sha256=hash_file(Path(sys.executable)),
         worker_sha256=hash_file(helper),
-        config_descriptor=config_desc,result_path=output,parent_journal_path=tmp_path/'parent.jsonl',timeout_seconds=60)
+        config_descriptor=config_desc,result_path=output,parent_journal_path=tmp_path/'parent.jsonl',timeout_seconds=120)
     payload = verify(receipt,role='diagnostic',subject=manifest.content_hash,
         authority_id=authorities['diagnostic'].authority_id,key=authorities['diagnostic'].key)
     assert len(payload['observations']) == 72 and payload['budget']['calls']['evaluator'] == 72

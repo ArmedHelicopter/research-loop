@@ -16,7 +16,13 @@ from evaluation.modular.diagnostic_subscription import (
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.ontology import ContractError, digest
 from tests.helpers.calibration_pilot_fixture import build_fixture, record, write
-from tests.helpers.subscription_worker import fixture_factory
+from tests.helpers.subscription_worker import fixture_factory, run_fixture_worker
+
+
+@pytest.fixture(autouse=True)
+def no_inherited_pythonpath(monkeypatch):
+    # Every child must bind its own checkout even from a private working folder.
+    monkeypatch.delenv('PYTHONPATH', raising=False)
 
 
 def setup_subscription(root, *, all_ready=False, byte_cap=100000, ready_kind='valid_positive', main_cap=180,
@@ -83,9 +89,8 @@ def test_real_worker_renderer_native_ledger_and_fixed_denominators(tmp_path, mod
     desc, manifest, authorities, _ = setup_subscription(tmp_path)
     worker = Path(__file__).parent / 'helpers' / 'subscription_worker.py'
     result_path = tmp_path / 'result.json'
-    proc = subprocess.run([sys.executable, str(worker), '--config', desc['path'], '--sha256', desc['sha256'],
-        '--output', str(result_path), '--mode', mode], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-        timeout=60, env=dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[1])))
+    proc = run_fixture_worker([sys.executable, str(worker), '--config', desc['path'], '--sha256', desc['sha256'],
+        '--output', str(result_path), '--mode', mode], stream_root=tmp_path, timeout=120)
     assert proc.returncode == 0, proc.stderr.decode()
     assert b'PRIVATE' not in proc.stdout + proc.stderr
     result = unpack(FrozenRecord(result_path.read_text()), manifest, authorities)

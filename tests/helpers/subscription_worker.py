@@ -4,16 +4,39 @@ import json
 import os
 from pathlib import Path
 import sys
+import subprocess
 
 from evaluation.modular.diagnostic_subscription import run_private, sha
-from research_loop.modular.grok_acp_transport import SinglePromptACP, DIAGNOSTIC_OPPORTUNITY_CONTRACT
+from research_loop.modular.grok_acp_transport import SinglePromptACP, DIAGNOSTIC_OPPORTUNITY_CONTRACT, ProcessTree
+
+
+def fixture_environment():
+    return dict(os.environ, PYTHONPATH=str(Path(__file__).resolve().parents[2]))
+
+
+def run_fixture_worker(command, *, stream_root, timeout=120):
+    """Bound the multi-call fixture parent separately from its native sessions."""
+    stdout_path = stream_root / 'fixture-worker.stdout.bin'
+    stderr_path = stream_root / 'fixture-worker.stderr.bin'
+    with stderr_path.open('xb') as stderr:
+        tree = ProcessTree(command, stream_root, fixture_environment(), stderr)
+        try:
+            stdout, _ = tree.process.communicate(timeout=timeout)
+            stdout_path.write_bytes(stdout)
+            code = tree.process.returncode
+        except subprocess.TimeoutExpired as exc:
+            (stream_root / 'fixture-worker.timeout-stdout.bin').write_bytes(exc.stdout or b'')
+            raise
+        finally:
+            tree.close()
+    return subprocess.CompletedProcess(command, code, stdout, stderr_path.read_bytes())
 
 
 def fixture_factory(mode='diagnostic'):
     def call(entry, prompt, schema, directory, frozen_files, spec):
         peer = Path(__file__).resolve().parents[1] / 'fixtures' / 'grok_acp_peer.py'
         return SinglePromptACP([sys.executable, str(peer), mode, str(directory / 'peer.private.jsonl')],
-            cwd=directory, env=dict(os.environ), private_dir=directory / 'native',
+            cwd=directory, env=fixture_environment(), private_dir=directory / 'native',
             reservation=directory / 'native-reservation.json',
             frozen_files=frozen_files, timeout=5,
             opportunity_contract=DIAGNOSTIC_OPPORTUNITY_CONTRACT,
