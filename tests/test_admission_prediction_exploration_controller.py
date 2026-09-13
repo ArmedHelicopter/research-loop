@@ -343,7 +343,9 @@ def test_persistent_replay_and_score_issuance_reject_forgeries(grid,fault):
 @pytest.mark.parametrize('flags',[{}, {'admission_prediction_exploration':1},{'admission_prediction_exploration':'true'},
     {'admission_prediction_exploration':True,'state_prediction':True},{'admission_prediction_exploration':True,'state_retrieval':True},{'admission_prediction_exploration':True,'state_exploration':True},{'admission_prediction_exploration':True,'state_scheduling':True},{'admission_prediction_exploration':True,'mechanism_exploration':True},{'admission_prediction_exploration':True,'mechanism_scheduling':True},{'admission_prediction_exploration':True,'lineage':True},
     {'admission_prediction_exploration':True,'retrieval_review':True},{'admission_prediction_exploration':True,'admission':True},
-    {'admission_prediction_exploration':True,'exploration_scheduler':True}])
+    {'admission_prediction_exploration':True,'exploration_scheduler':True},
+    {'mechanism_improvement':True},{'admission_prediction_exploration':True,'mechanism_improvement':True},
+    {'state_improvement':True},{'admission_prediction_exploration':True,'state_improvement':True}])
 def test_strict_scorer_family_scope_no_default_relaxation(grid,flags):
     setup,*_=grid
     with pytest.raises(ContractError):serialize_combination_panel(setup['compiled'].panels[0],**flags)
