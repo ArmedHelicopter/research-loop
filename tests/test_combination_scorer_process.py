@@ -41,6 +41,10 @@ def fixture(root):
     {'lineage': 1, 'retrieval_review': False},
     {'lineage': False, 'retrieval_review': 1},
     {'lineage': 'false', 'retrieval_review': False},
+    {'lineage': True, 'admission': True},
+    {'retrieval_review': True, 'admission': True},
+    {'admission': 1},
+    {'admission': 'false'},
 ])
 def test_merged_combination_scopes_cannot_be_mixed_or_coerced(tmp_path, flags):
     _, _, _, compiled, _, _ = fixture(tmp_path)
