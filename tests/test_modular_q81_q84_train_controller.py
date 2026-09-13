@@ -20,8 +20,8 @@ FRONTIER = {"type": "object", "properties": {"proposals": {"type": "array", "ite
 
 
 def sources():
-    rows = [{"source_id": f"report-{i}", "root_source_id": "shared-experiment", "lane": "support", "text": f"Public report {i} records the same measurement procedure and an observation of x."} for i in range(3)]
-    return {"shared_root": rows, "independent_roots": [{**doc, "root_source_id": f"experiment-{i}"} for i,doc in enumerate(rows)],
+    rows = [{"source_id": f"report-{i}", "root_source_id": "origin-0", "lane": "support", "text": f"Public report {i} records the same measurement procedure and an observation of x."} for i in range(3)]
+    return {"shared_root": rows, "independent_roots": [{**doc, "root_source_id": f"origin-{i}"} for i,doc in enumerate(rows)],
             "research": [{"source_id": lane, "root_source_id": lane, "lane": lane, "text": "Public source about " + lane} for lane in ("support", "counter", "method")]}
 
 

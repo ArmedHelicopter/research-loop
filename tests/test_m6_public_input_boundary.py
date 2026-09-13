@@ -53,6 +53,7 @@ def verify_actual_public_requests(events):
         assert FrozenRecord.from_dict(record['public_context']).content_hash==record['public_digest']
         encoded=FrozenRecord.from_dict(request).encoded
         assert all(digest not in encoded for digest in forbidden_digests)
+        assert 'shared-experiment' not in encoded
         slot=request['slot']
         if 'retrieval' in raw:
             assert public['retrieval']=={k:raw['retrieval'][k] for k in ('by_lane','source_qualification','scientific_admission')}
@@ -102,10 +103,17 @@ def verify_actual_public_requests(events):
                 if a['kind']=='failed_check' and a['trace']['stage']=='execution_result':
                     assert b['execution']['status']=='failed'
                     assert b['execution']['record']['stderr']==a['trace']['data']['receipt']['record']['stderr']
-    for event in events:
+    for index,event in enumerate(events):
         if event['stage']!='q8_public_frontier_binding':continue
         binding=event['data'];mapping=binding['references']
         assert len(set(mapping.values()))==len(mapping)
+        context=next(e['data'] for e in reversed(events[:index]) if e['stage']=='q8_public_model_context' and e['data']['slot']=='frontier')
+        catalog=context['controller_context']['frontier_catalog']
+        assert mapping=={'origin-'+str(i):key for i,key in enumerate(catalog)}
+        assert binding['original_catalog_digest']==FrozenRecord.from_dict(catalog).content_hash
+        actual_response=next(e['data']['response'] for e in reversed(events[:index]) if e['stage']=='model_response')
+        assert actual_response==binding['public_response']
+        assert len(binding['public_response']['proposals'])==len(binding['controller_response']['proposals'])
         for public,original in zip(binding['public_response']['proposals'],binding['controller_response']['proposals']):
             assert original=={**public,'origin_ref':mapping[public['origin_ref']]}
     return len(requests)
