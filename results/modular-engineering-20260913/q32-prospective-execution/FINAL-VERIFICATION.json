@@ -1,0 +1,117 @@
+{
+  "additional_failure_fixture_broker_attempts": 1,
+  "additional_new_docker_attempts": 6,
+  "archives": {
+    "final01": {
+      "archive_sha256": "b8ada5b1ade3f5cc0ecd62e22ce3d359717c1e27dc79b093068bf771cebe2e2b",
+      "files": 447,
+      "member_manifest_sha256": "888e2c26f24468da5d233fa66d321b1b9c9d2c07d5faf8cf3eed541223fed7db"
+    },
+    "final02": {
+      "archive_sha256": "c1edf5ee63857aade314f16df156eaac06a30791b36ee89b62d4adf7364c622e",
+      "files": 2217,
+      "member_manifest_sha256": "212181d586f2c8ffca55407b87324169a07de3af8e79fd714d9eab6d3678a077"
+    },
+    "final03": {
+      "archive_sha256": "02834fe6dbedf4b7e0347b3c9ebc9625069cd65bc6d935ae5e3fa9825357f5b2",
+      "files": 513,
+      "member_manifest_sha256": "5f8a5ea3611b376adafb40ec20e3f948fb7d230584ce99d48565e6f740e35460"
+    }
+  },
+  "base_commit": "1fc1c8f69c6eb9e415bef224f432b61d09e4e4de",
+  "blocked_plan_substitution_counterexamples": 1,
+  "grid_file_sha256": "ee7165a4aa5bbdd36bb4610dbeba93a683ee96db9793408fbdf183a751e9a736",
+  "historical_regression": "final02 includes unchanged planning-only path and old 20-cell linked prediction grid plus its failure grid; not new experiments",
+  "independent_data_qualification": "not_established",
+  "limitations": [
+    "Caller supplies unverified plan and numeric measurement meaning.",
+    "Same CSV-derived measurements are not independent data.",
+    "Declared-range membership has no calibrated scientific support/elimination interpretation.",
+    "No real paid calls, validation, private reference payloads or scientific scoring used.",
+    "Model token threshold stops later calls after returned usage; in-flight overshoot/unknown cost remains visible.",
+    "The original planning_only and caller-supplied support restrictions remain unchanged."
+  ],
+  "new_execution_failure_cells": 4,
+  "new_primary_grid_docker_attempts": 24,
+  "new_primary_grid_fixture_model_calls": 32,
+  "new_primary_grid_measurement_denominator": 24,
+  "new_success_cells": 4,
+  "producer_failure_fixture_calls": 2,
+  "programme_complete": false,
+  "rehashed_grid_counterexamples": 48,
+  "reports": {
+    "final01": {
+      "sha256": "99669582ca069674ee6d6422cfabe43d0ed47f432c8ed5484ec31b21769fc642",
+      "suite": {
+        "errors": "0",
+        "failures": "0",
+        "hostname": "SC-202507131830",
+        "name": "pytest",
+        "skipped": "0",
+        "tests": "7",
+        "time": "43.394",
+        "timestamp": "2026-09-13T18:17:35.601662+08:00"
+      }
+    },
+    "final02": {
+      "sha256": "5f5a29a57cc6cea12384ee4ecf22fcd8a9ca3c07e94ffb449317890d1aac1e4a",
+      "suite": {
+        "errors": "0",
+        "failures": "0",
+        "hostname": "SC-202507131830",
+        "name": "pytest",
+        "skipped": "0",
+        "tests": "59",
+        "time": "92.314",
+        "timestamp": "2026-09-13T18:21:22.743041+08:00"
+      }
+    },
+    "final03": {
+      "sha256": "b1fa4cffd72707a751417e9d24db6f491a0bcd528bea797f96a621b14f4ca0ee",
+      "suite": {
+        "errors": "0",
+        "failures": "0",
+        "hostname": "SC-202507131830",
+        "name": "pytest",
+        "skipped": "0",
+        "tests": "18",
+        "time": "27.918",
+        "timestamp": "2026-09-13T18:24:40.923174+08:00"
+      }
+    },
+    "preflight": {
+      "sha256": "7a60534e606377b98d596a4df3cf1b56244e555d1f3e18c366a1c7d1981394b7",
+      "suite": {
+        "errors": "0",
+        "failures": "0",
+        "hostname": "SC-202507131830",
+        "name": "pytest",
+        "skipped": "0",
+        "tests": "10",
+        "time": "0.519",
+        "timestamp": "2026-09-13T18:17:23.142105+08:00"
+      }
+    },
+    "red": {
+      "sha256": "a5377557c4f3a2756caeebe47411f6f17fa6524a3be8360dad85af77ab9895b0",
+      "suite": {
+        "errors": "1",
+        "failures": "0",
+        "hostname": "SC-202507131830",
+        "name": "pytest",
+        "skipped": "0",
+        "tests": "1",
+        "time": "0.232",
+        "timestamp": "2026-09-13T18:10:28.416144+08:00"
+      }
+    }
+  },
+  "schema": "q32-prospective-execution-engineering-evidence-v1",
+  "scientific_validated": false,
+  "scope": "Q3.2 explicit execution phase; M4 fixed on; two variants times two benchmarks",
+  "source_after_sha256": "39b723350eb2eaaece487e97cfcd34624482df7d8742a2fcf75b21cf15879167",
+  "source_before_sha256": "39b723350eb2eaaece487e97cfcd34624482df7d8742a2fcf75b21cf15879167",
+  "source_commit": "e7a5012",
+  "source_commit_full": "e7a50129cd44c7d0deb4b2cb1b658e718aa1995e",
+  "source_file_count": 453
+}

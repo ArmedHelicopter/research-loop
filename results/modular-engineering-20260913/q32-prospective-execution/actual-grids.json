@@ -1,0 +1,368 @@
+{
+  "execution_failure": {
+    "cells": 4,
+    "docker_attempts": 12,
+    "measurement_denominator": 12,
+    "model_attempts": 16,
+    "rows": [
+      {
+        "cell": {
+          "cell_id": "6c1d9f6a980d293c4dc9615ba95f4fd6d66d204422908f97a520dcf2c1ce045b",
+          "task_digest": "2e10c628a1e0746c533e65852bce434a2290b30cc5c42b09b233b739cd63f982",
+          "variant": "joint"
+        },
+        "execution_attempts": 3,
+        "measurements": [
+          {
+            "execution_digest": "23f3028616113270bace16032b05b8c1dea2066970791c1b4c21c8a12e3097ce",
+            "observable": "sum_x",
+            "observation": {
+              "observable": "sum_x",
+              "value": 6.0
+            },
+            "ordinal": 0,
+            "plan_id": "bef20fec2859b2f27465343a7b1009af15414668371f258609e4f414cb949278",
+            "status": "succeeded"
+          },
+          {
+            "execution_digest": "d8eb8189054cae00e392970bcadad15ebefd27bad4d53181c226f94d4111faa9",
+            "observable": "mean_x",
+            "observation": null,
+            "ordinal": 1,
+            "plan_id": "bef20fec2859b2f27465343a7b1009af15414668371f258609e4f414cb949278",
+            "status": "failed"
+          },
+          {
+            "execution_digest": "c885cc6b0c71312cb0f175b2b3d621d4c892edc76cb331991c595084a68f1430",
+            "observable": "max_x",
+            "observation": {
+              "observable": "max_x",
+              "value": 3.0
+            },
+            "ordinal": 2,
+            "plan_id": "bef20fec2859b2f27465343a7b1009af15414668371f258609e4f414cb949278",
+            "status": "succeeded"
+          }
+        ],
+        "model_attempts": 4
+      },
+      {
+        "cell": {
+          "cell_id": "6c330475ca2d7238e30d8e1d4fe7a43f2e4c77c714444425b07983a016d42968",
+          "task_digest": "2e10c628a1e0746c533e65852bce434a2290b30cc5c42b09b233b739cd63f982",
+          "variant": "separate"
+        },
+        "execution_attempts": 3,
+        "measurements": [
+          {
+            "execution_digest": "9d8fb7d9e4c809458ee24e708f5b819c901989b9c62fbcd3f2d558c8bd2d89c7",
+            "observable": "sum_x",
+            "observation": {
+              "observable": "sum_x",
+              "value": 6.0
+            },
+            "ordinal": 0,
+            "plan_id": "5f97b82aadc7ab0f1777c9ee28fa1568db95aff237c057a903cfdd8f5f58fb96",
+            "status": "succeeded"
+          },
+          {
+            "execution_digest": "702c7e80ac6789da31e18de6e9a6a54d35437e29e37303e026e319c4821ec400",
+            "observable": "mean_x",
+            "observation": null,
+            "ordinal": 1,
+            "plan_id": "651dc891e259b04aa57c9215970b27a04264cb3cdd13c5a92b77990b47f57e9b",
+            "status": "failed"
+          },
+          {
+            "execution_digest": "7757c7cbffc2b52a2c79d9a2145a0d7da0e2834d7a83b7f3725981c9258a5b83",
+            "observable": "max_x",
+            "observation": {
+              "observable": "max_x",
+              "value": 3.0
+            },
+            "ordinal": 2,
+            "plan_id": "b948082e29ca46ecffe74c75c0d578bc17ef11a029c84aca2aa3e125355cbe2c",
+            "status": "succeeded"
+          }
+        ],
+        "model_attempts": 4
+      },
+      {
+        "cell": {
+          "cell_id": "1d1c2a373014fb2b21576da3de1d27bd685720bab83d8215ade26fa2b6eedd4c",
+          "task_digest": "3d52f8079c1eb7e1ebee42447215e441f9e1d70017e322f34fa50b68ccc90858",
+          "variant": "joint"
+        },
+        "execution_attempts": 3,
+        "measurements": [
+          {
+            "execution_digest": "39017017132bb325de6fcac0a1f713142adbb6b35435de1cc4f5258b4e63c3f2",
+            "observable": "sum_x",
+            "observation": {
+              "observable": "sum_x",
+              "value": 6.0
+            },
+            "ordinal": 0,
+            "plan_id": "0c6507d46ef3721a21c3d08b109fd440adcecc709a1a92f86f96c1fb8b64bd6c",
+            "status": "succeeded"
+          },
+          {
+            "execution_digest": "ba3ab16d464c8235be1c051b6142559b915260df7d24447eb9c5a73784c2295e",
+            "observable": "mean_x",
+            "observation": null,
+            "ordinal": 1,
+            "plan_id": "0c6507d46ef3721a21c3d08b109fd440adcecc709a1a92f86f96c1fb8b64bd6c",
+            "status": "failed"
+          },
+          {
+            "execution_digest": "729b075fbe3d1c6d1611402131cf8c9562cdb7f0561cbd7ae8a98adc96dab27c",
+            "observable": "max_x",
+            "observation": {
+              "observable": "max_x",
+              "value": 3.0
+            },
+            "ordinal": 2,
+            "plan_id": "0c6507d46ef3721a21c3d08b109fd440adcecc709a1a92f86f96c1fb8b64bd6c",
+            "status": "succeeded"
+          }
+        ],
+        "model_attempts": 4
+      },
+      {
+        "cell": {
+          "cell_id": "69a1473e41b8d7fc82b0f195d35d50d1b49913d5ff412de2b0717ed6c8aaeb3a",
+          "task_digest": "3d52f8079c1eb7e1ebee42447215e441f9e1d70017e322f34fa50b68ccc90858",
+          "variant": "separate"
+        },
+        "execution_attempts": 3,
+        "measurements": [
+          {
+            "execution_digest": "68c30331921bccfa9b22255b74b38246acfe2a44443573bfb881a19c4d2c9a5c",
+            "observable": "sum_x",
+            "observation": {
+              "observable": "sum_x",
+              "value": 6.0
+            },
+            "ordinal": 0,
+            "plan_id": "da47cb74aa43c5fb33a5ab84de7a09ca36f03f042982ccc01c0dd50f9e95ae30",
+            "status": "succeeded"
+          },
+          {
+            "execution_digest": "58c988abc433af63b22ae8711444adf86f9bdfec03a21f15f086b6a1532c2d84",
+            "observable": "mean_x",
+            "observation": null,
+            "ordinal": 1,
+            "plan_id": "89aea19a0c0c489ee5badadc059b763c1598cf407f4ef55aaf27f6f87cd304a3",
+            "status": "failed"
+          },
+          {
+            "execution_digest": "bb29534599426ea08a58deffd780626476831866a385159a7b0f241ba7db22c1",
+            "observable": "max_x",
+            "observation": {
+              "observable": "max_x",
+              "value": 3.0
+            },
+            "ordinal": 2,
+            "plan_id": "ab7d8ae8271ce656ebf8ccf165c53a05d52393037d47bdd06527c48a95189788",
+            "status": "succeeded"
+          }
+        ],
+        "model_attempts": 4
+      }
+    ],
+    "statuses": {
+      "blocked": 0,
+      "failed": 4,
+      "succeeded": 8
+    }
+  },
+  "success": {
+    "cells": 4,
+    "docker_attempts": 12,
+    "measurement_denominator": 12,
+    "model_attempts": 16,
+    "rows": [
+      {
+        "cell": {
+          "cell_id": "6c1d9f6a980d293c4dc9615ba95f4fd6d66d204422908f97a520dcf2c1ce045b",
+          "task_digest": "2e10c628a1e0746c533e65852bce434a2290b30cc5c42b09b233b739cd63f982",
+          "variant": "joint"
+        },
+        "execution_attempts": 3,
+        "measurements": [
+          {
+            "execution_digest": "aea0b814430a3c0ae106e7392abc3a5945c3b1045774ae4778f34125c722beb6",
+            "observable": "sum_x",
+            "observation": {
+              "observable": "sum_x",
+              "value": 6.0
+            },
+            "ordinal": 0,
+            "plan_id": "bef20fec2859b2f27465343a7b1009af15414668371f258609e4f414cb949278",
+            "status": "succeeded"
+          },
+          {
+            "execution_digest": "96ae45c25b084e5a1df99f37f3da4b9111f2dc4287a8747f013946a00501f26e",
+            "observable": "mean_x",
+            "observation": {
+              "observable": "mean_x",
+              "value": 2.0
+            },
+            "ordinal": 1,
+            "plan_id": "bef20fec2859b2f27465343a7b1009af15414668371f258609e4f414cb949278",
+            "status": "succeeded"
+          },
+          {
+            "execution_digest": "31610ac02ea258c3819c883d5b8a833a5aa46e564c66e84ddeb0aff7c8760999",
+            "observable": "max_x",
+            "observation": {
+              "observable": "max_x",
+              "value": 3.0
+            },
+            "ordinal": 2,
+            "plan_id": "bef20fec2859b2f27465343a7b1009af15414668371f258609e4f414cb949278",
+            "status": "succeeded"
+          }
+        ],
+        "model_attempts": 4
+      },
+      {
+        "cell": {
+          "cell_id": "6c330475ca2d7238e30d8e1d4fe7a43f2e4c77c714444425b07983a016d42968",
+          "task_digest": "2e10c628a1e0746c533e65852bce434a2290b30cc5c42b09b233b739cd63f982",
+          "variant": "separate"
+        },
+        "execution_attempts": 3,
+        "measurements": [
+          {
+            "execution_digest": "f44a0bd9977c96249d2594db81e175408f40cc6165ee990537c0f4336bd5572f",
+            "observable": "sum_x",
+            "observation": {
+              "observable": "sum_x",
+              "value": 6.0
+            },
+            "ordinal": 0,
+            "plan_id": "5f97b82aadc7ab0f1777c9ee28fa1568db95aff237c057a903cfdd8f5f58fb96",
+            "status": "succeeded"
+          },
+          {
+            "execution_digest": "2c8494f5ffcf9e76aa3fc8b29a91e6b6079c2600bc7af250bb41757d9835dd83",
+            "observable": "mean_x",
+            "observation": {
+              "observable": "mean_x",
+              "value": 2.0
+            },
+            "ordinal": 1,
+            "plan_id": "651dc891e259b04aa57c9215970b27a04264cb3cdd13c5a92b77990b47f57e9b",
+            "status": "succeeded"
+          },
+          {
+            "execution_digest": "aadbbfc107ae466f0a57ca781fa01c10a9cc0b85b932b71322a519c3996c0f07",
+            "observable": "max_x",
+            "observation": {
+              "observable": "max_x",
+              "value": 3.0
+            },
+            "ordinal": 2,
+            "plan_id": "b948082e29ca46ecffe74c75c0d578bc17ef11a029c84aca2aa3e125355cbe2c",
+            "status": "succeeded"
+          }
+        ],
+        "model_attempts": 4
+      },
+      {
+        "cell": {
+          "cell_id": "1d1c2a373014fb2b21576da3de1d27bd685720bab83d8215ade26fa2b6eedd4c",
+          "task_digest": "3d52f8079c1eb7e1ebee42447215e441f9e1d70017e322f34fa50b68ccc90858",
+          "variant": "joint"
+        },
+        "execution_attempts": 3,
+        "measurements": [
+          {
+            "execution_digest": "75d9d0025fd14b94f0f4b87d8bae3879bf36ae77c59e6089f9da53a86af7de15",
+            "observable": "sum_x",
+            "observation": {
+              "observable": "sum_x",
+              "value": 6.0
+            },
+            "ordinal": 0,
+            "plan_id": "0c6507d46ef3721a21c3d08b109fd440adcecc709a1a92f86f96c1fb8b64bd6c",
+            "status": "succeeded"
+          },
+          {
+            "execution_digest": "a66a3e33ce6fa845d3248ef09dc7d15cf2193928f7e983184912083456d7e50a",
+            "observable": "mean_x",
+            "observation": {
+              "observable": "mean_x",
+              "value": 2.0
+            },
+            "ordinal": 1,
+            "plan_id": "0c6507d46ef3721a21c3d08b109fd440adcecc709a1a92f86f96c1fb8b64bd6c",
+            "status": "succeeded"
+          },
+          {
+            "execution_digest": "9e1d6befa8b6045a5dd7e72904abecc75ea2c62b50c2a54f6329f4552c6d2935",
+            "observable": "max_x",
+            "observation": {
+              "observable": "max_x",
+              "value": 3.0
+            },
+            "ordinal": 2,
+            "plan_id": "0c6507d46ef3721a21c3d08b109fd440adcecc709a1a92f86f96c1fb8b64bd6c",
+            "status": "succeeded"
+          }
+        ],
+        "model_attempts": 4
+      },
+      {
+        "cell": {
+          "cell_id": "69a1473e41b8d7fc82b0f195d35d50d1b49913d5ff412de2b0717ed6c8aaeb3a",
+          "task_digest": "3d52f8079c1eb7e1ebee42447215e441f9e1d70017e322f34fa50b68ccc90858",
+          "variant": "separate"
+        },
+        "execution_attempts": 3,
+        "measurements": [
+          {
+            "execution_digest": "45bc81c87a7ec6405cf7bac773a29b2c3b9a55b5ae59be9b3cd12dfcdff1170d",
+            "observable": "sum_x",
+            "observation": {
+              "observable": "sum_x",
+              "value": 6.0
+            },
+            "ordinal": 0,
+            "plan_id": "da47cb74aa43c5fb33a5ab84de7a09ca36f03f042982ccc01c0dd50f9e95ae30",
+            "status": "succeeded"
+          },
+          {
+            "execution_digest": "7a5767a571bf0679190cf5a964c2dc565feee58fe2f581334670e47a94c2e698",
+            "observable": "mean_x",
+            "observation": {
+              "observable": "mean_x",
+              "value": 2.0
+            },
+            "ordinal": 1,
+            "plan_id": "89aea19a0c0c489ee5badadc059b763c1598cf407f4ef55aaf27f6f87cd304a3",
+            "status": "succeeded"
+          },
+          {
+            "execution_digest": "7a98deffc49af62bdffaa4e0e7222cfaf6ef4b1c41008a8459f274f14b7f4c8d",
+            "observable": "max_x",
+            "observation": {
+              "observable": "max_x",
+              "value": 3.0
+            },
+            "ordinal": 2,
+            "plan_id": "ab7d8ae8271ce656ebf8ccf165c53a05d52393037d47bdd06527c48a95189788",
+            "status": "succeeded"
+          }
+        ],
+        "model_attempts": 4
+      }
+    ],
+    "statuses": {
+      "blocked": 0,
+      "failed": 0,
+      "succeeded": 12
+    }
+  }
+}
