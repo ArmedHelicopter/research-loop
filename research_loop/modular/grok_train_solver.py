@@ -55,7 +55,7 @@ class GrokTrainModelPort:
             'max_calls':max_calls,'schemas':self.schemas,'slot_output_caps':self.slot_output_caps,
             'slot_input_byte_caps':self.slot_input_byte_caps,'observed_main_token_cap':observed_main_token_cap,
             'title_opportunities_per_main':1,'title_usage_and_all_call_totals':'unknown','max_retries':0,
-            'executable':self.executable,'frozen_files':self.frozen_files}
+            'executable':self.executable,'executable_sha256':_sha(Path(self.executable).read_bytes()),'frozen_files':self.frozen_files}
         if self.ledger_path.exists():
             self.ledger=json.loads(self.ledger_path.read_text(encoding='utf-8'))
             if self.ledger.get('config') != config or self.ledger.get('usage_incomplete') is not False:
@@ -123,6 +123,11 @@ def replay_grok_train_ledger(port: GrokTrainModelPort) -> None:
     ledger=json.loads(port.ledger_path.read_text(encoding='utf-8'))
     if ledger != port.ledger or ledger.get('config') != port.ledger.get('config'):
         raise ContractError('on-disk Grok ledger drifted')
+    if _sha(Path(port.executable).read_bytes()) != ledger['config'].get('executable_sha256'):
+        raise ContractError('native executable source drifted')
+    for path, expected in ledger['config']['frozen_files'].items():
+        if _sha(Path(path).read_bytes()) != expected:
+            raise ContractError('native frozen source drifted')
     identities=set()
     for row in ledger['calls']:
         call=port.calls_root/f"{row['id']:04d}-{row['slot']}"
@@ -132,12 +137,17 @@ def replay_grok_train_ledger(port: GrokTrainModelPort) -> None:
             if _sha((call/'observer-receipt.private.json').read_bytes()) != row['native_receipt_sha256'] or _sha(Path(row['reservation_path']).read_bytes()) != row['reservation_sha256']:
                 raise ContractError('native receipt or reservation replay failed')
             receipt=json.loads((call/'observer-receipt.private.json').read_text(encoding='utf-8'))
+            native=Path(row['native_private_path'])
+            native_observer=json.loads((native/'observer-receipt.json').read_text(encoding='utf-8'))
             binding=receipt.get('public_train_binding', {})
             identity=(receipt.get('session_id'), receipt.get('prompt_id'))
             if identity in identities or not all(isinstance(x,str) and x for x in identity):
                 raise ContractError('duplicate or missing native session/prompt identity')
             identities.add(identity)
             if (receipt.get('accepted') is not True or receipt.get('requested_model') != MODEL
+                    or native_observer != receipt
+                    or receipt.get('private_stream_sha256') != _sha((native/'stdout.private.jsonl').read_bytes())
                     or binding.get('response_sha256') != row['response_sha256']
-                    or _sha((call/'request.private.json').read_bytes()) != row['request_sha256']):
+                    or _sha((call/'request.private.json').read_bytes()) != row['request_sha256']
+                    or _sha((call/'response.private.json').read_bytes()) != row['response_sha256']):
                 raise ContractError('native public TRAIN binding replay failed')

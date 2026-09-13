@@ -31,7 +31,7 @@ from research_loop.modular.combination_benchmark_driver import (
 )
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.model_port import CodexModelPort, _validate_schema, _schema_witness
-from research_loop.modular.grok_train_solver import GrokTrainModelPort
+from research_loop.modular.grok_train_solver import GrokTrainModelPort, replay_grok_train_ledger
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier, ScientificScorerReceipt
 from research_loop.modular.runtime import AuditVerifier
@@ -356,6 +356,8 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
             if result.runtime.status != "succeeded" or result.solver is None or result.solver.status != "execution_succeeded":
                 row.update(status="failed", phase="execution", reason="combination_execution_failed")
                 continue
+            if isinstance(model, GrokTrainModelPort):
+                replay_grok_train_ledger(model)
             source = issue_combination_score_input(panel=compiled.panel, result=result, task=packet.task,
                 scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash], authority=execution_authority)
             signed_inputs[cell.key] = source
