@@ -1,0 +1,242 @@
+{
+  "triple147-3c77026-a/test_m1_semantic_drift_preserv0": {
+    "status": "inconclusive",
+    "expected_cells": 16,
+    "observed_cells": 16,
+    "scored_cells": 16,
+    "failed_cells": 0,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 96,
+      "model_calls": 48,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 48,
+    "actual_scorer_calls": 16,
+    "source_calls": 32,
+    "auxiliary_docker_attempts": 32,
+    "phase_unknown_cost_attempts": 0,
+    "unused_model_opportunities": 0,
+    "unused_docker_opportunities": 0,
+    "unused_scorer_opportunities": 0,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "admission_qualification_semantic_drift"
+      }
+    ]
+  },
+  "triple147-3c77026-a/test_original_failures_keep_al0": {
+    "status": "inconclusive",
+    "expected_cells": 16,
+    "observed_cells": 16,
+    "scored_cells": 0,
+    "failed_cells": 16,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 0,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 0,
+    "actual_scorer_calls": 0,
+    "source_calls": 32,
+    "auxiliary_docker_attempts": 0,
+    "phase_unknown_cost_attempts": 0,
+    "unused_model_opportunities": 48,
+    "unused_docker_opportunities": 48,
+    "unused_scorer_opportunities": 16,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "triple147-3c77026-a/test_original_failures_keep_al1": {
+    "status": "inconclusive",
+    "expected_cells": 16,
+    "observed_cells": 16,
+    "scored_cells": 0,
+    "failed_cells": 16,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 0,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 0,
+    "actual_scorer_calls": 0,
+    "source_calls": 32,
+    "auxiliary_docker_attempts": 0,
+    "phase_unknown_cost_attempts": 0,
+    "unused_model_opportunities": 48,
+    "unused_docker_opportunities": 48,
+    "unused_scorer_opportunities": 16,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "triple147-3c77026-a/test_original_failures_keep_al2": {
+    "status": "inconclusive",
+    "expected_cells": 16,
+    "observed_cells": 16,
+    "scored_cells": 0,
+    "failed_cells": 16,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 32,
+      "model_calls": 16,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 32,
+    "actual_scorer_calls": 0,
+    "source_calls": 32,
+    "auxiliary_docker_attempts": 32,
+    "phase_unknown_cost_attempts": 0,
+    "unused_model_opportunities": 32,
+    "unused_docker_opportunities": 16,
+    "unused_scorer_opportunities": 16,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "triple147-3c77026-a/test_original_failures_keep_al3": {
+    "status": "inconclusive",
+    "expected_cells": 16,
+    "observed_cells": 16,
+    "scored_cells": 0,
+    "failed_cells": 16,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 96,
+      "model_calls": 48,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 48,
+    "actual_scorer_calls": 16,
+    "source_calls": 32,
+    "auxiliary_docker_attempts": 32,
+    "phase_unknown_cost_attempts": 0,
+    "unused_model_opportunities": 0,
+    "unused_docker_opportunities": 0,
+    "unused_scorer_opportunities": 0,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "triple147-3c77026-a/test_poisoned_ledger_preserves0": {
+    "status": "inconclusive",
+    "expected_cells": 16,
+    "observed_cells": 16,
+    "scored_cells": 0,
+    "failed_cells": 1,
+    "blocked_cells": 15,
+    "actual_model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 1,
+      "model_usage_incomplete": true
+    },
+    "actual_docker_attempts": 0,
+    "actual_scorer_calls": 0,
+    "source_calls": 2,
+    "auxiliary_docker_attempts": 0,
+    "phase_unknown_cost_attempts": 0,
+    "unused_model_opportunities": 47,
+    "unused_docker_opportunities": 48,
+    "unused_scorer_opportunities": 16,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "triple147-3c77026-a/test_unknown_phase_reservation0": {
+    "status": "inconclusive",
+    "expected_cells": 16,
+    "observed_cells": 16,
+    "scored_cells": 0,
+    "failed_cells": 16,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 32,
+      "model_calls": 16,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 32,
+    "actual_scorer_calls": 0,
+    "source_calls": 32,
+    "auxiliary_docker_attempts": 32,
+    "phase_unknown_cost_attempts": 32,
+    "unused_model_opportunities": 32,
+    "unused_docker_opportunities": 16,
+    "unused_scorer_opportunities": 16,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "triple147-3c77026-a/triple147-controller0": {
+    "status": "complete_train_engineering",
+    "expected_cells": 16,
+    "observed_cells": 16,
+    "scored_cells": 16,
+    "failed_cells": 0,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 96,
+      "model_calls": 48,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 48,
+    "actual_scorer_calls": 16,
+    "source_calls": 32,
+    "auxiliary_docker_attempts": 32,
+    "phase_unknown_cost_attempts": 0,
+    "unused_model_opportunities": 0,
+    "unused_docker_opportunities": 0,
+    "unused_scorer_opportunities": 0,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "estimated",
+        "reason": null
+      }
+    ]
+  }
+}

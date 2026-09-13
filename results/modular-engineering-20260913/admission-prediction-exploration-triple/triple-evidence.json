@@ -1,0 +1,4574 @@
+{
+  "schema": "admission-prediction-exploration-engineering-evidence-v1",
+  "cells": [
+    {
+      "cell": {
+        "arm_id": "000",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "36b249aa037d7292200fdbe8504eae870f586c2c6288bce61678e48942415b6a",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "a35da87b2205dab63b69835ed4303e5d9f7cedec32d503d0f5b33e4d851e5d6a",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": null,
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "24.8",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "24.8",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "24.8",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "fb5d72898cc78f856259d2a63adb24481ee8e9652c49a39d2c748f33051ecc21",
+              "content": {
+                "x": 8
+              }
+            },
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            },
+            {
+              "binding": "ef69b14f036b072cc50f158ba49ef3504928182ac6399776175b7c31ab6d76eb",
+              "content": {
+                "x": 99
+              }
+            },
+            {
+              "binding": "a4e358d0664b53d85c99758fc6740a29df0ae3b5a6f017e44c30cff6f2df30aa",
+              "content": {
+                "reported_x": 8
+              }
+            },
+            {
+              "binding": "229498db11501b07e5859a6ab74ed0873963572b28289faa7fa79bb892118781",
+              "content": {
+                "summary_x": 8
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "d6b62e141ae9247781cc0a0f2969b68f938a3d7870ce1aedae284c6ed3a7b744",
+      "qualification_semantics_digest": "95f8b9944fefff55e7e856f84696fa19809322fa385211e09e79e2dcc0fecda4",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "3be4a14978ca042fd087fb228ee08b9d93c5a55046bc024e9f8265fb45aab310",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "75467245db9b48e99f22643e285c202b7a73e25c96c5cbbd8ca710b98a77b58d",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 322.51111111111106,
+        "mean": 1.3333333333333333,
+        "observations": [
+          8,
+          1,
+          99,
+          8,
+          8
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "proposed": [
+          24.8,
+          24.8,
+          24.8
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "001",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "36b249aa037d7292200fdbe8504eae870f586c2c6288bce61678e48942415b6a",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "a35da87b2205dab63b69835ed4303e5d9f7cedec32d503d0f5b33e4d851e5d6a",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": null,
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "24.8",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "24.8",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "24.8",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "fb5d72898cc78f856259d2a63adb24481ee8e9652c49a39d2c748f33051ecc21",
+              "content": {
+                "x": 8
+              }
+            },
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            },
+            {
+              "binding": "ef69b14f036b072cc50f158ba49ef3504928182ac6399776175b7c31ab6d76eb",
+              "content": {
+                "x": 99
+              }
+            },
+            {
+              "binding": "a4e358d0664b53d85c99758fc6740a29df0ae3b5a6f017e44c30cff6f2df30aa",
+              "content": {
+                "reported_x": 8
+              }
+            },
+            {
+              "binding": "229498db11501b07e5859a6ab74ed0873963572b28289faa7fa79bb892118781",
+              "content": {
+                "summary_x": 8
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "a8d1b51eed43a4205ebf8990a2ebf46614e24351ecf15c45ae3a905e603fbb44",
+      "qualification_semantics_digest": "95f8b9944fefff55e7e856f84696fa19809322fa385211e09e79e2dcc0fecda4",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "c660593f87bf73993280a8f67da1af17d000c163aee7384c5e678cd9da5ee10b",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "71177b2256ce52a561314422876e28334a378cebbae222cf522e608a6393ee8a",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "a7b26223bfb3054fccc20aac329722a878e0c49bd58c42b0657410854d2aa5a4",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "e2ec2b5d3ffeaf2bbf95cf67dc661f4e5cdd79bce61e4dd37c39f62cd95e390d",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 321.06666666666666,
+        "mean": 1.3333333333333333,
+        "observations": [
+          8,
+          1,
+          99,
+          8,
+          8
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "proposed": [
+          24.8,
+          24.8,
+          24.8
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "010",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M4"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "36b249aa037d7292200fdbe8504eae870f586c2c6288bce61678e48942415b6a",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "a35da87b2205dab63b69835ed4303e5d9f7cedec32d503d0f5b33e4d851e5d6a",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "24.8",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "24.8",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "24.8",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "24.8",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "24.8",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "24.8",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "fb5d72898cc78f856259d2a63adb24481ee8e9652c49a39d2c748f33051ecc21",
+              "content": {
+                "x": 8
+              }
+            },
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            },
+            {
+              "binding": "ef69b14f036b072cc50f158ba49ef3504928182ac6399776175b7c31ab6d76eb",
+              "content": {
+                "x": 99
+              }
+            },
+            {
+              "binding": "a4e358d0664b53d85c99758fc6740a29df0ae3b5a6f017e44c30cff6f2df30aa",
+              "content": {
+                "reported_x": 8
+              }
+            },
+            {
+              "binding": "229498db11501b07e5859a6ab74ed0873963572b28289faa7fa79bb892118781",
+              "content": {
+                "summary_x": 8
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "8d780521114e3eaf6063bbbdf1bf2fe3e13bd62939860c8d7797ea74e9bb0a82",
+      "qualification_semantics_digest": "95f8b9944fefff55e7e856f84696fa19809322fa385211e09e79e2dcc0fecda4",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "3aede11b2a3be520cf0d0a05307be485535494b31dc43532defd42dcf88f4511",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "9a45f1725f5d80228f5efeb1ec48da6eda3581878e8689989ea13e52ad5634a8",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 319.51111111111106,
+        "mean": 1.3333333333333333,
+        "observations": [
+          8,
+          1,
+          99,
+          8,
+          8
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "proposed": [
+          24.8,
+          24.8,
+          24.8
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "011",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M4",
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "36b249aa037d7292200fdbe8504eae870f586c2c6288bce61678e48942415b6a",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "a35da87b2205dab63b69835ed4303e5d9f7cedec32d503d0f5b33e4d851e5d6a",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "24.8",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "24.8",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "24.8",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "24.8",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "24.8",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "24.8",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "fb5d72898cc78f856259d2a63adb24481ee8e9652c49a39d2c748f33051ecc21",
+              "content": {
+                "x": 8
+              }
+            },
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            },
+            {
+              "binding": "ef69b14f036b072cc50f158ba49ef3504928182ac6399776175b7c31ab6d76eb",
+              "content": {
+                "x": 99
+              }
+            },
+            {
+              "binding": "a4e358d0664b53d85c99758fc6740a29df0ae3b5a6f017e44c30cff6f2df30aa",
+              "content": {
+                "reported_x": 8
+              }
+            },
+            {
+              "binding": "229498db11501b07e5859a6ab74ed0873963572b28289faa7fa79bb892118781",
+              "content": {
+                "summary_x": 8
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "1e2d879f5887f47d5ef3bff449ef90d2d8ff75b2d6d0c5d816aabaf101e863f2",
+      "qualification_semantics_digest": "95f8b9944fefff55e7e856f84696fa19809322fa385211e09e79e2dcc0fecda4",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "c660593f87bf73993280a8f67da1af17d000c163aee7384c5e678cd9da5ee10b",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "71177b2256ce52a561314422876e28334a378cebbae222cf522e608a6393ee8a",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "c2cd7a28257aa998653629ef8403dd22198b2d66f3616da6750df8addafec73d",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "116f57031e924b6056982cb4cce6c1926e080582ed50e66130700789f5e32dce",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 318.06666666666666,
+        "mean": 1.3333333333333333,
+        "observations": [
+          8,
+          1,
+          99,
+          8,
+          8
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "proposed": [
+          24.8,
+          24.8,
+          24.8
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "100",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M1"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "36b249aa037d7292200fdbe8504eae870f586c2c6288bce61678e48942415b6a",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "a35da87b2205dab63b69835ed4303e5d9f7cedec32d503d0f5b33e4d851e5d6a",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": null,
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "1.0",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "1.0",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "1.0",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "5febe368722fb3d7680b2a5464a5286882ece51ba898643faf6553e27653c3f7",
+      "qualification_semantics_digest": "95f8b9944fefff55e7e856f84696fa19809322fa385211e09e79e2dcc0fecda4",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "bdafc5114d503a7042cd022a73fadd116913f41a2346f089cc5bc0e1b7683d3e",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "76a208c9fb0039dc15403bc556060eba14688f7d767c75b0ef573965c3b8d44f",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 13.11111111111111,
+        "mean": 1.3333333333333333,
+        "observations": [
+          1
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "proposed": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "101",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M1",
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "36b249aa037d7292200fdbe8504eae870f586c2c6288bce61678e48942415b6a",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "a35da87b2205dab63b69835ed4303e5d9f7cedec32d503d0f5b33e4d851e5d6a",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": null,
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "1.0",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "1.0",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "1.0",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "29f3e8475245f8c83828ab5f7999860a80f81f849d8a95b1766dbc42a03f8433",
+      "qualification_semantics_digest": "95f8b9944fefff55e7e856f84696fa19809322fa385211e09e79e2dcc0fecda4",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "c660593f87bf73993280a8f67da1af17d000c163aee7384c5e678cd9da5ee10b",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "71177b2256ce52a561314422876e28334a378cebbae222cf522e608a6393ee8a",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "64b33794d4a74f66442b7d8291d65458d89764711a490c310f71be6f1993d44a",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "8081bd65ac57a77ba0c022d908808656c59cf80f4ade003f08c4f07da163c875",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 11.666666666666668,
+        "mean": 1.3333333333333333,
+        "observations": [
+          1
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "proposed": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "110",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M1",
+            "M4"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "36b249aa037d7292200fdbe8504eae870f586c2c6288bce61678e48942415b6a",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "a35da87b2205dab63b69835ed4303e5d9f7cedec32d503d0f5b33e4d851e5d6a",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "1.0",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "1.0",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "1.0",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "1.0",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "1.0",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "1.0",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "2293dec3d3abc0045ba34436a62b4c9f01321294c04d002fca158b196c80e580",
+      "qualification_semantics_digest": "95f8b9944fefff55e7e856f84696fa19809322fa385211e09e79e2dcc0fecda4",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "703b54310bb2768bf4739860d5ce6c7490dbac0fb73c54fe40090750e673a21b",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "9db71866cc8cd793e0f098da5aea5cf3ca1085e81d33ccd3dac6ef740c769fc5",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 10.11111111111111,
+        "mean": 1.3333333333333333,
+        "observations": [
+          1
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "proposed": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "111",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M1",
+            "M4",
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "36b249aa037d7292200fdbe8504eae870f586c2c6288bce61678e48942415b6a",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "a35da87b2205dab63b69835ed4303e5d9f7cedec32d503d0f5b33e4d851e5d6a",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "1.0",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "1.0",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "1.0",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "1.0",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "1.0",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "1.0",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "c821c3fc8a1af30858a10031d57d73d2179a2eddd970750130cd4501b9b1a8d1",
+      "qualification_semantics_digest": "95f8b9944fefff55e7e856f84696fa19809322fa385211e09e79e2dcc0fecda4",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "c660593f87bf73993280a8f67da1af17d000c163aee7384c5e678cd9da5ee10b",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "71177b2256ce52a561314422876e28334a378cebbae222cf522e608a6393ee8a",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "284ca8d9152ad6556fb3f6bb8ad11ab635d90833c43586911da6e6f6729e2c02",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "0ca2940751a968347ca2bc6005fe79b5878572a1ac8a50f34ab30a66c3d3fbbd",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 8.666666666666668,
+        "mean": 1.3333333333333333,
+        "observations": [
+          1
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "proposed": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "000",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "7502aa19364028c3f0227811b18e5c02d3b0bef840fadbd566ea6a7d742d604d",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "edd9e011fb0ec7a5c82a9fc9e2f5e1aa394be293e9963f204f2b193e86a44297",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": null,
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "24.8",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "24.8",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "24.8",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "fb5d72898cc78f856259d2a63adb24481ee8e9652c49a39d2c748f33051ecc21",
+              "content": {
+                "x": 8
+              }
+            },
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            },
+            {
+              "binding": "ef69b14f036b072cc50f158ba49ef3504928182ac6399776175b7c31ab6d76eb",
+              "content": {
+                "x": 99
+              }
+            },
+            {
+              "binding": "a4e358d0664b53d85c99758fc6740a29df0ae3b5a6f017e44c30cff6f2df30aa",
+              "content": {
+                "reported_x": 8
+              }
+            },
+            {
+              "binding": "229498db11501b07e5859a6ab74ed0873963572b28289faa7fa79bb892118781",
+              "content": {
+                "summary_x": 8
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "6a129c5cb75eadd1277f6aad289085a7da326f7ff3570fc56efe9e43ab0eaa72",
+      "qualification_semantics_digest": "a74cb9f78d05ef512da1b046a6ac3c9ffe29d73b2b41a7274cc3ccb062ae6b2e",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "27fe993b6b74fd7c514af8c044a238b152bf3d01bbc3967bbb5e38298d39e06a",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "45d04f1960d8b80eae722b90feefb5cb670ea5c99fda294b41fa602f65eb61ec",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 322.51111111111106,
+        "mean": 1.3333333333333333,
+        "observations": [
+          8,
+          1,
+          99,
+          8,
+          8
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "proposed": [
+          24.8,
+          24.8,
+          24.8
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "001",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "7502aa19364028c3f0227811b18e5c02d3b0bef840fadbd566ea6a7d742d604d",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "edd9e011fb0ec7a5c82a9fc9e2f5e1aa394be293e9963f204f2b193e86a44297",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": null,
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "24.8",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "24.8",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "24.8",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "fb5d72898cc78f856259d2a63adb24481ee8e9652c49a39d2c748f33051ecc21",
+              "content": {
+                "x": 8
+              }
+            },
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            },
+            {
+              "binding": "ef69b14f036b072cc50f158ba49ef3504928182ac6399776175b7c31ab6d76eb",
+              "content": {
+                "x": 99
+              }
+            },
+            {
+              "binding": "a4e358d0664b53d85c99758fc6740a29df0ae3b5a6f017e44c30cff6f2df30aa",
+              "content": {
+                "reported_x": 8
+              }
+            },
+            {
+              "binding": "229498db11501b07e5859a6ab74ed0873963572b28289faa7fa79bb892118781",
+              "content": {
+                "summary_x": 8
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "d201425e3b587052d652c1eae1ee6720a6777865695bb604001b9005dc0e6397",
+      "qualification_semantics_digest": "a74cb9f78d05ef512da1b046a6ac3c9ffe29d73b2b41a7274cc3ccb062ae6b2e",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "799702ea21a8f661ad187cd25ffc0f2f1cb9fcd6d0dbcd271ac576ebacc74e46",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "939947994a1ed97683707c55d81ae317eafd218f674173e9d36ee87411e109e9",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "2367460f7a8190146c94881a3a952d9cfa8ad4bd5a499ad01c6537304c53edb2",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "fb551dfe92465ea9762cab9981346916961f0015604fc21d10c68a093de7ec0d",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 321.06666666666666,
+        "mean": 1.3333333333333333,
+        "observations": [
+          8,
+          1,
+          99,
+          8,
+          8
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "proposed": [
+          24.8,
+          24.8,
+          24.8
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "010",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M4"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "7502aa19364028c3f0227811b18e5c02d3b0bef840fadbd566ea6a7d742d604d",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "edd9e011fb0ec7a5c82a9fc9e2f5e1aa394be293e9963f204f2b193e86a44297",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "24.8",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "24.8",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "24.8",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "24.8",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "24.8",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "24.8",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "fb5d72898cc78f856259d2a63adb24481ee8e9652c49a39d2c748f33051ecc21",
+              "content": {
+                "x": 8
+              }
+            },
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            },
+            {
+              "binding": "ef69b14f036b072cc50f158ba49ef3504928182ac6399776175b7c31ab6d76eb",
+              "content": {
+                "x": 99
+              }
+            },
+            {
+              "binding": "a4e358d0664b53d85c99758fc6740a29df0ae3b5a6f017e44c30cff6f2df30aa",
+              "content": {
+                "reported_x": 8
+              }
+            },
+            {
+              "binding": "229498db11501b07e5859a6ab74ed0873963572b28289faa7fa79bb892118781",
+              "content": {
+                "summary_x": 8
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "3c1ab4feee92364fff6505c42875dda9ff58ac05916f78019f20c572ac59c690",
+      "qualification_semantics_digest": "a74cb9f78d05ef512da1b046a6ac3c9ffe29d73b2b41a7274cc3ccb062ae6b2e",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "f2d3869ae6be14726f414bde7146b213a9272184d88583d15d666887198e6dcc",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "63a0ae796da2935719911aa9cd01ce5acf64b773ec70c7680bec5e26c9d87c82",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 319.51111111111106,
+        "mean": 1.3333333333333333,
+        "observations": [
+          8,
+          1,
+          99,
+          8,
+          8
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "proposed": [
+          24.8,
+          24.8,
+          24.8
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "011",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M4",
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "7502aa19364028c3f0227811b18e5c02d3b0bef840fadbd566ea6a7d742d604d",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "edd9e011fb0ec7a5c82a9fc9e2f5e1aa394be293e9963f204f2b193e86a44297",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "24.8",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "24.8",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "24.8",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "24.8",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "24.8",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "24.8",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "fb5d72898cc78f856259d2a63adb24481ee8e9652c49a39d2c748f33051ecc21",
+              "content": {
+                "x": 8
+              }
+            },
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            },
+            {
+              "binding": "ef69b14f036b072cc50f158ba49ef3504928182ac6399776175b7c31ab6d76eb",
+              "content": {
+                "x": 99
+              }
+            },
+            {
+              "binding": "a4e358d0664b53d85c99758fc6740a29df0ae3b5a6f017e44c30cff6f2df30aa",
+              "content": {
+                "reported_x": 8
+              }
+            },
+            {
+              "binding": "229498db11501b07e5859a6ab74ed0873963572b28289faa7fa79bb892118781",
+              "content": {
+                "summary_x": 8
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "ffc59f48b3dc4734c984b3ea7286bc6268a08d7058fc46250886554934899deb",
+      "qualification_semantics_digest": "a74cb9f78d05ef512da1b046a6ac3c9ffe29d73b2b41a7274cc3ccb062ae6b2e",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "799702ea21a8f661ad187cd25ffc0f2f1cb9fcd6d0dbcd271ac576ebacc74e46",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "939947994a1ed97683707c55d81ae317eafd218f674173e9d36ee87411e109e9",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "e4132d83c7d14b641125d171f6e870aa35a4724a524729e51a11b1b5f446f8bc",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "f599c33c40e02c484710a0db9dde42ffc04fc758d5e95f00bf3e90ca90695547",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 318.06666666666666,
+        "mean": 1.3333333333333333,
+        "observations": [
+          8,
+          1,
+          99,
+          8,
+          8
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "proposed": [
+          24.8,
+          24.8,
+          24.8
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "100",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M1"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "7502aa19364028c3f0227811b18e5c02d3b0bef840fadbd566ea6a7d742d604d",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "edd9e011fb0ec7a5c82a9fc9e2f5e1aa394be293e9963f204f2b193e86a44297",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": null,
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "1.0",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "1.0",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "1.0",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "49d9b80e0dd2cd2495a01499fae3da4fd57d7332a3e3fcfd99716f57dc063cbe",
+      "qualification_semantics_digest": "a74cb9f78d05ef512da1b046a6ac3c9ffe29d73b2b41a7274cc3ccb062ae6b2e",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "be1657fad5bbaeb7bf104ca8e869e27edb7aba3287596c82e08f2b84c0dbd45d",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "7c4fcd6388316627a6596006ba3603019cc41191eefe9e2f7a1f87f3f1efb6dc",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 13.11111111111111,
+        "mean": 1.3333333333333333,
+        "observations": [
+          1
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "proposed": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "101",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M1",
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "7502aa19364028c3f0227811b18e5c02d3b0bef840fadbd566ea6a7d742d604d",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "edd9e011fb0ec7a5c82a9fc9e2f5e1aa394be293e9963f204f2b193e86a44297",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": null,
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "1.0",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "1.0",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "1.0",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "00ce8775b775e97ee2a3a8c6717123cb294653ce39525f63d305f953ba373e96",
+      "qualification_semantics_digest": "a74cb9f78d05ef512da1b046a6ac3c9ffe29d73b2b41a7274cc3ccb062ae6b2e",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "799702ea21a8f661ad187cd25ffc0f2f1cb9fcd6d0dbcd271ac576ebacc74e46",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "939947994a1ed97683707c55d81ae317eafd218f674173e9d36ee87411e109e9",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "1f0c28ef5a68b7698ae69a90bdae9c6f85feed032e97a44a3a66a867e10fff74",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "6c273e6c2310f152752f6e30ee2abff08ecbc9cbd6247705c6147e8d48127a55",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 11.666666666666668,
+        "mean": 1.3333333333333333,
+        "observations": [
+          1
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "proposed": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "110",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M1",
+            "M4"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "7502aa19364028c3f0227811b18e5c02d3b0bef840fadbd566ea6a7d742d604d",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "edd9e011fb0ec7a5c82a9fc9e2f5e1aa394be293e9963f204f2b193e86a44297",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "1.0",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "1.0",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "1.0",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "1.0",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "1.0",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "1.0",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "6bb377fd70fb4d4a659ebd32c8322af1464cba1225c3c17e040c2c451f6af919",
+      "qualification_semantics_digest": "a74cb9f78d05ef512da1b046a6ac3c9ffe29d73b2b41a7274cc3ccb062ae6b2e",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "6a8d56953af620dd69051720511c8d115935e0d60348fd1a176d9609f347bbe9",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "b9cf5587a3bf0addd847dd4de675ed87e35e6b946848fa1b39b1e7a5b9c738fe",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 10.11111111111111,
+        "mean": 1.3333333333333333,
+        "observations": [
+          1
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "proposed": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    },
+    {
+      "cell": {
+        "arm_id": "111",
+        "coverage_id": "triple:M1+M4+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "9fc0cd01f0cac7687444099c06e870de363baefb860fda3ac086843b17e5866e",
+          "task_id": "case0"
+        },
+        "package_digest": "dda5c3b20897c2365e921440ab53f67a55f80d727ffba0c67674036951a373fd",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M1",
+            "M4",
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "7502aa19364028c3f0227811b18e5c02d3b0bef840fadbd566ea6a7d742d604d",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "edd9e011fb0ec7a5c82a9fc9e2f5e1aa394be293e9963f204f2b193e86a44297",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "prediction_plan": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "1.0",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "1.0",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "1.0",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "1.0",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "1.0",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "1.0",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "state_projection": {
+          "memory": [
+            {
+              "evidence_roots": [],
+              "kind": "untrusted_summary",
+              "text": "The old interpretation that x is high remains in this ordinary summary."
+            }
+          ],
+          "observations": [
+            {
+              "binding": "934cdcdc298554c4b37f16387fb79ec2e9c5d3e0100d69357cd485430253939e",
+              "content": {
+                "x": 1
+              }
+            }
+          ]
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "a2e555634e34f98e18a950fac08cbf6479fbd1529ff6ff2b541f3df9c3154280",
+      "qualification_semantics_digest": "a74cb9f78d05ef512da1b046a6ac3c9ffe29d73b2b41a7274cc3ccb062ae6b2e",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "799702ea21a8f661ad187cd25ffc0f2f1cb9fcd6d0dbcd271ac576ebacc74e46",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "939947994a1ed97683707c55d81ae317eafd218f674173e9d36ee87411e109e9",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "95f67ddf47a00e5dd38e04fa5c47330cad0d0021a8ab1a93f02c1454a168261a",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "55f85a779b1c21a704d184bca0cfbaae6b2887d83ba19c0b39554dfc77608258",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 8.666666666666668,
+        "mean": 1.3333333333333333,
+        "observations": [
+          1
+        ],
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "proposed": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1
+    }
+  ],
+  "all_original_contrast_reports": {
+    "test_m1_semantic_drift_preserv0/run/controller-receipt.json": [
+      {
+        "components": {
+          "M1": {
+            "reason": "admission_qualification_semantic_drift",
+            "status": "inconclusive"
+          },
+          "M1+M4": {
+            "reason": "admission_qualification_semantic_drift",
+            "status": "inconclusive"
+          },
+          "M1+M4+M7": {
+            "reason": "admission_qualification_semantic_drift",
+            "status": "inconclusive"
+          },
+          "M1+M7": {
+            "reason": "admission_qualification_semantic_drift",
+            "status": "inconclusive"
+          },
+          "M4": {
+            "reason": "admission_qualification_semantic_drift",
+            "status": "inconclusive"
+          },
+          "M4+M7": {
+            "reason": "admission_qualification_semantic_drift",
+            "status": "inconclusive"
+          },
+          "M7": {
+            "reason": "admission_qualification_semantic_drift",
+            "status": "inconclusive"
+          }
+        },
+        "panel_digest": "6a368f72be8a8915d07639283feda768351f790fc51b901a15feeda8091ab99c",
+        "qualification_drift": [
+          {
+            "arm_semantics": {
+              "000": "e046ffe638d4a071aa62336946db1a7eee8f899d26cb0932ae4e066b7785a520",
+              "001": "0f0b5ad465f1a71095bf574df4623f149ec932fd918889f298dcb2ec2525578a",
+              "010": "e046ffe638d4a071aa62336946db1a7eee8f899d26cb0932ae4e066b7785a520",
+              "011": "0f0b5ad465f1a71095bf574df4623f149ec932fd918889f298dcb2ec2525578a",
+              "100": "e046ffe638d4a071aa62336946db1a7eee8f899d26cb0932ae4e066b7785a520",
+              "101": "0f0b5ad465f1a71095bf574df4623f149ec932fd918889f298dcb2ec2525578a",
+              "110": "e046ffe638d4a071aa62336946db1a7eee8f899d26cb0932ae4e066b7785a520",
+              "111": "0f0b5ad465f1a71095bf574df4623f149ec932fd918889f298dcb2ec2525578a"
+            },
+            "replicate": "r1",
+            "task_digest": "ab6e58b2b38ef72ef38f33506df3184bfb6a7ab6f1385322a4dcb9d6b19efa05"
+          },
+          {
+            "arm_semantics": {
+              "000": "30bd6321c16e53e30314efe63af1d49e051fda582434c9469fc3486cf4803b46",
+              "001": "83cf59d83ed32c6e51e64611095ef12cbf9d13bbb70c8bc7a42f24096918bd14",
+              "010": "30bd6321c16e53e30314efe63af1d49e051fda582434c9469fc3486cf4803b46",
+              "011": "83cf59d83ed32c6e51e64611095ef12cbf9d13bbb70c8bc7a42f24096918bd14",
+              "100": "30bd6321c16e53e30314efe63af1d49e051fda582434c9469fc3486cf4803b46",
+              "101": "83cf59d83ed32c6e51e64611095ef12cbf9d13bbb70c8bc7a42f24096918bd14",
+              "110": "30bd6321c16e53e30314efe63af1d49e051fda582434c9469fc3486cf4803b46",
+              "111": "83cf59d83ed32c6e51e64611095ef12cbf9d13bbb70c8bc7a42f24096918bd14"
+            },
+            "replicate": "r1",
+            "task_digest": "10a6f04514b8c838a9ca8c635a83d60a77321feeff8f528a39603db1356013b7"
+          }
+        ],
+        "reason": "admission_qualification_semantic_drift",
+        "schema": "admission-prediction-exploration-inconclusive-contrast-v1",
+        "scientific_status": "not_measured",
+        "status": "inconclusive"
+      }
+    ],
+    "test_original_failures_keep_al0/run/controller-receipt.json": [
+      {
+        "components": {
+          "M1": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M4": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M4+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M4": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M4+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          }
+        },
+        "error_type": "ContractError",
+        "panel_digest": "770b8f7d14e7132cd780d8c831e36602b3ed614ab9f4a8ec1e711015259e28b3",
+        "reason": "incomplete_or_failed_cell",
+        "schema": "admission-prediction-exploration-inconclusive-contrast-v1",
+        "status": "inconclusive"
+      }
+    ],
+    "test_original_failures_keep_al1/run/controller-receipt.json": [
+      {
+        "components": {
+          "M1": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M4": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M4+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M4": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M4+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          }
+        },
+        "error_type": "ContractError",
+        "panel_digest": "8fb5dbf4f52207ac9a4648b16671dd446c2d116d73dbb2a6474a17042948578f",
+        "reason": "incomplete_or_failed_cell",
+        "schema": "admission-prediction-exploration-inconclusive-contrast-v1",
+        "status": "inconclusive"
+      }
+    ],
+    "test_original_failures_keep_al2/run/controller-receipt.json": [
+      {
+        "components": {
+          "M1": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M4": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M4+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M4": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M4+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          }
+        },
+        "error_type": "ContractError",
+        "panel_digest": "5f11bbe49e1537b5444aa2f4e9bcbdf400298e97276a60536cf82dbd252aca53",
+        "reason": "incomplete_or_failed_cell",
+        "schema": "admission-prediction-exploration-inconclusive-contrast-v1",
+        "status": "inconclusive"
+      }
+    ],
+    "test_original_failures_keep_al3/run/controller-receipt.json": [
+      {
+        "components": {
+          "M1": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M4": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M4+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M4": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M4+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          }
+        },
+        "error_type": "ContractError",
+        "panel_digest": "4a68a186fadfd3a79fe02e574ccc1e94f344b1a80a51a8032199d857fcc46b09",
+        "reason": "incomplete_or_failed_cell",
+        "schema": "admission-prediction-exploration-inconclusive-contrast-v1",
+        "status": "inconclusive"
+      }
+    ],
+    "test_poisoned_ledger_preserves0/run/controller-receipt.json": [
+      {
+        "components": {
+          "M1": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M4": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M4+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M4": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M4+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          }
+        },
+        "error_type": "ContractError",
+        "panel_digest": "2b878de02c67d710d10c2f08b8481c9dc4aaf213f66e89883af74dfec98c6790",
+        "reason": "incomplete_or_failed_cell",
+        "schema": "admission-prediction-exploration-inconclusive-contrast-v1",
+        "status": "inconclusive"
+      }
+    ],
+    "test_unknown_phase_reservation0/run/controller-receipt.json": [
+      {
+        "components": {
+          "M1": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M4": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M4+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M1+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M4": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M4+M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          },
+          "M7": {
+            "reason": "incomplete_or_failed_cell",
+            "status": "inconclusive"
+          }
+        },
+        "error_type": "ContractError",
+        "panel_digest": "033412655df49ad258b9f6d8550284a491235a9d29ee304ebfa5bb08f2193c2c",
+        "reason": "incomplete_or_failed_cell",
+        "schema": "admission-prediction-exploration-inconclusive-contrast-v1",
+        "status": "inconclusive"
+      }
+    ],
+    "triple147-controller0/run/controller-receipt.json": [
+      {
+        "components": {
+          "M1": {
+            "benchmark_estimates": {
+              "blade": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              },
+              "discoverybench": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              }
+            },
+            "status": "estimated"
+          },
+          "M1+M4": {
+            "benchmark_estimates": {
+              "blade": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              },
+              "discoverybench": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              }
+            },
+            "status": "estimated"
+          },
+          "M1+M4+M7": {
+            "benchmark_estimates": {
+              "blade": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              },
+              "discoverybench": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              }
+            },
+            "status": "estimated"
+          },
+          "M1+M7": {
+            "benchmark_estimates": {
+              "blade": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              },
+              "discoverybench": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              }
+            },
+            "status": "estimated"
+          },
+          "M4": {
+            "benchmark_estimates": {
+              "blade": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              },
+              "discoverybench": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              }
+            },
+            "status": "estimated"
+          },
+          "M4+M7": {
+            "benchmark_estimates": {
+              "blade": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              },
+              "discoverybench": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              }
+            },
+            "status": "estimated"
+          },
+          "M7": {
+            "benchmark_estimates": {
+              "blade": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              },
+              "discoverybench": {
+                "confidence_interval": {
+                  "level": 0.95,
+                  "lower": null,
+                  "reason": "insufficient_independent_groups",
+                  "status": "not_estimable",
+                  "upper": null
+                },
+                "independent_groups": 1,
+                "mean": 0.0
+              }
+            },
+            "status": "estimated"
+          }
+        },
+        "highest_order": {
+          "benchmark_estimates": {
+            "blade": {
+              "independent_groups": 1,
+              "mean": 0.0
+            },
+            "discoverybench": {
+              "independent_groups": 1,
+              "mean": 0.0
+            }
+          },
+          "direction": "higher_better",
+          "estimand": "interaction_on_scale",
+          "group_detail": {
+            "interaction:blade:12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8": {
+              "mean": 0.0,
+              "task_replicate_contrasts": 1
+            },
+            "interaction:discoverybench:12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8": {
+              "mean": 0.0,
+              "task_replicate_contrasts": 1
+            }
+          },
+          "input_evidence": {
+            "panel_digest": "d90bc79e9622736acb28e15809b8184ea4c169e23ed91dcd88d507feb95a4db6",
+            "runtime": [
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "000"
+                ],
+                "trace_digest": "d5c85a759531b21bc5fb2ca037d4cd5c5a4a2485937967a42826ca14297234c3"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "001"
+                ],
+                "trace_digest": "3e079ea6113ce9ff16c8825b30e2462b313a627f92b6143dfe6254252dc30a41"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "010"
+                ],
+                "trace_digest": "0d1042b9959e90fb50779d2ca113ede4d34f7a2f725de9114dd5321687e0e661"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "011"
+                ],
+                "trace_digest": "6994dba331dd624679b07b3d36a4bf5e76547319dddd5f59caf2e5c37700b7c9"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "100"
+                ],
+                "trace_digest": "293653194e72285c97f71b56a308e08662c0212ec902e9e067620752cda449b1"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "101"
+                ],
+                "trace_digest": "70791d69e839ebf63cb7277fef2c64db7726f98758cdfb2cd6fb892702da8298"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "110"
+                ],
+                "trace_digest": "47b64ec9dfa416aa95971f27779825bafcf542536956a58f27092b3af4e4d491"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "111"
+                ],
+                "trace_digest": "862067ed3a4abb9a83d0add34ac3cdb30732e2ce8a15d209bb3b30d6b98b016a"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "000"
+                ],
+                "trace_digest": "47ab2569058bc6e661ff71c8fd84f23c397a0eeea42b5f7d0c65882483e73624"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "001"
+                ],
+                "trace_digest": "ebc44b33da90b92536925b76043c86b1a47b3188246873b8933565c62822626d"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "010"
+                ],
+                "trace_digest": "c7b8894ab3ff94581bc4cf39b9da5c42c72ab6699f95c0826c513e0d28852099"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "011"
+                ],
+                "trace_digest": "9fe72f021d1598453de804389a2af6d3170c5b8fa2b49d953a86d35a22327b20"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "100"
+                ],
+                "trace_digest": "c9ee5c5201dff76019f87350041c4970eff7cf633d850aa032dafb9425f38e3d"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "101"
+                ],
+                "trace_digest": "5a0311ca2f1824607611be9f86c1347dbd740076007c898a9ecff12e45d8b6eb"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "110"
+                ],
+                "trace_digest": "aa99e1b033e982eb3a0112b01e0bf6bbf9f961796915acf9786c6d05f6d01c64"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "111"
+                ],
+                "trace_digest": "f12583a66cd58930de46e6509257f77909b329ed4b25c4276826b8208fe513bb"
+              }
+            ],
+            "scorer": [
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "000"
+                ],
+                "receipt_digest": "8cb46933ac5fb9c1e3720b5674d3550ac632864677e7798b3ed9da12225b7a04"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "001"
+                ],
+                "receipt_digest": "ca0aa465aa6ded0ffac1faa60bd386a08a4f44c3db957ef21e6ae54bf8a3cb1d"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "010"
+                ],
+                "receipt_digest": "73ab321d93ee7bc7734b49831b6ec070224c1c06dbefbe38832a5e88e42e6992"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "011"
+                ],
+                "receipt_digest": "d9a06e88caac8f023ad0a624b645f0b0026f84115e27d95e08545f6f4586108b"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "100"
+                ],
+                "receipt_digest": "30314be596313b4e2e666a695b58089eb959edb80cfe637e4d06c5d0f2556ef1"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "101"
+                ],
+                "receipt_digest": "ed3fb4ee4e92add63b8fd68845d7d7b496f221fe17ce755a97ee80573b17f227"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "110"
+                ],
+                "receipt_digest": "02d539d28a5a5b803f8886163845bc1597d54ab1df384e9b3b23207a4269027b"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "blade",
+                  "case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "111"
+                ],
+                "receipt_digest": "6d6b7911ec632f5cc496da334ce3abca5c7d6826e12d494a7bdcc9f24917965f"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "000"
+                ],
+                "receipt_digest": "d6d4d815154effa01f27ac0ab5304c490353bf2d31daecb6b8a5bf79294e2c26"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "001"
+                ],
+                "receipt_digest": "bffd2788b167a8bd6d0a15e87e910f9daefa98bf1889b9dfa361f3a7c1db24f7"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "010"
+                ],
+                "receipt_digest": "67972646631dd530daf609f5c4e89ceec8ed701179412a825adc705f24469233"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "011"
+                ],
+                "receipt_digest": "6842cd3117a35d6b1583006444b6785261e5d6c5d3ba57bbc6a953b19a85f994"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "100"
+                ],
+                "receipt_digest": "48b2d3e7939811f88bd59d56a11fb36a3f7054cfd95ae2402173737fe8991f3c"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "101"
+                ],
+                "receipt_digest": "2058c61a86b7356d6d024fcc4a859cc036718bdb6a030547aec9e01fc3f4f4a5"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "110"
+                ],
+                "receipt_digest": "e47ef396ce550a79a88a4efd9b741a69426e59833af5886c4b2dc13d4eb73791"
+              },
+              {
+                "cell_key": [
+                  "triple:M1+M4+M7",
+                  "discoverybench",
+                  "synth:test:case0",
+                  "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+                  "r1",
+                  "combination",
+                  "111"
+                ],
+                "receipt_digest": "7e479f9fead52f2abbf7beab4e8faa07d909e90d53538a88856f0e626d41b823"
+              }
+            ]
+          },
+          "input_evidence_digest": "4e09e9d6368b5f946c275479b7400a6b95c4716b52b2feca5731c36a36485f59",
+          "missing_policy": "incomplete_reject",
+          "panel_digest": "d90bc79e9622736acb28e15809b8184ea4c169e23ed91dcd88d507feb95a4db6",
+          "scale": "unit",
+          "schema": "frozen-grouped-combination-estimate-v1",
+          "scientific_status": "estimation_only_not_acceptance",
+          "significance": "not_computed_no_frozen_alpha_or_minimum_groups",
+          "status": "estimated",
+          "value_range": [
+            0.0,
+            1.0
+          ]
+        },
+        "policy": {
+          "ci": {
+            "level": 0.95,
+            "method": "unavailable_in_one_group_per_benchmark_slice",
+            "minimum_independent_groups": 2
+          },
+          "coefficients": {
+            "M1": {
+              "000": -0.25,
+              "001": -0.25,
+              "010": -0.25,
+              "011": -0.25,
+              "100": 0.25,
+              "101": 0.25,
+              "110": 0.25,
+              "111": 0.25
+            },
+            "M1+M4": {
+              "000": 0.5,
+              "001": 0.5,
+              "010": -0.5,
+              "011": -0.5,
+              "100": -0.5,
+              "101": -0.5,
+              "110": 0.5,
+              "111": 0.5
+            },
+            "M1+M4+M7": {
+              "000": -1.0,
+              "001": 1.0,
+              "010": 1.0,
+              "011": -1.0,
+              "100": 1.0,
+              "101": -1.0,
+              "110": -1.0,
+              "111": 1.0
+            },
+            "M1+M7": {
+              "000": 0.5,
+              "001": -0.5,
+              "010": 0.5,
+              "011": -0.5,
+              "100": -0.5,
+              "101": 0.5,
+              "110": -0.5,
+              "111": 0.5
+            },
+            "M4": {
+              "000": -0.25,
+              "001": -0.25,
+              "010": 0.25,
+              "011": 0.25,
+              "100": -0.25,
+              "101": -0.25,
+              "110": 0.25,
+              "111": 0.25
+            },
+            "M4+M7": {
+              "000": 0.5,
+              "001": -0.5,
+              "010": -0.5,
+              "011": 0.5,
+              "100": 0.5,
+              "101": -0.5,
+              "110": -0.5,
+              "111": 0.5
+            },
+            "M7": {
+              "000": -0.25,
+              "001": 0.25,
+              "010": -0.25,
+              "011": 0.25,
+              "100": -0.25,
+              "101": 0.25,
+              "110": -0.25,
+              "111": 0.25
+            }
+          },
+          "factors": [
+            "M1",
+            "M4",
+            "M7"
+          ],
+          "group_weighting": "task_replicate_mean_then_equal_group_mean",
+          "missing_policy": "incomplete_reject",
+          "qualification_parity": "all_matched_arms_required",
+          "schema": "admission-prediction-exploration-components-v1"
+        },
+        "schema": "admission-prediction-exploration-estimate-v1",
+        "scientific_status": "descriptive_estimation_only_not_acceptance",
+        "status": "estimated"
+      }
+    ]
+  },
+  "scientific_effectiveness_proven": false
+}
