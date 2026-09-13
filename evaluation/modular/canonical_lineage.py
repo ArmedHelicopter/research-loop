@@ -36,7 +36,7 @@ def normalize_reference(raw, hint="source_url"):
     different versions or encodings are not guessed equivalent. Bare names,
     prose, filenames, and source-bound hashes are not cross-source identifiers.
     """
-    if not isinstance(raw, str) or not raw.strip() or len(raw) > 4096:
+    if not isinstance(raw, str) or not raw.strip() or len(raw) > 4096 or not raw.isascii():
         return None
     value = raw.strip()
     if any(character.isspace() for character in value):

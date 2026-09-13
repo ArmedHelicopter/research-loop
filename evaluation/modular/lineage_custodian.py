@@ -53,7 +53,7 @@ def _binding():
     return {"source_pin_hashes": [], "metadata_container_hashes": [], "data_artifact_hashes": [],
             "metadata_file_count": 0, "data_artifact_file_count": 0,
             "records_missing_metadata_file": 0, "records_without_received_data_artifact": 0,
-            "empty_data_artifact_file_count": 0, "source_pin_established": False,
+            "empty_data_artifact_file_count": 0, "non_utf8_metadata_file_count": 0, "source_pin_established": False,
             "source_license_metadata_hashes": [], "per_record_terms_qualification": "not_established"}
 
 
@@ -105,6 +105,19 @@ def _merge_refs(refs, raw):
     return unresolved, license_declared
 
 
+def _primary_json(path, source, audit):
+    raw = path.read_bytes()
+    try:
+        text = raw.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        # Preserve undecodable bytes as opaque surrogates to read JSON's ASCII
+        # structure. Do not guess an upstream encoding. The canonical matcher
+        # only admits ASCII identifiers; non-ASCII values remain unmapped.
+        text = raw.decode("utf-8-sig", errors="surrogateescape")
+        audit.bindings[source]["non_utf8_metadata_file_count"] += 1
+    return json.loads(text)
+
+
 def _git_pin(root):
     # Only the fixed checkout's HEAD is queried; stderr and arbitrary text stay
     # private. A missing .git is a pin gap, not permission to guess a revision.
@@ -143,7 +156,7 @@ def primary_records(config, audit):
             for path in metadata_paths:
                 _public_file(path, allowed)
                 audit.metadata(source, path)
-                metadata = json.loads(path.read_bytes())
+                metadata = _primary_json(path, source, audit)
                 count, declared = _merge_refs(refs, metadata)
                 unresolved += count
                 license_declared |= declared
@@ -164,7 +177,7 @@ def primary_records(config, audit):
             for path in metadata_paths:
                 _public_file(path, allowed)
                 audit.metadata(source, path)
-                count, declared = _merge_refs(refs, json.loads(path.read_bytes()))
+                count, declared = _merge_refs(refs, _primary_json(path, source, audit))
                 unresolved += count
                 license_declared |= declared
             if (directory / "data.csv").is_file():
@@ -282,6 +295,7 @@ def validate_receipt(value):
     bind_spec = {"source_pin_hashes": ["sha"], "metadata_container_hashes": ["sha"], "data_artifact_hashes": ["sha"],
                  "metadata_file_count": "count", "data_artifact_file_count": "count", "records_missing_metadata_file": "count",
                  "records_without_received_data_artifact": "count", "empty_data_artifact_file_count": "count",
+                 "non_utf8_metadata_file_count": "count",
                  "source_pin_established": False, "source_license_metadata_hashes": ["sha"], "per_record_terms_qualification": "not_established"}
     spec = {"schema": SCHEMA, "inventory_digest": "sha", "config_sha256": "sha", "field_rules_sha256": "sha",
             "implementation_sha256": ["sha"], "runtime_metadata_sha256": "sha", "read_manifest_sha256": "sha",

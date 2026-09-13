@@ -72,7 +72,7 @@ def extract_metadata_references(row):
         declared = declared or any(isinstance(value.get(name), str) and bool(value[name].strip()) for name in LICENSE_FIELDS)
         for name in (*CONTAINERS, "metadata.yaml"):
             child = value.get(name)
-            if isinstance(child, str):
+            if isinstance(child, str) and name == "metadata.yaml":
                 import yaml
                 parsed = yaml.safe_load(child)
                 visit(parsed)

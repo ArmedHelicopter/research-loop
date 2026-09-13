@@ -83,6 +83,7 @@ def test_generic_url_keeps_semantic_query_and_path_differences():
     assert normalize_reference("https://example.com/a?version=1") != normalize_reference("https://example.com/a?version=2")
     assert normalize_reference("https://example.com/a") != normalize_reference("https://example.com/A")
     assert normalize_reference("https://secret:password@example.com/data") is None
+    assert normalize_reference("https://example.com/\udc96") is None
 
 
 def test_legacy_constraint_kept_separate_from_scientific_reference_support():

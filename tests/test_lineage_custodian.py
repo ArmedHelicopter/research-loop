@@ -150,7 +150,7 @@ def test_untrusted_yaml_exception_does_not_export_private_text(tmp_path, fixture
     state = json.loads(state_path.read_bytes())
     metadata = Path(config["snapshot_root"]) / "discovery/upstream/discoverybench/synth/train/case_1/metadata_case.json"
     old = hashlib.sha256(metadata.read_bytes()).hexdigest()
-    sha = write(metadata, {"metadata": "!!python/object/apply:os.system ['" + SECRET + "']", "datasets": [{"name": "data.csv"}]})
+    sha = write(metadata, {"metadata.yaml": "!!python/object/apply:os.system ['" + SECRET + "']", "datasets": [{"name": "data.csv"}]})
     state["inventory"][0]["content_hashes"] = [sha if value == old else value for value in state["inventory"][0]["content_hashes"]]
     state["inventory_digest"] = digest(state["inventory"])
     write(state_path, state)
@@ -158,3 +158,20 @@ def test_untrusted_yaml_exception_does_not_export_private_text(tmp_path, fixture
     assert c.main(["--config", str(config_path), "--private-audit", str(tmp_path / "audit-private"), "--output", str(out)]) == 1
     captured = capsys.readouterr()
     assert SECRET not in captured.out + captured.err + out.with_suffix(".failure.json").read_text()
+
+
+def test_non_utf8_unknown_text_keeps_ascii_refs_and_reports_encoding_gap(tmp_path, fixture):
+    config_path, state_path, provider = fixture
+    metadata = provider.parent / "metadata_case.json"
+    old = hashlib.sha256(metadata.read_bytes()).hexdigest()
+    raw = metadata.read_bytes().replace(SECRET.encode(), b"PRIVATE\x96OPAQUE")
+    new = write(metadata, raw)
+    state = json.loads(state_path.read_bytes())
+    state["inventory"][0]["content_hashes"] = [new if value == old else value for value in state["inventory"][0]["content_hashes"]]
+    state["inventory_digest"] = digest(state["inventory"])
+    write(state_path, state)
+    out = tmp_path / "public" / "receipt.json"
+    receipt = c.run(config_path=config_path, private_audit=tmp_path / "private-audit", output=out)
+    assert receipt["source_bindings"]["discoverybench"]["non_utf8_metadata_file_count"] == 1
+    assert receipt["graph"]["sources"]["discoverybench"]["canonical_reference_record_counts"]["doi"] == 1
+    assert "PRIVATE" not in out.read_text()
