@@ -14,5 +14,15 @@ class FrozenAdmissionTrainConfig(FrozenLineageTrainConfig):
             raise ContractError('admission controller requires the exact frozen primary rubric')
 
 
-compile_admission_train_panels = compile_lineage_train_panels
-run_admission_train_panels = run_lineage_train_panels
+def compile_admission_train_panels(config, packets):
+    from research_loop.ontology import ContractError
+    if type(config) is not FrozenAdmissionTrainConfig:
+        raise ContractError('admission compiler requires its exact frozen configuration')
+    return compile_lineage_train_panels(config, packets)
+
+
+def run_admission_train_panels(config, **kwargs):
+    from research_loop.ontology import ContractError
+    if type(config) is not FrozenAdmissionTrainConfig:
+        raise ContractError('admission controller requires its exact frozen configuration')
+    return run_lineage_train_panels(config, **kwargs)

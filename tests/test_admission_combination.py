@@ -278,3 +278,41 @@ def test_unknown_source_cost_is_preserved_when_contract_succeeds(grid,tmp_path):
     verifier.qualify(material,path,cell_binding=_source_binding(executed.cell))
     rows=json.loads(path.read_text(encoding='utf-8'))['calls']
     assert len(calls)==2 and all(r['cost_units'] is None and r['cost_unknown'] is True for r in rows)
+
+
+def test_admission_public_entries_reject_other_typed_family(tmp_path):
+    from research_loop.modular.lineage_combination_controller import compile_lineage_train_panels
+    from research_loop.modular.admission_combination import issue_admission_score_input
+    _,_,packets,legacy,_,_=old_fixture(tmp_path,old_sources([]))
+    with pytest.raises(ContractError,match='admission'):compile_admission_train_panels(legacy,packets)
+    with pytest.raises(ContractError,match='admission'):run_admission_train_panels(legacy)
+    old=compile_lineage_train_panels(legacy,packets)
+    with pytest.raises(ContractError,match='admission'):
+        issue_admission_score_input(authority=EXECUTION,result=None,panel=old.panels[0],material=next(iter(old.materials.values())))
+
+
+@pytest.mark.parametrize('state',['unknown','invalid','valid'])
+def test_gate_reacts_to_actual_qualified_state_without_variant_labels(grid,tmp_path,state):
+    from research_loop.modular.admission_combination import transition
+    from research_loop.modular.lineage_combination_driver import _source_binding
+    from research_loop.modular.modules.evidence import EvidenceLedger, ClaimLedger
+    from research_loop.modular.modules.context import ContextCache
+    executed=grid[0].results[0];material=grid[0].compiled.materials[executed.cell.task_digest]
+    verifier=sources([]);authorities=[]
+    for a in verifier.authorities:
+        def qualify(request,a=a):
+            signed=a.verify(request);body=signed.data()['body']
+            for phase in body['assessments'].values():
+                for q in phase.values():
+                    q['state']['validity']=state
+                    q['audit']=[{'name':'measurement','executed':True,'passed':True}]
+            return a.authority.issue({k:v for k,v in body.items() if k!='authority'})
+        authorities.append(MaterialAuthority(a.authority,a.source_group,qualify))
+    verifier=AdmissionMaterialVerifier(tuple(authorities));path=tmp_path/'qualification'/'receipt.json'
+    verifier.qualify(material,path,cell_binding=_source_binding(executed.cell))
+    facts=verifier.assessments(material,path,cell_binding=_source_binding(executed.cell))
+    for enabled in ({'M1'},set()):
+        e=EvidenceLedger(executed.cell.identity);c=ClaimLedger(e)
+        actual=transition(e,c,ContextCache(),material,enabled,facts).data()
+        assert len(actual['public']['observations'])==(0 if enabled and state!='valid' else 5)
+        assert all(v['admitted'] is bool(enabled and state=='valid') for v in actual['decisions']['before'].values())

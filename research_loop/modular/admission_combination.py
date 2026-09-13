@@ -171,5 +171,9 @@ def transition(evidence, claims, cache, material, enabled, qualification):
 
 def issue_admission_score_input(*, authority, result, **args):
     from research_loop.modular.lineage_combination_driver import verify_lineage_combination_cell
+    from evaluation.modular.linked_scoring import LinkedExecutionAuthority
+    if (not isinstance(authority, LinkedExecutionAuthority) or args.get('panel') is None
+            or args['panel'].obligation_id not in DESIGNS or type(args.get('material')) is not FrozenAdmissionMaterial):
+        raise ContractError('admission score issuer requires its exact family and qualified material')
     verify_lineage_combination_cell(result, **args)
     return authority.issue(_score_input_payload(args['panel'], result).data())
