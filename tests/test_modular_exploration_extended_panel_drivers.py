@@ -17,6 +17,7 @@ from research_loop.modular.experiments import scenario as base_scenario
 from research_loop.modular.exploration_extended_panel_drivers import (
     LIMITS, VARIANTS, freeze_extended_exploration_bundle, extended_exploration_injection, install_drivers,
     freeze_ratio_selection, select_training_ratio,
+    _append_prior_observation,
 )
 from research_loop.modular.modules.admission import AuditItem, ScientificState
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
@@ -239,6 +240,24 @@ def test_ratio_menu_cannot_change_with_allocation(tmp_path,monkeypatch):
     with pytest.raises(ContractError): freeze_extended_exploration_bundle(task,materials=body['materials'],budget=FrozenRecord.from_dict(BUDGET))
 
 
+def test_ratios_must_change_actual_execution_allocation(tmp_path,monkeypatch):
+    _,tasks,authority,bundles=_compile(tmp_path,monkeypatch); task=next(iter(tasks.values())); body=bundles[task.content_hash].data()
+    for index,row in enumerate(body['materials']['Q7.3'].values()): row['config']['exploration_percent']=index+1
+    with pytest.raises(ContractError): freeze_extended_exploration_bundle(task,materials=body['materials'],budget=FrozenRecord.from_dict(BUDGET))
+
+
+def test_prior_art_observation_uses_real_task_ledger_contract():
+    from types import SimpleNamespace
+    from research_loop.modular.modules.evidence import EvidenceLedger,ClaimLedger
+    task=_task('blade'); evidence=EvidenceLedger(task.identity); session=SimpleNamespace(task=task,evidence=evidence)
+    bindings={'task':task.identity.task_id}
+    root=_append_prior_observation(session,{'facets':{'prior_art_status':'matched'},'observation_digest':'a'*64,'admission':{'authorities':['a','b']}},bindings)
+    claims=ClaimLedger(evidence)
+    claim=claims.create('The measurement is novel.',subject_bindings=bindings)
+    updated=claims.apply(claim.claim_id,{'subject_bindings':bindings,'supports':[],'refutes':[root.root_id]},expected_revision=claim.revision).claim
+    assert updated.status=='refuted' and evidence.is_active_admitted(root.root_id)
+
+
 @pytest.mark.parametrize('hard',['resource','authorization'])
 def test_typed_hard_missing_keeps_all_family_arm_denominators(tmp_path,monkeypatch,hard):
     compiled,tasks,authority,bundles=_compile(tmp_path,monkeypatch,hard=hard)
@@ -295,6 +314,11 @@ def test_full_88_cell_real_docker_grid(tmp_path,monkeypatch):
             if 'M2' in enabled and cell.variant=='valid_known':
                 assert operation['claims']['measurement_root_retained'] is True
                 assert operation['claims']['novelty']['status']=='refuted'
+            if 'M1' in enabled:
+                expected={'valid_known':('valid','supported','known','explore'), 'novel_refuted':('valid','refuted','novel','stop'),
+                    'infeasible':('unknown','undetermined','unknown','repair'), 'easy_valid':('valid','supported','unknown','explore')}[cell.variant]
+                state=context['observations'][0]['scientific_gate']['state']
+                assert tuple(state[k] for k in ('validity','support','novelty','investment'))==expected
         else:
             review=next(r['module_context'] for r in seen if r['slot']=='semantic_review')
             assert ('earlier_assessment' in review)==('M5' not in enabled)

@@ -103,6 +103,8 @@ def freeze_extended_exploration_bundle(task: PublicTask, *, materials: Mapping, 
     ratio_configs = [item['config'] for item in clean['Q7.3'].values()]
     if len({r['ratio_id'] for r in ratio_configs}) != 4 or len({r['exploration_percent'] for r in ratio_configs}) != 4 or len({r['control_percent'] for r in ratio_configs}) != 1:
         raise ContractError('four distinct ratios and one fixed control allocation required')
+    if len({ceil(4 * r['exploration_percent'] / 100) for r in ratio_configs}) != 4:
+        raise ContractError('ratio candidates must produce distinct actual allocations')
     menus = []
     for item in clean['Q7.3'].values():
         shared = {k: v for k, v in item.items() if k != 'config'}
@@ -218,6 +220,8 @@ def _execute_job(driver, workflow, bundle, item, job, prospective, ledger, index
     # Q7.6's independent reviewer must not inherit a root containing the
     # authority's scientific verdict. Fixed P0 admission follows its response.
     admission = None if driver.experiment_id == 'Q7.6' else workflow.session.admit(execution.content_hash, audits).data()
+    if facets['main_progress'] == 'completed' and not admission['admitted']:
+        raise ContractError('completed scientific main progress needs fixed-P0 qualification')
     return {'role': role, 'job_id': job['diagnostic_id'], 'status': execution.status,
             'execution': _execution_public(execution), 'facets': post['facets'], 'observation_digest': post_hash,
             'admission': admission, 'scientific_status': post['facts']['scientific_status']}, execution, post
@@ -235,6 +239,17 @@ def _candidate_jobs(item, experiment, enabled):
     if experiment == 'Q7.4':
         return [(cfg['old_id'], 'old_instrument'), (cfg['repair_id'] if 'M7' in enabled else cfg['old_id'], 'followup_instrument')], None
     return [(cfg['observation_id'], 'observation')], None
+
+
+def _append_prior_observation(session, observation, bindings):
+    """A task-bound prior-art observation, not a fabricated independent family."""
+    if observation['facets']['prior_art_status'] != 'matched':
+        raise ContractError('prior observation requires source-verified match')
+    return session.evidence.append({'kind': 'observation',
+        'root_material': {'source_bound_prior_art_receipt': observation['observation_digest']},
+        'representation': 'raw', 'content': {'prior_art_status': 'matched'}, 'subject_bindings': bindings,
+        'independent_group': session.task.identity.group_id},
+        {'trusted_validator': '+'.join(observation['admission']['authorities']), 'validator_verified': True, 'admitted': True})
 
 
 def _run(driver, workflow, *, cell, scenario, model):
@@ -289,10 +304,7 @@ def _run(driver, workflow, *, cell, scenario, model):
             claim = workflow.session.claims.apply(claim.claim_id, update, expected_revision=claim.revision).claim
             novelty = workflow.session.claims.create(cfg['novelty_claim'], subject_bindings=bindings)
             if observation['facets']['prior_art_status'] == 'matched':
-                prior = workflow.session.evidence.append({'kind': 'bibliographic', 'root_material': {'observation_digest': observation['observation_digest']},
-                    'representation': 'raw', 'content': {'prior_art_status': 'matched'}, 'subject_bindings': bindings,
-                    'independent_group': item['authority_contract']['authorities'][0]['source_group']},
-                    {'trusted_validator': '+'.join(admission['authorities']), 'validator_verified': True, 'admitted': True})
+                prior = _append_prior_observation(workflow.session, observation, bindings)
                 novelty = workflow.session.claims.apply(novelty.claim_id, {'subject_bindings': bindings, 'supports': [], 'refutes': [prior.root_id]}, expected_revision=novelty.revision).claim
             operation['claims'] = {'observation': claim.data(), 'novelty': novelty.data(),
                 'measurement_root_retained': workflow.session.evidence.is_active_admitted(root)}
@@ -413,15 +425,21 @@ def select_training_ratio(*, task, bundle, panel, runtimes):
         requests = {event['data']['attempt']: event['data'] for event in events if event['stage'] == 'extended_verifier_request'}
         responses = [event['data'] for event in events if event['stage'] == 'extended_verifier_response']
         metrics = {'effective_diagnostics': 0, 'waste': 0, 'main_completed': 0, 'unknown': 0}
-        digests = []
+        digests = []; indices = []
         for response in responses:
             request = requests[response['attempt']]
             if request['kind'] != 'observation': continue
             subject = FrozenRecord.from_dict(request['subject']); body = response['receipt'].copy(); facets = body.pop('facets')
             _verified(FrozenRecord.from_dict(body), subject, observation=True)
             data = subject.data(); index = data['execution_index']
-            if data['task_digest'] != task.content_hash or data['bundle_digest'] != bundle.content_hash or (data['diagnostic']['diagnostic_id'], data['job_role']) != schedule[index]:
+            if type(index) is not int or not 0 <= index < 4 or index in indices:
+                raise ContractError('ratio observation execution indices duplicate or drift')
+            job = next(job for job in item['jobs'] if job['diagnostic_id'] == schedule[index][0])
+            if (data['task_digest'] != task.content_hash or data['bundle_digest'] != bundle.content_hash
+                    or data['diagnostic'] != job or data['job_role'] != schedule[index][1]
+                    or data['authority_contract'] != item['authority_contract'] or data['extended_config'] != item['config']):
                 raise ContractError('ratio observation subject or schedule drift')
+            indices.append(index)
             metrics['effective_diagnostics'] += facets['diagnostic_value'] == 'effective'
             metrics['waste'] += facets['diagnostic_value'] == 'waste'
             metrics['main_completed'] += facets['main_progress'] == 'completed'
