@@ -14,7 +14,7 @@ from research_loop.modular.modules.review import ReviewEngine
 from research_loop.modular.panel_receipts import PanelCell, opaque_panel_cell_binding
 from research_loop.ontology import ContractError
 
-_SUPPORTED = frozenset({"Q1.5", "Q3.1", "Q4.3"})
+_SUPPORTED = frozenset({"Q1.5", "Q3.1", "Q4.3", "Q8.2", "Q8.3"})
 
 
 def project_linked_public_context(*, provenance: FrozenRecord, cell: PanelCell,
@@ -35,6 +35,8 @@ def project_linked_public_context(*, provenance: FrozenRecord, cell: PanelCell,
         material = _q31_material(cell, task, body["mechanism_stages"], responses)
     elif coverage == "Q4.3":
         material = _q43_material(cell, body["mechanism_stages"], responses)
+    elif coverage in {"Q8.2", "Q8.3"}:
+        material = _retrieval_material(cell, task, scenario, body)
     else:  # guarded above, retained for a closed extension point
         raise ContractError("linked public projection does not support this mechanism")
     return FrozenRecord.from_dict({
@@ -208,3 +210,53 @@ def _q43_material(cell: PanelCell, stages: list[Any], calls: Mapping[str, dict[s
         if not isinstance(item, Mapping) or not isinstance(item.get("response"), Mapping) or FrozenRecord.from_dict(item["response"]).data() != response:
             raise ContractError("Q4.3 revision is not bound to its model response")
     return {"kind": "sealed_review", "revealed_review": {"initial": initial, "revisions": revisions}}
+
+
+def _retrieval_material(cell: PanelCell, task: PublicTask, scenario: FrozenRecord,
+                        body: dict[str, Any]) -> dict[str, Any]:
+    """Expose only actual selected public documents, bound to source and request.
+
+    Selection labels, queries, costs and policy IDs stay in the full provenance.
+    Both arms use the same output shape; Q8.3's ordinary retrieval stays visible.
+    """
+    from research_loop.modular.retrieval_panel_drivers import _docs, freeze_retrieval_bundle
+    from research_loop.modular.modules.retrieval import FrozenSourceBundle, LANES
+    enabled, stage = _stage_for_arm(cell, body['mechanism_stages'], module='M6',
+        enabled_stage='stage_0.5', control_stage='operation_m6_ordinary_baseline')
+    fields={'source_bundle_digest','policy_digest','by_lane','source_qualification','scientific_admission'}
+    if set(stage) != fields | {'stage','status','usage'} or stage['status'] != 'executed':
+        raise ContractError('retrieval stage does not have its closed executed schema')
+    source=scenario.data().get('controller_input',{})
+    if set(source) != {'schema','bundle'} or source['schema'] != 'retrieval-panel-controller-v1':
+        raise ContractError('linked retrieval requires its typed source bundle')
+    frozen=FrozenRecord.from_dict(source['bundle']); data=frozen.data()
+    if freeze_retrieval_bundle(task,query=data.get('query'),budget=data.get('budget'),materials=data.get('materials')) != frozen:
+        raise ContractError('linked retrieval source bundle is not bound to this task')
+    docs=_docs(data['materials'][cell.coverage_id][cell.variant]['sources'])
+    pool=FrozenSourceBundle('public-train-retrieval-pool-v1',docs)
+    if stage['source_bundle_digest'] != pool.content_hash:
+        raise ContractError('linked retrieval stage changed its frozen source pool')
+    selected=stage['by_lane']; allowed={d.source_id:d.data() for d in docs}; roots=set()
+    if not isinstance(selected,Mapping) or set(selected)!=set(LANES):
+        raise ContractError('linked retrieval has invalid source lanes')
+    for lane, rows in selected.items():
+        if not isinstance(rows,list): raise ContractError('linked retrieval source list is invalid')
+        for row in rows:
+            if (not isinstance(row,Mapping) or row.get('source_id') not in allowed
+                    or allowed[row['source_id']] != row or row['lane'] != lane
+                    or row['root_source_id'] in roots):
+                raise ContractError('linked retrieval contains an unbound or duplicate source')
+            roots.add(row['root_source_id'])
+    if cell.coverage_id=='Q8.2' and not enabled and roots:
+        raise ContractError('Q8.2 control cannot contain external sources')
+    if (stage['scientific_admission'] is not False
+            or stage['source_qualification'] != 'caller_declared_public_train_unvalidated'):
+        raise ContractError('retrieval provenance cannot establish scientific qualification')
+    calls=body['responses']
+    if len(calls)!=1 or calls[0]['slot']!='final':
+        raise ContractError('retrieval precursor must contain exactly its final response')
+    projection={key:stage[key] for key in fields}
+    if calls[0]['request'].get('module_context',{}).get('retrieval') != projection:
+        raise ContractError('retrieval stage differs from the material actually shown to the model')
+    return {'kind':'retrieved_public_sources','retrieval':{key:stage[key] for key in
+        ('by_lane','source_qualification','scientific_admission')}}

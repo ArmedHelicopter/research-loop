@@ -23,7 +23,7 @@ from research_loop.ontology import ContractError
 
 
 ModelPort = Callable[[FrozenRecord], FrozenRecord]
-_SUPPORTED_MECHANISMS = frozenset({"Q1.5", "Q3.1", "Q4.3"})
+_SUPPORTED_MECHANISMS = frozenset({"Q1.5", "Q3.1", "Q4.3", "Q8.2", "Q8.3"})
 
 
 @dataclass(frozen=True)
@@ -43,8 +43,9 @@ def run_benchmark_cell(*, cell: PanelCell, task: PublicTask, scenario: FrozenRec
                        mechanism_sidecar: Path, solver_sidecar: Path,
                        public_inputs: Mapping[str, Path], image: str,
                        broker: DockerExecutionBroker, model: ModelPort,
-                       audit_verifier: AuditVerifier, timeout_seconds: int = 20) -> LinkedBenchmarkCellResult:
-    """Run the closed Q1.5/Q3.1/Q4.3 mechanism first, then solve from its trace.
+                       audit_verifier: AuditVerifier, timeout_seconds: int = 20,
+                       retrieval_provider=None, retrieval_admission_port=None) -> LinkedBenchmarkCellResult:
+    """Run a registered linked mechanism first, then solve from its trace.
 
     A failed mechanism remains an explicit row and does not call the solver.
     Solver failures are returned from ``run_benchmark_solve`` with their own
@@ -53,7 +54,8 @@ def run_benchmark_cell(*, cell: PanelCell, task: PublicTask, scenario: FrozenRec
     _validate_inputs(cell, task, scenario, package, objective, model)
     mechanism = run_train_cell(cell, task=task, scenario=scenario, package=package,
                                objective=objective, sidecar=mechanism_sidecar, model=model,
-                               audit_verifier=audit_verifier)
+                               audit_verifier=audit_verifier, retrieval_provider=retrieval_provider,
+                               retrieval_admission_port=retrieval_admission_port)
     if mechanism.runtime.status != "succeeded":
         return _result(cell, mechanism, None, None, "mechanism_" + mechanism.runtime.status)
     try:
@@ -89,7 +91,8 @@ def verified_mechanism_provenance(*, cell: PanelCell, task: PublicTask, scenario
         raise ContractError("mechanism trace digest differs from its runtime receipt")
     stages = [event for event in events if event["stage"] == "modular_workflow"
               and event["data"].get("stage") in {"stage_1", "stage_7", "stage_9",
-                                                   "operation_m4_control", "operation_m5_control"}]
+                                                   "operation_m4_control", "operation_m5_control",
+                                                   "stage_0.5", "operation_m6_ordinary_baseline"}]
     if not stages:
         raise ContractError("mechanism trace lacks an executed mechanism stage")
     calls = _model_calls(events)
