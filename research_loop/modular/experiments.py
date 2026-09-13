@@ -102,6 +102,9 @@ def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs,
     elif spec.experiment_id in {"Q7.1", "Q7.2"}:
         from research_loop.modular.exploration_panel_drivers import exploration_panel_injection
         injection=dict(exploration_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
+    elif spec.experiment_id in {"Q7.3", "Q7.4", "Q7.5", "Q7.6"}:
+        from research_loop.modular.exploration_extended_panel_drivers import extended_exploration_injection
+        injection=dict(extended_exploration_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
     elif spec.experiment_id == "Q5.4":
         from research_loop.modular.q54_causal_driver import q54_causal_injection
         injection=dict(q54_causal_injection(variant, task=inputs.task, evidence=inputs.evidence))
@@ -120,9 +123,6 @@ def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs,
     elif spec.experiment_id == "Q4.3":
         from research_loop.modular.scenarios_review import review_injection
         injection=dict(review_injection(spec.experiment_id, variant))
-    elif spec.experiment_id in {"Q7.1", "Q7.2", "Q7.3", "Q7.4", "Q7.5", "Q7.6"}:
-        from research_loop.modular.scenarios_exploration import exploration_injection
-        injection=dict(exploration_injection(spec.experiment_id, variant))
     elif spec.experiment_id in {"Q8.1", "Q8.2", "Q8.3", "Q8.4", "Q8.5", "Q8.6", "Q8.7"}:
         from research_loop.modular.scenarios_retrieval import retrieval_injection
         injection=retrieval_injection(spec.experiment_id, variant).data()

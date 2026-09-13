@@ -57,7 +57,7 @@ def inputs(scope_ids=tuple(registry())):
 def test_every_obligation_gets_all_variants_and_all_legal_paired_arms():
     # These scopes have distinct caller-supplied material contracts,
     # so they compile as dedicated panels instead of coercing Q1.5 material.
-    caller_bound = {"Q2.1", "Q2.2", "Q2.5", "Q2.6", "Q2.7", "Q3.2", "Q3.3", "Q3.4", "Q3.5", "Q5.1", "Q5.2", "Q5.3", "Q5.4", "Q6.4", "Q7.1", "Q7.2"}
+    caller_bound = {"Q2.1", "Q2.2", "Q2.5", "Q2.6", "Q2.7", "Q3.2", "Q3.3", "Q3.4", "Q3.5", "Q5.1", "Q5.2", "Q5.3", "Q5.4", "Q6.4", "Q7.1", "Q7.2", "Q7.3", "Q7.4", "Q7.5", "Q7.6"}
     values = inputs(tuple(name for name in registry() if name not in caller_bound))
     compiled = compile_train_panel(**values)
     panel = compiled.panel

@@ -27,6 +27,7 @@ from research_loop.modular.history_panel_drivers import AdmissionPort
 from research_loop.modular.audit_panel_drivers import AuditReceiptPort, ShadowExecutionPort
 from research_loop.modular.feasibility_panel_drivers import FeasibilityAuthorityPort
 from research_loop.modular.exploration_panel_drivers import ExplorationAuthorityPort, BUDGET as EXPLORATION_BUDGET
+from research_loop.modular.exploration_extended_panel_drivers import BUDGET as EXTENDED_EXPLORATION_BUDGET
 from research_loop.modular.q54_causal_driver import DiagnosticAuthority
 from research_loop.modular.benchmark_cell import LinkedBenchmarkCellResult, run_benchmark_cell, verify_linked_benchmark_cell
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
@@ -92,6 +93,9 @@ class FrozenTrainControllerConfig:
         if set(scope) & {"Q7.1", "Q7.2"} and (data["budget"] != EXPLORATION_BUDGET
                 or any(type(value) is not int for value in data["budget"].values())):
             raise ContractError("exploration controller requires exact matched opportunity budget")
+        if set(scope) & set(EXTENDED_EXPLORATION_BUDGET) and (data["budget"] != EXTENDED_EXPLORATION_BUDGET
+                or any(type(value) is not int for row in data["budget"].values() for value in row.values())):
+            raise ContractError("extended exploration controller requires exact matched opportunity budgets")
         if "Q5.4" in scope and (data["budget"] != {"model_calls":3, "execution_opportunities":1, "verification_calls":1}
                 or any(type(value) is not int for value in data["budget"].values())):
             raise ContractError("diagnostic controller requires exact matched opportunity budget")
@@ -181,7 +185,8 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
         raise ContractError("controller requires the real model port and trusted audit verifier")
     data = config.data()
-    exploration = bool(set(data["scope_ids"]) & {"Q7.1", "Q7.2"})
+    extended_exploration = bool(set(data["scope_ids"]) & set(EXTENDED_EXPLORATION_BUDGET))
+    exploration = extended_exploration or bool(set(data["scope_ids"]) & {"Q7.1", "Q7.2"})
     diagnostic = "Q5.4" in data["scope_ids"]
     if diagnostic and not callable(getattr(diagnostic_authority, "verify_diagnostic", None)):
         raise ContractError("diagnostic controller requires its caller-owned verification port before export")
@@ -270,8 +275,12 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
             packet = packets_by_digest.get(task.content_hash)
             if packet is None or packet.task != task:
                 raise ContractError("exploration input is not an exported train task")
-            diagnostics = [diagnostic for key in ("q71", "q72") for item in bundle.data()[key].values()
-                           for diagnostic in item["diagnostics"]]
+            if extended_exploration:
+                diagnostics = [job for variants in bundle.data()["materials"].values()
+                               for item in variants.values() for job in item["jobs"]]
+            else:
+                diagnostics = [diagnostic for key in ("q71", "q72") for item in bundle.data()[key].values()
+                               for diagnostic in item["diagnostics"]]
             names = {tuple(sorted(row["inputs"])) for row in diagnostics}
             if len(names) != 1 or len(next(iter(names))) != 1:
                 raise ContractError("exploration controller requires one shared exported CSV identity")

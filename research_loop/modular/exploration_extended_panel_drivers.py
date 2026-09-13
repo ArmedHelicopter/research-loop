@@ -9,7 +9,11 @@ from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTa
 from research_loop.modular.exploration_panel_drivers import (
     _diagnostic, _requirements, _verified, _subject, _trusted_execution_material,
 )
-from research_loop.modular.feasibility_panel_drivers import _map, _hex, _prepare_inputs, _execute, _execution_public, _invoke
+from research_loop.modular.panel_execution import (
+    require_mapping as _map, prepare_public_inputs as _prepare_inputs,
+    execute_public_diagnostic as _execute, public_execution_observation as _execution_public,
+    invoke_panel_model as _invoke,
+)
 from research_loop.modular.modules.admission import AuditItem, EvidenceAdmission, ScientificState
 from research_loop.modular.modules.exploration import ExplorationBudget, ExplorationRatioCandidate, InstrumentRepair
 from research_loop.modular.modules.review import ReviewEngine
@@ -19,6 +23,8 @@ VARIANTS = {'Q7.3': ('zero', 'low', 'medium', 'high'), 'Q7.4': ('invalid_measure
             'Q7.5': ('valid_known', 'novel_refuted', 'infeasible', 'easy_valid'),
             'Q7.6': ('contract_only', 'real_counterexample')}
 LIMITS = {'Q7.3': (3, 4, 8), 'Q7.4': (3, 2, 4), 'Q7.5': (3, 1, 2), 'Q7.6': (4, 1, 2)}
+BUDGET = {key: {'model_calls': values[0], 'execution_opportunities': values[1], 'verification_calls': values[2]}
+          for key, values in LIMITS.items()}
 FACETS = {'mechanical_status': ('passed', 'failed', 'unknown'), 'semantic_status': ('passed', 'failed', 'unknown'),
           'diagnostic_value': ('effective', 'waste', 'unknown', 'not_applicable'),
           'main_progress': ('completed', 'incomplete', 'unknown', 'not_applicable'),
@@ -91,8 +97,7 @@ def _material_item(task, experiment, raw):
 
 
 def freeze_extended_exploration_bundle(task: PublicTask, *, materials: Mapping, budget: FrozenRecord):
-    expected_budget = {key: {'model_calls': n[0], 'execution_opportunities': n[1], 'verification_calls': n[2]} for key, n in LIMITS.items()}
-    if not isinstance(task, PublicTask) or not isinstance(budget, FrozenRecord) or budget.data() != expected_budget:
+    if not isinstance(task, PublicTask) or not isinstance(budget, FrozenRecord) or budget.data() != BUDGET:
         raise ContractError('caller public task and matched extended budgets required')
     task.identity.require_train()
     if any(type(v) is not int for row in budget.data().values() for v in row.values()):
@@ -367,12 +372,14 @@ class ExtendedExplorationDriver:
     input_resolver: object
     authority: object
     experiment_id: str
-    slots: tuple = ('prospective', 'semantic_review', 'diagnostic', 'final')
     docker_execution: str = 'matched_source_bound_extended_exploration'
+    @property
+    def slots(self):
+        return ('prospective', 'semantic_review', 'diagnostic', 'final') if self.experiment_id == 'Q7.6' else ('prospective', 'diagnostic', 'final')
     @property
     def execution_limit(self): return LIMITS[self.experiment_id][1]
     def slots_for(self, cell):
-        return self.slots if self.experiment_id == 'Q7.6' else ('prospective', 'diagnostic', 'final')
+        return self.slots
     def run(self, workflow, *, cell, scenario, model, package):
         return _run(self, workflow, cell=cell, scenario=scenario, model=model)
 

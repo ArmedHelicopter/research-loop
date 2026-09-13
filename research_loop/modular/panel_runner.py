@@ -186,6 +186,7 @@ from research_loop.modular.feasibility_panel_drivers import (
 from research_loop.modular.panel_execution import PublicInputResolver
 from research_loop.modular.exploration_panel_drivers import (
     Q71ExplorationAdmissionDriver, Q72FeasibilityAppealDriver, ExplorationAuthorityPort)
+from research_loop.modular.exploration_extended_panel_drivers import ExtendedExplorationDriver
 from research_loop.modular.q54_causal_driver import Q54CausalDriver, DiagnosticAuthority
 from research_loop.modular.protocol_panel_driver import (Q27ProtocolDriver, ProtocolAuditPort, ProtocolReplayAuthority,
     verify_after_finish, verify_protocol_replay_receipt, _exclusive_record)
@@ -201,6 +202,7 @@ DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12Dep
     "Q3.1": Q31PredictionDriver(), "Q3.2": Q32JointSeparateDriver(), "Q5.3": Q53DedupDriver(),
     "Q5.1": Q51FeasibilityDriver(None, None, None), "Q5.2": Q52DistinguishabilityDriver(None, None, None),
     "Q7.1": Q71ExplorationAdmissionDriver(None, None, None), "Q7.2": Q72FeasibilityAppealDriver(None, None, None),
+    **{key: ExtendedExplorationDriver(None, None, None, key) for key in ("Q7.3", "Q7.4", "Q7.5", "Q7.6")},
     "Q5.4": Q54CausalDriver(None, None, None),
     "Q3.3": M8SchedulerDriver("Q3.3"), "Q3.4": M8SchedulerDriver("Q3.4"), "Q3.5": M8SchedulerDriver("Q3.5"),
     "Q4.1": Q41IndependenceDriver(), "Q4.2": Q42RoleDriver(), "Q4.3": Q43ReviewDriver(),
@@ -259,7 +261,7 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
             broker=feasibility_broker if feasibility_broker is not None else driver.broker,
             input_resolver=feasibility_input_resolver if feasibility_input_resolver is not None else driver.input_resolver,
             authority=feasibility_authority if feasibility_authority is not None else driver.authority)
-    if isinstance(driver, Q71ExplorationAdmissionDriver):
+    if isinstance(driver, (Q71ExplorationAdmissionDriver, ExtendedExplorationDriver)):
         driver = replace(driver,
             broker=exploration_broker if exploration_broker is not None else driver.broker,
             input_resolver=exploration_input_resolver if exploration_input_resolver is not None else driver.input_resolver,
