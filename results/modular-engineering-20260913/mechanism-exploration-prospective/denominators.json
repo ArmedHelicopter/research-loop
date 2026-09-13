@@ -1,0 +1,282 @@
+{
+  "mechanism-exploration-a577d41-b/mechanism-exploration-controller0": {
+    "status": "complete_train_engineering",
+    "expected_cells": 24,
+    "observed_cells": 24,
+    "scored_cells": 24,
+    "failed_cells": 0,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 144,
+      "model_calls": 72,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 72,
+    "actual_scorer_calls": 24,
+    "source_calls": 48,
+    "auxiliary_docker_attempts": 48,
+    "phase_unknown_cost_attempts": 0,
+    "unused_model_opportunities": 0,
+    "unused_docker_opportunities": 0,
+    "unused_scorer_opportunities": 0,
+    "retrieval_calls": 24,
+    "unused_retrieval_opportunities": 0,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "estimated",
+        "reason": null
+      },
+      {
+        "status": "estimated",
+        "reason": null
+      },
+      {
+        "status": "estimated",
+        "reason": null
+      }
+    ]
+  },
+  "mechanism-exploration-a577d41-b/test_original_failures_keep_al0": {
+    "status": "inconclusive",
+    "expected_cells": 24,
+    "observed_cells": 24,
+    "scored_cells": 0,
+    "failed_cells": 24,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 0,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 0,
+    "actual_scorer_calls": 0,
+    "source_calls": 48,
+    "auxiliary_docker_attempts": 0,
+    "phase_unknown_cost_attempts": 0,
+    "unused_model_opportunities": 72,
+    "unused_docker_opportunities": 72,
+    "unused_scorer_opportunities": 24,
+    "retrieval_calls": 0,
+    "unused_retrieval_opportunities": 24,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "mechanism-exploration-a577d41-b/test_original_failures_keep_al1": {
+    "status": "inconclusive",
+    "expected_cells": 24,
+    "observed_cells": 24,
+    "scored_cells": 0,
+    "failed_cells": 24,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 48,
+      "model_calls": 24,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 48,
+    "actual_scorer_calls": 0,
+    "source_calls": 48,
+    "auxiliary_docker_attempts": 48,
+    "phase_unknown_cost_attempts": 0,
+    "unused_model_opportunities": 48,
+    "unused_docker_opportunities": 24,
+    "unused_scorer_opportunities": 24,
+    "retrieval_calls": 24,
+    "unused_retrieval_opportunities": 0,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "mechanism-exploration-a577d41-b/test_original_failures_keep_al2": {
+    "status": "inconclusive",
+    "expected_cells": 24,
+    "observed_cells": 24,
+    "scored_cells": 0,
+    "failed_cells": 24,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 144,
+      "model_calls": 72,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 72,
+    "actual_scorer_calls": 24,
+    "source_calls": 48,
+    "auxiliary_docker_attempts": 48,
+    "phase_unknown_cost_attempts": 0,
+    "unused_model_opportunities": 0,
+    "unused_docker_opportunities": 0,
+    "unused_scorer_opportunities": 0,
+    "retrieval_calls": 24,
+    "unused_retrieval_opportunities": 0,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "mechanism-exploration-a577d41-b/test_partial_provider_failure_0": {
+    "status": "inconclusive",
+    "expected_cells": 24,
+    "observed_cells": 24,
+    "scored_cells": 16,
+    "failed_cells": 8,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 112,
+      "model_calls": 56,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 48,
+    "actual_scorer_calls": 16,
+    "source_calls": 48,
+    "auxiliary_docker_attempts": 32,
+    "phase_unknown_cost_attempts": 0,
+    "unused_model_opportunities": 16,
+    "unused_docker_opportunities": 24,
+    "unused_scorer_opportunities": 8,
+    "retrieval_calls": 8,
+    "unused_retrieval_opportunities": 16,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "estimated",
+        "reason": null
+      },
+      {
+        "status": "estimated",
+        "reason": null
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "mechanism-exploration-a577d41-b/test_poisoned_ledger_preserves0": {
+    "status": "inconclusive",
+    "expected_cells": 24,
+    "observed_cells": 24,
+    "scored_cells": 0,
+    "failed_cells": 1,
+    "blocked_cells": 23,
+    "actual_model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 1,
+      "model_usage_incomplete": true
+    },
+    "actual_docker_attempts": 0,
+    "actual_scorer_calls": 0,
+    "source_calls": 2,
+    "auxiliary_docker_attempts": 0,
+    "phase_unknown_cost_attempts": 0,
+    "unused_model_opportunities": 71,
+    "unused_docker_opportunities": 72,
+    "unused_scorer_opportunities": 24,
+    "retrieval_calls": 0,
+    "unused_retrieval_opportunities": 24,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  },
+  "mechanism-exploration-a577d41-b/test_unknown_phase_cost_is_ret0": {
+    "status": "inconclusive",
+    "expected_cells": 24,
+    "observed_cells": 24,
+    "scored_cells": 0,
+    "failed_cells": 24,
+    "blocked_cells": 0,
+    "actual_model_usage": {
+      "known_model_tokens": 48,
+      "model_calls": 24,
+      "model_usage_incomplete": false
+    },
+    "actual_docker_attempts": 48,
+    "actual_scorer_calls": 0,
+    "source_calls": 48,
+    "auxiliary_docker_attempts": 48,
+    "phase_unknown_cost_attempts": 48,
+    "unused_model_opportunities": 48,
+    "unused_docker_opportunities": 24,
+    "unused_scorer_opportunities": 24,
+    "retrieval_calls": 24,
+    "unused_retrieval_opportunities": 0,
+    "pruned_cells": [],
+    "scientific_effectiveness_proven": false,
+    "validation_opened": false,
+    "contrasts": [
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      },
+      {
+        "status": "inconclusive",
+        "reason": "incomplete_or_failed_cell"
+      }
+    ]
+  }
+}

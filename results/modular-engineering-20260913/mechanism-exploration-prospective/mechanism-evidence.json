@@ -1,0 +1,4460 @@
+{
+  "schema": "mechanism-exploration-engineering-evidence-v1",
+  "cells": [
+    {
+      "cell": {
+        "arm_id": "00",
+        "coverage_id": "pair:M4+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "b4418cc70d2e3dc3208534589fd2ec653e7363caf6ad6e0257833a094b13460c",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "55aa143355c082b6a7719b67c0612eb3151bc09454ad532a1a7399f23236dea8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "prediction",
+        "prediction_plan": null,
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "624ff61c6a3dcb0e932b0d99aaf19fc3fde064d2e4976254c31359be2c57a9fc",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "017e241b7475caada3ffaeada252c80379fd1bbf004d6b55cf86ba0fa99c9501",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "370bb32b716d82e901340163ff490e70a24abfa2f47d25b1662e747032653895",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 0.11111111111111116,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "useful": [
+          "increase",
+          "increase",
+          "increase"
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "01",
+        "coverage_id": "pair:M4+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "b4418cc70d2e3dc3208534589fd2ec653e7363caf6ad6e0257833a094b13460c",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "55aa143355c082b6a7719b67c0612eb3151bc09454ad532a1a7399f23236dea8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "prediction",
+        "prediction_plan": null,
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "c38657fcdf290c0920002706d23c547008137b6950e3457529a16f1ee759690d",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "aba4ccf6d50f40fa04168a05a21edb291f1da7166aca1cdffeaab46c3ec8139c",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "39771567c7dccaffc5883f9a21596c45c307481c7854959442bf056dc297a58d",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "ad5eeb0a438360d4c91d89f2a6fd30f284f7611ae2e6ca77ee05b331b619c53d",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "d411eacd565f73ccc61e5cb32ca24c62e2af5bcbd3e4066c98be438f69afdc3e",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -1.333333333333333,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "useful": [
+          "increase",
+          "increase",
+          "increase"
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "10",
+        "coverage_id": "pair:M4+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M4"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "b4418cc70d2e3dc3208534589fd2ec653e7363caf6ad6e0257833a094b13460c",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "55aa143355c082b6a7719b67c0612eb3151bc09454ad532a1a7399f23236dea8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "prediction",
+        "prediction_plan": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "5f304f4cdde939f18a0e9733b86f50497d6634c4d12b59c580820a6283f2aa15",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "34ab43d235b49fb92ddb90f457b4437c1bf4f7f13c20fab181a9af7c8a7b28cc",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "bb439852cef33c71c32281934cefdf3ae617c8183487ff8ff3b99e417f4394c9",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -2.888888888888889,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "useful": [
+          "increase",
+          "decrease",
+          "unchanged"
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "11",
+        "coverage_id": "pair:M4+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M4",
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "b4418cc70d2e3dc3208534589fd2ec653e7363caf6ad6e0257833a094b13460c",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "55aa143355c082b6a7719b67c0612eb3151bc09454ad532a1a7399f23236dea8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "prediction",
+        "prediction_plan": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "4e778d648aa438327a129e5a67ef58585a1a1cd70a8c710f7a1bfd0d257ecb7f",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "aba4ccf6d50f40fa04168a05a21edb291f1da7166aca1cdffeaab46c3ec8139c",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "39771567c7dccaffc5883f9a21596c45c307481c7854959442bf056dc297a58d",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "5583ac7cc26f04e3f08f403f63c26097b47b9c282b182e989043424f735479c8",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "5756dd4f9713b8f4147d4634de09aa6f3b0c397456ca981c56a29c47ccb67bc5",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -4.333333333333333,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "useful": [
+          "increase",
+          "decrease",
+          "unchanged"
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "00",
+        "coverage_id": "pair:M4+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "630b4d02596bd264a1c72f07c0a1613f742c435141a2023c37cb3f836f131d40",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "3a7ff0fdd80f3e5929ee118716a428f95bf6528985db28d863328ef50402e5a8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "prediction",
+        "prediction_plan": null,
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "0d8fb1534f545bacf42b7ad0d6b787d2ba5c1063b11468202e861367c6a1d332",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "3c3c3f7376eabfcfc80023094967b3a59f6fb02581695f12ac5cc53c4ab50e48",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "4695740818095e48bb9fd22d41c825d42b46832e11a5bcb9b5206df35dc7fcc4",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 0.11111111111111116,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "useful": [
+          "increase",
+          "increase",
+          "increase"
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "01",
+        "coverage_id": "pair:M4+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "630b4d02596bd264a1c72f07c0a1613f742c435141a2023c37cb3f836f131d40",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "3a7ff0fdd80f3e5929ee118716a428f95bf6528985db28d863328ef50402e5a8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "prediction",
+        "prediction_plan": null,
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "0b1ce625dac9ccac3fb8635becd865b18bd1acf8bcbf2b4c8e479e5524752b70",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "c031b55bbc879b6a8cd68c6ee6231538258b54a312dc47795d88d9073486c1ab",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "4abc4a6e13eca8393d7370c825e28736dc1fbb4e5b254d21f209349e97750e5b",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "200c7f258c6201b0936e66cf33827e7aaf46a0db5dad504c8c6cb670a0e35602",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "f5fe5a37298274bbda8882a620590e114b6dea9544a0dbd5abcbd1a7f1e7119d",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -1.333333333333333,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "useful": [
+          "increase",
+          "increase",
+          "increase"
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "10",
+        "coverage_id": "pair:M4+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M4"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "630b4d02596bd264a1c72f07c0a1613f742c435141a2023c37cb3f836f131d40",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "3a7ff0fdd80f3e5929ee118716a428f95bf6528985db28d863328ef50402e5a8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "prediction",
+        "prediction_plan": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "08eaf0e822991054b3727d21317ff212569e8d0c926ce768b313438acacd6d6d",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "ce1486da092d119b660664b97951054c7830a2ac84a46f3cc84aebcd2c3fe158",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "82ff8c545d311af47e7b3f702b9aae7afb6b4896f5866c53e9bc22b8c0c6d562",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -2.888888888888889,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "useful": [
+          "increase",
+          "decrease",
+          "unchanged"
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "11",
+        "coverage_id": "pair:M4+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M4",
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "630b4d02596bd264a1c72f07c0a1613f742c435141a2023c37cb3f836f131d40",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "3a7ff0fdd80f3e5929ee118716a428f95bf6528985db28d863328ef50402e5a8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "prediction",
+        "prediction_plan": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        }
+      },
+      "model_slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "3711785df040cf0e299e4e1c3424f985f8f9b70ac1b76877c203631645f53cfe",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "c031b55bbc879b6a8cd68c6ee6231538258b54a312dc47795d88d9073486c1ab",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "4abc4a6e13eca8393d7370c825e28736dc1fbb4e5b254d21f209349e97750e5b",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "e20301915a99b53b71006abae8bc8ddfc8542f9b1de80c59487d2c8a22c014c0",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "aaf8ecfba2833605501f6a181181f36cc38e3de07f626bc173371e6ce1f42361",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -4.333333333333333,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "useful": [
+          "increase",
+          "decrease",
+          "unchanged"
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "00",
+        "coverage_id": "pair:M5+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "9bc3842f35b8ce9d4e2c49d503137fa0b1671c3c7b0f6d33563d630d1dbd5341",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "55aa143355c082b6a7719b67c0612eb3151bc09454ad532a1a7399f23236dea8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "review",
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "review_responses": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0",
+              "Check public measurement 1"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "model_slots": [
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "ebd27cf07e2c553813b5f6ab4500607d4e621b56c5a05ca41fc8e24e3a852918",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "243c96fed4eb631857d82f7723e49fc921f01e6e0791793610570c799660472a",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "17045b6ee593310a2658ba894a21fa6d9db9c3411ab998b1f5565656cd637b0e",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 0.11111111111111116,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "useful": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0",
+              "Check public measurement 1"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "01",
+        "coverage_id": "pair:M5+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "9bc3842f35b8ce9d4e2c49d503137fa0b1671c3c7b0f6d33563d630d1dbd5341",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "55aa143355c082b6a7719b67c0612eb3151bc09454ad532a1a7399f23236dea8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "review",
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "review_responses": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0",
+              "Check public measurement 1"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "model_slots": [
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "53f68170bf783b0e7cd0108eb020ca22a2ddc9b1f73b39e5c152922bf0be7705",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "aba4ccf6d50f40fa04168a05a21edb291f1da7166aca1cdffeaab46c3ec8139c",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "39771567c7dccaffc5883f9a21596c45c307481c7854959442bf056dc297a58d",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "c18f6b7b31a4ad55549ed6c981cc47b9ea2f946567f6379dfd32521ec83108ed",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "515057e60b04d1949f04c3875fe34ad6700ffa3af7b3f9b00098aac45e139f26",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -1.333333333333333,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "useful": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0",
+              "Check public measurement 1"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "10",
+        "coverage_id": "pair:M5+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M5"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "9bc3842f35b8ce9d4e2c49d503137fa0b1671c3c7b0f6d33563d630d1dbd5341",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "55aa143355c082b6a7719b67c0612eb3151bc09454ad532a1a7399f23236dea8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "review",
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "review_responses": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "model_slots": [
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "4aee656fc6732ad50b63422067011bc58c11a1e288f997ddfb5e6d8dfff0326d",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "dd780eaa5f737ddc54d8024d0951c76cd1e4b43c42412fb3ade532d56d718b80",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "caa93d5ba31b07aca3ce20aaa965db9a2ae15c4716342b0d83705cd4f6a3214c",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -0.8888888888888888,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "useful": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "11",
+        "coverage_id": "pair:M5+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M5",
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "9bc3842f35b8ce9d4e2c49d503137fa0b1671c3c7b0f6d33563d630d1dbd5341",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "55aa143355c082b6a7719b67c0612eb3151bc09454ad532a1a7399f23236dea8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "review",
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "review_responses": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "model_slots": [
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "8d8f31dca26c3d8faf4aba5864169cdb233a356f58a3b90c5f369e4a4f3437ad",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "aba4ccf6d50f40fa04168a05a21edb291f1da7166aca1cdffeaab46c3ec8139c",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "39771567c7dccaffc5883f9a21596c45c307481c7854959442bf056dc297a58d",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "49f021ae369f8cb41b350e4001fc1322d40b8a35d685f1995131502a27149075",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "a9c5d5893767e1fa425946229e17b5cf3df4b4adbc8a34677b731bf32c699d55",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -2.333333333333333,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "useful": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "00",
+        "coverage_id": "pair:M5+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "92835565325f0f73ace6caddbfdc31925df2d8731fe9fe9ec2e60462ef06fdc1",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "3a7ff0fdd80f3e5929ee118716a428f95bf6528985db28d863328ef50402e5a8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "review",
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "review_responses": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0",
+              "Check public measurement 1"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "model_slots": [
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "185c2dd1fdfb070df19c0b1f7ac32901cc9f49bf2acdef80fad8cc7d978fef4b",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "e6723e1523f73ce37057c509e2cc39ef12abcdf6ec1b3b6ac662324c9a530c71",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "f6d818640303a317754dfdcc306d81605d4dd3443ffa3f4b88a6a130724dc35c",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 0.11111111111111116,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "useful": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0",
+              "Check public measurement 1"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "01",
+        "coverage_id": "pair:M5+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "92835565325f0f73ace6caddbfdc31925df2d8731fe9fe9ec2e60462ef06fdc1",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "3a7ff0fdd80f3e5929ee118716a428f95bf6528985db28d863328ef50402e5a8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "review",
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "review_responses": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0",
+              "Check public measurement 1"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "model_slots": [
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "f7c9860ae1988a59da77e8b21077680859ced7f771c1abd4f3251789b5d05b93",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "c031b55bbc879b6a8cd68c6ee6231538258b54a312dc47795d88d9073486c1ab",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "4abc4a6e13eca8393d7370c825e28736dc1fbb4e5b254d21f209349e97750e5b",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "4bbd7dc52ef66e37e01d9a714114a072f681cbf742b4c7b2a0de8f48289cf7b1",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "8f5765c3307bed89d5a2aeb06ff92fb7d8ee5ad91210c02d3b211eda96859286",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -1.333333333333333,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "useful": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0",
+              "Check public measurement 1"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "10",
+        "coverage_id": "pair:M5+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M5"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "92835565325f0f73ace6caddbfdc31925df2d8731fe9fe9ec2e60462ef06fdc1",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "3a7ff0fdd80f3e5929ee118716a428f95bf6528985db28d863328ef50402e5a8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "review",
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "review_responses": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "model_slots": [
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "93ca31b3a925fc0362ac1e1cd4a2225d389bbe4e5384a63d05a4c1fd4bbd1fa5",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "f8e9c7857e01358e855af3e149340925a416d2edf385b42e3356e44c6cf9e42b",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "04473bd468228c625041778713e775f49112f1051d951fffd591ad7f10620ce8",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -0.8888888888888888,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "useful": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "11",
+        "coverage_id": "pair:M5+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M5",
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "92835565325f0f73ace6caddbfdc31925df2d8731fe9fe9ec2e60462ef06fdc1",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "3a7ff0fdd80f3e5929ee118716a428f95bf6528985db28d863328ef50402e5a8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "review",
+        "proposal": {
+          "branches": [
+            {
+              "elimination_condition": "x does not increase",
+              "hypothesis_id": "h1",
+              "intervention": "public",
+              "mechanism": "public mechanism one",
+              "mechanism_key": "m1",
+              "predictions": [
+                {
+                  "direction": "increase",
+                  "discriminator_id": "d",
+                  "failure_condition": "not increase",
+                  "observable": "x",
+                  "prediction_id": "p1",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x does increase",
+              "hypothesis_id": "h2",
+              "intervention": "public",
+              "mechanism": "public mechanism two",
+              "mechanism_key": "m2",
+              "predictions": [
+                {
+                  "direction": "decrease",
+                  "discriminator_id": "d",
+                  "failure_condition": "not decrease",
+                  "observable": "x",
+                  "prediction_id": "p2",
+                  "value_range": null
+                }
+              ]
+            },
+            {
+              "elimination_condition": "x is unchanged",
+              "hypothesis_id": "h3",
+              "intervention": "public",
+              "mechanism": "public mechanism three",
+              "mechanism_key": "m3",
+              "predictions": [
+                {
+                  "direction": "unchanged",
+                  "discriminator_id": "d",
+                  "failure_condition": "not unchanged",
+                  "observable": "x",
+                  "prediction_id": "p3",
+                  "value_range": null
+                }
+              ]
+            }
+          ],
+          "budget_units": 3,
+          "question": "Which public mechanism explains x?"
+        },
+        "review_responses": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "model_slots": [
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "b8d9b1cab89b5f2269bcfa02ac887efaa6051325747cac0e1f5873ed38601731",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "c031b55bbc879b6a8cd68c6ee6231538258b54a312dc47795d88d9073486c1ab",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "4abc4a6e13eca8393d7370c825e28736dc1fbb4e5b254d21f209349e97750e5b",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "1cc738658774079abf2a6af878dbc754946864705ab7d175e9ad89625c6b1922",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "9b5ce3963d69281dacace4762e56bde524e64b714073fdf7af210eb8b9d57ea0",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -2.333333333333333,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "useful": [
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          },
+          {
+            "assessment": "concern",
+            "counterexamples": [
+              "Check public measurement 0"
+            ],
+            "evidence_refs": [],
+            "uncertainty": "Public observations remain unvalidated."
+          }
+        ]
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 0,
+      "retrieval_budget": []
+    },
+    {
+      "cell": {
+        "arm_id": "00",
+        "coverage_id": "pair:M6+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "2c373933870eb33fb2cc33de4d4d3c8c0e335da870ae69b2b4df20e0cd2084a1",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "55aa143355c082b6a7719b67c0612eb3151bc09454ad532a1a7399f23236dea8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "retrieval",
+        "retrieval": {
+          "by_lane": {
+            "counter": [],
+            "method": [
+              {
+                "lane": "method",
+                "root_source_id": "r003",
+                "source_id": "s003",
+                "text": {
+                  "text": "Calculate the current public CSV mean."
+                }
+              }
+            ],
+            "support": [
+              {
+                "lane": "support",
+                "root_source_id": "r001",
+                "source_id": "s001",
+                "text": {
+                  "text": "The public values suggest a high mean."
+                }
+              }
+            ]
+          },
+          "scientific_admission": false,
+          "source_qualification": "caller_declared_public_train_unvalidated"
+        }
+      },
+      "model_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "217b2718433fea549529441354b7c06bc531218f1e2c55d91a270d03c70132a3",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "0f49aa05d98f4111ef4d70c0d67e1580c063f959cd096c2a48c0955e38ba7cd0",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "9f21b257156e2575b4514d00c880d61b3c8e08433badcb148792af76f53f8844",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -0.8888888888888888,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "useful": {
+          "counter": [],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Calculate the current public CSV mean."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "The public values suggest a high mean."
+              }
+            }
+          ]
+        }
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 3,
+      "retrieval_budget": [
+        {
+          "context_bytes": 554,
+          "external_cost": {
+            "status": "unknown",
+            "units": null
+          },
+          "limits": {
+            "context_bytes": 4096,
+            "provider_calls": 3,
+            "source_cap": 3
+          },
+          "provider_calls": 3,
+          "sources_returned": 2,
+          "unused_context_bytes": 3542,
+          "unused_provider_calls": 0,
+          "unused_source_slots": 1
+        }
+      ]
+    },
+    {
+      "cell": {
+        "arm_id": "01",
+        "coverage_id": "pair:M6+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "2c373933870eb33fb2cc33de4d4d3c8c0e335da870ae69b2b4df20e0cd2084a1",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "55aa143355c082b6a7719b67c0612eb3151bc09454ad532a1a7399f23236dea8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "retrieval",
+        "retrieval": {
+          "by_lane": {
+            "counter": [],
+            "method": [
+              {
+                "lane": "method",
+                "root_source_id": "r003",
+                "source_id": "s003",
+                "text": {
+                  "text": "Calculate the current public CSV mean."
+                }
+              }
+            ],
+            "support": [
+              {
+                "lane": "support",
+                "root_source_id": "r001",
+                "source_id": "s001",
+                "text": {
+                  "text": "The public values suggest a high mean."
+                }
+              }
+            ]
+          },
+          "scientific_admission": false,
+          "source_qualification": "caller_declared_public_train_unvalidated"
+        }
+      },
+      "model_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "04cc872944690d9abc9b35ab204b70355baf4c5b6b2c7d14d14371570ad08835",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "aba4ccf6d50f40fa04168a05a21edb291f1da7166aca1cdffeaab46c3ec8139c",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "39771567c7dccaffc5883f9a21596c45c307481c7854959442bf056dc297a58d",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "5efcca4df6a7e04d348cf164833de3512d5f3d7b62897582d13acc15a439cfd0",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "d5460389741af89c2aacd9204fb3097dc68a40cfbc576ed65265566ff9717431",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -2.333333333333333,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "useful": {
+          "counter": [],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Calculate the current public CSV mean."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "The public values suggest a high mean."
+              }
+            }
+          ]
+        }
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 3,
+      "retrieval_budget": [
+        {
+          "context_bytes": 554,
+          "external_cost": {
+            "status": "unknown",
+            "units": null
+          },
+          "limits": {
+            "context_bytes": 4096,
+            "provider_calls": 3,
+            "source_cap": 3
+          },
+          "provider_calls": 3,
+          "sources_returned": 2,
+          "unused_context_bytes": 3542,
+          "unused_provider_calls": 0,
+          "unused_source_slots": 1
+        }
+      ]
+    },
+    {
+      "cell": {
+        "arm_id": "10",
+        "coverage_id": "pair:M6+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M6"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "2c373933870eb33fb2cc33de4d4d3c8c0e335da870ae69b2b4df20e0cd2084a1",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "55aa143355c082b6a7719b67c0612eb3151bc09454ad532a1a7399f23236dea8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "retrieval",
+        "retrieval": {
+          "by_lane": {
+            "counter": [
+              {
+                "lane": "counter",
+                "root_source_id": "r002",
+                "source_id": "s002",
+                "text": {
+                  "text": "Check the older measurement."
+                }
+              }
+            ],
+            "method": [
+              {
+                "lane": "method",
+                "root_source_id": "r003",
+                "source_id": "s003",
+                "text": {
+                  "text": "Calculate the current public CSV mean."
+                }
+              }
+            ],
+            "support": [
+              {
+                "lane": "support",
+                "root_source_id": "r001",
+                "source_id": "s001",
+                "text": {
+                  "text": "The public values suggest a high mean."
+                }
+              }
+            ]
+          },
+          "scientific_admission": false,
+          "source_qualification": "caller_declared_public_train_unvalidated"
+        }
+      },
+      "model_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "3c7acc3629b4d3edf4164562022b136ec7159f4fe86b3b758090216b959a7a5b",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "4dc13ccfd5c343709867298e7b289047a7f5313a0d889bcf423e0e0195e40b63",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "e95f5f0bc77b5132ee8a0527d1ede7012cca9727e1c51cdf1446d4d5a634b69c",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 0.11111111111111116,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "useful": {
+          "counter": [
+            {
+              "lane": "counter",
+              "root_source_id": "r002",
+              "source_id": "s002",
+              "text": {
+                "text": "Check the older measurement."
+              }
+            }
+          ],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Calculate the current public CSV mean."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "The public values suggest a high mean."
+              }
+            }
+          ]
+        }
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 3,
+      "retrieval_budget": [
+        {
+          "context_bytes": 662,
+          "external_cost": {
+            "status": "unknown",
+            "units": null
+          },
+          "limits": {
+            "context_bytes": 4096,
+            "provider_calls": 3,
+            "source_cap": 3
+          },
+          "provider_calls": 3,
+          "sources_returned": 3,
+          "unused_context_bytes": 3434,
+          "unused_provider_calls": 0,
+          "unused_source_slots": 0
+        }
+      ]
+    },
+    {
+      "cell": {
+        "arm_id": "11",
+        "coverage_id": "pair:M6+M7",
+        "identity": {
+          "benchmark": "discoverybench",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "synth:test:case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M6",
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "2c373933870eb33fb2cc33de4d4d3c8c0e335da870ae69b2b4df20e0cd2084a1",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "55aa143355c082b6a7719b67c0612eb3151bc09454ad532a1a7399f23236dea8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "retrieval",
+        "retrieval": {
+          "by_lane": {
+            "counter": [
+              {
+                "lane": "counter",
+                "root_source_id": "r002",
+                "source_id": "s002",
+                "text": {
+                  "text": "Check the older measurement."
+                }
+              }
+            ],
+            "method": [
+              {
+                "lane": "method",
+                "root_source_id": "r003",
+                "source_id": "s003",
+                "text": {
+                  "text": "Calculate the current public CSV mean."
+                }
+              }
+            ],
+            "support": [
+              {
+                "lane": "support",
+                "root_source_id": "r001",
+                "source_id": "s001",
+                "text": {
+                  "text": "The public values suggest a high mean."
+                }
+              }
+            ]
+          },
+          "scientific_admission": false,
+          "source_qualification": "caller_declared_public_train_unvalidated"
+        }
+      },
+      "model_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "66e565270d1b857bff5a04c3c7faae6088a5866ba65ef32489058c3e2dad07c8",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "aba4ccf6d50f40fa04168a05a21edb291f1da7166aca1cdffeaab46c3ec8139c",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "39771567c7dccaffc5883f9a21596c45c307481c7854959442bf056dc297a58d",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "11074a3245d70889a66ea1c04ee9a56e9425a5cf5b81d7e42513f00fd2af1683",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "23157b0ee87963d636d3bba9b3e3ef29b245db9e8459a4b854bbc70eb287c322",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -1.333333333333333,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "useful": {
+          "counter": [
+            {
+              "lane": "counter",
+              "root_source_id": "r002",
+              "source_id": "s002",
+              "text": {
+                "text": "Check the older measurement."
+              }
+            }
+          ],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Calculate the current public CSV mean."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "The public values suggest a high mean."
+              }
+            }
+          ]
+        }
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 3,
+      "retrieval_budget": [
+        {
+          "context_bytes": 662,
+          "external_cost": {
+            "status": "unknown",
+            "units": null
+          },
+          "limits": {
+            "context_bytes": 4096,
+            "provider_calls": 3,
+            "source_cap": 3
+          },
+          "provider_calls": 3,
+          "sources_returned": 3,
+          "unused_context_bytes": 3434,
+          "unused_provider_calls": 0,
+          "unused_source_slots": 0
+        }
+      ]
+    },
+    {
+      "cell": {
+        "arm_id": "00",
+        "coverage_id": "pair:M6+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "617f32e993173e6f7c24a5a9cedf27fea4481f179ea3ac59dc7c79cd42fcc7fa",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "3a7ff0fdd80f3e5929ee118716a428f95bf6528985db28d863328ef50402e5a8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "retrieval",
+        "retrieval": {
+          "by_lane": {
+            "counter": [],
+            "method": [
+              {
+                "lane": "method",
+                "root_source_id": "r003",
+                "source_id": "s003",
+                "text": {
+                  "text": "Calculate the current public CSV mean."
+                }
+              }
+            ],
+            "support": [
+              {
+                "lane": "support",
+                "root_source_id": "r001",
+                "source_id": "s001",
+                "text": {
+                  "text": "The public values suggest a high mean."
+                }
+              }
+            ]
+          },
+          "scientific_admission": false,
+          "source_qualification": "caller_declared_public_train_unvalidated"
+        }
+      },
+      "model_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "56e42fb9d39475ff94030092eeded2e1a718a0e3a321b74b338bfa14ccfa0e31",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "694ccb4b4e09cd01dc254456c6d141951d91ed816244077540202c900a14de1b",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "0bec6619b19e37cd8402ed102e602f1bdb47dc20fefd6f311898c464b2e7ef04",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -0.8888888888888888,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "useful": {
+          "counter": [],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Calculate the current public CSV mean."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "The public values suggest a high mean."
+              }
+            }
+          ]
+        }
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 3,
+      "retrieval_budget": [
+        {
+          "context_bytes": 554,
+          "external_cost": {
+            "status": "unknown",
+            "units": null
+          },
+          "limits": {
+            "context_bytes": 4096,
+            "provider_calls": 3,
+            "source_cap": 3
+          },
+          "provider_calls": 3,
+          "sources_returned": 2,
+          "unused_context_bytes": 3542,
+          "unused_provider_calls": 0,
+          "unused_source_slots": 1
+        }
+      ]
+    },
+    {
+      "cell": {
+        "arm_id": "01",
+        "coverage_id": "pair:M6+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "617f32e993173e6f7c24a5a9cedf27fea4481f179ea3ac59dc7c79cd42fcc7fa",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "3a7ff0fdd80f3e5929ee118716a428f95bf6528985db28d863328ef50402e5a8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "retrieval",
+        "retrieval": {
+          "by_lane": {
+            "counter": [],
+            "method": [
+              {
+                "lane": "method",
+                "root_source_id": "r003",
+                "source_id": "s003",
+                "text": {
+                  "text": "Calculate the current public CSV mean."
+                }
+              }
+            ],
+            "support": [
+              {
+                "lane": "support",
+                "root_source_id": "r001",
+                "source_id": "s001",
+                "text": {
+                  "text": "The public values suggest a high mean."
+                }
+              }
+            ]
+          },
+          "scientific_admission": false,
+          "source_qualification": "caller_declared_public_train_unvalidated"
+        }
+      },
+      "model_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "68a62d9bdb90d00d3ce2912874e8106d3a44f88f7aadd3cfef39c3cf43f39ec9",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "c031b55bbc879b6a8cd68c6ee6231538258b54a312dc47795d88d9073486c1ab",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "4abc4a6e13eca8393d7370c825e28736dc1fbb4e5b254d21f209349e97750e5b",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "310331d4a95f6548e6062be9aaf6daa3b1454e6facb95277e607df2da5c2a5dd",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "5e71e9eb80bf83b05870203cac640956b8b4d7e2a888b0151cd668acfb533f3a",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -2.333333333333333,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "useful": {
+          "counter": [],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Calculate the current public CSV mean."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "The public values suggest a high mean."
+              }
+            }
+          ]
+        }
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 3,
+      "retrieval_budget": [
+        {
+          "context_bytes": 554,
+          "external_cost": {
+            "status": "unknown",
+            "units": null
+          },
+          "limits": {
+            "context_bytes": 4096,
+            "provider_calls": 3,
+            "source_cap": 3
+          },
+          "provider_calls": 3,
+          "sources_returned": 2,
+          "unused_context_bytes": 3542,
+          "unused_provider_calls": 0,
+          "unused_source_slots": 1
+        }
+      ]
+    },
+    {
+      "cell": {
+        "arm_id": "10",
+        "coverage_id": "pair:M6+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M6"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "617f32e993173e6f7c24a5a9cedf27fea4481f179ea3ac59dc7c79cd42fcc7fa",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "3a7ff0fdd80f3e5929ee118716a428f95bf6528985db28d863328ef50402e5a8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "retrieval",
+        "retrieval": {
+          "by_lane": {
+            "counter": [
+              {
+                "lane": "counter",
+                "root_source_id": "r002",
+                "source_id": "s002",
+                "text": {
+                  "text": "Check the older measurement."
+                }
+              }
+            ],
+            "method": [
+              {
+                "lane": "method",
+                "root_source_id": "r003",
+                "source_id": "s003",
+                "text": {
+                  "text": "Calculate the current public CSV mean."
+                }
+              }
+            ],
+            "support": [
+              {
+                "lane": "support",
+                "root_source_id": "r001",
+                "source_id": "s001",
+                "text": {
+                  "text": "The public values suggest a high mean."
+                }
+              }
+            ]
+          },
+          "scientific_admission": false,
+          "source_qualification": "caller_declared_public_train_unvalidated"
+        }
+      },
+      "model_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "9d86084b32353836eb977645f8235fa34decc06c391141a7f0bae13435d15d4f",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": null,
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "f5ecbe2c903c465c4e4731dd11009952cfe75002d13f424e383f0833f9ee2784",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "receipt_binding": "8d554977f83b291a97b5ca540eaf31c83320f9255eebd12b06c1fc9060306de5",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"variance\": 1.5555555555555556}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": 0.11111111111111116,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "variance": 1.5555555555555556
+          }
+        ],
+        "useful": {
+          "counter": [
+            {
+              "lane": "counter",
+              "root_source_id": "r002",
+              "source_id": "s002",
+              "text": {
+                "text": "Check the older measurement."
+              }
+            }
+          ],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Calculate the current public CSV mean."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "The public values suggest a high mean."
+              }
+            }
+          ]
+        }
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 3,
+      "retrieval_budget": [
+        {
+          "context_bytes": 662,
+          "external_cost": {
+            "status": "unknown",
+            "units": null
+          },
+          "limits": {
+            "context_bytes": 4096,
+            "provider_calls": 3,
+            "source_cap": 3
+          },
+          "provider_calls": 3,
+          "sources_returned": 3,
+          "unused_context_bytes": 3434,
+          "unused_provider_calls": 0,
+          "unused_source_slots": 0
+        }
+      ]
+    },
+    {
+      "cell": {
+        "arm_id": "11",
+        "coverage_id": "pair:M6+M7",
+        "identity": {
+          "benchmark": "blade",
+          "dataset_version": "9c42aae56672b5eacb5a203f6023a7ad3c0fd41dc831f11cbdabfb133a43de80",
+          "domain": "train",
+          "group_id": "12efe6d2390e4b9f369d547cd341412433e5be79c84604a85aaa3f4b3669e8d8",
+          "split_id": "ab11b70dbda0f1f79f541d315f76cfb5935444dabb640bf128b0cb4a5ca8f656",
+          "task_id": "case0"
+        },
+        "package_digest": "febebe3cf214d2b7b8888e0a22b1460e4115bcddd3e79b426d6e2010c292b809",
+        "replicate": "r1",
+        "runtime_arm": {
+          "baseline_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "compatibility_digest": "56502d92239a978547b0d2306b36fb7e3b74c01944e33ca3fff0ba51d8950f0f",
+          "enabled": [
+            "M6",
+            "M7"
+          ],
+          "schema": "module-arm-v1"
+        },
+        "scenario_digest": "617f32e993173e6f7c24a5a9cedf27fea4481f179ea3ac59dc7c79cd42fcc7fa",
+        "scorer_digest": "e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895",
+        "task_digest": "3a7ff0fdd80f3e5929ee118716a428f95bf6528985db28d863328ef50402e5a8",
+        "variant": "combination"
+      },
+      "status": "succeeded",
+      "mechanism": {
+        "kind": "retrieval",
+        "retrieval": {
+          "by_lane": {
+            "counter": [
+              {
+                "lane": "counter",
+                "root_source_id": "r002",
+                "source_id": "s002",
+                "text": {
+                  "text": "Check the older measurement."
+                }
+              }
+            ],
+            "method": [
+              {
+                "lane": "method",
+                "root_source_id": "r003",
+                "source_id": "s003",
+                "text": {
+                  "text": "Calculate the current public CSV mean."
+                }
+              }
+            ],
+            "support": [
+              {
+                "lane": "support",
+                "root_source_id": "r001",
+                "source_id": "s001",
+                "text": {
+                  "text": "The public values suggest a high mean."
+                }
+              }
+            ]
+          },
+          "scientific_admission": false,
+          "source_qualification": "caller_declared_public_train_unvalidated"
+        }
+      },
+      "model_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "source_calls": 2,
+      "source_sha256": "eb2558319a75940c1d28023767f8bcd3d91c3f84283fe8265a1c3389a841d16b",
+      "phase_selection": {
+        "budget": {
+          "execution_limit": 2,
+          "execution_used": 2,
+          "token_limit": 2,
+          "token_used": 2
+        },
+        "permit": {
+          "budget_after": {
+            "execution_limit": 2,
+            "execution_used": 2,
+            "token_limit": 2,
+            "token_used": 2
+          },
+          "diagnostic_digest": "c031b55bbc879b6a8cd68c6ee6231538258b54a312dc47795d88d9073486c1ab",
+          "evidence_admission": "not_evidence",
+          "plan_digest": "4abc4a6e13eca8393d7370c825e28736dc1fbb4e5b254d21f209349e97750e5b",
+          "veto_kind": null
+        },
+        "selected": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+        ]
+      },
+      "phase_peak_dispatches": 1,
+      "phase_completion_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_fifo_order": [
+        "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+        "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c"
+      ],
+      "phase_outputs": [
+        {
+          "binding": "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "receipt_binding": "e7bac58e29673ee7df86687fefa7f3453b6b147e85bceabaeade04c942e0fbe0",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"mean\": 1.3333333333333333}\n"
+        },
+        {
+          "binding": "9ba551509dacda72ac8c1e30870e7cd8389b9ed464986e84faaefaf029f1bc2c",
+          "receipt_binding": "3bfc067e9e7d92289ebb2b4547ed5658b0098d1f1fc522cdfe70a11d8c180e48",
+          "status": "succeeded",
+          "stderr": "",
+          "stdout": "{\"range\": 3.0}\n"
+        }
+      ],
+      "solver_stdout": {
+        "adjusted": -1.333333333333333,
+        "mean": 1.3333333333333333,
+        "phase": [
+          {
+            "mean": 1.3333333333333333
+          },
+          {
+            "range": 3.0
+          }
+        ],
+        "useful": {
+          "counter": [
+            {
+              "lane": "counter",
+              "root_source_id": "r002",
+              "source_id": "s002",
+              "text": {
+                "text": "Check the older measurement."
+              }
+            }
+          ],
+          "method": [
+            {
+              "lane": "method",
+              "root_source_id": "r003",
+              "source_id": "s003",
+              "text": {
+                "text": "Calculate the current public CSV mean."
+              }
+            }
+          ],
+          "support": [
+            {
+              "lane": "support",
+              "root_source_id": "r001",
+              "source_id": "s001",
+              "text": {
+                "text": "The public values suggest a high mean."
+              }
+            }
+          ]
+        }
+      },
+      "docker_attempts": 3,
+      "scorer_calls": 1,
+      "retrieval_calls": 3,
+      "retrieval_budget": [
+        {
+          "context_bytes": 662,
+          "external_cost": {
+            "status": "unknown",
+            "units": null
+          },
+          "limits": {
+            "context_bytes": 4096,
+            "provider_calls": 3,
+            "source_cap": 3
+          },
+          "provider_calls": 3,
+          "sources_returned": 3,
+          "unused_context_bytes": 3434,
+          "unused_provider_calls": 0,
+          "unused_source_slots": 0
+        }
+      ]
+    }
+  ],
+  "scientific_effectiveness_proven": false
+}
