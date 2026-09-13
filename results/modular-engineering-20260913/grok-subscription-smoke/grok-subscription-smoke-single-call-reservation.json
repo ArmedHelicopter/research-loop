@@ -1,0 +1,13 @@
+{
+  "schema": "single-authorized-grok-generation-reservation-v1",
+  "created_at": "2026-09-13T13:57:23.631209+00:00",
+  "limit": 1,
+  "retry_permitted": false,
+  "envelope_sha256": "f1967580263049b1399456dd49386df995758d723b2c0bf152ef4128e405e6e6",
+  "runner_sha256": "b61de53325f53466eaf657aa333abaddb088357b3c752c11d2861c314bcdeeba",
+  "session_id": "e8f3fc91-21f2-463d-ac60-ee22adbbe046",
+  "status": "reserved_before_process_io",
+  "safety_invariant": "synthetic constant only; existing grok.com session; empty discovered context; no tools/subagents/web/MCP; no API key route",
+  "verification": "record init/end/error/usage and real response; no benchmark or scientific validity claim",
+  "deliverable": "private raw streams plus sanitized receipt"
+}

@@ -1,0 +1,159 @@
+{
+  "schema": "grok-subscription-smoke-postrun-verification-v1",
+  "receipt_sha256": "f3f99fb0e7ea652f796777981cf62bdf62b8676a7a11563b0e12975124592b8e",
+  "transport_pass": true,
+  "scientific_validation": false,
+  "external_discovery_empty": true,
+  "runtime_toolset_empty": false,
+  "runtime_toolset_note": "All three available_commands events advertise 21 built-in tools despite empty --tools argument. Exact wire tool schema was not captured; cannot certify tool-free request. No tool_call or tool_call_update occurred.",
+  "available_commands": [
+    {
+      "type": "available_commands",
+      "tools": [
+        "run_terminal_command",
+        "read_file",
+        "search_replace",
+        "list_dir",
+        "grep",
+        "kill_command_or_subagent",
+        "todo_write",
+        "get_command_or_subagent_output",
+        "scheduler_create",
+        "scheduler_delete",
+        "scheduler_list",
+        "monitor",
+        "update_goal",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "ask_user_question",
+        "image_gen",
+        "image_edit",
+        "image_to_video",
+        "reference_to_video",
+        "write"
+      ],
+      "commands": [
+        "compact",
+        "always-approve",
+        "context",
+        "session-info",
+        "feedback",
+        "goal",
+        "loop"
+      ]
+    },
+    {
+      "type": "available_commands",
+      "tools": [
+        "run_terminal_command",
+        "read_file",
+        "search_replace",
+        "list_dir",
+        "grep",
+        "kill_command_or_subagent",
+        "todo_write",
+        "get_command_or_subagent_output",
+        "scheduler_create",
+        "scheduler_delete",
+        "scheduler_list",
+        "monitor",
+        "update_goal",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "ask_user_question",
+        "image_gen",
+        "image_edit",
+        "image_to_video",
+        "reference_to_video",
+        "write"
+      ],
+      "commands": [
+        "compact",
+        "always-approve",
+        "context",
+        "session-info",
+        "feedback",
+        "goal",
+        "loop"
+      ]
+    },
+    {
+      "type": "available_commands",
+      "tools": [
+        "run_terminal_command",
+        "read_file",
+        "search_replace",
+        "list_dir",
+        "grep",
+        "kill_command_or_subagent",
+        "todo_write",
+        "get_command_or_subagent_output",
+        "scheduler_create",
+        "scheduler_delete",
+        "scheduler_list",
+        "monitor",
+        "update_goal",
+        "enter_plan_mode",
+        "exit_plan_mode",
+        "ask_user_question",
+        "image_gen",
+        "image_edit",
+        "image_to_video",
+        "reference_to_video",
+        "write"
+      ],
+      "commands": [
+        "compact",
+        "always-approve",
+        "context",
+        "session-info",
+        "feedback",
+        "goal",
+        "loop"
+      ]
+    }
+  ],
+  "raw_tool_call_count": 0,
+  "requested_model": "grok-4.6",
+  "server_model_usage_key": "grok-4.6-build",
+  "model_resolution_note": "Requested alias versus returned accounting key are distinguished; exact deployment identity beyond server key not certified.",
+  "requested_output_cap": 128,
+  "output_cap_wire_certified": false,
+  "actual_output_tokens": 46,
+  "actual_reasoning_tokens": 37,
+  "actual_input_tokens": 9335,
+  "actual_total_tokens": 9381,
+  "server_reported_usd": 0.00644164,
+  "server_reported_usd_ticks": 64416400,
+  "billing_settlement": "unknown; server reported cost is not proof of an extra API invoice, nor of free usage",
+  "api_key_route_used": false,
+  "receipt_field_correction": "receipt.additional_api_fee_route_used=false means no API-key route was configured; it must not be read as no monetary charge. Use billing_settlement=unknown.",
+  "prompt_context": {
+    "agents_md_files": [],
+    "persona_summaries": [],
+    "memory_enabled": false,
+    "is_non_interactive": true
+  },
+  "generation_process_attempts": 1,
+  "server_recorded_main_model_calls": 1,
+  "no_further_generation": true,
+  "side_model_calls": "No evidence of side-model generation in captured receipt; receipt modelCalls covers reported main ledger and is not a universal network counter.",
+  "source_integrity_after_run": {
+    "C:\\Users\\Administrator\\.grok\\bin\\grok.exe": true,
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-subscription-smoke-r5\\private-home\\config.toml": true,
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-subscription-smoke-r5\\prompt.txt": true
+  },
+  "private_files_do_not_archive": [
+    "private-home",
+    "private-profile",
+    "generation.stdout.private.jsonl",
+    "generation.stderr.private.txt"
+  ],
+  "safe_evidence_files": [
+    "receipt.json",
+    "postrun-verification.json",
+    "frozen-envelope.json",
+    "inspect-metadata.json",
+    "prompt.txt"
+  ]
+}
