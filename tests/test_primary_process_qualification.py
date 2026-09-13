@@ -182,6 +182,42 @@ def test_sab_malformed_history_keeps_persistent_hold_and_failure(tmp_path):
     assert (tmp_path / "hold/failure.json").exists()
 
 
+def test_source_mutation_after_first_audit_is_rejected_at_final_seal_boundary(tmp_path, monkeypatch):
+    config = source_fixture(tmp_path)
+    real_audit = p.audit_primary_process
+    def mutate_after(*args):
+        result = real_audit(*args)
+        (Path(config["snapshot_root"]) / "scienceagent/work/BLADE/blade_bench/datasets/case3/data.csv").write_text(SECRET)
+        return result
+    monkeypatch.setattr(p, "audit_primary_process", mutate_after)
+    with pytest.raises(p.CustodyError):
+        p.seal_primary_process(tmp_path / "sealed", config)
+    assert not (tmp_path / "sealed/prospective-split.json").exists()
+
+
+def test_sab_public_hold_cannot_leak_dynamic_token_strings(tmp_path):
+    config = sab_fixture(tmp_path)
+    path = Path(config["inputs"]["sab_split"]["path"])
+    value = json.loads(path.read_bytes())
+    value["groups"][0]["member_tokens"] = [SECRET]
+    write(path, value)
+    config["inputs"]["sab_split"] = pin(path)
+    with pytest.raises(p.CustodyError):
+        supplement_sab_eligibility(tmp_path / "hold", config)
+    assert not (tmp_path / "hold").exists()
+
+
+def test_initial_budget_preserves_unknown_usage_instead_of_zero(tmp_path):
+    config = source_fixture(tmp_path)
+    path = tmp_path / "budget.json"
+    write(path, {"calls": 4, "tokens": 17, "usage_incomplete": True})
+    config["inputs"]["initial_budget"] = pin(path)
+    config["initial_budgets"] = [{"source": "blade", "input": "initial_budget"}]
+    audit, _ = p.audit_primary_process(config)
+    assert audit["initial_budget_observations"] == [{"source": "blade", "call_count": 4, "known_tokens": 17,
+                                                    "usage_incomplete": True, "call_status_breakdown_available": False}]
+
+
 @pytest.mark.parametrize("raw", [b"TASKS=get_private_data()", b"TASKS=['x']; TASKS=['y']", b"TASKS=['x','x']"])
 def test_runner_selection_must_be_literal_unique(raw):
     with pytest.raises((p.CustodyError, ValueError)):

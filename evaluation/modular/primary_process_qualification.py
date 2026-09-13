@@ -220,7 +220,15 @@ def _selection(reads, index, config):
             receipt_stats["unknown_usage_count"] += 1
     for key in ("discovery_runner", "blade_manifest", "prepare_runner", "final_verification"):
         reads.raw(key)  # Frozen context evidence only; no outcome interpretation.
-    return selected, call_observed, observations, receipt_stats
+    budgets = []
+    for entry in config.get("initial_budgets", []):
+        budget = reads.json(entry["input"])
+        if (entry["source"] not in SOURCES or any(type(budget.get(k)) is not int or budget[k] < 0 for k in ("calls", "tokens"))
+                or type(budget.get("usage_incomplete")) is not bool):
+            raise CustodyError()
+        budgets.append({"source": entry["source"], "call_count": budget["calls"], "known_tokens": budget["tokens"],
+                        "usage_incomplete": budget["usage_incomplete"], "call_status_breakdown_available": False})
+    return selected, call_observed, observations, receipt_stats, budgets
 
 
 def _later_runs(config, reads, index, domains):
@@ -343,7 +351,7 @@ def _audit_primary_process(config):
     manifest = reads.json("canonical_manifest") if "canonical_manifest" in config["inputs"] else None
     validate_receipt(receipt)
     index, source_files = _source_index(config, reads, state, items, receipt, manifest)
-    selected, called, observations, initial_cost = _selection(reads, index, config)
+    selected, called, observations, initial_cost, initial_budgets = _selection(reads, index, config)
     later_selected, later_runs = _later_runs(config, reads, index, domains)
     original_train = {token for token, item in index.items() if domains[f"{item.benchmark}:{item.task_id}"] == "train"}
     exposed = {token for token, item in index.items() if item.exposure == "exposed"}
@@ -357,6 +365,7 @@ def _audit_primary_process(config):
              "primary_aggregate_source_hashes_reverified": True,
              "source_verified_file_counts": source_files, "initial_selection_observations": observations,
              "initial_call_observations": initial_cost, "later_run_observations": later_runs,
+             "initial_budget_observations": initial_budgets,
              "rows": [{"token": token, "source": item.benchmark, "original_train": token in original_train,
                        "known_exposure": token in exposed, "historically_selected": token in selected,
                        "legacy_call_receipt_observed": token in called, "later_projection_observed": token in later_selected,

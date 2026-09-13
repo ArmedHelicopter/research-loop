@@ -6,7 +6,7 @@ held. A selection is potential exposure; a call receipt is observed I/O.
 """
 from pathlib import Path
 
-from evaluation.modular.fresh_airs_custodian import CustodyError, _write_new
+from evaluation.modular.fresh_airs_custodian import CustodyError, _check, _write_new
 from evaluation.modular.primary_process_qualification import PinnedReads, literal_selection
 from research_loop.ontology import digest
 
@@ -22,6 +22,9 @@ def supplement_sab_eligibility(destination, config):
     groups = [row for row in seal["groups"] if row["source"] == "scienceagentbench" and row["split"] == "validation"]
     if not groups:
         raise CustodyError()
+    for group in groups:
+        _check(group["group_sha256"], "sha")
+        _check(group["member_tokens"], ["sha"])
     held = sorted(token for row in groups for token in row["member_tokens"])
     destination = Path(destination)
     destination.mkdir(parents=True, exist_ok=False)
