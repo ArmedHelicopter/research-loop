@@ -202,6 +202,52 @@ def test_dedup_response_failure_keeps_all_twenty_denominators(tmp_path,monkeypat
     assert len(port.ledger['calls'])==60 and result.receipt.data()['execution_status']=='execution_incomplete'
 
 
+@pytest.mark.parametrize('coverage,variant', [('Q3.2','joint'), ('Q3.2','separate'), ('Q5.3','opposite_prediction')])
+@pytest.mark.parametrize('enabled', [False, True])
+@pytest.mark.parametrize('fault', ['late_freeze', 'early_aggregate', 'reversed_artifacts', 'extra_aggregate'])
+def test_actual_rehashed_chronology_rejected(prediction_grid,tmp_path,coverage,variant,enabled,fault):
+    import hashlib
+    import shutil
+    from dataclasses import replace
+    from research_loop.modular.benchmark_cell import verified_mechanism_provenance
+    from research_loop.modular.panel_receipts import PanelReceiptVerifier
+    from research_loop.ontology import ContractError
+    from test_modular_combination_benchmark_driver import _rewrite_trace
+    result,_,_=prediction_grid
+    row=next(r for r in result.linked_results if r.cell.coverage_id==coverage and r.cell.variant==variant
+             and ('M4' in r.cell.runtime_arm.data()['enabled'])==enabled)
+    original=row.mechanism.runtime.trace_path.parent
+    hashes={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in original.iterdir() if p.is_file()}
+    copy=tmp_path/'closed-mechanism'
+    shutil.copytree(original,copy)
+    def reorder(trace):
+        operation=next(e for e in trace if e['stage']=='modular_workflow'
+                       and e['data'].get('stage') in {'stage_1','operation_m4_control'})
+        artifact=next(e for e in trace if e['stage']=='modular_workflow'
+                      and e['data'].get('stage')=='prediction_artifacts')
+        if fault=='late_freeze':
+            trace.remove(operation);trace.remove(artifact)
+            last=max(i for i,e in enumerate(trace) if e['stage']=='model_response')
+            trace[last+1:last+1]=[operation,artifact]
+        elif fault=='early_aggregate':
+            trace.remove(operation)
+            responses=[e for e in trace if e['stage']=='model_response']
+            trace.insert(trace.index(responses[-2]),operation)
+        elif fault=='reversed_artifacts':
+            trace.remove(artifact);trace.insert(trace.index(operation),artifact)
+        else:
+            trace.insert(trace.index(operation),dict(operation))
+    digest=_rewrite_trace(copy/'trace.jsonl',reorder)
+    runtime=replace(row.mechanism.runtime,trace_path=copy/'trace.jsonl',trace_digest=digest)
+    # These attacks retain the existing general receipt/hash-chain validity.
+    PanelReceiptVerifier()._verify_runtime(runtime,row.cell)
+    with pytest.raises(ContractError,match='prediction chronology'):
+        verified_mechanism_provenance(cell=row.cell,task=result.compiled.tasks[row.cell.task_digest],
+            scenario=result.compiled.scenarios[row.cell.key],package=result.compiled.packages[row.cell.runtime_arm.content_hash],
+            mechanism=replace(row.mechanism,runtime=runtime))
+    assert hashes=={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in original.iterdir() if p.is_file()}
+
+
 def test_every_success_reaches_anonymous_independent_primary_score(prediction_grid):
     import hashlib
     from evaluation.modular.scoring_service import FrozenRubricTransport

@@ -89,6 +89,9 @@ def verified_mechanism_provenance(*, cell: PanelCell, task: PublicTask, scenario
     events = _events(mechanism.runtime.trace_path)
     if FrozenRecord.from_dict(events[-1]).content_hash != mechanism.runtime.trace_digest:
         raise ContractError("mechanism trace digest differs from its runtime receipt")
+    if cell.coverage_id in {"Q3.2", "Q5.3"}:
+        from research_loop.modular.linked_prediction_projection import verify_prediction_chronology
+        verify_prediction_chronology(cell, events)
     stages = [event for event in events if event["stage"] == "modular_workflow"
               and event["data"].get("stage") in {"stage_1", "stage_7", "stage_9",
                                                    "operation_m4_control", "operation_m5_control",

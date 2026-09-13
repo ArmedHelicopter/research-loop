@@ -11,6 +11,38 @@ from research_loop.modular.prediction_panel_drivers import _material, _dedup_inp
 from research_loop.ontology import ContractError, canonical
 
 
+def verify_prediction_chronology(cell, events):
+    """Check the original event order before flattening evidence into stages.
+
+    Q3.2 has three ordered confirmations and one aggregate operation event.
+    The aggregate and its artifacts must exist before the final model request.
+    """
+    slots = ['plan_1', 'plan_2', 'plan_3', 'final'] if cell.coverage_id == 'Q3.2' else ['dedup', 'final']
+    requests = [(index, event['data']) for index, event in enumerate(events)
+                if event['stage'] == 'model_request']
+    responses = [(index, event['data']) for index, event in enumerate(events)
+                 if event['stage'] == 'model_response']
+    if [data['request']['slot'] for _, data in requests] != slots or len(responses) != len(slots):
+        raise ContractError('prediction chronology: unexpected model schedule')
+    previous_response = -1
+    response_positions = []
+    for position, data in requests:
+        matches = [index for index, response in responses
+                   if response['request_digest'] == data['request_digest']]
+        if len(matches) != 1 or not previous_response < position < matches[0]:
+            raise ContractError('prediction chronology: unordered or unbound response')
+        previous_response = matches[0]
+        response_positions.append(previous_response)
+    operation = 'stage_1' if 'M4' in cell.runtime_arm.data()['enabled'] else 'operation_m4_control'
+    stages = [(index, event['data']['stage']) for index, event in enumerate(events)
+              if event['stage'] == 'modular_workflow'
+              and event['data'].get('stage') in {'stage_1', 'operation_m4_control', 'prediction_artifacts'}]
+    if [stage for _, stage in stages] != [operation, 'prediction_artifacts']:
+        raise ContractError('prediction chronology: missing, extra, or reordered prediction stage')
+    if not response_positions[-2] < stages[0][0] < stages[1][0] < requests[-1][0]:
+        raise ContractError('prediction chronology: prediction freeze must precede final request')
+
+
 def prediction_registry_observation(sidecar):
     path=Path(sidecar)/'predictions.jsonl'
     if not path.is_file() or path.is_symlink() or path.is_junction():
