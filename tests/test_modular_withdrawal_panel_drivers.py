@@ -62,6 +62,7 @@ def test_q16_q17_full_compiled_grid_uses_actual_material_without_blind_leaks(tmp
  encoded='\n'.join(FrozenRecord.from_dict(r).encoded for r in seen)
  assert all(label not in encoded for label in ('replacement','high_score','irrelevant','causal'))
  assert 'evidence_sufficient' not in encoded
+ assert all(marker not in encoded for marker in ('arm_id','enabled_modules','frozen_control','controller_input','candidate_package','package_digest','package_record','package_changes','"variant"','"m1"','"m2"','"m3"'))
  for r in seen:
   if r['slot']=='initial':
    text=FrozenRecord.from_dict(r).encoded; assert 'INVALID-Q16-' not in text and 'effect-before-cause' not in text and 'evidence_sufficient' not in text
@@ -79,6 +80,15 @@ def test_q16_rejects_wrong_target_digest_before_execution():
  with pytest.raises(Exception,match='target'): freeze_withdrawal_bundle(t,public_evidence=body['public_evidence'],q16=body['q16'],q17=body['q17'])
  body=bundle(t).data(); body['q16']['high_score']['invalidation_action']['reason']='variant-only action'
  with pytest.raises(Exception,match='must share'): freeze_withdrawal_bundle(t,public_evidence=body['public_evidence'],q16=body['q16'],q17=body['q17'])
+ body=bundle(t).data(); body['q17']['causal']['current_evidence']['narrative']='changed narrative'
+ with pytest.raises(Exception,match='same observation, narrative'): freeze_withdrawal_bundle(t,public_evidence=body['public_evidence'],q16=body['q16'],q17=body['q17'])
+
+@pytest.mark.parametrize('bad',[float('nan'),float('inf'),-float('inf')])
+def test_bundle_rejects_nonfinite_score_and_event_time(bad):
+ t=task('discoverybench'); body=bundle(t).data(); body['q16']['high_score']['historical_score']['score']=bad
+ with pytest.raises(Exception,match='historical score'): freeze_withdrawal_bundle(t,public_evidence=body['public_evidence'],q16=body['q16'],q17=body['q17'])
+ body=bundle(t).data(); body['q17']['causal']['current_evidence']['event_times']['event-a']=bad
+ with pytest.raises(Exception,match='typed event'): freeze_withdrawal_bundle(t,public_evidence=body['public_evidence'],q16=body['q16'],q17=body['q17'])
 
 @pytest.mark.parametrize('fault',["audit","execution","old_validity"])
 def test_q16_synchronized_gate_faults_do_not_withdraw(tmp_path,monkeypatch,fault):
