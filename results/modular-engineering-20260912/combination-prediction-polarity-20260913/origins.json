@@ -1,0 +1,62 @@
+{
+  "combination-public-root-3532e62.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\work\\combination-public-root-20260913-r1.xml",
+    "sha256": "1c5b00b7c6a83d0ec2405586c7e4f1a3caa8812a0fe5e7af8ad0fc8e1262a347",
+    "source_ref": "3532e62",
+    "source_commit": "3532e62991f8c1e30eaffa636d03708c18fdfe50"
+  },
+  "prediction-semantic-first-failure.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-root-semantics-r1.xml",
+    "sha256": "351450e9446f60907c7d0060f5484a0da43fef21e810745f7e9f661a1acc0926",
+    "source_ref": "uncommitted root semantic repair before a45c84d; no commit-pinned source claim"
+  },
+  "prediction-semantic-repair-a45c84d.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-root-semantics-r2.xml",
+    "sha256": "8cedb7325bd9ce88eda64535abc83d961f70c10fe480994cc6212bf7e7d64a56",
+    "source_ref": "a45c84d",
+    "source_commit": "a45c84daad722425f948de39adc94b6d05e08e15"
+  },
+  "prediction-controller-1e54633.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\work\\prediction-controller-root-20260913-r1.xml",
+    "sha256": "5da90b2cab4ca6a4c6c62344bbcef65abda4614cc7c17bec6ee929879353cae0",
+    "source_ref": "1e54633",
+    "source_commit": "1e54633627b41df146a28a8919bb24f221e1e4c0"
+  },
+  "polarity-controller-1576525.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\work\\polarity-controller-root-20260913-r1.xml",
+    "sha256": "9ee5f5d2f68610a9d8dadb97a0be54a8e7a18fef5ffa699f64029a3f91d15133",
+    "source_ref": "1576525",
+    "source_commit": "157652533db0349db5eaf6f1fb31ed7a9087505f"
+  },
+  "combination-scoring-fd985fa.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\work\\combination-scoring-root-20260913-r1.xml",
+    "sha256": "83821ef99b3a66d69f8db0b5c78a5430742fa5b123df322989b3048ba5f44f3d",
+    "source_ref": "fd985fa",
+    "source_commit": "fd985fa65d0c218559e2adb2d98bc706820b6ae5"
+  },
+  "extended-custodian-metadata-receipt.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\extended-data-qualification-custodian-live-r3\\extended-custodian-metadata-receipt.json",
+    "sha256": "18cd3ddcaeeacc6ea438ba792506f574567ee8c80928685bc79f0f20ad40a9bd",
+    "source_ref": "metadata-only received artifact qualification"
+  },
+  "corebench-acquisition-receipt.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\corebench-controlled-acquisition-r1\\acquisition-receipt.json",
+    "sha256": "4925170ae599892d0d4b012e4ec46a38f17404c3eb50a8d4b6f1d935e9ffeec9",
+    "source_ref": "acquisition event only; later exposure failure overrides unseen eligibility"
+  },
+  "corebench-exposure-failure.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\corebench-controlled-acquisition-r1\\exposure-failure.json",
+    "sha256": "d87d101a390f80201686d8415b068f2596c59d0ab0ef9f25fff701634c9a0d98",
+    "source_ref": "dynamic result-key exposure; not validation eligible"
+  },
+  "extended-overlap-baseline.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\corebench-controlled-acquisition-r1\\extended-overlap-baseline.json",
+    "sha256": "5d2ebee157481605c8b8a167e432219063cd1996f799fd1dce947e77a7ea00af",
+    "source_ref": "opaque equality baseline only; not lineage independence proof"
+  },
+  "publish_modular_seams_checkpoint_20260913.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\publish_modular_seams_checkpoint_20260913.py",
+    "sha256": "a892b41a46592d389e6dceaebb13080a3d2af007a950a896288bd267da0e2342",
+    "source_ref": null
+  }
+}

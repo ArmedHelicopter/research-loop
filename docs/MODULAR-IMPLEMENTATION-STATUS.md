@@ -3,7 +3,23 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current terminal training checkpoint (2026-09-13)
+## Current combination scoring checkpoint (2026-09-13)
+
+Source `fd985fa` connects 20 production question drivers and the first actual
+four-arm M4+M5 execution-to-signed-adapted-score-to-contrast path. Q3.2/Q5.3 are
+planning-only; Q2.5/Q2.6 signed material is not session execution evidence.
+Source-specific suites passed 63, 42, 131, 108 and 34 tests; the first prediction
+semantic failure is retained. A new full suite runs on a separate frozen checkout.
+No new paid call, scientific effect, candidate selection or validation acceptance
+is claimed. The remaining question drivers and all required combinations stay in scope.
+
+SciCode and ScienceAgentBench have conservative metadata grouping evidence but
+remain unknown-exposure and unsplit. A recorded CORE-Bench diagnostic exposure
+disqualifies that acquired source from an unseen validation claim in this context.
+See [MODULAR-CHECKPOINT-20260913-COMBINED-SCORING.md](MODULAR-CHECKPOINT-20260913-COMBINED-SCORING.md)
+for exact behavior, source bindings, failed checks and archived receipts.
+
+## Previous terminal training checkpoint (2026-09-13)
 
 The frozen `c3a4b21` linked train attempt is closed: 12 cells, 10 successful
 restricted-Docker executions with independent adapted scores, and 2 retained

@@ -1,0 +1,65 @@
+{
+  "schema": "modular-seams-checkpoint-v1",
+  "checked_source": "fd985fa65d0c218559e2adb2d98bc706820b6ae5",
+  "reports": {
+    "combination-public-root-3532e62.xml": {
+      "tests": "63",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "269.236"
+    },
+    "prediction-semantic-first-failure.xml": {
+      "tests": "40",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "34.385"
+    },
+    "prediction-semantic-repair-a45c84d.xml": {
+      "tests": "42",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "17.508"
+    },
+    "prediction-controller-1e54633.xml": {
+      "tests": "131",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "155.610"
+    },
+    "polarity-controller-1576525.xml": {
+      "tests": "108",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "179.479"
+    },
+    "combination-scoring-fd985fa.xml": {
+      "tests": "34",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "64.641"
+    }
+  },
+  "production_question_drivers": 20,
+  "actual_combination_driver": "pair:M4+M5 only; synthetic Docker scored-grid verification",
+  "planning_only": [
+    "Q3.2",
+    "Q5.3"
+  ],
+  "signed_material_without_session_execution": [
+    "Q2.5",
+    "Q2.6"
+  ],
+  "new_paid_calls": 0,
+  "new_scientific_effect": "not_measured",
+  "validation_acceptance": "not_measured",
+  "corebench_exposure": "failed; not eligible for unseen validation in this optimization context",
+  "full_suite": "running separately on frozen fd985fa; no completion claim in this checkpoint",
+  "all_48_and_singletons_pairs_triples_full_loo_and_separate_q63_still_required": true,
+  "raw_private_payloads_or_keys_archived": false
+}

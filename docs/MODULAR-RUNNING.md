@@ -65,7 +65,11 @@ complete task × variant × arm × replicate grid for any or all 48 obligations.
 P0-only obligations have one fixed control arm bound to a source/protocol hash;
 P0 is always enabled. Compiling a grid does not qualify its driver or scoring.
 
-`panel_runner.run_train_cell()` supports Q1.1–Q1.7, Q2.1/Q2.3/Q2.4, Q3.1 and Q4.1–Q4.5.
+`panel_runner.run_train_cell()` supports Q1.1–Q1.7, Q2.1/Q2.3–Q2.6, Q3.1/Q3.2,
+Q4.1–Q4.5 and Q5.3. Q3.2/Q5.3 currently execute planning operations only.
+Q2.5/Q2.6 require signed caller material; Q2.6 also requires the exact per-task
+`objective_by_task` mapping frozen before panel compilation. Material audit
+signatures do not replace actual session execution receipts.
 Q1.1–Q1.4 and Q1.6/Q1.7 require typed caller material and the record-bound
 `history_admission_port`, which the train controller forwards. Q2.1 and the Q4
 family require their typed per-task material bundles. Planning fixtures cannot
