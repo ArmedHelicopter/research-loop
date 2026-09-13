@@ -47,5 +47,5 @@ def test_semantic_driver_runs_all_cells_with_compiled_p0_control(tmp_path, monke
         run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
     assert len(result.runtimes) == expected_cells and all(row.status == "succeeded" for row in result.runtimes)
     assert len(port.ledger["calls"]) == len(seen) == expected_cells * len(slots)
-    assert all(request["module_context"]["p0_control_digest"] == result.compiled.p0_control.content_hash for request in seen)
+    assert all(request["module_context"]["p0_control_digest"] == result.compiled.control.content_hash for request in seen)
     assert result.receipt.data()["execution_status"] == "engineering_complete" and result.verdict.scientific_verified is False

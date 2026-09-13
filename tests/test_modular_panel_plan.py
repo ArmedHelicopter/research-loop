@@ -78,7 +78,8 @@ def test_every_obligation_gets_all_variants_and_all_legal_paired_arms():
                 assert compiled.packages[cell.runtime_arm.content_hash].digest == cell.package_digest
     assert compiled.manifest.data()["status"] == "planned_only"
     assert compiled.manifest.data()["scientific_status"] == "not_measured"
-    assert all(len(executable_arms(panel.legal_arm_grids[q])) == 1 for q in ("Q2.2", "Q2.7", "Q6.4"))
+    p0_grids = obligation_grids(("Q2.2", "Q2.7", "Q6.4"), baseline_digest=values["baseline_digest"], p0_control=values["p0_control"])
+    assert all(len(executable_arms(grid)) == 1 for grid in p0_grids.values())
     q21 = compile_train_panel(**inputs(("Q2.1",)))
     assert set(q21.panel.scope_ids) == {"Q2.1"}
     assert len(q21.panel.cells) == 24

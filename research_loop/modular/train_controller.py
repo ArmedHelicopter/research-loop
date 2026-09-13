@@ -233,7 +233,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                 sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
                 model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
                 audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
-                p0_control=compiled.p0_control)
+                p0_control=compiled.control)
             runtimes.append(result.runtime)
             attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.runtime))
             attempt["runtime_trace_digests"].append(result.runtime.trace_digest)
