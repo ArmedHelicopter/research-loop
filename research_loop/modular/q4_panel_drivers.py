@@ -5,6 +5,7 @@ from typing import Any, Mapping, TYPE_CHECKING
 
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.modules.predictions import freeze_shared_experiment
+from research_loop.modular.panel_receipts import opaque_panel_cell_binding
 from research_loop.modular.scenarios_review import Q4ReviewMaterial
 from research_loop.ontology import ContractError
 
@@ -26,8 +27,7 @@ _QUESTIONS = {
 
 
 def _binding(cell: "PanelCell", scenario: FrozenRecord) -> dict[str, Any]:
-    return {"experiment_id": cell.coverage_id, "variant": cell.variant, "replicate": cell.replicate,
-            "arm_id": cell.arm_id, "scenario_digest": scenario.content_hash}
+    return opaque_panel_cell_binding(cell)
 
 
 def _material(workflow: "ModularWorkflow", scenario: FrozenRecord) -> Mapping[str, Any]:
@@ -240,7 +240,7 @@ class Q45SelfCorrectionDriver:
             response = workflow.invoke_model(f"revision_{number}", callback, instruction="Revise only after considering the supplied prior review material.", module_context=FrozenRecord.from_dict(context))
             revisions.append(response)
             if m5: workflow.reviews.revise_after_reveal(review_id, role_id=name, reviewer_id=f"q45-{name}", response=response.data())
-        review_context = {"experiment": self.experiment_id, "variant": cell.variant, "m5_enabled": m5, "review_id": review_id,
+        review_context = {"experiment": self.experiment_id, "m5_enabled": m5, "review_id": review_id,
             "public_evidence_digest": evidence.content_hash,
             "decision_material": ({"kind": "sealed_review_revisions", "records": [item.data() for item in revisions]} if m5
                                   else {"kind": "pre_registered_control_material", "record": material["summary_material"]}),

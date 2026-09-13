@@ -96,6 +96,11 @@ class PanelCell:
                 "package_digest": self.package_digest, "scorer_digest": self.scorer_digest}
 
 
+def opaque_panel_cell_binding(cell: PanelCell) -> dict[str, str]:
+    """Model-visible binding that proves a frozen cell without exposing its arm labels."""
+    return {"schema": "opaque-panel-cell-binding-v1", "cell_digest": FrozenRecord.from_dict(cell.data()).content_hash}
+
+
 @dataclass(frozen=True)
 class CombinationObligations:
     """Frozen routing coverage; status is not inferred from a score."""
@@ -417,8 +422,9 @@ class PanelReceiptVerifier:
         expected_binding = {"experiment_id": expected.coverage_id, "variant": expected.variant,
                             "replicate": expected.replicate, "arm_id": expected.arm_id,
                             "scenario_digest": expected.scenario_digest}
+        expected_opaque_binding = opaque_panel_cell_binding(expected)
         bound_request = any(request.get("task", {}).get("identity") == expected.identity.data()
-                            and request.get("module_context", {}).get("panel_cell") == expected_binding
+                            and request.get("module_context", {}).get("panel_cell") in (expected_binding, expected_opaque_binding)
                             for request in requests)
         bound_early_failure = (not requests and events[-1].get("stage") == "controller_failure"
                                and events[-1].get("data", {}).get("panel_cell") == expected_binding)

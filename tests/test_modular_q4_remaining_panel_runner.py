@@ -124,6 +124,10 @@ def test_remaining_q4_full_grid_binds_public_material_blindness_revisions_and_m5
             continue
         assert run.runtime.status == "succeeded"
         requests = _requests(run)
+        if cell.coverage_id in {"Q4.4", "Q4.5"}:
+            assert all(all(label not in FrozenRecord.from_dict(request).encoded for label in
+                           ("none_valid", "defective", "right_to_wrong", "wrong_to_right")) for request in requests)
+            assert requests[-1]["module_context"]["panel_cell"]["schema"] == "opaque-panel-cell-binding-v1"
         initial = [request for request in requests if request["module_context"].get("review_phase") == "initial_blind"]
         sentinel = "PUBLIC-Q4-EVIDENCE-" + cell.identity.benchmark.upper()
         assert initial and all(sentinel in FrozenRecord.from_dict(request["module_context"]).encoded for request in initial)
