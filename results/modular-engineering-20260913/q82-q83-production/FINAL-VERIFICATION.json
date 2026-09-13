@@ -1,0 +1,98 @@
+{
+  "artifacts_sha256": {
+    "controller-attempt.json": "3939b88524c544ff4b8c3c0c0a100db994f9b3351f616e8eba9f5fc3c5b71a32",
+    "controller-receipt.json": "70fa8072836eeb371ab06c64f0851bfc8f1f17f16f7a23bca682464347637005",
+    "frozen-grid.zip": "78d687fe0820672860656626bda225cf55de48d72cccee577685f78f5197e3b7",
+    "independent-fixture-authority.json": "4c64cb098c3c5c703fced44ec6ec765b24aee7a527039042f0d8e20000847c7c",
+    "m6-causal-baseline.xml": "4862984239ae12eea1b54d5f209bec62f07a04fa28bb26fe0d8e017a281e36fd",
+    "m6-q82q83-final.xml": "15f4e707d4c6fa316ddc44bdc4d4b69ac4195d8f258c838f77daca83fac76b36",
+    "q82q83-frozen-final.xml": "738b36510551c244d7c1827d52abede80a0ce71de45de0d6df25f6cce0022d6d",
+    "q82q83-frozen-source.json": "e253ada4664e8c715f035d2851a2bea19aa76316c6970c0eae6d0d0be279d51a",
+    "q82q83-red02-source.zip": "9907cfe661b12d1388a4cf5079668a6430794ee610917a541d4b5e9818f6116c",
+    "q82q83-safety-red01.xml": "4b39751a669741058b086459157d7e38287dd0e290b881bca825067cc6987c85",
+    "q82q83-safety02.xml": "3438db58160a769bbf89c49cb07c8f447ea8cf90d4153106e221e303251daaba",
+    "q82q83-safety03.xml": "d04ba9fc304504d96ce6082d8ab086bed7235e6e475a83d5a7231fe95e3cf2aa",
+    "red02-grid.zip": "ee421beac7710215638b57858570f167f05b2e12aad17bf1e0b981145af823a1"
+  },
+  "controller_grid": {
+    "benchmarks": [
+      "discoverybench",
+      "blade"
+    ],
+    "denominator": 24,
+    "m6_states": 2,
+    "model_calls": 24,
+    "provider_call_opportunities": 72,
+    "provider_invocations": 54,
+    "questions": 2,
+    "sources_returned": 40,
+    "variants_per_question": 3,
+    "verified_cells": 24
+  },
+  "fixed_p0_control_digest": "4712d20861e1ee5915b846378d341ec36dc85f3597935c7a19c6ce939ce9aa59",
+  "fixtures": {
+    "caller_provider": true,
+    "caller_source_admission": true,
+    "codex_process_transport": true,
+    "post_runtime_authority": true
+  },
+  "history_notes": {
+    "m6-causal-baseline.xml": "Unfrozen old draft RED after initial repairs, not pristine source baseline.",
+    "m6-q82q83-final.xml": "Old unfrozen draft GREEN; XML verifies 13 tests, despite prior 14-test description.",
+    "q82q83-safety-red01.xml": "GREEN 13 tests; red01 is only a filename.",
+    "q82q83-safety02.xml": "Retained 3 RED failures: P0 blocked source IDs falsely used as evidence and two obsolete compiler expectations. Corresponding source and runtime archives retained.",
+    "q82q83-safety03.xml": "Repaired pre-freeze GREEN 66 tests."
+  },
+  "junit": {
+    "m6-causal-baseline.xml": {
+      "errors": 0,
+      "failures": 1,
+      "skipped": 0,
+      "tests": 2
+    },
+    "m6-q82q83-final.xml": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 13
+    },
+    "q82q83-frozen-final.xml": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 89
+    },
+    "q82q83-safety-red01.xml": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 13
+    },
+    "q82q83-safety02.xml": {
+      "errors": 0,
+      "failures": 3,
+      "skipped": 0,
+      "tests": 61
+    },
+    "q82q83-safety03.xml": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 66
+    }
+  },
+  "method_execution": "not_measured",
+  "paid_calls": 0,
+  "reference_payload_used": false,
+  "schema": "q82-q83-frozen-engineering-verification-v1",
+  "scientific_status": "not_measured",
+  "scientific_verified": false,
+  "scope_ids": [
+    "Q8.2",
+    "Q8.3"
+  ],
+  "source_commit": "cf6fd50cbea8ffd76d53860bf8e26cb7b210d04f",
+  "source_files_verified_unchanged_after_run": 322,
+  "source_git_tree": "7b1961ad06e36cfa5aa95e02ad57893894659b97",
+  "validation_used": false
+}

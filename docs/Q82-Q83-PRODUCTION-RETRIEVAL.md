@@ -81,7 +81,8 @@ The retained safety02 RED includes a P0 refusal when the transport incorrectly
 reported public source IDs as scientific evidence, plus two obsolete fixture-only
 compiler expectations. Repair retains P0 and changes the transport to report
 context only. The older `m6-causal-baseline.xml` is an unfrozen draft RED after
-initial repairs, not a pristine source baseline; the older 14-pass draft is also
+initial repairs, not a pristine source baseline; the older draft GREEN (13 tests
+in its XML, previously described as 14) is also
 not frozen delivery evidence. Their files and hashes remain in the evidence
 record. Final source commit and JUnit/trace hashes are recorded alongside the
 frozen verification artifacts.

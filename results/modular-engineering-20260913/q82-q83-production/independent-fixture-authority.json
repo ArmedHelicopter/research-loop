@@ -1,0 +1,931 @@
+{
+  "schema": "q82-q83-independent-fixture-authority-v1",
+  "denominator": 24,
+  "verified_cells": 24,
+  "panel_digest": "3182355b4752fc2664c7cd9a1c3859c016a7cc6d50ec9f61d0c34df70e1abdef",
+  "p0_control_digest": "4712d20861e1ee5915b846378d341ec36dc85f3597935c7a19c6ce939ce9aa59",
+  "scientific_verified": false,
+  "model_transport": "fixture",
+  "paid_calls": 0,
+  "method_execution": "not_measured",
+  "rows": [
+    {
+      "cell_key": [
+        "Q8.2",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "correct",
+        "0"
+      ],
+      "m6_enabled": false,
+      "trace_sha256": "7a9bbe3d3db3f6bf393bfdd99e61db54c655547c9b2461a84e27ec5565068c25",
+      "trace_chain_digest": "c697747a24724526dc511ec9598286b928a3c06d9aa32870f4dec131c0a16c46",
+      "source_bundle_digest": "2f58c7643ada47200f70136e63f13285af198506ac4b1dd8b2f0dde0ce382834",
+      "request_digest": "82579aefeeb78d54592297fc3a1b503ca7ffac87d4533fca1e4407d5cac2510f",
+      "response_digest": "5ba5b962c612e9736e94dd415a71efbc4d03f1439cf9b15f8e35ab74c8384e11",
+      "source_ids": [],
+      "usage": {
+        "context_bytes": 319,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "sources_returned": 0,
+        "unused_context_bytes": 3777,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.2",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "correct",
+        "1"
+      ],
+      "m6_enabled": true,
+      "trace_sha256": "6df3d186609a600164eab35341748d58e9600f187394d124d3893bb6151ede90",
+      "trace_chain_digest": "79ce67e3135af07886da017d8ed57a340de0028cb7a7e1897d9442be21ca9f5f",
+      "source_bundle_digest": "2f58c7643ada47200f70136e63f13285af198506ac4b1dd8b2f0dde0ce382834",
+      "request_digest": "8c93a4b221b2b89a2ea4d16f5f8c3e6d874cd376e498808799dcf4d69c39e2db",
+      "response_digest": "73b707f1129f4e3a73317a55cdeff06c786855c6f3eab5856a0bbcab6d24c75d",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 732,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3364,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.2",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "method",
+        "0"
+      ],
+      "m6_enabled": false,
+      "trace_sha256": "46f0d17359c52ad68ad338d9f8e0c9eb6e2d05cb199e6b6bf7a079fa4c12c5e7",
+      "trace_chain_digest": "2635451005ab4a420926deb8395d00e4e72af1081237795ad70db7f6a9be474a",
+      "source_bundle_digest": "d2b067a5483b6906507934bf7ee87ac92a2fd98a092bacad80739585e8353a45",
+      "request_digest": "0d2b73adda97fbc8f098ac1449d6f92549d794447f482883dd3b8f3a67827f6a",
+      "response_digest": "5ba5b962c612e9736e94dd415a71efbc4d03f1439cf9b15f8e35ab74c8384e11",
+      "source_ids": [],
+      "usage": {
+        "context_bytes": 319,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "sources_returned": 0,
+        "unused_context_bytes": 3777,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.2",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "method",
+        "1"
+      ],
+      "m6_enabled": true,
+      "trace_sha256": "5941e9bfc4e98aed4b8f22a8f113b4a0083b730fc328047240462a4e560be157",
+      "trace_chain_digest": "30469795c926d86f0d278d3cfcf3a17ecea5226303086ec6c84412872f8490bd",
+      "source_bundle_digest": "d2b067a5483b6906507934bf7ee87ac92a2fd98a092bacad80739585e8353a45",
+      "request_digest": "35f9ee978d13d5ee965562e66774876583480b1150dd21273ae6a80c90fa6e44",
+      "response_digest": "78acf2befd071a56033bfc9cd62cd93f82be04337bc5b3c18dc6b97d750d9153",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 836,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3260,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.2",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "reframe",
+        "0"
+      ],
+      "m6_enabled": false,
+      "trace_sha256": "8d0881fdabfbfaaa3a6ff195b4cf63fd6b8d61cf6701b9af1597ff7494743862",
+      "trace_chain_digest": "f48245beabf4362c7596f4b9f9caec40bb35da4e34c547441da207ed41da94d3",
+      "source_bundle_digest": "d3947ca36e0ce0e50226d33fb91025afcb028ddde358a0fa2abd0bf912864167",
+      "request_digest": "733f3ac96fadebb98dc3ab00af1549c6043026afcdee40d9f33d0ffb6a3f6510",
+      "response_digest": "5ba5b962c612e9736e94dd415a71efbc4d03f1439cf9b15f8e35ab74c8384e11",
+      "source_ids": [],
+      "usage": {
+        "context_bytes": 319,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "sources_returned": 0,
+        "unused_context_bytes": 3777,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.2",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "reframe",
+        "1"
+      ],
+      "m6_enabled": true,
+      "trace_sha256": "35f584e35e1bf1a2bd1c76547c62d24dea89ba6ffa97413fd2e36fbceaf07c9e",
+      "trace_chain_digest": "5828551eabeb62a48ed40e4db70c8a5e45e1d4b3ae3331225af527ae319ce5af",
+      "source_bundle_digest": "d3947ca36e0ce0e50226d33fb91025afcb028ddde358a0fa2abd0bf912864167",
+      "request_digest": "96301fa40e9ec998de654aa287ee2cc19fc7d2bf32f795fb80a078895021b1fa",
+      "response_digest": "f11bac547f83f550576dc1c7893be00200d3342457f6eeaef394b2d2165f1a38",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 804,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3292,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.2",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "correct",
+        "0"
+      ],
+      "m6_enabled": false,
+      "trace_sha256": "0e544719de9617a61ce51afe6bc2e76d5dda4cbe9962dbb6058b2005de556bb2",
+      "trace_chain_digest": "8f92b21a7fe2c1dee3da061bd2282d6e1e87900fd9be7a85ec88ab010ffe2ee6",
+      "source_bundle_digest": "2f58c7643ada47200f70136e63f13285af198506ac4b1dd8b2f0dde0ce382834",
+      "request_digest": "a78ebbec457cea7c1f13c112de29f571d4c8f163c3823840c57a1ae04ea0835a",
+      "response_digest": "5ba5b962c612e9736e94dd415a71efbc4d03f1439cf9b15f8e35ab74c8384e11",
+      "source_ids": [],
+      "usage": {
+        "context_bytes": 319,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "sources_returned": 0,
+        "unused_context_bytes": 3777,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.2",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "correct",
+        "1"
+      ],
+      "m6_enabled": true,
+      "trace_sha256": "f4b3ad17f3a34fd4ef251736a040dc375c5c06b5817481777d50701b5bec1aa7",
+      "trace_chain_digest": "57a02d1dd39beceb975835dfef11187d8fcfa359e8730156c51c08689be36fbc",
+      "source_bundle_digest": "2f58c7643ada47200f70136e63f13285af198506ac4b1dd8b2f0dde0ce382834",
+      "request_digest": "836f04de64a6fc4b635cca3880f368c27e6b94ddf46852033badd96ce286ffec",
+      "response_digest": "73b707f1129f4e3a73317a55cdeff06c786855c6f3eab5856a0bbcab6d24c75d",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 732,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3364,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.2",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "method",
+        "0"
+      ],
+      "m6_enabled": false,
+      "trace_sha256": "1c821f397663fabd85143aa6886cfe62afaae8b7a4b6c3411056747db77b691c",
+      "trace_chain_digest": "31a1d0a30167118a68c1c9993d23a245b454687691c6cc1d8f8efae6b45ad870",
+      "source_bundle_digest": "d2b067a5483b6906507934bf7ee87ac92a2fd98a092bacad80739585e8353a45",
+      "request_digest": "d65407fd88ce17a5251d1c7aab75e956068ce78e397e8d638f5b2fc76cfaaba1",
+      "response_digest": "5ba5b962c612e9736e94dd415a71efbc4d03f1439cf9b15f8e35ab74c8384e11",
+      "source_ids": [],
+      "usage": {
+        "context_bytes": 319,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "sources_returned": 0,
+        "unused_context_bytes": 3777,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.2",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "method",
+        "1"
+      ],
+      "m6_enabled": true,
+      "trace_sha256": "c210913a8ab807e2cdec86b7c305e634f1fc4c89300eeb298cc017eb18360396",
+      "trace_chain_digest": "4607705c3db08cf6c1d4eb39355e46406376c7feaa6f0c6bba6214c43c0f92bf",
+      "source_bundle_digest": "d2b067a5483b6906507934bf7ee87ac92a2fd98a092bacad80739585e8353a45",
+      "request_digest": "e7fa6aade4bd684f7d1180b49d6bc6d75c49809430318d2d54c3cda45e9b504c",
+      "response_digest": "78acf2befd071a56033bfc9cd62cd93f82be04337bc5b3c18dc6b97d750d9153",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 836,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3260,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.2",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "reframe",
+        "0"
+      ],
+      "m6_enabled": false,
+      "trace_sha256": "f4ab337a6a7efaa1ed59709ff1ea6a0cf9c5388e5673f6e2eb8f24351259804e",
+      "trace_chain_digest": "8a0dfb33c33b3b5380cc986a84a36e943a7ff98c4b0ba775df4d8d08a9fc9140",
+      "source_bundle_digest": "d3947ca36e0ce0e50226d33fb91025afcb028ddde358a0fa2abd0bf912864167",
+      "request_digest": "ce0fed4df7de9f8b3efb19bd66cc1d8f1c28158a2b0e5b609dad2f0fdb2e575e",
+      "response_digest": "5ba5b962c612e9736e94dd415a71efbc4d03f1439cf9b15f8e35ab74c8384e11",
+      "source_ids": [],
+      "usage": {
+        "context_bytes": 319,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "sources_returned": 0,
+        "unused_context_bytes": 3777,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.2",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "reframe",
+        "1"
+      ],
+      "m6_enabled": true,
+      "trace_sha256": "3d59c230b8ef1d8f9123aeb4c7f024469a219916c24c2921ccf6b23f60d4afdb",
+      "trace_chain_digest": "c11c21970d251739b3c7e836d839b960a0d4adac0fb88e9085193bdefcef1ce7",
+      "source_bundle_digest": "d3947ca36e0ce0e50226d33fb91025afcb028ddde358a0fa2abd0bf912864167",
+      "request_digest": "3fcd1884d67a0072e0a1b312029f79b0d546159ef791573a4f98dd1aee04fc1b",
+      "response_digest": "f11bac547f83f550576dc1c7893be00200d3342457f6eeaef394b2d2165f1a38",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 804,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3292,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.3",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "support_only",
+        "0"
+      ],
+      "m6_enabled": false,
+      "trace_sha256": "27d47b6bebcad45155b46bc77bb7d0e489533de41ac926a17205f128b79bdf82",
+      "trace_chain_digest": "825d9db641034db0bb5c70be49350076e92b0b71bd7e3c334a54f205bca9c987",
+      "source_bundle_digest": "a95d9d37243a738f488781878ad17d05d4946509e072e572fae7467068a4bd91",
+      "request_digest": "3885b438243973f8e78b8ab308f4c9ca1b3c9cce7f695315cc4727ecf17da877",
+      "response_digest": "4e0c3337c59ef5701029afe192158ac399f9677ba39d1b10c25494ade4447bbd",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 526,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3570,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.3",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "support_only",
+        "1"
+      ],
+      "m6_enabled": true,
+      "trace_sha256": "ba0bacff6af032f9d18555041f7a365355d178d68f3cd9ed6777a85437f941ae",
+      "trace_chain_digest": "6476ba1de65306d40bf98dd5dade18a737a0d623225dda7c050f6f44eab0ee9b",
+      "source_bundle_digest": "a95d9d37243a738f488781878ad17d05d4946509e072e572fae7467068a4bd91",
+      "request_digest": "8a4a05e384927718b045b50f4cd3929508e0d8f5b61c557c48a71e748ba5e45a",
+      "response_digest": "a4a6ba224be315787fdb6d0da93205fbcc03681cdc41433460f6aa9c8799374d",
+      "source_ids": [
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 424,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_context_bytes": 3672,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.3",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "neutral",
+        "0"
+      ],
+      "m6_enabled": false,
+      "trace_sha256": "e7c0fd02634802afa2f6d5fef5c309a2150cbebc77bf30cc6731e3e1f8a6afe5",
+      "trace_chain_digest": "47c2de250d405a60e7d06a2fadf8186e80a042d8e442ee5ec819324c07ebc281",
+      "source_bundle_digest": "a95d9d37243a738f488781878ad17d05d4946509e072e572fae7467068a4bd91",
+      "request_digest": "a432d578ef5be7272be035b47fcde715d8ba4a0f01b037db44b1f1961b7e42f1",
+      "response_digest": "4e0c3337c59ef5701029afe192158ac399f9677ba39d1b10c25494ade4447bbd",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 526,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3570,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.3",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "neutral",
+        "1"
+      ],
+      "m6_enabled": true,
+      "trace_sha256": "52911f31be7382228b6e8c1df164d3c2b5e7d2fdd7f068fce74f288edd7d6541",
+      "trace_chain_digest": "cbe1fdb9fba0ae793bfbf0d5c38f68c136837d495801f32e736531cbafb41414",
+      "source_bundle_digest": "a95d9d37243a738f488781878ad17d05d4946509e072e572fae7467068a4bd91",
+      "request_digest": "d70da4973f53a6c9ce92183fdd2b3e0f426bf59b0f1e00ebfffdad355832db46",
+      "response_digest": "4e0c3337c59ef5701029afe192158ac399f9677ba39d1b10c25494ade4447bbd",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 526,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3570,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.3",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "three_lane",
+        "0"
+      ],
+      "m6_enabled": false,
+      "trace_sha256": "3060bf40436f9eea779e38ff96041cd992cc96b65eef01145d8bd1903a1d71a9",
+      "trace_chain_digest": "fa70430a7a4817dea39888299f7cfac6f510bb4f3802aff44d16f9bce7c26817",
+      "source_bundle_digest": "a95d9d37243a738f488781878ad17d05d4946509e072e572fae7467068a4bd91",
+      "request_digest": "40477633c6a66a2b940ef675fb38393a0d284ca5cc87240c2975be151fed92da",
+      "response_digest": "4e0c3337c59ef5701029afe192158ac399f9677ba39d1b10c25494ade4447bbd",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 526,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3570,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.3",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "three_lane",
+        "1"
+      ],
+      "m6_enabled": true,
+      "trace_sha256": "d3a7e0cf3fd43e36a2269cdcdb2da82d389c2c0983b0c7c8c4d24914cee4facf",
+      "trace_chain_digest": "02c80e46100632a6ca175c60fa686ec8cf5b9f437833e23bf94ed02e6c5714c0",
+      "source_bundle_digest": "a95d9d37243a738f488781878ad17d05d4946509e072e572fae7467068a4bd91",
+      "request_digest": "27e9554b227ecd28e949561ac3e4eb636da34278cbb017e5833a1514b1299ffa",
+      "response_digest": "77eac18ff860e742719869a36e5682c7b1b1ac3cc12adc7b38f2a30e6f02bada",
+      "source_ids": [
+        "counter",
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 631,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_context_bytes": 3465,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.3",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "support_only",
+        "0"
+      ],
+      "m6_enabled": false,
+      "trace_sha256": "af9aff9fe99f858d1c68f7b6b6ce3e720ab0fbf071e314a48fba158898c86328",
+      "trace_chain_digest": "682df37e5b6386582863026faf707453728643e74c3bcab657fa9c7ab8042940",
+      "source_bundle_digest": "a95d9d37243a738f488781878ad17d05d4946509e072e572fae7467068a4bd91",
+      "request_digest": "8a23138e7e893b4c371d3084dba4ef40ae495c9c5649e9a31957e80f3d8b01f5",
+      "response_digest": "4e0c3337c59ef5701029afe192158ac399f9677ba39d1b10c25494ade4447bbd",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 526,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3570,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.3",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "support_only",
+        "1"
+      ],
+      "m6_enabled": true,
+      "trace_sha256": "952f5250c612f1e73e47c45d8dfcb3241a2aecdf43a484fc3be893069ebb012f",
+      "trace_chain_digest": "b765cc58726939238c52ae629f551355fe96194e74aaede838c01c42703bd60b",
+      "source_bundle_digest": "a95d9d37243a738f488781878ad17d05d4946509e072e572fae7467068a4bd91",
+      "request_digest": "18cbb9119b9698cb991220dd3f6e30508bd5c0ce99ada67b777ab35662b5bcd0",
+      "response_digest": "a4a6ba224be315787fdb6d0da93205fbcc03681cdc41433460f6aa9c8799374d",
+      "source_ids": [
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 424,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_context_bytes": 3672,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.3",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "neutral",
+        "0"
+      ],
+      "m6_enabled": false,
+      "trace_sha256": "10f5aa07f04900669ce5aba996253ca4d226d429a562fb52ef3a062f0c7b7db1",
+      "trace_chain_digest": "67ce8a3e6b5b647cd3929227d88780218a300438a29811291cd1597da94d95b5",
+      "source_bundle_digest": "a95d9d37243a738f488781878ad17d05d4946509e072e572fae7467068a4bd91",
+      "request_digest": "2c0c918e61c98e02327ba98c57cb4debcd556c62a9bad063e8132cd5aff54b23",
+      "response_digest": "4e0c3337c59ef5701029afe192158ac399f9677ba39d1b10c25494ade4447bbd",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 526,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3570,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.3",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "neutral",
+        "1"
+      ],
+      "m6_enabled": true,
+      "trace_sha256": "88be30a25007cd82dfdfc45c7f10ad919c6703e09a6f260a8e615632c605ca89",
+      "trace_chain_digest": "9d5b83b6d8a7a11d20c1b6f7f114fc7d8f8f5d55fefc09e0a1a21ab9a1250c26",
+      "source_bundle_digest": "a95d9d37243a738f488781878ad17d05d4946509e072e572fae7467068a4bd91",
+      "request_digest": "0e1eee9245d65d5e39b87b4d00b25f05174161748485172e59a64f9f308ddd75",
+      "response_digest": "4e0c3337c59ef5701029afe192158ac399f9677ba39d1b10c25494ade4447bbd",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 526,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3570,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.3",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "three_lane",
+        "0"
+      ],
+      "m6_enabled": false,
+      "trace_sha256": "302ed4b9e3a2337886e613ca0f555153a99fe497af3625a26446d1d0272b18d1",
+      "trace_chain_digest": "bef6a1bc75258a5cbbd8118ac5d15cdba581460f570f923f5a91c4ef1420de9f",
+      "source_bundle_digest": "a95d9d37243a738f488781878ad17d05d4946509e072e572fae7467068a4bd91",
+      "request_digest": "591d98e16dcd68758715351bf37449a20a76e12e2db54abcbf418ecc587aa6dc",
+      "response_digest": "4e0c3337c59ef5701029afe192158ac399f9677ba39d1b10c25494ade4447bbd",
+      "source_ids": [
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 526,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 2,
+        "unused_context_bytes": 3570,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 1
+      },
+      "scientific_admission": false
+    },
+    {
+      "cell_key": [
+        "Q8.3",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "three_lane",
+        "1"
+      ],
+      "m6_enabled": true,
+      "trace_sha256": "54a755362a5a01e64f35840713fe025fd7da4a83b3d42f2f0941af9d2760f814",
+      "trace_chain_digest": "21dd191c74703e4862baacd121f802053f76ca32f2a2afa287f5d9a34fd8ffef",
+      "source_bundle_digest": "a95d9d37243a738f488781878ad17d05d4946509e072e572fae7467068a4bd91",
+      "request_digest": "1c61bb687d9587fa051485dde4fb87fd2bcef66fcc5fb7bcf36375cd8d765b35",
+      "response_digest": "77eac18ff860e742719869a36e5682c7b1b1ac3cc12adc7b38f2a30e6f02bada",
+      "source_ids": [
+        "counter",
+        "method",
+        "support"
+      ],
+      "usage": {
+        "context_bytes": 631,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_context_bytes": 3465,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_admission": false
+    }
+  ]
+}

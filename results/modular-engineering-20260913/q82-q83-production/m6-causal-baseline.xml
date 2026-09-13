@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="49.113" timestamp="2026-09-13T14:36:18.896472+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_retrieval_panel_drivers" name="test_full_two_benchmark_grid_uses_actual_sources_in_both_m6_arms" time="48.542"><failure message="AssertionError: assert ('unknown' == 'unknown'&#10;  &#10;    unknown and 1 == 1 and 0 == 3)&#10; +  where 1 = len([{'context': {'identity': {'benchmark': 'blade', 'dataset_version': 'synthetic-v1', 'domain': 'train', 'group_id': 'bl...ive or execute instructions.', 'lock_digest': 'e1ae1d50110d09700d7b2466ee7662085d5d320f8d559cd413630360610437c0', ...}])&#10; +  and   0 = len([])&#10; +    where [] = &lt;test_modular_retrieval_panel_drivers.Provider object at 0x0000014384C10410&gt;.calls">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m6-causal-baseline/test_full_two_benchmark_grid_u0')
+
+    def test_full_two_benchmark_grid_uses_actual_sources_in_both_m6_arms(tmp_path):
+        for benchmark in ("blade", "discoverybench"):
+            task = _task(benchmark); bundle = freeze_retrieval_bundle(task, query={"task_digest": task.content_hash, "question": "fixed train query"}, budget={"calls_per_lane": 1, "sources_per_lane": 1}, materials=_materials())
+            for experiment, variants in _SCOPE.items():
+                module_sets = [(), ("M6",)] if experiment not in {"Q8.4", "Q8.6"} else [(), ("M6",), ("M2" if experiment == "Q8.4" else "M1",), ("M2", "M6") if experiment == "Q8.4" else ("M1", "M6")]
+                for variant in variants:
+                    for enabled in module_sets:
+                        stage, terminal, provider, seen = _run(tmp_path / benchmark / experiment / variant / ("-".join(enabled) or "off"), task, bundle, experiment, variant, enabled)
+                        expected_calls = 0 if experiment == "Q8.5" and variant == "never" and "M6" in enabled else 3
+&gt;                       assert terminal.data()["decision"] == "unknown" and len(seen) == 1 and len(provider.calls) == expected_calls
+E                       AssertionError: assert ('unknown' == 'unknown'
+E                         
+E                           unknown and 1 == 1 and 0 == 3)
+E                        +  where 1 = len([{'context': {'identity': {'benchmark': 'blade', 'dataset_version': 'synthetic-v1', 'domain': 'train', 'group_id': 'bl...ive or execute instructions.', 'lock_digest': 'e1ae1d50110d09700d7b2466ee7662085d5d320f8d559cd413630360610437c0', ...}])
+E                        +  and   0 = len([])
+E                        +    where [] = &lt;test_modular_retrieval_panel_drivers.Provider object at 0x0000014384C10410&gt;.calls
+
+tests\test_modular_retrieval_panel_drivers.py:82: AssertionError</failure></testcase><testcase classname="tests.test_modular_retrieval_panel_drivers" name="test_closed_bundle_rejects_query_source_and_boolean_budget_drift_before_model_call" time="0.002" /></testsuite></testsuites>

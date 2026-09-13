@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="61" time="35.982" timestamp="2026-09-13T14:56:43.469551+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_retrieval_panel_drivers" name="test_full_two_benchmark_grid_uses_actual_sources_in_both_m6_arms" time="12.040" /><testcase classname="tests.test_modular_retrieval_panel_drivers" name="test_closed_bundle_rejects_query_source_and_boolean_budget_drift_before_model_call" time="0.001" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_reservation_precedes_io_and_partial_failure_keeps_cost_and_items" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_infinite_provider_is_probed_only_to_limit_plus_one" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_foreign_or_mislabelled_return_is_recorded_and_rejected[bad0]" time="0.001" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_foreign_or_mislabelled_return_is_recorded_and_rejected[bad1]" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_foreign_or_mislabelled_return_is_recorded_and_rejected[bad2]" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_no_retry_can_exceed_a_reserved_provider_call" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_total_context_includes_metadata_and_utf8_and_same_opportunities[support_only]" time="0.001" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_total_context_includes_metadata_and_utf8_and_same_opportunities[neutral]" time="0.001" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_total_context_includes_metadata_and_utf8_and_same_opportunities[three_lane]" time="0.001" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_root_dedup_is_structural_and_text_never_grants_admission" time="0.001" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_only_q82_q83_have_new_production_drivers" time="0.000" /><testcase classname="tests.test_modular_q82_q83_train_controller" name="test_q82_q83_custody_controller_full_grid" time="23.411"><failure message="assert False&#10; +  where False = all(&lt;generator object test_q82_q83_custody_controller_full_grid.&lt;locals&gt;.&lt;genexpr&gt; at 0x000001D53F1FE740&gt;)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q82q83-safety02/test_q82_q83_custody_controlle0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D53E7EE030&gt;
+
+    def test_q82_q83_custody_controller_full_grid(tmp_path, monkeypatch):
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        grid = obligation_grids(("Q8.2", "Q8.3"), baseline_digest=base["baseline_digest"],
+                                p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        packets = __import__("evaluation.modular.train_io", fromlist=["TrainPacketExporter"]).TrainPacketExporter(custody, snapshot, tmp_path / "material").export(base["item_ids"])
+        evidence = {packet.task.content_hash: freeze_retrieval_bundle(packet.task,
+            query={"task_digest": packet.task.content_hash, "question": "fixed public train query"},
+            budget={"provider_calls": 3, "source_cap": 3, "context_bytes": 4096}, materials=_materials()).data() for packet in packets}
+        arms = {arm.content_hash: package for item in grid.values() for arm in executable_arms(item).values()}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+            "engineering_scope": "train_only_panel_engineering", "stage": "q82-q83-controller", "scope_ids": ["Q8.2", "Q8.3"],
+            "evidence_by_task": evidence, "packages_by_arm": arms, "budget": {"model_calls": 1, "retrieval_calls": 3},
+            "max_calls": 48, "schemas": {"final": FINAL}}))
+        seen = []
+        def response(request):
+            seen.append(request.data())
+            docs = [doc for lane in request.data()["module_context"]["retrieval"]["by_lane"].values() for doc in lane]
+            return FrozenRecord.from_dict({"objective_digest": request.data()["module_context"]["required_objective_digest"], "outcome": "unknown", "evidence_ids": [doc["source_id"] for doc in docs], "conclusion": "\n".join(doc["text"]["text"] for doc in docs) or "No external source was available.", "programme_complete": False})
+        port = model_port(tmp_path, monkeypatch, max_calls=48, schemas=frozen.data()["schemas"], response_factory=response)
+        class QueryAwareProvider(Provider):
+            def search(self, **kwargs):
+                rows = super().search(**kwargs)
+                # Fixed public fixture index: a generic query misses the counter record;
+                # explicitly seeking counterevidence retrieves it. No arm IDs are read.
+                if kwargs["lane"] == "counter" and "counterevidence" not in kwargs["query"].data()["intent"]:
+                    return ()
+                return rows
+        provider = QueryAwareProvider()
+        result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export", run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}), retrieval_provider=provider)
+        assert len(result.runtimes) == len(seen) == len(port.ledger["calls"]) == 24
+&gt;       assert all(runtime.status == "succeeded" for runtime in result.runtimes)
+E       assert False
+E        +  where False = all(&lt;generator object test_q82_q83_custody_controller_full_grid.&lt;locals&gt;.&lt;genexpr&gt; at 0x000001D53F1FE740&gt;)
+
+tests\test_modular_q82_q83_train_controller.py:46: AssertionError</failure></testcase><testcase classname="tests.test_modular_retrieval_exploration" name="test_three_lane_retrieval_uses_frozen_bundle_and_deduplicates_roots" time="0.000" /><testcase classname="tests.test_modular_retrieval_exploration" name="test_retrieval_does_not_call_provider_without_a_frozen_trigger" time="0.000" /><testcase classname="tests.test_modular_retrieval_exploration" name="test_feasibility_requires_all_stages_and_train_only_appeals" time="0.001" /><testcase classname="tests.test_modular_retrieval_exploration" name="test_instrument_repair_requires_new_execution_for_invalidated_evidence" time="0.000" /><testcase classname="tests.test_modular_experiments" name="test_registry_keeps_all_48_obligations_designed_and_emits_controlled_scenarios" time="0.011" /><testcase classname="tests.test_modular_experiments" name="test_q15_requires_actual_identity_bound_review_material" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_legacy_two_benchmark_hashes_cannot_claim_measurement" time="0.002" /><testcase classname="tests.test_modular_experiments" name="test_blocked_status_cannot_skip_measurement_or_validation" time="0.002" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.1]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.3]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.6]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q1.7]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.1]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.3]" time="0.011" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q2.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q3.1]" time="0.011" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.1]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.3]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q4.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q5.5]" time="0.011" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.1]" time="0.017" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.2]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.3]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q6.6]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.1]" time="0.044" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.2]" time="0.001"><failure message="research_loop.ontology.ContractError: retrieval panel requires typed caller sources">coverage = 'Q8.2'
+
+    @pytest.mark.parametrize("coverage", tuple(name for name in registry() if name not in {"Q2.2", "Q2.5", "Q2.6", "Q2.7", "Q3.2", "Q3.3", "Q3.4", "Q3.5", "Q5.1", "Q5.2", "Q5.3", "Q5.4", "Q6.4", "Q7.1", "Q7.2", "Q7.3", "Q7.4", "Q7.5", "Q7.6"}))
+    def test_added_runners_match_every_authoritative_variant(coverage):
+        spec = registry()[coverage]
+        for variant in spec.variants:
+&gt;           result = scenario(spec, variant, inputs=inputs()).data()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_experiments.py:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\experiments.py:128: in scenario
+    injection = dict(retrieval_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+experiment = 'Q8.2', variant = 'correct'
+
+    def retrieval_panel_injection(experiment: str, variant: str, *, task: FrozenRecord, evidence: FrozenRecord) -&gt; Mapping[str, Any]:
+        if experiment not in _SCOPE or variant not in _SCOPE[experiment]: raise ContractError("retrieval panel variant is not registered")
+        public = PublicTask(DataIdentity.parse(task.data()["identity"]), FrozenRecord.from_dict(task.data()["payload"]))
+        body = evidence.data()
+&gt;       if body.get("schema") != "typed-retrieval-panel-bundle-v2": raise ContractError("retrieval panel requires typed caller sources")
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       research_loop.ontology.ContractError: retrieval panel requires typed caller sources
+
+research_loop\modular\retrieval_panel_drivers.py:97: ContractError</failure></testcase><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.3]" time="0.001"><failure message="research_loop.ontology.ContractError: retrieval panel requires typed caller sources">coverage = 'Q8.3'
+
+    @pytest.mark.parametrize("coverage", tuple(name for name in registry() if name not in {"Q2.2", "Q2.5", "Q2.6", "Q2.7", "Q3.2", "Q3.3", "Q3.4", "Q3.5", "Q5.1", "Q5.2", "Q5.3", "Q5.4", "Q6.4", "Q7.1", "Q7.2", "Q7.3", "Q7.4", "Q7.5", "Q7.6"}))
+    def test_added_runners_match_every_authoritative_variant(coverage):
+        spec = registry()[coverage]
+        for variant in spec.variants:
+&gt;           result = scenario(spec, variant, inputs=inputs()).data()
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_experiments.py:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\experiments.py:128: in scenario
+    injection = dict(retrieval_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+experiment = 'Q8.3', variant = 'support_only'
+
+    def retrieval_panel_injection(experiment: str, variant: str, *, task: FrozenRecord, evidence: FrozenRecord) -&gt; Mapping[str, Any]:
+        if experiment not in _SCOPE or variant not in _SCOPE[experiment]: raise ContractError("retrieval panel variant is not registered")
+        public = PublicTask(DataIdentity.parse(task.data()["identity"]), FrozenRecord.from_dict(task.data()["payload"]))
+        body = evidence.data()
+&gt;       if body.get("schema") != "typed-retrieval-panel-bundle-v2": raise ContractError("retrieval panel requires typed caller sources")
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       research_loop.ontology.ContractError: retrieval panel requires typed caller sources
+
+research_loop\modular\retrieval_panel_drivers.py:97: ContractError</failure></testcase><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.4]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.5]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.6]" time="0.001" /><testcase classname="tests.test_modular_experiments" name="test_added_runners_match_every_authoritative_variant[Q8.7]" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.009" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.004" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.004" /></testsuite></testsuites>
