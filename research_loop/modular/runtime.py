@@ -184,18 +184,20 @@ class RunSession:
         if type(evidence_only) is not bool:
             raise ContractError("evidence-only review flag must be boolean")
         mode = "candidate" if "M3" in self.arm.data()["enabled"] else "baseline"
-        self.claims.refresh_after_withdrawal()
+        if "M2" in self.arm.data()["enabled"]:
+            self.claims.refresh_after_withdrawal()
         if evidence_only:
             # An independent retrospective first pass must not inherit a claim
             # summary, including one hidden in the normal reconstructed context.
-            context = FrozenRecord.from_dict({"mode": "evidence_only", "identity": self.task.identity.data(),
+            context = FrozenRecord.from_dict({"identity": self.task.identity.data(),
                 "records": [root.data() for root in self.evidence.roots(admitted_only=False, active_only=False)],
                 "withdrawn": self.evidence.snapshot().data()["withdrawn"]})
             if len(context.encoded.encode()) > self.context_budget:
                 raise ContractError("raw evidence review exceeds frozen context budget")
         else:
-            context = self.cache.get_or_build(ContextBuilder(self.task.identity, budget_bytes=self.context_budget),
+            bundle = self.cache.get_or_build(ContextBuilder(self.task.identity, budget_bytes=self.context_budget),
                 canonical(self.task.payload.data()), self.evidence, self.claims, mode=mode, baseline_summary=baseline_summary)
+            context = FrozenRecord.from_dict(bundle.public_data())
         request = FrozenRecord.from_dict({"schema": "public-model-request-v1", "task": self.task.data(),
             "lock_digest": self.lock.content_hash, "objective": self.objective.data(), "slot": slot,
             "instruction": required_text(instruction, "instruction"), "context": context.data(),

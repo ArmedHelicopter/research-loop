@@ -73,6 +73,8 @@ def model_port(root: Path, monkeypatch, *, max_calls: int = 24, valid_plan: bool
             output = {"analysis": "calculate the public x mean", "program": "import csv\nwith open('/input/public_csv', newline='') as f:\n rows=list(csv.DictReader(f))\nprint(sum(float(r['x']) for r in rows)/len(rows))"}
         elif request["slot"] == "final_answer":
             output = {"objective_digest": request["module_context"]["required_objective_digest"], "outcome": "unknown", "evidence_ids": [], "conclusion": "synthetic benchmark answer", "programme_complete": False}
+        elif request["slot"] == "reconstructed":
+            output = {"mechanism_judgment": {"decision": "unknown", "reason": "synthetic mechanism judgment", "evidence_ids": []}}
         else:
             output = {"assessment": "concern", "evidence_refs": ["synthetic-public-observation"], "counterexamples": [], "uncertainty": "synthetic transport review"}
         Path(argv[argv.index("-o") + 1]).write_text(json.dumps(output), encoding="utf-8")
@@ -146,6 +148,43 @@ def test_support_drivers_reach_production_controller_without_registry_patch(tmp_
     assert result.receipt.data()["execution_status"] == "engineering_complete"
     assert len(result.runtimes) == expected_cells and len(model.ledger["calls"]) == expected_cells * 3
     assert admissions and all(runtime.status == "succeeded" for runtime in result.runtimes)
+
+
+@pytest.mark.parametrize("coverage,slots", [
+    ("Q1.6", ("initial", "invalidation", "final")),
+    ("Q1.7", ("initial", "reconstructed", "final")),
+])
+def test_withdrawal_drivers_reach_custody_controller_with_caller_admission(tmp_path, monkeypatch, coverage, slots):
+    from test_modular_withdrawal_panel_drivers import bundle, admission
+    from research_loop.modular.experiments import registry
+    snapshot, custody = snapshot_and_custody(tmp_path)
+    base = config(custody, snapshot, tmp_path).data()
+    packets = TrainPacketExporter(custody, snapshot, tmp_path / "withdrawal-material").export(base["item_ids"])
+    grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+    package = next(iter(base["packages_by_arm"].values()))
+    expected_cells = 2 * len(registry()[coverage].variants) * len(executable_arms(grids[coverage]))
+    judgment = {"type": "object", "properties": {"mechanism_judgment": {
+        "type": "object", "properties": {"decision": {"type": "string", "enum": ["positive", "negative", "unknown"]},
+            "reason": {"type": "string"}, "evidence_ids": {"type": "array", "items": {"type": "string"}}},
+        "required": ["decision", "reason", "evidence_ids"], "additionalProperties": False}},
+        "required": ["mechanism_judgment"], "additionalProperties": False}
+    schemas = {slot: FINAL if slot == "final" else judgment if slot == "reconstructed" else REVIEW for slot in slots}
+    frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+        "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-withdrawal-controller", "scope_ids": [coverage],
+        "evidence_by_task": {packet.task.content_hash: bundle(packet.task).data() for packet in packets},
+        "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+        "budget": {"model_calls": 3, "execution_limit": 0}, "max_calls": expected_cells * 3, "schemas": schemas}))
+    port = model_port(tmp_path, monkeypatch, max_calls=expected_cells * 3, schemas=schemas)
+    admitted = []
+    def caller(task, record):
+        admitted.append(record.content_hash)
+        return admission(task, record)
+    result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+        export_root=tmp_path / "export", run_root=tmp_path / "run", model=port,
+        audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}), history_admission_port=caller)
+    assert result.receipt.data()["execution_status"] == "engineering_complete"
+    assert len(result.runtimes) == expected_cells and len(port.ledger["calls"]) == expected_cells * 3
+    assert admitted and all(row.status == "succeeded" for row in result.runtimes)
 
 
 def test_q43_closed_driver_runs_through_custody_export_and_frozen_policy(tmp_path: Path, monkeypatch) -> None:

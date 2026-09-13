@@ -17,11 +17,11 @@ from research_loop.modular.runtime import AuditAuthority, AuditVerifier, RunSess
 KEYS = {"audit-a": b"a" * 32, "audit-b": b"b" * 32}
 
 
-def session_at(path, *, outcome="positive", slots=("final",)):
+def session_at(path, *, outcome="positive", slots=("final",), modules=("M1", "M2", "M3")):
     identity = DataIdentity("blade", "fixture", "source-a", "v1", "split", "train")
     task = BladeAdapter().prepare(identity, {"task_id": "fixture", "dataset_id": "fixture-data",
         "research_question": "Does the fixture change?", "data_schema": [{"name": "x"}]})
-    session = RunSession(task, package_digest="package", arm=default_compatibility("base").arm(["M1", "M2", "M3"]),
+    session = RunSession(task, package_digest="package", arm=default_compatibility("base").arm(modules),
         objective=FrozenRecord.from_dict({"question": "Does the fixture change?", "primary_endpoint": "difference"}),
         slots=slots, execution_limit=1, sidecar=path, verifier=AuditVerifier(KEYS), required_audit=("measurement",))
     data = path / "public.csv"
@@ -38,6 +38,27 @@ def session_at(path, *, outcome="positive", slots=("final",)):
 def final_candidate(session, execution, outcome="positive"):
     return FrozenRecord.from_dict({"objective_digest": session.objective.content_hash, "outcome": outcome,
         "evidence_ids": [execution.content_hash], "conclusion": "fixture observation", "programme_complete": False})
+
+
+@pytest.mark.parametrize("modules", [("M1",), ("M1", "M2")])
+def test_invoke_respects_m2_control_but_withdrawal_still_blocks_scientific_final(tmp_path, modules):
+    session, execution, receipts = session_at(tmp_path / "run", modules=modules)
+    session.admit(execution.content_hash, receipts)
+    root = session.admission_roots[execution.content_hash]
+    bindings = {"task": session.task.identity.task_id, "objective": session.objective.content_hash}
+    claim = session.claims.create("caller-supported claim", subject_bindings=bindings)
+    session.claims.apply(claim.claim_id, {"supports": [root], "refutes": [], "subject_bindings": bindings}, expected_revision=0)
+    session.evidence.withdraw(root, "caller withdraws the supporting observation")
+    candidate = final_candidate(session, execution)
+    seen = []
+    session.invoke("final", lambda request: seen.append(request) or candidate, instruction="Assess current material.")
+    current = session.claims.claims()[0]
+    if "M2" in modules:
+        assert not current.support_roots and current.needs_review and current.revision == 2
+    else:
+        assert current.support_roots == (root,) and not current.needs_review and current.revision == 1
+    assert "mode" not in seen[0].data()["context"]
+    assert session.finish(candidate).data()["decision"] == "blocked"
 
 
 @pytest.mark.parametrize("outcome", ["positive", "negative"])

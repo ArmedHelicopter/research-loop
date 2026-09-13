@@ -41,9 +41,9 @@ def setup(fault=None):
 def requests(runtime): return [FrozenRecord(line).data()['data']['request'] for line in runtime.trace_path.read_text(encoding='utf-8').splitlines() if FrozenRecord(line).data()['stage']=='model_request']
 def events(runtime): return [FrozenRecord(line).data() for line in runtime.trace_path.read_text(encoding='utf-8').splitlines()]
 def test_q16_q17_full_compiled_grid_uses_actual_material_without_blind_leaks(tmp_path,monkeypatch):
- compiled,tasks=setup(); monkeypatch.setitem(panel_runner.DRIVERS,'Q1.6',Q16WithdrawalDriver(admission_port=admission)); monkeypatch.setitem(panel_runner.DRIVERS,'Q1.7',Q17TimeInformationDriver(admission_port=admission)); runtimes=[]; seen=[]; traced=[]
+ compiled,tasks=setup(); runtimes=[]; seen=[]; traced=[]
  for n,cell in enumerate(compiled.panel.cells):
-  result=panel_runner.run_train_cell(cell,task=tasks[cell.identity.benchmark],scenario=compiled.scenarios[cell.key],package=compiled.packages[cell.runtime_arm.content_hash],objective=FrozenRecord.from_dict({'objective':'withdrawal'}),sidecar=tmp_path/str(n),model=model,audit_verifier=AUDIT); assert result.runtime.status=='succeeded'; assert result.call_plan.data()['model_calls']==3; runtimes.append(result.runtime); seen += requests(result.runtime); traced.append((cell,events(result.runtime)))
+  result=panel_runner.run_train_cell(cell,task=tasks[cell.identity.benchmark],scenario=compiled.scenarios[cell.key],package=compiled.packages[cell.runtime_arm.content_hash],objective=FrozenRecord.from_dict({'objective':'withdrawal'}),sidecar=tmp_path/str(n),model=model,audit_verifier=AUDIT,history_admission_port=admission); assert result.runtime.status=='succeeded'; assert result.call_plan.data()['model_calls']==3; runtimes.append(result.runtime); seen += requests(result.runtime); traced.append((cell,events(result.runtime)))
  assert PanelReceiptVerifier().verify(compiled.panel,tuple(runtimes)).decision=='engineering_verified'
  assert {FrozenRecord.from_dict(row['data']['response']).data()['mechanism_judgment']['decision'] for _cell,rows in traced for row in rows if row['stage']=='model_response' and 'mechanism_judgment' in FrozenRecord.from_dict(row['data']['response']).data()} == {'positive','negative','unknown'}
  assert all(r['module_context']['panel_cell'].keys()=={'schema','cell_digest'} for r in seen)
@@ -61,7 +61,7 @@ def test_q16_q17_full_compiled_grid_uses_actual_material_without_blind_leaks(tmp
 
  encoded='\n'.join(FrozenRecord.from_dict(r).encoded for r in seen)
  assert all(label not in encoded for label in ('replacement','high_score','irrelevant','causal'))
- assert 'evidence_sufficient' not in encoded
+ assert 'evidence_sufficient' not in encoded and '"mode"' not in encoded
  assert all(marker not in encoded for marker in ('arm_id','enabled_modules','frozen_control','controller_input','candidate_package','package_digest','package_record','package_changes','"variant"','"m1"','"m2"','"m3"'))
  for r in seen:
   if r['slot']=='initial':

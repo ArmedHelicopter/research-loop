@@ -89,7 +89,7 @@ def _run_grid(tmp_path: Path, monkeypatch, coverage: str):
         runtimes.append(run.runtime)
         assert run.runtime.status == "succeeded" and run.call_plan.data()["model_calls"] == 3
     assert PanelReceiptVerifier().verify(compiled.panel, tuple(runtimes)).decision == "engineering_verified"
-    return requests
+    return requests, compiled.panel.cells
 
 
 def _by_binding(rows, slot):
@@ -102,7 +102,13 @@ def _claims(context):
 
 @pytest.mark.parametrize("coverage", ["Q1.1", "Q1.2"])
 def test_full_public_grid_uses_phase_bound_material_and_real_m2_m3_state(tmp_path: Path, monkeypatch, coverage: str):
-    requests = _run_grid(tmp_path, monkeypatch, coverage)
+    requests, cells = _run_grid(tmp_path, monkeypatch, coverage)
+    cell_modules = {FrozenRecord.from_dict(cell.data()).content_hash: cell.runtime_arm.data()['enabled'] for cell in cells}
+    def mode(row, module):
+        return 'enabled' if module in cell_modules[row['module_context']['panel_cell']['cell_digest']] else 'frozen_control'
+    for row in requests:
+        for marker in ('"m2"', '"m3"', '"mode"', '"candidate_package"', '"arm_id"'):
+            assert marker not in canonical(row)
     assert all(row["task"]["identity"]["benchmark"] in {"blade", "discoverybench"} for row in requests)
     assert all(row["module_context"]["panel_cell"].keys() == {"schema", "cell_digest"} for row in requests)
     if coverage == "Q1.1":
@@ -115,7 +121,7 @@ def test_full_public_grid_uses_phase_bound_material_and_real_m2_m3_state(tmp_pat
             assert material["phase"] == "before" and "CURRENT-SENTINEL" not in canonical(material)
             assert row["module_context"]["public_record_digest"] == FrozenRecord.from_dict(material["public_record"]).content_hash
             assert row["module_context"]["admission_receipt"]["record_digest"] == row["module_context"]["public_record_digest"]
-            paired.setdefault((row["task"]["identity"]["task_id"], material["historical_summary"]), {})[row["module_context"]["m3"]] = material["public_record"]
+            paired.setdefault((row["task"]["identity"]["task_id"], material["historical_summary"]), {})[mode(row, "M3")] = material["public_record"]
         for pair in paired.values():
             assert pair["enabled"] == pair["frozen_control"]
         for binding, row in second.items():
@@ -124,17 +130,15 @@ def test_full_public_grid_uses_phase_bound_material_and_real_m2_m3_state(tmp_pat
             assert row["module_context"]["public_record_digest"] == FrozenRecord.from_dict(material["public_record"]).content_hash
             assert material["public_record"] == final[binding]["module_context"]["history_material"]["public_record"]
             assert row["module_context"]["admission_receipt"]["record_digest"] == row["module_context"]["public_record_digest"]
-            paired.setdefault((row["task"]["identity"]["task_id"], material["historical_summary"]), {})[row["module_context"]["m3"] + "-current"] = material["public_record"]
+            paired.setdefault((row["task"]["identity"]["task_id"], material["historical_summary"]), {})[mode(row, "M3") + "-current"] = material["public_record"]
         for pair in paired.values():
             assert pair["enabled-current"] == pair["frozen_control-current"]
         for binding, before_row in first.items():
             after_row = second[binding]
-            if before_row["module_context"]["m3"] == "enabled":
-                assert before_row["context"]["mode"] == after_row["context"]["mode"] == "candidate"
+            if mode(before_row, "M3") == "enabled":
                 assert "BEFORE-SENTINEL" in canonical(before_row["context"])
                 assert "CURRENT-SENTINEL" in canonical(after_row["context"])
             else:
-                assert before_row["context"]["mode"] == after_row["context"]["mode"] == "baseline"
                 assert before_row["context"]["entries"] == after_row["context"]["entries"]
                 assert before_row["module_context"]["context_material"] == after_row["module_context"]["context_material"]
     else:
@@ -149,9 +153,9 @@ def test_full_public_grid_uses_phase_bound_material_and_real_m2_m3_state(tmp_pat
         for binding, row in second.items():
             material = row["module_context"]["history_material"]
             assert material["phase"] == "current" and "POST-" in canonical(material) and material["transition"]["action"] == "replace_public_measurement"
-            if row["module_context"]["m3"] == "frozen_control":
+            if mode(row, "M3") == "frozen_control":
                 assert row["module_context"]["reconstructed_context"] == first[binding]["module_context"]["claim_context"]
-        enabled_first = [row for row in first.values() if row["module_context"]["m2"] == "enabled" and row["module_context"]["m3"] == "enabled"]
+        enabled_first = [row for row in first.values() if mode(row, "M2") == "enabled" and mode(row, "M3") == "enabled"]
         summary = next(row for row in enabled_first if row["module_context"]["history_material"]["pre_transition_summary"] == "PRE-SUMMARY-ONLY-SENTINEL")
         registered = next(row for row in enabled_first if row["module_context"]["history_material"]["pre_transition_summary"] == "PRE-REGISTERED-SENTINEL")
         withdrawn = next(row for row in enabled_first if row["module_context"]["history_material"]["pre_transition_summary"] == "PRE-WITHDRAW-SENTINEL")

@@ -175,11 +175,13 @@ from research_loop.modular.q4_panel_drivers import Q41IndependenceDriver, Q42Rol
 from research_loop.modular.history_panel_drivers import Q11HistoryDriver, Q12DependencyDriver, AdmissionPort
 from research_loop.modular.pressure_panel_driver import Q21PressureDriver
 from research_loop.modular.support_panel_drivers import Q13RepresentationDriver, Q14SupportDriver
+from research_loop.modular.withdrawal_panel_drivers import Q16WithdrawalDriver, Q17TimeInformationDriver
 
 
 DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12DependencyDriver(),
     "Q1.3": Q13RepresentationDriver(), "Q1.4": Q14SupportDriver(),
-    "Q1.5": Q15HistoryReviewDriver(), "Q2.1": Q21PressureDriver(), "Q3.1": Q31PredictionDriver(),
+    "Q1.5": Q15HistoryReviewDriver(), "Q1.6": Q16WithdrawalDriver(), "Q1.7": Q17TimeInformationDriver(),
+    "Q2.1": Q21PressureDriver(), "Q3.1": Q31PredictionDriver(),
     "Q4.1": Q41IndependenceDriver(), "Q4.2": Q42RoleDriver(), "Q4.3": Q43ReviewDriver(),
     "Q4.4": Q44CounterexampleDriver(), "Q4.5": Q45SelfCorrectionDriver()}
 
@@ -213,7 +215,8 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
     if history_admission_port is not None:
         if not callable(history_admission_port):
             raise ContractError("history admission must be a caller-owned verification port")
-        if isinstance(driver, (Q11HistoryDriver, Q12DependencyDriver, Q13RepresentationDriver, Q14SupportDriver)):
+        if isinstance(driver, (Q11HistoryDriver, Q12DependencyDriver, Q13RepresentationDriver, Q14SupportDriver,
+                               Q16WithdrawalDriver, Q17TimeInformationDriver)):
             driver = replace(driver, admission_port=history_admission_port)
     if not isinstance(package, CandidatePackage) or package.digest != cell.package_digest:
         raise ContractError("package digest differs from panel cell")
@@ -266,7 +269,7 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
         "cell_key": list(cell.key), "scenario_digest": scenario.content_hash,
         "enabled_modules": cell.runtime_arm.data()["enabled"], "package_digest": package.digest,
         "package_record_digest": package.record.content_hash, "package_changes": package.record.data()["changes"],
-        "package_binding": "candidate_package_record_in_model_context", "schema_slots": list(driver.slots), "slots": list(session.slots),
+        "package_binding": "frozen_session_lock_only_unless_explicitly_deployed", "schema_slots": list(driver.slots), "slots": list(session.slots),
         "workflow_stage": stage.detail.data()["stage"], "execution_attempts": session._attempts,
         "model_calls": session._next_call, "docker_execution": driver.docker_execution,
         "actual_token_measurement": "not_measured"})

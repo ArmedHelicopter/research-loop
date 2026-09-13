@@ -31,6 +31,10 @@ class ContextBundle:
             "budget_bytes": self.budget_bytes, "ephemeral": self.ephemeral,
         }
 
+    def public_data(self) -> dict[str, Any]:
+        """Expose the constructed material without the controller's arm mode."""
+        return {key: value for key, value in self.data().items() if key not in {"mode", "ephemeral"}}
+
     @property
     def content_hash(self) -> str:
         return digest(self.data())

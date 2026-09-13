@@ -187,9 +187,9 @@ def _final(workflow: ModularWorkflow, cell: PanelCell, scenario: FrozenRecord, m
         "Return the bounded train-only candidate. Copy required_objective_digest exactly; "
         "use outcome unknown, no evidence_ids, and programme_complete false."), baseline_summary=baseline_summary,
         module_context=FrozenRecord.from_dict({"panel_cell": _binding(cell, scenario),
-            "candidate_package": package.record.data(), "required_objective_digest": workflow.session.objective.content_hash,
+            "required_objective_digest": workflow.session.objective.content_hash,
             "history_material": _request_material(material, record, phase="current"),
-            "reconstructed_context": context.data(), **_admission_context(record, receipt)}))
+            "reconstructed_context": context.public_data(), **_admission_context(record, receipt)}))
 
 
 @dataclass(frozen=True)
@@ -212,7 +212,7 @@ class Q11HistoryDriver:
         first = workflow.invoke_model("history_baseline", model, instruction="Assess the typed public history without treating it as truth.",
             baseline_summary=summary, module_context=FrozenRecord.from_dict({
                 "panel_cell": _binding(cell, scenario), "history_material": _request_material(material, before_record, phase="before"),
-                "context_material": before.data(), "m3": "enabled" if enabled else "frozen_control",
+                "context_material": before.public_data(),
                 **_admission_context(before_record, before_receipt)}))
         current_receipt = _admit(self.admission_port, workflow.session.task, current_record, purpose="Q1.1 current record")
         workflow.session.evidence.withdraw(before_root.root_id, material.data()["transition"]["reason"])
@@ -230,7 +230,7 @@ class Q11HistoryDriver:
         second = workflow.invoke_model("history_rebuilt", model, instruction="Assess the current typed public material after the declared context operation.",
             baseline_summary=summary, module_context=FrozenRecord.from_dict({
                 "panel_cell": _binding(cell, scenario), "history_material": _request_material(material, current_record, phase="current"),
-                "context_material": after.data(), "m3": "enabled" if enabled else "frozen_control",
+                "context_material": after.public_data(),
                 **_admission_context(current_record, current_receipt)}))
         final = _final(workflow, cell, scenario, model, package, material, current_record, after, summary, current_receipt)
         _candidate(final, workflow.session.objective)
@@ -271,8 +271,7 @@ class Q12DependencyDriver:
         first = workflow.invoke_model("upstream_before_withdrawal", model,
             instruction="Assess typed upstream public material and its declared dependency state.", baseline_summary=pre_summary,
             module_context=FrozenRecord.from_dict({"panel_cell": _binding(cell, scenario),
-                "history_material": _request_material(material, before_record, phase="before"), "claim_context": before.data(),
-                "m2": "enabled" if m2 else "frozen_control", "m3": "enabled" if m3 else "frozen_control",
+                "history_material": _request_material(material, before_record, phase="before"), "claim_context": before.public_data(),
                 **_admission_context(before_record, before_receipt)}))
         revisions = ()
         if m2 and material.data()["withdrawal"]:
@@ -292,8 +291,7 @@ class Q12DependencyDriver:
             instruction="Assess the current typed dependency material after any upstream withdrawal.", baseline_summary=pre_summary,
             module_context=FrozenRecord.from_dict({"panel_cell": _binding(cell, scenario),
                 "history_material": _request_material(material, current_record, phase="current"),
-                "reconstructed_context": after.data(), "withdrawal_applied": bool(revisions),
-                "m2": "enabled" if m2 else "frozen_control", "m3": "enabled" if m3 else "frozen_control",
+                "reconstructed_context": after.public_data(), "withdrawal_applied": bool(revisions),
                 **_admission_context(current_record, None)}))
         final = _final(workflow, cell, scenario, model, package, material, current_record, after, pre_summary, None)
         _candidate(final, workflow.session.objective)

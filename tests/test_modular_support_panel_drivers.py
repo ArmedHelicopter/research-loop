@@ -55,47 +55,52 @@ def test_shared_bundle_full_grid_exercises_actual_support_state(tmp_path: Path, 
     package=CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze([task.identity for task in tasks.values()]), changes={"prompt":{"instructions":"support"}}, search_cost=0)
     control=FrozenRecord.from_dict({"source":"synthetic","always_enabled":True}); grids=obligation_grids((coverage,),baseline_digest="b"*64,p0_control=control); packages={arm.content_hash:package for grid in grids.values() for arm in executable_arms(grid).values()}
     compiled=compile_train_panel(stage="support",scope_ids=(coverage,),tasks=tuple(tasks.values()),evidence_by_task=bundles,budget=FrozenRecord.from_dict({"calls":3}),baseline_digest="b"*64,p0_control=control,packages_by_arm=packages,scorer=FrozenRecord.from_dict({"identity":"none"}),acceptance_criteria=FrozenRecord.from_dict({"scope":"engineering"}),replicates=("r1",))
+    cell_modules = {FrozenRecord.from_dict(cell.data()).content_hash: cell.runtime_arm.data()['enabled'] for cell in compiled.panel.cells}
+    def mode(row):
+        return 'enabled' if 'M2' in cell_modules[row['module_context']['panel_cell']['cell_digest']] else 'frozen_control'
     rows=[]; runtime=[]
     for n,cell in enumerate(compiled.panel.cells):
         result=panel_runner.run_train_cell(cell,task=tasks[cell.identity.benchmark],scenario=compiled.scenarios[cell.key],package=compiled.packages[cell.runtime_arm.content_hash],objective=FrozenRecord.from_dict({"q":coverage}),sidecar=tmp_path/str(n),model=_model(rows),audit_verifier=AUDIT,history_admission_port=_admit)
         assert result.runtime.status=="succeeded" and result.call_plan.data()["model_calls"]==3; runtime.append(result.runtime)
     assert PanelReceiptVerifier().verify(compiled.panel,tuple(runtime)).decision=="engineering_verified"
     assert all(set(row["module_context"]["panel_cell"])=={"schema","cell_digest"} for row in rows)
+    for row in rows:
+        for marker in ('"m2"', '"ledger_mode"', '"mode"', '"candidate_package"', '"arm_id"'):
+            assert marker not in canonical(row)
     if coverage=="Q1.3":
         initial=[row for row in rows if row["slot"]=="representation_initial"]
         later=[row for row in rows if row["slot"]=="representation_next"]
         assert all("Q13-SAME-SOURCE" in canonical(row["module_context"]["public_support_state"]) and len(row["module_context"]["public_support_state"]["records"])==1 for row in initial)
         assert all({record["representation"] for record in row["module_context"]["public_support_state"]["records"]}=={"raw"} for row in initial)
         assert all(len(row["module_context"]["public_support_state"]["records"])==2 for row in later)
-        on=[row for row in initial if row["module_context"]["ledger_mode"]=="deduplicated"]
-        assert all(row["module_context"]["context_material"]["mode"]=="candidate" for row in on)
+        on=[row for row in initial if mode(row)=="enabled"]
         assert all(len([entry for entry in row["module_context"]["context_material"]["entries"]["entries"] if entry["kind"]=="evidence"])==1 for row in on)
         paired={}
         for row in later:
             key=(row["task"]["identity"]["task_id"], row["module_context"]["public_support_state"]["records"][1]["representation"])
-            paired.setdefault(key,{})[row["module_context"]["ledger_mode"]]=row["module_context"]["public_support_state"]["records"]
-        assert all(pair["deduplicated"]==pair["frozen_non_deduplicated_control"] for pair in paired.values())
+            paired.setdefault(key,{})[mode(row)]=row["module_context"]["public_support_state"]["records"]
+        assert all(pair["enabled"]==pair["frozen_control"] for pair in paired.values())
     else:
         initial=[row for row in rows if row["slot"]=="support_initial"]; after=[row for row in rows if row["slot"]=="support_rechecked"]
         assert all("withdraw_actions" not in row["module_context"]["public_support_state"] for row in initial)
         one_rows=[row for row in after if len(row["module_context"]["public_support_state"]["sources"])==1 and row["module_context"]["public_support_state"]["withdraw_actions"]]
-        assert {row["module_context"]["m2"] for row in one_rows}=={"enabled","frozen_control"}
+        assert {mode(row) for row in one_rows}=={"enabled","frozen_control"}
         assert all(set(row["module_context"]["public_support_state"]["sources"])=={"b"} for row in one_rows)
-        one=next(row for row in one_rows if row["module_context"]["m2"]=="enabled")
+        one=next(row for row in one_rows if mode(row)=="enabled")
         assert set(one["module_context"]["public_support_state"]["sources"])=={"b"}
         assert "Q14-A" not in canonical(one["module_context"]["public_support_state"])
         assert any(entry["kind"]=="claim" and entry["support_roots"] for entry in next(row for row in initial if row["module_context"]["panel_cell"]==one["module_context"]["panel_cell"])["module_context"]["context_material"]["entries"]["entries"])
         one_entries=one["module_context"]["reconstructed_context"]["entries"]["entries"]
         assert any(entry["kind"]=="evidence" and "Q14-B" in canonical(entry) for entry in one_entries)
         assert any(entry["kind"]=="claim" and entry["needs_review"] and len(entry["support_roots"])==1 for entry in one_entries)
-        copied=next(row for row in initial if row["module_context"]["m2"]=="enabled" and len(row["module_context"]["public_support_state"]["sources"])==2 and "Q14-COPY" in canonical(row["module_context"]["public_support_state"]))
+        copied=next(row for row in initial if mode(row)=="enabled" and len(row["module_context"]["public_support_state"]["sources"])==2 and "Q14-COPY" in canonical(row["module_context"]["public_support_state"]))
         assert len([entry for entry in copied["module_context"]["context_material"]["entries"]["entries"] if entry["kind"]=="evidence"])==1
-        all_withdrawn=next(row for row in after if row["module_context"]["m2"]=="enabled" and not row["module_context"]["public_support_state"]["sources"])
+        all_withdrawn=next(row for row in after if mode(row)=="enabled" and not row["module_context"]["public_support_state"]["sources"])
         assert {action["source_key"] for action in all_withdrawn["module_context"]["public_support_state"]["withdraw_actions"]}=={"a","b"}
         assert any(entry["kind"]=="claim" and entry["needs_review"] and not entry["support_roots"] for entry in all_withdrawn["module_context"]["reconstructed_context"]["entries"]["entries"])
         paired={}
         for row in after:
-            paired.setdefault(canonical(row["module_context"]["public_support_state"]),set()).add(row["module_context"]["m2"])
+            paired.setdefault(canonical(row["module_context"]["public_support_state"]),set()).add(mode(row))
         assert all(modes=={"enabled","frozen_control"} for modes in paired.values())
 
 def test_rejects_unbound_receipts_before_model_calls(tmp_path: Path, monkeypatch):

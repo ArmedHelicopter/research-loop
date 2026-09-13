@@ -84,14 +84,18 @@ def test_q15_complete_grid_binds_order_visibility_sealed_content_final_and_m5_co
             assert expected_summary not in initial["context"].__str__()
             assert expected_summary not in initial["task"].__str__()
             assert expected_summary not in FrozenRecord.from_dict(initial).encoded
-        assert initial["context"]["mode"] == "evidence_only"
+        assert set(initial["context"]) == {"identity", "records", "withdrawn"}
+        for request in requests:
+            for marker in ('"mode"', '"arm_id"', '"variant"', '"m5_enabled"', '"control"',
+                           '"candidate_package"', '"driver_stage"', '"summary_visibility"'):
+                assert marker not in FrozenRecord.from_dict(request).encoded
         if enabled:
-            assert initial["module_context"]["sealed"] is True
+            assert "sealed" not in initial["module_context"]
             assert followup["module_context"]["sealed_submission"]["reviewer_id"] == "q15-evidence-reviewer"
             assert final["module_context"]["q15_review"]["initial_submission"]["response"]["assessment"] == "concern"
             assert final["module_context"]["q15_review"]["post_reveal_revision"]["response"]["assessment"] == "concern"
         else:
-            assert initial["module_context"]["control"] == followup["module_context"]["control"] == "M5"
+            assert "control" not in initial["module_context"] and "control" not in followup["module_context"]
             assert followup["module_context"]["sealed_submission"] is None
             assert final["module_context"]["q15_review"]["initial_submission"] is None
     verdict = PanelReceiptVerifier().verify(frozen, tuple(run.runtime for run in runs))

@@ -137,8 +137,8 @@ def _resolve(resolver, task: PublicTask, scenario: FrozenRecord, experiment_id: 
 def _final(workflow, cell, scenario, model, package, material: Mapping[str, Any], context, receipt_context: Mapping[str, Any]):
     result = workflow.invoke_model("final", model, instruction="Return a bounded train-only candidate: unknown, no evidence_ids, and programme_complete false.",
         baseline_summary=canonical(material), module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell),
-            "candidate_package": package.record.data(), "required_objective_digest": workflow.session.objective.content_hash,
-            "public_support_state": dict(material), "reconstructed_context": context.data(), **dict(receipt_context)}))
+            "required_objective_digest": workflow.session.objective.content_hash,
+            "public_support_state": dict(material), "reconstructed_context": context.public_data(), **dict(receipt_context)}))
     body = result.data()
     if body.get("objective_digest") != workflow.session.objective.content_hash or body.get("outcome") != "unknown" or body.get("evidence_ids") != [] or body.get("programme_complete") is not False:
         raise ContractError("support driver final candidate is invalid")
@@ -161,13 +161,13 @@ class Q13RepresentationDriver:
             workflow.session.claims.apply(claim.claim_id, {"supports": [roots[0].root_id], "refutes": [], "subject_bindings": {"task": workflow.session.task.identity.task_id}}, expected_revision=0)
         before = _context(workflow, enabled=enabled, summary=canonical(material["source"]))
         initial = {"schema": "q13-public-projection-v2", "phase": "before", "records": [raw.data()], "claim_statement": material["claim_statement"]}
-        first = workflow.invoke_model("representation_initial", model, instruction="Assess the supplied public support material.", baseline_summary=canonical(material["source"]), module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "public_support_state": initial, "ledger_mode": "deduplicated" if enabled else "frozen_non_deduplicated_control", "context_material": before.data(), "record_digest": raw.content_hash, **({"admission_receipt": raw_receipt} if raw_receipt else {})}))
+        first = workflow.invoke_model("representation_initial", model, instruction="Assess the supplied public support material.", baseline_summary=canonical(material["source"]), module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "public_support_state": initial, "context_material": before.public_data(), "record_digest": raw.content_hash, **({"admission_receipt": raw_receipt} if raw_receipt else {})}))
         if enabled:
             receipt = _admit(self.admission_port, workflow.session.task, record); roots.append(_append(workflow.session, record, receipt)); after = _context(workflow, enabled=True, summary=canonical(material["source"]))
         else:
             after = before
         projection = {"schema": "q13-public-projection-v2", "phase": "after", "records": [raw.data(), record.data()], "claim_statement": material["claim_statement"]}
-        second = workflow.invoke_model("representation_next", model, instruction="Assess the current supplied public support material.", baseline_summary=canonical(material["source"]), module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "public_support_state": projection, "ledger_mode": "deduplicated" if enabled else "frozen_non_deduplicated_control", "context_material": after.data(), "record_digest": record.content_hash, **({"admission_receipt": receipt} if receipt else {})}))
+        second = workflow.invoke_model("representation_next", model, instruction="Assess the current supplied public support material.", baseline_summary=canonical(material["source"]), module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "public_support_state": projection, "context_material": after.public_data(), "record_digest": record.content_hash, **({"admission_receipt": receipt} if receipt else {})}))
         final = _final(workflow, cell, scenario, model, package, projection, after, {"record_digest": record.content_hash, **({"admission_receipt": receipt} if receipt else {})})
         return workflow._trace("operation_m2_root_dedup" if enabled else "operation_m2_control", "executed", root_ids=[item.root_id for item in roots]), final, (first, second, final)
 
@@ -186,7 +186,7 @@ class Q14SupportDriver:
             workflow.session.claims.apply(claim.claim_id, {"supports": sorted({item.root_id for item in roots.values()}), "refutes": [], "subject_bindings": {"task": workflow.session.task.identity.task_id}}, expected_revision=0)
         before = _context(workflow, enabled=enabled, summary=material["claim_statement"])
         initial = {"schema": "q14-public-support-projection-v1", "phase": "before", "sources": {key: item.data() for key, item in records.items()}, "claim_statement": material["claim_statement"]}
-        first = workflow.invoke_model("support_initial", model, instruction="Assess only the supplied public support records.", baseline_summary=material["claim_statement"], module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "public_support_state": initial, "context_material": before.data(), "m2": "enabled" if enabled else "frozen_control"}))
+        first = workflow.invoke_model("support_initial", model, instruction="Assess only the supplied public support records.", baseline_summary=material["claim_statement"], module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "public_support_state": initial, "context_material": before.public_data()}))
         if enabled:
             for action in material["withdraw_actions"]: workflow.session.evidence.withdraw(roots[action["source_key"]].root_id, action["reason"])
             revisions = workflow.session.claims.refresh_after_withdrawal()
@@ -202,7 +202,7 @@ class Q14SupportDriver:
             if canonical(record.data()["root_material"]) not in withdrawn_roots
         }
         post = {"schema": "q14-public-support-projection-v1", "phase": "after", "sources": surviving, "withdraw_actions": material["withdraw_actions"], "claim_statement": material["claim_statement"]}
-        second = workflow.invoke_model("support_rechecked", model, instruction="Assess the current supplied support records after the declared source actions.", baseline_summary=material["claim_statement"], module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "public_support_state": post, "reconstructed_context": after.data(), "m2": "enabled" if enabled else "frozen_control"}))
+        second = workflow.invoke_model("support_rechecked", model, instruction="Assess the current supplied support records after the declared source actions.", baseline_summary=material["claim_statement"], module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "public_support_state": post, "reconstructed_context": after.public_data()}))
         final = _final(workflow, cell, scenario, model, package, post, after, {})
         return workflow._trace("operation_m2_support_recheck" if enabled else "operation_m2_control", "executed", revised_claims=[item.claim.data() for item in revisions], surviving_sources=sorted(surviving)), final, (first, second, final)
 
