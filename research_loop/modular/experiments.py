@@ -54,7 +54,8 @@ def registry() -> Mapping[str, ExperimentSpec]:
 class ControllerInputs:
     task: FrozenRecord; evidence: FrozenRecord; budget: FrozenRecord
 
-def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs) -> FrozenRecord:
+def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs,
+             p0_fixed_control: FrozenRecord | None = None) -> FrozenRecord:
     if variant not in spec.variants: raise ContractError("variant is not registered")
     base={"task":inputs.task.content_hash,"evidence":inputs.evidence.content_hash,"budget":inputs.budget.content_hash}
     if spec.experiment_id in {"Q1.1", "Q1.2"}:
@@ -82,8 +83,11 @@ def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs) ->
         from research_loop.modular.scenarios_protocol import protocol_injection
         injection=protocol_injection(spec.experiment_id, variant)
     elif spec.experiment_id in {"Q2.2", "Q6.4"}:
-        from research_loop.modular.scenarios_scoring import scoring_injection
-        injection=dict(scoring_injection(spec.experiment_id, variant))
+        from research_loop.modular.semantic_panel_drivers import semantic_panel_injection
+        if not isinstance(p0_fixed_control, FrozenRecord):
+            raise ContractError("semantic scenario requires the compiled P0 fixed control")
+        injection=dict(semantic_panel_injection(spec.experiment_id, variant, task=inputs.task,
+            evidence=inputs.evidence, p0_fixed_control=p0_fixed_control))
     elif spec.experiment_id in {"Q6.1", "Q6.2", "Q6.3", "Q6.5", "Q6.6"}:
         from research_loop.modular.scenarios_improvement import improvement_injection
         injection=improvement_injection(spec.experiment_id, variant).data()

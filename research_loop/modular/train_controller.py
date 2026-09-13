@@ -84,6 +84,11 @@ class FrozenTrainControllerConfig:
                     raise ContractError("task objectives must be nonempty")
         for name in ("budget", "p0_control", "scorer", "acceptance_criteria"):
             _record(data[name], name)
+        if set(scope) & {"Q2.2", "Q6.4"}:
+            from research_loop.modular.p0_panel import fixed_control_design
+            expected_grid = fixed_control_design(data["baseline_digest"], _record(data["p0_control"], "P0 control").content_hash)
+            if any(value.get("p0_fixed_control") != expected_grid.data() for value in data["evidence_by_task"].values()):
+                raise ContractError("semantic material must bind the controller's frozen P0 control")
         if (not isinstance(data["baseline_digest"], str) or len(data["baseline_digest"]) != 64
                 or any(char not in "0123456789abcdef" for char in data["baseline_digest"])):
             raise ContractError("baseline digest must be frozen")
@@ -227,7 +232,8 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                 package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
                 sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
                 model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
-                audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port)
+                audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+                p0_control=compiled.p0_control)
             runtimes.append(result.runtime)
             attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.runtime))
             attempt["runtime_trace_digests"].append(result.runtime.trace_digest)

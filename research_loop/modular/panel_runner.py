@@ -180,6 +180,7 @@ from research_loop.modular.audit_panel_drivers import Q23AuditFaultDriver, Q24Au
 from research_loop.modular.prediction_panel_drivers import Q32JointSeparateDriver, Q53DedupDriver
 from research_loop.modular.polarity_goal_panel_drivers import Q25EvidencePolarityDriver, Q26GoalLockDriver
 from research_loop.modular.scheduler_panel_drivers import M8SchedulerDriver
+from research_loop.modular.semantic_panel_drivers import Q22CompletionSemanticsDriver, Q64ScorerRepairDriver
 
 
 DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12DependencyDriver(),
@@ -187,6 +188,7 @@ DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12Dep
     "Q1.5": Q15HistoryReviewDriver(), "Q1.6": Q16WithdrawalDriver(), "Q1.7": Q17TimeInformationDriver(),
     "Q2.1": Q21PressureDriver(), "Q2.3": Q23AuditFaultDriver(), "Q2.4": Q24AuditPairDriver(),
     "Q2.5": Q25EvidencePolarityDriver(), "Q2.6": Q26GoalLockDriver(),
+    "Q2.2": Q22CompletionSemanticsDriver(), "Q6.4": Q64ScorerRepairDriver(),
     "Q3.1": Q31PredictionDriver(), "Q3.2": Q32JointSeparateDriver(), "Q5.3": Q53DedupDriver(),
     "Q3.3": M8SchedulerDriver("Q3.3"), "Q3.4": M8SchedulerDriver("Q3.4"), "Q3.5": M8SchedulerDriver("Q3.5"),
     "Q4.1": Q41IndependenceDriver(), "Q4.2": Q42RoleDriver(), "Q4.3": Q43ReviewDriver(),
@@ -198,7 +200,8 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
                    model: ModelPort, audit_verifier: AuditVerifier,
                    scorer: ScorerPort | None = None, history_admission_port: AdmissionPort | None = None,
                    audit_receipt_port: AuditReceiptPort | None = None,
-                   shadow_execution_port: ShadowExecutionPort | None = None) -> TrainCellResult:
+                   shadow_execution_port: ShadowExecutionPort | None = None,
+                   p0_control: FrozenRecord | None = None) -> TrainCellResult:
     """Run one predeclared training cell and return only trace-bound receipts.
 
     Validation is deliberately absent.  Driver selection is closed, so fixture
@@ -221,6 +224,11 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
     driver = DRIVERS.get(cell.coverage_id)
     if driver is None:
         raise ContractError("registered scenario has no production panel driver")
+    if p0_control is not None:
+        if not isinstance(p0_control, FrozenRecord):
+            raise ContractError("P0 control must be a caller-trusted frozen record")
+        if isinstance(driver, (Q22CompletionSemanticsDriver, Q64ScorerRepairDriver)):
+            driver = replace(driver, expected_p0_control_digest=p0_control.content_hash)
     if history_admission_port is not None:
         if not callable(history_admission_port):
             raise ContractError("history admission must be a caller-owned verification port")

@@ -4,10 +4,9 @@ from pathlib import Path
 
 import pytest
 
-from research_loop.modular import panel_plan, panel_runner
+from research_loop.modular import panel_runner
 from research_loop.modular.benchmarks import BladeAdapter, DiscoveryBenchAdapter
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask
-from research_loop.modular.experiments import scenario as base_scenario
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.panel_plan import compile_train_panel, executable_arms, obligation_grids
 from research_loop.modular.panel_receipts import PanelReceiptVerifier
@@ -66,12 +65,6 @@ def _compile(monkeypatch):
     control = P0_CONTROL
     grids = obligation_grids(("Q2.2", "Q6.4"), baseline_digest="s" * 64, p0_control=control)
     bundles = {task.content_hash: _bundle(task, grids["Q2.2"]) for task in tasks.values()}
-    def scenario_with_bundle(spec, variant, *, inputs):
-        body = base_scenario(spec, variant, inputs=inputs).data()
-        body["controller_input"] = dict(semantic_panel_injection(spec.experiment_id, variant, task=inputs.task,
-            evidence=inputs.evidence, p0_fixed_control=grids[spec.experiment_id]))
-        return FrozenRecord.from_dict(body)
-    monkeypatch.setattr(panel_plan, "scenario", scenario_with_bundle)
     local = dict(panel_runner.DRIVERS); install_drivers(local, expected_p0_control_digest=control.content_hash); monkeypatch.setattr(panel_runner, "DRIVERS", local)
     package = CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze([task.identity for task in tasks.values()]),
         changes={"prompt": {"instructions": "synthetic semantic evaluation"}}, search_cost=0)
