@@ -17,7 +17,7 @@ from test_modular_combination_benchmark_driver import _model, IMAGE
 def _panel(root, obligation):
     sources = _sources([]); _, _, packets, config, _, _ = _fixture(root, sources)
     design = registered_design(obligation, config.data()['baseline_digest'])
-    packages = config.data()['packages_by_arm']; materials = config.data()['materials_by_task']
+    legacy_packages = config.data()['packages_by_arm']; materials = config.data()['materials_by_task']
     cells, scenarios = [], {}
     arms = {r['id']: FrozenRecord.from_dict(r['arm']) for r in design.data()['cells'] if r['status'] == 'executable'}
     for packet in packets:
@@ -26,9 +26,10 @@ def _panel(root, obligation):
                 'obligation_id':obligation, 'design_digest':design.content_hash, 'task_digest':packet.task.content_hash,
                 'replicate':'r1', 'material_digest':FrozenRecord.from_dict(materials[packet.task.content_hash]).content_hash})
             cell = PanelCell(obligation, packet.task.identity, 'r1', 'combination', arm_id, arm, packet.task.content_hash,
-                scenario.content_hash, FrozenRecord.from_dict(packages[arm.content_hash]).content_hash,
+                scenario.content_hash, FrozenRecord.from_dict(next(iter(legacy_packages.values()))).content_hash,
                 FrozenRecord.from_dict(config.data()['scorer']).content_hash)
             cells.append(cell); scenarios[cell.key] = scenario
+    packages = {arm.content_hash: next(iter(legacy_packages.values())) for arm in arms.values()}
     panel = CombinationPanel('synthetic-state-prediction', 'train', packets[0].task.identity.split_id, obligation,
         'interaction_on_scale', design, FrozenRecord.from_dict({'schema':'combination-package-bundle-v1','packages':packages}),
         FrozenRecord.from_dict(config.data()['acceptance_criteria']), tuple(cells))
