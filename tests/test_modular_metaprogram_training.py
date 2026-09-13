@@ -233,3 +233,37 @@ def test_foreign_builder_return_is_archived_and_never_reaches_solver(tmp_path,mo
         returned=next(e['data'] for e in phase if e['stage']=='builder_returned')
         assert returned['candidate']['changes']['prompt']['instructions']=='foreign'
         assert not (cell.root/'solver').exists()
+
+
+def test_history_annotations_cannot_duplicate_one_actual_source_in_the_whitelist(tmp_path,monkeypatch):
+    plan,args,seen,_=fixture(tmp_path,monkeypatch)
+    source=plan.histories[0]
+    duplicate=FrozenTrainHistory.freeze(source.task,source.trace_path,expected_sha256=sha(source.trace_path),
+        source_notes=FrozenRecord.from_dict({'different_note':'does not create another source'}))
+    with pytest.raises(ContractError,match='history.*whitelist|duplicate'):
+        FrozenMetaTrainingPlan.freeze(targets=plan.targets,histories=(*plan.histories,duplicate),parent=plan.parent,
+            fixed_builder=plan.fixed_builder,baseline_digest=plan.record.data()['baseline_digest'],
+            p0_control=FrozenRecord.from_dict(plan.record.data()['p0_control']),image=IMAGE,
+            model_config=FrozenRecord.from_dict(plan.record.data()['model_config']))
+    assert not seen
+
+
+def test_original_driver_failure_from_invalid_response_is_retained_as_failed_history(tmp_path,monkeypatch):
+    plan,args,seen,_=fixture(tmp_path,monkeypatch)
+    target=plan.targets[0]
+    def invalid_analysis(request): return FrozenRecord.from_dict({'analysis':'','program':''})
+    port=model_port(tmp_path/'invalid-history-port',monkeypatch,max_calls=2,
+        schemas={k:v for k,v in metaprogram_schemas().items() if k!='builder_proposal'},response_factory=invalid_analysis)
+    source_root=tmp_path/'invalid-history';source_root.mkdir()
+    broker=DockerExecutionBroker([tmp_path/'export',source_root])
+    actual=run_benchmark_solve(task=target.task,public_inputs=target.public_inputs,image=IMAGE,
+        package_digest=plan.parent.digest,arm=FrozenRecord.from_dict(plan.record.data()['cells'][0]['arm']),
+        objective=target.objective,sidecar=source_root/'run',broker=broker,model=port,
+        audit_verifier=AuditVerifier({'unused-a':b'a'*32,'unused-b':b'b'*32}))
+    assert actual.status=='analysis_rejected' and len(port.ledger['calls'])==1
+    path=actual.session.sidecar/'trace.jsonl'
+    history=FrozenTrainHistory.freeze(target.task,path,expected_sha256=sha(path))
+    observation=history.binding.data()['public']['observations']
+    assert observation['terminal']=='driver_failure' and observation['response_contract_valid']is False
+    assert observation['analysis']is None and observation['execution_status']is None
+    assert len(history.binding.data()['response_digests'])==1 and not seen

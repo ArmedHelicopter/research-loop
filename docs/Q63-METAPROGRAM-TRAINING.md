@@ -18,6 +18,10 @@ original solver lock, task/domain/package/objective, paired original model
 requests and responses, program/execution binding, and a real terminal. It
 supports the existing analysis_program/final_answer solver trace contract.
 Completed failures are eligible history; running or truncated traces are not.
+A response rejected by the original driver remains a failed historical
+observation, with its raw response bound in the journal and unavailable public
+fields projected as null. Changing source notes cannot duplicate one actual
+journal path in the whitelist.
 Source notes retain caller provenance and known limitations without qualifying
 them as scientific facts. These checks authenticate caller-frozen journal
 structure, not provider authenticity, scientific truth or source independence.

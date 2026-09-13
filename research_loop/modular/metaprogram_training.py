@@ -72,6 +72,7 @@ def _history_material(task, path, expected_sha256, source_notes):
         raise ContractError('history must be an original bounded benchmark-solver lock')
     _digest(lock.get('package_digest'),'history package')
     objective=FrozenRecord.from_dict(lock['objective']); requests=[];responses=[];analysis=None;answer=None;execution=None
+    response_contract_valid=True
     for row in rows:
         if row['stage']=='model_request':
             request=row['data']['request']
@@ -81,20 +82,32 @@ def _history_material(task, path, expected_sha256, source_notes):
         elif row['stage']=='model_response':
             response=FrozenRecord.from_dict(row['data']['response']);responses.append(response.content_hash)
             if analysis is None:
-                _program_from(response);analysis=response
+                analysis=response
+                try: _program_from(response)
+                except ContractError:
+                    if rows[-1]['stage']!='driver_failure' or row!=rows[-2]: raise
+                    response_contract_valid=False
             else:
-                _candidate_from(response,objective);answer=response
+                answer=response
+                try: _candidate_from(response,objective)
+                except ContractError:
+                    if rows[-1]['stage']!='driver_failure' or row!=rows[-2]: raise
+                    response_contract_valid=False
         elif row['stage']=='execution_result':
             execution=ExecutionReceipt.parse(row['data']['receipt'])
-            if analysis is None or (execution.artifact is not None and execution.artifact.sha256!=_sha(
+            if analysis is None or not response_contract_valid or (execution.artifact is not None and execution.artifact.sha256!=_sha(
                     analysis.data()['program'].replace('\n',os.linesep).encode('utf-8'))):
                 raise ContractError('history execution does not bind its actual model program')
     if rows[-1]['stage'] not in {'final_decision','model_failure','driver_failure','controller_failure','execution_terminal','execution_failure'}:
         raise ContractError('history is unfinished; it cannot optimize a running source')
     if rows[-1]['stage']=='final_decision' and answer is None:
         raise ContractError('history final lacks its original model response')
-    observations={'analysis':analysis.data()['analysis'] if analysis else None,
-        'conclusion':answer.data()['conclusion'] if answer else None,
+    def public_text(response,key):
+        value=response.data().get(key) if response is not None else None
+        return value if isinstance(value,str) and value.strip() and len(value.encode())<=_MAX_TEXT else None
+    observations={'analysis':public_text(analysis,'analysis'),
+        'conclusion':public_text(answer,'conclusion'),
+        'response_contract_valid':response_contract_valid if responses else None,
         'execution_status':execution.status if execution else None,
         'stdout':execution.record.data().get('stdout','') if execution else None,
         'terminal':rows[-1]['stage']}
@@ -198,7 +211,8 @@ def _plan_material(targets,histories,parent,fixed_builder,baseline_digest,p0_con
         raise ContractError('Q6.3 requires unique train targets from both registered benchmarks')
     if (not isinstance(histories,tuple) or not histories or len(histories)>128
             or any(not isinstance(h,FrozenTrainHistory) for h in histories)
-            or len({h.binding.content_hash for h in histories})!=len(histories)):
+            or len({h.binding.content_hash for h in histories})!=len(histories)
+            or len({h.trace_path.resolve() for h in histories})!=len(histories)):
         raise ContractError('history must be a nonempty frozen whitelist without duplicates')
     if len(canonical([h.binding.data()['public'] for h in histories]).encode())>1048576:
         raise ContractError('frozen history public context budget exceeded')
