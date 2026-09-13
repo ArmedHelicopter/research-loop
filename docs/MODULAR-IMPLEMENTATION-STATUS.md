@@ -3,7 +3,39 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current state/retrieval integration checkpoint (2026-09-13)
+## Current state/exploration integration checkpoint (2026-09-13)
+
+Source `694d126` passed 40 root integration checks with all 512 frozen
+source/document files unchanged. M1×M7, M2×M7 and M3×M7 now have complete
+prospective TRAIN controllers and independent primary scorer processes.
+The full 24-cell grid used 48 scripted model calls, 48 source qualifications,
+72 actual Docker executions (48 auxiliary jobs and 24 solver executions),
+and 24 independent scores. M3 keeps M2 as fixed background.
+
+The actual M7 permit and resource budget select a restricted range probe;
+the useful ordinary arm runs dispersion analysis. Both consume the same two
+literal jobs/cost units under serial FIFO; M8 is not enabled here. Actual job
+outputs and reconstructed state reach the same solver. Replay binds source
+qualification, permit/selection, state/phase journals, complete bounded Docker
+argv, model requests, literal programs and scoring. Repaired-chain attacks
+pass the generic trace checker and are then rejected by family replay.
+
+The isolated source passed 88 checks. Source/phase/scorer failures, unknown
+model usage and M1 qualification drift retain all planned rows. Root source
+review found no concrete blocking defect, with selected-cell adversarial
+coverage and synthetic solver/scorer limitations recorded. The 14-file source
+archive has 13 indexed artifacts and 3,072 verified ZIP members. Root closure
+and source review are under
+`results/modular-engineering-20260913/state-exploration-root/`.
+
+Coverage is now 19/36 pair controllers and 2/5 triple controllers. These are
+engineering checks. Actual TRAIN effects, calibration, other combinations,
+the final frozen bundle and validation acceptance remain unfinished. No actual
+model generation or validation access occurred in this checkpoint.
+Grok transport/accounting work is recorded separately in
+[the transport contract](GROK-CLI-TRANSPORT.md).
+
+## Prior state/retrieval integration checkpoint (2026-09-13)
 
 Source `a98f580` passed 50 root checks with all 504 frozen source/document files
 unchanged. M1×M6, M2×M6 and M3×M6 now have complete prospective TRAIN

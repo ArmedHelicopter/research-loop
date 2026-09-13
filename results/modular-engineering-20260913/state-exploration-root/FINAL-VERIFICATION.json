@@ -1,0 +1,34 @@
+{
+  "source_commit": "694d126c129c38aada59610af313cd7d508dbabc",
+  "source_files": 512,
+  "source_unchanged": true,
+  "junit": {
+    "tests": 40,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "junit_sha256": "e108895827cc1dfe24a18d16f564d44c40e7c50a30b335914b625abf01513b40",
+  "coverage": "19 of 36 pair controllers; 2 of 5 triple controllers; synthetic engineering only",
+  "complete_grid": {
+    "cells": 24,
+    "scripted_model_calls": 48,
+    "actual_docker": 72,
+    "actual_primary_scorer_process_calls": 24,
+    "source_qualifications": 48
+  },
+  "root_scope": "full prospective grid; repaired-chain replay; complete Docker argv; strict family and existing prediction scorer scopes; label isolation",
+  "source_archive": {
+    "files": 14,
+    "indexed": 13,
+    "zip_members": 3072
+  },
+  "limitations": [
+    "synthetic solver/source/scorer responses",
+    "selected-cell attack coverage",
+    "no throughput estimate under concurrent workload"
+  ],
+  "new_generation_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}

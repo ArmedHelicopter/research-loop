@@ -41,3 +41,11 @@ tests used zero generation calls. Evidence is retained under
 `results/modular-engineering-20260913/grok-contract-root/`. Credential homes
 and raw private ACP streams are excluded. No benchmark data or validation was
 opened in these checks.
+
+Read-only inspection of the original r5 raw stream then exposed an unsupported
+primitive `const` schema in the inherited validator. The Grok-only repair at
+`5007d26` passed 46 protocol/label checks and leaves legacy Codex schemas
+unchanged. Replaying the same original bytes now rejects only the nonempty
+runtime toolset and retains all reported usage/accounting. Both inspection
+results are preserved under `results/modular-engineering-20260913/grok-const-repair/`;
+no model call was repeated and no private raw stream was copied there.
