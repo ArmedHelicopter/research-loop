@@ -84,7 +84,9 @@ class Authority:
             repaired = matches and d['requires_repair'] and d['repairable']
             facts = {'block_status': 'cleared' if repaired else 'blocked' if d['requires_repair'] else 'unknown',
                 'resource_request_verified': diagnostic['requirements']['execution_units'] < body['original_requirements']['execution_units'],
-                'diagnostic_answer': 'repair_supported' if repaired else 'inconclusive' if not d['data_known'] else 'no_repair'}
+                'diagnostic_answer': 'repair_supported' if repaired else 'inconclusive' if not d['data_known'] else 'no_repair',
+                'scientific_status': 'conflict' if conflict else 'data_unknown' if not d['data_known'] else
+                    'qualified_' + outcome if qualified else 'measurement_repair' if d['requires_repair'] else 'unknown'}
             for aid, key in self.keys.items():
                 audits.append(AuditAuthority(aid, key).issue(identity=DataIdentity.parse(body['identity']),
                     objective_digest=body['objective_digest'], execution_digest=body['execution_digest'], state=state,
@@ -142,7 +144,7 @@ def _item(task, csv, authority, *, data_known=True, qualified=False, conflict=Fa
     return row
 
 
-def _compile(tmp_path, monkeypatch, *, hard='none'):
+def _compile(tmp_path, monkeypatch, *, hard='none', repairable=True):
     csv = tmp_path / 'data.csv'; csv.write_text('x\n-2\n0\n')
     tasks = {name: _task(name) for name in ('blade', 'discoverybench')}; authority = Authority(); bundles = {}
     for task in tasks.values():
@@ -150,7 +152,7 @@ def _compile(tmp_path, monkeypatch, *, hard='none'):
             'measurement_repair': _item(task, csv, authority, repair=True, hard=hard),
             'valid_negative': _item(task, csv, authority, qualified=True, hard=hard),
             'conflict': _item(task, csv, authority, conflict=True, hard=hard)}
-        q72 = {name: _item(task, csv, authority, kind=kind, repair=name != 'value', hard=hard if hard != 'none' else 'contract' if name == 'deterministic' else 'none')
+        q72 = {name: _item(task, csv, authority, kind=kind, repair=name != 'value', repairable=repairable, hard=hard if hard != 'none' else 'contract' if name == 'deterministic' else 'none')
                for name, kind in zip(Q72_VARIANTS, ('deterministic_block', 'evidence_insufficient', 'value_doubt'))}
         bundles[task.content_hash] = freeze_exploration_panel_bundle(task, q71=q71, q72=q72, budget=FrozenRecord.from_dict(BUDGET))
     def inject(spec, variant, *, inputs):
@@ -189,7 +191,6 @@ def _model(seen, *, overclaim=False):
                 'exploration_allowed': obs['host_diagnostic_allowed'], 'evidence_qualified': gate['admitted'] if gate else obs['execution'] is not None and obs['execution']['exit_code'] == 0,
                 'rationale': 'Only available operation results update the observed judgement.'})
         p0 = row['module_context']['p0_evidence']
-        positive = overclaim or p0 and p0['admitted']
         return FrozenRecord.from_dict({'objective_digest': row['module_context']['required_objective_digest'],
             'outcome': p0['outcome'] if p0 and p0['admitted'] else 'positive' if overclaim else 'invalid' if p0 and p0['state']['validity'] == 'invalid' else 'unknown',
             'evidence_ids': p0['evidence_ids'] if p0 else [], 'conclusion': 'Bounded synthetic observation; no programme completion.', 'programme_complete': False})
@@ -235,6 +236,9 @@ def test_full_52_cell_real_docker_grid_keeps_prospective_and_actual_denominators
             assert events[-1]['data']['scientific_validated'] is True
         if cell.coverage_id == 'Q7.1' and cell.variant != 'valid_negative':
             assert events[-1]['data']['scientific_validated'] is False
+        if cell.coverage_id == 'Q7.1' and 'M1' in cell.runtime_arm.data()['enabled']:
+            expected_status = {'low_cost': 'unknown', 'data_unknown': 'data_unknown', 'measurement_repair': 'measurement_repair', 'valid_negative': 'qualified_negative', 'conflict': 'conflict'}[cell.variant]
+            assert obs['scientific_status'] == expected_status
         if 'M7' in cell.runtime_arm.data()['enabled']:
             assert obs['selected_diagnostic_id'] == 'small_probe'
             assert obs['exploration_transition']['original_prerequisite_promoted'] is False
@@ -248,10 +252,11 @@ def test_full_52_cell_real_docker_grid_keeps_prospective_and_actual_denominators
 
 
 @pytest.mark.parametrize('hard', ['authorization', 'resource'])
-def test_legitimate_hard_missing_conditions_remain_in_both_arm_denominators(tmp_path, monkeypatch, hard):
+@pytest.mark.parametrize('scope,variant,count', [('Q7.1', 'low_cost', 4), ('Q7.2', 'deterministic', 2)])
+def test_legitimate_hard_missing_conditions_remain_in_both_arm_denominators(tmp_path, monkeypatch, hard, scope, variant, count):
     compiled, tasks, authority, bundles = _compile(tmp_path, monkeypatch, hard=hard)
-    cells = [cell for cell in compiled.panel.cells if cell.identity.benchmark == 'blade' and cell.coverage_id == 'Q7.2' and cell.variant == 'deterministic']
-    assert len(cells) == 2
+    cells = [cell for cell in compiled.panel.cells if cell.identity.benchmark == 'blade' and cell.coverage_id == scope and cell.variant == variant]
+    assert len(cells) == count
     for index, cell in enumerate(cells):
         seen = []; result = _run(compiled, tasks, cell, tmp_path / str(index), seen)
         assert result.runtime.status == 'succeeded' and result.call_plan.data()['model_calls'] == 3
@@ -260,6 +265,16 @@ def test_legitimate_hard_missing_conditions_remain_in_both_arm_denominators(tmp_
         assert obs['host_diagnostic_allowed'] is False
         if obs['exploration_transition']:
             assert obs['exploration_transition']['decision'] == 'block'
+
+
+def test_actual_diagnostic_does_not_clear_unrepaired_deterministic_block(tmp_path, monkeypatch):
+    compiled, tasks, authority, bundles = _compile(tmp_path, monkeypatch, repairable=False)
+    cell = next(cell for cell in compiled.panel.cells if cell.coverage_id == 'Q7.2' and cell.variant == 'deterministic' and 'M7' in cell.runtime_arm.data()['enabled'])
+    seen = []; result = _run(compiled, tasks, cell, tmp_path / 'run', seen)
+    assert result.runtime.status == 'succeeded' and result.call_plan.data()['execution_attempts'] == 1
+    transition = seen[1]['module_context']['observation']['exploration_transition']
+    assert transition['decision'] == 'block' and transition['observed_block_status'] == 'blocked'
+    assert transition['prior_evidence_digest'] != transition['diagnostic_evidence_digest']
 
 
 @pytest.mark.parametrize('fault', ['transport', 'source', 'subject', 'bad_signature', 'audit_subject'])

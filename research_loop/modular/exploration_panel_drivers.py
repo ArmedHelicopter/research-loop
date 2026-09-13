@@ -177,12 +177,14 @@ def _verified(raw, subject, *, observation):
     if set(cost) != {'unit', 'units'} or cost['unit'] != 'verifier_units' or (cost['units'] is not None and (type(cost['units']) is not int or cost['units'] < 0)):
         raise ContractError('verifier cost invalid')
     facts = row['facts']
-    expected_facts = ({'block_status', 'resource_request_verified', 'diagnostic_answer'} if observation else
+    expected_facts = ({'block_status', 'resource_request_verified', 'diagnostic_answer', 'scientific_status'} if observation else
                       {'safe', 'authorized', 'resources_available', 'diagnostic_inputs_available', 'scientific_data_status', 'block_status'})
     if set(facts) != expected_facts or facts['block_status'] not in ('blocked', 'cleared', 'unknown'):
         raise ContractError('authority facts invalid')
     if observation:
         strict_bool(facts['resource_request_verified'], 'resource request verified')
+        if facts['scientific_status'] not in ('unknown', 'data_unknown', 'measurement_repair', 'qualified_negative', 'qualified_positive', 'conflict'):
+            raise ContractError('scientific observation status invalid')
         if facts['diagnostic_answer'] not in ('repair_supported', 'no_repair', 'inconclusive') or not isinstance(row['audits'], list) or len(row['audits']) != 2:
             raise ContractError('diagnostic result or audit pair incomplete')
     else:
@@ -303,6 +305,14 @@ def _run(driver, workflow, *, cell, scenario, model):
             objective_digest=workflow.session.objective.content_hash, execution=execution, required_audit=workflow.session.required_audit).data()
         if post['facts']['resource_request_verified'] is not True:
             raise ContractError('actual diagnostic resource request not verified')
+        scientific_status = post['facts']['scientific_status']
+        if scientific_status.startswith('qualified_'):
+            outcome = scientific_status.removeprefix('qualified_')
+            if (verified['state']['validity'] != 'valid' or verified['outcome'] != outcome
+                    or verified['state']['support'] != {'positive': 'supported', 'negative': 'refuted'}[outcome]):
+                raise ContractError('qualified status contradicts scientific audit')
+        elif verified['state']['validity'] == 'valid':
+            raise ContractError('unqualified or conflicting status cannot admit scientific validity')
         admission = workflow.session.admit(execution.content_hash, audits).data()
     else:
         workflow.session._record('exploration_opportunity_blocked', {'preflight_digest': pre_digest,
@@ -340,6 +350,7 @@ def _run(driver, workflow, *, cell, scenario, model):
     observation = {'execution': _execution_public(execution) if execution else None,
         'host_diagnostic_allowed': host_allowed, 'selected_diagnostic_id': selected,
         'scientific_data_status': facts['scientific_data_status'], 'prospective': proposal,
+        'scientific_status': post['facts']['scientific_status'] if post and 'M1' in workflow.enabled else None,
         'evidence_gate': evidence_gate, 'exploration_transition': transition}
     stage = workflow._trace('stage_3' if 'M7' in workflow.enabled else 'operation_exploration_control', 'executed',
         prospective_digest=prospective.content_hash, preflight_digest=pre_digest, observation_digest=post_digest,
