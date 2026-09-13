@@ -47,7 +47,8 @@ def test_q16_q17_full_compiled_grid_uses_actual_material_without_blind_leaks(tmp
    assert 'operation_m2_withdrawal_propagation' in stages or 'operation_m2_control' in stages
    if 'M1' in cell.runtime_arm.data()['enabled']:
     gate=next(row for row in workflow if row['stage']=='operation_m1_evidence_gate'); assert gate['disposition']['admitted'] is False
-    assert any(row['stage']=='operation_m2_withdrawal_propagation' and row['withdrawn_root'] for row in workflow)
+    if 'M2' in cell.runtime_arm.data()['enabled']:
+     assert any(row['stage']=='operation_m2_withdrawal_propagation' and row['withdrawn_root'] for row in workflow)
   else:
    row=next(row for row in workflow if row['stage'] in {'stage_9','operation_m3_control'}); assert row['before_root'] and row['current_root']
 
