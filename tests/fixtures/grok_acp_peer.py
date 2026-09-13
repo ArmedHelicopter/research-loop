@@ -5,9 +5,12 @@ from pathlib import Path
 import subprocess
 import sys
 import time
+import uuid
 
 scenario, log_path = sys.argv[1:]
 sid = '00000000-0000-4000-8000-000000000001'
+if scenario.startswith('diagnostic'):
+    sid = str(uuid.uuid5(uuid.NAMESPACE_URL, log_path))
 bill_count = 0
 
 
@@ -62,6 +65,22 @@ for line in sys.stdin:
             result = {'rule': {'enabled': True}}
     elif method == 'session/prompt':
         pid = req['params']['_meta']['promptId']
+        answer = {'ok': True}
+        if scenario.startswith('diagnostic'):
+            from tests.helpers.calibration_pilot_fixture import fixture_target
+            messages = json.loads(req['params']['prompt'][0]['text'])['messages']
+            schema_fields = req['params']['_meta']['outputSchema']['properties']
+            if 'state' in schema_fields:
+                material = json.loads(messages[1]['content'])
+                benchmark = 'blade' if 'cvars' in material['dimensions'] else 'discoverybench'
+                answer = fixture_target(material['candidate']['answer'], benchmark)
+            else:
+                candidate = json.loads(messages[1]['content'].rsplit('\nANONYMOUS_CANDIDATE=', 1)[1])
+                benchmark = 'blade' if 'cvars' in schema_fields else 'discoverybench'
+                target = fixture_target(candidate['answer'], benchmark)
+                dims = target['dimensions'] or {k: 1 for k in schema_fields if k != 'reason'}
+                answer = {k: v * (2 if benchmark == 'blade' else 1) for k, v in dims.items()}
+                answer['reason'] = 'synthetic fixture'
         if scenario in ('queue', 'queue_wrong', 'queue_extra', 'queue_unknown'):
             send({'method': '_x.ai/queue/changed', 'params': {'sessionId': sid, 'entries': [
                 {'id': pid, 'version': 1, 'kind': 'prompt', 'text': 'PRIVATE PROMPT DISPLAY', 'position': 0}]}})
@@ -83,7 +102,7 @@ for line in sys.stdin:
         if scenario == 'server_request':
             send({'id': 999, 'method': 'session/request_permission', 'params': {'secret': 'PRIVATE'}})
         event('agent_thought_chunk', content={'type': 'text', 'text': 'PRIVATE REASONING'})
-        event('agent_message_chunk', content={'type': 'text', 'text': '{"ok":true}'})
+        event('agent_message_chunk', content={'type': 'text', 'text': json.dumps(answer)})
         inter = {'input_tokens': 8, 'output_tokens': 2, 'cache_read_input_tokens': 2,
                  'cache_creation_input_tokens': 0, 'reasoning_tokens': 0}
         if scenario == 'optional_usage':
@@ -96,6 +115,8 @@ for line in sys.stdin:
                  'cachedReadTokens': 2, 'cacheCreationTokens': 0, 'reasoningTokens': 0,
                  'modelCalls': 1, 'apiDurationMs': 20, 'costUsdTicks': 123}
         usage = {**usage, 'numTurns': 1, 'modelUsage': {'grok-4.6-build': dict(usage)}}
+        if scenario == 'diagnostic_unknown_main':
+            usage['usageIsIncomplete'] = True
         if scenario == 'rpc_error_usage':
             usage['usageIsIncomplete'] = True
             send({'id': req['id'], 'error': {'code': -32000, 'message': 'PRIVATE ERROR',
@@ -113,7 +134,7 @@ for line in sys.stdin:
             usage['outputTokens'] = 129; usage['totalTokens'] = 139
         event('turn_completed', prompt_id=pid, stop_reason='end_turn', usage=usage)
         meta = {'sessionId': sid, 'promptId': pid, 'requestId': pid, 'modelId': 'grok-4.6',
-                'usage': usage, 'structuredOutput': {'ok': True}, 'totalTokens': 12}
+                'usage': usage, 'structuredOutput': answer, 'totalTokens': 12}
         if scenario == 'prompt_binding':
             meta['promptId'] = 'PRIVATE WRONG'
         if scenario == 'result_session':

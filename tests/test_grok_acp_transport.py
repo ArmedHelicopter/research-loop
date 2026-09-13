@@ -19,6 +19,40 @@ SCHEMA = {'type': 'object', 'properties': {'ok': {'type': 'boolean', 'enum': [Tr
           'required': ['ok'], 'additionalProperties': False}
 
 
+def test_diagnostic_entry_uses_separate_explicit_caps_without_changing_smoke(tmp_path, monkeypatch):
+    import research_loop.modular.grok_acp_transport as module
+    configs = []
+    def launch(**kwargs):
+        configs.append(kwargs['expected_config'])
+        return [sys.executable, str(PEER), 'ok', str(tmp_path / 'peer.jsonl')], dict(os.environ)
+    monkeypatch.setattr(module, 'native_launch', launch)
+    result = module.run_native_diagnostic(opportunity_contract=module.DIAGNOSTIC_OPPORTUNITY_CONTRACT,
+        executable='synthetic', cwd=tmp_path, private_home=tmp_path / 'home',
+        private_profile=tmp_path / 'profile', private_dir=tmp_path / 'private',
+        reservation=tmp_path / 'reservation.json', frozen_files={str(PEER): digest(PEER.read_bytes())},
+        prompt='synthetic prompt', schema=SCHEMA, main_output_cap=512,
+        observed_main_token_cap=262144, input_byte_cap=200000)
+    assert result.receipt.data()['accepted']
+    assert result.receipt.data()['requested_max_completion_tokens'] == 512
+    assert configs == [module.diagnostic_config(512)]
+    assert module.SAFE_CONFIG.count('max_completion_tokens = 128') == 2
+    assert configs[0].count('max_completion_tokens = 512') == 2
+
+
+def test_native_nullable_diagnostic_dimensions_leave_legacy_schema_unchanged():
+    from research_loop.modular.grok_acp_transport import validate_acp_schema
+    from research_loop.modular.model_port import _validate_schema
+    from research_loop.ontology import ContractError
+    schema = {'type': 'object', 'properties': {'dimensions': {'type': ['object', 'null'],
+        'properties': {'value': {'type': 'number', 'minimum': 0, 'maximum': 1}},
+        'required': ['value'], 'additionalProperties': False}},
+        'required': ['dimensions'], 'additionalProperties': False}
+    validate_acp_schema(schema, {'dimensions': None})
+    validate_acp_schema(schema, {'dimensions': {'value': .5}})
+    with pytest.raises(ContractError): _validate_schema(schema, {'dimensions': None})
+    with pytest.raises(ContractError): validate_acp_schema(schema, {'dimensions': {'value': 2}})
+
+
 def invoke(tmp_path, scenario='ok', timeout=5):
     log = tmp_path / 'peer.jsonl'
     client = SinglePromptACP([sys.executable, str(PEER), scenario, str(log)],

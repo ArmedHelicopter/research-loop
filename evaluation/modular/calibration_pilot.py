@@ -112,11 +112,11 @@ def slot_id(identity_digest, kind):
     return digest({'identity_digest': pin(identity_digest), 'kind': kind})
 
 
-def validate_manifest(manifest: FrozenRecord):
+def validate_grid(manifest: FrozenRecord, *, schema):
     if not isinstance(manifest, FrozenRecord):
         raise ContractError('pilot manifest must be immutable')
     body = exact(manifest.data(), ('schema', 'tasks', 'slots', 'policy', 'authorities', 'input_pins', 'validation_eligible'))
-    if body['schema'] != PILOT_SCHEMA or body['validation_eligible'] is not False:
+    if body['schema'] != schema or body['validation_eligible'] is not False:
         raise ContractError('pilot is diagnostic only')
     if not isinstance(body['tasks'], list) or len(body['tasks']) != 4:
         raise ContractError('pilot requires exactly four train identities')
@@ -164,6 +164,11 @@ def validate_manifest(manifest: FrozenRecord):
         pin(value)
     if any(body['input_pins'].get(name) != value for name, value in runtime_code_pins().items()):
         raise ContractError('pilot running implementation differs from frozen code pins')
+    return body, tasks, slots
+
+
+def validate_manifest(manifest: FrozenRecord):
+    body, tasks, slots = validate_grid(manifest, schema=PILOT_SCHEMA)
     policy = exact(body['policy'], ('ports', 'max_calls', 'max_tokens', 'max_microusd'))
     exact(policy['ports'], ROLES)
     for name in ('max_calls', 'max_tokens', 'max_microusd'):
@@ -365,12 +370,19 @@ def blind_request(manifest, slot, task, material):
 
 
 class DiagnosticPilot:
+    manifest_validator = staticmethod(validate_manifest)
+    budget_type = PortBudget
+    observation_schema = 'four-train-diagnostic-observation-v1'
+
+    def augment_report(self, report):
+        return report
+
     def __init__(self, *, manifest, resolver: FrozenTrainReferenceResolver, materials: Mapping[str, FrozenRecord],
                  keys: Mapping[str, bytes], journal_path: Path, capacity_port: Callable,
                  reviewer1: Callable, reviewer2: Callable, arbitrator: Callable, evaluator: Callable,
                  authority: DiagnosticAuthority, source_guard):
         self.manifest = manifest
-        self.body, self.tasks, self.slots = validate_manifest(manifest)
+        self.body, self.tasks, self.slots = self.manifest_validator(manifest)
         if not callable(source_guard):
             raise ContractError('pilot requires a caller source verification guard')
         if not isinstance(resolver, FrozenTrainReferenceResolver):
@@ -415,7 +427,7 @@ class DiagnosticPilot:
         self.journal.append('sources_verified', {'task_count': 4})
         self.materials, self.keys, self.resolver, self.authority = parsed, dict(keys), resolver, authority
         self.ports = {'reviewer1': reviewer1, 'reviewer2': reviewer2, 'arbitrator': arbitrator, 'evaluator': evaluator}
-        self.budget = PortBudget(manifest, self.journal, capacity_port=capacity_port, capacity_key=keys['capacity'], source_guard=source_guard)
+        self.budget = self.budget_type(manifest, self.journal, capacity_port=capacity_port, capacity_key=keys['capacity'], source_guard=source_guard)
         self.ran = False
 
     def _review(self, role, request, benchmark):
@@ -499,11 +511,11 @@ class DiagnosticPilot:
         report['material_review_target_disagreements'] = sum(
             decision['target'] is not None and decision['target'] != self.materials[sid]['expected']
             for sid, decision in decisions.items())
-        report.update({'schema': 'four-train-diagnostic-observation-v1', 'manifest_digest': self.manifest.content_hash,
+        report.update({'schema': self.observation_schema, 'manifest_digest': self.manifest.content_hash,
                        'review_decisions_digest': frozen_decisions.content_hash, 'budget': self.budget.data(),
                        'validation_eligible': False, 'calibration_eligible': False,
                        'official_metric_equivalence': 'not_established', 'scientific_validity': 'not_measured'})
-        result = self.authority.issue('diagnostic', self.manifest.content_hash, report)
+        result = self.authority.issue('diagnostic', self.manifest.content_hash, self.augment_report(report))
         self.journal.append('pilot_completed', {'receipt_digest': result.content_hash, 'evaluator_opportunities': 72})
         return result
 

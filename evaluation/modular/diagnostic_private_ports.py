@@ -51,11 +51,13 @@ def context_digest(role):
 
 class PrivateRequestRenderer:
     """Only a manifest-bound standard resolver can supply reviewer materials."""
+    manifest_validator = staticmethod(validate_manifest)
+
     def __init__(self, manifest, resolver):
         if not isinstance(resolver, FrozenTrainReferenceResolver):
             raise ContractError('private reviewer requires the standard train resolver')
         self.manifest = manifest
-        self.body, self.tasks, self.slots = validate_manifest(manifest)
+        self.body, self.tasks, self.slots = self.manifest_validator(manifest)
         self.resolver = resolver
 
     def _reference(self, task):

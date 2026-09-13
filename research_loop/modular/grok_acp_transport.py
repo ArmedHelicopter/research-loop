@@ -23,6 +23,36 @@ from research_loop.modular.model_port import _validate_schema
 from research_loop.ontology import ContractError
 
 MODEL = 'grok-4.6'
+
+
+def validate_acp_schema(schema, value):
+    """Native-only nullable-object support for diagnostic unknown judgments.
+
+    The legacy Codex schema validator and its admitted schema subset are unchanged.
+    """
+    if isinstance(schema, dict) and schema.get('type') == ['object', 'null']:
+        if (set(schema) != {'type', 'properties', 'required', 'additionalProperties'}
+                or not isinstance(schema['properties'], dict)
+                or not isinstance(schema['required'], list)
+                or set(schema['required']) != set(schema['properties'])
+                or schema['additionalProperties'] is not False
+                or any(child != {'type': 'number', 'minimum': 0, 'maximum': 1}
+                       for child in schema['properties'].values())):
+            raise ContractError('invalid nullable diagnostic dimensions schema')
+        if value is None:
+            return
+        schema = dict(schema, type='object')
+    if isinstance(schema, dict) and schema.get('type') == 'object' and isinstance(value, dict):
+        properties = schema.get('properties', {})
+        for key, child in properties.items():
+            if isinstance(child, dict) and child.get('type') == ['object', 'null'] and key in value:
+                validate_acp_schema(child, value[key])
+                properties = dict(properties)
+                properties[key] = {'type': 'null'} if value[key] is None else dict(child, type='object')
+        schema = dict(schema, properties=properties)
+    _validate_schema(schema, value)
+
+
 EXECUTABLE_SHA256 = 'bf43dc75f5478a106eab1e86d422c963e4dbe9666cf14dab363733d27bf1e672'
 DENIED_TOOLS = (
     'Agent', 'ask_user_question', 'enter_plan_mode', 'exit_plan_mode',
@@ -83,6 +113,12 @@ name = "xAI Official"
 git = "https://github.com/xai-org/plugin-marketplace.git"
 '''
 OPPORTUNITY_CONTRACT = 'main-and-initial-title-v2'
+DIAGNOSTIC_OPPORTUNITY_CONTRACT = 'diagnostic-main-and-initial-title-v1'
+
+
+def diagnostic_config(main_output_cap):
+    require(type(main_output_cap) is int and main_output_cap > 0, 'diagnostic_output_cap')
+    return SAFE_CONFIG.replace('max_completion_tokens = 128', f'max_completion_tokens = {main_output_cap}')
 
 
 def digest(data: bytes) -> str:
@@ -262,12 +298,24 @@ class SinglePromptACP:
     This engine alone is not an authentication or executable provenance gate.
     """
     def __init__(self, command, *, cwd, env, private_dir, reservation, frozen_files,
-                 timeout=60, max_total_tokens=20000):
+                 timeout=60, max_total_tokens=20000, main_output_cap=128,
+                 opportunity_contract=OPPORTUNITY_CONTRACT, input_byte_cap=None):
         require(0 < timeout <= 60, 'timeout_contract')
+        require(type(main_output_cap) is int and main_output_cap > 0
+                and type(max_total_tokens) is int and max_total_tokens > main_output_cap,
+                'main_token_bounds')
+        require(opportunity_contract in (OPPORTUNITY_CONTRACT, DIAGNOSTIC_OPPORTUNITY_CONTRACT),
+                'opportunity_contract_unapproved')
+        require(opportunity_contract != OPPORTUNITY_CONTRACT or main_output_cap == 128,
+                'smoke_output_cap_changed')
+        require(opportunity_contract != DIAGNOSTIC_OPPORTUNITY_CONTRACT
+                or (type(input_byte_cap) is int and input_byte_cap > 0), 'diagnostic_input_cap_missing')
         self.command = tuple(command); self.cwd = Path(cwd); self.env = dict(env)
         self.private = Path(private_dir); self.reservation = Path(reservation)
         self.frozen_files = dict(frozen_files)
         self.timeout = timeout; self.max_total_tokens = max_total_tokens
+        self.main_output_cap = main_output_cap; self.opportunity_contract = opportunity_contract
+        self.input_byte_cap = input_byte_cap
         self.called = False; self.sid = None; self.prompt_id = str(uuid.uuid4())
         self.inventory_sessions = []; self.seen_sessions = set(); self.text = []
         self.usage = None; self.response_usage = []; self.turns = 0
@@ -469,7 +517,7 @@ class SinglePromptACP:
         usage = self.usage
         require(usage is not None and usage['numTurns'] == 1 and usage['modelCalls'] == 1
                 and not usage['usageIsIncomplete'], 'usage_incomplete_or_extra_calls')
-        require(usage['outputTokens'] <= 128 and usage['totalTokens'] <= self.max_total_tokens,
+        require(usage['outputTokens'] <= self.main_output_cap and usage['totalTokens'] <= self.max_total_tokens,
                 'observed_token_limit')
         models = usage['modelUsage']
         require(len(models) == 1, 'accounting_model')
@@ -493,7 +541,7 @@ class SinglePromptACP:
         try:
             text = load_json(''.join(self.text))
             require(text == meta.get('structuredOutput'), 'structured_text_disagreement')
-            _validate_schema(schema, text)
+            validate_acp_schema(schema, text)
             require(isinstance(text, dict), 'structured_output_not_object')
         except (ValueError, ContractError, TypeError):
             raise Rejected('structured_output_invalid') from None
@@ -502,6 +550,8 @@ class SinglePromptACP:
     def invoke(self, prompt, schema):
         require(not self.called, 'single_invoke_only'); self.called = True
         require(isinstance(prompt, str) and prompt and isinstance(schema, dict), 'prompt_contract')
+        require(self.input_byte_cap is None or len(prompt.encode('utf-8')) <= self.input_byte_cap,
+                'diagnostic_input_bytes')
         self.private.mkdir(parents=True, exist_ok=False)
         self.deadline = time.monotonic() + self.timeout
         self.request_id = 0; self.queue = queue.Queue(); faults = []; response = None
@@ -621,9 +671,9 @@ class SinglePromptACP:
             'faults': list(dict.fromkeys(faults)), 'prompt_may_have_been_dispatched': self.sent,
             'prompt_requests_reserved': int(self.sent), 'session_id': self.sid,
             'prompt_id': self.prompt_id, 'requested_model': MODEL,
-            'requested_max_completion_tokens': 128, 'wire_output_cap_certified': False,
+            'requested_max_completion_tokens': self.main_output_cap, 'wire_output_cap_certified': False,
             'requested_max_retries': 0, 'requested_max_turns': 1,
-            'opportunity_contract': OPPORTUNITY_CONTRACT,
+            'opportunity_contract': self.opportunity_contract,
             'max_main_prompt_opportunities': 1, 'max_initial_title_opportunities': 1,
             'requested_initial_title_model': MODEL, 'requested_initial_title_output_cap': 100,
             'initial_title_internal_function': 'session_title',
@@ -643,11 +693,21 @@ class SinglePromptACP:
             'billing_before': self.pre, 'billing_after': self.post,
             'private_stream_sha256': digest((self.private / 'stdout.private.jsonl').read_bytes()),
             'source_manifest_sha256': digest(encoded(self.frozen_files))}
+        if self.opportunity_contract == DIAGNOSTIC_OPPORTUNITY_CONTRACT:
+            receipt['schema'] = 'grok-native-acp-diagnostic-receipt-v1'
+            receipt['diagnostic_binding'] = {
+                'prompt_sha256': digest(prompt.encode('utf-8')),
+                'schema_sha256': digest(encoded(schema)),
+                'response_sha256': response.content_hash if response is not None else None,
+                'reservation_sha256': digest(self.reservation.read_bytes()) if self.sent else None,
+                'source_manifest_sha256': digest(encoded(self.frozen_files)),
+                'input_byte_cap': self.input_byte_cap,
+                'observed_main_token_cap': self.max_total_tokens}
         (self.private / 'observer-receipt.json').write_bytes(encoded(receipt) + b'\n')
         return AcpResult(FrozenRecord.from_dict(receipt), response if not faults else None)
 
 
-def native_launch(*, executable, cwd, private_home, private_profile, frozen_files):
+def native_launch(*, executable, cwd, private_home, private_profile, frozen_files, expected_config=SAFE_CONFIG):
     """Prepare pinned native startup for read-only ACP investigation.
 
     The caller provisions the already-authorized native auth file without reading
@@ -657,7 +717,7 @@ def native_launch(*, executable, cwd, private_home, private_profile, frozen_file
     executable = Path(executable).resolve(); cwd = Path(cwd).resolve()
     home = Path(private_home).resolve(); user = Path(private_profile).resolve()
     require(digest(executable.read_bytes()) == EXECUTABLE_SHA256, 'executable_pin')
-    require((home / 'config.toml').read_text(encoding='utf-8') == SAFE_CONFIG, 'native_config_pin')
+    require((home / 'config.toml').read_text(encoding='utf-8') == expected_config, 'native_config_pin')
     require(set(p.name for p in home.iterdir()) == {'auth.json', 'config.toml'}, 'native_home_not_fresh')
     require(not any(cwd.iterdir()) and not any(user.iterdir()), 'native_context_not_empty')
     require(str(executable) in frozen_files and str(home / 'config.toml') in frozen_files,
@@ -690,3 +750,21 @@ def run_native(*, opportunity_contract, executable, cwd, private_home, private_p
         private_home=private_home, private_profile=private_profile, frozen_files=frozen_files)
     return SinglePromptACP(command, cwd=cwd, env=env, private_dir=private_dir,
         reservation=reservation, frozen_files=frozen_files, timeout=timeout).invoke(prompt, schema)
+
+
+def run_native_diagnostic(*, opportunity_contract, executable, cwd, private_home, private_profile,
+                          private_dir, reservation, frozen_files, prompt, schema,
+                          main_output_cap, observed_main_token_cap, input_byte_cap):
+    """Separate diagnostic request bounds; no tokenizer or capacity claim."""
+    require(opportunity_contract == DIAGNOSTIC_OPPORTUNITY_CONTRACT, 'diagnostic_contract_unapproved')
+    require(type(input_byte_cap) is int and input_byte_cap > 0 and isinstance(prompt, str)
+            and len(prompt.encode('utf-8')) <= input_byte_cap, 'diagnostic_input_bytes')
+    config = diagnostic_config(main_output_cap)
+    require(type(observed_main_token_cap) is int and observed_main_token_cap > main_output_cap,
+            'diagnostic_observed_token_cap')
+    command, env = native_launch(executable=executable, cwd=cwd, private_home=private_home,
+        private_profile=private_profile, frozen_files=frozen_files, expected_config=config)
+    return SinglePromptACP(command, cwd=cwd, env=env, private_dir=private_dir,
+        reservation=reservation, frozen_files=frozen_files, timeout=60,
+        main_output_cap=main_output_cap, max_total_tokens=observed_main_token_cap,
+        opportunity_contract=opportunity_contract, input_byte_cap=input_byte_cap).invoke(prompt, schema)
