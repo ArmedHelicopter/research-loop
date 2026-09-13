@@ -7,9 +7,10 @@ from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.panel_receipts import PanelCell
-from research_loop.modular.q54_causal_driver import Q54CausalDriver, freeze_q54_causal_bundle, q54_causal_injection
+from research_loop.modular.q54_causal_driver import Q54CausalDriver, _receipt, freeze_q54_causal_bundle, q54_causal_injection
 from research_loop.modular.runtime import AuditVerifier, RunSession
 from research_loop.modular.workflow import ModularWorkflow
+from research_loop.ontology import ContractError
 
 IMAGE='research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349'
 
@@ -60,3 +61,23 @@ def test_q54_uses_model_ranking_updates_m4_and_executes_every_arm(tmp_path,varia
  assert any(event['stage']=='modular_workflow' and event['data'].get('selection',{}).get('diagnostic_id')==expected for event in events)
  assert ('M4' in enabled)==any(event['stage']=='modular_workflow' and event['data'].get('m4_outcome') is not None for event in events)
  assert all(token not in json.dumps(calls) for token in ('M4','M7','authority_contract','bundle_digest','container_path','argv'))
+
+def test_authority_receipt_rejects_bad_aggregate_and_failed_execution_classification():
+ contract={'contract_id':'c','source_id':'g','authorities':[{'authority_id':'a','source_group':'one'},{'authority_id':'b','source_group':'two'}]}
+ branches=[branch('a','increase'),branch('b','decrease')]
+ subject=FrozenRecord.from_dict({'authority_contract':contract,'prediction_branches':branches,'execution_receipt':{'status':'succeeded'}})
+ observations=[{'authority_id':x,'source_group':g,'contract_id':'c','subject_digest':subject.content_hash,'observation_digest':str(i+1)*64,'status':'failed','signature_verified':True} for i,(x,g) in enumerate((('a','one'),('b','two')))]
+ malformed={'schema':'q54-causal-authority-receipt-v1','subject_digest':subject.content_hash,'status':'passed','observations':observations,'cost':{'unit':'verifier_units','units':1},'classifications':{'h-a':'failed','h-b':'consistent'}}
+ with pytest.raises(ContractError): _receipt(FrozenRecord.from_dict(malformed),subject)
+ failed_subject=FrozenRecord.from_dict({**subject.data(),'execution_receipt':{'status':'failed'}})
+ observations=[{**item,'subject_digest':failed_subject.content_hash,'status':'passed'} for item in observations]
+ malformed={**malformed,'subject_digest':failed_subject.content_hash,'status':'passed','observations':observations}
+ with pytest.raises(ContractError): _receipt(FrozenRecord.from_dict(malformed),failed_subject)
+
+def test_bundle_rejects_crlf_program_and_measurement_observable_drift():
+ t=task('blade'); raw=material(t,b'x\n1\n').data()['variants']
+ raw['subjective']['diagnostics'][0]['program']="print('a')\r\nprint('bad')"
+ with pytest.raises(ContractError): freeze_q54_causal_bundle(t,variants=raw)
+ raw=material(t,b'x\n1\n').data()['variants']
+ raw['subjective']['measurement_contract']['observable']='different observable'
+ with pytest.raises(ContractError): freeze_q54_causal_bundle(t,variants=raw)
