@@ -1,0 +1,39 @@
+{
+  "scope": "read-only audit of original closed synthetic r5 stream",
+  "parser_source_sha256": "b05059be139b26e4daad05a7da9e741f6007fe190c2029818bfad954d20ef384",
+  "inspection": {
+    "accepted": false,
+    "accounting_model": "grok-4.6-build",
+    "billing_settlement": "not_established_by_stream",
+    "cost_status": "server_reported",
+    "end_count": 1,
+    "event_count": 44,
+    "events_sha256": "aaa73e69d1454ebf7da6088b56754caff86f340b3659e77f5e9da30c896dbf56",
+    "faults": [
+      "runtime_tools_available"
+    ],
+    "max_total_tokens": 20000,
+    "output_cap_wire_certified": false,
+    "process_exit_code": 0,
+    "reported_main_model_calls": 1,
+    "requested_max_output_tokens": 128,
+    "requested_model": "grok-4.6",
+    "response_digest": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+    "runtime_inventory_count": 3,
+    "schema": "grok-cli-stream-inspection-v1",
+    "server_reported_usd": 0.00644164,
+    "server_reported_usd_ticks": 64416400,
+    "session_id": "e8f3fc91-21f2-463d-ac60-ee22adbbe046",
+    "tool_event_count": 0,
+    "usage": {
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "input_tokens": 9335,
+      "output_tokens": 46,
+      "reasoning_tokens": 37,
+      "total_tokens": 9381
+    }
+  },
+  "new_generation_calls": 0,
+  "private_raw_stream_copied": false
+}

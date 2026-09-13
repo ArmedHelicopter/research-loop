@@ -1,0 +1,21 @@
+{
+  "source_commit": "5007d26d1098660accf65b20c9c6cf0b12d062b7",
+  "junit": {
+    "tests": 46,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "source_files": 507,
+  "source_unchanged": true,
+  "junit_sha256": "14207113ed42ea15a756741c853fc2678dc19fd29228b7e10b8555d7efb56d1a",
+  "new_generation_calls": 0,
+  "repair": "Grok-specific primitive const schema support; legacy Codex schema behavior unchanged",
+  "first_original_stream_inspection": "tools and unsupported const response contract rejected",
+  "repaired_original_stream_inspection": "same original raw bytes; only runtime tools remain rejected",
+  "original_reported_tokens": 9381,
+  "original_server_accounting_usd": 0.00644164,
+  "private_raw_stream_copied": false,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}
