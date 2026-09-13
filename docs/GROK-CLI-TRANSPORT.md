@@ -32,6 +32,8 @@ The observed output cap check does not certify an unobserved wire parameter.
 These checks have not yet connected a Grok transport to the TRAIN controller
 or diagnostic scorer; that connection requires its own explicit process and
 accounting contract. Existing Codex and HTTP contracts stay versioned.
+The concrete remaining boundaries are recorded in
+[the subscription integration review](GROK-SUBSCRIPTION-INTEGRATION.md).
 
 The isolated r5 constant smoke reports one main model call (9,381 reported
 tokens and $0.00644164 server accounting), zero observed tool calls, and an
