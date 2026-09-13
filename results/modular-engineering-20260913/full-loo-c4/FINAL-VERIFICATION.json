@@ -1,0 +1,46 @@
+{
+  "schema": "c4-full-loo-engineering-closure-v1",
+  "commit": "3236ace56682d2736aaf7d5dd60f461b08975678",
+  "scope": "synthetic_model_and_scorer_engineering_only",
+  "scientific_effectiveness_proven": false,
+  "validation_opened": false,
+  "paid_calls": 0,
+  "frozen_denominator": {
+    "train_tasks": 2,
+    "issue_contracts_retained": 48,
+    "arm_procedures": 12,
+    "executable_arm_procedures": 11,
+    "structural_rows": ["without-M2"],
+    "target_cells": 22,
+    "canonical_builds": 9,
+    "history_model_calls": 45,
+    "target_model_calls": 124,
+    "model_calls": 169,
+    "independent_source_qualification_calls": 62,
+    "retrieval_requests": 87,
+    "history_auxiliary_docker_attempts": 18,
+    "target_auxiliary_docker_attempts": 40,
+    "solver_docker_attempts": 22,
+    "docker_attempts": 80,
+    "scorer_calls": 22
+  },
+  "frozen_check": {
+    "helper": "results/modular-engineering-20260913/m4-m5-useful-controls/run_frozen_useful_checks.py",
+    "pytest_args": ["tests/test_full_loo_composition.py"],
+    "exit_code": 0,
+    "junit": {"tests": 2, "failures": 0, "errors": 0, "skipped": 0},
+    "source_unchanged": true,
+    "source_count": 546,
+    "new_paid_calls": 0,
+    "work_artifacts": {
+      "full-loo-c4-frozen-r1.xml": "b8f1c294e8991fb1326d4950be84e3d67e81d1f025e2c22ee9828d7cc2330c42",
+      "full-loo-c4-frozen-r1-before.json": "da00df4179008ec24bdee51997e02744f2b8827e3628bf3e47b2cf95608358b8",
+      "full-loo-c4-frozen-r1-closed.json": "eb8bb95515880c80d9fc72958465efa7d512adf22e620a7ec4778adfd6b825d2"
+    }
+  },
+  "git_source_bytes": {
+    "docs/FULL-LOO-C4-COMPOSITION.md": "47a69fffa1048152ccc618e8bb61287dc9a45b9b",
+    "research_loop/modular/full_loo_composition.py": "b682693d2e71926429e158f1440ee2faa685730e",
+    "tests/test_full_loo_composition.py": "dcb09292c94efbeb14fcb7fdcc328b63c45cbbd5"
+  }
+}
