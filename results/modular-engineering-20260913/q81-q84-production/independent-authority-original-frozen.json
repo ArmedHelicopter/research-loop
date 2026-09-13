@@ -1,0 +1,2289 @@
+{
+  "schema": "q81-q84-independent-fixture-grid-v1",
+  "denominator": 64,
+  "verified_cells": 64,
+  "q81_cells": 48,
+  "q84_cells": 16,
+  "model_transport": "fixture",
+  "docker_execution": "real",
+  "docker_executions": 8,
+  "paid_calls": 0,
+  "m6_increment_given_m2": "structurally_non_identifiable",
+  "scientific_verified": false,
+  "panel_digest": "405e7fd8b9fa01b0977a2d1f689709f676b80448c3105fb5d9ec29357b0db029",
+  "p0_control_digest": "4712d20861e1ee5915b846378d341ec36dc85f3597935c7a19c6ce939ce9aa59",
+  "rows": [
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "research",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "d4ab427aa661a42f85654f2a7bb49538b9281418ce99b9af9664df9c0f377fc8",
+      "trace_sha256": "ea3f40a0d0d7e626c11fadf4bc6f653e8d26b05ca0a3cd021d375a00cd59413a",
+      "final_request_digest": "b1274f42c045f3c7500b054299655f5048e423b1d6cf2099b7531068bca2f116",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 319,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "sources_returned": 0,
+        "unused_context_bytes": 3777,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "research",
+        "01"
+      ],
+      "enabled": [
+        "M5"
+      ],
+      "trace_digest": "9e01663e7529a71ba430c0b358e9412424c8e9d24e6ebb6157b96cd1da73c70b",
+      "trace_sha256": "dc6dc369fbad9311882608b1f1de80371183a3b1f6a3c38d6b90d919f561e42f",
+      "final_request_digest": "225b2368a90b70e206b88843f65e42da248f086028b55997c308b67773484448",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 319,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "sources_returned": 0,
+        "unused_context_bytes": 3777,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "research",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "0d30f8980d2497310d303cb8fea7e2f9b4cec0cd25bfddd55ae50df34c440147",
+      "trace_sha256": "925e357b6f4262dd72550d290635def0ebbb3bbd2e77c7df2674c197a5e29896",
+      "final_request_digest": "6f67adc02ba904cf06d11dc8ebf8c607d46c224bd265873479c9ffcfaf287521",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 654,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_context_bytes": 3442,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "research",
+        "11"
+      ],
+      "enabled": [
+        "M5",
+        "M6"
+      ],
+      "trace_digest": "34f867bacb4909843dc28ea2f495a05e2266dc58f89069ad6a24aa3ecc0f4dd0",
+      "trace_sha256": "8aae1aab35590a8a4f78702b88f0529b8bced3d681a1b4ea6d75b67814f60797",
+      "final_request_digest": "300bdd48a435ce73f7c7000575478166e60a9a147dddb1938b4a9bc62d87793b",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 654,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_context_bytes": 3442,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "competition",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "35487bfa6e0f46576a6885a624c11153b1a3996ac8cc8b97d0def9507f793063",
+      "trace_sha256": "6892737a86ef4af21ef6d43d5b017a2d913991786aef75d1ec5e6dce68dda314",
+      "final_request_digest": "b89ee3ac16c4937c4c5817adf8ff9ec8c4302a4cf9b20232e5ab563b7e120e7b",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "competition",
+        "01"
+      ],
+      "enabled": [
+        "M5"
+      ],
+      "trace_digest": "bf43bf19222923c30561eb893d23823642db78743b42f825de882586446075bf",
+      "trace_sha256": "54ef94a83d85dbb5cf0cc3553f4254fbf30568753d9e9c48e61e44b3648d8bdf",
+      "final_request_digest": "16b12995e34001650ba26b75a3fa3a3a25ca5ace301447f86abf6be8af850eff",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "competition",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "caa1735c864a5a95141f21324d21c37223acecd6f414f89a0aad45e412ef7864",
+      "trace_sha256": "5af6a1feee0367a56d7c1053562c708f22576903461ba7ff10bc4993e2ca4077",
+      "final_request_digest": "7945566cfef3550ee808b9422518b01480c953971eb4e7a6551f2b504329b089",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "competition",
+        "11"
+      ],
+      "enabled": [
+        "M5",
+        "M6"
+      ],
+      "trace_digest": "6633de470b139d42efd102b5c69492d239b6c30bfc8ca2df3c8b70fe7e18cc24",
+      "trace_sha256": "d5f46c22a2308076753d510e3deab94fbf228e5be372000f27921937b7a16cbb",
+      "final_request_digest": "7a1e4514fdbffdc8f998ac798b5faf8ed8f352425c5b964a178954dabc8fd9ca",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "distinguish",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "2a6b3d210359e485e3ac07f5f07239e10d51878e2a9fd639d4b38fa5519e53fc",
+      "trace_sha256": "f23ba65f3d15a99a46ac6308cb1563583c94a9a1db8a12604da3334776c310d0",
+      "final_request_digest": "eca52e733d46218e1028d8b005022bc860de9b3928e56d2fb7a8fc5940706fea",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "distinguish",
+        "01"
+      ],
+      "enabled": [
+        "M5"
+      ],
+      "trace_digest": "abea4782379964ac64b0f756fbc526bb10b61033021d6be9fa6f327fdefdc891",
+      "trace_sha256": "78471b459d6a144542e93b5804861678dc52646e3688b705ba52142a5b3e3075",
+      "final_request_digest": "4064ae8f557db53d9463865a9a7e444a06a82db50171788c0cf874190f834fac",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "distinguish",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "47bb14c9cf5e345f035dc4e4843f19959b0f4d360a089e9f099f83d184a2e967",
+      "trace_sha256": "717da7a3e3e2e628a068132d3abd4bafd1273b7a567560ec4b0ea84a4186f79b",
+      "final_request_digest": "6292e51ab34f8adeff9f34f568711cbcf16fe08b3897e5f5caf0195f55669a4e",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "distinguish",
+        "11"
+      ],
+      "enabled": [
+        "M5",
+        "M6"
+      ],
+      "trace_digest": "832eafe81b31fe916f2d0be43f7909c832b59eb5fa4996053c8c6d3c35295e8a",
+      "trace_sha256": "683919b15e19fd7e001a994edd97a466c33f4f2314fdb9c5998191c4492e3413",
+      "final_request_digest": "b6483bc0bbfa1bd44454a79324a35dc52b0f4a4ebf8f2f12ba814c0f69ef7315",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "adversarial",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "eefaf95480c008198833061378b49513d7af1f72efad8703de36ab0d69015b57",
+      "trace_sha256": "4c0cb91899d6be639b8812c82ccead0484f7274923e36120cea89ecab794c8fb",
+      "final_request_digest": "e5152dccace836cc709744d3a4355c155504e443f980cd21849b316f1626ccbe",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "adversarial",
+        "01"
+      ],
+      "enabled": [
+        "M5"
+      ],
+      "trace_digest": "982c39798f256b001087247c3f135f2764fcc8da582d291036e1e7c0dfca1d68",
+      "trace_sha256": "825f2a1eefb9399703966b8eb9a8a9c9598bc67f12e67f3e6803aef2efa9ec7c",
+      "final_request_digest": "91ee2f40bf26a66bea9832256ffed5c8788a785a6f77ed70dded7db8a9b6aa6f",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "adversarial",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "2eb3e42db00f42da38fa0975baf35c7d6d69860c6a55d89226cfec0f9ff9d925",
+      "trace_sha256": "9254f74083966a5629f133c2c5ba3d78511ecad8a4faac342b6dee5d93cc3260",
+      "final_request_digest": "721a42c31cf8efb4e1ed179de3dae8aeee7700c4083da1aaceb472dba2ebf565",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "adversarial",
+        "11"
+      ],
+      "enabled": [
+        "M5",
+        "M6"
+      ],
+      "trace_digest": "c5a89edc716490777e5d202463ead0a36ada3b9b541f450969d59a7da463c575",
+      "trace_sha256": "8538c5fdb0f1c1abd85a350c2de46d16c47fb43c0cce88851af72ca1b983ffd4",
+      "final_request_digest": "f1806e14592601cfbda2ea982a9184862fe1f475dbaa9c53cdaf26c3ede22d3e",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "retrospective",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "e5c160a01fce8f219fabff5bcc5d4408820ed42b3e36d897a52742b2a030ed1d",
+      "trace_sha256": "61c4a6d8a6bc75498ea8d3e0bb8c40a73a13c4c2a32483b6241af785cfe3a480",
+      "final_request_digest": "be3bbca45b96a8c0b057c9cb741317d5ea9be9feab626f3b758ed09ddbf433dd",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "retrospective",
+        "01"
+      ],
+      "enabled": [
+        "M5"
+      ],
+      "trace_digest": "2651de009d910e4200f018b6861d586c63e6a2539f2c806550f54a65c05b25b1",
+      "trace_sha256": "27ebfe4cfc8ca6f9ca2522d6c1dca7814ebe1b2fdc3838ca1c92af77aa693a55",
+      "final_request_digest": "d0290a7c2643363e8dfb35d429aa217a29d16a9599a2ea43d2803dafabb1a489",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "retrospective",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "6c7a83cd9336634be8c1bd65fd5fb2538e9640e9f24c41306987e85830fa3f03",
+      "trace_sha256": "dbf87be4f6a4cb0c283fef719c02e140970782210ed56cfc6bca3bcf20b18532",
+      "final_request_digest": "5e058c5aa79a4d22598436c71156b0fe8b1ba1819fefd625ca91a32f02bc41f9",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "retrospective",
+        "11"
+      ],
+      "enabled": [
+        "M5",
+        "M6"
+      ],
+      "trace_digest": "da8068a174dc76cbc6da12b5a62b5316e9373cf13fed1fab58c2d8b2b164b6ce",
+      "trace_sha256": "88fef3a9ef1c170812cc5c5eaeacb29684a31592773a77d6334a068f99d491b5",
+      "final_request_digest": "795fb4c1aba9909adeb3c833f658f55b3d44e6a8fdeeeadfe00ad1ff81783e5d",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "frontier",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "edc490e221e8a46c48127006307f93fda44763da3798ed31bfd1b08f826b560e",
+      "trace_sha256": "aeebd6a20df8db13f853c5f0cedd2aa02db7387d4abd8bfc5120ab6fb288421d",
+      "final_request_digest": "084567980a463dbc707168c23f80b89d7688565fc7908a7993fa5c8d334b2172",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "frontier",
+        "01"
+      ],
+      "enabled": [
+        "M5"
+      ],
+      "trace_digest": "de68afda520005de2c328c6c08dad72f6e527b549a43ea341ff3ee73e6a9a923",
+      "trace_sha256": "08e70308c3293354e53e248cc0f9bf4ff49fd271a35847fcb3c9a8833a4f7260",
+      "final_request_digest": "c22ef99cb33e4442c25eb994c71a34a61a4ba609c39483ce891cfc9c2a03919f",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "frontier",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "c2affb175aa5e68045743835d41895e582ad8ba2f57f242fe6669da3ab502e51",
+      "trace_sha256": "d153bf6e5a11ea5628d4226540518e6fc3c85a9072a499eb6a17719a2b8f4d58",
+      "final_request_digest": "e33ca4151ee5d97977a8906ee6d11eab8bd6043d446546caaee172d5552e6e81",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "frontier",
+        "11"
+      ],
+      "enabled": [
+        "M5",
+        "M6"
+      ],
+      "trace_digest": "a6a7e24f7510c88eb427fcebf4674441700fec8ee0c73e8fba912e0139203300",
+      "trace_sha256": "e2c9f9461e01afdece812a811f45188ab700582e9b21bb165d9e52013edd7787",
+      "final_request_digest": "6777a997a245c27ac9607b8a15d22808c32ca9dd3e4524ad3355c4fe4b3d13eb",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "research",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "1974f582457941af03590e31da5d57d0ec64b46efb9d5f4db505457da7c2f8cb",
+      "trace_sha256": "5bd65d33dcee18ff5aae90a5c5315c2e1d1790722933aa30870b9f9df64cf9be",
+      "final_request_digest": "fcb687570356da7aea5496ad484d77415f84e13e52967e5b71d24ae431827314",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 319,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "sources_returned": 0,
+        "unused_context_bytes": 3777,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "research",
+        "01"
+      ],
+      "enabled": [
+        "M5"
+      ],
+      "trace_digest": "2de71c6b5234be8e3f62894d9336beb22ac7d7dd0508bcd0fe6e00f95f54681e",
+      "trace_sha256": "0c26329cc520b68243eaf82b5957bbec4773bcff1a33d11f5ad7009c7b8bd4f8",
+      "final_request_digest": "5b8ac8f94fcbe66ac9b0b4a97a0f919e4075af5b821be6dfe46ed229641488b1",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 319,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "sources_returned": 0,
+        "unused_context_bytes": 3777,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "research",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "54683f7e6c95e38e5ea8ca7fb4fd2f41e1309e745a312353bf032796f14e6b71",
+      "trace_sha256": "26992fd24092b03ab6fa901e24e47bbd63008bce243f014d932fa70c2ebc667f",
+      "final_request_digest": "adfe37d9176eb8ce9bd034c031380b78a64a6423c7f9db970397619e5ed05b4a",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 654,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_context_bytes": 3442,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "research",
+        "11"
+      ],
+      "enabled": [
+        "M5",
+        "M6"
+      ],
+      "trace_digest": "e9b8f18ce9792f00055a5f8ded294dfe4427429181ae9fb266f4727cc5363843",
+      "trace_sha256": "ff29bb076dff851e24ade0867aa4dc5947a0c6777c7f6e3055a8e86d9c0cc496",
+      "final_request_digest": "e11f5595fc6362bb8c553e2ee84a3f3027521c11be5a8a7b3c55df6b0ad25d49",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 654,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_context_bytes": 3442,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "competition",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "52b846a93031d525c972633f6c0a3c7ce50f918c5817b84bb4b87c78969027ad",
+      "trace_sha256": "6140a06cc5cb9aa2c4c08c9c85ebe6eb285488ef6d58f5ee8959c4ce05ad3eb2",
+      "final_request_digest": "d6b396f11b3e00008638ab478f7ae1680c3fc08d00f513216b11b1764c418a80",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "competition",
+        "01"
+      ],
+      "enabled": [
+        "M5"
+      ],
+      "trace_digest": "663762e73bb261a4e3e30170c85c6c64ee34ea515baf498151c5dd3b7597ef9e",
+      "trace_sha256": "2c7bf23cc29ad326a9654c85ea1ac7ea83506c1255cc0337f25444b6e6c6ec0a",
+      "final_request_digest": "6538939793a28291a0c759d7a5fe828587ccee1e72d89a3607959fc6747b663c",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "competition",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "2aa8b5db172540400d504df1509030dc8b6dded465d29a99a9d0cd828f073b71",
+      "trace_sha256": "ea4356620ed73092a438f731a8f761761770af54f8243a43a27b0b29d6f035fc",
+      "final_request_digest": "ff525bf7de71ee7551da4c7387c8e1f598c3fa07fae3b5df19f1bb205c5a9a6b",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "competition",
+        "11"
+      ],
+      "enabled": [
+        "M5",
+        "M6"
+      ],
+      "trace_digest": "f37304716b998777814ca38e671603eb6e6f832feffc87aa03aa7ad804d4046a",
+      "trace_sha256": "8469701637c13eb54fe754d1d28155179cf3c034346fc6f278eabf82e1b47877",
+      "final_request_digest": "63ae4da043ef49d382472e2a35ec10e2fb7ed6283664f3f6ef1588570f6f8ea5",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "distinguish",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "4578abc892dc0ba3b41e6be737c6fecef7857167e3af362e838fd577c46bc6d5",
+      "trace_sha256": "e005bbb3868c78843c8832f8fef63fb22538235e31773253ad8f589347a58a12",
+      "final_request_digest": "0f0f53c1cf45caddaab2c336c3e8327745ac51d726df42aec9381f740ce6f5fb",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "distinguish",
+        "01"
+      ],
+      "enabled": [
+        "M5"
+      ],
+      "trace_digest": "000c4ddda474004579e7f28fbb3e7add2353d244c1f595cb9ba4197600d1747c",
+      "trace_sha256": "26d9672592318acb29300ba7454c029e865445b2f5a987abd2896bda32088511",
+      "final_request_digest": "10963a8c12ac8d78614788b79ab2298d020e97fedd81ec1e1422dc69ee9a9e57",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "distinguish",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "e725687a3707e93a6bcb71a3581a7a24a4c153242be0652c8719069ff58f11e6",
+      "trace_sha256": "49ecbe1731d308eec10d6a06520c02926eacfb9f5df32af7cf48c39d43143c1a",
+      "final_request_digest": "ee3a7fae283ee77d6a5b043de5946926d9931f844f62fa4c286845b59534a292",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "distinguish",
+        "11"
+      ],
+      "enabled": [
+        "M5",
+        "M6"
+      ],
+      "trace_digest": "d19b28b926c4173565a497c8455056082019d04e44ad7098d92c8c911795b6ad",
+      "trace_sha256": "ac849038b699de87d95ce2fe158efa55d673b61c1f115888cfe2dfb546913778",
+      "final_request_digest": "4950eb85d82458b3fd5ae1152a0c1eae7b1963053c41eabd14b6ac6558015dbb",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "adversarial",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "9ba1950d402d7ead98cb7ae7d747da027310c37517b10f4ecd660292e7f07f3a",
+      "trace_sha256": "7d6b307c885d7257a9a17003114646deb55fa4756e1dd3975551f3a02643338f",
+      "final_request_digest": "74f50f5b9eb98b309a58da3c9a0f1029aa11f220b8893743ea094176a0efee64",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "adversarial",
+        "01"
+      ],
+      "enabled": [
+        "M5"
+      ],
+      "trace_digest": "f0650fa85493e8f99f8b7cf3778c29248117990ca651172966ebacf8bd6526a8",
+      "trace_sha256": "7d6d947b7f0877a943ca009c3d5908bce8c0869306ff4e9ddafb72fff6efe96d",
+      "final_request_digest": "6891701b4eb168cee1f8a3fe5d3fb647b970446a7cc3f5425cc35ba15633b0e7",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "adversarial",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "6589232eb06a32561e5f872fbe3651f457679afdf096f9a8feee4ed7c5a4c183",
+      "trace_sha256": "c69e71cae373d0e1304a4339cfed004ac0ca5adf05b54c513bf37d1c581261db",
+      "final_request_digest": "4f3902fb18492ff368aa946b6f97efdb7e9fa0612edb81a8679274924a96143e",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "adversarial",
+        "11"
+      ],
+      "enabled": [
+        "M5",
+        "M6"
+      ],
+      "trace_digest": "608cab41a3ddd5a6582b716c03e23f4fd60f7fe78601524f8be61c4e1393c4a4",
+      "trace_sha256": "286f6c74380af926ea9ad67ad43a8aebce8af505167040d9ac4bf9a9a5adc40e",
+      "final_request_digest": "667fe83b63e8eba68e7abc53989c949b868676ae80ea7fd3b46e5e11238ff2d1",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "retrospective",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "37cafcf3cc7afc47afbbff828074209fbfd7fe4a44dadf23f6509da50faec632",
+      "trace_sha256": "31d76911525fa64c300a4c4b56eca8eab7de6f3aad74514149021c3d73d667f8",
+      "final_request_digest": "971ed34c9ecea6f4eaace1d80abdce9c6801780975db49d58ca94c832920619b",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "retrospective",
+        "01"
+      ],
+      "enabled": [
+        "M5"
+      ],
+      "trace_digest": "7f7a598c8dd08fd9bd19973001ba4c0a1deb851204bae24b5c8f00f9c6e5a001",
+      "trace_sha256": "5dd23fb8fd0d9689f4691a676366fd94ce1f47c4a9fbb59fc23ab642b23ffe34",
+      "final_request_digest": "ba0d84f5ad0a982470267e7e3309f05ae58ecd38aaaced75c6aff5719afe37f1",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "retrospective",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "c0585114bb18e62491d13298571cac2c6a0a0ac2274e257f3948d91404671eab",
+      "trace_sha256": "180fb485718eb0b7c4f6c067b866492a6eeb7804b43e72dadf6aaf6862d4b87d",
+      "final_request_digest": "f7048dcbdb21979b4b6b7b1e918b7f99d0c83869df4aa295a1a39ed6ecda24fd",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "retrospective",
+        "11"
+      ],
+      "enabled": [
+        "M5",
+        "M6"
+      ],
+      "trace_digest": "776ac5d23d57ce826fc28bc65c2cdfa543ce7bf029fa825cef76230c72cd2fd6",
+      "trace_sha256": "f26b15e1519fc77dd2739b308593e08c41f14ef6a327c8a9fbeebb8695c7e329",
+      "final_request_digest": "23d68244111a41fe6c72afc7ca88d98f761a4ef4572f2389f060237e44da43c2",
+      "model_calls": 3,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "frontier",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "7c7189a9f15eef32fdde791367c17f414ad2598b972a2c7cd2ab2cad60a486d7",
+      "trace_sha256": "aaf4bcfc04733dfb9c9a3564872d9e15a820060ae151955d91fcab36ee542428",
+      "final_request_digest": "0f2540299a7836568e48a0e4599b8b67477494fddc59c1c010811f0f6ea4844d",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "frontier",
+        "01"
+      ],
+      "enabled": [
+        "M5"
+      ],
+      "trace_digest": "d9935380a70bcba3ea17bd45a3baf3654ce19e28f433773de1494f6d657fadcf",
+      "trace_sha256": "bd7589db637342e732ea28e77d6dcbbafb3d0b9c5726921ee7dd104ea50bed21",
+      "final_request_digest": "676184129a6f24f0a3a1e74d32926aaaa0d0e02d031fc3bced1bf2a23a05ec00",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "frontier",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "8047a92ec82309a81204d4e71d92ff5432ef541224fd90b59b34bb2cb57c1ef5",
+      "trace_sha256": "5be9713ccd609c5531799a747b5d0e900ef985319c11189c94160e68a5932a53",
+      "final_request_digest": "6965df6f75e4d0fe3385bf25877e5b0e28152ce8317b366d8e55f75d76837f85",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.1",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "frontier",
+        "11"
+      ],
+      "enabled": [
+        "M5",
+        "M6"
+      ],
+      "trace_digest": "3befa21808c04182456bd062907fca3330158be00f0829530bf9148df121daed",
+      "trace_sha256": "9a8b0850f9941e824933638414f7467216af56ba25f9284e024e996cea17f4cf",
+      "final_request_digest": "1ce67cb94b4575423c2961d069194006e0b84ffc348741f6877a8e698029a944",
+      "model_calls": 2,
+      "budget": {
+        "context_bytes": 0,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 0,
+        "reason": "retrieval outside selected protocol stage",
+        "sources_returned": 0,
+        "unused_provider_calls": 3,
+        "unused_source_slots": 3
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "shared_root",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "0443a8c6f75572c5e7d963b4d5fa504f91e36b104380956c281b53705357d6e2",
+      "trace_sha256": "a26ce6a7810c3a68bc9cd0611b255ca001f61ad859ff663d5348dd26543b37d8",
+      "final_request_digest": "697142995d116484434973223b5f4af292b98fc16cacfa6b94d7ad143dbb2d37",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 737,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "shared_root",
+        "01"
+      ],
+      "enabled": [
+        "M2"
+      ],
+      "trace_digest": "a1260ff3442bd508c1c6b077406d5178d5c549d9019cdc3847d6322773dba1a2",
+      "trace_sha256": "96c66701c23b301908f96219ddfde2a11829c8f3d31a97980f43a66f8178f54b",
+      "final_request_digest": "ad220e08471d17b89856ac46e4aed323e7a22cdd5c0dd329ae84852bff3651e2",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 386,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "shared_root",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "b7e3c76759172efa0e40c039683c63d6edbe8c8f57fe1f76a27aa4a084cdf353",
+      "trace_sha256": "c83c9c37014f57ed37ca7d4ad22c217323a22962eb4efc52cbbe0a1304ed9f76",
+      "final_request_digest": "d727bdb0f9bd69223c06411369fa1d05274c6a869161d379bedcccecff51994c",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 386,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "shared_root",
+        "11"
+      ],
+      "enabled": [
+        "M2",
+        "M6"
+      ],
+      "trace_digest": "4dc9edffff321c3a77c9729fe9a5b589f6a6642e6efc636da44a09326237544f",
+      "trace_sha256": "a7ee580ef23ba7bee10a8c835df3849c88ec693acf8e2489eacf3ed2ece876f0",
+      "final_request_digest": "1f43f3a54927bcfc34175cbbc797165565b906c0d1f3475f5bf45e3e04e1b7a2",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 386,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "independent_roots",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "1f926698bcd515f9bf25793a3eb69ee2fc28cefd110ace55445511473284d0ec",
+      "trace_sha256": "5f98d97d45d03ab0f378eba77a65903b0e4564e35a6dc58fc8b8bb14f9a6a832",
+      "final_request_digest": "7ae61ec08b04baeab7bce43c8576e1610c8d091645d50df37e3d9d0ee02688a6",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 722,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "independent_roots",
+        "01"
+      ],
+      "enabled": [
+        "M2"
+      ],
+      "trace_digest": "3cd0105c2a691b1d3f162a6bb2e8b76bc4fbe0edcf166689cae8a59c7031067c",
+      "trace_sha256": "c927576aea4acf431775174c4d4560726a6212930c1b6ca56fba3b91b8588775",
+      "final_request_digest": "1742414110c044ff84f05ef451fe0b36afcaf291a2fab9e93ee3b4669c3636e9",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 725,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "independent_roots",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "242b4793a534c5479593acbf5c73f327d1e6d1e7b5b0c3f97135c5b28479cb40",
+      "trace_sha256": "7c01e48f4152ce04a760f4afd02d5aebc11b0d2961e2a468b1b6457f3b61fbf3",
+      "final_request_digest": "793f45c637def12e6bcd6a2349521d4dff019d96afe8f3925477308a651adecb",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 725,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "discoverybench",
+        "synth:train:family_1_1",
+        "discoverybench:synth:train:family_1_1",
+        "r1",
+        "independent_roots",
+        "11"
+      ],
+      "enabled": [
+        "M2",
+        "M6"
+      ],
+      "trace_digest": "68fb51cc1a01b8af7a9f6572dab4892c629e690dcf438dfa6b948ddd48d2229d",
+      "trace_sha256": "df3509115beed7e31bc452c06a1dd87641049853736c8fe226c7e8397242a5a2",
+      "final_request_digest": "e8b309b6fc20fb44caea79785e40814515c12507e1a480894bf80214a957dc04",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 725,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "shared_root",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "a5e9d18865f272367f9dce9a701e62bea57cdd06a592d0337a363d3d2aa915d5",
+      "trace_sha256": "c2c759ff27306a56ad7f89dcc8605191ecfa0aadc61ec6a50b72ed99cf97002e",
+      "final_request_digest": "424bd54740f2e2d7785eccad7458d3c97579ea8fb6dc01979a760ea686cb9ba9",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 737,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "shared_root",
+        "01"
+      ],
+      "enabled": [
+        "M2"
+      ],
+      "trace_digest": "ac53589d22d4db572f91d28c0846d69684b862efb07521050665503201d41887",
+      "trace_sha256": "857d14b43a9d33327430746c0c128c809c517587c0435d8f6e12dfeb89144190",
+      "final_request_digest": "1b9bab773477b35aa4463c8ad3dfd508324fc32eae2159e760634b5176fcb31a",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 386,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "shared_root",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "e0159d29f6dd7e03686070c5a11f33d63ad2703ed98a1086bb868144028de358",
+      "trace_sha256": "fc7e8286fc548b630d5f10563e5dd5a323012f0200ae7cf6b9f1aff02689868f",
+      "final_request_digest": "16e0c3cfe2c21bbac67d09298d3775f79db6d9ab89b3bdfb25a4b460aada2513",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 386,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "shared_root",
+        "11"
+      ],
+      "enabled": [
+        "M2",
+        "M6"
+      ],
+      "trace_digest": "68d1398b47bb9a31d4d0da2d8c48ff49e469743e80c4bc6e98be27750360e963",
+      "trace_sha256": "5044c25254ef6a5ac4363eef273e0ec8f155ee1070322fdda6a4e8fa878c95ba",
+      "final_request_digest": "f4d456d6adc81958d77babd57c855ebac2547626867b970b6ce081575819e6c2",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 386,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "independent_roots",
+        "00"
+      ],
+      "enabled": [],
+      "trace_digest": "179dd6828d6f36ccde1362174e8eed11113fd1667b7735d7086bfce0138317ba",
+      "trace_sha256": "8745c5572665100ebc3a8760fc1a2352d827e0ca2f1d2c573f591807fc99cce7",
+      "final_request_digest": "1d26f438a0792eb22cd7c2954038192f33aeebae2ed2f764fa476624a0802b0e",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 722,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "independent_roots",
+        "01"
+      ],
+      "enabled": [
+        "M2"
+      ],
+      "trace_digest": "05c6cc223224d9e82ee3222948d22030d164de814e90e032d9e7115f4abf8c9c",
+      "trace_sha256": "d0c5155d6f66710977f044be4b05180e71cf2c83da8a983e774962c5848a359b",
+      "final_request_digest": "9e0f276acfb41edcbb1d4c83a8efa572344d3ed603bd4a79ce479ca61da467d9",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 725,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "independent_roots",
+        "10"
+      ],
+      "enabled": [
+        "M6"
+      ],
+      "trace_digest": "a8cb7f438d4c79cc4751b8c44d81bce93639c3b678f76127c9399bb88d92ccdf",
+      "trace_sha256": "2891b5aa4f0fa5f5d7e6ef3a99ff511108107f867a6f460fe0ac79565fbff90d",
+      "final_request_digest": "e87d70db6ba9aed1de320155fce351481f6307ef73932bee1ca6783eac5a5b52",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 725,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    },
+    {
+      "cell_key": [
+        "Q8.4",
+        "blade",
+        "fish",
+        "blade:fish",
+        "r1",
+        "independent_roots",
+        "11"
+      ],
+      "enabled": [
+        "M2",
+        "M6"
+      ],
+      "trace_digest": "bcff3087f4f6290a61e478d457389992a3067e286f075076576ae19edb168b42",
+      "trace_sha256": "70b5bcfc7772cebff0ba0321108ceeb85d4999c8c4fc8563cce0d72e1e56b5f4",
+      "final_request_digest": "bc0c7140e7702b4d79e0cb9f9733245aa0b6d73009529ba1a529e8958bc3ad83",
+      "model_calls": 1,
+      "budget": {
+        "context_bytes": 725,
+        "external_cost": {
+          "status": "unknown",
+          "units": null
+        },
+        "limits": {
+          "context_bytes": 4096,
+          "provider_calls": 3,
+          "source_cap": 3
+        },
+        "provider_calls": 3,
+        "sources_returned": 3,
+        "unused_provider_calls": 0,
+        "unused_source_slots": 0
+      },
+      "scientific_verified": false
+    }
+  ]
+}

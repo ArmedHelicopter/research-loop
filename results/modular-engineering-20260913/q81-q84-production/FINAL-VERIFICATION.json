@@ -1,0 +1,117 @@
+{
+  "artifacts_sha256": {
+    "README.md": "ae53a0027818a88b19668bb0159772990a1fd6ce913d916705cf1b2f3a433e85",
+    "controller-attempt.json": "f5a5ccbb2af2ba53aba22b899333f24464475bcc16df3965a97f5ddf5807d615",
+    "controller-receipt.json": "c07420883745fed9438e869ddf1bce75c847641cf97b66019c6823bb69195954",
+    "expected-null-contrasts.json": "171be08e58590c668ef1e1d6f96b697fdd4cc67f5fa029190da845d376a96651",
+    "frozen-grid.zip": "b2292b4f85bad63061ed0bd2fa30764fc5e59cf3b5e013c0ba128c7e012ea7d3",
+    "independent-authority-original-frozen.json": "8fc28580dce70aff6bf392deed7163f283ad6235b4e0475af2cd15eee1ec3b92",
+    "q81q84-first.xml": "1899e06345a4cbda43dda53ffdd7ea8403e31c9e27f39123a3c0b2669a4a7dbe",
+    "q81q84-frozen-final.xml": "cce72bcff426fcbc5b2bbc5e7aab3ab928df18f3fb20595d97e84fd364cf4563",
+    "q81q84-frozen-source.json": "3ec8ef49ea394788a38ff917c533ed8b67d263825281ed612fa527d5d767d0b7",
+    "q81q84-label-preflight.xml": "6305a97624a0ff2542c06cd32c4b7ef14be04ccd1b774d8b0b2ba3e6593b4f92",
+    "q81q84-red01-source.zip": "fc3c5446210e30b3586564edc63ff74b3eceb9aa7b5d024d7728183dcd266c04",
+    "q81q84-red02-source.zip": "e23bd5f8bfacf94424f5718456b3a75fdee81fa275003973a2b8935b5a7e2c2a",
+    "q81q84-safety.xml": "8290ef173468f0703affd5b096522ce23c869b01035c128132b584cf8f4c186e",
+    "q81q84-second.xml": "d47ebeb24212c981c73bc85506f50ff1564f3d182a74cfb38789086c1eb0592d",
+    "q81q84-semantic-final.xml": "9e2b95bceb3f4374b567b364c35208c0290e0fbe6066cf6dc6962edcfd50982a",
+    "q81q84-semantic-source.json": "d14fd5c423f77df668e22b0be80a159bae3bbb8ab28910ce016154db8428a1af",
+    "q81q84-third.xml": "ae6685a60581f92752a2f809d9a21d780b2f560d9b0712df4cc54d8ea7770a82",
+    "red01-grid.zip": "ac3344a6640792466304c6de4b75d36f698257f7bcfab19c134dcce28d227ecd",
+    "red02-grid.zip": "7a5801baad778a6606fb11fdda14fda71e439b9f3bcb2e28621ba61a8f580981",
+    "semantic-contrasts.zip": "38e1d50f63fcaf0edbd34ea9b969223b436101c82f0859ed9d00940c93f1961b",
+    "third-grid.zip": "e4052c9ec0099436b0f1f3b8ea7e4b483ef5f0fb12cbafcd306604a14d380cbc"
+  },
+  "history": {
+    "first": "RED pre-export schedule overcount; no controller model or Docker calls",
+    "frozen_final": "GREEN 97 tests including 64 main controller cells and 8 real Docker executions",
+    "second": "RED aggregate receipt mismatch after all 64 runtime cells and 8 Docker executions",
+    "semantic_final": "GREEN 21 bounded tests; no full-grid rerun or overwritten previous evidence",
+    "third": "GREEN 64 cells and 8 Docker executions before source freeze",
+    "total_main_controller_fixture_model_calls_across_second_third_final": 384,
+    "total_main_controller_provider_calls_across_second_third_final": 180,
+    "total_real_docker_executions_across_main_attempts": 24
+  },
+  "junit": {
+    "q81q84-first.xml": {
+      "errors": 0,
+      "failures": 1,
+      "skipped": 0,
+      "tests": 16
+    },
+    "q81q84-frozen-final.xml": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 97
+    },
+    "q81q84-label-preflight.xml": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 10
+    },
+    "q81q84-safety.xml": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 66
+    },
+    "q81q84-second.xml": {
+      "errors": 0,
+      "failures": 1,
+      "skipped": 0,
+      "tests": 16
+    },
+    "q81q84-semantic-final.xml": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 21
+    },
+    "q81q84-third.xml": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 16
+    }
+  },
+  "main_grid": {
+    "benchmarks": [
+      "discoverybench",
+      "blade"
+    ],
+    "denominator": 64,
+    "model_calls": 128,
+    "model_transport": "fixture",
+    "provider_calls": 60,
+    "provider_opportunities": 192,
+    "q81_cells": 48,
+    "q84_cells": 16,
+    "real_docker_executions": 8,
+    "source_items": 60,
+    "verified_cells": 64
+  },
+  "main_suite_source_commit": "30065f140262a96af92727c436e49ba8efac8942",
+  "main_suite_source_files_verified_unchanged_after_run": true,
+  "p0_control_digest": "4712d20861e1ee5915b846378d341ec36dc85f3597935c7a19c6ce939ce9aa59",
+  "paid_calls": 0,
+  "reference_payload_used": false,
+  "schema": "q81-q84-production-engineering-verification-v1",
+  "scientific_verified": false,
+  "scope_ids": [
+    "Q8.1",
+    "Q8.4"
+  ],
+  "semantic_check": {
+    "annotation": "mechanistically_redundant_expected_null",
+    "conditional_m6_increment_estimable": true,
+    "excluded_contrasts": [],
+    "factorial_complete": true,
+    "module_cells": 8
+  },
+  "semantic_production_diff": "one annotation string; no decision, qualification, or contrast mask changes",
+  "semantic_source_commit": "f0a14e75f62ec026cf2cbf3773f72544c636ad2e",
+  "source_files_in_each_manifest": 326,
+  "validation_payload_used": false
+}
