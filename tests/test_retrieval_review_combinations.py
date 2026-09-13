@@ -50,14 +50,14 @@ def fixture(root):
     (root/'execution.key').write_bytes(EXECUTION.key); (root/'score.key').write_bytes(SCORER.key)
     service_args = {}
     for index,panel in enumerate(compiled.panels):
-        server = {'schema':'combination-scorer-process-config-v1','panel':serialize_combination_panel(panel),
+        server = {'schema':'retrieval-review-scorer-process-config-v1','panel':serialize_combination_panel(panel,retrieval_review=True),
             'scorer_config':rubric.record.data(),'scorer_config_digest':rubric.digest,
             'train_reference_store':{'root':str(store.resolve()),'manifest_sha256':manifest_sha,
                 'inventory_digest':packets[0].task.identity.dataset_version,'split_digest':panel.split_digest},
             'task_handles':handles,'execution_authority_key_files':{EXECUTION.authority_id:str((root/'execution.key').resolve())},
             'scorer_authority':{'id':SCORER.authority_id,'key_file':str((root/'score.key').resolve())},'evaluator':{}}
         path=root/f'server-{index}.json'; path.write_text(canonical(server),encoding='utf-8')
-        service_args[panel.obligation_id] = dict(panel=panel,config=rubric,command=_command(path,root/f'worker-{index}.jsonl'),
+        service_args[panel.obligation_id] = dict(panel=panel,config=rubric,retrieval_review=True,command=_command(path,root/f'worker-{index}.jsonl'),
             journal_path=root/f'client-{index}.jsonl',task_handle_bindings=b['scorer_handle_bindings'],
             execution_authority_keys={EXECUTION.authority_id:EXECUTION.key},scorer_authority_keys={SCORER.authority_id:SCORER.key},
             environment={**os.environ,'PYTHONIOENCODING':'gbk'})

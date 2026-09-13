@@ -126,12 +126,16 @@ def parse_frozen_panel(value: object) -> FrozenPanel:
     return panel
 
 
-def serialize_combination_panel(panel: CombinationPanel, *, lineage: bool = False) -> dict[str, object]:
-    """Serialize only the implemented M4/M5 train factorial, with its full design."""
-    from research_loop.modular.lineage_combination_driver import DESIGNS
-    permitted = DESIGNS if lineage else ('pair:M4+M5',)
+def serialize_combination_panel(panel: CombinationPanel, *, lineage: bool = False,
+                                retrieval_review: bool = False) -> dict[str, object]:
+    """Keep each explicitly opted-in combination family in a closed scope."""
+    from research_loop.modular.lineage_combination_driver import DESIGNS as LINEAGE_DESIGNS
+    from research_loop.modular.retrieval_review_combination_driver import DESIGNS as RETRIEVAL_DESIGNS
+    if type(lineage) is not bool or type(retrieval_review) is not bool or (lineage and retrieval_review):
+        raise ContractError('combination scorer requires one strict explicit scope')
+    permitted = LINEAGE_DESIGNS if lineage else RETRIEVAL_DESIGNS if retrieval_review else ('pair:M4+M5',)
     if not isinstance(panel, CombinationPanel) or panel.obligation_id not in permitted or panel.domain != "train":
-        raise ContractError("process scoring currently supports the train M4/M5 combination only")
+        raise ContractError("process scoring combination is outside its explicit closed scope")
     return {"schema": "combination-scorer-process-panel-v1", "panel_digest": panel.digest, "panel": {
         "stage": panel.stage, "domain": panel.domain, "split_digest": panel.split_digest,
         "obligation_id": panel.obligation_id, "estimand": panel.estimand, "design": panel.design.data(),
@@ -139,7 +143,8 @@ def serialize_combination_panel(panel: CombinationPanel, *, lineage: bool = Fals
         "cells": [cell.data() for cell in panel.cells], "required_benchmarks": list(panel.required_benchmarks)}}
 
 
-def parse_combination_panel(value: object, *, lineage: bool = False) -> CombinationPanel:
+def parse_combination_panel(value: object, *, lineage: bool = False,
+                            retrieval_review: bool = False) -> CombinationPanel:
     if (not isinstance(value, Mapping) or set(value) != {"schema", "panel_digest", "panel"}
             or value["schema"] != "combination-scorer-process-panel-v1" or not isinstance(value["panel"], Mapping)):
         raise ContractError("combination scorer panel envelope is invalid")
@@ -155,7 +160,7 @@ def parse_combination_panel(value: object, *, lineage: bool = False) -> Combinat
             FrozenRecord.from_dict(body["acceptance_criteria"]), cells, tuple(body["required_benchmarks"]))
     except (KeyError, TypeError, ValueError) as exc:
         raise ContractError("combination scorer panel cannot be reconstructed") from exc
-    if serialize_combination_panel(panel, lineage=lineage) != value:
+    if serialize_combination_panel(panel, lineage=lineage, retrieval_review=retrieval_review) != value:
         raise ContractError("combination scorer panel differs from its complete frozen serialization")
     return panel
 
@@ -197,9 +202,12 @@ class ScorerServerConfig:
 
 def parse_server_config(value: object, *, lineage: bool = False) -> ScorerServerConfig:
     required = {"schema", "panel", "scorer_config", "scorer_config_digest", "train_reference_store", "task_handles", "execution_authority_key_files", "scorer_authority", "evaluator"}
-    if not isinstance(value, Mapping) or set(value) != required or value.get("schema") not in {_CONFIG_SCHEMA, _COMBINATION_CONFIG_SCHEMA}:
+    retrieval_schema = 'retrieval-review-scorer-process-config-v1'
+    if not isinstance(value, Mapping) or set(value) != required or value.get("schema") not in {_CONFIG_SCHEMA, _COMBINATION_CONFIG_SCHEMA, retrieval_schema}:
         raise ContractError("scorer process configuration is invalid")
-    panel = (parse_combination_panel(value["panel"], lineage=lineage) if value["schema"] == _COMBINATION_CONFIG_SCHEMA
+    panel = (parse_combination_panel(value["panel"], lineage=lineage,
+                 retrieval_review=value['schema']==retrieval_schema)
+             if value["schema"] in {_COMBINATION_CONFIG_SCHEMA, retrieval_schema}
              else parse_frozen_panel(value["panel"]))
     if panel.domain != "train" or any(cell.identity.domain != "train" for cell in panel.cells):
         raise ContractError("scorer process is train-only")
@@ -513,8 +521,8 @@ class CombinationScorerProcessClient(LinkedScorerProcessClient):
     def __init__(self, *, panel: CombinationPanel, config: ScorerConfig, command: list[str], journal_path: Path,
                  task_handle_bindings: Mapping[str, str], execution_authority_keys: Mapping[str, bytes],
                  scorer_authority_keys: Mapping[str, bytes], environment: Mapping[str, str] | None = None,
-                 response_timeout_seconds: int = 240):
-        serialize_combination_panel(panel)
+                 response_timeout_seconds: int = 240, retrieval_review: bool = False):
+        serialize_combination_panel(panel, retrieval_review=retrieval_review)
         expected = scorer_process_binding(panel=panel, config=config, task_handle_bindings=task_handle_bindings,
             execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
         self.config = config
