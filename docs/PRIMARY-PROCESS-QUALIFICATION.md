@@ -56,3 +56,46 @@ Passing synthetic tests or writing these metadata receipts establishes the
 implemented custody boundary only. Scientific data licensing, evaluator fitness,
 artifact completeness, scientific validity, and unobserved relationships remain
 separate qualifications. No paid model or network call is made by this protocol.
+
+## Actual bounded audit and seal
+
+The frozen implementation at `1d737b1` passed 76 checks, including the synthetic
+source-to-history-to-seal seam and label isolation. Its unchanged declared input
+set produced 308 train and 95 sealed records in 76 observed families. Discovery
+has 294 train records in 46 groups and 94 sealed records in 15 groups. BLADE has
+14 train groups/records and one sealed group/record. The original BLADE four
+unknown records became three train and one sealed; one of those train records
+was selected by an earlier runner and is conservatively treated as potential
+exposure. The one Discovery fallback member remains train.
+
+The first actual attempt failed on a file-classification mismatch: recursive
+enumeration included one nested same-byte metadata copy that the original
+canonical direct-child contract omitted. Complete inventory bytes and every
+unique primary metadata/data hash already matched. A synthetic counterexample
+reproduced the failure; the corrected classification retained full recursive
+inventory hashing and matched the original direct-child metadata rule. The
+original failed seal, diagnostic counts, RED test, and unchanged-seed retry are
+preserved. Neither the archived canonical receipt nor any source was rewritten.
+
+The scope includes 85 initial Discovery calls with 1,431,917 known tokens, 64
+BLADE v2 calls with 1,493,232 known tokens, two separate BLADE v1 call receipts
+with 31,752 known tokens, and 159 later solver calls with 1,743,025 known tokens.
+Aggregate old budgets do not provide a per-call success/failure breakdown; these
+are separate observed ledgers, not an assertion of complete historical usage.
+The later task identities include two Discovery and one BLADE identity, all
+already in the original train allocation. All 24 declared input hashes and the
+implementation hashes matched after the successful seal.
+
+The SAB supplement independently found 12 selected legacy identities and three
+identities with three observed successful calls, using 75,272 known tokens. The
+remaining nine are selection-only potential exposure. No shared revision-bound
+identity bridge was established. All eight existing SAB validation groups,
+containing 18 records, therefore remain on hold with zero eligible records.
+Their original audit and split bytes remain unchanged. This does not claim that
+each held record was exposed, and does not authorize replacement sampling.
+
+Exact metadata-only evidence paths, raw SHA-256 values, canonical digests,
+source/group counts, preserved failures, and frozen JUnit results are archived in
+[`primary-process-qualification-verification.json`](primary-process-qualification-verification.json).
+The original primary inventory and old 81-train allocation remain unchanged;
+the new primary seal grants no payload access or validation lease.
