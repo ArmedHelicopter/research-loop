@@ -25,18 +25,20 @@ def material(t,csv):
  branches=[branch('a','increase'),branch('b','decrease')]
  rows=[]
  for name,cost,u in [('a',2,1),('b',1,9)]:
-  program=f"print('{name}')\nprint('measured')"
-  rows.append({'diagnostic_id':name,'branch_id':'h-'+name,'program':program,'program_sha256':hashlib.sha256(program.encode()).hexdigest(),'image':IMAGE,'inputs':{'data':{'sha256':hashlib.sha256(csv).hexdigest(),'byte_count':len(csv)}},'cost':cost,'preregistered_uncertainty':u})
+  program="import csv\nwith open('/input/data') as handle:\n value=sum(float(row['x']) for row in csv.DictReader(handle))\nprint('measurement='+str(value))"
+  rows.append({'diagnostic_id':name,'branch_ids':['h-a','h-b'],'program':program,'program_sha256':hashlib.sha256(program.encode()).hexdigest(),'image':IMAGE,'inputs':{'data':{'sha256':hashlib.sha256(csv).hexdigest(),'byte_count':len(csv)}},'cost':cost,'preregistered_uncertainty':u})
  item={'diagnostics':rows,'prediction_branches':branches,'measurement_contract':{'source_id':t.identity.group_id,'contract_id':'measure','discriminator_id':'disc','observable':'public result','negative_control_id':'zero'},'authority_contract':authority}
  return freeze_q54_causal_bundle(t,variants={'subjective':item,'preregistered_cost':item})
 class Authority:
  def verify_diagnostic(self,subject):
   body=subject.data(); c=body['authority_contract']; receipt=body['execution_receipt']
-  assert receipt['status']=='succeeded' and 'measured' in receipt['record']['stdout']
-  assert bytes.fromhex(body['public_input_bytes']['data'])==b'x\n1\n'
+  csv_bytes=bytes.fromhex(body['public_input_bytes']['data']); expected=sum(float(row.split(',')[0]) for row in csv_bytes.decode().splitlines()[1:])
+  assert receipt['status']=='succeeded' and ('measurement='+str(expected)) in receipt['record']['stdout']
+  assert csv_bytes==b'x\n1\n'
   assert hashlib.sha256(bytes.fromhex(body['public_program_bytes'])).hexdigest()==receipt['artifact']['sha256']
   assert body['measurement_contract']['observable']=='public result'
-  return FrozenRecord.from_dict({'schema':'q54-causal-authority-receipt-v1','subject_digest':subject.content_hash,'status':'passed','observations':[{'authority_id':x['authority_id'],'source_group':x['source_group'],'contract_id':c['contract_id'],'subject_digest':subject.content_hash,'observation_digest':str(i+1)*64,'status':'passed','signature_verified':True} for i,x in enumerate(c['authorities'])],'cost':{'unit':'verifier_units','units':1},'classifications':{'h-a':'failed','h-b':'consistent'}})
+  classifications={'h-a':'consistent' if expected==1 else 'failed','h-b':'failed' if expected==1 else 'consistent'}
+  return FrozenRecord.from_dict({'schema':'q54-causal-authority-receipt-v1','subject_digest':subject.content_hash,'status':'passed','observations':[{'authority_id':x['authority_id'],'source_group':x['source_group'],'contract_id':c['contract_id'],'subject_digest':subject.content_hash,'observation_digest':str(i+1)*64,'status':'passed','signature_verified':True} for i,x in enumerate(c['authorities'])],'cost':{'unit':'verifier_units','units':1},'classifications':classifications})
 
 @pytest.mark.parametrize('variant,expected',[('subjective','a'),('preregistered_cost','b')])
 @pytest.mark.parametrize('enabled',[(),('M4',),('M7',),('M4','M7')])
@@ -78,6 +80,20 @@ def test_bundle_rejects_crlf_program_and_measurement_observable_drift():
  t=task('blade'); raw=material(t,b'x\n1\n').data()['variants']
  raw['subjective']['diagnostics'][0]['program']="print('a')\r\nprint('bad')"
  with pytest.raises(ContractError): freeze_q54_causal_bundle(t,variants=raw)
+
+def test_post_execution_input_mutation_is_refused(tmp_path):
+ t=task('blade'); csv=b'x\n1\n'; inputs=tmp_path/'inputs'; inputs.mkdir(); path=inputs/'data.csv'; path.write_bytes(csv); bundle=material(t,csv); variant='subjective'
+ scenario=FrozenRecord.from_dict({'experiment_id':'Q5.4','variant':variant,'controller_input':q54_causal_injection(variant,task=FrozenRecord.from_dict(t.data()),evidence=bundle),'base':{'task':t.content_hash,'evidence':bundle.content_hash,'budget':'a'*64},'controls':{'same_task':True,'same_evidence':True,'same_budget':True}}); package=CandidatePackage.create(parent_digest=None,manifest=TrainingManifest.freeze([t.identity]),changes={'prompt':{'instructions':'x'}},search_cost=0); arm=default_compatibility('b'*64).arm(('M7',)); cell=PanelCell('Q5.4',t.identity,'r',variant,'a',arm,t.content_hash,scenario.content_hash,package.digest,'a'*64)
+ class MutatingBroker(DockerExecutionBroker):
+  def execute(self,request):
+   receipt=super().execute(request); path.write_bytes(b'x\n99\n'); return receipt
+ session=RunSession(t,package_digest=package.digest,arm=arm,objective=FrozenRecord.from_dict({'o':'x'}),slots=('ranking','diagnostic','final'),execution_limit=1,sidecar=tmp_path/'run',verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}),required_audit=('measurement',))
+ def model(request):
+  context=request.data()['module_context']
+  if 'diagnostics' in context: return FrozenRecord.from_dict({'ranking':['a','b'],'rationale':'x'})
+  return FrozenRecord.from_dict({'decision':'continue','rationale':'x'}) if 'required_objective_digest' not in context else FrozenRecord.from_dict({'objective_digest':context['required_objective_digest'],'outcome':'unknown','evidence_ids':[],'conclusion':'x','programme_complete':False})
+ with pytest.raises(ContractError,match='public input changed after execution'):
+  Q54CausalDriver(MutatingBroker([tmp_path]),lambda _task,_bundle:{'data':path},Authority()).run(ModularWorkflow(session),cell=cell,scenario=scenario,model=model,package=package)
  raw=material(t,b'x\n1\n').data()['variants']
  raw['subjective']['measurement_contract']['observable']='different observable'
  with pytest.raises(ContractError): freeze_q54_causal_bundle(t,variants=raw)

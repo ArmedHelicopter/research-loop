@@ -68,16 +68,16 @@ def _diagnostics(x,branches):
  branch_ids={b['hypothesis_id'] for b in branches}; out=[]; seen=set()
  for row in x:
   row=_map(row,'diagnostic')
-  raw_fields={'diagnostic_id','branch_id','program','program_sha256','image','inputs','cost','preregistered_uncertainty'}
-  frozen_fields={'diagnostic_id','branch_id','program','canonical_program_sha256','host_program_sha256','host_program_byte_count','image','inputs','cost','preregistered_uncertainty'}
+  raw_fields={'diagnostic_id','branch_ids','program','program_sha256','image','inputs','cost','preregistered_uncertainty'}
+  frozen_fields={'diagnostic_id','branch_ids','program','canonical_program_sha256','host_program_sha256','host_program_byte_count','image','inputs','cost','preregistered_uncertainty'}
   if set(row) not in (raw_fields,frozen_fields): raise ContractError('diagnostic fields incomplete')
   did=_text(row['diagnostic_id'],'diagnostic id')
-  if did in seen or row['branch_id'] not in branch_ids: raise ContractError('diagnostic identity or branch binding drift')
+  if did in seen or not isinstance(row['branch_ids'],list) or set(row['branch_ids'])!=branch_ids or len(row['branch_ids'])!=len(branch_ids): raise ContractError('diagnostic identity or common branch binding drift')
   seen.add(did)
   if type(row['cost']) not in (int,float) or row['cost']<=0 or type(row['preregistered_uncertainty']) not in (int,float) or row['preregistered_uncertainty']<0: raise ContractError('diagnostic cost or uncertainty invalid')
   program=_program(row['program'],row.get('program_sha256',row.get('canonical_program_sha256')))
   if set(row)==frozen_fields and (row['host_program_sha256']!=program['host_program_sha256'] or row['host_program_byte_count']!=program['host_program_byte_count']): raise ContractError('frozen host program bytes drift')
-  out.append({'diagnostic_id':did,'branch_id':_text(row['branch_id'],'branch id'),'program':program['text'],'canonical_program_sha256':program['canonical_program_sha256'],'host_program_sha256':program['host_program_sha256'],'host_program_byte_count':program['host_program_byte_count'],'image':_text(row['image'],'image'),'inputs':_inputs(row['inputs']),'cost':row['cost'],'preregistered_uncertainty':row['preregistered_uncertainty']})
+  out.append({'diagnostic_id':did,'branch_ids':sorted(_text(item,'branch id') for item in row['branch_ids']),'program':program['text'],'canonical_program_sha256':program['canonical_program_sha256'],'host_program_sha256':program['host_program_sha256'],'host_program_byte_count':program['host_program_byte_count'],'image':_text(row['image'],'image'),'inputs':_inputs(row['inputs']),'cost':row['cost'],'preregistered_uncertainty':row['preregistered_uncertainty']})
  return out
 def _item(raw,identity):
  raw=_map(raw,'Q5.4 material')
@@ -89,7 +89,7 @@ def _item(raw,identity):
  if not isinstance(branches,list): raise ContractError('prediction branches must be list')
  PredictionRegistry(identity).freeze('caller-frozen diagnostic competition',branches,budget_units=1)
  measurement=_measurement(raw['measurement_contract'],identity)
- if any(measurement['discriminator_id'] not in {p['discriminator_id'] for p in b['predictions']} or measurement['observable'] not in {p['observable'] for p in b['predictions']} for b in branches): raise ContractError('measurement discriminator or observable does not bind all branches')
+ if any(not any(p['discriminator_id']==measurement['discriminator_id'] and p['observable']==measurement['observable'] for p in b['predictions']) for b in branches): raise ContractError('measurement discriminator and observable pair does not bind all branches')
  return {'diagnostics':_diagnostics(raw['diagnostics'],branches),'prediction_branches':branches,'measurement_contract':measurement,'authority_contract':_authorities(raw['authority_contract'],identity)}
 
 def freeze_q54_causal_bundle(task:PublicTask,*,variants:Mapping[str,Mapping[str,Any]])->FrozenRecord:
@@ -173,8 +173,16 @@ class Q54CausalDriver:
   execution=workflow.session.execute(chosen['program'],broker=self.broker,image=chosen['image'],inputs={k:paths[k] for k in chosen['inputs']})
   actual_program=Path(execution.artifact.path).read_bytes() if execution.artifact is not None else b''
   if (execution.artifact is None or execution.artifact.sha256!=chosen['host_program_sha256'] or execution.artifact.byte_count!=chosen['host_program_byte_count'] or hashlib.sha256(actual_program).hexdigest()!=chosen['host_program_sha256'] or len(actual_program)!=chosen['host_program_byte_count'] or execution.record.data().get('input_artifacts')!={k:{'artifact_id':k,**v} for k,v in chosen['inputs'].items()}): raise ContractError('execution receipt literal host-byte binding drift')
+  # Re-read once after Docker.  This catches a resolver path changed between
+  # broker validation/execution and authority review; the authority receives
+  # exactly these verified bytes, never a second unchecked read.
+  verified_input_bytes={}
+  for artifact_id,declaration in chosen['inputs'].items():
+   raw_input=paths[artifact_id].read_bytes()
+   if len(raw_input)!=declaration['byte_count'] or hashlib.sha256(raw_input).hexdigest()!=declaration['sha256']: raise ContractError('public input changed after execution')
+   verified_input_bytes[artifact_id]=raw_input.hex()
   # Authority gets the complete receipt and read-only public bytes; model never does.
-  subject=FrozenRecord.from_dict({'schema':'q54-causal-authority-subject-v1','identity':task.identity.data(),'task_digest':task.content_hash,'bundle_digest':bundle.content_hash,'cell_binding':opaque_panel_cell_binding(cell),'authority_contract':item['authority_contract'],'prediction_branches':item['prediction_branches'],'measurement_contract':item['measurement_contract'],'selection':chosen,'ranking':rank,'execution_receipt':execution.data(),'public_program_bytes':actual_program.hex(),'public_input_bytes':{k:paths[k].read_bytes().hex() for k in chosen['inputs']}})
+  subject=FrozenRecord.from_dict({'schema':'q54-causal-authority-subject-v1','identity':task.identity.data(),'task_digest':task.content_hash,'bundle_digest':bundle.content_hash,'cell_binding':opaque_panel_cell_binding(cell),'authority_contract':item['authority_contract'],'prediction_branches':item['prediction_branches'],'measurement_contract':item['measurement_contract'],'selection':chosen,'ranking':rank,'execution_receipt':execution.data(),'public_program_bytes':actual_program.hex(),'public_input_bytes':verified_input_bytes})
   workflow.session._record('q54_authority_request',{'subject':subject.data(),'subject_digest':subject.content_hash,'cost':{'unit':'verifier_units','units':None}})
   raw=None
   try:
@@ -182,8 +190,9 @@ class Q54CausalDriver:
    workflow.session._record('q54_authority_response_raw',{'subject_digest':subject.content_hash,'receipt':raw.data() if isinstance(raw,FrozenRecord) else None,'reported_cost':raw.data().get('cost') if isinstance(raw,FrozenRecord) else None})
    receipt=_receipt(raw,subject)
   except Exception as exc:
-   partial=raw if isinstance(raw,FrozenRecord) else getattr(exc,'receipt',None)
-   workflow.session._record('q54_authority_failure',{'subject_digest':subject.content_hash,'error_type':type(exc).__name__,'reported_cost':partial.data().get('cost') if isinstance(partial,FrozenRecord) else None,'partial_receipt':partial.data() if isinstance(partial,FrozenRecord) else None}); raise
+   partial=raw if raw is not None else getattr(exc,'partial_response',getattr(exc,'receipt',None))
+   partial_data=partial.data() if isinstance(partial,FrozenRecord) else dict(partial) if isinstance(partial,Mapping) else None
+   workflow.session._record('q54_authority_failure',{'subject_digest':subject.content_hash,'error_type':type(exc).__name__,'reported_cost':partial_data.get('cost') if isinstance(partial_data,Mapping) else None,'partial_response':partial_data,'verified_cost':None}); raise
   receipt_record=FrozenRecord.from_dict(receipt)
   update=None
   if runtime_plan is not None:
