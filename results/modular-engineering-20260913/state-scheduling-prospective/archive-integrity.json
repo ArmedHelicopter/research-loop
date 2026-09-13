@@ -1,0 +1,62 @@
+{
+  "archive-members.json": {
+    "sha256": "728d60258447283417f9dcbf3019af1f1a06899ec93375b3ffc23985416da453",
+    "bytes": 1168517
+  },
+  "archive_evidence.py": {
+    "sha256": "68f13c0916831a12e06e1d95141bf61926c172c5fec33092dcdeb19c34241810",
+    "bytes": 3946
+  },
+  "checks.json": {
+    "sha256": "97d8d03ee856c1869981c59f728b40cff0804725dc8a1ae37b2ee8ec45443164",
+    "bytes": 885
+  },
+  "denominators.json": {
+    "sha256": "5dd966b5db7fdd11da6bbe8b9918ecebc7010719311782bbd8c79f1d0378b597",
+    "bytes": 14987
+  },
+  "README.md": {
+    "sha256": "812be2ba9cd5ed9d6b2d9365cf5bb598ec40c7c12fb167e5ccf9173a9c1ca69c",
+    "bytes": 5736
+  },
+  "scheduling-evidence.json": {
+    "sha256": "48a55344d3446ca4d89f6df5f78ff3b9ab818bc6d8082c39d16d431a0f5979f3",
+    "bytes": 37362
+  },
+  "state-scheduling-5e005ad-a.zip": {
+    "sha256": "f717cb1ade0c06904bf5750745ac58a1898fe2761ce0f4b9706971d100ecd5fb",
+    "bytes": 2916201
+  },
+  "state-scheduling-7ddf8d0-b.zip": {
+    "sha256": "a520abc089e43a9670dd54feb9f2819ed01f52c68604ef4b4d20ab49a5e75747",
+    "bytes": 2952388
+  },
+  "summarize_scheduling_evidence.py": {
+    "sha256": "192441e90d73256ec592be177ae6a16e79e08e8941cdfa90da4c3463ecb5be9d",
+    "bytes": 3529
+  },
+  "checks/state-scheduling-5e005ad-a-before.json": {
+    "sha256": "e182d42e99885fc9c3f7c2cc202200218950e17c073f498245afa1ca70d16cd3",
+    "bytes": 60103
+  },
+  "checks/state-scheduling-5e005ad-a-closed.json": {
+    "sha256": "7a42731018b30b81026e406fda68cd09784a3f741518ad8a371f7ef9ca6cf99c",
+    "bytes": 60184
+  },
+  "checks/state-scheduling-5e005ad-a.xml": {
+    "sha256": "baa8dfc52ff1a32216dd9bba34d0f704e5d76b640e98aadf7746a905b5fa71b6",
+    "bytes": 15789
+  },
+  "checks/state-scheduling-7ddf8d0-b-before.json": {
+    "sha256": "efc1c1ec593e04318ce0446de92271e36c5ec516a497ca067a4a712e3e9415ef",
+    "bytes": 60103
+  },
+  "checks/state-scheduling-7ddf8d0-b-closed.json": {
+    "sha256": "72e0f734a7d98127d923cd217ee6315a1395743b1bc4bdafbfcb194168f7627b",
+    "bytes": 60184
+  },
+  "checks/state-scheduling-7ddf8d0-b.xml": {
+    "sha256": "db8dcd09b98eb355a5291e944c80992ed445710fbb632cd8b50109d01ade6441",
+    "bytes": 15971
+  }
+}

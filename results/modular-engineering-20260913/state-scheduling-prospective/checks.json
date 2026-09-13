@@ -1,0 +1,32 @@
+{
+  "state-scheduling-5e005ad-a": {
+    "commit": "5e005ad7582248507e338672bd2f933cbfd6a0dd",
+    "source_unchanged": true,
+    "source_count": 517,
+    "exit_code": 0,
+    "wall_seconds": 439.0149999999994,
+    "new_paid_calls": 0,
+    "report_sha256": "baa8dfc52ff1a32216dd9bba34d0f704e5d76b640e98aadf7746a905b5fa71b6",
+    "junit": {
+      "tests": 101,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "state-scheduling-7ddf8d0-b": {
+    "commit": "7ddf8d0a7d864a2ffbee2401b61aba0513c022e9",
+    "source_unchanged": true,
+    "source_count": 517,
+    "exit_code": 0,
+    "wall_seconds": 472.0310000000027,
+    "new_paid_calls": 0,
+    "report_sha256": "db8dcd09b98eb355a5291e944c80992ed445710fbb632cd8b50109d01ade6441",
+    "junit": {
+      "tests": 102,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  }
+}

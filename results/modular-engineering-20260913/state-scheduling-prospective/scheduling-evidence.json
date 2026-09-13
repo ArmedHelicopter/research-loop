@@ -1,0 +1,1117 @@
+{
+  "state-scheduling-5e005ad-a": {
+    "source_commit": "5e005ad7582248507e338672bd2f933cbfd6a0dd",
+    "grid": [
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "11",
+        "enabled": [
+          "M2",
+          "M3",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "blade",
+        "arm_id": "11",
+        "enabled": [
+          "M2",
+          "M3",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "blade",
+        "arm_id": "00",
+        "enabled": [],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "blade",
+        "arm_id": "10",
+        "enabled": [
+          "M1"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "blade",
+        "arm_id": "10",
+        "enabled": [
+          "M2"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "10",
+        "enabled": [
+          "M2"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "01",
+        "enabled": [
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "01",
+        "enabled": [
+          "M2",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "blade",
+        "arm_id": "01",
+        "enabled": [
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "blade",
+        "arm_id": "00",
+        "enabled": [],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "11",
+        "enabled": [
+          "M2",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "blade",
+        "arm_id": "01",
+        "enabled": [
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "11",
+        "enabled": [
+          "M1",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "blade",
+        "arm_id": "01",
+        "enabled": [
+          "M2",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "00",
+        "enabled": [],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "blade",
+        "arm_id": "10",
+        "enabled": [
+          "M2",
+          "M3"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "blade",
+        "arm_id": "11",
+        "enabled": [
+          "M1",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "00",
+        "enabled": [
+          "M2"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "00",
+        "enabled": [],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "01",
+        "enabled": [
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "blade",
+        "arm_id": "00",
+        "enabled": [
+          "M2"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "10",
+        "enabled": [
+          "M2",
+          "M3"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "10",
+        "enabled": [
+          "M1"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "blade",
+        "arm_id": "11",
+        "enabled": [
+          "M2",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      }
+    ],
+    "variants": [
+      {
+        "case": "test_bound_driver_scheduler_va0",
+        "status": "succeeded",
+        "docker_attempts": 2,
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "peak_leases": 1,
+        "completion_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "fifo_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "overlapping_docker_call_intervals": false,
+        "inside_container_intervals": null,
+        "inside_container_overlap": null,
+        "remaining_leases": [],
+        "residual_containers": [],
+        "independent_scorer_receipt_sha256": "9bf1a7bd628cb12ebb65b79f1174444615c38b11e25503664b1481c1542f608d"
+      },
+      {
+        "case": "test_bound_driver_scheduler_va1",
+        "status": "succeeded",
+        "docker_attempts": 2,
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "peak_leases": 1,
+        "completion_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "fifo_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "overlapping_docker_call_intervals": false,
+        "inside_container_intervals": null,
+        "inside_container_overlap": null,
+        "remaining_leases": [],
+        "residual_containers": [],
+        "independent_scorer_receipt_sha256": "0d21f340fd718c506fa40461299e27783aa240415cea393660abc271da86b769"
+      },
+      {
+        "case": "test_bound_driver_scheduler_va2",
+        "status": "succeeded",
+        "docker_attempts": 2,
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "peak_leases": 2,
+        "completion_order": [
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272"
+        ],
+        "fifo_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "overlapping_docker_call_intervals": true,
+        "inside_container_intervals": null,
+        "inside_container_overlap": null,
+        "remaining_leases": [],
+        "residual_containers": [],
+        "independent_scorer_receipt_sha256": "7def8fc287dae276006f5569ab269c7d3ee607e927c21721cc2fa330e478640d"
+      },
+      {
+        "case": "test_bound_driver_scheduler_va3",
+        "status": "failed",
+        "docker_attempts": 2,
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "peak_leases": 2,
+        "completion_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "fifo_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "overlapping_docker_call_intervals": true,
+        "inside_container_intervals": null,
+        "inside_container_overlap": null,
+        "remaining_leases": [],
+        "residual_containers": [],
+        "independent_scorer_receipt_sha256": null
+      }
+    ],
+    "throughput_claim": false,
+    "scientific_effect_measured": false
+  },
+  "state-scheduling-7ddf8d0-b": {
+    "source_commit": "7ddf8d0a7d864a2ffbee2401b61aba0513c022e9",
+    "grid": [
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "10",
+        "enabled": [
+          "M2",
+          "M3"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "blade",
+        "arm_id": "11",
+        "enabled": [
+          "M2",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "blade",
+        "arm_id": "11",
+        "enabled": [
+          "M1",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "blade",
+        "arm_id": "11",
+        "enabled": [
+          "M2",
+          "M3",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "blade",
+        "arm_id": "01",
+        "enabled": [
+          "M2",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "blade",
+        "arm_id": "10",
+        "enabled": [
+          "M2",
+          "M3"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "11",
+        "enabled": [
+          "M2",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "00",
+        "enabled": [
+          "M2"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "10",
+        "enabled": [
+          "M1"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "10",
+        "enabled": [
+          "M2"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "01",
+        "enabled": [
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "00",
+        "enabled": [],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "blade",
+        "arm_id": "01",
+        "enabled": [
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "01",
+        "enabled": [
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "01",
+        "enabled": [
+          "M2",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "blade",
+        "arm_id": "00",
+        "enabled": [],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "00",
+        "enabled": [],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "blade",
+        "arm_id": "10",
+        "enabled": [
+          "M1"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "blade",
+        "arm_id": "00",
+        "enabled": [
+          "M2"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "11",
+        "enabled": [
+          "M1",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "blade",
+        "arm_id": "10",
+        "enabled": [
+          "M2"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M1+M8",
+        "benchmark": "blade",
+        "arm_id": "00",
+        "enabled": [],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 0,
+        "overlapping_docker_call_intervals": false,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M3+M8",
+        "benchmark": "discoverybench",
+        "arm_id": "11",
+        "enabled": [
+          "M2",
+          "M3",
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      },
+      {
+        "pair": "pair:M2+M8",
+        "benchmark": "blade",
+        "arm_id": "01",
+        "enabled": [
+          "M8"
+        ],
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "permit": null,
+        "docker_attempts": 2,
+        "peak_leases": 2,
+        "overlapping_docker_call_intervals": true,
+        "remaining_leases": [],
+        "residual_containers": []
+      }
+    ],
+    "variants": [
+      {
+        "case": "test_bound_driver_scheduler_va0",
+        "status": "succeeded",
+        "docker_attempts": 2,
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "peak_leases": 1,
+        "completion_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "fifo_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "overlapping_docker_call_intervals": false,
+        "inside_container_intervals": null,
+        "inside_container_overlap": null,
+        "remaining_leases": [],
+        "residual_containers": [],
+        "independent_scorer_receipt_sha256": "604bc88cf7014e14baaa4c8ecb4e9e38fd6cb59dc0d9e794c5ef0a9748ae16fc"
+      },
+      {
+        "case": "test_bound_driver_scheduler_va1",
+        "status": "succeeded",
+        "docker_attempts": 2,
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "peak_leases": 1,
+        "completion_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "fifo_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "overlapping_docker_call_intervals": false,
+        "inside_container_intervals": null,
+        "inside_container_overlap": null,
+        "remaining_leases": [],
+        "residual_containers": [],
+        "independent_scorer_receipt_sha256": "821acaaeb540a7bfa6e67a9a9b2a23253e8b08535e0cebe7f77825787e234485"
+      },
+      {
+        "case": "test_bound_driver_scheduler_va2",
+        "status": "succeeded",
+        "docker_attempts": 2,
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "peak_leases": 2,
+        "completion_order": [
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1",
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272"
+        ],
+        "fifo_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "overlapping_docker_call_intervals": true,
+        "inside_container_intervals": null,
+        "inside_container_overlap": null,
+        "remaining_leases": [],
+        "residual_containers": [],
+        "independent_scorer_receipt_sha256": "f13a3c01ceabce9dce50acfdc0df79f7d681d3d46a953e8ce00242785650030d"
+      },
+      {
+        "case": "test_bound_driver_scheduler_va3",
+        "status": "failed",
+        "docker_attempts": 2,
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "peak_leases": 2,
+        "completion_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "fifo_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "overlapping_docker_call_intervals": true,
+        "inside_container_intervals": null,
+        "inside_container_overlap": null,
+        "remaining_leases": [],
+        "residual_containers": [],
+        "independent_scorer_receipt_sha256": null
+      },
+      {
+        "case": "test_bound_driver_scheduler_va4",
+        "status": "succeeded",
+        "docker_attempts": 2,
+        "selected_jobs": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "peak_leases": 2,
+        "completion_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "fifo_order": [
+          "a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272",
+          "7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"
+        ],
+        "overlapping_docker_call_intervals": true,
+        "inside_container_intervals": [
+          {
+            "started_ns": 53682536915740,
+            "finished_ns": 53686538691060
+          },
+          {
+            "started_ns": 53682900218939,
+            "finished_ns": 53686913462202
+          }
+        ],
+        "inside_container_overlap": true,
+        "remaining_leases": [],
+        "residual_containers": [],
+        "independent_scorer_receipt_sha256": "4435f1b3c96c33e7ace1c9bc3ad4fdb97e45a106948cde8309101814d4df643f"
+      }
+    ],
+    "throughput_claim": false,
+    "scientific_effect_measured": false
+  }
+}
