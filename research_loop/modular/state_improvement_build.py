@@ -173,6 +173,7 @@ class FrozenProviderLedger:
 
 def verify_build(result, *, recipe, plan_digest, history, material, qualifier, parent, fixed_builder, broker, inputs, ledger):
     if type(result) is not BuildResult: raise ContractError('typed build result required')
+    if type(ledger) is not FrozenProviderLedger: raise ContractError('exact original build provider ledger required')
     b=result.record.data();root=result.root
     if (_path(root/'build-receipt.json').read_bytes()!=(result.record.encoded+'\n').encode('utf-8')
             or set(b)!={'schema','recipe','plan_digest','status','reason','candidate_digest','files'}

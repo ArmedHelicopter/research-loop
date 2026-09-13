@@ -27,6 +27,9 @@ SLOTS=('analysis_program','final_answer')
 
 
 def _validate(panel,cell,task,scenario,package,material,source_verifier,barrier):
+    from research_loop.modular.state_improvement_combination_controller import CandidateBarrier
+    if type(barrier) is not CandidateBarrier:
+        raise ContractError('exact candidate barrier required for original build replay')
     if (type(panel) is not StateImprovementPanel or cell not in panel.cells or not isinstance(task,PublicTask)
             or task.identity!=cell.identity or task.content_hash!=cell.task_digest or not isinstance(package,CandidatePackage)
             or package.digest!=cell.package_digest or not isinstance(scenario,FrozenRecord) or scenario.content_hash!=cell.scenario_digest):

@@ -191,6 +191,10 @@ class CandidateBarrier:
             else:raise ContractError('unknown side effect in state improvement controller journal')
 
     def verify(self):
+        if (type(self) is not CandidateBarrier or type(self.plan) is not FrozenStateImprovementPlan
+                or type(self.ledger) is not FrozenProviderLedger or type(self.builds) is not tuple
+                or any(type(result) is not BuildResult for result in self.builds)):
+            raise ContractError('exact barrier plan, builds and original provider ledger required')
         self.plan.check_packets(self.packets);self.ledger.verify()
         if (_path(self.root/'candidate-barrier.json').read_bytes()!=(self.record.encoded+'\n').encode('utf-8')
                 or _path(self.root/'plan.json').read_bytes()!=(self.plan.record.encoded+'\n').encode('utf-8')): raise ContractError('original plan or global candidate barrier drift')
