@@ -5,6 +5,16 @@ stage, and C1–C5 combination experiments defined in the design documents.
 
 ## Current checkpoint (2026-09-13)
 
+Source `c3a4b21040e419692a74382c973104d5fe5cf7e1` adds production Q1.1–Q1.4 and
+Q2.1 wiring, frozen train-reference extraction, a separate evaluator provider
+contract and a real stdio scorer process. The current archive has 448 files,
+including both failed planning-assertion reports and their 55-test repair.
+The source is frozen in a separate worktree for a full regression and the first
+12-cell linked training solve/adapted-score run; neither is claimed complete in
+this checkpoint. See [MODULAR-CHECKPOINT-20260913-SCORER.md](MODULAR-CHECKPOINT-20260913-SCORER.md).
+
+## Previous selection checkpoint (2026-09-13)
+
 Source `bd302e7b91771514f1f327f5e0229b5d00baeae3` additionally integrates the
 linked training controller, signed linked adapted scorer, train-only grouped
 selection and Q4.1/Q4.2/Q4.4/Q4.5 material-bundle drivers. The controller/selection

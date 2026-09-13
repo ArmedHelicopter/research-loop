@@ -1,0 +1,201 @@
+{
+  "schema": "history-support-scorer-checkpoint-v1",
+  "source_commit": "c3a4b21040e419692a74382c973104d5fe5cf7e1",
+  "reports": {
+    "reference-draft-r1.xml": {
+      "source_commit": "e913ed61b8aa2f60286319bdac242bbfe3623356",
+      "note": "earlier uncommitted reference-store draft",
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.043"
+    },
+    "reference-draft-r2-failure.xml": {
+      "source_commit": "e913ed61b8aa2f60286319bdac242bbfe3623356",
+      "note": "uncommitted draft; Windows test decoding and misplaced helper assertion failure retained",
+      "tests": "18",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "44.561"
+    },
+    "reference-root-r3.xml": {
+      "source_commit": "e913ed61b8aa2f60286319bdac242bbfe3623356",
+      "note": "repaired reference extraction and train export",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.800"
+    },
+    "history-root-integration.xml": {
+      "source_commit": "ecc67415995dc5f92100b3605f33c003c5510a75",
+      "note": "history/compiler/receipt integration",
+      "tests": "83",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "85.115"
+    },
+    "history-controller-root.xml": {
+      "source_commit": "ecc67415995dc5f92100b3605f33c003c5510a75",
+      "note": "real controller with synthetic provider and caller receipt port",
+      "tests": "1",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "7.542"
+    },
+    "history-pressure-evaluator-root.xml": {
+      "source_commit": "a3e6534a53aad7f0acb0c6d201e0242700c3111a",
+      "note": "tested source committed unchanged",
+      "tests": "39",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "154.150"
+    },
+    "full-suite-a3e6534-failure.xml": {
+      "source_commit": "a3e6534a53aad7f0acb0c6d201e0242700c3111a",
+      "note": "913 tests; stale Q2 planning assertion failed; raw report retained",
+      "tests": "913",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1050.563"
+    },
+    "support-agent-r4.xml": {
+      "source_commit": "1462b5119f277665fbf4d156d4cfdc512da32f54",
+      "note": "earlier support driver before causal review corrections",
+      "tests": "54",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "15.486"
+    },
+    "support-agent-r5-failure.xml": {
+      "source_commit": "6567bf81ee8c6b56f159f5f31b393f312cc6cfd1",
+      "note": "uncommitted intermediate repair; helper construction failure retained",
+      "tests": "56",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "26.029"
+    },
+    "support-agent-r7.xml": {
+      "source_commit": "6567bf81ee8c6b56f159f5f31b393f312cc6cfd1",
+      "note": "paired representation and source-root topology repair",
+      "tests": "56",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "32.115"
+    },
+    "support-agent-r9.xml": {
+      "source_commit": "61db7bcf09776bf4e45e0d338bf4e4ed089e5149",
+      "note": "withdrawal applies to all copies of a root",
+      "tests": "56",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "37.266"
+    },
+    "scorer-process-agent.xml": {
+      "source_commit": "b0c6466deb5647b3395bfb62000d0b15ffb54ba4",
+      "note": "initial process boundary before repeated-input repair",
+      "tests": "6",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "98.375"
+    },
+    "scorer-process-agent-repair.xml": {
+      "source_commit": "a63978be61d51acc5a029405b5e775dfc99be163",
+      "note": "repeated input binding, malformed journal preflight and reaping",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "75.032"
+    },
+    "scorer-regression-agent.xml": {
+      "source_commit": "a63978be61d51acc5a029405b5e775dfc99be163",
+      "note": "linked scorer and evaluator provider regressions",
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "9.683"
+    },
+    "array-schema-agent.xml": {
+      "source_commit": "d16bbfa7ab73634b6687b109896c65c1d609c571",
+      "note": "array response bounds with actual mock provider port",
+      "tests": "9",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.232"
+    },
+    "array-schema-regression.xml": {
+      "source_commit": "d16bbfa7ab73634b6687b109896c65c1d609c571",
+      "note": "controller and evaluator regressions",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "10.633"
+    },
+    "support-scorer-root.xml": {
+      "source_commit": "f87dd0a8d8723dfa70fe987531cbb842d96301ad",
+      "note": "97 tests: 96 pass and one Q2 nested planning-marker test assertion failure; all runtime/controller/scorer/label isolation checks pass",
+      "tests": "97",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "125.555"
+    },
+    "planning-pressure-root-repair.xml": {
+      "source_commit": "c3a4b21040e419692a74382c973104d5fe5cf7e1",
+      "note": "test follows Q2 projection wrapper; planning and production placeholder refusal regression",
+      "tests": "55",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "11.613"
+    }
+  },
+  "scope": "engineering reports, reference preparation, context review and zero-call worker startup",
+  "new_paid_calls_in_this_archive_batch": 0,
+  "train_reference_tasks": 2,
+  "train_reference_alternatives": {
+    "discoverybench": 1,
+    "blade": 65
+  },
+  "reference_contents_archived": false,
+  "scorer_process_live_status": "production startup probe passed with zero model calls",
+  "separate_live_experiment": {
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\linked-train-scored-20260913-01",
+    "source_commit": "c3a4b21040e419692a74382c973104d5fe5cf7e1",
+    "status": "launched; outcomes and costs not included in this engineering checkpoint"
+  },
+  "driver_registry": [
+    "Q1.1",
+    "Q1.2",
+    "Q1.3",
+    "Q1.4",
+    "Q1.5",
+    "Q2.1",
+    "Q3.1",
+    "Q4.1",
+    "Q4.2",
+    "Q4.3",
+    "Q4.4",
+    "Q4.5"
+  ],
+  "full_suite_for_current_source": "not_run; a3e6534 report contains 912 pass and one stale planning assertion failure",
+  "scientific_effect": "not_measured",
+  "calibration": "not_measured",
+  "validation_access": "none",
+  "remaining": "All 48 Q obligations, per-module mechanism and benchmark effects, 36 pairs, 5 triples, full/LOO, final combination, separate Q6.3 meta-program phase and qualified validation remain required."
+}

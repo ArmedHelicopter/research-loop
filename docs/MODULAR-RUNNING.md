@@ -65,14 +65,29 @@ complete task × variant × arm × replicate grid for any or all 48 obligations.
 P0-only obligations have one fixed control arm bound to a source/protocol hash;
 P0 is always enabled. Compiling a grid does not qualify its driver or scoring.
 
-`panel_runner.run_train_cell()` currently supports Q3.1. Its two real model
-requests bind the task, controlled diagnostic, package and exact panel cell.
-M4-on freezes a prediction plan and supplies it to the final request; M4-off
-supplies the control response. Typed runtime and optional scorer receipts pass
-to `PanelReceiptVerifier`. Other Q drivers fail closed at this entry point until
-their mechanisms are connected. The existing engineering scenario drivers are
-not automatically substituted as formal benchmark runs. This Q3.1 driver does
-not execute code or claim matched token consumption.
+`panel_runner.run_train_cell()` supports Q1.1–Q1.5, Q2.1, Q3.1 and Q4.1–Q4.5.
+Q1.1–Q1.4 require typed caller material and the record-bound
+`history_admission_port`, which the train controller forwards. Q2.1 and the Q4
+family require their typed per-task material bundles. Planning fixtures cannot
+substitute for these runtime inputs. Q4.5 heterogeneous routing still fails
+without the required independent route evidence and remains in the denominator.
+Typed runtime and optional scorer receipts pass to `PanelReceiptVerifier`.
+
+The controller's explicit `linked_benchmark_solve` mode currently supports
+Q1.5, Q3.1 and Q4.3. It adds analysis-program and final-answer calls, executes
+the program in the frozen restricted Docker image, and exposes verified
+`linked_results` for scoring without rerunning the solver. No token matching or
+scientific efficacy follows from completed execution.
+
+The separate train-only stdio scoring worker is described in
+[MODULAR-LINKED-SCORER-PROCESS.md](MODULAR-LINKED-SCORER-PROCESS.md). It requires a
+full frozen panel, configuration hash, private train-reference manifest and
+separate executor/scorer authority keys. Run the production worker with empty
+stdin first to check initialization without a provider request. Keep evaluator
+ledgers and references in the private store; use a fixed reviewed environment
+and a fresh no-tools context check for every provider call. Unknown reservations
+must be investigated, never silently retried. This process boundary does not
+establish OS account isolation or scientific scorer calibration.
 
 SciCode and ScienceAgentBench accept restricted public projections through their
 adapters. They do not acquire source data or accept complete Hugging Face rows.

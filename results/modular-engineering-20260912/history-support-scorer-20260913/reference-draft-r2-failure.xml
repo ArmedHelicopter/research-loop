@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="18" time="44.561" timestamp="2026-09-13T09:13:04.674502+08:00" hostname="SC-202507131830"><testcase classname="tests.test_train_reference_store" name="test_train_export_real_journal_to_frozen_reference_endpoint_and_signed_score" time="0.986" /><testcase classname="tests.test_train_reference_store" name="test_rejects_mismatched_allocation_source_or_destination_before_publication[validation]" time="0.031" /><testcase classname="tests.test_train_reference_store" name="test_rejects_mismatched_allocation_source_or_destination_before_publication[split_reallocated]" time="0.021" /><testcase classname="tests.test_train_reference_store" name="test_rejects_mismatched_allocation_source_or_destination_before_publication[source_hash]" time="0.021" /><testcase classname="tests.test_train_reference_store" name="test_rejects_mismatched_allocation_source_or_destination_before_publication[answer_key_hash]" time="0.025" /><testcase classname="tests.test_train_reference_store" name="test_rejects_mismatched_allocation_source_or_destination_before_publication[foreign_question]" time="0.016" /><testcase classname="tests.test_train_reference_store" name="test_rejects_mismatched_allocation_source_or_destination_before_publication[nested_store]" time="0.177" /><testcase classname="tests.test_train_reference_store" name="test_rejects_mismatched_allocation_source_or_destination_before_publication[missing_selector]" time="0.020" /><testcase classname="tests.test_train_reference_store" name="test_resolver_rejects_foreign_handles_and_changed_reference_or_manifest" time="0.085" /><testcase classname="tests.test_train_reference_store" name="test_exact_discovery_source_selector_and_task_context_binding" time="0.058"><failure message="UnicodeDecodeError: 'gbk' codec can't decode byte 0x99 in position 183: illegal multibyte sequence">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/reference-store-r2/test_exact_discovery_source_se0')
+
+    def test_exact_discovery_source_selector_and_task_context_binding(tmp_path):
+        args = material(tmp_path)
+        directory = args["snapshot_root"] / "discovery/upstream/discoverybench/synth/train/family_1_1"
+        # A new lexically first metadata record cannot redirect the exported task.
+        alternate = json.loads((directory / "metadata_1.json").read_text()); alternate["id"] = 99
+        (directory / "metadata_0.json").write_text(json.dumps(alternate))
+        publication = prepare_train_reference_store(**args)
+        resolve = resolver(args, publication)
+        packet = args["packets"][0]; handle = publication.data()["task_handles"][digest(packet.task.identity.data())]
+        assert "SYNTHETIC-DISCOVERY-REFERENCE" in resolve(handle, "discoverybench").encoded
+        manifest_path = args["store_root"] / "manifest.json"
+        manifest = FrozenRecord(manifest_path.read_text()).data()
+        reference_path = args["store_root"] / (handle + ".json")
+&gt;       body = FrozenRecord(reference_path.read_text()).data(); body["task_context"]["question"] = "wrong task"
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_train_reference_store.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/reference-store-r2/test_exact_discovery_source_se0/scorer-only/34f7d680c973ecc138fa4062894cfc5a0994e6e729cddec95cee9b1633c595de.json')
+encoding = 'locale', errors = None
+
+    def read_text(self, encoding=None, errors=None):
+        """
+        Open the file in text mode, read it, and close the file.
+        """
+        encoding = io.text_encoding(encoding)
+        with self.open(mode='r', encoding=encoding, errors=errors) as f:
+&gt;           return f.read()
+                   ^^^^^^^^
+E           UnicodeDecodeError: 'gbk' codec can't decode byte 0x99 in position 183: illegal multibyte sequence
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1028: UnicodeDecodeError</failure></testcase><testcase classname="tests.test_modular_train_io" name="test_exports_only_allowlisted_public_packets" time="0.026" /><testcase classname="tests.test_modular_train_io" name="test_rejects_validation_identity_and_hash_drift_before_parse" time="0.011" /><testcase classname="tests.test_modular_train_controller" name="test_actual_custody_export_port_runner_and_receipt_are_engineering_only" time="8.588" /><testcase classname="tests.test_modular_train_controller" name="test_q43_closed_driver_runs_through_custody_export_and_frozen_policy" time="22.667" /><testcase classname="tests.test_modular_train_controller" name="test_rejects_config_drift_reused_root_and_unreviewed_policy" time="2.651" /><testcase classname="tests.test_modular_train_controller" name="test_rejects_non_train_allowlist_and_evidence_task_mismatch_before_model" time="0.495" /><testcase classname="tests.test_modular_train_controller" name="test_failed_cells_keep_the_complete_denominator_and_are_not_completed" time="7.929" /><testcase classname="tests.test_modular_train_controller" name="test_refuses_a_reused_ledger_before_export_or_run_side_effects" time="0.430" /></testsuite></testsuites>
