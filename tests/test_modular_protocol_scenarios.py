@@ -7,7 +7,9 @@ from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.experiments import ControllerInputs, registry, scenario
 from research_loop.modular.protocol_trace import verify_protocol_trace
-from research_loop.modular.runtime import verify_trace
+from research_loop.modular.modules.admission import AuditItem, ScientificState
+from research_loop.modular.polarity_goal_panel_drivers import admission_subject, freeze_polarity_goal_bundle
+from research_loop.modular.runtime import AuditAuthority, verify_trace
 from research_loop.modular.scenarios_protocol import run_protocol_scenario
 from research_loop.ontology import ContractError
 
@@ -30,6 +32,44 @@ def run(root, experiment, variant, benchmark="blade", model=None):
                                  sidecar=root, broker=broker, model=model)
 
 
+def typed_q26_bundle(task):
+    """Create the caller-owned material required by the production Q2.6 path.
+
+    This deliberately does not reuse the protocol fixture.  The fixture's
+    controller input is an engineering fault record and must remain rejected
+    by the typed production driver.
+    """
+    keys = {"typed-a": b"a" * 32, "typed-b": b"b" * 32}
+
+    def signed_item(experiment, variant):
+        public = {"source_id": task.identity.group_id,
+                  "observation": f"Public source material for {experiment} {variant}."}
+        locked = {"objective": "registered primary contrast"}
+        proposal = {"source_id": task.identity.group_id,
+                    "statement": "The public report describes the registered endpoint."}
+        subject = admission_subject(task, experiment_id=experiment, public_material=public,
+                                    **({"locked_objective": locked, "proposal": proposal}
+                                       if experiment == "Q2.6" else {}))
+        receipts = [AuditAuthority(name, key).issue_material(
+            identity=task.identity, subject_digest=subject.content_hash,
+            execution_success=True,
+            state=ScientificState("valid", "supported", "unknown", "explore"),
+            outcome="positive", audit=[AuditItem("measurement", True, True)]).data()
+            for name, key in keys.items()]
+        item = {"public_material": public, "admission_receipts": receipts}
+        if experiment == "Q2.6":
+            item.update({"locked_objective": locked, "proposal": proposal})
+        return item
+
+    return freeze_polarity_goal_bundle(
+        task,
+        q25={name: signed_item("Q2.5", name)
+             for name in ("invalid_positive", "invalid_negative", "valid_negative")},
+        q26={name: signed_item("Q2.6", name)
+             for name in ("secondary_win", "maintenance", "late_pivot")},
+    )
+
+
 @pytest.mark.parametrize("benchmark", ["blade", "discoverybench"])
 @pytest.mark.parametrize(("experiment", "variant"), [(key, variant) for key in ("Q2.6", "Q2.7") for variant in registry()[key].variants])
 def test_all_protocol_faults_block_actual_gate_or_receipt(tmp_path, benchmark, experiment, variant):
@@ -49,8 +89,23 @@ def test_all_protocol_faults_block_actual_gate_or_receipt(tmp_path, benchmark, e
         if experiment == "Q2.6":
             specific = "programme_completion_unauthorized" if variant == "maintenance" else "objective_drift"
             assert specific in result.gate.data()["reasons"]
-    inputs = ControllerInputs(FrozenRecord.from_dict({"task": "fixture"}), FrozenRecord.from_dict({}), FrozenRecord.from_dict({"calls": 1}))
-    assert scenario(registry()[experiment], variant, inputs=inputs).data()["controller_input"]["fault"] == variant
+    old_inputs = ControllerInputs(FrozenRecord.from_dict({"task": "fixture"}), FrozenRecord.from_dict({}), FrozenRecord.from_dict({"calls": 1}))
+    if experiment == "Q2.6":
+        # The protocol fault fixture remains useful for replay engineering, but
+        # is not caller material accepted by the production goal-lock driver.
+        with pytest.raises(ContractError, match="typed polarity/goal caller material is required"):
+            scenario(registry()[experiment], variant, inputs=old_inputs)
+        task = task_for(benchmark)
+        typed = typed_q26_bundle(task)
+        typed_inputs = ControllerInputs(FrozenRecord.from_dict(task.data()), typed,
+                                        FrozenRecord.from_dict({"calls": 2}))
+        compiled = scenario(registry()[experiment], variant, inputs=typed_inputs)
+        controller = compiled.data()["controller_input"]
+        assert controller["schema"] == "polarity-goal-controller-v2"
+        assert controller["bundle"]["q26"][variant]["public_material"]["source_id"] == task.identity.group_id
+        assert "fixture_only" not in FrozenRecord.from_dict(controller).encoded
+    else:
+        assert scenario(registry()[experiment], variant, inputs=old_inputs).data()["controller_input"]["fault"] == variant
 
 
 def test_q26_actual_model_can_preserve_unknown_without_accepting_the_proposed_pivot(tmp_path):
