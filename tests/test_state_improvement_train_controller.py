@@ -239,6 +239,38 @@ def test_original_build_barrier_and_provider_files_replay_bound(grid,relative):
     finally:path.write_bytes(raw)
 
 
+def test_barrier_proxy_cannot_bypass_corrupted_build_replay_without_new_io(grid,monkeypatch):
+    from types import SimpleNamespace
+    setup,run=grid;result=run.results[0];args=replay_args(setup,run,result)
+    barrier=run.barrier;path=run.builds[0].root/'candidate.json';raw=path.read_bytes()
+    before=(len(setup['seen']),len(setup['calls']),len(setup['port'].ledger['calls']))
+    def forbidden(*a,**k):raise AssertionError('replay attempted new external I/O')
+    monkeypatch.setattr(DockerExecutionBroker,'execute',forbidden)
+    monkeypatch.setattr(RestrictedBuilderPort,'execute',forbidden)
+    monkeypatch.setattr(type(setup['port']),'__call__',forbidden)
+    for qualifier_type in {type(q) for q in setup['verifiers'].values()}:
+        monkeypatch.setattr(qualifier_type,'qualify',forbidden)
+    issue_state_improvement_score_input(authority=EXECUTION,result=result,**args)
+    proxy=SimpleNamespace(root=barrier.root,record=barrier.record,plan=barrier.plan,
+        verify=lambda:None,package=lambda *a:args['package'],provenance=lambda:barrier.provenance())
+    try:
+        path.write_bytes(raw+b' ')
+        with pytest.raises(ContractError):barrier.verify()
+        with pytest.raises(ContractError):
+            signed=issue_state_improvement_score_input(authority=EXECUTION,result=result,**{**args,'barrier':proxy})
+            (setup['root']/'barrier-proxy-counterexample.json').write_text(json.dumps({
+                'schema':'state-improvement-barrier-proxy-counterexample-v1','corrupted_build':str(path),
+                'original_sha256':hashlib.sha256(raw).hexdigest(),'corrupted_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
+                'score_input_issued':signed is not None,'new_external_calls':0})+'\n',encoding='utf-8')
+    finally:path.write_bytes(raw)
+    for field in ('plan','ledger'):
+        original=getattr(barrier,field)
+        class Proxy:
+            def __getattr__(self,name):return getattr(original,name)
+        with pytest.raises(ContractError):replace(barrier,**{field:Proxy()}).verify()
+    assert (len(setup['seen']),len(setup['calls']),len(setup['port'].ledger['calls']))==before
+
+
 @pytest.mark.parametrize('field',['program','context','instruction','joint'])
 def test_rehashed_target_trace_cannot_change_provider_response_or_candidate(grid,field):
     setup,run=grid;result=run.results[0];path=result.runtime.trace_path;raw=path.read_bytes()
