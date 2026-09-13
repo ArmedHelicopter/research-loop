@@ -321,13 +321,15 @@ class LinkedScorerProcessClient:
             raise ContractError("scorer process response timeout must be positive")
         self.panel, self.cells, self.journal_path = panel, {cell.key: cell for cell in panel.cells}, journal_path
         self.response_timeout_seconds = response_timeout_seconds
+        # A malformed local journal is an unknown prior reservation.  Reject it
+        # before process creation, so it cannot leave an unused scorer worker.
+        self.states = _journal(journal_path)
         flags = getattr(subprocess, "CREATE_NO_WINDOW", 0) if os.name == "nt" else 0
         self.process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
             text=True, encoding="utf-8", creationflags=flags, env=dict(environment) if environment is not None else None)
         if self.process.stdin is None or self.process.stdout is None:
             raise ContractError("scorer process stdio is unavailable")
         self.input, self.output = self.process.stdin, self.process.stdout
-        self.states = _journal(journal_path)
 
     def close(self) -> None:
         if not self.input.closed:
@@ -340,8 +342,7 @@ class LinkedScorerProcessClient:
         try:
             self.process.wait(timeout=20)
         except subprocess.TimeoutExpired:
-            self.process.terminate()
-            self.process.wait(timeout=20)
+            self._stop_unknown_worker()
 
     def _stop_unknown_worker(self) -> None:
         """Do not let a timed-out scorer continue an unacknowledged cell."""
@@ -381,6 +382,10 @@ class LinkedScorerProcessClient:
         state = self.states.get(canonical(list(cell_key)))
         if state is not None:
             if state["status"] == "succeeded":
+                material = {"request_id": state["request_id"], "panel_digest": self.panel.digest,
+                    "cell_key": list(cell_key), "linked_input": linked_input.data()}
+                if _sha(canonical(material)) != state["request_digest"]:
+                    raise ContractError("scorer client repeat input differs from completed request")
                 return ScientificScorerReceipt(cell_key, FrozenRecord.from_dict(state["receipt"]))
             raise ContractError("scorer client has an unresolved prior reservation")
         request_id = uuid.uuid4().hex

@@ -77,6 +77,10 @@ def test_actual_stdio_worker_scores_two_benchmark_cells_without_exposing_private
         receipts = [client.submit(cell_key=cell.key, linked_input=args["linked_inputs"][cell.key]) for cell in chosen]
         # Exact completed calls are replayed locally without another model request.
         assert client.submit(cell_key=chosen[0].key, linked_input=args["linked_inputs"][chosen[0].key]) == receipts[0]
+        changed = args["linked_inputs"][chosen[0].key].data()
+        changed["body"]["candidate"]["answer"] = "different candidate after successful score"
+        with pytest.raises(ContractError, match="differs"):
+            client.submit(cell_key=chosen[0].key, linked_input=FrozenRecord.from_dict(changed))
     finally:
         client.close()
     for cell, receipt in zip(chosen, receipts, strict=True):
@@ -84,7 +88,9 @@ def test_actual_stdio_worker_scores_two_benchmark_cells_without_exposing_private
             panel=args["panel"], cell=cell, linked_input=args["linked_inputs"][cell.key], execution_authority_keys={EXEC.authority_id: EXEC.key})
     assert "PRIVATE-REFERENCE-SENTINEL" not in client_journal.read_text(encoding="utf-8")
     assert "PRIVATE-REFERENCE-SENTINEL" not in worker_journal.read_text(encoding="utf-8")
-    assert {json.loads(line)["status"] for line in worker_journal.read_text(encoding="utf-8").splitlines()} == {"reserved", "succeeded"}
+    journal_rows = [json.loads(line) for line in worker_journal.read_text(encoding="utf-8").splitlines()]
+    assert {row["status"] for row in journal_rows} == {"reserved", "succeeded"}
+    assert len(journal_rows) == 4
     with pytest.raises(ContractError, match="hash mismatch"):
         _load(path, "0" * 64)
 
@@ -149,3 +155,15 @@ def test_unknown_server_reservation_is_not_retried_or_double_scored(tmp_path):
             timeout_client.submit(cell_key=args["panel"].cells[1].key, linked_input=args["linked_inputs"][args["panel"].cells[1].key])
     finally:
         timeout_client.close()
+
+
+def test_malformed_client_journal_refuses_before_spawning_worker(tmp_path, monkeypatch):
+    args, _ = _material(tmp_path)
+    journal = tmp_path / "bad-client.jsonl"; journal.write_text("not json\n", encoding="utf-8")
+    spawned = []
+    def forbidden(*args, **kwargs):
+        spawned.append(True); raise AssertionError("worker must not spawn")
+    monkeypatch.setattr("evaluation.modular.scorer_process.subprocess.Popen", forbidden)
+    with pytest.raises(ContractError, match="journal"):
+        LinkedScorerProcessClient(panel=args["panel"], command=[sys.executable, "-c", "pass"], journal_path=journal)
+    assert spawned == []
