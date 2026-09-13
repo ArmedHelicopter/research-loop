@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="8.445" timestamp="2026-09-14T00:05:11.151108+08:00" hostname="SC-202507131830"><testcase classname="tests.test_execution_improvement_train_controller" name="test_complete_shared_builds_and_actual_execution_factorial" time="7.508"><error message="failed on setup with &quot;research_loop.ontology.ContractError: execution material must bind the same target state and original CSV&quot;">tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/execution-improvement-r1'), _tr...ath('E:/_ryanDev/AI/research-loop-modular/work/execution-improvement-r1'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        root=tmp_path_factory.mktemp('execution-improvement')
+        with pytest.MonkeyPatch.context() as patch:
+&gt;           setup=prepare(root,patch);run=invoke(setup,patch)
+                  ^^^^^^^^^^^^^^^^^^^
+
+tests\test_execution_improvement_train_controller.py:194: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_execution_improvement_train_controller.py:147: in prepare
+    plan=FrozenExecutionImprovementPlan(FrozenRecord.from_dict(body),history,(('public_csv',csv),))
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:6: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = FrozenExecutionImprovementPlan(record=FrozenRecord(encoded='{"acceptance_criteria":{"contrast_analysis":{"direction":"...sPath('E:/_ryanDev/AI/research-loop-modular/work/execution-improvement-r1/execution-improvement0/history/data.csv')),))
+
+    def __post_init__(self):
+        b=self.data()
+        required={'schema','export_mode','stage','domain','item_ids','task_bindings','baseline_digest','history_binding','history_inputs',
+            'parent','fixed_builder','history_materials','target_materials','source_verifier_bindings','model_config',
+            'scorer','scorer_handle_bindings','acceptance_criteria','objective','image','timeout_seconds','allocation','pipeline_estimand','candidate_selections','phase_materials'}
+        if (type(self) is not FrozenExecutionImprovementPlan or set(b)!=required or b['schema']!='execution-improvement-train-plan-v1'
+                or b['export_mode']!='primary_prospective' or b['domain']!='train' or b['allocation']!=ALLOCATION
+                or b['pipeline_estimand']!=ESTIMAND or b['candidate_selections']!=selections(b['baseline_digest'])
+                or not isinstance(b['stage'],str) or not b['stage'].strip() or type(self.history) is not FrozenTrainHistory
+                or b['history_binding']!=self.history.binding.data() or not isinstance(self.history_inputs,tuple)):
+            raise ContractError('exact versioned history/target TRAIN plan required')
+        if len(self.history_inputs)!=1 or self.history_inputs[0][0]!='public_csv': raise ContractError('one exact history CSV required')
+        path=_path(self.history_inputs[0][1]);raw=path.read_bytes()
+        if b['history_inputs']!={'public_csv':{'sha256':_sha(raw),'byte_count':len(raw)}}: raise ContractError('history CSV drift')
+        self.history.verify()
+        if not isinstance(b['item_ids'],list) or len(b['item_ids'])!=2 or len(set(b['item_ids']))!=2 or set(b['task_bindings'])!=set(b['item_ids']):
+            raise ContractError('exact two target tokens required')
+        identities=[]
+        for token,row in b['task_bindings'].items():
+            if (len(token)!=64 or any(c not in '0123456789abcdef' for c in token)
+                    or set(row)!={'identity','task_digest','csv_sha256','csv_byte_count'}): raise ContractError('target source binding fields differ')
+            identity=DataIdentity.parse(row['identity']);identity.require_train();identities.append(identity)
+            if (identity.benchmark,identity.task_id,identity.group_id)==(self.history.task.identity.benchmark,self.history.task.identity.task_id,self.history.task.identity.group_id):
+                raise ContractError('optimizer history overlaps target subject')
+            for key in ('task_digest','csv_sha256'):
+                v=row[key]
+                if not isinstance(v,str) or len(v)!=64 or any(c not in '0123456789abcdef' for c in v): raise ContractError('target digest malformed')
+            if type(row['csv_byte_count']) is not int or row['csv_byte_count']&lt;0: raise ContractError('target byte budget invalid')
+        if {i.benchmark for i in identities}!={'blade','discoverybench'} or len({i.split_id for i in identities})!=1:
+            raise ContractError('two core benchmark targets in one train split required')
+        if set(TrainingManifest(FrozenRecord.from_dict(self.parent.record.data()['training_manifest'])).identities())!={self.history.task.identity}:
+            raise ContractError('candidate training manifest must contain only the history')
+        _builder(self.fixed_builder)
+        if (set(b['history_materials'])!=set(DESIGNS) or set(b['target_materials'])!=set(DESIGNS)
+                or set(b['source_verifier_bindings'])!=set(DESIGNS)): raise ContractError('all three state pairs required')
+        budgets=set()
+        for pair in DESIGNS:
+            _validate_source_binding(b['source_verifier_bindings'][pair])
+            m=self.history_material(pair);budgets.add(m.data()['context_budget_bytes'])
+            if m.data()['task_digest']!=self.history.task.content_hash: raise ContractError('foreign optimizer state')
+            entries=b['target_materials'][pair]
+            if set(entries)!={r['task_digest'] for r in b['task_bindings'].values()}: raise ContractError('exact target state coverage required')
+            for row in b['task_bindings'].values():
+                m=self.target_material(pair,row['task_digest']);budgets.add(m.data()['context_budget_bytes'])
+                if (m.data()['identity']!=row['identity'] or m.data()['task_digest']!=row['task_digest']
+                        or m.data()['public_artifacts']!=[{'artifact':{'artifact_id':'public_csv','sha256':row['csv_sha256'],
+                            'byte_count':row['csv_byte_count']},'container_path':'/input/public_csv'}]):
+                    raise ContractError('target material and original custody CSV differ')
+        if len(budgets)!=1 or len({v['cost_limit_per_call'] for v in b['source_verifier_bindings'].values()})!=1:
+            raise ContractError('state context/source cost allocation must match')
+        config=b['model_config']
+        if (set(config)!={'model','effort','max_calls','max_tokens','schemas','context_policy_sha256'}
+                or config['model']!='gpt-5.6-luna' or config['effort']!='low' or config['max_calls']!=70
+                or type(config['max_tokens']) is not int or config['max_tokens']&lt;1 or config['schemas']!=model_schemas()):
+            raise ContractError('matched exact proposal and target model opportunities required')
+        scorer=ScorerConfig(FrozenRecord.from_dict(b['scorer']))
+        if (scorer.record.data()['rubric_digest']!=FrozenBenchmarkRubricEndpoint.rubric_digest()
+                or b['acceptance_criteria']!={'contrast_analysis':_ANALYSIS}
+                or set(b['scorer_handle_bindings'])!={FrozenRecord.from_dict(i.data()).content_hash for i in identities}
+                or not isinstance(b['objective'],dict) or not b['objective'] or type(b['timeout_seconds']) is not int or not 1&lt;=b['timeout_seconds']&lt;=120):
+            raise ContractError('frozen primary scorer, estimand, objective and timeout required')
+        for identity in identities: ExecutionRequest(identity,b['image'],Path('planned.py'),{'public_csv':Path('planned.csv')},b['timeout_seconds'])
+        if len(recipes(b['baseline_digest']))!=6 or len(arm_recipes(b['baseline_digest']))!=16: raise ContractError('registered legal build inventory changed')
+    
+        if set(b['phase_materials'])!={r['task_digest'] for r in b['task_bindings'].values()}:
+            raise ContractError('exact target execution material inventory required')
+        for row in b['task_bindings'].values():
+            phase=self.phase_material(row['task_digest'])
+            state=self.target_material(next(iter(DESIGNS)),row['task_digest'])
+            if any(phase.data()[k]!=state.data()[k] for k in ('identity','task_digest','public_artifacts','context_budget_bytes')):
+&gt;               raise ContractError('execution material must bind the same target state and original CSV')
+E               research_loop.ontology.ContractError: execution material must bind the same target state and original CSV
+
+research_loop\modular\execution_improvement_combination_controller.py:139: ContractError</error></testcase></testsuite></testsuites>

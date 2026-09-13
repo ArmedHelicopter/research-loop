@@ -1,0 +1,26 @@
+{
+  "schema": "execution-improvement-synthetic-archive-v1",
+  "source_head": "af99f16a8140c7cf2d319b3bf9d0d951a584659d",
+  "commits": [
+    "e91cb614d0172a64a5a9e4c0d64dcceb24c9b86e",
+    "30effabe470f427bdbb798b09560de4060ff2b96",
+    "9e220bcc48640e203626f48b0cdc7a08ef9912d7",
+    "af99f16a8140c7cf2d319b3bf9d0d951a584659d"
+  ],
+  "zip_members": 9085,
+  "excluded_members": 318,
+  "zip_sha256": "68c38e1244a822de2a334d5c7b5293ab291c58f1e2f64892f48f93be2daddc6b",
+  "candidate_builds": 6,
+  "arm_recipe_bindings": 16,
+  "target_cells": 32,
+  "model_slots": 70,
+  "source_calls": 76,
+  "retrieval_calls": 0,
+  "target_docker": 96,
+  "auxiliary_docker": 64,
+  "solver_docker": 32,
+  "target_scorer": 32,
+  "actual_model_generation": false,
+  "actual_private_references": false,
+  "validation_opened": false
+}

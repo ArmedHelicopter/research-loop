@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="17.463" timestamp="2026-09-14T00:46:15.875876+08:00" hostname="SC-202507131830"><testcase classname="work.test_exec_m9_archived_source_replay" name="test_archived_signed_unknown_source_replay" time="1.339"><failure message="AssertionError: signed unknown-cost source bypasses successful target replay&#10;assert False">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/execution-improvement-r3-red/test_archived_signed_unknown_s0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000162F5834D10&gt;
+
+    def test_archived_signed_unknown_source_replay(tmp_path,monkeypatch):
+        work=R.parent/'work';closure=json.loads((work/'execution-improvement-r2-closed.json').read_bytes())
+        assert closure['source_unchanged']
+        root=work/'execution-improvement-r2'/'execution-improvement0';run=root/'run'
+        assert record(run/'controller-receipt.json').data()['status']=='complete_train_engineering'
+        b=record(run/'plan.json').data();historypath=root/'history'/'runtime'/'trace.jsonl'
+        old=_read_events(historypath);historytask=task(next(e['data']['request']['task'] for e in old if e['stage']=='model_request'))
+        history=FrozenTrainHistory(historytask,historypath,FrozenRecord.from_dict(b['history_binding']))
+        plan=FrozenExecutionImprovementPlan(FrozenRecord.from_dict(b),history,(('public_csv',root/'history'/'data.csv'),))
+        packets=[]
+        for token in b['item_ids']:
+            path=root/'export'/token/'public.json';body=record(path).data()
+            packets.append(PublicTrainPacket(task(body['task']),path,path.parent/'data.csv',FrozenRecord.from_dict(body['receipt'])))
+        calls=[];qualifiers={pair:provenance(calls) for pair in b['history_materials']}
+        broker=DockerExecutionBroker([root/'export',run,root/'history'])
+        def forbidden(*a,**k):raise AssertionError('counterexample cannot execute new Docker work')
+        monkeypatch.setattr(DockerExecutionBroker,'execute',forbidden)
+        rows=_phase_rows(run/'controller.jsonl');prefix=rows[:next(i for i,e in enumerate(rows) if e['stage']=='candidate_barrier')]
+        builds=tuple(BuildResult(run/'builds'/str(i),record(run/'builds'/str(i)/'build-receipt.json')) for i in range(6))
+        barrier=CandidateBarrier(run,record(run/'candidate-barrier.json'),plan,builds,
+            FrozenProviderLedger(run/'build-provider-ledger.json',record(run/'build-provider-ledger.json')),qualifiers,broker,tuple(packets),tuple(FrozenRecord.from_dict(r) for r in prefix))
+        panels,scenarios=compile_panels(barrier);panel=panels[-1];cell=panel.cells[-1];packet=next(p for p in packets if p.task.content_hash==cell.task_digest)
+        path=run/'targets'/FrozenRecord.from_dict(cell.data()).content_hash/'runtime'/'trace.jsonl';events=_read_events(path);state=_solver_journal_state(events)
+        session=CompletedSolverSession(packet.task,FrozenRecord.from_dict(events[0]['data']),FrozenRecord.from_dict(b['objective']),path.parent)
+        artifacts=broker.validate_inputs(packet.task.identity,{'public_csv':packet.csv_path})
+        solver=BenchmarkSolveResult(session,artifacts,state['analysis'],state['execution'],state['answer'],state['decision'],state['status'])
+        output=FrozenRecord.from_dict({'responses':[e['data']['response'] for e in events if e['stage']=='model_response'],'terminal':events[-1]['data']}).content_hash
+        runtime=RuntimeReceipt(cell.key,'succeeded',path,FrozenRecord.from_dict(events[-1]).content_hash,output)
+        result=ExecutionImprovementResult(cell,runtime,solver,FrozenRecord.from_dict(next(e['data']['transition'] for e in events if e['stage']=='execution_improvement_transition')),
+            FrozenRecord.from_dict(next(e['data']['joint'] for e in events if e['stage']=='execution_improvement_joint')),record(path.parent.parent/'phase'/'receipt.json'))
+        args=dict(panel=panel,task=packet.task,scenario=scenarios[cell.key],package=barrier.package(panel.obligation_id,cell.arm_id),
+            material=plan.target_material(panel.obligation_id,cell.task_digest),source_verifier=qualifiers[panel.obligation_id],barrier=barrier,
+            public_inputs={'public_csv':packet.csv_path},broker=broker,ledger=FrozenProviderLedger(run/'target-provider-ledger.json',record(run/'target-provider-ledger.json')),
+            phase_material=plan.phase_material(cell.task_digest))
+        issue_execution_improvement_score_input(authority=EXECUTION,result=result,**args)
+        sourcepath=path.parent.parent/'source-verification.json';original=sourcepath.read_bytes();trace=path.read_bytes();body=json.loads(original)
+        for row,authority in zip(body['calls'],args['source_verifier'].authorities,strict=True):
+            response=row['response']['body'];response['cost_units']=None
+            row.update(response=authority.authority.issue(response).data(),cost_units=None,cost_unknown=True)
+        issued=None;rejected=False
+        try:
+            sourcepath.write_text(canonical(body),encoding='utf-8');sha=hashlib.sha256(sourcepath.read_bytes()).hexdigest()
+            def mutate(events):next(e for e in events if e['stage']=='execution_improvement_transition')['data']['source_sha256']=sha
+            tail=_rewrite_trace(path,mutate);forged=replace(result,runtime=replace(result.runtime,trace_digest=tail))
+            PanelReceiptVerifier()._verify_runtime(forged.runtime,forged.cell)
+            try:issued=issue_execution_improvement_score_input(authority=EXECUTION,result=forged,**args)
+            except ContractError:rejected=True
+            (tmp_path/'original-source.json').write_bytes(original);(tmp_path/'original-trace.jsonl').write_bytes(trace)
+            (tmp_path/'forged-source.json').write_bytes(sourcepath.read_bytes());(tmp_path/'forged-trace.jsonl').write_bytes(path.read_bytes())
+            (tmp_path/'reproducer.py').write_bytes(Path(__file__).read_bytes())
+            (tmp_path/'counterexample.json').write_text(canonical({'original_verified':True,'generic_verified':True,'family_rejected':rejected,
+                'score_input_issued':issued is not None,'score_input_digest':issued.content_hash if issued else None,
+                'new_model_calls':0,'new_source_calls':len(calls),'new_docker_calls':0,'source_commit':closure['commit'],
+                'script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}),encoding='utf-8')
+            assert calls==[]
+&gt;           assert rejected,'signed unknown-cost source bypasses successful target replay'
+E           AssertionError: signed unknown-cost source bypasses successful target replay
+E           assert False
+
+..\work\test_exec_m9_archived_source_replay.py:83: AssertionError</failure></testcase></testsuite></testsuites>

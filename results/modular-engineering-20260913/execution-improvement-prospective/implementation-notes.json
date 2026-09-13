@@ -1,0 +1,7 @@
+{
+  "phase": "implementation_before_R4_freeze",
+  "attempt": "external component patch helper",
+  "outcome": "UnicodeDecodeError reading UTF-8 documentation with the host default GBK codec after Python edits had completed",
+  "repair": "Documentation updated with apply_patch before committing or running R4; no runtime/model/source calls in this failed editing helper",
+  "original_script_sha256": "0e1bd84cc7461654006ac59a661195c34bafed5a5f1d75c70e62ded34b052c81"
+}
