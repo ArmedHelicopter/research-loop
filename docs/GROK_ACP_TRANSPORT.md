@@ -1,9 +1,10 @@
-# Grok ACP single-prompt transport contract
+# Grok ACP two-opportunity transport contract
 
 The subprocess protocol engine is implemented and tested with synthetic peers.
-The production entry point `run_native` is deliberately disabled before process
-startup (`initial_title_suppression_unverified`). No new live model request was
-sent while building this transport. This is not yet an operational ModelPort.
+`run_native` requires the explicit versioned `main-and-initial-title-v2` contract:
+one main prompt and at most one initial title request opportunity. The earlier
+single-total-request entry was blocked in commit 73197ce; that evidence remains
+valid. This module is separate from the programme's operational ModelPort.
 
 ## What the engine checks
 
@@ -40,7 +41,7 @@ The receipt separately states that wire output cap, side-call completeness and
 actual additional settlement are not certified. It never translates ACP into
 headless events or adopts the Codex transport type/policy.
 
-## Why the native entry point is blocked
+## Why this contract includes the first-title opportunity
 
 The installed executable is GrokCLI 1.0.13, SHA-256
 `bf43dc75f5478a106eab1e86d422c963e4dbe9666cf14dab363733d27bf1e672`.
@@ -64,7 +65,7 @@ See the pinned official
 [first-title generator](https://github.com/xai-org/grok-build/blob/37949780c144e37df692e3d669051a21fec24f20/crates/codegen/xai-grok-shell/src/session/summary.rs#L41),
 and [title request helper](https://github.com/xai-org/grok-build/blob/37949780c144e37df692e3d669051a21fec24f20/crates/codegen/xai-grok-shell/src/session/helpers/session_summary.rs#L128).
 
-An honest future two-opportunity contract could explicitly pin
+The versioned two-opportunity contract explicitly pins
 `models.session_summary="grok-4.6"`: the summary client inherits primary retries,
 and the helper makes one collect request with a requested 100 output-token cap,
 at most 8,000 source-text bytes and a forced internal `session_title` function.
@@ -74,10 +75,12 @@ The old r5 private logs did not expose a recoverable title usage/cost receipt.
 Neither an empty title nor process exit proves no title dispatch.
 
 No supported switch was established that suppresses this first-title request
-while retaining the required fresh session. Do not enable a generation by
-changing the fixture command or bypassing `run_native`. A revised, explicitly
-authorized contract must budget the additional opportunity and preserve
-unknown side usage, or first establish a supported suppression mechanism.
+while retaining the required fresh session. The revised authorization budgets
+that additional opportunity and preserves unknown side usage/cost and unknown
+total calls/tokens/cost. Main prompt ledger counts never become totals for the
+two opportunities. One generated-title update and its title-only session-info
+update may be observed; no arbitrary tool activity is allowed. Both requests
+use the included-only account route established immediately before prompting.
 
 ## Validation boundary
 

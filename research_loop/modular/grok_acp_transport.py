@@ -38,6 +38,7 @@ SAFE_CONFIG = '''disable_web_search = true
 auto_update = false
 [models]
 default = "grok-4.6"
+session_summary = "grok-4.6"
 max_completion_tokens = 128
 max_retries = 0
 [model."grok-4.6"]
@@ -77,7 +78,11 @@ skills = false
 [marketplace]
 default_skills_installs_purged = true
 official_marketplace_auto_installed = true
+[[marketplace.sources]]
+name = "xAI Official"
+git = "https://github.com/xai-org/plugin-marketplace.git"
 '''
+OPPORTUNITY_CONTRACT = 'main-and-initial-title-v2'
 
 
 def digest(data: bytes) -> str:
@@ -321,6 +326,12 @@ class SinglePromptACP:
                 require(update.get('model_id') == MODEL, 'model_changed')
             elif kind == 'session_status':
                 pass  # Source-defined display snapshot; values stay private.
+            elif kind == 'session_summary_generated':
+                require(self.sent and isinstance(update.get('session_summary'), str)
+                        and self.event_counts.get(kind, 0) == 0, 'unexpected_title_update')
+            elif kind == 'session_info_update':
+                require(self.sent and isinstance(update.get('title'), str)
+                        and self.event_counts.get(kind, 0) == 0, 'unexpected_title_update')
             elif kind == 'response_started':
                 require(self.sent and update.get('model') in (None, MODEL, MODEL + '-build'),
                         'response_model')
@@ -546,12 +557,19 @@ class SinglePromptACP:
         ticks = usage['costUsdTicks'] if usage else None
         cost_complete = bool(usage and ticks is not None and not usage['costIsPartial']
                              and not usage['usageIsIncomplete'])
-        receipt = {'schema': 'grok-native-acp-receipt-v1', 'accepted': not faults,
+        receipt = {'schema': 'grok-native-acp-receipt-v2', 'accepted': not faults,
             'faults': list(dict.fromkeys(faults)), 'prompt_may_have_been_dispatched': self.sent,
             'prompt_requests_reserved': int(self.sent), 'session_id': self.sid,
             'prompt_id': self.prompt_id, 'requested_model': MODEL,
             'requested_max_completion_tokens': 128, 'wire_output_cap_certified': False,
             'requested_max_retries': 0, 'requested_max_turns': 1,
+            'opportunity_contract': OPPORTUNITY_CONTRACT,
+            'max_main_prompt_opportunities': 1, 'max_initial_title_opportunities': 1,
+            'requested_initial_title_model': MODEL, 'requested_initial_title_output_cap': 100,
+            'initial_title_internal_function': 'session_title',
+            'initial_title_usage': None, 'initial_title_cost_usd': None,
+            'total_model_call_count': None, 'total_tokens_all_opportunities': None,
+            'total_cost_usd_all_opportunities': None,
             'side_call_completeness_certified': False,
             'reported_usage_scope': 'native_prompt_usage_ledger',
             'runtime_empty_inventory_count': len(self.inventory_sessions),
@@ -597,11 +615,16 @@ def native_launch(*, executable, cwd, private_home, private_profile, frozen_file
     return command, env
 
 
-def run_native(**kwargs):
-    """Disabled until a supported initial-title suppression contract is found.
+def run_native(*, opportunity_contract, executable, cwd, private_home, private_profile,
+               private_dir, reservation, frozen_files, prompt, schema, timeout=60):
+    """Execute the explicit two-opportunity contract using existing native login.
 
-    Neither maxTurns nor features.turn_summary/title_refresh suppresses v1.0.13's
-    separate first-title generation. A fresh profile plus one prompt is therefore
-    insufficient evidence for a single model request. No process is started here.
+    One main prompt plus at most one first-title opportunity, with title usage
+    unknown, is a different contract from a single total model-call guarantee.
+    No legacy ModelPort or Codex dispatch policy is changed by this entry point.
     """
-    raise Rejected('initial_title_suppression_unverified')
+    require(opportunity_contract == OPPORTUNITY_CONTRACT, 'opportunity_contract_unapproved')
+    command, env = native_launch(executable=executable, cwd=cwd,
+        private_home=private_home, private_profile=private_profile, frozen_files=frozen_files)
+    return SinglePromptACP(command, cwd=cwd, env=env, private_dir=private_dir,
+        reservation=reservation, frozen_files=frozen_files, timeout=timeout).invoke(prompt, schema)

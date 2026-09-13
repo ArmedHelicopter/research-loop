@@ -11,6 +11,7 @@ import pytest
 
 from research_loop.modular.grok_acp_transport import (
     Rejected, SinglePromptACP, billing_gate, digest, known_usage, profile, run_native,
+    native_launch, SAFE_CONFIG,
 )
 
 PEER = Path(__file__).parent / 'fixtures' / 'grok_acp_peer.py'
@@ -161,10 +162,46 @@ def test_acp_input_includes_cache_and_reasoning_is_subset():
         assert known_usage({**base, **changed}) is None
 
 
-def test_native_entry_point_blocks_unbounded_initial_title_before_start(monkeypatch):
+def test_native_entry_point_requires_explicit_revised_contract(monkeypatch):
     import research_loop.modular.grok_acp_transport as transport
     def forbidden(*args, **kwargs):
         pytest.fail('native process must not start without initial-title contract')
     monkeypatch.setattr(transport.subprocess, 'Popen', forbidden)
-    with pytest.raises(Rejected, match='initial_title_suppression_unverified'):
-        run_native(prompt='synthetic')
+    with pytest.raises(Rejected, match='opportunity_contract_unapproved'):
+        run_native(opportunity_contract='one-total-model-call', executable='', cwd='',
+            private_home='', private_profile='', private_dir='', reservation='',
+            frozen_files={}, prompt='synthetic', schema=SCHEMA)
+
+
+def test_receipt_cannot_claim_main_usage_is_total(tmp_path):
+    _, result, _ = invoke(tmp_path)
+    r = result.receipt.data()
+    assert r['known_usage']['modelCalls'] == 1
+    assert r['max_initial_title_opportunities'] == 1
+    assert r['requested_initial_title_output_cap'] == 100
+    assert r['initial_title_internal_function'] == 'session_title'
+    for key in ('initial_title_usage', 'initial_title_cost_usd', 'total_model_call_count',
+                'total_tokens_all_opportunities', 'total_cost_usd_all_opportunities'):
+        assert r[key] is None
+
+
+def test_native_startup_pins_config_and_excludes_api_environment(tmp_path, monkeypatch):
+    import research_loop.modular.grok_acp_transport as transport
+    exe = tmp_path / 'fake-grok.exe'; exe.write_bytes(b'fixture only')
+    home = tmp_path / 'home'; home.mkdir()
+    user = tmp_path / 'user'; user.mkdir()
+    cwd = tmp_path / 'cwd'; cwd.mkdir()
+    config = home / 'config.toml'; config.write_text(SAFE_CONFIG)
+    (home / 'auth.json').write_text('{}')  # Synthetic; no actual login involved.
+    monkeypatch.setattr(transport, 'EXECUTABLE_SHA256', digest(exe.read_bytes()))
+    monkeypatch.setenv('XAI_API_KEY', 'fixture-must-not-propagate')
+    monkeypatch.setenv('GROK_CONFIG', 'fixture-must-not-propagate')
+    files = {str(exe): digest(exe.read_bytes()), str(config): digest(config.read_bytes())}
+    cmd, env = native_launch(executable=exe, cwd=cwd, private_home=home,
+        private_profile=user, frozen_files=files)
+    assert cmd[-2:] == ['agent', 'stdio']
+    assert 'XAI_API_KEY' not in env and 'GROK_CONFIG' not in env
+    assert env['GROK_HOME'] == str(home)
+    assert env['GROK_TURN_SUMMARY'] == 'false'
+    assert 'session_summary = "grok-4.6"' in SAFE_CONFIG
+    assert 'max_retries = 0' in SAFE_CONFIG
