@@ -103,6 +103,19 @@ def verify_m4_m5_combination_benchmark_cell(result: CombinationBenchmarkCellResu
     joint = result.joint_mechanism.data()
     enabled = set(result.cell.runtime_arm.data()["enabled"])
     _verify_module_logs(result.runtime.trace_path.parent, task, joint, enabled)
+    module_requests = [event for event in events if event["stage"] == "model_request" and event["data"]["request"]["slot"] in _SLOTS[:3]]
+    module_responses = [event for event in events if event["stage"] == "model_response"]
+    by_digest = {event["data"]["request_digest"]: FrozenRecord.from_dict(event["data"]["response"]) for event in module_responses}
+    actual = [by_digest.get(event["data"]["request_digest"]) for event in module_requests]
+    if len(module_requests) != 3 or any(item is None for item in actual) or [item.content_hash for item in actual] != joint.get("module_response_digests"):
+        raise ContractError("joint mechanism response digests do not bind the three actual module calls")
+    joint_index = next(index for index,event in enumerate(events) if event["stage"] == "combination_mechanism")
+    response_indexes = [index for index,event in enumerate(events) if event["stage"] == "model_response" and event["data"]["request_digest"] in {item["data"]["request_digest"] for item in module_requests}]
+    solver_indexes = [index for index,event in enumerate(events) if event["stage"] == "model_request" and event["data"]["request"]["slot"] == "analysis_program"]
+    if not response_indexes or not solver_indexes or not max(response_indexes) < joint_index < min(solver_indexes):
+        raise ContractError("joint mechanism event is not ordered after module responses and before solver")
+    if joint["prediction_plan"] is not None and any(event["data"]["request"]["module_context"].get("prediction_plan") != joint["prediction_plan"] for event in module_requests[1:]):
+        raise ContractError("M5 review requests do not carry the actual frozen M4 plan")
     if len(requests) < 3:
         raise ContractError("joint mechanism did not reach both matched module calls")
     first_response = next(event["data"]["response"] for event in events
