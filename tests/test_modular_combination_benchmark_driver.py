@@ -133,6 +133,12 @@ def test_full_two_benchmark_four_arm_grid_uses_one_session_real_modules_and_dock
         enabled = set(cell.runtime_arm.data()["enabled"])
         assert (joint["prediction_plan"] is not None) is ("M4" in enabled)
         assert (joint["revealed_review"] is not None) is ("M5" in enabled)
+        public_joint = seen[3]["module_context"]["joint_mechanism"]
+        assert set(public_joint) == {"schema", "panel_cell", "task_digest", "source_joint_digest", "prediction_plan", "review_responses"}
+        assert public_joint["prediction_plan"] == joint["prediction_plan"]
+        assert public_joint["review_responses"] == (None if joint["revealed_review"] is None else
+            [item["response"] for item in joint["revealed_review"]["submissions"]])
+        assert public_joint == seen[4]["module_context"]["joint_mechanism"]
         m4 = seen[0]["module_context"]
         assert set(m4) == {"panel_cell", "public_task", "mechanism_phase"}
         assert m4["public_task"] == catalogue.tasks[cell.task_digest].data()
@@ -183,6 +189,35 @@ def test_malformed_module_solver_failure_and_other_obligations_fail_closed(tmp_p
     with pytest.raises(ContractError, match="no actual combination executor"):
         _run(unsupported_panel, unsupported, catalogue, tmp_path / "unsupported", _model(calls))
     assert not calls
+
+
+def test_post_mechanism_input_failure_retains_joint_and_failed_solver(tmp_path: Path):
+    catalogue = _catalogue(); panel = catalogue.panels["pair:M4+M5"]
+    cell = next(cell for cell in panel.cells if cell.arm_id == "11")
+    seen = []
+    call = _model(seen)
+    def remove_input_after_modules(request):
+        response = call(request)
+        if request.data()["slot"] == "m5_measurement":
+            (tmp_path / "public/public.csv").unlink()
+        return response
+    result = _run(panel, cell, catalogue, tmp_path, remove_input_after_modules)
+    assert len(seen) == 3 and result.runtime.status == "failed"
+    assert result.solver.status == "input_preflight_failed" and result.joint_mechanism is not None
+    arguments = dict(panel=panel, task=catalogue.tasks[cell.task_digest], scenario=catalogue.scenarios[cell.key],
+                     package=catalogue.packages[cell.runtime_arm.content_hash])
+    assert verify_m4_m5_combination_benchmark_cell(result, **arguments).data()["engineering_verified"] is True
+    with pytest.raises(ContractError, match="absent mechanism"):
+        verify_m4_m5_combination_benchmark_cell(replace(result, joint_mechanism=None, solver=None), **arguments)
+
+
+def test_m4_budget_rejects_float_before_review_calls(tmp_path: Path):
+    catalogue = _catalogue(); panel = catalogue.panels["pair:M4+M5"]
+    cell = next(cell for cell in panel.cells if cell.arm_id == "10")
+    seen = []; plan = _plan(); plan["budget_units"] = 3.0
+    result = _run(panel, cell, catalogue, tmp_path, lambda request: (
+        seen.append(request.data()) or FrozenRecord.from_dict(plan)))
+    assert result.runtime.status == "failed" and result.solver is None and len(seen) == 1
 
 
 def test_verifier_rejects_forged_runtime_and_joint_bindings(tmp_path: Path):

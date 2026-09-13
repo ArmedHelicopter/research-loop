@@ -239,7 +239,7 @@ def _solver_journal_state(events: list[dict]) -> dict:
     requests, responses, execution = {}, {}, None
     for event in events:
         stage, data = event["stage"], event["data"]
-        if stage == "model_request":
+        if stage == "model_request" and data["request"]["slot"] in {"analysis_program", "final_answer"}:
             requests[data["request_digest"]] = data["request"]
         elif stage == "model_response":
             responses[data["request_digest"]] = FrozenRecord.from_dict(data["response"])

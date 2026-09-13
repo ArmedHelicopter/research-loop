@@ -63,7 +63,7 @@ def run_m4_m5_combination_benchmark_cell(*, panel: CombinationPanel, cell: Panel
             "controller_contrast_coefficient": panel.design.data()["contrast"][cell.arm_id]})
         solver = run_benchmark_solve_in_session(session=session, workflow=workflow, public_inputs=public_inputs,
             image=image, broker=broker, model=model, analysis_slot="analysis_program", final_slot="final_answer",
-            joint_mechanism=joint, panel_cell_binding=binding, driver_id=cell.coverage_id, timeout_seconds=timeout_seconds)
+            joint_mechanism=_public_joint(joint), panel_cell_binding=binding, driver_id=cell.coverage_id, timeout_seconds=timeout_seconds)
     except Exception as exc:
         if not session._terminal:
             _close_failure(session, cell, scenario, exc)
@@ -93,7 +93,8 @@ def verify_m4_m5_combination_benchmark_cell(result: CombinationBenchmarkCellResu
         raise ContractError("combination model request leaks arm or truth metadata")
     if result.joint_mechanism is None:
         solver_started = any(request["slot"] in {"analysis_program", "final_answer"} for request in requests)
-        if result.solver is not None or result.runtime.status != "failed" or solver_started:
+        if (result.solver is not None or result.runtime.status != "failed" or solver_started
+                or any(event["stage"] == "combination_mechanism" for event in events)):
             raise ContractError("absent mechanism must retain its failed pre-solver runtime")
         return FrozenRecord.from_dict({"schema": "m4-m5-combination-verification-v1", "cell_key": list(result.cell.key),
             "status": result.runtime.status, "engineering_verified": True, "joint_mechanism": None,
@@ -114,7 +115,10 @@ def verify_m4_m5_combination_benchmark_cell(result: CombinationBenchmarkCellResu
     joint_index = next(index for index,event in enumerate(events) if event["stage"] == "combination_mechanism")
     response_indexes = [index for index,event in enumerate(events) if event["stage"] == "model_response" and event["data"]["request_digest"] in {item["data"]["request_digest"] for item in module_requests}]
     solver_indexes = [index for index,event in enumerate(events) if event["stage"] == "model_request" and event["data"]["request"]["slot"] == "analysis_program"]
-    if not response_indexes or not solver_indexes or not max(response_indexes) < joint_index < min(solver_indexes):
+    state = _solver_journal_state(events)
+    if (not response_indexes or not max(response_indexes) < joint_index
+            or (solver_indexes and not joint_index < min(solver_indexes))
+            or (not solver_indexes and state["status"] != "input_preflight_failed")):
         raise ContractError("joint mechanism event is not ordered after module responses and before solver")
     if joint["prediction_plan"] is not None and any(event["data"]["request"]["module_context"].get("prediction_plan") != joint["prediction_plan"] for event in module_requests[1:]):
         raise ContractError("M5 review requests do not carry the actual frozen M4 plan")
@@ -129,13 +133,13 @@ def verify_m4_m5_combination_benchmark_cell(result: CombinationBenchmarkCellResu
         raise ContractError("second sealed reviewer received the first submission")
     if result.solver is None:
         raise ContractError("successful combination mechanism requires an in-trace solver result")
-    state = _solver_journal_state(events)
     _compare_solver_result(result.solver, state)
     if result.solver.status != state["status"] or result.runtime.status != ("succeeded" if state["status"] == "execution_succeeded" else "failed"):
         raise ContractError("combination receipt status is not derived from the shared solver journal")
     solver_requests = [request for request in requests if request["slot"] in {"analysis_program", "final_answer"}]
-    if result.solver is not None and (len(solver_requests) and any(request["module_context"].get("joint_mechanism") != joint
-                                                               or request["module_context"].get("joint_mechanism_digest") != result.joint_mechanism.content_hash
+    public_joint = _public_joint(result.joint_mechanism)
+    if result.solver is not None and (len(solver_requests) and any(request["module_context"].get("joint_mechanism") != public_joint.data()
+                                                               or request["module_context"].get("joint_mechanism_digest") != public_joint.content_hash
                                                                for request in solver_requests)):
         raise ContractError("solver request does not carry the trace-bound joint mechanism")
     if result.solver is not None and result.solver.session.sidecar != result.runtime.trace_path.parent:
@@ -156,7 +160,8 @@ def _run_m4(workflow: ModularWorkflow, cell: PanelCell, scenario: FrozenRecord, 
         workflow._trace("operation_m4_control", "executed", response_digest=response.content_hash)
         return None, response
     body = response.data()
-    if set(body) != {"question", "branches", "budget_units"} or body["budget_units"] != 3 or not isinstance(body["branches"], list) or len(body["branches"]) != 3:
+    if (set(body) != {"question", "branches", "budget_units"} or type(body["budget_units"]) is not int
+            or body["budget_units"] != 3 or not isinstance(body["branches"], list) or len(body["branches"]) != 3):
         raise ContractError("M4 combination response requires the frozen three-branch plan")
     plan = workflow.predictions.freeze(body["question"], body["branches"], budget_units=3)
     workflow._trace("stage_1", "executed", plan_id=plan.plan_id, plan_digest=plan.payload.content_hash,
@@ -200,6 +205,16 @@ def _joint(cell: PanelCell, task: PublicTask, scenario: FrozenRecord, panel: Com
         "review_id": review_id, "revealed_review": revealed.data() if revealed else None,
         "review_digest": revealed.content_hash if revealed else None,
         "module_response_digests": [m4_response.content_hash, *[item.content_hash for item in review_responses]]})
+
+
+def _public_joint(joint: FrozenRecord) -> FrozenRecord:
+    """Keep journal identities and controller design fields out of solver inputs."""
+    body = joint.data()
+    review = body["revealed_review"]
+    return FrozenRecord.from_dict({"schema": "m4-m5-public-joint-context-v1",
+        "panel_cell": body["panel_cell"], "task_digest": body["task_digest"],
+        "source_joint_digest": joint.content_hash, "prediction_plan": body["prediction_plan"],
+        "review_responses": None if review is None else [item["response"] for item in review["submissions"]]})
 
 
 def _runtime(cell: PanelCell, session: RunSession, joint: FrozenRecord | None, status: str) -> RuntimeReceipt:
