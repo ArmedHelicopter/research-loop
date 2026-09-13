@@ -149,7 +149,10 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
     predictions._log=_MemoryLog();reviews._log=_MemoryLog()
     prepared=phase=None
     if nonbaseline:
-        retrieval=_verify_sources(events,task,material.retrieval(),'M6' in cell.runtime_arm.data()['enabled'])
+        # The older retrieval-first verifier owns the retrieval transaction,
+        # while C4 owns its later placement after both sealed critiques.
+        retrieval_events=[e for e in events if e['stage'].startswith('q8_') or e['stage']=='retrieval_review_sources']
+        retrieval=_verify_sources(retrieval_events,task,material.retrieval(),'M6' in cell.runtime_arm.data()['enabled'])
         prepared=prepare(cell=cell,task=task,package=package,transition=transition,predictions=predictions,reviews=reviews,
             invoke=invoke,record=record,retrieve=lambda:public_retrieval(retrieval),phase_material=phase_material)
         phase=verify_phase(material=phase_material,cell=cell,objective=plan.objective(stage),root=root/'phase',image=plan.data()['image'],
