@@ -253,3 +253,36 @@ def test_rehashed_target_trace_cannot_change_provider_response_or_candidate(grid
         altered=replace(result,runtime=replace(result.runtime,trace_digest=digest))
         with pytest.raises(ContractError):issue_state_improvement_score_input(authority=EXECUTION,result=altered,**replay_args(setup,run,altered))
     finally:path.write_bytes(raw)
+
+
+@pytest.mark.parametrize('field,value',[('--network','host'),('--memory','4g'),('--cpus','8.0'),('--user','0:0'),('-v','/wrong:/input/public_csv:rw')])
+def test_rehashed_solver_execution_cannot_relax_docker_limits_or_mounts(grid,field,value):
+    from research_loop.modular.panel_receipts import PanelReceiptVerifier
+    from research_loop.modular.state_improvement_combination_driver import verify_state_improvement_cell
+    setup,run=grid;executed=next(r for r in run.results if r.cell.coverage_id=='pair:M3+M9' and r.cell.arm_id=='11')
+    args=replay_args(setup,run,executed);path=executed.runtime.trace_path;before=path.read_bytes()
+    record=executed.solver.execution.record.data();record['argv'][record['argv'].index(field)+1]=value
+    receipt=replace(executed.solver.execution,record=FrozenRecord.from_dict(record))
+    old_hash=executed.solver.execution.content_hash;new_hash=receipt.content_hash
+    def substitute(value):
+        if isinstance(value,dict):return {k:substitute(v) for k,v in value.items()}
+        if isinstance(value,list):return [substitute(v) for v in value]
+        return new_hash if value==old_hash else value
+    def mutate(events):
+        for event in events:event['data']=substitute(event['data'])
+        execution=next(e for e in events if e['stage']=='execution_result')['data']
+        execution['record']=receipt.record.data();execution['receipt']=receipt.data()
+        for event in events:
+            if event['stage']=='model_request':
+                old=event['data']['request_digest'];new=FrozenRecord.from_dict(event['data']['request']).content_hash
+                event['data']['request_digest']=new
+                for other in events:
+                    if other['stage']=='model_response' and other['data']['request_digest']==old:other['data']['request_digest']=new
+    try:
+        tail=_rewrite_trace(path,mutate)
+        forged=replace(executed,runtime=replace(executed.runtime,trace_digest=tail),solver=replace(executed.solver,execution=receipt))
+        PanelReceiptVerifier()._verify_runtime(forged.runtime,forged.cell)
+        with pytest.raises(ContractError,match='Docker limits'):verify_state_improvement_cell(forged,**args)
+        with pytest.raises(ContractError):issue_state_improvement_score_input(authority=EXECUTION,result=forged,**args)
+    finally:path.write_bytes(before)
+    verify_state_improvement_cell(executed,**args)

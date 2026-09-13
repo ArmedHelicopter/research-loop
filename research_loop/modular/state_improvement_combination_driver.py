@@ -2,6 +2,8 @@
 from dataclasses import dataclass
 from pathlib import Path
 import json
+import re
+from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.state_improvement_panel import StateImprovementPanel, DESIGNS, registered_design
 from research_loop.modular.state_improvement_build import qualifier_check, FrozenProviderLedger
 from research_loop.modular.admission_combination import FrozenAdmissionMaterial
@@ -112,7 +114,6 @@ def verify_state_improvement_cell(result,*,panel,task,scenario,package,material,
     if not events.index(transitions[0])<events.index(joints[0])<first: raise ContractError('joint was not frozen before target I/O')
     if tuple(r['slot'] for r in requests)!=SLOTS[:len(requests)] or any(_private_arm_marker(r) for r in requests):
         raise ContractError('target schedule or isolation drift')
-    ledger.bind_events(events)
     state=_solver_journal_state(events);_compare_solver_result(result.solver,state)
     if result.solver.session.sidecar!=path.parent or result.runtime.status!=('succeeded' if state['status']=='execution_succeeded' else 'failed'):
         raise ContractError('target solver result relabeled')
@@ -132,7 +133,23 @@ def verify_state_improvement_cell(result,*,panel,task,scenario,package,material,
                 or request['slot']=='analysis_program' and request['execution_feedback']!=[]):
             raise ContractError('target request includes unselected proposal or omits candidate')
     _verify_solver_files(state,events,path,material)
-    if state['execution'] is not None and state['execution'].record.data().get('argv') and state['execution'].record.data()['argv'][-3:]!=[scenario.data()['image'],'python3','/task/analysis.py']:
-        raise ContractError('target Docker image changed')
+    execution=state['execution']
+    if execution is not None and execution.status!='rejected':
+        argv=execution.record.data().get('argv')
+        if not isinstance(argv,list) or len(argv)<6 or not isinstance(argv[5],str) or not re.fullmatch('research-loop-[0-9a-f]{20}',argv[5]):
+            raise ContractError('missing actual bounded target Docker invocation')
+        expected=['docker','run','--pull','never','--name',argv[5],'--rm','--network','none','--read-only',
+            '--user','1000:1000','--tmpfs','/tmp:rw,noexec,nosuid,size=64m','--pids-limit','128','--memory','1g',
+            '--cpus','1.0','--cap-drop','ALL','--security-opt','no-new-privileges']
+        for key in sorted(public_inputs):
+            expected.extend(['-v',DockerExecutionBroker._mount_source(public_inputs[key].absolute())+':/input/'+key+':ro'])
+        expected.extend(['-v',DockerExecutionBroker._mount_source((path.parent/'analysis-1.py').absolute())+
+            ':/task/analysis.py:ro',scenario.data()['image'],'python3','/task/analysis.py'])
+        if argv!=expected: raise ContractError('target Docker limits or exact program/input mounts differ from frozen allocation')
+    seals=[r['data'] for r in __import__('research_loop.modular.metaprogram_training',fromlist=['_phase_rows'])._phase_rows(barrier.root/'controller.jsonl')
+        if r['stage']=='target_ledger_sealed']
+    if ledger.path!=barrier.root/'target-provider-ledger.json' or seals!=[{'digest':ledger.record.content_hash}]:
+        raise ContractError('target provider ledger is not the original controller seal')
+    ledger.bind_events(events)
     return FrozenRecord.from_dict({'schema':'state-improvement-verification-v1','engineering_verified':True,
         'cell_key':list(cell.key),'status':result.runtime.status,'barrier_digest':barrier.record.content_hash,'scientific_effect':'not_measured'})

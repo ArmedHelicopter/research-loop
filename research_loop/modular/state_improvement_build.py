@@ -59,10 +59,11 @@ def build_binding(plan_digest, recipe):
         'plan_digest':plan_digest,'recipe':recipe}).content_hash,'scenario_digest':plan_digest})
 
 
-def proposal_context(history, transition):
+def proposal_context(history, transition, binding):
     # Raw history stdout, other proposals and target public tasks are excluded.
     return FrozenRecord.from_dict({'schema':'state-improvement-history-context-v1',
-        'history_binding':history.binding.content_hash, 'state_projection':transition.data()['public']})
+        'history_binding':history.binding.content_hash, 'proposal_binding':binding.content_hash,
+        'state_projection':transition.data()['public']})
 
 
 def qualification_semantics(material, qualifier, path, binding):
@@ -105,7 +106,7 @@ def run_build(*, recipe, plan_digest, history, material, qualifier, parent, fixe
             finally: phase.append('model_charge',{'request_digest':request.content_hash,
                 'provider_calls':[_safe_call(c) for c in model.ledger['calls'][before:]]})
         response=session.invoke('builder_proposal',charged,instruction=PROPOSAL_INSTRUCTION,
-            module_context=proposal_context(history,transition))
+            module_context=proposal_context(history,transition,binding))
         proposed=_builder(FrozenBuilderVersion(response))
         session._record('state_improvement_proposal_terminal',{'response_digest':response.content_hash,'builder_digest':proposed.digest})
         session._terminal=True
@@ -202,7 +203,7 @@ def verify_build(result, *, recipe, plan_digest, history, material, qualifier, p
     request=requests[0]['data']['request']
     context=ContextBuilder(history.task.identity,budget_bytes=material.data()['context_budget_bytes']).build(
         canonical(history.task.payload.data()),evidence,claims,mode='candidate' if 'M3' in enabled else 'baseline',baseline_summary='').public_data()
-    if (request['instruction']!=PROPOSAL_INSTRUCTION or request['module_context']!=proposal_context(history,transition).data()
+    if (request['instruction']!=PROPOSAL_INSTRUCTION or request['module_context']!=proposal_context(history,transition,binding).data()
             or request['context']!=context or request['task']!=history.task.data()
             or request['slot']!='builder_proposal' or request['execution_feedback']!=[]
             or set(request)!={'schema','task','lock_digest','objective','slot','instruction','context','module_context','execution_feedback'}):
