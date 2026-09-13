@@ -194,7 +194,7 @@ def test_all_24_prospective_cells_actual_modules_docker_and_scorer(grid):
     for attempt,executed in zip(result.attempts,result.results,strict=True):
         row=attempt.data();assert row['status']=='succeeded' and len(row['source_verification']['calls'])==2
         assert row['docker_attempts']==row['scorer_calls']==1
-        assert row['execution_receipt']['image']==IMAGE
+        assert row['execution_receipt']['record']['argv'][-3:]==[IMAGE,'python3','/task/analysis.py']
         enabled=executed.cell.runtime_arm.data()['enabled']
         if executed.cell.coverage_id=='pair:M3+M4':assert 'M2' in enabled
         journal=executed.runtime.trace_path.parent/'predictions.jsonl'
