@@ -83,3 +83,26 @@ while that process was active. Its source-change receipt records process session
 25716, the JUnit interval, file modification time and before/after source hashes
 (the before image is explicitly reconstructed from the edit). That run is invalid
 for frozen verification. Full final checks are rerun after a source commit.
+
+## Frozen delivery
+
+Source commit `574bfbf19837fac73ae4d464a67374b907b89d3d` passed 125 related
+checks, with zero failures/errors/skips in 686.443 seconds. All 261 tracked
+Python source/test files had identical hashes before and after the run. The
+new bridge's standard scorer subprocess completed two synthetic calls, one per
+benchmark, with zero failed fixture calls and no model/network/Docker calls.
+The JUnit SHA256 is
+`3962344becb69cdbaf23ff9435afe11d6bcade125110986388981d6f5474418f`.
+See `primary-reference-bridge-verification.json` for raw report paths, retained
+failure evidence, per-attempt reference journals and source pins.
+
+The original four-task plan remains unchanged. Its independent descriptor
+supplement at `work/primary-reference-checks/actual-four-train-reference-descriptor-r2.json`
+has SHA256 `53b849053d87eb81565c16440f53c2460f800e9bdbbc1e0d568ee47445669f3e`.
+The archived custodian script declares `synth`, `cp1252`, and answer-key SHA256
+`afd51d7053cefff6b335c209a42a1943217cb73a9fd36144a500cce49ecda675`.
+The archived status/publication/reference manifest agree with that descriptor,
+the snapshot root, original custody pin, and both selected `synth/test` tasks.
+Only the answer path's existence/size was inspected; its content was not read or
+rehashed. Fresh byte verification remains a prerequisite inside the later
+authorized preparation. Actual private reference preparation has not run.
