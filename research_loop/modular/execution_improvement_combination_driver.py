@@ -109,6 +109,8 @@ def verify_execution_improvement_cell(result,*,panel,task,scenario,package,mater
             or lock['context_budget']!=material.data()['context_budget_bytes'] or lock['required_audit']!=['measurement']):
         raise ContractError('target allocation changed')
     sourcepath=path.parent.parent/'source-verification.json';source=source_verifier.replay(material,sourcepath,cell_binding=binding)
+    if any(c['cost_unknown'] for c in json.loads(sourcepath.read_bytes())['calls']):
+        raise ContractError('unknown source cost forbids successful target replay')
     q=source_verifier.assessments(material,sourcepath,cell_binding=binding) if type(material) is FrozenAdmissionMaterial else None
     evidence=EvidenceLedger(task.identity);claims=ClaimLedger(evidence);evidence._log=_MemoryLog();claims._log=_MemoryLog()
     transition=_transition(evidence,claims,ContextCache(),material,set(cell.runtime_arm.data()['enabled']),q)

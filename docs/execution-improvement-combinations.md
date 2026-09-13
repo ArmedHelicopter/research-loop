@@ -49,9 +49,12 @@ attestation against replacing every trusted record and authority.
 
 Pairs retain their registered interaction contrasts. The triple additionally
 reports all seven normalized descriptive terms: M7, M8, M9, M7×M8, M7×M9,
-M8×M9 and M7×M8×M9. Each term sums signed cell means divided by 2^(n−1), with
+M8×M9 and M7×M8×M9. Acceptance criteria freeze every coefficient before execution.
+Each term sums signed cell means divided by 2^(n−component order), with
 task/replicate means then equal group weighting. With one group per benchmark,
 confidence intervals are null; no significance or causal efficacy is claimed.
+For the triple, main coefficients are ±1/4, pair coefficients ±1/2 and triple
+coefficients ±1. Pair interactions retain their ordinary ±1 scale.
 
 Verification uses synthetic source/model/reference fixtures, real restricted
 builders, real Docker and independent scorer processes. It covers complete

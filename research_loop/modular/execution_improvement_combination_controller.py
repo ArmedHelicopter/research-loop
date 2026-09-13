@@ -31,7 +31,7 @@ from research_loop.modular.modules.improvement import CandidatePackage, Training
 from research_loop.modular.contracts import FrozenRecord, DataIdentity
 from research_loop.modular.panel_receipts import PanelCell
 from research_loop.modular.combination_panels import CombinationPanelVerifier
-from research_loop.modular.execution_improvement_contrasts import estimate_execution_contrast
+from research_loop.modular.execution_improvement_contrasts import estimate_execution_contrast, component_policy
 from research_loop.ontology import ContractError, canonical
 
 ALLOCATION={'arm_recipe_bindings':16,'build_recipes':6,'builder_proposals':6,'builder_executions':6,
@@ -123,7 +123,7 @@ class FrozenExecutionImprovementPlan:
             raise ContractError('matched exact proposal and target model opportunities required')
         scorer=ScorerConfig(FrozenRecord.from_dict(b['scorer']))
         if (scorer.record.data()['rubric_digest']!=FrozenBenchmarkRubricEndpoint.rubric_digest()
-                or b['acceptance_criteria']!={'contrast_analysis':_ANALYSIS}
+                or b['acceptance_criteria']!={'contrast_analysis':_ANALYSIS,'factorial_components':component_policy().data()}
                 or set(b['scorer_handle_bindings'])!={FrozenRecord.from_dict(i.data()).content_hash for i in identities}
                 or not isinstance(b['objective'],dict) or not b['objective'] or type(b['timeout_seconds']) is not int or not 1<=b['timeout_seconds']<=120):
             raise ContractError('frozen primary scorer, estimand, objective and timeout required')

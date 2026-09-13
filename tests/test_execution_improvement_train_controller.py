@@ -29,6 +29,7 @@ from research_loop.modular.state_retrieval_combination_driver import freeze_mate
 from research_loop.modular.lineage_combination_material import DualMaterialVerifier, MaterialAuthority
 from evaluation.modular.linked_scoring import LinkedExecutionAuthority
 from research_loop.modular.execution_improvement_modules import model_schemas
+from research_loop.modular.execution_improvement_contrasts import component_policy
 from test_modular_combination_benchmark_driver import _plan
 from test_admission_combination import sources
 from test_modular_train_controller import model_port
@@ -65,7 +66,7 @@ def provenance(calls,fault=None,corpus=False):
             b=request.data()
             return signer.issue({'schema':'lineage-material-provenance-response-v1','request_digest':request.content_hash,
                 'material_digest':b['material_digest'],'identity':b['material']['identity'],'source_group':group,
-                'verdict':'verified','cost_units':None if fault=='unknown_cost' else 1})
+                'verdict':'verified','cost_units':None if fault=='unknown_cost' or fault=='target_source_unknown' and b['material']['identity']['task_id']!='closed-history' else 1})
         authorities.append(MaterialAuthority(signer,group,verify))
     return DualMaterialVerifier(tuple(authorities))
 
@@ -140,7 +141,7 @@ def prepare(root,patch,fault=None):
         'history_materials':histories,'target_materials':{pair:{p.task.content_hash:state_material(p.task,p.csv_path,False).data() for p in packets} for pair in DESIGNS},
         'source_verifier_bindings':{pair:q.binding().data() for pair,q in verifiers.items()},'model_config':model_configuration(port).data(),
         'scorer':ScorerConfig.create(benchmark='core_pair',evaluator_id='synthetic-primary',version='v1',rubric_digest=FrozenBenchmarkRubricEndpoint.rubric_digest()).record.data(),
-        'scorer_handle_bindings':{k:hashlib.sha256(v.encode()).hexdigest() for k,v in handles.items()},'acceptance_criteria':{'contrast_analysis':_ANALYSIS},
+        'scorer_handle_bindings':{k:hashlib.sha256(v.encode()).hexdigest() for k,v in handles.items()},'acceptance_criteria':{'contrast_analysis':_ANALYSIS,'factorial_components':component_policy().data()},
         'objective':{'purpose':'Analyze public TRAIN measurements with frozen candidate and state.'},'image':IMAGE,'timeout_seconds':20,'allocation':ALLOCATION,
         'pipeline_estimand':ESTIMAND,'candidate_selections':selections('a'*64),
         'phase_materials':{p.task.content_hash:phase_material(p.task,p.csv_path,fault).data() for p in packets}}
@@ -229,8 +230,9 @@ def test_complete_shared_builds_and_actual_execution_factorial(grid):
     triples=[c for c in b['contrasts'] if len(c['normalized_descriptive_terms'])==7]
     assert len(triples)==1
     assert set(triples[0]['normalized_descriptive_terms'])=={'M7','M8','M9','M7+M8','M7+M9','M8+M9','M7+M8+M9'}
-    for term in triples[0]['normalized_descriptive_terms'].values():
-        assert len(term['coefficients'])==8 and set(term['coefficients'].values())=={-.25,.25}
+    for name,term in triples[0]['normalized_descriptive_terms'].items():
+        magnitude=1/(2**(3-len(name.split('+'))))
+        assert len(term['coefficients'])==8 and set(term['coefficients'].values())=={-magnitude,magnitude}
         for estimate in term['benchmark_estimates'].values():assert estimate['independent_groups']==1 and estimate['confidence_interval'] is None
     for request in setup['seen'][:6]:assert request['slot']=='builder_proposal' and not any(m in canonical(request) for m in ('M7','M8'))
 
@@ -318,7 +320,7 @@ def test_source_faults_precede_any_new_source_or_model_calls(tmp_path,monkeypatc
     assert setup['seen']==setup['calls']==[]
 
 
-@pytest.mark.parametrize('fault',['model_unknown','source_exception','unknown_cost','proposal','builder','target_unknown','auxiliary_failed','auxiliary_unknown','scorer'])
+@pytest.mark.parametrize('fault',['model_unknown','source_exception','unknown_cost','proposal','builder','target_unknown','auxiliary_failed','auxiliary_unknown','target_source_unknown','scorer'])
 def test_failures_and_unknown_costs_preserve_all_denominators(tmp_path,monkeypatch,fault):
     setup=prepare(tmp_path,monkeypatch,fault);run=invoke(setup,monkeypatch,fault);b=run.receipt.data()
     assert b['status']=='inconclusive' and len(run.attempts)==32 and b['expected_builds']==6 and len(b['arm_recipe_bindings'])==16
@@ -330,6 +332,7 @@ def test_failures_and_unknown_costs_preserve_all_denominators(tmp_path,monkeypat
     if fault in ('model_unknown','source_exception','unknown_cost','proposal','builder'):
         assert b['blocked_cells']==32 and b['actual_docker_attempts']==b['actual_scorer_calls']==0
     elif fault=='target_unknown':assert b['failed_cells']==1 and b['blocked_cells']==31 and b['actual_auxiliary_docker_attempts']==2
+    elif fault=='target_source_unknown':assert b['failed_cells']==1 and b['blocked_cells']==31 and b['source_calls']==14 and b['actual_docker_attempts']==0 and b['actual_model_usage']['model_calls']==6
     elif fault=='auxiliary_unknown':assert b['failed_cells']==1 and b['blocked_cells']==31 and b['actual_model_usage']['model_calls']==6 and b['auxiliary_cost_unknown']
     elif fault=='auxiliary_failed':assert b['failed_cells']==32 and b['actual_model_usage']['model_calls']==6 and b['actual_auxiliary_docker_attempts']==64
     elif fault=='scorer':assert b['failed_cells']==32 and b['actual_scorer_calls']==32
@@ -398,11 +401,65 @@ def test_generic_passes_but_family_rejects_rehashed_native_execution_attacks(gri
         for artifact,body in restores.items():artifact.write_bytes(body)
 
 
-@pytest.mark.parametrize('attack',['selection','allocation','estimand','material'])
+@pytest.mark.parametrize('attack',['selection','allocation','estimand','material','components'])
 def test_rehashed_plan_cannot_change_fixed_allocation_or_phase_binding(grid,attack):
     setup,_=grid;plan=setup['plan'];b=plan.data()
     if attack=='selection':b['candidate_selections'][0]['canonical_build_arm_id']='01'
     elif attack=='allocation':b['allocation']['model_calls']+=1
     elif attack=='estimand':b['pipeline_estimand']='unconditional'
+    elif attack=='components':b['acceptance_criteria']['factorial_components']['designs']['triple:M7+M8+M9']['coefficients']['M7+M8+M9']['111']=.25
     else:next(iter(b['phase_materials'].values()))['public_artifacts'][0]['artifact']['sha256']='0'*64
     with pytest.raises(ContractError):replace(plan,record=FrozenRecord.from_dict(b))
+
+
+@pytest.mark.parametrize('design',list(DESIGNS))
+def test_signed_unknown_source_cannot_replay_as_success(grid,design):
+    from research_loop.modular.panel_receipts import PanelReceiptVerifier
+    setup,run=grid;result=next(r for r in run.results if r.cell.coverage_id==design)
+    args=replay_args(setup,run,result);path=result.runtime.trace_path;raw=path.read_bytes()
+    sourcepath=path.parent.parent/'source-verification.json';original=sourcepath.read_bytes();body=json.loads(original)
+    before=(len(setup['seen']),len(setup['calls']))
+    for row,authority in zip(body['calls'],args['source_verifier'].authorities,strict=True):
+        response=row['response']['body'];response['cost_units']=None
+        row.update(response=authority.authority.issue(response).data(),cost_units=None,cost_unknown=True)
+    issued=None;rejected=False
+    try:
+        sourcepath.write_text(canonical(body),encoding='utf-8');source_hash=hashlib.sha256(sourcepath.read_bytes()).hexdigest()
+        def mutate(events):
+            next(e for e in events if e['stage']=='execution_improvement_transition')['data']['source_sha256']=source_hash
+        tail=_rewrite_trace(path,mutate);forged=replace(result,runtime=replace(result.runtime,trace_digest=tail))
+        PanelReceiptVerifier()._verify_runtime(forged.runtime,forged.cell)
+        try:issued=issue_execution_improvement_score_input(authority=EXECUTION,result=forged,**args)
+        except ContractError:rejected=True
+        name=design.replace(':','-').replace('+','-')
+        (setup['root']/(name+'-unknown-source-forged.json')).write_bytes(sourcepath.read_bytes())
+        (setup['root']/(name+'-unknown-source-forged-trace.jsonl')).write_bytes(path.read_bytes())
+        (setup['root']/(name+'-unknown-source-counterexample.json')).write_text(canonical({
+            'generic_verified':True,'family_rejected':rejected,'score_input_issued':issued is not None,
+            'score_input_digest':issued.content_hash if issued else None,'source_before_sha256':hashlib.sha256(original).hexdigest(),
+            'source_after_sha256':source_hash,'trace_before_sha256':hashlib.sha256(raw).hexdigest(),
+            'trace_after_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'new_model_or_qualification_calls':False}),encoding='utf-8')
+        assert before==(len(setup['seen']),len(setup['calls']))
+        assert rejected,'signed unknown-cost source passed successful-target replay and score issuance'
+    finally:sourcepath.write_bytes(original);path.write_bytes(raw)
+
+
+def test_nonzero_component_scales_and_missing_arm_rejection(grid):
+    policy=component_policy().data()
+    weights=policy['designs']['triple:M7+M8+M9']['coefficients'];values={}
+    for arm in weights['M7']:
+        a,b,c=[2*int(bit)-1 for bit in arm]
+        values[arm]=100+2*a+3*b+5*c+7*a*b+11*a*c+13*b*c+17*a*b*c
+    assert {name:sum(w[k]*v for k,v in values.items()) for name,w in weights.items()}=={
+        'M7':4,'M8':6,'M9':10,'M7+M8':28,'M7+M9':44,'M8+M9':52,'M7+M8+M9':136}
+    for pair in ('pair:M7+M9','pair:M8+M9'):
+        weights=policy['designs'][pair]['coefficients'];first=policy['designs'][pair]['factors'][0]
+        values={arm:10+2*(2*int(arm[0])-1)+3*(2*int(arm[1])-1)+7*(2*int(arm[0])-1)*(2*int(arm[1])-1) for arm in weights[first]}
+        assert {name:sum(w[k]*v for k,v in values.items()) for name,w in weights.items()}=={first:4,'M9':6,first+'+M9':28}
+    from research_loop.modular.execution_improvement_contrasts import estimate_execution_contrast
+    from research_loop.modular.combination_panels import CombinationPanelVerifier
+    setup,run=grid;panel=run.panels[-1]
+    with pytest.raises(ContractError):estimate_execution_contrast(panel,runtime=[r.runtime for r in run.results if r.cell in panel.cells][:-1],
+        scorer_receipts=[s for s in run.scores if s.cell_key in {c.key for c in panel.cells}][:-1],verifier=CombinationPanelVerifier(scorer_verifier=lambda *a:None))
+    changed=panel.acceptance_criteria.data();changed['factorial_components']['designs'][panel.obligation_id]['coefficients']['M7+M8+M9']['111']=.25
+    with pytest.raises(ContractError,match='frozen before execution'):estimate_execution_contrast(replace(panel,acceptance_criteria=FrozenRecord.from_dict(changed)),runtime=[],scorer_receipts=[],verifier=CombinationPanelVerifier(scorer_verifier=lambda *a:None))
