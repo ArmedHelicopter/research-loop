@@ -45,7 +45,7 @@ def _bundle(task) -> FrozenRecord:
         "task_payload_digest": task.payload.content_hash, "cases": rows})
 
 
-def _compiled():
+def _compiled(*, typed_material=True):
     tasks = tuple(_task(name) for name in ("discoverybench", "blade"))
     package = CandidatePackage.create(parent_digest=None,
         manifest=TrainingManifest.freeze([task.identity for task in tasks]),
@@ -53,7 +53,7 @@ def _compiled():
     grid = default_compatibility("base").conditional_factorial(registry()["Q2.1"].modules)
     packages = {arm.content_hash: package for arm in executable_arms(grid).values()}
     return compile_train_panel(stage="train-q21-pressure", scope_ids=("Q2.1",), tasks=tasks,
-        evidence_by_task={task.content_hash: _bundle(task) for task in tasks}, budget=FrozenRecord.from_dict({"budget": "fixed"}),
+        evidence_by_task={task.content_hash: _bundle(task) if typed_material else FrozenRecord.from_dict({"scope": "planning_only"}) for task in tasks}, budget=FrozenRecord.from_dict({"budget": "fixed"}),
         baseline_digest="base", p0_control=FrozenRecord.from_dict({"control": "fixed"}), packages_by_arm=packages,
         scorer=FrozenRecord.from_dict({"scorer": "not-measured"}),
         acceptance_criteria=FrozenRecord.from_dict({"criterion": "engineering trace only"}))
@@ -89,7 +89,7 @@ def _events(result):
     return [FrozenRecord(line).data() for line in result.runtime.trace_path.read_text(encoding="utf-8").splitlines()]
 
 
-def test_q21_full_train_grid_projects_caller_material_into_changed_pressure_requests_and_controls(tmp_path: Path, monkeypatch):
+def test_q21_full_train_grid_projects_caller_material_into_changed_pressure_requests_and_controls(tmp_path: Path):
     compiled = _compiled()
     assert len(compiled.panel.cells) == 24  # 2 public benchmark tasks * 3 pressures * M1/M5 factorial grid
     results = []
@@ -175,7 +175,7 @@ def test_q21_full_train_grid_projects_caller_material_into_changed_pressure_requ
         assert on["decision_material"]["kind"] == "sealed_review_submissions"
 
 
-def test_q21_bundle_requires_all_caller_cases_and_train_only_runner_rejects_validation(tmp_path: Path, monkeypatch):
+def test_q21_bundle_requires_all_caller_cases_and_train_only_runner_rejects_validation(tmp_path: Path):
     compiled = _compiled()
     bad_by_task = {}
     for task in compiled.tasks.values():
@@ -190,8 +190,6 @@ def test_q21_bundle_requires_all_caller_cases_and_train_only_runner_rejects_vali
             scorer=FrozenRecord.from_dict({"scorer": "not-measured"}),
             acceptance_criteria=FrozenRecord.from_dict({"criterion": "engineering trace only"}))
 
-    import research_loop.modular.panel_runner as runner
-    monkeypatch.setitem(runner.DRIVERS, "Q2.1", Q21PressureDriver())
     cell = compiled.panel.cells[0]
     validation = type(cell)(cell.coverage_id, DataIdentity(cell.identity.benchmark, cell.identity.task_id, cell.identity.group_id,
         cell.identity.dataset_version, cell.identity.split_id, "validation"), cell.replicate, cell.variant, cell.arm_id,
@@ -200,3 +198,15 @@ def test_q21_bundle_requires_all_caller_cases_and_train_only_runner_rejects_vali
         run_train_cell(validation, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
             package=compiled.packages[cell.runtime_arm.content_hash], objective=FrozenRecord.from_dict({"objective": "q21"}),
             sidecar=tmp_path / "validation", model=_model, audit_verifier=_audit())
+
+
+def test_q21_planning_placeholders_cannot_execute_or_call_model(tmp_path: Path):
+    compiled = _compiled(typed_material=False)
+    called = []
+    for index, cell in enumerate(compiled.panel.cells):
+        result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+            package=compiled.packages[cell.runtime_arm.content_hash], objective=FrozenRecord.from_dict({"objective": "q21"}),
+            sidecar=tmp_path / str(index), model=lambda request: called.append(request), audit_verifier=_audit())
+        assert result.runtime.status == "failed"
+        assert _requests(result) == []
+    assert called == []

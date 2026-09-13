@@ -56,11 +56,6 @@ def test_blocked_status_cannot_skip_measurement_or_validation() -> None:
 def test_added_runners_match_every_authoritative_variant(coverage):
     spec = registry()[coverage]
     for variant in spec.variants:
-        if coverage == "Q2.1":
-            # Production Q2.1 no longer accepts an untyped fixture bundle.
-            with pytest.raises(ContractError, match="pressure material bundle"):
-                scenario(spec, variant, inputs=inputs())
-            continue
         result = scenario(spec, variant, inputs=inputs()).data()
         assert result["experiment_id"] == coverage and result["variant"] == variant
         assert result["controller_input"]["fixture_only"] is True
