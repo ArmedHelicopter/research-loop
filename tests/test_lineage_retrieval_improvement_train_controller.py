@@ -243,8 +243,11 @@ def test_new_exposure_and_process_scope_leave_old_exact_panel_contract(grid):
         wire=serialize_combination_panel(panel,lineage_retrieval_improvement=True)
         assert parse_combination_panel(wire,lineage_retrieval_improvement=True)==panel
         for flags in ({},{'state_improvement':True},{'state_retrieval':True},{'lineage_retrieval_improvement':1},
+                {'mechanism_improvement':True},{'execution_improvement':True},
+                {'execution_improvement':True,'lineage_retrieval_improvement':True},
                 {'state_improvement':True,'lineage_retrieval_improvement':True}):
             with pytest.raises(ContractError):serialize_combination_panel(panel,**flags)
+            with pytest.raises(ContractError):parse_combination_panel(wire,**flags)
         with pytest.raises(ContractError):
             CombinationPanel(panel.stage,panel.domain,panel.split_digest,panel.obligation_id,panel.estimand,
                 panel.design,panel.package_bundle,panel.acceptance_criteria,panel.cells)
