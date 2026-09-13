@@ -1,0 +1,72 @@
+{
+  "source_commit": "4d88532354ce8222367fa95a48429a80b7d82e69",
+  "base_commit": "eff3a84",
+  "source_files": {
+    "source/docs/EXPLORATION-SCHEDULER-COMBINATION.md": "cfef136774155a3230430e1299dbec0305412bf7463f37a1245a278146acfde9",
+    "source/evaluation/modular/scorer_process.py": "864757bd244bcf0659aece2275465fcc2efbfcace08e8a7d75a2e8d6a86fb71a",
+    "source/research_loop/modular/exploration_scheduler_combination.py": "8258f03fedf35373b9dcdd57b55b07dfb5e1af6efda18c1088c529ea87c61dd7",
+    "source/research_loop/modular/exploration_scheduler_controller.py": "7d60a07b9ba5bec736b172c28f4011b43d8b7ca05d332f565c427c183f2e135f",
+    "source/tests/test_exploration_scheduler_combination.py": "c1c06d93fe08aed3a6524180a7470089984ad4d4b13ac6cf1a62c922c8cc2041"
+  },
+  "reports": {
+    "es-red.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "11",
+      "time": "0.551",
+      "timestamp": "2026-09-13T18:09:21.093514+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "es-grid-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "2",
+      "time": "27.367",
+      "timestamp": "2026-09-13T18:22:01.567384+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "es-root-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "46",
+      "time": "149.380",
+      "timestamp": "2026-09-13T19:34:50.154891+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "es-root-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "36",
+      "time": "192.139",
+      "timestamp": "2026-09-13T19:38:47.003063+08:00",
+      "hostname": "SC-202507131830"
+    }
+  },
+  "synthetic_archives": {
+    "es-grid-r1-temp": {
+      "sha256": "835d80d040c8d15c85cc1ad2707c8c44f220737b23ff1550a2091276dfbffa20",
+      "members": 240
+    },
+    "es-root-r1": {
+      "sha256": "273b14f1fe8e07bd4d4ff389ab85413cfd7f3914d3cb5f77d9a7875e6620572c",
+      "members": 1181
+    },
+    "es-root-r2": {
+      "sha256": "519a5b6fe7e05583cf9bc4a585659f9d53a86c3f5040f8db2e98174404883b38",
+      "members": 1181
+    }
+  },
+  "actual_paid_calls": 0,
+  "actual_private_reference_payloads_copied": false,
+  "validation_accessed": false,
+  "scientific_effectiveness_proven": false,
+  "scope": "Named local synthetic fixtures only; complete original failures retained. Source after interrupted agent was committed and checked by root."
+}
