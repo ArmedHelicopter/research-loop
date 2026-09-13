@@ -1,0 +1,86 @@
+{
+  "schema": "selection-q4-checkpoint-v1",
+  "source_commit": "bd302e7b91771514f1f327f5e0229b5d00baeae3",
+  "reports": {
+    "integrated-selection-controller.xml": {
+      "source_commit": "9c00739511e3b5271f63ea6ea0a09896559739ca",
+      "note": "tested source committed unchanged",
+      "tests": "42",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "134.486"
+    },
+    "q4-root-bundle.xml": {
+      "source_commit": "bd302e7b91771514f1f327f5e0229b5d00baeae3",
+      "note": "compiler bundle integration",
+      "tests": "81",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "59.179"
+    },
+    "train-selection-draft.xml": {
+      "source_commit": "7c3abe8d88a6c5adb864721a31702a966fcd173d",
+      "note": "initial uncommitted selection draft; superseded by final report",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "282.725"
+    },
+    "train-selection-final.xml": {
+      "source_commit": "1dfcaa8b935e370ad1b994a9aaff8cac88648720",
+      "note": "tested source committed unchanged",
+      "tests": "24",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "354.839"
+    },
+    "linked-rubric-failure-repro.xml": {
+      "source_commit": "7c3abe8d88a6c5adb864721a31702a966fcd173d",
+      "note": "reproduced authentic signed rubric drift with new uncommitted regression test; fixed by 1dfcaa8",
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "29.081"
+    },
+    "controller-agent-focused.xml": {
+      "source_commit": "629bf18952723d61fe085b754e3f52253434c93d",
+      "note": "agent focused controller and actual Docker",
+      "tests": "24",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "217.395"
+    },
+    "q4-agent-bundle.xml": {
+      "source_commit": "5fe020da77b4790c59a3416e2ee39211c6b9a1db",
+      "note": "agent compiler-produced grid",
+      "tests": "3",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "54.796"
+    }
+  },
+  "full_suite_for_this_source": "not_run; previous 854-test full suite is frozen at cc640f7",
+  "new_paid_model_calls": 0,
+  "formal_effect": "not_measured",
+  "calibration": "not_measured",
+  "validation_access": "none",
+  "driver_registry": [
+    "Q1.5",
+    "Q3.1",
+    "Q4.1",
+    "Q4.2",
+    "Q4.3",
+    "Q4.4",
+    "Q4.5"
+  ],
+  "q45_heterogeneous": "unsupported without independently verified typed route evidence; retained as failed cells",
+  "history_drivers": "not_integrated; review and before/current evidence repairs pending",
+  "remaining": "All scientific module/mechanism endpoints, actual train effects, combinations, Q6.3 and qualified validation remain required."
+}

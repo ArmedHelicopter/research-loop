@@ -5,6 +5,17 @@ stage, and C1–C5 combination experiments defined in the design documents.
 
 ## Current checkpoint (2026-09-13)
 
+Source `bd302e7b91771514f1f327f5e0229b5d00baeae3` additionally integrates the
+linked training controller, signed linked adapted scorer, train-only grouped
+selection and Q4.1/Q4.2/Q4.4/Q4.5 material-bundle drivers. The controller/selection
+seams passed 42 focused tests and Q4/compiler regressions passed 81. This batch
+has no full-suite result, live effect estimate or validation result; Q4.5
+heterogeneous routing remains unsupported and counted as failed observations.
+There are 413 hash-indexed archive files. See
+[MODULAR-CHECKPOINT-20260913-SELECTION.md](MODULAR-CHECKPOINT-20260913-SELECTION.md).
+
+## Previous full-suite checkpoint (2026-09-13)
+
 Source `cc640f79fe258bd27cd0d1d43ac1036f2d8957cf` passed the full 854-test suite
 with zero failures/errors/skips (1438.961 seconds). Q1.5/Q3.1/Q4.3 production
 mechanisms, Q3.1/Q4.3 linked benchmark solver, complete protocol terminal checks

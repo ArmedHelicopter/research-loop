@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="29.081" timestamp="2026-09-13T08:32:07.724044+08:00" hostname="SC-202507131830"><testcase classname="tests.test_linked_scoring" name="test_authentic_but_inconsistent_issuer_receipts_are_rejected[rubric-0000000000000000000000000000000000000000000000000000000000000000]" time="27.225"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">chain = {'config': ScorerConfig(record=FrozenRecord(encoded='{"benchmark":"core_pair","benchmarks":["discoverybench","blade"],...etic-blade"}]},"training_manifest_digest":"663aacf0e81cb27495223aa2c596aabd5b273d43126fb0f36406736a9ef10d86"}'))}, ...}
+field = 'rubric'
+value = '0000000000000000000000000000000000000000000000000000000000000000'
+
+    @pytest.mark.parametrize("field,value", [("metric_value", 1), ("dimension", True), ("rubric", "0" * 64),
+        ("mode", "unfrozen"), ("evidence_schema", "wrong"), ("mechanism_trace_digest", "0" * 64),
+        ("solver_trace_digest", "0" * 64), ("scientific_validity", "validated"), ("calibration", "passed")])
+    def test_authentic_but_inconsistent_issuer_receipts_are_rejected(chain, field, value):
+        cell = chain["panel"].cells[0]
+        original = next(row for row in chain["scores"] if row.cell_key == cell.key)
+        body = original.receipt.data()["body"]
+        if field == "metric_value": body["metric"]["value"] = value
+        elif field == "dimension": body["metric"]["dimensions"][next(iter(body["metric"]["dimensions"]))] = value
+        elif field == "rubric": body["evaluator_evidence"]["rubric_digest"] = value
+        elif field == "mode": body["evaluator_evidence"]["mode"] = value
+        elif field == "evidence_schema": body["evaluator_evidence"]["schema"] = value
+        else: body[field] = value
+        changed = replace(original, receipt=SCORER.issue(body))
+&gt;       with pytest.raises(ContractError): verify(chain, score=changed)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+tests\test_linked_scoring.py:45: Failed</failure></testcase></testsuite></testsuites>
