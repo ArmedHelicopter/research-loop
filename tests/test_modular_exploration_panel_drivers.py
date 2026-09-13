@@ -182,11 +182,6 @@ def _compile(tmp_path, monkeypatch, *, hard='none', repairable=True):
         q72 = {name: _item(task, csv, authority, kind=kind, repair=name != 'value', repairable=repairable, hard=hard if hard != 'none' else 'contract' if name == 'deterministic' else 'none')
                for name, kind in zip(Q72_VARIANTS, ('deterministic_block', 'evidence_insufficient', 'value_doubt'))}
         bundles[task.content_hash] = freeze_exploration_panel_bundle(task, q71=q71, q72=q72, budget=FrozenRecord.from_dict(BUDGET))
-    def inject(spec, variant, *, inputs):
-        row = base_scenario(spec, variant, inputs=inputs).data()
-        row['controller_input'] = exploration_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence)
-        return FrozenRecord.from_dict(row)
-    monkeypatch.setattr(panel_plan, 'scenario', inject)
     local = dict(panel_runner.DRIVERS)
     broker = DockerExecutionBroker([tmp_path])
     install_drivers(local, broker=broker, input_resolver=lambda task, bundle: {'data_csv': csv}, authority=authority)

@@ -183,6 +183,8 @@ from research_loop.modular.scheduler_panel_drivers import M8SchedulerDriver
 from research_loop.modular.semantic_panel_drivers import Q22CompletionSemanticsDriver, Q64ScorerRepairDriver
 from research_loop.modular.feasibility_panel_drivers import (
     Q51FeasibilityDriver, Q52DistinguishabilityDriver, FeasibilityAuthorityPort, PublicInputResolver)
+from research_loop.modular.exploration_panel_drivers import (
+    Q71ExplorationAdmissionDriver, Q72FeasibilityAppealDriver, ExplorationAuthorityPort)
 from research_loop.modular.protocol_panel_driver import (Q27ProtocolDriver, ProtocolAuditPort, ProtocolReplayAuthority,
     verify_after_finish, verify_protocol_replay_receipt, _exclusive_record)
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
@@ -196,6 +198,7 @@ DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12Dep
     "Q2.2": Q22CompletionSemanticsDriver(), "Q6.4": Q64ScorerRepairDriver(),
     "Q3.1": Q31PredictionDriver(), "Q3.2": Q32JointSeparateDriver(), "Q5.3": Q53DedupDriver(),
     "Q5.1": Q51FeasibilityDriver(None, None, None), "Q5.2": Q52DistinguishabilityDriver(None, None, None),
+    "Q7.1": Q71ExplorationAdmissionDriver(None, None, None), "Q7.2": Q72FeasibilityAppealDriver(None, None, None),
     "Q3.3": M8SchedulerDriver("Q3.3"), "Q3.4": M8SchedulerDriver("Q3.4"), "Q3.5": M8SchedulerDriver("Q3.5"),
     "Q4.1": Q41IndependenceDriver(), "Q4.2": Q42RoleDriver(), "Q4.3": Q43ReviewDriver(),
     "Q4.4": Q44CounterexampleDriver(), "Q4.5": Q45SelfCorrectionDriver()}
@@ -211,6 +214,9 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
                    feasibility_broker: DockerExecutionBroker | None = None,
                    feasibility_input_resolver: PublicInputResolver | None = None,
                    feasibility_authority: FeasibilityAuthorityPort | None = None,
+                   exploration_broker: DockerExecutionBroker | None = None,
+                   exploration_input_resolver: PublicInputResolver | None = None,
+                   exploration_authority: ExplorationAuthorityPort | None = None,
                    protocol_broker: DockerExecutionBroker | None = None,
                    protocol_audit_port: ProtocolAuditPort | None = None,
                    protocol_replay_authority: ProtocolReplayAuthority | None = None) -> TrainCellResult:
@@ -247,6 +253,11 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
             broker=feasibility_broker if feasibility_broker is not None else driver.broker,
             input_resolver=feasibility_input_resolver if feasibility_input_resolver is not None else driver.input_resolver,
             authority=feasibility_authority if feasibility_authority is not None else driver.authority)
+    if isinstance(driver, Q71ExplorationAdmissionDriver):
+        driver = replace(driver,
+            broker=exploration_broker if exploration_broker is not None else driver.broker,
+            input_resolver=exploration_input_resolver if exploration_input_resolver is not None else driver.input_resolver,
+            authority=exploration_authority if exploration_authority is not None else driver.authority)
     if p0_control is not None:
         if not isinstance(p0_control, FrozenRecord):
             raise ContractError("P0 control must be a caller-trusted frozen record")

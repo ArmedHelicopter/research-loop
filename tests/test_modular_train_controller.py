@@ -29,15 +29,15 @@ FINAL = {"type": "object", "properties": {"objective_digest": {"type": "string"}
 REVIEW = {"type": "object", "properties": {"assessment": {"type": "string", "enum": ["accept", "concern", "unknown"]}, "evidence_refs": {"type": "array", "items": {"type": "string"}}, "counterexamples": {"type": "array", "items": {"type": "string"}}, "uncertainty": {"type": "string"}}, "required": ["assessment", "evidence_refs", "counterexamples", "uncertainty"], "additionalProperties": False}
 
 
-def snapshot_and_custody(root: Path) -> tuple[Path, CustodyStore]:
+def snapshot_and_custody(root: Path, *, csv_text: str | None = None) -> tuple[Path, CustodyStore]:
     snapshot = root / "public-snapshot"
     discovery = snapshot / "discovery" / "upstream" / "discoverybench" / "synth" / "train" / "family_1_1"
     blade = snapshot / "scienceagent" / "work" / "BLADE" / "blade_bench" / "datasets" / "fish"
     discovery.mkdir(parents=True); blade.mkdir(parents=True)
     (discovery / "metadata_1.json").write_text(json.dumps({"queries": [{"question": "public discovery question"}], "datasets": [{"name": "data.csv", "columns": [{"name": "x"}]}]}), encoding="utf-8")
-    (discovery / "data.csv").write_text("x\n1\n", encoding="utf-8")
+    (discovery / "data.csv").write_text(csv_text if csv_text is not None else "x\n1\n", encoding="utf-8")
     (blade / "info.json").write_text(json.dumps({"research_questions": ["public blade question"], "data_desc": {"dataset_description": "public instruction"}}), encoding="utf-8")
-    (blade / "data.csv").write_text("x,y\n1,2\n", encoding="utf-8")
+    (blade / "data.csv").write_text(csv_text if csv_text is not None else "x,y\n1,2\n", encoding="utf-8")
     store = CustodyStore(root / "custody.json")
     store.inventory([
         InventoryItem("discoverybench", "synth:train:family_1_1", "discoverybench:family", "synth/train", "synth/train/family_1_1", tuple(sha(p) for p in (discovery / "metadata_1.json", discovery / "data.csv")), "exposed"),
@@ -47,7 +47,7 @@ def snapshot_and_custody(root: Path) -> tuple[Path, CustodyStore]:
     return snapshot, store
 
 
-def model_port(root: Path, monkeypatch, *, max_calls: int = 24, valid_plan: bool = True, schemas=None, response_factory=None) -> CodexModelPort:
+def model_port(root: Path, monkeypatch, *, max_calls: int = 24, max_tokens: int = 200, valid_plan: bool = True, schemas=None, response_factory=None) -> CodexModelPort:
     home = root / "user" / ".codex"; home.mkdir(parents=True)
     monkeypatch.setenv("HOME", str(home.parent)); monkeypatch.setenv("USERPROFILE", str(home.parent)); monkeypatch.setenv("CODEX_HOME", str(home))
     (home / "config.toml").write_text('[mcp_servers.fixture]\nenabled=true\n', encoding="utf-8")
@@ -88,7 +88,7 @@ def model_port(root: Path, monkeypatch, *, max_calls: int = 24, valid_plan: bool
         usage = {"input_tokens": 1, "cached_input_tokens": 0, "cache_write_input_tokens": 0, "output_tokens": 1, "reasoning_output_tokens": 0}
         return SimpleNamespace(returncode=0, stdout=json.dumps({"type": "turn.completed", "usage": usage}), stderr="")
     monkeypatch.setenv("PYTEST_CURRENT_TEST", fixed_test_env)
-    return CodexModelPort(cli, root / "model", max_calls=max_calls, max_tokens=200,
+    return CodexModelPort(cli, root / "model", max_calls=max_calls, max_tokens=max_tokens,
         schema_by_slot=schemas or {"scenario": SCENARIO, "final": FINAL}, process_runner=transport,
         context_probe_runner=probe, frozen_base_context=policy)
 
