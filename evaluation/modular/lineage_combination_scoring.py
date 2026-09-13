@@ -42,11 +42,15 @@ def _endpoints(values):
 class LineageCombinationScoringService(CombinationAdaptedScoringService):
     def score_lineage(self, *, panel, cell, score_input):
         source, primary_input, _ = _source(score_input, self._execution_keys, panel, cell)
+        from evaluation.modular.lineage_rubric import FrozenLineageRubricEndpoint
+        v2 = self.config.record.data()['rubric_digest'] == FrozenLineageRubricEndpoint.rubric_digest()
         endpoint_result = {}
         def combined_transport(request):
             prompt = request.data()
             prompt.update(schema='lineage-adapted-rubric-request-v1', public_context=source['public_context'],
                 public_context_digest=source['public_context_digest'], lineage_endpoints=list(ENDPOINTS))
+            if v2:
+                prompt.update(task_digest=cell.task_digest, material_digest=source['material_digest'])
             response = self._evaluator(FrozenRecord.from_dict(prompt))
             if not isinstance(response, FrozenRecord):
                 raise ContractError('independent lineage scorer returned no immutable response')
@@ -54,6 +58,10 @@ class LineageCombinationScoringService(CombinationAdaptedScoringService):
             if data.pop('public_context_digest', None) != source['public_context_digest']:
                 raise ContractError('independent rubric did not bind the public lineage context')
             values = data.pop('lineage_endpoints', None); _endpoints(values)
+            if v2:
+                ref_digest = data.pop('lineage_reference_digest', None)
+                if not isinstance(ref_digest, str) or len(ref_digest) != 64:
+                    raise ContractError('lineage rubric must bind qualified reference')
             endpoint_result.update(values=values, response_digest=response.content_hash, response=response.data())
             return FrozenRecord.from_dict(data)
         # Reuse exact adapted-score calculation and evidence validation without a
@@ -70,7 +78,7 @@ class LineageCombinationScoringService(CombinationAdaptedScoringService):
             'runtime_trace_digest': primary.receipt.data()['body']['runtime_trace_digest']}))
 
 
-def verify_lineage_score(receipt, *, authority_keys, config, panel, cell, score_input, execution_authority_keys):
+def verify_lineage_score(receipt, *, authority_keys, config, panel, cell, score_input, execution_authority_keys, expected_reference_digest=None):
     source, primary_input, _ = _source(score_input, execution_authority_keys, panel, cell)
     if not isinstance(receipt, ScientificScorerReceipt) or receipt.cell_key != cell.key:
         raise ContractError('lineage scorer cell drift')
@@ -86,6 +94,12 @@ def verify_lineage_score(receipt, *, authority_keys, config, panel, cell, score_
             or response.data().get('lineage_endpoints') != body['endpoints']
             or response.data().get('public_context_digest') != source['public_context_digest']):
         raise ContractError('lineage endpoints differ from the original independent response')
+    from evaluation.modular.lineage_rubric import FrozenLineageRubricEndpoint
+    if config.record.data()['rubric_digest'] == FrozenLineageRubricEndpoint.rubric_digest():
+        if expected_reference_digest is None or response.data().get('lineage_reference_digest') != expected_reference_digest:
+            raise ContractError('lineage score did not bind the predeclared independent reference')
+    elif expected_reference_digest is not None:
+        raise ContractError('legacy lineage scoring cannot claim source-reference binding')
     primary = ScientificScorerReceipt(cell.key, FrozenRecord.from_dict(body['primary']))
     verified = verify_combination_adapted_receipt(primary, authority_keys=authority_keys, config=config,
         panel=panel, cell=cell, score_input=primary_input, execution_authority_keys=execution_authority_keys)

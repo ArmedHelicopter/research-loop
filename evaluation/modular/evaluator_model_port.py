@@ -43,7 +43,7 @@ class CodexEvaluatorModelPort(CodexModelPort):
     """
 
     def __init__(self, executable: Path | str, work_root: Path, *, evaluator_id: str,
-                 evaluator_version: str, model: str = "gpt-5.6-luna", effort: str = "low",
+                 evaluator_version: str, rubric_mode: str = "primary_v1", model: str = "gpt-5.6-luna", effort: str = "low",
                  max_calls: int, max_tokens: int, timeout_seconds: int = 180,
                  process_runner: ProcessRunner | None = None,
                  context_probe_runner: ProcessRunner | None = None,
@@ -51,8 +51,12 @@ class CodexEvaluatorModelPort(CodexModelPort):
                  allow_mock_context: bool = False, environment: Mapping[str, str] | None = None) -> None:
         self.evaluator_id = required_text(evaluator_id, "evaluator id")
         self.evaluator_version = required_text(evaluator_version, "evaluator version")
-        self.rubric_digest = FrozenBenchmarkRubricEndpoint.rubric_digest()
-        schemas = {self._slot(benchmark): FrozenBenchmarkRubricEndpoint._output_schema(benchmark)
+        if rubric_mode not in {"primary_v1", "lineage_v1"}:
+            raise ContractError("unknown frozen evaluator rubric mode")
+        from evaluation.modular.lineage_rubric import FrozenLineageRubricEndpoint
+        self.endpoint_type = FrozenLineageRubricEndpoint if rubric_mode == "lineage_v1" else FrozenBenchmarkRubricEndpoint
+        self.rubric_digest = self.endpoint_type.rubric_digest()
+        schemas = {self._slot(benchmark): self.endpoint_type._output_schema(benchmark)
                    for benchmark in ("discoverybench", "blade")}
         super().__init__(executable, work_root, model=model, effort=effort,
                          max_calls=max_calls, max_tokens=max_tokens,
@@ -84,20 +88,19 @@ class CodexEvaluatorModelPort(CodexModelPort):
         for field in ("prompt_digest", "schema_digest", "reference_digest", "rubric_digest"):
             _digest(body[field], field)
         benchmark = body["benchmark"]
-        schema = FrozenBenchmarkRubricEndpoint._output_schema(benchmark)
+        schema = self.endpoint_type._output_schema(benchmark)
         if body["output_schema"] != schema or body["schema_digest"] != _hash(schema):
             raise ContractError("frozen evaluator schema does not match the benchmark contract")
         if body["prompt_digest"] != _hash(body["prompt"]):
             raise ContractError("frozen evaluator prompt digest mismatch")
         if (body["rubric_digest"] != self.rubric_digest
-                or FrozenBenchmarkRubricEndpoint.rubric_digest() != self.rubric_digest):
+                or self.endpoint_type.rubric_digest() != self.rubric_digest):
             raise ContractError("frozen evaluator rubric contract drift")
         self._verify_prompt_template(benchmark, body["prompt"])
         prompt = "Return only JSON conforming to the supplied schema.\n" + body["prompt"]
         return self._invoke_protected(request, slot=self._slot(benchmark), schema=schema, prompt=prompt)
 
-    @staticmethod
-    def _verify_prompt_template(benchmark: str, prompt: str) -> None:
+    def _verify_prompt_template(self, benchmark: str, prompt: str) -> None:
         rubric = (FrozenBenchmarkRubricEndpoint._DISCOVERY_RUBRIC if benchmark == "discoverybench"
                   else FrozenBenchmarkRubricEndpoint._BLADE_RUBRIC)
         if prompt.count("\nTASK=") != 1 or prompt.count("\nREFERENCE=") != 1 or prompt.count("\nANONYMOUS_CANDIDATE=") != 1:
@@ -111,5 +114,5 @@ class CodexEvaluatorModelPort(CodexModelPort):
                 raise ValueError("noncanonical evaluator material")
         except (ValueError, TypeError, json.JSONDecodeError) as exc:
             raise ContractError("frozen evaluator prompt has noncanonical material") from exc
-        if prompt != FrozenBenchmarkRubricEndpoint._prompt(benchmark, rubric, *values):
+        if prompt != self.endpoint_type._prompt(benchmark, rubric, *values):
             raise ContractError("frozen evaluator prompt does not exactly match the benchmark template")
