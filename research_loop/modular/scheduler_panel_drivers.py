@@ -154,6 +154,7 @@ def _run_scheduler(sidecar: Path, cell: PanelCell, material: Mapping[str, Any]) 
     total_budget = sum(job["cost_units"] for job in jobs)
     scheduler = FifoScheduler(sidecar / "m8-scheduler.sqlite", max_concurrency=workers, total_budget=total_budget)
     experiment = "m8-" + opaque_panel_cell_binding(cell)["cell_digest"]
+    snapshot_digest = FrozenRecord.from_dict(dict(material["snapshot"])).content_hash
     states = [scheduler.enqueue(experiment_id=experiment, task_id=job["task_id"], dependencies=job["dependencies"],
                                 resources=job["resources"], cost_units=job["cost_units"], snapshot=material["snapshot"])
               for job in jobs]
@@ -172,7 +173,7 @@ def _run_scheduler(sidecar: Path, cell: PanelCell, material: Mapping[str, Any]) 
         merged = scheduler.merge(experiment)
         return {"engine": "durable_fifo", "kind": "fifo_workers", "issued_task_ids": [row.task_id for row in merged],
                 "merged_task_ids": [row.task_id for row in merged], "worker_count": workers,
-                "reserved_cost_units": total_budget, "actual_completed_cost_units": total_budget, "remaining_leases": [], "prediction_ordering_used": False}
+                "reserved_cost_units": total_budget, "actual_completed_cost_units": total_budget, "remaining_leases": [], "work_output_digests": [_worker(row.task_id, snapshot_digest) for row in merged], "prediction_ordering_used": False}
     if experiment_id == "Q3.4":
         if len(active) != 2: raise ContractError("completion-order driver requires two active leases")
         by_task = {lease.task_id: lease for lease in active}; ordered = [by_task[task_id] for task_id in material["completion_order"]]
@@ -184,7 +185,7 @@ def _run_scheduler(sidecar: Path, cell: PanelCell, material: Mapping[str, Any]) 
         return {"engine": "durable_fifo", "kind": "completion_order", "issued_task_ids": [lease.task_id for lease in active],
                 "completion_task_ids": [lease.task_id for lease in ordered], "merge_barrier_blocked": barrier,
                 "pending_snapshot_hash": pending.snapshot_hash, "merged_snapshot_hashes": sorted({row.snapshot_hash for row in merged}),
-                "reserved_cost_units": total_budget, "actual_completed_cost_units": total_budget, "remaining_leases": []}
+                "reserved_cost_units": total_budget, "actual_completed_cost_units": total_budget, "remaining_leases": [], "work_output_digests": [_worker(row.task_id, snapshot_digest) for row in merged]}
     if experiment_id != "Q3.5": raise ContractError("M8 driver supports Q3.3 through Q3.5 only")
     if variant == "write_conflict":
         if len(active) != 1: raise ContractError("write-conflict schedule did not defer the locked work item")
@@ -215,11 +216,25 @@ def _run_scheduler(sidecar: Path, cell: PanelCell, material: Mapping[str, Any]) 
 
 
 def _baseline_replay(jobs: list[Mapping[str, Any]], material: Mapping[str, Any]) -> dict[str, Any]:
-    """Pre-registered safe control: records planned work, never leases or merges it."""
-    return {"engine": "deterministic_preflight_baseline", "planned_task_ids": [job["task_id"] for job in jobs],
-            "planned_resource_sets": [list(job["resources"]) for job in jobs], "reserved_cost_units": sum(job["cost_units"] for job in jobs),
-            "actual_completed_cost_units": 0, "remaining_leases": [], "unsafe_execution_started": False,
-            "snapshot_digest": FrozenRecord.from_dict(dict(material["snapshot"])).content_hash}
+    """Independent in-memory FIFO control with the same pure worker workload.
+
+    It deliberately has no leases, dedup index, recovery, or all-arm barrier;
+    those are the M8 intervention.  It nevertheless dispatches and returns
+    every caller work item, so workload and budget remain matched.
+    """
+    snapshot = FrozenRecord.from_dict(dict(material["snapshot"])).content_hash
+    issued = [job["task_id"] for job in jobs]
+    outputs = [_worker(job["task_id"], snapshot) for job in jobs]
+    return {"engine": "memory_fifo_baseline", "issued_task_ids": issued, "merged_task_ids": issued,
+            "work_output_digests": outputs, "reserved_cost_units": sum(job["cost_units"] for job in jobs),
+            "actual_completed_cost_units": sum(job["cost_units"] for job in jobs), "remaining_leases": [],
+            "snapshot_digest": snapshot, "merge_visibility": "per_return"}
+
+
+def _worker(task_id: str, snapshot_digest: str) -> str:
+    """Restricted deterministic computation, bound to caller work and snapshot."""
+    return FrozenRecord.from_dict({"schema": "m8-public-work-result-v1", "task_id": task_id,
+                                    "snapshot_digest": snapshot_digest}).content_hash
 
 
 def install_drivers(target: MutableMapping[str, Any], *, material_resolver: BundleResolver | None = None):

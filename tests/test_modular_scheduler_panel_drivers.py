@@ -74,8 +74,8 @@ def test_full_public_two_benchmark_m8_grid_runs_real_fifo_barrier_and_recovery(t
                     observed = stage.detail.data()["scheduler_observation"]
                     assert observed["reserved_cost_units"] == 2
                     by_condition[(task.identity.benchmark, experiment, variant, arm_id)] = observed["engine"]
-                    if observed["engine"] == "deterministic_preflight_baseline":
-                        assert observed["actual_completed_cost_units"] == 0 and observed["unsafe_execution_started"] is False
+                    if observed["engine"] == "memory_fifo_baseline":
+                        assert observed["actual_completed_cost_units"] == 2 and len(observed["work_output_digests"]) == 2
                     elif experiment == "Q3.3":
                         assert observed["merged_task_ids"] == ["public-first", "public-second"] and observed["prediction_ordering_used"] is False
                     elif experiment == "Q3.4":
@@ -90,4 +90,4 @@ def test_full_public_two_benchmark_m8_grid_runs_real_fifo_barrier_and_recovery(t
         for experiment, variants in VARIANTS.items():
             for variant in variants:
                 modes = {by_condition[(task.identity.benchmark, experiment, variant, arm_id)] for arm_id, _ in _arms()}
-                assert modes == {"deterministic_preflight_baseline", "durable_fifo"}
+                assert modes == {"memory_fifo_baseline", "durable_fifo"}
