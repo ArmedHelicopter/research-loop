@@ -1,0 +1,32 @@
+{
+  "m9-known-cost-red-r1": {
+    "commit": "73477f866b026cdf834b97ace5a6a7a5ed88d914",
+    "source_unchanged": true,
+    "source_count": 561,
+    "exit_code": 1,
+    "wall_seconds": 918.1569999999992,
+    "new_paid_calls": 0,
+    "report_sha256": "c06c05881a878b53791d5f2094814f408e2cfef1744a93085da3d5c4f9f99359",
+    "junit": {
+      "tests": 9,
+      "failures": 9,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "m9-known-cost-green-r1": {
+    "commit": "5f4d12ad771eca23d3a5316eeb9ede51c9c7c5aa",
+    "source_unchanged": true,
+    "source_count": 562,
+    "exit_code": 0,
+    "wall_seconds": 408.70300000000134,
+    "new_paid_calls": 0,
+    "report_sha256": "367eb43cc39385c1591fc7ef92ce4a859e4db2cb0f6fd8c8971523aef5e5092d",
+    "junit": {
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "m9-known-cost-red-r1": [
+    {
+      "path": "test_build_replay_rejects_sign0/counterexample.json",
+      "family_rejected": false,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": null,
+      "score_input_issued": false
+    },
+    {
+      "path": "test_build_replay_rejects_sign1/counterexample.json",
+      "family_rejected": false,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": null,
+      "score_input_issued": false
+    },
+    {
+      "path": "test_mechanism_target_replay_r0/counterexample.json",
+      "family_rejected": false,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": "76d9cfc90ade9fdcf794a91e43fd252b4824a973c0bd1dea14be99f20b2cade9",
+      "score_input_issued": true
+    },
+    {
+      "path": "test_mechanism_target_replay_r1/counterexample.json",
+      "family_rejected": false,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": "7f06e354970729aedc24d1831d18653068cd45802ed6b50465dda6f6aa8d890f",
+      "score_input_issued": true
+    },
+    {
+      "path": "test_mechanism_target_replay_r2/counterexample.json",
+      "family_rejected": false,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": "335f946dcd2ba0423eaad02515f3d3ce20a5c378bfaf5e916ed20ec2dfa27b3a",
+      "score_input_issued": true
+    },
+    {
+      "path": "test_mechanism_target_replay_r3/counterexample.json",
+      "family_rejected": false,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": "8afa0d8fde811a448adf0783bc9bc344827b60995ad8de905fd4e79cbc65616b",
+      "score_input_issued": true
+    },
+    {
+      "path": "test_state_target_replay_rejec0/counterexample.json",
+      "family_rejected": false,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": "f0362cb027a9b8d26b1c1c1190ccb60c43b0e4f1bc83633ad8134b85c7ccc36e",
+      "score_input_issued": true
+    },
+    {
+      "path": "test_state_target_replay_rejec1/counterexample.json",
+      "family_rejected": false,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": "9ebd669c33ad14649198947de4500e15d17387513d4a1d50d3c075cabc675b51",
+      "score_input_issued": true
+    },
+    {
+      "path": "test_state_target_replay_rejec2/counterexample.json",
+      "family_rejected": false,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": "5e4c6eddab41ac44bfa063a3f6f6b3d09339a0b53af2044b40cc4697a8efb87a",
+      "score_input_issued": true
+    }
+  ],
+  "m9-known-cost-green-r1": [
+    {
+      "path": "test_build_replay_rejects_sign0/counterexample.json",
+      "family_rejected": true,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": null,
+      "score_input_issued": false
+    },
+    {
+      "path": "test_build_replay_rejects_sign1/counterexample.json",
+      "family_rejected": true,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": null,
+      "score_input_issued": false
+    },
+    {
+      "path": "test_mechanism_target_replay_r0/counterexample.json",
+      "family_rejected": true,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": null,
+      "score_input_issued": false
+    },
+    {
+      "path": "test_mechanism_target_replay_r1/counterexample.json",
+      "family_rejected": true,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": null,
+      "score_input_issued": false
+    },
+    {
+      "path": "test_mechanism_target_replay_r2/counterexample.json",
+      "family_rejected": true,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": null,
+      "score_input_issued": false
+    },
+    {
+      "path": "test_mechanism_target_replay_r3/counterexample.json",
+      "family_rejected": true,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": null,
+      "score_input_issued": false
+    },
+    {
+      "path": "test_state_target_replay_rejec0/counterexample.json",
+      "family_rejected": true,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": null,
+      "score_input_issued": false
+    },
+    {
+      "path": "test_state_target_replay_rejec1/counterexample.json",
+      "family_rejected": true,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": null,
+      "score_input_issued": false
+    },
+    {
+      "path": "test_state_target_replay_rejec2/counterexample.json",
+      "family_rejected": true,
+      "generic_verified": true,
+      "new_docker_calls_during_replay": 0,
+      "new_model_calls_during_replay": 0,
+      "new_source_calls_during_replay": 0,
+      "original_verified": true,
+      "score_input_digest": null,
+      "score_input_issued": false
+    }
+  ]
+}

@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="9" time="909.029" timestamp="2026-09-14T00:30:29.868979+08:00" hostname="SC-202507131830"><testcase classname="tests.test_m9_known_cost_replay" name="test_state_target_replay_rejects_signed_unknown_cost[pair:M1+M9]" time="701.573"><failure message="AssertionError: signed unknown cost bypasses successful M9 target replay&#10;assert False">state_grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...d_model_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+pair = 'pair:M1+M9'
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_state_target_replay_rejec0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E67E86D460&gt;
+
+    @pytest.mark.parametrize('pair', ['pair:M1+M9', 'pair:M2+M9', 'pair:M3+M9'])
+    def test_state_target_replay_rejects_signed_unknown_cost(state_grid, pair, tmp_path, monkeypatch):
+&gt;       target_attack(state_grid, state, pair, False, tmp_path, monkeypatch)
+
+tests\test_m9_known_cost_replay.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...d_model_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+module = &lt;module 'test_state_improvement_train_controller' from 'E:\\_ryanDev\\AI\\research-loop-modular\\m9-replay\\tests\\test_state_improvement_train_controller.py'&gt;
+pair = 'pair:M1+M9', corpus = False
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_state_target_replay_rejec0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E67E86D460&gt;
+
+    def target_attack(grid, module, pair, corpus, tmp_path, monkeypatch):
+        setup, run = grid
+        assert run.receipt.data()['status'] == 'complete_train_engineering'
+        result = next(r for r in reversed(run.results) if r.cell.coverage_id == pair)
+        args = module.replay_args(setup, run, result)
+        issue = (state.issue_state_improvement_score_input if module is state
+                 else mechanism.issue_mechanism_improvement_score_input)
+        forbid_execution(monkeypatch)
+        counts = (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+        issue(authority=module.EXECUTION, result=result, **args)
+        path = result.runtime.trace_path
+        source = path.parent.parent / ('retrieval/source-verification.json' if corpus else 'source-verification.json')
+        original, trace = source.read_bytes(), path.read_bytes()
+        qualifier = args['retrieval_verifier'] if corpus else args['source_verifier']
+        material = args['retrieval_material'] if corpus else args['material']
+        stage = ('state' if module is state else 'mechanism') + '_improvement_transition'
+        field = 'retrieval_source_sha256' if corpus else 'source_sha256'
+        rejected = False; issued = None
+        try:
+            sha = unknown_source(source, qualifier)
+            assert qualifier.replay(material, source, cell_binding=_source_binding(result.cell)) == sha
+            def mutate(rows):
+                next(row for row in rows if row['stage'] == stage)['data'][field] = sha
+            tail = _rewrite_trace(path, mutate)
+            forged = replace(result, runtime=replace(result.runtime, trace_digest=tail))
+            PanelReceiptVerifier()._verify_runtime(forged.runtime, forged.cell)
+            try:
+                issued = issue(authority=module.EXECUTION, result=forged, **args)
+            except ContractError as exc:
+                assert 'unknown' in str(exc) and 'cost' in str(exc)
+                rejected = True
+            preserve(tmp_path, original_source=original, original_trace=trace,
+                     source=source, trace=path, rejected=rejected, issued=issued)
+            assert counts == (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+&gt;           assert rejected, 'signed unknown cost bypasses successful M9 target replay'
+E           AssertionError: signed unknown cost bypasses successful M9 target replay
+E           assert False
+
+tests\test_m9_known_cost_replay.py:93: AssertionError</failure></testcase><testcase classname="tests.test_m9_known_cost_replay" name="test_state_target_replay_rejects_signed_unknown_cost[pair:M2+M9]" time="0.926"><failure message="AssertionError: signed unknown cost bypasses successful M9 target replay&#10;assert False">state_grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...d_model_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+pair = 'pair:M2+M9'
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_state_target_replay_rejec1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E67FD53EF0&gt;
+
+    @pytest.mark.parametrize('pair', ['pair:M1+M9', 'pair:M2+M9', 'pair:M3+M9'])
+    def test_state_target_replay_rejects_signed_unknown_cost(state_grid, pair, tmp_path, monkeypatch):
+&gt;       target_attack(state_grid, state, pair, False, tmp_path, monkeypatch)
+
+tests\test_m9_known_cost_replay.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...d_model_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+module = &lt;module 'test_state_improvement_train_controller' from 'E:\\_ryanDev\\AI\\research-loop-modular\\m9-replay\\tests\\test_state_improvement_train_controller.py'&gt;
+pair = 'pair:M2+M9', corpus = False
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_state_target_replay_rejec1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E67FD53EF0&gt;
+
+    def target_attack(grid, module, pair, corpus, tmp_path, monkeypatch):
+        setup, run = grid
+        assert run.receipt.data()['status'] == 'complete_train_engineering'
+        result = next(r for r in reversed(run.results) if r.cell.coverage_id == pair)
+        args = module.replay_args(setup, run, result)
+        issue = (state.issue_state_improvement_score_input if module is state
+                 else mechanism.issue_mechanism_improvement_score_input)
+        forbid_execution(monkeypatch)
+        counts = (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+        issue(authority=module.EXECUTION, result=result, **args)
+        path = result.runtime.trace_path
+        source = path.parent.parent / ('retrieval/source-verification.json' if corpus else 'source-verification.json')
+        original, trace = source.read_bytes(), path.read_bytes()
+        qualifier = args['retrieval_verifier'] if corpus else args['source_verifier']
+        material = args['retrieval_material'] if corpus else args['material']
+        stage = ('state' if module is state else 'mechanism') + '_improvement_transition'
+        field = 'retrieval_source_sha256' if corpus else 'source_sha256'
+        rejected = False; issued = None
+        try:
+            sha = unknown_source(source, qualifier)
+            assert qualifier.replay(material, source, cell_binding=_source_binding(result.cell)) == sha
+            def mutate(rows):
+                next(row for row in rows if row['stage'] == stage)['data'][field] = sha
+            tail = _rewrite_trace(path, mutate)
+            forged = replace(result, runtime=replace(result.runtime, trace_digest=tail))
+            PanelReceiptVerifier()._verify_runtime(forged.runtime, forged.cell)
+            try:
+                issued = issue(authority=module.EXECUTION, result=forged, **args)
+            except ContractError as exc:
+                assert 'unknown' in str(exc) and 'cost' in str(exc)
+                rejected = True
+            preserve(tmp_path, original_source=original, original_trace=trace,
+                     source=source, trace=path, rejected=rejected, issued=issued)
+            assert counts == (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+&gt;           assert rejected, 'signed unknown cost bypasses successful M9 target replay'
+E           AssertionError: signed unknown cost bypasses successful M9 target replay
+E           assert False
+
+tests\test_m9_known_cost_replay.py:93: AssertionError</failure></testcase><testcase classname="tests.test_m9_known_cost_replay" name="test_state_target_replay_rejects_signed_unknown_cost[pair:M3+M9]" time="1.013"><failure message="AssertionError: signed unknown cost bypasses successful M9 target replay&#10;assert False">state_grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...d_model_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+pair = 'pair:M3+M9'
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_state_target_replay_rejec2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E60255A480&gt;
+
+    @pytest.mark.parametrize('pair', ['pair:M1+M9', 'pair:M2+M9', 'pair:M3+M9'])
+    def test_state_target_replay_rejects_signed_unknown_cost(state_grid, pair, tmp_path, monkeypatch):
+&gt;       target_attack(state_grid, state, pair, False, tmp_path, monkeypatch)
+
+tests\test_m9_known_cost_replay.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...d_model_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+module = &lt;module 'test_state_improvement_train_controller' from 'E:\\_ryanDev\\AI\\research-loop-modular\\m9-replay\\tests\\test_state_improvement_train_controller.py'&gt;
+pair = 'pair:M3+M9', corpus = False
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_state_target_replay_rejec2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E60255A480&gt;
+
+    def target_attack(grid, module, pair, corpus, tmp_path, monkeypatch):
+        setup, run = grid
+        assert run.receipt.data()['status'] == 'complete_train_engineering'
+        result = next(r for r in reversed(run.results) if r.cell.coverage_id == pair)
+        args = module.replay_args(setup, run, result)
+        issue = (state.issue_state_improvement_score_input if module is state
+                 else mechanism.issue_mechanism_improvement_score_input)
+        forbid_execution(monkeypatch)
+        counts = (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+        issue(authority=module.EXECUTION, result=result, **args)
+        path = result.runtime.trace_path
+        source = path.parent.parent / ('retrieval/source-verification.json' if corpus else 'source-verification.json')
+        original, trace = source.read_bytes(), path.read_bytes()
+        qualifier = args['retrieval_verifier'] if corpus else args['source_verifier']
+        material = args['retrieval_material'] if corpus else args['material']
+        stage = ('state' if module is state else 'mechanism') + '_improvement_transition'
+        field = 'retrieval_source_sha256' if corpus else 'source_sha256'
+        rejected = False; issued = None
+        try:
+            sha = unknown_source(source, qualifier)
+            assert qualifier.replay(material, source, cell_binding=_source_binding(result.cell)) == sha
+            def mutate(rows):
+                next(row for row in rows if row['stage'] == stage)['data'][field] = sha
+            tail = _rewrite_trace(path, mutate)
+            forged = replace(result, runtime=replace(result.runtime, trace_digest=tail))
+            PanelReceiptVerifier()._verify_runtime(forged.runtime, forged.cell)
+            try:
+                issued = issue(authority=module.EXECUTION, result=forged, **args)
+            except ContractError as exc:
+                assert 'unknown' in str(exc) and 'cost' in str(exc)
+                rejected = True
+            preserve(tmp_path, original_source=original, original_trace=trace,
+                     source=source, trace=path, rejected=rejected, issued=issued)
+            assert counts == (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+&gt;           assert rejected, 'signed unknown cost bypasses successful M9 target replay'
+E           AssertionError: signed unknown cost bypasses successful M9 target replay
+E           assert False
+
+tests\test_m9_known_cost_replay.py:93: AssertionError</failure></testcase><testcase classname="tests.test_m9_known_cost_replay" name="test_mechanism_target_replay_rejects_signed_unknown_cost[pair:M4+M9-False]" time="201.138"><failure message="AssertionError: signed unknown cost bypasses successful M9 target replay&#10;assert False">mechanism_grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...trieval_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+pair = 'pair:M4+M9', corpus = False
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_mechanism_target_replay_r0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E67E898A10&gt;
+
+    @pytest.mark.parametrize('pair,corpus', [
+        ('pair:M4+M9', False), ('pair:M5+M9', False), ('pair:M6+M9', False), ('pair:M6+M9', True),
+    ])
+    def test_mechanism_target_replay_rejects_signed_unknown_cost(mechanism_grid, pair, corpus, tmp_path, monkeypatch):
+&gt;       target_attack(mechanism_grid, mechanism, pair, corpus, tmp_path, monkeypatch)
+
+tests\test_m9_known_cost_replay.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...trieval_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+module = &lt;module 'test_mechanism_improvement_train_controller' from 'E:\\_ryanDev\\AI\\research-loop-modular\\m9-replay\\tests\\test_mechanism_improvement_train_controller.py'&gt;
+pair = 'pair:M4+M9', corpus = False
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_mechanism_target_replay_r0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E67E898A10&gt;
+
+    def target_attack(grid, module, pair, corpus, tmp_path, monkeypatch):
+        setup, run = grid
+        assert run.receipt.data()['status'] == 'complete_train_engineering'
+        result = next(r for r in reversed(run.results) if r.cell.coverage_id == pair)
+        args = module.replay_args(setup, run, result)
+        issue = (state.issue_state_improvement_score_input if module is state
+                 else mechanism.issue_mechanism_improvement_score_input)
+        forbid_execution(monkeypatch)
+        counts = (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+        issue(authority=module.EXECUTION, result=result, **args)
+        path = result.runtime.trace_path
+        source = path.parent.parent / ('retrieval/source-verification.json' if corpus else 'source-verification.json')
+        original, trace = source.read_bytes(), path.read_bytes()
+        qualifier = args['retrieval_verifier'] if corpus else args['source_verifier']
+        material = args['retrieval_material'] if corpus else args['material']
+        stage = ('state' if module is state else 'mechanism') + '_improvement_transition'
+        field = 'retrieval_source_sha256' if corpus else 'source_sha256'
+        rejected = False; issued = None
+        try:
+            sha = unknown_source(source, qualifier)
+            assert qualifier.replay(material, source, cell_binding=_source_binding(result.cell)) == sha
+            def mutate(rows):
+                next(row for row in rows if row['stage'] == stage)['data'][field] = sha
+            tail = _rewrite_trace(path, mutate)
+            forged = replace(result, runtime=replace(result.runtime, trace_digest=tail))
+            PanelReceiptVerifier()._verify_runtime(forged.runtime, forged.cell)
+            try:
+                issued = issue(authority=module.EXECUTION, result=forged, **args)
+            except ContractError as exc:
+                assert 'unknown' in str(exc) and 'cost' in str(exc)
+                rejected = True
+            preserve(tmp_path, original_source=original, original_trace=trace,
+                     source=source, trace=path, rejected=rejected, issued=issued)
+            assert counts == (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+&gt;           assert rejected, 'signed unknown cost bypasses successful M9 target replay'
+E           AssertionError: signed unknown cost bypasses successful M9 target replay
+E           assert False
+
+tests\test_m9_known_cost_replay.py:93: AssertionError</failure></testcase><testcase classname="tests.test_m9_known_cost_replay" name="test_mechanism_target_replay_rejects_signed_unknown_cost[pair:M5+M9-False]" time="0.654"><failure message="AssertionError: signed unknown cost bypasses successful M9 target replay&#10;assert False">mechanism_grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...trieval_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+pair = 'pair:M5+M9', corpus = False
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_mechanism_target_replay_r1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E67FD05010&gt;
+
+    @pytest.mark.parametrize('pair,corpus', [
+        ('pair:M4+M9', False), ('pair:M5+M9', False), ('pair:M6+M9', False), ('pair:M6+M9', True),
+    ])
+    def test_mechanism_target_replay_rejects_signed_unknown_cost(mechanism_grid, pair, corpus, tmp_path, monkeypatch):
+&gt;       target_attack(mechanism_grid, mechanism, pair, corpus, tmp_path, monkeypatch)
+
+tests\test_m9_known_cost_replay.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...trieval_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+module = &lt;module 'test_mechanism_improvement_train_controller' from 'E:\\_ryanDev\\AI\\research-loop-modular\\m9-replay\\tests\\test_mechanism_improvement_train_controller.py'&gt;
+pair = 'pair:M5+M9', corpus = False
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_mechanism_target_replay_r1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E67FD05010&gt;
+
+    def target_attack(grid, module, pair, corpus, tmp_path, monkeypatch):
+        setup, run = grid
+        assert run.receipt.data()['status'] == 'complete_train_engineering'
+        result = next(r for r in reversed(run.results) if r.cell.coverage_id == pair)
+        args = module.replay_args(setup, run, result)
+        issue = (state.issue_state_improvement_score_input if module is state
+                 else mechanism.issue_mechanism_improvement_score_input)
+        forbid_execution(monkeypatch)
+        counts = (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+        issue(authority=module.EXECUTION, result=result, **args)
+        path = result.runtime.trace_path
+        source = path.parent.parent / ('retrieval/source-verification.json' if corpus else 'source-verification.json')
+        original, trace = source.read_bytes(), path.read_bytes()
+        qualifier = args['retrieval_verifier'] if corpus else args['source_verifier']
+        material = args['retrieval_material'] if corpus else args['material']
+        stage = ('state' if module is state else 'mechanism') + '_improvement_transition'
+        field = 'retrieval_source_sha256' if corpus else 'source_sha256'
+        rejected = False; issued = None
+        try:
+            sha = unknown_source(source, qualifier)
+            assert qualifier.replay(material, source, cell_binding=_source_binding(result.cell)) == sha
+            def mutate(rows):
+                next(row for row in rows if row['stage'] == stage)['data'][field] = sha
+            tail = _rewrite_trace(path, mutate)
+            forged = replace(result, runtime=replace(result.runtime, trace_digest=tail))
+            PanelReceiptVerifier()._verify_runtime(forged.runtime, forged.cell)
+            try:
+                issued = issue(authority=module.EXECUTION, result=forged, **args)
+            except ContractError as exc:
+                assert 'unknown' in str(exc) and 'cost' in str(exc)
+                rejected = True
+            preserve(tmp_path, original_source=original, original_trace=trace,
+                     source=source, trace=path, rejected=rejected, issued=issued)
+            assert counts == (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+&gt;           assert rejected, 'signed unknown cost bypasses successful M9 target replay'
+E           AssertionError: signed unknown cost bypasses successful M9 target replay
+E           assert False
+
+tests\test_m9_known_cost_replay.py:93: AssertionError</failure></testcase><testcase classname="tests.test_m9_known_cost_replay" name="test_mechanism_target_replay_rejects_signed_unknown_cost[pair:M6+M9-False]" time="0.594"><failure message="AssertionError: signed unknown cost bypasses successful M9 target replay&#10;assert False">mechanism_grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...trieval_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+pair = 'pair:M6+M9', corpus = False
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_mechanism_target_replay_r2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E6026A78C0&gt;
+
+    @pytest.mark.parametrize('pair,corpus', [
+        ('pair:M4+M9', False), ('pair:M5+M9', False), ('pair:M6+M9', False), ('pair:M6+M9', True),
+    ])
+    def test_mechanism_target_replay_rejects_signed_unknown_cost(mechanism_grid, pair, corpus, tmp_path, monkeypatch):
+&gt;       target_attack(mechanism_grid, mechanism, pair, corpus, tmp_path, monkeypatch)
+
+tests\test_m9_known_cost_replay.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...trieval_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+module = &lt;module 'test_mechanism_improvement_train_controller' from 'E:\\_ryanDev\\AI\\research-loop-modular\\m9-replay\\tests\\test_mechanism_improvement_train_controller.py'&gt;
+pair = 'pair:M6+M9', corpus = False
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_mechanism_target_replay_r2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E6026A78C0&gt;
+
+    def target_attack(grid, module, pair, corpus, tmp_path, monkeypatch):
+        setup, run = grid
+        assert run.receipt.data()['status'] == 'complete_train_engineering'
+        result = next(r for r in reversed(run.results) if r.cell.coverage_id == pair)
+        args = module.replay_args(setup, run, result)
+        issue = (state.issue_state_improvement_score_input if module is state
+                 else mechanism.issue_mechanism_improvement_score_input)
+        forbid_execution(monkeypatch)
+        counts = (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+        issue(authority=module.EXECUTION, result=result, **args)
+        path = result.runtime.trace_path
+        source = path.parent.parent / ('retrieval/source-verification.json' if corpus else 'source-verification.json')
+        original, trace = source.read_bytes(), path.read_bytes()
+        qualifier = args['retrieval_verifier'] if corpus else args['source_verifier']
+        material = args['retrieval_material'] if corpus else args['material']
+        stage = ('state' if module is state else 'mechanism') + '_improvement_transition'
+        field = 'retrieval_source_sha256' if corpus else 'source_sha256'
+        rejected = False; issued = None
+        try:
+            sha = unknown_source(source, qualifier)
+            assert qualifier.replay(material, source, cell_binding=_source_binding(result.cell)) == sha
+            def mutate(rows):
+                next(row for row in rows if row['stage'] == stage)['data'][field] = sha
+            tail = _rewrite_trace(path, mutate)
+            forged = replace(result, runtime=replace(result.runtime, trace_digest=tail))
+            PanelReceiptVerifier()._verify_runtime(forged.runtime, forged.cell)
+            try:
+                issued = issue(authority=module.EXECUTION, result=forged, **args)
+            except ContractError as exc:
+                assert 'unknown' in str(exc) and 'cost' in str(exc)
+                rejected = True
+            preserve(tmp_path, original_source=original, original_trace=trace,
+                     source=source, trace=path, rejected=rejected, issued=issued)
+            assert counts == (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+&gt;           assert rejected, 'signed unknown cost bypasses successful M9 target replay'
+E           AssertionError: signed unknown cost bypasses successful M9 target replay
+E           assert False
+
+tests\test_m9_known_cost_replay.py:93: AssertionError</failure></testcase><testcase classname="tests.test_m9_known_cost_replay" name="test_mechanism_target_replay_rejects_signed_unknown_cost[pair:M6+M9-True]" time="0.578"><failure message="AssertionError: signed unknown cost bypasses successful M9 target replay&#10;assert False">mechanism_grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...trieval_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+pair = 'pair:M6+M9', corpus = True
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_mechanism_target_replay_r3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E67FEC9970&gt;
+
+    @pytest.mark.parametrize('pair,corpus', [
+        ('pair:M4+M9', False), ('pair:M5+M9', False), ('pair:M6+M9', False), ('pair:M6+M9', True),
+    ])
+    def test_mechanism_target_replay_rejects_signed_unknown_cost(mechanism_grid, pair, corpus, tmp_path, monkeypatch):
+&gt;       target_attack(mechanism_grid, mechanism, pair, corpus, tmp_path, monkeypatch)
+
+tests\test_m9_known_cost_replay.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...trieval_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+module = &lt;module 'test_mechanism_improvement_train_controller' from 'E:\\_ryanDev\\AI\\research-loop-modular\\m9-replay\\tests\\test_mechanism_improvement_train_controller.py'&gt;
+pair = 'pair:M6+M9', corpus = True
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_mechanism_target_replay_r3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E67FEC9970&gt;
+
+    def target_attack(grid, module, pair, corpus, tmp_path, monkeypatch):
+        setup, run = grid
+        assert run.receipt.data()['status'] == 'complete_train_engineering'
+        result = next(r for r in reversed(run.results) if r.cell.coverage_id == pair)
+        args = module.replay_args(setup, run, result)
+        issue = (state.issue_state_improvement_score_input if module is state
+                 else mechanism.issue_mechanism_improvement_score_input)
+        forbid_execution(monkeypatch)
+        counts = (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+        issue(authority=module.EXECUTION, result=result, **args)
+        path = result.runtime.trace_path
+        source = path.parent.parent / ('retrieval/source-verification.json' if corpus else 'source-verification.json')
+        original, trace = source.read_bytes(), path.read_bytes()
+        qualifier = args['retrieval_verifier'] if corpus else args['source_verifier']
+        material = args['retrieval_material'] if corpus else args['material']
+        stage = ('state' if module is state else 'mechanism') + '_improvement_transition'
+        field = 'retrieval_source_sha256' if corpus else 'source_sha256'
+        rejected = False; issued = None
+        try:
+            sha = unknown_source(source, qualifier)
+            assert qualifier.replay(material, source, cell_binding=_source_binding(result.cell)) == sha
+            def mutate(rows):
+                next(row for row in rows if row['stage'] == stage)['data'][field] = sha
+            tail = _rewrite_trace(path, mutate)
+            forged = replace(result, runtime=replace(result.runtime, trace_digest=tail))
+            PanelReceiptVerifier()._verify_runtime(forged.runtime, forged.cell)
+            try:
+                issued = issue(authority=module.EXECUTION, result=forged, **args)
+            except ContractError as exc:
+                assert 'unknown' in str(exc) and 'cost' in str(exc)
+                rejected = True
+            preserve(tmp_path, original_source=original, original_trace=trace,
+                     source=source, trace=path, rejected=rejected, issued=issued)
+            assert counts == (len(setup['calls']), len(setup['port'].ledger['calls']), len(setup.get('corpus_calls', [])))
+&gt;           assert rejected, 'signed unknown cost bypasses successful M9 target replay'
+E           AssertionError: signed unknown cost bypasses successful M9 target replay
+E           assert False
+
+tests\test_m9_known_cost_replay.py:93: AssertionError</failure></testcase><testcase classname="tests.test_m9_known_cost_replay" name="test_build_replay_rejects_signed_unknown_cost[pair:M1+M9]" time="0.128"><failure message="AssertionError: coherent build receipt bypasses unknown source cost stop rule&#10;assert False">state_grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...d_model_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+pair = 'pair:M1+M9'
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_build_replay_rejects_sign0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E67FDEFEC0&gt;
+
+    @pytest.mark.parametrize('pair', ['pair:M1+M9', 'pair:M3+M9'])
+    def test_build_replay_rejects_signed_unknown_cost(state_grid, pair, tmp_path, monkeypatch):
+        setup, run = state_grid
+        build = next(b for b in run.builds if b.record.data()['recipe']['pair'] == pair)
+        args = state.build_args(setup, run, build)
+        forbid_execution(monkeypatch)
+        verify_build(build, **args)
+        source = build.root / 'source/source-verification.json'
+        trace = build.root / 'proposal/trace.jsonl'
+        receipt = build.root / 'build-receipt.json'
+        original_source, original_trace, original_receipt = source.read_bytes(), trace.read_bytes(), receipt.read_bytes()
+        counts = len(setup['calls']), len(setup['port'].ledger['calls'])
+        rejected = False
+        try:
+            sha = unknown_source(source, args['qualifier'])
+            binding = build_binding(args['plan_digest'], args['recipe'])
+            assert args['qualifier'].replay(args['material'], source, cell_binding=binding) == sha
+            def mutate(rows):
+                next(row for row in rows if row['stage'] == 'state_improvement_history')['data']['source_sha256'] = sha
+            _rewrite_trace(trace, mutate); verify_trace(trace)
+            metadata = build.record.data()
+            metadata['files'] = {name: hashlib.sha256((build.root / name).read_bytes()).hexdigest()
+                                 for name in metadata['files']}
+            forged = replace(build, record=FrozenRecord.from_dict(metadata))
+            receipt.write_text(forged.record.encoded + '\n', encoding='utf-8', newline='\n')
+            try:
+                verify_build(forged, **args)
+            except ContractError as exc:
+                assert 'unknown' in str(exc) and 'cost' in str(exc)
+                rejected = True
+            preserve(tmp_path, original_source=original_source, original_trace=original_trace,
+                     source=source, trace=trace, rejected=rejected)
+            (tmp_path / 'original-build-receipt.json').write_bytes(original_receipt)
+            (tmp_path / 'forged-build-receipt.json').write_bytes(receipt.read_bytes())
+            assert counts == (len(setup['calls']), len(setup['port'].ledger['calls']))
+&gt;           assert rejected, 'coherent build receipt bypasses unknown source cost stop rule'
+E           AssertionError: coherent build receipt bypasses unknown source cost stop rule
+E           assert False
+
+tests\test_m9_known_cost_replay.py:146: AssertionError</failure></testcase><testcase classname="tests.test_m9_known_cost_replay" name="test_build_replay_rejects_signed_unknown_cost[pair:M3+M9]" time="0.104"><failure message="AssertionError: coherent build receipt bypasses unknown source cost stop rule&#10;assert False">state_grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...d_model_opportunities":0,"unused_scorer_opportunities":0,"unused_source_opportunities":0,"validation_opened":false}')))
+pair = 'pair:M3+M9'
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m9-known-cost-red-r1/test_build_replay_rejects_sign1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E60256AC90&gt;
+
+    @pytest.mark.parametrize('pair', ['pair:M1+M9', 'pair:M3+M9'])
+    def test_build_replay_rejects_signed_unknown_cost(state_grid, pair, tmp_path, monkeypatch):
+        setup, run = state_grid
+        build = next(b for b in run.builds if b.record.data()['recipe']['pair'] == pair)
+        args = state.build_args(setup, run, build)
+        forbid_execution(monkeypatch)
+        verify_build(build, **args)
+        source = build.root / 'source/source-verification.json'
+        trace = build.root / 'proposal/trace.jsonl'
+        receipt = build.root / 'build-receipt.json'
+        original_source, original_trace, original_receipt = source.read_bytes(), trace.read_bytes(), receipt.read_bytes()
+        counts = len(setup['calls']), len(setup['port'].ledger['calls'])
+        rejected = False
+        try:
+            sha = unknown_source(source, args['qualifier'])
+            binding = build_binding(args['plan_digest'], args['recipe'])
+            assert args['qualifier'].replay(args['material'], source, cell_binding=binding) == sha
+            def mutate(rows):
+                next(row for row in rows if row['stage'] == 'state_improvement_history')['data']['source_sha256'] = sha
+            _rewrite_trace(trace, mutate); verify_trace(trace)
+            metadata = build.record.data()
+            metadata['files'] = {name: hashlib.sha256((build.root / name).read_bytes()).hexdigest()
+                                 for name in metadata['files']}
+            forged = replace(build, record=FrozenRecord.from_dict(metadata))
+            receipt.write_text(forged.record.encoded + '\n', encoding='utf-8', newline='\n')
+            try:
+                verify_build(forged, **args)
+            except ContractError as exc:
+                assert 'unknown' in str(exc) and 'cost' in str(exc)
+                rejected = True
+            preserve(tmp_path, original_source=original_source, original_trace=original_trace,
+                     source=source, trace=trace, rejected=rejected)
+            (tmp_path / 'original-build-receipt.json').write_bytes(original_receipt)
+            (tmp_path / 'forged-build-receipt.json').write_bytes(receipt.read_bytes())
+            assert counts == (len(setup['calls']), len(setup['port'].ledger['calls']))
+&gt;           assert rejected, 'coherent build receipt bypasses unknown source cost stop rule'
+E           AssertionError: coherent build receipt bypasses unknown source cost stop rule
+E           assert False
+
+tests\test_m9_known_cost_replay.py:146: AssertionError</failure></testcase></testsuite></testsuites>
