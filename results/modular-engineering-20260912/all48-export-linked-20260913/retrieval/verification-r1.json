@@ -1,0 +1,116 @@
+{
+  "schema": "retrieval-linked-engineering-verification-v1",
+  "source_commit": "50fc21b274d0ef2a4a4a7d7f0678597f9b308336",
+  "implementation_commit": "f89a619",
+  "source_bindings": {
+    "research_loop/modular/benchmark_cell.py": {
+      "worktree_sha256": "ac59b780c74552746b4dddf635354dd30362d7c85778412da9f11c6d1a416c67",
+      "git_blob_sha256": "90a805b9222f3c1de5c9abcc37c6ddaf624a1365f5dc24ec2d334c0dd55a063c"
+    },
+    "research_loop/modular/linked_public_projection.py": {
+      "worktree_sha256": "ccfcaf3e3fb61bf6c6799a9b06039dc65692e5508a87ee0810a7748806105fbf",
+      "git_blob_sha256": "064570f949fabd4627d7c0b250d1c76653d45eb031d2df2020d20bb1ac807bfe"
+    },
+    "research_loop/modular/train_controller.py": {
+      "worktree_sha256": "9ca15d606cfcbe476be512e2edda6b47705604d59134926e77743c50e84412f1",
+      "git_blob_sha256": "a96e40dd545795419ac98387be98b0a0a0f48e57d9f2c893b8aed46bbba1c5b4"
+    },
+    "tests/test_retrieval_linked_benchmark.py": {
+      "worktree_sha256": "19dcf203ad0819a779fb33742df031f2e8a80bb793793612b30038a428350e76",
+      "git_blob_sha256": "19dcf203ad0819a779fb33742df031f2e8a80bb793793612b30038a428350e76"
+    },
+    "docs/RETRIEVAL-LINKED-BENCHMARK.md": {
+      "worktree_sha256": "db6aa35ac670d465a3d3347d2ec7d5230e84dfd93a53e972978fd34f28cd78da",
+      "git_blob_sha256": "db6aa35ac670d465a3d3347d2ec7d5230e84dfd93a53e972978fd34f28cd78da"
+    }
+  },
+  "full_before_test_hash_manifest_recorded": false,
+  "reports": {
+    "retrieval-linked-red-r1": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\retrieval-linked-red-r1.xml",
+      "sha256": "809db8cc7dc6e684331a408589f5e3b52b2bfcc01c527ef870c4ee82cda1d7d1",
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "1",
+      "time": "1.573",
+      "timestamp": "2026-09-13T16:10:01.905413+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "retrieval-linked-green-r1": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\retrieval-linked-green-r1.xml",
+      "sha256": "42346f4062591fb0f62fd3ff38b1006348a61fac270e845429b4529d877dac5b",
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "16",
+      "time": "62.846",
+      "timestamp": "2026-09-13T16:11:20.267344+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "retrieval-linked-green-r2": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\retrieval-linked-green-r2.xml",
+      "sha256": "984c591f6a5a6f388a537388800dbab7b41a36b0534de35224ab282f992d50e1",
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "8",
+      "time": "88.709",
+      "timestamp": "2026-09-13T16:15:03.895320+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "retrieval-linked-frozen-r1": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\retrieval-linked-frozen-r1.xml",
+      "sha256": "861f35b8d782607bf7a6c84be1088b5c45d379177648a78ac1e1320d716f6a46",
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "57",
+      "time": "134.762",
+      "timestamp": "2026-09-13T16:17:35.373517+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "retrieval-linked-frozen-r2": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\retrieval-linked-frozen-r2.xml",
+      "sha256": "8316d65d6b9ee77ed3ee40c29e91b2fb87215df6d85a12badadc529fae86956f",
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "18",
+      "time": "62.287",
+      "timestamp": "2026-09-13T16:22:35.988149+08:00",
+      "hostname": "SC-202507131830"
+    }
+  },
+  "independent_review": {
+    "reviewer": "m6_delivery_safety_review",
+    "finding": "fixture root IDs encoded treatment variants despite key-only blinding checks",
+    "resolution": "50fc21b maps identifiers to neutral public names before all model calls and checks values",
+    "original_passing_round_retained": true
+  },
+  "grid": {
+    "cells": 24,
+    "fixture_solver_model_calls": 72,
+    "provider_calls": 54,
+    "docker_executions": 24,
+    "fixture_primary_scorer_calls": 24
+  },
+  "provider_failure_grid": {
+    "planned_cells": 24,
+    "linked_succeeded": 6,
+    "mechanism_failed": 18,
+    "fixture_model_calls": 18,
+    "provider_failed_calls": 18
+  },
+  "new_paid_calls": 0,
+  "validation_payload_read": false,
+  "scientific_effectiveness": "not_established",
+  "retrieval_mechanism_endpoint_scoring": "not_implemented",
+  "root_integration_commit": "b9f7ff4",
+  "root_integration_suite": "running_separately"
+}

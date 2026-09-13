@@ -1,6 +1,6 @@
 # 原对话八个问题的完整实验覆盖
 
-日期：2026-09-12。状态：全量实施与实验规格，所有条目当前均为 `designed`；尚未运行新实验。
+初始规格日期：2026-09-12。当前工程状态（2026-09-13）：48 项均有执行合同，分为 43 个注册题目驱动和 5 个独立 Q6 训练阶段；这不等于所有题目已完成 benchmark 效果实验。逐次证据与剩余工作见 [实施记录](MODULAR-IMPLEMENTATION-STATUS.md) 和 [本次检查点](MODULAR-CHECKPOINT-20260913-ALL48-EXPORT-LINKED.md)。下表保留完整研究规格，不能以工程检查通过替代 `train_measured` 或验证验收。
 
 来源：[研究架构与先验偏置分享对话](https://chatgpt.com/s/t_6aa5249396488191a62ee99332081c77)。本文把对话中的全部八类问题拆成可追踪条目，不把问题优先级用于删减范围。模块边界见 [架构](MODULAR-RESEARCH-ARCHITECTURE.md)，数据与判定见 [实验协议](MODULAR-EXPERIMENT-PROTOCOL.md)。
 

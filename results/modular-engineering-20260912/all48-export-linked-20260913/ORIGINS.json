@@ -1,0 +1,392 @@
+{
+  "primary/fixture-verification.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\primary-prospective-export-verification.json",
+    "sha256": "2040832b59acf2dbc2976b31ebd6ded9c9a357e9b89b22bee2958ca9b7515061",
+    "bytes": 6895
+  },
+  "primary/fixture-initial-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-checks\\initial-r1.xml",
+    "sha256": "e357c05bcc5cad34a83b38f3817d4a43535f66ba8f490586d2e2c7cfca784e75",
+    "bytes": 4071
+  },
+  "primary/fixture-green-r2.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-checks\\green-r2.xml",
+    "sha256": "aae3858fa936009423c4d06a80fd1562cba1407745f8df1e9da1a1e527e25a47",
+    "bytes": 5306
+  },
+  "primary/fixture-frozen-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-checks\\frozen-r1.xml",
+    "sha256": "6ac4b8ad73dc41e702567e6a3d169aa06fcc928b31517c52d6e74a0bba022829",
+    "bytes": 19956
+  },
+  "primary/frozen-source/evaluation/modular/primary_prospective_exporter.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\primary-prospective-export\\evaluation\\modular\\primary_prospective_exporter.py",
+    "sha256": "95bcc8c6a8c619672b9f0decec8a7d4fe998f9b751a2fd7250fd331cd0c928af",
+    "bytes": 12443
+  },
+  "integrated-source/evaluation/modular/primary_prospective_exporter.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\evaluation\\modular\\primary_prospective_exporter.py",
+    "sha256": "b037d1e83c6dc00657febbacec0389939dc3b2795677eb456f0158b2f854264a",
+    "bytes": 12678
+  },
+  "primary/frozen-source/evaluation/modular/prospective_train_exporter.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\primary-prospective-export\\evaluation\\modular\\prospective_train_exporter.py",
+    "sha256": "bab7b3cd52de9913ae34246599c6490ad470bfbd67d63af788d63eaba77a6b0d",
+    "bytes": 17880
+  },
+  "integrated-source/evaluation/modular/prospective_train_exporter.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\evaluation\\modular\\prospective_train_exporter.py",
+    "sha256": "1d3be8481543ede148cbd8e1b8367bbc68f2f3b39c46453108c67aa1b70fe3c8",
+    "bytes": 17923
+  },
+  "primary/frozen-source/evaluation/modular/train_io.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\primary-prospective-export\\evaluation\\modular\\train_io.py",
+    "sha256": "93984784a10ba1965d1363b142d0a96a9d24e112e92c200ffc66f9b3cef4721b",
+    "bytes": 10432
+  },
+  "integrated-source/evaluation/modular/train_io.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\evaluation\\modular\\train_io.py",
+    "sha256": "d5cc1284b2d29544ed81c773b3478d51192009cb7f3620631e859b2e8dc82c60",
+    "bytes": 10482
+  },
+  "primary/frozen-source/research_loop/modular/train_controller.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\primary-prospective-export\\research_loop\\modular\\train_controller.py",
+    "sha256": "2b6924ab074f3f250fe84006933020789e3f1a604f87deb8e55e9f9756780eab",
+    "bytes": 39586
+  },
+  "integrated-source/research_loop/modular/train_controller.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\train_controller.py",
+    "sha256": "6296024e2e9450ae001f923c4e9e2e905e5d544747ba7ad4c7d5456d3983b9f4",
+    "bytes": 42293
+  },
+  "primary/frozen-source/tests/test_primary_prospective_exporter.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\primary-prospective-export\\tests\\test_primary_prospective_exporter.py",
+    "sha256": "e3805c60d21b6474a0e8eddf59ae0d346d218f05904ffcc7de217923e81dec63",
+    "bytes": 12608
+  },
+  "integrated-source/tests/test_primary_prospective_exporter.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\tests\\test_primary_prospective_exporter.py",
+    "sha256": "d96e7f4443336ab42c44821628ac3a3d95c042dc905e3ec7c93882a4e30fd27f",
+    "bytes": 12817
+  },
+  "primary/frozen-source/tests/test_primary_process_qualification.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\primary-prospective-export\\tests\\test_primary_process_qualification.py",
+    "sha256": "786eec55fa83682f66fea07fa4f8a59f7ef8d593197c139723db0773f2853ba9",
+    "bytes": 13948
+  },
+  "integrated-source/tests/test_primary_process_qualification.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\tests\\test_primary_process_qualification.py",
+    "sha256": "23416dc6ac47be1d474ec140a543b77a81a9ec4f4d3bda00fc06c7a722e3744e",
+    "bytes": 13957
+  },
+  "primary/live/delivery-manifest-r1.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\delivery-manifest-r1.json",
+    "sha256": "8f30d619bec9227d1064bf597d580b3a54426a76e3e683205dab50e3f17416d3",
+    "bytes": 6900
+  },
+  "primary/live/prepare_request.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\prepare_request.py",
+    "sha256": "0722f51f5b2eb6e500ec8909e183a48c63bceb0fce14807d922792c64f6c5f7c",
+    "bytes": 5228
+  },
+  "primary/live/run_export.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\run_export.py",
+    "sha256": "e615f0135de6ac0ffbcc42915742963f45f47cf726da36baa8e049b60ad92cb1",
+    "bytes": 10539
+  },
+  "primary/live/archive_metadata.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\archive_metadata.py",
+    "sha256": "ddd90455ef6dedf68972700d7f5f3ce457ec2bf1a961f44012d523b78cc760af",
+    "bytes": 4097
+  },
+  "primary/live/frozen-request-r1.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\frozen-request-r1.json",
+    "sha256": "8713df0bccbd7dfd499e4461790bb5c983fe0b89b37d3eac98867df250cb6685",
+    "bytes": 2841
+  },
+  "primary/live/primary-eligibility-r1.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\primary-eligibility-r1.json",
+    "sha256": "1963e2684ea024af19a798b89cf8d1665f25008cc6fb5200310de41fa0dd3917",
+    "bytes": 751
+  },
+  "primary/live/before-bindings-r1.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\before-bindings-r1.json",
+    "sha256": "888627cd891b2df0b2cd695d08341864646fb2f2a212afecf266d120c88169ca",
+    "bytes": 6680
+  },
+  "primary/live/after-bindings-r1.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\after-bindings-r1.json",
+    "sha256": "03f0b95a0bf8d5dc9a571de74e353ce0700911977b77b629c0d7ed5242d46573",
+    "bytes": 6755
+  },
+  "primary/live/actual-result-r1.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\actual-result-r1.json",
+    "sha256": "aa970541eb481351641735335af745edee56e72dcab422a16ce389c75a20d26c",
+    "bytes": 6406
+  },
+  "primary/live/export-audit/exports.jsonl": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\export-audit\\exports.jsonl",
+    "sha256": "0a99c347e1a1f255efb5ca753d9ff7ad67574cd2887bc82d19cf4711e7b3737b",
+    "bytes": 7642
+  },
+  "primary/live/public-train/012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299/receipt.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\012ada98f13f89d78278ec9537777cf74e00c03ff41db441911f8fa6ec2ab299\\receipt.json",
+    "sha256": "3fedb235317b1394d796bb16f78bd89ec316498792e7128f23090c1d15d01fb7",
+    "bytes": 1145
+  },
+  "primary/live/public-train/021280701960bd662b5da995e6bd454400820fb83539a3ef78215615cb449a2b/receipt.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\021280701960bd662b5da995e6bd454400820fb83539a3ef78215615cb449a2b\\receipt.json",
+    "sha256": "6af226dc29dccc453b6a896a5d30b5c3f3f85897678f7b2e4ecf772309e5cae0",
+    "bytes": 1141
+  },
+  "primary/live/public-train/13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a/receipt.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\13ed058202aca52c807b95ad21df61557f8869ac29833236802f108426c1d58a\\receipt.json",
+    "sha256": "2c8529a9ee2066b2627e733e388627426b0593956f205869809733d95f0cfa79",
+    "bytes": 947
+  },
+  "primary/live/public-train/1b81bfefc108fbe6396bf67762306cb12c5c187cc4926ca8d9c586255bcbdbfc/receipt.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\1b81bfefc108fbe6396bf67762306cb12c5c187cc4926ca8d9c586255bcbdbfc\\receipt.json",
+    "sha256": "6ae8092cceeae147a95cc120ce494a508843a5d0e05af80e88a85ab80bcb6ef8",
+    "bytes": 951
+  },
+  "primary/live/public-train/export-receipt.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-live-r1\\public-train\\export-receipt.json",
+    "sha256": "b08238bc3fdf9757074d5e64e49ca7b3b5cdc2f58015b0688420cd9f78ad3bb3",
+    "bytes": 5049
+  },
+  "primary/fixture-source-freeze-r1.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-prospective-export-checks\\source-freeze-r1.json",
+    "sha256": "c0de7229712367cb605f75244b976548810b1f5e236e5d606e9493874b02ee3e",
+    "bytes": 1050
+  },
+  "verify_primary_live_root_20260913.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\verify_primary_live_root_20260913.py",
+    "sha256": "1992a963656226c5d7e7880c37d89daea709bef2103efa2d4589b1b0bc5813a8",
+    "bytes": 5405
+  },
+  "primary-live-root-metadata-verification-r1.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-live-root-metadata-verification-r1.json",
+    "sha256": "c4a79064a72ec40e30e118d58cb4713c48e5da42599721c28ef75cab75ce7ae1",
+    "bytes": 842
+  },
+  "all48-export-linked-root-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\all48-export-linked-root-r1.xml",
+    "sha256": "9537465dfb8ead9c27c1c6bfa7873608e6432ccec2ae4bcd9826704ed4ab896a",
+    "bytes": 18333
+  },
+  "primary-lineage-archive-index-verification.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\primary-lineage-archive-index-verification.json",
+    "sha256": "edf6768a70b58c5c9865634fea3c3ef42dd9d8d56254b264884417a32b6d0cea",
+    "bytes": 159
+  },
+  "m6/failure-and-review-history.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\failure-and-review-history.json",
+    "sha256": "87ce79bb49b29aba4e0a16aaa8546b37e064449590148345584a582068337577",
+    "bytes": 1588
+  },
+  "m6/FINAL-VERIFICATION.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\FINAL-VERIFICATION.json",
+    "sha256": "8d1fad73bf4e00ab2c6a4ac9c67c306d47161c20f86b8e2e74710ed8a2dffbfa",
+    "bytes": 7800
+  },
+  "m6/frozen01-independent-authority.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\frozen01-independent-authority.json",
+    "sha256": "d26d9956fa6f7294a36847eece94a4a9bc371e3a6b9ff56123627044a11e9443",
+    "bytes": 83122
+  },
+  "m6/frozen01-runtime.zip": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\frozen01-runtime.zip",
+    "sha256": "9dd18fc8fd85a5e6019f45179bd74e9db4041e66c332abccc310450d020b2d4d",
+    "bytes": 1265067
+  },
+  "m6/frozen02-independent-authority.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\frozen02-independent-authority.json",
+    "sha256": "14eab8a1add1d5ca101320c1d0a9664acd4ccb77e5b484ee680b876add43fc27",
+    "bytes": 83122
+  },
+  "m6/frozen02-runtime.zip": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\frozen02-runtime.zip",
+    "sha256": "3b3272ca86c5e9f01e7b169b94a7714345446e38ac09a2f0c5e5911e2b86fa63",
+    "bytes": 1274054
+  },
+  "m6/m6-final-corrected-source-after.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-corrected-source-after.json",
+    "sha256": "dd92115485d93744ae14d79893ef6ee2f752b5775a84628ec61319e569475104",
+    "bytes": 109663
+  },
+  "m6/m6-final-corrected-source-before.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-corrected-source-before.json",
+    "sha256": "dd92115485d93744ae14d79893ef6ee2f752b5775a84628ec61319e569475104",
+    "bytes": 109663
+  },
+  "m6/m6-final-frozen01.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-frozen01.xml",
+    "sha256": "87ea999aa359f4b28a5e7ddbf3fa7363d891a6e909b5e618cba387c64ed8c4b0",
+    "bytes": 15862
+  },
+  "m6/m6-final-frozen02.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-frozen02.xml",
+    "sha256": "4ef4b51fdd6b215ac69ad35f10fc4d409846adcf4ad3be1b2458e5602d537ce3",
+    "bytes": 17855
+  },
+  "m6/m6-final-grid01-source.zip": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-grid01-source.zip",
+    "sha256": "11d4a428def93c335d4086adfb2eb118ae4c0dc70775c4003173f2d9c4df3ce4",
+    "bytes": 966290
+  },
+  "m6/m6-final-grid01.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-grid01.xml",
+    "sha256": "1aac17ab62adc10a3fc8f84bedc9f001b6a3c3111a9e9a56b4035247f3593dce",
+    "bytes": 3610
+  },
+  "m6/m6-final-grid02-runtime.zip": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-grid02-runtime.zip",
+    "sha256": "f8afb05310f4afd72d02ace4382feed5a359b95eafa19cbe820894efcbaabccc",
+    "bytes": 932892
+  },
+  "m6/m6-final-grid02-source.zip": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-grid02-source.zip",
+    "sha256": "516f5482b10a84a7139bfda6fb47e7c5532530a4b28071a4522a8ce93534653c",
+    "bytes": 966447
+  },
+  "m6/m6-final-grid02.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-grid02.xml",
+    "sha256": "4d051fb00501212b6ebd3428ca6a03f3974809485f587e1f02368dffa9c50e57",
+    "bytes": 3629
+  },
+  "m6/m6-final-safety01.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-safety01.xml",
+    "sha256": "dd102a5b04c84757605efb45b4f4b94dfaf8ae8cf1f94cf21f509d5b299b691e",
+    "bytes": 3152
+  },
+  "m6/m6-final-safety02-source.zip": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-safety02-source.zip",
+    "sha256": "476fc463bfdd574c0e2afd14e340bb03cd1d5f27f61849e073a5cb82af618fa3",
+    "bytes": 967051
+  },
+  "m6/m6-final-safety02.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-safety02.xml",
+    "sha256": "b398e668c50446b4d02ae19262f0ca774cc38506d9fb26a74aa4b555e4a8235e",
+    "bytes": 10550
+  },
+  "m6/m6-final-safety03.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-safety03.xml",
+    "sha256": "26722cae786b83acee98763147b598cf40c599b93fabdc29927b7c1313ce87a7",
+    "bytes": 9771
+  },
+  "m6/m6-final-safety04.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-safety04.xml",
+    "sha256": "b0f8f971482429380d7b574f8c3916680a760abd21180890e45032e6a728b397",
+    "bytes": 10122
+  },
+  "m6/m6-final-source-after.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-source-after.json",
+    "sha256": "41bee5c6f10e7dfc6be6a0d2ff0714f21073f52ad58229b85b8c10fcb9b4a4d6",
+    "bytes": 109663
+  },
+  "m6/m6-final-source-before.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\m6-final-source-before.json",
+    "sha256": "41bee5c6f10e7dfc6be6a0d2ff0714f21073f52ad58229b85b8c10fcb9b4a4d6",
+    "bytes": 109663
+  },
+  "m6/provider-failure-witness.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\provider-failure-witness.json",
+    "sha256": "b7e43384942390e27cc746b0ac0581bb0f07d2137c10aecf48333d8406038629",
+    "bytes": 3186
+  },
+  "m6/provider-failure-witness.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\provider-failure-witness.py",
+    "sha256": "ac8a275dbadfcf660f118951ab244acc5f9950449a0d03d42b7eba383ad88ffd",
+    "bytes": 3321
+  },
+  "m6/README.md": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\README.md",
+    "sha256": "79942aea4fa3f768de8e62ef377fec96d8ae130b4d105cb4e15309bfee8d186f",
+    "bytes": 3877
+  },
+  "m6/version-port-negative-witnesses.zip": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\results\\modular-engineering-20260913\\q85-q86-q87-production\\version-port-negative-witnesses.zip",
+    "sha256": "2c3a42eb5c6cb79d7e23799ccb0724dacfee87c6f47951f8054ba7773505e76a",
+    "bytes": 7532
+  },
+  "retrieval/verification-r1.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\retrieval-linked-verification-r1.json",
+    "sha256": "798ff2506751b4abe229109067279215bcc58cd24c91b66be525cd9f8dc14800",
+    "bytes": 4631
+  },
+  "retrieval/retrieval-linked-red-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\retrieval-linked-red-r1.xml",
+    "sha256": "809db8cc7dc6e684331a408589f5e3b52b2bfcc01c527ef870c4ee82cda1d7d1",
+    "bytes": 7758
+  },
+  "retrieval/retrieval-linked-green-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\retrieval-linked-green-r1.xml",
+    "sha256": "42346f4062591fb0f62fd3ff38b1006348a61fac270e845429b4529d877dac5b",
+    "bytes": 2317
+  },
+  "retrieval/retrieval-linked-green-r2.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\retrieval-linked-green-r2.xml",
+    "sha256": "984c591f6a5a6f388a537388800dbab7b41a36b0534de35224ab282f992d50e1",
+    "bytes": 1468
+  },
+  "retrieval/retrieval-linked-frozen-r1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\retrieval-linked-frozen-r1.xml",
+    "sha256": "861f35b8d782607bf7a6c84be1088b5c45d379177648a78ac1e1320d716f6a46",
+    "bytes": 9073
+  },
+  "retrieval/retrieval-linked-frozen-r2.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\retrieval-linked-frozen-r2.xml",
+    "sha256": "8316d65d6b9ee77ed3ee40c29e91b2fb87215df6d85a12badadc529fae86956f",
+    "bytes": 2619
+  },
+  "retrieval/frozen-source/research_loop/modular/benchmark_cell.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\retrieval-linked-benchmark\\research_loop\\modular\\benchmark_cell.py",
+    "sha256": "ac59b780c74552746b4dddf635354dd30362d7c85778412da9f11c6d1a416c67",
+    "bytes": 25317
+  },
+  "integrated-source/research_loop/modular/benchmark_cell.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\benchmark_cell.py",
+    "sha256": "3ab81b29c7746a83534faf425f3be22009977820cded60961b4c229403dbf513",
+    "bytes": 25325
+  },
+  "retrieval/frozen-source/research_loop/modular/linked_public_projection.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\retrieval-linked-benchmark\\research_loop\\modular\\linked_public_projection.py",
+    "sha256": "ccfcaf3e3fb61bf6c6799a9b06039dc65692e5508a87ee0810a7748806105fbf",
+    "bytes": 16673
+  },
+  "integrated-source/research_loop/modular/linked_public_projection.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\linked_public_projection.py",
+    "sha256": "c4db74c6b1443ac20c095502708ae324a1d19e674cf3b0a42d94b96f28e77531",
+    "bytes": 16729
+  },
+  "retrieval/frozen-source/research_loop/modular/train_controller.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\retrieval-linked-benchmark\\research_loop\\modular\\train_controller.py",
+    "sha256": "9ca15d606cfcbe476be512e2edda6b47705604d59134926e77743c50e84412f1",
+    "bytes": 40586
+  },
+  "retrieval/frozen-source/tests/test_retrieval_linked_benchmark.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\retrieval-linked-benchmark\\tests\\test_retrieval_linked_benchmark.py",
+    "sha256": "19dcf203ad0819a779fb33742df031f2e8a80bb793793612b30038a428350e76",
+    "bytes": 13193
+  },
+  "integrated-source/tests/test_retrieval_linked_benchmark.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\tests\\test_retrieval_linked_benchmark.py",
+    "sha256": "5fd6471ea6df41d59252bc28733591d94735b036bca9cbe5cb0900cc53b1366e",
+    "bytes": 13391
+  },
+  "retrieval/frozen-source/docs/RETRIEVAL-LINKED-BENCHMARK.md": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\retrieval-linked-benchmark\\docs\\RETRIEVAL-LINKED-BENCHMARK.md",
+    "sha256": "db6aa35ac670d465a3d3347d2ec7d5230e84dfd93a53e972978fd34f28cd78da",
+    "bytes": 2495
+  },
+  "integrated-source/docs/RETRIEVAL-LINKED-BENCHMARK.md": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\RETRIEVAL-LINKED-BENCHMARK.md",
+    "sha256": "457ed8e491b94d1092c60639db7c897a3a736529566573ca75a082d8bb15e60d",
+    "bytes": 2532
+  },
+  "publish_all48_export_linked_checkpoint_20260913.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\publish_all48_export_linked_checkpoint_20260913.py",
+    "sha256": "7bccb5b261589b208d909659db5b6fe83f5c9df3f8b77b04624be8c099cf6912",
+    "bytes": 7734
+  }
+}

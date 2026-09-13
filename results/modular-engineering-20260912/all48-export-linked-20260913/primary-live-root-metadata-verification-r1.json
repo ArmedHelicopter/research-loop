@@ -1,0 +1,22 @@
+{
+  "schema": "primary-live-root-metadata-verification-v1",
+  "status": "verified",
+  "delivery_manifest_sha256": "8f30d619bec9227d1064bf597d580b3a54426a76e3e683205dab50e3f17416d3",
+  "source_commit": "3558a7895de0b2369b691ab7c142a59cae6c3b15",
+  "artifacts_verified": 26,
+  "input_pins_verified": 24,
+  "protected_files_verified": 4,
+  "original_train_and_new_train_selection_recomputed": true,
+  "selected_sources": {
+    "discoverybench": 2,
+    "blade": 2
+  },
+  "public_output_files": 13,
+  "journal_events": 7,
+  "journal_chain_verified": true,
+  "public_task_and_csv_bytes_hashed_not_parsed": true,
+  "validation_and_reference_payloads_parsed": false,
+  "new_model_scorer_docker_network_calls": 0,
+  "scientific_effectiveness": "not_established",
+  "script_sha256": "1992a963656226c5d7e7880c37d89daea709bef2103efa2d4589b1b0bc5813a8"
+}

@@ -1,0 +1,121 @@
+{
+  "schema": "q8-provider-failure-witness-v1",
+  "source_commit": "9580c9de3ccca0da0dc24ce3cd8af2058167dac6",
+  "provider_source_sha256": "6740bc6dc92e0262c46b159c16809bbb55a9dda198aaa9819532883729c4ac26",
+  "partial_failure": [
+    {
+      "stage": "q8_retrieval_request",
+      "data": {
+        "lane": "support",
+        "query": {
+          "question": "public fixture"
+        },
+        "query_digest": "47c530eced38a8cdd90b79044a50e47ab4ce7197c242afe1b19abd1634a55ecb",
+        "call_limit": 1,
+        "source_limit": 2,
+        "reservation": {
+          "provider_calls": 1,
+          "source_slots": 2
+        },
+        "remaining": {
+          "provider_calls": 0,
+          "source_slots": 0
+        },
+        "external_cost": {
+          "units": null,
+          "status": "unknown"
+        }
+      }
+    },
+    {
+      "stage": "q8_retrieval_item",
+      "data": {
+        "lane": "support",
+        "ordinal": 0,
+        "source_digest": "6c60e2b3c4a9ddc14a20405ca06e767344d21b5f5e68ec792c6bf2b389cbd804",
+        "within_reservation": true
+      }
+    },
+    {
+      "stage": "q8_retrieval_failure",
+      "data": {
+        "lane": "support",
+        "error_type": "PartialFailure",
+        "returned_before_failure": 1,
+        "reported_cost": {
+          "usd": 0.25,
+          "status": "provider_reported_fixture_not_a_real_charge"
+        },
+        "verified_external_cost": {
+          "units": null,
+          "status": "unknown"
+        },
+        "reserved_provider_calls": 1,
+        "reserved_source_slots": 2
+      }
+    }
+  ],
+  "bounded_overrun": [
+    {
+      "stage": "q8_retrieval_request",
+      "data": {
+        "lane": "support",
+        "query": {
+          "question": "public fixture"
+        },
+        "query_digest": "47c530eced38a8cdd90b79044a50e47ab4ce7197c242afe1b19abd1634a55ecb",
+        "call_limit": 1,
+        "source_limit": 1,
+        "reservation": {
+          "provider_calls": 1,
+          "source_slots": 1
+        },
+        "remaining": {
+          "provider_calls": 0,
+          "source_slots": 0
+        },
+        "external_cost": {
+          "units": null,
+          "status": "unknown"
+        }
+      }
+    },
+    {
+      "stage": "q8_retrieval_item",
+      "data": {
+        "lane": "support",
+        "ordinal": 0,
+        "source_digest": "6c60e2b3c4a9ddc14a20405ca06e767344d21b5f5e68ec792c6bf2b389cbd804",
+        "within_reservation": true
+      }
+    },
+    {
+      "stage": "q8_retrieval_item",
+      "data": {
+        "lane": "support",
+        "ordinal": 1,
+        "source_digest": "6c60e2b3c4a9ddc14a20405ca06e767344d21b5f5e68ec792c6bf2b389cbd804",
+        "within_reservation": false
+      }
+    },
+    {
+      "stage": "q8_retrieval_failure",
+      "data": {
+        "lane": "support",
+        "error_type": "ContractError",
+        "returned_before_failure": 1,
+        "reported_cost": null,
+        "verified_external_cost": {
+          "units": null,
+          "status": "unknown"
+        },
+        "reserved_provider_calls": 1,
+        "reserved_source_slots": 1
+      }
+    }
+  ],
+  "yielded_items": 2,
+  "retry_performed_provider_io": false,
+  "paid_calls": 0,
+  "scientific_verified": false
+}

@@ -1,0 +1,61 @@
+{
+  "schema": "all48-export-linked-engineering-checkpoint-v1",
+  "source_commit": "b9f7ff46030f16ddfe321c616bf863b92fc9a08c",
+  "root_tests": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "121",
+    "time": "393.106",
+    "timestamp": "2026-09-13T16:24:32.990192+08:00",
+    "hostname": "SC-202507131830"
+  },
+  "registered_question_drivers": 43,
+  "separate_Q6_phases": 5,
+  "all_question_execution_contracts": 48,
+  "all_question_scientific_effects": "open",
+  "generic_linked_benchmark_scopes": [
+    "Q1.5",
+    "Q3.1",
+    "Q4.3",
+    "Q8.2",
+    "Q8.3"
+  ],
+  "final_three_question_cells": 92,
+  "final_three_fixture_model_calls": 236,
+  "final_three_real_docker_calls": 16,
+  "primary_train_public_export": {
+    "discoverybench": 2,
+    "blade": 2,
+    "root_hash_verified_artifacts": 26,
+    "journal_events": 7
+  },
+  "retrieval_synthetic_cells": 24,
+  "retrieval_fixture_model_calls": 72,
+  "retrieval_provider_calls": 54,
+  "retrieval_provider_failure_grid": {
+    "denominator": 24,
+    "failed": 18,
+    "baseline_succeeded": 6
+  },
+  "retrieval_v1_qualification": "review_limited_encoded_variant_source_ids",
+  "retrieval_v2_qualification": "neutral_ids_actual_precursor_and_solver_request_checks",
+  "retrieval_synthetic_zip_members": {
+    "review-limited-v1": 726,
+    "neutral-identifiers-v2": 726
+  },
+  "existing_pair_controllers": 4,
+  "remaining_pair_controllers": 32,
+  "existing_triple_controllers": 1,
+  "remaining_triple_controllers": 4,
+  "full_loo_and_final_train_selected_bundle": "open",
+  "pruned_combinations": [],
+  "new_paid_calls": 0,
+  "validation_acceptance": "not_run",
+  "primary_validation_stays_sealed": 95,
+  "SAB_validation_records_on_hold": 18,
+  "BLADE_validation_groups": 1,
+  "multiple_disjoint_primary_validation_stages": "insufficient_groups",
+  "scientific_effectiveness": "not_established"
+}

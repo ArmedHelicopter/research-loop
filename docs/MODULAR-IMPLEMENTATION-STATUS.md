@@ -3,7 +3,35 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current primary partition and lineage checkpoint (2026-09-13)
+## Current all-question execution and training export checkpoint (2026-09-13)
+
+Source `b9f7ff4` passed 121 integrated checks with no failures or skips. There are
+now 43 registered question drivers and five separate Q6 training phases, covering
+all 48 engineering execution contracts. Generic mechanism-to-benchmark solving
+currently supports Q1.5, Q3.1, Q4.3, Q8.2 and Q8.3; the other questions still need
+their complete benchmark/scoring paths and effects measured. The separate Q6.3
+metaprogram phase remains a distinct obligation.
+
+The final Q8.5/Q8.6/Q8.7 delivery exercised 92 synthetic cells, including actual
+post-pause I/O rejection. Retrieval-linked Q8.2/Q8.3 exercised 24 synthetic cells
+with 24 Docker executions and independent fixture primary scores. Review found
+variant labels in an earlier fixture's source IDs; the original run is retained
+as review-limited, and neutral IDs plus actual precursor/solver request checks
+passed the corrected frozen run. These results do not establish scientific effect.
+
+The primary prospective exporter actually published four fixed training tasks,
+two from each primary benchmark. Root independently verified 26 artifact hashes,
+24 input pins, four protected files, the deterministic original-train selection,
+and the seven-event exposure chain. No validation or reference payload was parsed
+by that root check. All 95 primary validation items remain sealed; all 18 SAB
+validation items remain on hold. BLADE still has only one validation family.
+
+The evidence archive has 1,680 indexed files, retaining all previous 1,595. The
+remaining 32 pair controllers, four triple controllers, full/LOO, final
+train-selected bundle, calibration and validation acceptance remain open. No
+singleton result has pruned a combination. See [the checkpoint](MODULAR-CHECKPOINT-20260913-ALL48-EXPORT-LINKED.md).
+
+## Previous primary partition and lineage checkpoint (2026-09-13)
 
 Source `73a6c2d` passed 201 integrated checks covering the new primary seal,
 prospective exporter, custody, shared M2/M3 behavior and combination controllers.
