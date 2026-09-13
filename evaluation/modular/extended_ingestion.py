@@ -154,6 +154,26 @@ def _public_sab(record: Mapping[str, Any]) -> Mapping[str, Any]:
     return {key: record[key] for key in _PUBLIC_SAB}
 
 
+def project_extended_public_record(source: str, record: Mapping[str, Any]) -> tuple[str, Mapping[str, Any]]:
+    """Pure shared source allowlist, without custody mutation or file output."""
+    if source == "scicode":
+        public = _public_scicode(record)
+        return public["problem_id"], public
+    if source == "scienceagentbench":
+        public = _public_sab(record)
+        return _token("scienceagentbench-task", public), public
+    raise ContractError("unsupported extended public projection source")
+
+
+def prepare_extended_public_task(identity: DataIdentity, public: Mapping[str, Any]) -> PublicTask:
+    """Run the existing adapters on the same pure projection for both brokers."""
+    if identity.benchmark == "scicode":
+        return SciCodeAdapter().prepare(identity, public)
+    if identity.benchmark == "scienceagentbench":
+        return ScienceAgentBenchAdapter().prepare(identity, {**public, "task_id": identity.task_id})
+    raise ContractError("unsupported extended public adapter source")
+
+
 def _sab_root(tree: object, task_token: str) -> str:
     """Use the source formatter's first tree line; unknown remains isolated."""
     if not isinstance(tree, str):
@@ -258,7 +278,7 @@ class ExtendedTrainProjectionExporter:
             public, record_hash = record
             if record_hash not in set(inventory[item_id]["content_hashes"]):
                 raise ContractError("source record no longer matches frozen inventory")
-            task = (SciCodeAdapter() if identity.benchmark == "scicode" else ScienceAgentBenchAdapter()).prepare(identity, {**public, **({"task_id": identity.task_id} if identity.benchmark == "scienceagentbench" else {})})
+            task = prepare_extended_public_task(identity, public)
             self._write(task)
             tasks.append(task)
         return tuple(tasks)
