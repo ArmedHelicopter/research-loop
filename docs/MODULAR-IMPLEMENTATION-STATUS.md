@@ -3,7 +3,32 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current common primary TRAIN source checkpoint (2026-09-13)
+## Current useful-output control checkpoint (2026-09-13)
+
+Source `c846ea8` passed 25 integrated checks with 486 unchanged frozen
+source/document files. The explicit M4/M5 v3 primary-TRAIN configuration now
+retains the proposal and both reviews in every solver arm. M4-off uses ordinary
+three-branch reasoning; M5-off uses sequential revision. M4-on still registers
+discriminating predictions; M5-on still exercises the actual sealed barrier.
+The recipe is frozen into each scenario and signed panel/score binding. Legacy
+v1/v2 runs keep their original behavior and cannot be silently pooled with this
+new estimand. See [the recipe and evidence](M4-M5-USEFUL-CONTROLS.md).
+
+The isolated final source passed 26 checks; the earlier 67-check run retained
+one incorrect test expectation about a poisoned provider ledger. The corrected
+test preserves one failed plus seven blocked cells, with no retry. Eight-cell
+success, 18 rehashed input/joint forgeries and a separate eight-cell runtime
+review failure grid are preserved. Archive: 21 files and 1,336 ZIP members,
+independently compared against Git bytes. Root closure evidence is under
+`results/modular-engineering-20260913/m4-m5-useful-controls-root/`.
+
+These are synthetic engineering checks, with zero new actual paid calls and
+validation unopened. Coverage remains 10/36 pairs and 2/5 triples. The same
+off-review omission exists in the lineage/admission family and is being handled
+as another explicit recipe. Real TRAIN effects, calibration, remaining
+combinations and validation acceptance are still unfinished.
+
+## Prior common primary TRAIN source checkpoint (2026-09-13)
 
 Source `64798f4` passed 44 integrated checks with 466 unchanged frozen
 source/document hashes. Admission and M7×M8 now accept explicit v2 primary
