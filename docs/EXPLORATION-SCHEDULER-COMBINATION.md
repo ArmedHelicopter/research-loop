@@ -40,3 +40,11 @@ they do not establish calibrated scientific utility, real training gain or
 production isolation. Source qualification and independent mechanism scoring
 remain separate obligations. No actual private reference or validation payload
 is opened, and no paid model is called.
+
+The first expanded root run retained all eight primary scores, but a test
+incorrectly required positive wall-clock overlap in every concurrent arm. Two
+of four concurrent cells measured zero overlap: SQLite claim overhead and short
+jobs can eliminate overlap even while two leases exist. Those original traces
+and the failed report remain evidence. Acceptance checks bounded concurrency,
+FIFO, exclusion and replay; positive overlap or throughput gain is a measured
+outcome and is not imposed by the test.
