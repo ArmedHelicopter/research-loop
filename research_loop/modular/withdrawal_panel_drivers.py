@@ -34,6 +34,8 @@ def _append(workflow: ModularWorkflow, record: FrozenRecord, receipt: Mapping[st
 
 def _record(identity: Mapping[str,Any], kind: str, evidence: Mapping[str,Any]) -> FrozenRecord:
     return FrozenRecord.from_dict({"schema":"typed-withdrawal-public-record-v1","identity":dict(identity),"kind":kind,"evidence":dict(evidence)})
+def _action_record(identity: Mapping[str,Any], evidence: Mapping[str,Any], action: Mapping[str,Any]) -> FrozenRecord:
+    return FrozenRecord.from_dict({"schema":"typed-withdrawal-invalidation-action-v1","identity":dict(identity),"invalidation_evidence":dict(evidence),"action":dict(action)})
 
 def _validate_bundle(task: PublicTask, body: Mapping[str,Any]) -> None:
     if set(body)!={"schema","identity","public_evidence","q16","q17"} or body["schema"]!="typed-withdrawal-panel-bundle-v1" or body["identity"]!=task.identity.data() or not isinstance(body["public_evidence"],Mapping) or not body["public_evidence"]:
@@ -47,8 +49,11 @@ def _validate_bundle(task: PublicTask, body: Mapping[str,Any]) -> None:
         for field in ("old_evidence","invalidation_evidence"):
             if not isinstance(item[field],Mapping) or not item[field]: raise ContractError(field+" must be concrete public material")
         action=item["invalidation_action"]
-        if (not isinstance(action,Mapping) or set(action)!={"execution_success","outcome","state","audit","reason"} or type(action["execution_success"]) is not bool or action["outcome"] not in {"positive","negative"} or not isinstance(action["state"],Mapping) or set(action["state"])!={"validity","support","novelty","investment"} or not isinstance(action["audit"],list) or not action["audit"]): raise ContractError("Q1.6 invalidation action is not a closed caller fact")
+        if (not isinstance(action,Mapping) or set(action)!={"execution_success","outcome","state","audit","required_audit","reason","target_old_record_digest","old_validity"} or type(action["execution_success"]) is not bool or action["outcome"] not in {"positive","negative"} or not isinstance(action["state"],Mapping) or set(action["state"])!={"validity","support","novelty","investment"} or not isinstance(action["audit"],list) or not action["audit"] or not isinstance(action["required_audit"],list) or not action["required_audit"] or action["old_validity"] not in {"valid","invalid","unknown"} or not isinstance(action["target_old_record_digest"],str)): raise ContractError("Q1.6 invalidation action is not a closed caller fact")
+        if len(set(action["required_audit"]))!=len(action["required_audit"]) or any(not isinstance(x,str) or not x.strip() for x in action["required_audit"]): raise ContractError("Q1.6 required audit is invalid")
         ScientificState(**action["state"]); [AuditItem(**entry) for entry in action["audit"]]; _text(action["reason"],"invalidation reason")
+        expected=_record(body["identity"],"old_source",item["old_evidence"]).content_hash
+        if action["target_old_record_digest"]!=expected: raise ContractError("Q1.6 invalidation action target does not bind old record")
         if variant=="replacement" and (not isinstance(item["alternative_material"],Mapping) or not item["alternative_material"]): raise ContractError("replacement requires concrete caller alternative material")
         if variant=="high_score" and (not isinstance(item["historical_score"],Mapping) or set(item["historical_score"])!={"score","source","recorded_at"} or type(item["historical_score"]["score"]) not in {int,float} or not all(isinstance(item["historical_score"][k],str) and item["historical_score"][k].strip() for k in ("source","recorded_at"))): raise ContractError("high_score requires a concrete caller historical score")
     q17=body["q17"]
@@ -58,10 +63,11 @@ def _validate_bundle(task: PublicTask, body: Mapping[str,Any]) -> None:
         for field in ("initial_answer","historical_summary"): _text(item[field],field)
         for field in ("before_evidence","current_evidence"):
             value=item[field]
-            if not isinstance(value,Mapping) or set(value)!={"observation","time_order","narrative","evidence_sufficient"} or not isinstance(value["observation"],str) or not isinstance(value["time_order"],str) or not isinstance(value["narrative"],str) or type(value["evidence_sufficient"]) is not bool: raise ContractError("Q1.7 evidence requires typed observation, time, narrative and sufficiency")
+            if not isinstance(value,Mapping) or set(value)!={"observation","event_ids","event_times","event_order","narrative","evidence_sufficient"} or not isinstance(value["observation"],str) or not isinstance(value["narrative"],str) or type(value["evidence_sufficient"]) is not bool or not isinstance(value["event_ids"],list) or not value["event_ids"] or len(set(value["event_ids"]))!=len(value["event_ids"]) or any(not isinstance(x,str) or not x.strip() for x in value["event_ids"]) or not isinstance(value["event_times"],Mapping) or set(value["event_times"])!=set(value["event_ids"]) or any(type(x) not in {int,float} for x in value["event_times"].values()) or not isinstance(value["event_order"],list) or set(value["event_order"])!=set(value["event_ids"]) or len(value["event_order"])!=len(value["event_ids"]): raise ContractError("Q1.7 evidence requires typed event IDs, times and order")
+            if value["event_order"]!=sorted(value["event_ids"],key=lambda key:value["event_times"][key]): raise ContractError("Q1.7 event order must match caller timestamps")
         before,current=item["before_evidence"],item["current_evidence"]
-        if variant=="irrelevant" and (before["observation"]!=current["observation"] or before["time_order"]!=current["time_order"] or before["narrative"]==current["narrative"]): raise ContractError("irrelevant variant must preserve observation/time and change only narrative")
-        if variant=="causal" and before["time_order"]==current["time_order"]: raise ContractError("causal variant requires a changed time or causal order")
+        if variant=="irrelevant" and (before["observation"]!=current["observation"] or before["event_ids"]!=current["event_ids"] or before["event_times"]!=current["event_times"] or before["event_order"]!=current["event_order"] or before["evidence_sufficient"]!=current["evidence_sufficient"] or before["narrative"]==current["narrative"]): raise ContractError("irrelevant variant must preserve observation, events, time and sufficiency")
+        if variant=="causal" and (before["event_ids"]!=current["event_ids"] or before["event_order"]==current["event_order"]): raise ContractError("causal variant requires same events with a changed time order")
         if variant=="unknown" and current["evidence_sufficient"] is not False: raise ContractError("unknown variant requires caller-declared insufficient evidence")
 
 def freeze_withdrawal_bundle(task: PublicTask, *, public_evidence: Mapping[str,Any], q16: Mapping[str,Mapping[str,Any]], q17: Mapping[str,Mapping[str,Any]]) -> FrozenRecord:
@@ -99,18 +105,18 @@ class Q16WithdrawalDriver:
     def slots_for(self,cell:PanelCell)->tuple[str,...]: return self.slots
     def run(self,workflow:ModularWorkflow,*,cell:PanelCell,scenario:FrozenRecord,model,package):
         material=_resolve(workflow.session.task,scenario,"Q1.6",cell.variant); body=material.data(); bind=_binding(cell)
-        initial=workflow.invoke_model("initial",model,instruction="Assess only the initial public answer and evidence; do not infer later information.",evidence_only=True,module_context=FrozenRecord.from_dict({"panel_cell":bind,"public_evidence":body["public_evidence"],"initial_answer":body["initial_answer"]}))
-        old=_record(body["identity"],"old_source",body["old_evidence"]); invalid=_record(body["identity"],"invalidation",body["invalidation_evidence"])
-        old_receipt=_admit(self.admission_port,workflow.session.task,old); invalid_receipt=_admit(self.admission_port,workflow.session.task,invalid)
+        old=_record(body["identity"],"old_source",body["old_evidence"]); invalid=_record(body["identity"],"invalidation",body["invalidation_evidence"]); action_record=_action_record(body["identity"],body["invalidation_evidence"],body["invalidation_action"])
+        old_receipt=_admit(self.admission_port,workflow.session.task,old); action_receipt=_admit(self.admission_port,workflow.session.task,action_record)
         old_root=_append(workflow,old,old_receipt,"q16-old-source"); claim=workflow.session.claims.create(body["old_claim"],subject_bindings={"task":workflow.session.task.identity.task_id}); claim=workflow.session.claims.apply(claim.claim_id,{"supports":[old_root.root_id],"refutes":[],"subject_bindings":{"task":workflow.session.task.identity.task_id}},expected_revision=0).claim
+        initial=workflow.invoke_model("initial",model,instruction="Assess the caller-admitted initial public answer and old source; later invalidation is unavailable at this stage.",evidence_only=True,module_context=FrozenRecord.from_dict({"panel_cell":bind,"public_evidence":body["public_evidence"],"initial_answer":body["initial_answer"],"old_record":old.data(),"old_admission_receipt":old_receipt}))
         m1,m2="M1" in workflow.enabled,"M2" in workflow.enabled; action=body["invalidation_action"]
-        review=workflow.invoke_model("invalidation",model,instruction="Describe the supplied caller-admitted invalidation evidence. It does not itself establish an alternative proposal.",module_context=FrozenRecord.from_dict({"panel_cell":bind,"historical_summary":body["historical_summary"],"old_record":old.data(),"old_claim":claim.data(),"invalidation_record":invalid.data(),"alternative_material":body.get("alternative_material"),"historical_score":body.get("historical_score"),"m1":"enabled" if m1 else "frozen_control","m2":"enabled" if m2 else "frozen_control"}))
+        review=workflow.invoke_model("invalidation",model,instruction="Describe the supplied caller-admitted invalidation evidence. It does not itself establish an alternative proposal.",module_context=FrozenRecord.from_dict({"panel_cell":bind,"historical_summary":body["historical_summary"],"old_record":old.data(),"old_claim":claim.data(),"invalidation_record":invalid.data(),"alternative_material":body.get("alternative_material"),"historical_score":body.get("historical_score"),"invalidation_action_record":action_record.data(),"invalidation_action_receipt":action_receipt,"m1":"enabled" if m1 else "frozen_control","m2":"enabled" if m2 else "frozen_control"}))
         gate=None; revisions=[]; withdrawn=None
         if m1:
             state=ScientificState(**action["state"]); audit=[AuditItem(**entry) for entry in action["audit"]]
-            gate=EvidenceAdmission.decide(identity=workflow.session.task.identity,state=state,outcome=action["outcome"],execution_success=action["execution_success"],trusted_validator=invalid_receipt["trusted_validator"],validator_verified=invalid_receipt["validator_verified"],evidence_ids=[invalid.content_hash],subject_bindings={"task":workflow.session.task.identity.task_id},required_audit=[entry.name for entry in audit],audit=audit)
+            gate=EvidenceAdmission.decide(identity=workflow.session.task.identity,state=state,outcome=action["outcome"],execution_success=action["execution_success"],trusted_validator=action_receipt["trusted_validator"],validator_verified=action_receipt["validator_verified"],evidence_ids=[action_record.content_hash],subject_bindings={"task":workflow.session.task.identity.task_id},required_audit=action["required_audit"],audit=audit)
             workflow._trace("operation_m1_evidence_gate","executed",invalidation_record=invalid.data(),disposition={"admitted":gate.admitted,"reason":gate.reason,"outcome":gate.outcome,"evidence_ids":list(gate.evidence_ids)},state=action["state"])
-            if state.validity=="invalid":
+            if gate.admitted and action["old_validity"]=="invalid":
                 workflow.session.evidence.withdraw(old_root.root_id,action["reason"]); withdrawn=old_root.root_id
         else: workflow._trace("operation_m1_control","executed",old_record=old.data(),invalidation_record=invalid.data())
         if m2:
@@ -129,14 +135,18 @@ class Q17TimeInformationDriver:
     def slots_for(self,cell:PanelCell)->tuple[str,...]: return self.slots
     def run(self,workflow:ModularWorkflow,*,cell:PanelCell,scenario:FrozenRecord,model,package):
         material=_resolve(workflow.session.task,scenario,"Q1.7",cell.variant); body=material.data(); bind=_binding(cell)
-        initial=workflow.invoke_model("initial",model,instruction="Assess only the initial public answer and evidence; later evidence is unavailable at this stage.",evidence_only=True,module_context=FrozenRecord.from_dict({"panel_cell":bind,"public_evidence":body["public_evidence"],"initial_answer":body["initial_answer"]}))
-        before=_record(body["identity"],"before",body["before_evidence"]); current=_record(body["identity"],"current",body["current_evidence"]); before_receipt=_admit(self.admission_port,workflow.session.task,before); current_receipt=_admit(self.admission_port,workflow.session.task,current)
+        before=_record(body["identity"],"before",body["before_evidence"]); before_receipt=_admit(self.admission_port,workflow.session.task,before)
+        initial=workflow.invoke_model("initial",model,instruction="Assess the caller-admitted initial public answer and before record; current evidence is unavailable at this stage.",evidence_only=True,module_context=FrozenRecord.from_dict({"panel_cell":bind,"public_evidence":body["public_evidence"],"initial_answer":body["initial_answer"],"before_record":before.data(),"before_admission_receipt":before_receipt}))
+        current=_record(body["identity"],"current",body["current_evidence"]); current_receipt=_admit(self.admission_port,workflow.session.task,current)
         before_root=_append(workflow,before,before_receipt,"q17-before"); frozen=workflow.session.cache.get_or_build(ContextBuilder(workflow.session.task.identity,budget_bytes=workflow.session.context_budget),canonical(workflow.session.task.payload.data()),workflow.session.evidence,workflow.session.claims,mode="baseline",baseline_summary=body["historical_summary"])
         workflow.session.evidence.withdraw(before_root.root_id,"caller-declared current public update"); current_root=_append(workflow,current,current_receipt,"q17-current")
         m3="M3" in workflow.enabled
         context=workflow.session.cache.get_or_build(ContextBuilder(workflow.session.task.identity,budget_bytes=workflow.session.context_budget),canonical(workflow.session.task.payload.data()),workflow.session.evidence,workflow.session.claims,mode="candidate",baseline_summary=body["historical_summary"]) if m3 else frozen
         stage=workflow._trace("stage_9" if m3 else "operation_m3_control","executed",before_root=before_root.root_id,current_root=current_root.root_id,context=context.data(),control_context=frozen.data() if not m3 else None)
         rebuilt=workflow.invoke_model("reconstructed",model,instruction="Assess current caller-admitted public evidence after the declared context operation; unknown is allowed.",module_context=FrozenRecord.from_dict({"panel_cell":bind,"before_record":before.data(),"current_record":current.data(),"historical_summary":body["historical_summary"],"reconstructed_context":context.data(),"admission_receipts":{"before":before_receipt,"current":current_receipt},"m3":"enabled" if m3 else "frozen_control"}))
+        decision=rebuilt.data().get("mechanism_judgment")
+        if (not isinstance(decision,Mapping) or set(decision)!={"decision","reason","evidence_ids"} or decision["decision"] not in {"positive","negative","unknown"} or not isinstance(decision["reason"],str) or not decision["reason"].strip() or not isinstance(decision["evidence_ids"],list)):
+            raise ContractError("Q1.7 reconstructed response requires a typed mechanism judgment")
         final=workflow.invoke_model("final",model,instruction="Return bounded train-only candidate. Copy required_objective_digest exactly and use the actual reconstruction result.",module_context=FrozenRecord.from_dict({"panel_cell":bind,"candidate_package":package.record.data(),"required_objective_digest":workflow.session.objective.content_hash,"time_reconstruction":{"response":rebuilt.data(),"context":context.data(),"before_record":before.data(),"current_record":current.data()}}))
         _candidate(final,workflow.session.objective); return stage,final,(initial,rebuilt,final)
 

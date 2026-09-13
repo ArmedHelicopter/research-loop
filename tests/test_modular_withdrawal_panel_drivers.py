@@ -15,18 +15,22 @@ def task(name):
  i=DataIdentity(name,'withdraw-'+name,name+':withdraw','synthetic-v1',SPLIT,'train')
  return DiscoveryBenchAdapter().prepare(i,{'task_id':i.task_id,'question':'PUBLIC-WITHDRAW-'+name,'source_kind':'synthetic','dataset':[{'name':'x.csv','columns':[{'name':'x'}]}]}) if name=='discoverybench' else BladeAdapter().prepare(i,{'task_id':i.task_id,'dataset_id':'public','research_question':'PUBLIC-WITHDRAW-'+name,'data_schema':[{'name':'x','dtype':'float'}]})
 def bundle(t):
- action={'execution_success':True,'outcome':'negative','state':{'validity':'invalid','support':'refuted','novelty':'unknown','investment':'repair'},'audit':[{'name':'measurement','executed':True,'passed':True}],'reason':'caller recorded source defect'}
- common=lambda n:{'initial_answer':'INITIAL-Q16-'+str(n),'historical_summary':'HISTORY-Q16-'+str(n),'old_evidence':{'observation':'OLD-Q16-'+str(n)},'old_claim':'OLD-CLAIM-Q16-'+str(n),'invalidation_evidence':{'observation':'INVALID-Q16-'+str(n)},'invalidation_action':action}
- q16={'replacement':common(1)|{'alternative_material':{'proposal':'ALTERNATIVE-Q16-1'}},'none':common(2),'high_score':common(3)|{'historical_score':{'score':9,'source':'caller-score-log','recorded_at':'2026-01-01T00:00:00Z'}}}
- def timed(n,before,current,sufficient=True): return {'initial_answer':'INITIAL-Q17-'+str(n),'historical_summary':'HISTORY-Q17-'+str(n),'before_evidence':{'observation':before[0],'time_order':before[1],'narrative':before[2],'evidence_sufficient':True},'current_evidence':{'observation':current[0],'time_order':current[1],'narrative':current[2],'evidence_sufficient':sufficient}}
- q17={'irrelevant':timed(1,('OBS-A','t1-before-t2','narrative one'),('OBS-A','t1-before-t2','narrative two')),'causal':timed(2,('OBS-B','cause-before-effect','narrative one'),('OBS-C','effect-before-cause','narrative one')),'unknown':timed(3,('OBS-D','t1-before-t2','narrative one'),('OBS-D','t1-before-t2','narrative two'),False)}
+ def common(n):
+  old={'observation':'OLD-Q16-'+str(n)}; old_record=FrozenRecord.from_dict({'schema':'typed-withdrawal-public-record-v1','identity':t.identity.data(),'kind':'old_source','evidence':old})
+  action={'execution_success':True,'outcome':'negative','state':{'validity':'valid','support':'refuted','novelty':'unknown','investment':'repair'},'audit':[{'name':'measurement','executed':True,'passed':True}],'required_audit':['measurement'],'reason':'caller recorded source defect','target_old_record_digest':old_record.content_hash,'old_validity':'invalid'}
+  return {'initial_answer':'INITIAL-Q16-'+str(n),'historical_summary':'HISTORY-Q16-'+str(n),'old_evidence':old,'old_claim':'OLD-CLAIM-Q16-'+str(n),'invalidation_evidence':{'observation':'INVALID-Q16-'+str(n)},'invalidation_action':action}
+ q16={'replacement':common(1)|{'alternative_material':{'proposal':'ALTERNATIVE-Q16-1'}},'none':common(2),'high_score':(common(3)|{'invalidation_action': common(3)['invalidation_action']|{'audit':[{'name':'measurement','executed':True,'passed':False}]}})|{'historical_score':{'score':9,'source':'caller-score-log','recorded_at':'2026-01-01T00:00:00Z'}}}
+ def evidence(observation,times,narrative,sufficient=True):
+  ids=['event-a','event-b']; return {'observation':observation,'event_ids':ids,'event_times':times,'event_order':sorted(ids,key=lambda key:times[key]),'narrative':narrative,'evidence_sufficient':sufficient}
+ def timed(n,before,current): return {'initial_answer':'INITIAL-Q17-'+str(n),'historical_summary':'HISTORY-Q17-'+str(n),'before_evidence':before,'current_evidence':current}
+ q17={'irrelevant':timed(1,evidence('OBS-A',{'event-a':1,'event-b':2},'narrative one'),evidence('OBS-A',{'event-a':1,'event-b':2},'narrative two')),'causal':timed(2,evidence('OBS-B',{'event-a':1,'event-b':2},'narrative one'),evidence('OBS-C',{'event-a':2,'event-b':1},'narrative one')),'unknown':timed(3,evidence('OBS-D',{'event-a':1,'event-b':2},'narrative one'),evidence('OBS-D',{'event-a':1,'event-b':2},'narrative two',False))}
  return freeze_withdrawal_bundle(t,public_evidence={'observation':'PUBLIC-EVIDENCE-'+t.identity.benchmark},q16=q16,q17=q17)
 
 def admission(_task,record): return {'record_digest':record.content_hash,'trusted_validator':'synthetic-caller','validator_verified':True,'admitted':True}
 def model(request):
  b=request.data()
  if b['slot']=='final': return FrozenRecord.from_dict({'objective_digest':b['module_context']['required_objective_digest'],'outcome':'unknown','evidence_ids':[],'conclusion':'synthetic bounded','programme_complete':False})
- return FrozenRecord.from_dict({'assessment':'synthetic','evidence_refs':['public'],'counterexamples':[],'uncertainty':'bounded'})
+ return FrozenRecord.from_dict({'mechanism_judgment':{'decision':'unknown','reason':'synthetic bounded mechanism judgment','evidence_ids':['public']}}) if b['slot']=='reconstructed' else FrozenRecord.from_dict({'assessment':'synthetic','evidence_refs':['public'],'counterexamples':[],'uncertainty':'bounded'})
 def setup():
  tasks={x:task(x) for x in ('discoverybench','blade')}; package=CandidatePackage.create(parent_digest=None,manifest=TrainingManifest.freeze([t.identity for t in tasks.values()]),changes={'prompt':{'instructions':'package'}},search_cost=0)
  from research_loop.modular.panel_plan import obligation_grids
@@ -46,9 +50,9 @@ def test_q16_q17_full_compiled_grid_uses_actual_material_without_blind_leaks(tmp
   if cell.coverage_id=='Q1.6':
    assert 'operation_m2_withdrawal_propagation' in stages or 'operation_m2_control' in stages
    if 'M1' in cell.runtime_arm.data()['enabled']:
-    gate=next(row for row in workflow if row['stage']=='operation_m1_evidence_gate'); assert gate['disposition']['admitted'] is False
+    gate=next(row for row in workflow if row['stage']=='operation_m1_evidence_gate'); assert gate['disposition']['admitted'] is (cell.variant != 'high_score')
     if 'M2' in cell.runtime_arm.data()['enabled']:
-     assert any(row['stage']=='operation_m2_withdrawal_propagation' and row['withdrawn_root'] for row in workflow)
+     assert any(row['stage']=='operation_m2_withdrawal_propagation' and row['withdrawn_root'] for row in workflow) if cell.variant != 'high_score' else all(not row.get('withdrawn_root') for row in workflow if row['stage']=='operation_m2_withdrawal_propagation')
   else:
    row=next(row for row in workflow if row['stage'] in {'stage_9','operation_m3_control'}); assert row['before_root'] and row['current_root']
 
@@ -56,10 +60,15 @@ def test_q16_q17_full_compiled_grid_uses_actual_material_without_blind_leaks(tmp
  assert all(label not in encoded for label in ('replacement','high_score','irrelevant','causal'))
  for r in seen:
   if r['slot']=='initial':
-   text=FrozenRecord.from_dict(r).encoded; assert 'INVALID-Q16-' not in text and 'CURRENT-Q17-' not in text
+   text=FrozenRecord.from_dict(r).encoded; assert 'INVALID-Q16-' not in text and 'effect-before-cause' not in text
   if r['slot']=='final':
    context=r['module_context']; assert ('withdrawal_processing' in context) ^ ('time_reconstruction' in context)
    assert any(key in FrozenRecord.from_dict(context).encoded for key in ('INVALID-Q16-','OBS-'))
 def test_bundle_and_caller_receipt_fail_closed(tmp_path,monkeypatch):
  compiled,tasks=setup(); cell=next(c for c in compiled.panel.cells if c.coverage_id=='Q1.6'); monkeypatch.setitem(panel_runner.DRIVERS,'Q1.6',Q16WithdrawalDriver(admission_port=lambda *_:{'record_digest':'0'*64,'trusted_validator':'x','validator_verified':False,'admitted':True}))
  result=panel_runner.run_train_cell(cell,task=tasks[cell.identity.benchmark],scenario=compiled.scenarios[cell.key],package=compiled.packages[cell.runtime_arm.content_hash],objective=FrozenRecord.from_dict({'objective':'bad'}),sidecar=tmp_path/'bad',model=model,audit_verifier=AUDIT); assert result.runtime.status=='failed'
+
+
+def test_q16_rejects_wrong_target_digest_before_execution():
+ t=task('discoverybench'); body=bundle(t).data(); body['q16']['none']['invalidation_action']['target_old_record_digest']='0'*64
+ with pytest.raises(Exception,match='target'): freeze_withdrawal_bundle(t,public_evidence=body['public_evidence'],q16=body['q16'],q17=body['q17'])
