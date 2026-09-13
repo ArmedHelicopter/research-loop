@@ -707,6 +707,7 @@ class SinglePromptACP:
         elif self.opportunity_contract == TRAIN_OPPORTUNITY_CONTRACT:
             receipt['schema'] = 'grok-native-acp-public-train-receipt-v1'
             receipt['public_train_binding'] = {
+                'request_stream_sha256': digest((self.private / 'requests.private.jsonl').read_bytes()),
                 'prompt_sha256': digest(prompt.encode('utf-8')), 'schema_sha256': digest(encoded(schema)),
                 'response_sha256': response.content_hash if response is not None else None,
                 'reservation_sha256': digest(self.reservation.read_bytes()) if self.sent else None,

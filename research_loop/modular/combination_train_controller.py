@@ -278,7 +278,7 @@ def _verify_grok_cell_native_binding(model, runtime):
     requests=[e['data']['request'] for e in events if e['stage']=='model_request']
     responses=[e['data']['response'] for e in events if e['stage']=='model_response']
     rows=model.ledger['calls'][-len(requests):]
-    if len(requests)!=len(responses)!=5 or len(rows)!=5:
+    if len(requests)!=5 or len(responses)!=5 or len(rows)!=5:
         raise ContractError('cell lacks exactly five native public solver opportunities')
     for request,response,row in zip(requests,responses,rows,strict=True):
         original=FrozenRecord.from_dict(json.loads((model.calls_root/f"{row['id']:04d}-{row['slot']}"/'request.private.json').read_text(encoding='utf-8')))
