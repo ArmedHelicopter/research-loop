@@ -31,18 +31,15 @@ def _task(benchmark: str):
 
 def _bundle(task) -> FrozenRecord:
     rows = []
-    # The test fixture is the caller: it supplies material and an authority
-    # disposition.  The driver has no authority object and does not mint these.
-    dispositions = (("support", True, True), ("refute", True, True),
-                    ("invalid", True, False), ("unknown", False, False))
-    for number, (case_id, verified, admitted) in enumerate(dispositions, 1):
+    # The test fixture is the caller.  It supplies checks, never an admission
+    # result; EvidenceAdmission.decide derives that result from the model state.
+    for number, case_id in enumerate(("support", "refute", "invalid", "unknown"), 1):
         marker = "CALLER-PUBLIC-EVIDENCE-%s-%s" % (task.identity.benchmark.upper(), number)
         rows.append({"case_id": case_id,
-            "observation": {"kind": "measurement", "root_material": {"source": marker}, "representation": "raw",
-                "content": {"public_observation": marker}, "subject_bindings": {"task": task.identity.task_id},
-                "independent_group": task.identity.group_id},
-            "authority_receipt": {"trusted_validator": "caller-authority-%s" % number,
-                "validator_verified": verified, "admitted": admitted},
+            "admission_checks": {"trusted_validator": "caller-authority-%s" % number,
+                "validator_verified": True, "execution_success": True, "required_audit": ["measurement"],
+                "audit": [{"name": "measurement", "executed": True, "passed": True}],
+                "subject_bindings": {"task": task.identity.task_id}, "evidence_ids": ["caller-evidence-%s" % number]},
             "review_material": {"public_observation": marker, "provenance": "caller-supplied public material"}})
     return FrozenRecord.from_dict({"schema": "q21-pressure-material-bundle-v1", "identity": task.identity.data(),
         "task_payload_digest": task.payload.content_hash, "cases": rows})
@@ -71,8 +68,16 @@ def _model(request: FrozenRecord) -> FrozenRecord:
     if body["slot"] == "final":
         return FrozenRecord.from_dict({"objective_digest": body["module_context"]["required_objective_digest"],
             "outcome": "unknown", "evidence_ids": [], "conclusion": "synthetic pressure candidate", "programme_complete": False})
-    return FrozenRecord.from_dict({"assessment": "unknown", "evidence_refs": ["caller-public-material"],
-        "counterexamples": [], "uncertainty": "synthetic transport"})
+    material = body["module_context"]["public_material"]["public_observation"]
+    number = int(material.rsplit("-", 1)[1])
+    candidate = (("valid", "supported", "known", "explore", "positive"),
+                 ("valid", "refuted", "known", "explore", "negative"),
+                 ("invalid", "undetermined", "unknown", "repair", "negative"),
+                 ("unknown", "undetermined", "unknown", "repair", "negative"))[number - 1]
+    return FrozenRecord.from_dict({"review": {"assessment": "unknown", "evidence_refs": ["caller-public-material"],
+        "counterexamples": [], "uncertainty": "synthetic transport"},
+        "candidate": {"validity": candidate[0], "support": candidate[1], "novelty": candidate[2],
+                      "investment": candidate[3], "outcome": candidate[4]}})
 
 
 def _requests(result):
@@ -115,21 +120,33 @@ def test_q21_full_train_grid_projects_caller_material_into_changed_pressure_requ
             assert binding["schema"] == "opaque-panel-cell-binding-v1"
             assert set(binding) == {"schema", "cell_digest"}
             encoded = FrozenRecord.from_dict(request).encoded
-            # Controller state names must not become model-visible truth labels.
             assert '"case_id"' not in encoded
-            assert '"support"' not in encoded and '"refute"' not in encoded
+            assert "caller-authority" not in encoded and '"validator_verified"' not in encoded
+            assert '"required_audit"' not in encoded and '"execution_success"' not in encoded
+        for index, request in enumerate(requests[:4], 1):
+            # No top-level context or module context may expose another case.
+            encoded = FrozenRecord.from_dict(request).encoded
+            expected = "CALLER-PUBLIC-EVIDENCE-%s-%s" % (cell.identity.benchmark.upper(), index)
+            assert expected in encoded
+            for other in range(1, 5):
+                marker = "CALLER-PUBLIC-EVIDENCE-%s-%s" % (cell.identity.benchmark.upper(), other)
+                assert (marker in encoded) == (other == index)
         enabled = set(cell.runtime_arm.data()["enabled"])
         events = _events(result)
         stages = [event["data"].get("stage") if event["stage"] == "modular_workflow" else event["stage"] for event in events]
+        m1_event = next(event["data"] for event in events if event["stage"] == "modular_workflow"
+                        and event["data"].get("stage") in {"stage_1", "operation_m1_control"})
         if "M1" in enabled:
             assert "stage_1" in stages
-            evidence_rows = [FrozenRecord(line).data() for line in (result.runtime.trace_path.parent / "evidence.jsonl").read_text(encoding="utf-8").splitlines()]
-            assert len(evidence_rows) == 4
-            assert [row["admitted"] for row in evidence_rows] == [True, True, False, False]
-            assert [row["payload"]["validator_verified"] for row in evidence_rows] == [True, True, True, False]
+            assert m1_event["intervention"] == "EvidenceAdmission.decide"
+            assert [row["admitted"] for row in m1_event["decisions"]] == [True, True, False, False]
+            assert [row["outcome"] for row in m1_event["decisions"]] == ["positive", "negative", "negative", "negative"]
         else:
             assert "operation_m1_control" in stages
-            assert not (result.runtime.trace_path.parent / "evidence.jsonl").read_text(encoding="utf-8")
+            assert m1_event["intervention"] == "not_applied"
+            assert all(row["gate"] == "not_applied" for row in m1_event["decisions"])
+        # Q2.1 M1 is an admission decision, not an M2 EvidenceLedger append.
+        assert not (result.runtime.trace_path.parent / "evidence.jsonl").read_text(encoding="utf-8")
         if "M5" in enabled:
             assert "stage_7" in stages
             assert len((result.runtime.trace_path.parent / "reviews.jsonl").read_text(encoding="utf-8").splitlines()) >= 5
@@ -145,6 +162,18 @@ def test_q21_full_train_grid_projects_caller_material_into_changed_pressure_requ
         materials = [request["module_context"]["public_material"] for request in first_requests]
         assert materials[0] == materials[1] == materials[2]
         assert len({request["module_context"]["pressure_instruction"] for request in first_requests}) == 3
+
+    by_m5 = {}
+    for cell, result in results:
+        enabled = tuple(module for module in cell.runtime_arm.data()["enabled"] if module != "M5")
+        by_m5.setdefault((cell.identity.benchmark, cell.variant, enabled), {})["M5" in cell.runtime_arm.data()["enabled"]] = _requests(result)[-1]
+    for pair in by_m5.values():
+        assert set(pair) == {False, True}
+        off, on = pair[False]["module_context"]["q21_review"], pair[True]["module_context"]["q21_review"]
+        assert off["public_case_material"] == on["public_case_material"]
+        assert off["candidate_judgements"] == on["candidate_judgements"]
+        assert off["decision_material"]["kind"] == "raw_unverified_review_responses"
+        assert on["decision_material"]["kind"] == "sealed_review_submissions"
 
 
 def test_q21_bundle_requires_all_caller_cases_and_train_only_runner_rejects_validation(tmp_path: Path, monkeypatch):

@@ -17,11 +17,10 @@ def q21_bundle(task):
     rows = []
     for number, case_id in enumerate(("support", "refute", "invalid", "unknown"), 1):
         rows.append({"case_id": case_id,
-            "observation": {"kind": "measurement", "root_material": {"source": "fixture-%s" % number},
-                "representation": "raw", "content": {"public": "fixture-%s" % number},
-                "subject_bindings": {"task": task.identity.task_id}, "independent_group": task.identity.group_id},
-            "authority_receipt": {"trusted_validator": "fixture-authority-%s" % number,
-                "validator_verified": number != 4, "admitted": number < 3},
+            "admission_checks": {"trusted_validator": "fixture-authority-%s" % number,
+                "validator_verified": True, "execution_success": True, "required_audit": ["measurement"],
+                "audit": [{"name": "measurement", "executed": True, "passed": True}],
+                "subject_bindings": {"task": task.identity.task_id}, "evidence_ids": ["fixture-evidence-%s" % number]},
             "review_material": {"public": "fixture-%s" % number}})
     return FrozenRecord.from_dict({"schema": "q21-pressure-material-bundle-v1", "identity": task.identity.data(),
         "task_payload_digest": task.payload.content_hash, "cases": rows})

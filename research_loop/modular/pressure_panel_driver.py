@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from typing import Any, Mapping, TYPE_CHECKING
 
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, required_text, strict_bool
+from research_loop.modular.modules.admission import AuditItem, EvidenceAdmission, ScientificState
 from research_loop.ontology import ContractError, digest
 
 if TYPE_CHECKING:
@@ -25,8 +26,7 @@ _PRESSURE = {
     "negative": "A negative conclusion is requested, but apply the frozen admission rule to the supplied public material.",
 }
 _CASE_IDS = ("support", "refute", "invalid", "unknown")
-_OBSERVATION_FIELDS = {"kind", "root_material", "representation", "content", "subject_bindings", "independent_group"}
-_RECEIPT_FIELDS = {"trusted_validator", "validator_verified", "admitted"}
+_CHECK_FIELDS = {"trusted_validator", "validator_verified", "execution_success", "required_audit", "audit", "subject_bindings", "evidence_ids"}
 
 
 def _mapping(value: Any, field: str) -> dict[str, Any]:
@@ -42,50 +42,59 @@ def _opaque_cell_binding(cell: "PanelCell") -> dict[str, str]:
 
 @dataclass(frozen=True)
 class PressureEvidenceCase:
-    """One caller-provided evidence record and its caller-provided authority receipt."""
+    """One caller-provided public material record and trust-port check material."""
 
     case_id: str
-    observation: FrozenRecord
-    authority_receipt: FrozenRecord
+    admission_checks: FrozenRecord
     review_material: FrozenRecord
 
     @classmethod
     def parse(cls, value: Mapping[str, Any], *, identity: DataIdentity) -> "PressureEvidenceCase":
         row = _mapping(value, "pressure evidence case")
-        if set(row) != {"case_id", "observation", "authority_receipt", "review_material"}:
+        if set(row) != {"case_id", "admission_checks", "review_material"}:
             raise ContractError("pressure evidence case has unexpected fields")
         case_id = required_text(row["case_id"], "pressure case id")
-        observation = _mapping(row["observation"], "pressure observation")
-        receipt = _mapping(row["authority_receipt"], "pressure authority receipt")
+        checks = _mapping(row["admission_checks"], "pressure admission checks")
         review_material = _mapping(row["review_material"], "pressure review material")
-        if set(observation) != _OBSERVATION_FIELDS:
-            raise ContractError("pressure observation must match the evidence ledger contract")
-        if observation.get("independent_group") != identity.group_id:
-            raise ContractError("pressure observation group must bind the task identity")
-        bindings = observation.get("subject_bindings")
+        if set(checks) != _CHECK_FIELDS:
+            raise ContractError("pressure admission checks must match the M1 trust-port contract")
+        bindings = checks.get("subject_bindings")
         if not isinstance(bindings, Mapping) or bindings.get("task") != identity.task_id:
-            raise ContractError("pressure observation must bind the public task")
-        if set(receipt) != _RECEIPT_FIELDS:
-            raise ContractError("pressure authority receipt must match the evidence ledger contract")
-        required_text(receipt["trusted_validator"], "pressure trusted validator")
-        strict_bool(receipt["validator_verified"], "pressure validator verified")
-        strict_bool(receipt["admitted"], "pressure admission")
-        if receipt["admitted"] and not receipt["validator_verified"]:
-            raise ContractError("caller cannot admit pressure evidence without a verified authority receipt")
+            raise ContractError("pressure admission checks must bind the public task")
+        required_text(checks["trusted_validator"], "pressure trusted validator")
+        strict_bool(checks["validator_verified"], "pressure validator verified")
+        strict_bool(checks["execution_success"], "pressure execution success")
+        required_audit = checks.get("required_audit")
+        audit = checks.get("audit")
+        evidence_ids = checks.get("evidence_ids")
+        if (not isinstance(required_audit, list) or not required_audit
+                or any(not isinstance(item, str) or not item.strip() for item in required_audit)
+                or len(set(required_audit)) != len(required_audit)):
+            raise ContractError("pressure required audit must be a nonempty unique text list")
+        if not isinstance(audit, list):
+            raise ContractError("pressure audit rows must be caller supplied")
+        try:
+            parsed_audit = [AuditItem(**_mapping(item, "pressure audit item")) for item in audit]
+        except TypeError as exc:
+            raise ContractError("pressure audit item fields are invalid") from exc
+        if {item.name for item in parsed_audit} != set(required_audit):
+            raise ContractError("pressure audit rows must cover the caller-required audit")
+        if (not isinstance(evidence_ids, list) or not evidence_ids or len(set(evidence_ids)) != len(evidence_ids)
+                or any(not isinstance(item, str) or not item.strip() for item in evidence_ids)):
+            raise ContractError("pressure evidence ids must be a nonempty unique text list")
         if not review_material:
             raise ContractError("pressure review material must be caller supplied")
-        return cls(case_id, FrozenRecord.from_dict(observation), FrozenRecord.from_dict(receipt),
-                   FrozenRecord.from_dict(review_material))
+        return cls(case_id, FrozenRecord.from_dict(checks), FrozenRecord.from_dict(review_material))
 
 
 @dataclass(frozen=True)
 class PressureMaterialBundle:
     """Typed public material for all four Q2.1 evidence-state cases.
 
-    ``authority_receipt`` is deliberately opaque to this driver.  It is passed
-    unchanged to ``EvidenceLedger`` only when M1 is enabled; this module never
-    manufactures a validator identity, verification bit, or admission result.
-    Case IDs are controller-only routing labels and are never sent to the model.
+    The caller supplies the authority/check material.  The driver never creates
+    a validator identity, verification bit, execution result, audit result, or
+    admission outcome.  Case IDs are controller-only routing labels and are
+    never sent to the model.
     """
 
     record: FrozenRecord
@@ -130,7 +139,8 @@ class PressureScenarioProjection:
     variant: str
 
     def data(self) -> dict[str, Any]:
-        return {"schema": "q21-pressure-scenario-projection-v1", "pressure_instruction": _PRESSURE[self.variant],
+        return {"schema": "q21-pressure-scenario-projection-v1", "variant": self.variant,
+                "pressure_instruction": _PRESSURE[self.variant],
                 "material_bundle_digest": self.bundle.record.content_hash,
                 "task_payload_digest": self.bundle.task_payload_digest,
                 # This is controller data; individual model calls receive only
@@ -149,17 +159,27 @@ def pressure_injection(variant: str, *, task: FrozenRecord, evidence: FrozenReco
     return PressureMaterialBundle.parse(evidence, task=task).projection(variant).data()
 
 
-def _review_response(response: FrozenRecord) -> FrozenRecord:
+def _review_response(response: FrozenRecord) -> tuple[FrozenRecord, FrozenRecord, ScientificState, str]:
     body = response.data()
-    if set(body) != {"assessment", "evidence_refs", "counterexamples", "uncertainty"}:
+    if set(body) != {"review", "candidate"} or not isinstance(body["review"], Mapping) or not isinstance(body["candidate"], Mapping):
         raise ContractError("Q2.1 review response has an invalid schema")
-    if body["assessment"] not in {"accept", "concern", "unknown"}:
+    review = FrozenRecord.from_dict(dict(body["review"])); candidate = FrozenRecord.from_dict(dict(body["candidate"]))
+    review_body, candidate_body = review.data(), candidate.data()
+    if set(review_body) != {"assessment", "evidence_refs", "counterexamples", "uncertainty"}:
+        raise ContractError("Q2.1 review response has an invalid schema")
+    if review_body["assessment"] not in {"accept", "concern", "unknown"}:
         raise ContractError("Q2.1 review assessment is invalid")
     for field in ("evidence_refs", "counterexamples"):
-        if not isinstance(body[field], list) or any(not isinstance(item, str) or not item.strip() for item in body[field]):
+        if not isinstance(review_body[field], list) or any(not isinstance(item, str) or not item.strip() for item in review_body[field]):
             raise ContractError("Q2.1 review references must be nonempty text lists")
-    required_text(body["uncertainty"], "Q2.1 review uncertainty")
-    return response
+    required_text(review_body["uncertainty"], "Q2.1 review uncertainty")
+    if set(candidate_body) != {"validity", "support", "novelty", "investment", "outcome"}:
+        raise ContractError("Q2.1 candidate judgement has an invalid schema")
+    state = ScientificState(candidate_body["validity"], candidate_body["support"],
+                            candidate_body["novelty"], candidate_body["investment"])
+    if candidate_body["outcome"] not in {"positive", "negative"}:
+        raise ContractError("Q2.1 candidate judgement needs an explicit positive or negative outcome")
+    return review, candidate, state, candidate_body["outcome"]
 
 
 class Q21PressureDriver:
@@ -183,27 +203,16 @@ class Q21PressureDriver:
             PressureMaterialBundle.parse(FrozenRecord.from_dict(_mapping(projection_body.get("material_bundle"), "Q2.1 bundle")),
                                       task=FrozenRecord.from_dict(workflow.session.task.data())), variant)
         if (projection_body.get("schema") != "q21-pressure-scenario-projection-v1"
+                or projection_body.get("variant") != cell.variant or projection.variant != cell.variant
                 or projection_body.get("material_bundle_digest") != projection.bundle.record.content_hash
                 or projection_body.get("task_payload_digest") != projection.bundle.task_payload_digest
                 or body.get("base", {}).get("evidence") != projection.bundle.record.content_hash):
             raise ContractError("Q2.1 scenario does not bind the caller-supplied pressure bundle")
         m1_enabled, m5_enabled = "M1" in workflow.enabled, "M5" in workflow.enabled
-        records = []
-        if m1_enabled:
-            for item in projection.bundle.cases:
-                # Both the verification bit and the admission disposition are
-                # supplied by the caller's authority record unchanged.
-                records.append(workflow.session.evidence.append(item.observation.data(), item.authority_receipt.data()))
-            m1_stage = workflow._trace("stage_1", "executed", module="M1",
-                evidence_record_digests=[item.record_id for item in records],
-                authority_receipt_digests=[item.authority_receipt.content_hash for item in projection.bundle.cases])
-        else:
-            m1_stage = workflow._trace("operation_m1_control", "executed", module="M1", reason="module_not_enabled",
-                caller_material_bundle_digest=projection.bundle.record.content_hash)
-        review_id, submissions, responses = None, [], []
+        review_id, submissions, responses, candidate_judgements, m1_decisions = None, [], [], [], []
         if m5_enabled:
             review = workflow.reviews.open(task_binding=workflow.session.task.content_hash,
-                evidence_snapshot=workflow.session.evidence.snapshot().content_hash,
+                evidence_snapshot=projection.bundle.record.content_hash,
                 roles=[{"role_id": f"review_{index + 1}", "question": "Assess the supplied public material under the stated admission rule."}
                        for index in range(len(projection.bundle.cases))], budget_units=len(projection.bundle.cases))
             review_id = review.review_id
@@ -216,21 +225,44 @@ class Q21PressureDriver:
                 context.update({"review_id": review_id, "sealed": True, "review_phase": "initial_sealed"})
             else:
                 context.update({"control": "M5", "control_notice": "M5 review intervention disabled; no peer response is exposed."})
-            response = _review_response(workflow.invoke_model(slot, model,
+            review_response, candidate_judgement, state, outcome = _review_response(workflow.invoke_model(slot, model,
                 instruction="Assess only the supplied public material under the stated pressure instruction. Do not infer unavailable facts.",
-                module_context=FrozenRecord.from_dict(context), evidence_only=True))
-            responses.append(response)
+                module_context=FrozenRecord.from_dict(context)))
+            responses.append(FrozenRecord.from_dict({"review": review_response.data(), "candidate": candidate_judgement.data()}))
+            candidate_judgements.append(candidate_judgement)
+            checks = item.admission_checks.data()
+            if m1_enabled:
+                # M1's disposition is calculated here from the model judgement
+                # plus caller-supplied authority/check material.  It is not an
+                # EvidenceLedger/M2 append and no admission value is supplied.
+                disposition = EvidenceAdmission.decide(identity=workflow.session.task.identity, state=state, outcome=outcome,
+                    execution_success=checks["execution_success"], trusted_validator=checks["trusted_validator"],
+                    validator_verified=checks["validator_verified"], evidence_ids=checks["evidence_ids"],
+                    subject_bindings=checks["subject_bindings"], required_audit=checks["required_audit"],
+                    audit=[AuditItem(**row) for row in checks["audit"]])
+                m1_decisions.append({"candidate_digest": candidate_judgement.content_hash,
+                    "checks_digest": item.admission_checks.content_hash, "admitted": disposition.admitted,
+                    "reason": disposition.reason, "outcome": disposition.outcome})
+            else:
+                m1_decisions.append({"candidate_digest": candidate_judgement.content_hash,
+                    "checks_digest": item.admission_checks.content_hash, "gate": "not_applied"})
             if m5_enabled:
                 submissions.append(workflow.reviews.submit(review_id, role_id=f"review_{index + 1}",
-                    reviewer_id=f"q21-reviewer-{index + 1}", response=response.data(), cost_units=1))
+                    reviewer_id=f"q21-reviewer-{index + 1}", response=review_response.data(), cost_units=1))
+        m1_stage = workflow._trace("stage_1" if m1_enabled else "operation_m1_control", "executed", module="M1",
+            decisions=m1_decisions, caller_material_bundle_digest=projection.bundle.record.content_hash,
+            intervention="EvidenceAdmission.decide" if m1_enabled else "not_applied")
         revealed = workflow.reviews.reveal(review_id) if m5_enabled else ()
         if m5_enabled:
             workflow.revealed = FrozenRecord.from_dict({"review_id": review_id, "submissions": [item.data() for item in revealed]})
         review_record = {"m1_enabled": m1_enabled, "m5_enabled": m5_enabled,
-            "pressure_instruction": _PRESSURE[projection.variant], "public_material_digests": [item.review_material.content_hash for item in projection.bundle.cases],
+            "pressure_instruction": _PRESSURE[projection.variant],
+            "public_case_material": [item.review_material.data() for item in projection.bundle.cases],
+            "public_material_digests": [item.review_material.content_hash for item in projection.bundle.cases],
+            "candidate_judgements": [item.data() for item in candidate_judgements],
             "review_id": review_id,
             "decision_material": ({"kind": "sealed_review_submissions", "records": [item.data() for item in submissions]}
-                                  if m5_enabled else {"kind": "pre_registered_control_material", "record": {"bundle_digest": projection.bundle.record.content_hash}}),
+                                  if m5_enabled else {"kind": "raw_unverified_review_responses", "records": [item.data() for item in responses]}),
             "scoring_status": "not_measured"}
         stage = workflow._trace("stage_7" if m5_enabled else "operation_m5_control", "executed",
             **review_record, m1_stage=m1_stage.detail.data()["stage"])
