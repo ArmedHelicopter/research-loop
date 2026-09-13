@@ -259,11 +259,11 @@ def test_original_history_build_provider_and_barrier_files_are_bound(grid,relati
     finally:path.write_bytes(raw)
 
 
-@pytest.mark.parametrize('attack',['late_prediction','sealed_peer','review_journal','retrieval_journal','program','instruction'])
+@pytest.mark.parametrize('attack',['late_prediction','sealed_peer','review_journal','retrieval_journal','late_retrieval_completion','program','instruction'])
 def test_rehashed_target_module_and_solver_attacks_are_rejected(grid,attack):
     from research_loop.modular.panel_receipts import PanelReceiptVerifier
     setup,run=grid
-    pair='pair:M5+M9' if attack in ('sealed_peer','review_journal') else 'pair:M6+M9' if attack=='retrieval_journal' else 'pair:M4+M9'
+    pair='pair:M5+M9' if attack in ('sealed_peer','review_journal') else 'pair:M6+M9' if attack in ('retrieval_journal','late_retrieval_completion') else 'pair:M4+M9'
     result=next(r for r in run.results if r.cell.coverage_id==pair and r.cell.arm_id=='11')
     path=result.runtime.trace_path;raw=path.read_bytes()
     def mutate(rows):
@@ -271,6 +271,9 @@ def test_rehashed_target_module_and_solver_attacks_are_rejected(grid,attack):
             row=next(r for r in rows if r['stage']=='mechanism_improvement_prediction');rows.remove(row);rows.insert(-1,row)
         elif attack=='retrieval_journal':
             row=next(r for r in rows if r['stage']=='q8_retrieval_result');row['data']['unused_reserved_sources']=999
+        elif attack=='late_retrieval_completion':
+            row=next(r for r in rows if r['stage']=='retrieval_review_sources');rows.remove(row)
+            joint=next(r for r in rows if r['stage']=='mechanism_improvement_joint');rows.insert(rows.index(joint)+1,row)
         elif attack=='review_journal':
             row=next(r for r in rows if r['stage']=='mechanism_improvement_review_submission');row['data']['barrier_open']=True
         else:
@@ -422,3 +425,22 @@ def test_module_records_cannot_precede_their_original_model_responses(grid,attac
                 'forged_trace_sha256':hashlib.sha256(path.read_bytes()).hexdigest()})+'\n',encoding='utf-8')
             (setup['root']/(attack+'-forged-trace.jsonl')).write_bytes(path.read_bytes())
     finally:path.write_bytes(raw)
+
+
+@pytest.mark.parametrize('field,value',[('direction','nonsense'),('value_range','unbounded'),('failure_condition','')])
+def test_ordinary_forecasts_validate_individual_fields_without_registry(grid,monkeypatch,field,value):
+    from research_loop.modular.mechanism_improvement_modules import apply_target_module
+    from research_loop.modular.modules.predictions import PredictionRegistry
+    setup,run=grid;result=next(r for r in run.results if r.cell.coverage_id=='pair:M4+M9' and r.cell.arm_id=='00')
+    args=replay_args(setup,run,result)
+    def forbidden(*a,**k):raise AssertionError('ordinary forecast invoked prediction registry')
+    monkeypatch.setattr(PredictionRegistry,'freeze',forbidden)
+    proposal=result.joint_mechanism.data()['prediction_proposal']
+    for branch in proposal['branches']:
+        branch['predictions'][0].update(direction='increase',failure_condition='not increase')
+    def apply(body):
+        return apply_target_module(cell=result.cell,task=args['task'],package=args['package'],transition=result.transition,
+            predictions=None,reviews=None,invoke=lambda *a:FrozenRecord.from_dict(body),record=lambda *a:None)
+    assert apply(proposal).data()['prediction_proposal']==proposal
+    proposal['branches'][0]['predictions'][0][field]=value
+    with pytest.raises(ContractError):apply(proposal)

@@ -2,6 +2,8 @@
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.metaprogram_training import metaprogram_schemas, _projection
 from research_loop.modular.modules.review import ReviewEngine
+from research_loop.modular.modules.predictions import _prediction
+from research_loop.modular.model_port import _validate_schema
 from research_loop.modular.modules.retrieval import FrozenSourceBundle
 from research_loop.modular.panel_receipts import opaque_panel_cell_binding
 from research_loop.modular.retrieval_panel_drivers import _select_sources
@@ -29,7 +31,7 @@ def slots(pair):
 def model_schemas():
     result=metaprogram_schemas()
     prediction_fields={'prediction_id':{'type':'string'},'discriminator_id':{'type':'string'},
-        'observable':{'type':'string'},'direction':{'type':'string'},'value_range':{'type':['string','null']},
+        'observable':{'type':'string'},'direction':{'type':'string','enum':['increase','decrease','unchanged']},'value_range':{'type':'null'},
         'failure_condition':{'type':'string'}}
     prediction={'type':'object','required':list(prediction_fields),'additionalProperties':False,'properties':prediction_fields}
     branch_fields={k:{'type':'string'} for k in ('hypothesis_id','mechanism_key','mechanism','intervention','elimination_condition')}
@@ -58,7 +60,7 @@ def apply_target_module(*,cell,task,package,transition,predictions,reviews,invok
     result={'prediction_proposal':None,'prediction_plan':None,'reviews':[],'retrieval':retrieval}
     if factor=='M4':
         response=invoke('m4_plan',PREDICTION_INSTRUCTION if enabled else ORDINARY_INSTRUCTION,FrozenRecord.from_dict({**context,'measurement':MEASUREMENT}))
-        b=response.data()
+        b=response.data();_validate_schema(model_schemas()['m4_plan'],b)
         if (set(b)!={'question','branches','budget_units'} or b['budget_units']!=3 or len(b['branches'])!=3
                 or any(p['observable']!=MEASUREMENT['observable'] or p['discriminator_id']!=MEASUREMENT['discriminator_id']
                     for branch in b['branches'] for p in branch['predictions'])):
@@ -69,9 +71,7 @@ def apply_target_module(*,cell,task,package,transition,predictions,reviews,invok
                     ('hypothesis_id','mechanism_key','mechanism','intervention','elimination_condition')):
                 raise ContractError('ordinary forecast alternatives require useful nonempty content')
             for prediction in branch['predictions']:
-                if any(not isinstance(prediction.get(k),str) or not prediction[k].strip() for k in
-                        ('prediction_id','discriminator_id','observable','direction','failure_condition')):
-                    raise ContractError('ordinary forecasts require an executable measurement statement')
+                _prediction(prediction)
         plan=predictions.freeze(b['question'],b['branches'],budget_units=3) if enabled else None
         result.update(prediction_proposal=b,prediction_plan=plan.payload.data() if plan else None)
         record('mechanism_improvement_prediction',{'proposal_digest':response.content_hash,'measurement':MEASUREMENT,

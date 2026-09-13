@@ -138,16 +138,39 @@ def verify_mechanism_improvement_cell(result,*,panel,task,scenario,package,mater
     predictions._log=_MemoryLog();reviews._log=_MemoryLog();module_records=[];module_requests={}
     requests=[e['data']['request'] for e in events if e['stage']=='model_request']
     responses={e['data']['request_digest']:e['data']['response'] for e in events if e['stage']=='model_response'}
+    module_cursor=0
+    actual_owned=[(i,e) for i,e in enumerate(events) if e['stage'].startswith(('mechanism_improvement_prediction','mechanism_improvement_review_'))]
+    if retrieval_material is not None:
+        completed=[i for i,e in enumerate(events) if e['stage']=='retrieval_review_sources']
+        if len(completed)!=1:raise ContractError('exact retrieval completion required')
+        module_cursor=completed[0]
+        if any(i>=module_cursor for i,e in enumerate(events) if e['stage'].startswith('q8_')):
+            raise ContractError('retrieval bookkeeping continues after its completion')
+    def replay_record(stage,data):
+        nonlocal module_cursor
+        if len(module_records)>=len(actual_owned):raise ContractError('missing original native module operation')
+        index,event=actual_owned[len(module_records)]
+        if index<=module_cursor or event['stage']!=stage or event['data']!=data:
+            raise ContractError('native module operation must follow its original response')
+        module_records.append({'stage':stage,'data':data});module_cursor=index
     def replay_invoke(slot,instruction,context):
+        nonlocal module_cursor
         matching=[r for r in requests if r['slot']==slot]
         if len(matching)!=1:raise ContractError('module requires one original response per slot')
         request=matching[0]
         if request['instruction']!=instruction or request['module_context']!=context.data() or request['execution_feedback']!=[]:
             raise ContractError('target module context leaks future outcomes or changes useful control')
+        request_digest=FrozenRecord.from_dict(request).content_hash
+        request_events=[(i,e) for i,e in enumerate(events) if e['stage']=='model_request' and e['data']['request_digest']==request_digest]
+        response_events=[(i,e) for i,e in enumerate(events) if e['stage'] in ('model_response','model_failure') and e['data']['request_digest']==request_digest]
+        if (len(request_events)!=1 or request_events[0][0]<=module_cursor or len(response_events)!=1
+                or response_events[0][0]<=request_events[0][0] or response_events[0][1]['stage']!='model_response'):
+            raise ContractError('native module request and response order drift')
+        module_cursor=response_events[0][0]
         module_requests[slot]=(instruction,context.data())
-        return FrozenRecord.from_dict(responses[FrozenRecord.from_dict(request).content_hash])
+        return FrozenRecord.from_dict(response_events[0][1]['data']['response'])
     joint=apply_target_module(cell=cell,task=task,package=package,transition=transition,predictions=predictions,reviews=reviews,
-        invoke=replay_invoke,record=lambda stage,data:module_records.append({'stage':stage,'data':data}),retrieval=retrieval)
+        invoke=replay_invoke,record=replay_record,retrieval=retrieval)
     if (_read_events(path.parent/'predictions.jsonl')!=predictions._log.rows or _read_events(path.parent/'reviews.jsonl')!=reviews._log.rows):
         raise ContractError('native prediction/review persistent journals differ from replay')
     actual_modules=[{'stage':e['stage'],'data':e['data']} for e in events if e['stage'].startswith(('mechanism_improvement_prediction','mechanism_improvement_review_'))]
@@ -157,6 +180,8 @@ def verify_mechanism_improvement_cell(result,*,panel,task,scenario,package,mater
             'barrier_digest':barrier.record.content_hash,'retrieval_source_sha256':retrieval_source}
             or result.joint_mechanism!=joint or len(joints)!=1 or joints[0]['data']!={'joint':joint.data(),'joint_digest':joint.content_hash}):
         raise ContractError('target joint differs from original native module execution')
+    if len(module_records)!=len(actual_owned) or events.index(joints[0])<=module_cursor:
+        raise ContractError('joint must follow complete original native module operations')
     first=next((i for i,e in enumerate(events) if e['stage'] in ('model_request','q8_retrieval_request','execution_request')),len(events))
     solve=next(i for i,e in enumerate(events) if e['stage']=='model_request' and e['data']['request']['slot']=='analysis_program')
     if not events.index(transitions[0])<first or not events.index(joints[0])<solve:

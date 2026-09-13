@@ -26,7 +26,9 @@ is measured by that execution. Already-observed historical quantities are
 conditioning information, not prospective outcomes. Forecast agreement or
 successful registration cannot establish causal validity. The ordinary off instruction accepts useful forecast alternatives that agree;
 off does not invoke prediction-registry validation or require discrimination.
-On requires actual operational competing predictions and native registration.
+Both arms use the narrow directional forecast schema (increase, decrease or
+unchanged, with no numeric range) and native individual-forecast validation.
+On additionally requires operational competing predictions and native registration.
 Matched useful off proposals may produce the same result as registered plans.
 
 M5 uses two useful reviews of the same candidate and public task. Off gives
@@ -45,7 +47,9 @@ I/O; retrieval receipts retain native unknown external monetary cost and exact
 reserved/completed item counts. Retrieval failure prevents that cell's model
 calls. Failed, blocked and unspent opportunities remain in the denominator.
 
-All target model responses are sealed before any score-input issuance. Replay
+Each module request must precede its exact original response, which must
+precede registration/submission/reveal; retrieval must complete before the
+joint context. All target model responses are sealed before score-input issuance. Replay
 requires exact barrier/plan/provider types; original history/source CSV and
 qualification records; canonical candidate mapping and builder receipts;
 literal model responses; native prediction/review/retrieval journals; shared
