@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="14" time="56.908" timestamp="2026-09-13T12:55:46.171838+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_q27_train_controller" name="test_actual_eight_cell_train_entry_has_strict_post_runtime_qualification" time="10.039"><failure message="research_loop.ontology.ContractError: post-runtime immutable sidecar binding mismatch">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q27c-r2/test_actual_eight_cell_train_e0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028721DFF380&gt;
+
+    def test_actual_eight_cell_train_entry_has_strict_post_runtime_qualification(tmp_path,monkeypatch):
+        frozen,args,seen,audits=_fixture(tmp_path,monkeypatch)
+&gt;       result=run_train_panel(frozen,**args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q27_train_controller.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\train_controller.py:278: in run_train_panel
+    verdict = PanelReceiptVerifier(post_runtime_verifier=post_verifier).verify(compiled.panel, tuple(runtimes))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\panel_receipts.py:354: in verify
+    finding = self._post_runtime_verifier(row, expected[key], panel)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+runtime = RuntimeReceipt(cell_key=('Q2.7', 'discoverybench', 'synth:train:family_1_1', 'discoverybench:synth:train:family_1_1', ...cfd0086a6374bb', output_digest='a99f1a12b4323ef7ca11885d841cf01d598eb6ba1010f167b4f9d4de0b24c208', failure_reason=None)
+cell = PanelCell(coverage_id='Q2.7', identity=DataIdentity(benchmark='discoverybench', task_id='synth:train:family_1_1', grou...18a51a673b35331a3cffb68c05db8958579', scorer_digest='630f02ff0bbc4150d4fdc03039808d377af73f1870325a2b272750d6085e2a6c')
+panel = FrozenPanel(stage='synthetic-q27-production', domain='train', split_digest='558f5f3fe103129a904f6dadd8bee909ae406936db...leave_one_out=('M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9')), required_benchmarks=('discoverybench', 'blade'))
+
+    def verify(runtime, cell, panel):
+        if panel.digest != compiled.panel.digest or cell not in compiled.panel.cells:
+            raise ContractError("post-runtime verifier received a foreign panel cell")
+        sidecar = runtime.trace_path.parent
+        post_path = sidecar / "protocol-post-runtime.json"
+        plan_path = sidecar / "call-plan.json"
+        _no_links(post_path); _no_links(plan_path)
+        post = FrozenRecord(post_path.read_text(encoding="utf-8").strip()).data()
+        plan = FrozenRecord(plan_path.read_text(encoding="utf-8").strip()).data()
+        required = {"schema", "status", "reason", "receipt_path", "receipt_digest", "source_trace_digest",
+                    "source_output_digest", "cell_key", "scenario_digest"}
+        if (set(post) != required or post["schema"] != "q27-post-runtime-check-v1"
+                or post["status"] != "refused" or post["reason"] is not None
+                or post["receipt_path"] != "q27-replay/receipt.json"
+                or post["source_trace_digest"] != runtime.trace_digest or post["source_output_digest"] != runtime.output_digest
+                or post["cell_key"] != cell.key or post["scenario_digest"] != cell.scenario_digest
+                or plan.get("protocol_replay") != post):
+&gt;           raise ContractError("post-runtime immutable sidecar binding mismatch")
+E           research_loop.ontology.ContractError: post-runtime immutable sidecar binding mismatch
+
+research_loop\modular\train_controller.py:350: ContractError</failure></testcase><testcase classname="tests.test_modular_q27_train_controller" name="test_post_finish_failure_keeps_original_terminal_and_full_denominator[unknown]" time="8.232" /><testcase classname="tests.test_modular_q27_train_controller" name="test_post_finish_failure_keeps_original_terminal_and_full_denominator[blocked]" time="8.608" /><testcase classname="tests.test_modular_q27_train_controller" name="test_post_finish_failure_keeps_original_terminal_and_full_denominator[hook_error]" time="8.371" /><testcase classname="tests.test_modular_q27_train_controller" name="test_post_finish_failure_keeps_original_terminal_and_full_denominator[malformed_verifier]" time="8.921" /><testcase classname="tests.test_modular_q27_train_controller" name="test_dependencies_and_frozen_config_reject_before_export_or_model[audit_port]" time="0.185" /><testcase classname="tests.test_modular_q27_train_controller" name="test_dependencies_and_frozen_config_reject_before_export_or_model[replay_authority]" time="0.142" /><testcase classname="tests.test_modular_q27_train_controller" name="test_dependencies_and_frozen_config_reject_before_export_or_model[model_schema]" time="0.145" /><testcase classname="tests.test_modular_q27_train_controller" name="test_dependencies_and_frozen_config_reject_before_export_or_model[budget]" time="0.116" /><testcase classname="tests.test_modular_q27_train_controller" name="test_dependencies_and_frozen_config_reject_before_export_or_model[p0_config]" time="0.130" /><testcase classname="tests.test_modular_q27_train_controller" name="test_dependencies_and_frozen_config_reject_before_export_or_model[broker]" time="0.139" /><testcase classname="tests.test_modular_q27_train_controller" name="test_dependencies_and_frozen_config_reject_before_export_or_model[roots]" time="0.290" /><testcase classname="tests.test_modular_q27_train_controller" name="test_caller_csv_cannot_replace_actual_custody_export" time="0.170" /><testcase classname="tests.test_modular_q27_train_controller" name="test_trusted_callback_cannot_qualify_wrong_or_empty_finding" time="11.001"><failure message="research_loop.ontology.ContractError: post-runtime immutable sidecar binding mismatch">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q27c-r2/test_trusted_callback_cannot_q0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000028722851A90&gt;
+
+    def test_trusted_callback_cannot_qualify_wrong_or_empty_finding(tmp_path,monkeypatch):
+&gt;       frozen,args,_,_=_fixture(tmp_path,monkeypatch); result=run_train_panel(frozen,**args)
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q27_train_controller.py:145: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\train_controller.py:278: in run_train_panel
+    verdict = PanelReceiptVerifier(post_runtime_verifier=post_verifier).verify(compiled.panel, tuple(runtimes))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\panel_receipts.py:354: in verify
+    finding = self._post_runtime_verifier(row, expected[key], panel)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+runtime = RuntimeReceipt(cell_key=('Q2.7', 'discoverybench', 'synth:train:family_1_1', 'discoverybench:synth:train:family_1_1', ...157ad0ee665391', output_digest='ffe43912f53020293d0cbe09ce1fe35e21a04a91784f2ad6e06da19bc9c91eaa', failure_reason=None)
+cell = PanelCell(coverage_id='Q2.7', identity=DataIdentity(benchmark='discoverybench', task_id='synth:train:family_1_1', grou...18a51a673b35331a3cffb68c05db8958579', scorer_digest='630f02ff0bbc4150d4fdc03039808d377af73f1870325a2b272750d6085e2a6c')
+panel = FrozenPanel(stage='synthetic-q27-production', domain='train', split_digest='558f5f3fe103129a904f6dadd8bee909ae406936db...leave_one_out=('M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8', 'M9')), required_benchmarks=('discoverybench', 'blade'))
+
+    def verify(runtime, cell, panel):
+        if panel.digest != compiled.panel.digest or cell not in compiled.panel.cells:
+            raise ContractError("post-runtime verifier received a foreign panel cell")
+        sidecar = runtime.trace_path.parent
+        post_path = sidecar / "protocol-post-runtime.json"
+        plan_path = sidecar / "call-plan.json"
+        _no_links(post_path); _no_links(plan_path)
+        post = FrozenRecord(post_path.read_text(encoding="utf-8").strip()).data()
+        plan = FrozenRecord(plan_path.read_text(encoding="utf-8").strip()).data()
+        required = {"schema", "status", "reason", "receipt_path", "receipt_digest", "source_trace_digest",
+                    "source_output_digest", "cell_key", "scenario_digest"}
+        if (set(post) != required or post["schema"] != "q27-post-runtime-check-v1"
+                or post["status"] != "refused" or post["reason"] is not None
+                or post["receipt_path"] != "q27-replay/receipt.json"
+                or post["source_trace_digest"] != runtime.trace_digest or post["source_output_digest"] != runtime.output_digest
+                or post["cell_key"] != cell.key or post["scenario_digest"] != cell.scenario_digest
+                or plan.get("protocol_replay") != post):
+&gt;           raise ContractError("post-runtime immutable sidecar binding mismatch")
+E           research_loop.ontology.ContractError: post-runtime immutable sidecar binding mismatch
+
+research_loop\modular\train_controller.py:350: ContractError</failure></testcase></testsuite></testsuites>

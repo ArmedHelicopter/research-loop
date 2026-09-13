@@ -1,0 +1,36 @@
+{
+  "commit": "70b061b6feecc7e17c6b880c757be54ba878ac32",
+  "source_unchanged": {
+    "tests/test_modular_q27_protocol_panel_driver.py": true,
+    "research_loop/modular/protocol_panel_driver.py": true,
+    "docs/Q27-PRODUCTION-PROTOCOL-DRIVER.md": true,
+    "docs/Q27-PRODUCTION-PROTOCOL-DRIVER-V1-ARCHIVE.md": true
+  },
+  "clean_worktree": true,
+  "limitations": [
+    "production registry/controller CodexModelPort seam remains parent integration scope",
+    "synthetic mean checks are not benchmark scientific validity",
+    "replay signature establishes configured host provenance only",
+    "source authority OS isolation not established",
+    "unknown reported audit cost is never treated as zero",
+    "source ineligible and hook failure must remain unscored/incomplete with original terminal"
+  ],
+  "junit_seconds": 66.353,
+  "skipped": 0,
+  "paid_model_calls": 0,
+  "scope": "Q27 synthetic driver/source/replay/read-only verifier engineering; two public benchmark adapters and eight real Docker cells",
+  "schema": "q27-frozen-verification-v1",
+  "hashes": {
+    "docs/Q27-PRODUCTION-PROTOCOL-DRIVER-V1-ARCHIVE.md": "0B3BFAE5C4CC190BEADBB2C4F8A482C534A9C5F3F50868ECEC45E05F1D5481AD",
+    "research_loop/modular/protocol_panel_driver.py": "7D3D5F09388B642B921C75E9A76311AAFB34D2CA149CDE6C2B482AAC3213F1AD",
+    "tests/test_modular_q27_protocol_panel_driver.py": "59422FB703C1990CBC4726C84E3BB0A08587F65D6BC06D7015F5A29B97F4C93C",
+    "docs/Q27-PRODUCTION-PROTOCOL-DRIVER.md": "19DE81FDC8D0C32C64B83151EB04CCD3C5BB82553D435CA7EF55127F61549B4F"
+  },
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false,
+  "junit_sha256": "93AF1F2870FA716BE036A632C16FB3CE4822CAC735CFEC454063EC8B4A63B5D4",
+  "errors": 0,
+  "tests": 80,
+  "failures": 0,
+  "junit": "E:/_ryanDev/AI/research-loop-modular/work/q27-repair-70b061b-20260913.xml"
+}

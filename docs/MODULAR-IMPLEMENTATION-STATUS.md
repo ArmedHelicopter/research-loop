@@ -3,7 +3,26 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current feasibility and lineage checkpoint (2026-09-13)
+## Current protocol and exploration checkpoint (2026-09-13)
+
+The production registry has 30 question drivers. Q2.7 now binds the actual P0
+control, completed source trace and independently verified read-only replay.
+Two stale fixture classifications were repaired after retaining the original
+failed reports; their complete files passed 55 root checks on `744387a`.
+Q7.1/Q7.2 now pass through the actual custody exporter and production controller,
+with 91 root checks passing on `d4d393d`, including the complete 52-cell synthetic
+Docker/audit grid. These are engineering results, not benchmark effect estimates.
+
+The archive contains 999 indexed files, including all 52 frozen agent exploration
+traces; all earlier 924 files are unchanged. A separate 12-cell Q3.1 training
+repeat is running on `a8449fa`, with only immutable controls archived so far.
+Its failures, usage and terminal result will be reported after completion.
+No validation lease or scientific acceptance is claimed. Q5.4/Q5.5 and M6
+remain under causal repair; all remaining questions, the separate meta-program
+stage and every required combination remain open. See
+[the checkpoint](MODULAR-CHECKPOINT-20260913-PROTOCOL-EXPLORATION.md).
+
+## Previous feasibility and lineage checkpoint (2026-09-13)
 
 The production registry has 27 question drivers. Q5.1/Q5.2 now pass through
 the actual typed compiler, train custody exporter, model port and Docker, with

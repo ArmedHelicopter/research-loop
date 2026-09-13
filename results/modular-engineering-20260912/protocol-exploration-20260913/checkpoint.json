@@ -1,0 +1,118 @@
+{
+  "schema": "protocol-exploration-engineering-checkpoint-v1",
+  "source_commit": "d4d393df75f63401e6866dc87bcf0065418ac829",
+  "production_question_drivers": 30,
+  "reports": {
+    "q27-controller-red-20260913.xml": {
+      "tests": "11",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.951"
+    },
+    "q27-controller-r2.xml": {
+      "tests": "14",
+      "failures": "2",
+      "errors": "0",
+      "skipped": "0",
+      "time": "56.908"
+    },
+    "q27-controller-r3.xml": {
+      "tests": "52",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "208.003"
+    },
+    "q27-controller-ecf16cc.xml": {
+      "tests": "141",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "670.999"
+    },
+    "q27-controller-d21fa3a.xml": {
+      "tests": "15",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "4.028"
+    },
+    "q27-root-a8449fa-r1.xml": {
+      "tests": "150",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "425.262"
+    },
+    "q27-root-fixture-r2.xml": {
+      "tests": "55",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "4.500"
+    },
+    "q27-repair-70b061b-20260913.xml": {
+      "tests": "80",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "66.353"
+    },
+    "exploration-root-seam-r1.xml": {
+      "tests": "91",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "166.477"
+    },
+    "exploration-live-r1-junit.xml": {
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "158.387"
+    },
+    "exploration-live-r2-junit.xml": {
+      "tests": "48",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "112.450"
+    },
+    "exploration-final-junit.xml": {
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "200.060"
+    },
+    "exploration-review-preflight-junit.xml": {
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "21.569"
+    },
+    "exploration-review-final-junit.xml": {
+      "tests": "20",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "198.335"
+    }
+  },
+  "q27_full_custody_cells": 8,
+  "exploration_full_custody_cells": 52,
+  "exploration_agent_traces": 52,
+  "scientific_effectiveness_proven": false,
+  "current_head_full_suite_pass": false,
+  "validation_opened": false,
+  "validation_eligible_records": 0,
+  "pruned_combinations": [],
+  "deployment_performed": false,
+  "ongoing_training_attempt": "linked-train-scored-20260913-02",
+  "ongoing_training_source": "a8449fa0c6f4c0bf3290b2ca1d7d02ff1035a44e",
+  "ongoing_training_terminal_result": "not_in_this_checkpoint",
+  "all_48_scientific_obligations_and_all_required_combinations_remain_open": true
+}

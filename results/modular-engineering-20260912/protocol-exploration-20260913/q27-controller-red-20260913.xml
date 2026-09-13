@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="11" time="0.951" timestamp="2026-09-13T12:49:29.885836+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.076" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.009" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.016" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.031" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.021" /><testcase classname="tests.test_modular_q27_train_controller" name="test_actual_eight_cell_train_entry_has_strict_post_runtime_qualification" time="0.175"><failure message="research_loop.ontology.ContractError: controller scope must use closed production drivers">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q27-controller-red-20260913/test_actual_eight_cell_train_e0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001F9C558A480&gt;
+
+    def test_actual_eight_cell_train_entry_has_strict_post_runtime_qualification(tmp_path,monkeypatch):
+&gt;       frozen,args,seen,audits=_fixture(tmp_path,monkeypatch)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_q27_train_controller.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_q27_train_controller.py:41: in _fixture
+    frozen=FrozenTrainControllerConfig(FrozenRecord.from_dict(raw_config)); seen=[]; audit_calls=[]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:4: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline..."],"type":"object"}},"scope_ids":["Q2.7"],"scorer":{"identity":"not-configured"},"stage":"synthetic-q27-production"}'))
+
+    def __post_init__(self) -&gt; None:
+        data = self.record.data()
+        required = {"schema", "engineering_scope", "stage", "scope_ids", "item_ids",
+                    "evidence_by_task", "budget", "baseline_digest", "p0_control",
+                    "packages_by_arm", "scorer", "acceptance_criteria", "replicates",
+                    "model", "effort", "max_calls", "max_tokens", "schemas"}
+        if (not required &lt;= set(data) or set(data) - required - {"execution_mode", "objective_by_task"}
+                or data["schema"] not in {_LEGACY_SCHEMA, _SCHEMA}):
+            raise ContractError("unexpected train controller config schema")
+        scope = tuple(data["scope_ids"]) if isinstance(data["scope_ids"], list) else ()
+        if (not scope or len(set(scope)) != len(scope) or set(scope) - set(DRIVERS)
+                or any(not isinstance(item, str) for item in scope)):
+&gt;           raise ContractError("controller scope must use closed production drivers")
+E           research_loop.ontology.ContractError: controller scope must use closed production drivers
+
+research_loop\modular\train_controller.py:64: ContractError</failure></testcase></testsuite></testsuites>

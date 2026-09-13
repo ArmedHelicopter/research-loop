@@ -1,0 +1,79 @@
+{
+  "schema": "q27-controller-verification-v1",
+  "commit": "d21fa3afe1beae8d66c8a3685ef0c2dcb94ea316",
+  "commit_chain": [
+    "7b5d395514c22c0ef7f5a22922ac5f1ccd49bd77",
+    "73291fffc105108d4a49b219e6a92aa0695c41bf",
+    "ecf16cca916bc58ac87be357a9ffbfd2db552878",
+    "d21fa3afe1beae8d66c8a3685ef0c2dcb94ea316"
+  ],
+  "git_clean": true,
+  "production_source_unchanged_from_ecf16cc": true,
+  "source_sha256": {
+    "research_loop/modular/experiments.py": "7d65b3ebcaa3c99f0ff4a3919b8d54a446402ed8f49ffb50b5af15e2d6f6c399",
+    "research_loop/modular/panel_plan.py": "0ef0acfeebe1013b8f11de3fba9a67ee560a129be569c2fdd0504c9ddb521927",
+    "research_loop/modular/panel_receipts.py": "741ac1e3cd129b86c891b4dc490849024f6998345a9c66e402af09f48373ad71",
+    "research_loop/modular/panel_runner.py": "50a674294cc16184356cb8126d1d82a4351fc6b9c375b3b2ca75e28595866dc0",
+    "research_loop/modular/train_controller.py": "805d6f44da4d67ba4412813904c3881f3f4e518a9335c7c0da72cbffc019d2cd",
+    "research_loop/modular/protocol_panel_driver.py": "7d3d5f09388b642b921c75e9a76311aafb34d2ca149cde6c2b482aac3213f1ad",
+    "tests/test_modular_q27_train_controller.py": "ea4c3a772eef128b076923d89d5337878d80ebc3f934b3437908de957a927a4f",
+    "docs/Q27-PRODUCTION-PROTOCOL-DRIVER.md": "fee589a63b96d23ccb37b93b72c4a2b1d9cf02a8cb66565f5ed3af6a035c0112"
+  },
+  "repair_test_sha256": "6a4ce25b61f29af12af71ebff09a0354bce4eb00f8a04edfec75b83d15186285",
+  "reports": {
+    "q27-controller-red-20260913.xml": {
+      "sha256": "f0f0144b8cdfe55d058908ab2e124c19d9f772fe31f47bf20ca0e80d344d193a",
+      "tests": 11,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.951,
+      "failed_testcases": [
+        "test_actual_eight_cell_train_entry_has_strict_post_runtime_qualification"
+      ]
+    },
+    "q27-controller-r2.xml": {
+      "sha256": "89907bc9f85f8d58dbf23a07d9f94f8a0269e6a75e2861db8d72d5f003a00517",
+      "tests": 14,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 56.908,
+      "failed_testcases": [
+        "test_actual_eight_cell_train_entry_has_strict_post_runtime_qualification",
+        "test_trusted_callback_cannot_qualify_wrong_or_empty_finding"
+      ]
+    },
+    "q27-controller-r3.xml": {
+      "sha256": "0ca85b48689086ea438ca8b4a59fa6b6946fb6d5556c8f82c08632f4c9ae914d",
+      "tests": 52,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 208.003,
+      "failed_testcases": []
+    },
+    "q27-controller-ecf16cc.xml": {
+      "sha256": "4fafdbd37b89e3d2f4593118c24d0d353183fc5d735d6d8d0d11f684f265d461",
+      "tests": 141,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 670.999,
+      "failed_testcases": [
+        "test_every_obligation_gets_all_variants_and_all_legal_paired_arms"
+      ]
+    },
+    "q27-controller-d21fa3a.xml": {
+      "sha256": "f51488c8b7c4185e91b7ad10977856ee98a139038bd19761886ee123b855e39c",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 4.028,
+      "failed_testcases": []
+    }
+  },
+  "verification_interpretation": "The 141-case frozen regression at ecf16cc had 140 passes and one stale generic Q2.7 planning fixture failure. d21fa3a changes only that test caller_bound classification; all 15 panel_plan cases pass on the final commit. All production, integration test and driver hashes above are unchanged. Historical failed XMLs are preserved, not rewritten.",
+  "evidence_boundary": "Public synthetic custody and actual Docker; real CodexModelPort with mocked local process; host fixture audit; no paid model/private/validation; structural and causal wiring only, scientific effectiveness not measured."
+}
