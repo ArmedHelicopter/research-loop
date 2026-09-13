@@ -35,6 +35,8 @@ class ScenarioDriver(Protocol):
     execution_limit: int
     docker_execution: str
 
+    def slots_for(self, cell: PanelCell) -> tuple[str, ...]: ...
+
     def run(self, workflow: ModularWorkflow, *, cell: PanelCell, scenario: FrozenRecord,
             model: ModelPort, package: CandidatePackage) -> tuple[WorkflowResult, FrozenRecord, tuple[FrozenRecord, ...]]: ...
 
@@ -52,6 +54,9 @@ class Q31PredictionDriver:
     slots = ("scenario", "final")
     execution_limit = 0
     docker_execution = "not_requested_by_driver"
+
+    def slots_for(self, cell: PanelCell) -> tuple[str, ...]:
+        return self.slots
 
     def run(self, workflow: ModularWorkflow, *, cell: PanelCell, scenario: FrozenRecord,
             model: ModelPort, package: CandidatePackage) -> tuple[WorkflowResult, FrozenRecord, tuple[FrozenRecord, ...]]:
@@ -98,6 +103,9 @@ class Q43ReviewDriver:
              "measurement_revision", "final")
     execution_limit = 0
     docker_execution = "not_requested_by_driver"
+
+    def slots_for(self, cell: PanelCell) -> tuple[str, ...]:
+        return self.slots
 
     def run(self, workflow: ModularWorkflow, *, cell: PanelCell, scenario: FrozenRecord,
             model: ModelPort, package: CandidatePackage) -> tuple[WorkflowResult, FrozenRecord, tuple[FrozenRecord, ...]]:
@@ -181,9 +189,12 @@ class Q43ReviewDriver:
 
 
 from research_loop.modular.q15_panel_driver import Q15HistoryReviewDriver
+from research_loop.modular.q4_panel_drivers import Q41IndependenceDriver, Q42RoleDriver, Q44CounterexampleDriver, Q45SelfCorrectionDriver
 
 
-DRIVERS: dict[str, ScenarioDriver] = {"Q1.5": Q15HistoryReviewDriver(), "Q3.1": Q31PredictionDriver(), "Q4.3": Q43ReviewDriver()}
+DRIVERS: dict[str, ScenarioDriver] = {"Q1.5": Q15HistoryReviewDriver(), "Q3.1": Q31PredictionDriver(),
+    "Q4.1": Q41IndependenceDriver(), "Q4.2": Q42RoleDriver(), "Q4.3": Q43ReviewDriver(),
+    "Q4.4": Q44CounterexampleDriver(), "Q4.5": Q45SelfCorrectionDriver()}
 
 
 def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
@@ -216,8 +227,12 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
         raise ContractError("package digest differs from panel cell")
     if not isinstance(objective, FrozenRecord) or not callable(model):
         raise ContractError("runner needs frozen objective and model port")
+    slots_for = getattr(driver, "slots_for", None)
+    slots = slots_for(cell) if callable(slots_for) else driver.slots
+    if (not isinstance(slots, tuple) or not slots or any(slot not in driver.slots for slot in slots)):
+        raise ContractError("driver variant schedule must be a nonempty subset of its frozen schema slots")
     session = RunSession(task, package_digest=package.digest, arm=cell.runtime_arm,
-                         objective=objective, slots=driver.slots, execution_limit=driver.execution_limit,
+                         objective=objective, slots=slots, execution_limit=driver.execution_limit,
                          sidecar=sidecar, verifier=audit_verifier, required_audit=("measurement",))
     workflow = ModularWorkflow(session)
     try:

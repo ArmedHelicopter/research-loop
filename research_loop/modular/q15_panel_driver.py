@@ -21,6 +21,9 @@ class Q15HistoryReviewDriver:
     execution_limit = 0
     docker_execution = "not_requested_by_driver"
 
+    def slots_for(self, cell: "PanelCell") -> tuple[str, ...]:
+        return self.slots
+
     def run(self, workflow: "ModularWorkflow", *, cell: "PanelCell", scenario: FrozenRecord,
             model: "ModelPort", package: "CandidatePackage") -> tuple["WorkflowResult", FrozenRecord, tuple[FrozenRecord, ...]]:
         binding = {"experiment_id": cell.coverage_id, "variant": cell.variant,
