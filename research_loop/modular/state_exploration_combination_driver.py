@@ -5,6 +5,7 @@ Neither provenance signatures nor execution success establish scientific validit
 """
 from dataclasses import dataclass
 from pathlib import Path
+import re
 
 from research_loop.modular.admission_combination import FrozenAdmissionMaterial, AdmissionMaterialVerifier
 from research_loop.modular.benchmark_cell import _solver_journal_state, _compare_solver_result
@@ -282,9 +283,19 @@ def verify_state_exploration_cell(result, *, panel, task, scenario, package, mat
                 raise ContractError('solver omitted the actual state or exploration context')
         _verify_solver_files(solver_state, events, path, state)
         execution = solver_state['execution']
-        if execution is not None and execution.record.data().get('argv'):
-            if execution.record.data()['argv'][-3:] != [scenario.data()['image'], 'python3', '/task/analysis.py']:
-                raise ContractError('Docker execution image differs from frozen scenario')
+        if execution is not None and execution.status != 'rejected':
+            argv = execution.record.data().get('argv')
+            if (not isinstance(argv, list) or len(argv) < 6 or not isinstance(argv[5], str)
+                    or not re.fullmatch('research-loop-[0-9a-f]{20}', argv[5])):
+                raise ContractError('missing actual bounded solver Docker invocation')
+            expected_argv = ['docker', 'run', '--pull', 'never', '--name', argv[5], '--rm', '--network', 'none', '--read-only',
+                '--user', '1000:1000', '--tmpfs', '/tmp:rw,noexec,nosuid,size=64m', '--pids-limit', '128',
+                '--memory', '1g', '--cpus', '1.0', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges']
+            for key in sorted(public_inputs):
+                expected_argv.extend(['-v', DockerExecutionBroker._mount_source(public_inputs[key].absolute())+':/input/'+key+':ro'])
+            expected_argv.extend(['-v', DockerExecutionBroker._mount_source((path.parent/'analysis-1.py').absolute())+
+                ':/task/analysis.py:ro', scenario.data()['image'], 'python3', '/task/analysis.py'])
+            if argv != expected_argv:
+                raise ContractError('solver Docker limits or exact program/input mounts differ from frozen allocation')
     return FrozenRecord.from_dict({'schema': 'state-exploration-verification-v1', 'engineering_verified': True,
         'cell_key': list(cell.key), 'status': result.runtime.status, 'scientific_effect': 'not_measured'})
-

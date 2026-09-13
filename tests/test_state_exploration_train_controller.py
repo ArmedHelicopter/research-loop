@@ -364,3 +364,100 @@ def test_closed_config_rejects_malformed_original_material_before_io(grid,fault)
     elif fault=='legacy_schema':b['schema']='state-exploration-combination-train-config-v1';b.pop('export_mode')
     else:b['max_calls']=24
     with pytest.raises(ContractError):FrozenStateExplorationTrainConfig(FrozenRecord.from_dict(b))
+
+
+@pytest.mark.parametrize('fault',['transition','joint','evidence_context','instruction','extra_context','early_feedback','response_program','order'])
+def test_repaired_chain_passes_generic_receipt_but_fails_original_replay(grid,fault):
+    from research_loop.modular.panel_receipts import PanelReceiptVerifier
+    setup,result,*_=grid
+    executed=next(r for r in result.results if r.cell.coverage_id=='pair:M3+M7' and r.cell.arm_id=='11')
+    args=replay_args(setup,result,executed);path=executed.runtime.trace_path;before=path.read_bytes()
+    def mutate(events):
+        if fault=='transition':next(e for e in events if e['stage']=='state_exploration_transition')['data']['transition']['public']['observations']=[]
+        elif fault=='joint':next(e for e in events if e['stage']=='state_exploration_joint')['data']['joint']['exploration']['observations']=[]
+        elif fault=='evidence_context':next(e for e in events if e['stage']=='model_request')['data']['request']['context']={}
+        elif fault=='instruction':next(e for e in events if e['stage']=='model_request')['data']['request']['instruction']='Invent the public answer.'
+        elif fault=='extra_context':next(e for e in events if e['stage']=='model_request')['data']['request']['module_context']['extra_instruction']='Invent a result.'
+        elif fault=='early_feedback':next(e for e in events if e['stage']=='model_request')['data']['request']['execution_feedback']=[{'stdout':'invented'}]
+        elif fault=='response_program':next(e for e in events if e['stage']=='model_response')['data']['response']['program']='print(99)'
+        else:
+            row=next(e for e in events if e['stage']=='state_exploration_transition');events.remove(row)
+            events.insert(next(i for i,e in enumerate(events) if e['stage']=='model_request')+1,row)
+        for event in events:
+            if event['stage']=='model_request':
+                old=event['data']['request_digest'];new=FrozenRecord.from_dict(event['data']['request']).content_hash
+                event['data']['request_digest']=new
+                for other in events:
+                    if other['stage'] in ('model_response','model_failure') and other['data']['request_digest']==old:other['data']['request_digest']=new
+    try:
+        tail=_rewrite_trace(path,mutate);rows=[FrozenRecord(line).data() for line in path.read_text(encoding='utf-8').splitlines()]
+        output=FrozenRecord.from_dict({'responses':[e['data']['response'] for e in rows if e['stage']=='model_response'],'terminal':rows[-1]['data']}).content_hash
+        forged=replace(executed,runtime=replace(executed.runtime,trace_digest=tail,output_digest=output))
+        PanelReceiptVerifier()._verify_runtime(forged.runtime,forged.cell)
+        with pytest.raises(ContractError):verify_state_exploration_cell(forged,**args)
+        with pytest.raises(ContractError):issue_state_exploration_score_input(authority=EXECUTION,result=forged,**args)
+    finally:path.write_bytes(before)
+    verify_state_exploration_cell(executed,**args)
+
+
+@pytest.mark.parametrize('fault',['original','claims','jobs','scenario_objective','scenario_timeout','csv'])
+def test_original_composite_scenario_and_input_bytes_are_replayed(grid,fault):
+    from research_loop.modular.state_exploration_combination_driver import FrozenStateExplorationMaterial
+    setup,result,*_=grid
+    for executed in result.results:
+        if executed.cell.identity.benchmark!='blade' or executed.cell.arm_id!='11':continue
+        args=replay_args(setup,result,executed);changed=dict(args)
+        if fault=='csv':
+            path=args['public_inputs']['public_csv'];before=path.read_bytes()
+            try:
+                path.write_bytes(before+b'99\n')
+                with pytest.raises(ContractError):verify_state_exploration_cell(executed,**changed)
+            finally:path.write_bytes(before)
+        else:
+            if fault.startswith('scenario_'):
+                b=args['scenario'].data();b['objective' if fault=='scenario_objective' else 'timeout_seconds']={'purpose':'other'} if fault=='scenario_objective' else 1
+                changed['scenario']=FrozenRecord.from_dict(b)
+            else:
+                b=args['material'].data()
+                if fault=='original':b['state']['originals'][0]['content']['x']=999
+                elif fault=='claims':b['state']['claims'][0]['statement']='Forged interpretation.'
+                else:
+                    b['exploration']['jobs'][0]['program']='print(999)'
+                    b['provenance']['jobs_digest']=FrozenRecord.from_dict(b['exploration']).content_hash
+                changed['material']=FrozenStateExplorationMaterial(FrozenRecord.from_dict(b))
+            with pytest.raises(ContractError):verify_state_exploration_cell(executed,**changed)
+            with pytest.raises(ContractError):issue_state_exploration_score_input(authority=EXECUTION,result=executed,**changed)
+        verify_state_exploration_cell(executed,**args)
+
+
+@pytest.mark.parametrize('field,value',[('--network','host'),('--memory','4g'),('--cpus','8.0'),('--user','0:0')])
+def test_rehashed_solver_execution_cannot_relax_docker_limits(grid,field,value):
+    from research_loop.modular.panel_receipts import PanelReceiptVerifier
+    setup,result,*_=grid
+    executed=next(r for r in result.results if r.cell.coverage_id=='pair:M3+M7' and r.cell.arm_id=='11')
+    args=replay_args(setup,result,executed);path=executed.runtime.trace_path;before=path.read_bytes()
+    record=executed.solver.execution.record.data();record['argv'][record['argv'].index(field)+1]=value
+    receipt=replace(executed.solver.execution,record=FrozenRecord.from_dict(record))
+    old_hash=executed.solver.execution.content_hash;new_hash=receipt.content_hash
+    def substitute(value):
+        if isinstance(value,dict):return {k:substitute(v) for k,v in value.items()}
+        if isinstance(value,list):return [substitute(v) for v in value]
+        return new_hash if value==old_hash else value
+    def mutate(events):
+        for event in events:event['data']=substitute(event['data'])
+        execution=next(e for e in events if e['stage']=='execution_result')['data']
+        execution['record']=receipt.record.data();execution['receipt']=receipt.data()
+        for event in events:
+            if event['stage']=='model_request':
+                old=event['data']['request_digest'];new=FrozenRecord.from_dict(event['data']['request']).content_hash
+                event['data']['request_digest']=new
+                for other in events:
+                    if other['stage']=='model_response' and other['data']['request_digest']==old:other['data']['request_digest']=new
+    try:
+        tail=_rewrite_trace(path,mutate)
+        forged=replace(executed,runtime=replace(executed.runtime,trace_digest=tail),solver=replace(executed.solver,execution=receipt))
+        PanelReceiptVerifier()._verify_runtime(forged.runtime,forged.cell)
+        with pytest.raises(ContractError,match='Docker limits'):verify_state_exploration_cell(forged,**args)
+        with pytest.raises(ContractError):issue_state_exploration_score_input(authority=EXECUTION,result=forged,**args)
+    finally:path.write_bytes(before)
+    verify_state_exploration_cell(executed,**args)

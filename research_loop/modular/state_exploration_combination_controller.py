@@ -365,4 +365,3 @@ def run_state_exploration_train_panels(config, *, custody, snapshot_root, export
             and all(c.data()['status'] in {'estimated', 'not_identifiable'} for c in contrasts) else 'inconclusive'})
     _write(root/'controller-receipt.json', receipt.data()); journal['status'] = receipt.data()['status']; persist()
     return StateExplorationTrainRun(compiled, tuple(results), tuple(scores), tuple(FrozenRecord.from_dict(r) for r in journal['cells']), tuple(contrasts), receipt)
-
