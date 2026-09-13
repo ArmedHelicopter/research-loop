@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="9" time="3.943" timestamp="2026-09-13T15:07:12.041445+08:00" hostname="SC-202507131830"><testcase classname="tests.test_prospective_train_exporter" name="test_pinned_source_to_seal_to_real_adapter_projection_seam" time="0.336"><failure message="research_loop.ontology.ContractError: extended source path is unavailable">path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_pinned_source_to_seal_to_0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+&gt;           info = path.stat(follow_symlinks=False)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+evaluation\modular\extended_ingestion.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_pinned_source_to_seal_to_0/public-train')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+&gt;       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\prospective-train-exporter-checks\\green-r1\\test_pinned_source_to_seal_to_0\\public-train'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:840: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_pinned_source_to_seal_to_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000015F8BE8F1D0&gt;
+
+    def test_pinned_source_to_seal_to_real_adapter_projection_seam(tmp_path, monkeypatch):
+&gt;       config, exporter, selected, _, split = setup_export(tmp_path, monkeypatch)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prospective_train_exporter.py:35: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_prospective_train_exporter.py:18: in setup_export
+    exporter = ProspectiveTrainExporter(config, sealed,
+evaluation\modular\prospective_train_exporter.py:71: in __init__
+    self.sealed_root, self.output_root, self.audit_root = map(_concrete, (sealed_root, output_root, audit_root))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+evaluation\modular\prospective_train_exporter.py:38: in _concrete
+    if _reparse(ancestor):
+       ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_pinned_source_to_seal_to_0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+            info = path.stat(follow_symlinks=False)
+        except OSError as exc:
+&gt;           raise ContractError("extended source path is unavailable") from exc
+E           research_loop.ontology.ContractError: extended source path is unavailable
+
+evaluation\modular\extended_ingestion.py:67: ContractError</failure></testcase><testcase classname="tests.test_prospective_train_exporter" name="test_validation_rejected_before_snapshot_read_projection_or_output" time="0.527"><failure message="research_loop.ontology.ContractError: extended source path is unavailable">path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_validation_rejected_befor0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+&gt;           info = path.stat(follow_symlinks=False)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+evaluation\modular\extended_ingestion.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_validation_rejected_befor0/public-train')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+&gt;       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\prospective-train-exporter-checks\\green-r1\\test_validation_rejected_befor0\\public-train'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:840: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_validation_rejected_befor0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000015F8BEC6E10&gt;
+
+    def test_validation_rejected_before_snapshot_read_projection_or_output(tmp_path, monkeypatch):
+&gt;       _, exporter, selected, validation, _ = setup_export(tmp_path, monkeypatch)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prospective_train_exporter.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_prospective_train_exporter.py:18: in setup_export
+    exporter = ProspectiveTrainExporter(config, sealed,
+evaluation\modular\prospective_train_exporter.py:71: in __init__
+    self.sealed_root, self.output_root, self.audit_root = map(_concrete, (sealed_root, output_root, audit_root))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+evaluation\modular\prospective_train_exporter.py:38: in _concrete
+    if _reparse(ancestor):
+       ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_validation_rejected_befor0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+            info = path.stat(follow_symlinks=False)
+        except OSError as exc:
+&gt;           raise ContractError("extended source path is unavailable") from exc
+E           research_loop.ontology.ContractError: extended source path is unavailable
+
+evaluation\modular\extended_ingestion.py:67: ContractError</failure></testcase><testcase classname="tests.test_prospective_train_exporter" name="test_caller_identity_drift_rejected_before_source_read[source]" time="0.357"><failure message="research_loop.ontology.ContractError: extended source path is unavailable">path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_caller_identity_drift_rej0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+&gt;           info = path.stat(follow_symlinks=False)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+evaluation\modular\extended_ingestion.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_caller_identity_drift_rej0/public-train')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+&gt;       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\prospective-train-exporter-checks\\green-r1\\test_caller_identity_drift_rej0\\public-train'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:840: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_caller_identity_drift_rej0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000015F8C749310&gt;
+changed = 'source'
+
+    @pytest.mark.parametrize("changed", ["source", "group_sha256", "source_receipt_digest"])
+    def test_caller_identity_drift_rejected_before_source_read(tmp_path, monkeypatch, changed):
+&gt;       _, exporter, selected, _, _ = setup_export(tmp_path, monkeypatch)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prospective_train_exporter.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_prospective_train_exporter.py:18: in setup_export
+    exporter = ProspectiveTrainExporter(config, sealed,
+evaluation\modular\prospective_train_exporter.py:71: in __init__
+    self.sealed_root, self.output_root, self.audit_root = map(_concrete, (sealed_root, output_root, audit_root))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+evaluation\modular\prospective_train_exporter.py:38: in _concrete
+    if _reparse(ancestor):
+       ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_caller_identity_drift_rej0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+            info = path.stat(follow_symlinks=False)
+        except OSError as exc:
+&gt;           raise ContractError("extended source path is unavailable") from exc
+E           research_loop.ontology.ContractError: extended source path is unavailable
+
+evaluation\modular\extended_ingestion.py:67: ContractError</failure></testcase><testcase classname="tests.test_prospective_train_exporter" name="test_caller_identity_drift_rejected_before_source_read[group_sha256]" time="0.348"><failure message="research_loop.ontology.ContractError: extended source path is unavailable">path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_caller_identity_drift_rej1/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+&gt;           info = path.stat(follow_symlinks=False)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+evaluation\modular\extended_ingestion.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_caller_identity_drift_rej1/public-train')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+&gt;       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\prospective-train-exporter-checks\\green-r1\\test_caller_identity_drift_rej1\\public-train'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:840: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_caller_identity_drift_rej1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000015F8C748CB0&gt;
+changed = 'group_sha256'
+
+    @pytest.mark.parametrize("changed", ["source", "group_sha256", "source_receipt_digest"])
+    def test_caller_identity_drift_rejected_before_source_read(tmp_path, monkeypatch, changed):
+&gt;       _, exporter, selected, _, _ = setup_export(tmp_path, monkeypatch)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prospective_train_exporter.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_prospective_train_exporter.py:18: in setup_export
+    exporter = ProspectiveTrainExporter(config, sealed,
+evaluation\modular\prospective_train_exporter.py:71: in __init__
+    self.sealed_root, self.output_root, self.audit_root = map(_concrete, (sealed_root, output_root, audit_root))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+evaluation\modular\prospective_train_exporter.py:38: in _concrete
+    if _reparse(ancestor):
+       ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_caller_identity_drift_rej1/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+            info = path.stat(follow_symlinks=False)
+        except OSError as exc:
+&gt;           raise ContractError("extended source path is unavailable") from exc
+E           research_loop.ontology.ContractError: extended source path is unavailable
+
+evaluation\modular\extended_ingestion.py:67: ContractError</failure></testcase><testcase classname="tests.test_prospective_train_exporter" name="test_caller_identity_drift_rejected_before_source_read[source_receipt_digest]" time="0.385"><failure message="research_loop.ontology.ContractError: extended source path is unavailable">path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_caller_identity_drift_rej2/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+&gt;           info = path.stat(follow_symlinks=False)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+evaluation\modular\extended_ingestion.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_caller_identity_drift_rej2/public-train')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+&gt;       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\prospective-train-exporter-checks\\green-r1\\test_caller_identity_drift_rej2\\public-train'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:840: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_caller_identity_drift_rej2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000015F8BEA0BC0&gt;
+changed = 'source_receipt_digest'
+
+    @pytest.mark.parametrize("changed", ["source", "group_sha256", "source_receipt_digest"])
+    def test_caller_identity_drift_rejected_before_source_read(tmp_path, monkeypatch, changed):
+&gt;       _, exporter, selected, _, _ = setup_export(tmp_path, monkeypatch)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prospective_train_exporter.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_prospective_train_exporter.py:18: in setup_export
+    exporter = ProspectiveTrainExporter(config, sealed,
+evaluation\modular\prospective_train_exporter.py:71: in __init__
+    self.sealed_root, self.output_root, self.audit_root = map(_concrete, (sealed_root, output_root, audit_root))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+evaluation\modular\prospective_train_exporter.py:38: in _concrete
+    if _reparse(ancestor):
+       ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_caller_identity_drift_rej2/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+            info = path.stat(follow_symlinks=False)
+        except OSError as exc:
+&gt;           raise ContractError("extended source path is unavailable") from exc
+E           research_loop.ontology.ContractError: extended source path is unavailable
+
+evaluation\modular\extended_ingestion.py:67: ContractError</failure></testcase><testcase classname="tests.test_prospective_train_exporter" name="test_sealed_split_tamper_cannot_be_rehashed_by_caller" time="0.362"><failure message="research_loop.ontology.ContractError: extended source path is unavailable">path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_sealed_split_tamper_canno0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+&gt;           info = path.stat(follow_symlinks=False)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+evaluation\modular\extended_ingestion.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_sealed_split_tamper_canno0/public-train')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+&gt;       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\prospective-train-exporter-checks\\green-r1\\test_sealed_split_tamper_canno0\\public-train'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:840: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_sealed_split_tamper_canno0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000015F8BD3F680&gt;
+
+    def test_sealed_split_tamper_cannot_be_rehashed_by_caller(tmp_path, monkeypatch):
+&gt;       _, exporter, selected, _, split = setup_export(tmp_path, monkeypatch)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prospective_train_exporter.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_prospective_train_exporter.py:18: in setup_export
+    exporter = ProspectiveTrainExporter(config, sealed,
+evaluation\modular\prospective_train_exporter.py:71: in __init__
+    self.sealed_root, self.output_root, self.audit_root = map(_concrete, (sealed_root, output_root, audit_root))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+evaluation\modular\prospective_train_exporter.py:38: in _concrete
+    if _reparse(ancestor):
+       ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_sealed_split_tamper_canno0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+            info = path.stat(follow_symlinks=False)
+        except OSError as exc:
+&gt;           raise ContractError("extended source path is unavailable") from exc
+E           research_loop.ontology.ContractError: extended source path is unavailable
+
+evaluation\modular\extended_ingestion.py:67: ContractError</failure></testcase><testcase classname="tests.test_prospective_train_exporter" name="test_original_receipt_input_or_actual_snapshot_drift_blocks_before_payload_write" time="0.483"><failure message="research_loop.ontology.ContractError: extended source path is unavailable">path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_original_receipt_input_or0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+&gt;           info = path.stat(follow_symlinks=False)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+evaluation\modular\extended_ingestion.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_original_receipt_input_or0/public-train')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+&gt;       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\prospective-train-exporter-checks\\green-r1\\test_original_receipt_input_or0\\public-train'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:840: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_original_receipt_input_or0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000015F8BEBBE00&gt;
+
+    def test_original_receipt_input_or_actual_snapshot_drift_blocks_before_payload_write(tmp_path, monkeypatch):
+&gt;       config, exporter, selected, _, _ = setup_export(tmp_path, monkeypatch)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prospective_train_exporter.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_prospective_train_exporter.py:18: in setup_export
+    exporter = ProspectiveTrainExporter(config, sealed,
+evaluation\modular\prospective_train_exporter.py:71: in __init__
+    self.sealed_root, self.output_root, self.audit_root = map(_concrete, (sealed_root, output_root, audit_root))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+evaluation\modular\prospective_train_exporter.py:38: in _concrete
+    if _reparse(ancestor):
+       ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_original_receipt_input_or0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+            info = path.stat(follow_symlinks=False)
+        except OSError as exc:
+&gt;           raise ContractError("extended source path is unavailable") from exc
+E           research_loop.ontology.ContractError: extended source path is unavailable
+
+evaluation\modular\extended_ingestion.py:67: ContractError</failure></testcase><testcase classname="tests.test_prospective_train_exporter" name="test_failure_retains_reserved_partial_exposure_without_raw_exception" time="0.465"><failure message="research_loop.ontology.ContractError: extended source path is unavailable">path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_failure_retains_reserved_0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+&gt;           info = path.stat(follow_symlinks=False)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+evaluation\modular\extended_ingestion.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_failure_retains_reserved_0/public-train')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+&gt;       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\prospective-train-exporter-checks\\green-r1\\test_failure_retains_reserved_0\\public-train'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:840: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_failure_retains_reserved_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000015F8BEC6120&gt;
+
+    def test_failure_retains_reserved_partial_exposure_without_raw_exception(tmp_path, monkeypatch):
+&gt;       _, exporter, selected, _, _ = setup_export(tmp_path, monkeypatch)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prospective_train_exporter.py:96: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_prospective_train_exporter.py:18: in setup_export
+    exporter = ProspectiveTrainExporter(config, sealed,
+evaluation\modular\prospective_train_exporter.py:71: in __init__
+    self.sealed_root, self.output_root, self.audit_root = map(_concrete, (sealed_root, output_root, audit_root))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+evaluation\modular\prospective_train_exporter.py:38: in _concrete
+    if _reparse(ancestor):
+       ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_failure_retains_reserved_0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+            info = path.stat(follow_symlinks=False)
+        except OSError as exc:
+&gt;           raise ContractError("extended source path is unavailable") from exc
+E           research_loop.ontology.ContractError: extended source path is unavailable
+
+evaluation\modular\extended_ingestion.py:67: ContractError</failure></testcase><testcase classname="tests.test_prospective_train_exporter" name="test_failure_ledger_is_append_only_and_tamper_is_not_reset" time="0.326"><failure message="research_loop.ontology.ContractError: extended source path is unavailable">path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_failure_ledger_is_append_0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+&gt;           info = path.stat(follow_symlinks=False)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+evaluation\modular\extended_ingestion.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_failure_ledger_is_append_0/public-train')
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+&gt;       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] 系统找不到指定的文件。: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\prospective-train-exporter-checks\\green-r1\\test_failure_ledger_is_append_0\\public-train'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:840: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_failure_ledger_is_append_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000015F8C74A090&gt;
+
+    def test_failure_ledger_is_append_only_and_tamper_is_not_reset(tmp_path, monkeypatch):
+&gt;       _, exporter, _, validation, _ = setup_export(tmp_path, monkeypatch)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prospective_train_exporter.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_prospective_train_exporter.py:18: in setup_export
+    exporter = ProspectiveTrainExporter(config, sealed,
+evaluation\modular\prospective_train_exporter.py:71: in __init__
+    self.sealed_root, self.output_root, self.audit_root = map(_concrete, (sealed_root, output_root, audit_root))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+evaluation\modular\prospective_train_exporter.py:38: in _concrete
+    if _reparse(ancestor):
+       ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/prospective-train-exporter-checks/green-r1/test_failure_ledger_is_append_0/public-train')
+
+    def _reparse(path: Path) -&gt; bool:
+        try:
+            info = path.stat(follow_symlinks=False)
+        except OSError as exc:
+&gt;           raise ContractError("extended source path is unavailable") from exc
+E           research_loop.ontology.ContractError: extended source path is unavailable
+
+evaluation\modular\extended_ingestion.py:67: ContractError</failure></testcase></testsuite></testsuites>

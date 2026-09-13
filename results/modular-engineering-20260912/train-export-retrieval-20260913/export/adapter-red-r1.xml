@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.110" timestamp="2026-09-13T15:19:55.923806+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_extended_adapters" name="test_adapter_supports_optional_blank_or_nested_path[blank_background]" time="0.000"><failure message="research_loop.ontology.ContractError: sub_step.step_background must be bounded nonempty text">variant = 'blank_background'
+
+    @pytest.mark.parametrize("variant", ["blank_background", "nested_output"])
+    def test_adapter_supports_optional_blank_or_nested_path(variant):
+        if variant == "blank_background":
+            metadata = scicode_public()
+            metadata["sub_steps"][0]["step_background"] = " \n\t"
+&gt;           task = SciCodeAdapter().prepare(identity("scicode"), metadata)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_extended_adapters.py:106: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\benchmarks\scicode.py:42: in prepare
+    "background": public_text(step.get("step_background"), "sub_step.step_background", optional=True),
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = ' \n\t', name = 'sub_step.step_background'
+
+    def public_text(value: Any, name: str, *, optional: bool = False) -&gt; str | None:
+        if value is None and optional:
+            return None
+        if not isinstance(value, str) or not value.strip() or len(value) &gt; 16000:
+&gt;           raise ContractError(f"{name} must be bounded nonempty text")
+E           research_loop.ontology.ContractError: sub_step.step_background must be bounded nonempty text
+
+research_loop\modular\benchmarks\_public.py:23: ContractError</failure></testcase><testcase classname="tests.test_modular_extended_adapters" name="test_adapter_supports_optional_blank_or_nested_path[nested_output]" time="0.000"><failure message="research_loop.ontology.ContractError: output_fname must use a safe relative filename">variant = 'nested_output'
+
+    @pytest.mark.parametrize("variant", ["blank_background", "nested_output"])
+    def test_adapter_supports_optional_blank_or_nested_path(variant):
+        if variant == "blank_background":
+            metadata = scicode_public()
+            metadata["sub_steps"][0]["step_background"] = " \n\t"
+            task = SciCodeAdapter().prepare(identity("scicode"), metadata)
+            assert task.payload.data()["steps"][0]["background"] is None
+        else:
+            metadata = scienceagent_public()
+            metadata["output_fname"] = "results/predictions.csv"
+&gt;           task = ScienceAgentBenchAdapter().prepare(identity("scienceagentbench"), metadata)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_extended_adapters.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\benchmarks\scienceagentbench.py:40: in prepare
+    "output_filename": _safe_output_name(raw.get("output_fname")),
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = 'results/predictions.csv'
+
+    def _safe_output_name(value: Any) -&gt; str:
+        name = public_text(value, "output_fname")
+        if "\\" in name:
+            raise ContractError("output_fname must use a safe relative filename")
+        path = PurePosixPath(name)
+        if (path.is_absolute() or ".." in path.parts or len(path.parts) != 1 or ":" in name
+                or path.name != name or any(ord(char) &lt; 32 for char in name)):
+&gt;           raise ContractError("output_fname must use a safe relative filename")
+E           research_loop.ontology.ContractError: output_fname must use a safe relative filename
+
+research_loop\modular\benchmarks\scienceagentbench.py:21: ContractError</failure></testcase></testsuite></testsuites>

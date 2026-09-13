@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="16" time="53.520" timestamp="2026-09-13T15:18:48.842676+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_q81_q84_train_controller" name="test_q81_q84_full_custody_controller_grid_real_docker" time="52.934"><failure message="research_loop.ontology.ContractError: successful receipt lacks terminal runtime output evidence">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q81q84-second/test_q81_q84_full_custody_cont0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000021B2D318410&gt;
+
+    def test_q81_q84_full_custody_controller_grid_real_docker(tmp_path, monkeypatch):
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        from evaluation.modular.train_io import TrainPacketExporter
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "material").export(base["item_ids"])
+        evidence = {packet.task.content_hash: bundle(packet).data() for packet in packets}
+        grids = obligation_grids(("Q8.1", "Q8.4"), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"final": FINAL, "research": ANALYSIS, "competition": SCENARIO, "distinguish": ANALYSIS,
+            "review_a": REVIEW, "review_b": REVIEW, "retro_blind": REVIEW, "retro_reveal": REVIEW, "frontier": FRONTIER}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1", "engineering_scope": "train_only_panel_engineering",
+            "stage": "q81-q84-controller", "scope_ids": ["Q8.1", "Q8.4"], "evidence_by_task": evidence,
+            "packages_by_arm": {arm.content_hash: package for grid in grids.values() for arm in executable_arms(grid).values()},
+            "budget": {"model_calls": 3, "retrieval_calls": 3, "execution_limit": 1}, "max_calls": 128, "max_tokens": 512, "schemas": schemas}))
+        port = model_port(tmp_path, monkeypatch, max_calls=128, max_tokens=512, schemas=schemas, response_factory=response)
+        provider, authority = Provider(), Authority()
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export", run_root=tmp_path / "run",
+            model=port, audit_verifier=AuditVerifier({"a": b"a"*32, "b": b"b"*32}), retrieval_provider=provider,
+            retrieval_admission_port=admission, retrieval_stage_authority=authority)
+
+tests\test_modular_q81_q84_train_controller.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\train_controller.py:381: in run_train_panel
+    verdict = PanelReceiptVerifier(post_runtime_verifier=post_verifier).verify(compiled.panel, tuple(runtimes))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\panel_receipts.py:350: in verify
+    self._verify_runtime(row, expected[key], p0_control_digest=grid.get("p0_control_digest"))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.panel_receipts.PanelReceiptVerifier object at 0x0000021B2D363F20&gt;
+receipt = RuntimeReceipt(cell_key=('Q8.1', 'discoverybench', 'synth:train:family_1_1', 'discoverybench:synth:train:family_1_1', ...64df9c0f377fc8', output_digest='990c1dc48d761cec1978b32c480073fbf97ddef22047627b59e73eed38875685', failure_reason=None)
+expected = PanelCell(coverage_id='Q8.1', identity=DataIdentity(benchmark='discoverybench', task_id='synth:train:family_1_1', grou...18a51a673b35331a3cffb68c05db8958579', scorer_digest='630f02ff0bbc4150d4fdc03039808d377af73f1870325a2b272750d6085e2a6c')
+
+    def _verify_runtime(self, receipt: RuntimeReceipt, expected: PanelCell, *, p0_control_digest: str | None = None) -&gt; None:
+        if receipt.cell_key != expected.key:
+            raise ContractError("runtime receipt cell key does not match the frozen panel cell")
+        verify_protocol_trace(receipt.trace_path)
+        trace = verify_trace(receipt.trace_path).data()
+        if trace["trace_digest"] != receipt.trace_digest:
+            raise ContractError("runtime trace digest does not match the hash-chained journal")
+        events = [FrozenRecord(line).data() for line in receipt.trace_path.read_text(encoding="utf-8").splitlines()]
+        lock = events[0].get("data")
+        if events[0].get("lock_digest") != FrozenRecord.from_dict(lock).content_hash:
+            raise ContractError("objective lock event does not bind its own lock")
+        if not isinstance(lock, dict) or lock.get("identity") != expected.identity.data():
+            raise ContractError("runtime trace task binding mismatch")
+        if lock.get("task_digest") != expected.task_digest or lock.get("package_digest") != expected.package_digest or lock.get("arm") != expected.runtime_arm.data():
+            raise ContractError("runtime trace package or legal-arm binding mismatch")
+        requests = [event["data"].get("request", {}) for event in events if event["stage"] == "model_request"]
+        expected_binding = {"experiment_id": expected.coverage_id, "variant": expected.variant,
+                            "replicate": expected.replicate, "arm_id": expected.arm_id,
+                            "scenario_digest": expected.scenario_digest}
+        protocol_bindings = [e["data"] for e in events if e["stage"] == "q27_panel_binding"]
+        bound_protocol_failure = (expected.coverage_id == "Q2.7" and not requests
+            and events[-1]["stage"] in {"controller_failure", "execution_failure", "execution_terminal"}
+            and protocol_bindings == [{"panel_cell": expected_binding, "p0_control_digest": p0_control_digest}])
+        if p0_control_digest is not None and not bound_protocol_failure and (not requests or any(
+                request.get("module_context", {}).get("p0_control_digest") != p0_control_digest for request in requests)):
+            raise ContractError("runtime request lacks the frozen P0 control binding")
+        expected_opaque_binding = opaque_panel_cell_binding(expected)
+        bound_request = any(request.get("task", {}).get("identity") == expected.identity.data()
+                            and request.get("module_context", {}).get("panel_cell") in (expected_binding, expected_opaque_binding)
+                            for request in requests)
+        bound_early_failure = (not requests and events[-1].get("stage") == "controller_failure"
+                               and events[-1].get("data", {}).get("panel_cell") == expected_binding)
+        if not bound_request and not bound_early_failure and not bound_protocol_failure:
+            raise ContractError("runtime trace lacks a bound task and scenario request")
+        pending = None
+        slots = []
+        for event in events[1:]:
+            data = event["data"]
+            if event["stage"] == "model_request":
+                request = data.get("request")
+                if pending is not None or not isinstance(request, dict):
+                    raise ContractError("runtime request sequence is incomplete")
+                pending = FrozenRecord.from_dict(request).content_hash
+                if data.get("request_digest") != pending or request.get("lock_digest") != trace["lock_digest"]:
+                    raise ContractError("runtime request digest is not bound to its frozen lock")
+                if (FrozenRecord.from_dict(request.get("task", {})).content_hash != expected.task_digest
+                        or request.get("objective") != lock.get("objective")):
+                    raise ContractError("runtime request task or objective drift")
+                slots.append(request.get("slot"))
+                if slots != lock.get("slots", [])[:len(slots)]:
+                    raise ContractError("runtime request violates the frozen call schedule")
+            elif event["stage"] in {"model_response", "model_failure"}:
+                if pending is None or data.get("request_digest") != pending:
+                    raise ContractError("runtime response is not bound to a pending request")
+                pending = None
+        terminal = events[-1]
+        if terminal["stage"] in {"driver_failure", "controller_failure"} and terminal["data"].get("driver_id") != expected.coverage_id:
+            raise ContractError("terminal driver failure does not bind this panel obligation")
+        responses = [event["data"]["response"] for event in events if event["stage"] == "model_response"]
+        observed = FrozenRecord.from_dict({"responses": responses, "terminal": terminal["data"]}).content_hash
+        has_model_failure = any(event["stage"] == "model_failure" for event in events)
+        if terminal["stage"] == "final_decision":
+            closing_failure = terminal["data"].get("decision") == "blocked" and has_model_failure
+            if (pending is not None or (not closing_failure and (slots != lock.get("slots") or not responses
+                    or terminal["data"].get("candidate_digest") != FrozenRecord.from_dict(responses[-1]).content_hash))
+                    or terminal["data"].get("lock_digest") != trace["lock_digest"]
+                    or terminal["data"].get("identity") != expected.identity.data()):
+                raise ContractError("final decision lacks a complete response-bound candidate")
+        if receipt.status == "succeeded":
+            if terminal["stage"] != "final_decision" or terminal["data"].get("decision") not in {"proceed", "closed_negative", "unknown", "invalid", "withdrawn"} or any(event["stage"] == "model_failure" for event in events) or not responses or receipt.output_digest != observed:
+&gt;               raise ContractError("successful receipt lacks terminal runtime output evidence")
+E               research_loop.ontology.ContractError: successful receipt lacks terminal runtime output evidence
+
+research_loop\modular\panel_receipts.py:486: ContractError</failure></testcase><testcase classname="tests.test_modular_q81_q84_train_controller" name="test_q84_material_must_keep_actual_document_and_budget_controls[text]" time="0.071" /><testcase classname="tests.test_modular_q81_q84_train_controller" name="test_q84_material_must_keep_actual_document_and_budget_controls[count]" time="0.074" /><testcase classname="tests.test_modular_q81_q84_train_controller" name="test_q84_material_must_keep_actual_document_and_budget_controls[root]" time="0.066" /><testcase classname="tests.test_modular_q81_q84_train_controller" name="test_q84_material_must_keep_actual_document_and_budget_controls[budget]" time="0.075" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_reservation_precedes_io_and_partial_failure_keeps_cost_and_items" time="0.001" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_infinite_provider_is_probed_only_to_limit_plus_one" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_foreign_or_mislabelled_return_is_recorded_and_rejected[bad0]" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_foreign_or_mislabelled_return_is_recorded_and_rejected[bad1]" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_foreign_or_mislabelled_return_is_recorded_and_rejected[bad2]" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_no_retry_can_exceed_a_reserved_provider_call" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_total_context_includes_metadata_and_utf8_and_same_opportunities[support_only]" time="0.001" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_total_context_includes_metadata_and_utf8_and_same_opportunities[neutral]" time="0.001" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_total_context_includes_metadata_and_utf8_and_same_opportunities[three_lane]" time="0.001" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_root_dedup_is_structural_and_text_never_grants_admission" time="0.001" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_only_delivered_q81_through_q84_have_production_drivers" time="0.000" /></testsuite></testsuites>

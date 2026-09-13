@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="16" time="1.664" timestamp="2026-09-13T15:17:31.679710+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_q81_q84_train_controller" name="test_q81_q84_full_custody_controller_grid_real_docker" time="0.342"><failure message="research_loop.ontology.ContractError: frozen model call capacity cannot cover complete panel">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q81q84-first/test_q81_q84_full_custody_cont0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001162F9D43E0&gt;
+
+    def test_q81_q84_full_custody_controller_grid_real_docker(tmp_path, monkeypatch):
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        from evaluation.modular.train_io import TrainPacketExporter
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "material").export(base["item_ids"])
+        evidence = {packet.task.content_hash: bundle(packet).data() for packet in packets}
+        grids = obligation_grids(("Q8.1", "Q8.4"), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"final": FINAL, "research": ANALYSIS, "competition": SCENARIO, "distinguish": ANALYSIS,
+            "review_a": REVIEW, "review_b": REVIEW, "retro_blind": REVIEW, "retro_reveal": REVIEW, "frontier": FRONTIER}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1", "engineering_scope": "train_only_panel_engineering",
+            "stage": "q81-q84-controller", "scope_ids": ["Q8.1", "Q8.4"], "evidence_by_task": evidence,
+            "packages_by_arm": {arm.content_hash: package for grid in grids.values() for arm in executable_arms(grid).values()},
+            "budget": {"model_calls": 3, "retrieval_calls": 3, "execution_limit": 1}, "max_calls": 128, "max_tokens": 512, "schemas": schemas}))
+        port = model_port(tmp_path, monkeypatch, max_calls=128, max_tokens=512, schemas=schemas, response_factory=response)
+        provider, authority = Provider(), Authority()
+&gt;       result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export", run_root=tmp_path / "run",
+            model=port, audit_verifier=AuditVerifier({"a": b"a"*32, "b": b"b"*32}), retrieval_provider=provider,
+            retrieval_admission_port=admission, retrieval_stage_authority=authority)
+
+tests\test_modular_q81_q84_train_controller.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+config = FrozenTrainControllerConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"scope":"engineering-only"},"baseline...],"type":"object"}},"scope_ids":["Q8.1","Q8.4"],"scorer":{"identity":"not-configured"},"stage":"q81-q84-controller"}'))
+
+    def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
+                            snapshot_root: Path, export_root: Path, run_root: Path,
+                            model: CodexModelPort, audit_verifier: AuditVerifier,
+                            history_admission_port: AdmissionPort | None = None,
+                            audit_receipt_port: AuditReceiptPort | None = None,
+                            shadow_execution_port: ShadowExecutionPort | None = None,
+                            feasibility_authority: FeasibilityAuthorityPort | None = None,
+                            exploration_authority: ExplorationAuthorityPort | None = None,
+                            diagnostic_authority: DiagnosticAuthority | None = None,
+                            retrieval_provider=None,
+                            retrieval_admission_port=None,
+                            retrieval_stage_authority=None,
+                            protocol_audit_port: ProtocolAuditPort | None = None,
+                            protocol_replay_authority: ProtocolReplayAuthority | None = None) -&gt; TrainPanelRun:
+        """Export and execute every cell selected by closed production drivers."""
+        if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
+            raise ContractError("trusted typed controller inputs required")
+        if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+            raise ContractError("controller requires the real model port and trusted audit verifier")
+        data = config.data()
+        extended_exploration = bool(set(data["scope_ids"]) &amp; set(EXTENDED_EXPLORATION_BUDGET))
+        exploration = extended_exploration or bool(set(data["scope_ids"]) &amp; {"Q7.1", "Q7.2"})
+        diagnostic = "Q5.4" in data["scope_ids"]
+        retrieval = bool(set(data["scope_ids"]) &amp; {"Q8.1", "Q8.2", "Q8.3", "Q8.4"})
+        retrieval_stage = bool(set(data["scope_ids"]) &amp; {"Q8.1", "Q8.4"})
+        if retrieval_stage and not all(callable(getattr(retrieval_stage_authority, name, None)) for name in ("verify_execution", "verify_provenance")):
+            raise ContractError("retrieval stages require caller execution and provenance authority before export")
+        if retrieval and (not callable(getattr(retrieval_provider, "search", None)) or not callable(retrieval_admission_port)):
+            raise ContractError("retrieval controller requires caller-owned provider and source admission before export")
+        if diagnostic and not callable(getattr(diagnostic_authority, "verify_diagnostic", None)):
+            raise ContractError("diagnostic controller requires its caller-owned verification port before export")
+        if exploration and not all(callable(getattr(exploration_authority, method, None))
+                                   for method in ("verify_preflight", "verify_observation")):
+            raise ContractError("exploration controller requires its caller-owned verification ports before export")
+        protocol = "Q2.7" in data["scope_ids"]
+        if protocol and (not callable(protocol_audit_port) or not isinstance(protocol_replay_authority, ProtocolReplayAuthority)):
+            raise ContractError("protocol controller requires trusted audit and replay authorities before export")
+        feasibility = bool(set(data["scope_ids"]) &amp; {"Q5.1", "Q5.2"})
+        if feasibility and (not callable(getattr(feasibility_authority, "verify_stage", None))
+                or ("Q5.2" in data["scope_ids"] and not callable(getattr(feasibility_authority, "verify_prediction_outcome", None)))):
+            raise ContractError("feasibility controller requires its caller-owned verification ports before export")
+        snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        policy = _reviewed_model_policy(model)
+        if (model.model != data["model"] or model.effort != data["effort"]
+                or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]
+                or model.schemas != data["schemas"]):
+            raise ContractError("live model port differs from frozen controller configuration")
+        if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+            raise ContractError("controller requires a fresh empty model ledger")
+        expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
+            p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
+        if model.max_calls &lt; expected_calls:
+&gt;           raise ContractError("frozen model call capacity cannot cover complete panel")
+E           research_loop.ontology.ContractError: frozen model call capacity cannot cover complete panel
+
+research_loop\modular\train_controller.py:223: ContractError</failure></testcase><testcase classname="tests.test_modular_q81_q84_train_controller" name="test_q84_material_must_keep_actual_document_and_budget_controls[text]" time="0.103" /><testcase classname="tests.test_modular_q81_q84_train_controller" name="test_q84_material_must_keep_actual_document_and_budget_controls[count]" time="0.091" /><testcase classname="tests.test_modular_q81_q84_train_controller" name="test_q84_material_must_keep_actual_document_and_budget_controls[root]" time="0.113" /><testcase classname="tests.test_modular_q81_q84_train_controller" name="test_q84_material_must_keep_actual_document_and_budget_controls[budget]" time="0.210" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_reservation_precedes_io_and_partial_failure_keeps_cost_and_items" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_infinite_provider_is_probed_only_to_limit_plus_one" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_foreign_or_mislabelled_return_is_recorded_and_rejected[bad0]" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_foreign_or_mislabelled_return_is_recorded_and_rejected[bad1]" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_foreign_or_mislabelled_return_is_recorded_and_rejected[bad2]" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_no_retry_can_exceed_a_reserved_provider_call" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_total_context_includes_metadata_and_utf8_and_same_opportunities[support_only]" time="0.001" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_total_context_includes_metadata_and_utf8_and_same_opportunities[neutral]" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_total_context_includes_metadata_and_utf8_and_same_opportunities[three_lane]" time="0.001" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_root_dedup_is_structural_and_text_never_grants_admission" time="0.000" /><testcase classname="tests.test_modular_recorded_retrieval" name="test_only_delivered_q81_through_q84_have_production_drivers" time="0.000" /></testsuite></testsuites>

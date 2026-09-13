@@ -3,7 +3,33 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current Q6, retrieval and source checkpoint (2026-09-13)
+## Current train export and retrieval checkpoint (2026-09-13)
+
+The integrated registry has 40 question drivers plus the five separate Q6 train
+phases, covering 45 engineering execution contracts. Q8.5/Q8.6/Q8.7 are undergoing
+their separate frozen delivery. All 48 scientific questions, calibration, actual
+validation acceptance and outstanding combination effects remain open.
+
+The fixed four-task train export succeeded (two SciCode and two SAB) after the
+original pre-materialization failure was retained. Root verified the sealed
+selection, artifact hashes, ten-event audit chain and unchanged input pins without
+parsing task bodies. The integrated exporter checks passed 75 tests on `2074352`;
+the merged Q8.1/Q8.4 controller checks passed 105 on `8aff4f1`. These are engineering
+results; Q8.4's complete factorial retains an estimable, expected-null contrast.
+
+All 18 SAB validation records are now on an eligibility hold: an earlier manifest
+selected 12 identities, with three observed successful calls and 75,272 historical
+tokens, but its relation to the sealed revision is unresolved. The original
+164/18 allocation is unchanged; no validation lease is allowed. A separately
+delivered primary 308/95 metadata partition awaits root source integration and
+review; it does not relax this hold or establish absolute independence.
+
+The archive contains 1,524 indexed files, preserving the earlier 1,459. A publisher
+path error was repaired by verifying and retaining all 49 partial copies before
+adding the remaining files; the original script and recovery receipt are retained.
+See [the checkpoint](MODULAR-CHECKPOINT-20260913-TRAIN-EXPORT-RETRIEVAL.md).
+
+## Previous Q6, retrieval and source checkpoint (2026-09-13)
 
 The production registry has 38 question drivers. Q6.1, Q6.2, Q6.3, Q6.5 and
 Q6.6 use separate train phases; Q6.4 remains a registered driver. Together these

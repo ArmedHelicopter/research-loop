@@ -1,0 +1,55 @@
+{
+  "schema": "train-export-retrieval-checkpoint-v1",
+  "source_commit": "8aff4f13d986adbe285a06d26bdce3d7ca68b637",
+  "registered_question_drivers": 40,
+  "separate_train_phases": [
+    "Q6.1",
+    "Q6.2",
+    "Q6.3",
+    "Q6.5",
+    "Q6.6"
+  ],
+  "remaining_question_drivers": [
+    "Q8.5",
+    "Q8.6",
+    "Q8.7"
+  ],
+  "root_reports": {
+    "prospective-export-root-r1": {
+      "source_commit": "20743525d2fdaafb4325fa986734f42cda22013e",
+      "tests": "75",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "18.024"
+    },
+    "q81-q84-root-integrated-r1": {
+      "source_commit": "8aff4f13d986adbe285a06d26bdce3d7ca68b637",
+      "tests": "105",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "252.499"
+    }
+  },
+  "actual_fixed_train_tasks_exported": 4,
+  "original_export_failure_preserved": true,
+  "original_extended_partition": {
+    "train": 164,
+    "sealed_validation": 18
+  },
+  "validation_eligibility_status": "all_18_SAB_records_on_hold_pending_revision_bound_earlier_history_overlap_audit",
+  "validation_lease_allowed": false,
+  "validation_opened": false,
+  "earlier_SAB_scope": {
+    "selected": 12,
+    "observed_successful_calls": 3,
+    "known_tokens": 75272
+  },
+  "earlier_calls_are_historical_not_new_usage": true,
+  "primary_seal": "separate_delivery_not_in_this_source_commit",
+  "q84_M6_given_M2": "mechanistically_redundant_expected_null_contrast_retained",
+  "scientific_effectiveness": "not_established",
+  "new_paid_model_calls": 0,
+  "pruned_combinations": []
+}

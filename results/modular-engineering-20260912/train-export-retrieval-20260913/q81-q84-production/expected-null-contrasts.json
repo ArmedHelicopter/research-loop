@@ -1,0 +1,78 @@
+{
+  "denominator": 8,
+  "verified_cells": 8,
+  "conditional_increment_estimable": true,
+  "excluded_contrasts": [],
+  "rows": [
+    {
+      "variant": "shared_root",
+      "enabled": [],
+      "context_units": 3,
+      "provider_calls": 3,
+      "annotation": "mechanistically_redundant_expected_null"
+    },
+    {
+      "variant": "shared_root",
+      "enabled": [
+        "M6"
+      ],
+      "context_units": 1,
+      "provider_calls": 3,
+      "annotation": "mechanistically_redundant_expected_null"
+    },
+    {
+      "variant": "shared_root",
+      "enabled": [
+        "M2"
+      ],
+      "context_units": 1,
+      "provider_calls": 3,
+      "annotation": "mechanistically_redundant_expected_null"
+    },
+    {
+      "variant": "shared_root",
+      "enabled": [
+        "M2",
+        "M6"
+      ],
+      "context_units": 1,
+      "provider_calls": 3,
+      "annotation": "mechanistically_redundant_expected_null"
+    },
+    {
+      "variant": "independent_roots",
+      "enabled": [],
+      "context_units": 3,
+      "provider_calls": 3,
+      "annotation": "mechanistically_redundant_expected_null"
+    },
+    {
+      "variant": "independent_roots",
+      "enabled": [
+        "M6"
+      ],
+      "context_units": 3,
+      "provider_calls": 3,
+      "annotation": "mechanistically_redundant_expected_null"
+    },
+    {
+      "variant": "independent_roots",
+      "enabled": [
+        "M2"
+      ],
+      "context_units": 3,
+      "provider_calls": 3,
+      "annotation": "mechanistically_redundant_expected_null"
+    },
+    {
+      "variant": "independent_roots",
+      "enabled": [
+        "M2",
+        "M6"
+      ],
+      "context_units": 3,
+      "provider_calls": 3,
+      "annotation": "mechanistically_redundant_expected_null"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "root-prospective-export-readonly-verification-v1",
+  "reported_files_verified": 22,
+  "public_train_file_hashes_verified": 4,
+  "same_first_two_train_tokens_per_source": true,
+  "sealed_partition_and_audit_unchanged": true,
+  "event_count": 10,
+  "failed_prefix_preserved": true,
+  "validation_payload_read": false,
+  "public_task_contents_parsed": false,
+  "model_calls": 0,
+  "report_sha256": "4a36685ce8c2e9ccb2a5b6d591362eddab78a35606af72fcfaf119a8cdbc3084"
+}
