@@ -126,7 +126,7 @@ class FrozenTrainControllerConfig:
                 or type(data["max_tokens"]) is not int or data["max_tokens"] < 1):
             raise ContractError("production controller requires frozen Luna/low budgets")
         mode = data.get("execution_mode", "mechanism_pilot")
-        if mode not in {"mechanism_pilot", "linked_benchmark_solve"} or (mode == "linked_benchmark_solve" and set(scope) - {"Q1.5", "Q3.1", "Q4.3", "Q8.2", "Q8.3"}):
+        if mode not in {"mechanism_pilot", "linked_benchmark_solve"} or (mode == "linked_benchmark_solve" and set(scope) - {"Q1.5", "Q3.1", "Q3.2", "Q4.3", "Q5.3", "Q8.2", "Q8.3"}):
             raise ContractError("controller linked mode has an unsupported scope")
         expected_slots = {slot for coverage in scope for slot in DRIVERS[coverage].slots}
         if mode == "linked_benchmark_solve": expected_slots |= {"analysis_program", "final_answer"}

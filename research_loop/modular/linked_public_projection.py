@@ -14,7 +14,7 @@ from research_loop.modular.modules.review import ReviewEngine
 from research_loop.modular.panel_receipts import PanelCell, opaque_panel_cell_binding
 from research_loop.ontology import ContractError
 
-_SUPPORTED = frozenset({"Q1.5", "Q3.1", "Q4.3", "Q8.2", "Q8.3"})
+_SUPPORTED = frozenset({"Q1.5", "Q3.1", "Q3.2", "Q4.3", "Q5.3", "Q8.2", "Q8.3"})
 
 
 def project_linked_public_context(*, provenance: FrozenRecord, cell: PanelCell,
@@ -37,11 +37,14 @@ def project_linked_public_context(*, provenance: FrozenRecord, cell: PanelCell,
         material = _q43_material(cell, body["mechanism_stages"], responses)
     elif coverage in {"Q8.2", "Q8.3"}:
         material = _retrieval_material(cell, task, scenario, body)
+    elif coverage in {"Q3.2", "Q5.3"}:
+        from research_loop.modular.linked_prediction_projection import prediction_public_material
+        material = prediction_public_material(cell, task, scenario, body, responses)
     else:  # guarded above, retained for a closed extension point
         raise ContractError("linked public projection does not support this mechanism")
     return FrozenRecord.from_dict({
         "schema": "linked-public-mechanism-context-v1",
-        "mechanism": coverage,
+        "mechanism": "operational_prediction" if coverage in {"Q3.2", "Q5.3"} else coverage,
         "identity": task.identity.data(),
         "task_digest": task.content_hash,
         "scenario_digest": scenario.content_hash,

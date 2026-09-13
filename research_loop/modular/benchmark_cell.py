@@ -23,7 +23,7 @@ from research_loop.ontology import ContractError
 
 
 ModelPort = Callable[[FrozenRecord], FrozenRecord]
-_SUPPORTED_MECHANISMS = frozenset({"Q1.5", "Q3.1", "Q4.3", "Q8.2", "Q8.3"})
+_SUPPORTED_MECHANISMS = frozenset({"Q1.5", "Q3.1", "Q3.2", "Q4.3", "Q5.3", "Q8.2", "Q8.3"})
 
 
 @dataclass(frozen=True)
@@ -92,12 +92,17 @@ def verified_mechanism_provenance(*, cell: PanelCell, task: PublicTask, scenario
     stages = [event for event in events if event["stage"] == "modular_workflow"
               and event["data"].get("stage") in {"stage_1", "stage_7", "stage_9",
                                                    "operation_m4_control", "operation_m5_control",
-                                                   "stage_0.5", "operation_m6_ordinary_baseline"}]
+                                                   "stage_0.5", "operation_m6_ordinary_baseline",
+                                                   "prediction_artifacts"}]
     if not stages:
         raise ContractError("mechanism trace lacks an executed mechanism stage")
     calls = _model_calls(events)
     if not calls:
         raise ContractError("mechanism trace lacks model responses")
+    mechanism_stages = [{"stage": event["data"]["stage"], "data": event["data"]} for event in stages]
+    if cell.coverage_id in {"Q3.2", "Q5.3"}:
+        from research_loop.modular.linked_prediction_projection import prediction_registry_observation
+        mechanism_stages.append(prediction_registry_observation(mechanism.runtime.trace_path.parent))
     return FrozenRecord.from_dict({
         "schema": "verified-mechanism-provenance-v1",
         "panel_cell": _binding(cell).data(),
@@ -108,7 +113,7 @@ def verified_mechanism_provenance(*, cell: PanelCell, task: PublicTask, scenario
         "arm": cell.runtime_arm.data(),
         "runtime_trace_digest": mechanism.runtime.trace_digest,
         "runtime_output_digest": mechanism.runtime.output_digest,
-        "mechanism_stages": [{"stage": event["data"]["stage"], "data": event["data"]} for event in stages],
+        "mechanism_stages": mechanism_stages,
         "responses": calls,
     })
 
