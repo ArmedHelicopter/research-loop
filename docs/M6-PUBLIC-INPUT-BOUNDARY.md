@@ -1,0 +1,9 @@
+# Remaining M6 public input boundary
+
+Scope is Q8.1, Q8.4, Q8.5, Q8.6 and Q8.7 through their production controller drivers. The original 156 cells / 364 actual model requests are preserved with archive and trace hashes. Prior GREEN reports do not prove complete condition blinding.
+
+Retrieval exposes only the shared closed by_lane/source_qualification/scientific_admission projection. Source text, same-root relations, operational plans, reviewer answers, current objectives, actual version states, observed execution outputs and expected observations remain task information. Policy and source-pool digests, explicit arm/method/review-mode labels, caller authorization receipts and raw journal wrappers stay in controller evidence. Projection is structural; scientific text or observation dictionaries are never recursively filtered by generic words.
+
+The scoped workflow boundary records the full original module context before projecting the actual model request. Other drivers retain their existing interface. Frontier origin references receive neutral aliases, with a recorded bijection back to the unchanged original catalog; the returned reference is restored before the existing frontier validator. This cannot add origins or benchmark/queue authority. Original reviews, prediction registration, source admission, version guards and score endpoints remain active.
+
+Verification preserves the complete 64-cell and 92-cell controller grids, P0, failed executions and provider-failure costs. Independent read-only checks inspect every actual request, including nested final material, and compare source/observation content to original controller material. Freeze the repaired source before the final suite and preserve RED and raw source hashes. Synthetic transport and actual necessary Docker only; no paid calls, validation or private reference opening. Engineering request isolation is not scientific validity or programme completion.
