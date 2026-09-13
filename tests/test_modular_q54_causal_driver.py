@@ -40,10 +40,12 @@ class Authority:
   assert body['measurement_contract']['observable']=='public result'
   control=float(next(line.split('=',1)[1] for line in stdout.splitlines() if line.startswith('negative_control=')))
   classifications={}
+  qualified=control==0.0
   for branch_row in body['prediction_branches']:
    direction=branch_row['predictions'][0]['direction']
-   classifications[branch_row['hypothesis_id']]='consistent' if ((direction=='increase' and expected>control) or (direction=='decrease' and expected<=control)) else 'failed'
-  return FrozenRecord.from_dict({'schema':'q54-causal-authority-receipt-v1','subject_digest':subject.content_hash,'status':'passed','observations':[{'authority_id':x['authority_id'],'source_group':x['source_group'],'contract_id':c['contract_id'],'subject_digest':subject.content_hash,'observation_digest':str(i+1)*64,'status':'passed','signature_verified':True} for i,x in enumerate(c['authorities'])],'cost':{'unit':'verifier_units','units':1},'classifications':classifications})
+   classifications[branch_row['hypothesis_id']]=('consistent' if direction=='increase' and expected>control else 'failed' if direction=='decrease' and expected>control else 'unknown') if qualified else 'unknown'
+  status='passed' if qualified else 'failed'
+  return FrozenRecord.from_dict({'schema':'q54-causal-authority-receipt-v1','subject_digest':subject.content_hash,'status':status,'observations':[{'authority_id':x['authority_id'],'source_group':x['source_group'],'contract_id':c['contract_id'],'subject_digest':subject.content_hash,'observation_digest':str(i+1)*64,'status':status,'signature_verified':True} for i,x in enumerate(c['authorities'])],'cost':{'unit':'verifier_units','units':1},'classifications':classifications})
 
 @pytest.mark.parametrize('variant,expected',[('subjective','a'),('preregistered_cost','b')])
 @pytest.mark.parametrize('enabled',[(),('M4',),('M7',),('M4','M7')])
@@ -59,7 +61,7 @@ def test_q54_uses_model_ranking_updates_m4_and_executes_every_arm(tmp_path,varia
   if 'diagnostics' in context: return FrozenRecord.from_dict({'ranking':['a','b'],'rationale':'public ordering'})
   if 'required_objective_digest' not in context:
    assert ('M4' in enabled)==(context['observation']['competition'] is not None)
-   return FrozenRecord.from_dict({'decision':'continue','rationale':'observed public output'})
+   return FrozenRecord.from_dict({'decision':context['observation']['gate']['disposition'] if 'M7' in enabled else 'continue','rationale':'observed public output'})
   return FrozenRecord.from_dict({'objective_digest':context['required_objective_digest'],'outcome':'unknown','evidence_ids':[],'conclusion':'x','programme_complete':False})
  driver=Q54CausalDriver(DockerExecutionBroker([tmp_path]),lambda _task,_bundle:{'data':path},Authority())
  _,candidate,_=driver.run(ModularWorkflow(session),cell=cell,scenario=scenario,model=model,package=package); session.finish(candidate)
@@ -123,3 +125,16 @@ def test_unknown_authority_gate_cannot_be_overridden_by_diagnostic_model(tmp_pat
   return FrozenRecord.from_dict({'decision':'continue','rationale':'attempt override'})
  with pytest.raises(ContractError,match='overrides applied M7 gate'):
   Q54CausalDriver(DockerExecutionBroker([tmp_path]),lambda _task,_bundle:{'data':path},Unknown()).run(ModularWorkflow(session),cell=cell,scenario=scenario,model=model,package=package)
+
+@pytest.mark.parametrize('units',[3,None])
+def test_authority_partial_response_and_exception_cost_are_journaled_first(tmp_path,units):
+ t=task('blade'); csv=b'x\n1\n'; inputs=tmp_path/'inputs'; inputs.mkdir(); path=inputs/'data.csv'; path.write_bytes(csv); bundle=material(t,csv); variant='subjective'; arm=default_compatibility('b'*64).arm(('M7',)); package=CandidatePackage.create(parent_digest=None,manifest=TrainingManifest.freeze([t.identity]),changes={'prompt':{'instructions':'x'}},search_cost=0)
+ scenario=FrozenRecord.from_dict({'experiment_id':'Q5.4','variant':variant,'controller_input':q54_causal_injection(variant,task=FrozenRecord.from_dict(t.data()),evidence=bundle),'base':{'task':t.content_hash,'evidence':bundle.content_hash,'budget':'a'*64},'controls':{'same_task':True,'same_evidence':True,'same_budget':True}}); cell=PanelCell('Q5.4',t.identity,'r',variant,'a',arm,t.content_hash,scenario.content_hash,package.digest,'a'*64); run=tmp_path/'run'; session=RunSession(t,package_digest=package.digest,arm=arm,objective=FrozenRecord.from_dict({'o':'x'}),slots=('ranking','diagnostic','final'),execution_limit=1,sidecar=run,verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}),required_audit=('measurement',))
+ class TransportError(RuntimeError): pass
+ class Broken:
+  def verify_diagnostic(self,subject):
+   error=TransportError('transport'); error.partial_response=FrozenRecord.from_dict({'partial':'typed','cost':{'unit':'verifier_units','units':units}}); error.cost={'unit':'verifier_units','units':units}; raise error
+ def model(request): return FrozenRecord.from_dict({'ranking':['a','b'],'rationale':'x'})
+ with pytest.raises(TransportError): Q54CausalDriver(DockerExecutionBroker([tmp_path]),lambda _task,_bundle:{'data':path},Broken()).run(ModularWorkflow(session),cell=cell,scenario=scenario,model=model,package=package)
+ events=[FrozenRecord(line).data() for line in (run/'trace.jsonl').read_text().splitlines()]; partial=next(i for i,e in enumerate(events) if e['stage']=='q54_authority_partial_response'); failure=next(i for i,e in enumerate(events) if e['stage']=='q54_authority_failure')
+ assert partial<failure and events[failure]['data']['exception_reported_cost']=={'unit':'verifier_units','units':units} and events[failure]['data']['verified_cost']=={'unit':'verifier_units','units':None}

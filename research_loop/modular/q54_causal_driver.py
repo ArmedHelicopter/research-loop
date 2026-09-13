@@ -191,9 +191,15 @@ class Q54CausalDriver:
    workflow.session._record('q54_authority_response_raw',{'subject_digest':subject.content_hash,'receipt':raw.data() if isinstance(raw,FrozenRecord) else None,'reported_cost':raw.data().get('cost') if isinstance(raw,FrozenRecord) else None})
    receipt=_receipt(raw,subject)
   except Exception as exc:
-   partial=raw if raw is not None else getattr(exc,'partial_response',getattr(exc,'receipt',None))
-   partial_data=partial.data() if isinstance(partial,FrozenRecord) else dict(partial) if isinstance(partial,Mapping) else None
-   workflow.session._record('q54_authority_failure',{'subject_digest':subject.content_hash,'error_type':type(exc).__name__,'reported_cost':partial_data.get('cost') if isinstance(partial_data,Mapping) else None,'partial_response':partial_data,'verified_cost':None}); raise
+   partial=getattr(exc,'partial_response',None)
+   if partial is not None and not isinstance(partial,FrozenRecord): raise ContractError('authority partial_response must be frozen') from exc
+   exception_cost=getattr(exc,'cost',None)
+   if exception_cost is not None:
+    if not isinstance(exception_cost,Mapping) or set(exception_cost)!={'unit','units'} or exception_cost['unit']!='verifier_units' or (exception_cost['units'] is not None and (type(exception_cost['units']) is not int or exception_cost['units']<0)): raise ContractError('authority exception cost invalid') from exc
+    exception_cost=dict(exception_cost)
+   partial_cost=partial.data().get('cost') if partial is not None else None
+   if partial is not None: workflow.session._record('q54_authority_partial_response',{'subject_digest':subject.content_hash,'partial_response':partial.data(),'reported_cost':partial_cost})
+   workflow.session._record('q54_authority_failure',{'subject_digest':subject.content_hash,'error_type':type(exc).__name__,'reported_cost':partial_cost,'exception_reported_cost':exception_cost,'verified_cost':{'unit':'verifier_units','units':None}}); raise
   receipt_record=FrozenRecord.from_dict(receipt)
   update=None
   if runtime_plan is not None:
