@@ -1,0 +1,30 @@
+{
+  "source_commit": "0fc124482997b67540ad84da6f4fb5a7faba7cf3",
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "54",
+    "time": "247.174",
+    "timestamp": "2026-09-13T20:04:28.064169+08:00",
+    "hostname": "SC-202507131830"
+  },
+  "unchanged_source_files": 466,
+  "synthetic_archives": {
+    "remaining-source-grid-r1": {
+      "sha256": "023250077840c6bc7557a95fea647681b0d64a5646df2f2b556e44042bf2149c",
+      "members": 1057
+    },
+    "remaining-source-final-r1": {
+      "sha256": "30f29e20962aef75b8a50a058bb5307e258fbb3a119100a3c67c6a848b26f59b",
+      "members": 3113
+    }
+  },
+  "actual_paid_calls": 0,
+  "validation_accessed": false,
+  "actual_reference_payloads_copied": false,
+  "scientific_effectiveness_proven": false,
+  "scope": "Actual primary synthetic exports reach M1 24-cell and M7/M8 8-cell independent scoring plus Q3.2 4-cell/12-measurement execution. Source fault cases and legacy regressions retained.",
+  "original_failure": "First new scheduler source run used old benchmark:task key and retained all 8 failed cells without model, Docker or scorer calls; fixed by complete identity lookup."
+}

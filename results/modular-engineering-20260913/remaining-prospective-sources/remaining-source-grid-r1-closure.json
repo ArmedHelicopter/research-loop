@@ -1,0 +1,21 @@
+{
+  "commit": "7f2cc6a83aa4a219c5145e1d901b32fd133f1640",
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "1",
+    "skipped": "0",
+    "tests": "10",
+    "time": "71.461",
+    "timestamp": "2026-09-13T20:00:36.831268+08:00",
+    "hostname": "SC-202507131830"
+  },
+  "report_sha256": "08d6ba2c70e47ab08d1b8b8705534e787e468c1f345c26a0e60ac18e9ffa58fd",
+  "source_manifest_timing": "clean commit frozen; no contemporaneous raw before manifest",
+  "source_after": {
+    "research_loop/modular/lineage_combination_controller.py": "6fdd21d769bb4114ada7df56e6c60337549fdf3d2244c910498324920177c551",
+    "research_loop/modular/exploration_scheduler_controller.py": "cea3d62b82781e1664a8fd8fa2c9e048e5903f1a6835a20da8e669f155a6a2d5",
+    "research_loop/modular/q32_execution.py": "339fad40ddedad2c1d7abc77c693d1f4661b430eeea52a37dd990b0a92571ee6",
+    "tests/test_remaining_prospective_train_sources.py": "9e88155e519805cdd137c60aaf52d9e8dbbf66a611f32e9a90a1ba70bec0b9f7"
+  }
+}

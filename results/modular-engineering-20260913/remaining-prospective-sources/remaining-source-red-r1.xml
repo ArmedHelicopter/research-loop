@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="13" time="3.534" timestamp="2026-09-13T19:55:56.350048+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.253" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.032" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.035" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.106" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.114" /><testcase classname="tests.test_remaining_prospective_train_sources" name="test_explicit_v2_source_configuration_accepts_opaque_tokens[admission]" time="0.938"><failure message="research_loop.ontology.ContractError: closed lineage train scope or source list invalid">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/remaining-source-red-r1/test_explicit_v2_source_config0')
+kind = 'admission'
+
+    @pytest.mark.parametrize('kind', ['admission', 'scheduler'])
+    def test_explicit_v2_source_configuration_accepts_opaque_tokens(tmp_path, kind):
+        if kind == 'admission':
+            _, _, config, _, _ = admission_fixture(tmp_path, sources([]))
+        else:
+            _, _, config, _, _ = scheduler_fixture(tmp_path)
+        body = config.data();body['schema'] = body['schema'].removesuffix('v1') + 'v2'
+        body['export_mode'] = 'primary_prospective'
+        body['task_bindings'] = {str(i + 1).zfill(64): binding for i, binding in enumerate(body['task_bindings'].values())}
+        body['item_ids'] = list(body['task_bindings'])
+        # Tokens are source handles, not labels: the actual exporter must still
+        # verify them against its sealed split before any data or model use.
+&gt;       actual = type(config)(FrozenRecord.from_dict(body))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_remaining_prospective_train_sources.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\admission_combination_controller.py:8: in __post_init__
+    super().__post_init__()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = FrozenAdmissionTrainConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"contrast_analysis":{"direction":"high...amily_1_1"},"task_digest":"b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"}},"timeout_seconds":20}'))
+
+    def __post_init__(self):
+        if not isinstance(self.record, FrozenRecord): raise ContractError('frozen lineage train configuration required')
+        b = self.data()
+        designs, material_type, schema, cell_count = self._contract()
+        required = {'schema', 'domain', 'stage', 'item_ids', 'task_bindings', 'baseline_digest', 'packages_by_arm',
+            'scorer', 'scorer_handle_bindings', 'acceptance_criteria', 'replicates', 'model', 'effort', 'max_calls',
+            'max_tokens', 'schemas', 'allocation', 'image', 'timeout_seconds', 'materials_by_task', 'source_verifier_binding'}
+        schema_ok = ((set(b) == required and b.get('schema') == schema)
+                     if schema == 'admission-combination-train-config-v1' else
+                     source_schema_matches(b, required, schema, optional=('lineage_reference_binding',)))
+        if (not schema_ok or b['domain'] != 'train'
+                or not isinstance(b['stage'], str) or not b['stage'].strip() or not _names(b['item_ids'])
+                or not _names(b['replicates']) or not _digest(b['baseline_digest'])):
+&gt;           raise ContractError('closed lineage train scope or source list invalid')
+E           research_loop.ontology.ContractError: closed lineage train scope or source list invalid
+
+research_loop\modular\lineage_combination_controller.py:59: ContractError</failure></testcase><testcase classname="tests.test_remaining_prospective_train_sources" name="test_explicit_v2_source_configuration_accepts_opaque_tokens[scheduler]" time="0.500"><failure message="research_loop.ontology.ContractError: controller supports the exact train-only M7/M8 configuration">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/remaining-source-red-r1/test_explicit_v2_source_config1')
+kind = 'scheduler'
+
+    @pytest.mark.parametrize('kind', ['admission', 'scheduler'])
+    def test_explicit_v2_source_configuration_accepts_opaque_tokens(tmp_path, kind):
+        if kind == 'admission':
+            _, _, config, _, _ = admission_fixture(tmp_path, sources([]))
+        else:
+            _, _, config, _, _ = scheduler_fixture(tmp_path)
+        body = config.data();body['schema'] = body['schema'].removesuffix('v1') + 'v2'
+        body['export_mode'] = 'primary_prospective'
+        body['task_bindings'] = {str(i + 1).zfill(64): binding for i, binding in enumerate(body['task_bindings'].values())}
+        body['item_ids'] = list(body['task_bindings'])
+        # Tokens are source handles, not labels: the actual exporter must still
+        # verify them against its sealed split before any data or model use.
+&gt;       actual = type(config)(FrozenRecord.from_dict(body))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_remaining_prospective_train_sources.py:23: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+&lt;string&gt;:4: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = FrozenExplorationSchedulerTrainConfig(record=FrozenRecord(encoded='{"acceptance_criteria":{"contrast_analysis":{"direc...amily_1_1"},"task_digest":"b916217cdfb5878255480f0926c4e0b587ae6f7a64b996447e74f461818c9d2d"}},"timeout_seconds":20}'))
+
+    def __post_init__(self):
+        if not isinstance(self.record, FrozenRecord):
+            raise ContractError("combination controller configuration must be frozen")
+        body = self.record.data()
+        fields = {"schema", "domain", "stage", "item_ids", "task_bindings", "baseline_digest", "packages_by_arm",
+                  "scorer", "scorer_handle_bindings", "acceptance_criteria", "replicates", "model", "effort",
+                  "max_calls", "max_tokens", "schemas", "allocation", "image", "timeout_seconds", "materials_by_task"}
+        if set(body) != fields or body["schema"] != "exploration-scheduler-train-controller-config-v1" or body["domain"] != "train":
+&gt;           raise ContractError("controller supports the exact train-only M7/M8 configuration")
+E           research_loop.ontology.ContractError: controller supports the exact train-only M7/M8 configuration
+
+research_loop\modular\exploration_scheduler_controller.py:80: ContractError</failure></testcase><testcase classname="tests.test_remaining_prospective_train_sources" name="test_q32_exposes_separate_typed_prospective_entry" time="0.001"><failure message="ImportError: cannot import name 'FrozenQ32ProspectiveConfig' from 'research_loop.modular.q32_execution' (E:\_ryanDev\AI\research-loop-modular\remaining-prospective-sources\research_loop\modular\q32_execution.py)">def test_q32_exposes_separate_typed_prospective_entry():
+&gt;       from research_loop.modular.q32_execution import FrozenQ32ProspectiveConfig, run_q32_prospective_execution_panel
+E       ImportError: cannot import name 'FrozenQ32ProspectiveConfig' from 'research_loop.modular.q32_execution' (E:\_ryanDev\AI\research-loop-modular\remaining-prospective-sources\research_loop\modular\q32_execution.py)
+
+tests\test_remaining_prospective_train_sources.py:28: ImportError</failure></testcase></testsuite></testsuites>
