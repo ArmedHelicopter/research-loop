@@ -47,7 +47,7 @@ def test_transport_failure_sealed_without_exception_text(tmp_path):
     assert "PRIVATE" not in json.dumps(result)
 
 
-@pytest.mark.parametrize("identity", ["https://evil.invalid/a/b", "a/b?secret=yes", "../repo", "a/..", "a/b/c", "https://github.com/a/b#task"])
+@pytest.mark.parametrize("identity", ["https://evil.invalid/a/b", "a/b?secret=yes", "../repo", "a/..", "a/b/c", "https://github.com/a/b#task", "fixture/repo/"])
 def test_repository_selection_cannot_expand_endpoints(identity):
     assert repository_identity(identity) is None
 

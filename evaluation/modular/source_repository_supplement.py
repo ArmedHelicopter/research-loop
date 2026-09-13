@@ -37,6 +37,10 @@ def repository_identity(value):
     value = value.strip()
     if value.lower() in {"", "n/a", "na", "none", "null", "-"}:
         return None
+    # This acquisition channel must not silently broaden the frozen canonical
+    # schema (for example by accepting a bare owner/repo/ trailing slash).
+    if normalize_reference(value, "github_repository") is None:
+        return None
     if "://" not in value:
         value = "https://github.com/" + value
     parsed = urllib.parse.urlsplit(value)

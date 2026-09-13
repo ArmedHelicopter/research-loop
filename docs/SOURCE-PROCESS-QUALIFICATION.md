@@ -47,8 +47,11 @@ and does not establish scientific effectiveness.
 The repository-metadata supplement separately binds actual official GitHub GET
 responses and current repository license metadata. A current repository license
 is not an upstream scientific-data license and its revision is not automatically
-the revision used by the benchmark. The first supplement mistakenly recognized
-the `n/a` missing-value sentinel as a repository. Its request and all original
-responses remain in the first attempt denominator. The corrected classifier
+the revision used by the benchmark. The first supplement accepted bare
+`owner/repo/` trailing-slash identifiers that the frozen canonical schema did
+not accept, introducing a thirtieth repository token for three unmapped rows.
+The request and all original responses remain in the first attempt denominator.
+An initial sentinel hypothesis was disproved by fixed-field structural counts;
+the additional `n/a` missing-value regression remains useful. The corrected classifier
 uses already received response hashes, without another download or any task
 inspection; the synthetic sentinel regressions are required before partitioning.
