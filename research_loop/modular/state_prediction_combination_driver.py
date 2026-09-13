@@ -124,7 +124,7 @@ def run_state_prediction_combination_cell(*, panel, cell, task, scenario, packag
         plan = workflow.predictions.freeze(body["question"], body["branches"], budget_units=body["budget_units"]) if "M4" in workflow.enabled else None
         # Off arms retain the same actual proposal as useful solver context but do not register a plan.
         session._record("state_prediction_plan", {"proposal": proposal.data(), "proposal_digest": proposal.content_hash,
-            "registered_plan": None if plan is None else plan.payload.data(), "registered_plan_digest": None if plan is None else plan.payload.content_hash})
+            "registered_plan": None if plan is None else plan.data(), "registered_plan_digest": None if plan is None else plan.payload.content_hash})
         joint = _joint(cell, transition, proposal, plan)
         session._record("state_prediction_joint", {"joint": joint.data(), "joint_digest": joint.content_hash})
         solver = run_benchmark_solve_in_session(session=session, workflow=workflow, public_inputs=public_inputs, image=image,
@@ -173,6 +173,14 @@ def verify_state_prediction_combination_cell(result, *, panel, task, scenario, p
         plan_rows = [e for e in events if e["stage"] == "state_prediction_plan"]
         if len(plan_rows) != 1 or plan_rows[0]["data"].get("registered_plan") is None:
             raise ContractError("M4-on did not use PredictionRegistry")
+        from research_loop.modular.modules.predictions import PredictionRegistry
+        registry = PredictionRegistry(task.identity, storage_path=result.runtime.trace_path.parent / "predictions.jsonl")
+        registered = plan_rows[0]["data"]["registered_plan"]
+        plan_id = registered.get("plan_id")
+        if not isinstance(plan_id, str) or registry.plan(plan_id).data() != registered:
+            raise ContractError("state prediction journal does not match persistent registry")
+        if result.joint_mechanism.data().get("prediction_plan") != registered["payload"]:
+            raise ContractError("solver joint did not consume the actual registered prediction plan")
     expected = _joint(result.cell, transition, proposal, None) if "M4" not in enabled else result.joint_mechanism
     if "M4" not in enabled and result.joint_mechanism != expected:
         raise ContractError("M4-off did not preserve its ordinary proposal")
