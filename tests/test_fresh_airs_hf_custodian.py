@@ -128,3 +128,23 @@ def test_changed_predeclared_pin_refused_before_payload_download(tmp_path):
         h.acquire(private_store=tmp_path / "private", output=tmp_path / "public" / "receipt.json",
                   overlap_baseline=baseline(tmp_path), transport=transport, expected_revision="f" * 40)
     assert transport.calls == [h.API_URL]
+
+
+def test_csv_transport_large_private_fields_remain_behind_public_allowlist(tmp_path):
+    import csv
+    import io
+    transport = Transport()
+    transport.name = f"data/{SECRET}.csv"
+    stream = io.StringIO(newline="")
+    writer = csv.DictWriter(stream, fieldnames=[SECRET, "dataset"])
+    writer.writeheader()
+    writer.writerows([{SECRET: SECRET * 6000, "dataset": "shared"} for _ in range(2)])
+    transport.payload = stream.getvalue().encode()
+    transport.sha = hashlib.sha256(transport.payload).hexdigest()
+    out = tmp_path / "public" / "receipt.json"
+    receipt = h.acquire(private_store=tmp_path / "private", output=out,
+                        overlap_baseline=baseline(tmp_path), transport=transport)
+    h.validate_public(receipt)
+    assert receipt["task_count"] == 2
+    assert receipt["metadata_components"][0]["member_count"] == 2
+    assert SECRET not in out.read_text()

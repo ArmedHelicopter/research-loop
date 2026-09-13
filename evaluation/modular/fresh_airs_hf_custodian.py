@@ -184,6 +184,7 @@ def read_rows(path, suffix):
             rows = rows.get("data", rows.get("tasks", rows.get("records")))
     else:
         import csv
+        csv.field_size_limit(MAX_BYTES)
         with path.open(encoding="utf-8", newline="") as stream:
             rows = list(csv.DictReader(stream))
     if not isinstance(rows, list) or not rows or any(not isinstance(row, dict) for row in rows):
