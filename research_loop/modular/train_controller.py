@@ -23,7 +23,7 @@ from research_loop.modular.modules.improvement import CandidatePackage
 from research_loop.modular.panel_plan import CompiledTrainPanel, compile_train_panel, executable_arms, obligation_grids
 from research_loop.modular.panel_receipts import PanelReceiptVerifier, PanelVerdict, RuntimeReceipt
 from research_loop.modular.panel_runner import DRIVERS, run_train_cell
-from research_loop.modular.benchmark_cell import run_benchmark_cell
+from research_loop.modular.benchmark_cell import run_benchmark_cell, verify_linked_benchmark_cell
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.ontology import ContractError, canonical, digest
@@ -185,7 +185,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
         _write(root / "controller-attempt.json", attempt)
         raise
     runtimes = []
-    linked_receipts = []
+    linked_results = []
     try:
         for cell in compiled.panel.cells:
             if data.get("execution_mode") == "linked_benchmark_solve":
@@ -196,8 +196,15 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                     solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
                     public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
                     broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier)
-                linked_receipts.append(result.receipt.data()); runtimes.append(result.mechanism.runtime)
+                verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                    scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                if verification.data().get("engineering_verified") is not True:
+                    raise ContractError("linked cell verification did not establish engineering provenance")
+                linked_results.append(result); runtimes.append(result.mechanism.runtime)
                 attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                attempt.setdefault("linked_verifications", []).append(verification.data())
+                attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
                 _write(root / "controller-attempt.json", attempt); continue
             result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
                 package=compiled.packages[cell.runtime_arm.content_hash], objective=_record({"panel_digest": compiled.panel.digest}, "objective"),
@@ -214,10 +221,15 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
         raise
     if verdict.decision != "engineering_verified" or verdict.scientific_verified:
         raise ContractError("production controller cannot claim scientific measurement")
-    execution_complete = verdict.failures == verdict.unscored == verdict.blocked == 0
+    linked_complete = (data.get("execution_mode") != "linked_benchmark_solve"
+                       or (len(linked_results) == len(compiled.panel.cells)
+                           and all(result.status == "linked_succeeded" for result in linked_results)))
+    execution_complete = verdict.failures == verdict.unscored == verdict.blocked == 0 and linked_complete
     receipt = FrozenRecord.from_dict({"schema": "train-panel-controller-receipt-v1", "config_digest": config.record.content_hash,
         "panel_digest": compiled.panel.digest, "packet_receipts": [packet.receipt.data() for packet in packets],
         "runtime_trace_digests": [runtime.trace_digest for runtime in runtimes], "verdict": verdict.__dict__,
+        "linked_receipt_digests": [result.receipt.content_hash for result in linked_results],
+        "linked_statuses": [result.status for result in linked_results],
         "execution_status": "engineering_complete" if execution_complete else "execution_incomplete",
         "scientific_status": "not_measured", "scope": data["engineering_scope"], "scope_ids": data["scope_ids"],
         "model_policy_sha256": model.frozen_base_context.sha256,
@@ -225,7 +237,8 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
         "model_ledger_config_digest": digest(model.ledger["config"])})
     (root / "controller-receipt.json").write_text(receipt.encoded, encoding="utf-8")
     attempt.update({"status": receipt.data()["execution_status"], "packet_receipts": [packet.receipt.data() for packet in packets],
-                    "runtime_trace_digests": [runtime.trace_digest for runtime in runtimes]})
+                    "runtime_trace_digests": [runtime.trace_digest for runtime in runtimes],
+                    "linked_statuses": [result.status for result in linked_results]})
     _write(root / "controller-attempt.json", attempt)
     return TrainPanelRun(compiled, tuple(packets), tuple(runtimes), verdict, receipt)
 

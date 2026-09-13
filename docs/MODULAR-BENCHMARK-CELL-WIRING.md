@@ -1,7 +1,7 @@
 # Linked benchmark cell wiring
 
 `research_loop.modular.benchmark_cell.run_benchmark_cell` composes one actual
-train-only Q3.1 or Q4.3 `run_train_cell` journal with the shared
+train-only Q1.5, Q3.1, or Q4.3 `run_train_cell` journal with the shared
 `run_benchmark_solve` journal. It is an independent adapter; it is not wired
 into `train_controller`, a scorer, or formal acceptance.
 
@@ -31,7 +31,7 @@ before that request is made.
 
 The synthetic integration suite is
 `tests/test_modular_benchmark_cell.py`. It uses both supported public task
-adapters, Q3.1 and Q4.3, the pinned local image, synthetic CSV input, and a
+adapters, Q1.5, Q3.1, and Q4.3, the pinned local image, synthetic CSV input, and a
 model callback that asserts real mechanism content reaches both solver calls
 and Docker stdout reaches the final answer.
 
@@ -39,5 +39,6 @@ and Docker stdout reaches the final answer.
 `linked_benchmark_solve` for the closed Q1.5/Q3.1/Q4.3 scope. Its frozen
 schemas include `analysis_program` and `final_answer`, and preflight budgets
 two additional model calls per cell. The controller takes only custody-exported
-packet CSV files, uses the pinned Docker image, and records each linked receipt
-in its attempt journal. Mechanism and solver failures remain denominator rows.
+packet CSV files, uses the pinned Docker image, replays every linked receipt
+before recording it, and includes every linked status in completion. Mechanism
+and solver failures remain denominator rows.

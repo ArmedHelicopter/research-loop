@@ -22,7 +22,7 @@ from research_loop.ontology import ContractError
 
 
 ModelPort = Callable[[FrozenRecord], FrozenRecord]
-_SUPPORTED_MECHANISMS = frozenset({"Q3.1", "Q4.3"})
+_SUPPORTED_MECHANISMS = frozenset({"Q1.5", "Q3.1", "Q4.3"})
 
 
 @dataclass(frozen=True)
@@ -43,7 +43,7 @@ def run_benchmark_cell(*, cell: PanelCell, task: PublicTask, scenario: FrozenRec
                        public_inputs: Mapping[str, Path], image: str,
                        broker: DockerExecutionBroker, model: ModelPort,
                        audit_verifier: AuditVerifier, timeout_seconds: int = 20) -> LinkedBenchmarkCellResult:
-    """Run the closed Q3.1/Q4.3 mechanism first, then solve from its trace.
+    """Run the closed Q1.5/Q3.1/Q4.3 mechanism first, then solve from its trace.
 
     A failed mechanism remains an explicit row and does not call the solver.
     Solver failures are returned from ``run_benchmark_solve`` with their own
@@ -84,7 +84,8 @@ def verified_mechanism_provenance(*, cell: PanelCell, task: PublicTask, scenario
     if FrozenRecord.from_dict(events[-1]).content_hash != mechanism.runtime.trace_digest:
         raise ContractError("mechanism trace digest differs from its runtime receipt")
     stages = [event for event in events if event["stage"] == "modular_workflow"
-              and event["data"].get("stage") in {"stage_1", "stage_7", "operation_m4_control", "operation_m5_control"}]
+              and event["data"].get("stage") in {"stage_1", "stage_7", "stage_9",
+                                                   "operation_m4_control", "operation_m5_control"}]
     if not stages:
         raise ContractError("mechanism trace lacks an executed mechanism stage")
     calls = _model_calls(events)
@@ -166,7 +167,7 @@ def verify_linked_benchmark_cell(result: LinkedBenchmarkCellResult, *, task: Pub
 def _validate_inputs(cell: PanelCell, task: PublicTask, scenario: FrozenRecord, package: CandidatePackage,
                      objective: FrozenRecord, model: ModelPort) -> None:
     if not isinstance(cell, PanelCell) or cell.coverage_id not in _SUPPORTED_MECHANISMS or cell.identity.domain != "train":
-        raise ContractError("linked benchmark cell supports train Q3.1 or Q4.3 only")
+        raise ContractError("linked benchmark cell supports train Q1.5, Q3.1, or Q4.3 only")
     if not isinstance(task, PublicTask) or task.identity != cell.identity or task.content_hash != cell.task_digest:
         raise ContractError("linked benchmark cell task does not bind the panel cell")
     if not isinstance(scenario, FrozenRecord) or scenario.content_hash != cell.scenario_digest:

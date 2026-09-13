@@ -69,6 +69,10 @@ def model_port(root: Path, monkeypatch, *, max_calls: int = 24, valid_plan: bool
             output = {"question": "public", "budget_units": 3, "branches": [{"hypothesis_id": f"h{i}", "mechanism_key": f"m{i}", "mechanism": "public mechanism", "intervention": "public intervention", "elimination_condition": "public disagreement", "predictions": [{"prediction_id": f"p{i}", "discriminator_id": "shared", "observable": "public observable", "direction": directions[i], "value_range": None, "failure_condition": "does not " + directions[i]}]} for i in range(3)]}
         elif request["slot"] == "final":
             output = {"objective_digest": request["module_context"]["required_objective_digest"], "outcome": "unknown", "evidence_ids": [], "conclusion": "synthetic engineering result", "programme_complete": False}
+        elif request["slot"] == "analysis_program":
+            output = {"analysis": "calculate the public x mean", "program": "import csv\nwith open('/input/public_csv', newline='') as f:\n rows=list(csv.DictReader(f))\nprint(sum(float(r['x']) for r in rows)/len(rows))"}
+        elif request["slot"] == "final_answer":
+            output = {"objective_digest": request["module_context"]["required_objective_digest"], "outcome": "unknown", "evidence_ids": [], "conclusion": "synthetic benchmark answer", "programme_complete": False}
         else:
             output = {"assessment": "concern", "evidence_refs": ["synthetic-public-observation"], "counterexamples": [], "uncertainty": "synthetic transport review"}
         Path(argv[argv.index("-o") + 1]).write_text(json.dumps(output), encoding="utf-8")

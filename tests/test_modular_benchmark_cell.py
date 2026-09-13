@@ -37,8 +37,11 @@ def _material(benchmark: str, mechanism: str):
     task = _task(benchmark)
     spec = registry()[mechanism]
     variant = spec.variants[0]
-    controlled = scenario(spec, variant, inputs=ControllerInputs(FrozenRecord.from_dict(task.data()),
-        FrozenRecord.from_dict({"evidence": "public"}), FrozenRecord.from_dict({"budget": "fixed"})))
+    evidence = (FrozenRecord.from_dict({"schema": "q15-review-material-v1", "identity": task.identity.data(),
+        "public_evidence": {"measurement": "public"}, "historical_summary": "synthetic public history"})
+        if mechanism == "Q1.5" else FrozenRecord.from_dict({"evidence": "public"}))
+    controlled = scenario(spec, variant, inputs=ControllerInputs(FrozenRecord.from_dict(task.data()), evidence,
+        FrozenRecord.from_dict({"budget": "fixed"})))
     package = CandidatePackage.create(parent_digest=None,
         manifest=TrainingManifest.freeze([task.identity]), changes={"prompt": {"instructions": "linked synthetic train package"}}, search_cost=0)
     cell = PanelCell(mechanism, task.identity, "r1", variant, "base", default_compatibility("base").arm([]),
@@ -75,7 +78,7 @@ def _model(seen: list[dict]):
 
 
 @pytest.mark.parametrize("benchmark", ["discoverybench", "blade"])
-@pytest.mark.parametrize("mechanism", ["Q3.1", "Q4.3"])
+@pytest.mark.parametrize("mechanism", ["Q1.5", "Q3.1", "Q4.3"])
 def test_linked_cell_uses_verified_mechanism_in_both_solver_calls_and_live_docker(tmp_path: Path, benchmark: str, mechanism: str) -> None:
     task, controlled, package, cell = _material(benchmark, mechanism)
     public = tmp_path / "public"; public.mkdir(); (public / "public.csv").write_text("x\n1\n3\n", encoding="utf-8")
