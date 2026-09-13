@@ -122,8 +122,6 @@ def _artifact(events: list[dict]) -> dict:
 
 def test_full_prediction_grid_has_actual_planning_artifacts_and_matched_calls(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     compiled, tasks = _compiled(tmp_path)
-    monkeypatch.setitem(panel_runner.DRIVERS, "Q3.2", Q32JointSeparateDriver())
-    monkeypatch.setitem(panel_runner.DRIVERS, "Q5.3", Q53DedupDriver())
     runs = []
     assert len(compiled.panel.cells) == 20
     for index, cell in enumerate(compiled.panel.cells):

@@ -67,6 +67,11 @@ def model_port(root: Path, monkeypatch, *, max_calls: int = 24, valid_plan: bool
         if request["slot"] == "scenario":
             directions = ["increase", "decrease", "increase"] if valid_plan else ["increase", "increase", "increase"]
             output = {"question": "public", "budget_units": 3, "branches": [{"hypothesis_id": f"h{i}", "mechanism_key": f"m{i}", "mechanism": "public mechanism", "intervention": "public intervention", "elimination_condition": "public disagreement", "predictions": [{"prediction_id": f"p{i}", "discriminator_id": "shared", "observable": "public observable", "direction": directions[i], "value_range": None, "failure_condition": "does not " + directions[i]}]} for i in range(3)]}
+        elif request["slot"].startswith("plan_"):
+            plan = request["module_context"]["plan_material"]
+            output = {name: plan[name] for name in ("question", "branches", "budget_units")}
+        elif request["slot"] == "dedup":
+            output = {"kept_proposal_ids": request["module_context"]["retained_proposal_ids"]}
         elif request["slot"] == "final":
             output = {"objective_digest": request["module_context"]["required_objective_digest"], "outcome": "unknown", "evidence_ids": [], "conclusion": "synthetic engineering result", "programme_complete": False}
         elif request["slot"] == "analysis_program":
@@ -185,6 +190,35 @@ def test_withdrawal_drivers_reach_custody_controller_with_caller_admission(tmp_p
     assert result.receipt.data()["execution_status"] == "engineering_complete"
     assert len(result.runtimes) == expected_cells and len(port.ledger["calls"]) == expected_cells * 3
     assert admitted and all(row.status == "succeeded" for row in result.runtimes)
+
+
+@pytest.mark.parametrize("coverage,expected_cells,slots", [
+    ("Q3.2", 8, ("plan_1", "plan_2", "plan_3", "final")),
+    ("Q5.3", 12, ("dedup", "final")),
+])
+def test_prediction_drivers_reach_custody_controller_without_registry_patch(tmp_path, monkeypatch, coverage, expected_cells, slots):
+    from test_modular_prediction_panel_drivers import material
+    snapshot, custody = snapshot_and_custody(tmp_path)
+    base = config(custody, snapshot, tmp_path).data()
+    packets = TrainPacketExporter(custody, snapshot, tmp_path / "prediction-material").export(base["item_ids"])
+    grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+    package = next(iter(base["packages_by_arm"].values()))
+    dedup = {"type": "object", "properties": {"kept_proposal_ids": {"type": "array", "items": {"type": "string"}}},
+             "required": ["kept_proposal_ids"], "additionalProperties": False}
+    schemas = {slot: FINAL if slot == "final" else dedup if slot == "dedup" else SCENARIO for slot in slots}
+    frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+        "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-prediction-controller", "scope_ids": [coverage],
+        "evidence_by_task": {packet.task.content_hash: material(packet.task).data() for packet in packets},
+        "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+        "budget": {"model_calls": len(slots), "execution_limit": 0}, "max_calls": expected_cells * len(slots), "schemas": schemas}))
+    port = model_port(tmp_path, monkeypatch, max_calls=expected_cells * len(slots), schemas=schemas)
+    result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+        export_root=tmp_path / "export", run_root=tmp_path / "run", model=port,
+        audit_verifier=AuditVerifier({"a": b"a"*32, "b": b"b"*32}))
+    assert result.receipt.data()["execution_status"] == "engineering_complete"
+    assert len(result.runtimes) == expected_cells and len(port.ledger["calls"]) == expected_cells * len(slots)
+    assert all(row.status == "succeeded" for row in result.runtimes)
+    assert result.verdict.scientific_verified is False
 
 
 @pytest.mark.parametrize("coverage,expected_cells", [("Q2.3", 28), ("Q2.4", 16)])
