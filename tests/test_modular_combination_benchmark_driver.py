@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import runpy
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -129,3 +130,13 @@ def test_malformed_module_solver_failure_and_other_obligations_fail_closed(tmp_p
     with pytest.raises(ContractError, match="no actual combination executor"):
         _run(unsupported_panel, unsupported, catalogue, tmp_path / "unsupported", _model(calls))
     assert not calls
+
+
+def test_verifier_rejects_forged_runtime_and_joint_bindings(tmp_path: Path):
+    catalogue = _catalogue(); panel = catalogue.panels["pair:M4+M5"]; cell = next(c for c in panel.cells if c.arm_id == "11")
+    result = _run(panel, cell, catalogue, tmp_path, _model([])); task=catalogue.tasks[cell.task_digest]; package=catalogue.packages[cell.runtime_arm.content_hash]; scenario=catalogue.scenarios[cell.key]
+    for forged in (replace(result, runtime=replace(result.runtime, status="failed", failure_reason="forged")), replace(result, joint_mechanism=None)):
+        with pytest.raises(ContractError): verify_m4_m5_combination_benchmark_cell(forged,panel=panel,task=task,scenario=scenario,package=package)
+    joint=result.joint_mechanism.data(); joint["module_response_digests"][0]="0"*64
+    with pytest.raises(ContractError): verify_m4_m5_combination_benchmark_cell(replace(result,joint_mechanism=FrozenRecord.from_dict(joint)),panel=panel,task=task,scenario=scenario,package=package)
+
