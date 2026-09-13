@@ -326,6 +326,20 @@ def test_rejects_config_drift_reused_root_and_unreviewed_policy(tmp_path: Path, 
         FrozenBaseContextPolicy(candidate, sha(candidate)).data()
 
 
+def test_rejects_live_response_schema_drift_before_export(tmp_path: Path, monkeypatch) -> None:
+    snapshot, custody = snapshot_and_custody(tmp_path)
+    frozen = config(custody, snapshot, tmp_path)
+    drifted = frozen.data()["schemas"]
+    drifted["final"]["properties"]["outcome"]["enum"] = ["unknown", "invalid"]
+    port = model_port(tmp_path, monkeypatch, schemas=drifted)
+    with pytest.raises(ContractError, match="frozen controller configuration"):
+        run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+            export_root=tmp_path / "export", run_root=tmp_path / "run", model=port,
+            audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+    assert not (tmp_path / "export").exists() and not (tmp_path / "run").exists()
+    assert port.ledger["calls"] == []
+
+
 def test_rejects_non_train_allowlist_and_evidence_task_mismatch_before_model(tmp_path: Path, monkeypatch) -> None:
     snapshot, custody = snapshot_and_custody(tmp_path)
     frozen = config(custody, snapshot, tmp_path)

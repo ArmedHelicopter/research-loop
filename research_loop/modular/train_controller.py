@@ -171,7 +171,8 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
     policy = _reviewed_model_policy(model)
     if (model.model != data["model"] or model.effort != data["effort"]
-            or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]):
+            or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]
+            or model.schemas != data["schemas"]):
         raise ContractError("live model port differs from frozen controller configuration")
     if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
         raise ContractError("controller requires a fresh empty model ledger")
