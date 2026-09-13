@@ -50,7 +50,7 @@ class FrozenLineageTrainConfig:
         required = {'schema', 'domain', 'stage', 'item_ids', 'task_bindings', 'baseline_digest', 'packages_by_arm',
             'scorer', 'scorer_handle_bindings', 'acceptance_criteria', 'replicates', 'model', 'effort', 'max_calls',
             'max_tokens', 'schemas', 'allocation', 'image', 'timeout_seconds', 'materials_by_task', 'source_verifier_binding'}
-        schema_ok = ((set(b) == required and b.get('schema') == schema)
+        schema_ok = (source_schema_matches(b, required, schema)
                      if schema == 'admission-combination-train-config-v1' else
                      source_schema_matches(b, required, schema, optional=('lineage_reference_binding',)))
         if (not schema_ok or b['domain'] != 'train'

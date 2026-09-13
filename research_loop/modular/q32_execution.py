@@ -256,6 +256,10 @@ def run_q32_execution_panel(*, custody, snapshot_root: Path, export_root: Path, 
         raise ContractError("execution panel output already used")
     packets = TrainPacketExporter(custody, snapshot_root, export_root).export(item_ids)
     compiled = compile_q32_execution(packets, material_by_task, image=image)
+    return _run_q32_compiled(packets, compiled, export_root, run_root, model_factory, verifier)
+
+
+def _run_q32_compiled(packets, compiled, export_root, run_root, model_factory, verifier):
     run_root.mkdir(parents=True, exist_ok=True)
     (run_root / "compiled.json").write_text(compiled.encoded, encoding="utf-8")
     packet_by_task = {p.task.content_hash: p for p in packets}
@@ -283,3 +287,82 @@ def run_q32_execution_panel(*, custody, snapshot_root: Path, export_root: Path, 
         "scientific_validated": False, "programme_complete": False})
     (run_root / "panel-result.json").write_text(result.encoded, encoding="utf-8")
     return result
+
+
+class FrozenQ32ProspectiveConfig:
+    """Exact public TRAIN bindings and caller plans, frozen before source I/O."""
+    def __init__(self, record):
+        from research_loop.modular.contracts import DataIdentity
+        from research_loop.modular.combination_train_source import source_item_matches
+        if type(record) is not FrozenRecord:
+            raise ContractError('typed immutable Q3.2 source configuration required')
+        b = record.data()
+        if (set(b) != {'schema', 'domain', 'export_mode', 'item_ids', 'task_bindings', 'material_by_task', 'image'}
+                or b['schema'] != 'q32-prospective-source-config-v2' or b['domain'] != 'train'
+                or b['export_mode'] != 'primary_prospective' or not isinstance(b['item_ids'], list)
+                or len(b['item_ids']) != 2 or len(set(b['item_ids'])) != 2
+                or not isinstance(b['task_bindings'], dict) or set(b['task_bindings']) != set(b['item_ids'])
+                or not isinstance(b['image'], str) or not b['image']):
+            raise ContractError('closed Q3.2 prospective source scope invalid')
+        identities, tasks = [], []
+        def is_digest(value):
+            return isinstance(value, str) and len(value) == 64 and all(c in '0123456789abcdef' for c in value)
+        for item, binding in b['task_bindings'].items():
+            if not isinstance(binding, dict) or set(binding) != {'identity', 'task_digest', 'csv_sha256', 'csv_byte_count'}:
+                raise ContractError('complete Q3.2 public source binding required')
+            identity = DataIdentity.parse(binding['identity']); identity.require_train()
+            if (not source_item_matches(b, item, identity) or not is_digest(binding['task_digest'])
+                    or not is_digest(binding['csv_sha256']) or type(binding['csv_byte_count']) is not int
+                    or binding['csv_byte_count'] < 1):
+                raise ContractError('Q3.2 source binding types differ')
+            identities.append(identity); tasks.append(binding['task_digest'])
+        if ({i.benchmark for i in identities} != {'blade', 'discoverybench'} or len({i.split_id for i in identities}) != 1
+                or not isinstance(b['material_by_task'], dict) or set(b['material_by_task']) != set(tasks)):
+            raise ContractError('Q3.2 requires both tasks in one TRAIN split and complete materials')
+        self.record = record
+
+    def data(self):
+        return self.record.data()
+
+
+def run_q32_prospective_execution_panel(config, *, prospective_exporter, snapshot_root, export_root,
+                                         run_root, model_factory, verifier):
+    """Use the audited primary source, then the unchanged actual execution kernel."""
+    from evaluation.modular.prospective_train_exporter import _concrete
+    from research_loop.modular.combination_train_source import CombinationTrainSource, packet_index
+    from research_loop.modular.train_controller import _write
+    if type(config) is not FrozenQ32ProspectiveConfig or not callable(model_factory) or not isinstance(verifier, AuditVerifier):
+        raise ContractError('typed Q3.2 source config, model factory and audit verifier required')
+    b = config.data()
+    snapshot, exported, root = (_concrete(Path(p)) for p in (snapshot_root, export_root, run_root))
+    if any(a == z or a.is_relative_to(z) or z.is_relative_to(a) for n,a in enumerate((snapshot,exported,root)) for z in (snapshot,exported,root)[n+1:]):
+        raise ContractError('Q3.2 source and execution roots must be disjoint')
+    if root.exists() or exported.exists():
+        raise ContractError('Q3.2 prospective execution is single-use')
+    source = CombinationTrainSource(b, custody=None, prospective_exporter=prospective_exporter,
+                                    snapshot=snapshot, exported=exported)
+    root.mkdir(parents=True)
+    journal = {'schema': 'q32-prospective-source-attempt-v1', 'source_config_digest': config.record.content_hash,
+               'status': 'exporting', 'packet_receipts': [], 'compiled_digest': None, 'error_type': None}
+    def persist(): _write(root / 'source-attempt.json', journal)
+    persist()
+    try:
+        packets = source.export()
+        journal['packet_receipts'] = [p.receipt.data() for p in packets]; persist()
+        by_item = packet_index(b, packets)
+        for item, packet in by_item.items():
+            expected = b['task_bindings'][item]; receipt = packet.receipt.data()
+            if (packet.task.identity.data() != expected['identity'] or packet.task.content_hash != expected['task_digest']
+                    or receipt['csv_sha256'] != expected['csv_sha256'] or receipt['csv_byte_count'] != expected['csv_byte_count']):
+                raise ContractError('Q3.2 export differs from pre-frozen task/CSV binding')
+        compiled = compile_q32_execution(packets, b['material_by_task'], image=b['image'])
+        journal.update(status='executing', compiled_digest=compiled.content_hash); persist()
+        result = _run_q32_compiled(packets, compiled, exported, root, model_factory, verifier)
+        journal['status'] = 'completed'; persist()
+        envelope = FrozenRecord.from_dict({'source_config_digest': config.record.content_hash, 'result': result.data()})
+        _write(root / 'source-result.json', envelope.data())
+        return envelope
+    except Exception as exc:
+        journal.update(status='blocked_before_execution' if journal['compiled_digest'] is None else 'execution_failed',
+                       error_type=type(exc).__name__); persist()
+        raise
