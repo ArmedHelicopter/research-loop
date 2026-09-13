@@ -40,3 +40,13 @@ exception whose partial response and reported cost remain ordered in the
 journal.  These are engineering trace checks.  They do not establish authority
 independence, calibration, scientific validity, or an effect of retrieval or
 resource closure.
+
+The registered `run_train_panel` entry now supplies the frozen provider,
+authority, keys and Docker broker directly. It verifies the exported CSV against
+every fault row before any provider, model or authority request. Source
+`a0beade8b3bc60eec6e4d1c5166bc1bd01bafa99` passed 52 independent checks,
+including the complete 32-cell custody/controller grid. The formal grid checks
+64 model calls, 96 bounded lane requests, 32 dual-signature authority requests,
+and 16 actual Docker executions in the resource-resolved arms. Every cell has
+the same one-execution opportunity; unresolved prerequisites remain blocked.
+The model transport and scientific authorities in this test are public fixtures.
