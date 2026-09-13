@@ -89,7 +89,8 @@ def model_response(seen, fail=False):
     def respond(request):
         b=request.data(); seen.append(b); context=b['module_context']; slot=b['slot']
         assert all(x not in request.encoded for x in ('private-variant-', 'private-root-', 'pair:M4', 'pair:M5', 'triple:M4',
-            '"enabled"','"arm_id"','"contrast"','PRIVATE-REFERENCE-SENTINEL','"scorer_handle_bindings"'))
+            '"enabled"','"arm_id"','"contrast"','PRIVATE-REFERENCE-SENTINEL','"scorer_handle_bindings"',
+            '"policy_digest"','"source_bundle_digest"'))
         def check_ids(value):
             if isinstance(value,dict):
                 for k,v in value.items():
@@ -166,6 +167,14 @@ def test_full_registry_custody_shared_session_grid_real_docker_and_scorer_proces
     assert len(result.scores)==32, [r.data() for r in result.attempts if r.data()['status']!='succeeded']
     assert receipt['failed_cells']==receipt['blocked_cells']==0
     assert len(seen)==len(port.ledger['calls'])==160 and len(provider.calls)==96
+    private_source_digests={value for r in result.results for key,value in r.joint_mechanism.data()['retrieval'].items()
+                           if key in ('policy_digest','source_bundle_digest')}
+    for request in seen:
+        encoded=canonical(request)
+        assert not any(value in encoded for value in private_source_digests)
+        context=request['module_context']
+        retrieval=context['retrieval'] if request['slot'] in SLOTS[:3] else context['joint_mechanism']['retrieval']
+        assert set(retrieval)=={'by_lane','source_qualification','scientific_admission'}
     assert receipt['actual_docker_attempts']==32 and receipt['source_calls']==96
     assert receipt['pruned_cells']==[] and receipt['scientific_effectiveness_proven'] is receipt['validation_opened'] is False
     assert receipt['mechanism_endpoint_independently_scored'] is False

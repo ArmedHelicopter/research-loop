@@ -83,14 +83,19 @@ class RetrievalReviewResult:
     joint_mechanism: FrozenRecord | None
 
 
+def public_retrieval(projection):
+    """Only task-useful material may cross the model boundary, never policy hashes."""
+    return {key: projection[key] for key in ('by_lane','source_qualification','scientific_admission')}
+
+
 def _context(task, cell, projection, proposal=None):
     return {'panel_cell': opaque_panel_cell_binding(cell), 'public_task': task.data(),
-            'retrieval': projection, 'proposal': proposal}
+            'retrieval': public_retrieval(projection), 'proposal': proposal}
 
 
 def _public(joint):
     b = joint.data()
-    return FrozenRecord.from_dict({'schema': 'public-research-context-v1', 'retrieval': b['retrieval'],
+    return FrozenRecord.from_dict({'schema': 'public-research-context-v1', 'retrieval': public_retrieval(b['retrieval']),
         'prediction_plan': b['prediction_plan'], 'ordinary_notes': b['ordinary_notes'],
         'review_responses': b['review_responses']})
 
