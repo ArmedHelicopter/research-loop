@@ -1,0 +1,2156 @@
+[
+  {
+    "path": "mechanism-improvement-r1/mechanism-improvement0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r1/mechanism-improvement0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r1/mechanism-improvement0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r1/mechanism-improvement0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r1/mechanism-improvement0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r1/mechanism-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "6e11310a46d1fec7bb24b4a4cf085356b95638bc5692ac154ce20779945443be",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r1/mechanism-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "2b333d08cd4b4510a0d24a6b6326808d4e34bd7dee283f57af4ad35f84721d74",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r1/mechanism-improvement0/private-scorer-store/manifest.json",
+    "sha256": "86c050b7bc369be7e27f07b7585ba4b2d287d0e975c65ae0ca8ba481dcb1e770",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r1/mechanism-improvement0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r1/mechanism-improvement0/server-0.json",
+    "sha256": "6bfccb5e01e9967f3ad1acdc305e38806776df6569fd8bea13e7770f778d7cc3",
+    "bytes": 16299,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r1/mechanism-improvement0/server-1.json",
+    "sha256": "51e5385d5bf61d236ff370b5e0fa23feca0bdc088ac161cc7a925f2debbc8ba1",
+    "bytes": 16299,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r1/mechanism-improvement0/server-2.json",
+    "sha256": "e3115809a3c76c98f3e60df13e666d67077e8dfe83049c2b3ff50b49ed80364f",
+    "bytes": 16299,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/mechanism-improvement0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r2/mechanism-improvement0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/mechanism-improvement0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/mechanism-improvement0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/mechanism-improvement0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/mechanism-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "00832a56987e938c168fa7b3df4c62229da41363ed52a14719dc540823a82cbd",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/mechanism-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "3a06c65409a0884d76880432114508d125d3ffd702e34afc545936e5e8eeeb75",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/mechanism-improvement0/private-scorer-store/manifest.json",
+    "sha256": "7918c003d601295c595cd6321c569a44bbe77fdbbbd66a3fb7f68b7089ed275f",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/mechanism-improvement0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r2/mechanism-improvement0/server-0.json",
+    "sha256": "3dfc003f3f3025ed22cb6ef9cc163e8f7c2c8f7e35ca79565f2a5975c9eacc39",
+    "bytes": 16299,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/mechanism-improvement0/server-1.json",
+    "sha256": "7dfae3a31ff6a1b4639c3d3d93f39d8031021df6ed6228527e2dcbdc9c2609c8",
+    "bytes": 16299,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/mechanism-improvement0/server-2.json",
+    "sha256": "633511d9598ae2999f737c82268f69f43f32b2a304e70ce0911472db65aa15f4",
+    "bytes": 16299,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "48a1fe93006205b6a1bf00c482c4389ef2ee82a060742489c582584fcc186189",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "20481e5d3ba35de6eb67354ac3c665056784d4d6490da62ae3e60790843cd027",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost0/private-scorer-store/manifest.json",
+    "sha256": "acc6853d698f0bb43c7b006ffd0e8c442dbe39ea9e6fae5c6d1f679ee49ac382",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost1/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost1/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost1/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost1/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "0bdfc736ad179a8bb913925412fb71a44b45db08538781b2be81331f58064dcf",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "86cf6693d9b093d88d0b835b8f08e7b55d118d228764327f5a56ce53fb399724",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost1/private-scorer-store/manifest.json",
+    "sha256": "f6b0118541d1d22a56ac13b895e17b76772ebf55845cc2a1a7c3f106bd9aff36",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost2/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost2/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost2/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost2/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "f2badfaec20b63c728163f8dd7ade58f83d3d8fbb50f92c301962b95f288c42f",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "508f9fb58bb3804ee40d3e1044fa0d2a1d3d7207e37c4edec03d79bc92f1fd6d",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost2/private-scorer-store/manifest.json",
+    "sha256": "3c38ec2b1b807f64ca9831f81c0f5f5a1c07f5d5ae8858cb3db1ae8479cda55a",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost3/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost3/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost3/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost3/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "f06d6b24a378717e1da063d79c067cb37dce553b6ecfa9897aed38eccc9bb11c",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "b05c8204b89710901295faec5a3547f17e7afaa3ef40e2a9d3bbdab39a8c8216",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost3/private-scorer-store/manifest.json",
+    "sha256": "a291a42159cdc544679bd3ef840ac1f9aefadd0bc62ddd7c037d3cf748e07c29",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost4/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost4/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost4/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost4/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "d94f7c3632dddc4ff2e808af7e6a6346658c59366802174d0aff7416f10d9e64",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "bacd9dec96c92fb67b99612ba5ecc09c0c5702de0902282fc883cbcadd262735",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost4/private-scorer-store/manifest.json",
+    "sha256": "4131a7e1c400e5fed56936edde4ff076559f8013b06c6993f4039901cbf4e00b",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost5/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost5/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost5/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost5/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost5/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "fae33e4bd69d4c1041157b0043f73e641b8f4ef66e8420332492a8c43c54dca4",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8d7005eafdaf58d0a8318ec7ed437e2631e833312906fca75dd2c0224d7e40e5",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost5/private-scorer-store/manifest.json",
+    "sha256": "e3ff394e8792608c579ff7edfa5b069c981d955f02fd64187a83c16b1ee733d0",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost5/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost5/server-0.json",
+    "sha256": "bb32556d7ccd28cc7cfab2359c8f445ba7fedf0a194e5076f6734230a293212e",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost5/server-1.json",
+    "sha256": "95cb069f2222790f3532eac967ba11d94547e09ce5bd23b51d76c2a6728dc733",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost5/server-2.json",
+    "sha256": "90a06f6fa1ce17f8befaaf1e961003d5b8cbdf8fb36a02537707a08903076676",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost6/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost6/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost6/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost6/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost6/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost6/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "cc296cb5c6650ffc03c6dec33fee325ccaf5975bc097c4c253aebc59a2b21b9e",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost6/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "d51f5c62324723867549d02cc4b59ab7d6b98ab8b2841ae0611b94952bbfa693",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost6/private-scorer-store/manifest.json",
+    "sha256": "12dd5b37e07caa0900df4101bcee6cba812556dde51cb170e6a45a4b6e009fa8",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost6/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost6/server-0.json",
+    "sha256": "a8c42d3b813ef56767cd46138f2387b2b18eaf944a34c116b33238712b278b34",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost6/server-1.json",
+    "sha256": "77cc61f0fc55304f451a48c5611ea9bde9cfb82fb07bec6eb16ab627e84b00e5",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost6/server-2.json",
+    "sha256": "149657db3a944166e8d572f686d59541d354ab9fd81bdf92c5135ee71e4cadbc",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost7/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost7/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost7/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost7/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost7/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost7/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "8d8823d5136ad3fc4ebd63618ccf50110ee4ebe43bfa8c4b188bf0f74ee2564a",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost7/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "25d2e273f7b546cd885119e34600c64b8d9d6d3a36310e196e98338418f1cabb",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost7/private-scorer-store/manifest.json",
+    "sha256": "095875f097b585ea9121847681b822a64240936c636bdeb7167a341110ee175d",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost7/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost7/server-0.json",
+    "sha256": "32790d06b5eb2f1ef7ad1df2b1a3dc9298bfcf8b3726de1bf95952c6c5fefc01",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost7/server-1.json",
+    "sha256": "88eda355d993d47b76324ce965d483f61c7c2477d4be34efd5ddd69474c1cdf2",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost7/server-2.json",
+    "sha256": "20dc1f79868c1f35794e7aa493b074d19760b43f6d4b88e3e9b9bc008b2dbc8a",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost8/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost8/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost8/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost8/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost8/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost8/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "7773a11643c1cd8ddfb9db39d4b23d85cd48145cdeec5b9d22645730f3038a24",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost8/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "2cc209c3f4c6d5b993148ebbc89cbf97354f06185e34b1727ed9dcfe8c6c0945",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost8/private-scorer-store/manifest.json",
+    "sha256": "8648f03fd24705c0fde6afaeb2cebd754e15283d7617932e15269651a2e44322",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost8/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost8/server-0.json",
+    "sha256": "a2cc661886ec13a1d446b818f65e932ebfc958147180c27ae258d7570cf0316d",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost8/server-1.json",
+    "sha256": "c0d2cd38156c1a3d6451e3cb361f909efe6b7e7e691ca2179d022d68055b0493",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_failures_and_unknown_cost8/server-2.json",
+    "sha256": "4ac190b73cf727522e04d5bfda2ff4a279489a04a29abe1fd9e69a0108b87def",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "22f6d0b1e8e776cd5203c71f96fe052cef8ef2497033b3a1fc780848aa9f878e",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "fa1364065a662ed44efc9becf9489a8b2624c134711b7232efe82c1824cf6867",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any0/private-scorer-store/manifest.json",
+    "sha256": "d5ec77db34973caba1e8c3e3462b6f15e8e6f79b7bdc4c592a746d3f49c41077",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any1/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any1/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any1/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any1/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "68d1a4561015345cab6fd9242b7afaa1632a07cc5dd3f5125683c800ff44b340",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8c661a3d4d36ec8410b341bdbd5965d8b1b3e78ad87d330f6484de80b19e67ce",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any1/private-scorer-store/manifest.json",
+    "sha256": "02de38ec95a2ccb120201a17f03b78cbb4b0fdb027e50da2c869435932fcb28f",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any2/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any2/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any2/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any2/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "45e22a97427a04295428e82921ee0be5ce5399ec354c93c61f2f62d30462f1ee",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "b3404f5071fab61c1fece27fb23107c445ebccd2af453c25a4a7c535038ed79c",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any2/private-scorer-store/manifest.json",
+    "sha256": "61b1f2d8d3f6f1e45ce9d6b9e33f1710ca3782efe4f2c9086f7f2dc58212a34d",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any3/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any3/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any3/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any3/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "a3b01883b216360e9e099606e5bd7c8ea0095c8147e5f51b13e0417da09e1c1c",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "e97de8bae4f7ccfb342577f3d84f3787d1a1fb95830772ea495917e0bcc7764c",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any3/private-scorer-store/manifest.json",
+    "sha256": "9be13358531db281b2003068d213179cb2e50b897669c389c7c1536784c26012",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any4/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any4/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any4/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any4/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "da893467e277a242ce5c8d0f247283eeeb3ae92f0f7e93e8423ad5c232b27b68",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "eca9207651ccbdad220b8859e3aa6dd1ab23a1f3252fda8316c3374ae83d6df2",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r2/test_source_faults_precede_any4/private-scorer-store/manifest.json",
+    "sha256": "2d45b57558ba59a847eca6eef88f2515832103e9ffe927734db742355953399b",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/state-improvement0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/state-improvement0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/state-improvement0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/state-improvement0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/state-improvement0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "541e79df7c0178c1d3e220a7ce15950a8c902ad7c49aa5c370f31265588f871c",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/state-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "d05c63e2fdb1c04b0f34e13be453c5435dfb1faea25c7d933326acc6fe61cb57",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/state-improvement0/private-scorer-store/manifest.json",
+    "sha256": "fc782f2f86560272589c82282a41cd1d7ef4746c99f69199b26bea3970e91805",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/state-improvement0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/state-improvement0/server-0.json",
+    "sha256": "36cdbf4a0ed3517fd644cb480da6a5925b3ad2dd2cd134ea074e5bf9cc5d50df",
+    "bytes": 16202,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/state-improvement0/server-1.json",
+    "sha256": "473dfd42e2261c57146304b1f862c2a744080ab21bd68ee9e6412fac3ab79cee",
+    "bytes": 13247,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/state-improvement0/server-2.json",
+    "sha256": "ebebc2345719bf59dd40f88ff833a368405d65e2e7ffc57b4ef20fa183fc0d42",
+    "bytes": 16203,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_actual_stdio_worker_score0/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_actual_stdio_worker_score0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "24bea7b093766a9339807855dc3dab23eb461830e09b0f860e13a62a04d62944",
+    "bytes": 553,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_actual_stdio_worker_score0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_actual_stdio_worker_score0/private-scorer-store/manifest.json",
+    "sha256": "ae2397b6e553df756e9d9d57e55552f9a207afeb05b7c53d8c23ef695e5d9bac",
+    "bytes": 1756,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_actual_stdio_worker_score0/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_eight_cell_custody_c0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_eight_cell_custody_c0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_eight_cell_custody_c0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_eight_cell_custody_c0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_eight_cell_custody_c0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_eight_cell_custody_c0/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_eight_cell_custody_c0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_eight_cell_custody_c0/server.json",
+    "sha256": "3f35c2c59689ecb972ac33b3895cd551740c1cca4d4d2d7c72b4c201682930e8",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont0/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont0/server.json",
+    "sha256": "18335f0b19ac6d53182d42973ff62abd6122005a8cffe1f9413dba675d48895b",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont1/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont1/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont1/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont1/server.json",
+    "sha256": "550946ee345fe9aae84d5dec07c6b13795f228f13af6d0f96844d54363ceefa4",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont2/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont2/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont2/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont2/server.json",
+    "sha256": "e8e63cfdac6ef7f968332a9c397c7f6cf337b9f23c8a392a52ebfdcbf551b3e4",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont3/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont3/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont3/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont3/server.json",
+    "sha256": "6bfc40dae99dd94910eba3dc22e8d605f8fbff522137927d8ef67b4f97815f58",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont4/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont4/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont4/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont4/server.json",
+    "sha256": "e3557d2b01b89d6576ea01ce5f9cf2a1a715cb89527bad38b10338570dd63064",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont5/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont5/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont5/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_full_panel_and_store_cont5/server.json",
+    "sha256": "c2209d7a3b86017027abdb26b63daf12e75934cf37562290177f0032cc46e139",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes0/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes0/server.json",
+    "sha256": "684d2735868656c413ba3c17ba094685a1d5fab22941b7585bc7d5a3b8a5f8ee",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes1/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes1/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes1/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes1/server.json",
+    "sha256": "2b4147de82d1686152f6b31851c70bfcdb8db88d0fa5ee96975c6cfbe2023cbe",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes2/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes2/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes2/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes2/server.json",
+    "sha256": "e1d7bde77c19f34f2abcace20b2de6022c5a0358f8d68993c5d53bc7f5fa9f4c",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes3/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes3/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes3/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes3/server.json",
+    "sha256": "b8d738e2982589d241ac80ec92090bf74cb80ac7c8b3a12cf72ea90d9d1f6811",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes4/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes4/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes4/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes4/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes4/server.json",
+    "sha256": "b2f22f15583b575365aa520888e6ccd41a116dd04956a058924fb3d4fda22039",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes5/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes5/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes5/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes5/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes5/server.json",
+    "sha256": "10b9973ae74e4fe7c5fd40ec57dcbaf367e5a390b6097e91ad4c70a470c70b1a",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes6/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes6/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes6/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes6/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes6/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes6/server.json",
+    "sha256": "22470ec055baff1742b3d6d080027958b15a8354029e6cd7d320d4e1736231da",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes7/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes7/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes7/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes7/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes7/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_merged_combination_scopes7/server.json",
+    "sha256": "f8043e90c3017be275d4ec2076b6ffd52a5bb75bbc540905298705b3673e1790",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis0/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "24bea7b093766a9339807855dc3dab23eb461830e09b0f860e13a62a04d62944",
+    "bytes": 553,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis0/private-scorer-store/manifest.json",
+    "sha256": "ae2397b6e553df756e9d9d57e55552f9a207afeb05b7c53d8c23ef695e5d9bac",
+    "bytes": 1756,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis0/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis1/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "24bea7b093766a9339807855dc3dab23eb461830e09b0f860e13a62a04d62944",
+    "bytes": 553,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis1/private-scorer-store/manifest.json",
+    "sha256": "ae2397b6e553df756e9d9d57e55552f9a207afeb05b7c53d8c23ef695e5d9bac",
+    "bytes": 1756,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis1/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis2/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "24bea7b093766a9339807855dc3dab23eb461830e09b0f860e13a62a04d62944",
+    "bytes": 553,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis2/private-scorer-store/manifest.json",
+    "sha256": "ae2397b6e553df756e9d9d57e55552f9a207afeb05b7c53d8c23ef695e5d9bac",
+    "bytes": 1756,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis2/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis3/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "89fbdaf2739e2c2617ac537d73a899cb4990792dba703b4845651464454ad2a0",
+    "bytes": 553,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis3/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis3/private-scorer-store/manifest.json",
+    "sha256": "9de35d447723d790108d04a63f422107837f8ce6cb68b567b3d3ed67e55314c2",
+    "bytes": 1756,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_rejects_validation_or_mis3/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be0/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be0/server.json",
+    "sha256": "4666ce61a612ec0ff905836f178526ebc5de692e3ddb2255537a035b65daad11",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be1/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be1/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be1/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be1/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be1/server.json",
+    "sha256": "199422cd2a7470bd7cd4f751767a504098a1347dbf4095665944927c7e23fef2",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be2/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "04fc480105e880c9fe8b81cf3e1597cb1328e3a2a4c1a28ddca555ac05b9eb59",
+    "bytes": 555,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be2/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "8a52108a1d58822148010432ffcc6100a5301dd8957368b842d89fa5250f78db",
+    "bytes": 549,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be2/private-scorer-store/manifest.json",
+    "sha256": "4853e1699bdde9e021cb01ef7dda1564d92ce25787db76f54523eb1ee8b46e80",
+    "bytes": 1907,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be2/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_startup_mismatch_fails_be2/server.json",
+    "sha256": "73352bbe863637278d597456923066c03a2fc951fe4d18c916723f9c758f3f69",
+    "bytes": 15512,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_unknown_server_reservatio0/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_unknown_server_reservatio0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "24bea7b093766a9339807855dc3dab23eb461830e09b0f860e13a62a04d62944",
+    "bytes": 553,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_unknown_server_reservatio0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_unknown_server_reservatio0/private-scorer-store/manifest.json",
+    "sha256": "ae2397b6e553df756e9d9d57e55552f9a207afeb05b7c53d8c23ef695e5d9bac",
+    "bytes": 1756,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_unknown_server_reservatio0/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_utf8_signed_candidate_sur0/executor.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_utf8_signed_candidate_sur0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "24bea7b093766a9339807855dc3dab23eb461830e09b0f860e13a62a04d62944",
+    "bytes": 553,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_utf8_signed_candidate_sur0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "afeeaa42598d36361663a4c43202f39750163202f18679eedb889a0c043f1af7",
+    "bytes": 564,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_utf8_signed_candidate_sur0/private-scorer-store/manifest.json",
+    "sha256": "ae2397b6e553df756e9d9d57e55552f9a207afeb05b7c53d8c23ef695e5d9bac",
+    "bytes": 1756,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-default-r2/test_utf8_signed_candidate_sur0/scorer.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r3/mechanism-improvement0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r3/mechanism-improvement0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r3/mechanism-improvement0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r3/mechanism-improvement0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r3/mechanism-improvement0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r3/mechanism-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "5220b3d2007d8ee631b85166182cbab0e4e1256a459680df1b59775b75935fee",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r3/mechanism-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "9619941bd10e12a1d66ad87fbe39a140a6aee8f646ff046cab4650c7c0e2f7f9",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r3/mechanism-improvement0/private-scorer-store/manifest.json",
+    "sha256": "bfe29a505f33bcd710e600e5336092900a2b26c3dfa6c1eb0ac49fb870d581a9",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r3/mechanism-improvement0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r3/mechanism-improvement0/server-0.json",
+    "sha256": "b2a5968819e660a42c42389f93294ead7149c733c99c99a2c36cdf10e98ebe99",
+    "bytes": 16299,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r3/mechanism-improvement0/server-1.json",
+    "sha256": "220a2953f41f4586275c217a3651909570e7888c00a1461902760ae05b2a9344",
+    "bytes": 16299,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r3/mechanism-improvement0/server-2.json",
+    "sha256": "62479cc50fc3b96dd3eb7f8278c04bce9c1c2ec92cad82fd5d3f6255ce44e848",
+    "bytes": 16299,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r3/test_useful_nondiscriminating_0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r3/test_useful_nondiscriminating_0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r3/test_useful_nondiscriminating_0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r3/test_useful_nondiscriminating_0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r3/test_useful_nondiscriminating_0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r3/test_useful_nondiscriminating_0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "1bbece5f00259c06943fd3265ccb9dca872cb1ed42cf421bd4339bf0bc1d795d",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r3/test_useful_nondiscriminating_0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "6fb6f9890b89563416db22ab35c89e951e5e262a943530b21af20517e1d62137",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r3/test_useful_nondiscriminating_0/private-scorer-store/manifest.json",
+    "sha256": "3c0bde55e41b904c55cb5fc1b35208f6693fc214fe820095bc5e8e293c8d33d5",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r3/test_useful_nondiscriminating_0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r3/test_useful_nondiscriminating_0/server-0.json",
+    "sha256": "13983d4cb48fe6579d4fb0d7a048d62b5d3cd19248aaec35c88b9ccac608058c",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r3/test_useful_nondiscriminating_0/server-1.json",
+    "sha256": "a51bb42771ef6a0165fefb79bbaa7ca0529d3d8c96fa252b181b01797d7cdf02",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r3/test_useful_nondiscriminating_0/server-2.json",
+    "sha256": "9bf881f2e0977b2f55d3a74bb878734d918c9821425f8090f34812e00894633c",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r4-red/mechanism-improvement0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r4-red/mechanism-improvement0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r4-red/mechanism-improvement0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r4-red/mechanism-improvement0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r4-red/mechanism-improvement0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r4-red/mechanism-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "2fae2ed2deda9a54dc758653ca0e69ed88a050c7c22fa909f44316a208018e63",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r4-red/mechanism-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "c13d4c77e76fb4bf60a210f6b412aec857d0f4cc3d2eeba2f3e33d8cfc728023",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r4-red/mechanism-improvement0/private-scorer-store/manifest.json",
+    "sha256": "36a91ef2d935c56a350f1c1e9f8083703cac30194d10e5f96f50393fe2b11ad3",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r4-red/mechanism-improvement0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r4-red/mechanism-improvement0/server-0.json",
+    "sha256": "0554e13ac066dc0fcb0fa0a5588b72da8b694f336c22a863a901f7144b893948",
+    "bytes": 16311,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r4-red/mechanism-improvement0/server-1.json",
+    "sha256": "2dd895647a6124e10f41ba418eb851fb4c46adc465d5303e5548629a51f0b264",
+    "bytes": 16311,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r4-red/mechanism-improvement0/server-2.json",
+    "sha256": "34177205b578da4dac5bfbd9f92c3df2b8d58cfb1f33b88d38b0b2ad0c21139f",
+    "bytes": 16311,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/mechanism-improvement0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r5/mechanism-improvement0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/mechanism-improvement0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/mechanism-improvement0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/mechanism-improvement0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/mechanism-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "9a07e56dcc6a0bbdb51ce150e4e46ced1dc2be22fe24fdcd96568538afcf24c4",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r5/mechanism-improvement0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "5f1c8f7d60f9af96a6b91fa221e79b85b83223b6e06893e430a734d071954aab",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r5/mechanism-improvement0/private-scorer-store/manifest.json",
+    "sha256": "4ca5e556dc30d8039468513f99b8a58df5c41730b7442f71ac1a83477f79bd49",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r5/mechanism-improvement0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r5/mechanism-improvement0/server-0.json",
+    "sha256": "2e286cc2aed28e299d3cd46a3b5296118f9bc4e1ec0b1ea6e8a1d63fca29477b",
+    "bytes": 16299,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/mechanism-improvement0/server-1.json",
+    "sha256": "6bc0f4663f765eb081d55380cebf26fbd96205adc28c82998ccd2c0343f1fc9e",
+    "bytes": 16299,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/mechanism-improvement0/server-2.json",
+    "sha256": "a568aca604c4cadc15a86b595948fd57b019de09be2d64e4ea960406b91bb1ee",
+    "bytes": 16299,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/test_useful_nondiscriminating_0/execution.key",
+    "sha256": "dfb417454d7432715ecfaa33d89abdaba4457c3b2cbd85a4a20620d0cd806da6",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r5/test_useful_nondiscriminating_0/port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/test_useful_nondiscriminating_0/port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/test_useful_nondiscriminating_0/prior-port/codex.exe",
+    "sha256": "3b3f0725fa0054bda527aaf09dd897599c146cd9be6fb30a5b076d932f364ba8",
+    "bytes": 11,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/test_useful_nondiscriminating_0/prior-port/user/.codex/config.toml",
+    "sha256": "1c80fc43fb85bcd10d774da8301e051aa5e1e497b96c470cc9c5ab9dd9eb65ea",
+    "bytes": 37,
+    "reason": "synthetic transport executable or configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/test_useful_nondiscriminating_0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000001.json",
+    "sha256": "7b30c08fe975a2b53854eda7b99bd9c1a7ae220bb19f2f56c17ee02edccdf2cb",
+    "bytes": 520,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r5/test_useful_nondiscriminating_0/private-scorer-store/0000000000000000000000000000000000000000000000000000000000000002.json",
+    "sha256": "4536a5d0683f0a02447efe85045ed4bc55cc2be7396b13473d6305055c1b6624",
+    "bytes": 509,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r5/test_useful_nondiscriminating_0/private-scorer-store/manifest.json",
+    "sha256": "06bd011a5fd2006f115838d33f5dd76505e0ee854d1f9131edb2a92f442a1d90",
+    "bytes": 1983,
+    "reason": "synthetic scorer fixture reference body"
+  },
+  {
+    "path": "mechanism-improvement-r5/test_useful_nondiscriminating_0/score.key",
+    "sha256": "8fd6a6a78f5857d7ba1cfe9033bffeec86da2ba6a4bd60a6f833209d9d3e390d",
+    "bytes": 32,
+    "reason": "synthetic authority key"
+  },
+  {
+    "path": "mechanism-improvement-r5/test_useful_nondiscriminating_0/server-0.json",
+    "sha256": "fdf205c9441f4f16eb1025dbca7a36e9dd5051315f5411bd939bff77c68702e3",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/test_useful_nondiscriminating_0/server-1.json",
+    "sha256": "99f26cff6e19d7b3459eb9a3679e77010c799da799ccb44c77ed1d2149df1068",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  },
+  {
+    "path": "mechanism-improvement-r5/test_useful_nondiscriminating_0/server-2.json",
+    "sha256": "4926c1a1179bc5687e6b017a76ead82378edf40dd652cfc04ecbd4c9f91e07cd",
+    "bytes": 16326,
+    "reason": "synthetic scorer server configuration"
+  }
+]

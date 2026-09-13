@@ -1,0 +1,25 @@
+{
+  "schema": "mechanism-improvement-synthetic-archive-v1",
+  "source_head": "cdadb4e292202028fc5a5fefb568985c883c8ae2",
+  "commits": [
+    "d0dff203c4c66768b611a5762574709c2ebb9dc0",
+    "55ba89910fd73e27329c1a0ddd8ce81afc159b41",
+    "58376c130bd16fd2a711e78648a8ddfe888e6aa5",
+    "729dac1b3839480b8cf0338bd3e5676eec3a1eed",
+    "cdadb4e292202028fc5a5fefb568985c883c8ae2"
+  ],
+  "zip_members": 11686,
+  "excluded_members": 359,
+  "zip_sha256": "ecc663368e706e34377b390e9d7061c469e6b470a890a81af13a06a9c16f7a3f",
+  "candidate_builds": 6,
+  "arm_recipe_bindings": 12,
+  "target_cells": 24,
+  "model_slots": 78,
+  "source_calls": 76,
+  "retrieval_calls": 24,
+  "target_docker": 24,
+  "target_scorer": 24,
+  "actual_model_generation": false,
+  "actual_private_references": false,
+  "validation_opened": false
+}

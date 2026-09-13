@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="29.807" timestamp="2026-09-13T23:24:29.277180+08:00" hostname="SC-202507131830"><testcase classname="tests.test_mechanism_improvement_train_controller" name="test_six_shared_builds_freeze_twelve_recipes_before_twenty_four_actual_targets" time="28.579"><failure message="AssertionError: {'actual_builder_executions': 6, 'actual_docker_attempts': 0, 'actual_model_usage': {'known_model_tokens': 14, 'model_calls': 7, 'model_usage_incomplete': True}, 'actual_retrieval_calls': 0, ...}&#10;assert 'inconclusive' == 'complete_train_engineering'&#10;  &#10;  - complete_train_engineering&#10;  + inconclusive">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...eval_opportunities":24,"unused_scorer_opportunities":24,"unused_source_opportunities":62,"validation_opened":false}')))
+
+    def test_six_shared_builds_freeze_twelve_recipes_before_twenty_four_actual_targets(grid):
+        setup,run=grid;b=run.receipt.data()
+&gt;       assert b['status']=='complete_train_engineering',b
+E       AssertionError: {'actual_builder_executions': 6, 'actual_docker_attempts': 0, 'actual_model_usage': {'known_model_tokens': 14, 'model_calls': 7, 'model_usage_incomplete': True}, 'actual_retrieval_calls': 0, ...}
+E       assert 'inconclusive' == 'complete_train_engineering'
+E         
+E         - complete_train_engineering
+E         + inconclusive
+
+tests\test_mechanism_improvement_train_controller.py:208: AssertionError</failure></testcase></testsuite></testsuites>
