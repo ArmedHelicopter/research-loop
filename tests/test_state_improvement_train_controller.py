@@ -340,6 +340,7 @@ def test_rehashed_history_cannot_replace_the_predeclared_history_binding(grid):
     def mutate(rows):
         response=next(e['data']['response'] for e in reversed(rows) if e['stage']=='model_response')
         response['conclusion']='Changed caller history after the build plan was frozen.'
+        rows[-1]['data']['candidate_digest']=FrozenRecord.from_dict(response).content_hash
     try:
         _rewrite_trace(path,mutate);verify_trace(path)
         changed=FrozenTrainHistory.freeze(history.task,path,expected_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
