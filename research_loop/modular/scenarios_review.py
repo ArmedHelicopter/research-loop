@@ -25,6 +25,45 @@ _VARIANTS = {
 }
 
 
+class Q4ReviewMaterial:
+    """Frozen public material for a production Q4 review intervention."""
+    def __init__(self, record: FrozenRecord, *, task_identity: Mapping[str, Any]) -> None:
+        if not isinstance(record, FrozenRecord):
+            raise ContractError("Q4 requires frozen review material")
+        body = record.data()
+        required = {"schema", "identity", "public_evidence", "counterexample_material", "initial_answer_material", "summary_material"}
+        if set(body) != required or body["schema"] != "q4-review-material-v1" or body["identity"] != task_identity:
+            raise ContractError("Q4 review material has unexpected fields or task identity")
+        for field in ("public_evidence", "counterexample_material", "initial_answer_material", "summary_material"):
+            if not isinstance(body[field], Mapping) or not body[field]:
+                raise ContractError(f"Q4 review material requires concrete {field}")
+        self.record = record
+
+    def data(self) -> dict[str, Any]:
+        return self.record.data()
+
+
+def q4_injection(experiment_id: str, variant: str, *, task: FrozenRecord, evidence: FrozenRecord) -> Mapping[str, Any]:
+    """Bind production Q4 drivers to caller-supplied material, never fixture truth."""
+    _validate(experiment_id, variant)
+    task_body = task.data()
+    identity = task_body.get("identity") if isinstance(task_body, Mapping) else None
+    if not isinstance(identity, Mapping):
+        raise ContractError("Q4 task must carry a typed public identity")
+    if evidence.data().get("schema") != "q4-review-material-v1":
+        # Planning may retain a public evidence digest shared with another
+        # intervention.  It is not an executable Q4 material: the production
+        # driver rejects it before its first model request.
+        return {"fixture_only": True, "fixture_notice": "Q4 material absent; production execution is closed",
+                "auxiliary": {"review_scenario_variant": variant, "requires_public_task": True,
+                              "requires_frozen_material": True}, "q4_review_material_missing": True}
+    material = Q4ReviewMaterial(evidence, task_identity=dict(identity))
+    return {"fixture_only": True, "fixture_notice": "synthetic public material; not a benchmark effect",
+            "auxiliary": {"review_scenario_variant": variant, "requires_public_task": True,
+                          "requires_frozen_material": True},
+            "q4_review_material": material.data(), "q4_review_material_digest": material.record.content_hash}
+
+
 @dataclass(frozen=True)
 class ReviewScenarioResult:
     experiment_id: str

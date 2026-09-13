@@ -84,7 +84,10 @@ def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs) ->
     elif spec.experiment_id in {"Q3.3", "Q3.4", "Q3.5", "Q5.1", "Q5.5"}:
         from research_loop.modular.scenarios_recovery import recovery_injection
         injection=dict(recovery_injection(spec.experiment_id, variant))
-    elif spec.experiment_id in {"Q4.1", "Q4.2", "Q4.3", "Q4.4", "Q4.5"}:
+    elif spec.experiment_id in {"Q4.1", "Q4.2", "Q4.4", "Q4.5"}:
+        from research_loop.modular.scenarios_review import q4_injection
+        injection=dict(q4_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
+    elif spec.experiment_id == "Q4.3":
         from research_loop.modular.scenarios_review import review_injection
         injection=dict(review_injection(spec.experiment_id, variant))
     elif spec.experiment_id in {"Q7.1", "Q7.2", "Q7.3", "Q7.4", "Q7.5", "Q7.6"}:

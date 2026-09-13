@@ -256,8 +256,9 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
             "cell_key": list(cell.key), "scenario_digest": scenario.content_hash,
             "enabled_modules": cell.runtime_arm.data()["enabled"], "package_digest": package.digest,
             "package_record_digest": package.record.content_hash, "package_changes": package.record.data()["changes"],
-            "slots": list(session.slots), "model_calls": session._next_call,
+            "schema_slots": list(driver.slots), "slots": list(session.slots), "model_calls": session._next_call,
             "execution_attempts": session._attempts, "docker_execution": driver.docker_execution,
+            "actual_token_measurement": "not_measured",
             "terminal": session._events[-1].data()["stage"]})
         return TrainCellResult(runtime, None, plan)
     terminal = session.finish(candidate)
@@ -273,9 +274,10 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
         "cell_key": list(cell.key), "scenario_digest": scenario.content_hash,
         "enabled_modules": cell.runtime_arm.data()["enabled"], "package_digest": package.digest,
         "package_record_digest": package.record.content_hash, "package_changes": package.record.data()["changes"],
-        "package_binding": "candidate_package_record_in_model_context", "slots": list(session.slots),
+        "package_binding": "candidate_package_record_in_model_context", "schema_slots": list(driver.slots), "slots": list(session.slots),
         "workflow_stage": stage.detail.data()["stage"], "execution_attempts": session._attempts,
-        "model_calls": session._next_call, "docker_execution": driver.docker_execution})
+        "model_calls": session._next_call, "docker_execution": driver.docker_execution,
+        "actual_token_measurement": "not_measured"})
     scored = None
     if scorer is not None:
         scored = scorer(cell, runtime)

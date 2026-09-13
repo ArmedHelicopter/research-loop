@@ -5,6 +5,7 @@ from typing import Any, Mapping, TYPE_CHECKING
 
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.modules.predictions import freeze_shared_experiment
+from research_loop.modular.scenarios_review import Q4ReviewMaterial
 from research_loop.ontology import ContractError
 
 if TYPE_CHECKING:
@@ -29,9 +30,16 @@ def _binding(cell: "PanelCell", scenario: FrozenRecord) -> dict[str, Any]:
             "arm_id": cell.arm_id, "scenario_digest": scenario.content_hash}
 
 
-def _public_evidence(workflow: "ModularWorkflow") -> FrozenRecord:
-    """The prepared task payload is the only evidence this driver can expose."""
-    return FrozenRecord.from_dict(workflow.session.task.payload.data())
+def _material(workflow: "ModularWorkflow", scenario: FrozenRecord) -> Mapping[str, Any]:
+    controller = scenario.data().get("controller_input", {})
+    body = controller.get("q4_review_material") if isinstance(controller, Mapping) else None
+    material_digest = controller.get("q4_review_material_digest") if isinstance(controller, Mapping) else None
+    if (not isinstance(body, Mapping) or not isinstance(material_digest, str)
+            or scenario.data()["base"].get("evidence") != material_digest
+            or FrozenRecord.from_dict(dict(body)).content_hash != material_digest):
+        raise ContractError("Q4 scenario lacks material bound to base evidence")
+    checked = Q4ReviewMaterial(FrozenRecord.from_dict(dict(body)), task_identity=workflow.session.task.identity.data())
+    return checked.data()
 
 
 def _review(response: FrozenRecord, *, m4: bool) -> tuple[FrozenRecord, tuple[Mapping[str, Any], ...]]:
@@ -57,11 +65,11 @@ def _final(workflow: "ModularWorkflow", *, cell: "PanelCell", scenario: FrozenRe
 
 
 def _initial_context(*, cell: "PanelCell", scenario: FrozenRecord, evidence: FrozenRecord, question: str,
-                     material: str, m5: bool, m4: bool = False) -> FrozenRecord:
+                     material: Mapping[str, Any], m5: bool, m4: bool = False) -> FrozenRecord:
     # Deliberately exclude controller data, reviewer/provider identity, variant
     # labels and any response.  The blind call receives only public material.
     context = {"review_phase": "initial_blind", "public_evidence": evidence.data(), "public_evidence_digest": evidence.content_hash,
-        "assigned_review_material": material, "assigned_question": question,
+        "assigned_review_material": dict(material), "assigned_question": question,
         "m5_enabled": m5, "m4_enabled": m4}
     if not m5:
         context["control"] = "M5"
@@ -81,7 +89,8 @@ class Q41IndependenceDriver:
 
     def run(self, workflow: "ModularWorkflow", *, cell: "PanelCell", scenario: FrozenRecord,
             model: "ModelPort", package: "CandidatePackage") -> tuple["WorkflowResult", FrozenRecord, tuple[FrozenRecord, ...]]:
-        m5, m4, evidence = "M5" in workflow.enabled, "M4" in workflow.enabled, _public_evidence(workflow)
+        material = _material(workflow, scenario)
+        m5, m4, evidence = "M5" in workflow.enabled, "M4" in workflow.enabled, FrozenRecord.from_dict(material["public_evidence"])
         questions = (["mechanism"] if cell.variant in {"single", "independent_samples"}
                      else ["mechanism", "alternative", "measurement", "experiment"])
         if cell.variant == "independent_samples":
@@ -92,9 +101,13 @@ class Q41IndependenceDriver:
                 roles=[{"role_id": f"review_{n}", "question": _QUESTIONS[name]} for n, name in enumerate(questions, 1)], budget_units=len(questions))
             review_id = review.review_id
         for number, name in enumerate(questions, 1):
-            raw = workflow.invoke_model(f"initial_{number}", model, instruction="Answer only the assigned review question from the supplied public evidence.",
+            instruction = "Answer only the assigned review question from the supplied public evidence."
+            if m4:
+                instruction += (" Return exactly review plus prediction_candidates. review must be a valid review response. "
+                    "prediction_candidates must contain at least two complete operational hypothesis branches with one shared intervention and discriminator.")
+            raw = workflow.invoke_model(f"initial_{number}", model, instruction=instruction,
                 module_context=_initial_context(cell=cell, scenario=scenario, evidence=evidence, question=_QUESTIONS[name],
-                    material="same-model sample" if cell.variant == "independent_samples" else "assigned review question", m5=m5, m4=m4), evidence_only=True)
+                    material=material["summary_material"], m5=m5, m4=m4), evidence_only=True)
             answer, prediction_candidates = _review(raw, m4=m4); responses.append(raw)
             candidates.extend(prediction_candidates)
             if m5: submissions.append(workflow.reviews.submit(review_id, role_id=f"review_{number}", reviewer_id=f"q41-reviewer-{number}", response=answer.data(), cost_units=1))
@@ -107,10 +120,11 @@ class Q41IndependenceDriver:
             revealed = workflow.reviews.reveal(review_id)
             workflow.revealed = FrozenRecord.from_dict({"review_id": review_id, "submissions": [item.data() for item in revealed]})
         review_context = {"experiment": self.experiment_id, "m5_enabled": m5, "m4_enabled": m4,
-            "review_id": review_id, "public_evidence": evidence.data(), "initial_answers": [item.data() for item in responses],
-            "sealed_submissions": [item.data() for item in submissions] if m5 else [],
+            "review_id": review_id, "public_evidence_digest": evidence.content_hash,
+            "decision_material": ({"kind": "sealed_review_submissions", "records": [item.data() for item in submissions]}
+                                  if m5 else {"kind": "pre_registered_control_material", "record": material["summary_material"]}),
             "prediction_plan": prediction.data() if prediction else None,
-            "limitation": "same-model samples and role prompts do not establish independent training priors"}
+            "scoring_status": "not_measured", "limitation": "same-model samples and role prompts do not establish independent training priors"}
         stage = workflow._trace("stage_7" if m5 else "operation_m5_control", "executed", **review_context)
         final = _final(workflow, cell=cell, scenario=scenario, model=model, package=package, stage=stage, review_context=review_context)
         return stage, final, tuple(responses + [final])
@@ -124,7 +138,8 @@ class Q42RoleDriver:
 
     def run(self, workflow: "ModularWorkflow", *, cell: "PanelCell", scenario: FrozenRecord,
             model: "ModelPort", package: "CandidatePackage") -> tuple["WorkflowResult", FrozenRecord, tuple[FrozenRecord, ...]]:
-        m5, evidence = "M5" in workflow.enabled, _public_evidence(workflow)
+        material = _material(workflow, scenario)
+        m5, evidence = "M5" in workflow.enabled, FrozenRecord.from_dict(material["public_evidence"])
         name = cell.variant
         question = _QUESTIONS.get(name, _QUESTIONS["generic"])
         review_id = None
@@ -134,14 +149,16 @@ class Q42RoleDriver:
             review_id = review.review_id
         answer = workflow.invoke_model("initial", model, instruction="Answer only the assigned review question from the supplied public evidence.",
             module_context=_initial_context(cell=cell, scenario=scenario, evidence=evidence, question=question,
-                material="assigned role material", m5=m5), evidence_only=True)
+                material=material["summary_material"], m5=m5), evidence_only=True)
         submission = None
         if m5:
             submission = workflow.reviews.submit(review_id, role_id="assigned_review", reviewer_id="q42-reviewer", response=answer.data(), cost_units=1)
             workflow.revealed = FrozenRecord.from_dict({"review_id": review_id, "submissions": [item.data() for item in workflow.reviews.reveal(review_id)]})
         review_context = {"experiment": self.experiment_id, "m5_enabled": m5, "review_id": review_id,
-            "public_evidence": evidence.data(), "role_material": question, "initial_answer": answer.data(),
-            "sealed_submission": submission.data() if submission else None}
+            "public_evidence_digest": evidence.content_hash, "role_material": question,
+            "decision_material": ({"kind": "sealed_review_submission", "record": submission.data()} if submission
+                                  else {"kind": "pre_registered_control_material", "record": material["summary_material"]}),
+            "scoring_status": "not_measured"}
         stage = workflow._trace("stage_7" if m5 else "operation_m5_control", "executed", **review_context)
         final = _final(workflow, cell=cell, scenario=scenario, model=model, package=package, stage=stage, review_context=review_context)
         return stage, final, (answer, final)
@@ -152,7 +169,8 @@ class Q44CounterexampleDriver(Q42RoleDriver):
 
     def run(self, workflow: "ModularWorkflow", *, cell: "PanelCell", scenario: FrozenRecord,
             model: "ModelPort", package: "CandidatePackage") -> tuple["WorkflowResult", FrozenRecord, tuple[FrozenRecord, ...]]:
-        m5, evidence = "M5" in workflow.enabled, _public_evidence(workflow)
+        material = _material(workflow, scenario)
+        m5, evidence = "M5" in workflow.enabled, FrozenRecord.from_dict(material["public_evidence"])
         question = _QUESTIONS["counterexample"]
         review_id = None
         if m5:
@@ -161,14 +179,16 @@ class Q44CounterexampleDriver(Q42RoleDriver):
             review_id = review.review_id
         answer = workflow.invoke_model("initial", model, instruction="Assess only the supplied public evidence for the requested counterexample.",
             module_context=_initial_context(cell=cell, scenario=scenario, evidence=evidence, question=question,
-                material="counterexample material", m5=m5), evidence_only=True)
+                material=material["counterexample_material"], m5=m5), evidence_only=True)
         submission = None
         if m5:
             submission = workflow.reviews.submit(review_id, role_id="counterexample", reviewer_id="q44-reviewer", response=answer.data(), cost_units=1)
             workflow.revealed = FrozenRecord.from_dict({"review_id": review_id, "submissions": [item.data() for item in workflow.reviews.reveal(review_id)]})
         review_context = {"experiment": self.experiment_id, "m5_enabled": m5, "review_id": review_id,
-            "public_evidence": evidence.data(), "counterexample_material": question, "initial_answer": answer.data(),
-            "sealed_submission": submission.data() if submission else None}
+            "public_evidence_digest": evidence.content_hash, "counterexample_material": material["counterexample_material"],
+            "decision_material": ({"kind": "sealed_review_submission", "record": submission.data()} if submission
+                                  else {"kind": "pre_registered_control_material", "record": material["summary_material"]}),
+            "scoring_status": "not_measured"}
         stage = workflow._trace("stage_7" if m5 else "operation_m5_control", "executed", **review_context)
         final = _final(workflow, cell=cell, scenario=scenario, model=model, package=package, stage=stage, review_context=review_context)
         return stage, final, (answer, final)
@@ -185,23 +205,12 @@ class Q45SelfCorrectionDriver:
 
     @staticmethod
     def _routes(model: "ModelPort") -> Mapping[str, Mapping[str, Any]]:
-        routes = getattr(model, "heterogeneous_reviewers", None)
-        if not isinstance(routes, Mapping) or set(routes) != {"reviewer_one", "reviewer_two"}:
-            raise ContractError("Q4.5 heterogeneous configuration is unsupported without two configured providers")
-        checked = {}
-        for name, route in routes.items():
-            if not isinstance(route, Mapping) or set(route) != {"provider", "model_id", "callback"} or not callable(route["callback"]):
-                raise ContractError("Q4.5 heterogeneous reviewer route is incomplete")
-            if not isinstance(route["provider"], str) or not route["provider"] or not isinstance(route["model_id"], str) or not route["model_id"]:
-                raise ContractError("Q4.5 heterogeneous reviewer provenance is incomplete")
-            checked[name] = route
-        if len({(row["provider"], row["model_id"]) for row in checked.values()}) < 2:
-            raise ContractError("Q4.5 heterogeneous reviewers need distinct configured provider/model identities")
-        return checked
+        raise ContractError("Q4.5 heterogeneous configuration is unsupported without independently verified typed route evidence")
 
     def run(self, workflow: "ModularWorkflow", *, cell: "PanelCell", scenario: FrozenRecord,
             model: "ModelPort", package: "CandidatePackage") -> tuple["WorkflowResult", FrozenRecord, tuple[FrozenRecord, ...]]:
-        m5, evidence = "M5" in workflow.enabled, _public_evidence(workflow)
+        material = _material(workflow, scenario)
+        m5, evidence = "M5" in workflow.enabled, FrozenRecord.from_dict(material["public_evidence"])
         names = ("reviewer_one", "reviewer_two") if cell.variant == "heterogeneous" else ("reviewer_one",)
         routes = self._routes(model) if cell.variant == "heterogeneous" else {}
         review_id, submissions, initials, revisions = None, [], [], []
@@ -213,7 +222,7 @@ class Q45SelfCorrectionDriver:
             callback = routes[name]["callback"] if routes else model
             answer = workflow.invoke_model(f"initial_{number}", callback, instruction="Independently assess the supplied public evidence; identify a concern only when supported.",
                 module_context=_initial_context(cell=cell, scenario=scenario, evidence=evidence, question=_QUESTIONS["generic"],
-                    material="self-correction initial material", m5=m5), evidence_only=True)
+                    material={"blind_review": "public evidence only"}, m5=m5), evidence_only=True)
             initials.append(answer)
             if m5: submissions.append(workflow.reviews.submit(review_id, role_id=name, reviewer_id=f"q45-{name}", response=answer.data(), cost_units=1))
         revealed = workflow.reviews.reveal(review_id) if m5 else ()
@@ -221,7 +230,7 @@ class Q45SelfCorrectionDriver:
             callback = routes[name]["callback"] if routes else model
             context = {"panel_cell": _binding(cell, scenario), "review_phase": "post_initial_revision",
                 "public_evidence": evidence.data(), "public_evidence_digest": evidence.content_hash,
-                "revision_material": "reconsider the actual initial review response", "m5_enabled": m5,
+                "initial_answer_material": material["initial_answer_material"], "summary_material": material["summary_material"], "m5_enabled": m5,
                 "visible_reviews": [item.data() for item in revealed] if m5 else [initials[number - 1].data()]}
             if not m5:
                 context.update({"control": "M5", "control_notice": "M5 review intervention disabled; only the caller's own prior response is supplied."})
@@ -229,9 +238,10 @@ class Q45SelfCorrectionDriver:
             revisions.append(response)
             if m5: workflow.reviews.revise_after_reveal(review_id, role_id=name, reviewer_id=f"q45-{name}", response=response.data())
         review_context = {"experiment": self.experiment_id, "variant": cell.variant, "m5_enabled": m5, "review_id": review_id,
-            "public_evidence": evidence.data(), "initial_answers": [item.data() for item in initials],
-            "sealed_submissions": [item.data() for item in submissions] if m5 else [], "post_reveal_revisions": [item.data() for item in revisions],
-            "heterogeneous_provider_configured": cell.variant == "heterogeneous"}
+            "public_evidence_digest": evidence.content_hash,
+            "decision_material": ({"kind": "sealed_review_revisions", "records": [item.data() for item in revisions]} if m5
+                                  else {"kind": "pre_registered_control_material", "record": material["summary_material"]}),
+            "heterogeneous_provider_configured": False, "scoring_status": "not_measured"}
         stage = workflow._trace("stage_7" if m5 else "operation_m5_control", "executed", **review_context)
         final = _final(workflow, cell=cell, scenario=scenario, model=model, package=package, stage=stage, review_context=review_context)
         return stage, final, tuple(initials + revisions + [final])
