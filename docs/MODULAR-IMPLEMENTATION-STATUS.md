@@ -3,7 +3,40 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current state/improvement integration checkpoint (2026-09-13)
+## Current mechanism/exploration and Grok integration checkpoint (2026-09-13)
+
+Source `20a1c29` passed 81 root checks with all 537 frozen source/document
+hashes unchanged. M4×M7, M5×M7 and M6×M7 now have prospective TRAIN
+controllers. All 24 paired cells freeze before execution. Actual prediction,
+review or retrieval output freezes before the auxiliary phase, and both
+mechanism and phase outputs reach one shared solver. The complete grid used
+72 scripted model calls, 48 source qualifications, 24 retrieval calls,
+72 actual Docker executions and 24 independent process scores.
+
+Original-input and repaired-chain replay, solver Docker limits, mutually
+exclusive scorer families, the history-built M9 panel and native ACP protocol
+fixtures passed root integration. The isolated mechanism source passed 101
+checks; its first collection-error closure remains preserved. Source accounting
+bounds opportunities and retains unknown realized external costs; it does not
+certify actual source expenditure. Source evidence contains 15 files, 14
+indexed artifacts and 1,937 verified ZIP members.
+
+Native Grok 4.6 is now integrated as a separate transport. Its third constant
+smoke was accepted before integration: the main ledger reports 2,301 tokens
+and $0.00116892 service cost. Title usage, all-opportunity totals and settlement
+remain unknown. Same-session empty tool inventories and fresh before/after
+included-only account snapshots passed. The first two rejected attempts and
+all five original check closures remain in the 48-file, 46-payload archive.
+No real generation was repeated by the root check. The native transport is
+not yet wired to the actual diagnostic or benchmark controllers.
+
+Root evidence is under
+`results/modular-engineering-20260913/mechanism-exploration-grok-root/`.
+Coverage is now 28/36 pair controllers and 2/5 triple controllers. These are
+engineering checks; real TRAIN effect experiments, calibration, remaining
+combinations, the final frozen bundle and validation acceptance remain open.
+
+## Prior state/improvement integration checkpoint (2026-09-13)
 
 Source `103ab6d` passed 27 root integration checks with all 526 frozen
 source/document hashes unchanged. M1×M9, M2×M9 and M3×M9 now have explicit

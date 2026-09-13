@@ -6,6 +6,19 @@ one main prompt and at most one initial title request opportunity. The earlier
 single-total-request entry was blocked in commit 73197ce; that evidence remains
 valid. This module is separate from the programme's operational ModelPort.
 
+## Latest closed native checkpoint
+
+The third separately frozen constant smoke was accepted on source `2586228`.
+Its native main ledger reported 2,301 total tokens and $0.00116892 service
+cost, with fresh before/after included-only billing snapshots. Title usage,
+all-opportunity totals and final settlement remain unknown. The preceding
+rejected attempts retain their original receipts; their historical descriptions
+below are not the current terminal result. The complete archive is
+`results/modular-engineering-20260913/grok-native-acp-prospective/`.
+Root integration at `20a1c29` passed 81 combined protocol, controller and
+isolation checks without repeating actual generation. Diagnostic and solver
+provider integration are separate unfinished seams.
+
 ## What the engine checks
 
 `SinglePromptACP` initializes a native JSON-RPC stdio session and creates a fresh

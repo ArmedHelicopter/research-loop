@@ -1,0 +1,41 @@
+{
+  "source_commit": "20a1c290d8b2f48a46640617377ee24f9c8358af",
+  "source_files": 537,
+  "source_unchanged": true,
+  "junit": {
+    "tests": 81,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "junit_sha256": "820f3edc6a628ef052c7d8059307b3c44aeb7215eb2a8824e82acb379c97e894",
+  "coverage": "28 of 36 pair controllers; 2 of 5 triple controllers; synthetic engineering only",
+  "mechanism_exploration_grid": {
+    "cells": 24,
+    "scripted_model_calls": 72,
+    "source_qualifications": 48,
+    "actual_docker": 72,
+    "actual_scorer_process_calls": 24,
+    "retrieval_calls": 24
+  },
+  "source_archive": {
+    "files": 15,
+    "indexed": 14,
+    "zip_members": 1937,
+    "isolated_checks": 101
+  },
+  "native_archive": {
+    "files": 48,
+    "payload_zip_entries": 46,
+    "accepted_constant_attempt": 3,
+    "main_reported_total_tokens": 2301,
+    "main_reported_cost_usd": 0.00116892,
+    "title_usage_unknown": true,
+    "all_opportunity_totals_unknown": true,
+    "final_settlement_unknown": true
+  },
+  "root_scope": "native ACP protocol fixtures; complete mechanism grid and original replay attacks; merged family scopes including complete history-built panel; label isolation",
+  "new_generation_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}
