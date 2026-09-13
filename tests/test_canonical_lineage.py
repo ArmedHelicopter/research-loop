@@ -76,6 +76,8 @@ def test_hf_dataset_identity_is_typed_and_case_conservative():
     assert a == b
     assert a != c
     assert a[0] == "hf_dataset"
+    assert normalize_reference("legacy", "hf_dataset") == normalize_reference("https://huggingface.co/datasets/legacy")
+    assert normalize_reference("https://huggingface.co/datasets/legacy/resolve/main/data.csv") is None
 
 
 def test_generic_url_keeps_semantic_query_and_path_differences():

@@ -52,7 +52,7 @@ def normalize_reference(raw, hint="source_url"):
     if "://" not in value:
         if hint == "github_repository" and len(value.split("/")) == 2:
             value = "https://github.com/" + value
-        elif hint == "hf_dataset" and len(value.split("/")) == 2:
+        elif hint == "hf_dataset" and len(value.split("/")) in (1, 2) and all(GITHUB_PART.fullmatch(part) for part in value.split("/")):
             value = "https://huggingface.co/datasets/" + value
         else:
             return None
@@ -70,10 +70,15 @@ def normalize_reference(raw, hint="source_url"):
             if not GITHUB_PART.fullmatch(owner) or not GITHUB_PART.fullmatch(repo):
                 return None
             return "github_repository", _reference("github_repository", "github", f"{owner}/{repo}".lower())
-        if host == "huggingface.co" and len(parts) >= 3 and parts[0] == "datasets":
-            if not all(GITHUB_PART.fullmatch(part) for part in parts[1:3]):
+        if host == "huggingface.co" and len(parts) >= 2 and parts[0] == "datasets":
+            if len(parts) > 3 and parts[2] in {"resolve", "tree", "blob"}:
+                # A legacy single-name dataset plus route cannot safely be
+                # distinguished from a namespace/repository with that name.
                 return None
-            return "hf_dataset", _reference("hf_dataset", "huggingface", "/".join(parts[1:3]))
+            identity = parts[1:3]
+            if not all(GITHUB_PART.fullmatch(part) for part in identity):
+                return None
+            return "hf_dataset", _reference("hf_dataset", "huggingface", "/".join(identity))
         port = parsed.port
         netloc = host if port is None or (parsed.scheme.lower(), port) in {("http", 80), ("https", 443)} else f"{host}:{port}"
         # Fragments do not change the retrieved resource; retain query semantics.

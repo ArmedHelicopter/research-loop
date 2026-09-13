@@ -9,10 +9,12 @@ from evaluation.modular.canonical_lineage import empty_references, normalize_ref
 # Arbitrary task/gold/code/background strings are not visited or regex-scanned.
 REFERENCE_FIELDS = {
     "doi": "doi", "paper_doi": "doi", "publication_doi": "doi", "doi_url": "doi",
-    "repository": "github_repository", "repo": "github_repository", "github": "github_repository",
-    "github_name": "github_repository", "repository_url": "github_repository", "github_url": "github_repository",
+    "repository": "source_url", "repo": "source_url", "github": "github_repository",
+    "github_name": "github_repository", "repository_url": "source_url", "github_url": "github_repository",
     "huggingface_repo": "hf_dataset", "hf_repo": "hf_dataset", "hf_dataset": "hf_dataset",
     "huggingface_dataset": "hf_dataset", "dataset_hf_id": "hf_dataset",
+    "hf_name": "hf_dataset", "hf_dataset_name": "hf_dataset", "hf_repo_id": "hf_dataset",
+    "hf_dataset_id": "hf_dataset", "huggingface_name": "hf_dataset", "huggingface_id": "hf_dataset",
     "source": "source_url", "source_url": "source_url", "source_urls": "source_url",
     "data_source": "source_url", "data_url": "source_url", "data_urls": "source_url",
     "dataset_source": "source_url", "dataset_url": "source_url", "dataset_urls": "source_url",
@@ -38,15 +40,33 @@ def extract_metadata_references(row):
     unresolved = 0
     declared = False
     visited = {}
+    recognized_inputs = 0
 
     def add(value, hint):
-        nonlocal unresolved
+        nonlocal unresolved, recognized_inputs
         if isinstance(value, dict):
+            if id(value) in visited:
+                return
+            previous = (unresolved, recognized_inputs)
             visit(value)
+            if previous == (unresolved, recognized_inputs):
+                unresolved += 1
         elif isinstance(value, list):
             for child in value:
                 add(child, hint)
         elif isinstance(value, str) and value.strip():
+            # CSV releases can serialize a reference object into one string.
+            # Parse only bracketed objects/lists in already-whitelisted reference
+            # fields, then visit the same declared keys. Never eval Python repr.
+            if value.lstrip().startswith(("{", "[")):
+                import yaml
+                try:
+                    structured = yaml.safe_load(value)
+                except yaml.YAMLError:
+                    structured = None
+                if isinstance(structured, (dict, list)):
+                    add(structured, hint)
+                    return
             direct = normalize_reference(value, hint)
             extracted = [direct] if direct is not None else []
             if not extracted:
@@ -59,6 +79,7 @@ def extract_metadata_references(row):
             if not extracted:
                 unresolved += 1
             for kind, token in extracted:
+                recognized_inputs += 1
                 references[kind].add(token)
 
     def visit(value):

@@ -35,3 +35,23 @@ def test_unknown_names_remain_unmapped_and_license_declaration_is_only_a_count()
 def test_atomic_substeps_share_refs_but_arbitrary_background_is_not_scanned():
     refs, _, _ = extract_metadata_references({"sub_steps": [{"metadata": {"doi": "10.1234/shared"}, "background": "https://doi.org/10.1234/no"}]})
     assert len(refs["doi"]) == 1
+
+
+def test_serialized_dataset_reference_visits_only_declared_provider_fields():
+    a, unresolved, _ = extract_metadata_references({"dataset": "{'hf_name': 'owner/corpus', 'PRIVATE_DYNAMIC': {'doi': '10.1234/not-allowed'}}"})
+    b, _, _ = extract_metadata_references({"dataset_url": "https://huggingface.co/datasets/owner/corpus"})
+    assert a["hf_dataset"] == b["hf_dataset"]
+    assert not a["doi"]
+    assert unresolved == 0
+
+
+def test_generic_repository_name_does_not_invent_a_github_provider():
+    refs, unresolved, _ = extract_metadata_references({"repository": "owner/corpus"})
+    assert not any(refs.values())
+    assert unresolved == 1
+
+
+def test_unmapped_serialized_object_remains_in_coverage_gap():
+    refs, unresolved, _ = extract_metadata_references({"dataset": "{'PRIVATE_DYNAMIC': 'PRIVATE_VALUE'}"})
+    assert not any(refs.values())
+    assert unresolved == 1
