@@ -14,11 +14,11 @@ from ._public import object_only, public_text, reject_private_names
 def _safe_output_name(value: Any) -> str:
     name = public_text(value, "output_fname")
     if "\\" in name:
-        raise ContractError("output_fname must use a safe relative filename")
+        raise ContractError("output_fname must use a safe relative POSIX path")
     path = PurePosixPath(name)
-    if (path.is_absolute() or ".." in path.parts or len(path.parts) != 1 or ":" in name
-            or path.name != name or any(ord(char) < 32 for char in name)):
-        raise ContractError("output_fname must use a safe relative filename")
+    if (path.is_absolute() or ".." in path.parts or not path.parts or ":" in name
+            or path.as_posix() != name or any(ord(char) < 32 for char in name)):
+        raise ContractError("output_fname must use a safe relative POSIX path")
     return name
 
 

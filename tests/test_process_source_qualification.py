@@ -130,7 +130,7 @@ def _synthetic_seal_config(tmp_path, monkeypatch, public_projection=False):
             content = {name: ("\n".join(json.dumps({"PRIVATE_GOLD": index, **({
                            "problem_id": name.replace('.', '-') + f"-{index}", "required_dependencies": "import math",
                            "sub_steps": [{"step_description_prompt": "Compute the square of the supplied number.",
-                                          "function_header": "def square(x):", "return_line": "return y", "step_background": None,
+                                          "function_header": "def square(x):", "return_line": "return y", "step_background": "",
                                           "ground_truth_code": "PRIVATE_GOLD_CODE", "test_cases": "PRIVATE_TEST"}]
                            } if public_projection else {})}) for index in range(count)) + "\n").encode()
                        for name, count in (("problems_dev.jsonl", 15), ("problems_test.jsonl", 65))}
@@ -142,7 +142,7 @@ def _synthetic_seal_config(tmp_path, monkeypatch, public_projection=False):
             for index in range(102):
                 writer.writerow({"github_name": f"fixture/repo{index // 3}" if index < 99 else "n/a",
                                  "dataset_folder_tree": f"fixture_{index // 3}" if public_projection else "", "src_file_or_path": "", "PRIVATE_GOLD": "fixture-only",
-                                 **({"task_inst": "Compute the mean of x.", "dataset_preview": "x\n1\n3", "output_fname": "answer.csv",
+                                 **({"task_inst": "Compute the mean of x.", "dataset_preview": "x\n1\n3", "output_fname": "results/answer.csv",
                                      "domain_knowledge": "Synthetic context"} if public_projection else {})})
             content = {"ScienceAgentBench.csv": stream.getvalue().encode()}
         artifacts = tuple(ArtifactSpec(name, len(raw), git_blob_sha1=hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest())

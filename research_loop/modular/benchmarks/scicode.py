@@ -34,12 +34,15 @@ class SciCodeAdapter:
         steps = []
         for ordinal, source_step in enumerate(source_steps, start=1):
             step = object_only(source_step, _STEP_FIELDS, "SciCode public sub_step")
+            background = step.get("step_background")
+            if isinstance(background, str) and not background.strip():
+                background = None
             steps.append({
                 "ordinal": ordinal,
                 "prompt": public_text(step.get("step_description_prompt"), "sub_step.step_description_prompt"),
                 "function_header": public_text(step.get("function_header"), "sub_step.function_header"),
                 "return_line": public_text(step.get("return_line"), "sub_step.return_line"),
-                "background": public_text(step.get("step_background"), "sub_step.step_background", optional=True),
+                "background": public_text(background, "sub_step.step_background", optional=True),
             })
         payload = {"problem_id": identity.task_id, "required_dependencies": dependencies, "steps": steps}
         reject_private_names(payload)

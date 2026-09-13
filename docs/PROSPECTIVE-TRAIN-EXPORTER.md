@@ -39,6 +39,15 @@ directory, or audit store. Existing outputs are not overwritten. The exporter
 returns typed train `PublicTask`s and a metadata receipt; the actual invocation
 tool emits only counts, hashes, and the caller-owned public output path.
 
+The first fixed four-item export exposed two adapter-shape gaps before any task
+was materialized: SciCode uses empty strings for some optional backgrounds, and
+SAB declares safe nested relative output paths. Empty optional SciCode background
+is now represented as missing (`None`). SAB preserves a canonical relative POSIX
+output path without stripping directory components. Absolute paths, traversal,
+drive/colon syntax, backslashes, control characters, repeated separators, dot
+components, and trailing separators remain rejected. These shape repairs do not
+alter the selected token list or any source snapshot, process audit, or split.
+
 The new exporter does not call or alter `CustodyStore`, create a legacy clean
 attestation, grant a validation lease, or provide a validation export API. These
 projections establish only that selected public train tasks were exported.
