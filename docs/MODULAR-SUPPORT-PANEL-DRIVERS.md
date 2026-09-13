@@ -16,7 +16,8 @@ Q1.4 records caller-defined sources and applies caller-defined withdrawals only
 after its initial model call. The initial payload contains no future withdrawal
 actions. Bundle validation requires one-withdrawn to preserve a distinct caller
 root, all-withdrawn to cover every caller root, and copies to contain multiple
-records of one root. M2 rechecks claims after withdrawal; M2-off retains its
+records of one root. Withdrawal projections remove every source record sharing
+the withdrawn root, including caller-declared copies. M2 rechecks claims after withdrawal; M2-off retains its
 frozen context while receiving the same post-action external source projection.
 Different caller root material is an engineering input constraint; scientific
 independence of support still requires separate review. These are engineering

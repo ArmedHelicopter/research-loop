@@ -193,8 +193,14 @@ class Q14SupportDriver:
             after = _context(workflow, enabled=True, summary=material["claim_statement"])
         else:
             revisions = (); after = before
-        withdrawn = {action["source_key"] for action in material["withdraw_actions"]}
-        surviving = {key: record.data() for key, record in records.items() if key not in withdrawn}
+        withdrawn_roots = {
+            canonical(records[action["source_key"]].data()["root_material"])
+            for action in material["withdraw_actions"]
+        }
+        surviving = {
+            key: record.data() for key, record in records.items()
+            if canonical(record.data()["root_material"]) not in withdrawn_roots
+        }
         post = {"schema": "q14-public-support-projection-v1", "phase": "after", "sources": surviving, "withdraw_actions": material["withdraw_actions"], "claim_statement": material["claim_statement"]}
         second = workflow.invoke_model("support_rechecked", model, instruction="Assess the current supplied support records after the declared source actions.", baseline_summary=material["claim_statement"], module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "public_support_state": post, "reconstructed_context": after.data(), "m2": "enabled" if enabled else "frozen_control"}))
         final = _final(workflow, cell, scenario, model, package, post, after, {})

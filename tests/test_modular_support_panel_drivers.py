@@ -26,8 +26,8 @@ def _bundle(task):
     b = _source({"source_id": "b-" + task.identity.benchmark}, {"observation": "Q14-B", "value": 2})
     copy = _source({"source_id": "copy-shared-" + task.identity.benchmark}, {"observation": "Q14-COPY", "value": 3})
     q13 = {v: {"source": common, "representation": r, "claim_statement": "Caller supplied representation claim."} for v,r in {"log":"raw","report":"report","summary":"summary","memory":"summary"}.items()}
-    q14 = {"one_withdrawn": {"sources":{"a":a,"b":b}, "withdraw_actions":[{"source_key":"a","reason":"caller withdrawal a"}], "claim_statement":"Caller supplied paired support claim."},
-           "all_withdrawn": {"sources":{"a":a,"b":b}, "withdraw_actions":[{"source_key":"a","reason":"caller withdrawal a"},{"source_key":"b","reason":"caller withdrawal b"}], "claim_statement":"Caller supplied all support claim."},
+    q14 = {"one_withdrawn": {"sources":{"a":a,"a_copy":a,"b":b}, "withdraw_actions":[{"source_key":"a","reason":"caller withdrawal a"}], "claim_statement":"Caller supplied paired support claim."},
+           "all_withdrawn": {"sources":{"a":a,"a_copy":a,"b":b,"b_copy":b}, "withdraw_actions":[{"source_key":"a","reason":"caller withdrawal a"},{"source_key":"b","reason":"caller withdrawal b"}], "claim_statement":"Caller supplied all support claim."},
            "copies": {"sources":{"primary":copy,"copy":copy}, "withdraw_actions":[], "claim_statement":"Caller supplied copied support claim."}}
     return freeze_support_bundle(task, q13=q13, q14=q14)
 
@@ -79,12 +79,20 @@ def test_shared_bundle_full_grid_exercises_actual_support_state(tmp_path: Path, 
     else:
         initial=[row for row in rows if row["slot"]=="support_initial"]; after=[row for row in rows if row["slot"]=="support_rechecked"]
         assert all("withdraw_actions" not in row["module_context"]["public_support_state"] for row in initial)
-        one=next(row for row in after if row["module_context"]["m2"]=="enabled" and len(row["module_context"]["public_support_state"]["sources"])==1 and row["module_context"]["public_support_state"]["withdraw_actions"])
+        one_rows=[row for row in after if len(row["module_context"]["public_support_state"]["sources"])==1 and row["module_context"]["public_support_state"]["withdraw_actions"]]
+        assert {row["module_context"]["m2"] for row in one_rows}=={"enabled","frozen_control"}
+        assert all(set(row["module_context"]["public_support_state"]["sources"])=={"b"} for row in one_rows)
+        one=next(row for row in one_rows if row["module_context"]["m2"]=="enabled")
+        assert set(one["module_context"]["public_support_state"]["sources"])=={"b"}
+        assert "Q14-A" not in canonical(one["module_context"]["public_support_state"])
         assert any(entry["kind"]=="claim" and entry["support_roots"] for entry in next(row for row in initial if row["module_context"]["panel_cell"]==one["module_context"]["panel_cell"])["module_context"]["context_material"]["entries"]["entries"])
-        assert any(entry["kind"]=="claim" and entry["needs_review"] for entry in one["module_context"]["reconstructed_context"]["entries"]["entries"])
+        one_entries=one["module_context"]["reconstructed_context"]["entries"]["entries"]
+        assert any(entry["kind"]=="evidence" and "Q14-B" in canonical(entry) for entry in one_entries)
+        assert any(entry["kind"]=="claim" and entry["needs_review"] and len(entry["support_roots"])==1 for entry in one_entries)
         copied=next(row for row in initial if row["module_context"]["m2"]=="enabled" and len(row["module_context"]["public_support_state"]["sources"])==2 and "Q14-COPY" in canonical(row["module_context"]["public_support_state"]))
         assert len([entry for entry in copied["module_context"]["context_material"]["entries"]["entries"] if entry["kind"]=="evidence"])==1
         all_withdrawn=next(row for row in after if row["module_context"]["m2"]=="enabled" and not row["module_context"]["public_support_state"]["sources"])
+        assert {action["source_key"] for action in all_withdrawn["module_context"]["public_support_state"]["withdraw_actions"]}=={"a","b"}
         assert any(entry["kind"]=="claim" and entry["needs_review"] and not entry["support_roots"] for entry in all_withdrawn["module_context"]["reconstructed_context"]["entries"]["entries"])
         paired={}
         for row in after:
