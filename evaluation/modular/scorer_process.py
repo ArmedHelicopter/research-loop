@@ -128,7 +128,7 @@ def parse_frozen_panel(value: object) -> FrozenPanel:
 
 def serialize_combination_panel(panel: CombinationPanel, *, lineage: bool = False,
                                 retrieval_review: bool = False, admission: bool = False, exploration_scheduler: bool = False,
-                                state_prediction: bool = False, state_retrieval: bool = False, state_exploration: bool = False) -> dict[str, object]:
+                                state_prediction: bool = False, state_retrieval: bool = False, state_exploration: bool = False, state_scheduling: bool = False) -> dict[str, object]:
     """Keep each explicitly opted-in combination family in a closed scope."""
     from research_loop.modular.lineage_combination_driver import DESIGNS as LINEAGE_DESIGNS
     from research_loop.modular.retrieval_review_combination_driver import DESIGNS as RETRIEVAL_DESIGNS, registered_design
@@ -137,20 +137,22 @@ def serialize_combination_panel(panel: CombinationPanel, *, lineage: bool = Fals
     from research_loop.modular.combinations import default_compatibility
     from research_loop.modular.state_retrieval_combination_driver import DESIGNS as STATE_RETRIEVAL_DESIGNS, registered_design as state_retrieval_design
     from research_loop.modular.state_exploration_combination_driver import DESIGNS as STATE_EXPLORATION_DESIGNS, registered_design as state_exploration_design
-    flags = (lineage, retrieval_review, admission, exploration_scheduler, state_prediction, state_retrieval, state_exploration)
+    from research_loop.modular.state_scheduling_combination_driver import DESIGNS as STATE_SCHEDULING_DESIGNS, registered_design as state_scheduling_design
+    flags = (lineage, retrieval_review, admission, exploration_scheduler, state_prediction, state_retrieval, state_exploration, state_scheduling)
     if any(type(flag) is not bool for flag in flags) or sum(flags) > 1:
         raise ContractError('combination scorer requires one strict explicit scope')
-    permitted = (STATE_EXPLORATION_DESIGNS if state_exploration else STATE_RETRIEVAL_DESIGNS if state_retrieval else STATE_PREDICTION_DESIGNS if state_prediction else ('pair:M7+M8',) if exploration_scheduler
+    permitted = (STATE_SCHEDULING_DESIGNS if state_scheduling else STATE_EXPLORATION_DESIGNS if state_exploration else STATE_RETRIEVAL_DESIGNS if state_retrieval else STATE_PREDICTION_DESIGNS if state_prediction else ('pair:M7+M8',) if exploration_scheduler
                  else LINEAGE_DESIGNS if lineage else RETRIEVAL_DESIGNS if retrieval_review
                  else ADMISSION_DESIGNS if admission else ('pair:M4+M5',))
     if not isinstance(panel, CombinationPanel) or panel.obligation_id not in permitted or panel.domain != "train":
         raise ContractError("process scoring combination is outside its explicit closed scope")
-    if (state_exploration and panel.design != state_exploration_design(panel.obligation_id, panel.design.data()['compatibility']['baseline_digest'])
+    if (state_scheduling and panel.design != state_scheduling_design(panel.obligation_id, panel.design.data()['compatibility']['baseline_digest'])
+            or state_exploration and panel.design != state_exploration_design(panel.obligation_id, panel.design.data()['compatibility']['baseline_digest'])
             or retrieval_review and panel.design != registered_design(panel.obligation_id, panel.design.data()['compatibility']['baseline_digest'])
             or state_prediction and panel.design != state_prediction_design(panel.obligation_id, panel.design.data()['compatibility']['baseline_digest'])
             or state_retrieval and panel.design != state_retrieval_design(panel.obligation_id, panel.design.data()['compatibility']['baseline_digest'])):
         raise ContractError('process scoring combination design differs from the exact registered design')
-    if admission or exploration_scheduler or not lineage and not retrieval_review and not state_prediction and not state_retrieval and not state_exploration:
+    if admission or exploration_scheduler or not lineage and not retrieval_review and not state_prediction and not state_retrieval and not state_exploration and not state_scheduling:
         designs = {'pair:M7+M8': ('M7','M8')} if exploration_scheduler else ADMISSION_DESIGNS if admission else {'pair:M4+M5': ('M4','M5')}
         if not panel.cells or panel.design != default_compatibility(panel.cells[0].runtime_arm.data()['baseline_digest']).conditional_factorial(designs[panel.obligation_id]):
             raise ContractError('process scoring design differs from default registered compatibility')
@@ -163,7 +165,7 @@ def serialize_combination_panel(panel: CombinationPanel, *, lineage: bool = Fals
 
 def parse_combination_panel(value: object, *, lineage: bool = False,
                             retrieval_review: bool = False, admission: bool = False, exploration_scheduler: bool = False,
-                            state_prediction: bool = False, state_retrieval: bool = False, state_exploration: bool = False) -> CombinationPanel:
+                            state_prediction: bool = False, state_retrieval: bool = False, state_exploration: bool = False, state_scheduling: bool = False) -> CombinationPanel:
     if (not isinstance(value, Mapping) or set(value) != {"schema", "panel_digest", "panel"}
             or value["schema"] != "combination-scorer-process-panel-v1" or not isinstance(value["panel"], Mapping)):
         raise ContractError("combination scorer panel envelope is invalid")
@@ -180,7 +182,7 @@ def parse_combination_panel(value: object, *, lineage: bool = False,
     except (KeyError, TypeError, ValueError) as exc:
         raise ContractError("combination scorer panel cannot be reconstructed") from exc
     if serialize_combination_panel(panel, lineage=lineage, retrieval_review=retrieval_review, admission=admission,
-                                   exploration_scheduler=exploration_scheduler, state_prediction=state_prediction, state_retrieval=state_retrieval, state_exploration=state_exploration) != value:
+                                   exploration_scheduler=exploration_scheduler, state_prediction=state_prediction, state_retrieval=state_retrieval, state_exploration=state_exploration, state_scheduling=state_scheduling) != value:
         raise ContractError("combination scorer panel differs from its complete frozen serialization")
     return panel
 
@@ -228,12 +230,13 @@ def parse_server_config(value: object, *, lineage: bool = False) -> ScorerServer
     state_prediction_schema = 'state-prediction-scorer-process-config-v1'
     state_retrieval_schema = 'state-retrieval-scorer-process-config-v1'
     state_exploration_schema = 'state-exploration-scorer-process-config-v1'
-    if not isinstance(value, Mapping) or set(value) != required or value.get("schema") not in {_CONFIG_SCHEMA, _COMBINATION_CONFIG_SCHEMA, retrieval_schema, admission_schema, exploration_schema, state_prediction_schema, state_retrieval_schema, state_exploration_schema}:
+    state_scheduling_schema = 'state-scheduling-scorer-process-config-v1'
+    if not isinstance(value, Mapping) or set(value) != required or value.get("schema") not in {_CONFIG_SCHEMA, _COMBINATION_CONFIG_SCHEMA, retrieval_schema, admission_schema, exploration_schema, state_prediction_schema, state_retrieval_schema, state_exploration_schema, state_scheduling_schema}:
         raise ContractError("scorer process configuration is invalid")
     panel = (parse_combination_panel(value["panel"], lineage=lineage,
                  retrieval_review=value['schema']==retrieval_schema, admission=value['schema']==admission_schema,
-                 exploration_scheduler=value['schema']==exploration_schema, state_prediction=value['schema']==state_prediction_schema, state_retrieval=value['schema']==state_retrieval_schema, state_exploration=value['schema']==state_exploration_schema)
-             if value["schema"] in {_COMBINATION_CONFIG_SCHEMA, retrieval_schema, admission_schema, exploration_schema, state_prediction_schema, state_retrieval_schema, state_exploration_schema}
+                 exploration_scheduler=value['schema']==exploration_schema, state_prediction=value['schema']==state_prediction_schema, state_retrieval=value['schema']==state_retrieval_schema, state_exploration=value['schema']==state_exploration_schema, state_scheduling=value['schema']==state_scheduling_schema)
+             if value["schema"] in {_COMBINATION_CONFIG_SCHEMA, retrieval_schema, admission_schema, exploration_schema, state_prediction_schema, state_retrieval_schema, state_exploration_schema, state_scheduling_schema}
              else parse_frozen_panel(value["panel"]))
     if panel.domain != "train" or any(cell.identity.domain != "train" for cell in panel.cells):
         raise ContractError("scorer process is train-only")
@@ -548,13 +551,14 @@ class CombinationScorerProcessClient(LinkedScorerProcessClient):
                  task_handle_bindings: Mapping[str, str], execution_authority_keys: Mapping[str, bytes],
                  scorer_authority_keys: Mapping[str, bytes], environment: Mapping[str, str] | None = None,
                  response_timeout_seconds: int = 240, retrieval_review: bool = False, admission: bool = False,
-                 exploration_scheduler: bool = False, state_prediction: bool = False, state_retrieval: bool = False, state_exploration: bool = False):
+                 exploration_scheduler: bool = False, state_prediction: bool = False, state_retrieval: bool = False, state_exploration: bool = False, state_scheduling: bool = False):
         serialize_combination_panel(panel, retrieval_review=retrieval_review, admission=admission,
-                                    exploration_scheduler=exploration_scheduler, state_prediction=state_prediction, state_retrieval=state_retrieval, state_exploration=state_exploration)
+                                    exploration_scheduler=exploration_scheduler, state_prediction=state_prediction, state_retrieval=state_retrieval, state_exploration=state_exploration, state_scheduling=state_scheduling)
         expected = scorer_process_binding(panel=panel, config=config, task_handle_bindings=task_handle_bindings,
             execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
         self.config, self.state_prediction, self.state_retrieval = config, state_prediction, state_retrieval
         self.state_exploration = state_exploration
+        self.state_scheduling = state_scheduling
         super().__init__(panel=panel, command=command, journal_path=journal_path,
                          environment=environment, response_timeout_seconds=response_timeout_seconds)
         try:
