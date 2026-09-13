@@ -68,3 +68,17 @@ separately. Reviewer consensus or one fixed arbitration produces the prospective
 frozen diagnostic target. These are authenticated judgements, not proof of expert
 correctness. There is no binary calibration eligibility threshold or confidence
 interval inferred from these four tasks.
+
+Reviewer deployments must resolve the blinded task handle with the standard
+FrozenTrainReferenceResolver and verify the exact reference digest. Supplying a
+callback does not mean an independent reviewer model or expert has been deployed.
+The request intentionally omits expected targets and other reviews.
+
+Any detected source guard failure permanently closes further I/O in that pilot,
+even if original bytes reappear. Usage evidence must identify an independently
+recorded actual call (for example a provider ledger reservation/usage receipt),
+not merely hash identical response content. Reusing one usage evidence digest
+retains the new reservation as unknown and blocks further I/O. Transport failures
+and invalid received responses have separate counters. Parent timeouts preserve
+captured partial stdout/stderr privately, mark the child call/token/money totals
+unknown pending private-ledger reconciliation, and never retry automatically.

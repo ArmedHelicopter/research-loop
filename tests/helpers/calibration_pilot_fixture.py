@@ -123,7 +123,8 @@ class FixturePorts:
     def cost(self, role, request):
         return record({'input_tokens': 10, 'output_tokens': 5, 'microusd': 1,
             'request_digest': request.content_hash, 'port_config_digest': digest(self.manifest.data()['policy']['ports'][role]),
-            'usage_evidence_digest': digest({'fixture_cost': request.content_hash, 'role': role})})
+            'usage_evidence_digest': digest({'fixture_cost': request.content_hash, 'role': role,
+                'actual_fixture_port_call_index': len(self.calls[role])})})
 
     def review(self, role, request):
         self.calls[role].append(request)

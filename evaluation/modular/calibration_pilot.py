@@ -243,22 +243,39 @@ class PortBudget:
         self.tokens = {role: 0 for role in ROLES}
         self.unknown = {role: 0 for role in ROLES}
         self.failed = {role: 0 for role in ROLES}
+        self.invalid = {role: 0 for role in ROLES}
         self.halted = False
+        self.halt_reason = None
+        self.usage_receipts = set()
+        self.capacity_checks = 0
         self.source_guard = source_guard
+
+    def _guard(self, role, request):
+        if self.source_guard is None:
+            return True
+        try:
+            self.source_guard()
+            return True
+        except Exception:
+            self.halted = True
+            self.halt_reason = 'blocked_source_drift'
+            self.journal.append('source_guard_rejected', {'role': role, 'request_digest': request.content_hash})
+            return False
 
     def call(self, role, request, port):
         policy = self.body['policy']
         spec = policy['ports'][role]
         if self.halted:
-            return None, 'blocked_unknown_cost'
+            return None, self.halt_reason
         if sum(self.calls.values()) >= policy['max_calls'] or self.calls[role] >= spec['max_calls']:
             return None, 'budget_exhausted'
         quote_request = FrozenRecord.from_dict({'schema': 'diagnostic-capacity-request-v1', 'manifest_digest': self.manifest.content_hash,
             'role': role, 'request_digest': request.content_hash, 'port_config': spec, 'request': request.data()})
         # This port is caller-trusted deterministic measurement, never a model port.
+        if not self._guard(role, request):
+            return None, self.halt_reason
         try:
-            if self.source_guard is not None:
-                self.source_guard()
+            self.capacity_checks += 1
             quote = self.capacity_port(quote_request)
             q = verify(quote, role='capacity', subject=quote_request.content_hash,
                        authority_id=self.body['authorities']['capacity'], key=self.capacity_key)
@@ -274,8 +291,8 @@ class PortBudget:
                     or sum(self.tokens.values()) + count > policy['max_tokens']
                     or sum(self.costs.values()) + amount > policy['max_microusd']):
                 raise ContractError('capacity reservation exceeds frozen limit')
-            if self.source_guard is not None:
-                self.source_guard()
+            if not self._guard(role, request):
+                return None, self.halt_reason
         except Exception:
             self.journal.append('capacity_rejected', {'role': role, 'request_digest': request.content_hash})
             return None, 'capacity_rejected'
@@ -305,16 +322,21 @@ class PortBudget:
             if cost['request_digest'] != request.content_hash or cost['port_config_digest'] != digest(spec):
                 raise ContractError('reported usage has a foreign model or request binding')
             pin(cost['usage_evidence_digest'])
+            if cost['usage_evidence_digest'] in self.usage_receipts:
+                raise ContractError('one actual usage receipt cannot be charged as another call')
+            self.usage_receipts.add(cost['usage_evidence_digest'])
             self.tokens[role] += cost['input_tokens'] + cost['output_tokens'] - count
             self.costs[role] += cost['microusd'] - amount
             cost_status = 'verified_reported'
             if (cost['input_tokens'] > q['input_tokens_upper'] or cost['output_tokens'] > q['output_tokens_upper']
                     or cost['microusd'] > amount):
                 self.halted = True
+                self.halt_reason = 'blocked_reservation_breach'
                 cost_status = 'reported_reservation_breach'
         except (ContractError, TypeError, ValueError):
             self.unknown[role] += 1
             self.halted = True
+            self.halt_reason = 'blocked_unknown_cost'
             cost_status = 'unknown_reservation_retained'
         if failed or not isinstance(output, FrozenRecord):
             self.failed[role] += 1
@@ -328,8 +350,9 @@ class PortBudget:
 
     def data(self):
         return {'calls': dict(self.calls), 'failed_calls': dict(self.failed), 'known_or_reserved_tokens': dict(self.tokens),
+                'invalid_response_calls': dict(self.invalid), 'nonbillable_capacity_checks': self.capacity_checks,
                 'known_or_reserved_microusd': dict(self.costs), 'unknown_cost_calls': dict(self.unknown),
-                'further_io_blocked': self.halted}
+                'further_io_blocked': self.halted, 'halt_reason': self.halt_reason}
 
 
 def blind_request(manifest, slot, task, material):
@@ -345,9 +368,11 @@ class DiagnosticPilot:
     def __init__(self, *, manifest, resolver: FrozenTrainReferenceResolver, materials: Mapping[str, FrozenRecord],
                  keys: Mapping[str, bytes], journal_path: Path, capacity_port: Callable,
                  reviewer1: Callable, reviewer2: Callable, arbitrator: Callable, evaluator: Callable,
-                 authority: DiagnosticAuthority, source_guard=None):
+                 authority: DiagnosticAuthority, source_guard):
         self.manifest = manifest
         self.body, self.tasks, self.slots = validate_manifest(manifest)
+        if not callable(source_guard):
+            raise ContractError('pilot requires a caller source verification guard')
         if not isinstance(resolver, FrozenTrainReferenceResolver):
             raise ContractError('pilot requires the standard train resolver')
         if (set(keys) != set(self.body['authorities']) or any(not isinstance(k, bytes) or len(k) < 32 for k in keys.values())
@@ -378,6 +403,7 @@ class DiagnosticPilot:
         self.journal = PrivateJournal(journal_path)
         self.journal.append('pilot_reserved', {'manifest_digest': manifest.content_hash, 'slots': 36, 'evaluator_opportunities': 72})
         try:
+            source_guard()
             for identity_digest, task in self.tasks.items():
                 ref = resolver(task['task_handle'], task['identity']['benchmark'])
                 if (ref.content_hash != task['reference_digest'] or ref.data()['identity_digest'] != identity_digest
@@ -402,6 +428,7 @@ class DiagnosticPilot:
             target(result, benchmark)
             return result, 'reviewed'
         except Exception:
+            self.budget.invalid[role] += 1
             self.journal.append('review_rejected', {'role': role, 'request_digest': request.content_hash})
             return None, 'invalid_review'
 
@@ -462,6 +489,8 @@ class DiagnosticPilot:
                         obs.update({'status': 'scored_diagnostic', 'dimensions': response.data()['dimensions'],
                                     'response_digest': response.content_hash})
                     except Exception:
+                        if model_status and model_status[-1] == 'received':
+                            self.budget.invalid['evaluator'] += 1
                         obs['status'] = (model_status[-1] if model_status and model_status[-1] != 'received'
                                          else 'invalid_evaluator_output' if model_status else 'source_rejected')
                 observations.append(obs)

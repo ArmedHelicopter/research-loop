@@ -144,8 +144,20 @@ def launch_once(*, command: list[str], executable_sha256: str, worker_sha256: st
         _read_bound(Path(command[1]), {worker_sha256})
         load_record(config_descriptor)
         return receipt
-    except subprocess.TimeoutExpired:
-        journal.append('process_unknown', {'reason': 'timeout', 'automatic_retry': False})
+    except subprocess.TimeoutExpired as exc:
+        captured = {}
+        for suffix, raw in (('.timeout-stdout.bin', exc.stdout), ('.timeout-stderr.bin', exc.stderr)):
+            if isinstance(raw, str):
+                raw = raw.encode('utf-8')
+            if raw is not None:
+                with _plain(Path(str(parent_journal_path) + suffix)).open('xb') as stream:
+                    stream.write(raw)
+                captured[suffix] = {'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw), 'complete': False}
+            else:
+                captured[suffix] = {'sha256': None, 'bytes': None, 'complete': False}
+        journal.append('process_unknown', {'reason': 'timeout', 'automatic_retry': False, 'captured_partial_streams': captured,
+            'child_call_count': None, 'child_tokens': None, 'child_microusd': None,
+            'child_cost_status': 'unknown_requires_private_journal_reconciliation'})
         raise ContractError('pilot subprocess outcome unknown') from None
     except Exception:
         journal.append('process_rejected', {'reason': 'failed_or_invalid_bound_result', 'automatic_retry': False})

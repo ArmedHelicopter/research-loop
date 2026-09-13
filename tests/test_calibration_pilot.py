@@ -12,7 +12,7 @@ from evaluation.modular.calibration_pilot import (
     PortBudget, PrivateJournal, summarize,
 )
 from evaluation.modular.calibration_pilot_process import run_config, launch_once
-from evaluation.modular.reference_store import FrozenTrainReferenceResolver
+from evaluation.modular.reference_store import FrozenTrainReferenceResolver, _read_bound
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.ontology import ContractError, digest
 from tests.helpers.calibration_pilot_fixture import build_fixture, FixturePorts, record, write, hash_file
@@ -33,7 +33,9 @@ def setup_pilot(tmp_path, *, change=None):
         inventory_digest=store['inventory_digest'], split_digest=store['split_digest'])
     kwargs = {'manifest': manifest, 'materials': {k: record(v) for k, v in materials.items()}, 'resolver': resolver,
         'keys': {k: a.key for k, a in authorities.items()}, 'authority': authorities['diagnostic'],
-        'journal_path': tmp_path / 'pilot.jsonl'} | ports.kwargs()
+        'journal_path': tmp_path / 'pilot.jsonl',
+        'source_guard': lambda: [_read_bound(Path(path), {manifest.data()['input_pins'][name]})
+            for name,path in config.data()['input_files'].items()]} | ports.kwargs()
     return kwargs, ports, config
 
 
@@ -234,7 +236,7 @@ def test_global_review_budget_is_not_free(tmp_path):
     ports = FixturePorts(manifest, authorities)
     budget = PortBudget(manifest, PrivateJournal(tmp_path/'budget.jsonl'),capacity_port=ports.capacity,
         capacity_key=authorities['capacity'].key)
-    request = record({'benchmark':'blade','candidate':{},'slot_id':'a'*64})
+    request = record({'benchmark':'blade','candidate':{'answer':'The synthetic relation is supported.'},'slot_id':'a'*64})
     _, status = budget.call('reviewer1',request,lambda r: ports.review('reviewer1',r))
     assert status=='received'
     _, status = budget.call('evaluator',request,ports.evaluator)
@@ -301,3 +303,56 @@ def test_nine_material_slots_have_distinct_actual_candidate_content(tmp_path):
         candidates = [materials[s['slot_id']]['body']['payload']['candidate']['answer'] for s in slots]
         assert len(set(candidates))==9 and '' in candidates
         assert any('not affirmed' in answer for answer in candidates)
+
+
+def test_source_drift_latches_even_when_original_bytes_are_restored(tmp_path):
+    manifest, _, authorities, _ = build_fixture(tmp_path)
+    ports = FixturePorts(manifest, authorities)
+    drift = [False]
+    def guard():
+        if drift[0]: raise ContractError('synthetic source drift')
+    def capacity(request):
+        quote = ports.capacity(request)
+        drift[0] = len(ports.capacity_calls) == 1
+        return quote
+    budget = PortBudget(manifest,PrivateJournal(tmp_path/'budget.jsonl'),capacity_port=capacity,
+        capacity_key=authorities['capacity'].key,source_guard=guard)
+    req = record({'benchmark':'blade','candidate':{'answer':'The synthetic relation is supported.'}})
+    _, first_status = budget.call('reviewer1',req,lambda r: ports.review('reviewer1',r))
+    drift[0]=False
+    _, status = budget.call('reviewer1',req,lambda r: ports.review('reviewer1',r))
+    assert first_status==status=='blocked_source_drift' and sum(budget.calls.values())==0
+    assert len(ports.capacity_calls)==1
+
+
+def test_same_usage_evidence_cannot_count_as_second_actual_call(tmp_path):
+    manifest, _, authorities, _ = build_fixture(tmp_path)
+    ports = FixturePorts(manifest, authorities)
+    budget = PortBudget(manifest,PrivateJournal(tmp_path/'budget.jsonl'),capacity_port=ports.capacity,
+        capacity_key=authorities['capacity'].key)
+    req = record({'benchmark':'blade','candidate':{'answer':'The synthetic relation is supported.'}})
+    cached = ports.review('reviewer1',req)
+    _, first = budget.call('reviewer1',req,lambda r: cached)
+    _, second = budget.call('reviewer1',req,lambda r: cached)
+    assert first=='received' and second=='unknown_cost'
+    assert budget.halted and budget.calls['reviewer1']==2
+    assert budget.unknown['reviewer1']==1 and budget.costs['reviewer1']==1001
+
+
+def test_timeout_preserves_partial_streams_and_unknown_child_cost(tmp_path):
+    _, _, _, config = build_fixture(tmp_path)
+    desc = write(tmp_path/'config.json',config.data())
+    helper = tmp_path/'timeout_worker.py'
+    helper.write_text('import sys,time\nprint("PRIVATE_PARTIAL_STDOUT",flush=True)\nprint("PRIVATE_PARTIAL_STDERR",file=sys.stderr,flush=True)\ntime.sleep(10)\n')
+    parent = tmp_path/'timeout-parent.jsonl'
+    output = tmp_path/'out.json'
+    with pytest.raises(ContractError,match='outcome unknown'):
+        launch_once(command=[sys.executable,str(helper),'--config',desc['path'],'--sha256',desc['sha256'],'--output',str(output)],
+            executable_sha256=hash_file(Path(sys.executable)),worker_sha256=hash_file(helper),config_descriptor=desc,
+            result_path=output,parent_journal_path=parent,timeout_seconds=1)
+    assert Path(str(parent)+'.timeout-stdout.bin').read_bytes().strip()==b'PRIVATE_PARTIAL_STDOUT'
+    assert Path(str(parent)+'.timeout-stderr.bin').read_bytes().strip()==b'PRIVATE_PARTIAL_STDERR'
+    last = journal(parent)[-1]['data']
+    assert last['child_tokens'] is None and last['child_microusd'] is None
+    assert last['automatic_retry'] is False and not output.exists()
+    assert all(v['complete'] is False for v in last['captured_partial_streams'].values())
