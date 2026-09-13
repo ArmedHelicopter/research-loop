@@ -73,9 +73,10 @@ class AuditVerifier:
             required_text(name, "authority id")
         self._keys = dict(keys)
 
-    def verify_pair(self, receipts: list[FrozenRecord], *, identity: DataIdentity,
-                    objective_digest: str, execution: ExecutionReceipt,
-                    required_audit: tuple[str, ...]) -> FrozenRecord:
+    def verify_evidence(self, receipts: list[FrozenRecord], *, identity: DataIdentity,
+                        objective_digest: str, execution: ExecutionReceipt,
+                        required_audit: tuple[str, ...]) -> FrozenRecord:
+        """Verify fixed host receipt binding without applying an M1 disposition."""
         if len(receipts) != 2:
             raise ContractError("two complete audit receipts required")
         bodies = {}
@@ -102,19 +103,32 @@ class AuditVerifier:
                 checks = [AuditItem(**row) for row in body["audit"]]
             except (TypeError, KeyError) as exc:
                 raise ContractError("malformed scientific state or audit") from exc
-            disposition = EvidenceAdmission.decide(identity=identity, state=state, outcome=body["outcome"],
-                execution_success=execution.status == "succeeded", trusted_validator=authority,
-                validator_verified=True, evidence_ids=[execution.content_hash],
-                subject_bindings={"task": identity.task_id, "objective": objective_digest},
-                required_audit=required_audit, audit=checks)
             bodies[authority] = {"state": body["state"], "outcome": body["outcome"],
-                                 "audit": sorted(body["audit"], key=lambda row: row["name"]), "admitted": disposition.admitted}
+                                  "audit": sorted(body["audit"], key=lambda row: row["name"])}
         normalized = list(bodies.values())
         if normalized[0] != normalized[1]:
             raise ContractError("dual audit disagreement")
-        return FrozenRecord.from_dict({"schema": "verified-dual-audit-v1", "identity": identity.data(),
+        return FrozenRecord.from_dict({"schema": "verified-dual-audit-evidence-v1", "identity": identity.data(),
             "objective_digest": objective_digest, "execution_digest": execution.content_hash,
             "authorities": sorted(bodies), **normalized[0]})
+
+    def verify_pair(self, receipts: list[FrozenRecord], *, identity: DataIdentity,
+                    objective_digest: str, execution: ExecutionReceipt,
+                    required_audit: tuple[str, ...]) -> FrozenRecord:
+        """Apply the existing M1 EvidenceAdmission disposition after host verification."""
+        verified = self.verify_evidence(receipts, identity=identity, objective_digest=objective_digest,
+                                        execution=execution, required_audit=required_audit).data()
+        state = ScientificState(**verified["state"])
+        checks = [AuditItem(**row) for row in verified["audit"]]
+        disposition = EvidenceAdmission.decide(identity=identity, state=state, outcome=verified["outcome"],
+            execution_success=execution.status == "succeeded", trusted_validator="+".join(verified["authorities"]),
+            validator_verified=True, evidence_ids=[execution.content_hash],
+            subject_bindings={"task": identity.task_id, "objective": objective_digest},
+            required_audit=required_audit, audit=checks)
+        return FrozenRecord.from_dict({"schema": "verified-dual-audit-v1", "identity": identity.data(),
+            "objective_digest": objective_digest, "execution_digest": execution.content_hash,
+            "authorities": verified["authorities"], "state": verified["state"],
+            "outcome": verified["outcome"], "audit": verified["audit"], "admitted": disposition.admitted})
 
 
 class RunSession:

@@ -8,6 +8,7 @@ or an independent authority.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import hashlib
 from typing import Any, Callable, Mapping, MutableMapping
 
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask
@@ -17,7 +18,7 @@ from research_loop.modular.workflow import ModularWorkflow
 from research_loop.ontology import ContractError
 
 
-AuditReceiptPort = Callable[[PublicTask, FrozenRecord, FrozenRecord, Any], tuple[FrozenRecord, FrozenRecord]]
+AuditReceiptPort = Callable[[PublicTask, FrozenRecord, FrozenRecord, Any], FrozenRecord]
 ShadowExecutionPort = Callable[[RunSession, PublicTask, FrozenRecord], Any]
 
 _Q23 = ("false", "string_false", "empty", "duplicate", "unknown", "missing", "parse_error")
@@ -29,10 +30,22 @@ def _text(value: Any) -> bool:
 
 
 def _validate_selected(item: Any) -> None:
-    if (not isinstance(item, Mapping) or set(item) != {"audit_material", "independent_check"}
-            or not isinstance(item["audit_material"], Mapping) or not item["audit_material"]
+    if (not isinstance(item, Mapping) or set(item) != {"audit_template", "independent_check"}
+            or not isinstance(item["audit_template"], Mapping) or not item["audit_template"]
             or not isinstance(item["independent_check"], Mapping) or not item["independent_check"]):
         raise ContractError("audit variant material is malformed")
+    template = item["audit_template"]
+    if template.get("kind") == "raw_parse_error":
+        if set(template) != {"kind", "raw_text"} or not _text(template["raw_text"]):
+            raise ContractError("raw audit parse template is malformed")
+    elif template.get("kind") == "signed_audit_pair":
+        if set(template) != {"kind", "receipts"} or not isinstance(template["receipts"], list) or len(template["receipts"]) != 2:
+            raise ContractError("signed audit template requires two receipt bodies")
+        for receipt in template["receipts"]:
+            if not isinstance(receipt, Mapping) or set(receipt) != {"state", "outcome", "audit"}:
+                raise ContractError("signed audit template is malformed")
+    else:
+        raise ContractError("audit template kind is unknown")
 
 
 def _validate_bundle(task: PublicTask, body: Mapping[str, Any]) -> None:
@@ -71,7 +84,7 @@ def select_audit_material(bundle: FrozenRecord, task: PublicTask, experiment_id:
     selected = body[key][variant]
     return FrozenRecord.from_dict({"schema": "typed-selected-audit-material-v1", "identity": body["identity"],
         "subject": body["subject"], "public_evidence": body["public_evidence"],
-        "shadow_execution": body["shadow_execution"], "audit_material": selected["audit_material"],
+        "shadow_execution": body["shadow_execution"], "audit_template": selected["audit_template"],
         # This record remains in controller trace state.  It is deliberately not
         # included in a model request: agreement on signatures is not scientific truth.
         "controller_only_independent_check": selected["independent_check"]})
@@ -107,6 +120,40 @@ def _candidate(record: FrozenRecord, objective: FrozenRecord) -> None:
         raise ContractError("audit driver final must be a bounded unknown candidate")
 
 
+def _payload_digest(value: str) -> str:
+    if not isinstance(value, str):
+        raise ContractError("audit payload must be serialized text")
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def _receipt_binding(port_record: FrozenRecord, *, task: PublicTask, material: FrozenRecord,
+                     objective: FrozenRecord, execution: Any) -> tuple[tuple[FrozenRecord, ...], str | None]:
+    body = port_record.data()
+    if (set(body) != {"schema", "material_digest", "identity", "objective_digest", "execution_digest",
+                     "shadow_receipt_digest", "audit_payloads", "audit_payload_digests"}
+            or body["schema"] != "caller-dual-audit-binding-v1" or body["material_digest"] != material.content_hash
+            or body["identity"] != task.identity.data() or body["objective_digest"] != objective.content_hash
+            or body["execution_digest"] != execution.content_hash or body["shadow_receipt_digest"] != execution.content_hash
+            or not isinstance(body["audit_payloads"], list) or len(body["audit_payloads"]) != 2
+            or not isinstance(body["audit_payload_digests"], list) or len(body["audit_payload_digests"]) != 2
+            or body["audit_payload_digests"] != [_payload_digest(value) for value in body["audit_payloads"]]):
+        raise ContractError("caller dual-audit binding does not match frozen execution material")
+    template = material.data()["audit_template"]
+    try:
+        receipts = tuple(FrozenRecord(value) for value in body["audit_payloads"])
+    except ContractError:
+        if template.get("kind") == "raw_parse_error" and body["audit_payloads"] == [template["raw_text"]] * 2:
+            return (), "audit payload parse failed"
+        raise ContractError("audit payload parse failed")
+    if template.get("kind") != "signed_audit_pair" or set(template) != {"kind", "receipts"}:
+        raise ContractError("audit template is not a signed audit projection")
+    for receipt, expected in zip(receipts, template["receipts"]):
+        audit = receipt.data().get("body")
+        if not isinstance(audit, Mapping) or any(audit.get(field) != expected[field] for field in ("state", "outcome", "audit")):
+            raise ContractError("authenticated audit does not match frozen caller template")
+    return receipts, None
+
+
 @dataclass(frozen=True)
 class _AuditDriver:
     experiment_id: str
@@ -133,19 +180,40 @@ class _AuditDriver:
             raise ContractError("audit shadow port did not execute through this RunSession")
         if self.receipt_port is None:
             raise ContractError("audit driver requires a caller-owned dual audit receipt port")
-        receipts = self.receipt_port(workflow.session.task, material, workflow.session.objective, execution)
-        if not isinstance(receipts, tuple) or len(receipts) != 2 or any(not isinstance(item, FrozenRecord) for item in receipts):
-            raise ContractError("audit receipt port requires exactly two frozen receipt records")
-        admission, rejection = None, None
-        try:
-            admission = workflow.session.admit(execution.content_hash, list(receipts))
-        except ContractError as exc:
-            rejection = str(exc)
+        port_record = self.receipt_port(workflow.session.task, material, workflow.session.objective, execution)
+        if not isinstance(port_record, FrozenRecord):
+            raise ContractError("audit receipt port requires one frozen caller binding")
+        receipts, host_error = _receipt_binding(port_record, task=workflow.session.task, material=material,
+                                                objective=workflow.session.objective, execution=execution)
+        verified, admission, rejection = None, None, None
+        if host_error is None:
+            try:
+                verified = workflow.session.verifier.verify_evidence(list(receipts), identity=workflow.session.task.identity,
+                    objective_digest=workflow.session.objective.content_hash, execution=execution,
+                    required_audit=workflow.session.required_audit)
+            except ContractError as exc:
+                host_error = str(exc)
+        workflow.session._record("host_audit_verified" if verified else "host_audit_rejected", {
+            "execution_digest": execution.content_hash, "receipt_binding_digest": port_record.content_hash,
+            **({"verified": verified.data()} if verified else {"reason": host_error})})
+        m1_enabled = "M1" in workflow.enabled
+        if m1_enabled and verified is not None:
+            # M1 alone applies EvidenceAdmission and may promote the verified
+            # record into the session ledger. The host checks above are fixed P0.
+            try:
+                admission = workflow.session.admit(execution.content_hash, list(receipts))
+            except ContractError as exc:
+                rejection = str(exc)
+        elif host_error is not None:
+            rejection = host_error
         processing = {"schema": "audit-processing-result-v1", "execution_status": execution.status,
-            "admission": admission.data() if admission else {"status": "rejected", "reason": rejection},
+            "host_verification": verified.data() if verified else {"status": "rejected", "reason": host_error},
+            "m1_policy": "applied" if admission else "not_applied_common_p0_rejection" if host_error else "frozen_shadow_control",
+            "admission": admission.data() if admission else {"status": "not_promoted", "reason": rejection},
             "independent_check": {"retained_by_controller": True, "scientific_authority": "not_established"}}
-        stage = workflow._trace("stage_1" if "M1" in workflow.enabled else "operation_m1_shadow_control", "executed",
-            host_audit_verifier="always_on", audit_receipt_digests=[item.content_hash for item in receipts],
+        stage = workflow._trace("stage_1" if m1_enabled else "operation_m1_shadow_control", "executed",
+            host_audit_verifier="always_on", receipt_binding_digest=port_record.content_hash,
+            host_verification="verified" if verified else "rejected",
             controller_only_independent_check=body["controller_only_independent_check"], processing=processing)
         final = workflow.invoke_model("final", model,
             instruction="Return a bounded train-only unknown candidate. The audit processing state is an engineering result, not scientific authority.",
