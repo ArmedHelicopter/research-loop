@@ -1,0 +1,10 @@
+{
+  "schema": "root-verification-order-failure-v1",
+  "status": "failed",
+  "verifier": "verify_grok_archive_pairs_committed.py",
+  "failed_comparison": "results/grok-public-train-provider-20260914/SHA256SUMS.json",
+  "cause": "The verifier ran after the commit command yielded a live session and before that session completed. It compared repaired payload bytes against the previous HEAD.",
+  "repair": "Waited for commit session 11857 to close successfully at e1fa60c before repeating the read-only committed-byte verification.",
+  "source_edits": false,
+  "model_calls": 0
+}

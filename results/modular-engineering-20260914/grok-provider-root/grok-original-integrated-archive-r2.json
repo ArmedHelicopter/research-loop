@@ -1,0 +1,346 @@
+{
+  "head": "cd2a4e0a88325605fb907dcc4504d97b8a540954",
+  "archive": "results/grok-public-train-provider-20260914",
+  "files": 447,
+  "manifest_entries": 446,
+  "zip_files": 447,
+  "zip_sha256": "946af412c5014be1a9a86a696269997cd39cbf3029267c57880e45c7b6da1ce6",
+  "failures": [
+    {
+      "path": "closure-9f6b718.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "closure-ad89775.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "mixed-failure-fc58ab0.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "SHA256SUMS.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0001-m4_plan/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0002-m5_mechanism/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0003-m5_measurement/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0004-analysis_program/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0005-final_answer/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0006-m4_plan/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0007-m5_mechanism/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0008-m5_measurement/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0009-analysis_program/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0010-final_answer/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0011-m4_plan/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0012-m5_mechanism/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0013-m5_measurement/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0014-analysis_program/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0015-final_answer/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0016-m4_plan/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0017-m5_mechanism/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0018-m5_measurement/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0019-analysis_program/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0020-final_answer/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0021-m4_plan/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0022-m5_mechanism/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0023-m5_measurement/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0024-analysis_program/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0025-final_answer/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0026-m4_plan/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0027-m5_mechanism/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0028-m5_measurement/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0029-analysis_program/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0030-final_answer/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0031-m4_plan/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0032-m5_mechanism/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0033-m5_measurement/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0034-analysis_program/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0035-final_answer/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0036-m4_plan/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0037-m5_mechanism/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0038-m5_measurement/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0039-analysis_program/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0040-final_answer/peer.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0001-m4_plan/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0002-m5_mechanism/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0003-m5_measurement/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0004-analysis_program/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0005-final_answer/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0006-m4_plan/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0007-m5_mechanism/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0008-m5_measurement/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0009-analysis_program/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0010-final_answer/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0011-m4_plan/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0012-m5_mechanism/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0013-m5_measurement/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0014-analysis_program/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0015-final_answer/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0016-m4_plan/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0017-m5_mechanism/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0018-m5_measurement/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0019-analysis_program/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0020-final_answer/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0021-m4_plan/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0022-m5_mechanism/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0023-m5_measurement/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0024-analysis_program/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0025-final_answer/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0026-m4_plan/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0027-m5_mechanism/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0028-m5_measurement/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0029-analysis_program/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0030-final_answer/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0031-m4_plan/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0032-m5_mechanism/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0033-m5_measurement/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0034-analysis_program/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0035-final_answer/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0036-m4_plan/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0037-m5_mechanism/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0038-m5_measurement/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0039-analysis_program/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "native-ledger/calls/0040-final_answer/native-private/stdout.private.jsonl",
+      "failure": "disk_vs_git"
+    }
+  ]
+}

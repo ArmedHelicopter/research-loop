@@ -1,0 +1,1498 @@
+{
+  "head": "cd2a4e0a88325605fb907dcc4504d97b8a540954",
+  "archive": "results/grok-public-train-provider-repair-20260914",
+  "files": 803,
+  "manifest_entries": 802,
+  "zip_files": 803,
+  "zip_sha256": "afcb6a850156a282d15e427a3a0b863bc0a5fc17cf3746d28a0ed55c8c17117c",
+  "failures": [
+    {
+      "path": "complete-panel/client-0.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/client-0.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/export/export-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/export/export-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/export-audit/exports.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/export-audit/exports.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/data.csv",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/data.csv",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/public.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/public.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0003-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0003-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0004-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0004-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0005-final_answer/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0005-final_answer/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0006-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0006-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0008-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0008-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0009-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0009-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0010-final_answer/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0010-final_answer/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0011-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0011-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0013-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0013-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0014-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0014-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0015-final_answer/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0015-final_answer/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0016-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0016-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0018-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0018-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0019-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0019-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0020-final_answer/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0020-final_answer/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0021-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0021-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0023-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0023-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0024-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0024-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0025-final_answer/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0025-final_answer/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0026-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0026-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0028-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0028-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0005-final_answer/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0005-final_answer/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0005-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0005-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0005-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0005-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0010-final_answer/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0010-final_answer/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0010-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0010-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0010-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0010-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0015-final_answer/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0015-final_answer/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0015-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0015-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0015-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0015-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0020-final_answer/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0020-final_answer/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0020-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0020-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0020-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0020-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0025-final_answer/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0025-final_answer/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0025-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0025-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0025-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0025-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_git"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_zip"
+    },
+    {
+      "path": "complete-panel/client-0.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/export/export-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/data.csv",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/public.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/export-audit/exports.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0002-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0003-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0003-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0004-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0004-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0005-final_answer/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0005-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0005-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0005-final_answer/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0006-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0006-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0007-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0008-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0008-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0009-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0009-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0010-final_answer/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0010-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0010-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0010-final_answer/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0011-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0011-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0012-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0013-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0013-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0014-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0014-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0015-final_answer/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0015-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0015-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0015-final_answer/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0016-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0016-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0017-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0018-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0018-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0019-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0019-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0020-final_answer/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0020-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0020-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0020-final_answer/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0021-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0021-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0022-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0023-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0023-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0024-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0024-analysis_program/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0025-final_answer/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0025-final_answer/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0025-final_answer/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0025-final_answer/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0026-m4_plan/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0026-m4_plan/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0027-m5_mechanism/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0028-m5_measurement/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0028-m5_measurement/prompt.private.txt",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-home/config.toml",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-private/observer-receipt.json",
+      "failure": "disk_vs_manifest"
+    },
+    {
+      "path": "complete-panel/native-ledger/calls/0029-analysis_program/native-private/requests.private.jsonl",
+      "failure": "disk_vs_manifest"
+    }
+  ]
+}

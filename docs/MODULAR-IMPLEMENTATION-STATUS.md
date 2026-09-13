@@ -3,6 +3,30 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Merged native TRAIN provider repair (2026-09-14)
+
+Root source `834b3b6` passed 33 integration checks with all 588 frozen
+source/document hashes unchanged. The repaired Grok entry creates fresh native
+contexts and exact per-slot configurations, verifies original native requests,
+responses, reservations and usage, and durably stops dispatch after provenance
+failure. Its eight-cell M4/M5 panel completed 40 synthetic MAIN calls, eight
+Docker executions and eight independent scores; unknown MAIN and provenance
+failures retain all eight rows and the known consumed usage. Authoring and
+diagnostic worker seams pass alongside it. Evidence is in
+`results/modular-engineering-20260914/grok-provider-root/`.
+
+The root independently verified all 1,252 imported source-archive files,
+including both original ZIPs. Checkout text conversions, their byte repairs
+and the original failed verification attempts are preserved. These are
+engineering and provenance checks; no actual model generation occurred.
+
+The native provider currently admits only the fixed M4/M5 v4 panel. Explicit
+provider portability for the other registered controllers is being implemented
+in an isolated worktree. Grok CLI 1.0.30 also timed out before session creation
+in a separate one-initialize/no-prompt observation; the cause remains unknown.
+Real material generation, calibration, TRAIN effects, final bundle selection
+and independent validation acceptance remain unfinished.
+
 ## Merged provisional material-authoring seam (2026-09-14)
 
 Root source `986c25c` passed 36 focused integration checks with all 585 frozen

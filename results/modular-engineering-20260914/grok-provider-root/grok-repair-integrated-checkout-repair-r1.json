@@ -1,0 +1,673 @@
+{
+  "head": "cd2a4e0a88325605fb907dcc4504d97b8a540954",
+  "source_edits": false,
+  "restored_archive_files": 133,
+  "clean_checkout": true,
+  "original_mismatches": [
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0029-analysis_program/prompt.private.txt",
+      "initial_sha256": "ace483c84cd692f584659b351a0d7b4c06045703e1f7a0ab0e49e4dd82d0d3cd",
+      "committed_sha256": "bc751958d646ad578d0457556c8bf00c3e2e0743465692c449df26d3212b8702"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0030-final_answer/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0030-final_answer/native-private/observer-receipt.json",
+      "initial_sha256": "33302fffcf2b95121aa2e47f43173a4560a0e84e9c94a1e49bc9ed49217dbdc1",
+      "committed_sha256": "796f9656a87e9e071af60a74b08fc4e4db280e8c930754fca0232bb0f654b931"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0030-final_answer/native-private/requests.private.jsonl",
+      "initial_sha256": "7a085f0371e5dc4cfc3d771de2e47e91469c4884fbe3f2151335bb1a52b31408",
+      "committed_sha256": "917465199bff6f452bb1e8954deea5031d77a3a0a7281f146036d50ad0b863db"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0030-final_answer/prompt.private.txt",
+      "initial_sha256": "ab19b0fb19a6b83994360c9bec76b4be004ef038b5713b8ad60f781d9674eb8d",
+      "committed_sha256": "efe6e33bd9fe16633f9732a2754d7d8e13d6710d45cc966deee74d9d705a85e3"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0031-m4_plan/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0031-m4_plan/native-private/observer-receipt.json",
+      "initial_sha256": "77e045e7bc4e210578ac3c798a62653ffe7ea67e8e5af7149b6356225206cc26",
+      "committed_sha256": "6e382f700688bbde776c043075d1d652b73d61bc9558ae4e06a11d0d7c79e363"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0031-m4_plan/native-private/requests.private.jsonl",
+      "initial_sha256": "fe8ff78f55bcf6e67569421bfda92cf1931d79be7a6cdc62ca473058dcf5df7a",
+      "committed_sha256": "e1083d99b8f2b4755f01db1f764fab0446eadb00cd8d0a7bc32b7e5d70687109"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0031-m4_plan/prompt.private.txt",
+      "initial_sha256": "cd1b4341555d41162ce4f0312b9de60b54695726cadf3ffcb6544953fde39076",
+      "committed_sha256": "1d166075b4546a70c7f4843ea6eb7c81727a4f01e01f4bc8dec9e53ec0f54270"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0032-m5_mechanism/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0032-m5_mechanism/native-private/observer-receipt.json",
+      "initial_sha256": "e722e8d5e14e97f8d8665d3fd9b67b2f33da38b8baa8c3d32e83eba23f13e823",
+      "committed_sha256": "5fd06cda5426c3943f56c339e4f464434ee9b88f4bb715b684a0c0f5979c5c5c"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0032-m5_mechanism/native-private/requests.private.jsonl",
+      "initial_sha256": "8dc4ab2e5ec7e8b022e867e4fabaf0015b35184444d7ff476dc6cd252afb1588",
+      "committed_sha256": "579dc15f95bc1fb3c0e122dc8b41a52cd1fbae2436349dc1e683a025132fb0ae"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0032-m5_mechanism/prompt.private.txt",
+      "initial_sha256": "5e297b3a49070a454feed79d847e27bcaede43bf69d77d743aa56f338bb48e41",
+      "committed_sha256": "a1a0d00869a055a98185ce8113d79d80e8f455f1809f66bad181f3cd388fc86e"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0033-m5_measurement/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0033-m5_measurement/native-private/observer-receipt.json",
+      "initial_sha256": "1fd12939bef8ed94e42f21325f35db3868b1965e6799a5667070089f1fe83031",
+      "committed_sha256": "8aefa72cc032d2ec95ee3d004dfb8de79b19b6549e956428aa9c817252c9873d"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0033-m5_measurement/native-private/requests.private.jsonl",
+      "initial_sha256": "8dcb8d11b96c5c9ab825a075092694621eb070b6c2a752929d1475e71c77da61",
+      "committed_sha256": "aeb3a17e1b707cd28cdeff76a21810eb6484b8cf29fe46ba26f2d9205c2ce29e"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0033-m5_measurement/prompt.private.txt",
+      "initial_sha256": "d53f16c59487d528961a3f56554db317ca670254c36ed92c5310404d28685d9c",
+      "committed_sha256": "7569c84ee85f7327d74010e892e1b7e31643934778b96e480af8d8ab535229ee"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0034-analysis_program/native-home/config.toml",
+      "initial_sha256": "223b0a69981328a1e45a93c88265934b99c9aaaeb2b0ff8c4e3177edeb98264c",
+      "committed_sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0034-analysis_program/native-private/observer-receipt.json",
+      "initial_sha256": "cd99f5bf4333ced12ea605b755d66c693390b72071d0f49242b941c10b36582f",
+      "committed_sha256": "b15d2d82ed58b530ac4669a8420312824d0592201bfac5d2d2d655db73608eac"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0034-analysis_program/native-private/requests.private.jsonl",
+      "initial_sha256": "208e644202bfef68f515657f60e866af260f3efa4a51955e8abf7d5d7e198c96",
+      "committed_sha256": "6f0ddad9bb2a473cacf7b389e5e9a7664667b408a3dce3f8aa77cb1b7e4fec61"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0034-analysis_program/prompt.private.txt",
+      "initial_sha256": "63204d62491956b1402ee04349ff6a1365887abec24131de434ccd7b2329b623",
+      "committed_sha256": "4cf6bfe7e81c7d14a5abdd835240ac6ca2f65a0bd32505a69747c6f5baaf2335"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0035-final_answer/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0035-final_answer/native-private/observer-receipt.json",
+      "initial_sha256": "c0234080b02e0009b0f67b3b4458f4c7be298277da03c932724be5e7f4f9f3ba",
+      "committed_sha256": "60f6906a3d3d88001461e08006232a28dab148102fd1cb0a8bbc026269d3b241"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0035-final_answer/native-private/requests.private.jsonl",
+      "initial_sha256": "c1d4c3dcdfcfdd224dd11eed3c1eaf55a6c0fb251f125f2184a31caec7badd10",
+      "committed_sha256": "d1bcf0ba349de46560f5ac37c3882d3df814c6380c8ab39e9b613d234951e29b"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0035-final_answer/prompt.private.txt",
+      "initial_sha256": "3d3af1ef4e2536fe1fcffb7892b33a1b370e5633eac559afe3bed861fb041aae",
+      "committed_sha256": "62916a4bcc654101f8d8321d4deabf460f6025a0c8c597be1139d3958c940e51"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0036-m4_plan/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0036-m4_plan/native-private/observer-receipt.json",
+      "initial_sha256": "d1d9039af9e939fcf94ddfb86947e6615467a7a2776f831351e4dd132d31d7e1",
+      "committed_sha256": "5cb64c9419ada0a2ac5f1df4f983ae199e2e86cb22a4a12940cca475fac1ae58"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0036-m4_plan/native-private/requests.private.jsonl",
+      "initial_sha256": "f9c73b8e2ba9cb62c6f6562549a9aeb6efab90fbae52377dffccaebbfd827156",
+      "committed_sha256": "f7637fa2aef9e446e560f7d820cdacbede691b9109920ca7fa41de3b4cdcc507"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0036-m4_plan/prompt.private.txt",
+      "initial_sha256": "86222c48e24e2a2cf4e04202c6994ffa8c15be0ab2273adef417e80d7a7e6644",
+      "committed_sha256": "5166f15c846f2fb753f00cd005708c359d2ae528f94d9fa72495b8614eae7e60"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0037-m5_mechanism/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0037-m5_mechanism/native-private/observer-receipt.json",
+      "initial_sha256": "a7cf87359d5b1d2bb777d4f5e413048331f874de57a8baa3354101a32f7ee315",
+      "committed_sha256": "a1b8c10d5a9168d83d9775069f57cc66c738129b7eb8dc2b09575b4856365688"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0037-m5_mechanism/native-private/requests.private.jsonl",
+      "initial_sha256": "0ecfc7b311c90f97ee3bfef3e353d68c26e56c1c913a4848c66d9de57bf458dd",
+      "committed_sha256": "41180f368f1d66cf5913a4c46db598ad202116d1d75bbf558abd06be03d873c2"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0037-m5_mechanism/prompt.private.txt",
+      "initial_sha256": "c622b06f99bc24a6bb3a3955f2a51b64e4075a45dd1a6d727369609521f70515",
+      "committed_sha256": "0faf0bde8cddd48cd53c7aa1ab33b80f9dd0a92c39b60b17c101cc56e0fe14a2"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0038-m5_measurement/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0038-m5_measurement/native-private/observer-receipt.json",
+      "initial_sha256": "9c62bdcf74a32c9d01dbef8924e218423c40e593cd87e95d9f9e8706074fe84e",
+      "committed_sha256": "04667ae5194badb9c467faac38f9c940f40134ef4e90b92e8170d6118b538682"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0038-m5_measurement/native-private/requests.private.jsonl",
+      "initial_sha256": "b10845a4f2b797b07d9ab02743233bcd1b0845e18950930c90336cb6a57cb9c6",
+      "committed_sha256": "df3c1efd4483b9d7b5eeec7ce50e0677a370be6985c6595f951c3705a0c960e4"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0038-m5_measurement/prompt.private.txt",
+      "initial_sha256": "0398dbe896a2ca3272a371df82d88e6d02c8d28e613c0069bfcec15d6993936a",
+      "committed_sha256": "ca395c8e4ef5a3b5dd5e106e99e1664c9390532c77aa03968f3d66e6361329a7"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0039-analysis_program/native-home/config.toml",
+      "initial_sha256": "223b0a69981328a1e45a93c88265934b99c9aaaeb2b0ff8c4e3177edeb98264c",
+      "committed_sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0039-analysis_program/native-private/observer-receipt.json",
+      "initial_sha256": "1b10b707e91991da843961473cf611831b243617f92bc2c7d7c3226e5cd7faff",
+      "committed_sha256": "e9d8d3f1e33fc685641680765bbc985c4dd22aefbc5065b2dbccff86cf256c3f"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0039-analysis_program/native-private/requests.private.jsonl",
+      "initial_sha256": "c8e4e1f05d2013ba965a3c75554a6dd17ca80af7a2f3b52a95cd7cde643f85e4",
+      "committed_sha256": "6e8aef6d74a7d275c018ffd18dbcd19d6782f2d12137eb68aaaa07a4f91ffbf1"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0039-analysis_program/prompt.private.txt",
+      "initial_sha256": "a202fb5d0cb082277d1314c0f4536fa51dcdeaf04f4ec220a5b5adb225d1b592",
+      "committed_sha256": "99822bdbd7562b0eabcc4b7401383ee7183ebd6a4f50024a97e21a84fa39be40"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0040-final_answer/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0040-final_answer/native-private/observer-receipt.json",
+      "initial_sha256": "42b60bc7d6f670e140bd7839a15af7737d53d9cc926e80450c9395a6728e3375",
+      "committed_sha256": "6f6211c813eca0593705e4ccab73747381f3f25b590af607fe869f3807cb2b9a"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0040-final_answer/native-private/requests.private.jsonl",
+      "initial_sha256": "dad0649f7bb9d7a8d8cff55407011724a6859465628c740deab86d7bb5d1cec8",
+      "committed_sha256": "d2b9c62ce87eb442c03da5a7c2145dfcac9ba96d9fe35030a488c5f6d8dc3278"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/native-ledger/calls/0040-final_answer/prompt.private.txt",
+      "initial_sha256": "365dfd185b72104b70a7301e70c94b7aeddfa53c34f99a70d0557694a92ea658",
+      "committed_sha256": "542f1da7fd0f0e4c7a51a45ff9efce6aaf9342e598470768ba421b4fb65236d4"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/2a5658c22d5996569433a09f52d4aaff05984c48e50c18efe95c1d57186f66c6/predictions.jsonl",
+      "initial_sha256": "726dbc011e0aae241e160fa94d775a97dc50f0743b4de7e3143162878ddbadb9",
+      "committed_sha256": "1792136541055c1bfba9cf43a25b61c625760497124b129dbb95d3b868ceb84f"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/2a5658c22d5996569433a09f52d4aaff05984c48e50c18efe95c1d57186f66c6/reviews.jsonl",
+      "initial_sha256": "3a05b1f88f812b5aed58a6648c7c8f79917d46d6005e11e17a1ff2a4a266bd77",
+      "committed_sha256": "6f4e3e7b9a4f117cd02e4d90b7af41baa948a6efbe3889710519df442641cd1c"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/2a5658c22d5996569433a09f52d4aaff05984c48e50c18efe95c1d57186f66c6/trace.jsonl",
+      "initial_sha256": "be98c727e927dd007a6333828cf87442a64ab4dfe898e2990c6400c5f0990932",
+      "committed_sha256": "54d56e75e61ce04551e34fead848b9b1fee4e4ca43c07c6d8fdf4f10fc0eaae1"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/5a6f06149c941d072b93723583a0cfddf2c4ce2412736c19172a199290def0e5/predictions.jsonl",
+      "initial_sha256": "f34bf4a04fcb5b3476096ce3e80e22e72a33cf9d8b7fdd1007fc477b1afc689f",
+      "committed_sha256": "ec6ca3178074e0796498402c12d2d33f47225809de1e74f50aab3187befe7fed"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/5a6f06149c941d072b93723583a0cfddf2c4ce2412736c19172a199290def0e5/trace.jsonl",
+      "initial_sha256": "a243e566155accc8df1ab853a58363cc5d5fc13ad983f07999682395f6bce8e9",
+      "committed_sha256": "786c39141c5f5b709e7d82ca42846eab378499be76a1e496d3287c43a5dd140a"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/74676809d2181f4ad94475d0e217181586b112cb6deeb19f47b4278ccef248e3/reviews.jsonl",
+      "initial_sha256": "18d44fa7c3eb8f994a6c487b100c7a754ba9cfaa62f23ebb8064092a197a70b1",
+      "committed_sha256": "888d241b2baafcd2cd757e757c649916e1708f994059dba4af86c5991f48359d"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/74676809d2181f4ad94475d0e217181586b112cb6deeb19f47b4278ccef248e3/trace.jsonl",
+      "initial_sha256": "d06f2383acb0578c479f62674f35006a3148c9002a334e7d3493e6935f1d59f7",
+      "committed_sha256": "75546da919ec7e731a2a8548464440c7777678e267f7710d48fa4e4213556111"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/aa61584a228b91ef373241316c78d47c91da73fae5b4ccaa4578963ac58cbf5d/reviews.jsonl",
+      "initial_sha256": "3a05b1f88f812b5aed58a6648c7c8f79917d46d6005e11e17a1ff2a4a266bd77",
+      "committed_sha256": "6f4e3e7b9a4f117cd02e4d90b7af41baa948a6efbe3889710519df442641cd1c"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/aa61584a228b91ef373241316c78d47c91da73fae5b4ccaa4578963ac58cbf5d/trace.jsonl",
+      "initial_sha256": "95d94420cd18c95006da46f96b6928489e48147914759b408c8671a324bea3ee",
+      "committed_sha256": "7f9b32e357986f564cf87400ae8bd391144e940cc8232a507fe54942761137ef"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/c2ea3dc13d8e23597e406b54c78223f41040df18e495a5a035d57a9c4f4398f7/trace.jsonl",
+      "initial_sha256": "94f01f47e055f4ad838d7b6ccb67716596fa3b8905aa5eb57522fbeae928b72d",
+      "committed_sha256": "a4f53728a6cbb6e7119a1bd7a801e56f64f1dee7486af9f64f8b468c99c84557"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/df82fd0ec8b2d699c42361e1580cef5a0c614b654275f705b9f3705b133a11f6/predictions.jsonl",
+      "initial_sha256": "f34bf4a04fcb5b3476096ce3e80e22e72a33cf9d8b7fdd1007fc477b1afc689f",
+      "committed_sha256": "ec6ca3178074e0796498402c12d2d33f47225809de1e74f50aab3187befe7fed"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/df82fd0ec8b2d699c42361e1580cef5a0c614b654275f705b9f3705b133a11f6/reviews.jsonl",
+      "initial_sha256": "18d44fa7c3eb8f994a6c487b100c7a754ba9cfaa62f23ebb8064092a197a70b1",
+      "committed_sha256": "888d241b2baafcd2cd757e757c649916e1708f994059dba4af86c5991f48359d"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/df82fd0ec8b2d699c42361e1580cef5a0c614b654275f705b9f3705b133a11f6/trace.jsonl",
+      "initial_sha256": "a960739720153680026f1f87107aef71d9db23c4ad1ac91f859dc02e932b8f78",
+      "committed_sha256": "13f3e39d7753dc1e42ec758ef0a66ba4d7f1cee9e26b8b3791adb114b5b930d2"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/e4a91497c10fd99ec1edcf3faa1cc8c86051abbfe23bba9b40661399d106fdc0/trace.jsonl",
+      "initial_sha256": "5b79f66545e7a6f6735884ba14914f6b389d4980d3538df4ba426451d5369779",
+      "committed_sha256": "56fec3ede405854b75fc9574ab06669775e95b6cc955e5789e80ecba8af4b8a3"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/ee41104b09a4a30949715fec0693042707996ea166ed83bf43e9236dc715e52f/predictions.jsonl",
+      "initial_sha256": "726dbc011e0aae241e160fa94d775a97dc50f0743b4de7e3143162878ddbadb9",
+      "committed_sha256": "1792136541055c1bfba9cf43a25b61c625760497124b129dbb95d3b868ceb84f"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/run-v4/cells/ee41104b09a4a30949715fec0693042707996ea166ed83bf43e9236dc715e52f/trace.jsonl",
+      "initial_sha256": "4640042d743a75786cf16f62a16804e9535445782af026d7aa5f3f7426b61be2",
+      "committed_sha256": "78b9a17580d21a6c6bbe207f18ed839e72f767020ceabb671823b5fce938a065"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/complete-panel/worker-0.jsonl",
+      "initial_sha256": "f81f7f4f5a8a59ef28a68e3154c538bdc722d96f911c7641283178a84657c587",
+      "committed_sha256": "0ff9e90dea194c636089419303c4cc934e3fc42c2a40c8ef79e71f7a2303242a"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+      "initial_sha256": "7e863c53dd126a326096de7082a0238a32bd60c534cd3e4ea71f3ab96643c6f4",
+      "committed_sha256": "fd7398e7bc80410e2c92dcc69746192c08d2fc7c71936dc0010d09bf32686209"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut0/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "initial_sha256": "a8df7960c28a443ed55c9fa7ea93abd9ba82ea0a83164d8a75e025509540a0b6",
+      "committed_sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut1/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "initial_sha256": "a8df7960c28a443ed55c9fa7ea93abd9ba82ea0a83164d8a75e025509540a0b6",
+      "committed_sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+      "initial_sha256": "2ed7cf8e0bd82c74b9f631aaa11fb5ef072b5c8a604ccaceab3cb7421a28aef1",
+      "committed_sha256": "7ae141c3ed3da36fbb43bb8086057c8664e997c37489cc0665c9ecb9f0957455"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+      "initial_sha256": "a70896927e440d6a4a0320806f3a68dc620e7f02e209d0ea770e1c4b17727ade",
+      "committed_sha256": "d2d9cfb99c52a0be0f39e7be9d249ce523c44cb8d8e9b08ca3e8659b1ea313ee"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut2/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "initial_sha256": "a8df7960c28a443ed55c9fa7ea93abd9ba82ea0a83164d8a75e025509540a0b6",
+      "committed_sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+      "initial_sha256": "70901a9e91ac944c49497fdfca4e205e411eaba237ef6c95009ef3c2f975a0c2",
+      "committed_sha256": "b3f8e356fe062d8d40f5b9f83be8766a5a7cafff1a9842c58718c3e088fa98fb"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+      "initial_sha256": "c5b661f1c48587a4cc1fdf1849d33973db40dea74fdb55234642e42521ad4392",
+      "committed_sha256": "f1d98f39e41e397dee9508c74b5bff398d603651fe5b1d807dcdb4f323214026"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut3/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "initial_sha256": "a8df7960c28a443ed55c9fa7ea93abd9ba82ea0a83164d8a75e025509540a0b6",
+      "committed_sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+      "initial_sha256": "65a0ad4291171eea69787a299db094ea10f5caa0830eab8e070f95174fcf7629",
+      "committed_sha256": "12dc982cbd61145f028a19290179ea66f9457dc85ae4db72b934d76c246467ba"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut4/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "initial_sha256": "a8df7960c28a443ed55c9fa7ea93abd9ba82ea0a83164d8a75e025509540a0b6",
+      "committed_sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+      "initial_sha256": "1d14e0ad974836efc15d2795bdc743af8d5ee4213cf63fdebc024f22c3f10821",
+      "committed_sha256": "fb54d59e8b029ad59231f393e3e59498be3b08ba9eb1b01e8118219031ef5e1d"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+      "initial_sha256": "34763914f891a3a0b0a1b752fcde705179572b9eff0508e42fc676884c750687",
+      "committed_sha256": "04e90529aedef22bc77d91ea593499a370a0c086fe0b3a39f46a9c2ef26fbd4e"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut5/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "initial_sha256": "a8df7960c28a443ed55c9fa7ea93abd9ba82ea0a83164d8a75e025509540a0b6",
+      "committed_sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+      "initial_sha256": "4ea12f3b0d5ff51f857f00886e02ef544aeca6f72f416609442af13bb1c5f03a",
+      "committed_sha256": "16925246613054af767a7ab74276310dd2812e07e6a360b98ce4812b76c6dcbd"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut6/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "initial_sha256": "a8df7960c28a443ed55c9fa7ea93abd9ba82ea0a83164d8a75e025509540a0b6",
+      "committed_sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+      "initial_sha256": "01790b9d722f606243e3fe0ad28e2cac695e1a3d33d13b77e5086c3d7e5652fd",
+      "committed_sha256": "a7fb5b9b121e26433ff73b0913d4ca948af6edd7952b3bbcd4b18861938b0812"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+      "initial_sha256": "d75a5ca0e91ffda9f821876cad8ce32b8bc8e6e13de99e04d84bf4dd50ccdb48",
+      "committed_sha256": "ddddeac66cb1fd60889078dac7e34363943d59696675828c90c6477672f190bc"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut7/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "initial_sha256": "a8df7960c28a443ed55c9fa7ea93abd9ba82ea0a83164d8a75e025509540a0b6",
+      "committed_sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+      "initial_sha256": "15336446da3181beb85353d34408e34ee919dd7218a9ef1b120641a65f3f6100",
+      "committed_sha256": "194b0e1918654d6da6e0f4501df6ac4b463111e99f7a9544cd2b90546ef83d62"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/negative-originals/test_native_original_substitut8/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "initial_sha256": "a8df7960c28a443ed55c9fa7ea93abd9ba82ea0a83164d8a75e025509540a0b6",
+      "committed_sha256": "7a15b1a101f45a1f1c3f85484c051e611f93ede17bf38126e7142033ff499559"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/export-audit/exports.jsonl",
+      "initial_sha256": "6adea67f96bf3567092a74505b82424756732fa04a09893a1edea5b31df9383b",
+      "committed_sha256": "ae073fa4f352c07a15af3d7b6f5938007ddafb4772adf4ab20f1c18512619e68"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+      "initial_sha256": "74e0a973d3a76fa561b31e05199a78aec0f04bfaddf3f7c760314338a34207fd",
+      "committed_sha256": "a03ee9e888b907f64a30915cf5d04520078779a38422a89e02ed1718c30b8f40"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+      "initial_sha256": "c50e00226010d035393586622eae0a6a75ca7fdf36b9d3514740410c72592683",
+      "committed_sha256": "c7ab288963320cf5a568f8ef8d17827a898fe6500145967e3abef703dae7b791"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+      "initial_sha256": "25b97dfcd41e6e490a1772d97039132dba56493881337fea3a639f204c194785",
+      "committed_sha256": "3382508354405351414767da2b48be7a343b10108d6ef01a1cf412135e951a3c"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/export/export-receipt.json",
+      "initial_sha256": "a6db4e046ef610dc92c48b532ee6ce4107fa406311924658802357372ebfc885",
+      "committed_sha256": "ea9e976500407c8324c1068e5bcb7ba1f942f6a22974fd4f134b997b0100a002"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/data.csv",
+      "initial_sha256": "26d820dcea9587de21739161659ae314a45997fe78cdbe05a3ccda799ade2793",
+      "committed_sha256": "e99561343117bad50b537bcf4f4f3ccd592ece4a9506669ea383464784314cf2"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/public.json",
+      "initial_sha256": "33d6a7bf6dda6d459c8d28d9b63b90508284f41b98e4f6b5c6e6f51769e3751f",
+      "committed_sha256": "b832980c7f4045b032305e2b4cdf9502dac2ffa8f2074f98d0a7ed3697c8d4ff"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/receipt.json",
+      "initial_sha256": "fb6b6ade47cd13b7614774c3be9d15b90ccf85e36cbedd6016f115cf244a6ba6",
+      "committed_sha256": "1221acb653f187b695013ea95cc1b69c459e74a4ef23a3a24ebc7833fe4dede7"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+      "initial_sha256": "850d2aa491a5898fac1158ba277a245bc889009d3640b47fb8d6411a73278c31",
+      "committed_sha256": "5afd096227c5ad183e61a2e9d2efe3423f3c06282d5bcdce0ea28289731acdf2"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+      "initial_sha256": "03f6c684231caa76fb9b59a886f1d2ce92e882283981b70398300f87df21a62e",
+      "committed_sha256": "e3b273f40ea73fbeda677f1f077eec16abd05c8aa6c985c5627997fc8483ce4b"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "initial_sha256": "01deb932de1ecaa4c61f36bd2d71740c484efa97e374aa7939f29d8af0afe20a",
+      "committed_sha256": "7454bde9c18f0c8cf20bb735d98c0834b9d2ac356f83ef3dfcd95629efcc6be9"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0002-m5_mechanism/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0002-m5_mechanism/native-private/observer-receipt.json",
+      "initial_sha256": "db763cd509ed7c425e0ed3b42d5fcd897a0400c0f1186af71b22b78dad5de035",
+      "committed_sha256": "9d4f5feecc848d41a8b2cb09925c7b50c1587fbfa290eda54aedcb3124deb307"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0002-m5_mechanism/native-private/requests.private.jsonl",
+      "initial_sha256": "a5b7a7727b5f31f231475b55d3a594625555bf1bce211fbd64af4aab63d8bb4f",
+      "committed_sha256": "aa82ac3e2d8f187c17aafb34409ee52f9889ebf275edeb15022049a32a4f920b"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0002-m5_mechanism/prompt.private.txt",
+      "initial_sha256": "20391cd17d7b05e38e5e9fe55e6de0ad2af87b4d02a63caa3cb03537a8f5617e",
+      "committed_sha256": "c24c035844fe182e3c415b07052147ea4562e7e318ff6b06dcf0b60bf786ec95"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0003-m5_measurement/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0003-m5_measurement/native-private/observer-receipt.json",
+      "initial_sha256": "0030b808e6df5636a5b9f125ef65eb410687d16d68ec4fb5332f1a1b93d9c404",
+      "committed_sha256": "6704bd6b2c1e1463ae540f659e72129b2ce6d89b67ceb16301b23ac5f48d0222"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0003-m5_measurement/native-private/requests.private.jsonl",
+      "initial_sha256": "279bc91f064e7d5f84657bbac3c98ac4726ae0b3db79949040df55047d351e8e",
+      "committed_sha256": "487edfaa4a3b4f7fc8710d2c81e576834d8380bfd649c769debc97f99d090e54"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0003-m5_measurement/prompt.private.txt",
+      "initial_sha256": "b9a4120aad228082986e9c96b0655c7184bca0a533c4dd2a62599184bb011cc9",
+      "committed_sha256": "5e347262b50a1cbd1009811b007cdab52eab17f054c247c2997e57f9233ee356"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0004-analysis_program/native-home/config.toml",
+      "initial_sha256": "223b0a69981328a1e45a93c88265934b99c9aaaeb2b0ff8c4e3177edeb98264c",
+      "committed_sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0004-analysis_program/native-private/observer-receipt.json",
+      "initial_sha256": "57eb294ba41ab3db4874614808bf698b990a80bc7f7f29af9e23f86e9abe84b1",
+      "committed_sha256": "461ca18b431f29771637dbd67574611d8db75d9ea87a376750f1d7280073e26b"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0004-analysis_program/native-private/requests.private.jsonl",
+      "initial_sha256": "3178f64055780721beecc81fcff802dd59d5d787b90ebb886010520d6d222ab6",
+      "committed_sha256": "ac571e8d78a3f744620409a6d7b00b0c2a6027f7aec6e494e8a7e32d4f7561e2"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0004-analysis_program/prompt.private.txt",
+      "initial_sha256": "4f955fd739e8bcd0e3e560caec9204fe0bf0b0ef73c0d5123e65d1d9cc710399",
+      "committed_sha256": "2318fade167bea5ce9a985c5fa8b6daff034bbb658d42a1177c1ff56250f3f0a"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0005-final_answer/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0005-final_answer/native-private/observer-receipt.json",
+      "initial_sha256": "454fd8ae1995cf078f5eac4d2730635f57ab45401abfbc4f3e42b90cdd6d8a59",
+      "committed_sha256": "2c667eb1b7508efa964d41451ae0f2833e2a97147297c01bd5c1b8dd21de7e68"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0005-final_answer/native-private/requests.private.jsonl",
+      "initial_sha256": "f72670771632c9fe6d6cb7e82e8328eb36c8fcc08d6f12e194888f570097ded5",
+      "committed_sha256": "174fda127e9aa799b94b2578109990a9a25876827ebc6f8f6c9516ca61de8ede"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/native-ledger/calls/0005-final_answer/prompt.private.txt",
+      "initial_sha256": "f83b4eeca5cf135d39782cb5062b471df2f7a22cddb086a4601ab566939ee967",
+      "committed_sha256": "52ad4b6d4af834a51e06fbff111e4128fee609a011a32ff196a4946f4d832c3d"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/provenance-fault/run-v4/cells/83aed8444e358bdb3018fa03804d44ed91b13ff705e0df038048b249ee0ab1b8/trace.jsonl",
+      "initial_sha256": "50aaadc691bbf5f77c99c1f5965bd912cc2c770356d1f4793812b6d94da28a4b",
+      "committed_sha256": "a4a8668a6d7a7462fad91db50b6d38bcf84ce655fda646070cf3db46dbb1e3a3"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/unknown-main/export-audit/exports.jsonl",
+      "initial_sha256": "f9be3e6a76300d58e0e1684ec4363b6b9bdd0358e90e0ba40d62ed5531a91a43",
+      "committed_sha256": "8ad2b4f69367d6abef7f02b439721768cb46940ab2ee8bddb5d587a9a4563ec3"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/unknown-main/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+      "initial_sha256": "74e0a973d3a76fa561b31e05199a78aec0f04bfaddf3f7c760314338a34207fd",
+      "committed_sha256": "a03ee9e888b907f64a30915cf5d04520078779a38422a89e02ed1718c30b8f40"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/unknown-main/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+      "initial_sha256": "340e067f0fdfc7c9a0d42d7e03daf07f83d404452ac80758c1c13960fd25370a",
+      "committed_sha256": "7235212ea91d80312adbaacea736481cf198a1d29eddaf34c74ca6c5efa456b9"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/unknown-main/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+      "initial_sha256": "f2e17dab0189f8d5afaae1c38504bfc7f602a25a8487752e34e55bf797554839",
+      "committed_sha256": "7c5c15d0b7e29d393f4c3ff9bcee8923353a535678b7a24f1cd6d095c7cf245a"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/unknown-main/export/export-receipt.json",
+      "initial_sha256": "a430578c3ba3c8b25f0cc6c1bcf1b726302a4afede88adca53972b4856cc4220",
+      "committed_sha256": "a36e124e7a328a850302e2e1676019c407a1460968f7cdfd6205b3e2e3870d21"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/unknown-main/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/data.csv",
+      "initial_sha256": "26d820dcea9587de21739161659ae314a45997fe78cdbe05a3ccda799ade2793",
+      "committed_sha256": "e99561343117bad50b537bcf4f4f3ccd592ece4a9506669ea383464784314cf2"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/unknown-main/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/public.json",
+      "initial_sha256": "235deeb9c0bdb7151bcc0ec826ed70e461ebfdf39af08c2201f731cc7937016c",
+      "committed_sha256": "4ef255782dd4fe9993e3c9554626c067c519e353e78057e2ea09164b79372988"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/unknown-main/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/receipt.json",
+      "initial_sha256": "e14cccfdae0bbd536f542e8fe6e6a2076b2c3c0a0614c3485a6a6b54a8cc5df2",
+      "committed_sha256": "35aea747da19483cc38061c4ffa65704f6712b59ae59efade0caa4fef0af492a"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/unknown-main/native-ledger/calls/0001-m4_plan/native-home/config.toml",
+      "initial_sha256": "8390b1c1d59431d57c829151ceeed43c01c8805017ec6a24290c0ed6359091c9",
+      "committed_sha256": "165d8daea7f1597526cb838f0fe9267239e9e2ca60ddef832be7abeed3a8f691"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/unknown-main/native-ledger/calls/0001-m4_plan/native-private/observer-receipt.json",
+      "initial_sha256": "30082a0c77423f9a6a394bd964a0c11e8043933fb1fe8ea54cbbb1139b52ca2b",
+      "committed_sha256": "c404953310b60e50fecaeb785fcc5f06ac0094abef7b3eb683c00799c3f809ee"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/unknown-main/native-ledger/calls/0001-m4_plan/native-private/requests.private.jsonl",
+      "initial_sha256": "6b39573edcc5f26437b74f61b5cb85be7c484e9a1115aa6fa90ef0c2fa83bc31",
+      "committed_sha256": "b8fa9ddc71128adee2c22750cc959d59af920834aef0b3d874e3506663e905fd"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/unknown-main/native-ledger/calls/0001-m4_plan/prompt.private.txt",
+      "initial_sha256": "3221130cf49f247a2d9b796611e45e89ac99b1b9eefb7af6548144614f52cc0d",
+      "committed_sha256": "719b593bd492a5577db0e647e6cbd1f5eeaa1dfbd4081bc3499827210efb3ade"
+    },
+    {
+      "path": "results/grok-public-train-provider-repair-20260914/unknown-main/run-v4/cells/8ca08d99f071dd7aa67fc808b4b9ba45eda0bee47ba190dd54e1006505978301/trace.jsonl",
+      "initial_sha256": "2bd356216c88e8336d6f08b739e77ab2578acd8365e2a01f41900ac5794c12e5",
+      "committed_sha256": "e8df08890cd2dfb82bba8145cec71a4d513ad4dae0a6743f5a6bc7d31e4d5cf3"
+    }
+  ]
+}
