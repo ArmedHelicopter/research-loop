@@ -62,7 +62,8 @@ def estimate_grouped_contrast(panel: CombinationPanel, *, runtime: Iterable[Runt
                    for row in sorted(scored, key=lambda value: value.cell_key)]})
     by_key = {}
     for key, receipt in scored_by_key.items():
-        body = receipt.receipt.data()
+        raw = receipt.receipt.data()
+        body = raw["body"] if set(raw) == {"body", "mac"} and isinstance(raw["body"], dict) else raw
         metric = body.get("metric")
         if (not isinstance(metric, dict) or set(metric) != {"value", "direction", "value_range", "scale"}
                 or metric["direction"] != direction or metric["value_range"] != list(value_range) or metric["scale"] != scale):

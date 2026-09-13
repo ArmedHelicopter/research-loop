@@ -232,8 +232,14 @@ class CombinationPanelVerifier:
                 raise ContractError("independent combination scorer receipts must exactly cover successful cells")
             for key, receipt in by_key.items():
                 self._scorer_verifier(receipt, expected[key], panel)
-                body = receipt.receipt.data()
-                if body.get("schema") != "independent-scored-cell-v1" or body.get("runtime_trace_digest") != actual[key].trace_digest or body.get("scorer_digest") != expected[key].scorer_digest:
+                raw = receipt.receipt.data()
+                # The legacy fixture receipt is an unsigned body.  The adapted
+                # scorer carries the same generic bindings inside a signed
+                # envelope, which the injected verifier has already checked.
+                body = raw["body"] if set(raw) == {"body", "mac"} and isinstance(raw["body"], dict) else raw
+                if (body.get("schema") not in {"independent-scored-cell-v1", "combination-adapted-scored-cell-v1"}
+                        or body.get("runtime_trace_digest") != actual[key].trace_digest
+                        or body.get("scorer_digest") != expected[key].scorer_digest):
                     raise ContractError("combination scorer receipt lacks typed runtime and scorer binding")
             scientific = True
         elif scored:
