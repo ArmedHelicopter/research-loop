@@ -11,25 +11,29 @@
   "sources": {
     "scicode": {
       "item_count": 80,
-      "minimum_grouping": "all substeps of one official problem_id",
-      "source_family_evidence": "missing",
-      "dataset_license_status": "pending_received_record_review",
-      "metadata_pin_reconciliation": "required: live import pin differs from recorded official metadata pin 8699b7c8fcebd916e429e26d28ac5d2257d25db3",
+      "minimum_grouping": "two received-artifact closures containing 80 atomic main-problem records and all dependent substeps",
+      "source_family_evidence": "received_artifact_and_atomic_substeps_closure_recorded",
+      "family_component_count": 2,
+      "custodian_receipt_sha256": "18cd3ddcaeeacc6ea438ba792506f574567ee8c80928685bc79f0f20ad40a9bd",
+      "dataset_license_status": "official_card_declaration_recorded_pending_received_terms_review",
+      "metadata_pin_reconciliation": "resolved: received dataset pin 4510f6a6aa27c43fad7b43da2c59602a86e88480 is distinct from the recorded GitHub code-repository metadata pin 8699b7c8fcebd916e429e26d28ac5d2257d25db3",
       "exposure": "unknown",
       "runtime_status": "quarantine_until_review",
-      "required_evidence": ["signed received-artifact inventory with immutable hashes", "per-record dataset license mapping", "custodian-derived provenance/artifact family tokens", "independent custodian exposure attestation", "frozen group-level train/validation split"]
+      "required_evidence": ["independent custodian exposure attestation", "independently authorised narrower family partition if any split is proposed", "frozen group-level train/validation split"]
     },
     "scienceagentbench": {
       "item_count": 102,
-      "minimum_grouping": "71 opaque dataset-folder-root constraints only",
-      "source_family_evidence": "missing",
-      "dataset_license_status": "pending_received_record_review",
-      "metadata_pin_reconciliation": "required: live import pin differs from recorded official metadata pin c26e151ed601ba109dc4d35e057ff8e73fec469d",
+      "minimum_grouping": "28 transitive closures over exact dataset-tree, repository, and source-path metadata values for 102 records",
+      "source_family_evidence": "dataset_tree_repository_and_source_path_closure_recorded",
+      "family_component_count": 28,
+      "custodian_receipt_sha256": "18cd3ddcaeeacc6ea438ba792506f574567ee8c80928685bc79f0f20ad40a9bd",
+      "dataset_license_status": "official_card_declaration_recorded_pending_received_terms_review",
+      "metadata_pin_reconciliation": "resolved: received dataset pin 9c6e96c9e74572e979b0930ee735041cef528cb7 is distinct from the recorded GitHub code-repository metadata pin c26e151ed601ba109dc4d35e057ff8e73fec469d",
       "exposure": "unknown",
       "runtime_status": "quarantine_until_review",
-      "required_evidence": ["signed received-artifact inventory with immutable hashes", "per-record upstream license mapping including adapted tasks", "custodian-derived publication/dataset/artifact family tokens", "independent custodian exposure attestation", "frozen group-level train/validation split"]
+      "required_evidence": ["independent custodian exposure attestation", "independently authorised narrower family partition if any split is proposed", "frozen group-level train/validation split"]
     }
   },
-  "decision": "blocked_pending_independent_custody",
+  "decision": "blocked_pending_independent_exposure_attestation_and_partition",
   "required_independent_custody": true
 }

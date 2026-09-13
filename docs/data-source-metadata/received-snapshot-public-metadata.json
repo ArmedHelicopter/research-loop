@@ -1,0 +1,27 @@
+{
+  "schema": "received-dataset-public-metadata-v1",
+  "collection_scope": "official Hugging Face dataset revision metadata and README license/citation markers only; no dataset rows, tasks, answers, references, annotations, or evaluator payloads were returned",
+  "sources": {
+    "scicode": {
+      "dataset_repository": "SciCode1/SciCode",
+      "received_snapshot_revision": "4510f6a6aa27c43fad7b43da2c59602a86e88480",
+      "official_metadata_url": "https://huggingface.co/api/datasets/SciCode1/SciCode?revision=4510f6a6aa27c43fad7b43da2c59602a86e88480",
+      "official_metadata_sha": "4510f6a6aa27c43fad7b43da2c59602a86e88480",
+      "dataset_card_license_declaration": "apache-2.0",
+      "readme_metadata": {"path": "README.md", "size_bytes": 333, "sha256": "f9349885a434d018008ddc95d079e00782c70fa7823d80214cb3ee3bd3e7827b", "citation_marker_present": false},
+      "citation_file_present_in_official_sibling_metadata": false,
+      "license_status": "official_card_declaration_recorded_pending_received-terms_review"
+    },
+    "scienceagentbench": {
+      "dataset_repository": "osunlp/ScienceAgentBench",
+      "received_snapshot_revision": "9c6e96c9e74572e979b0930ee735041cef528cb7",
+      "official_metadata_url": "https://huggingface.co/api/datasets/osunlp/ScienceAgentBench?revision=9c6e96c9e74572e979b0930ee735041cef528cb7",
+      "official_metadata_sha": "9c6e96c9e74572e979b0930ee735041cef528cb7",
+      "dataset_card_license_declaration": "cc-by-4.0",
+      "readme_metadata": {"path": "README.md", "size_bytes": 5705, "sha256": "e482e8a8662d84a991ea473bc7934e945364c489d2c49396bc5979a6f674c9d0", "citation_marker_present": true},
+      "citation_file_present_in_official_sibling_metadata": false,
+      "license_status": "official_card_declaration_recorded_pending_received-terms_review"
+    }
+  },
+  "pin_interpretation": "The received dataset revisions are source pins. Earlier GitHub repository pins remain code-repository metadata evidence and must not be compared as if they were the received dataset revisions."
+}

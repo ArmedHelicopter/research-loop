@@ -3,6 +3,12 @@
   "canonical_id": "scienceagentbench",
   "collection_scope": "official repository metadata only; no benchmark, task, answer, reference, annotation, or dataset content was opened or downloaded",
   "official_repository_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench",
+  "received_dataset_snapshot": {
+    "repository": "osunlp/ScienceAgentBench",
+    "revision": "9c6e96c9e74572e979b0930ee735041cef528cb7",
+    "metadata_record": "received-snapshot-public-metadata.json",
+    "pin_relation": "This is the received source snapshot. pinned_commit below is a separate GitHub code-repository metadata pin."
+  },
   "pinned_commit": "c26e151ed601ba109dc4d35e057ff8e73fec469d",
   "commit_evidence_url": "https://github.com/OSU-NLP-Group/ScienceAgentBench/commit/HEAD.patch",
   "commit_hash_kind": "Git commit SHA-1 from the official repository HEAD patch header",

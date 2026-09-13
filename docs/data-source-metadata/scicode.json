@@ -3,6 +3,12 @@
   "canonical_id": "scicode",
   "collection_scope": "official repository metadata only; no benchmark, task, answer, reference, annotation, or dataset content was opened or downloaded",
   "official_repository_url": "https://github.com/scicode-bench/SciCode",
+  "received_dataset_snapshot": {
+    "repository": "SciCode1/SciCode",
+    "revision": "4510f6a6aa27c43fad7b43da2c59602a86e88480",
+    "metadata_record": "received-snapshot-public-metadata.json",
+    "pin_relation": "This is the received source snapshot. pinned_commit below is a separate GitHub code-repository metadata pin."
+  },
   "pinned_commit": "8699b7c8fcebd916e429e26d28ac5d2257d25db3",
   "commit_evidence_url": "https://github.com/scicode-bench/SciCode/commit/HEAD.patch",
   "commit_hash_kind": "Git commit SHA-1 from the official repository HEAD patch header",

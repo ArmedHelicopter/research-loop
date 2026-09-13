@@ -6,12 +6,14 @@ asking a separately authorised custodian for content-derived evidence.
 """
 from __future__ import annotations
 
+import re
 from typing import Any, Mapping
 
 from research_loop.ontology import ContractError
 
 
 _SOURCES = {"scicode", "scienceagentbench"}
+_FAMILY_COMPONENT_COUNTS = {"scicode": 2, "scienceagentbench": 28}
 _MANIFEST_KEYS = {
     "schema",
     "core_benchmarks_retained",
@@ -55,11 +57,19 @@ def validate_extended_qualification(manifest: Mapping[str, Any], live_metadata: 
     for name, row in sources.items():
         if not isinstance(row, Mapping) or row.get("runtime_status") != "quarantine_until_review" or row.get("exposure") != "unknown":
             raise ContractError("unknown exposure source cannot be qualified")
-        if row.get("source_family_evidence") != "missing" or row.get("dataset_license_status") != "pending_received_record_review":
-            raise ContractError("metadata-only source cannot claim family or license qualification")
+        expected_evidence = ("received_artifact_and_atomic_substeps_closure_recorded" if name == "scicode"
+                             else "dataset_tree_repository_and_source_path_closure_recorded")
+        if (row.get("source_family_evidence") != expected_evidence
+                or row.get("dataset_license_status") != "official_card_declaration_recorded_pending_received_terms_review"
+                or row.get("family_component_count") != _FAMILY_COMPONENT_COUNTS[name]
+                or not isinstance(row.get("custodian_receipt_sha256"), str)
+                or re.fullmatch(r"[0-9a-f]{64}", row["custodian_receipt_sha256"]) is None):
+            raise ContractError("source-family and license evidence is incomplete")
         if not isinstance(row.get("required_evidence"), list) or not row["required_evidence"]:
             raise ContractError("qualification manifest requires a concrete custody evidence list")
-    if manifest["decision"] != "blocked_pending_independent_custody" or manifest["required_independent_custody"] is not True:
-        raise ContractError("metadata-only manifest must remain blocked")
-    return {"schema": "extended-source-qualification-verdict-v1", "decision": "blocked_pending_independent_custody",
+    if (manifest["decision"] != "blocked_pending_independent_exposure_attestation_and_partition"
+            or manifest["required_independent_custody"] is not True):
+        raise ContractError("metadata-only manifest must remain blocked pending independent custody")
+    return {"schema": "extended-source-qualification-verdict-v1",
+            "decision": "blocked_pending_independent_exposure_attestation_and_partition",
             "inventory_digest": live_metadata["inventory_digest"], "sources": sorted(_SOURCES)}

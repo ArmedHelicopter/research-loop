@@ -18,7 +18,7 @@ def _live():
 def test_metadata_only_manifest_blocks_unknown_extended_sources():
     path = Path("docs/data-source-metadata/extended-source-qualification.json")
     verdict = validate_extended_qualification(json.loads(path.read_text(encoding="utf-8")), _live())
-    assert verdict["decision"] == "blocked_pending_independent_custody"
+    assert verdict["decision"] == "blocked_pending_independent_exposure_attestation_and_partition"
     assert verdict["sources"] == ["scicode", "scienceagentbench"]
 
 
@@ -42,3 +42,15 @@ def test_manifest_cannot_replace_the_core_benchmark_pair():
     manifest["core_benchmarks_retained"] = ["scicode", "scienceagentbench"]
     with pytest.raises(ContractError, match="cannot replace core benchmarks"):
         validate_extended_qualification(manifest, _live())
+
+
+def test_received_dataset_pins_are_archived_separately_from_repository_metadata_pins():
+    public = json.loads(Path("docs/data-source-metadata/received-snapshot-public-metadata.json").read_text(encoding="utf-8"))
+    live = _live()
+    assert {name: row["received_snapshot_revision"] for name, row in public["sources"].items()} == live["source_pins"]
+    assert {name: row["dataset_card_license_declaration"] for name, row in public["sources"].items()} == {
+        "scicode": "apache-2.0", "scienceagentbench": "cc-by-4.0"}
+    for name in live["source_pins"]:
+        historical = json.loads(Path(f"docs/data-source-metadata/{name}.json").read_text(encoding="utf-8"))
+        assert historical["received_dataset_snapshot"]["revision"] == live["source_pins"][name]
+        assert historical["received_dataset_snapshot"]["revision"] != historical["pinned_commit"]
