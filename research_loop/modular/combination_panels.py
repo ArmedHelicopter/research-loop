@@ -237,7 +237,7 @@ class CombinationPanelVerifier:
                 # scorer carries the same generic bindings inside a signed
                 # envelope, which the injected verifier has already checked.
                 body = raw["body"] if set(raw) == {"body", "mac"} and isinstance(raw["body"], dict) else raw
-                if (body.get("schema") not in {"independent-scored-cell-v1", "combination-adapted-scored-cell-v1"}
+                if (body.get("schema") not in {"independent-scored-cell-v1", "combination-adapted-scored-cell-v1", "lineage-combination-scored-cell-v1"}
                         or body.get("runtime_trace_digest") != actual[key].trace_digest
                         or body.get("scorer_digest") != expected[key].scorer_digest):
                     raise ContractError("combination scorer receipt lacks typed runtime and scorer binding")

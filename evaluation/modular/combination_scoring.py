@@ -81,6 +81,14 @@ def derive_combination_score_input(*, panel: CombinationPanel, result: Combinati
     verification = verify_m4_m5_combination_benchmark_cell(result, panel=panel, task=task, scenario=scenario, package=package).data()
     if verification.get("engineering_verified") is not True or result.joint_mechanism is None:
         raise ContractError("combination score input requires an executed joint mechanism")
+    return _score_input_payload(panel, result)
+
+
+def _score_input_payload(panel, result) -> FrozenRecord:
+    """Serialize a candidate only after the owning executor's full replay.
+
+    This private serializer supplies no verification or authority itself.
+    """
     candidate, evidence = _candidate(result)
     solver = result.solver
     assert solver is not None

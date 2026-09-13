@@ -184,7 +184,10 @@ class EvidenceLedger:
         for root_id, record_ids in self._roots.items():
             if active_only and root_id in self._withdrawn:
                 continue
-            records = [self._records[item] for item in record_ids]
+            # A replay in a different process must select the same original
+            # representative, independent of Python's randomized set order.
+            records = sorted((self._records[item] for item in record_ids),
+                             key=lambda item: (item.representation != "raw", item.record_id))
             non_summaries = [item for item in records if item.representation != "summary"]
             selected = next((item for item in non_summaries if item.admitted), non_summaries[0] if non_summaries else None)
             if selected is not None and (not admitted_only or selected.admitted):

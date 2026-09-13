@@ -78,7 +78,7 @@ class ContextBuilder:
                 refutes = [root for root in claim.refute_roots if root in active_roots]
                 if not supports and not refutes and not claim.needs_review:
                     continue
-                status = "undetermined" if supports and refutes else "supported" if supports else "refuted"
+                status = "undetermined" if supports and refutes else "supported" if supports else "refuted" if refutes else "undetermined"
                 candidates.append({
                     "kind": "claim", "claim_id": claim.claim_id, "statement": claim.statement,
                     "status": status, "support_roots": supports, "refute_roots": refutes,
