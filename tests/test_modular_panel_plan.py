@@ -55,16 +55,17 @@ def inputs(scope_ids=tuple(registry())):
 
 
 def test_every_obligation_gets_all_variants_and_all_legal_paired_arms():
-    # Q2.1 has a distinct caller-supplied material contract, so it compiles as
-    # its own panel rather than coercing its evidence into Q1.5's contract.
-    values = inputs(tuple(name for name in registry() if name != "Q2.1"))
+    # Q2.1, Q3.2, and Q5.3 have distinct caller-supplied material contracts,
+    # so they compile as dedicated panels instead of coercing Q1.5 material.
+    caller_bound = {"Q2.1", "Q3.2", "Q5.3"}
+    values = inputs(tuple(name for name in registry() if name not in caller_bound))
     compiled = compile_train_panel(**values)
     panel = compiled.panel
-    assert set(panel.scope_ids) == set(registry()) - {"Q2.1"}
+    assert set(panel.scope_ids) == set(registry()) - caller_bound
     assert len(panel.combinations.pairs) == 36 and len(panel.combinations.triples) == 5
     assert set(panel.combinations.leave_one_out) == {f"M{i}" for i in range(1, 10)}
     for coverage, spec in registry().items():
-        if coverage == "Q2.1":
+        if coverage in caller_bound:
             continue
         arms = executable_arms(panel.legal_arm_grids[coverage])
         for task in values["tasks"]:
