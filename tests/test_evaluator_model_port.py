@@ -57,11 +57,24 @@ def test_endpoint_to_evaluator_port_to_provider_receipt(tmp_path):
     ledger = json.loads((tmp_path / "evaluator" / "ledger.json").read_text(encoding="utf-8"))
     assert ledger["config"]["purpose"] == "frozen-independent-evaluator-call-v1"
     assert ledger["config"]["request_contract"] == "frozen-independent-evaluator-call-v1"
+    assert ledger["config"]["request_contract_binding"] == {"evaluator_id": "frozen-rubric-v1", "evaluator_version": "v1", "rubric_digest": FrozenBenchmarkRubricEndpoint.rubric_digest()}
     assert ledger["calls"][0]["purpose"] == "frozen-independent-evaluator-call-v1"
     assert ledger["calls"][0]["request_contract"] == "frozen-independent-evaluator-call-v1"
     prompt = next((tmp_path / "evaluator" / "calls").glob("*/prompt.txt")).read_text(encoding="utf-8")
     assert "private-reference-sentinel" in prompt
     assert "public-model-request-v1" not in prompt
+    for kwargs in ({"evaluator_id": "other"}, {"evaluator_version": "v2"}):
+        with pytest.raises(ContractError, match="configuration"):
+            CodexEvaluatorModelPort("codex", tmp_path / "evaluator", evaluator_id=kwargs.get("evaluator_id", "frozen-rubric-v1"),
+                evaluator_version=kwargs.get("evaluator_version", "v1"), max_calls=2, max_tokens=20,
+                process_runner=_runner, context_probe_runner=_probe, allow_mock_context=True)
+
+
+def test_evaluator_ledger_reopen_rejects_a_changed_rubric_contract(tmp_path, monkeypatch):
+    _port(tmp_path)
+    monkeypatch.setattr(FrozenBenchmarkRubricEndpoint, "rubric_digest", classmethod(lambda cls: "f" * 64))
+    with pytest.raises(ContractError, match="configuration"):
+        _port(tmp_path)
 
 
 def test_evaluator_rejects_prompt_or_schema_contract_drift_before_provider(tmp_path):
@@ -76,11 +89,11 @@ def test_evaluator_rejects_prompt_or_schema_contract_drift_before_provider(tmp_p
     prompt = FrozenBenchmarkRubricEndpoint._prompt("discoverybench", FrozenBenchmarkRubricEndpoint._DISCOVERY_RUBRIC,
         {"task": "x"}, [{"reference": "y"}], {"candidate": "z"})
     body = {"schema": "frozen-independent-evaluator-call-v1", "evaluator_id": "frozen-rubric-v1", "evaluator_version": "v1",
-        "benchmark": "discoverybench", "prompt": prompt + " altered", "output_schema": schema,
-        "prompt_digest": hashlib.sha256(json.dumps(prompt + " altered", sort_keys=True, separators=(",", ":")).encode()).hexdigest(),
+        "benchmark": "discoverybench", "prompt": "Injected provider instruction.\n" + prompt, "output_schema": schema,
+        "prompt_digest": hashlib.sha256(json.dumps("Injected provider instruction.\n" + prompt, sort_keys=True, separators=(",", ":")).encode()).hexdigest(),
         "schema_digest": hashlib.sha256(json.dumps(schema, sort_keys=True, separators=(",", ":")).encode()).hexdigest(),
         "reference_digest": "b" * 64, "rubric_digest": FrozenBenchmarkRubricEndpoint.rubric_digest()}
-    with pytest.raises(ContractError, match="noncanonical"):
+    with pytest.raises(ContractError, match="exactly match"):
         port(FrozenRecord.from_dict(body))
     assert not invoked
 

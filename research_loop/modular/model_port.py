@@ -417,7 +417,8 @@ class CodexModelPort:
                  process_runner: ProcessRunner | None = None, context_probe_runner: ProcessRunner | None = None,
                  frozen_base_context: FrozenBaseContextPolicy | None = None,
                  allow_mock_context: bool = False, environment: Mapping[str, str] | None = None,
-                 _ledger_purpose: str | None = None, _ledger_request_contract: str | None = None) -> None:
+                 _ledger_purpose: str | None = None, _ledger_request_contract: str | None = None,
+                 _ledger_contract_binding: Mapping[str, Any] | None = None) -> None:
         if not isinstance(model, str) or not model or not isinstance(effort, str) or not effort:
             raise ContractError("model and effort must be nonempty")
         if type(max_calls) is not int or max_calls < 1 or type(max_tokens) is not int or max_tokens < 1:
@@ -441,7 +442,12 @@ class CodexModelPort:
         if _ledger_purpose is not None and (not isinstance(_ledger_purpose, str) or not _ledger_purpose
                 or not isinstance(_ledger_request_contract, str) or not _ledger_request_contract):
             raise ContractError("ledger purpose and request contract must be nonempty")
+        if _ledger_contract_binding is not None and (not isinstance(_ledger_contract_binding, Mapping)
+                or not _ledger_purpose):
+            raise ContractError("ledger contract binding requires a purpose")
         self._ledger_purpose, self._ledger_request_contract = _ledger_purpose, _ledger_request_contract
+        self._ledger_contract_binding = (json.loads(canonical(_ledger_contract_binding))
+                                         if _ledger_contract_binding is not None else None)
         self.model, self.effort = model, effort
         self.max_calls, self.max_tokens = max_calls, max_tokens
         self.schemas = json.loads(canonical(schema_by_slot))
@@ -484,6 +490,8 @@ class CodexModelPort:
         if self._ledger_purpose is not None:
             config["purpose"] = self._ledger_purpose
             config["request_contract"] = self._ledger_request_contract
+        if self._ledger_contract_binding is not None:
+            config["request_contract_binding"] = self._ledger_contract_binding
         if self.ledger_path.exists():
             self.ledger = json.loads(self.ledger_path.read_text(encoding="utf-8"))
             if self.ledger.get("config") != config:

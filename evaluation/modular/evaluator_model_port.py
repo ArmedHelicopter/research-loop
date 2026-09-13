@@ -51,6 +51,7 @@ class CodexEvaluatorModelPort(CodexModelPort):
                  allow_mock_context: bool = False, environment: Mapping[str, str] | None = None) -> None:
         self.evaluator_id = required_text(evaluator_id, "evaluator id")
         self.evaluator_version = required_text(evaluator_version, "evaluator version")
+        self.rubric_digest = FrozenBenchmarkRubricEndpoint.rubric_digest()
         schemas = {self._slot(benchmark): FrozenBenchmarkRubricEndpoint._output_schema(benchmark)
                    for benchmark in ("discoverybench", "blade")}
         super().__init__(executable, work_root, model=model, effort=effort,
@@ -59,7 +60,10 @@ class CodexEvaluatorModelPort(CodexModelPort):
                          process_runner=process_runner, context_probe_runner=context_probe_runner,
                          frozen_base_context=frozen_base_context,
                          allow_mock_context=allow_mock_context, environment=environment,
-                         _ledger_purpose=_PURPOSE, _ledger_request_contract=_REQUEST_SCHEMA)
+                         _ledger_purpose=_PURPOSE, _ledger_request_contract=_REQUEST_SCHEMA,
+                         _ledger_contract_binding={"evaluator_id": self.evaluator_id,
+                                                   "evaluator_version": self.evaluator_version,
+                                                   "rubric_digest": self.rubric_digest})
 
     @staticmethod
     def _slot(benchmark: str) -> str:
@@ -85,7 +89,8 @@ class CodexEvaluatorModelPort(CodexModelPort):
             raise ContractError("frozen evaluator schema does not match the benchmark contract")
         if body["prompt_digest"] != _hash(body["prompt"]):
             raise ContractError("frozen evaluator prompt digest mismatch")
-        if body["rubric_digest"] != FrozenBenchmarkRubricEndpoint.rubric_digest():
+        if (body["rubric_digest"] != self.rubric_digest
+                or FrozenBenchmarkRubricEndpoint.rubric_digest() != self.rubric_digest):
             raise ContractError("frozen evaluator rubric contract drift")
         self._verify_prompt_template(benchmark, body["prompt"])
         prompt = "Return only JSON conforming to the supplied schema.\n" + body["prompt"]
@@ -95,20 +100,16 @@ class CodexEvaluatorModelPort(CodexModelPort):
     def _verify_prompt_template(benchmark: str, prompt: str) -> None:
         rubric = (FrozenBenchmarkRubricEndpoint._DISCOVERY_RUBRIC if benchmark == "discoverybench"
                   else FrozenBenchmarkRubricEndpoint._BLADE_RUBRIC)
-        template = FrozenBenchmarkRubricEndpoint._prompt(benchmark, rubric, "<TASK>", "<REFERENCE>", "<CANDIDATE>")
-        prefix = template.split("\nTASK=", 1)[0]
-        if not prompt.startswith(prefix):
-            raise ContractError("frozen evaluator prompt does not use the benchmark template")
-        # Dynamic task/reference/candidate text is intentionally private evaluator
-        # material.  This validates the frozen static rubric and field delimiters
-        # without relabelling or serializing it as a public solver request.
         if prompt.count("\nTASK=") != 1 or prompt.count("\nREFERENCE=") != 1 or prompt.count("\nANONYMOUS_CANDIDATE=") != 1:
             raise ContractError("frozen evaluator prompt has invalid material delimiters")
         _, material = prompt.split("\nTASK=", 1)
         task, material = material.split("\nREFERENCE=", 1)
         reference, candidate = material.split("\nANONYMOUS_CANDIDATE=", 1)
         try:
-            if any(canonical(json.loads(value)) != value for value in (task, reference, candidate)):
+            values = tuple(json.loads(value) for value in (task, reference, candidate))
+            if any(canonical(value) != source for value, source in zip(values, (task, reference, candidate), strict=True)):
                 raise ValueError("noncanonical evaluator material")
         except (ValueError, TypeError, json.JSONDecodeError) as exc:
             raise ContractError("frozen evaluator prompt has noncanonical material") from exc
+        if prompt != FrozenBenchmarkRubricEndpoint._prompt(benchmark, rubric, *values):
+            raise ContractError("frozen evaluator prompt does not exactly match the benchmark template")
