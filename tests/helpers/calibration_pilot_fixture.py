@@ -13,6 +13,28 @@ from evaluation.modular.calibration_pilot import (
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.ontology import digest
 
+SYNTHETIC_ANSWERS = {
+    'valid_positive': 'The synthetic relation is supported.',
+    'valid_negative': 'The controlled synthetic test supports no association.',
+    'invalid_measurement': 'The synthetic target is constant; the requested measurement is invalid.',
+    'uncertain': 'The synthetic evidence is insufficient to decide.',
+    'negation_or_quoted_completion': 'The phrase "programme complete" is quoted, not affirmed.',
+    'correct_rejection': 'I reject the unsupported synthetic claim.',
+    'over_rejection': 'I refuse even the explicitly supported synthetic relation.',
+    'reasonable_alternative': 'An equivalent synthetic alternative specification supports the relation.',
+    'empty_output': '',
+}
+
+
+def fixture_target(answer, benchmark):
+    # Canned hand-authored fixture targets, not a production semantic classifier.
+    unknown = {SYNTHETIC_ANSWERS['invalid_measurement'], SYNTHETIC_ANSWERS['uncertain']}
+    zero = {SYNTHETIC_ANSWERS['empty_output'], SYNTHETIC_ANSWERS['over_rejection'],
+            SYNTHETIC_ANSWERS['negation_or_quoted_completion']}
+    if answer in unknown:
+        return {'state': 'unknown', 'dimensions': None}
+    return {'state': 'known', 'dimensions': {name: 0 if answer in zero else 1 for name in DIMENSIONS[benchmark]}}
+
 
 def record(value):
     return FrozenRecord.from_dict(value)
@@ -53,9 +75,9 @@ def build_fixture(root):
         identity_digest = digest(task['identity'])
         for kind in COVERAGE_KINDS:
             sid = slot_id(identity_digest, kind)
-            candidate = {'answer': 'Synthetic anonymous candidate', 'slot_token': sid}
+            candidate = {'answer': SYNTHETIC_ANSWERS[kind], 'slot_token': sid}
             material = authorities['material'].issue('material', sid, {'status': 'ready', 'candidate': candidate,
-                'expected': {'state': 'known', 'dimensions': {name: 1 for name in DIMENSIONS[task['identity']['benchmark']]}},
+                'expected': fixture_target(candidate['answer'], task['identity']['benchmark']),
                 'support_digest': digest({'private_support': sid})})
             materials[sid] = material.data()
             slots.append({'slot_id': sid, 'identity_digest': identity_digest, 'kind': kind, 'status': 'ready',
@@ -107,7 +129,7 @@ class FixturePorts:
         self.calls[role].append(request)
         body = request.data()
         assert 'expected' not in body and 'kind' not in body and 'other_review' not in body
-        target = {'state': 'known', 'dimensions': {name: 1 for name in DIMENSIONS[body['benchmark']]}}
+        target = fixture_target(body['candidate']['answer'], body['benchmark'])
         return PortResult(self.authorities[role].issue(role, request.content_hash, target), self.cost(role, request))
 
     def evaluator(self, request):
@@ -115,7 +137,10 @@ class FixturePorts:
         body = request.data()
         assert 'PRIVATE_SYNTHETIC_REFERENCE_SENTINEL' in body['prompt']
         assert 'support_digest' not in body['prompt'] and 'expected' not in body['prompt']
-        result = {name: 2 if body['benchmark'] == 'blade' else 1 for name in DIMENSIONS[body['benchmark']]}
+        candidate = json.loads(body['prompt'].split('\nANONYMOUS_CANDIDATE=',1)[1])
+        expected = fixture_target(candidate['answer'], body['benchmark'])
+        normalized = expected['dimensions'] if expected['state']=='known' else {name: 1 for name in DIMENSIONS[body['benchmark']]}
+        result = {name: value * (2 if body['benchmark']=='blade' else 1) for name,value in normalized.items()}
         return PortResult(record(result | {'reason': 'synthetic canned judge'}), self.cost('evaluator', request))
 
     def kwargs(self):

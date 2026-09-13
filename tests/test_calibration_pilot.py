@@ -53,7 +53,7 @@ def test_full_grid_blind_reviews_before_evaluation_and_statistics(tmp_path):
     assert result['source_task_count'] == 4 and result['independent_sample_count_claimed'] is None
     for bench, stats in result['per_benchmark'].items():
         assert stats['opportunities'] == 36 and stats['source_tasks'] == 2
-        assert all(v['n'] == 36 and v['mean'] == 0 for v in stats['absolute_error'].values())
+        assert all(v['n'] == 28 and v['mean'] == 0 for v in stats['absolute_error'].values())
         assert all(v['pairs'] == 18 and v['mean'] == 0 for v in stats['repeat_absolute_difference'].values())
     rows = journal(args['journal_path'])
     frozen_index = next(i for i, r in enumerate(rows) if r['event'] == 'reviews_frozen')
@@ -109,7 +109,10 @@ def test_review_disagreement_calls_one_fixed_arbitration(tmp_path):
     def disagree(request):
         result = ports.review('reviewer2', request)
         body = result.output.data()['body']['payload']
-        body['dimensions'] = {name: 0 for name in body['dimensions']}
+        if body['state']=='known':
+            body['dimensions'] = {name: 1-value for name,value in body['dimensions'].items()}
+        else:
+            body = {'state':'known','dimensions':{name:0 for name in DIMENSIONS[request.data()['benchmark']]}}
         return PortResult(ports.authorities['reviewer2'].issue('reviewer2', request.content_hash, body), result.cost)
     args['reviewer2'] = disagree
     result = DiagnosticPilot(**args).run().data()['body']['payload']
@@ -289,3 +292,12 @@ def test_parent_refuses_foreign_config_command_before_launch(tmp_path):
             '--output',str(tmp_path/'out.json')],executable_sha256=hash_file(Path(sys.executable)),worker_sha256=hash_file(helper),
             config_descriptor=desc,result_path=tmp_path/'out.json',parent_journal_path=tmp_path/'parent.jsonl',timeout_seconds=60)
     assert not (tmp_path/'parent.jsonl').exists()
+
+
+def test_nine_material_slots_have_distinct_actual_candidate_content(tmp_path):
+    manifest, materials, _, _ = build_fixture(tmp_path)
+    for task in manifest.data()['tasks']:
+        slots = [s for s in manifest.data()['slots'] if s['identity_digest']==digest(task['identity'])]
+        candidates = [materials[s['slot_id']]['body']['payload']['candidate']['answer'] for s in slots]
+        assert len(set(candidates))==9 and '' in candidates
+        assert any('not affirmed' in answer for answer in candidates)
