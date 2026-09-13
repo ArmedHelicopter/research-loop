@@ -27,6 +27,7 @@ from research_loop.modular.history_panel_drivers import AdmissionPort
 from research_loop.modular.audit_panel_drivers import AuditReceiptPort, ShadowExecutionPort
 from research_loop.modular.feasibility_panel_drivers import FeasibilityAuthorityPort
 from research_loop.modular.exploration_panel_drivers import ExplorationAuthorityPort, BUDGET as EXPLORATION_BUDGET
+from research_loop.modular.q54_causal_driver import DiagnosticAuthority
 from research_loop.modular.benchmark_cell import LinkedBenchmarkCellResult, run_benchmark_cell, verify_linked_benchmark_cell
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.protocol_panel_driver import (ProtocolAuditPort, ProtocolReplayAuthority,
@@ -91,6 +92,9 @@ class FrozenTrainControllerConfig:
         if set(scope) & {"Q7.1", "Q7.2"} and (data["budget"] != EXPLORATION_BUDGET
                 or any(type(value) is not int for value in data["budget"].values())):
             raise ContractError("exploration controller requires exact matched opportunity budget")
+        if "Q5.4" in scope and (data["budget"] != {"model_calls":3, "execution_opportunities":1, "verification_calls":1}
+                or any(type(value) is not int for value in data["budget"].values())):
+            raise ContractError("diagnostic controller requires exact matched opportunity budget")
         if "Q2.7" in scope and any(type(data["budget"].get(key)) is not int or data["budget"][key] != 1
                 for key in ("docker_attempts", "audit_calls", "model_calls")):
             raise ContractError("protocol budget must freeze one Docker, audit batch and model call per cell")
@@ -168,6 +172,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                         shadow_execution_port: ShadowExecutionPort | None = None,
                         feasibility_authority: FeasibilityAuthorityPort | None = None,
                         exploration_authority: ExplorationAuthorityPort | None = None,
+                        diagnostic_authority: DiagnosticAuthority | None = None,
                         protocol_audit_port: ProtocolAuditPort | None = None,
                         protocol_replay_authority: ProtocolReplayAuthority | None = None) -> TrainPanelRun:
     """Export and execute every cell selected by closed production drivers."""
@@ -177,6 +182,9 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
         raise ContractError("controller requires the real model port and trusted audit verifier")
     data = config.data()
     exploration = bool(set(data["scope_ids"]) & {"Q7.1", "Q7.2"})
+    diagnostic = "Q5.4" in data["scope_ids"]
+    if diagnostic and not callable(getattr(diagnostic_authority, "verify_diagnostic", None)):
+        raise ContractError("diagnostic controller requires its caller-owned verification port before export")
     if exploration and not all(callable(getattr(exploration_authority, method, None))
                                for method in ("verify_preflight", "verify_observation")):
         raise ContractError("exploration controller requires its caller-owned verification ports before export")
@@ -239,7 +247,25 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     try:
         feasibility_broker = DockerExecutionBroker([exported, root]) if feasibility else None
         exploration_broker = DockerExecutionBroker([exported, root]) if exploration else None
+        diagnostic_broker = DockerExecutionBroker([exported, root]) if diagnostic else None
         packets_by_digest = {packet.task.content_hash: packet for packet in packets}
+        def diagnostic_inputs(task, bundle):
+            packet = packets_by_digest.get(task.content_hash)
+            if packet is None or packet.task != task:
+                raise ContractError("diagnostic input is not an exported train task")
+            rows = [row for item in bundle.data()["variants"].values() for row in item["diagnostics"]]
+            names = {tuple(sorted(row["inputs"])) for row in rows}
+            if len(names) != 1 or len(next(iter(names))) != 1:
+                raise ContractError("diagnostic controller requires one shared exported CSV identity")
+            name = next(iter(names))[0]
+            content = packet.csv_path.read_bytes()
+            expected = {"sha256":hashlib.sha256(content).hexdigest(), "byte_count":len(content)}
+            if any(row["inputs"][name] != expected for row in rows):
+                raise ContractError("diagnostic material differs from exported train CSV bytes")
+            return {name:packet.csv_path}
+        if diagnostic:
+            for task in compiled.tasks.values():
+                diagnostic_inputs(task, _record(data["evidence_by_task"][task.content_hash], "diagnostic material"))
         def exploration_inputs(task, bundle):
             packet = packets_by_digest.get(task.content_hash)
             if packet is None or packet.task != task:
@@ -304,6 +330,9 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                 exploration_broker=exploration_broker,
                 exploration_input_resolver=exploration_inputs if exploration else None,
                 exploration_authority=exploration_authority,
+                diagnostic_broker=diagnostic_broker,
+                diagnostic_input_resolver=diagnostic_inputs if diagnostic else None,
+                diagnostic_authority=diagnostic_authority,
                 protocol_audit_port=protocol_audit_port, protocol_replay_authority=protocol_replay_authority)
             runtimes.append(result.runtime)
             attempt.setdefault("runtime_call_plans", []).append(result.call_plan.data())

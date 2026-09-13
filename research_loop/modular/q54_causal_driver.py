@@ -192,14 +192,18 @@ class Q54CausalDriver:
    receipt=_receipt(raw,subject)
   except Exception as exc:
    partial=getattr(exc,'partial_response',None)
-   if partial is not None and not isinstance(partial,FrozenRecord): raise ContractError('authority partial_response must be frozen') from exc
+   partial_valid=isinstance(partial,FrozenRecord)
+   if partial_valid:
+    workflow.session._record('q54_authority_partial_response',{'subject_digest':subject.content_hash,'partial_response':partial.data(),'reported_cost':partial.data().get('cost')})
    exception_cost=getattr(exc,'cost',None)
-   if exception_cost is not None:
-    if not isinstance(exception_cost,Mapping) or set(exception_cost)!={'unit','units'} or exception_cost['unit']!='verifier_units' or (exception_cost['units'] is not None and (type(exception_cost['units']) is not int or exception_cost['units']<0)): raise ContractError('authority exception cost invalid') from exc
-    exception_cost=dict(exception_cost)
-   partial_cost=partial.data().get('cost') if partial is not None else None
-   if partial is not None: workflow.session._record('q54_authority_partial_response',{'subject_digest':subject.content_hash,'partial_response':partial.data(),'reported_cost':partial_cost})
-   workflow.session._record('q54_authority_failure',{'subject_digest':subject.content_hash,'error_type':type(exc).__name__,'reported_cost':partial_cost,'exception_reported_cost':exception_cost,'verified_cost':{'unit':'verifier_units','units':None}}); raise
+   if isinstance(exception_cost,FrozenRecord): exception_cost=exception_cost.data()
+   cost_valid=isinstance(exception_cost,Mapping) and set(exception_cost)=={'unit','units'} and exception_cost['unit']=='verifier_units' and (exception_cost['units'] is None or (type(exception_cost['units']) is int and exception_cost['units']>=0))
+   reported=raw.data().get('cost') if isinstance(raw,FrozenRecord) else partial.data().get('cost') if partial_valid else None
+   workflow.session._record('q54_authority_failure',{'subject_digest':subject.content_hash,'error_type':type(exc).__name__,
+    'reported_cost':reported,'exception_reported_cost':dict(exception_cost) if cost_valid else None,
+    'exception_cost_invalid':exception_cost is not None and not cost_valid,
+    'partial_response_invalid':partial is not None and not partial_valid,
+    'verified_cost':{'unit':'verifier_units','units':None}}); raise
   receipt_record=FrozenRecord.from_dict(receipt)
   update=None
   if runtime_plan is not None:

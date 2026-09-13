@@ -35,7 +35,8 @@ class Authority:
   body=subject.data(); c=body['authority_contract']; receipt=body['execution_receipt']
   csv_bytes=bytes.fromhex(body['public_input_bytes']['data']); expected=sum(float(row.split(',')[0]) for row in csv_bytes.decode().splitlines()[1:]); stdout=receipt['record']['stdout']
   assert receipt['status']=='succeeded' and ('measurement='+str(expected)) in stdout and 'negative_control=' in stdout
-  assert csv_bytes==b'x\n1\n'
+  assert hashlib.sha256(csv_bytes).hexdigest()==body['selection']['inputs']['data']['sha256']
+  assert len(csv_bytes)==body['selection']['inputs']['data']['byte_count']
   assert hashlib.sha256(bytes.fromhex(body['public_program_bytes'])).hexdigest()==receipt['artifact']['sha256']
   assert body['measurement_contract']['observable']=='public result'
   control=float(next(line.split('=',1)[1] for line in stdout.splitlines() if line.startswith('negative_control=')))
@@ -127,14 +128,23 @@ def test_unknown_authority_gate_cannot_be_overridden_by_diagnostic_model(tmp_pat
   Q54CausalDriver(DockerExecutionBroker([tmp_path]),lambda _task,_bundle:{'data':path},Unknown()).run(ModularWorkflow(session),cell=cell,scenario=scenario,model=model,package=package)
 
 @pytest.mark.parametrize('units',[3,None])
-def test_authority_partial_response_and_exception_cost_are_journaled_first(tmp_path,units):
+@pytest.mark.parametrize('cost_form',['mapping','frozen','malformed'])
+def test_authority_partial_response_and_exception_cost_are_journaled_first(tmp_path,units,cost_form):
  t=task('blade'); csv=b'x\n1\n'; inputs=tmp_path/'inputs'; inputs.mkdir(); path=inputs/'data.csv'; path.write_bytes(csv); bundle=material(t,csv); variant='subjective'; arm=default_compatibility('b'*64).arm(('M7',)); package=CandidatePackage.create(parent_digest=None,manifest=TrainingManifest.freeze([t.identity]),changes={'prompt':{'instructions':'x'}},search_cost=0)
  scenario=FrozenRecord.from_dict({'experiment_id':'Q5.4','variant':variant,'controller_input':q54_causal_injection(variant,task=FrozenRecord.from_dict(t.data()),evidence=bundle),'base':{'task':t.content_hash,'evidence':bundle.content_hash,'budget':'a'*64},'controls':{'same_task':True,'same_evidence':True,'same_budget':True}}); cell=PanelCell('Q5.4',t.identity,'r',variant,'a',arm,t.content_hash,scenario.content_hash,package.digest,'a'*64); run=tmp_path/'run'; session=RunSession(t,package_digest=package.digest,arm=arm,objective=FrozenRecord.from_dict({'o':'x'}),slots=('ranking','diagnostic','final'),execution_limit=1,sidecar=run,verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}),required_audit=('measurement',))
  class TransportError(RuntimeError): pass
  class Broken:
   def verify_diagnostic(self,subject):
-   error=TransportError('transport'); error.partial_response=FrozenRecord.from_dict({'partial':'typed','cost':{'unit':'verifier_units','units':units}}); error.cost={'unit':'verifier_units','units':units}; raise error
+   error=TransportError('transport'); error.partial_response=FrozenRecord.from_dict({'partial':'typed','cost':{'unit':'verifier_units','units':units}})
+   error.cost={'unit':'verifier_units','units':units}
+   if cost_form=='frozen': error.cost=FrozenRecord.from_dict(error.cost)
+   if cost_form=='malformed': error.cost={'unit':'verifier_units','units':True}
+   raise error
  def model(request): return FrozenRecord.from_dict({'ranking':['a','b'],'rationale':'x'})
  with pytest.raises(TransportError): Q54CausalDriver(DockerExecutionBroker([tmp_path]),lambda _task,_bundle:{'data':path},Broken()).run(ModularWorkflow(session),cell=cell,scenario=scenario,model=model,package=package)
  events=[FrozenRecord(line).data() for line in (run/'trace.jsonl').read_text().splitlines()]; partial=next(i for i,e in enumerate(events) if e['stage']=='q54_authority_partial_response'); failure=next(i for i,e in enumerate(events) if e['stage']=='q54_authority_failure')
- assert partial<failure and events[failure]['data']['exception_reported_cost']=={'unit':'verifier_units','units':units} and events[failure]['data']['verified_cost']=={'unit':'verifier_units','units':None}
+ assert partial<failure
+ assert events[failure]['data']['reported_cost']=={'unit':'verifier_units','units':units}
+ assert events[failure]['data']['exception_reported_cost']==(None if cost_form=='malformed' else {'unit':'verifier_units','units':units})
+ assert events[failure]['data']['exception_cost_invalid']==(cost_form=='malformed')
+ assert events[failure]['data']['verified_cost']=={'unit':'verifier_units','units':None}

@@ -102,6 +102,9 @@ def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs,
     elif spec.experiment_id in {"Q7.1", "Q7.2"}:
         from research_loop.modular.exploration_panel_drivers import exploration_panel_injection
         injection=dict(exploration_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
+    elif spec.experiment_id == "Q5.4":
+        from research_loop.modular.q54_causal_driver import q54_causal_injection
+        injection=dict(q54_causal_injection(variant, task=inputs.task, evidence=inputs.evidence))
     elif spec.experiment_id in {"Q3.1", "Q5.4"}:
         from research_loop.modular.scenarios_predictions import prediction_injection
         injection=dict(prediction_injection(spec.experiment_id, variant))
