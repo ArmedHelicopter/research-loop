@@ -1,0 +1,119 @@
+{
+  "schema": "scoring-recovery-resource-checkpoint-v1",
+  "source_commit": "7441cfdef06d1c88ffa3bfd6c021642366c99a50",
+  "production_question_drivers": 31,
+  "reports": {
+    "q54-root-seam-r1.xml": {
+      "tests": "97",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "51.608"
+    },
+    "public-execution-root-r1.xml": {
+      "tests": "68",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "466.931"
+    },
+    "scorer-utf8-red-r1.xml": {
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "25.944"
+    },
+    "scorer-utf8-green-r1.xml": {
+      "tests": "18",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "178.975"
+    },
+    "completed-cell-recovery-r1.xml": {
+      "tests": "21",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "134.088"
+    },
+    "q54-history/q54-causal-6c55fde.xml": {
+      "tests": "21",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "19.256"
+    },
+    "q54-history/q54-causal-8cb5955.xml": {
+      "tests": "62",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "19.395"
+    },
+    "q54-history/q54-causal-97cf30f.xml": {
+      "tests": "23",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "20.662"
+    },
+    "q54-history/q54-causal-f6d2750.xml": {
+      "tests": "61",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "49.309"
+    },
+    "q54-history/q54-causal-final.xml": {
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "25.976"
+    },
+    "q54-history/q54-causal-grid.xml": {
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "32.695"
+    },
+    "q54-history/q54-causal-repair-grid.xml": {
+      "tests": "16",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "55.419"
+    }
+  },
+  "training": {
+    "calibration": "not_measured",
+    "cells": 12,
+    "evaluator_calls": 11,
+    "evaluator_tokens": 231721,
+    "new_solver_calls": 0,
+    "original_files_unchanged": true,
+    "original_solver_calls": 48,
+    "original_solver_tokens": 454992,
+    "schema": "scorer-only-recovery-result-v1",
+    "scientific_validity": "not_measured",
+    "scored": 11,
+    "selection": "inconclusive",
+    "source_commit": "7441cfdef06d1c88ffa3bfd6c021642366c99a50",
+    "usage_incomplete": false,
+    "validation_items": 0
+  },
+  "combined_provider_calls": 59,
+  "combined_tokens": 686713,
+  "original_execution_failures": 1,
+  "failure_summary": "Generated analysis formatted an undefined correlation as a float; original TypeError remains in denominator",
+  "new_solver_calls": 0,
+  "current_head_full_suite_pass": false,
+  "scientific_effectiveness_proven": false,
+  "validation_eligible_records": 0,
+  "validation_opened": false,
+  "pruned_combinations": [],
+  "all_48_scientific_obligations_and_required_combinations_remain_open": true
+}

@@ -1,0 +1,186 @@
+{
+  "schema": "scorer-recovery-cost-metadata-v1",
+  "source_sha256": "44c5dedbc945070f374dcab941b1b69cd567f3daf8e4adb1a6ef9a6b29bb0053",
+  "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\linked-scorer-recovery-20260913-01\\evaluator-model\\ledger.json",
+  "calls": 11,
+  "tokens": 231721,
+  "usage_incomplete": false,
+  "reservations": [
+    {
+      "id": 1,
+      "slot": "frozen-rubric.discoverybench",
+      "status": "succeeded",
+      "request_hash": "a1db804b9477da6f87ed9d0761443644c0e17355696a1e82097e096a81044117",
+      "output_hash": "fa450805803ab2d858683443c919355380de81aeb237e24a8dcf7ebe7d9ac351",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 8173,
+        "output_tokens": 147,
+        "reasoning_output_tokens": 104,
+        "total_tokens": 8320
+      },
+      "error_type": null
+    },
+    {
+      "id": 2,
+      "slot": "frozen-rubric.discoverybench",
+      "status": "succeeded",
+      "request_hash": "03372265c4755f450870243f3cb51f74ec4c8123a13d3d338e445e5e80aff4be",
+      "output_hash": "581b45775186d9a53cd7824447d7e24749013b039082ac5a5f04c13ca8b9f354",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 7960,
+        "output_tokens": 169,
+        "reasoning_output_tokens": 102,
+        "total_tokens": 8129
+      },
+      "error_type": null
+    },
+    {
+      "id": 3,
+      "slot": "frozen-rubric.discoverybench",
+      "status": "succeeded",
+      "request_hash": "659aa8d103f25eebb3e23a0ada63248efc16fc30f0c247be7ec1bf74f5589faf",
+      "output_hash": "998212764084de4672c7f8b85bcb152367a06345644c41ebd1fc03984543e853",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 8448,
+        "output_tokens": 104,
+        "reasoning_output_tokens": 50,
+        "total_tokens": 8552
+      },
+      "error_type": null
+    },
+    {
+      "id": 4,
+      "slot": "frozen-rubric.discoverybench",
+      "status": "succeeded",
+      "request_hash": "f49604417303ccb6a8ea20391536b1c6f38b04ed940df8f54171fc5859dc8758",
+      "output_hash": "a105f8619a8809e94ac2d471ea646c3f8f922752865fd9f53f23806fc3e44f0e",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 8427,
+        "output_tokens": 208,
+        "reasoning_output_tokens": 119,
+        "total_tokens": 8635
+      },
+      "error_type": null
+    },
+    {
+      "id": 5,
+      "slot": "frozen-rubric.discoverybench",
+      "status": "succeeded",
+      "request_hash": "76bb70eae6743a33229ff019bede75d35563683bab83f1dc15c4ef6522544fa5",
+      "output_hash": "7396ff83d8958f813619e3c279af6c514cc5f401c8a374ef2dd2813c0e754cf9",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 8650,
+        "output_tokens": 59,
+        "reasoning_output_tokens": 0,
+        "total_tokens": 8709
+      },
+      "error_type": null
+    },
+    {
+      "id": 6,
+      "slot": "frozen-rubric.blade",
+      "status": "succeeded",
+      "request_hash": "8cfaa9a4cb4588feecc4aba393c2d76c733d098bf4ae3683c4e6c07dddcd24dc",
+      "output_hash": "8c3e334aa3f5e314604cbb9ad87739d4216ae1e3a7b5e92027af4a02e7df0a80",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 31461,
+        "output_tokens": 324,
+        "reasoning_output_tokens": 249,
+        "total_tokens": 31785
+      },
+      "error_type": null
+    },
+    {
+      "id": 7,
+      "slot": "frozen-rubric.blade",
+      "status": "succeeded",
+      "request_hash": "d6f73a310987d40ef7dd1fc244aed4d278ddbe90e358ec1fa07ee8b55d6a0022",
+      "output_hash": "72941458a558dcc4cf396ab0ad32d11fcb7b1b7b8e0a2b62ffce0303d6311a99",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 31297,
+        "output_tokens": 342,
+        "reasoning_output_tokens": 256,
+        "total_tokens": 31639
+      },
+      "error_type": null
+    },
+    {
+      "id": 8,
+      "slot": "frozen-rubric.blade",
+      "status": "succeeded",
+      "request_hash": "f4211e9e1e9f8521029f4887e1a63bff7aece2af9c0971befc5150a5c81cd09c",
+      "output_hash": "c1ce70896ace000f903700de1cae308623f0ab1828b12caa1140e7cc206d7f64",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 31352,
+        "output_tokens": 156,
+        "reasoning_output_tokens": 76,
+        "total_tokens": 31508
+      },
+      "error_type": null
+    },
+    {
+      "id": 9,
+      "slot": "frozen-rubric.blade",
+      "status": "succeeded",
+      "request_hash": "5e3d3e46f5dc914c50dcb2208f5de2a52ce972c40ab5f5e0c59f6428f311dc39",
+      "output_hash": "dccb89f81de77253db68966818a307d6e90255c6c4239f4e52d4e96a5f99dc73",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 4864,
+        "input_tokens": 31362,
+        "output_tokens": 157,
+        "reasoning_output_tokens": 58,
+        "total_tokens": 31519
+      },
+      "error_type": null
+    },
+    {
+      "id": 10,
+      "slot": "frozen-rubric.blade",
+      "status": "succeeded",
+      "request_hash": "1c32160f22e38ff4321f996ebadf74316b0fd26db2e19a35be15f0ec7a073ee5",
+      "output_hash": "6166c9cc82037369bba1b7d4f88bf6be4f7430f0e095abce86aaf76665429b5b",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 31472,
+        "output_tokens": 266,
+        "reasoning_output_tokens": 213,
+        "total_tokens": 31738
+      },
+      "error_type": null
+    },
+    {
+      "id": 11,
+      "slot": "frozen-rubric.blade",
+      "status": "succeeded",
+      "request_hash": "6f4a25af59c018f966980c90c8d28801f6b961d2794fa76963a59d103f43c1d5",
+      "output_hash": "d4ef2cf45481fbfe42b113f275433b564f18c10e6fe930875b69d14c0d81d75b",
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 30870,
+        "output_tokens": 317,
+        "reasoning_output_tokens": 236,
+        "total_tokens": 31187
+      },
+      "error_type": null
+    }
+  ]
+}

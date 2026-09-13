@@ -3,7 +3,26 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current protocol and exploration checkpoint (2026-09-13)
+## Current scoring recovery and resource checkpoint (2026-09-13)
+
+The production registry has 31 question drivers. Q5.4's actual custody/export/
+controller/diagnostic/authority path passed 97 root checks on `f41982d`. Shared
+public execution helpers passed 68 checks on `07bdc04`. Explicit UTF-8 scorer
+stdio repaired a reproduced GBK decoding failure (18 checks); read-only completed
+cell recovery passed 21 checks on `7441cfd`.
+
+The closed Q3.1 repeat and its separate scorer-only recovery used 59 provider
+calls and 686,713 tokens. Eleven of 12 cells executed and received adapted scores;
+one generated-program failure remains in the denominator. No solver call was
+repeated during recovery. The frozen selection is inconclusive, with no selected
+package, deployment or combination pruning. The archive has 1,194 indexed files,
+preserving all earlier 999 bytes/hash entries. No scientific efficacy, scorer
+calibration or validation acceptance is established. Q5.5, extended exploration
+controller wiring, the separate Q6.3 phase and remaining M6/M9 implementations
+still need work; all 48 scientific questions and all combinations remain open.
+See [the checkpoint](MODULAR-CHECKPOINT-20260913-SCORING-RECOVERY.md).
+
+## Previous protocol and exploration checkpoint (2026-09-13)
 
 The production registry has 30 question drivers. Q2.7 now binds the actual P0
 control, completed source trace and independently verified read-only replay.

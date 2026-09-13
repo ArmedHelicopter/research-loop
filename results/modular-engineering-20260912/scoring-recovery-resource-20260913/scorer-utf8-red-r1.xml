@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="25.944" timestamp="2026-09-13T13:44:17.912840+08:00" hostname="SC-202507131830"><testcase classname="tests.test_scorer_process" name="test_utf8_signed_candidate_survives_a_gbk_worker_locale" time="25.126"><failure message="research_loop.ontology.ContractError: scorer process did not return a bound receipt">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/scorer-utf8-red-r1/test_utf8_signed_candidate_sur0')
+
+    def test_utf8_signed_candidate_survives_a_gbk_worker_locale(tmp_path):
+        args, _ = _material(tmp_path)
+        value = _config(tmp_path, args)
+        path = tmp_path / "worker.json"
+        path.write_text(canonical(value), encoding="utf-8")
+        cell = args["panel"].cells[0]
+        # This fixture exercises the signed transport contract, not a claim about
+        # the scientific quality or provenance of generated benchmark answers.
+        body = args["linked_inputs"][cell.key].data()["body"]
+        body["candidate"]["answer"] = "中文观测：均值 α = 1；保留阴性结果 #x1F52C"
+        body["candidate_digest"] = digest(body["candidate"])
+        linked = EXEC.issue(body)
+        worker = tmp_path / "worker.jsonl"
+        client = LinkedScorerProcessClient(panel=args["panel"], command=_command(path, worker),
+            journal_path=tmp_path / "client.jsonl", environment={**os.environ, "PYTHONIOENCODING":"gbk"})
+        try:
+&gt;           receipt = client.submit(cell_key=cell.key, linked_input=linked)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_scorer_process.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;evaluation.modular.scorer_process.LinkedScorerProcessClient object at 0x00000223ED3BBC20&gt;
+
+    def submit(self, *, cell_key: tuple[str, ...], linked_input: FrozenRecord) -&gt; ScientificScorerReceipt:
+        if cell_key not in self.cells or not isinstance(linked_input, FrozenRecord):
+            raise ContractError("scorer client input is not a frozen panel cell")
+        state = self.states.get(canonical(list(cell_key)))
+        if state is not None:
+            if state["status"] == "succeeded":
+                material = {"request_id": state["request_id"], "panel_digest": self.panel.digest,
+                    "cell_key": list(cell_key), "linked_input": linked_input.data()}
+                if _sha(canonical(material)) != state["request_digest"]:
+                    raise ContractError("scorer client repeat input differs from completed request")
+                return ScientificScorerReceipt(cell_key, FrozenRecord.from_dict(state["receipt"]))
+            raise ContractError("scorer client has an unresolved prior reservation")
+        request_id = uuid.uuid4().hex
+        material = {"request_id": request_id, "panel_digest": self.panel.digest, "cell_key": list(cell_key), "linked_input": linked_input.data()}
+        request_digest = _sha(canonical(material))
+        reservation = {"schema": _JOURNAL_SCHEMA, "cell_key": list(cell_key), "request_id": request_id,
+                       "request_digest": request_digest, "status": "reserved"}
+        _append(self.journal_path, reservation); self.states[canonical(list(cell_key))] = reservation
+        request = {"schema": _REQUEST_SCHEMA, **material, "request_digest": request_digest}
+        try:
+            self.input.write(canonical(request) + "\n"); self.input.flush()
+            line = self._readline_bounded()
+            response = json.loads(line) if line else None
+            required = {"schema", "request_id", "request_digest", "cell_key", "status", "receipt"}
+            if (not isinstance(response, dict) or set(response) != required or response.get("schema") != _RESPONSE_SCHEMA
+                    or response.get("request_id") != request_id or response.get("request_digest") != request_digest
+                    or response.get("cell_key") != list(cell_key) or response.get("status") != "succeeded"):
+&gt;               raise ContractError("scorer process did not return a bound receipt")
+E               research_loop.ontology.ContractError: scorer process did not return a bound receipt
+
+evaluation\modular\scorer_process.py:406: ContractError</failure></testcase></testsuite></testsuites>
