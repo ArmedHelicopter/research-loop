@@ -156,8 +156,7 @@ def _joint(cell, transition, responses, package, *, useful=False):
     return FrozenRecord.from_dict({'schema': 'lineage-combination-public-context-v1',
         'panel_cell': opaque_panel_cell_binding(cell), 'material': transition.data()['public'],
         'review_responses': [r.data() for r in responses] if useful or 'M5' in cell.runtime_arm.data()['enabled'] else None,
-        'candidate_context': {'prompt': changes.get('prompt', {}), 'memory': changes.get('memory', {})},
-        **({'schema':'lineage-combination-public-context-v2'} if useful else {})})
+        'candidate_context': {'prompt': changes.get('prompt', {}), 'memory': changes.get('memory', {})}})
 
 
 def run_lineage_combination_cell(*, panel, cell, task, scenario, package, material, source_verifier,

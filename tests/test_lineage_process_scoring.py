@@ -38,6 +38,12 @@ def fixture(root):
     root.mkdir(parents=True,exist_ok=True)
     sources=_sources([])
     snapshot,custody,packets,old,_,_= _fixture(root,sources)
+    return prepared_fixture(root, snapshot, custody, packets, old, sources)
+
+
+def prepared_fixture(root, snapshot, custody, packets, old, sources):
+    """Build synthetic isolated scorer fixtures for already-frozen public packets."""
+    root.mkdir(parents=True,exist_ok=True)
     primary,handles,primary_sha=_store(root,{'tasks':{p.task.content_hash:p.task for p in packets}})
     store=root/'lineage-references';store.mkdir()
     rows=[];bindings={};subjects={}
@@ -62,7 +68,7 @@ def fixture(root):
         rubric_digest=FrozenLineageRubricEndpoint.rubric_digest())
     body=old.data();body.update(scorer=rubric.record.data(),scorer_handle_bindings={k:hashlib.sha256(v.encode()).hexdigest() for k,v in handles.items()},
         lineage_reference_binding=reference_binding)
-    config=FrozenLineageTrainConfig(FrozenRecord.from_dict(body));compiled=compile_lineage_train_panels(config,packets)
+    config=type(old)(FrozenRecord.from_dict(body));compiled=compile_lineage_train_panels(config,packets)
     (root/'execute.key').write_bytes(EXECUTION.key);(root/'score.key').write_bytes(SCORER.key)
     specs=[]
     for i,panel in enumerate(compiled.panels):
