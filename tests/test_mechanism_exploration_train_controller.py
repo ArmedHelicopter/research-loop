@@ -351,7 +351,8 @@ def test_persistent_replay_and_score_issuance_reject_forgeries(grid,fault):
 @pytest.mark.parametrize('flags',[{}, {'mechanism_exploration':1},{'mechanism_exploration':'true'},
     {'mechanism_exploration':True,'state_prediction':True},{'mechanism_exploration':True,'state_retrieval':True},{'mechanism_exploration':True,'state_exploration':True},{'mechanism_exploration':True,'state_scheduling':True},{'mechanism_exploration':True,'lineage':True},
     {'mechanism_exploration':True,'retrieval_review':True},{'mechanism_exploration':True,'admission':True},
-    {'mechanism_exploration':True,'exploration_scheduler':True}])
+    {'mechanism_exploration':True,'exploration_scheduler':True},
+    {'mechanism_exploration':True,'state_improvement':True},{'state_improvement':True}])
 def test_strict_scorer_family_scope_no_default_relaxation(grid,flags):
     setup,*_=grid
     with pytest.raises(ContractError):serialize_combination_panel(setup['compiled'].panels[0],**flags)

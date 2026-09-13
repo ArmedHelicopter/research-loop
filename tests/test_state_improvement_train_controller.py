@@ -189,7 +189,8 @@ def test_versioned_process_scope_and_legacy_exact_manifest_unchanged(grid):
                 {'state_improvement':True,'state_retrieval':True},
                 {'state_improvement':True,'state_exploration':True},
                 {'state_improvement':True,'state_scheduling':True},
-                {'state_exploration':True},{'state_scheduling':True}):
+                {'state_improvement':True,'mechanism_exploration':True},
+                {'mechanism_exploration':True},{'state_exploration':True},{'state_scheduling':True}):
             with pytest.raises(ContractError):serialize_combination_panel(panel,**flags)
         with pytest.raises(ContractError):
             CombinationPanel(panel.stage,panel.domain,panel.split_digest,panel.obligation_id,panel.estimand,panel.design,
