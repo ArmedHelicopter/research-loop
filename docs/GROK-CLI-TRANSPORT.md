@@ -33,7 +33,7 @@ These checks have not yet connected a Grok transport to the TRAIN controller
 or diagnostic scorer; that connection requires its own explicit process and
 accounting contract. Existing Codex and HTTP contracts stay versioned.
 
-The isolated r5 constant smoke has one actual model call (9,381 reported
+The isolated r5 constant smoke reports one main model call (9,381 reported
 tokens and $0.00644164 server accounting), zero observed tool calls, and an
 unmet empty-tool invariant. The later metadata checks and 45 protocol/label
 tests used zero generation calls. Evidence is retained under
@@ -49,3 +49,24 @@ unchanged. Replaying the same original bytes now rejects only the nonempty
 runtime toolset and retains all reported usage/accounting. Both inspection
 results are preserved under `results/modular-engineering-20260913/grok-const-repair/`;
 no model call was repeated and no private raw stream was copied there.
+
+The reviewed native client can also start an initial session-title generation
+when the first prompt is persisted. Disabling post-turn summary and title
+refresh does not suppress this initial opportunity in the reviewed source.
+Its helper discards usage, so the main prompt's call count does not establish
+the total generation count. An empty saved title does not establish that no
+request was dispatched. The original r5 main usage remains unchanged; possible
+title usage and accounting are unknown. The reviewed source snapshot is not
+proof of exact correspondence to the installed binary.
+
+The next native ACP smoke therefore uses a separate prospective contract:
+at most one main prompt plus one initial title opportunity. Both select
+`grok-4.6`; the requested main output cap is 128 and the reviewed title helper
+cap is 100, with retries disabled. The title helper's forced internal
+`session_title` output is separately described from the empty public tool
+inventory; it is not an arbitrary filesystem or shell operation. Fresh
+included-only billing and auto-topup checks precede dispatch. Missing title
+usage remains unknown, and server accounting remains distinct from actual
+settlement. This bounded smoke does not certify exact total tokens, a wire
+cap, benchmark effect, or eligibility for the existing HTTP pilot budget.
+The old one-main-call r5 evidence is not overwritten or retried.
