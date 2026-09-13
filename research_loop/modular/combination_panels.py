@@ -131,10 +131,11 @@ class CombinationPanel:
             if package is None or package.digest != cell.package_digest:
                 raise ContractError("combination cell package does not bind its exact arm")
         panel_identities = {canonical(cell.identity.data()) for cell in self.cells}
+        training_identities = self._training_identities(panel_identities)
         for package in packages.values():
             manifest = TrainingManifest(FrozenRecord.from_dict(package.record.data()["training_manifest"]))
             package_identities = {canonical(identity.data()) for identity in manifest.identities()}
-            if package_identities != panel_identities:
+            if package_identities != training_identities:
                 raise ContractError("combination train package must bind exactly this panel task set")
         grouped: dict[tuple[str, str, str, str], list[PanelCell]] = {}
         for cell in self.cells:
@@ -148,6 +149,10 @@ class CombinationPanel:
                 raise ContractError("combination arms must share exact frozen task and scenario bindings")
         if len({cell.scorer_digest for cell in self.cells}) != 1:
             raise ContractError("combination panel must use one frozen scorer")
+
+    def _training_identities(self, panel_identities):
+        """Ordinary panels retain their exact target-manifest contract."""
+        return panel_identities
 
     @property
     def digest(self) -> str:
