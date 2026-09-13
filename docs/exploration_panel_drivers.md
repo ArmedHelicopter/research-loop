@@ -96,9 +96,35 @@ Transport exceptions may carry a typed `partial_response: FrozenRecord` and a
 typed `cost` record/mapping. Partial responses are persisted before failure;
 returned/exception-reported costs remain separate from unknown verified cost.
 Unknown cost is never converted to zero, and an unvalidated partial response is
-never used as an observation.
+never used as an observation. Returned and exception-reported costs refer to
+the same attempt and must not be added as separate charges.
 
 The prospective synthetic grid is 52 cells: two benchmark adapter types × five
 Q7.1 variants × four M1/M7 combinations, plus two adapters × three Q7.2 variants
 × two M7 arms. Results only test causal controller wiring on public synthetic
 data; they do not estimate benchmark-level scientific effectiveness.
+
+## Frozen verification
+
+Source commit `b55c170` passed 20 final driver tests under the existing isolated
+`work/custody-root-venv/Scripts/python.exe` environment. The frozen Git blob and
+post-run source bytes are identical, SHA-256
+`36f52471d1493b8625a1be9a7433efada0334b164f5b31874854d80dba17a0f6`.
+The complete main grid has 52 real Docker executions, 156 model requests and
+104 trusted-verifier requests/results (104 measured fixture verifier units).
+All 52 trace chains verify. Terminal outcomes are 8 closed negatives under the
+synthetic scientific audit, 22 invalid and 22 unknown; this is not an all-unknown
+substitute for execution and is not a real benchmark effectiveness estimate.
+
+The final suite also checks both candidates before I/O, bad actual sources at
+zero model/verifier calls, post-Docker program/CSV drift, foreign source/subject,
+bad signatures, inconsistent scientific-audit subject, typed hard resource and
+authorization absence, unresolved deterministic blocks, partial transport
+responses with measured and unknown costs, and unchanged overclaim candidates
+being rejected by fixed P0. Fault cases are bounded synthetic counterexamples,
+separate from the 52-cell main grid denominator.
+
+`docs/exploration_panel_verification.json` binds the per-cell traces and five
+retained JUnit reports. The earlier source revisions' suites remain separately
+recorded (10, 48 and 14 tests); the final preflight has 10 tests and final
+post-review driver suite has 20. None is silently replaced by a later run.
