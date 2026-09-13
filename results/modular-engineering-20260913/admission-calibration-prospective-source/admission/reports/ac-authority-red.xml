@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="35.932" timestamp="2026-09-13T17:44:35.021031+08:00" hostname="SC-202507131830"><testcase classname="work.ac-authority-red" name="test_closed_grid_public_requests_do_not_name_host_qualification_authority" time="0.012"><failure message="assert False&#10; +  where False = all(&lt;generator object test_closed_grid_public_requests_do_not_name_host_qualification_authority.&lt;locals&gt;.&lt;genexpr&gt; at 0x0000024DC9D2EDC0&gt;)">def test_closed_grid_public_requests_do_not_name_host_qualification_authority():
+        root = Path('E:/_ryanDev/AI/research-loop-modular/work/ac-grid-r2-temp/admission-grid0/run')
+        assert (root/'controller-receipt.json').is_file()
+        requests = [event['data']['request'] for path in (root/'cells').glob('*/runtime/trace.jsonl')
+                    for line in path.read_text(encoding='utf-8').splitlines()
+                    if (event := json.loads(line))['stage']=='model_request']
+        assert len(requests)==96
+&gt;       assert all('source-quorum' not in json.dumps(request) for request in requests)
+E       assert False
+E        +  where False = all(&lt;generator object test_closed_grid_public_requests_do_not_name_host_qualification_authority.&lt;locals&gt;.&lt;genexpr&gt; at 0x0000024DC9D2EDC0&gt;)
+
+..\work\ac-authority-red.py:11: AssertionError</failure></testcase></testsuite></testsuites>

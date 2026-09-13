@@ -1,0 +1,18 @@
+{
+  "schema": "calibration-pilot-frozen-attempt-v1",
+  "source_commit": "80c7ac48ce388c469c50cf0b23873baac052860e",
+  "source_files": 459,
+  "changed_files": [],
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "1",
+    "skipped": "0",
+    "tests": "112",
+    "time": "535.532",
+    "timestamp": "2026-09-13T17:47:04.309023+08:00",
+    "hostname": "SC-202507131830"
+  },
+  "failure_scope": "test fixture passed empty candidate mapping after fixture began requiring answer; original transport failure and assertion retained",
+  "acceptance": false
+}

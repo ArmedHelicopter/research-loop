@@ -1,0 +1,587 @@
+{
+  "actual_private_references_read": 0,
+  "base_commit": "57bed6ee30147f64fdc10379ae83f6023460b49f",
+  "closed_controller_runs": [
+    {
+      "actual_docker_attempts": 24,
+      "actual_model_usage": {
+        "known_model_tokens": 192,
+        "model_calls": 96,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 24,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r1-temp\\admission-grid0\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "989da1a35b9980c022dc8dd01f04ad221a1413f042994e87d23442c6d81683b7",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 24,
+      "actual_model_usage": {
+        "known_model_tokens": 192,
+        "model_calls": 96,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 24,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 0,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r2-temp\\admission-grid0\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 24,
+      "sha256": "89bcbfbca38367057d2f251f64a4da45b11d7d91438cf2517c6f6e435ed32b5d",
+      "source_calls": 48,
+      "status": "complete_train_engineering"
+    },
+    {
+      "actual_docker_attempts": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 144,
+        "model_calls": 72,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r2-temp\\test_original_solver_failure_k0\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "29fa2d4bfd62f311cfdcd7583b726dc751577d8ed222dc648e611fbc6a211fbd",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 24,
+      "actual_model_usage": {
+        "known_model_tokens": 192,
+        "model_calls": 96,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r2-temp\\test_original_solver_failure_k1\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "ab99c330f0d48037101361e4b45f4cebd6748ab3e70a8e03b6fa43d06f24c367",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 24,
+      "actual_model_usage": {
+        "known_model_tokens": 192,
+        "model_calls": 96,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r2-temp\\test_original_solver_failure_k2\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "ab99c330f0d48037101361e4b45f4cebd6748ab3e70a8e03b6fa43d06f24c367",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r2-temp\\test_source_failures_preserve_0\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "52e348544dafc391bc79791af7fca9be759d6a6d835169bff71e2130de398745",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r2-temp\\test_source_failures_preserve_1\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "52e348544dafc391bc79791af7fca9be759d6a6d835169bff71e2130de398745",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r2-temp\\test_source_failures_preserve_2\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "52e348544dafc391bc79791af7fca9be759d6a6d835169bff71e2130de398745",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r2-temp\\test_source_failures_preserve_3\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "52e348544dafc391bc79791af7fca9be759d6a6d835169bff71e2130de398745",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r2-temp\\test_source_failures_preserve_4\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "52e348544dafc391bc79791af7fca9be759d6a6d835169bff71e2130de398745",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 24,
+      "actual_model_usage": {
+        "known_model_tokens": 192,
+        "model_calls": 96,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 24,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 0,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-temp\\admission-grid0\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 24,
+      "sha256": "1f69e8a4be521b9841c55acb86c33b03e35f4e0385d46a18b36a5ef447816878",
+      "source_calls": 48,
+      "status": "complete_train_engineering"
+    },
+    {
+      "actual_docker_attempts": 34,
+      "actual_model_usage": {
+        "known_model_tokens": 272,
+        "model_calls": 136,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 34,
+      "blocked_cells": 0,
+      "expected_cells": 34,
+      "failed_cells": 0,
+      "observed_cells": 34,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-temp\\lineage-grid0\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 34,
+      "sha256": "44d175c972ab43786a87918f1a175f9ca6a8c46e61d2be4b1657edc1afdd2f65",
+      "source_calls": 68,
+      "status": "complete_train_engineering"
+    },
+    {
+      "actual_docker_attempts": 24,
+      "actual_model_usage": {
+        "known_model_tokens": 192,
+        "model_calls": 96,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 24,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-temp\\test_actual_scorer_failures_ke0\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "f743f846cb021e11420c75a448b6323cfc49a5c44cde5d4ae5f66d9c4e8b03af",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_model_usage": {
+        "known_model_tokens": 80,
+        "model_calls": 40,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 8,
+      "blocked_cells": 0,
+      "expected_cells": 8,
+      "failed_cells": 0,
+      "observed_cells": 8,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-temp\\test_full_eight_cell_custody_c0\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 8,
+      "sha256": "dead3a1b78dcf495222fe13378124084918834948076b0c63d8edbb259e42043",
+      "status": "estimated"
+    },
+    {
+      "actual_docker_attempts": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 144,
+        "model_calls": 72,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-temp\\test_original_solver_failure_k0\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "29fa2d4bfd62f311cfdcd7583b726dc751577d8ed222dc648e611fbc6a211fbd",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 24,
+      "actual_model_usage": {
+        "known_model_tokens": 192,
+        "model_calls": 96,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-temp\\test_original_solver_failure_k1\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "ab99c330f0d48037101361e4b45f4cebd6748ab3e70a8e03b6fa43d06f24c367",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 24,
+      "actual_model_usage": {
+        "known_model_tokens": 192,
+        "model_calls": 96,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-temp\\test_original_solver_failure_k2\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "ab99c330f0d48037101361e4b45f4cebd6748ab3e70a8e03b6fa43d06f24c367",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-temp\\test_source_failures_preserve_0\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "52e348544dafc391bc79791af7fca9be759d6a6d835169bff71e2130de398745",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-temp\\test_source_failures_preserve_1\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "52e348544dafc391bc79791af7fca9be759d6a6d835169bff71e2130de398745",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-temp\\test_source_failures_preserve_2\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "52e348544dafc391bc79791af7fca9be759d6a6d835169bff71e2130de398745",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-temp\\test_source_failures_preserve_3\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "52e348544dafc391bc79791af7fca9be759d6a6d835169bff71e2130de398745",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 0,
+        "model_calls": 0,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 24,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-temp\\test_source_failures_preserve_4\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "52e348544dafc391bc79791af7fca9be759d6a6d835169bff71e2130de398745",
+      "source_calls": 48,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 0,
+      "actual_model_usage": {
+        "known_model_tokens": 4,
+        "model_calls": 3,
+        "model_usage_incomplete": true
+      },
+      "actual_scorer_calls": 0,
+      "blocked_cells": 23,
+      "expected_cells": 24,
+      "failed_cells": 1,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-temp\\test_unknown_solver_cost_block0\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 0,
+      "sha256": "eca1dafcbd7349530d9e84a9bce492447c9e7e73508fe4410a006a0b46776657",
+      "source_calls": 2,
+      "status": "inconclusive"
+    },
+    {
+      "actual_docker_attempts": 24,
+      "actual_model_usage": {
+        "known_model_tokens": 192,
+        "model_calls": 96,
+        "model_usage_incomplete": false
+      },
+      "actual_scorer_calls": 24,
+      "blocked_cells": 0,
+      "expected_cells": 24,
+      "failed_cells": 0,
+      "observed_cells": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-r2-temp\\admission-grid0\\run\\controller-receipt.json",
+      "pruned_cells": [],
+      "scored_cells": 24,
+      "sha256": "74eb4cc3da7fe6fb71d52adcf18e5f8736d941b276ede7e402814ec6e0f8f983",
+      "source_calls": 48,
+      "status": "complete_train_engineering"
+    }
+  ],
+  "commit": "0dbc3e64713bef10908aaee28fe142cf7416fffc",
+  "docker": "actual bounded Docker attempts on synthetic public CSV",
+  "limits": [
+    "legacy v1 train exporter only; prospective v2 integration is subsequent work",
+    "configured dual source provenance does not establish scientific independence or validity",
+    "constant primary fixture yields estimated zero interactions, not scientific measurement",
+    "initial eligibility only; requalification can revoke but does not add new observations"
+  ],
+  "mechanism_score": "not_measured",
+  "model_transport": "CodexModelPort mocked subprocess transport",
+  "paid_calls": 0,
+  "process_isolation": "separate process and key domains; not OS authority isolation",
+  "reports": [
+    {
+      "bytes": 1957,
+      "errors": "0",
+      "failures": "1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-red.xml",
+      "sha256": "1a6620cc43ddedd9cdaf6f69d538bdbdf5f7cce72f374e0cabef32ea6b4b6986",
+      "skipped": "0",
+      "source_status": "development_or_independent_red",
+      "tests": "11",
+      "time": "0.605"
+    },
+    {
+      "bytes": 4016,
+      "errors": "0",
+      "failures": "1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r1.xml",
+      "sha256": "17da9fa453a862824f01a8f30c515cbf258bf3f19eb7c04ee924b2012644cf52",
+      "skipped": "0",
+      "source_status": "development_or_independent_red",
+      "tests": "2",
+      "time": "90.831"
+    },
+    {
+      "bytes": 1769,
+      "errors": "0",
+      "failures": "0",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r2.xml",
+      "sha256": "e44b590b562ce2e5ccf6d149475fb145907d58b9fb646cd7d47fbbc7474024fa",
+      "skipped": "0",
+      "source_status": "development_or_independent_red",
+      "tests": "10",
+      "time": "248.900"
+    },
+    {
+      "bytes": 1505,
+      "errors": "0",
+      "failures": "1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-authority-red.xml",
+      "sha256": "179088ba2ba6d2fa09b9994a0c92a489a0843c418375cc53196880d4322d94b7",
+      "skipped": "0",
+      "source_status": "development_or_independent_red",
+      "tests": "1",
+      "time": "35.932"
+    },
+    {
+      "bytes": 1007,
+      "errors": "0",
+      "failures": "1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-scope-red.xml",
+      "sha256": "bb72ae00886f2a73f8130406afebe7b06cfee4ffbb68f67b4beba873a0caa794",
+      "skipped": "0",
+      "source_status": "development_or_independent_red",
+      "tests": "1",
+      "time": "0.821"
+    },
+    {
+      "bytes": 12910,
+      "errors": "0",
+      "failures": "0",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final.xml",
+      "sha256": "fc06a69437057e1f22fff9577855a5d8babf1918ea4ba51b42f20c3c2c4fc712",
+      "skipped": "0",
+      "source_status": "frozen",
+      "tests": "83",
+      "time": "405.611"
+    },
+    {
+      "bytes": 5793,
+      "errors": "0",
+      "failures": "0",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-r2.xml",
+      "sha256": "38016776ff0ec39cb358573f76434684bb86a008a643a3e92c06bf55fb63c06c",
+      "skipped": "0",
+      "source_status": "frozen",
+      "tests": "40",
+      "time": "69.475"
+    }
+  ],
+  "schema": "admission-combination-engineering-verification-v1",
+  "scientific_effectiveness_proven": false,
+  "scope": [
+    "pair:M1+M2",
+    "pair:M1+M3",
+    "pair:M1+M5"
+  ],
+  "scorer_transport": "actual independent UTF-8 stdio child with synthetic primary evaluator",
+  "sessions": {
+    "16357": "closed_exit_0_40_pass_10_deselected",
+    "64725": "closed_exit_0_83_pass_5_deselected"
+  },
+  "source_after": {
+    "docs/ADMISSION-COMBINATION-TRAIN.md": "8af94efe8954be82f7288f7f22b628fa6c026a0bdcec43ac5d0a8022e4ac938b",
+    "evaluation/modular/scorer_process.py": "eb417aef41b05729b65e5ccb0dbc090713f65a3e9a6b2c88c3254dec61c117e3",
+    "research_loop/modular/admission_combination.py": "03b6c441c394667e26d7596593012b27376f5a796f4f423ef473d172f102ccea",
+    "research_loop/modular/admission_combination_controller.py": "2eecaae5e9483b972d547bde78e1f5c28383090c5748d0f78d3fd194bd9481f4",
+    "research_loop/modular/lineage_combination_controller.py": "66e9f62501cef547476107f3a058fd9863436371a0d93b603ba482d50123adac",
+    "research_loop/modular/lineage_combination_driver.py": "b9303f57b9eb0c81ed712f98ae3f708bbb18304c0a36cc623675704664828257",
+    "tests/helpers/admission_scorer_process_helper.py": "968b91ca0756cc9283f290cc8f5e362457e6590d8443c4fbb410b1c5bafba5d8",
+    "tests/test_admission_combination.py": "a19ca03716af830768402865c87962d6c618c287e83b7246dbdae60bd3e258d0"
+  },
+  "source_before": {
+    "docs/ADMISSION-COMBINATION-TRAIN.md": "8af94efe8954be82f7288f7f22b628fa6c026a0bdcec43ac5d0a8022e4ac938b",
+    "evaluation/modular/scorer_process.py": "eb417aef41b05729b65e5ccb0dbc090713f65a3e9a6b2c88c3254dec61c117e3",
+    "research_loop/modular/admission_combination.py": "03b6c441c394667e26d7596593012b27376f5a796f4f423ef473d172f102ccea",
+    "research_loop/modular/admission_combination_controller.py": "2eecaae5e9483b972d547bde78e1f5c28383090c5748d0f78d3fd194bd9481f4",
+    "research_loop/modular/lineage_combination_controller.py": "66e9f62501cef547476107f3a058fd9863436371a0d93b603ba482d50123adac",
+    "research_loop/modular/lineage_combination_driver.py": "b9303f57b9eb0c81ed712f98ae3f708bbb18304c0a36cc623675704664828257",
+    "tests/helpers/admission_scorer_process_helper.py": "968b91ca0756cc9283f290cc8f5e362457e6590d8443c4fbb410b1c5bafba5d8",
+    "tests/test_admission_combination.py": "a19ca03716af830768402865c87962d6c618c287e83b7246dbdae60bd3e258d0"
+  },
+  "source_calls_are_synthetic_authority_fixtures": true,
+  "source_unchanged": true,
+  "validation_opened": false,
+  "worktree_clean": true
+}

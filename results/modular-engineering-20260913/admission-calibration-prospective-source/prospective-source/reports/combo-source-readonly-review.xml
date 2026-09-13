@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="9" skipped="0" tests="9" time="35.127" timestamp="2026-09-13T18:02:42.764995+08:00" hostname="SC-202507131830"><testcase classname="work.combo-source-readonly-review" name="test_serialized_receipt_false_source_metadata_is_rejected[csv_byte_count--1-m4]" time="3.115"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/combo-source-readonly-review-temp/test_serialized_receipt_false_0')
+kind = 'm4', field = 'csv_byte_count', value = -1
+
+    @pytest.mark.parametrize('kind',['m4','lineage','retrieval'])
+    @pytest.mark.parametrize('field,value',[('csv_byte_count',-1),('input_bindings_digest','0'*64),('eligibility_sha256','0'*64)])
+    def test_serialized_receipt_false_source_metadata_is_rejected(tmp_path,kind,field,value):
+        setup=prepare(tmp_path,kind);packet,other=setup['packets']
+        receipt=FrozenRecord.from_dict({**packet.receipt.data(),field:value})
+        packet.packet_path.write_text(canonical({'task':packet.task.data(),'receipt':receipt.data()}),encoding='utf-8')
+        altered=replace(packet,receipt=receipt)
+&gt;       with pytest.raises(ContractError):setup['compile_fn'](setup['config'],(altered,other))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+..\work\combo-source-readonly-review.py:18: Failed</failure></testcase><testcase classname="work.combo-source-readonly-review" name="test_serialized_receipt_false_source_metadata_is_rejected[csv_byte_count--1-lineage]" time="5.753"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/combo-source-readonly-review-temp/test_serialized_receipt_false_1')
+kind = 'lineage', field = 'csv_byte_count', value = -1
+
+    @pytest.mark.parametrize('kind',['m4','lineage','retrieval'])
+    @pytest.mark.parametrize('field,value',[('csv_byte_count',-1),('input_bindings_digest','0'*64),('eligibility_sha256','0'*64)])
+    def test_serialized_receipt_false_source_metadata_is_rejected(tmp_path,kind,field,value):
+        setup=prepare(tmp_path,kind);packet,other=setup['packets']
+        receipt=FrozenRecord.from_dict({**packet.receipt.data(),field:value})
+        packet.packet_path.write_text(canonical({'task':packet.task.data(),'receipt':receipt.data()}),encoding='utf-8')
+        altered=replace(packet,receipt=receipt)
+&gt;       with pytest.raises(ContractError):setup['compile_fn'](setup['config'],(altered,other))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+..\work\combo-source-readonly-review.py:18: Failed</failure></testcase><testcase classname="work.combo-source-readonly-review" name="test_serialized_receipt_false_source_metadata_is_rejected[csv_byte_count--1-retrieval]" time="4.307"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/combo-source-readonly-review-temp/test_serialized_receipt_false_2')
+kind = 'retrieval', field = 'csv_byte_count', value = -1
+
+    @pytest.mark.parametrize('kind',['m4','lineage','retrieval'])
+    @pytest.mark.parametrize('field,value',[('csv_byte_count',-1),('input_bindings_digest','0'*64),('eligibility_sha256','0'*64)])
+    def test_serialized_receipt_false_source_metadata_is_rejected(tmp_path,kind,field,value):
+        setup=prepare(tmp_path,kind);packet,other=setup['packets']
+        receipt=FrozenRecord.from_dict({**packet.receipt.data(),field:value})
+        packet.packet_path.write_text(canonical({'task':packet.task.data(),'receipt':receipt.data()}),encoding='utf-8')
+        altered=replace(packet,receipt=receipt)
+&gt;       with pytest.raises(ContractError):setup['compile_fn'](setup['config'],(altered,other))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+..\work\combo-source-readonly-review.py:18: Failed</failure></testcase><testcase classname="work.combo-source-readonly-review" name="test_serialized_receipt_false_source_metadata_is_rejected[input_bindings_digest-0000000000000000000000000000000000000000000000000000000000000000-m4]" time="3.900"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/combo-source-readonly-review-temp/test_serialized_receipt_false_3')
+kind = 'm4', field = 'input_bindings_digest'
+value = '0000000000000000000000000000000000000000000000000000000000000000'
+
+    @pytest.mark.parametrize('kind',['m4','lineage','retrieval'])
+    @pytest.mark.parametrize('field,value',[('csv_byte_count',-1),('input_bindings_digest','0'*64),('eligibility_sha256','0'*64)])
+    def test_serialized_receipt_false_source_metadata_is_rejected(tmp_path,kind,field,value):
+        setup=prepare(tmp_path,kind);packet,other=setup['packets']
+        receipt=FrozenRecord.from_dict({**packet.receipt.data(),field:value})
+        packet.packet_path.write_text(canonical({'task':packet.task.data(),'receipt':receipt.data()}),encoding='utf-8')
+        altered=replace(packet,receipt=receipt)
+&gt;       with pytest.raises(ContractError):setup['compile_fn'](setup['config'],(altered,other))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+..\work\combo-source-readonly-review.py:18: Failed</failure></testcase><testcase classname="work.combo-source-readonly-review" name="test_serialized_receipt_false_source_metadata_is_rejected[input_bindings_digest-0000000000000000000000000000000000000000000000000000000000000000-lineage]" time="5.386"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/combo-source-readonly-review-temp/test_serialized_receipt_false_4')
+kind = 'lineage', field = 'input_bindings_digest'
+value = '0000000000000000000000000000000000000000000000000000000000000000'
+
+    @pytest.mark.parametrize('kind',['m4','lineage','retrieval'])
+    @pytest.mark.parametrize('field,value',[('csv_byte_count',-1),('input_bindings_digest','0'*64),('eligibility_sha256','0'*64)])
+    def test_serialized_receipt_false_source_metadata_is_rejected(tmp_path,kind,field,value):
+        setup=prepare(tmp_path,kind);packet,other=setup['packets']
+        receipt=FrozenRecord.from_dict({**packet.receipt.data(),field:value})
+        packet.packet_path.write_text(canonical({'task':packet.task.data(),'receipt':receipt.data()}),encoding='utf-8')
+        altered=replace(packet,receipt=receipt)
+&gt;       with pytest.raises(ContractError):setup['compile_fn'](setup['config'],(altered,other))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+..\work\combo-source-readonly-review.py:18: Failed</failure></testcase><testcase classname="work.combo-source-readonly-review" name="test_serialized_receipt_false_source_metadata_is_rejected[input_bindings_digest-0000000000000000000000000000000000000000000000000000000000000000-retrieval]" time="2.716"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/combo-source-readonly-review-temp/test_serialized_receipt_false_5')
+kind = 'retrieval', field = 'input_bindings_digest'
+value = '0000000000000000000000000000000000000000000000000000000000000000'
+
+    @pytest.mark.parametrize('kind',['m4','lineage','retrieval'])
+    @pytest.mark.parametrize('field,value',[('csv_byte_count',-1),('input_bindings_digest','0'*64),('eligibility_sha256','0'*64)])
+    def test_serialized_receipt_false_source_metadata_is_rejected(tmp_path,kind,field,value):
+        setup=prepare(tmp_path,kind);packet,other=setup['packets']
+        receipt=FrozenRecord.from_dict({**packet.receipt.data(),field:value})
+        packet.packet_path.write_text(canonical({'task':packet.task.data(),'receipt':receipt.data()}),encoding='utf-8')
+        altered=replace(packet,receipt=receipt)
+&gt;       with pytest.raises(ContractError):setup['compile_fn'](setup['config'],(altered,other))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+..\work\combo-source-readonly-review.py:18: Failed</failure></testcase><testcase classname="work.combo-source-readonly-review" name="test_serialized_receipt_false_source_metadata_is_rejected[eligibility_sha256-0000000000000000000000000000000000000000000000000000000000000000-m4]" time="3.117"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/combo-source-readonly-review-temp/test_serialized_receipt_false_6')
+kind = 'm4', field = 'eligibility_sha256'
+value = '0000000000000000000000000000000000000000000000000000000000000000'
+
+    @pytest.mark.parametrize('kind',['m4','lineage','retrieval'])
+    @pytest.mark.parametrize('field,value',[('csv_byte_count',-1),('input_bindings_digest','0'*64),('eligibility_sha256','0'*64)])
+    def test_serialized_receipt_false_source_metadata_is_rejected(tmp_path,kind,field,value):
+        setup=prepare(tmp_path,kind);packet,other=setup['packets']
+        receipt=FrozenRecord.from_dict({**packet.receipt.data(),field:value})
+        packet.packet_path.write_text(canonical({'task':packet.task.data(),'receipt':receipt.data()}),encoding='utf-8')
+        altered=replace(packet,receipt=receipt)
+&gt;       with pytest.raises(ContractError):setup['compile_fn'](setup['config'],(altered,other))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+..\work\combo-source-readonly-review.py:18: Failed</failure></testcase><testcase classname="work.combo-source-readonly-review" name="test_serialized_receipt_false_source_metadata_is_rejected[eligibility_sha256-0000000000000000000000000000000000000000000000000000000000000000-lineage]" time="2.997"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/combo-source-readonly-review-temp/test_serialized_receipt_false_7')
+kind = 'lineage', field = 'eligibility_sha256'
+value = '0000000000000000000000000000000000000000000000000000000000000000'
+
+    @pytest.mark.parametrize('kind',['m4','lineage','retrieval'])
+    @pytest.mark.parametrize('field,value',[('csv_byte_count',-1),('input_bindings_digest','0'*64),('eligibility_sha256','0'*64)])
+    def test_serialized_receipt_false_source_metadata_is_rejected(tmp_path,kind,field,value):
+        setup=prepare(tmp_path,kind);packet,other=setup['packets']
+        receipt=FrozenRecord.from_dict({**packet.receipt.data(),field:value})
+        packet.packet_path.write_text(canonical({'task':packet.task.data(),'receipt':receipt.data()}),encoding='utf-8')
+        altered=replace(packet,receipt=receipt)
+&gt;       with pytest.raises(ContractError):setup['compile_fn'](setup['config'],(altered,other))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+..\work\combo-source-readonly-review.py:18: Failed</failure></testcase><testcase classname="work.combo-source-readonly-review" name="test_serialized_receipt_false_source_metadata_is_rejected[eligibility_sha256-0000000000000000000000000000000000000000000000000000000000000000-retrieval]" time="3.175"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/combo-source-readonly-review-temp/test_serialized_receipt_false_8')
+kind = 'retrieval', field = 'eligibility_sha256'
+value = '0000000000000000000000000000000000000000000000000000000000000000'
+
+    @pytest.mark.parametrize('kind',['m4','lineage','retrieval'])
+    @pytest.mark.parametrize('field,value',[('csv_byte_count',-1),('input_bindings_digest','0'*64),('eligibility_sha256','0'*64)])
+    def test_serialized_receipt_false_source_metadata_is_rejected(tmp_path,kind,field,value):
+        setup=prepare(tmp_path,kind);packet,other=setup['packets']
+        receipt=FrozenRecord.from_dict({**packet.receipt.data(),field:value})
+        packet.packet_path.write_text(canonical({'task':packet.task.data(),'receipt':receipt.data()}),encoding='utf-8')
+        altered=replace(packet,receipt=receipt)
+&gt;       with pytest.raises(ContractError):setup['compile_fn'](setup['config'],(altered,other))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+..\work\combo-source-readonly-review.py:18: Failed</failure></testcase></testsuite></testsuites>

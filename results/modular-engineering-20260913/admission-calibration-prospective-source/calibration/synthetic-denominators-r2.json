@@ -1,0 +1,555 @@
+{
+  "schema": "calibration-pilot-synthetic-denominators-v1",
+  "journals": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_capacity_or_budget_never_0\\pilot.jsonl",
+      "sha256": "60c462d1b51ec659095f4c1c088ca20e478d42442be47b9fe056d9c0266c9bce",
+      "events": {
+        "pilot_reserved": 1,
+        "sources_verified": 1,
+        "capacity_rejected": 72,
+        "reviews_frozen": 1,
+        "opportunity_closed": 72,
+        "pilot_completed": 1
+      },
+      "reserved_port_attempts": {},
+      "retained_raw_responses": {},
+      "cost_statuses": {},
+      "last_chain_digest": "97acb7d76a8c96b201406382e45e1136137713678ceec59415a8109ea12cb217"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_capacity_or_budget_never_1\\pilot.jsonl",
+      "sha256": "60c462d1b51ec659095f4c1c088ca20e478d42442be47b9fe056d9c0266c9bce",
+      "events": {
+        "pilot_reserved": 1,
+        "sources_verified": 1,
+        "capacity_rejected": 72,
+        "reviews_frozen": 1,
+        "opportunity_closed": 72,
+        "pilot_completed": 1
+      },
+      "reserved_port_attempts": {},
+      "retained_raw_responses": {},
+      "cost_statuses": {},
+      "last_chain_digest": "97acb7d76a8c96b201406382e45e1136137713678ceec59415a8109ea12cb217"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_capacity_or_budget_never_2\\pilot.jsonl",
+      "sha256": "60c462d1b51ec659095f4c1c088ca20e478d42442be47b9fe056d9c0266c9bce",
+      "events": {
+        "pilot_reserved": 1,
+        "sources_verified": 1,
+        "capacity_rejected": 72,
+        "reviews_frozen": 1,
+        "opportunity_closed": 72,
+        "pilot_completed": 1
+      },
+      "reserved_port_attempts": {},
+      "retained_raw_responses": {},
+      "cost_statuses": {},
+      "last_chain_digest": "97acb7d76a8c96b201406382e45e1136137713678ceec59415a8109ea12cb217"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_capacity_or_budget_never_3\\pilot.jsonl",
+      "sha256": "60c462d1b51ec659095f4c1c088ca20e478d42442be47b9fe056d9c0266c9bce",
+      "events": {
+        "pilot_reserved": 1,
+        "sources_verified": 1,
+        "capacity_rejected": 72,
+        "reviews_frozen": 1,
+        "opportunity_closed": 72,
+        "pilot_completed": 1
+      },
+      "reserved_port_attempts": {},
+      "retained_raw_responses": {},
+      "cost_statuses": {},
+      "last_chain_digest": "97acb7d76a8c96b201406382e45e1136137713678ceec59415a8109ea12cb217"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_full_grid_blind_reviews_b0\\pilot.jsonl",
+      "sha256": "4f75f5105ca00f2c86c7f288005ec32af2ef11bf9cfd2a358c175d87cd20af35",
+      "events": {
+        "pilot_reserved": 1,
+        "sources_verified": 1,
+        "port_reserved": 144,
+        "port_raw": 144,
+        "port_closed": 144,
+        "reviews_frozen": 1,
+        "opportunity_closed": 72,
+        "pilot_completed": 1
+      },
+      "reserved_port_attempts": {
+        "reviewer1": 36,
+        "reviewer2": 36,
+        "evaluator": 72
+      },
+      "retained_raw_responses": {
+        "reviewer1": 36,
+        "reviewer2": 36,
+        "evaluator": 72
+      },
+      "cost_statuses": {
+        "verified_reported": 144
+      },
+      "last_chain_digest": "792de47ed0f5034006d7b9933e8eae097c154d9744bf67a84711830440c35a49"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_global_review_budget_is_n0\\budget.jsonl",
+      "sha256": "8e5ba1966f9dd7c0f4309ceba6484d3270f923d6465ab2e0502c9d62e06fcddf",
+      "events": {
+        "port_reserved": 1,
+        "port_raw": 1,
+        "port_closed": 1
+      },
+      "reserved_port_attempts": {
+        "reviewer1": 1
+      },
+      "retained_raw_responses": {
+        "reviewer1": 1
+      },
+      "cost_statuses": {
+        "verified_reported": 1
+      },
+      "last_chain_digest": "bc964c81d45220221c9e0b2ea9b206754f7454c73b79630d8f10f6b18fd46915"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_invalid_judge_output_reta0\\pilot.jsonl",
+      "sha256": "14047640b05759835e7c8e8f4b4b69d19fa1a463b6a64887a142e79d62d5d637",
+      "events": {
+        "pilot_reserved": 1,
+        "sources_verified": 1,
+        "port_reserved": 144,
+        "port_raw": 144,
+        "port_closed": 144,
+        "reviews_frozen": 1,
+        "opportunity_closed": 72,
+        "pilot_completed": 1
+      },
+      "reserved_port_attempts": {
+        "reviewer1": 36,
+        "reviewer2": 36,
+        "evaluator": 72
+      },
+      "retained_raw_responses": {
+        "reviewer1": 36,
+        "reviewer2": 36,
+        "evaluator": 72
+      },
+      "cost_statuses": {
+        "verified_reported": 144
+      },
+      "last_chain_digest": "c8d610c3147d3f6c236644362097a2490b538a208297178b934516dc86c5b406"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_partial_evaluator_cost_pr0\\budget.jsonl",
+      "sha256": "892f8add386c2ab8187486d369903222e9bc31e89400b5d987db00132d55d2a1",
+      "events": {
+        "port_reserved": 1,
+        "port_raw": 1,
+        "port_closed": 1
+      },
+      "reserved_port_attempts": {
+        "evaluator": 1
+      },
+      "retained_raw_responses": {
+        "evaluator": 1
+      },
+      "cost_statuses": {
+        "unknown_reservation_retained": 1
+      },
+      "last_chain_digest": "fe5e23c6fd2e7139987b21e839790ff3f035b5ab0336cfcec0cd397d1d8f2a7e"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_partial_evaluator_cost_pr1\\budget.jsonl",
+      "sha256": "e0a219032bbe70b68ae5683882d5a7d5ac63950e72df40a95e7347ce331d63a7",
+      "events": {
+        "port_reserved": 1,
+        "port_raw": 1,
+        "port_closed": 1
+      },
+      "reserved_port_attempts": {
+        "evaluator": 1
+      },
+      "retained_raw_responses": {
+        "evaluator": 1
+      },
+      "cost_statuses": {
+        "unknown_reservation_retained": 1
+      },
+      "last_chain_digest": "d3f51e3fcad11d93fedbb650edd8c151484dd0f338fc013a098d366d2ee2be51"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_partial_evaluator_cost_pr2\\budget.jsonl",
+      "sha256": "e48270efbfa7667b2fc282bfa2b02a6f62c6b9c3a4847b878f5a84808fbe48c5",
+      "events": {
+        "port_reserved": 1,
+        "port_raw": 1,
+        "port_closed": 1
+      },
+      "reserved_port_attempts": {
+        "evaluator": 1
+      },
+      "retained_raw_responses": {
+        "evaluator": 1
+      },
+      "cost_statuses": {
+        "reported_reservation_breach": 1
+      },
+      "last_chain_digest": "d5357bdcadf3fa6558368df65e6747aee3f8869915c88a34b763cfa6257ce27c"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_real_subprocess_36_slot_s0\\parent.jsonl",
+      "sha256": "5890701a6c2c926ca9aeb314f4f85d3d4185b11a10fbc90dde7808fda3537219",
+      "events": {
+        "process_reserved": 1,
+        "process_closed": 1
+      },
+      "reserved_port_attempts": {},
+      "retained_raw_responses": {},
+      "cost_statuses": {},
+      "last_chain_digest": "af510c12444a8d2db8de4f0bb5930066767f75346fccaa5c7087b745d44bafc4"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_real_subprocess_36_slot_s0\\private-journal.jsonl",
+      "sha256": "4f75f5105ca00f2c86c7f288005ec32af2ef11bf9cfd2a358c175d87cd20af35",
+      "events": {
+        "pilot_reserved": 1,
+        "sources_verified": 1,
+        "port_reserved": 144,
+        "port_raw": 144,
+        "port_closed": 144,
+        "reviews_frozen": 1,
+        "opportunity_closed": 72,
+        "pilot_completed": 1
+      },
+      "reserved_port_attempts": {
+        "reviewer1": 36,
+        "reviewer2": 36,
+        "evaluator": 72
+      },
+      "retained_raw_responses": {
+        "reviewer1": 36,
+        "reviewer2": 36,
+        "evaluator": 72
+      },
+      "cost_statuses": {
+        "verified_reported": 144
+      },
+      "last_chain_digest": "792de47ed0f5034006d7b9933e8eae097c154d9744bf67a84711830440c35a49"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_reference_drift_keeps_res0\\pilot.jsonl",
+      "sha256": "46dc9ee90d3ce0b719fe937a869e931479448d747d6aeb9f6e518b0112ff1eaf",
+      "events": {
+        "pilot_reserved": 1,
+        "pilot_source_rejected": 1
+      },
+      "reserved_port_attempts": {},
+      "retained_raw_responses": {},
+      "cost_statuses": {},
+      "last_chain_digest": "a710e1da6f4bc51e2db6d6d757bff45b21e698d695b122da726e13d636995a55"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_review_disagreement_calls0\\pilot.jsonl",
+      "sha256": "5e3e22b5c0da049a8b4a6986880a23ec462c98cc4c3ae00b6bf0b6696f42912f",
+      "events": {
+        "pilot_reserved": 1,
+        "sources_verified": 1,
+        "port_reserved": 180,
+        "port_raw": 180,
+        "port_closed": 180,
+        "reviews_frozen": 1,
+        "opportunity_closed": 72,
+        "pilot_completed": 1
+      },
+      "reserved_port_attempts": {
+        "reviewer1": 36,
+        "reviewer2": 36,
+        "arbitrator": 36,
+        "evaluator": 72
+      },
+      "retained_raw_responses": {
+        "reviewer1": 36,
+        "reviewer2": 36,
+        "arbitrator": 36,
+        "evaluator": 72
+      },
+      "cost_statuses": {
+        "verified_reported": 180
+      },
+      "last_chain_digest": "a9a8faaff9f97c134e505b67b83df7211b8a0e22a21fe0c6b9e5dfda17102b52"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_same_usage_evidence_canno0\\budget.jsonl",
+      "sha256": "049754223cfb044cc1e30b3e2c67cc95ca9c51dbb049d4196e36e145fe741f78",
+      "events": {
+        "port_reserved": 2,
+        "port_raw": 2,
+        "port_closed": 2
+      },
+      "reserved_port_attempts": {
+        "reviewer1": 2
+      },
+      "retained_raw_responses": {
+        "reviewer1": 2
+      },
+      "cost_statuses": {
+        "verified_reported": 1,
+        "unknown_reservation_retained": 1
+      },
+      "last_chain_digest": "8db99ca342832482d048a76def6c1de598af3ada1d3d9e6cef3acf85465dc4a3"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_source_change_in_capacity0\\private-journal.jsonl",
+      "sha256": "8803daa72217171a1c4c09f7b881cd73eaef39dfeffa4d91c9151e896d7029a1",
+      "events": {
+        "pilot_reserved": 1,
+        "sources_verified": 1,
+        "source_guard_rejected": 1,
+        "reviews_frozen": 1,
+        "opportunity_closed": 72,
+        "pilot_completed": 1,
+        "postrun_source_rejected": 1
+      },
+      "reserved_port_attempts": {},
+      "retained_raw_responses": {},
+      "cost_statuses": {},
+      "last_chain_digest": "c90e3d9717b40a101ad474add97f7a095f321fa181400a46ed30f3fd2bd6d695"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_source_drift_latches_even0\\budget.jsonl",
+      "sha256": "3c75b74868824d3e40c6588612b1a47de74c6ae8c5c6efa24cd819e84bda939a",
+      "events": {
+        "source_guard_rejected": 1
+      },
+      "reserved_port_attempts": {},
+      "retained_raw_responses": {},
+      "cost_statuses": {},
+      "last_chain_digest": "97d3841032905f8095d77c1a133091301e0ed9e48866a9e71ee6cd6dd41367c1"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_timeout_preserves_partial0\\timeout-parent.jsonl",
+      "sha256": "2f4fd92ed65983263082974eaee192e6fa64ddf936f4fbe5ee01bab61afe3d3c",
+      "events": {
+        "process_reserved": 1,
+        "process_unknown": 1
+      },
+      "reserved_port_attempts": {},
+      "retained_raw_responses": {},
+      "cost_statuses": {},
+      "last_chain_digest": "de7f114880aa6e56011df2a98b1b9b9bce1fca2fe1f7d7239a771c7690cdc0e2"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_unknown_reviewer_cost_blo0\\pilot.jsonl",
+      "sha256": "ee126a011912d3db3f633b44292fd73ba0587a2945272baf9992ef5408862aa5",
+      "events": {
+        "pilot_reserved": 1,
+        "sources_verified": 1,
+        "port_reserved": 1,
+        "port_raw": 1,
+        "port_closed": 1,
+        "reviews_frozen": 1,
+        "opportunity_closed": 72,
+        "pilot_completed": 1
+      },
+      "reserved_port_attempts": {
+        "reviewer1": 1
+      },
+      "retained_raw_responses": {
+        "reviewer1": 1
+      },
+      "cost_statuses": {
+        "unknown_reservation_retained": 1
+      },
+      "last_chain_digest": "0e7d54fa227451f07ca9191642414c965d43e204840d3c93f16acdb349c0e5a7"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_unresolved_and_not_applic0\\pilot.jsonl",
+      "sha256": "ca24279fc88669cbcc2a6657ed32de8f31250d372625adc4744c8ae7a76d1911",
+      "events": {
+        "pilot_reserved": 1,
+        "sources_verified": 1,
+        "port_reserved": 136,
+        "port_raw": 136,
+        "port_closed": 136,
+        "reviews_frozen": 1,
+        "opportunity_closed": 72,
+        "pilot_completed": 1
+      },
+      "reserved_port_attempts": {
+        "reviewer1": 34,
+        "reviewer2": 34,
+        "evaluator": 68
+      },
+      "retained_raw_responses": {
+        "reviewer1": 34,
+        "reviewer2": 34,
+        "evaluator": 68
+      },
+      "cost_statuses": {
+        "verified_reported": 136
+      },
+      "last_chain_digest": "9038d012fffdec81dffd6de0258c01f7b2e659f081a1fc87977f43bf77856a66"
+    }
+  ],
+  "journal_count": 20,
+  "reserved_port_attempts": {
+    "reviewer1": 182,
+    "reviewer2": 178,
+    "evaluator": 359,
+    "arbitrator": 36
+  },
+  "cost_statuses": {
+    "verified_reported": 750,
+    "unknown_reservation_retained": 4,
+    "reported_reservation_breach": 1
+  },
+  "main_grid": {
+    "source_tasks": 4,
+    "slots": 36,
+    "evaluator_opportunities": 72,
+    "budget": {
+      "calls": {
+        "arbitrator": 0,
+        "evaluator": 72,
+        "reviewer1": 36,
+        "reviewer2": 36
+      },
+      "failed_calls": {
+        "arbitrator": 0,
+        "evaluator": 0,
+        "reviewer1": 0,
+        "reviewer2": 0
+      },
+      "further_io_blocked": false,
+      "halt_reason": null,
+      "invalid_response_calls": {
+        "arbitrator": 0,
+        "evaluator": 0,
+        "reviewer1": 0,
+        "reviewer2": 0
+      },
+      "known_or_reserved_microusd": {
+        "arbitrator": 0,
+        "evaluator": 72,
+        "reviewer1": 36,
+        "reviewer2": 36
+      },
+      "known_or_reserved_tokens": {
+        "arbitrator": 0,
+        "evaluator": 1080,
+        "reviewer1": 540,
+        "reviewer2": 540
+      },
+      "nonbillable_capacity_checks": 144,
+      "unknown_cost_calls": {
+        "arbitrator": 0,
+        "evaluator": 0,
+        "reviewer1": 0,
+        "reviewer2": 0
+      }
+    },
+    "per_benchmark": {
+      "blade": {
+        "absolute_error": {
+          "cvars": {
+            "mean": 0.0,
+            "n": 28
+          },
+          "model": {
+            "mean": 0.0,
+            "n": 28
+          },
+          "transform": {
+            "mean": 0.0,
+            "n": 28
+          }
+        },
+        "dimension_confusion": {
+          "cvars": {
+            "0:0": 12,
+            "1:1": 16
+          },
+          "model": {
+            "0:0": 12,
+            "1:1": 16
+          },
+          "transform": {
+            "0:0": 12,
+            "1:1": 16
+          }
+        },
+        "observed_groups": 2,
+        "opportunities": 36,
+        "repeat_absolute_difference": {
+          "cvars": {
+            "mean": 0.0,
+            "pairs": 18
+          },
+          "model": {
+            "mean": 0.0,
+            "pairs": 18
+          },
+          "transform": {
+            "mean": 0.0,
+            "pairs": 18
+          }
+        },
+        "source_tasks": 2,
+        "statuses": {
+          "scored_diagnostic": 36
+        }
+      },
+      "discoverybench": {
+        "absolute_error": {
+          "context": {
+            "mean": 0.0,
+            "n": 28
+          },
+          "relation": {
+            "mean": 0.0,
+            "n": 28
+          },
+          "variable_f1": {
+            "mean": 0.0,
+            "n": 28
+          }
+        },
+        "dimension_confusion": {
+          "context": {
+            "0:0": 12,
+            "1:1": 16
+          },
+          "relation": {
+            "0:0": 12,
+            "1:1": 16
+          }
+        },
+        "observed_groups": 2,
+        "opportunities": 36,
+        "repeat_absolute_difference": {
+          "context": {
+            "mean": 0.0,
+            "pairs": 18
+          },
+          "relation": {
+            "mean": 0.0,
+            "pairs": 18
+          },
+          "variable_f1": {
+            "mean": 0.0,
+            "pairs": 18
+          }
+        },
+        "source_tasks": 2,
+        "statuses": {
+          "scored_diagnostic": 36
+        }
+      }
+    }
+  },
+  "actual_paid_model_calls": 0,
+  "actual_reference_payload_reads": 0,
+  "validation_calls": 0,
+  "denominator_scope": "Synthetic private journals in final2-tmp only; counts are port-dispatch attempts, including rejected/cached/partial counterexamples, not paid model calls. Hand-authored fixture preparation is not a model call."
+}

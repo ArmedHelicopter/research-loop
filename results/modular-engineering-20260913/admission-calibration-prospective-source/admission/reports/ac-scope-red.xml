@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.821" timestamp="2026-09-13T17:50:49.933677+08:00" hostname="SC-202507131830"><testcase classname="work.ac-scope-red" name="test_admission_named_entry_rejects_legacy_lineage_configuration" time="0.333"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/ac-scope-red-temp/test_admission_named_entry_rej0')
+
+    def test_admission_named_entry_rejects_legacy_lineage_configuration(tmp_path):
+        _,_,packets,legacy,_,_ = _fixture(tmp_path,_sources([]))
+&gt;       with pytest.raises(ContractError,match='admission'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+..\work\ac-scope-red.py:11: Failed</failure></testcase></testsuite></testsuites>

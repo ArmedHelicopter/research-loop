@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="2.687" timestamp="2026-09-13T17:59:05.122729+08:00" hostname="SC-202507131830"><testcase classname="tests.test_calibration_pilot" name="test_source_drift_latches_even_when_original_bytes_are_restored" time="0.156"><failure message="AssertionError: assert 'capacity_rejected' == 'blocked_source_drift'&#10;  &#10;  - blocked_source_drift&#10;  + capacity_rejected">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/cal-pilot-checks/red-boundary-tmp/test_source_drift_latches_even0')
+
+    def test_source_drift_latches_even_when_original_bytes_are_restored(tmp_path):
+        manifest, _, authorities, _ = build_fixture(tmp_path)
+        ports = FixturePorts(manifest, authorities)
+        drift = [False]
+        def guard():
+            if drift[0]: raise ContractError('synthetic source drift')
+        def capacity(request):
+            quote = ports.capacity(request)
+            drift[0] = True
+            return quote
+        budget = PortBudget(manifest,PrivateJournal(tmp_path/'budget.jsonl'),capacity_port=capacity,
+            capacity_key=authorities['capacity'].key,source_guard=guard)
+        req = record({'benchmark':'blade','candidate':{'answer':'The synthetic relation is supported.'}})
+        _, status = budget.call('reviewer1',req,lambda r: ports.review('reviewer1',r))
+&gt;       assert status=='blocked_source_drift'
+E       AssertionError: assert 'capacity_rejected' == 'blocked_source_drift'
+E         
+E         - blocked_source_drift
+E         + capacity_rejected
+
+tests\test_calibration_pilot.py:322: AssertionError</failure></testcase><testcase classname="tests.test_calibration_pilot" name="test_same_usage_evidence_cannot_count_as_second_actual_call" time="0.667"><failure message="AssertionError: assert ('received' == 'received'&#10;  &#10;    received and 'received' == 'unknown_cost'&#10;  &#10;  - unknown_cost&#10;  + received)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/cal-pilot-checks/red-boundary-tmp/test_same_usage_evidence_canno0')
+
+    def test_same_usage_evidence_cannot_count_as_second_actual_call(tmp_path):
+        manifest, _, authorities, _ = build_fixture(tmp_path)
+        ports = FixturePorts(manifest, authorities)
+        budget = PortBudget(manifest,PrivateJournal(tmp_path/'budget.jsonl'),capacity_port=ports.capacity,
+            capacity_key=authorities['capacity'].key)
+        req = record({'benchmark':'blade','candidate':{'answer':'The synthetic relation is supported.'}})
+        cached = ports.review('reviewer1',req)
+        _, first = budget.call('reviewer1',req,lambda r: cached)
+        _, second = budget.call('reviewer1',req,lambda r: cached)
+&gt;       assert first=='received' and second=='unknown_cost'
+E       AssertionError: assert ('received' == 'received'
+E         
+E           received and 'received' == 'unknown_cost'
+E         
+E         - unknown_cost
+E         + received)
+
+tests\test_calibration_pilot.py:338: AssertionError</failure></testcase><testcase classname="tests.test_calibration_pilot" name="test_timeout_preserves_partial_streams_and_unknown_child_cost" time="1.418"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\red-boundary-tmp\\test_timeout_preserves_partial0\\timeout-parent.jsonl.timeout-stdout.bin'">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/cal-pilot-checks/red-boundary-tmp/test_timeout_preserves_partial0')
+
+    def test_timeout_preserves_partial_streams_and_unknown_child_cost(tmp_path):
+        _, _, _, config = build_fixture(tmp_path)
+        desc = write(tmp_path/'config.json',config.data())
+        helper = tmp_path/'timeout_worker.py'
+        helper.write_text('import sys,time\nprint("PRIVATE_PARTIAL_STDOUT",flush=True)\nprint("PRIVATE_PARTIAL_STDERR",file=sys.stderr,flush=True)\ntime.sleep(10)\n')
+        parent = tmp_path/'timeout-parent.jsonl'
+        output = tmp_path/'out.json'
+        with pytest.raises(ContractError,match='outcome unknown'):
+            launch_once(command=[sys.executable,str(helper),'--config',desc['path'],'--sha256',desc['sha256'],'--output',str(output)],
+                executable_sha256=hash_file(Path(sys.executable)),worker_sha256=hash_file(helper),config_descriptor=desc,
+                result_path=output,parent_journal_path=parent,timeout_seconds=1)
+&gt;       assert Path(str(parent)+'.timeout-stdout.bin').read_bytes().strip()==b'PRIVATE_PARTIAL_STDOUT'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_calibration_pilot.py:354: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/cal-pilot-checks/red-boundary-tmp/test_timeout_preserves_partial0/timeout-parent.jsonl.timeout-stdout.bin')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\red-boundary-tmp\\test_timeout_preserves_partial0\\timeout-parent.jsonl.timeout-stdout.bin'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError</failure></testcase></testsuite></testsuites>

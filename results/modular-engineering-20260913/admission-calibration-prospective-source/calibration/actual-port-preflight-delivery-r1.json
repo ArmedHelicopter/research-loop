@@ -1,0 +1,23 @@
+{
+  "files": [
+    {
+      "bytes": 3964,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\actual-port-preflight-plan-r1.json",
+      "sha256": "58f0d4dd62b90d27d7e346b5f01650ca3429e0aee6b8d1e331392fbde62517b1"
+    },
+    {
+      "bytes": 9560,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\actual-port-preflight-plan-r1.md",
+      "sha256": "95a8210e3aabac84035b2721e26466a312685599ccb18b765b34950a2094b75d"
+    },
+    {
+      "bytes": 1427,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\actual-port-historical-metadata-r1.json",
+      "sha256": "28e33d542844c73942b8c31d8288ffda68cb5ee593197693eee4d46d4dc2dd81"
+    }
+  ],
+  "schema": "diagnostic-port-preflight-delivery-v1",
+  "scope": "metadata/code-only followup; no actual pilot executed",
+  "source_clean": true,
+  "source_pins_after_match": true
+}

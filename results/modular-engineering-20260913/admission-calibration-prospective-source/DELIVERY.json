@@ -1,0 +1,1061 @@
+{
+  "root_source_commit": "20b111fe4f0d03b13c20ec18d8b200eae9a75e64",
+  "files": {
+    "admission/verification.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-verification.json",
+      "sha256": "a908ab1b4e0dae0bc7cabd1e8e3255c46712251b29880a63378371d6b52f97f7",
+      "bytes": 22296
+    },
+    "admission/source/docs/ADMISSION-COMBINATION-TRAIN.md": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\adm-combo\\docs\\ADMISSION-COMBINATION-TRAIN.md",
+      "sha256": "8af94efe8954be82f7288f7f22b628fa6c026a0bdcec43ac5d0a8022e4ac938b",
+      "bytes": 4910
+    },
+    "admission/source/evaluation/modular/scorer_process.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\adm-combo\\evaluation\\modular\\scorer_process.py",
+      "sha256": "eb417aef41b05729b65e5ccb0dbc090713f65a3e9a6b2c88c3254dec61c117e3",
+      "bytes": 37260
+    },
+    "admission/source/research_loop/modular/admission_combination.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\adm-combo\\research_loop\\modular\\admission_combination.py",
+      "sha256": "03b6c441c394667e26d7596593012b27376f5a796f4f423ef473d172f102ccea",
+      "bytes": 13414
+    },
+    "admission/source/research_loop/modular/admission_combination_controller.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\adm-combo\\research_loop\\modular\\admission_combination_controller.py",
+      "sha256": "2eecaae5e9483b972d547bde78e1f5c28383090c5748d0f78d3fd194bd9481f4",
+      "bytes": 1500
+    },
+    "admission/source/research_loop/modular/lineage_combination_controller.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\adm-combo\\research_loop\\modular\\lineage_combination_controller.py",
+      "sha256": "66e9f62501cef547476107f3a058fd9863436371a0d93b603ba482d50123adac",
+      "bytes": 24425
+    },
+    "admission/source/research_loop/modular/lineage_combination_driver.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\adm-combo\\research_loop\\modular\\lineage_combination_driver.py",
+      "sha256": "b9303f57b9eb0c81ed712f98ae3f708bbb18304c0a36cc623675704664828257",
+      "bytes": 27155
+    },
+    "admission/source/tests/helpers/admission_scorer_process_helper.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\adm-combo\\tests\\helpers\\admission_scorer_process_helper.py",
+      "sha256": "968b91ca0756cc9283f290cc8f5e362457e6590d8443c4fbb410b1c5bafba5d8",
+      "bytes": 1235
+    },
+    "admission/source/tests/test_admission_combination.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\adm-combo\\tests\\test_admission_combination.py",
+      "sha256": "a19ca03716af830768402865c87962d6c618c287e83b7246dbdae60bd3e258d0",
+      "bytes": 22844
+    },
+    "admission/reports/ac-red.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-red.xml",
+      "sha256": "1a6620cc43ddedd9cdaf6f69d538bdbdf5f7cce72f374e0cabef32ea6b4b6986",
+      "bytes": 1957
+    },
+    "admission/reports/ac-grid-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r1.xml",
+      "sha256": "17da9fa453a862824f01a8f30c515cbf258bf3f19eb7c04ee924b2012644cf52",
+      "bytes": 4016
+    },
+    "admission/reports/ac-grid-r2.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-grid-r2.xml",
+      "sha256": "e44b590b562ce2e5ccf6d149475fb145907d58b9fb646cd7d47fbbc7474024fa",
+      "bytes": 1769
+    },
+    "admission/reports/ac-authority-red.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-authority-red.xml",
+      "sha256": "179088ba2ba6d2fa09b9994a0c92a489a0843c418375cc53196880d4322d94b7",
+      "bytes": 1505
+    },
+    "admission/reports/ac-scope-red.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-scope-red.xml",
+      "sha256": "bb72ae00886f2a73f8130406afebe7b06cfee4ffbb68f67b4beba873a0caa794",
+      "bytes": 1007
+    },
+    "admission/reports/ac-final.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final.xml",
+      "sha256": "fc06a69437057e1f22fff9577855a5d8babf1918ea4ba51b42f20c3c2c4fc712",
+      "bytes": 12910
+    },
+    "admission/reports/ac-final-r2.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ac-final-r2.xml",
+      "sha256": "38016776ff0ec39cb358573f76434684bb86a008a643a3e92c06bf55fb63c06c",
+      "bytes": 5793
+    },
+    "calibration/delivery-manifest-r2.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\delivery-manifest-r2.json",
+      "sha256": "a176f8200ff72282fdddbdefe92c537da77f877e72094514ef0192d057ef63e9",
+      "bytes": 3604
+    },
+    "calibration/source-before-final-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\source-before-final-r1.json",
+      "sha256": "8f4797a095ec17d2de3777aa92ad535b285555044b938f735fe0fd46851ed1a6",
+      "bytes": 84958
+    },
+    "calibration/final-r1-closure.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final-r1-closure.json",
+      "sha256": "e54187a4fa45ac1a9065500b478e7671d2b77d6b8c1c3cbcce1db557fb87399f",
+      "bytes": 588
+    },
+    "calibration/source-before-final-r2.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\source-before-final-r2.json",
+      "sha256": "1b6c6bb0dd966e9ddb6c144c42bfb2fec9247eed6be1e25ea3826dc344e6953d",
+      "bytes": 84958
+    },
+    "calibration/source-after-final-r2.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\source-after-final-r2.json",
+      "sha256": "23a334f5d907845f13bd61e2ee4eda22bcf0f61cb27b35b2500737cbe0b46613",
+      "bytes": 84961
+    },
+    "calibration/synthetic-main-grid-receipt-r2.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\synthetic-main-grid-receipt-r2.json",
+      "sha256": "b8ef7731ec4fc619df69a2d0aee7176f55aedf5b88c71601d14497e2b7dbb9fe",
+      "bytes": 32175
+    },
+    "calibration/synthetic-denominators-r2.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\synthetic-denominators-r2.json",
+      "sha256": "b79da3351cc4869349a923572b033077e08659117a4c54becf518ec3bd41d957",
+      "bytes": 18212
+    },
+    "calibration/delivery-verification-r2.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\delivery-verification-r2.json",
+      "sha256": "a71dfb68ade667f1aa44d9c4ced5fa5b99d76bbb2023a1d537bdb2ea9e889aa6",
+      "bytes": 3769
+    },
+    "calibration/archive_delivery.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\archive_delivery.py",
+      "sha256": "770470d131b2f64eb1856f613b9dd225f4858ed6543ee636584532d8830ac19f",
+      "bytes": 7358
+    },
+    "calibration/red-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\red-r1.xml",
+      "sha256": "445bdf05afd3bd1da11649de21cc2052fffdc939c6282468426d5edfe2172b11",
+      "bytes": 1038
+    },
+    "calibration/green-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\green-r1.xml",
+      "sha256": "28a43fa01f8e1885ca00fd80df9ed500bfe3472e3544dc3803b167ff7bfbd714",
+      "bytes": 3083
+    },
+    "calibration/boundary-r2.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\boundary-r2.xml",
+      "sha256": "3b18520a12c377652816a97b83e05dbfd7a1daeac7ca844e13360267d97b9a1f",
+      "bytes": 1055
+    },
+    "calibration/final-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final-r1.xml",
+      "sha256": "dbae42591bfaa0f85d07c64d0a119106671ea50765faaf9651a94742c4f307fd",
+      "bytes": 17479
+    },
+    "calibration/red-boundary-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\red-boundary-r1.xml",
+      "sha256": "909e3eedd25a74ec3f5ad32be3a732d99d57680e3efcaf5930db1a77e92a3e43",
+      "bytes": 6215
+    },
+    "calibration/green-boundary-r3.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\green-boundary-r3.xml",
+      "sha256": "de327f0baee4fc6b8b6bcda7824e344aec4674775d83f609d19a6d02d0a26096",
+      "bytes": 767
+    },
+    "calibration/final-r2.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final-r2.xml",
+      "sha256": "b8a86e9ec0c34e7f37fcd8f2693bbb4532cf3b5eba7f2fb3c12f37776fab2b79",
+      "bytes": 16773
+    },
+    "calibration/verification.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\docs\\calibration-pilot-verification.json",
+      "sha256": "a71dfb68ade667f1aa44d9c4ced5fa5b99d76bbb2023a1d537bdb2ea9e889aa6",
+      "bytes": 3769
+    },
+    "calibration/reports/red-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\red-r1.xml",
+      "sha256": "445bdf05afd3bd1da11649de21cc2052fffdc939c6282468426d5edfe2172b11",
+      "bytes": 1038
+    },
+    "calibration/reports/green-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\green-r1.xml",
+      "sha256": "28a43fa01f8e1885ca00fd80df9ed500bfe3472e3544dc3803b167ff7bfbd714",
+      "bytes": 3083
+    },
+    "calibration/reports/boundary-r2.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\boundary-r2.xml",
+      "sha256": "3b18520a12c377652816a97b83e05dbfd7a1daeac7ca844e13360267d97b9a1f",
+      "bytes": 1055
+    },
+    "calibration/reports/final-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final-r1.xml",
+      "sha256": "dbae42591bfaa0f85d07c64d0a119106671ea50765faaf9651a94742c4f307fd",
+      "bytes": 17479
+    },
+    "calibration/reports/red-boundary-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\red-boundary-r1.xml",
+      "sha256": "909e3eedd25a74ec3f5ad32be3a732d99d57680e3efcaf5930db1a77e92a3e43",
+      "bytes": 6215
+    },
+    "calibration/reports/green-boundary-r3.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\green-boundary-r3.xml",
+      "sha256": "de327f0baee4fc6b8b6bcda7824e344aec4674775d83f609d19a6d02d0a26096",
+      "bytes": 767
+    },
+    "calibration/reports/final-r2.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final-r2.xml",
+      "sha256": "b8a86e9ec0c34e7f37fcd8f2693bbb4532cf3b5eba7f2fb3c12f37776fab2b79",
+      "bytes": 16773
+    },
+    "calibration/synthetic-journals/final2-tmp/test_capacity_or_budget_never_0/pilot.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_capacity_or_budget_never_0\\pilot.jsonl",
+      "sha256": "60c462d1b51ec659095f4c1c088ca20e478d42442be47b9fe056d9c0266c9bce",
+      "bytes": 62414
+    },
+    "calibration/synthetic-journals/final2-tmp/test_capacity_or_budget_never_1/pilot.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_capacity_or_budget_never_1\\pilot.jsonl",
+      "sha256": "60c462d1b51ec659095f4c1c088ca20e478d42442be47b9fe056d9c0266c9bce",
+      "bytes": 62414
+    },
+    "calibration/synthetic-journals/final2-tmp/test_capacity_or_budget_never_2/pilot.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_capacity_or_budget_never_2\\pilot.jsonl",
+      "sha256": "60c462d1b51ec659095f4c1c088ca20e478d42442be47b9fe056d9c0266c9bce",
+      "bytes": 62414
+    },
+    "calibration/synthetic-journals/final2-tmp/test_capacity_or_budget_never_3/pilot.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_capacity_or_budget_never_3\\pilot.jsonl",
+      "sha256": "60c462d1b51ec659095f4c1c088ca20e478d42442be47b9fe056d9c0266c9bce",
+      "bytes": 62414
+    },
+    "calibration/synthetic-journals/final2-tmp/test_full_grid_blind_reviews_b0/pilot.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_full_grid_blind_reviews_b0\\pilot.jsonl",
+      "sha256": "4f75f5105ca00f2c86c7f288005ec32af2ef11bf9cfd2a358c175d87cd20af35",
+      "bytes": 338888
+    },
+    "calibration/synthetic-journals/final2-tmp/test_global_review_budget_is_n0/budget.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_global_review_budget_is_n0\\budget.jsonl",
+      "sha256": "8e5ba1966f9dd7c0f4309ceba6484d3270f923d6465ab2e0502c9d62e06fcddf",
+      "bytes": 2151
+    },
+    "calibration/synthetic-journals/final2-tmp/test_invalid_judge_output_reta0/pilot.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_invalid_judge_output_reta0\\pilot.jsonl",
+      "sha256": "14047640b05759835e7c8e8f4b4b69d19fa1a463b6a64887a142e79d62d5d637",
+      "bytes": 327296
+    },
+    "calibration/synthetic-journals/final2-tmp/test_partial_evaluator_cost_pr0/budget.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_partial_evaluator_cost_pr0\\budget.jsonl",
+      "sha256": "892f8add386c2ab8187486d369903222e9bc31e89400b5d987db00132d55d2a1",
+      "bytes": 1855
+    },
+    "calibration/synthetic-journals/final2-tmp/test_partial_evaluator_cost_pr1/budget.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_partial_evaluator_cost_pr1\\budget.jsonl",
+      "sha256": "e0a219032bbe70b68ae5683882d5a7d5ac63950e72df40a95e7347ce331d63a7",
+      "bytes": 1837
+    },
+    "calibration/synthetic-journals/final2-tmp/test_partial_evaluator_cost_pr2/budget.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_partial_evaluator_cost_pr2\\budget.jsonl",
+      "sha256": "e48270efbfa7667b2fc282bfa2b02a6f62c6b9c3a4847b878f5a84808fbe48c5",
+      "bytes": 1839
+    },
+    "calibration/synthetic-journals/final2-tmp/test_real_subprocess_36_slot_s0/parent.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_real_subprocess_36_slot_s0\\parent.jsonl",
+      "sha256": "5890701a6c2c926ca9aeb314f4f85d3d4185b11a10fbc90dde7808fda3537219",
+      "bytes": 844
+    },
+    "calibration/synthetic-journals/final2-tmp/test_real_subprocess_36_slot_s0/private-journal.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_real_subprocess_36_slot_s0\\private-journal.jsonl",
+      "sha256": "4f75f5105ca00f2c86c7f288005ec32af2ef11bf9cfd2a358c175d87cd20af35",
+      "bytes": 338888
+    },
+    "calibration/synthetic-journals/final2-tmp/test_reference_drift_keeps_res0/pilot.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_reference_drift_keeps_res0\\pilot.jsonl",
+      "sha256": "46dc9ee90d3ce0b719fe937a869e931479448d747d6aeb9f6e518b0112ff1eaf",
+      "bytes": 571
+    },
+    "calibration/synthetic-journals/final2-tmp/test_review_disagreement_calls0/pilot.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_review_disagreement_calls0\\pilot.jsonl",
+      "sha256": "5e3e22b5c0da049a8b4a6986880a23ec462c98cc4c3ae00b6bf0b6696f42912f",
+      "bytes": 418070
+    },
+    "calibration/synthetic-journals/final2-tmp/test_same_usage_evidence_canno0/budget.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_same_usage_evidence_canno0\\budget.jsonl",
+      "sha256": "049754223cfb044cc1e30b3e2c67cc95ca9c51dbb049d4196e36e145fe741f78",
+      "bytes": 4313
+    },
+    "calibration/synthetic-journals/final2-tmp/test_source_change_in_capacity0/private-journal.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_source_change_in_capacity0\\private-journal.jsonl",
+      "sha256": "8803daa72217171a1c4c09f7b881cd73eaef39dfeffa4d91c9151e896d7029a1",
+      "bytes": 40752
+    },
+    "calibration/synthetic-journals/final2-tmp/test_source_drift_latches_even0/budget.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_source_drift_latches_even0\\budget.jsonl",
+      "sha256": "3c75b74868824d3e40c6588612b1a47de74c6ae8c5c6efa24cd819e84bda939a",
+      "bytes": 314
+    },
+    "calibration/synthetic-journals/final2-tmp/test_timeout_preserves_partial0/timeout-parent.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_timeout_preserves_partial0\\timeout-parent.jsonl",
+      "sha256": "2f4fd92ed65983263082974eaee192e6fa64ddf936f4fbe5ee01bab61afe3d3c",
+      "bytes": 1129
+    },
+    "calibration/synthetic-journals/final2-tmp/test_unknown_reviewer_cost_blo0/pilot.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_unknown_reviewer_cost_blo0\\pilot.jsonl",
+      "sha256": "ee126a011912d3db3f633b44292fd73ba0587a2945272baf9992ef5408862aa5",
+      "bytes": 41758
+    },
+    "calibration/synthetic-journals/final2-tmp/test_unresolved_and_not_applic0/pilot.jsonl": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\final2-tmp\\test_unresolved_and_not_applic0\\pilot.jsonl",
+      "sha256": "ca24279fc88669cbcc2a6657ed32de8f31250d372625adc4744c8ae7a76d1911",
+      "bytes": 322163
+    },
+    "calibration/actual-port-preflight-delivery-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\actual-port-preflight-delivery-r1.json",
+      "sha256": "b1a31fc36f508054c0b72930c6c68c8d57e43ef53baca15077cccde806ee2260",
+      "bytes": 928
+    },
+    "calibration/actual-port-preflight-plan-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\actual-port-preflight-plan-r1.json",
+      "sha256": "58f0d4dd62b90d27d7e346b5f01650ca3429e0aee6b8d1e331392fbde62517b1",
+      "bytes": 3964
+    },
+    "calibration/actual-port-preflight-plan-r1.md": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\actual-port-preflight-plan-r1.md",
+      "sha256": "95a8210e3aabac84035b2721e26466a312685599ccb18b765b34950a2094b75d",
+      "bytes": 9560
+    },
+    "calibration/actual-port-historical-metadata-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\actual-port-historical-metadata-r1.json",
+      "sha256": "28e33d542844c73942b8c31d8288ffda68cb5ee593197693eee4d46d4dc2dd81",
+      "bytes": 1427
+    },
+    "calibration/source/docs/calibration-pilot-verification.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\docs\\calibration-pilot-verification.json",
+      "sha256": "a71dfb68ade667f1aa44d9c4ced5fa5b99d76bbb2023a1d537bdb2ea9e889aa6",
+      "bytes": 3769
+    },
+    "calibration/source/evaluation/modular/calibration_pilot.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\evaluation\\modular\\calibration_pilot.py",
+      "sha256": "9c3cbf20528df33aa1b1524da95b1799a43a971735994c24798b2679ced37f97",
+      "bytes": 30639
+    },
+    "calibration/source/evaluation/modular/calibration_pilot_process.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\evaluation\\modular\\calibration_pilot_process.py",
+      "sha256": "d1462452b7c091ab27120a912e04949a33d1c9a604fe03e5ea10e92caa38ac1c",
+      "bytes": 9751
+    },
+    "calibration/source/tests/helpers/calibration_pilot_fixture.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\tests\\helpers\\calibration_pilot_fixture.py",
+      "sha256": "dba33a5c3cf406d5b22a3ba44bc86a05c123a1f74acdf2da7ce2458952f4db69",
+      "bytes": 9032
+    },
+    "calibration/source/tests/helpers/calibration_pilot_worker.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\tests\\helpers\\calibration_pilot_worker.py",
+      "sha256": "3ebdb9105469f3f700286143be54ec4482e8ba4a41cf565dc4aa09b02ece1083",
+      "bytes": 1289
+    },
+    "calibration/source/tests/test_calibration_pilot.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\tests\\test_calibration_pilot.py",
+      "sha256": "1b7f67aae166d06797258d3d2006c81b4ffce5baf7d4253248226937e8ecede7",
+      "bytes": 20459
+    },
+    "prospective-source/source/docs/COMBINATION-PROSPECTIVE-TRAIN-PORT.md": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\combo-export\\docs\\COMBINATION-PROSPECTIVE-TRAIN-PORT.md",
+      "sha256": "615ef85db0535c3fd782c75115e7c04aeceb03beb1f0271bfa2ac2a8d1536a4b",
+      "bytes": 2943
+    },
+    "prospective-source/source/research_loop/modular/combination_train_controller.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\combo-export\\research_loop\\modular\\combination_train_controller.py",
+      "sha256": "62e2ac8e7c10594b10f9cf00375cb4a69e4339a46006f2600c854695e35b2f74",
+      "bytes": 26462
+    },
+    "prospective-source/source/research_loop/modular/combination_train_source.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\combo-export\\research_loop\\modular\\combination_train_source.py",
+      "sha256": "b5124a188e0ee4d0842394b68d7d909a624736fbee08895590e15a816d4f1300",
+      "bytes": 11499
+    },
+    "prospective-source/source/research_loop/modular/lineage_combination_controller.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\combo-export\\research_loop\\modular\\lineage_combination_controller.py",
+      "sha256": "4c8fa9be231aada25dae8ccfd2e1463d9f11a7f8cff02e4e2a6a1c3f356d32fb",
+      "bytes": 24512
+    },
+    "prospective-source/source/research_loop/modular/retrieval_review_combination_controller.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\combo-export\\research_loop\\modular\\retrieval_review_combination_controller.py",
+      "sha256": "6ee6d2f6979cada1295735c6db7bf60d6e630aa6e8bbf1e3f40d9d9069728416",
+      "bytes": 20936
+    },
+    "prospective-source/source/tests/test_combination_prospective_train_source.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\combo-export\\tests\\test_combination_prospective_train_source.py",
+      "sha256": "3058fe59acb87a63c447b0a92fa959aadbba9fa831a9a5c64f7a4753270fa487",
+      "bytes": 14930
+    },
+    "prospective-source/reports/combo-export-preflight-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-export-preflight-r1.xml",
+      "sha256": "3be7b8e5ad380a0cdeb1abd56e7c1e2137a43a86294940aa0a1e9cee58582bcb",
+      "bytes": 1916
+    },
+    "prospective-source/reports/combo-export-grid-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-export-grid-r1.xml",
+      "sha256": "deeaef949386ef8035f3acb71ddddf574f376fc3b7e1608e2240d889726227bf",
+      "bytes": 8537
+    },
+    "prospective-source/reports/combo-export-grid-r2.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-export-grid-r2.xml",
+      "sha256": "35bc248c6abff8fafe4293eebe7b1095f0639843268a32035a1a5faebd27c4c0",
+      "bytes": 5491
+    },
+    "prospective-source/reports/combo-export-provenance-r3.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-export-provenance-r3.xml",
+      "sha256": "e1a8c203b5b08027757ae9fb509dfcbc61ee13a8de5c1be9ec23402c23449f89",
+      "bytes": 2719
+    },
+    "prospective-source/reports/combo-export-final-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-export-final-r1.xml",
+      "sha256": "1f14df4272db21c17a5029c0b1f7b54c1dfeb82ca712f5e32ca061c39eca0232",
+      "bytes": 12517
+    },
+    "prospective-source/reports/combo-export-source-before-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-export-source-before-r1.json",
+      "sha256": "89d8932c05365394b00f0eec03d32314c7dabe8bcc34e95d53082b6be9409b43",
+      "bytes": 50594
+    },
+    "prospective-source/reports/combo-export-grid-r1-closed.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-export-grid-r1-closed.json",
+      "sha256": "389de9b779a15f9e50e0680ee68a7f68b9f1a5e7fa7e6e9b782119316c3002b2",
+      "bytes": 328
+    },
+    "prospective-source/reports/combo-export-source-before-final-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-export-source-before-final-r1.json",
+      "sha256": "1596874e805b53b5f95a34fb70f5547a19a6bd36847adc16403223767bedab6f",
+      "bytes": 50594
+    },
+    "prospective-source/reports/combo-export-final-closed-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-export-final-closed-r1.json",
+      "sha256": "023bccf8434a4d78f4177160aa5ff096f737c26a8ca4bbbf052899399c1dc645",
+      "bytes": 51100
+    },
+    "prospective-source/reports/combo-source-readonly-review.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-source-readonly-review.py",
+      "sha256": "1981ee6911228bc473a15e8a2c8cad050f2507a64efbf672c3d4d1c9e694bd53",
+      "bytes": 1125
+    },
+    "prospective-source/reports/combo-source-readonly-review.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-source-readonly-review.xml",
+      "sha256": "d1f2367bcfcac285f6f8aeb3eb0081afca4bdc54260ce10a2f620aec56b5bdc1",
+      "bytes": 13278
+    },
+    "root/admission-m6-integrated-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\admission-m6-integrated-r1.xml",
+      "sha256": "0f50ac9f20d9c190ac1250f507d00c9c660ae1b4f648713746abc663cf854da6",
+      "bytes": 19200
+    },
+    "root/admission-m6-integrated-source-before-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\admission-m6-integrated-source-before-r1.json",
+      "sha256": "45800078fb341082f30ae0a30dc2d3de3312eb112c6206570830e7435ecde2db",
+      "bytes": 51312
+    },
+    "root/admission-m6-integrated-closed-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\admission-m6-integrated-closed-r1.json",
+      "sha256": "4b79a0532124487dc4f360d8e9366033af9acf34acc4d62052bf2d9168ebfaa5",
+      "bytes": 51593
+    },
+    "root/cal-pilot-integrated-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-integrated-r1.xml",
+      "sha256": "1bd0c1bb0c784418cc6a33e810e90a0094796c505d11c8e9e22e30621f3b953c",
+      "bytes": 5712
+    },
+    "root/cal-pilot-integrated-source-before-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-integrated-source-before-r1.json",
+      "sha256": "cb91d1dad4aed4b0c63b2897e76108719c707e565d3d991ca53928ccee387bdb",
+      "bytes": 52135
+    },
+    "root/cal-pilot-integrated-closed-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-integrated-closed-r1.json",
+      "sha256": "cd719816a0c41bfe4fc58f01f7bda0bf3640587a00ad420986cb91e6695ff84e",
+      "bytes": 52643
+    },
+    "root/admission-m6-deliveries-root-verification-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\admission-m6-deliveries-root-verification-r1.json",
+      "sha256": "a5cf0e0b310ecf9e1e09dab6b0e67ae10cdbbfbae1b65bb0be1e2a4f4da08eb2",
+      "bytes": 509
+    },
+    "root/cal-pilot-delivery-root-verification-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-delivery-root-verification-r1.json",
+      "sha256": "5e9ef3c5aa1ed0093cedaf2452f1938c9ed867a1ab390b8137d234f2b002a6cc",
+      "bytes": 437
+    },
+    "root/verify_admission_m6_deliveries_root_20260913.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\verify_admission_m6_deliveries_root_20260913.py",
+      "sha256": "83b758f826019454d019f2221e30f38d79092316aea0d7279af69ac31c12b29f",
+      "bytes": 2904
+    },
+    "root/verify_cal_pilot_delivery_root_20260913.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\verify_cal_pilot_delivery_root_20260913.py",
+      "sha256": "b1eed44be6d1d1aa34627bc862278ecbbcf99ea2e0f422a26d6e2d57fb9a10c9",
+      "bytes": 2902
+    },
+    "root/combo-source-integrated-r1.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-source-integrated-r1.xml",
+      "sha256": "405921e8cdfc8d1a17e48b42091faa18012d4a9ee90fef9fc504448b50c89417",
+      "bytes": 241
+    },
+    "root/combo-source-integrated-r2.xml": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-source-integrated-r2.xml",
+      "sha256": "19fcfbe4d47ae6a869a5b3b92b859d519ad1d9eaa207ad8badf68e0d9978eebf",
+      "bytes": 19498
+    },
+    "root/combo-source-integrated-source-before-r1.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-source-integrated-source-before-r1.json",
+      "sha256": "407f16ba3e641e04ab0bf15ca2c930f50bc9325f15187de315d17242b067c683",
+      "bytes": 52507
+    },
+    "root/combo-source-integrated-closed-r2.json": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\combo-source-integrated-closed-r2.json",
+      "sha256": "7158ee06ea58bb36c545ddabc3b577e85909a3d450554ee8e29ea98f46b81955",
+      "bytes": 53064
+    },
+    "publish_admission_calibration_prospective_20260913.py": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\publish_admission_calibration_prospective_20260913.py",
+      "sha256": "a70c76a02ece2d65b2bbeb7917e54284406d13538619984bcce1b3cb36c35548",
+      "bytes": 7031
+    }
+  },
+  "junit": {
+    "admission/reports/ac-red.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "11",
+      "time": "0.605",
+      "timestamp": "2026-09-13T17:31:42.077775+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "admission/reports/ac-grid-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "2",
+      "time": "90.831",
+      "timestamp": "2026-09-13T17:37:04.898162+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "admission/reports/ac-grid-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "10",
+      "time": "248.900",
+      "timestamp": "2026-09-13T17:40:31.205639+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "admission/reports/ac-authority-red.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "1",
+      "time": "35.932",
+      "timestamp": "2026-09-13T17:44:35.021031+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "admission/reports/ac-scope-red.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.821",
+      "timestamp": "2026-09-13T17:50:49.933677+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "admission/reports/ac-final.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "83",
+      "time": "405.611",
+      "timestamp": "2026-09-13T17:48:31.890725+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "admission/reports/ac-final-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "40",
+      "time": "69.475",
+      "timestamp": "2026-09-13T17:57:29.480803+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/red-r1.xml": {
+      "name": "pytest",
+      "errors": "1",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.216",
+      "timestamp": "2026-09-13T17:26:41.674023+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/green-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "21",
+      "time": "262.621",
+      "timestamp": "2026-09-13T17:35:43.612212+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/boundary-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "6",
+      "time": "2.551",
+      "timestamp": "2026-09-13T17:44:23.479234+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/final-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "112",
+      "time": "535.532",
+      "timestamp": "2026-09-13T17:47:04.309023+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/red-boundary-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "3",
+      "skipped": "0",
+      "tests": "3",
+      "time": "2.687",
+      "timestamp": "2026-09-13T17:59:05.122729+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/green-boundary-r3.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "4",
+      "time": "3.356",
+      "timestamp": "2026-09-13T17:59:45.543065+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/final-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "115",
+      "time": "459.575",
+      "timestamp": "2026-09-13T18:00:24.436279+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/reports/red-r1.xml": {
+      "name": "pytest",
+      "errors": "1",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "1",
+      "time": "0.216",
+      "timestamp": "2026-09-13T17:26:41.674023+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/reports/green-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "21",
+      "time": "262.621",
+      "timestamp": "2026-09-13T17:35:43.612212+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/reports/boundary-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "6",
+      "time": "2.551",
+      "timestamp": "2026-09-13T17:44:23.479234+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/reports/final-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "112",
+      "time": "535.532",
+      "timestamp": "2026-09-13T17:47:04.309023+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/reports/red-boundary-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "3",
+      "skipped": "0",
+      "tests": "3",
+      "time": "2.687",
+      "timestamp": "2026-09-13T17:59:05.122729+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/reports/green-boundary-r3.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "4",
+      "time": "3.356",
+      "timestamp": "2026-09-13T17:59:45.543065+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "calibration/reports/final-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "115",
+      "time": "459.575",
+      "timestamp": "2026-09-13T18:00:24.436279+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "prospective-source/reports/combo-export-preflight-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "13",
+      "time": "11.248",
+      "timestamp": "2026-09-13T17:55:10.316337+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "prospective-source/reports/combo-export-grid-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "3",
+      "skipped": "0",
+      "tests": "24",
+      "time": "96.142",
+      "timestamp": "2026-09-13T17:56:54.016147+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "prospective-source/reports/combo-export-grid-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "34",
+      "time": "319.044",
+      "timestamp": "2026-09-13T17:59:24.027544+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "prospective-source/reports/combo-export-provenance-r3.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "12",
+      "time": "27.009",
+      "timestamp": "2026-09-13T18:09:34.583616+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "prospective-source/reports/combo-export-final-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "74",
+      "time": "470.635",
+      "timestamp": "2026-09-13T18:12:26.510135+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "prospective-source/reports/combo-source-readonly-review.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "9",
+      "skipped": "0",
+      "tests": "9",
+      "time": "35.127",
+      "timestamp": "2026-09-13T18:02:42.764995+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/admission-m6-integrated-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "129",
+      "time": "329.116",
+      "timestamp": "2026-09-13T18:07:28.075110+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/cal-pilot-integrated-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "42",
+      "time": "210.590",
+      "timestamp": "2026-09-13T18:14:32.561248+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/combo-source-integrated-r1.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "0",
+      "time": "0.001",
+      "timestamp": "2026-09-13T18:26:24.654602+08:00",
+      "hostname": "SC-202507131830"
+    },
+    "root/combo-source-integrated-r2.xml": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "123",
+      "time": "634.073",
+      "timestamp": "2026-09-13T19:32:50.158079+08:00",
+      "hostname": "SC-202507131830"
+    }
+  },
+  "synthetic_grids": {
+    "admission-0": {
+      "files": 176,
+      "sha256": "f0d382e787cefcb968c74800b2e5a054b2d88d64804be339f3e833bdba6ec523"
+    },
+    "admission-1": {
+      "files": 176,
+      "sha256": "075db7c8e89d1f1bf9e6c5abbc5439629ea47cd12df476c4e957f40447fb5db7"
+    },
+    "admission-2": {
+      "files": 146,
+      "sha256": "d19bd517286ceb6d81383220f744d6ee6c976793bace2677a7f269c70d57da96"
+    },
+    "admission-3": {
+      "files": 170,
+      "sha256": "931991013f4f6d567af86d8b50ebf27c18b8c65a7b03f4ef1dfb0bd7c30efffb"
+    },
+    "admission-4": {
+      "files": 170,
+      "sha256": "8fad0052322c0b5ac307ac86835a8b67066de8c531bbf344d2784bf62b7e84cc"
+    },
+    "admission-5": {
+      "files": 26,
+      "sha256": "23193efbabc86cb65f7ea28cf2c6761f128b1e076350da777ecb8a5bb17e1032"
+    },
+    "admission-6": {
+      "files": 26,
+      "sha256": "1de014be096a78ea444092e8afc4d315023b9cb6557b9dde6fb64dad4e937661"
+    },
+    "admission-7": {
+      "files": 26,
+      "sha256": "7311ecf68eb67e6aeaeddc806db7eb78b035ba975ac49128a3713b73998ac23e"
+    },
+    "admission-8": {
+      "files": 26,
+      "sha256": "c660cc308a0d5208620bbf36d44df0e2f3cf2d0e1af56ddcd0a3f97116519c6f"
+    },
+    "admission-9": {
+      "files": 26,
+      "sha256": "028293e18fdbff3e0a56069cb9e89b490e91f918cd46afd22013a7060e30678d"
+    },
+    "admission-10": {
+      "files": 176,
+      "sha256": "516b441b53b51b22039e006b1367cc9c13b2a85e716ea92bf277c88f97e41f9e"
+    },
+    "admission-11": {
+      "files": 240,
+      "sha256": "46c4161e9d1810055fbb6607b34723af95b878044d969b792cbfe4ffe1407969"
+    },
+    "admission-12": {
+      "files": 176,
+      "sha256": "38c984f1010f416729f7a1a3518affcaecca8847fe386f81571defbf21a30292"
+    },
+    "admission-13": {
+      "files": 53,
+      "sha256": "1d5abaedeceeb1e10d0b96ecababb8637122264ab89a831d0fcf2f84da74771f"
+    },
+    "admission-14": {
+      "files": 146,
+      "sha256": "88377332431c59872a134c9c576efff20671e8fbb8bd46dc796eb4f811b338da"
+    },
+    "admission-15": {
+      "files": 170,
+      "sha256": "bc3ef2ba2da68528b9a094b4af4f56fd534dd07bde463e6a78b5cdc28c8db33e"
+    },
+    "admission-16": {
+      "files": 170,
+      "sha256": "0f05de69d0931cd3ca60c28ed363edcaca6cda3ee0e8d5a268eb3e1935b39577"
+    },
+    "admission-17": {
+      "files": 26,
+      "sha256": "dd036b3865ea3d6b255e37b7761c0075850dbd3ed331bf8b89e6d65667c52ec1"
+    },
+    "admission-18": {
+      "files": 26,
+      "sha256": "16df5c584e8d8b1d592b99fa4dbe0f3c6d758d380b982868b0942c668cfd37b0"
+    },
+    "admission-19": {
+      "files": 26,
+      "sha256": "f8b8054fa3dc283a951a8015a7d7ec467154bdc382d48525ba4e0df97e8a011d"
+    },
+    "admission-20": {
+      "files": 26,
+      "sha256": "fe6aecab4b33e3eeba3d61d80643de13e070700cefc50a39d41b6d5686ca61f5"
+    },
+    "admission-21": {
+      "files": 26,
+      "sha256": "2b39a89343815cd590269b6cb9ded89821b8c0990b3cfdd4b70b165163d06083"
+    },
+    "admission-22": {
+      "files": 8,
+      "sha256": "fe635e84bc2bf4d46c4b48ae196f2843a7f2f71b55db1f9708fb2292732469f4"
+    },
+    "admission-23": {
+      "files": 176,
+      "sha256": "a715d4c9c49d0aeae16671246501df902296938fd4a4af91647f86db1389ada5"
+    },
+    "combo-export-grid-r1-0": {
+      "files": 12,
+      "sha256": "72fa83355c5caac92b90f7148167f5690a536cfd0d883b8132b31f1b5c6f407e"
+    },
+    "combo-export-grid-r1-1": {
+      "files": 12,
+      "sha256": "c0ce19bae515bde47af696c9335bcf94cbe9afaa1ff82113995271caa9317310"
+    },
+    "combo-export-grid-r1-2": {
+      "files": 11,
+      "sha256": "eb517211ff6164fe2fc4ba3992a228e6d430c9f9541969f398d66fb205c0ce5f"
+    },
+    "combo-export-grid-r1-rejection-4": {
+      "files": 1,
+      "sha256": "e8a0ce723d5369ec84bbb015af3198423ea4ea84870a7116593151d9acea1b18"
+    },
+    "combo-export-grid-r1-rejection-5": {
+      "files": 1,
+      "sha256": "e9c3aef974a0311be2c5aba281335222b8de2bd7adbbcfff3cc602b2399c7687"
+    },
+    "combo-export-grid-r1-rejection-6": {
+      "files": 1,
+      "sha256": "8767df9247c10a0ce541a301d0def6e3e7a1fc39b13288c7c839681f6436877c"
+    },
+    "combo-export-grid-r1-rejection-7": {
+      "files": 4,
+      "sha256": "93b89cab45acdd3d7b77cccc6d25688f851b3793eaea3203111ac433e94df665"
+    },
+    "combo-export-grid-r1-rejection-8": {
+      "files": 4,
+      "sha256": "ca82b2bd282ccbb257eac370d33bc743437323f61fa957cb07deffa3cf84893c"
+    },
+    "combo-export-grid-r1-rejection-9": {
+      "files": 4,
+      "sha256": "5c351ff6d7d8d829fd6bbdd82db089278a703d734afda1a53a0dbd7e00c9ba43"
+    },
+    "combo-export-grid-r2-0": {
+      "files": 56,
+      "sha256": "4718befc278d1a1c85f0da45ff2851a8ac694d1ba2faa4a6f6d31b0eb38a3869"
+    },
+    "combo-export-grid-r2-1": {
+      "files": 243,
+      "sha256": "d523c23ca3c95d118493a6f2acc548ab9864db742182752ecb185e7090197ad8"
+    },
+    "combo-export-grid-r2-2": {
+      "files": 203,
+      "sha256": "eb13eb7ae80b525a2bb8c2f4668d96edbdfbdbf6b3e2e9cd2c52f0a6b8b3afde"
+    },
+    "combo-export-grid-r2-rejection-4": {
+      "files": 1,
+      "sha256": "ce836277893295cddd8c8f4cc5e56eadc7a0d9d73b32444007a64f4c3910aa9c"
+    },
+    "combo-export-grid-r2-rejection-5": {
+      "files": 1,
+      "sha256": "5196ccd28db45cfe194596ba47400d0ce514714d75cd71357e972479337bb64e"
+    },
+    "combo-export-grid-r2-rejection-6": {
+      "files": 1,
+      "sha256": "136f7822b9fe2271cd5b64b2963b9ce570af907d48eb7c248b9de30ad419c8ee"
+    },
+    "combo-export-grid-r2-rejection-7": {
+      "files": 4,
+      "sha256": "38d93bcc773da9cb85f77f36220d3d5aa4b06a48d8ee463e9c5e9d6f3ff9126c"
+    },
+    "combo-export-grid-r2-rejection-8": {
+      "files": 4,
+      "sha256": "70b1752d91a6271d3e04c41ca5e72f55b3d8d898d6d2dc238cf8f3ea92b1ecc1"
+    },
+    "combo-export-grid-r2-rejection-9": {
+      "files": 4,
+      "sha256": "ef0ac86770c40e2c8edd6ebc2b1e54723ef5c8788ef8306b66a9582550c881cc"
+    },
+    "combo-export-final-r1-0": {
+      "files": 56,
+      "sha256": "3ff20f04b286277f3f792ef3be792e494472cda125b52d0696d2abb135b4315d"
+    },
+    "combo-export-final-r1-1": {
+      "files": 243,
+      "sha256": "1dd8ae9b9dd0dd83023cd2d7bbc9548e3fed4a9db24cef83f01ef64ffa1b5b5a"
+    },
+    "combo-export-final-r1-2": {
+      "files": 203,
+      "sha256": "e730031c8cb51905f9ecbeacbc7ce6356b484f781fcf53682810972c99e52bd1"
+    },
+    "combo-export-final-r1-rejection-4": {
+      "files": 1,
+      "sha256": "bc3e210aff695d2021831994c3ca33d379b006de12807d70edea95a78a7297f0"
+    },
+    "combo-export-final-r1-rejection-5": {
+      "files": 1,
+      "sha256": "4733fe41a7ab1a470b764bfbb1e17844cc5cf58951ced37c3d9f6fcf56d976c9"
+    },
+    "combo-export-final-r1-rejection-6": {
+      "files": 1,
+      "sha256": "4d29f6f2ba2cf6c2987d52819e0c8f7d9eb3e93032bd451dde524d87e6a87fa2"
+    },
+    "combo-export-final-r1-rejection-7": {
+      "files": 4,
+      "sha256": "9a6592a700db7491c10cd0eae956a399e503b94ce4bea340f099f043b55a2a5f"
+    },
+    "combo-export-final-r1-rejection-8": {
+      "files": 4,
+      "sha256": "f00e0ab1010bd174bbfdc684a8271a7f9241c361b6e90fadddb6c99aaa761fbd"
+    },
+    "combo-export-final-r1-rejection-9": {
+      "files": 4,
+      "sha256": "737fba4e4f8fce73d6a4f2f46884447a5d6deb70a588008f850843a546cbeef4"
+    },
+    "combo-export-final-r1-rejection-10": {
+      "files": 4,
+      "sha256": "1cf0577b017b35ca2e490403b9de49fdf35ba96dbb78a08b790cec641118189e"
+    },
+    "combo-export-final-r1-rejection-11": {
+      "files": 4,
+      "sha256": "9c5c2fc386b1dcab68a5d9587b5ff68967725b417f78f48a2fac62842ce19d21"
+    },
+    "combo-export-final-r1-rejection-13": {
+      "files": 4,
+      "sha256": "7adbe39f515288ec34ff1817227aa2a4002d4b7a7be2bd99dd361afbdac2e969"
+    },
+    "combo-export-final-r1-rejection-14": {
+      "files": 4,
+      "sha256": "8be6164227807c45525e6222cd3e62fa0da780d91d135063f9dff8acf736cef2"
+    },
+    "combo-export-final-r1-rejection-15": {
+      "files": 4,
+      "sha256": "e62c6602783c016f16d8cb155f34e112e737872c54919d99bcee4f2a6201b9ab"
+    },
+    "combo-export-final-r1-rejection-16": {
+      "files": 4,
+      "sha256": "9fadabf3b41a21406458e2454ae99660fbc11f590a3bdd8dc6c69e372226fe0d"
+    }
+  },
+  "new_paid_calls": 0,
+  "actual_private_payloads_in_archive": false,
+  "scientific_calibration": false,
+  "validation_eligible": false
+}

@@ -1,0 +1,85 @@
+{
+  "actual_model_calls": 0,
+  "actual_reference_body_reads": 0,
+  "calibration_eligible": false,
+  "caller_required_fields": [
+    "exact_model_and_revision_or_deployment_per_role",
+    "parameters_including_effort_and_enforced_output_limit",
+    "context_digest_and_context_window",
+    "tokenizer_digest_and_full_request_counting_contract",
+    "pricing_digest_currency_and_billing_categories",
+    "per_role_max_calls_max_tokens_per_call_max_microusd_per_call",
+    "global_max_calls_max_tokens_max_microusd",
+    "private_material_manifest_and_36_statuses",
+    "six_distinct_authority_ids_and_private_key_descriptors",
+    "new_exclusive_output_and_journal_paths"
+  ],
+  "capacity_and_pricing_reliability_verified": false,
+  "deployment_health_verified": false,
+  "frozen_denominator": {
+    "arbitration_max_opportunities": 36,
+    "evaluator_opportunities": 72,
+    "evaluator_repetitions": 2,
+    "global_max_opportunities": 180,
+    "independent_sample_count_claimed": null,
+    "independent_task_count": 4,
+    "kinds_per_task": 9,
+    "material_slots": 36,
+    "per_benchmark_tasks": 2,
+    "reviewer1_opportunities": 36,
+    "reviewer2_opportunities": 36,
+    "source_tasks": 4
+  },
+  "historical_context_current_source_closure_verified": false,
+  "historical_context_policy_hash_verified": true,
+  "historical_metadata": {
+    "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\cal-pilot-checks\\actual-port-historical-metadata-r1.json",
+    "sha256": "28e33d542844c73942b8c31d8288ffda68cb5ee593197693eee4d46d4dc2dd81"
+  },
+  "missing_implementation": [
+    "production_diagnostic_worker_with_four_explicit_billable_ports",
+    "reviewer_and_arbitrator_private_standard_resolver_adapters",
+    "provider_bound_output_cap_and_full_context_capacity_measurement",
+    "provider_billing_contract_pricing_and_unique_usage_receipt_adapter",
+    "actual_36_material_custodian_construction_and_independent_review"
+  ],
+  "monetary_budget_proposed": null,
+  "network_calls": 0,
+  "read_scope": "bounded source code and exact historical evaluator config/ledger fixed metadata only; no credentials, prompt, response, task or reference bodies",
+  "schema": "diagnostic-actual-port-readonly-preflight-plan-v1",
+  "source_clean": true,
+  "source_commit": "4cbfe2c269f631d43ff7b42b74edc5283909dbad",
+  "source_pins": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\evaluation\\modular\\calibration_pilot.py",
+      "sha256": "9c3cbf20528df33aa1b1524da95b1799a43a971735994c24798b2679ced37f97"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\evaluation\\modular\\calibration_pilot_process.py",
+      "sha256": "d1462452b7c091ab27120a912e04949a33d1c9a604fe03e5ea10e92caa38ac1c"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\evaluation\\modular\\evaluator_model_port.py",
+      "sha256": "758a0657cd6ae7e2404a754224e05d123f44c375d3a922e84cc3519f12e104a9"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\evaluation\\modular\\scorer_process.py",
+      "sha256": "9937674fc91668a57fc9f2f9290deb42d3e4037030a0d5737ad5f2d872f43571"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\research_loop\\modular\\model_port.py",
+      "sha256": "c56bdaf3818841d0956a647c9e2ae012cc49d4a15dd94a5c91756c53a628d9b6"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\research_loop\\provider.py",
+      "sha256": "86854f0597468dd5ea6aaed6dae5c5efd66447065c9430d41d7a58088a3b1583"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\cal-pilot\\docs\\MODULAR-FOUR-TRAIN-CALIBRATION-PILOT.md",
+      "sha256": "0c15e6de895899677ffef5ec1a265e244f643de18bf84cf6302b30a5af387e71"
+    }
+  ],
+  "status": "blocked_before_actual_dispatch",
+  "token_budget_proposed": null,
+  "validation_access": false
+}
