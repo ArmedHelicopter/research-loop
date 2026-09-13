@@ -4,17 +4,17 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Callable, Mapping, MutableMapping
 
-from research_loop.modular.contracts import FrozenRecord, PublicTask
+from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask
 from research_loop.modular.modules.context import ContextBuilder
-from research_loop.modular.panel_receipts import PanelCell
+from research_loop.modular.panel_receipts import PanelCell, opaque_panel_cell_binding
 from research_loop.modular.workflow import ModularWorkflow
-from research_loop.ontology import ContractError, canonical, digest
+from research_loop.ontology import ContractError, canonical
 
 AdmissionPort = Callable[[PublicTask, FrozenRecord], Mapping[str, Any]]
 
 
 def _binding(cell: PanelCell, scenario: FrozenRecord) -> dict[str, Any]:
-    return {"schema": "opaque-panel-cell-binding-v1", "cell_digest": digest(cell.data())}
+    return opaque_panel_cell_binding(cell)
 
 
 def _nonempty(value: Any) -> bool:
@@ -76,7 +76,9 @@ def _admit(port: AdmissionPort | None, task: PublicTask, record: FrozenRecord, *
     if port is None:
         raise ContractError(purpose + " requires a caller-supplied verified admission receipt")
     receipt = port(task, record)
-    if (not isinstance(receipt, Mapping) or receipt.get("record_digest") != record.content_hash):
+    if (not isinstance(receipt, Mapping) or set(receipt) != {"record_digest", "trusted_validator", "validator_verified", "admitted"}
+            or receipt.get("record_digest") != record.content_hash or not _nonempty(receipt.get("trusted_validator"))
+            or receipt.get("validator_verified") is not True or receipt.get("admitted") is not True):
         raise ContractError("history admission receipt does not bind the supplied public record")
     return dict(receipt)
 
@@ -145,11 +147,30 @@ def select_history_material(bundle: FrozenRecord, task: PublicTask, experiment_i
 def _resolve(resolver: Callable[[PublicTask, FrozenRecord], FrozenRecord] | None, task: PublicTask,
              scenario: FrozenRecord, experiment_id: str, variant: str) -> FrozenRecord:
     if resolver is None:
-        raise ContractError("history driver requires caller-supplied frozen history bundle resolver")
-    bundle = resolver(task, scenario)
+        body = scenario.data().get("controller_input", {})
+        if body.get("schema") != "history-panel-controller-v1" or not isinstance(body.get("material_bundle"), Mapping):
+            raise ContractError("history driver requires a compiler-bound frozen history bundle")
+        bundle = FrozenRecord.from_dict(body["material_bundle"])
+    else:
+        bundle = resolver(task, scenario)
     if not isinstance(bundle, FrozenRecord) or scenario.data().get("base", {}).get("evidence") != bundle.content_hash:
         raise ContractError("history bundle does not match the scenario frozen evidence")
     return select_history_material(bundle, task, experiment_id, variant)
+
+
+def history_panel_injection(experiment_id: str, variant: str, *, task: FrozenRecord, evidence: FrozenRecord) -> Mapping[str, Any]:
+    """Compiler projection; the selected variant is resolved inside the driver."""
+    if evidence.data().get("schema") != "typed-history-panel-bundle-v2":
+        # Planning fixtures stay distinct from runtime-ready public materials.
+        if experiment_id == "Q1.1":
+            from research_loop.modular.scenarios_core import core_injection
+            return core_injection(experiment_id, variant)
+        from research_loop.modular.scenarios_history import history_injection
+        return history_injection(experiment_id, variant)
+    task_body = task.data()
+    public_task = PublicTask(DataIdentity.parse(task_body["identity"]), FrozenRecord.from_dict(task_body["payload"]))
+    select_history_material(evidence, public_task, experiment_id, variant)
+    return {"schema": "history-panel-controller-v1", "material_bundle": evidence.data()}
 
 
 def _candidate(value: FrozenRecord, objective: FrozenRecord) -> None:

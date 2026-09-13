@@ -57,13 +57,16 @@ class ControllerInputs:
 def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs) -> FrozenRecord:
     if variant not in spec.variants: raise ContractError("variant is not registered")
     base={"task":inputs.task.content_hash,"evidence":inputs.evidence.content_hash,"budget":inputs.budget.content_hash}
-    if spec.experiment_id in {"Q1.1", "Q2.1"}:
+    if spec.experiment_id in {"Q1.1", "Q1.2"}:
+        from research_loop.modular.history_panel_drivers import history_panel_injection
+        injection=dict(history_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
+    elif spec.experiment_id == "Q2.1":
         from research_loop.modular.scenarios_core import core_injection
         injection=dict(core_injection(spec.experiment_id, variant))
     elif spec.experiment_id == "Q1.5":
         from research_loop.modular.scenarios_history import q15_injection
         injection=dict(q15_injection(variant, task=inputs.task, evidence=inputs.evidence))
-    elif spec.experiment_id in {"Q1.2","Q1.3","Q1.4","Q1.6","Q1.7"}:
+    elif spec.experiment_id in {"Q1.3","Q1.4","Q1.6","Q1.7"}:
         from research_loop.modular.scenarios_history import history_injection
         injection=dict(history_injection(spec.experiment_id, variant))
     elif spec.experiment_id in {"Q2.3", "Q2.4", "Q2.5"}:

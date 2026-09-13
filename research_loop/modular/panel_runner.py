@@ -7,7 +7,7 @@ receipt into a scientific claim.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Callable, Protocol
 
@@ -190,9 +190,11 @@ class Q43ReviewDriver:
 
 from research_loop.modular.q15_panel_driver import Q15HistoryReviewDriver
 from research_loop.modular.q4_panel_drivers import Q41IndependenceDriver, Q42RoleDriver, Q44CounterexampleDriver, Q45SelfCorrectionDriver
+from research_loop.modular.history_panel_drivers import Q11HistoryDriver, Q12DependencyDriver, AdmissionPort
 
 
-DRIVERS: dict[str, ScenarioDriver] = {"Q1.5": Q15HistoryReviewDriver(), "Q3.1": Q31PredictionDriver(),
+DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12DependencyDriver(),
+    "Q1.5": Q15HistoryReviewDriver(), "Q3.1": Q31PredictionDriver(),
     "Q4.1": Q41IndependenceDriver(), "Q4.2": Q42RoleDriver(), "Q4.3": Q43ReviewDriver(),
     "Q4.4": Q44CounterexampleDriver(), "Q4.5": Q45SelfCorrectionDriver()}
 
@@ -200,7 +202,7 @@ DRIVERS: dict[str, ScenarioDriver] = {"Q1.5": Q15HistoryReviewDriver(), "Q3.1": 
 def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
                    package: CandidatePackage, objective: FrozenRecord, sidecar: Path,
                    model: ModelPort, audit_verifier: AuditVerifier,
-                   scorer: ScorerPort | None = None) -> TrainCellResult:
+                   scorer: ScorerPort | None = None, history_admission_port: AdmissionPort | None = None) -> TrainCellResult:
     """Run one predeclared training cell and return only trace-bound receipts.
 
     Validation is deliberately absent.  Driver selection is closed, so fixture
@@ -223,6 +225,11 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
     driver = DRIVERS.get(cell.coverage_id)
     if driver is None:
         raise ContractError("registered scenario has no production panel driver")
+    if history_admission_port is not None:
+        if not callable(history_admission_port):
+            raise ContractError("history admission must be a caller-owned verification port")
+        if isinstance(driver, (Q11HistoryDriver, Q12DependencyDriver)):
+            driver = replace(driver, admission_port=history_admission_port)
     if not isinstance(package, CandidatePackage) or package.digest != cell.package_digest:
         raise ContractError("package digest differs from panel cell")
     if not isinstance(objective, FrozenRecord) or not callable(model):

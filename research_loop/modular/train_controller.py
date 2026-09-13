@@ -23,6 +23,7 @@ from research_loop.modular.modules.improvement import CandidatePackage
 from research_loop.modular.panel_plan import CompiledTrainPanel, compile_train_panel, executable_arms, obligation_grids
 from research_loop.modular.panel_receipts import PanelReceiptVerifier, PanelVerdict, RuntimeReceipt
 from research_loop.modular.panel_runner import DRIVERS, run_train_cell
+from research_loop.modular.history_panel_drivers import AdmissionPort
 from research_loop.modular.benchmark_cell import LinkedBenchmarkCellResult, run_benchmark_cell, verify_linked_benchmark_cell
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.runtime import AuditVerifier
@@ -135,7 +136,8 @@ def _driver_plan(scope_ids: Sequence[str], *, baseline_digest: str, p0_control: 
 
 def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStore,
                         snapshot_root: Path, export_root: Path, run_root: Path,
-                        model: CodexModelPort, audit_verifier: AuditVerifier) -> TrainPanelRun:
+                        model: CodexModelPort, audit_verifier: AuditVerifier,
+                        history_admission_port: AdmissionPort | None = None) -> TrainPanelRun:
     """Export and execute every cell selected by closed production drivers."""
     if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
         raise ContractError("trusted typed controller inputs required")
@@ -210,7 +212,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
             result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
                 package=compiled.packages[cell.runtime_arm.content_hash], objective=_record({"panel_digest": compiled.panel.digest}, "objective"),
                 sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
-                model=model, audit_verifier=audit_verifier, scorer=None)
+                model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port)
             runtimes.append(result.runtime)
             attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.runtime))
             attempt["runtime_trace_digests"].append(result.runtime.trace_digest)

@@ -3,10 +3,12 @@
 `freeze_history_bundle()` accepts caller-supplied before/current public records,
 a frozen replacement transition, and complete Q1.1/Q1.2 historical records.
 It verifies the task identity and variant coverage, then freezes one bundle for
-all variants of that task. `install_drivers()` takes
-a resolver for that bundle and installs Q1.1 and Q1.2 only into a
-caller-owned driver mapping. The production registry remains unchanged until a
-separate integration change chooses to register them.
+all variants of that task. The production panel registry includes Q1.1 and
+Q1.2. The compiler binds the complete caller bundle into the scenario; the
+driver selects only its own variant and active phase for model input.
+`run_train_cell` and the Python `run_train_panel` controller accept a
+caller-owned `history_admission_port`. The CLI does not fabricate one.
+`install_drivers` remains available for explicit local dependency injection.
 
 The resolver must return the exact bundle whose digest is frozen in the
 scenario base evidence. The transition is closed to

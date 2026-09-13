@@ -81,13 +81,11 @@ def _admit(_task, record):
 
 def _run_grid(tmp_path: Path, monkeypatch, coverage: str):
     compiled, tasks, bundles = _rows(coverage)
-    local = dict(panel_runner.DRIVERS)
-    install_drivers(local, material_resolver=lambda task, _scenario: bundles[task.content_hash], admission_port=_admit)
-    monkeypatch.setattr(panel_runner, "DRIVERS", local)
     runtimes, requests = [], []
     for number, cell in enumerate(compiled.panel.cells):
         run = panel_runner.run_train_cell(cell, task=tasks[cell.identity.benchmark], scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash],
-            objective=FrozenRecord.from_dict({"objective": coverage}), sidecar=tmp_path / str(number), model=_model(requests), audit_verifier=AUDIT)
+            objective=FrozenRecord.from_dict({"objective": coverage}), sidecar=tmp_path / str(number), model=_model(requests), audit_verifier=AUDIT,
+            history_admission_port=_admit)
         runtimes.append(run.runtime)
         assert run.runtime.status == "succeeded" and run.call_plan.data()["model_calls"] == 3
     assert PanelReceiptVerifier().verify(compiled.panel, tuple(runtimes)).decision == "engineering_verified"
@@ -191,3 +189,31 @@ def test_transition_parser_rejects_nonreplacement_before_driver_execution():
         select_history_material(FrozenRecord.from_dict(malformed), task, "Q1.1", "neutral")
     with pytest.raises(ContractError):
         freeze_history_bundle(task, before_evidence={"id": "a"}, current_evidence={"id": "b"}, transition={"action": "replace_public_measurement", "reason": ""}, q11=bundle.data()["q11"], q12=bundle.data()["q12"])
+
+
+def test_registered_history_driver_runs_from_custody_controller_with_caller_admission(tmp_path, monkeypatch):
+    from evaluation.modular.train_io import TrainPacketExporter
+    from research_loop.modular.train_controller import FrozenTrainControllerConfig, run_train_panel
+    from test_modular_train_controller import snapshot_and_custody, config, model_port, REVIEW, FINAL
+
+    snapshot, custody = snapshot_and_custody(tmp_path)
+    base = config(custody, snapshot, tmp_path).data()
+    packets = TrainPacketExporter(custody, snapshot, tmp_path / "material-input").export(base["item_ids"])
+    grids = obligation_grids(("Q1.1",), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+    package = next(iter(base["packages_by_arm"].values()))
+    schemas = {"history_baseline": REVIEW, "history_rebuilt": REVIEW, "final": FINAL}
+    frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+        "engineering_scope": "train_only_panel_engineering", "scope_ids": ["Q1.1"], "stage": "history-controller",
+        "evidence_by_task": {packet.task.content_hash: _bundle(packet.task).data() for packet in packets},
+        "packages_by_arm": {arm.content_hash: package for grid in grids.values() for arm in executable_arms(grid).values()},
+        "schemas": schemas, "max_calls": 36, "budget": {"model_calls": 3, "execution_limit": 0}}))
+    port = model_port(tmp_path, monkeypatch, max_calls=36, schemas=schemas)
+    admissions = []
+    def caller_admission(task, record):
+        admissions.append((task.identity, record.content_hash))
+        return _admit(task, record)
+    run = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "run-export",
+        run_root=tmp_path / "controller", model=port, audit_verifier=AUDIT, history_admission_port=caller_admission)
+    assert len(run.runtimes) == 12 and all(row.status == "succeeded" for row in run.runtimes)
+    assert len(admissions) == 24 and len(port.ledger["calls"]) == 36
+    assert run.verdict.decision == "engineering_verified" and not run.verdict.scientific_verified
