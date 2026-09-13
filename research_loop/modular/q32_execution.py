@@ -187,7 +187,7 @@ class Q32ExecutionStage:
 
     def execute_next(self, *, broker: DockerExecutionBroker, plan_id: str, program: str, csv_path: Path):
         i = len(self._rows)
-        if self._seal is None or i >= 3:
+        if self._seal is None or i >= 3 or self._session._terminal:
             raise ContractError("all programs must be frozen before execution")
         if FrozenRecord((self._session.sidecar / "execution-seal.json").read_text(encoding="utf-8")) != self._seal:
             raise ContractError("durable execution seal was modified")
@@ -241,6 +241,7 @@ class Q32ExecutionStage:
             "scientific_validated": False, "programme_complete": False, "distinct_public_input_artifacts": 1,
             "independent_data_qualification": "not_established",
             "model_usage": ({"tokens": model.ledger["tokens"], "usage_incomplete": model.ledger["usage_incomplete"],
+                "reported_tokens": sum((row.get("usage") or {}).get("total_tokens", 0) for row in model.ledger["calls"]),
                 "calls": model.ledger["calls"]} if hasattr(model, "ledger") else None),
             "measurement_calibration": "unverified_caller_definition"})
         self._session._record("q32_phase_result", result.data())

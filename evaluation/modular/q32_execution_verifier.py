@@ -88,7 +88,7 @@ def verify_q32_execution(path: Path, compiled: FrozenRecord) -> FrozenRecord:
             result = results[i]
             receipt = ExecutionReceipt.parse(result["data"]["receipt"])
             if (result["sequence"] <= execution["sequence"] or receipt.content_hash != result["data"]["execution_digest"]
-                    or receipt.identity.data() != task["task"]["identity"] or receipt.artifact.sha256 != job["program_sha256"]
+                    or receipt.identity.data() != task["task"]["identity"] or receipt.artifact is None or receipt.artifact.sha256 != job["program_sha256"]
                     or receipt.record.data().get("input_artifacts") != {"public_csv": job["input_artifact"]}):
                 raise ContractError("actual receipt does not bind program/input/plan")
             if i >= len(observations):
@@ -127,6 +127,13 @@ def verify_q32_execution(path: Path, compiled: FrozenRecord) -> FrozenRecord:
     if len(finals) != 1 or len(finals[0]["rows"]) != 3 or finals[0]["rows"][:len(observations)] != [e["data"] for e in observations]:
         raise ContractError("final failed/succeeded measurement denominator changed")
     final = finals[0]
+    usage = final.get("model_usage")
+    if usage is not None:
+        calls = usage["calls"]
+        if (len(calls) > len(public) or any(call.get("request_hash") != digest(event["data"]["request"])
+                or call.get("slot") != event["data"]["request"]["slot"] for call, event in zip(calls, public))
+                or usage["reported_tokens"] != sum((call.get("usage") or {}).get("total_tokens", 0) for call in calls)):
+            raise ContractError("actual model cost ledger lost public request binding")
     if final["model_attempts"] != len(requests) or final["execution_attempts"] != len(executions) or final["scientific_validated"] is not False:
         raise ContractError("final cost or scientific claim differs")
     for i, row in enumerate(final["rows"][len(observations):], len(observations)):

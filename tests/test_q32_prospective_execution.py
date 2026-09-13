@@ -228,3 +228,22 @@ def test_observation_and_p0_do_not_promote_execution_to_science(tmp_path, mode):
 
 def test_explicit_new_entry_point():
     assert Q32ExecutionStage and compile_q32_execution
+
+
+def test_terminal_broker_failure_retains_unused_opportunities(tmp_path):
+    from research_loop.modular.benchmarks.execution import ExecutionReceipt, validate_artifact
+    stage, _, compiled = make_stage(tmp_path)
+    class UnavailableBroker:
+        calls = 0
+        def execute(self, request):
+            self.calls += 1
+            artifact = validate_artifact(request.identity, "program", request.program)
+            return ExecutionReceipt(request.identity, "unavailable", artifact,
+                FrozenRecord.from_dict({"status": "unavailable", "reason": "synthetic infrastructure failure",
+                    "input_artifacts": {"public_csv": validate_artifact(request.identity, "public_csv", request.inputs["public_csv"]).record.data()}}))
+    broker = UnavailableBroker()
+    result = stage.run(fixture_response, broker).data()
+    assert broker.calls == result["execution_attempts"] == 1
+    assert [r["status"] for r in result["rows"]] == ["unavailable", "blocked", "blocked"]
+    assert result["unattempted_executions"] == 2 and result["model_attempts"] == 3
+    assert verify_q32_execution(stage._session.sidecar / "trace.jsonl", compiled).data()["verified"]
