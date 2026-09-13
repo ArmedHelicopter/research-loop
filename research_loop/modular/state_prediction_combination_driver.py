@@ -51,6 +51,7 @@ def _material_verifier(material, verifier):
 
 
 def _validate(panel, cell, task, scenario, package, material):
+    from research_loop.modular.admission_combination import FrozenAdmissionMaterial
     if (getattr(panel, "obligation_id", None) not in DESIGNS or cell not in panel.cells
             or panel.design != registered_design(panel.obligation_id, cell.runtime_arm.data()["baseline_digest"])
             or not isinstance(task, PublicTask) or task.identity != cell.identity or task.content_hash != cell.task_digest
@@ -58,6 +59,9 @@ def _validate(panel, cell, task, scenario, package, material):
             or not isinstance(scenario, FrozenRecord) or scenario.content_hash != cell.scenario_digest
             or not isinstance(material, FrozenLineageMaterial)):
         raise ContractError("state prediction frozen cell binding mismatch")
+    if ((panel.obligation_id == "pair:M1+M4" and type(material) is not FrozenAdmissionMaterial)
+            or (panel.obligation_id != "pair:M1+M4" and type(material) is not FrozenLineageMaterial)):
+        raise ContractError("state prediction obligation requires its exact material type")
     expected = {"schema": "state-prediction-combination-scenario-v1", "obligation_id": panel.obligation_id,
                 "design_digest": panel.design.content_hash, "task_digest": task.content_hash,
                 "replicate": cell.replicate, "material_digest": material.record.content_hash}
@@ -93,7 +97,7 @@ def _close_failure(session, cell, scenario, exc):
     if last["stage"] == "model_response":
         session.driver_failure(driver_id=cell.coverage_id, response=FrozenRecord.from_dict(last["data"]["response"]), error_type=type(exc).__name__)
     else:
-        session.controller_failure(driver_id=cell.coverage_id, error_type=type(exc).__name__)
+        session.controller_failure(driver_id=cell.coverage_id, error_type=type(exc).__name__, panel_cell=opaque_panel_cell_binding(cell))
 
 
 def run_state_prediction_combination_cell(*, panel, cell, task, scenario, package, material, source_verifier,
