@@ -488,7 +488,7 @@ class PanelReceiptVerifier:
             if not (terminal["stage"] in {"model_failure", "driver_failure", "controller_failure", "execution_failure", "execution_terminal"} and receipt.output_digest is None) and not (
                     terminal["stage"] == "final_decision" and terminal["data"].get("decision") == "blocked"
                     and has_model_failure and receipt.output_digest == observed) and not (
-                    receipt.output_digest is None and _failed_final_benchmark_solve(events)):
+                    receipt.output_digest is None and _failed_final_benchmark_solve(events, receipt.trace_path)):
                 raise ContractError("failed receipt does not match terminal runtime evidence")
         elif terminal["stage"] != "final_decision" or receipt.output_digest != observed:
             raise ContractError("non-success receipt lacks a bound terminal decision")
@@ -540,7 +540,7 @@ class PanelReceiptVerifier:
 
 
 
-def _failed_final_benchmark_solve(events: list[dict]) -> bool:
+def _failed_final_benchmark_solve(events: list[dict], trace_path: Path) -> bool:
     """A protocol-valid unknown answer can follow an actual failed program.
 
     Recognize only the shared solve's two final slots and the failed execution
@@ -548,7 +548,9 @@ def _failed_final_benchmark_solve(events: list[dict]) -> bool:
     This retains a failed denominator; it never qualifies a result for scoring.
     The caller has already verified the protocol and complete hash chain.
     """
-    from research_loop.modular.benchmarks.execution import ExecutionReceipt
+    import os
+    from research_loop.modular.benchmarks.execution import DockerExecutionBroker, ExecutionReceipt
+    from research_loop.modular.benchmark_solver import _candidate_from, _program_from
     lock = events[0]["data"]
     if (lock.get("slots", [])[-2:] != ["analysis_program", "final_answer"]
             or events[-1]["stage"] != "final_decision"
@@ -562,9 +564,54 @@ def _failed_final_benchmark_solve(events: list[dict]) -> bool:
     if [e["stage"] for e in between] != ["model_response", "execution_request", "execution_result"]:
         return False
     execution = ExecutionReceipt.parse(between[-1]["data"]["receipt"])
+    record = execution.record.data()
+    if (execution.status != "failed" or type(record.get("exit_code")) is not int
+            or record["exit_code"] == 0 or execution.artifact is None):
+        return False
+    analysis = FrozenRecord.from_dict(between[0]["data"]["response"])
     request = events[final_index]["data"]["request"]
     context = request.get("module_context", {})
     answer = events[-2]["data"].get("response", {}) if events[-2]["stage"] == "model_response" else {}
+    if not isinstance(context, dict):
+        return False
+    try:
+        program = _program_from(analysis)
+        _candidate_from(FrozenRecord.from_dict(answer), FrozenRecord.from_dict(lock["objective"]))
+    except (ContractError, TypeError, ValueError):
+        return False
+    attempt = between[1]["data"].get("attempt")
+    if type(attempt) is not int or attempt < 1:
+        return False
+    # RunSession.write_text uses the host newline convention. Verify the literal
+    # encoded program, not universal-newline-normalized text or a caller path.
+    expected_bytes = program.replace("\n", os.linesep).encode("utf-8")
+    path = trace_path.absolute().parent / f"analysis-{attempt}.py"
+    artifact = execution.artifact
+    try:
+        if (".." in trace_path.parts or DockerExecutionBroker._has_link_component(path)
+                or Path(artifact.path) != path or not path.is_file()
+                or path.stat().st_size != len(expected_bytes)
+                or artifact.byte_count != len(expected_bytes)):
+            return False
+        actual_bytes = path.read_bytes()
+    except (OSError, ValueError):
+        return False
+    if (actual_bytes != expected_bytes or hashlib.sha256(actual_bytes).hexdigest() != artifact.sha256
+            or between[1]["data"].get("program_sha256") != artifact.sha256):
+        return False
+    analysis_context = events[analysis_index]["data"]["request"].get("module_context", {})
+    if not isinstance(analysis_context, dict):
+        return False
+    declarations = analysis_context.get("public_artifacts")
+    inputs = _failed_solve_public_inputs(declarations)
+    if (inputs is None or not isinstance(record.get("input_artifacts"), dict)
+            or not isinstance(context.get("execution_input_artifacts"), dict)
+            or FrozenRecord.from_dict(record["input_artifacts"]) != FrozenRecord.from_dict(inputs)
+            or FrozenRecord.from_dict(context["execution_input_artifacts"]) != FrozenRecord.from_dict(inputs)
+            or _failed_solve_public_inputs(context.get("public_artifacts")) != inputs
+            or context.get("public_artifacts") != declarations
+            or context.get("analysis") != analysis.data()):
+        return False
     return (execution.status == "failed" and execution.identity.data() == lock["identity"]
         and execution.artifact is not None
         and context.get("execution_digest") == execution.content_hash
@@ -575,6 +622,28 @@ def _failed_final_benchmark_solve(events: list[dict]) -> bool:
         and answer.get("objective_digest") == FrozenRecord.from_dict(lock["objective"]).content_hash
         and answer.get("outcome") == "unknown" and answer.get("evidence_ids") == []
         and answer.get("programme_complete") is False)
+
+
+def _failed_solve_public_inputs(declarations: Any) -> dict[str, dict] | None:
+    """Validate the complete named input commitment consumed by both slots."""
+    import re
+    if not isinstance(declarations, list) or not declarations:
+        return None
+    inputs = {}
+    for row in declarations:
+        if not isinstance(row, dict) or set(row) != {"artifact", "container_path"}:
+            return None
+        artifact = row["artifact"]
+        if not isinstance(artifact, dict) or set(artifact) != {"artifact_id", "sha256", "byte_count"}:
+            return None
+        name = artifact["artifact_id"]
+        if (not isinstance(name, str) or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{0,63}", name)
+                or name in inputs or row["container_path"] != "/input/" + name
+                or not isinstance(artifact["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", artifact["sha256"])
+                or type(artifact["byte_count"]) is not int or artifact["byte_count"] < 0):
+            return None
+        inputs[name] = artifact
+    return inputs
 
 
 def require_protocol_refusal(finding: FrozenRecord, runtime: RuntimeReceipt, cell: PanelCell) -> None:

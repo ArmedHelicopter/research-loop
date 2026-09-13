@@ -153,6 +153,121 @@ def _alternate_plan():
     return plan
 
 
+@pytest.mark.parametrize("fault", ["program", "inputs_missing", "success_as_failed", "inputs_empty",
+    "inputs_duplicate", "inputs_drift", "input_bool_size", "input_float_actual", "final_public_missing",
+    "exit_bool", "exit_missing", "exit_string", "artifact_path", "artifact_size", "script_bytes", "reparse"])
+def test_failed_final_rejects_consistently_rehashed_material_forgery(tmp_path, fault, monkeypatch):
+    """Rehash our own synthetic trace; never mutate retained research runs."""
+    from research_loop.modular.benchmarks.execution import ExecutionReceipt
+    catalogue = _catalogue(); panel = catalogue.panels["pair:M4+M5"]
+    cell = next(c for c in panel.cells if c.arm_id == "01" and c.identity.benchmark == "discoverybench")
+    ordinary = _model([])
+    def model(request):
+        body = request.data()
+        if body["slot"] == "analysis_program" and fault != "success_as_failed":
+            return FrozenRecord.from_dict({"analysis": "Public failure with literal Unicode and newlines.",
+                "program": "# public synthetic 数据\nraise ValueError('public failure')\n"})
+        if body["slot"] == "final_answer":
+            return FrozenRecord.from_dict({"objective_digest": body["module_context"]["required_objective_digest"],
+                "outcome": "unknown", "evidence_ids": [], "conclusion": "No scientific result established.",
+                "programme_complete": False})
+        return ordinary(request)
+    result = _run(panel, cell, catalogue, tmp_path, model)
+    args = dict(panel=panel, task=catalogue.tasks[cell.task_digest], scenario=catalogue.scenarios[cell.key],
+                package=catalogue.packages[cell.runtime_arm.content_hash])
+    assert result.solver.execution.record.data()["exit_code"] == (0 if fault == "success_as_failed" else 1)
+    assert verify_m4_m5_combination_benchmark_cell(result, **args).data()["status"] == result.runtime.status
+    material = {}
+    def forge(events):
+        analysis = next(e for e in events if e["stage"] == "model_request" and e["data"]["request"]["slot"] == "analysis_program")
+        response = events[events.index(analysis) + 1]["data"]["response"]
+        execution_event = next(e for e in events if e["stage"] == "execution_result")
+        envelope = execution_event["data"]["receipt"]
+        final = next(e for e in events if e["stage"] == "model_request" and e["data"]["request"]["slot"] == "final_answer")
+        context = final["data"]["request"]["module_context"]
+        if fault == "program":
+            response["program"] = "print('unexecuted alternate program')"
+            context["analysis"] = response
+            context["analysis_digest"] = FrozenRecord.from_dict(response).content_hash
+        elif fault == "inputs_missing":
+            envelope["record"].pop("input_artifacts")
+            context.pop("execution_input_artifacts")
+        elif fault == "success_as_failed":
+            envelope["status"] = envelope["record"]["status"] = "failed"
+        elif fault == "inputs_empty":
+            envelope["record"]["input_artifacts"] = context["execution_input_artifacts"] = {}
+            analysis["data"]["request"]["module_context"]["public_artifacts"] = context["public_artifacts"] = []
+        elif fault == "inputs_duplicate":
+            declarations = analysis["data"]["request"]["module_context"]["public_artifacts"]
+            declarations.append(declarations[0].copy())
+            context["public_artifacts"] = declarations
+        elif fault in {"inputs_drift", "input_float_actual"}:
+            actual = envelope["record"]["input_artifacts"]["public_csv"]
+            if fault == "inputs_drift":
+                actual["sha256"] = "0" * 64
+            else:
+                actual["byte_count"] = float(actual["byte_count"])
+            context["execution_input_artifacts"] = envelope["record"]["input_artifacts"]
+        elif fault == "input_bool_size":
+            envelope["record"]["input_artifacts"]["public_csv"]["byte_count"] = True
+            context["execution_input_artifacts"] = envelope["record"]["input_artifacts"]
+            analysis["data"]["request"]["module_context"]["public_artifacts"][0]["artifact"]["byte_count"] = True
+            context["public_artifacts"] = analysis["data"]["request"]["module_context"]["public_artifacts"]
+        elif fault == "final_public_missing":
+            context.pop("public_artifacts")
+        elif fault == "exit_bool":
+            envelope["record"]["exit_code"] = True
+        elif fault == "exit_string":
+            envelope["record"]["exit_code"] = "1"
+        elif fault == "exit_missing":
+            envelope["record"].pop("exit_code")
+        elif fault == "artifact_path":
+            envelope["artifact"]["path"] = str(tmp_path.parent / "never-read-external-program.py")
+        elif fault == "artifact_size":
+            envelope["artifact"]["byte_count"] += 1
+            envelope["artifact"]["record"]["byte_count"] += 1
+        elif fault == "script_bytes":
+            path = result.runtime.trace_path.parent / "analysis-1.py"
+            path.write_bytes(path.read_bytes() + b"# altered public script\n")
+        elif fault == "reparse":
+            # Deterministic reparse gate injection; OS junction isolation is a broker concern.
+            monkeypatch.setattr(DockerExecutionBroker, "_has_link_component", classmethod(lambda cls, path: True))
+        execution = ExecutionReceipt.parse(envelope)
+        execution_event["data"].update(receipt=execution.data(), record=execution.record.data(),
+            status=execution.status, execution_digest=execution.content_hash)
+        context.update(execution_digest=execution.content_hash, execution_status=execution.status)
+        for feedback in final["data"]["request"].get("execution_feedback", []):
+            feedback.update(execution_digest=execution.content_hash, status=execution.status)
+        for request_event in (analysis, final):
+            old_digest = request_event["data"]["request_digest"]
+            new_digest = FrozenRecord.from_dict(request_event["data"]["request"]).content_hash
+            request_event["data"]["request_digest"] = new_digest
+            for event in events:
+                if event["stage"] == "model_response" and event["data"]["request_digest"] == old_digest:
+                    event["data"]["request_digest"] = new_digest
+        material.update(analysis=FrozenRecord.from_dict(response), execution=execution)
+    tail = _rewrite_trace(result.runtime.trace_path, forge)
+    if fault == "artifact_path":
+        original_read = Path.read_bytes
+        def no_external_read(path):
+            assert path.name != "never-read-external-program.py", "verifier followed an untrusted artifact path"
+            return original_read(path)
+        monkeypatch.setattr(Path, "read_bytes", no_external_read)
+    forged = replace(result, runtime=replace(result.runtime, status="failed", output_digest=None,
+        failure_reason="synthetic forged failure", trace_digest=tail),
+        solver=replace(result.solver, analysis=material["analysis"], execution=material["execution"], status="execution_failed"))
+    accepted = []
+    for name, verify in (("common", lambda: PanelReceiptVerifier()._verify_runtime(forged.runtime, cell)),
+                         ("combination", lambda: verify_m4_m5_combination_benchmark_cell(forged, **args))):
+        try:
+            verify()
+        except ContractError:
+            pass
+        else:
+            accepted.append(name)
+    assert accepted == [], f"{fault}: accepted by {accepted}"
+
+
 def _replace_joint_in_trace(path: Path, joint: FrozenRecord) -> str:
     def change(events):
         event = next(item for item in events if item["stage"] == "combination_mechanism")
