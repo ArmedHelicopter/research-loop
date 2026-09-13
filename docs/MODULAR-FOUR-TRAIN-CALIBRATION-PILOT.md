@@ -33,3 +33,38 @@ of all 36 slots / 72 opportunities, both benchmarks, isolated review requests,
 fixed arbitration, unknown / unavailable cases, capacity and budget refusal,
 raw partial failure preservation, source drift, and explicit rejection by the
 formal calibration verifier. Scientific calibration remains not established.
+
+## Deployment seam and evidence limits
+
+`calibration_pilot_process.run_config(config, reviewer1=..., reviewer2=...,
+arbitrator=..., evaluator=..., capacity_port=...)` is the worker-owned entry.
+`serve_once` exposes its one-shot file protocol and `launch_once` pins the Python
+executable, worker file, exact config/output arguments and verifies the signed
+diagnostic result. A deployment entry script supplies reviewed ports; the test
+helper is deliberately not a production evaluator. There is no automatic CLI
+model, tokenizer, price or reviewer implementation hidden behind a default.
+
+The frozen manifest includes the actual pilot, process, rubric and resolver code
+hashes, caller source/eligibility pins, the four exact store-backed task/public
+and reference digests, and the 36 signed material commitments. The worker checks
+caller inputs before and after every capacity measurement and after the run.
+The standard resolver rechecks its frozen reference bytes. These checks are
+application boundaries, not OS isolation or evidence of unlogged access absence.
+
+The nonbillable capacity port receives the exact private request plus the frozen
+port model/parameters/context/tokenizer/pricing contract. Its separately signed
+receipt must certify complete request capacity and a reliable monetary upper
+bound. This delegation must be backed by a reviewed tokenizer/context and pricing
+implementation before any actual pilot. A synthetic or assertion-only measurement
+port cannot establish that qualification. Each billable port returns an immutable
+output and request/config-bound usage evidence; partial transport failures retain
+both raw partial output and raw reported cost in the private journal. Confirmed
+reservation breaches retain reported usage and close further I/O.
+
+Reviewer receipts target normalized rubric dimensions or explicit unknown / not
+applicable. Material expectations do not enter either blind review request or
+the judge prompt; disagreements with the frozen material expectations are counted
+separately. Reviewer consensus or one fixed arbitration produces the prospectively
+frozen diagnostic target. These are authenticated judgements, not proof of expert
+correctness. There is no binary calibration eligibility threshold or confidence
+interval inferred from these four tasks.

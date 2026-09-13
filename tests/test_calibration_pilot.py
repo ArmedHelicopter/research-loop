@@ -9,6 +9,7 @@ from evaluation.modular.calibration import verify_calibration_receipt
 from evaluation.modular.calibration_pilot import (
     PILOT_SCHEMA, OPPORTUNITIES, DiagnosticPilot, PilotTransportError, PortResult,
     validate_manifest, verify, DIMENSIONS,
+    PortBudget, PrivateJournal, summarize,
 )
 from evaluation.modular.calibration_pilot_process import run_config, launch_once
 from evaluation.modular.reference_store import FrozenTrainReferenceResolver
@@ -188,6 +189,7 @@ def test_real_subprocess_36_slot_standard_resolver_endpoint(tmp_path):
     helper = Path(__file__).parent/'helpers/calibration_pilot_worker.py'
     receipt = launch_once(command=[sys.executable,str(helper),'--config',config_desc['path'],
         '--sha256',config_desc['sha256'],'--output',str(output)], executable_sha256=hash_file(Path(sys.executable)),
+        worker_sha256=hash_file(helper),
         config_descriptor=config_desc,result_path=output,parent_journal_path=tmp_path/'parent.jsonl',timeout_seconds=60)
     payload = verify(receipt,role='diagnostic',subject=manifest.content_hash,
         authority_id=authorities['diagnostic'].authority_id,key=authorities['diagnostic'].key)
@@ -202,3 +204,88 @@ def test_worker_source_pin_drift_zero_ports(tmp_path):
     Path(config.data()['input_files']['source']).write_text('changed')
     with pytest.raises(ContractError): run_config(config,**ports.kwargs())
     assert sum(map(len,ports.calls.values())) == 0
+
+
+def test_source_change_in_capacity_check_refused_before_billable_io(tmp_path):
+    manifest, _, authorities, config = build_fixture(tmp_path)
+    ports = FixturePorts(manifest, authorities)
+    source = Path(config.data()['input_files']['source'])
+    def changing_capacity(request):
+        result = ports.capacity(request)
+        source.write_text('changed-after-quote')
+        return result
+    kwargs = ports.kwargs() | {'capacity_port': changing_capacity}
+    with pytest.raises(ContractError, match='inputs changed'):
+        run_config(config, **kwargs)
+    assert sum(map(len, ports.calls.values())) == 0
+    rows = journal(Path(config.data()['journal_path']))
+    assert sum(r['event']=='opportunity_closed' for r in rows) == 72
+    assert rows[-1]['event']=='postrun_source_rejected'
+
+
+def test_global_review_budget_is_not_free(tmp_path):
+    manifest, _, authorities, _ = build_fixture(tmp_path)
+    body = manifest.data()
+    body['policy']['max_calls'] = 1
+    manifest = record(body)
+    ports = FixturePorts(manifest, authorities)
+    budget = PortBudget(manifest, PrivateJournal(tmp_path/'budget.jsonl'),capacity_port=ports.capacity,
+        capacity_key=authorities['capacity'].key)
+    request = record({'benchmark':'blade','candidate':{},'slot_id':'a'*64})
+    _, status = budget.call('reviewer1',request,lambda r: ports.review('reviewer1',r))
+    assert status=='received'
+    _, status = budget.call('evaluator',request,ports.evaluator)
+    assert status=='budget_exhausted' and budget.calls['evaluator']==0
+
+
+@pytest.mark.parametrize('case', ['unknown','foreign_config','exceeds_bound'])
+def test_partial_evaluator_cost_preserved_and_stops_io(tmp_path, case):
+    manifest, _, authorities, _ = build_fixture(tmp_path)
+    ports = FixturePorts(manifest, authorities)
+    path = tmp_path/'budget.jsonl'
+    budget = PortBudget(manifest,PrivateJournal(path),capacity_port=ports.capacity,capacity_key=authorities['capacity'].key)
+    request = record({'benchmark':'blade','prompt':'synthetic'})
+    cost = ports.cost('evaluator',request).data()
+    if case=='unknown': cost['microusd']='raw-invalid-value'
+    if case=='foreign_config': cost['port_config_digest']='0'*64
+    if case=='exceeds_bound': cost['microusd']=1001
+    def failing(req):
+        raise PilotTransportError(partial_response=record({'partial':'PRIVATE_PARTIAL'}),reported_cost=record(cost))
+    budget.call('evaluator',request,failing)
+    assert budget.halted and budget.calls['evaluator']==1
+    assert budget.costs['evaluator']==(1001 if case=='exceeds_bound' else 1000)
+    raw = next(r['data'] for r in journal(path) if r['event']=='port_raw')
+    assert raw['reported_cost']==cost and raw['output']=={'partial':'PRIVATE_PARTIAL'}
+    budget.call('reviewer1',request,lambda r: ports.review('reviewer1',r))
+    assert budget.calls['reviewer1']==0
+
+
+def test_statistics_nonzero_errors_and_unknown_excluded_without_inventing_samples(tmp_path):
+    manifest, _, _, _ = build_fixture(tmp_path)
+    body = manifest.data()
+    tasks = {digest(t['identity']):t for t in body['tasks']}
+    decisions, observations = {}, []
+    for index, slot in enumerate(body['slots']):
+        benchmark = tasks[slot['identity_digest']]['identity']['benchmark']
+        expected = {'state':'unknown','dimensions':None} if index==0 else {'state':'known','dimensions':{n:1 for n in DIMENSIONS[benchmark]}}
+        decisions[slot['slot_id']]={'state':'reviewed','target':expected}
+        for repeat in range(2):
+            dims = {n:1 if n=='context' else .5 if repeat else 0 for n in DIMENSIONS[benchmark]}
+            observations.append({'slot_id':slot['slot_id'],'benchmark':benchmark,'repeat':repeat,
+                'status':'scored_diagnostic','dimensions':dims})
+    result = summarize(body,decisions,observations)
+    assert result['source_task_count']==4 and result['slot_count']==36
+    assert result['per_benchmark']['blade']['absolute_error']['cvars']=={'n':34,'mean':.75}
+    assert result['per_benchmark']['blade']['repeat_absolute_difference']['cvars']=={'pairs':18,'mean':.5}
+    assert result['per_benchmark']['blade']['dimension_confusion']['cvars']=={'1:0':17,'1:0.5':17}
+
+
+def test_parent_refuses_foreign_config_command_before_launch(tmp_path):
+    _, _, _, config = build_fixture(tmp_path)
+    desc = write(tmp_path/'config.json',config.data())
+    helper = Path(__file__).parent/'helpers/calibration_pilot_worker.py'
+    with pytest.raises(ContractError,match='exact config'):
+        launch_once(command=[sys.executable,str(helper),'--config','FOREIGN','--sha256',desc['sha256'],
+            '--output',str(tmp_path/'out.json')],executable_sha256=hash_file(Path(sys.executable)),worker_sha256=hash_file(helper),
+            config_descriptor=desc,result_path=tmp_path/'out.json',parent_journal_path=tmp_path/'parent.jsonl',timeout_seconds=60)
+    assert not (tmp_path/'parent.jsonl').exists()

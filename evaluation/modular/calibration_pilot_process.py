@@ -12,7 +12,7 @@ import subprocess
 from pathlib import Path
 
 from evaluation.modular.calibration_pilot import (
-    DiagnosticAuthority, DiagnosticPilot, PrivateJournal, exact, pin, validate_manifest,
+    DiagnosticAuthority, DiagnosticPilot, PrivateJournal, exact, pin, validate_manifest, verify,
 )
 from evaluation.modular.reference_store import FrozenTrainReferenceResolver, _plain, _read_bound
 from research_loop.modular.contracts import FrozenRecord
@@ -41,7 +41,14 @@ def run_config(config: FrozenRecord, *, reviewer1, reviewer2, arbitrator, evalua
         raise ContractError('worker source inventory differs')
     def check_sources():
         for name, path in body['input_files'].items():
+            if not Path(path).is_absolute():
+                raise ContractError('worker source path must be absolute')
             _read_bound(Path(path), {pilot_body['input_pins'][name]})
+        for descriptor in (body['manifest'], body['materials'], *body['key_files'].values()):
+            exact(descriptor, ('path', 'sha256'))
+            if not Path(descriptor['path']).is_absolute():
+                raise ContractError('worker custody path must be absolute')
+            _read_bound(Path(descriptor['path']), {pin(descriptor['sha256'])})
     check_sources()
     materials = load_record(body['materials'])
     material_rows = {sid: FrozenRecord.from_dict(receipt) for sid, receipt in materials.data().items()}
@@ -51,12 +58,15 @@ def run_config(config: FrozenRecord, *, reviewer1, reviewer2, arbitrator, evalua
         exact(descriptor, ('path', 'sha256'))
         keys[role], _ = _read_bound(Path(descriptor['path']), {pin(descriptor['sha256'])})
     store = exact(body['reference_store'], ('root', 'manifest_sha256', 'inventory_digest', 'split_digest'))
+    if not Path(store['root']).is_absolute() or not Path(body['journal_path']).is_absolute():
+        raise ContractError('worker store and journal must be absolute')
     resolver = FrozenTrainReferenceResolver(Path(store['root']), manifest_sha256=pin(store['manifest_sha256']),
         inventory_digest=store['inventory_digest'], split_digest=store['split_digest'])
     authority = DiagnosticAuthority(pilot_body['authorities']['diagnostic'], keys['diagnostic'])
     pilot = DiagnosticPilot(manifest=manifest, resolver=resolver, materials=material_rows, keys=keys,
         journal_path=Path(body['journal_path']), capacity_port=capacity_port,
-        reviewer1=reviewer1, reviewer2=reviewer2, arbitrator=arbitrator, evaluator=evaluator, authority=authority)
+        reviewer1=reviewer1, reviewer2=reviewer2, arbitrator=arbitrator, evaluator=evaluator, authority=authority,
+        source_guard=check_sources)
     result = pilot.run()
     try:
         check_sources()
@@ -86,7 +96,7 @@ def serve_once(config_descriptor, *, reviewer1, reviewer2, arbitrator, evaluator
         return 1
 
 
-def launch_once(*, command: list[str], executable_sha256: str, config_descriptor,
+def launch_once(*, command: list[str], executable_sha256: str, worker_sha256: str, config_descriptor,
                 result_path: Path, parent_journal_path: Path, timeout_seconds: int):
     """Caller supplies its pinned worker deployment. No shell or auto-retry.
 
@@ -96,8 +106,17 @@ def launch_once(*, command: list[str], executable_sha256: str, config_descriptor
     """
     if not command or any(not isinstance(arg, str) or not arg for arg in command):
         raise ContractError('pilot subprocess command is invalid')
+    if len(command) != 8 or command[2:] != ['--config', config_descriptor['path'], '--sha256', config_descriptor['sha256'], '--output', str(result_path)]:
+        raise ContractError('pilot subprocess command does not bind exact config and output')
+    if not Path(command[0]).is_absolute() or not Path(command[1]).is_absolute():
+        raise ContractError('pilot executable and worker must be absolute')
     _read_bound(Path(command[0]), {pin(executable_sha256)})
-    load_record(config_descriptor)
+    _read_bound(Path(command[1]), {pin(worker_sha256)})
+    config = load_record(config_descriptor).data()
+    manifest = load_record(config['manifest'])
+    manifest_body, _, _ = validate_manifest(manifest)
+    key_descriptor = config['key_files']['diagnostic']
+    key, _ = _read_bound(Path(key_descriptor['path']), {pin(key_descriptor['sha256'])})
     if type(timeout_seconds) is not int or timeout_seconds <= 0:
         raise ContractError('pilot process timeout must be explicit')
     if _plain(result_path).exists():
@@ -108,15 +127,26 @@ def launch_once(*, command: list[str], executable_sha256: str, config_descriptor
     try:
         result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             timeout=timeout_seconds, check=False, shell=False)
+        for suffix, raw in (('.stdout.bin', result.stdout), ('.stderr.bin', result.stderr)):
+            with _plain(Path(str(parent_journal_path) + suffix)).open('xb') as stream:
+                stream.write(raw)
         journal.append('process_closed', {'exit_code': result.returncode,
             'stdout_sha256': hashlib.sha256(result.stdout).hexdigest(), 'stderr_sha256': hashlib.sha256(result.stderr).hexdigest()})
         if result.returncode != 0:
             raise ContractError('pilot subprocess failed')
         receipt = FrozenRecord(_plain(result_path).read_text(encoding='utf-8'))
-        body = receipt.data().get('body', {})
-        if body.get('role') != 'diagnostic' or body.get('validation_eligible') is not False:
+        body = verify(receipt, role='diagnostic', subject=manifest.content_hash,
+            authority_id=manifest_body['authorities']['diagnostic'], key=key)
+        if (body.get('schema') != 'four-train-diagnostic-observation-v1' or body.get('validation_eligible') is not False
+                or body.get('calibration_eligible') is not False or body.get('manifest_digest') != manifest.content_hash
+                or body.get('evaluator_opportunity_count') != 72 or len(body.get('observations', [])) != 72):
             raise ContractError('pilot subprocess emitted non-diagnostic receipt')
+        _read_bound(Path(command[1]), {worker_sha256})
+        load_record(config_descriptor)
         return receipt
     except subprocess.TimeoutExpired:
         journal.append('process_unknown', {'reason': 'timeout', 'automatic_retry': False})
         raise ContractError('pilot subprocess outcome unknown') from None
+    except Exception:
+        journal.append('process_rejected', {'reason': 'failed_or_invalid_bound_result', 'automatic_retry': False})
+        raise ContractError('pilot subprocess failed or returned an invalid bound result') from None

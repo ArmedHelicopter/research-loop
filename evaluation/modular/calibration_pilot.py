@@ -28,6 +28,16 @@ DIMENSIONS = {'blade': ('cvars', 'transform', 'model'),
               'discoverybench': ('context', 'variable_f1', 'relation')}
 
 
+def runtime_code_paths():
+    root = Path(__file__).parent
+    return {'pilot_code': root / 'calibration_pilot.py', 'worker_code': root / 'calibration_pilot_process.py',
+            'rubric_code': root / 'scoring_service.py', 'resolver_code': root / 'reference_store.py'}
+
+
+def runtime_code_pins():
+    return {name: hashlib.sha256(_plain(path).read_bytes()).hexdigest() for name, path in runtime_code_paths().items()}
+
+
 def exact(value, fields):
     if not isinstance(value, Mapping) or set(value) != set(fields):
         raise ContractError('diagnostic contract fields differ')
@@ -152,6 +162,8 @@ def validate_manifest(manifest: FrozenRecord):
         raise ContractError('pilot requires caller source pins')
     for value in body['input_pins'].values():
         pin(value)
+    if any(body['input_pins'].get(name) != value for name, value in runtime_code_pins().items()):
+        raise ContractError('pilot running implementation differs from frozen code pins')
     policy = exact(body['policy'], ('ports', 'max_calls', 'max_tokens', 'max_microusd'))
     exact(policy['ports'], ROLES)
     for name in ('max_calls', 'max_tokens', 'max_microusd'):
@@ -220,7 +232,7 @@ def raw_record(value):
 
 
 class PortBudget:
-    def __init__(self, manifest, journal, *, capacity_port, capacity_key):
+    def __init__(self, manifest, journal, *, capacity_port, capacity_key, source_guard=None):
         self.body, _, _ = validate_manifest(manifest)
         self.manifest = manifest
         self.journal = journal
@@ -232,6 +244,7 @@ class PortBudget:
         self.unknown = {role: 0 for role in ROLES}
         self.failed = {role: 0 for role in ROLES}
         self.halted = False
+        self.source_guard = source_guard
 
     def call(self, role, request, port):
         policy = self.body['policy']
@@ -244,6 +257,8 @@ class PortBudget:
             'role': role, 'request_digest': request.content_hash, 'port_config': spec, 'request': request.data()})
         # This port is caller-trusted deterministic measurement, never a model port.
         try:
+            if self.source_guard is not None:
+                self.source_guard()
             quote = self.capacity_port(quote_request)
             q = verify(quote, role='capacity', subject=quote_request.content_hash,
                        authority_id=self.body['authorities']['capacity'], key=self.capacity_key)
@@ -259,6 +274,8 @@ class PortBudget:
                     or sum(self.tokens.values()) + count > policy['max_tokens']
                     or sum(self.costs.values()) + amount > policy['max_microusd']):
                 raise ContractError('capacity reservation exceeds frozen limit')
+            if self.source_guard is not None:
+                self.source_guard()
         except Exception:
             self.journal.append('capacity_rejected', {'role': role, 'request_digest': request.content_hash})
             return None, 'capacity_rejected'
@@ -328,7 +345,7 @@ class DiagnosticPilot:
     def __init__(self, *, manifest, resolver: FrozenTrainReferenceResolver, materials: Mapping[str, FrozenRecord],
                  keys: Mapping[str, bytes], journal_path: Path, capacity_port: Callable,
                  reviewer1: Callable, reviewer2: Callable, arbitrator: Callable, evaluator: Callable,
-                 authority: DiagnosticAuthority):
+                 authority: DiagnosticAuthority, source_guard=None):
         self.manifest = manifest
         self.body, self.tasks, self.slots = validate_manifest(manifest)
         if not isinstance(resolver, FrozenTrainReferenceResolver):
@@ -372,7 +389,7 @@ class DiagnosticPilot:
         self.journal.append('sources_verified', {'task_count': 4})
         self.materials, self.keys, self.resolver, self.authority = parsed, dict(keys), resolver, authority
         self.ports = {'reviewer1': reviewer1, 'reviewer2': reviewer2, 'arbitrator': arbitrator, 'evaluator': evaluator}
-        self.budget = PortBudget(manifest, self.journal, capacity_port=capacity_port, capacity_key=keys['capacity'])
+        self.budget = PortBudget(manifest, self.journal, capacity_port=capacity_port, capacity_key=keys['capacity'], source_guard=source_guard)
         self.ran = False
 
     def _review(self, role, request, benchmark):
@@ -450,6 +467,9 @@ class DiagnosticPilot:
                 observations.append(obs)
                 self.journal.append('opportunity_closed', obs)
         report = summarize(self.body, decisions, observations)
+        report['material_review_target_disagreements'] = sum(
+            decision['target'] is not None and decision['target'] != self.materials[sid]['expected']
+            for sid, decision in decisions.items())
         report.update({'schema': 'four-train-diagnostic-observation-v1', 'manifest_digest': self.manifest.content_hash,
                        'review_decisions_digest': frozen_decisions.content_hash, 'budget': self.budget.data(),
                        'validation_eligible': False, 'calibration_eligible': False,
@@ -489,6 +509,7 @@ def summarize(body, decisions, observations):
             'absolute_error': {name: {'n': len(values), 'mean': sum(values) / len(values) if values else None} for name, values in errors.items()},
             'repeat_absolute_difference': {name: {'pairs': len(values), 'mean': sum(values) / len(values) if values else None} for name, values in repeated.items()}}
     return {'source_task_count': 4, 'slot_count': 36, 'evaluator_opportunity_count': 72,
+            'observed_group_count': len({task['identity']['group_id'] for task in body['tasks']}),
             'independent_sample_count_claimed': None, 'per_benchmark': stats,
             'observations': observations, 'coverage_slots': {kind: sum(s['kind'] == kind for s in slots.values()) for kind in COVERAGE_KINDS},
             'review_states': {sid: decisions[sid]['state'] for sid in sorted(decisions)}}

@@ -8,7 +8,7 @@ from pathlib import Path
 from evaluation.modular.calibration import COVERAGE_KINDS
 from evaluation.modular.calibration_pilot import (
     BENCHMARKS, DIMENSIONS, PILOT_SCHEMA, ROLES, DiagnosticAuthority, PortResult,
-    slot_id,
+    slot_id, runtime_code_paths, runtime_code_pins,
 )
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.ontology import digest
@@ -70,7 +70,7 @@ def build_fixture(root):
     manifest = record({'schema': PILOT_SCHEMA, 'tasks': tasks, 'slots': slots,
         'policy': {'ports': ports, 'max_calls': 180, 'max_tokens': 18000000, 'max_microusd': 180000},
         'authorities': {role: authority.authority_id for role, authority in authorities.items()},
-        'input_pins': {'source': source['sha256']}, 'validation_eligible': False})
+        'input_pins': {'source': source['sha256']} | runtime_code_pins(), 'validation_eligible': False})
     manifest_desc = write(root / 'manifest.json', manifest.data())
     materials_desc = write(root / 'materials.json', materials)
     key_files = {}
@@ -80,7 +80,8 @@ def build_fixture(root):
         key_files[role] = {'path': str(path.absolute()), 'sha256': hash_file(path)}
     config = record({'schema': 'diagnostic-calibration-worker-config-v1', 'manifest': manifest_desc, 'materials': materials_desc,
         'key_files': key_files, 'reference_store': {'root': str(store.absolute()), 'manifest_sha256': store_desc['sha256'],
-            'inventory_digest': 'inventory', 'split_digest': 'split'}, 'input_files': {'source': str(source_path.absolute())},
+            'inventory_digest': 'inventory', 'split_digest': 'split'},
+        'input_files': {'source': str(source_path.absolute())} | {name:str(path.absolute()) for name,path in runtime_code_paths().items()},
         'journal_path': str((root / 'private-journal.jsonl').absolute())})
     return manifest, materials, authorities, config
 
