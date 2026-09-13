@@ -1,0 +1,64 @@
+{
+  "schema": "failed-final-repair-verification-v1",
+  "base": "cf571b0512d682378a45eb00df41462a50da7de0",
+  "commit": "7a5c3784e0a4553bbd389ab6e82b1df968016050",
+  "source_sha256": {
+    "research_loop/modular/panel_receipts.py": "341e69e8aca742dd21652dce9f93fecdc55cb1c7839851cd3f7ba27c0992a76e",
+    "tests/test_modular_combination_benchmark_driver.py": "67d55a74dcde8d779926888438baf0728d30d4f64facecabf927cc7f0e9b40a2",
+    "docs/FAILED-FINAL-BENCHMARK-VERIFICATION.md": "1d9f95b6e404d376ae31ef8fc9cb8b9746fa13ce369cb1b635f91dab4943960d"
+  },
+  "reports": {
+    "ff-label.xml": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ff-label.xml",
+      "sha256": "9235cd8e613f10832dc84ffd87eb8b0a8b37aecbf5f76ed86b1c5ac5f6c8985b",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.298"
+    },
+    "ff-red.xml": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ff-red.xml",
+      "sha256": "922c7ec56857b62148b610f5f195e939720911fc2626bf697e66816a83e998aa",
+      "tests": "3",
+      "failures": "3",
+      "errors": "0",
+      "skipped": "0",
+      "time": "6.828"
+    },
+    "ff-final.xml": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\ff-final.xml",
+      "sha256": "89b21cb32ab86342e71340e18606eb1745257be355a46712f1029fbb0c030da2",
+      "tests": "85",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "195.264"
+    }
+  },
+  "session": {
+    "id": 77964,
+    "status": "closed",
+    "exit_code": 0
+  },
+  "source_frozen": true,
+  "worktree_clean": true,
+  "counterexamples": {
+    "before": "Both common and combination accepted each of three consistently rehashed synthetic contradictions.",
+    "after": "16 material-fault variants rejected; six relevant test files passed."
+  },
+  "scope": {
+    "paid_calls": 0,
+    "private_validation_reference_reads": 0,
+    "original_paid_run_mutations": 0,
+    "solver_reruns_on_original_tasks": 0,
+    "scoring_calls_on_original_tasks": 0
+  },
+  "limitations": [
+    "Engineering artifact and broker-receipt consistency only; not independent execution attestation or scientific validity.",
+    "Failed status and denominator retained; no timeout contract expansion.",
+    "Reparse test injects broker gate; not an OS isolation claim.",
+    "Replay expects original fixed path and host newline convention.",
+    "Original run pins remain required against wholesale replacement."
+  ]
+}

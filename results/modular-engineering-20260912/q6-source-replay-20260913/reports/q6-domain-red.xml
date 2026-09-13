@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="25.163" timestamp="2026-09-13T14:30:58.808121+08:00" hostname="SC-202507131830"><testcase classname="work.test_q6_staging_cross_domain_red" name="test_legacy_plain_mac_staging_token_must_not_activate_production" time="3.195"><failure message="AttributeError: 'TrainStagingAuthorization' object has no attribute 'receipt_id'">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q6-domain-red/test_legacy_plain_mac_staging_0')
+
+    def test_legacy_plain_mac_staging_token_must_not_activate_production(tmp_path):
+        identity=DataIdentity('blade','public-synthetic','group','dataset','split','train')
+        manifest=TrainingManifest.freeze((identity,))
+        parent=CandidatePackage.create(parent_digest=None,manifest=manifest,changes={'prompt':{'instructions':'base'}},search_cost=0)
+        candidate=CandidatePackage.create(parent_digest=parent.digest,manifest=manifest,changes={'memory':{'lesson':'candidate'}},search_cost=1)
+        key=b'explicit-synthetic-host-key-32bytes'
+        stage=TrainOperationAuthority('synthetic-stage',key)
+        record=FrozenRecord.from_dict({'schema':'train-staging-authorization-v1','domain':'train',
+            'candidate_digest':candidate.digest,'expected_active_digest':parent.digest,'subject':{'synthetic':'legacy-reproduction'}})
+        legacy=TrainStagingAuthorization(record,stage.sign(record))
+        def no_validation(_): pytest.fail('validation cannot be called')
+        production=AcceptanceAuthority(key,b'other-independent-validator-key32',no_validation)
+        runtime=ExecutionRuntime(tmp_path/'shadow.sqlite',FileDeploymentPort(tmp_path/'shadow.json',parent),production,parent)
+        try:
+&gt;           with pytest.raises(ContractError): runtime.activate(legacy,candidate)
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\work\test_q6_staging_cross_domain_red.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.modules.improvement.ExecutionRuntime object at 0x000002338B6E8590&gt;
+receipt = TrainStagingAuthorization(record=FrozenRecord(encoded='{"candidate_digest":"96ca22166acfef80c452530269ff390ac1944eef7a...":{"synthetic":"legacy-reproduction"}}'), signature='3e9b7bb0366a412c487ba3d680d4481987720239b7d182f3f7190730cd48a497')
+candidate = CandidatePackage(record=FrozenRecord(encoded='{"changes":{"memory":{"lesson":"candidate"}},"parent_digest":"09d82ae8ce..."public-synthetic"}]},"training_manifest_digest":"0c02a6ba5530bbc5e023504b1b341b2389d48604d38171def3f18031a91be68c"}'))
+
+    def activate(self, receipt: AcceptanceReceipt, candidate: CandidatePackage) -&gt; DeploymentAck:
+        self._authority.verify(receipt)
+        active = self.active()
+        data = receipt.record.data()
+&gt;       if receipt.receipt_id in {row[0] for row in self._db.execute("SELECT id FROM used_receipts")}:
+           ^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'TrainStagingAuthorization' object has no attribute 'receipt_id'
+
+research_loop\modular\modules\improvement.py:540: AttributeError</failure></testcase></testsuite></testsuites>

@@ -44,5 +44,17 @@ The syntax-error cell also exposed a verifier defect: the shared runtime
 verifier rejected a failed program followed by a protocol-valid unknown answer.
 A separate read-only diagnosis preserved all 302 original trial files. Initial
 repair `cf571b0` passed 29 checks; independent review then found additional
-program/input/exit-status binding gaps. That repair remains under review and
-is not a reason to remove any original failed cell or rerun the paid trial.
+program/input/exit-status binding gaps. The subsequent `7a5c378` repair binds
+literal program bytes, complete public input declarations and a strict nonzero
+integer exit code. Three reproduced REDs are retained; its frozen six-file
+regression passed 85 tests. Root integrated verification passed 222 tests on
+`39cfac6`, including the merged retrieval/controller/custody seams.
+
+A separate read-only replay on `39cfac6` verified all eight original runtime
+records against the already archived 302-file hash manifest. No original file,
+solver call, Docker call, scorer call or result changed. The syntax-error record
+now verifies as an actual failure; the two rejected empty answers remain
+failures. The original five scores, three failures and inconclusive conclusion
+are unchanged. Evidence is in `q6-source-replay-20260913` within the indexed
+engineering archive. This consistency repair does not establish scientific
+effect, scorer calibration or validation acceptance.

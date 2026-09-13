@@ -1,0 +1,229 @@
+{
+  "commit": "c60a23ae2b682681e979643f4c9dc78af23e8493",
+  "base_commit": "7441cfdef06d1c88ffa3bfd6c021642366c99a50",
+  "source_frozen": true,
+  "git_status": "",
+  "source_sha256": {
+    "research_loop/modular/metaprogram_training.py": "734f0af7ce0e028ebf4cb651e448612b308250acf844f4f9eb5164675e6a3de0",
+    "research_loop/modular/improvement_training.py": "bb4927177b49440fd40b4fecab0fda1a292d623d0ce2c813a88042708b55afd1",
+    "research_loop/modular/train_operations.py": "503cd6c97e51f5c6ef0a6fc42c41b47cee5998dc3df7a9cc4904f92c7aa15a2e",
+    "tests/test_modular_metaprogram_training.py": "f579e614469e270506a30abcc37b40b2518819036816f2e8a0d13ba736e11b63",
+    "tests/test_modular_improvement_training.py": "994685e0342bbb24ac16283eb184c342b760c61638dd3afcd35a173b92ee025b",
+    "tests/test_modular_train_operations.py": "e7dae3fc824530a5e49d131cd75e0f30b2980104d71201bd5297fb54e929fc3f",
+    "docs/Q6-TRAIN-CONTROLLERS.md": "486b8696c732fb5194d84b4934de01450945cae9bcce9f643d1014c35a77df70"
+  },
+  "commit_chain": [
+    "68774dc0ff63b14a2a3921ed9b0aaeaaea6e72d3 Execute Q6.3 train builder proposals through generated solver context",
+    "86fe76a763d5937dd9d39c1235bd4a6e6a1eba1c Preserve rejected training responses and unique history sources",
+    "8a9a37e66e4748c83efb2bd97d1dd49a62f8cb69 Retain original rejected successor responses in meta training verification",
+    "5120b132ec123f03fe814854c45b11ed4ae4c307 Reuse bound training phase for complete Q6.2 candidate comparisons",
+    "25a32498a013a707c1a0e56b0c01241ba5430e4b Execute isolated Q6 train capability feedback and staging operations",
+    "c60a23ae2b682681e979643f4c9dc78af23e8493 Separate staging authority domain and verify actual operation sources"
+  ],
+  "reports": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q6-label1.xml",
+      "sha256": "af869522bccb456d7c9f175fd8103523ec3cecc390202e2b460e0d9cba6ce636",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "10",
+        "time": "0.639",
+        "timestamp": "2026-09-13T14:09:54.224229+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "qualification": "Label isolation before new operation models.",
+      "failures": []
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q62-r1.xml",
+      "sha256": "4a83733528499661e9d03429966eae0bead99c3a7261e0730c15ef8210f90d69",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "7",
+        "time": "235.917",
+        "timestamp": "2026-09-13T14:10:11.626985+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "qualification": "Frozen Q6.2 complete grids plus shared Q6.3 regression at 5120b13.",
+      "failures": []
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q6-ops-r1.xml",
+      "sha256": "82890caea7d39ab254b265c6d31c690a58cfd92079e25ed0a48928d855e71326",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "1",
+        "skipped": "0",
+        "tests": "1",
+        "time": "25.513",
+        "timestamp": "2026-09-13T14:21:14.727602+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "qualification": "Preserved development failure: shared journal expected phase_lock; no success substitution.",
+      "failures": [
+        {
+          "classname": "tests.test_modular_train_operations",
+          "name": "test_full_operation_grids_execute_and_consume_actual_shadow_results[Q6.1]",
+          "time": "25.023"
+        }
+      ]
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q6-ops-r2.xml",
+      "sha256": "b1e19b080250148a6dfe168aa2e156aba2369e7c829ed8e2150806184098bf19",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "1",
+        "skipped": "0",
+        "tests": "2",
+        "time": "132.224",
+        "timestamp": "2026-09-13T14:24:12.426645+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "qualification": "Preserved development failure: train-artifact ancestor restriction incorrectly applied to host verifier Python source.",
+      "failures": [
+        {
+          "classname": "tests.test_modular_train_operations",
+          "name": "test_full_operation_grids_execute_and_consume_actual_shadow_results[Q6.5]",
+          "time": "4.859"
+        }
+      ]
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q6-ops-r3.xml",
+      "sha256": "6b1c55637093c721f7c14cc095a86c980b8a3deab4bb6bb258b7ebcfb26ac231",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "7",
+        "time": "493.313",
+        "timestamp": "2026-09-13T14:28:30.785877+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "qualification": "Seven passing operation regressions; source held unchanged while running, then captured by 25a3249.",
+      "failures": []
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q6-domain-red.xml",
+      "sha256": "4a623c0f76bc9a8d01c40452f5e234c91c87b73750ca0eb7b7251e5adfef1167",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "1",
+        "skipped": "0",
+        "tests": "1",
+        "time": "25.163",
+        "timestamp": "2026-09-13T14:30:58.808121+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "qualification": "Legacy plain-MAC direct Python token passed MAC but failed AttributeError for absent receipt_id; this report alone does not show activation.",
+      "failures": [
+        {
+          "classname": "work.test_q6_staging_cross_domain_red",
+          "name": "test_legacy_plain_mac_staging_token_must_not_activate_production",
+          "time": "3.195"
+        }
+      ]
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q6-domain-red2.xml",
+      "sha256": "fcd8f0054528ef59618e982a14ef3cee3f9ec139a7401d23b2e8f9b3e69bb434",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "1",
+        "skipped": "0",
+        "tests": "1",
+        "time": "3.273",
+        "timestamp": "2026-09-13T14:32:54.888067+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "qualification": "Retrospective isolated legacy-MAC reproduction: public fields rewrapped as AcceptanceReceipt actually activated the shadow runtime, so expected rejection failed.",
+      "failures": [
+        {
+          "classname": "work.test_q6_staging_cross_domain_red",
+          "name": "test_legacy_plain_mac_staging_token_must_not_activate_production",
+          "time": "2.859"
+        }
+      ]
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q6-stage-contract.xml",
+      "sha256": "3e5fd69469b0a3684e50fb07b82f2afddc1e4e109b828346b7d2a6fe65e3f55c",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "6",
+        "time": "0.272",
+        "timestamp": "2026-09-13T14:38:52.025824+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "qualification": "Six strict staging field rejections before MAC.",
+      "failures": []
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q6-label-final.xml",
+      "sha256": "7d59f76a6fc457029e37b45b9eec014a26456b14b484e2399626751bd3aa70a7",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "10",
+        "time": "0.664",
+        "timestamp": "2026-09-13T14:40:30.524480+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "qualification": "Final frozen label isolation at c60a23a.",
+      "failures": []
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q6-c60-final.xml",
+      "sha256": "cdf2453830bc21247a1b592fbce28bd81be33984d3bf18f7c152a0ca14652537",
+      "summary": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "21",
+        "time": "407.545",
+        "timestamp": "2026-09-13T14:40:45.707690+08:00",
+        "hostname": "SC-202507131830"
+      },
+      "qualification": "Final frozen complete new grids, operation counterexamples, Q6.2 and shared Q6.3 success/rejection/history checks.",
+      "failures": []
+    }
+  ],
+  "final_exec_session": {
+    "id": 59549,
+    "status": "completed",
+    "exit_code": 0,
+    "tests": 21
+  },
+  "executed_contracts": {
+    "Q6.1": "16 train-shadow capability cells; real API attempts, invariant negative controls, no validation store access",
+    "Q6.2": "12 fixed/manual/automatic x M9 x public synthetic benchmark cells",
+    "Q6.5": "16 round-cells: two actual feedback rounds, retained/adopted package and true predecessor journal consumed",
+    "Q6.6": "20 train-staging cells; actual deployment/SQLite changes, rollback consumption, drift/offline blocks"
+  },
+  "boundaries": {
+    "data": "public synthetic custody fixtures only; no real 01/02 histories consumed",
+    "model": "mocked Codex process transport, zero paid model calls",
+    "execution": "real pinned Docker",
+    "production_acceptance": "not supplied or established; only a read-only future seam and negative staging-token tests",
+    "science": "improvement, transfer, scientific calibration and scientific validity not measured",
+    "security": "host in-process provenance and contracts; OS authority isolation and independent source competence remain external qualifications"
+  }
+}

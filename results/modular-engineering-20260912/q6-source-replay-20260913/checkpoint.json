@@ -1,0 +1,56 @@
+{
+  "schema": "q6-source-replay-checkpoint-v1",
+  "source_commit": "39cfac6e3702879b139af58c7d4f02b1acb00ad5",
+  "registered_question_drivers": 38,
+  "separate_train_phases": [
+    "Q6.1",
+    "Q6.2",
+    "Q6.3",
+    "Q6.5",
+    "Q6.6"
+  ],
+  "remaining_question_driver_ids": [
+    "Q8.1",
+    "Q8.4",
+    "Q8.5",
+    "Q8.6",
+    "Q8.7"
+  ],
+  "new_live_validation_payload_reads": 0,
+  "new_paid_model_calls": 0,
+  "root_reports": {
+    "q6-root-integrated-r1": {
+      "source_commit": "9ca3214b4b624f2084bbfeb35dacbcba7d813629",
+      "tests": "53",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "496.667"
+    },
+    "integration-q8-source-failure-r1": {
+      "source_commit": "39cfac6e3702879b139af58c7d4f02b1acb00ad5",
+      "tests": "222",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "462.407"
+    }
+  },
+  "q6_synthetic_runtime_files": 8261,
+  "original_paid_trial_files_unchanged": 302,
+  "m4m5_readonly_replay_verified": 8,
+  "m4m5_original_scores": 5,
+  "m4m5_original_failures": 3,
+  "m4m5_conclusion": "inconclusive",
+  "pruned_combinations": [],
+  "prospective_extended_partition": {
+    "train": 164,
+    "sealed_validation": 18,
+    "legacy_custody_mutated": false
+  },
+  "actual_train_exporter": "separate_worktree_first_actual_export_failed_under_repair",
+  "primary_validation": "process_and_lineage_audit_required",
+  "scientific_effectiveness": "not_established",
+  "old_q82_git_eol_mismatch_files": 6,
+  "q82_original_worktree_bytes_copied_in_this_archive": true
+}

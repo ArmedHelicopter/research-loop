@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="132.224" timestamp="2026-09-13T14:24:12.426645+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_train_operations" name="test_full_operation_grids_execute_and_consume_actual_shadow_results[Q6.1]" time="126.870" /><testcase classname="tests.test_modular_train_operations" name="test_full_operation_grids_execute_and_consume_actual_shadow_results[Q6.5]" time="4.859"><failure message="research_loop.ontology.ContractError: phase paths cannot enter label-containing ancestors">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q6-ops-r2/test_full_operation_grids_exec1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000178F520B140&gt;
+experiment = 'Q6.5'
+
+    @pytest.mark.parametrize('experiment',['Q6.1','Q6.5','Q6.6'])
+    def test_full_operation_grids_execute_and_consume_actual_shadow_results(tmp_path,monkeypatch,experiment):
+&gt;       plan,args,seen,feedback=operation_fixture(tmp_path,monkeypatch,experiment)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_train_operations.py:59: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_train_operations.py:49: in operation_fixture
+    plan=FrozenTrainOperationPlan.freeze(targets=original.targets,histories=original.histories,parent=parent,
+research_loop\modular\train_operations.py:147: in freeze
+    model_config,FrozenRecord.from_dict(authority.descriptor),feedback_rules,timeout_seconds)
+                                        ^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\train_operations.py:47: in descriptor
+    path=Path(inspect.getsourcefile(self.feedback) or '').absolute();shared._path(path)
+                                                                     ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/q6-train-controller/tests/test_modular_train_operations.py')
+
+    def _path(path: Path, *, exists=True):
+        if not isinstance(path,Path) or not path.is_absolute() or '..' in path.parts or DockerExecutionBroker._has_link_component(path):
+            raise ContractError('phase paths must be absolute and exclude links')
+        if any((a/'data'/'labels').exists() or (a.name=='labels' and a.parent.name=='data') for a in (path,*path.parents)):
+&gt;           raise ContractError('phase paths cannot enter label-containing ancestors')
+E           research_loop.ontology.ContractError: phase paths cannot enter label-containing ancestors
+
+research_loop\modular\metaprogram_training.py:47: ContractError</failure></testcase></testsuite></testsuites>

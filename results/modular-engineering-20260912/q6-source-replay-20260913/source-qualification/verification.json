@@ -1,0 +1,165 @@
+{
+  "actual_seal_source_commit": "edd7d6f",
+  "artifacts": {
+    "private_extended_inventory": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\extended-sources\\custody-inventory-v1.json",
+      "sha256": "6959fe024f6468b0fc0bae79ab3d39ff73c0492c6f15659079d178e4b0a212d3"
+    },
+    "public_seal_receipt": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\source-qualification-next-checks\\process-seal-receipt-r3.json",
+      "sha256": "edf494ba7071a08fec4a358fade30e12866c87ba9b9208d18aece3fa52302d8c"
+    },
+    "scope_review": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\source-qualification-next-checks\\process-access-scope-review-r3.json",
+      "sha256": "8475669a2c90fad5e2d52069bb3720651498a1785b543de954448f4c0cad6074"
+    },
+    "seal_failure_r1": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\source-qualification-next-checks\\process-seal-failure-r1.json",
+      "sha256": "98130acc21776475137f70b001afe04a7143a714618348d5adc6bbe1c2ced124"
+    },
+    "seal_failure_r2": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\source-qualification-next-checks\\process-seal-failure-r2.json",
+      "sha256": "0dda3565651e7e80d6251643b99ce6395107d521cf7bbc95d547359672762dfc"
+    },
+    "sealed_audit": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\prospective-process-split-20260913-r3\\process-audit.json",
+      "sha256": "f088cbe3a5aff14a8a7c137fd9cc5c30b79bcb9fc2eb847afbffa9949ebb48a3"
+    },
+    "sealed_partition": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\custody-private\\prospective-process-split-20260913-r3\\prospective-split.json",
+      "sha256": "50e1df62fe733f00aaed74ca7af005d7547f26ccbc78db0ec633c0e47aef7ef2"
+    },
+    "supplement_r1": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\source-qualification-next-checks\\sab-repository-supplement-r1.json",
+      "sha256": "c9f16b1368ea9481fecc35502501157715ee34da01bbf7d793794935f0cd5107"
+    },
+    "supplement_reclassification": {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\source-qualification-next-checks\\sab-repository-supplement-reclassified-r3.json",
+      "sha256": "a79897745c7ed04f50a73c3cfb609aa91b5fa5bdfa1f46110a944b4f20e0bd4d"
+    }
+  },
+  "audit_scope": "two_initial_acquisition_receipts_unchanged_extended_inventory_metadata_custody_receipt_five_declared_solver_ledgers",
+  "cost_scope": "listed_solver_ledgers_only_not_all_historical_provider_or_independent_evaluator_calls",
+  "gaps": [
+    "os_access_not_audited",
+    "unlogged_historical_access_not_established",
+    "model_pretraining_not_assessed",
+    "cross_source_independence_not_proven",
+    "upstream_scientific_data_terms_require_artifact_binding"
+  ],
+  "included_run_names": [
+    "q31-live-20260912",
+    "q31-live-20260913-isolated",
+    "linked-train-scored-20260913-01",
+    "linked-train-scored-20260913-02",
+    "m4m5-train-process-20260913-01"
+  ],
+  "incomplete_solver_ledger_count": 0,
+  "interfaces": {
+    "legacy_custody_mutated": false,
+    "named_process_audit": true,
+    "new_partition_payload_train_exporter": false,
+    "prospective_token_split_seal": true,
+    "validation_lease_entry": false,
+    "validation_payload_exporter": false
+  },
+  "known_core_related_groups": 0,
+  "new_paid_model_calls": 0,
+  "observed_solver_call_status_counts": {
+    "failed": 0,
+    "over_budget": 0,
+    "reserved": 0,
+    "succeeded": 159,
+    "unknown": 0
+  },
+  "observed_solver_calls": 159,
+  "observed_solver_known_tokens": 1743025,
+  "post_seal_guard_input_bindings_unchanged": true,
+  "post_seal_guard_source_commit": "5a2636e",
+  "primary_benchmarks_retained": [
+    "discoverybench",
+    "blade"
+  ],
+  "primary_validation_obligation_satisfied_by_this_split": false,
+  "qualification_is_not_independent_clean": true,
+  "sab_unmapped_fallback_side_counts": {
+    "train": 0,
+    "validation": 3
+  },
+  "schema": "source-process-qualification-verification-v1",
+  "scicode_unmapped_fallback": {
+    "groups": 1,
+    "records": 80,
+    "side": "train"
+  },
+  "seed": "research-loop-observed-family-split-20260913-v1",
+  "source_group_counts": {
+    "scicode": {
+      "train": 1,
+      "validation": 0
+    },
+    "scienceagentbench": {
+      "train": 20,
+      "validation": 8
+    }
+  },
+  "source_hashes": {
+    "evaluation/modular/process_source_qualification.py": {
+      "actual_sha256": "8340ee8236776f64873a720189f4150e1e70258871d79d4a8da19a348df6823c",
+      "matches_frozen_git_blob_after_line_endings": true
+    },
+    "evaluation/modular/source_repository_supplement.py": {
+      "actual_sha256": "b1fd9af50576fe20a018f6a79d5353dcfa891fbbab8cda6d6da013773b40dc25",
+      "matches_frozen_git_blob_after_line_endings": true
+    }
+  },
+  "source_record_counts": {
+    "scicode": {
+      "train": 80,
+      "validation": 0
+    },
+    "scienceagentbench": {
+      "train": 84,
+      "validation": 18
+    }
+  },
+  "supplement": {
+    "canonical_mapped_records": 99,
+    "corrected_repository_count": 29,
+    "current_pins_received": 22,
+    "current_repository_license_declarations_received": 19,
+    "failure_category_counts": {
+      "contract": 0,
+      "http": 8,
+      "io": 0,
+      "network": 0,
+      "other": 0,
+      "timeout": 0,
+      "tls": 0
+    },
+    "http_status_counts": {
+      "403": 8
+    },
+    "original_failed_or_unresolved_count": 10,
+    "original_get_count": 53,
+    "original_selected_repository_count": 30,
+    "reclassification_get_count": 0,
+    "unmapped_records": 3,
+    "upstream_scientific_data_license_qualified": false
+  },
+  "validation_percent": 30,
+  "verification": {
+    "PyYAML_version": "6.0.3",
+    "actual_validation_payload_read_by_tests": false,
+    "errors": 0,
+    "failures": 0,
+    "junit_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\source-qualification-next-checks\\frozen-r1.xml",
+    "junit_sha256": "a1753c488f705b3985ee05837bf04b1d111d0df383a42c5a86f78dae65a10393",
+    "pytest_version": "8.4.2",
+    "python_executable": "E:/_ryanDev/AI/research-loop-modular/work/custody-root-venv/Scripts/python.exe",
+    "seconds": 30.666,
+    "skipped": 0,
+    "source_commit": "5a2636e",
+    "tests": 89
+  }
+}

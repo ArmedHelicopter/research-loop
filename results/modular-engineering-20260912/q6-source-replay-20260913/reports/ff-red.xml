@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="6.828" timestamp="2026-09-13T15:00:15.608048+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_combination_benchmark_driver" name="test_failed_final_rejects_consistently_rehashed_material_forgery[program]" time="2.067"><failure message="AssertionError: program: accepted by ['common', 'combination']&#10;assert ['common', 'combination'] == []&#10;  &#10;  Left contains 2 more items, first extra item: 'common'&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/ff-red-tmp/test_failed_final_rejects_cons0')
+fault = 'program'
+
+    @pytest.mark.parametrize("fault", ["program", "inputs_missing", "success_as_failed"])
+    def test_failed_final_rejects_consistently_rehashed_material_forgery(tmp_path, fault):
+        """Rehash our own synthetic trace; never mutate retained research runs."""
+        from research_loop.modular.benchmarks.execution import ExecutionReceipt
+        catalogue = _catalogue(); panel = catalogue.panels["pair:M4+M5"]
+        cell = next(c for c in panel.cells if c.arm_id == "01" and c.identity.benchmark == "discoverybench")
+        ordinary = _model([])
+        def model(request):
+            body = request.data()
+            if body["slot"] == "analysis_program" and fault != "success_as_failed":
+                return FrozenRecord.from_dict({"analysis": "Public failure with literal Unicode and newlines.",
+                    "program": "# public synthetic 数据\nraise ValueError('public failure')\n"})
+            if body["slot"] == "final_answer":
+                return FrozenRecord.from_dict({"objective_digest": body["module_context"]["required_objective_digest"],
+                    "outcome": "unknown", "evidence_ids": [], "conclusion": "No scientific result established.",
+                    "programme_complete": False})
+            return ordinary(request)
+        result = _run(panel, cell, catalogue, tmp_path, model)
+        args = dict(panel=panel, task=catalogue.tasks[cell.task_digest], scenario=catalogue.scenarios[cell.key],
+                    package=catalogue.packages[cell.runtime_arm.content_hash])
+        assert result.solver.execution.record.data()["exit_code"] == (0 if fault == "success_as_failed" else 1)
+        assert verify_m4_m5_combination_benchmark_cell(result, **args).data()["status"] == result.runtime.status
+        material = {}
+        def forge(events):
+            analysis = next(e for e in events if e["stage"] == "model_request" and e["data"]["request"]["slot"] == "analysis_program")
+            response = events[events.index(analysis) + 1]["data"]["response"]
+            execution_event = next(e for e in events if e["stage"] == "execution_result")
+            envelope = execution_event["data"]["receipt"]
+            final = next(e for e in events if e["stage"] == "model_request" and e["data"]["request"]["slot"] == "final_answer")
+            context = final["data"]["request"]["module_context"]
+            if fault == "program":
+                response["program"] = "print('unexecuted alternate program')"
+                context["analysis"] = response
+                context["analysis_digest"] = FrozenRecord.from_dict(response).content_hash
+            elif fault == "inputs_missing":
+                envelope["record"].pop("input_artifacts")
+                context.pop("execution_input_artifacts")
+            else:
+                envelope["status"] = envelope["record"]["status"] = "failed"
+            execution = ExecutionReceipt.parse(envelope)
+            execution_event["data"].update(receipt=execution.data(), record=execution.record.data(),
+                status=execution.status, execution_digest=execution.content_hash)
+            context.update(execution_digest=execution.content_hash, execution_status=execution.status)
+            for feedback in final["data"]["request"].get("execution_feedback", []):
+                feedback.update(execution_digest=execution.content_hash, status=execution.status)
+            old_digest = final["data"]["request_digest"]
+            new_digest = FrozenRecord.from_dict(final["data"]["request"]).content_hash
+            final["data"]["request_digest"] = new_digest
+            for event in events:
+                if event["stage"] == "model_response" and event["data"]["request_digest"] == old_digest:
+                    event["data"]["request_digest"] = new_digest
+            material.update(analysis=FrozenRecord.from_dict(response), execution=execution)
+        tail = _rewrite_trace(result.runtime.trace_path, forge)
+        forged = replace(result, runtime=replace(result.runtime, status="failed", output_digest=None,
+            failure_reason="synthetic forged failure", trace_digest=tail),
+            solver=replace(result.solver, analysis=material["analysis"], execution=material["execution"], status="execution_failed"))
+        accepted = []
+        for name, verify in (("common", lambda: PanelReceiptVerifier()._verify_runtime(forged.runtime, cell)),
+                             ("combination", lambda: verify_m4_m5_combination_benchmark_cell(forged, **args))):
+            try:
+                verify()
+            except ContractError:
+                pass
+            else:
+                accepted.append(name)
+&gt;       assert accepted == [], f"{fault}: accepted by {accepted}"
+E       AssertionError: program: accepted by ['common', 'combination']
+E       assert ['common', 'combination'] == []
+E         
+E         Left contains 2 more items, first extra item: 'common'
+E         Use -v to get more diff
+
+tests\test_modular_combination_benchmark_driver.py:221: AssertionError</failure></testcase><testcase classname="tests.test_modular_combination_benchmark_driver" name="test_failed_final_rejects_consistently_rehashed_material_forgery[inputs_missing]" time="2.119"><failure message="AssertionError: inputs_missing: accepted by ['common', 'combination']&#10;assert ['common', 'combination'] == []&#10;  &#10;  Left contains 2 more items, first extra item: 'common'&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/ff-red-tmp/test_failed_final_rejects_cons1')
+fault = 'inputs_missing'
+
+    @pytest.mark.parametrize("fault", ["program", "inputs_missing", "success_as_failed"])
+    def test_failed_final_rejects_consistently_rehashed_material_forgery(tmp_path, fault):
+        """Rehash our own synthetic trace; never mutate retained research runs."""
+        from research_loop.modular.benchmarks.execution import ExecutionReceipt
+        catalogue = _catalogue(); panel = catalogue.panels["pair:M4+M5"]
+        cell = next(c for c in panel.cells if c.arm_id == "01" and c.identity.benchmark == "discoverybench")
+        ordinary = _model([])
+        def model(request):
+            body = request.data()
+            if body["slot"] == "analysis_program" and fault != "success_as_failed":
+                return FrozenRecord.from_dict({"analysis": "Public failure with literal Unicode and newlines.",
+                    "program": "# public synthetic 数据\nraise ValueError('public failure')\n"})
+            if body["slot"] == "final_answer":
+                return FrozenRecord.from_dict({"objective_digest": body["module_context"]["required_objective_digest"],
+                    "outcome": "unknown", "evidence_ids": [], "conclusion": "No scientific result established.",
+                    "programme_complete": False})
+            return ordinary(request)
+        result = _run(panel, cell, catalogue, tmp_path, model)
+        args = dict(panel=panel, task=catalogue.tasks[cell.task_digest], scenario=catalogue.scenarios[cell.key],
+                    package=catalogue.packages[cell.runtime_arm.content_hash])
+        assert result.solver.execution.record.data()["exit_code"] == (0 if fault == "success_as_failed" else 1)
+        assert verify_m4_m5_combination_benchmark_cell(result, **args).data()["status"] == result.runtime.status
+        material = {}
+        def forge(events):
+            analysis = next(e for e in events if e["stage"] == "model_request" and e["data"]["request"]["slot"] == "analysis_program")
+            response = events[events.index(analysis) + 1]["data"]["response"]
+            execution_event = next(e for e in events if e["stage"] == "execution_result")
+            envelope = execution_event["data"]["receipt"]
+            final = next(e for e in events if e["stage"] == "model_request" and e["data"]["request"]["slot"] == "final_answer")
+            context = final["data"]["request"]["module_context"]
+            if fault == "program":
+                response["program"] = "print('unexecuted alternate program')"
+                context["analysis"] = response
+                context["analysis_digest"] = FrozenRecord.from_dict(response).content_hash
+            elif fault == "inputs_missing":
+                envelope["record"].pop("input_artifacts")
+                context.pop("execution_input_artifacts")
+            else:
+                envelope["status"] = envelope["record"]["status"] = "failed"
+            execution = ExecutionReceipt.parse(envelope)
+            execution_event["data"].update(receipt=execution.data(), record=execution.record.data(),
+                status=execution.status, execution_digest=execution.content_hash)
+            context.update(execution_digest=execution.content_hash, execution_status=execution.status)
+            for feedback in final["data"]["request"].get("execution_feedback", []):
+                feedback.update(execution_digest=execution.content_hash, status=execution.status)
+            old_digest = final["data"]["request_digest"]
+            new_digest = FrozenRecord.from_dict(final["data"]["request"]).content_hash
+            final["data"]["request_digest"] = new_digest
+            for event in events:
+                if event["stage"] == "model_response" and event["data"]["request_digest"] == old_digest:
+                    event["data"]["request_digest"] = new_digest
+            material.update(analysis=FrozenRecord.from_dict(response), execution=execution)
+        tail = _rewrite_trace(result.runtime.trace_path, forge)
+        forged = replace(result, runtime=replace(result.runtime, status="failed", output_digest=None,
+            failure_reason="synthetic forged failure", trace_digest=tail),
+            solver=replace(result.solver, analysis=material["analysis"], execution=material["execution"], status="execution_failed"))
+        accepted = []
+        for name, verify in (("common", lambda: PanelReceiptVerifier()._verify_runtime(forged.runtime, cell)),
+                             ("combination", lambda: verify_m4_m5_combination_benchmark_cell(forged, **args))):
+            try:
+                verify()
+            except ContractError:
+                pass
+            else:
+                accepted.append(name)
+&gt;       assert accepted == [], f"{fault}: accepted by {accepted}"
+E       AssertionError: inputs_missing: accepted by ['common', 'combination']
+E       assert ['common', 'combination'] == []
+E         
+E         Left contains 2 more items, first extra item: 'common'
+E         Use -v to get more diff
+
+tests\test_modular_combination_benchmark_driver.py:221: AssertionError</failure></testcase><testcase classname="tests.test_modular_combination_benchmark_driver" name="test_failed_final_rejects_consistently_rehashed_material_forgery[success_as_failed]" time="2.096"><failure message="AssertionError: success_as_failed: accepted by ['common', 'combination']&#10;assert ['common', 'combination'] == []&#10;  &#10;  Left contains 2 more items, first extra item: 'common'&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/ff-red-tmp/test_failed_final_rejects_cons2')
+fault = 'success_as_failed'
+
+    @pytest.mark.parametrize("fault", ["program", "inputs_missing", "success_as_failed"])
+    def test_failed_final_rejects_consistently_rehashed_material_forgery(tmp_path, fault):
+        """Rehash our own synthetic trace; never mutate retained research runs."""
+        from research_loop.modular.benchmarks.execution import ExecutionReceipt
+        catalogue = _catalogue(); panel = catalogue.panels["pair:M4+M5"]
+        cell = next(c for c in panel.cells if c.arm_id == "01" and c.identity.benchmark == "discoverybench")
+        ordinary = _model([])
+        def model(request):
+            body = request.data()
+            if body["slot"] == "analysis_program" and fault != "success_as_failed":
+                return FrozenRecord.from_dict({"analysis": "Public failure with literal Unicode and newlines.",
+                    "program": "# public synthetic 数据\nraise ValueError('public failure')\n"})
+            if body["slot"] == "final_answer":
+                return FrozenRecord.from_dict({"objective_digest": body["module_context"]["required_objective_digest"],
+                    "outcome": "unknown", "evidence_ids": [], "conclusion": "No scientific result established.",
+                    "programme_complete": False})
+            return ordinary(request)
+        result = _run(panel, cell, catalogue, tmp_path, model)
+        args = dict(panel=panel, task=catalogue.tasks[cell.task_digest], scenario=catalogue.scenarios[cell.key],
+                    package=catalogue.packages[cell.runtime_arm.content_hash])
+        assert result.solver.execution.record.data()["exit_code"] == (0 if fault == "success_as_failed" else 1)
+        assert verify_m4_m5_combination_benchmark_cell(result, **args).data()["status"] == result.runtime.status
+        material = {}
+        def forge(events):
+            analysis = next(e for e in events if e["stage"] == "model_request" and e["data"]["request"]["slot"] == "analysis_program")
+            response = events[events.index(analysis) + 1]["data"]["response"]
+            execution_event = next(e for e in events if e["stage"] == "execution_result")
+            envelope = execution_event["data"]["receipt"]
+            final = next(e for e in events if e["stage"] == "model_request" and e["data"]["request"]["slot"] == "final_answer")
+            context = final["data"]["request"]["module_context"]
+            if fault == "program":
+                response["program"] = "print('unexecuted alternate program')"
+                context["analysis"] = response
+                context["analysis_digest"] = FrozenRecord.from_dict(response).content_hash
+            elif fault == "inputs_missing":
+                envelope["record"].pop("input_artifacts")
+                context.pop("execution_input_artifacts")
+            else:
+                envelope["status"] = envelope["record"]["status"] = "failed"
+            execution = ExecutionReceipt.parse(envelope)
+            execution_event["data"].update(receipt=execution.data(), record=execution.record.data(),
+                status=execution.status, execution_digest=execution.content_hash)
+            context.update(execution_digest=execution.content_hash, execution_status=execution.status)
+            for feedback in final["data"]["request"].get("execution_feedback", []):
+                feedback.update(execution_digest=execution.content_hash, status=execution.status)
+            old_digest = final["data"]["request_digest"]
+            new_digest = FrozenRecord.from_dict(final["data"]["request"]).content_hash
+            final["data"]["request_digest"] = new_digest
+            for event in events:
+                if event["stage"] == "model_response" and event["data"]["request_digest"] == old_digest:
+                    event["data"]["request_digest"] = new_digest
+            material.update(analysis=FrozenRecord.from_dict(response), execution=execution)
+        tail = _rewrite_trace(result.runtime.trace_path, forge)
+        forged = replace(result, runtime=replace(result.runtime, status="failed", output_digest=None,
+            failure_reason="synthetic forged failure", trace_digest=tail),
+            solver=replace(result.solver, analysis=material["analysis"], execution=material["execution"], status="execution_failed"))
+        accepted = []
+        for name, verify in (("common", lambda: PanelReceiptVerifier()._verify_runtime(forged.runtime, cell)),
+                             ("combination", lambda: verify_m4_m5_combination_benchmark_cell(forged, **args))):
+            try:
+                verify()
+            except ContractError:
+                pass
+            else:
+                accepted.append(name)
+&gt;       assert accepted == [], f"{fault}: accepted by {accepted}"
+E       AssertionError: success_as_failed: accepted by ['common', 'combination']
+E       assert ['common', 'combination'] == []
+E         
+E         Left contains 2 more items, first extra item: 'common'
+E         Use -v to get more diff
+
+tests\test_modular_combination_benchmark_driver.py:221: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="25.513" timestamp="2026-09-13T14:21:14.727602+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_train_operations" name="test_full_operation_grids_execute_and_consume_actual_shadow_results[Q6.1]" time="25.023"><failure message="research_loop.ontology.ContractError: phase lock missing">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q6-ops-r1/test_full_operation_grids_exec0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001941B413E30&gt;
+experiment = 'Q6.1'
+
+    @pytest.mark.parametrize('experiment',['Q6.1','Q6.5','Q6.6'])
+    def test_full_operation_grids_execute_and_consume_actual_shadow_results(tmp_path,monkeypatch,experiment):
+        plan,args,seen,feedback=operation_fixture(tmp_path,monkeypatch,experiment)
+&gt;       run=run_train_operations(plan,**args)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_train_operations.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\train_operations.py:345: in run_train_operations
+    verify_train_operations(result,plan=plan,authority=authority);return result
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\train_operations.py:375: in verify_train_operations
+    used.extend(shared._verify_cell(actual,adapter,cell,targets[cell['task_digest']],ledger));completed[cell['cell_id']]=actual
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\metaprogram_training.py:599: in _verify_cell
+    execution_material=plan.execution_material(candidate,cell,root,phase,replay=True)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\train_operations.py:303: in execution_material
+    return fn(self.outer,cell,self.parent,candidate,self.histories,root/'host-operation',self.authority)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\train_operations.py:256: in _verify_operation
+    rows=shared._phase_rows(root/'operations.jsonl')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q6-ops-r1/test_full_operation_grids_exec0/stage/cells/7cac53bb60ef0ec969c81f327f0a0a502faae4a09607d7b02193e36beedd50db/host-operation/operations.jsonl')
+
+    def _phase_rows(path):
+        rows=_events(path);prior=None
+        for index,row in enumerate(rows):
+            if set(row)!={'sequence','previous','stage','data'} or row['sequence']!=index or row['previous']!=prior:
+                raise ContractError('phase journal chain drift')
+            prior=FrozenRecord.from_dict(row).content_hash
+&gt;       if not rows or rows[0]['stage']!='phase_lock': raise ContractError('phase lock missing')
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       research_loop.ontology.ContractError: phase lock missing
+
+research_loop\modular\metaprogram_training.py:329: ContractError</failure></testcase></testsuite></testsuites>

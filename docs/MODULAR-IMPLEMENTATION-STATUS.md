@@ -3,7 +3,30 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current combination and exploration checkpoint (2026-09-13)
+## Current Q6, retrieval and source checkpoint (2026-09-13)
+
+The production registry has 38 question drivers. Q6.1, Q6.2, Q6.3, Q6.5 and
+Q6.6 use separate train phases; Q6.4 remains a registered driver. Together these
+cover 43 question execution contracts. Q8.1, Q8.4, Q8.5, Q8.6 and Q8.7 still
+require production drivers. This is engineering coverage, not completed science.
+
+Q6's integrated checks passed 53 tests on `9ca3214`; the later merged retrieval,
+custody, failure-verification and controller regression passed 222 on `39cfac6`.
+Q8.2/Q8.3's frozen agent delivery contains 24 actual synthetic controller cells
+and 89 passing tests. The archive now contains 1,459 indexed files; all earlier
+1,396 entries retain their bytes and hashes. A separate read-only replay verifies
+all eight original M4/M5 records with all 302 original files unchanged. Its
+five scores, three failures and inconclusive result remain unchanged.
+
+The separately scoped extended partition is sealed at 164 train and 18 validation
+records. Its train exporter is under repair after the first fixed four-item
+public projection was rejected without materializing output. Primary benchmark
+validation remains a separate process/lineage audit obligation. Q6.6's train
+staging/rollback checks do not establish production acceptance. All scientific
+questions, calibration and required combination effects remain open.
+See [the checkpoint](MODULAR-CHECKPOINT-20260913-Q6-SOURCE-REPLAY.md).
+
+## Previous combination and exploration checkpoint (2026-09-13)
 
 The production registry has 36 question drivers plus the separate Q6.3 train
 phase. Extended exploration passed 69 root checks including its full 88-cell
