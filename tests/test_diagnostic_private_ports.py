@@ -34,7 +34,9 @@ def test_renderer_resolves_train_reference_and_blinds_labels(tmp_path):
     rendered = renderer.render('reviewer1', request)
     assert 'PRIVATE_SYNTHETIC_REFERENCE_SENTINEL' in rendered.encoded
     assert 'support_digest' not in rendered.encoded and '"expected"' not in rendered.encoded
-    assert '"kind"' not in rendered.encoded and '"slot_token"' in rendered.encoded
+    public = json.loads(rendered.data()['messages'][1]['content'])
+    assert set(public) == {'task', 'reference', 'candidate', 'dimensions', 'rubric', 'normalization'}
+    assert set(public['dimensions']) == {'cvars', 'transform', 'model'}
 
 
 def test_foreign_handle_rejected_before_resolver_payload_read(tmp_path, monkeypatch):

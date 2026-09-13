@@ -40,7 +40,7 @@ class LocalProvider:
                 review = 'state and dimensions' in b['messages'][0]['content']
                 if review:
                     material = json.loads(content)
-                    benchmark = 'blade' if 'conceptual_variables' in material['dimensions'] else 'discoverybench'
+                    benchmark = 'blade' if 'cvars' in material['dimensions'] else 'discoverybench'
                     result = fixture_target(material['candidate']['answer'], benchmark)
                     if owner.mode == 'disagree' and b['model'].endswith('reviewer2'):
                         result = {'state': 'unknown', 'dimensions': None}
