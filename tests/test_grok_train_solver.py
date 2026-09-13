@@ -99,7 +99,7 @@ def default_port(root, monkeypatch, *, schemas=None, caps=None, max_calls=3, sce
     peer=(Path(__file__).parent/'fixtures/grok_acp_peer.py').resolve();logs=[]
     original=transport.ProcessTree
     def process_tree(command,cwd,env,stderr):
-        assert command==[str(exe.resolve()),'--no-auto-update','--cwd',str(cwd),'agent','stdio']
+        assert list(command)==[str(exe.resolve()),'--no-auto-update','--cwd',str(cwd),'agent','stdio']
         assert set(Path(env['GROK_HOME']).iterdir())=={Path(env['GROK_HOME'])/'auth.json',Path(env['GROK_HOME'])/'config.toml'}
         assert not any(Path(cwd).iterdir())
         assert 'XAI_API_KEY' not in env and 'GROK_API_KEY' not in env

@@ -69,7 +69,7 @@ for line in sys.stdin:
         if scenario.startswith('authoring'):
             from tests.helpers.material_authoring_fixture import authored_answer
             answer = authored_answer(json.loads(req['params']['prompt'][0]['text'])['references'])
-        if scenario.startswith(('diagnostic','train_')):
+        if scenario.startswith('diagnostic'):
             from tests.helpers.calibration_pilot_fixture import fixture_target
             messages = json.loads(req['params']['prompt'][0]['text'])['messages']
             schema_fields = req['params']['_meta']['outputSchema']['properties']
@@ -133,11 +133,7 @@ for line in sys.stdin:
                  'cachedReadTokens': 2, 'cacheCreationTokens': 0, 'reasoningTokens': 0,
                  'modelCalls': 1, 'apiDurationMs': 20, 'costUsdTicks': 123}
         usage = {**usage, 'numTurns': 1, 'modelUsage': {'grok-4.6-build': dict(usage)}}
-<<<<<<< HEAD
-        if scenario in ('diagnostic_unknown_main', 'authoring_unknown_main'):
-=======
-        if scenario in ('diagnostic_unknown_main','train_unknown_main'):
->>>>>>> 9ad2fd9 (Repair native TRAIN startup and terminal provenance replay)
+        if scenario in ('diagnostic_unknown_main', 'authoring_unknown_main', 'train_unknown_main'):
             usage['usageIsIncomplete'] = True
         if scenario == 'rpc_error_usage':
             usage['usageIsIncomplete'] = True
