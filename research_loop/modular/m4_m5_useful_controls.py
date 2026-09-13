@@ -25,6 +25,11 @@ REVISION_INSTRUCTION = (
 
 def source_contract_body(body):
     """Normalize only the explicitly frozen v3 recipe for the existing source gate."""
+    if body.get('schema') == 'm4-m5-train-controller-config-v4':
+        normalized = dict(body)
+        normalized.pop('provider', None)
+        normalized['schema'] = 'm4-m5-train-controller-config-v3'
+        return source_contract_body(normalized)
     if body.get('schema') != 'm4-m5-train-controller-config-v3':
         if 'execution_recipe' in body:
             raise ContractError('legacy M4/M5 configuration cannot select another execution recipe')

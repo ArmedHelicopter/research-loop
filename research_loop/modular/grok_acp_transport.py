@@ -114,6 +114,7 @@ git = "https://github.com/xai-org/plugin-marketplace.git"
 '''
 OPPORTUNITY_CONTRACT = 'main-and-initial-title-v2'
 DIAGNOSTIC_OPPORTUNITY_CONTRACT = 'diagnostic-main-and-initial-title-v1'
+TRAIN_OPPORTUNITY_CONTRACT = 'public-train-main-and-initial-title-v1'
 
 
 def diagnostic_config(main_output_cap):
@@ -304,11 +305,11 @@ class SinglePromptACP:
         require(type(main_output_cap) is int and main_output_cap > 0
                 and type(max_total_tokens) is int and max_total_tokens > main_output_cap,
                 'main_token_bounds')
-        require(opportunity_contract in (OPPORTUNITY_CONTRACT, DIAGNOSTIC_OPPORTUNITY_CONTRACT),
+        require(opportunity_contract in (OPPORTUNITY_CONTRACT, DIAGNOSTIC_OPPORTUNITY_CONTRACT, TRAIN_OPPORTUNITY_CONTRACT),
                 'opportunity_contract_unapproved')
         require(opportunity_contract != OPPORTUNITY_CONTRACT or main_output_cap == 128,
                 'smoke_output_cap_changed')
-        require(opportunity_contract != DIAGNOSTIC_OPPORTUNITY_CONTRACT
+        require(opportunity_contract not in (DIAGNOSTIC_OPPORTUNITY_CONTRACT, TRAIN_OPPORTUNITY_CONTRACT)
                 or (type(input_byte_cap) is int and input_byte_cap > 0), 'diagnostic_input_cap_missing')
         self.command = tuple(command); self.cwd = Path(cwd); self.env = dict(env)
         self.private = Path(private_dir); self.reservation = Path(reservation)
@@ -551,7 +552,7 @@ class SinglePromptACP:
         require(not self.called, 'single_invoke_only'); self.called = True
         require(isinstance(prompt, str) and prompt and isinstance(schema, dict), 'prompt_contract')
         require(self.input_byte_cap is None or len(prompt.encode('utf-8')) <= self.input_byte_cap,
-                'diagnostic_input_bytes')
+                'bounded_input_bytes')
         self.private.mkdir(parents=True, exist_ok=False)
         self.deadline = time.monotonic() + self.timeout
         self.request_id = 0; self.queue = queue.Queue(); faults = []; response = None
@@ -703,6 +704,15 @@ class SinglePromptACP:
                 'source_manifest_sha256': digest(encoded(self.frozen_files)),
                 'input_byte_cap': self.input_byte_cap,
                 'observed_main_token_cap': self.max_total_tokens}
+        elif self.opportunity_contract == TRAIN_OPPORTUNITY_CONTRACT:
+            receipt['schema'] = 'grok-native-acp-public-train-receipt-v1'
+            receipt['public_train_binding'] = {
+                'prompt_sha256': digest(prompt.encode('utf-8')), 'schema_sha256': digest(encoded(schema)),
+                'response_sha256': response.content_hash if response is not None else None,
+                'reservation_sha256': digest(self.reservation.read_bytes()) if self.sent else None,
+                'source_manifest_sha256': digest(encoded(self.frozen_files)), 'input_byte_cap': self.input_byte_cap,
+                'observed_main_token_cap': self.max_total_tokens,
+                'title_usage_and_all_opportunity_totals': 'unknown'}
         (self.private / 'observer-receipt.json').write_bytes(encoded(receipt) + b'\n')
         return AcpResult(FrozenRecord.from_dict(receipt), response if not faults else None)
 
@@ -768,3 +778,22 @@ def run_native_diagnostic(*, opportunity_contract, executable, cwd, private_home
         reservation=reservation, frozen_files=frozen_files, timeout=60,
         main_output_cap=main_output_cap, max_total_tokens=observed_main_token_cap,
         opportunity_contract=opportunity_contract, input_byte_cap=input_byte_cap).invoke(prompt, schema)
+
+
+def run_native_train(*, opportunity_contract, executable, cwd, private_home, private_profile,
+                     private_dir, reservation, frozen_files, prompt, schema, main_output_cap,
+                     observed_main_token_cap, input_byte_cap):
+    """Native public-TRAIN request with explicit observed, not quoted, bounds."""
+    require(opportunity_contract == TRAIN_OPPORTUNITY_CONTRACT, 'train_opportunity_contract_unapproved')
+    require(type(input_byte_cap) is int and input_byte_cap > 0 and isinstance(prompt, str)
+            and len(prompt.encode('utf-8')) <= input_byte_cap, 'train_input_bytes')
+    require(type(observed_main_token_cap) is int and observed_main_token_cap > main_output_cap,
+            'train_observed_token_cap')
+    config = diagnostic_config(main_output_cap)
+    command, env = native_launch(executable=executable, cwd=cwd, private_home=private_home,
+        private_profile=private_profile, frozen_files=frozen_files, expected_config=config)
+    return SinglePromptACP(command, cwd=cwd, env=env, private_dir=private_dir,
+        reservation=reservation, frozen_files=frozen_files, timeout=60,
+        main_output_cap=main_output_cap, max_total_tokens=observed_main_token_cap,
+        opportunity_contract=TRAIN_OPPORTUNITY_CONTRACT,
+        input_byte_cap=input_byte_cap).invoke(prompt, schema)

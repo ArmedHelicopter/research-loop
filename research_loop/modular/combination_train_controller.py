@@ -31,6 +31,7 @@ from research_loop.modular.combination_benchmark_driver import (
 )
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.model_port import CodexModelPort, _validate_schema, _schema_witness
+from research_loop.modular.grok_train_solver import GrokTrainModelPort
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier, ScientificScorerReceipt
 from research_loop.modular.runtime import AuditVerifier
@@ -81,7 +82,8 @@ class FrozenM4M5TrainConfig:
         fields = {"schema", "domain", "stage", "item_ids", "task_bindings", "baseline_digest", "packages_by_arm",
                   "scorer", "scorer_handle_bindings", "acceptance_criteria", "replicates", "model", "effort",
                   "max_calls", "max_tokens", "schemas", "allocation", "image", "timeout_seconds"}
-        if not source_schema_matches(source_contract_body(body), fields, "m4-m5-train-controller-config-v1") or body["domain"] != "train":
+        normalized = source_contract_body(body)
+        if not source_schema_matches(normalized, fields, "m4-m5-train-controller-config-v1") or body["domain"] != "train":
             raise ContractError("controller supports the exact train-only M4/M5 configuration")
         if not isinstance(body["stage"], str) or not body["stage"].strip() or not _names(body["item_ids"]) or not _names(body["replicates"]):
             raise ContractError("stage, train allowlist and replicates must be nonempty and unique")
@@ -134,7 +136,18 @@ class FrozenM4M5TrainConfig:
                 or any(type(body["allocation"].get(k)) is not int for k in
                        ("docker_attempts_per_cell", "scorer_calls_per_cell", "scorer_call_limit"))):
             raise ContractError("model slots, Docker attempts and scorer opportunities must be equally frozen")
-        if (body["model"] != "gpt-5.6-luna" or body["effort"] != "low"
+        grok = body.get('schema') == 'm4-m5-train-controller-config-v4'
+        if grok:
+            provider = body.get('provider')
+            expected = {'kind':'grok-acp-public-train-v1','model':'grok-4.6','opportunity_contract':'public-train-main-and-initial-title-v1',
+                'included_only':True,'api_key_route_permitted':False,'main_calls':cells*len(SLOTS),
+                'possible_initial_title_calls':cells*len(SLOTS),'main_output_caps':{'m4_plan':2048,'m5_mechanism':2048,'m5_measurement':2048,'analysis_program':8192,'final_answer':2048},
+                'input_byte_cap_per_request':262144,'observed_main_token_cap':131072,'title_requested_output_cap':100,
+                'wall_timeout_seconds':60,'max_retries':0,'title_usage_and_all_call_totals':'unknown'}
+            if provider != expected or body['model'] != 'grok-4.6' or body['effort'] != 'native_acp':
+                raise ContractError('v4 requires the exact public Grok TRAIN provider allocation')
+        if ((not grok and (body["model"] != "gpt-5.6-luna" or body["effort"] != "low"))
+                or (grok and (body['max_tokens'] != 131072 * cells * len(SLOTS)))
                 or type(body["max_calls"]) is not int or body["max_calls"] != cells * len(SLOTS)
                 or type(body["max_tokens"]) is not int or body["max_tokens"] < 1
                 or type(body["timeout_seconds"]) is not int or not 1 <= body["timeout_seconds"] <= 120):
@@ -213,11 +226,12 @@ class M4M5TrainRun:
 def _service_preflight(config, model, service, execution_authority, scorer_keys):
     from evaluation.modular.scorer_process import CombinationScorerProcessClient
     body = config.data()
-    if not isinstance(model, CodexModelPort) or not isinstance(service, (CombinationAdaptedScoringService, CombinationScorerProcessClient)) or not isinstance(execution_authority, LinkedExecutionAuthority):
+    grok = body.get('schema') == 'm4-m5-train-controller-config-v4'
+    if not isinstance(model, (GrokTrainModelPort if grok else CodexModelPort)) or not isinstance(service, (CombinationAdaptedScoringService, CombinationScorerProcessClient)) or not isinstance(execution_authority, LinkedExecutionAuthority):
         raise ContractError("real model port, independent scoring service and execution authority are required")
-    _reviewed_model_policy(model)
+    if not grok: _reviewed_model_policy(model)
     if (model.model != body["model"] or model.effort != body["effort"] or model.max_calls != body["max_calls"]
-            or model.max_tokens != body["max_tokens"] or model.schemas != body["schemas"]
+            or (not grok and model.max_tokens != body["max_tokens"]) or model.schemas != body["schemas"]
             or model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False):
         raise ContractError("live model configuration/schemas or fresh budget ledger drift")
     if isinstance(service, CombinationScorerProcessClient):
@@ -264,7 +278,7 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
         "status": "exporting", "expected_cells": expected_cells, "allocated_model_calls": body["max_calls"],
         "allocated_model_token_limit": body["max_tokens"], "allocated_docker_attempts": expected_cells,
         "allocated_scorer_calls": expected_cells, "actual_scorer_calls": 0, "scorer_usage": "not_provided_by_transport",
-        "model_policy_sha256": model.frozen_base_context.sha256, "cells": [], "packet_receipts": []}
+        "model_policy_sha256": None if body.get('schema') == 'm4-m5-train-controller-config-v4' else model.frozen_base_context.sha256, "provider_kind": getattr(model, 'provider_kind', 'codex-cli'), "cells": [], "packet_receipts": []}
     root.mkdir(parents=True, exist_ok=False)
     def persist():
         journal["actual_model_usage"] = _usage(model)
