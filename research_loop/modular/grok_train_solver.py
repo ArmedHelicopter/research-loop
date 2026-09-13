@@ -48,7 +48,10 @@ class GrokTrainModelPort:
         self.executable, self.root = str(Path(executable).resolve()), Path(work_root).resolve()
         self.private_home, self.private_profile, self.public_cwd = map(lambda p: Path(p).resolve(), (private_home, private_profile, public_cwd))
         self.frozen_files = dict(frozen_files)
-        self.frozen_files[self.executable] = _sha(Path(self.executable).read_bytes())
+        executable_sha=_sha(Path(self.executable).read_bytes())
+        if self.executable in self.frozen_files and self.frozen_files[self.executable] != executable_sha:
+            raise ContractError('native executable differs from frozen source manifest')
+        self.frozen_files[self.executable] = executable_sha
         self.max_calls = max_calls; self.schemas = json.loads(canonical(schemas))
         self.slot_output_caps, self.slot_input_byte_caps = dict(slot_output_caps), dict(slot_input_byte_caps)
         self.observed_main_token_cap, self.native_invoke = observed_main_token_cap, native_invoke
@@ -66,6 +69,7 @@ class GrokTrainModelPort:
             self.ledger=json.loads(self.ledger_path.read_text(encoding='utf-8'))
             if self.ledger.get('config') != config or self.ledger.get('usage_incomplete') is not False:
                 raise ContractError('existing Grok TRAIN ledger is terminal or has different frozen configuration')
+            replay_grok_train_ledger(self)
         else:
             self.ledger={'config':config,'calls':[],'tokens':0,'usage_incomplete':False}; _write(self.ledger_path,self.ledger)
 
@@ -162,6 +166,8 @@ def _replay_grok_train_ledger(port: GrokTrainModelPort) -> None:
             raise ContractError('native frozen source drifted')
     if ledger.get('usage_incomplete') or any(r.get('status') != 'succeeded' for r in ledger['calls']):
         raise ContractError('native ledger contains an unresolved opportunity')
+    if ledger['tokens'] != sum(r['known_main_usage']['totalTokens'] for r in ledger['calls']):
+        raise ContractError('known MAIN accounting differs from native call ledger')
     identities=set()
     for row in ledger['calls']:
         call=port.calls_root/f"{row['id']:04d}-{row['slot']}"
@@ -231,6 +237,8 @@ def _replay_native_call(port, row, call, receipt):
     wire=[load_json(line) for line in wire_raw.splitlines()]
     methods=['initialize','session/new','_x.ai/billing','_x.ai/auto-topup-rule','session/prompt','_x.ai/billing','_x.ai/auto-topup-rule']
     require(len(wire)==7 and all(r.get('jsonrpc')=='2.0' and type(r.get('id')) is int and r['id']==i and r.get('method')==m for i,(r,m) in enumerate(zip(wire,methods,strict=True),1)))
+    require(wire[0]['params']=={'protocolVersion':1,'clientCapabilities':{},'clientInfo':{'name':'research-loop-bounded-acp','version':'1'},
+        '_meta':{'startupHints':{'nonInteractive':True,'skipGitStatus':True,'skipProjectLayout':True}}})
     require(wire[1]['params']=={'cwd':row['public_cwd'],'mcpServers':[], '_meta':{'agentProfile':profile(),'sessionKind':'headless'}})
     require(wire[4]['params']=={'sessionId':row['session_id'],'prompt':[{'type':'text','text':prompt}],
         '_meta':{'verbatim':True,'outputSchema':schema,'screenMode':'headless','promptId':row['prompt_id']}})

@@ -114,7 +114,7 @@ def default_port(root, monkeypatch, *, schemas=None, caps=None, max_calls=3, sce
         slot_input_byte_caps={slot:262144 for slot in (schemas or {'m4_plan':SCHEMA})},observed_main_token_cap=131072),logs
 
 
-@pytest.mark.parametrize('substitution',['wire','coherent_wire','reservation','response','config','observer_billing'])
+@pytest.mark.parametrize('substitution',['wire','coherent_wire','coherent_request','reservation','coherent_reservation','response','coherent_response','config','observer_billing'])
 def test_native_original_substitution_closes_before_later_io(tmp_path,monkeypatch,substitution):
     port,logs=default_port(tmp_path,monkeypatch);port(REQUEST)
     row=port.ledger['calls'][0];call=port.calls_root/'0001-m4_plan';native=call/'native-private'
@@ -127,11 +127,24 @@ def test_native_original_substitution_closes_before_later_io(tmp_path,monkeypatc
             rec['public_train_binding']['request_stream_sha256']=digest(wire.read_bytes())
             for path in (call/'observer-receipt.private.json',native/'observer-receipt.json'):path.write_text(canonical(rec))
             row['native_receipt_sha256']=digest((call/'observer-receipt.private.json').read_bytes())
-    elif substitution=='reservation':
+    elif substitution=='coherent_request':
+        path=call/'request.private.json';r=json.loads(path.read_text());r['instruction']='foreign public instruction'
+        path.write_text(canonical(r));row['request_sha256']=digest(path.read_bytes())
+    elif substitution in ('reservation','coherent_reservation'):
         path=Path(row['reservation_path']);r=json.loads(path.read_text());r['prompt_sha256']='0'*64
         path.write_text(canonical(r));row['reservation_sha256']=digest(path.read_bytes())
-    elif substitution=='response':
+        if substitution=='coherent_reservation':
+            rec=json.loads((call/'observer-receipt.private.json').read_text())
+            rec['public_train_binding']['reservation_sha256']=row['reservation_sha256']
+            for path in (call/'observer-receipt.private.json',native/'observer-receipt.json'):path.write_text(canonical(rec))
+            row['native_receipt_sha256']=digest((call/'observer-receipt.private.json').read_bytes())
+    elif substitution in ('response','coherent_response'):
         (call/'response.private.json').write_text('{"ok":false}')
+        if substitution=='coherent_response':
+            row['response_sha256']=digest((call/'response.private.json').read_bytes())
+            rec=json.loads((call/'observer-receipt.private.json').read_text());rec['public_train_binding']['response_sha256']=row['response_sha256']
+            for path in (call/'observer-receipt.private.json',native/'observer-receipt.json'):path.write_text(canonical(rec))
+            row['native_receipt_sha256']=digest((call/'observer-receipt.private.json').read_bytes())
     elif substitution=='config':
         Path(row['config_path']).write_text(transport.diagnostic_config(8192))
     else:
@@ -147,6 +160,29 @@ def test_native_original_substitution_closes_before_later_io(tmp_path,monkeypatc
 def test_unknown_reserved_opportunity_stays_closed_after_restart(tmp_path,monkeypatch):
     port,logs=default_port(tmp_path,monkeypatch);port(REQUEST)
     port.ledger['calls'][0]['status']='reserved';port.ledger_path.write_text(canonical(port.ledger))
-    with pytest.raises(ContractError):replay_grok_train_ledger(port)
+    with pytest.raises(ContractError):
+        GrokTrainModelPort(executable=port.executable,work_root=port.root,private_home=port.private_home,
+            private_profile=port.private_profile,public_cwd=port.public_cwd,frozen_files=port.frozen_files,
+            max_calls=port.max_calls,schemas=port.schemas,slot_output_caps=port.slot_output_caps,
+            slot_input_byte_caps=port.slot_input_byte_caps,observed_main_token_cap=port.observed_main_token_cap)
+    assert json.loads(port.ledger_path.read_text())['usage_incomplete'] is True
     with pytest.raises(ContractError):port(REQUEST)
     assert len(logs)==1 and port.ledger['tokens']==12
+
+
+@pytest.mark.parametrize('fault',['wrong_provider','wrong_scorer','extra_replicate'])
+def test_v4_wrong_admission_stops_before_native_or_scoring(tmp_path,monkeypatch,fault):
+    from research_loop.modular import combination_train_controller as controller
+    from test_combination_prospective_train_source import prepare
+    from test_m4_m5_useful_controls import RECIPE
+    setup=prepare(tmp_path,'m4');body=setup['config'].data()
+    provider={'kind':'grok-acp-public-train-v1','model':'grok-4.6','opportunity_contract':'public-train-main-and-initial-title-v1',
+        'included_only':True,'api_key_route_permitted':False,'main_calls':40,'possible_initial_title_calls':40,
+        'main_output_caps':{'m4_plan':2048,'m5_mechanism':2048,'m5_measurement':2048,'analysis_program':8192,'final_answer':2048},
+        'input_byte_cap_per_request':262144,'observed_main_token_cap':131072,'title_requested_output_cap':100,
+        'wall_timeout_seconds':60,'max_retries':0,'title_usage_and_all_call_totals':'unknown'}
+    body.update(schema='m4-m5-train-controller-config-v4',execution_recipe=RECIPE,provider=provider,model='grok-4.6',effort='native_acp',max_tokens=131072*40)
+    if fault=='wrong_provider':body['provider']['kind']='codex-cli'
+    if fault=='wrong_scorer':body['scorer']['benchmark']='blade'
+    if fault=='extra_replicate':body['replicates'].append('unadmitted-extra')
+    with pytest.raises(ContractError):controller.FrozenM4M5TrainConfig(FrozenRecord.from_dict(body))

@@ -139,6 +139,8 @@ class FrozenM4M5TrainConfig:
             raise ContractError("model slots, Docker attempts and scorer opportunities must be equally frozen")
         grok = body.get('schema') == 'm4-m5-train-controller-config-v4'
         if grok:
+            if len(identities) != 2 or len(body['replicates']) != 1 or cells != 8:
+                raise ContractError('v4 admits exactly one eight-cell core TRAIN panel')
             provider = body.get('provider')
             expected = {'kind':'grok-acp-public-train-v1','model':'grok-4.6','opportunity_contract':'public-train-main-and-initial-title-v1',
                 'included_only':True,'api_key_route_permitted':False,'main_calls':cells*len(SLOTS),
