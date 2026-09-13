@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.119" timestamp="2026-09-13T11:55:39.296864+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_feasibility_panel_drivers" name="test_full_grid_executes_public_docker_and_retains_m4_m7_controls" time="0.960"><failure message="assert (0 == 2)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/feasibility-grid-tests/test_full_grid_executes_public0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A83B2F1EE0&gt;
+
+    def test_full_grid_executes_public_docker_and_retains_m4_m7_controls(tmp_path, monkeypatch):
+        compiled, tasks, _broker, _resolver = _compile(tmp_path, monkeypatch); runs = []
+        for index, cell in enumerate(compiled.panel.cells):
+            seen = []; result = panel_runner.run_train_cell(cell, task=tasks[cell.identity.benchmark], scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash], objective=FrozenRecord.from_dict({"objective": "public feasibility"}), sidecar=tmp_path / "runs" / str(index), model=_model(seen), audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+&gt;           runs.append(result.runtime); assert result.call_plan.data()["model_calls"] == 2 and result.call_plan.data()["execution_attempts"] == 1 and len(seen) == 2
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           assert (0 == 2)
+
+tests\test_modular_feasibility_panel_drivers.py:94: AssertionError</failure></testcase></testsuite></testsuites>

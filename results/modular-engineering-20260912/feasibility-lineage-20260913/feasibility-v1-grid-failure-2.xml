@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.159" timestamp="2026-09-13T11:56:28.307120+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_feasibility_panel_drivers" name="test_full_grid_executes_public_docker_and_retains_m4_m7_controls" time="0.003"><failure message="research_loop.ontology.ContractError: program text and frozen byte hash differ">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/feasibility-grid-tests-2/test_full_grid_executes_public0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E60187D730&gt;
+
+    def test_full_grid_executes_public_docker_and_retains_m4_m7_controls(tmp_path, monkeypatch):
+&gt;       compiled, tasks, _broker, _resolver = _compile(tmp_path, monkeypatch); runs = []
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_modular_feasibility_panel_drivers.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_modular_feasibility_panel_drivers.py:66: in _compile
+    bundles[task.content_hash] = freeze_feasibility_panel_bundle(task, q51=q51, q52=q52)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\feasibility_panel_drivers.py:119: in freeze_feasibility_panel_bundle
+    "payload_digest": task.payload.content_hash, "q51": {name: _item(item, task.identity, prediction=False) for name, item in q51.items()},
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'closure': {'data_version': 'public-v1', 'execution_units': 1, 'minimum_artifact_digest': 'aaaaaaaaaaaaaaaaaaaaaaaaaa...a805f2a483e2be07ed7e3abd'}}, 'measurement_contract': {'observable': 'x', 'registered': True, 'source': 'blade:f'}, ...}
+identity = DataIdentity(benchmark='blade', task_id='f-blade', group_id='blade:f', dataset_version='synthetic-v1', split_id='7777777777777777777777777777777777777777777777777777777777777777', domain='train')
+
+    def _item(value: Any, identity: DataIdentity, *, prediction: bool) -&gt; dict[str, Any]:
+        row = dict(_map(value, "feasibility material"))
+        required = {"source_id", "program", "program_sha256", "image", "inputs", "closure", "stage_contracts", "measurement_contract"}
+        if prediction:
+            required.add("branches")
+        if set(row) != required or row["source_id"] != identity.group_id:
+            raise ContractError("feasibility material has incomplete or unbound fields")
+        program = required_text(row["program"], "bounded public program")
+        if "\r" in program or hashlib.sha256(program.replace("\n", os.linesep).encode("utf-8")).hexdigest() != _hex(row["program_sha256"], "program sha256"):
+&gt;           raise ContractError("program text and frozen byte hash differ")
+E           research_loop.ontology.ContractError: program text and frozen byte hash differ
+
+research_loop\modular\feasibility_panel_drivers.py:95: ContractError</failure></testcase></testsuite></testsuites>

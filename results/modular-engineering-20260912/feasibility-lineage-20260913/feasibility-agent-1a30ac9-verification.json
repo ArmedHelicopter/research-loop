@@ -1,0 +1,35 @@
+{
+  "skipped": 0,
+  "junit": "E:/_ryanDev/AI/research-loop-modular/work/feasibility-repair-1a30ac9-20260913.xml",
+  "errors": 0,
+  "failures": 0,
+  "commit": "1a30ac96f2879b0969dad3cc8e6bf6a079db2673",
+  "tests": 83,
+  "schema": "feasibility-frozen-verification-v1",
+  "junit_sha256": "9A70F49BBE17D78A4FEA7FA466113D65343FCFB1A9DD7D6BF8700F294231B2CE",
+  "scientific_effectiveness_proven": false,
+  "validation_opened": false,
+  "source_unchanged": {
+    "docs/FEASIBILITY-PANEL-DRIVERS.md": true,
+    "tests/test_modular_feasibility_panel_drivers.py": true,
+    "research_loop/modular/feasibility_panel_drivers.py": true,
+    "docs/FEASIBILITY-PANEL-DRIVERS-V1-ARCHIVE.md": true
+  },
+  "limitations": [
+    "source lineage qualification remains external verifier responsibility",
+    "source-group distinctions do not prove scientific independence",
+    "OS authority isolation not established",
+    "unknown verifier cost never treated as zero",
+    "prospective subjective fixture is not empirical model calibration"
+  ],
+  "junit_seconds": 170.47,
+  "clean_worktree": true,
+  "paid_model_calls": 0,
+  "scope": "synthetic driver engineering; 36cell actual Docker and signed fixture observations; production custody/CodexModelPort/scoring remains integrating controller seam",
+  "hashes": {
+    "docs/FEASIBILITY-PANEL-DRIVERS.md": "4B6D3A1A55DE47158ABE09680157127C05611E7A3907B93294D2449762BBAFA0",
+    "research_loop/modular/feasibility_panel_drivers.py": "AEAA0D8A61D02F7A73DDE14A80C66464E4607EB398296642DF14DD988C82D387",
+    "docs/FEASIBILITY-PANEL-DRIVERS-V1-ARCHIVE.md": "694820180902A8EC6442392D152EBB545DBEF7048DDBE370C4C5C64C13BF735D",
+    "tests/test_modular_feasibility_panel_drivers.py": "8BB66292EAFA6FBDA216DA35C6556DD1CE688557EFDF7DB0AE39DB584C835E9D"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "failures": 0,
+  "tests": 74,
+  "superseded_reason": "parent review requires pre-execution subjective assessment and strict scenario controls; current source is preserved at commit",
+  "junit": "feasibility-repair-716f778-verified-20260913.xml",
+  "paid_model_calls": 0,
+  "prior_invocation_failure": "feasibility-repair-716f778-20260913.xml",
+  "junit_seconds": 127.621,
+  "errors": 0,
+  "commit": "716f778a88a173fb2402af705645d34377637959",
+  "scientific_effectiveness_proven": false,
+  "hashes": {
+    "docs/FEASIBILITY-PANEL-DRIVERS.md": "C1E2857F9601BFCD6E11040054B4D403993E586DD3C569571816A97C4560082E",
+    "docs/FEASIBILITY-PANEL-DRIVERS-V1-ARCHIVE.md": "694820180902A8EC6442392D152EBB545DBEF7048DDBE370C4C5C64C13BF735D",
+    "tests/test_modular_feasibility_panel_drivers.py": "148ED948750DFB6338C8F5182FB57A3D453B82DB81789D694D9599DBBBB34BFB",
+    "research_loop/modular/feasibility_panel_drivers.py": "5F1D5F9705D117864D3C4ED2F3F4F901DB31EDEE174B0FCAEEA8E36466EC7115"
+  },
+  "schema": "feasibility-frozen-verification-v1",
+  "source_unchanged": {
+    "tests/test_modular_feasibility_panel_drivers.py": true,
+    "research_loop/modular/feasibility_panel_drivers.py": true,
+    "docs/FEASIBILITY-PANEL-DRIVERS-V1-ARCHIVE.md": true,
+    "docs/FEASIBILITY-PANEL-DRIVERS.md": true
+  }
+}

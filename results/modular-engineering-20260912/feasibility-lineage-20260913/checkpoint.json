@@ -1,0 +1,114 @@
+{
+  "schema": "feasibility-lineage-engineering-checkpoint-v1",
+  "source_commit": "b53159d6cc03b318e0c5c6437f7c47d73b7ce85b",
+  "production_question_drivers": 27,
+  "new_feasibility_cells": 36,
+  "reports": {
+    "full-root-286f5b1.xml": {
+      "tests": "1143",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "2011.086"
+    },
+    "feasibility-root-be65ef5.xml": {
+      "tests": "186",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "499.057"
+    },
+    "controller-schema-root-9881060.xml": {
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "13.363"
+    },
+    "feasibility-716f778-collection-failure.xml": {
+      "tests": "0",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.102"
+    },
+    "feasibility-agent-716f778-superseded.xml": {
+      "tests": "74",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "127.621"
+    },
+    "feasibility-agent-1a30ac9.xml": {
+      "tests": "83",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "170.470"
+    },
+    "feasibility-v1-grid-failure.xml": {
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "1.119"
+    },
+    "feasibility-v1-grid-failure-2.xml": {
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.159"
+    },
+    "feasibility-v1-fault-failure.xml": {
+      "tests": "1",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0",
+      "time": "0.744"
+    },
+    "feasibility-v1-final-superseded.xml": {
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "43.946"
+    },
+    "lineage-root-460de21.xml": {
+      "tests": "34",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "7.711"
+    },
+    "lineage-static-root-b53159d.xml": {
+      "tests": "36",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "14.187"
+    },
+    "lineage-agent-9f74850.xml": {
+      "tests": "69",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "35.343"
+    }
+  },
+  "full_suite_source": "286f5b1633786e40dbc525576af690f1488d849c",
+  "current_head_full_suite_pass": false,
+  "source_records": 605,
+  "metadata_group_constraints": 202,
+  "independent_validation_eligible": 0,
+  "static_preparation_slots": 40,
+  "static_declared_api_matches": 0,
+  "new_paid_calls": 0,
+  "scientific_effectiveness_proven": false,
+  "validation_opened": false,
+  "pruned_combinations": [],
+  "deployment_performed": false,
+  "overlapping_checks_are_not_independent_replications": true,
+  "non_integrated_work": "Q27 controller pending root review; Q54/Q55 and M6 causal defects under repair; no production completion credit",
+  "remaining_scope": "All 48 Q outcomes, all single/conditional/pair/triple/full/LOO studies, separate Q6.3 and frozen-candidate validation acceptance"
+}

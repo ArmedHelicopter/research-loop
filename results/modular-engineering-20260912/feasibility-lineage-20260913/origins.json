@@ -1,0 +1,117 @@
+{
+  "full-root-286f5b1.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\full-286f5b1-r1.xml",
+    "sha256": "4e745df34e4df1a27411bbc854dc35e2f234123de3291de650ad56a6c4c5a0af",
+    "qualification": "Frozen 286f5b1; 1143 passed; predates feasibility, model schema drift check and canonical lineage"
+  },
+  "feasibility-root-be65ef5.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\feasibility-root-be65ef5-r1.xml",
+    "sha256": "b088e98b6c69096f7a342530f7a8a2fb652e6187ac3b4604de7793b4e72a9b6b",
+    "qualification": "Frozen be65ef5; 186 passed; real 36-cell custody/model-port mocked transport/Docker/fixture-verifier seam"
+  },
+  "controller-schema-root-9881060.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\controller-schema-root-r1.xml",
+    "sha256": "7687cd0807db3cb0461541a559626f8433b0c9213af024486e3413c14a50996d",
+    "qualification": "9881060; two source-qualified checks including live vs frozen schema rejection before export"
+  },
+  "feasibility-716f778-collection-failure.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\feasibility-repair-716f778-20260913.xml",
+    "sha256": "840c38b1b1744aae0b2a1389b16947808fb2b55da7c6b250ae0b35070be10c0d",
+    "qualification": "Wrong test filename; zero tests, not a successful run"
+  },
+  "feasibility-agent-716f778-superseded.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\feasibility-repair-716f778-verified-20260913.xml",
+    "sha256": "f170eee19c6e0bda897b39db94764a4ddfe6cddf5d8bd18747bea8c5bfe0288c",
+    "qualification": "74 passed on 716f778; superseded because subjective judgement still followed execution"
+  },
+  "feasibility-agent-716f778-verification.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\feasibility-repair-716f778-verification.json",
+    "sha256": "19d702965e624d3ba94f4a75430f73915451eb438e4094ebe376fec23131a893",
+    "qualification": "Source hashes and explicit prospective-judgement qualification"
+  },
+  "feasibility-agent-1a30ac9.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\feasibility-repair-1a30ac9-20260913.xml",
+    "sha256": "9a70f49bbe17d78a4fea7fa466113d65343fcfb1a9dd7d6bf8700f294231b2ce",
+    "qualification": "Frozen final driver; 83 passed; overlaps root checks"
+  },
+  "feasibility-agent-1a30ac9-verification.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\feasibility-repair-1a30ac9-verification.json",
+    "sha256": "7b0a7447a6f0e18c30df8b602000c6628d6ff4c27bfce9359ac0f199b41561bd",
+    "qualification": "Source and report hashes; no independent scientific validation"
+  },
+  "feasibility-v1-grid-failure.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\feasibility-grid.xml",
+    "sha256": "ff5874adc8448922f6ce38fa7dfd62127b9b49418391930671256d0207a95ccf",
+    "qualification": "Original v1 development failure; not final source verification"
+  },
+  "feasibility-v1-grid-failure-2.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\feasibility-grid-2.xml",
+    "sha256": "a21f555f768adf1a2fdb5f8422be181a7a13953e9986e278f9bffbe5a687d662",
+    "qualification": "Original v1 development failure; not final source verification"
+  },
+  "feasibility-v1-fault-failure.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\feasibility-faults.xml",
+    "sha256": "d585cde72eabbd09d4f096d8aed6b0f99a338c06a6c63a69ad97f7b568c56dd7",
+    "qualification": "Original v1 development failure; not final source verification"
+  },
+  "feasibility-v1-final-superseded.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\feasibility-final.xml",
+    "sha256": "373e453a32c78132eb38bad504a97b8a2cff1c4f3432dc153d118536c50f000e",
+    "qualification": "Original v1 passed checks do not establish repaired causal bindings; preserved without promoting claims"
+  },
+  "lineage-root-460de21.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lineage-root-460de21-r1.xml",
+    "sha256": "3528b81986cded2d26043b09480d92a6b1930b7fbb81db541c75ef686f5b9f93",
+    "qualification": "34 passed; fixed metadata, exact Git root, real worktree and label isolation"
+  },
+  "lineage-static-root-b53159d.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\lineage-root-b53159d-r1.xml",
+    "sha256": "5489893d6597ddc0c8db350774b8b3aefb297e33decef822c0ba88d1d2b846ec",
+    "qualification": "36 passed; fixed-slot AST, custody CLI, exact Git root and label isolation; overlaps prior checks"
+  },
+  "lineage-agent-9f74850.xml": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\fresh-airs-custodian-checks\\lineage-final-junit.xml",
+    "sha256": "17b6b33f2e59ddce7a90d2de092398d5afaa901cc1df1f7df3dcf2d0a3b8a4b3",
+    "qualification": "Agent final 69 checks; predates root Git-root identity fix"
+  },
+  "lineage-live-r1-failure.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\fresh-airs-lineage-live-r1\\receipt.failure.json",
+    "sha256": "c5bc4daf425e882b218b754c313834d7dd8f54a349c64429571f134ab225fc38",
+    "qualification": "Fixed-schema failure only; first metadata decode failed"
+  },
+  "lineage-live-r2.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\fresh-airs-lineage-live-r1\\receipt-r2.json",
+    "sha256": "8ff60e32f205ff9101b8fe135973c0809b8821dd77c0f347cf5bca84ae8d7c54",
+    "qualification": "Metadata parser revision, not a newly unexposed source"
+  },
+  "lineage-live-r3.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\fresh-airs-lineage-live-r1\\receipt-r3.json",
+    "sha256": "a1720decd63629d74dd804ceff8b7503f1f7706573df374156cdc076e36d9f2f",
+    "qualification": "Structured reference parser revision; prior files preserved"
+  },
+  "lineage-live-r4.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\data-source-metadata\\airsbench-canonical-lineage-receipt.json",
+    "sha256": "1e68f789f8b913e496093c52429ddf316e21004e518cc24c384291d3f53f3866",
+    "qualification": "605 records, 1502 unchanged read files, conservative 202 components, zero validation eligibility"
+  },
+  "lineage-live-attempts.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\data-source-metadata\\airsbench-canonical-lineage-attempts.json",
+    "sha256": "f33414339e77edb98e9cfa5bd89c53b1103c9079c24c8fd516b56c79768e6640",
+    "qualification": "Exact attempt hashes and all source-qualified failures"
+  },
+  "lineage-supplement-requirements.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\data-source-metadata\\airsbench-canonical-lineage-supplements.json",
+    "sha256": "e76e102460ae1c7d523a0244b622d33400c9ec29a1ba98a4658574f46473d682",
+    "qualification": "Opaque source-group gaps; no raw task or reference payload"
+  },
+  "lineage-static-live-r1.json": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\docs\\data-source-metadata\\airsbench-canonical-lineage-static-receipt.json",
+    "sha256": "3fb64ba6d6bfbd352a465a1fbef2811f15efb458fd39996a31398d2e1c029267",
+    "qualification": "40 fixed preparation slots, zero declared API matches; no upstream execution or eligibility promotion"
+  },
+  "publish_feasibility_lineage_checkpoint_20260913.py": {
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\publish_feasibility_lineage_checkpoint_20260913.py",
+    "sha256": "fc60b58404111d96e8064d60ec3ada7e67eb0378ebbbc069b5f3aec18bb2d1ea",
+    "qualification": "Append-only publisher"
+  }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.744" timestamp="2026-09-13T11:54:51.748194+08:00" hostname="SC-202507131830"><testcase classname="tests.test_modular_feasibility_panel_drivers" name="test_bad_hash_and_nonboolean_authority_do_not_promote_stage" time="0.365"><failure message="AssertionError: assert ('failed' == 'failed'&#10;  &#10;    failed and 0 == 1)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/feasibility-fault-tests/test_bad_hash_and_nonboolean_a0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000023A226B9F10&gt;
+
+    def test_bad_hash_and_nonboolean_authority_do_not_promote_stage(tmp_path, monkeypatch):
+        compiled, tasks, broker, resolver = _compile(tmp_path, monkeypatch); cell = next(item for item in compiled.panel.cells if item.coverage_id == "Q5.1" and "M7" in item.runtime_arm.data()["enabled"])
+        body = compiled.scenarios[cell.key].data(); body["controller_input"]["bundle"]["q51"][cell.variant]["inputs"]["data.csv"]["sha256"] = "0" * 64
+        bundle = FrozenRecord.from_dict(body["controller_input"]["bundle"]); body["controller_input"]["bundle"] = bundle.data(); body["base"]["evidence"] = bundle.content_hash
+        scenario = FrozenRecord.from_dict(body); changed = replace(cell, scenario_digest=scenario.content_hash); seen = []
+        result = panel_runner.run_train_cell(changed, task=tasks[changed.identity.benchmark], scenario=scenario, package=compiled.packages[changed.runtime_arm.content_hash], objective=FrozenRecord.from_dict({"objective": "public feasibility"}), sidecar=tmp_path / "hash", model=_model(seen), audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+        assert result.runtime.status == "failed" and result.call_plan.data()["model_calls"] == 0 and result.call_plan.data()["execution_attempts"] == 0
+        local = dict(panel_runner.DRIVERS); install_drivers(local, broker=broker, input_resolver=resolver, authority=_Authority(bad_boolean=True)); monkeypatch.setattr(panel_runner, "DRIVERS", local)
+        seen = []; result = panel_runner.run_train_cell(cell, task=tasks[cell.identity.benchmark], scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash], objective=FrozenRecord.from_dict({"objective": "public feasibility"}), sidecar=tmp_path / "boolean", model=_model(seen), audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
+&gt;       assert result.runtime.status == "failed" and result.call_plan.data()["execution_attempts"] == 1
+E       AssertionError: assert ('failed' == 'failed'
+E         
+E           failed and 0 == 1)
+
+tests\test_modular_feasibility_panel_drivers.py:109: AssertionError</failure></testcase></testsuite></testsuites>

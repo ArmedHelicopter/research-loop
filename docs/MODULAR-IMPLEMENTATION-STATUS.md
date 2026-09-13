@@ -3,7 +3,29 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current semantic, custody and combination checkpoint (2026-09-13)
+## Current feasibility and lineage checkpoint (2026-09-13)
+
+The production registry has 27 question drivers. Q5.1/Q5.2 now pass through
+the actual typed compiler, train custody exporter, model port and Docker, with
+source-bound stage verification. The 36-cell synthetic grid is covered by 186
+root checks on `be65ef5`. Prospective assessments precede execution. This is
+engineering evidence; no benchmark scientific efficacy is established.
+
+The complete suite on frozen `286f5b1` passed 1,143 tests with zero failures,
+errors or skips. That source predates feasibility and canonical lineage; their
+later focused checks are source-qualified separately. A metadata-only audit of
+605 records gives 202 conservative grouping constraints, with zero records
+qualified for independent validation. Static parsing of 40 fixed preparation
+slots yielded no references under its predeclared API rules.
+
+All 924 indexed archive files have exact byte hashes; the earlier 899 are
+preserved. Q2.7 controller wiring remains under review. Q5.4/Q5.5 and M6 drafts
+have substantive causal defects and are not credited as completed production
+drivers. All 48 scientific obligations and all required combinations remain
+open; no null singleton has pruned a combination. See
+[the checkpoint](MODULAR-CHECKPOINT-20260913-FEASIBILITY-LINEAGE.md).
+
+## Previous semantic, custody and combination checkpoint (2026-09-13)
 
 The production registry has 25 drivers, including Q2.2/Q6.4 through the actual
 fixed-P0 compiler and train controller. Their root suite passed 109 checks on
