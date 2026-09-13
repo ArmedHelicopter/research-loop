@@ -47,7 +47,7 @@ def snapshot_and_custody(root: Path) -> tuple[Path, CustodyStore]:
     return snapshot, store
 
 
-def model_port(root: Path, monkeypatch, *, max_calls: int = 24, valid_plan: bool = True, schemas=None) -> CodexModelPort:
+def model_port(root: Path, monkeypatch, *, max_calls: int = 24, valid_plan: bool = True, schemas=None, response_factory=None) -> CodexModelPort:
     home = root / "user" / ".codex"; home.mkdir(parents=True)
     monkeypatch.setenv("HOME", str(home.parent)); monkeypatch.setenv("USERPROFILE", str(home.parent)); monkeypatch.setenv("CODEX_HOME", str(home))
     (home / "config.toml").write_text('[mcp_servers.fixture]\nenabled=true\n', encoding="utf-8")
@@ -64,7 +64,9 @@ def model_port(root: Path, monkeypatch, *, max_calls: int = 24, valid_plan: bool
     fixed_test_env = os.environ.get("PYTEST_CURRENT_TEST", "")
     def transport(argv, **kwargs):
         request = json.loads(kwargs["input"].split("\n", 1)[1])
-        if request["slot"] == "scenario":
+        if response_factory is not None:
+            output = response_factory(FrozenRecord.from_dict(request)).data()
+        elif request["slot"] == "scenario":
             directions = ["increase", "decrease", "increase"] if valid_plan else ["increase", "increase", "increase"]
             output = {"question": "public", "budget_units": 3, "branches": [{"hypothesis_id": f"h{i}", "mechanism_key": f"m{i}", "mechanism": "public mechanism", "intervention": "public intervention", "elimination_condition": "public disagreement", "predictions": [{"prediction_id": f"p{i}", "discriminator_id": "shared", "observable": "public observable", "direction": directions[i], "value_range": None, "failure_condition": "does not " + directions[i]}]} for i in range(3)]}
         elif request["slot"].startswith("plan_"):
@@ -219,6 +221,45 @@ def test_prediction_drivers_reach_custody_controller_without_registry_patch(tmp_
     assert len(result.runtimes) == expected_cells and len(port.ledger["calls"]) == expected_cells * len(slots)
     assert all(row.status == "succeeded" for row in result.runtimes)
     assert result.verdict.scientific_verified is False
+
+
+@pytest.mark.parametrize("coverage", ["Q2.5", "Q2.6"])
+def test_polarity_and_goal_drivers_use_frozen_task_objectives_in_actual_controller(tmp_path, monkeypatch, coverage):
+    from test_modular_polarity_goal_panel_drivers import _bundle, _model, KEYS
+    snapshot, custody = snapshot_and_custody(tmp_path)
+    base = config(custody, snapshot, tmp_path).data()
+    packets = TrainPacketExporter(custody, snapshot, tmp_path / "goal-material").export(base["item_ids"])
+    materials = {packet.task.content_hash: _bundle(packet.task) for packet in packets}
+    grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+    package = next(iter(base["packages_by_arm"].values()))
+    fields = ["validity", "support", "novelty", "investment", "outcome"]
+    if coverage == "Q2.6": fields.append("selected_objective_digest")
+    assessment = {"type": "object", "properties": {name: {"type": "string"} for name in fields},
+                  "required": fields, "additionalProperties": False}
+    final = {**FINAL, "properties": {**FINAL["properties"], "outcome": {"type": "string", "enum": ["positive", "negative", "unknown", "invalid", "withdrawn"]}}}
+    schemas = {"assessment": assessment, "final": final}
+    frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+        "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-polarity-goal-controller", "scope_ids": [coverage],
+        "evidence_by_task": {key: item[0].data() for key, item in materials.items()},
+        "objective_by_task": {key: {"objective": "registered primary endpoint"} for key in materials},
+        "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+        "budget": {"model_calls": 2, "execution_limit": 0}, "max_calls": 24, "schemas": schemas}))
+    seen = []
+    secondary = {packet.task.identity.group_id: materials[packet.task.content_hash][1] for packet in packets}
+    port = model_port(tmp_path, monkeypatch, schemas=schemas, response_factory=_model(seen, secondary))
+    result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+        export_root=tmp_path / "export", run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier(KEYS))
+    assert len(result.runtimes) == 12 and len(port.ledger["calls"]) == len(seen) == 24
+    assert sum(row.status == "failed" for row in result.runtimes) == (4 if coverage == "Q2.6" else 0)
+    assert result.receipt.data()["execution_status"] == "execution_incomplete" and result.verdict.scientific_verified is False
+    assert all(request["objective"] == {"objective": "registered primary endpoint"} for request in seen)
+    bad = frozen.data(); bad["objective_by_task"].pop(next(iter(bad["objective_by_task"])))
+    with pytest.raises(ContractError, match="exactly cover"):
+        FrozenTrainControllerConfig(FrozenRecord.from_dict(bad))
+    if coverage == "Q2.6":
+        bad = frozen.data(); bad.pop("objective_by_task")
+        with pytest.raises(ContractError, match="predeclared task objectives"):
+            FrozenTrainControllerConfig(FrozenRecord.from_dict(bad))
 
 
 @pytest.mark.parametrize("coverage,expected_cells", [("Q2.3", 28), ("Q2.4", 16)])

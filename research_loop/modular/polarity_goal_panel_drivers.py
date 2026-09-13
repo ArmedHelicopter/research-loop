@@ -54,7 +54,8 @@ def admission_subject(task: PublicTask, *, experiment_id: str, public_material: 
     if not isinstance(task, PublicTask) or experiment_id not in {"Q2.5", "Q2.6"}:
         raise ContractError("admission subject requires a registered public task")
     body: dict[str, Any] = {"schema": "polarity-goal-public-subject-v1", "experiment_id": experiment_id,
-                            "identity": task.identity.data(), "public_material": _public_material(public_material, task.identity)}
+                            "identity": task.identity.data(), "task_digest": task.content_hash,
+                            "public_material": _public_material(public_material, task.identity)}
     if experiment_id == "Q2.6":
         if locked_objective is None or proposal is None:
             raise ContractError("goal-lock receipt subject is incomplete")
@@ -213,7 +214,7 @@ class _Driver:
                          "goal_match": goal_match if self.experiment_id == "Q2.6" else None,
                          "disposition": {"admitted": disposition.admitted, "reason": disposition.reason,
                                          "outcome": disposition.outcome, "evidence_ids": list(disposition.evidence_ids)}}
-            permitted = ["positive", "negative", "unknown", "invalid", "withdrawn"] if disposition.admitted and goal_match else ["unknown"]
+            permitted = [outcome, "unknown"] if disposition.admitted and goal_match else ["unknown"]
         else:
             permitted = ["positive", "negative", "unknown", "invalid", "withdrawn"]
         trace = workflow._trace("stage_1" if enabled else "operation_m1_control", "executed",
@@ -231,7 +232,8 @@ class _Driver:
                          "the public context; evidence promotion remains controller-gated."),
             module_context=FrozenRecord.from_dict(final_context))
         candidate = _candidate(final)
-        if enabled and (candidate["outcome"] not in permitted or (self.experiment_id == "Q2.6" and not goal_match)):
+        if enabled and (candidate["outcome"] not in permitted or (self.experiment_id == "Q2.6" and
+                (not goal_match or candidate["objective_digest"] != workflow.session.objective.content_hash))):
             raise ContractError("M1 admission or objective-lock gate rejected the model candidate")
         return trace, final, (initial, final)
 

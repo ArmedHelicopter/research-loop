@@ -70,11 +70,6 @@ def _compile(monkeypatch):
     package = CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze([t.identity for t in tasks.values()]), changes={"prompt": {"instructions": "synthetic"}}, search_cost=0)
     control = FrozenRecord.from_dict({"p0": "fixed"}); grids = obligation_grids(("Q2.5", "Q2.6"), baseline_digest="b" * 64, p0_control=control)
     packages = {arm.content_hash: package for grid in grids.values() for arm in executable_arms(grid).values()}
-    def injected(spec, variant, *, inputs):
-        row = base_scenario(spec, variant, inputs=inputs).data()
-        row["controller_input"] = polarity_goal_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence)
-        return FrozenRecord.from_dict(row)
-    monkeypatch.setattr(panel_plan, "scenario", injected)
     compiled = compile_train_panel(stage="polarity-goal", scope_ids=("Q2.5", "Q2.6"), tasks=tuple(tasks.values()), evidence_by_task=bundles,
         budget=FrozenRecord.from_dict({"calls": 2}), baseline_digest="b" * 64, p0_control=control, packages_by_arm=packages,
         scorer=FrozenRecord.from_dict({"scorer": "none"}), acceptance_criteria=FrozenRecord.from_dict({"engineering": True}))
@@ -134,7 +129,7 @@ def _workflow_stages(result):
 
 
 def test_full_grid_exercises_polarity_goal_pivots_and_real_m1_gate(tmp_path: Path, monkeypatch):
-    compiled, tasks, secondary = _compile(monkeypatch); local = dict(panel_runner.DRIVERS); install_drivers(local); monkeypatch.setattr(panel_runner, "DRIVERS", local)
+    compiled, tasks, secondary = _compile(monkeypatch)
     assert len(compiled.panel.cells) == 24
     assert {cell.runtime_arm.data()["baseline_digest"] for cell in compiled.panel.cells} == {"b" * 64}
     assert {compiled.packages[cell.runtime_arm.content_hash].digest for cell in compiled.panel.cells} == {next(iter(compiled.packages.values())).digest}
@@ -222,3 +217,40 @@ def test_goal_lock_rejects_a_session_with_a_different_primary_objective_before_m
         package=compiled.packages[cell.runtime_arm.content_hash], objective=FrozenRecord.from_dict({"objective": "changed"}),
         sidecar=tmp_path / "changed", model=_model(seen, secondary), audit_verifier=AuditVerifier(KEYS))
     assert result.runtime.status == "failed" and result.call_plan.data()["model_calls"] == 0 and not seen
+
+
+def test_material_signatures_cannot_move_to_a_changed_task_payload(tmp_path, monkeypatch):
+    from research_loop.modular.contracts import PublicTask
+    compiled, tasks, secondary = _compile(monkeypatch)
+    original = next(c for c in compiled.panel.cells if c.coverage_id == "Q2.5")
+    task = tasks[original.identity.benchmark]
+    payload = task.payload.data(); payload["question"] = "different public scientific question"
+    changed = PublicTask(task.identity, FrozenRecord.from_dict(payload))
+    body = compiled.scenarios[original.key].data()
+    prior = body["controller_input"]["bundle"]
+    bundle = freeze_polarity_goal_bundle(changed, q25=prior["q25"], q26=prior["q26"])
+    body["controller_input"] = dict(polarity_goal_injection("Q2.5", original.variant,
+        task=FrozenRecord.from_dict(changed.data()), evidence=bundle))
+    body["base"]["task"] = changed.content_hash; body["base"]["evidence"] = bundle.content_hash
+    scenario = FrozenRecord.from_dict(body)
+    cell = replace(original, task_digest=changed.content_hash, scenario_digest=scenario.content_hash)
+    seen = []
+    result = panel_runner.run_train_cell(cell, task=changed, scenario=scenario,
+        package=compiled.packages[cell.runtime_arm.content_hash], objective=FrozenRecord.from_dict({"objective": "polarity"}),
+        sidecar=tmp_path / "changed-payload", model=_model(seen, secondary), audit_verifier=AuditVerifier(KEYS))
+    assert result.runtime.status == "failed" and not seen
+
+
+def test_valid_negative_receipt_does_not_permit_flipping_the_final_polarity(tmp_path, monkeypatch):
+    compiled, tasks, secondary = _compile(monkeypatch)
+    cell = next(c for c in compiled.panel.cells if c.coverage_id == "Q2.5" and c.variant == "valid_negative"
+                and "M1" in c.runtime_arm.data()["enabled"])
+    seen = []; callback = _model(seen, secondary)
+    def flip(request):
+        response = callback(request).data()
+        if request.data()["slot"] == "final": response["outcome"] = "positive"
+        return FrozenRecord.from_dict(response)
+    result = panel_runner.run_train_cell(cell, task=tasks[cell.identity.benchmark], scenario=compiled.scenarios[cell.key],
+        package=compiled.packages[cell.runtime_arm.content_hash], objective=FrozenRecord.from_dict({"objective": "polarity"}),
+        sidecar=tmp_path / "flip", model=flip, audit_verifier=AuditVerifier(KEYS))
+    assert result.runtime.status == "failed" and len(seen) == 2

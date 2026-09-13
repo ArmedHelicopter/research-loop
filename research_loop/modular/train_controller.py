@@ -54,7 +54,8 @@ class FrozenTrainControllerConfig:
                     "evidence_by_task", "budget", "baseline_digest", "p0_control",
                     "packages_by_arm", "scorer", "acceptance_criteria", "replicates",
                     "model", "effort", "max_calls", "max_tokens", "schemas"}
-        if set(data) not in (required, required | {"execution_mode"}) or data["schema"] not in {_LEGACY_SCHEMA, _SCHEMA}:
+        if (not required <= set(data) or set(data) - required - {"execution_mode", "objective_by_task"}
+                or data["schema"] not in {_LEGACY_SCHEMA, _SCHEMA}):
             raise ContractError("unexpected train controller config schema")
         scope = tuple(data["scope_ids"]) if isinstance(data["scope_ids"], list) else ()
         if (not scope or len(set(scope)) != len(scope) or set(scope) - set(DRIVERS)
@@ -72,6 +73,15 @@ class FrozenTrainControllerConfig:
         if not isinstance(data["evidence_by_task"], Mapping) or not data["evidence_by_task"]:
             raise ContractError("controller needs exact task evidence")
         for value in data["evidence_by_task"].values(): _record(value, "evidence")
+        if "Q2.6" in scope and "objective_by_task" not in data:
+            raise ContractError("goal-lock controller requires predeclared task objectives")
+        if "objective_by_task" in data:
+            objectives = data["objective_by_task"]
+            if not isinstance(objectives, Mapping) or set(objectives) != set(data["evidence_by_task"]):
+                raise ContractError("task objectives must exactly cover the frozen task evidence")
+            for value in objectives.values():
+                if not _record(value, "task objective").data():
+                    raise ContractError("task objectives must be nonempty")
         for name in ("budget", "p0_control", "scorer", "acceptance_criteria"):
             _record(data[name], name)
         if (not isinstance(data["baseline_digest"], str) or len(data["baseline_digest"]) != 64
@@ -194,10 +204,11 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     linked_results = []
     try:
         for cell in compiled.panel.cells:
+            objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
             if data.get("execution_mode") == "linked_benchmark_solve":
                 packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
                 result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
-                    package=compiled.packages[cell.runtime_arm.content_hash], objective=_record({"panel_digest": compiled.panel.digest}, "objective"),
+                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
                     mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
                     solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
                     public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
@@ -213,7 +224,7 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                 attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
                 _write(root / "controller-attempt.json", attempt); continue
             result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
-                package=compiled.packages[cell.runtime_arm.content_hash], objective=_record({"panel_digest": compiled.panel.digest}, "objective"),
+                package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
                 sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
                 model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
                 audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port)
