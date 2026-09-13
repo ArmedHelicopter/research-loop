@@ -3,7 +3,36 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current state/scheduling integration checkpoint (2026-09-13)
+## Current state/improvement integration checkpoint (2026-09-13)
+
+Source `103ab6d` passed 27 root integration checks with all 526 frozen
+source/document hashes unchanged. M1×M9, M2×M9 and M3×M9 now have explicit
+history-trained candidate barriers and independent target scorer processes.
+All 11 history builds freeze before 22 legal targets; the two M2-off/M9-on
+structural exclusions remain in the denominator. The target provider ledger
+seals before any scoring. History and target tasks are distinct; independent
+data-family transfer has not been established.
+
+The full synthetic fixture used 55 scripted model calls, 66 source
+qualifications, 11 actual candidate builders, 22 target Docker executions and
+22 independent process scores. Its inherited history adds two scripted calls
+and one Docker execution, reported separately. M9-off executes a useful fixed
+builder under the same reserved proposal/build allocation.
+
+A concrete barrier-proxy bypass missed in the initial source review was
+reproduced, repaired and checked again. Exact barrier, plan, build and ledger
+types now precede replay. Rehashed order and Docker-limit attacks and merged
+scorer family exclusivity passed the root check. The source archive preserves
+all eight original closures, including failures; its 95 distinct accumulated
+checks are not a fresh 95-check final-source run. Evidence and both reviews are
+under `results/modular-engineering-20260913/state-improvement-root/`.
+
+Coverage is now 25/36 pair controllers and 2/5 triple controllers. Real TRAIN
+effect experiments, calibration, remaining combinations, the final frozen
+bundle and validation acceptance remain unfinished. No actual model generation
+or validation access occurred in this checkpoint.
+
+## Prior state/scheduling integration checkpoint (2026-09-13)
 
 Source `ed4098c` passed 34 root integration checks with all 517 frozen
 source/document files unchanged. M1×M8, M2×M8 and M3×M8 now have complete

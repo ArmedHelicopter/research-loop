@@ -1,0 +1,38 @@
+{
+  "source_commit": "103ab6dafe84d0e39d35eadaef30cb81975b2030",
+  "source_files": 526,
+  "source_unchanged": true,
+  "junit": {
+    "tests": 27,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "junit_sha256": "1c85b0fbfcbec8cb91f952738b22fd7790dd4afa17ce5877cc8606ca49883135",
+  "coverage": "25 of 36 pair controllers; 2 of 5 triple controllers; synthetic engineering only",
+  "complete_grid": {
+    "actual_history_builds": 11,
+    "target_cells": 22,
+    "structural_exclusions": 2,
+    "scripted_model_calls": 55,
+    "source_qualifications": 66,
+    "actual_target_docker": 22,
+    "actual_scorer_process_calls": 22
+  },
+  "inherited_history_separately_reported": {
+    "scripted_model_calls": 2,
+    "actual_docker": 1
+  },
+  "source_archive": {
+    "files": 35,
+    "indexed": 34,
+    "zip_members": 13701,
+    "closure_count": 8,
+    "accumulated_distinct_checks": 95,
+    "fresh_final_source_95_check_run": false
+  },
+  "root_scope": "full builds/targets; proxy bypass, rehashed order and Docker limits; merged family scopes; legacy prediction scorer; labels",
+  "new_generation_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}
