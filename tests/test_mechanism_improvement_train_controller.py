@@ -391,3 +391,34 @@ def test_useful_nondiscriminating_forecasts_are_consumed_off_but_rejected_on(tmp
             measured=json.loads(result.solver.execution.record.data()['stdout'])
             assert set(measured['forecast_checks'])=={'increase'}
             assert measured['forecast_checks']['increase']==(measured['target_statistic']>0)
+
+
+@pytest.mark.parametrize('attack',['early_prediction','early_review_submission','early_review_reveal'])
+def test_module_records_cannot_precede_their_original_model_responses(grid,attack):
+    from research_loop.modular.panel_receipts import PanelReceiptVerifier
+    setup,run=grid
+    result=next(r for r in run.results if r.cell.coverage_id==('pair:M4+M9' if attack=='early_prediction' else 'pair:M5+M9') and r.cell.arm_id=='11')
+    path=result.runtime.trace_path;raw=path.read_bytes()
+    stage={'early_prediction':'mechanism_improvement_prediction','early_review_submission':'mechanism_improvement_review_submission',
+        'early_review_reveal':'mechanism_improvement_review_reveal'}[attack]
+    def mutate(rows):
+        record=next(r for r in rows if r['stage']==stage);rows.remove(record)
+        slot='m4_plan' if attack=='early_prediction' else 'review_first' if attack=='early_review_submission' else 'review_second'
+        request=next(r for r in rows if r['stage']=='model_request' and r['data']['request']['slot']==slot)
+        # Reveal remains after both submission records, but those records and
+        # reveal can all be moved ahead of the second response as one block.
+        if attack=='early_review_reveal':
+            submission=[r for r in rows if r['stage']=='mechanism_improvement_review_submission'][-1]
+            rows.remove(submission);rows.insert(rows.index(request)+1,submission)
+            rows.insert(rows.index(submission)+1,record)
+        else:rows.insert(rows.index(request)+1,record)
+    try:
+        digest=_rewrite_trace(path,mutate);forged=replace(result,runtime=replace(result.runtime,trace_digest=digest))
+        PanelReceiptVerifier()._verify_runtime(forged.runtime,forged.cell)
+        with pytest.raises(ContractError):
+            issued=issue_mechanism_improvement_score_input(authority=EXECUTION,result=forged,**replay_args(setup,run,forged))
+            (setup['root']/(attack+'-counterexample.json')).write_text(json.dumps({'attack':attack,'generic_verified':True,
+                'score_input_issued':True,'score_input_digest':issued.content_hash,'original_trace_sha256':hashlib.sha256(raw).hexdigest(),
+                'forged_trace_sha256':hashlib.sha256(path.read_bytes()).hexdigest()})+'\n',encoding='utf-8')
+            (setup['root']/(attack+'-forged-trace.jsonl')).write_bytes(path.read_bytes())
+    finally:path.write_bytes(raw)
