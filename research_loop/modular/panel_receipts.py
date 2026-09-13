@@ -402,6 +402,8 @@ class PanelReceiptVerifier:
                             adapted_score, limitation)
 
     def _verify_runtime(self, receipt: RuntimeReceipt, expected: PanelCell, *, p0_control_digest: str | None = None) -> None:
+        if receipt.cell_key != expected.key:
+            raise ContractError("runtime receipt cell key does not match the frozen panel cell")
         verify_protocol_trace(receipt.trace_path)
         trace = verify_trace(receipt.trace_path).data()
         if trace["trace_digest"] != receipt.trace_digest:

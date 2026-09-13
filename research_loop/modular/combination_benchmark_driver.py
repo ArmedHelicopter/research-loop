@@ -92,8 +92,9 @@ def verify_m4_m5_combination_benchmark_cell(result: CombinationBenchmarkCellResu
     if any(_private_arm_marker(request) for request in requests):
         raise ContractError("combination model request leaks arm or truth metadata")
     if result.joint_mechanism is None:
-        if result.solver is not None:
-            raise ContractError("failed mechanism cannot have a solver result")
+        solver_started = any(request["slot"] in {"analysis_program", "final_answer"} for request in requests)
+        if result.solver is not None or result.runtime.status != "failed" or solver_started:
+            raise ContractError("absent mechanism must retain its failed pre-solver runtime")
         return FrozenRecord.from_dict({"schema": "m4-m5-combination-verification-v1", "cell_key": list(result.cell.key),
             "status": result.runtime.status, "engineering_verified": True, "joint_mechanism": None,
             "scientific_effect": "not_measured"})
@@ -109,6 +110,7 @@ def verify_m4_m5_combination_benchmark_cell(result: CombinationBenchmarkCellResu
     actual = [by_digest.get(event["data"]["request_digest"]) for event in module_requests]
     if len(module_requests) != 3 or any(item is None for item in actual) or [item.content_hash for item in actual] != joint.get("module_response_digests"):
         raise ContractError("joint mechanism response digests do not bind the three actual module calls")
+    _verify_actual_module_artifacts(joint, actual, enabled)
     joint_index = next(index for index,event in enumerate(events) if event["stage"] == "combination_mechanism")
     response_indexes = [index for index,event in enumerate(events) if event["stage"] == "model_response" and event["data"]["request_digest"] in {item["data"]["request_digest"] for item in module_requests}]
     solver_indexes = [index for index,event in enumerate(events) if event["stage"] == "model_request" and event["data"]["request"]["slot"] == "analysis_program"]
@@ -116,6 +118,8 @@ def verify_m4_m5_combination_benchmark_cell(result: CombinationBenchmarkCellResu
         raise ContractError("joint mechanism event is not ordered after module responses and before solver")
     if joint["prediction_plan"] is not None and any(event["data"]["request"]["module_context"].get("prediction_plan") != joint["prediction_plan"] for event in module_requests[1:]):
         raise ContractError("M5 review requests do not carry the actual frozen M4 plan")
+    if any("review_id" in event["data"]["request"]["module_context"] for event in module_requests[1:]):
+        raise ContractError("sealed M5 role requests expose an on-only review identifier")
     if len(requests) < 3:
         raise ContractError("joint mechanism did not reach both matched module calls")
     first_response = next(event["data"]["response"] for event in events
@@ -146,7 +150,7 @@ def _run_m4(workflow: ModularWorkflow, cell: PanelCell, scenario: FrozenRecord, 
     response = workflow.invoke_model("m4_plan", model, instruction=(
         "Produce exactly a three-branch public prediction plan with budget_units=3. Each branch must use one common "
         "discriminator and at least two branches must differ on it. This is train-only reasoning, not a score or truth."),
-        module_context=FrozenRecord.from_dict({"panel_cell": binding.data(), "combination_scenario": scenario.data(),
+        module_context=FrozenRecord.from_dict({"panel_cell": binding.data(), "public_task": workflow.session.task.data(),
                                                 "mechanism_phase": "proposal"}))
     if "M4" not in workflow.enabled:
         workflow._trace("operation_m4_control", "executed", response_digest=response.content_hash)
@@ -253,6 +257,24 @@ def _verify_module_logs(sidecar: Path, task: PublicTask, joint: Mapping, enabled
             raise ContractError("joint M5 review does not replay from the review log")
     elif any(joint[key] is not None for key in ("review_id", "revealed_review", "review_digest")):
         raise ContractError("M5 control invented a review artifact")
+
+
+def _verify_actual_module_artifacts(joint: Mapping, responses: list[FrozenRecord], enabled: set[str]) -> None:
+    """Bind replayed M4/M5 artifacts to the actual three model responses.
+
+    The append-only module logs prove that an artifact is well-formed, but do
+    not alone prove that it arose from this session's module calls.
+    """
+    if "M4" in enabled:
+        if responses[0].data() != joint["prediction_plan"]:
+            raise ContractError("joint M4 plan is not the actual M4 model response")
+    if "M5" in enabled:
+        revealed = joint["revealed_review"]
+        if not isinstance(revealed, Mapping) or not isinstance(revealed.get("submissions"), list):
+            raise ContractError("joint M5 review has no sealed submissions")
+        submitted = [item.get("response") if isinstance(item, Mapping) else None for item in revealed["submissions"]]
+        if submitted != [response.data() for response in responses[1:]]:
+            raise ContractError("joint M5 review is not the actual sealed model responses")
 
 
 def _private_arm_marker(request: Mapping) -> bool:
