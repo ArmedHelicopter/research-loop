@@ -1,5 +1,6 @@
 """Synthetic train-reference integration tests; no benchmark reference is read."""
 from dataclasses import replace
+import hashlib
 
 import pytest
 
@@ -7,7 +8,7 @@ from evaluation.modular.scoring_service import (
     AdaptedMetricReceiptVerifier, FrozenBenchmarkRubricEndpoint,
     FrozenRubricTransport, IndependentScoringService, ScorerConfig, ScoringAuthority,
 )
-from research_loop.modular.contracts import FrozenRecord
+from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.panel_receipts import FrozenPanel, PanelReceiptVerifier
 from research_loop.ontology import ContractError
 
@@ -31,10 +32,13 @@ def test_authenticated_but_inconsistent_receipt_cannot_change_the_executed_submi
 
 class SyntheticTrainResolver:
     def __call__(self, handle, benchmark):
-        if handle != "synthetic-train" or benchmark not in {"discoverybench", "blade"}:
+        prefix = "synthetic-train:"
+        if not isinstance(handle, str) or not handle.startswith(prefix) or benchmark not in {"discoverybench", "blade"}:
             raise ContractError("synthetic reference is unavailable")
+        identity = handle[len(prefix):]
         return FrozenRecord.from_dict({"schema": "train-only-rubric-reference-v1", "split": "train",
-            "benchmark": benchmark, "task_context": {"question": "synthetic"},
+            "benchmark": benchmark, "task_handle_digest": hashlib.sha256(handle.encode()).hexdigest(),
+            "identity_digest": identity, "task_context": {"question": "synthetic"},
             "references": [{"spec_id": "synthetic-reference", "answer": "X relates to Y"}]})
 
 
@@ -58,7 +62,7 @@ def _panel_with_config(tmp_path, benchmark):
 
 
 def _service(panel, config, output):
-    identities = {FrozenRecord.from_dict(cell.identity.data()).content_hash: "synthetic-train" for cell in panel.cells}
+    identities = {FrozenRecord.from_dict(cell.identity.data()).content_hash: "synthetic-train:" + FrozenRecord.from_dict(cell.identity.data()).content_hash for cell in panel.cells}
     model = CannedIndependentEvaluator(output)
     endpoint = FrozenBenchmarkRubricEndpoint(resolver=SyntheticTrainResolver(), evaluator=model,
         evaluator_id="frozen-rubric-v1", evaluator_version="v1")
@@ -81,6 +85,10 @@ def test_endpoint_to_signed_receipt_to_panel_verifier(tmp_path, benchmark, outpu
     assert body["metric"]["value"] == expected
     assert body["evaluator_evidence"]["mode"] == "single_candidate_train_only"
     assert model.calls[0]["evaluator_id"] == "frozen-rubric-v1"
+    if benchmark == "blade":
+        assert "all material IV/DV/control roles" in model.calls[0]["prompt"]
+    else:
+        assert "different/general/similar relation" in model.calls[0]["prompt"]
     AdaptedMetricReceiptVerifier(authority_keys={"independent-test": b"s" * 32}, config=config)(score, cell, frozen)
 
 
@@ -101,7 +109,8 @@ def test_endpoint_rejects_range_missing_reference_and_wrong_candidate(tmp_path):
     service, endpoint, _ = _service(frozen, config, {"cvars": 3, "transform": 1, "model": 1, "reason": "bad"})
     candidate = {"outcome": "unknown", "conclusion": "engineering fixture", "programme_complete": False}
     request = FrozenRecord.from_dict({"schema": "adapted-rubric-evaluation-request-v1", "panel_digest": frozen.digest,
-        "scorer_config_digest": config.digest, "benchmark": "blade", "task_handle": "synthetic-train",
+        "scorer_config_digest": config.digest, "benchmark": "blade", "task_handle": "synthetic-train:" + "a" * 64,
+        "identity_digest": "a" * 64,
         "candidate": candidate, "candidate_digest": FrozenRecord.from_dict(candidate).content_hash})
     with pytest.raises(ContractError, match="outside the frozen rubric"):
         endpoint(request)
@@ -111,7 +120,23 @@ def test_endpoint_rejects_range_missing_reference_and_wrong_candidate(tmp_path):
     wrong = FrozenRecord.from_dict({**request.data(), "candidate_digest": "a" * 64})
     with pytest.raises(ContractError, match="candidate digest mismatch"):
         endpoint(wrong)
+    wrong_reference = FrozenRecord.from_dict({**request.data(), "identity_digest": "b" * 64})
+    with pytest.raises(ContractError, match="train-only matching reference"):
+        endpoint(wrong_reference)
     assert service.config is config
+
+
+def test_service_rejects_validation_panel_before_reference_resolution(tmp_path):
+    frozen, runtime, config = _panel_with_config(tmp_path, "discoverybench")
+    service, _, _ = _service(frozen, config, {"context": 1, "variable_f1": 1, "relation": 1, "reason": "synthetic"})
+    cell = next(c for c in frozen.cells if c.identity.benchmark == "discoverybench")
+    row = next(r for r in runtime if r.cell_key == cell.key)
+    validation_cells = tuple(replace(c, identity=DataIdentity.parse({**c.identity.data(), "domain": "validation"})) for c in frozen.cells)
+    validation = FrozenPanel(frozen.stage, "validation", frozen.split_digest, frozen.candidate_digest, frozen.scope_ids,
+        frozen.legal_arm_grids, frozen.acceptance_criteria, validation_cells, frozen.combinations)
+    validation_cell = next(c for c in validation.cells if c.key == cell.key)
+    with pytest.raises(ContractError, match="train-only"):
+        service.score(panel=validation, cell=validation_cell, runtime=row)
 
 
 def test_signed_receipt_rejects_duplicate_and_validation_rejects_adapted_only(tmp_path):
