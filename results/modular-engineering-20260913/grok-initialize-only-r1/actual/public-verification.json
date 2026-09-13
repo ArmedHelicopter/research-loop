@@ -1,0 +1,38 @@
+{
+  "schema": "initialize-only-terminal-verification-v1",
+  "outcome": "pre_session_initialize_timeout",
+  "initialize_frames_verified": 1,
+  "other_rpc_frames_verified": 0,
+  "frozen_files_verified": 13,
+  "original_private_artifacts_unchanged": 26,
+  "original_envelope_unchanged": true,
+  "source_clean": true,
+  "process_tree_closed": true,
+  "owned_native_processes_remaining_observed": 0,
+  "frozen_envelope_sha256": "2edfa6cd28a0ffc30fa861fb6eba46cbfbd68ed8d62a45369f4a6087cc8a14c4",
+  "result_sha256": "b1f44818b1b3bfb8242dc8486787b6d0baf6cec476dd79773b789ff0f9139078",
+  "request_stream_sha256": "4ff2a6301d0f60b08451d890fb2bff5ee7067be81658cd46845e64bc1edac4dd",
+  "fixture_check_sha256": "ef3f270c66c1f262dfb3d9a5520029a229451061bcb77c34359ce0a5dbcfb375",
+  "safe_startup_phases": [
+    {
+      "timestamp": "2026-09-13T22:56:32.042Z",
+      "phase": "initialize_handler_entered"
+    },
+    {
+      "timestamp": "2026-09-13T22:56:32.043Z",
+      "phase": "auth_methods_built"
+    },
+    {
+      "timestamp": "2026-09-13T22:56:32.043Z",
+      "phase": "auth_method_selected"
+    }
+  ],
+  "new_private_log_sha256": "2601e9b3b97fb090ec5ee8527260b48d41c33ba4960cdacce3d4c9a34b3f5dfb",
+  "changed_conditions": [
+    "fresh shorter paths",
+    "opaque copy of refreshed existing private login"
+  ],
+  "root_cause_established": false,
+  "retry_allowed": false,
+  "material_or_diagnostic_prompts_dispatched": 0
+}

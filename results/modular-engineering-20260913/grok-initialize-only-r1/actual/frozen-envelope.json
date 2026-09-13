@@ -1,0 +1,35 @@
+{
+  "schema": "reviewed-initialize-only-native-envelope-v1",
+  "source_commit": "5e1b18410910d57fbb67bafcc1ec78d4bcbc3afd",
+  "frozen_files": {
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\init-only-driver-r1\\driver.py": "c24712cbf1f25f080123b019c1317ff58b6871bbcbee101aceb15933bbb3fbd2",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\init-only-driver-r1\\fixture_peer.py": "9992796425ebd9b8c743dd8fb4cd0dee138076607a4cd1680ffda57a221fe597",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\init-only-driver-r1\\frozen_check.py": "d2cf4bfeef93c41f1701d329ec5cff6d53e6676e4bfe54759203ca0a76ab57c6",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\init-only-driver-r1\\run_actual_once.py": "f6fcefd524c131d139c91ec9826ac5cff049fd315900b092c7991461867f1a9a",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\init-only-driver-r1\\test_driver.py": "6c7b797de4e4d71852b185e2a03962733c671f891f6e89480645a84db5d227f2",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\grok-materials\\research_loop\\modular\\grok_acp_transport.py": "8ef693476977e1e75be1e73fe2a320255f9ebda500acc4899f23cc8baef414ac",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\grok-materials\\research_loop\\modular\\model_port.py": "c56bdaf3818841d0956a647c9e2ae012cc49d4a15dd94a5c91756c53a628d9b6",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\grok-materials\\research_loop\\modular\\contracts.py": "2e6c0d12e864430322329babe569b6244daad6311fa8ddc40a7a2ffb9e4c15bc",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\grok-materials\\research_loop\\ontology.py": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb",
+    "C:\\Users\\Administrator\\.grok\\bin\\grok.exe": "bf43dc75f5478a106eab1e86d422c963e4dbe9666cf14dab363733d27bf1e672",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\init-only-r1\\home\\config.toml": "223b0a69981328a1e45a93c88265934b99c9aaaeb2b0ff8c4e3177edeb98264c",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\init-only-driver-r1\\frozen-check-r1\\receipt.json": "ef3f270c66c1f262dfb3d9a5520029a229451061bcb77c34359ce0a5dbcfb375",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\material-authoring-initialize-only-proposal-r1.md": "aab6e4a37f04a2a13ccca3c8b2dbe9a576e90d6d444d780e27e442df29446de5"
+  },
+  "executable_sha256": "bf43dc75f5478a106eab1e86d422c963e4dbe9666cf14dab363733d27bf1e672",
+  "wire_sha256": "4ff2a6301d0f60b08451d890fb2bff5ee7067be81658cd46845e64bc1edac4dd",
+  "only_outbound_method": "initialize",
+  "launches_max": 1,
+  "timeout_seconds": 60,
+  "retry": false,
+  "session_new_max": 0,
+  "authenticate_max": 0,
+  "account_rpc_max": 0,
+  "prompt_max": 0,
+  "changed_conditions": [
+    "fresh shorter paths",
+    "opaque copy of refreshed existing private login"
+  ],
+  "private_material_inputs": false,
+  "auth_hashing_or_body_inspection": false
+}

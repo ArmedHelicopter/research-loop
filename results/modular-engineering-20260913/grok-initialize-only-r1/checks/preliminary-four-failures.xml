@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="7.315" timestamp="2026-09-14T06:54:20.043824" hostname="SC-202507131830"><testcase classname="work.init-only-driver-r1.test_driver" name="test_exactly_one_initialize_and_owned_cleanup[success-None]" time="1.332"><failure message="assert b'{&quot;id&quot;:1,&quot;js...sion&quot;:1}}\r\n' == b'{&quot;id&quot;:1,&quot;js...ersion&quot;:1}}\n'&#10;  At index 260 diff: b'\r' != b'\n'&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/init-only-driver-r1/preliminary-temp/test_exactly_one_initialize_an0')
+mode = 'success', fault = None
+
+    @pytest.mark.parametrize('mode,fault', [('success', None), ('malformed', 'malformed_json'),
+        ('server_request', 'unsolicited_server_request'), ('timeout', 'timeout')])
+    def test_exactly_one_initialize_and_owned_cleanup(tmp_path, mode, fault):
+        source = Path(__file__).parent
+        pinned = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in source.glob('*.py')}
+        result = run_once([sys.executable, str(source / 'fixture_peer.py'), mode, str(tmp_path)],
+            cwd=tmp_path, env=dict(os.environ), directory=tmp_path / 'receipt', frozen_files=pinned,
+            timeout=2 if mode == 'timeout' else 10)
+&gt;       assert (tmp_path / 'received.private.jsonl').read_bytes() == WIRE
+E       assert b'{"id":1,"js...sion":1}}\r\n' == b'{"id":1,"js...ersion":1}}\n'
+E         At index 260 diff: b'\r' != b'\n'
+E         Use -v to get more diff
+
+..\work\init-only-driver-r1\test_driver.py:18: AssertionError</failure></testcase><testcase classname="work.init-only-driver-r1.test_driver" name="test_exactly_one_initialize_and_owned_cleanup[malformed-malformed_json]" time="1.602"><failure message="assert b'{&quot;id&quot;:1,&quot;js...sion&quot;:1}}\r\n' == b'{&quot;id&quot;:1,&quot;js...ersion&quot;:1}}\n'&#10;  At index 260 diff: b'\r' != b'\n'&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/init-only-driver-r1/preliminary-temp/test_exactly_one_initialize_an1')
+mode = 'malformed', fault = 'malformed_json'
+
+    @pytest.mark.parametrize('mode,fault', [('success', None), ('malformed', 'malformed_json'),
+        ('server_request', 'unsolicited_server_request'), ('timeout', 'timeout')])
+    def test_exactly_one_initialize_and_owned_cleanup(tmp_path, mode, fault):
+        source = Path(__file__).parent
+        pinned = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in source.glob('*.py')}
+        result = run_once([sys.executable, str(source / 'fixture_peer.py'), mode, str(tmp_path)],
+            cwd=tmp_path, env=dict(os.environ), directory=tmp_path / 'receipt', frozen_files=pinned,
+            timeout=2 if mode == 'timeout' else 10)
+&gt;       assert (tmp_path / 'received.private.jsonl').read_bytes() == WIRE
+E       assert b'{"id":1,"js...sion":1}}\r\n' == b'{"id":1,"js...ersion":1}}\n'
+E         At index 260 diff: b'\r' != b'\n'
+E         Use -v to get more diff
+
+..\work\init-only-driver-r1\test_driver.py:18: AssertionError</failure></testcase><testcase classname="work.init-only-driver-r1.test_driver" name="test_exactly_one_initialize_and_owned_cleanup[server_request-unsolicited_server_request]" time="0.917"><failure message="assert b'{&quot;id&quot;:1,&quot;js...sion&quot;:1}}\r\n' == b'{&quot;id&quot;:1,&quot;js...ersion&quot;:1}}\n'&#10;  At index 260 diff: b'\r' != b'\n'&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/init-only-driver-r1/preliminary-temp/test_exactly_one_initialize_an2')
+mode = 'server_request', fault = 'unsolicited_server_request'
+
+    @pytest.mark.parametrize('mode,fault', [('success', None), ('malformed', 'malformed_json'),
+        ('server_request', 'unsolicited_server_request'), ('timeout', 'timeout')])
+    def test_exactly_one_initialize_and_owned_cleanup(tmp_path, mode, fault):
+        source = Path(__file__).parent
+        pinned = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in source.glob('*.py')}
+        result = run_once([sys.executable, str(source / 'fixture_peer.py'), mode, str(tmp_path)],
+            cwd=tmp_path, env=dict(os.environ), directory=tmp_path / 'receipt', frozen_files=pinned,
+            timeout=2 if mode == 'timeout' else 10)
+&gt;       assert (tmp_path / 'received.private.jsonl').read_bytes() == WIRE
+E       assert b'{"id":1,"js...sion":1}}\r\n' == b'{"id":1,"js...ersion":1}}\n'
+E         At index 260 diff: b'\r' != b'\n'
+E         Use -v to get more diff
+
+..\work\init-only-driver-r1\test_driver.py:18: AssertionError</failure></testcase><testcase classname="work.init-only-driver-r1.test_driver" name="test_exactly_one_initialize_and_owned_cleanup[timeout-timeout]" time="3.213"><failure message="assert b'{&quot;id&quot;:1,&quot;js...sion&quot;:1}}\r\n' == b'{&quot;id&quot;:1,&quot;js...ersion&quot;:1}}\n'&#10;  At index 260 diff: b'\r' != b'\n'&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/init-only-driver-r1/preliminary-temp/test_exactly_one_initialize_an3')
+mode = 'timeout', fault = 'timeout'
+
+    @pytest.mark.parametrize('mode,fault', [('success', None), ('malformed', 'malformed_json'),
+        ('server_request', 'unsolicited_server_request'), ('timeout', 'timeout')])
+    def test_exactly_one_initialize_and_owned_cleanup(tmp_path, mode, fault):
+        source = Path(__file__).parent
+        pinned = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in source.glob('*.py')}
+        result = run_once([sys.executable, str(source / 'fixture_peer.py'), mode, str(tmp_path)],
+            cwd=tmp_path, env=dict(os.environ), directory=tmp_path / 'receipt', frozen_files=pinned,
+            timeout=2 if mode == 'timeout' else 10)
+&gt;       assert (tmp_path / 'received.private.jsonl').read_bytes() == WIRE
+E       assert b'{"id":1,"js...sion":1}}\r\n' == b'{"id":1,"js...ersion":1}}\n'
+E         At index 260 diff: b'\r' != b'\n'
+E         Use -v to get more diff
+
+..\work\init-only-driver-r1\test_driver.py:18: AssertionError</failure></testcase></testsuite></testsuites>
