@@ -55,10 +55,9 @@ def test_shared_bundle_full_grid_exercises_actual_support_state(tmp_path: Path, 
     package=CandidatePackage.create(parent_digest=None, manifest=TrainingManifest.freeze([task.identity for task in tasks.values()]), changes={"prompt":{"instructions":"support"}}, search_cost=0)
     control=FrozenRecord.from_dict({"source":"synthetic","always_enabled":True}); grids=obligation_grids((coverage,),baseline_digest="b"*64,p0_control=control); packages={arm.content_hash:package for grid in grids.values() for arm in executable_arms(grid).values()}
     compiled=compile_train_panel(stage="support",scope_ids=(coverage,),tasks=tuple(tasks.values()),evidence_by_task=bundles,budget=FrozenRecord.from_dict({"calls":3}),baseline_digest="b"*64,p0_control=control,packages_by_arm=packages,scorer=FrozenRecord.from_dict({"identity":"none"}),acceptance_criteria=FrozenRecord.from_dict({"scope":"engineering"}),replicates=("r1",))
-    local=dict(panel_runner.DRIVERS); install_drivers(local, material_resolver=lambda task,_:bundles[task.content_hash],admission_port=_admit); monkeypatch.setattr(panel_runner,"DRIVERS",local)
     rows=[]; runtime=[]
     for n,cell in enumerate(compiled.panel.cells):
-        result=panel_runner.run_train_cell(cell,task=tasks[cell.identity.benchmark],scenario=compiled.scenarios[cell.key],package=compiled.packages[cell.runtime_arm.content_hash],objective=FrozenRecord.from_dict({"q":coverage}),sidecar=tmp_path/str(n),model=_model(rows),audit_verifier=AUDIT)
+        result=panel_runner.run_train_cell(cell,task=tasks[cell.identity.benchmark],scenario=compiled.scenarios[cell.key],package=compiled.packages[cell.runtime_arm.content_hash],objective=FrozenRecord.from_dict({"q":coverage}),sidecar=tmp_path/str(n),model=_model(rows),audit_verifier=AUDIT,history_admission_port=_admit)
         assert result.runtime.status=="succeeded" and result.call_plan.data()["model_calls"]==3; runtime.append(result.runtime)
     assert PanelReceiptVerifier().verify(compiled.panel,tuple(runtime)).decision=="engineering_verified"
     assert all(set(row["module_context"]["panel_cell"])=={"schema","cell_digest"} for row in rows)

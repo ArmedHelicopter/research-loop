@@ -192,9 +192,11 @@ from research_loop.modular.q15_panel_driver import Q15HistoryReviewDriver
 from research_loop.modular.q4_panel_drivers import Q41IndependenceDriver, Q42RoleDriver, Q44CounterexampleDriver, Q45SelfCorrectionDriver
 from research_loop.modular.history_panel_drivers import Q11HistoryDriver, Q12DependencyDriver, AdmissionPort
 from research_loop.modular.pressure_panel_driver import Q21PressureDriver
+from research_loop.modular.support_panel_drivers import Q13RepresentationDriver, Q14SupportDriver
 
 
 DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12DependencyDriver(),
+    "Q1.3": Q13RepresentationDriver(), "Q1.4": Q14SupportDriver(),
     "Q1.5": Q15HistoryReviewDriver(), "Q2.1": Q21PressureDriver(), "Q3.1": Q31PredictionDriver(),
     "Q4.1": Q41IndependenceDriver(), "Q4.2": Q42RoleDriver(), "Q4.3": Q43ReviewDriver(),
     "Q4.4": Q44CounterexampleDriver(), "Q4.5": Q45SelfCorrectionDriver()}
@@ -229,7 +231,7 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
     if history_admission_port is not None:
         if not callable(history_admission_port):
             raise ContractError("history admission must be a caller-owned verification port")
-        if isinstance(driver, (Q11HistoryDriver, Q12DependencyDriver)):
+        if isinstance(driver, (Q11HistoryDriver, Q12DependencyDriver, Q13RepresentationDriver, Q14SupportDriver)):
             driver = replace(driver, admission_port=history_admission_port)
     if not isinstance(package, CandidatePackage) or package.digest != cell.package_digest:
         raise ContractError("package digest differs from panel cell")

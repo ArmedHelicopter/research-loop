@@ -116,6 +116,38 @@ def test_actual_custody_export_port_runner_and_receipt_are_engineering_only(tmp_
     assert all(runtime.trace_path.exists() for runtime in result.runtimes)
 
 
+@pytest.mark.parametrize("coverage,slots,expected_cells", [
+    ("Q1.3", ("representation_initial", "representation_next", "final"), 16),
+    ("Q1.4", ("support_initial", "support_rechecked", "final"), 12),
+])
+def test_support_drivers_reach_production_controller_without_registry_patch(tmp_path, monkeypatch, coverage, slots, expected_cells):
+    from test_modular_support_panel_drivers import _bundle, _admit
+    snapshot, custody = snapshot_and_custody(tmp_path)
+    base = config(custody, snapshot, tmp_path).data()
+    packets = TrainPacketExporter(custody, snapshot, tmp_path / "support-material").export(base["item_ids"])
+    control = FrozenRecord.from_dict(base["p0_control"])
+    grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=control)
+    package = next(iter(base["packages_by_arm"].values()))
+    schemas = {slot: FINAL if slot == "final" else REVIEW for slot in slots}
+    frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+        "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-support-controller",
+        "scope_ids": [coverage], "evidence_by_task": {packet.task.content_hash: _bundle(packet.task).data() for packet in packets},
+        "packages_by_arm": {arm.content_hash: package for grid in grids.values() for arm in executable_arms(grid).values()},
+        "budget": {"model_calls": 3, "execution_limit": 0}, "max_calls": expected_cells * 3, "schemas": schemas}))
+    admissions = []
+    def caller_admit(task, record):
+        receipt = _admit(task, record)
+        admissions.append(receipt["record_digest"])
+        return receipt
+    model = model_port(tmp_path, monkeypatch, max_calls=expected_cells * 3, schemas=schemas)
+    result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+        export_root=tmp_path / "export", run_root=tmp_path / "run", model=model,
+        audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}), history_admission_port=caller_admit)
+    assert result.receipt.data()["execution_status"] == "engineering_complete"
+    assert len(result.runtimes) == expected_cells and len(model.ledger["calls"]) == expected_cells * 3
+    assert admissions and all(runtime.status == "succeeded" for runtime in result.runtimes)
+
+
 def test_q43_closed_driver_runs_through_custody_export_and_frozen_policy(tmp_path: Path, monkeypatch) -> None:
     snapshot, custody = snapshot_and_custody(tmp_path)
     frozen = config(custody, snapshot, tmp_path)

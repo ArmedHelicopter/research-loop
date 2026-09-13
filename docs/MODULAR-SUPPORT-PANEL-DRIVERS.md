@@ -1,5 +1,10 @@
 # Q1.3 and Q1.4 support panel drivers
 
+Both drivers are registered in the production panel runner. The existing
+`history_admission_port` on `run_train_cell` and `run_train_panel` also forwards
+caller-owned, record-bound admission receipts to these support drivers.
+No default scientific admission authority is fabricated by the controller.
+
 `freeze_support_bundle()` freezes caller-supplied public source records, claim
 statements, representation records, and source-bound withdrawal actions for one
 task. Its digest is checked against scenario evidence before a model request.
