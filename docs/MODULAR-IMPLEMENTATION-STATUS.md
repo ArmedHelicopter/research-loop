@@ -3,7 +3,36 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current mechanism/scheduling integration checkpoint (2026-09-13)
+## Current mechanism/improvement and triple integration checkpoint (2026-09-14)
+
+Source `8f9b16c` passed 50 root integration checks, with all 556 frozen
+source/document hashes unchanged. M4×M9, M5×M9 and M6×M9 now freeze six
+actual history-only candidate builds and twelve arm bindings before 24
+targets. The complete grid used 78 scripted model calls, 76 qualifications,
+24 retrieval operations, 24 actual target Docker executions and 24 process
+scores. Other target factors share the exact candidate at a fixed M9 level.
+The two original RED closures remain archived, including the reproduced
+early-registration score-input bypass and its original-response-order repair.
+
+M1×M4×M7 also has a complete 16-cell prospective controller. Its root grid
+used 48 scripted model calls, 32 admission qualifications, 48 actual Docker
+executions and 16 process scores. Seven descriptive components use frozen
+main/pair/triple coefficients. Each benchmark has one independent group;
+confidence limits are null, and qualification drift makes contrasts inconclusive.
+Predictions freeze before fresh auxiliary measurements; state, proposal and
+phase outputs actually enter the common solver. Useful off controls remain.
+
+Root checked merged scorer-family isolation, exact candidate provenance,
+original response ordering, coherent Docker attacks, component normalization
+and label isolation. The two source archives contain 25 and 11 committed
+files, with all 11,686 and 1,483 ZIP members verified. Root evidence is under
+`results/modular-engineering-20260913/mechanism-improvement-triple147-root/`.
+Engineering coverage is 34/36 pair controllers and 3/5 required triples.
+No actual generation or validation access occurred in this checkpoint.
+Real TRAIN effects, calibration, remaining combinations, full/LOO, the final
+TRAIN-selected bundle and independent validation acceptance remain unfinished.
+
+## Prior mechanism/scheduling integration checkpoint (2026-09-13)
 
 Source `e61dadd` passed 46 root checks with all 542 frozen source/document
 hashes unchanged. M4×M8, M5×M8 and M6×M8 now have prospective TRAIN

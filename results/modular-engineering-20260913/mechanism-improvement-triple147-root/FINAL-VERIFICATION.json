@@ -1,0 +1,59 @@
+{
+  "source_commit": "8f9b16ce30a42f3d0a391700592c978a511dcabb",
+  "source_files": 556,
+  "source_unchanged": true,
+  "junit": {
+    "tests": 50,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "junit_sha256": "26f84f33259174bdc2d71dfe702decccf144434e6b15ff7b06bd7387369b7a9a",
+  "coverage": "34 of36 pair controllers;3 of5 required triple controllers; synthetic engineering only",
+  "mechanism_improvement_grid": {
+    "cells": 24,
+    "canonical_builds": 6,
+    "arm_bindings": 12,
+    "scripted_model_calls": 78,
+    "qualification_calls": 76,
+    "retrieval_operations": 24,
+    "docker_executions": 24,
+    "scorer_process_calls": 24
+  },
+  "triple147_grid": {
+    "cells": 16,
+    "scripted_model_calls": 48,
+    "qualification_calls": 32,
+    "docker_executions": 48,
+    "scorer_process_calls": 16,
+    "descriptive_components": 7,
+    "confidence_intervals": "null_insufficient_independent_groups"
+  },
+  "source_archives": [
+    {
+      "files": 25,
+      "indexed": 24,
+      "zip_members": 11686,
+      "current_accumulated_checks": 95,
+      "not_fresh_final_source_suite": true,
+      "original_red_closures": 2
+    },
+    {
+      "files": 11,
+      "indexed": 10,
+      "zip_members": 1483,
+      "isolated_checks": 103
+    }
+  ],
+  "root_scope": "full grids; exact merged scorer scopes; original-response ordering; coherent Docker attacks; normalized triple terms; labels",
+  "limitations": [
+    "scripted model and scorer responses",
+    "caller-trusted pinned records and signing keys",
+    "selected-cell adversarial coverage",
+    "adapted primary metrics",
+    "unknown source costs preserved"
+  ],
+  "new_generation_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}
