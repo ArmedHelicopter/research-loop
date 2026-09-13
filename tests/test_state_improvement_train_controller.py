@@ -15,7 +15,7 @@ from research_loop.modular.contracts import FrozenRecord, PublicTask, DataIdenti
 from research_loop.modular.benchmark_solver import run_benchmark_solve
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest, FrozenBuilderVersion, RestrictedBuilderPort
-from research_loop.modular.runtime import AuditVerifier
+from research_loop.modular.runtime import AuditVerifier, verify_trace
 from research_loop.modular.metaprogram_training import FrozenTrainHistory, model_configuration, metaprogram_schemas
 from research_loop.modular.state_improvement_combination_controller import FrozenStateImprovementPlan, run_state_improvement_train, recipes, ALLOCATION
 from research_loop.modular.state_improvement_build import material_class, verify_build, FrozenProviderLedger
@@ -54,7 +54,7 @@ def prepare(root,patch,fault=None):
         sidecar=historyroot/'runtime',broker=DockerExecutionBroker([historyroot]),model=prior,audit_verifier=AUDIT)
     assert actual.status=='execution_succeeded'
     trace=actual.session.sidecar/'trace.jsonl';history=FrozenTrainHistory.freeze(task,trace,expected_sha256=hashlib.sha256(trace.read_bytes()).hexdigest())
-    calls=[];verifiers={pair:sources(calls,fault=fault if fault in {'source_exception','unknown_cost','source_cell_drift'} else None)
+    calls=[];verifiers={pair:sources(calls,fault='source_unknown' if fault=='source_rejected' else fault if fault in {'source_exception','unknown_cost','source_cell_drift'} else None)
         if pair=='pair:M1+M9' else provenance(calls) for pair in DESIGNS}
     histories={}
     for pair in DESIGNS:
@@ -75,6 +75,8 @@ def prepare(root,patch,fault=None):
             public=b['module_context']['state_projection'];values=[next(iter(r['content'].values())) for r in public['observations']]
             pending=sum(r.get('needs_review') is True for r in public['memory'])
             value='Use candidate adjustment='+str(sum(values)/len(values)-pending)
+            if fault=='mid_build_source_drift' and len(seen)==1:
+                exported=next((root/'export').glob('*/data.csv'));exported.write_bytes(exported.read_bytes()+b' ')
             return FrozenRecord.from_dict({'entrypoint':'emit_literal_change_v1','surface':'prompt',
                 'key':'lesson' if fault=='proposal' else 'instructions','value':value})
         barrier=json.loads((root/'run/candidate-barrier.json').read_bytes())
@@ -103,7 +105,8 @@ def prepare(root,patch,fault=None):
         'source_verifier_bindings':{pair:q.binding().data() for pair,q in verifiers.items()},'model_config':model_configuration(port).data(),
         'scorer':ScorerConfig.create(benchmark='core_pair',evaluator_id='synthetic-primary',version='v1',rubric_digest=FrozenBenchmarkRubricEndpoint.rubric_digest()).record.data(),
         'scorer_handle_bindings':{k:hashlib.sha256(v.encode()).hexdigest() for k,v in handles.items()},'acceptance_criteria':{'contrast_analysis':_ANALYSIS},
-        'objective':{'purpose':'Analyze public TRAIN measurements with frozen candidate and state.'},'image':IMAGE,'timeout_seconds':20,'allocation':ALLOCATION}
+        'objective':{'purpose':'Analyze public TRAIN measurements with frozen candidate and state.'},'image':IMAGE,'timeout_seconds':20,'allocation':ALLOCATION,
+        'pipeline_estimand':'total_history_build_and_target_state_interaction'}
     plan=FrozenStateImprovementPlan(FrozenRecord.from_dict(body),history,(('public_csv',csv),))
     return dict(root=root,exporter=exporter,selected=selected,all_items=all_items,packets=packets,plan=plan,verifiers=verifiers,
         port=port,seen=seen,calls=calls,store=store,handles=handles,manifest_sha=manifest_sha)
@@ -286,3 +289,107 @@ def test_rehashed_solver_execution_cannot_relax_docker_limits_or_mounts(grid,fie
         with pytest.raises(ContractError):issue_state_improvement_score_input(authority=EXECUTION,result=forged,**args)
     finally:path.write_bytes(before)
     verify_state_improvement_cell(executed,**args)
+
+
+def build_args(setup,run,result):
+    recipe=result.record.data()['recipe'];pair=recipe['pair'];plan=setup['plan']
+    return dict(recipe=recipe,plan_digest=plan.record.content_hash,history=plan.history,material=plan.history_material(pair),
+        qualifier=setup['verifiers'][pair],parent=plan.parent,fixed_builder=plan.fixed_builder,broker=run.barrier.broker,
+        inputs=dict(plan.history_inputs),ledger=run.barrier.ledger)
+
+
+@pytest.mark.parametrize('fault',['provider','package','source'])
+def test_rehashed_build_files_still_require_original_provider_builder_and_qualification(grid,fault):
+    setup,run=grid;build=run.builds[1];root=build.root
+    before={p:p.read_bytes() for p in root.rglob('*') if p.is_file()}
+    try:
+        if fault=='provider':
+            path=root/'proposal/trace.jsonl'
+            def mutate(rows):
+                response=next(e['data']['response'] for e in rows if e['stage']=='model_response')
+                response['value']='Use candidate adjustment=999'
+                builder=FrozenBuilderVersion(FrozenRecord.from_dict(response))
+                rows[-1]['data']={'response_digest':builder.record.content_hash,'builder_digest':builder.digest}
+            _rewrite_trace(path,mutate)
+        elif fault=='package':
+            candidate=json.loads((root/'candidate.json').read_bytes());candidate['changes']['prompt']['instructions']='Use candidate adjustment=999'
+            candidate=CandidatePackage(FrozenRecord.from_dict(candidate))
+            (root/'candidate.json').write_text(candidate.record.encoded+'\n',encoding='utf-8',newline='\n')
+            receipt=json.loads((root/'builder-receipt.json').read_bytes());receipt['output_candidate_digest']=candidate.digest
+            (root/'builder-receipt.json').write_text(canonical(receipt)+'\n',encoding='utf-8',newline='\n')
+        else:
+            path=root/'source/source-verification.json';body=json.loads(path.read_bytes())
+            for entry,authority in zip(body['calls'],setup['verifiers']['pair:M1+M9'].authorities,strict=True):
+                signed=entry['response']['body'];signed['assessments']['before']['old']['state']['validity']='invalid'
+                entry['response']=authority.authority.issue({k:v for k,v in signed.items() if k!='authority'}).data()
+            path.write_text(canonical(body),encoding='utf-8')
+        metadata=build.record.data();metadata['files']={str(p.relative_to(root)).replace('\\','/'):hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in before if p!=root/'build-receipt.json'}
+        if fault=='package':metadata['candidate_digest']=candidate.digest
+        altered=replace(build,record=FrozenRecord.from_dict(metadata))
+        (root/'build-receipt.json').write_text(altered.record.encoded+'\n',encoding='utf-8',newline='\n')
+        verify_trace(root/'proposal/trace.jsonl')
+        with pytest.raises(ContractError):verify_build(altered,**build_args(setup,run,altered))
+    finally:
+        for p,raw in before.items():p.write_bytes(raw)
+    verify_build(build,**build_args(setup,run,build))
+
+
+def test_rehashed_history_cannot_replace_the_predeclared_history_binding(grid):
+    setup,run=grid;history=setup['plan'].history;path=history.trace_path;before=path.read_bytes()
+    def mutate(rows):
+        response=next(e['data']['response'] for e in reversed(rows) if e['stage']=='model_response')
+        response['conclusion']='Changed caller history after the build plan was frozen.'
+    try:
+        _rewrite_trace(path,mutate);verify_trace(path)
+        changed=FrozenTrainHistory.freeze(history.task,path,expected_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+        with pytest.raises(ContractError):replace(setup['plan'],history=changed)
+        with pytest.raises(ContractError):run.barrier.verify()
+    finally:path.write_bytes(before)
+
+
+def test_rehashed_barrier_and_controller_order_do_not_create_early_target_permission(grid):
+    setup,run=grid;barrier=run.barrier;path=run.root/'controller.jsonl';before=path.read_bytes()
+    try:
+        rows=[json.loads(line) for line in path.read_bytes().splitlines()]
+        a=next(i for i,r in enumerate(rows) if r['stage']=='candidate_barrier');rows[a],rows[a+1]=rows[a+1],rows[a]
+        previous=None
+        for i,row in enumerate(rows):
+            row['sequence']=i;row['previous']=previous;previous=FrozenRecord.from_dict(row).content_hash
+        path.write_text(''.join(canonical(r)+'\n' for r in rows),encoding='utf-8',newline='\n')
+        from research_loop.modular.metaprogram_training import _phase_rows
+        _phase_rows(path)
+        with pytest.raises(ContractError,match='precedes'):barrier.verify()
+    finally:path.write_bytes(before)
+    path=run.root/'candidate-barrier.json';before=path.read_bytes()
+    try:
+        b=barrier.record.data();b['provider_ledger_digest']='e'*64;changed=FrozenRecord.from_dict(b)
+        path.write_text(changed.encoded+'\n',encoding='utf-8',newline='\n')
+        forged=replace(barrier,record=changed)
+        with pytest.raises(ContractError):forged.verify()
+    finally:path.write_bytes(before)
+
+
+@pytest.mark.parametrize('fault',['scorer','source_cell_drift'])
+def test_complete_execution_does_not_hide_scorer_failure_or_qualification_confound(tmp_path,monkeypatch,fault):
+    setup=prepare(tmp_path,monkeypatch,fault);run=invoke(setup,monkeypatch,fault);b=run.receipt.data()
+    assert b['status']=='inconclusive' and b['successful_builds']==11 and b['actual_model_usage']['model_calls']==55
+    assert b['actual_docker_attempts']==b['actual_scorer_calls']==22 and b['scorer_usage_unknown'] is True
+    assert b['known_source_cost_units']==66 and b['source_cost_unknown'] is False
+    if fault=='scorer':
+        assert len(run.scores)==0 and b['failed_cells']==22 and all(c['status']=='inconclusive' for c in b['contrasts'])
+    else:
+        assert len(run.scores)==22 and b['failed_cells']==0
+        assert b['contrasts'][0]['status']=='inconclusive' and 'qualification_semantic_drift' in b['contrasts'][0]['reason']
+        assert [c['status'] for c in b['contrasts'][1:]]==['not_identifiable','estimated']
+
+
+@pytest.mark.parametrize('fault',['source_rejected','mid_build_source_drift'])
+def test_known_source_rejection_and_later_source_drift_keep_unused_targets(tmp_path,monkeypatch,fault):
+    setup=prepare(tmp_path,monkeypatch,fault);run=invoke(setup,monkeypatch,fault);b=run.receipt.data()
+    assert len(run.attempts)==22 and b['blocked_cells']==22 and b['unused_docker_opportunities']==b['unused_scorer_opportunities']==22
+    assert b['source_cost_unknown'] is False and b['pruned_cells']==[]
+    if fault=='source_rejected':
+        assert len(setup['seen'])==7 and len(setup['calls'])==22 and b['failed_builds']==4 and b['successful_builds']==7
+    else:
+        assert len(setup['seen'])==1 and len(setup['calls'])==2 and b['failed_builds']==1 and b['blocked_builds']==9

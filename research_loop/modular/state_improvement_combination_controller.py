@@ -54,9 +54,10 @@ class FrozenStateImprovementPlan:
         b=self.data()
         required={'schema','export_mode','stage','domain','item_ids','task_bindings','baseline_digest','history_binding','history_inputs',
             'parent','fixed_builder','history_materials','target_materials','source_verifier_bindings','model_config',
-            'scorer','scorer_handle_bindings','acceptance_criteria','objective','image','timeout_seconds','allocation'}
+            'scorer','scorer_handle_bindings','acceptance_criteria','objective','image','timeout_seconds','allocation','pipeline_estimand'}
         if (type(self) is not FrozenStateImprovementPlan or set(b)!=required or b['schema']!='state-improvement-train-plan-v1'
                 or b['export_mode']!='primary_prospective' or b['domain']!='train' or b['allocation']!=ALLOCATION
+                or b['pipeline_estimand']!='total_history_build_and_target_state_interaction'
                 or not isinstance(b['stage'],str) or not b['stage'].strip() or type(self.history) is not FrozenTrainHistory
                 or b['history_binding']!=self.history.binding.data() or not isinstance(self.history_inputs,tuple)):
             raise ContractError('exact versioned history/target TRAIN plan required')
@@ -142,6 +143,53 @@ class CandidateBarrier:
     packets: tuple
     prefix: tuple
 
+    def _order(self,actual):
+        b=self.plan.data()
+        structural=[{'pair':p,'arm_id':c['id'],'reason':c['reason'],'task_digest':row['task_digest']}
+            for p in DESIGNS for c in registered_design(p,b['baseline_digest']).data()['cells'] if c['status']!='executable'
+            for row in b['task_bindings'].values()]
+        expected=[('phase_lock',{'plan_digest':self.plan.record.content_hash,'build_recipes':recipes(b['baseline_digest']),
+            'target_recipes':target_recipes(b),'structural_exclusions':structural,'allocation':ALLOCATION})]
+        for result in self.builds:
+            expected.extend([('build_reserved',{'recipe':result.record.data()['recipe']}),
+                ('build_completed',{'receipt_digest':result.record.content_hash,'status':'succeeded'})])
+        expected.append(('build_ledger_sealed',{'digest':self.ledger.record.content_hash}))
+        if [(r.data()['stage'],r.data()['data']) for r in self.prefix]!=expected:
+            raise ContractError('candidate barrier requires the exact complete original build order')
+        suffix=actual[len(self.prefix):]
+        if not suffix:return
+        if (suffix[0]['stage']!='candidate_barrier' or suffix[0]['data'].get('digest')!=self.record.content_hash
+                or set(suffix[0]['data'])!={'digest','panels'} or len(suffix[0]['data']['panels'])!=3):
+            raise ContractError('target I/O precedes the immutable candidate barrier')
+        cursor=0;active=None;sealed=False;scorer=None;scored=set();completed={};planned=target_recipes(b)
+        for event in suffix[1:]:
+            stage=event['stage'];data=event['data']
+            if stage in {'target_reserved','target_blocked'}:
+                if sealed or active is not None or cursor>=len(planned):raise ContractError('target opportunity order drift')
+                row=data['cell'] if stage=='target_reserved' else data
+                binding={'pair':row.get('coverage_id',row.get('pair')),'arm_id':row['arm_id'],'task_digest':row['task_digest'],'replicate':row['replicate']}
+                if binding!=planned[cursor]:raise ContractError('target reservation differs from original recipe order')
+                if stage=='target_reserved':
+                    active=(row['coverage_id'],row['identity']['benchmark'],row['identity']['task_id'],row['identity']['group_id'],row['replicate'],row['variant'],row['arm_id'])
+                else:cursor+=1
+            elif stage=='target_completed':
+                if active is None or tuple(data['cell_key'])!=active or data['status'] not in {'executed','failed'}:
+                    raise ContractError('target completion lacks its original reservation')
+                completed[active]=data['status'];active=None;cursor+=1
+            elif stage=='target_ledger_sealed':
+                if sealed or active is not None or cursor!=22:raise ContractError('provider seal precedes complete target denominator')
+                sealed=True
+            elif stage=='scorer_reserved':
+                key=tuple(data['cell_key'])
+                if not sealed or scorer is not None or key in scored or completed.get(key)!='executed':
+                    raise ContractError('scorer lacks a unique completed target after provider seal')
+                scorer=key;scored.add(key)
+            elif stage=='scorer_completed':
+                if scorer is None or tuple(data['cell_key'])!=scorer or data['status'] not in {'succeeded','failed'}:
+                    raise ContractError('scorer completion differs from reservation')
+                scorer=None
+            else:raise ContractError('unknown side effect in state improvement controller journal')
+
     def verify(self):
         self.plan.check_packets(self.packets);self.ledger.verify()
         if (_path(self.root/'candidate-barrier.json').read_bytes()!=(self.record.encoded+'\n').encode('utf-8')
@@ -149,6 +197,7 @@ class CandidateBarrier:
         actual=_phase_rows(self.root/'controller.jsonl')
         if tuple(FrozenRecord.from_dict(r) for r in actual[:len(self.prefix)])!=self.prefix:
             raise ContractError('global build order/reservations changed before barrier')
+        self._order(actual)
         expected={'schema':'state-improvement-candidate-barrier-v1','plan_digest':self.plan.record.content_hash,
             'build_receipts':[r.record.content_hash for r in self.builds], 'provider_ledger_digest':self.ledger.record.content_hash,
             'controller_prefix_digest':FrozenRecord.from_dict({'rows':[r.data() for r in self.prefix]}).content_hash}
@@ -252,6 +301,10 @@ def run_state_improvement_train(plan,*,prospective_exporter,snapshot_root,export
         recipe=row['recipe']
         if poison or model.ledger['usage_incomplete']:
             row.update(status='blocked',reason='prior_unknown_cost');phase.append('build_blocked',row.copy());persist();continue
+        try:plan.check_packets(packets)
+        except Exception as exc:
+            poison=True;row.update(status='failed',reason='source_drift',error_type=type(exc).__name__)
+            phase.append('build_preflight_failed',row.copy());persist();continue
         phase.append('build_reserved',{'recipe':recipe});row['status']='running';persist()
         result=run_build(recipe=recipe,plan_digest=plan.record.content_hash,history=plan.history,material=plan.history_material(recipe['pair']),
             qualifier=source_verifiers[recipe['pair']],parent=plan.parent,fixed_builder=plan.fixed_builder,broker=broker,
@@ -343,16 +396,23 @@ def run_state_improvement_train(plan,*,prospective_exporter,snapshot_root,export
                 scorer_receipts=[s for s in scores if s.cell_key in {c.key for c in panel.cells}],verifier=CombinationPanelVerifier(scorer_verifier=verify_score))
         except Exception as exc: contrast=FrozenRecord.from_dict({'pair':pair,'status':'inconclusive','reason':str(exc),'scientific_effect':'not_measured'})
         contrasts.append(contrast)
-    sourcecalls=sum(len(r.get('source',{}).get('calls',[])) for r in [*buildrows,*targets])
+    sourcecharges=[c for r in [*buildrows,*targets] for c in r.get('source',{}).get('calls',[])]
+    sourcecalls=len(sourcecharges)
+    buildercalls=sum(sum(x['stage']=='builder_request' for x in _phase_rows(r.root/'phase.jsonl')) for r in builds)
+    dockercalls=sum(r['docker_attempts'] for r in targets);scorercalls=sum(r['scorer_calls'] for r in targets)
     receipt=FrozenRecord.from_dict({'schema':'state-improvement-train-receipt-v1','plan_digest':plan.record.content_hash,'allocation':ALLOCATION,
         'expected_builds':11,'successful_builds':sum(r['status']=='succeeded' for r in buildrows),'expected_cells':22,
+        'failed_builds':sum(r['status']=='failed' for r in buildrows),'blocked_builds':sum(r['status']=='blocked' for r in buildrows),
         'scored_cells':len(scores),'failed_cells':sum(r['status']=='failed' for r in targets),'blocked_cells':sum(r['status']=='blocked' for r in targets),
-        'actual_model_usage':_usage(model),'source_calls':sourcecalls,'actual_builder_executions':sum(
-            sum(x['stage']=='builder_request' for x in _phase_rows(r.root/'phase.jsonl')) for r in builds),
-        'actual_docker_attempts':sum(r['docker_attempts'] for r in targets),'actual_scorer_calls':sum(r['scorer_calls'] for r in targets),
+        'actual_model_usage':_usage(model),'source_calls':sourcecalls,'actual_builder_executions':buildercalls,
+        'known_source_cost_units':sum(c['cost_units'] for c in sourcecharges if c.get('cost_units') is not None),
+        'source_cost_unknown':any(c.get('cost_units') is None for c in sourcecharges),
+        'actual_docker_attempts':dockercalls,'actual_scorer_calls':scorercalls,
+        'unused_builder_opportunities':11-buildercalls,'unused_docker_opportunities':22-dockercalls,'unused_scorer_opportunities':22-scorercalls,
         'unused_model_opportunities':55-len(model.ledger['calls']),'unused_source_opportunities':66-sourcecalls,
         'structural_exclusions':excluded,'pruned_cells':[],'contrasts':[c.data() for c in contrasts],
-        'validation_opened':False,'scientific_effectiveness_proven':False,'scorer_usage_unknown':bool(scores),
+        'history_acquisition':{'model_requests':len(plan.history.binding.data()['request_digests']),'cost':'inherited_unknown_not_in_current_allocation'},
+        'validation_opened':False,'scientific_effectiveness_proven':False,'scorer_usage_unknown':bool(scorercalls),
         'status':'complete_train_engineering' if len(scores)==22 and all(c.data()['status'] in {'estimated','not_identifiable'} for c in contrasts) else 'inconclusive'})
     _exclusive(root/'controller-receipt.json',receipt);journal['status']=receipt.data()['status'];persist()
     return StateImprovementRun(root,barrier,panels,scenarios,tuple(results),tuple(scores),tuple(FrozenRecord.from_dict(r) for r in targets),tuple(builds),ledger,receipt)

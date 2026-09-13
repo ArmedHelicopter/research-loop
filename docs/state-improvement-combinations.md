@@ -8,6 +8,8 @@ implements only M1×M9, M2×M9 and M3×M9: 11 builds, 22 legal target cells and
 the same two structural exclusions. The other seven panels remain required.
 Nothing here prunes singletons, the 36 pairs or five triples, opens validation,
 or replaces the distinct Q6.2 optimization and Q6.3 metaprogram experiments.
+The frozen estimand is total history-build and target-state interaction; this
+design does not identify learning-only and inference-only effects separately.
 
 `FrozenStateImprovementPlan` declares all build and target recipes before source
 qualification or model calls. Existing closed TRAIN history is disjoint from
@@ -16,6 +18,8 @@ original runtime byte hash and literal keyed execution stdout. Candidate
 training manifests contain that history identity only. `StateImprovementPanel`
 adds the explicit `state-improvement-exposure-v1` contract for this separation;
 the default `CombinationPanel` still requires exact target-manifest equality.
+Disjointness is checked for the benchmark/task/group subject tuple. It does not
+assert that different task IDs from a shared group are independent families.
 
 Each legal arm receives two independent source calls, the actual typed state
 transition, one useful proposal and one restricted-builder execution. M1 uses

@@ -9,7 +9,7 @@ from research_loop.modular.state_improvement_build import qualifier_check, Froze
 from research_loop.modular.admission_combination import FrozenAdmissionMaterial
 from research_loop.modular.lineage_combination_material import check_material_inputs
 from research_loop.modular.lineage_combination_driver import _transition, _source_binding, _MemoryLog, _read_events, _verify_solver_files
-from research_loop.modular.metaprogram_training import _projection
+from research_loop.modular.metaprogram_training import _projection, _phase_rows
 from research_loop.modular.benchmark_solver import run_benchmark_solve_in_session
 from research_loop.modular.benchmark_cell import _solver_journal_state, _compare_solver_result
 from research_loop.modular.combination_benchmark_driver import _runtime, _private_arm_marker
@@ -69,6 +69,8 @@ def run_state_improvement_cell(*,panel,cell,task,scenario,package,material,sourc
     source=source_verifier.qualify(material,sourcepath,cell_binding=binding)
     if any(c['cost_unknown'] for c in json.loads(sourcepath.read_bytes())['calls']):
         raise ContractError('unknown source cost blocks target model I/O')
+    check_material_inputs(material,task,broker,public_inputs)
+    barrier.verify()
     q=source_verifier.assessments(material,sourcepath,cell_binding=binding) if type(material) is FrozenAdmissionMaterial else None
     session=RunSession(task,package_digest=package.digest,arm=cell.runtime_arm,objective=FrozenRecord.from_dict(scenario.data()['objective']),
         slots=SLOTS,execution_limit=1,sidecar=sidecar/'runtime',verifier=audit_verifier,required_audit=('measurement',),
@@ -146,7 +148,7 @@ def verify_state_improvement_cell(result,*,panel,task,scenario,package,material,
         expected.extend(['-v',DockerExecutionBroker._mount_source((path.parent/'analysis-1.py').absolute())+
             ':/task/analysis.py:ro',scenario.data()['image'],'python3','/task/analysis.py'])
         if argv!=expected: raise ContractError('target Docker limits or exact program/input mounts differ from frozen allocation')
-    seals=[r['data'] for r in __import__('research_loop.modular.metaprogram_training',fromlist=['_phase_rows'])._phase_rows(barrier.root/'controller.jsonl')
+    seals=[r['data'] for r in _phase_rows(barrier.root/'controller.jsonl')
         if r['stage']=='target_ledger_sealed']
     if ledger.path!=barrier.root/'target-provider-ledger.json' or seals!=[{'digest':ledger.record.content_hash}]:
         raise ContractError('target provider ledger is not the original controller seal')

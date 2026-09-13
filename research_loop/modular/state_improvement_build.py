@@ -90,6 +90,7 @@ def run_build(*, recipe, plan_digest, history, material, qualifier, parent, fixe
         source=qualifier.qualify(material,root/'source'/'source-verification.json',cell_binding=binding)
         if any(c['cost_unknown'] for c in json.loads((root/'source'/'source-verification.json').read_bytes())['calls']):
             raise ContractError('unknown source cost blocks the build proposal')
+        check_history(history,material,broker,inputs)
         q=qualifier.assessments(material,root/'source'/'source-verification.json',cell_binding=binding) if type(material) is FrozenAdmissionMaterial else None
         session=RunSession(history.task,package_digest=parent.digest,arm=FrozenRecord.from_dict(recipe['arm']),
             objective=FrozenRecord.from_dict(history.binding.data()['lock']['objective']), slots=('builder_proposal',),
@@ -173,11 +174,13 @@ class FrozenProviderLedger:
 def verify_build(result, *, recipe, plan_digest, history, material, qualifier, parent, fixed_builder, broker, inputs, ledger):
     if type(result) is not BuildResult: raise ContractError('typed build result required')
     b=result.record.data();root=result.root
-    if (_read_record(root/'build-receipt.json')!=result.record or b['recipe']!=recipe or b['plan_digest']!=plan_digest
+    if (_path(root/'build-receipt.json').read_bytes()!=(result.record.encoded+'\n').encode('utf-8')
+            or set(b)!={'schema','recipe','plan_digest','status','reason','candidate_digest','files'}
+            or b['schema']!='state-improvement-build-receipt-v1' or b['recipe']!=recipe or b['plan_digest']!=plan_digest
             or b['status']!='succeeded'):
         raise ContractError('successful original build receipt required')
     actual={str(p.relative_to(root)).replace('\\','/'):_sha(_path(p).read_bytes())
-        for p in root.rglob('*') if p.is_file() and p.name!='build-receipt.json'}
+        for p in root.rglob('*') if p.is_file() and p!=root/'build-receipt.json'}
     if actual!=b['files']: raise ContractError('original build side effects drift')
     qualifier_check(recipe['pair'],material,qualifier);check_history(history,material,broker,inputs)
     binding=build_binding(plan_digest,recipe);sourcepath=root/'source'/'source-verification.json'
