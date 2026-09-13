@@ -58,14 +58,15 @@ class ModularWorkflow:
 
     def invoke_model(self, slot: str, model: Callable[[FrozenRecord], FrozenRecord], *, instruction: str,
                      module_context: FrozenRecord | None = None, baseline_summary: str = "",
-                     evidence_only: bool = False) -> FrozenRecord:
+                     evidence_only: bool = False, reporting_only: bool = False) -> FrozenRecord:
+        self.session.check_research_access(operation="model", slot=slot, reporting_only=reporting_only)
         context = module_context.data() if module_context else {}
         if "deployment" in context:
             raise ContractError("module context cannot override deployment payload")
         context.update(self._deployment_context())
         return self.session.invoke(slot, model, instruction=instruction, baseline_summary=baseline_summary,
                                    module_context=FrozenRecord.from_dict(context) if context else None,
-                                   evidence_only=evidence_only)
+                                   evidence_only=evidence_only, reporting_only=reporting_only)
 
     def propose(self,slot:str,model:Callable[[FrozenRecord],FrozenRecord],*,instruction:str)->WorkflowResult:
         if "M4" not in self.enabled:
@@ -86,6 +87,7 @@ class ModularWorkflow:
         revealed=self.reviews.reveal(review.review_id); self.revealed=FrozenRecord.from_dict({"review_id":review.review_id,"submissions":[x.data()for x in revealed]})
         return self._trace("stage_7","executed",review_digest=self.revealed.content_hash)
     def retrieve_then_invoke(self,slot:str,model:Callable[[FrozenRecord],FrozenRecord],*,instruction:str,provider:RetrievalProvider,query:FrozenRecord,source_bundle:FrozenSourceBundle,policy:FrozenRetrievalPolicy,signals:RetrievalSignals)->FrozenRecord|WorkflowResult:
+        self.session.check_research_access(operation="retrieval")
         if "M6" not in self.enabled:
             return self.invoke_model(slot,model,instruction=instruction,module_context=FrozenRecord.from_dict({"control":"M6"}))
         sources=retrieve(provider=provider,query=query,source_bundle=source_bundle,policy=policy,signals=signals)

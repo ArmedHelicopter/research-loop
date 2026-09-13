@@ -13,6 +13,7 @@ class ResearchVersionBoundary:
         self.state = "running"
         self.child = None
         self._transition("running", "initial_freeze")
+        session.bind_research_version(self)
 
     @staticmethod
     def _write(path, record):

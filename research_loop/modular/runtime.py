@@ -252,7 +252,28 @@ class RunSession:
         self.admission_roots: dict[str, str] = {}
         self._events: list[FrozenRecord] = []
         self._next_call, self._attempts, self._terminal = 0, 0, False
+        self._research_version = None
         self._record("objective_lock", self.lock.data())
+
+    def bind_research_version(self, boundary) -> None:
+        from research_loop.modular.research_versions import ResearchVersionBoundary
+        if self._research_version is not None or not isinstance(boundary, ResearchVersionBoundary) or boundary.session is not self:
+            raise ContractError("research version must bind this session exactly once")
+        boundary.assert_immutable()
+        self._research_version = boundary
+
+    def check_research_access(self, *, operation: str, slot: str | None = None, reporting_only: bool = False) -> None:
+        if type(reporting_only) is not bool or (reporting_only and (operation != "model" or slot != "final")):
+            raise ContractError("report-only authority is restricted to the final model slot")
+        boundary = self._research_version
+        if boundary is None: return
+        boundary.assert_immutable()
+        if reporting_only: return
+        try: boundary.require_research()
+        except ContractError:
+            self._record("research_version_io_refused", {"operation": operation, "slot": slot,
+                "state": boundary.state, "parent_digest": boundary.parent.content_hash, "before_io": True})
+            raise
 
     def _record(self, stage: str, data: dict) -> FrozenRecord:
         event = FrozenRecord.from_dict({"sequence": len(self._events), "previous": self._events[-1].content_hash if self._events else None,
@@ -266,7 +287,8 @@ class RunSession:
 
     def invoke(self, slot: str, model: Callable[[FrozenRecord], FrozenRecord], *, instruction: str,
                baseline_summary: str = "", module_context: FrozenRecord | None = None,
-               evidence_only: bool = False) -> FrozenRecord:
+               evidence_only: bool = False, reporting_only: bool = False) -> FrozenRecord:
+        self.check_research_access(operation="model", slot=slot, reporting_only=reporting_only)
         if self._terminal or self._next_call >= len(self.slots) or slot != self.slots[self._next_call]:
             raise ContractError("call does not match frozen schedule")
         if type(evidence_only) is not bool:
@@ -307,6 +329,7 @@ class RunSession:
 
     def execute(self, code: str, *, broker: DockerExecutionBroker, image: str,
                 inputs: Mapping[str, Path], timeout_seconds: int = 20) -> ExecutionReceipt:
+        self.check_research_access(operation="execution")
         if self._terminal or self._attempts >= self.execution_limit:
             raise ContractError("execution allocation exhausted or run terminal")
         self._attempts += 1
@@ -360,6 +383,7 @@ class RunSession:
         return self._record("controller_failure", body)
 
     def admit(self, execution_digest: str, audits: list[FrozenRecord]) -> FrozenRecord:
+        self.check_research_access(operation="scientific_admission")
         if self._terminal:
             raise ContractError("terminal runs cannot admit evidence")
         if execution_digest not in self.executions:

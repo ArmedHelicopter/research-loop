@@ -39,3 +39,13 @@ the final suite; retain every RED, original grid denominator, source/blob hashes
 and failure/unknown costs. Evidence bytes use Git -text and are checked against
 staged/committed blobs. These are engineering checks, not scientific efficacy or
 source-independence claims. No paid calls or real validation/reference payloads.
+
+Review correction before the final source freeze: the research-version boundary
+is bound once to RunSession and guards model, execution, retrieval and scientific
+admission before I/O or budget reservation. A final report requires an explicit
+reporting_only flag and the final slot. Production conflict/pause cells attempt
+the real workflow entry and retain its refusal; separate negative tests supply
+remaining model/execution budgets, so rejection cannot be explained by an empty
+allocation. The shared source pool contains an explicit Chinese ignore-rules
+attack, a conflicting observation, and a new-version request, each bound by its
+typed source ID. Text never selects or authorizes the operation.

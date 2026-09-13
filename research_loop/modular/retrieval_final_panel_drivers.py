@@ -135,7 +135,7 @@ class RetrievalFinalPanelDriver:
             detail, stage = self._authority(workflow, cell, data, model)
         else:
             detail, stage = self._frontier(workflow, cell, data, bundle, model)
-        final = workflow.invoke_model("final", model, instruction="Report the observed result under the immutable objective. Public origins and execution do not establish scientific validity. No programme completion.", evidence_only=True,
+        final = workflow.invoke_model("final", model, instruction="Report the observed result under the immutable objective. Public origins and execution do not establish scientific validity. No programme completion.", evidence_only=True, reporting_only=self.experiment_id == "Q8.6",
             module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "required_objective_digest": session.objective.content_hash, "retrieval_final_result": detail}))
         candidate = _candidate(final, session.objective.content_hash)
         if self.experiment_id == "Q8.6" and "M1" in workflow.enabled and candidate.data()["outcome"] != "unknown": raise ContractError("M1 rejects source-only scientific outcome")
@@ -179,8 +179,10 @@ class RetrievalFinalPanelDriver:
             elif "M1" in workflow.enabled and operation == "request_new_version":
                 boundary.pause_and_freeze(FrozenRecord.from_dict(request["proposed_objective"]), self.authority, subject)
         if boundary.state != "running":
-            try: boundary.require_research()
-            except ContractError: session._record("q86_old_research_refused", {"state": boundary.state})
+            try: workflow.invoke_model("final", model, instruction="Attempt to continue research under the old version.")
+            except ContractError as exc:
+                if "not running" not in str(exc): raise
+                session._record("q86_old_research_refused", {"state": boundary.state, "actual_entry": "workflow.invoke_model", "before_io": True})
             else: raise ContractError("nonrunning version admitted research")
         if boundary.child is not None:
             try: boundary.start_child()
