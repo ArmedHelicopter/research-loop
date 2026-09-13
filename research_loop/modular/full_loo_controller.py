@@ -246,7 +246,7 @@ def run_full_loo_train(plan, *, prospective_exporter, snapshot_root, export_root
         for row in [*buildrows,*rows]:row.update(status='blocked',reason='source_preflight: '+str(exc))
         persist();raise
     def unknown(result):
-        for name in ('source.json','corpus.json'):
+        for name in ('source/source.json','corpus/source.json'):
             if (result.root/name).exists() and any(c.get('cost_unknown',True) for c in json.loads((result.root/name).read_bytes()).get('calls',[])):return True
         if result.phase is not None and result.phase.data()['unknown_cost_attempts']:return True
         return model.ledger['usage_incomplete']
@@ -306,7 +306,7 @@ def run_full_loo_train(plan, *, prospective_exporter, snapshot_root, export_root
     stages=[*builds,*[r for r in results if r is not None]]
     sourcecalls=[];corpuscalls=[];aux=solvercalls=retrievalcalls=buildercalls=0
     for r in stages:
-        for filename,dest in [('source.json',sourcecalls),('corpus.json',corpuscalls)]:
+        for filename,dest in [('source/source.json',sourcecalls),('corpus/source.json',corpuscalls)]:
             if (r.root/filename).exists():dest.extend(json.loads((r.root/filename).read_bytes())['calls'])
         events=[]
         if (r.root/'runtime/trace.jsonl').exists():events=[json.loads(line) for line in (r.root/'runtime/trace.jsonl').read_bytes().splitlines()]

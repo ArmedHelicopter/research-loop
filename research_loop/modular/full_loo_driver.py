@@ -50,15 +50,15 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
     try:
         check_material_inputs(material.state(),task,broker,inputs);check_inputs(phase_material,task,broker,inputs)
         binding=_source_binding(cell)
-        source=source_verifier.qualify(material.state(),root/'source.json',cell_binding=binding)
-        if any(c['cost_unknown'] for c in json.loads((root/'source.json').read_bytes())['calls']):
+        source=source_verifier.qualify(material.state(),root/'source/source.json',cell_binding=binding)
+        if any(c['cost_unknown'] for c in json.loads((root/'source/source.json').read_bytes())['calls']):
             raise ContractError('unknown qualification cost blocks work')
-        qualification=source_verifier.assessments(material.state(),root/'source.json',cell_binding=binding)
+        qualification=source_verifier.assessments(material.state(),root/'source/source.json',cell_binding=binding)
         nonbaseline=stage=='history_build' or recipe['procedure']!='baseline_b0'
         corpus=None
         if nonbaseline:
-            corpus=corpus_verifier.qualify(material,root/'corpus.json',cell_binding=binding)
-            if any(c['cost_unknown'] for c in json.loads((root/'corpus.json').read_bytes())['calls']):
+            corpus=corpus_verifier.qualify(material,root/'corpus/source.json',cell_binding=binding)
+            if any(c['cost_unknown'] for c in json.loads((root/'corpus/source.json').read_bytes())['calls']):
                 raise ContractError('unknown corpus cost blocks work')
         session=RunSession(task,package_digest=package.digest,arm=cell.runtime_arm,objective=plan.objective(stage),
             slots=slots(recipe,stage),execution_limit=int(stage=='target'),sidecar=root/'runtime',verifier=audit_verifier,
@@ -121,11 +121,11 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
             or lock['execution_limit']!=int(stage=='target') or lock['required_audit']!=['measurement'] or lock['context_budget']!=material.state().data()['context_budget_bytes']):
         raise ContractError('C4 lock allocation drift')
     ledger.bind_events(events)
-    binding=_source_binding(cell);source=source_verifier.replay(material.state(),root/'source.json',cell_binding=binding)
-    q=source_verifier.assessments(material.state(),root/'source.json',cell_binding=binding)
+    binding=_source_binding(cell);source=source_verifier.replay(material.state(),root/'source/source.json',cell_binding=binding)
+    q=source_verifier.assessments(material.state(),root/'source/source.json',cell_binding=binding)
     nonbaseline=stage=='history_build' or recipe['procedure']!='baseline_b0'
-    corpus=corpus_verifier.replay(material,root/'corpus.json',cell_binding=binding) if nonbaseline else None
-    for filename in ('source.json','corpus.json') if nonbaseline else ('source.json',):
+    corpus=corpus_verifier.replay(material,root/'corpus/source.json',cell_binding=binding) if nonbaseline else None
+    for filename in ('source/source.json','corpus/source.json') if nonbaseline else ('source/source.json',):
         if any(c['cost_unknown'] for c in json.loads((root/filename).read_bytes())['calls']):raise ContractError('unknown qualification cost')
     evidence=EvidenceLedger(task.identity);claims=ClaimLedger(evidence);cache=ContextCache()
     evidence._log=_MemoryLog();claims._log=_MemoryLog()
