@@ -77,6 +77,7 @@ class GrokTrainModelPort:
         number=len(self.ledger['calls'])+1; call_dir=self.calls_root/f'{number:04d}-{slot}'; call_dir.mkdir()
         prompt_path=call_dir/'prompt.private.txt'; schema_path=call_dir/'schema.private.json'
         prompt_path.write_bytes(raw); schema_path.write_bytes(canonical(self.schemas[slot]).encode())
+        request_path=call_dir/'request.private.json'; request_path.write_bytes(request.encoded.encode())
         reservation=call_dir/'reservation.private.json'; private=call_dir/'native-private'
         row={'id':number,'slot':slot,'request_sha256':request.content_hash,'prompt_sha256':_sha(raw),
              'schema_sha256':_sha(schema_path.read_bytes()),'status':'reserved','reservation_path':str(reservation),
@@ -90,13 +91,26 @@ class GrokTrainModelPort:
                 observed_main_token_cap=self.observed_main_token_cap, input_byte_cap=cap)
             receipt=result.receipt.data(); response=result.response
             receipt_path=call_dir/'observer-receipt.private.json'; receipt_path.write_bytes(result.receipt.encoded.encode())
+            binding=receipt.get('public_train_binding')
+            billing=receipt.get('billing_before')
+            valid = (receipt.get('schema') == 'grok-native-acp-public-train-receipt-v1'
+                and receipt.get('accepted') is True and receipt.get('requested_model') == MODEL
+                and receipt.get('opportunity_contract') == TRAIN_OPPORTUNITY_CONTRACT
+                and receipt.get('runtime_empty_inventory_count', 0) >= 1
+                and isinstance(billing, Mapping) and billing.get('route') == 'grok_com_unified_subscription'
+                and billing.get('on_demand_cap') == billing.get('on_demand_used') == billing.get('prepaid_balance') == 0
+                and billing.get('auto_topup_rule_present') is False and isinstance(binding, Mapping)
+                and binding.get('prompt_sha256') == _sha(raw) and binding.get('schema_sha256') == _sha(schema_path.read_bytes())
+                and binding.get('source_manifest_sha256') == _sha(canonical(self.frozen_files).encode())
+                and binding.get('input_byte_cap') == cap and binding.get('observed_main_token_cap') == self.observed_main_token_cap)
             row.update(native_receipt_sha256=_sha(receipt_path.read_bytes()), reservation_sha256=_sha(reservation.read_bytes()) if reservation.exists() else None,
                        response_sha256=response.content_hash if response else None, known_main_usage=receipt.get('known_usage'),
                        accepted=receipt.get('accepted') is True)
             usage=receipt.get('known_usage')
-            if not response or not isinstance(usage, Mapping) or type(usage.get('totalTokens')) is not int:
+            if not valid or not response or not isinstance(usage, Mapping) or type(usage.get('totalTokens')) is not int or binding.get('response_sha256') != response.content_hash:
                 raise ContractError('native main dispatch or usage is unknown; ledger closed')
             self.ledger['tokens'] += usage['totalTokens']; _validate_schema(self.schemas[slot], response.data())
+            (call_dir/'response.private.json').write_bytes(response.encoded.encode())
             row['status']='succeeded'; _write(self.ledger_path,self.ledger); return response
         except Exception as exc:
             row.update(status='unknown_or_failed', error_type=type(exc).__name__); self.ledger['usage_incomplete']=True
@@ -106,10 +120,24 @@ class GrokTrainModelPort:
 def replay_grok_train_ledger(port: GrokTrainModelPort) -> None:
     """Recheck original private input and native receipt/reservation byte bindings."""
     if not isinstance(port, GrokTrainModelPort): raise ContractError('typed Grok TRAIN ledger required')
-    for row in port.ledger['calls']:
+    ledger=json.loads(port.ledger_path.read_text(encoding='utf-8'))
+    if ledger != port.ledger or ledger.get('config') != port.ledger.get('config'):
+        raise ContractError('on-disk Grok ledger drifted')
+    identities=set()
+    for row in ledger['calls']:
         call=port.calls_root/f"{row['id']:04d}-{row['slot']}"
         if _sha((call/'prompt.private.txt').read_bytes()) != row['prompt_sha256'] or _sha((call/'schema.private.json').read_bytes()) != row['schema_sha256']:
             raise ContractError('original native request replay failed')
         if row['status']=='succeeded':
             if _sha((call/'observer-receipt.private.json').read_bytes()) != row['native_receipt_sha256'] or _sha(Path(row['reservation_path']).read_bytes()) != row['reservation_sha256']:
                 raise ContractError('native receipt or reservation replay failed')
+            receipt=json.loads((call/'observer-receipt.private.json').read_text(encoding='utf-8'))
+            binding=receipt.get('public_train_binding', {})
+            identity=(receipt.get('session_id'), receipt.get('prompt_id'))
+            if identity in identities or not all(isinstance(x,str) and x for x in identity):
+                raise ContractError('duplicate or missing native session/prompt identity')
+            identities.add(identity)
+            if (receipt.get('accepted') is not True or receipt.get('requested_model') != MODEL
+                    or binding.get('response_sha256') != row['response_sha256']
+                    or _sha((call/'request.private.json').read_bytes()) != row['request_sha256']):
+                raise ContractError('native public TRAIN binding replay failed')

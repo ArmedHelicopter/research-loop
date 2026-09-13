@@ -84,6 +84,21 @@ for line in sys.stdin:
                 dims = target['dimensions'] or {k: 1 for k in schema_fields if k != 'reason'}
                 answer = {k: v * (2 if benchmark == 'blade' else 1) for k, v in dims.items()}
                 answer['reason'] = 'synthetic fixture'
+        if scenario == 'train_panel':
+            request = json.loads(req['params']['prompt'][0]['text'].split('\n', 1)[1])
+            slot = request['slot']
+            if slot == 'm4_plan':
+                answer = {'question': 'Which public mechanism explains x?', 'budget_units': 3, 'branches': [
+                    {'hypothesis_id':'h1','mechanism_key':'m1','mechanism':'public mechanism one','intervention':'public','elimination_condition':'x does not increase','predictions':[{'prediction_id':'p1','discriminator_id':'d','observable':'x','direction':'increase','value_range':None,'failure_condition':'not increase'}]},
+                    {'hypothesis_id':'h2','mechanism_key':'m2','mechanism':'public mechanism two','intervention':'public','elimination_condition':'x does increase','predictions':[{'prediction_id':'p2','discriminator_id':'d','observable':'x','direction':'decrease','value_range':None,'failure_condition':'not decrease'}]},
+                    {'hypothesis_id':'h3','mechanism_key':'m3','mechanism':'public mechanism three','intervention':'public','elimination_condition':'x is unchanged','predictions':[{'prediction_id':'p3','discriminator_id':'d','observable':'x','direction':'unchanged','value_range':None,'failure_condition':'not unchanged'}]}]}
+            elif slot in ('m5_mechanism', 'm5_measurement'):
+                answer = {'assessment': 'concern', 'evidence_refs': [], 'counterexamples': [], 'uncertainty': 'synthetic'}
+            elif slot == 'analysis_program':
+                answer = {'analysis': 'mean public x', 'program': "import csv\nwith open('/input/public_csv', newline='') as f:\n rows=list(csv.DictReader(f))\nprint(sum(float(r['x']) for r in rows)/len(rows))"}
+            else:
+                answer = {'objective_digest': request['module_context']['required_objective_digest'], 'outcome': 'unknown',
+                    'evidence_ids': [], 'conclusion': 'The public mean is 2.0.', 'programme_complete': False}
         if scenario in ('queue', 'queue_wrong', 'queue_extra', 'queue_unknown'):
             send({'method': '_x.ai/queue/changed', 'params': {'sessionId': sid, 'entries': [
                 {'id': pid, 'version': 1, 'kind': 'prompt', 'text': 'PRIVATE PROMPT DISPLAY', 'position': 0}]}})

@@ -230,6 +230,14 @@ def _service_preflight(config, model, service, execution_authority, scorer_keys)
     if not isinstance(model, (GrokTrainModelPort if grok else CodexModelPort)) or not isinstance(service, (CombinationAdaptedScoringService, CombinationScorerProcessClient)) or not isinstance(execution_authority, LinkedExecutionAuthority):
         raise ContractError("real model port, independent scoring service and execution authority are required")
     if not grok: _reviewed_model_policy(model)
+    if grok:
+        declared=body['provider']
+        if (model.provider_kind != declared['kind'] or model.slot_output_caps != declared['main_output_caps']
+                or set(model.slot_input_byte_caps) != set(SLOTS)
+                or any(model.slot_input_byte_caps[s] != declared['input_byte_cap_per_request'] for s in SLOTS)
+                or model.observed_main_token_cap != declared['observed_main_token_cap']
+                or model.ledger['config'].get('frozen_files') != model.frozen_files):
+            raise ContractError('live Grok provider bounds or source binding drift')
     if (model.model != body["model"] or model.effort != body["effort"] or model.max_calls != body["max_calls"]
             or (not grok and model.max_tokens != body["max_tokens"]) or model.schemas != body["schemas"]
             or model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False):

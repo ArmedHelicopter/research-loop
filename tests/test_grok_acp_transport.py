@@ -131,8 +131,11 @@ def test_unknown_cost_not_invented(tmp_path, scenario):
 @pytest.mark.parametrize('scenario,dispatched', [('pre_timeout', False), ('timeout', True)])
 def test_timeout_kills_subprocess_tree_without_retry(tmp_path, scenario, dispatched):
     start = time.monotonic()
-    _, result, requests = invoke(tmp_path, scenario, timeout=1.5)
-    assert time.monotonic() - start < 8
+    # The dispatched worker first starts its child and writes this observable
+    # fixture binding.  Give that subprocess setup a bounded window; this does
+    # not change the production client's 60-second native timeout contract.
+    _, result, requests = invoke(tmp_path, scenario, timeout=5)
+    assert time.monotonic() - start < 12
     receipt = result.receipt.data()
     assert receipt['faults'] == ['timeout']
     assert receipt['prompt_may_have_been_dispatched'] is dispatched
