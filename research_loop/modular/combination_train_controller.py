@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import hashlib
+import json
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -263,8 +264,29 @@ def _service_preflight(config, model, service, execution_authority, scorer_keys)
 
 
 def _usage(model):
-    return {"model_calls": len(model.ledger["calls"]), "known_model_tokens": model.ledger["tokens"],
+    base={"model_calls": len(model.ledger["calls"]), "known_model_tokens": model.ledger["tokens"],
             "model_usage_incomplete": model.ledger["usage_incomplete"]}
+    if isinstance(model, GrokTrainModelPort):
+        base.update(possible_initial_title_opportunities=len(model.ledger['calls']),
+            title_and_all_opportunity_settlement='unknown')
+    return base
+
+
+def _verify_grok_cell_native_binding(model, runtime):
+    """Every public trace call must be the matching immutable native original."""
+    events=[FrozenRecord(line).data() for line in runtime.trace_path.read_text(encoding='utf-8').splitlines()]
+    requests=[e['data']['request'] for e in events if e['stage']=='model_request']
+    responses=[e['data']['response'] for e in events if e['stage']=='model_response']
+    rows=model.ledger['calls'][-len(requests):]
+    if len(requests)!=len(responses)!=5 or len(rows)!=5:
+        raise ContractError('cell lacks exactly five native public solver opportunities')
+    for request,response,row in zip(requests,responses,rows,strict=True):
+        original=FrozenRecord.from_dict(json.loads((model.calls_root/f"{row['id']:04d}-{row['slot']}"/'request.private.json').read_text(encoding='utf-8')))
+        saved=FrozenRecord.from_dict(json.loads((model.calls_root/f"{row['id']:04d}-{row['slot']}"/'response.private.json').read_text(encoding='utf-8')))
+        if (row['status']!='succeeded' or request.get('slot') != row['slot'] or FrozenRecord.from_dict(request).content_hash != original.content_hash
+                or FrozenRecord.from_dict(response).content_hash != saved.content_hash or row['response_sha256'] != saved.content_hash
+                or request.get('task') != original.data().get('task') or request.get('lock_digest') != original.data().get('lock_digest')):
+            raise ContractError('runtime trace differs from native public solver originals')
 
 
 def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStore | None, snapshot_root: Path,
@@ -358,6 +380,7 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
                 continue
             if isinstance(model, GrokTrainModelPort):
                 replay_grok_train_ledger(model)
+                _verify_grok_cell_native_binding(model, result.runtime)
             source = issue_combination_score_input(panel=compiled.panel, result=result, task=packet.task,
                 scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash], authority=execution_authority)
             signed_inputs[cell.key] = source

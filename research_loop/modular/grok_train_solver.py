@@ -71,6 +71,10 @@ class GrokTrainModelPort:
             raise ContractError('unexpected public TRAIN solver request')
         if self.ledger['usage_incomplete'] or len(self.ledger['calls']) >= self.max_calls:
             raise ContractError('Grok TRAIN ledger is closed')
+        identities={(row.get('session_id'), row.get('prompt_id')) for row in self.ledger['calls'] if row.get('status') == 'succeeded'}
+        if len(identities) != sum(row.get('status') == 'succeeded' for row in self.ledger['calls']) or any(not all(identity) for identity in identities):
+            self.ledger['usage_incomplete']=True; _write(self.ledger_path,self.ledger)
+            raise ContractError('prior native identity is missing or duplicated; ledger closed')
         prompt='Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n'+request.encoded
         raw=prompt.encode('utf-8'); cap=self.slot_input_byte_caps[slot]
         if len(raw)>cap: raise ContractError('public TRAIN prompt exceeds frozen complete input-byte bound')
@@ -109,6 +113,11 @@ class GrokTrainModelPort:
             usage=receipt.get('known_usage')
             if not valid or not response or not isinstance(usage, Mapping) or type(usage.get('totalTokens')) is not int or binding.get('response_sha256') != response.content_hash:
                 raise ContractError('native main dispatch or usage is unknown; ledger closed')
+            reserved=json.loads(reservation.read_text(encoding='utf-8'))
+            if (reserved.get('session_id') != receipt.get('session_id') or reserved.get('prompt_id') != receipt.get('prompt_id')
+                    or (receipt.get('session_id'),receipt.get('prompt_id')) in identities):
+                raise ContractError('native reservation/session/prompt binding failed')
+            row.update(session_id=receipt['session_id'], prompt_id=receipt['prompt_id'])
             self.ledger['tokens'] += usage['totalTokens']; _validate_schema(self.schemas[slot], response.data())
             (call_dir/'response.private.json').write_bytes(response.encoded.encode())
             row['status']='succeeded'; _write(self.ledger_path,self.ledger); return response
