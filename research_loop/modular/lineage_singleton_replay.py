@@ -65,6 +65,8 @@ def _read(path):
 def _replay(proof, *, cell, task, scenario):
     try:
         return _replay_checked(proof, cell=cell, task=task, scenario=scenario)
+    except ContractError:
+        raise
     except (KeyError, TypeError, ValueError, IndexError, AttributeError) as exc:
         raise ContractError('lineage replay has malformed typed material') from exc
 
@@ -135,13 +137,13 @@ def verify_lineage_trace(*,cell,task,scenario,package,events,sidecar):
 
 
 def _public(value):
-    # Preserve actual observations and support/dependency state; authority names
-    # and controller-only admission metadata have no role in solving the task.
-    if isinstance(value,dict):
-        return {key:_public(item) for key,item in value.items()
-            if key not in {'trusted_validator','validator_verified','admission_receipt','mode','ephemeral'}}
-    if isinstance(value,list): return [_public(item) for item in value]
-    return value
+    # Strip only the typed ledger receipt fields, never caller observation keys.
+    result = FrozenRecord.from_dict(value).data()
+    for entry in result["context"]["entries"]["entries"]:
+        if entry["kind"] == "evidence":
+            entry["payload"].pop("trusted_validator", None)
+            entry["payload"].pop("validator_verified", None)
+    return result
 
 
 def project_lineage_material(body, *,cell,task,scenario):

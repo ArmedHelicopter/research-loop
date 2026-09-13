@@ -19,8 +19,8 @@ def _history(task):
             'upstream_claim':'The earlier observation supports x=8.',
             'downstream_claim':'The interpretation relies on the earlier observation.',
             'withdrawal':withdrawal,'dependency':dependency}
-    return freeze_history_bundle(task,before_evidence={'observation_id':'public-record-0','x':8},
-        current_evidence={'observation_id':'public-record-1','x':1},
+    return freeze_history_bundle(task,before_evidence={'observation_id':'public-record-0','x':8,'mode':'instrument-setting','ephemeral':False},
+        current_evidence={'observation_id':'public-record-1','x':1,'mode':'instrument-setting','ephemeral':False},
         transition={'action':'replace_public_measurement','reason':'The source superseded its earlier observation.'},
         q11={'correct':{'historical_summary':'The present observation measures x as 1.'},
              'wrong':{'historical_summary':'The present observation measures x as 8.'},
@@ -30,7 +30,7 @@ def _history(task):
 
 def _support(task):
     def source(index,value):
-        return {'root_material':{'source_id':'public-origin-'+str(index)},'public_evidence':{'x':value}}
+        return {'root_material':{'source_id':'public-origin-'+str(index)},'public_evidence':{'x':value,'mode':'instrument-setting','ephemeral':False}}
     a,b=source(0,1),source(1,2)
     def row(sources,actions):
         return {'sources':sources,'withdraw_actions':[{'source_key':k,'reason':'The source withdrew this observation.'} for k in actions],
@@ -144,6 +144,8 @@ def test_full_grid_uses_actual_context_in_solver_and_docker(linked_grid):
             if event['stage']!='model_request':continue
             public=FrozenRecord.from_dict(event['data']['request']).encoded
             assert not any(label in public for label in ('Q1.1','Q1.2','Q1.3','Q1.4','q11-','q12-','q13-','q14-','arm_id','expected_correctness'))
+        final_request=next(event['data']['request'] for event in events if event['stage']=='model_request' and event['data']['request']['slot']=='final')['module_context']
+        assert material['source_material']==final_request.get('history_material',final_request.get('public_support_state'))
         solver_requests=[event['data']['request'] for event in solver if event['stage']=='model_request']
         assert len(solver_requests)==2
         assert all(item['module_context']['predecessor_context']==projection.data() for item in solver_requests)
@@ -318,3 +320,15 @@ def test_late_source_failure_preserves_already_spent_model_slot(tmp_path):
     verified=verify_linked_benchmark_cell(result,task=tasks[cell.identity.benchmark],scenario=compiled.scenarios[cell.key],
         package=compiled.packages[cell.runtime_arm.content_hash])
     assert verified.data()['engineering_verified'] is True
+
+
+def test_public_projection_preserves_scientific_fields_named_like_metadata():
+    from research_loop.modular.lineage_singleton_replay import _public
+    material={'source_material':{'public_record':{'evidence':{'mode':'instrument-setting','ephemeral':False}}},
+        'context':{'entries':{'entries':[{'kind':'evidence','payload':{
+            'trusted_validator':'private-id','validator_verified':True,
+            'content':{'mode':'instrument-setting','ephemeral':False}}}]}}}
+    result=_public(material)
+    assert result['source_material']==material['source_material']
+    payload=result['context']['entries']['entries'][0]['payload']
+    assert payload=={'content':{'mode':'instrument-setting','ephemeral':False}}

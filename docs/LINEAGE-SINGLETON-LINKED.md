@@ -70,3 +70,11 @@ caller authority named with a question/arm marker previously leaked through
 mechanism contexts. Public receipt and ledger authority identifiers now use a
 stable opaque digest; original identities remain in controller admission events.
 No source qualification or scientific-admission rule is changed by this encoding.
+
+Final review also preserved `work/lsl-public-field-red.xml`: recursive metadata
+removal could erase a caller observation named `mode` or `ephemeral`. Projection
+now strips only the two exact ledger-receipt fields at their typed location and
+preserves source material and evidence content. Full-grid fixtures carry these
+ordinary observation fields and compare the projected source to the actual final
+mechanism request. The original frozen e94 regression remains 104 passed / 2
+rejection-message failures (`work/lsl-final.xml`), with unchanged source hashes.
