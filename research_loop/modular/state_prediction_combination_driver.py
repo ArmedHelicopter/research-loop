@@ -11,7 +11,8 @@ from research_loop.modular.benchmark_solver import run_benchmark_solve_in_sessio
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import FrozenRecord, PublicTask
-from research_loop.modular.lineage_combination_driver import _transition, _source_binding
+from research_loop.modular.lineage_combination_driver import _transition, _source_binding, _verify_solver_files
+from research_loop.modular.benchmark_cell import _solver_journal_state, _compare_solver_result
 from research_loop.modular.lineage_combination_material import FrozenLineageMaterial, DualMaterialVerifier, check_material_inputs
 from research_loop.modular.modules.improvement import CandidatePackage
 from research_loop.modular.panel_receipts import PanelReceiptVerifier, RuntimeReceipt, opaque_panel_cell_binding
@@ -167,32 +168,54 @@ def verify_state_prediction_combination_cell(result, *, panel, task, scenario, p
     if tuple(r["slot"] for r in requests) != SLOTS[:len(requests)]:
         raise ContractError("state prediction request schedule drift")
     if result.joint_mechanism is None:
-        if result.solver is not None or any(r["slot"] != "m4_plan" for r in requests):
+        if result.runtime.status != 'failed' or result.solver is not None or any(r["slot"] != "m4_plan" for r in requests):
             raise ContractError("failed state prediction cell started an unbound solver")
         return FrozenRecord.from_dict({"schema":"state-prediction-combination-verification-v1", "engineering_verified":True, "scientific_effect":"not_measured"})
-    proposal = next((FrozenRecord.from_dict(e["data"]["response"]) for e in events if e["stage"] == "model_response" and e["data"]["request_digest"] == next(r for r in [x["data"] for x in events if x["stage"] == "model_request"] if r["request"]["slot"] == "m4_plan")["request_digest"]), None)
-    if proposal is None or requests[0]["module_context"] != _proposal_context(result.cell, task, transition).data():
-        raise ContractError("M4 did not consume actual transitioned public state")
-    if "M4" in enabled:
-        plan_rows = [e for e in events if e["stage"] == "state_prediction_plan"]
-        if len(plan_rows) != 1 or plan_rows[0]["data"].get("registered_plan") is None:
-            raise ContractError("M4-on did not use PredictionRegistry")
-        from research_loop.modular.modules.predictions import PredictionRegistry
-        registry = PredictionRegistry(task.identity, storage_path=result.runtime.trace_path.parent / "predictions.jsonl")
-        registered = plan_rows[0]["data"]["registered_plan"]
-        plan_id = registered.get("plan_id")
-        if not isinstance(plan_id, str) or registry.plan(plan_id).data() != registered:
-            raise ContractError("state prediction journal does not match persistent registry")
-        if result.joint_mechanism.data().get("prediction_plan") != registered["payload"]:
-            raise ContractError("solver joint did not consume the actual registered prediction plan")
-    expected = _joint(result.cell, transition, proposal, None) if "M4" not in enabled else result.joint_mechanism
-    if "M4" not in enabled and result.joint_mechanism != expected:
-        raise ContractError("M4-off did not preserve its ordinary proposal")
+    first = next(e for e in events if e['stage'] == 'model_request' and e['data']['request']['slot'] == 'm4_plan')
+    responses = [FrozenRecord.from_dict(e['data']['response']) for e in events
+                 if e['stage'] == 'model_response' and e['data']['request_digest'] == first['data']['request_digest']]
+    if len(responses) != 1 or requests[0]['module_context'] != _proposal_context(result.cell, task, transition).data():
+        raise ContractError('M4 did not consume actual transitioned public state')
+    proposal = responses[0]; body = proposal.data()
+    if set(body) != {'question', 'branches', 'budget_units'}:
+        raise ContractError('state prediction proposal contract drift')
+    plan = None
+    from research_loop.modular.modules.predictions import PredictionRegistry
+    journal = result.runtime.trace_path.parent / 'predictions.jsonl'
+    if not journal.is_file() or DockerExecutionBroker._has_link_component(journal):
+        raise ContractError('prediction registry must be an existing regular journal')
+    if 'M4' in enabled:
+        # Reconstruct from the actual response, then compare the persistent registry.
+        plan = PredictionRegistry(task.identity).freeze(body['question'], body['branches'], budget_units=body['budget_units'])
+        registry = PredictionRegistry(task.identity, storage_path=journal)
+        if registry.plan(plan.plan_id).data() != plan.data() or len(journal.read_text(encoding='utf-8').splitlines()) != 1:
+            raise ContractError('persistent prediction registry differs from the actual proposal')
+    elif journal.read_text(encoding='utf-8').strip():
+        raise ContractError('M4-off cannot register a prediction plan')
+    plan_rows = [e for e in events if e['stage'] == 'state_prediction_plan']
+    expected_event = {'proposal': proposal.data(), 'proposal_digest': proposal.content_hash,
+        'registered_plan': None if plan is None else plan.data(),
+        'registered_plan_digest': None if plan is None else plan.payload.content_hash}
+    if len(plan_rows) != 1 or plan_rows[0]['data'] != expected_event:
+        raise ContractError('prediction event differs from the consumed proposal')
+    expected = _joint(result.cell, transition, proposal, plan)
+    if result.joint_mechanism != expected:
+        raise ContractError('solver joint differs from reconstructed public state and prediction')
     joint_events = [e for e in events if e["stage"] == "state_prediction_joint"]
-    if len(joint_events) != 1 or joint_events[0]["data"].get("joint") != result.joint_mechanism.data():
+    if len(joint_events) != 1 or joint_events[0]["data"] != {"joint": expected.data(), "joint_digest": expected.content_hash}:
         raise ContractError("state prediction joint drift")
     joint_i = events.index(joint_events[0]); analysis_i = next((i for i,e in enumerate(events) if e["stage"] == "model_request" and e["data"]["request"]["slot"] == "analysis_program"), None)
     if analysis_i is not None and joint_i >= analysis_i:
         raise ContractError("prediction plan was not frozen before Docker solver")
+    if result.solver is None or result.solver.session.sidecar != result.runtime.trace_path.parent:
+        raise ContractError('state prediction must use the shared solver session')
+    state = _solver_journal_state(events); _compare_solver_result(result.solver, state)
+    if result.runtime.status != ('succeeded' if state['status'] == 'execution_succeeded' else 'failed'):
+        raise ContractError('solver failure was relabeled')
+    for request in requests[1:]:
+        context = request['module_context']
+        if context.get('joint_mechanism') != expected.data() or context.get('joint_mechanism_digest') != expected.content_hash:
+            raise ContractError('solver did not consume the actual registered plan and public state')
+    _verify_solver_files(state, events, result.runtime.trace_path, material)
     return FrozenRecord.from_dict({"schema":"state-prediction-combination-verification-v1", "engineering_verified":True,
         "transition_digest":transition.content_hash, "joint_digest":result.joint_mechanism.content_hash, "scientific_effect":"not_measured"})

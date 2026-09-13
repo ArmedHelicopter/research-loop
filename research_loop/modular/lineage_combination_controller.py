@@ -210,6 +210,11 @@ def _v3_admission_qualification_semantics(config, cell, material, qualifier, pat
     from research_loop.modular.admission_combination_controller import FrozenAdmissionTrainConfig
     if type(config) is not FrozenAdmissionTrainConfig or 'execution_recipe' not in config.data():
         return None
+    return admission_qualification_semantics(cell, material, qualifier, path, config.data()['source_verifier_binding'])
+
+
+def admission_qualification_semantics(cell, material, qualifier, path, source_binding):
+    """Project the exact subject-bound semantic fields consumed by admission."""
     binding = FrozenRecord.from_dict({'cell_digest': FrozenRecord.from_dict(cell.data()).content_hash,
                                       'scenario_digest': cell.scenario_digest})
     assessments = qualifier.assessments(material, path, cell_binding=binding)
@@ -222,7 +227,7 @@ def _v3_admission_qualification_semantics(config, cell, material, qualifier, pat
                                     ('subject_digest', 'state', 'outcome', 'execution_success', 'audit')}
     return FrozenRecord.from_dict({'schema': 'v3-admission-qualification-semantics-v1',
         'task_digest': cell.task_digest, 'material_digest': material.record.content_hash,
-        'source_verifier_binding': config.data()['source_verifier_binding'], 'assessments': consumed})
+        'source_verifier_binding': source_binding, 'assessments': consumed})
 
 
 def _v3_admission_qualification_drift(config, panel, rows):
@@ -230,6 +235,11 @@ def _v3_admission_qualification_drift(config, panel, rows):
     from research_loop.modular.admission_combination_controller import FrozenAdmissionTrainConfig
     if type(config) is not FrozenAdmissionTrainConfig or 'execution_recipe' not in config.data():
         return None
+    return admission_qualification_drift(panel, rows)
+
+
+def admission_qualification_drift(panel, rows):
+    """Compare completed matched cells; incomplete outcomes stay incomplete."""
     expected = {FrozenRecord.from_dict(cell.data()).content_hash for cell in panel.cells}
     comparable = [row for row in rows if FrozenRecord.from_dict(row['cell']).content_hash in expected]
     groups = {}
@@ -241,7 +251,7 @@ def _v3_admission_qualification_drift(config, panel, rows):
         if len(group) != len([cell for cell in panel.cells if cell.task_digest == task_digest and cell.replicate == replicate]):
             continue  # Existing incomplete-cell handling determines this outcome.
         if any(row.get('status') != 'succeeded' for row in group):
-            continue  # Do not relabel unknown/failed source handling as drift.
+            continue  # Preserve incomplete/unknown source failure handling.
         by_arm = {row['cell']['arm_id']: row.get('qualification_semantics_digest') for row in group}
         if None in by_arm.values() or len(set(by_arm.values())) != 1:
             drift.append({'task_digest': task_digest, 'replicate': replicate, 'arm_semantics': by_arm})
