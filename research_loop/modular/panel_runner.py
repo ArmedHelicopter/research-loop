@@ -182,7 +182,8 @@ from research_loop.modular.polarity_goal_panel_drivers import Q25EvidencePolarit
 from research_loop.modular.scheduler_panel_drivers import M8SchedulerDriver
 from research_loop.modular.semantic_panel_drivers import Q22CompletionSemanticsDriver, Q64ScorerRepairDriver
 from research_loop.modular.feasibility_panel_drivers import (
-    Q51FeasibilityDriver, Q52DistinguishabilityDriver, FeasibilityAuthorityPort, PublicInputResolver)
+    Q51FeasibilityDriver, Q52DistinguishabilityDriver, FeasibilityAuthorityPort)
+from research_loop.modular.panel_execution import PublicInputResolver
 from research_loop.modular.exploration_panel_drivers import (
     Q71ExplorationAdmissionDriver, Q72FeasibilityAppealDriver, ExplorationAuthorityPort)
 from research_loop.modular.q54_causal_driver import Q54CausalDriver, DiagnosticAuthority

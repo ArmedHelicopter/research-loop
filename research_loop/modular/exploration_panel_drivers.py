@@ -8,8 +8,10 @@ from pathlib import Path
 from typing import Any, Mapping, MutableMapping, Protocol
 
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask, required_text, strict_bool
-from research_loop.modular.feasibility_panel_drivers import (
-    _map, _hex, _inputs, _prepare_inputs, _execute, _execution_public, _invoke,
+from research_loop.modular.panel_execution import (
+    PublicInputResolver, require_mapping as _map, require_sha256 as _hex, input_declarations as _inputs,
+    prepare_public_inputs as _prepare_inputs, execute_public_diagnostic as _execute,
+    public_execution_observation as _execution_public, invoke_panel_model as _invoke,
 )
 from research_loop.modular.modules.admission import AuditItem, EvidenceAdmission, ExplorationPolicy, ScientificState
 from research_loop.modular.modules.exploration import (
