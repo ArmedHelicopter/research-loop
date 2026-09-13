@@ -52,6 +52,11 @@ def test_repository_selection_cannot_expand_endpoints(identity):
     assert repository_identity(identity) is None
 
 
+@pytest.mark.parametrize("identity", ["n/a", " N/A ", "na", "none", "null", "-"])
+def test_missing_value_does_not_become_official_repository(identity):
+    assert repository_identity(identity) is None
+
+
 def test_exact_public_schema_and_duplicate_denominator_rejected(tmp_path):
     result = supplement({"fixture/repo": [digest(1)]}, [], digest(2), digest(3), Archive(tmp_path / "private"), Fake())
     malformed = dict(result, PRIVATE_DYNAMIC_TASK="PRIVATE_GOLD")

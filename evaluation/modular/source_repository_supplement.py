@@ -35,6 +35,8 @@ def repository_identity(value):
     if not isinstance(value, str) or len(value) > 4096:
         return None
     value = value.strip()
+    if value.lower() in {"", "n/a", "na", "none", "null", "-"}:
+        return None
     if "://" not in value:
         value = "https://github.com/" + value
     parsed = urllib.parse.urlsplit(value)
