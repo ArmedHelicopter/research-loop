@@ -34,9 +34,9 @@ def _admit(port: AdmissionPort | None, task: PublicTask, record: FrozenRecord) -
     if port is None:
         raise ContractError("support ledger admission requires a caller-owned receipt port")
     receipt = port(task, record)
-    if (not isinstance(receipt, Mapping) or receipt.get("record_digest") != record.content_hash
-            or not _text(receipt.get("trusted_validator")) or type(receipt.get("validator_verified")) is not bool
-            or type(receipt.get("admitted")) is not bool):
+    if (not isinstance(receipt, Mapping) or set(receipt) != {"record_digest", "trusted_validator", "validator_verified", "admitted"}
+            or receipt.get("record_digest") != record.content_hash or not _text(receipt.get("trusted_validator"))
+            or receipt.get("validator_verified") is not True or receipt.get("admitted") is not True):
         raise ContractError("support admission receipt does not bind its public record")
     return dict(receipt)
 
@@ -69,7 +69,7 @@ def _validate(task: PublicTask, body: Mapping[str, Any]) -> None:
     q13_sources = [row["source"] for row in body["q13"].values()]
     if any(source != q13_sources[0] for source in q13_sources[1:]):
         raise ContractError("Q1.3 representations must share one caller source")
-    for row in body["q14"].values():
+    for variant, row in body["q14"].items():
         if not isinstance(row, Mapping) or set(row) != {"sources", "withdraw_actions", "claim_statement"} or not isinstance(row["sources"], Mapping) or not _text(row["claim_statement"]) or not isinstance(row["withdraw_actions"], list):
             raise ContractError("Q1.4 material is malformed")
         if not row["sources"]:
@@ -82,6 +82,16 @@ def _validate(task: PublicTask, body: Mapping[str, Any]) -> None:
             if not isinstance(action, Mapping) or set(action) != {"source_key", "reason"} or not _text(action["source_key"]) or not _text(action["reason"]) or action["source_key"] not in row["sources"] or action["source_key"] in seen:
                 raise ContractError("Q1.4 withdrawal action is malformed")
             seen.add(action["source_key"])
+        source_roots = {canonical(source["root_material"]) for source in row["sources"].values()}
+        withdrawn_roots = {canonical(row["sources"][action["source_key"]]["root_material"]) for action in row["withdraw_actions"]}
+        if len(withdrawn_roots) != len(row["withdraw_actions"]):
+            raise ContractError("Q1.4 withdrawal actions must target distinct source roots")
+        if variant == "one_withdrawn" and (len(source_roots) < 2 or not withdrawn_roots or withdrawn_roots == source_roots):
+            raise ContractError("Q1.4 one_withdrawn must leave a caller root")
+        if variant == "all_withdrawn" and (not source_roots or withdrawn_roots != source_roots):
+            raise ContractError("Q1.4 all_withdrawn must withdraw every caller root")
+        if variant == "copies" and (len(source_roots) != 1 or len(row["sources"]) < 2 or row["withdraw_actions"]):
+            raise ContractError("Q1.4 copies must be multiple records of one caller root")
 
 
 def freeze_support_bundle(task: PublicTask, *, q13: Mapping[str, Mapping[str, Any]], q14: Mapping[str, Mapping[str, Any]]) -> FrozenRecord:
@@ -141,19 +151,23 @@ class Q13RepresentationDriver:
     material_resolver: Callable[[PublicTask, FrozenRecord], FrozenRecord] | None = None; admission_port: AdmissionPort | None = None
     def run(self, workflow: ModularWorkflow, *, cell: PanelCell, scenario: FrozenRecord, model, package):
         material = _resolve(self.material_resolver, workflow.session.task, scenario, "Q1.3", cell.variant).data(); enabled = "M2" in workflow.enabled
+        raw = _record(material["identity"], material["source"], source_key="same_source", representation="raw")
         record = _record(material["identity"], material["source"], source_key="same_source", representation=material["representation"])
-        receipt = _admit(self.admission_port, workflow.session.task, record) if enabled else None
-        roots = []
+        raw_receipt = _admit(self.admission_port, workflow.session.task, raw) if enabled else None
+        receipt = None; roots = []
         if enabled:
-            raw = _record(material["identity"], material["source"], source_key="same_source", representation="raw")
-            roots = [_append(workflow.session, raw, _admit(self.admission_port, workflow.session.task, raw)), _append(workflow.session, record, receipt)]
+            roots = [_append(workflow.session, raw, raw_receipt)]
             claim = workflow.session.claims.create(material["claim_statement"], subject_bindings={"task": workflow.session.task.identity.task_id})
             workflow.session.claims.apply(claim.claim_id, {"supports": [roots[0].root_id], "refutes": [], "subject_bindings": {"task": workflow.session.task.identity.task_id}}, expected_revision=0)
         before = _context(workflow, enabled=enabled, summary=canonical(material["source"]))
-        projection = {"schema": "q13-public-projection-v1", "record": record.data(), "representation_record": material["representation"], "root_ids": [item.root_id for item in roots]}
-        first = workflow.invoke_model("representation_initial", model, instruction="Assess the supplied public representation without treating repetition as independent support.", baseline_summary=canonical(material["source"]), module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "public_support_state": projection, "ledger_mode": "deduplicated" if enabled else "frozen_non_deduplicated_control", "context_material": before.data(), "record_digest": record.content_hash, **({"admission_receipt": receipt} if receipt else {})}))
-        after = before
-        second = workflow.invoke_model("representation_next", model, instruction="Assess the same supplied public representation after the declared ledger treatment.", baseline_summary=canonical(material["source"]), module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "public_support_state": projection, "ledger_mode": "deduplicated" if enabled else "frozen_non_deduplicated_control", "context_material": after.data(), "record_digest": record.content_hash, **({"admission_receipt": receipt} if receipt else {})}))
+        initial = {"schema": "q13-public-projection-v2", "phase": "before", "records": [raw.data()], "claim_statement": material["claim_statement"]}
+        first = workflow.invoke_model("representation_initial", model, instruction="Assess the supplied public support material.", baseline_summary=canonical(material["source"]), module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "public_support_state": initial, "ledger_mode": "deduplicated" if enabled else "frozen_non_deduplicated_control", "context_material": before.data(), "record_digest": raw.content_hash, **({"admission_receipt": raw_receipt} if raw_receipt else {})}))
+        if enabled:
+            receipt = _admit(self.admission_port, workflow.session.task, record); roots.append(_append(workflow.session, record, receipt)); after = _context(workflow, enabled=True, summary=canonical(material["source"]))
+        else:
+            after = before
+        projection = {"schema": "q13-public-projection-v2", "phase": "after", "records": [raw.data(), record.data()], "claim_statement": material["claim_statement"]}
+        second = workflow.invoke_model("representation_next", model, instruction="Assess the current supplied public support material.", baseline_summary=canonical(material["source"]), module_context=FrozenRecord.from_dict({"panel_cell": opaque_panel_cell_binding(cell), "public_support_state": projection, "ledger_mode": "deduplicated" if enabled else "frozen_non_deduplicated_control", "context_material": after.data(), "record_digest": record.content_hash, **({"admission_receipt": receipt} if receipt else {})}))
         final = _final(workflow, cell, scenario, model, package, projection, after, {"record_digest": record.content_hash, **({"admission_receipt": receipt} if receipt else {})})
         return workflow._trace("operation_m2_root_dedup" if enabled else "operation_m2_control", "executed", root_ids=[item.root_id for item in roots]), final, (first, second, final)
 
