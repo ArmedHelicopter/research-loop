@@ -73,17 +73,24 @@ def test_q43_complete_two_benchmark_grid_uses_real_journaled_m5_visibility_and_m
         requests = _requests(run)
         assert len(requests) == 5 == run.call_plan.data()["model_calls"]
         assert requests[-1]["module_context"]["required_objective_digest"] == FrozenRecord.from_dict(requests[-1]["objective"]).content_hash
-        assert all(request["module_context"]["panel_cell"]["scenario_digest"] == cell.scenario_digest for request in requests)
+        from research_loop.modular.panel_receipts import opaque_panel_cell_binding
+        assert all(request["module_context"]["panel_cell"] == opaque_panel_cell_binding(cell) for request in requests)
+        encoded = FrozenRecord.from_dict({"requests": requests}).encoded
+        for marker in ('"arm_id"', '"candidate_package"', '"control"', '"variant"',
+                       '"driver_stage"', '"m5_enabled"', '"visibility"', '"fixture_only"'):
+            assert marker not in encoded
         enabled = cell.runtime_arm.data()["enabled"] == ["M5"]
         initial = requests[:2]
         if enabled and cell.variant == "sealed_then_exchange":
             assert [request["module_context"]["prior_visible_submission"] for request in initial] == [None, None]
-            assert all(request["module_context"]["sealed"] is True for request in initial)
+            # The actual absence of a peer response implements the barrier;
+            # no experimental arm or visibility label tells the model its arm.
+            assert all("sealed" not in request["module_context"] for request in initial)
         elif enabled:
             assert initial[0]["module_context"]["prior_visible_submission"] is None
             assert initial[1]["module_context"]["prior_visible_submission"]["evidence_refs"] == ["public-mechanism"]
         else:
-            assert all(request["module_context"]["control"] == "M5" and request["module_context"]["prior_visible_submission"] is None for request in initial)
+            assert all(request["module_context"]["prior_visible_submission"] is None for request in initial)
             assert all(not request["module_context"]["revealed_submissions"] for request in requests[2:4])
         if enabled:
             assert all(len(request["module_context"]["revealed_submissions"]) == 2 for request in requests[2:4])

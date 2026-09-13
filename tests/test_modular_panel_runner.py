@@ -13,7 +13,7 @@ from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask
 from research_loop.modular.experiments import ControllerInputs, registry, scenario
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
-from research_loop.modular.panel_receipts import CombinationObligations, FrozenPanel, PanelCell, PanelReceiptVerifier, ScientificScorerReceipt
+from research_loop.modular.panel_receipts import CombinationObligations, FrozenPanel, PanelCell, PanelReceiptVerifier, ScientificScorerReceipt, opaque_panel_cell_binding
 from research_loop.modular.panel_runner import run_train_cell
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.ontology import ContractError
@@ -96,8 +96,15 @@ def test_q31_train_panel_runs_real_journals_for_both_public_adapters(tmp_path: P
         events = [FrozenRecord(line).data() for line in run.runtime.trace_path.read_text(encoding="utf-8").splitlines()]
         requests = [event["data"]["request"] for event in events if event["stage"] == "model_request"]
         assert len(requests) == 2
-        assert all(request["module_context"]["panel_cell"]["scenario_digest"] == cell.scenario_digest for request in requests)
-        assert requests[0]["module_context"]["scenario_controller_input"] == scenario_record.data()["controller_input"]
+        assert all(request["module_context"]["panel_cell"] == opaque_panel_cell_binding(cell) for request in requests)
+        controller = scenario_record.data()["controller_input"]
+        assert requests[0]["module_context"]["public_diagnostic"] == {
+            name: controller[name] for name in ("diagnostic_focus", "operational_constraints")}
+        encoded = FrozenRecord.from_dict({"requests": requests}).encoded
+        for marker in ('"arm_id"', '"candidate_package"', '"control"', '"variant"',
+                       '"driver_stage"', '"prediction_scenario_variant"', '"fixture_only"',
+                       'synthetic public train package'):
+            assert marker not in encoded
     diagnostic_material = {scenario_record.data()["controller_input"]["diagnostic_focus"]
                            for scenario_record in scenarios.values()}
     assert diagnostic_material == {"mechanism perturbation", "independent recomputation", "measurement negative control and calibration"}

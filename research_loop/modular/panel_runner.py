@@ -14,7 +14,7 @@ from typing import Callable, Protocol
 from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.experiments import registry
 from research_loop.modular.modules.improvement import CandidatePackage
-from research_loop.modular.panel_receipts import PanelCell, RuntimeReceipt, ScientificScorerReceipt
+from research_loop.modular.panel_receipts import PanelCell, RuntimeReceipt, ScientificScorerReceipt, opaque_panel_cell_binding
 from research_loop.modular.runtime import AuditVerifier, RunSession
 from research_loop.modular.workflow import ModularWorkflow, WorkflowResult
 from research_loop.ontology import ContractError
@@ -60,17 +60,14 @@ class Q31PredictionDriver:
 
     def run(self, workflow: ModularWorkflow, *, cell: PanelCell, scenario: FrozenRecord,
             model: ModelPort, package: CandidatePackage) -> tuple[WorkflowResult, FrozenRecord, tuple[FrozenRecord, ...]]:
-        binding = {"experiment_id": cell.coverage_id, "variant": cell.variant,
-                   "replicate": cell.replicate, "arm_id": cell.arm_id,
-                   "scenario_digest": scenario.content_hash}
+        binding = opaque_panel_cell_binding(cell)
         controller = scenario.data()["controller_input"]
+        diagnostic = {name: controller[name] for name in ("diagnostic_focus", "operational_constraints")}
         first = workflow.invoke_model("scenario", model, instruction=(
             "Produce exactly a three-branch prediction plan from this exact public scenario with budget_units=3. "
             "Every branch must use one common discriminator, and at least two branches must make different "
             "predictions for it. The plan is not an observation or a scientific result; do not claim either."), module_context=FrozenRecord.from_dict({
-                "panel_cell": binding, "scenario_controller_input": controller,
-                "candidate_package": package.record.data(),
-                "control": "M4" if "M4" not in workflow.enabled else ""}))
+                "panel_cell": binding, "public_diagnostic": diagnostic}))
         if "M4" in workflow.enabled:
             body = first.data()
             if set(body) != {"question", "branches", "budget_units"}:
@@ -81,17 +78,18 @@ class Q31PredictionDriver:
             stage = workflow._trace("stage_1", "executed", plan_digest=plan.payload.content_hash,
                                     scenario_digest=scenario.content_hash)
             result_context = {"prediction_plan": plan.payload.data(),
-                              "prediction_plan_digest": plan.payload.content_hash}
+                              "prediction_plan_digest": plan.payload.content_hash,
+                              "proposal": first.data()}
         else:
             stage = workflow._trace("operation_m4_control", "executed", response_digest=first.content_hash,
                                     scenario_digest=scenario.content_hash)
-            result_context = {"m4_control_response": first.data()}
+            result_context = {"prediction_plan": None, "prediction_plan_digest": None,
+                              "proposal": first.data()}
         candidate = workflow.invoke_model("final", model, instruction=(
             "Return the bounded candidate record for this train-only run; unknown is allowed. "
             "Copy required_objective_digest exactly into objective_digest; do not calculate or alter it."),
-            module_context=FrozenRecord.from_dict({"panel_cell": binding, "candidate_package": package.record.data(),
+            module_context=FrozenRecord.from_dict({"panel_cell": binding,
                                                     "required_objective_digest": workflow.session.objective.content_hash,
-                                                    "driver_stage": stage.detail.data()["stage"],
                                                     "driver_result": result_context}))
         return stage, candidate, (first, candidate)
 
@@ -109,10 +107,7 @@ class Q43ReviewDriver:
 
     def run(self, workflow: ModularWorkflow, *, cell: PanelCell, scenario: FrozenRecord,
             model: ModelPort, package: CandidatePackage) -> tuple[WorkflowResult, FrozenRecord, tuple[FrozenRecord, ...]]:
-        binding = {"experiment_id": cell.coverage_id, "variant": cell.variant,
-                   "replicate": cell.replicate, "arm_id": cell.arm_id,
-                   "scenario_digest": scenario.content_hash}
-        controller = scenario.data()["controller_input"]
+        binding = opaque_panel_cell_binding(cell)
         roles = (("mechanism", "What causal mechanism could produce the public pattern, and what observation would falsify it?"),
                  ("measurement", "Identify a plausible measurement failure and a public check that would distinguish it from the stated mechanism."))
         responses: list[FrozenRecord] = []
@@ -126,16 +121,9 @@ class Q43ReviewDriver:
             review_id = review.review_id
         for index, ((role, question), slot) in enumerate(zip(roles, self.slots[:2])):
             previous = submissions[0].response.data() if (m5_enabled and cell.variant == "sequential" and index) else None
-            context = {"panel_cell": binding, "scenario_controller_input": controller,
-                       "candidate_package": package.record.data(), "review_role": role,
+            context = {"panel_cell": binding, "review_role": role,
                        "review_question": question, "review_phase": "initial",
-                       "visibility": "sequential" if cell.variant == "sequential" else "sealed"}
-            if m5_enabled:
-                context.update({"review_id": review_id, "sealed": cell.variant == "sealed_then_exchange",
-                                "prior_visible_submission": previous})
-            else:
-                context.update({"control": "M5", "prior_visible_submission": None,
-                                "control_notice": "M5 review intervention disabled; no peer response is exposed."})
+                       "prior_visible_submission": previous}
             response = workflow.invoke_model(slot, model, instruction="Answer only the assigned review question.",
                 module_context=FrozenRecord.from_dict(context))
             responses.append(response)
@@ -149,16 +137,9 @@ class Q43ReviewDriver:
             workflow.revealed = FrozenRecord.from_dict({"review_id": review_id,
                 "submissions": [item.data() for item in revealed]})
         for (role, question), slot in zip(roles, self.slots[2:4]):
-            context = {"panel_cell": binding, "scenario_controller_input": controller,
-                       "candidate_package": package.record.data(), "review_role": role,
+            context = {"panel_cell": binding, "review_role": role,
                        "review_question": question, "review_phase": "post_reveal_revision",
-                       "visibility": "post_reveal"}
-            if m5_enabled:
-                context.update({"review_id": review_id, "sealed": False,
-                                "revealed_submissions": [item.data() for item in revealed]})
-            else:
-                context.update({"control": "M5", "revealed_submissions": [],
-                                "control_notice": "M5 review intervention disabled; no submissions exist to reveal."})
+                       "revealed_submissions": [item.data() for item in revealed] if revealed else []}
             response = workflow.invoke_model(slot, model, instruction="Reassess after the declared review visibility stage.",
                 module_context=FrozenRecord.from_dict(context))
             responses.append(response)
@@ -179,9 +160,10 @@ class Q43ReviewDriver:
         candidate = workflow.invoke_model("final", model, instruction=(
             "Return the bounded candidate record for this train-only run; unknown is allowed. "
             "Copy required_objective_digest exactly into objective_digest; do not calculate or alter it."),
-            module_context=FrozenRecord.from_dict({"panel_cell": binding, "candidate_package": package.record.data(),
-                "required_objective_digest": workflow.session.objective.content_hash, "driver_stage": stage.detail.data()["stage"],
-                "q43_review": review_context}))
+            module_context=FrozenRecord.from_dict({"panel_cell": binding,
+                "required_objective_digest": workflow.session.objective.content_hash,
+                "q43_review": {name: value for name, value in review_context.items()
+                               if name not in {"m5_enabled", "variant"}}}))
         responses.append(candidate)
         if candidate.data().get("objective_digest") != workflow.session.objective.content_hash:
             raise ContractError("Q4.3 final must copy required_objective_digest exactly")
