@@ -58,3 +58,19 @@ grid. Reference markers remain outside solver tasks and traces; no scientific
 scoring or efficacy is asserted. No actual primary train or validation payload
 is exported by this implementation/test task. Real training export remains a
 separate, explicitly scheduled bounded operation.
+
+The implementation frozen at `e57b1dd` passed 127 related checks with no failures
+or skips, including the old controller and custody paths. The complete synthetic
+Q3.1 grid executed 12 cells and 24 mocked model calls. Four controller rejection
+cases (validation member, eligibility hold, wrong roots, and simultaneous legacy
+and prospective ports) made zero model calls. An actual same-byte symlink fixture
+was rejected. Source hashes remained equal to the frozen commit throughout the
+final verification.
+
+The first test run retained a RED case where canonical digests alone accepted
+whitespace drift in a sealed file. Explicit raw split/audit file SHA pins repaired
+that gap. A subsequent archive-only directory-prefix mismatch was also retained;
+it did not change the completed test result or production source. Exact JUnit,
+source hashes, synthetic controller receipts and ledgers, and preserved failures
+are listed in
+[`primary-prospective-export-verification.json`](primary-prospective-export-verification.json).
