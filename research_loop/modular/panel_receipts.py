@@ -487,7 +487,8 @@ class PanelReceiptVerifier:
         elif receipt.status == "failed":
             if not (terminal["stage"] in {"model_failure", "driver_failure", "controller_failure", "execution_failure", "execution_terminal"} and receipt.output_digest is None) and not (
                     terminal["stage"] == "final_decision" and terminal["data"].get("decision") == "blocked"
-                    and has_model_failure and receipt.output_digest == observed):
+                    and has_model_failure and receipt.output_digest == observed) and not (
+                    receipt.output_digest is None and _failed_final_benchmark_solve(events)):
                 raise ContractError("failed receipt does not match terminal runtime evidence")
         elif terminal["stage"] != "final_decision" or receipt.output_digest != observed:
             raise ContractError("non-success receipt lacks a bound terminal decision")
@@ -537,6 +538,43 @@ class PanelReceiptVerifier:
         return {"cell_key": list(row.cell_key), "status": row.status, "trace_digest": row.trace_digest,
                 "output_digest": row.output_digest, "failure_reason": row.failure_reason}
 
+
+
+def _failed_final_benchmark_solve(events: list[dict]) -> bool:
+    """A protocol-valid unknown answer can follow an actual failed program.
+
+    Recognize only the shared solve's two final slots and the failed execution
+    consumed by that answer. An earlier diagnostic failure is insufficient.
+    This retains a failed denominator; it never qualifies a result for scoring.
+    The caller has already verified the protocol and complete hash chain.
+    """
+    from research_loop.modular.benchmarks.execution import ExecutionReceipt
+    lock = events[0]["data"]
+    if (lock.get("slots", [])[-2:] != ["analysis_program", "final_answer"]
+            or events[-1]["stage"] != "final_decision"
+            or events[-1]["data"].get("decision") != "unknown"):
+        return False
+    indexes = [i for i, e in enumerate(events) if e["stage"] == "model_request"]
+    if len(indexes) < 2:
+        return False
+    analysis_index, final_index = indexes[-2:]
+    between = events[analysis_index + 1:final_index]
+    if [e["stage"] for e in between] != ["model_response", "execution_request", "execution_result"]:
+        return False
+    execution = ExecutionReceipt.parse(between[-1]["data"]["receipt"])
+    request = events[final_index]["data"]["request"]
+    context = request.get("module_context", {})
+    answer = events[-2]["data"].get("response", {}) if events[-2]["stage"] == "model_response" else {}
+    return (execution.status == "failed" and execution.identity.data() == lock["identity"]
+        and execution.artifact is not None
+        and context.get("execution_digest") == execution.content_hash
+        and context.get("execution_status") == "failed"
+        and context.get("analysis_digest") == FrozenRecord.from_dict(between[0]["data"]["response"]).content_hash
+        and context.get("analysis_program_sha256") == execution.artifact.sha256
+        and context.get("execution_input_artifacts") == execution.record.data().get("input_artifacts")
+        and answer.get("objective_digest") == FrozenRecord.from_dict(lock["objective"]).content_hash
+        and answer.get("outcome") == "unknown" and answer.get("evidence_ids") == []
+        and answer.get("programme_complete") is False)
 
 
 def require_protocol_refusal(finding: FrozenRecord, runtime: RuntimeReceipt, cell: PanelCell) -> None:

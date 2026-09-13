@@ -97,6 +97,56 @@ def _rewrite_trace(path: Path, change) -> str:
     return previous
 
 
+def test_real_failed_docker_solve_retains_failed_runtime_after_valid_answer(tmp_path):
+    catalogue = _catalogue(); panel = catalogue.panels["pair:M4+M5"]
+    cell = next(c for c in panel.cells if c.arm_id == "01" and c.identity.benchmark == "discoverybench")
+    seen = []; ordinary = _model(seen)
+    def failed_program(request):
+        body = request.data()
+        if body["slot"] == "analysis_program":
+            seen.append(body)
+            return FrozenRecord.from_dict({"analysis": "Preserved public program failure.",
+                                          "program": "raise ValueError('public synthetic execution failure')"})
+        if body["slot"] == "final_answer":
+            seen.append(body)
+            return FrozenRecord.from_dict({"objective_digest": body["module_context"]["required_objective_digest"],
+                "outcome": "unknown", "evidence_ids": [], "conclusion": "The public program failed; no result is established.",
+                "programme_complete": False})
+        return ordinary(request)
+    result = _run(panel, cell, catalogue, tmp_path, failed_program)
+    assert result.runtime.status == "failed" and result.runtime.output_digest is None
+    assert result.solver.status == "execution_failed" and result.solver.execution.status == "failed"
+    verified = verify_m4_m5_combination_benchmark_cell(result, panel=panel, task=catalogue.tasks[cell.task_digest],
+        scenario=catalogue.scenarios[cell.key], package=catalogue.packages[cell.runtime_arm.content_hash])
+    assert verified.data()["status"] == "failed"
+    # A successful final protocol cannot erase the earlier executable failure.
+    with pytest.raises(ContractError):
+        verify_m4_m5_combination_benchmark_cell(replace(result, runtime=replace(result.runtime, status="succeeded")),
+            panel=panel, task=catalogue.tasks[cell.task_digest], scenario=catalogue.scenarios[cell.key],
+            package=catalogue.packages[cell.runtime_arm.content_hash])
+    original = result.runtime.trace_path.read_bytes()
+    def remove_failed_execution_binding(events):
+        request_event = next(e for e in events if e["stage"] == "model_request" and e["data"]["request"]["slot"] == "final_answer")
+        old_digest = request_event["data"]["request_digest"]
+        request_event["data"]["request"]["module_context"]["execution_digest"] = "0" * 64
+        new_digest = FrozenRecord.from_dict(request_event["data"]["request"]).content_hash
+        request_event["data"]["request_digest"] = new_digest
+        for event in events:
+            if event["stage"] == "model_response" and event["data"]["request_digest"] == old_digest:
+                event["data"]["request_digest"] = new_digest
+    try:
+        changed = _rewrite_trace(result.runtime.trace_path, remove_failed_execution_binding)
+        with pytest.raises(ContractError):
+            PanelReceiptVerifier()._verify_runtime(replace(result.runtime, trace_digest=changed), cell)
+    finally:
+        result.runtime.trace_path.write_bytes(original)
+    success = _run(panel, cell, catalogue, tmp_path / "success", _model([]))
+    assert success.solver.status == "execution_succeeded"
+    with pytest.raises(ContractError, match="failed receipt"):
+        PanelReceiptVerifier()._verify_runtime(replace(success.runtime, status="failed", output_digest=None,
+                                                       failure_reason="invented failure"), cell)
+
+
 def _alternate_plan():
     plan = _plan()
     plan["question"] = "Which other public mechanism explains x?"
