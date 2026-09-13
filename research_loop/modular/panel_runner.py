@@ -189,6 +189,7 @@ from research_loop.modular.exploration_panel_drivers import (
 from research_loop.modular.exploration_extended_panel_drivers import ExtendedExplorationDriver
 from research_loop.modular.q54_causal_driver import Q54CausalDriver, DiagnosticAuthority
 from research_loop.modular.q55_causal_driver import Q55Driver, Authority as Q55Authority
+from research_loop.modular.retrieval_panel_drivers import RetrievalPanelDriver
 from research_loop.modular.protocol_panel_driver import (Q27ProtocolDriver, ProtocolAuditPort, ProtocolReplayAuthority,
     verify_after_finish, verify_protocol_replay_receipt, _exclusive_record)
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
@@ -206,6 +207,7 @@ DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12Dep
     **{key: ExtendedExplorationDriver(None, None, None, key) for key in ("Q7.3", "Q7.4", "Q7.5", "Q7.6")},
     "Q5.4": Q54CausalDriver(None, None, None),
     "Q5.5": Q55Driver(None, None, None, None, {}),
+    **{key: RetrievalPanelDriver(key) for key in ("Q8.2", "Q8.3")},
     "Q3.3": M8SchedulerDriver("Q3.3"), "Q3.4": M8SchedulerDriver("Q3.4"), "Q3.5": M8SchedulerDriver("Q3.5"),
     "Q4.1": Q41IndependenceDriver(), "Q4.2": Q42RoleDriver(), "Q4.3": Q43ReviewDriver(),
     "Q4.4": Q44CounterexampleDriver(), "Q4.5": Q45SelfCorrectionDriver()}
@@ -232,6 +234,8 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
                    q55_input_resolver: PublicInputResolver | None = None,
                    q55_authority: Q55Authority | None = None,
                    q55_authority_keys: Mapping[str, bytes] | None = None,
+                   retrieval_provider=None,
+                   retrieval_admission_port=None,
                    protocol_broker: DockerExecutionBroker | None = None,
                    protocol_audit_port: ProtocolAuditPort | None = None,
                    protocol_replay_authority: ProtocolReplayAuthority | None = None) -> TrainCellResult:
@@ -284,6 +288,9 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
             resolver=q55_input_resolver if q55_input_resolver is not None else driver.resolver,
             authority=q55_authority if q55_authority is not None else driver.authority,
             authority_keys=q55_authority_keys if q55_authority_keys is not None else driver.authority_keys)
+    if isinstance(driver, RetrievalPanelDriver):
+        driver = replace(driver, provider=retrieval_provider if retrieval_provider is not None else driver.provider,
+                         admission_port=retrieval_admission_port if retrieval_admission_port is not None else driver.admission_port)
     if p0_control is not None:
         if not isinstance(p0_control, FrozenRecord):
             raise ContractError("P0 control must be a caller-trusted frozen record")

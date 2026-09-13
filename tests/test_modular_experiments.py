@@ -52,7 +52,7 @@ def test_blocked_status_cannot_skip_measurement_or_validation() -> None:
     assert resumed.data()["Q2.1"]["status"] == "implemented"
 
 
-@pytest.mark.parametrize("coverage", tuple(name for name in registry() if name not in {"Q2.2", "Q2.5", "Q2.6", "Q2.7", "Q3.2", "Q3.3", "Q3.4", "Q3.5", "Q5.1", "Q5.2", "Q5.3", "Q5.4", "Q6.4", "Q7.1", "Q7.2", "Q7.3", "Q7.4", "Q7.5", "Q7.6"}))
+@pytest.mark.parametrize("coverage", tuple(name for name in registry() if name not in {"Q2.2", "Q2.5", "Q2.6", "Q2.7", "Q3.2", "Q3.3", "Q3.4", "Q3.5", "Q5.1", "Q5.2", "Q5.3", "Q5.4", "Q6.4", "Q7.1", "Q7.2", "Q7.3", "Q7.4", "Q7.5", "Q7.6", "Q8.2", "Q8.3"}))
 def test_added_runners_match_every_authoritative_variant(coverage):
     spec = registry()[coverage]
     for variant in spec.variants:
@@ -66,3 +66,9 @@ def test_added_runners_match_every_authoritative_variant(coverage):
             continue
         projection = controller["q21_pressure_projection"] if coverage == "Q2.1" else controller
         assert projection["fixture_only"] is True
+
+
+@pytest.mark.parametrize("coverage", ["Q8.2", "Q8.3"])
+def test_retrieval_compiler_rejects_fixture_only_material(coverage):
+    with pytest.raises(ContractError, match="typed caller sources"):
+        scenario(registry()[coverage], registry()[coverage].variants[0], inputs=inputs())

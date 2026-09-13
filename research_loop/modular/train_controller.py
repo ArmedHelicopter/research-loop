@@ -181,6 +181,8 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                         q55_authority: Q55Authority | None = None,
                         q55_authority_keys: Mapping[str, bytes] | None = None,
                         q55_provider=None,
+                        retrieval_provider=None,
+                        retrieval_admission_port=None,
                         protocol_audit_port: ProtocolAuditPort | None = None,
                         protocol_replay_authority: ProtocolReplayAuthority | None = None) -> TrainPanelRun:
     """Export and execute every cell selected by closed production drivers."""
@@ -195,6 +197,9 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     q55 = "Q5.5" in data["scope_ids"]
     if q55 and (not callable(getattr(q55_authority, "verify_closure", None)) or not isinstance(q55_authority_keys, Mapping) or not callable(getattr(q55_provider, "search", None))):
         raise ContractError("Q5.5 controller requires dual closure authority and keys before export")
+    retrieval = bool(set(data["scope_ids"]) & {"Q8.2", "Q8.3"})
+    if retrieval and (not callable(getattr(retrieval_provider, "search", None)) or not callable(retrieval_admission_port)):
+        raise ContractError("retrieval controller requires caller-owned provider and source admission before export")
     if diagnostic and not callable(getattr(diagnostic_authority, "verify_diagnostic", None)):
         raise ContractError("diagnostic controller requires its caller-owned verification port before export")
     if exploration and not all(callable(getattr(exploration_authority, method, None))
@@ -362,6 +367,8 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                 diagnostic_authority=diagnostic_authority,
                 q55_broker=q55_broker, q55_input_resolver=q55_inputs if q55 else None,
                 q55_authority=q55_authority, q55_authority_keys=q55_authority_keys, q55_provider=q55_provider,
+                retrieval_provider=retrieval_provider,
+                retrieval_admission_port=retrieval_admission_port,
                 protocol_audit_port=protocol_audit_port, protocol_replay_authority=protocol_replay_authority)
             runtimes.append(result.runtime)
             attempt.setdefault("runtime_call_plans", []).append(result.call_plan.data())
