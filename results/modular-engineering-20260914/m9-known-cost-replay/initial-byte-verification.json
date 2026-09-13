@@ -1,0 +1,10 @@
+{
+  "archive_commit": "1129f825c4461c32c2c9b5a2ec51eda009abd8df",
+  "status": "failed",
+  "file": "archive-integrity.json",
+  "reason": "Git text normalization changed committed CRLF bytes to LF",
+  "original_disk_sha256": "2fb6771151a3a67342c5b206b07e5614525f22100998d8cfbc1cc1c24f25f822",
+  "original_git_sha256": "ff1dacae355738af1660e87e19daa8ce68fda4f6c6756486f011c50aef8252f7",
+  "equal_after_crlf_normalization": true,
+  "repair": "Preserve original evidence bytes using archive-local -text attributes; reindex original disk bytes."
+}

@@ -1,4 +1,8 @@
 {
+  ".gitattributes": {
+    "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+    "bytes": 8
+  },
   "archive-members.json": {
     "sha256": "f0d68e126ffe712a6c4c8c6e269ad22fdd2ea1b69bf7ffc8b0951456890b5f0d",
     "bytes": 801443
@@ -18,6 +22,10 @@
   "excluded-paths.json": {
     "sha256": "cd97eaf9e83288274a1052a3d3f1be786751f1e4e26e9f1e0c4a031c39844218",
     "bytes": 26042
+  },
+  "initial-byte-verification.json": {
+    "sha256": "52d308c5ebf915e527ed62ab4904a11bc0f5521c4103c828fbbef648f6a23742",
+    "bytes": 552
   },
   "m9-known-cost-green-r1-before.json": {
     "sha256": "615354ea503b40c50e127f085f81879b1edc376e721d668d35373e1760fb5dbe",
