@@ -204,7 +204,17 @@ def _builder(builder):
     return builder
 
 
-def _plan_material(targets,histories,parent,fixed_builder,baseline_digest,p0_control,image,model_config,timeout_seconds):
+def _plan_material(targets,histories,parent,fixed_builder,baseline_digest,p0_control,image,model_config,timeout_seconds,
+                   experiment_id='Q6.3',manual_builder=None,manual_source=None):
+    if experiment_id not in {'Q6.2','Q6.3'}: raise ContractError('unsupported candidate training phase')
+    variants=('fixed','train_proposed') if experiment_id=='Q6.3' else ('fixed','manual_train','automatic_train')
+    if experiment_id=='Q6.2':
+        _builder(manual_builder)
+        if not isinstance(manual_source,FrozenRecord) or manual_source.data()!= {
+                'history_bindings':[h.binding.content_hash for h in histories],
+                'builder_digest':manual_builder.digest,'origin':'caller_frozen_manual_training'}:
+            raise ContractError('manual training material must bind the complete history and builder')
+    elif manual_builder is not None or manual_source is not None: raise ContractError('meta training has no manual intervention')
     if (not isinstance(targets,tuple) or not targets or any(not isinstance(t,FrozenMetaTarget) for t in targets)
             or len({t.task.content_hash for t in targets})!=len(targets)
             or {t.task.identity.benchmark for t in targets}!={'blade','discoverybench'}):
@@ -227,17 +237,18 @@ def _plan_material(targets,histories,parent,fixed_builder,baseline_digest,p0_con
     config=model_config.data()
     if (set(config)!={'model','effort','max_calls','max_tokens','schemas','context_policy_sha256'} or config['model']!='gpt-5.6-luna'
             or config['effort']!='low' or config['schemas']!=metaprogram_schemas()
-            or type(config['max_calls'])is not int or config['max_calls']<len(targets)*12
+            or type(config['max_calls'])is not int or config['max_calls']<len(targets)*len(variants)*6
             or type(config['max_tokens'])is not int or config['max_tokens']<1): raise ContractError('matched complete model budget and exact schemas required')
     _digest(config['context_policy_sha256'],'reviewed model policy')
-    grid=obligation_grids(('Q6.3',),baseline_digest=baseline_digest,p0_control=p0_control)['Q6.3']
+    grid=obligation_grids((experiment_id,),baseline_digest=baseline_digest,p0_control=p0_control)[experiment_id]
     cells=[]
     for target in sorted(targets,key=lambda t:t.task.content_hash):
-        for variant in ('fixed','train_proposed'):
+        for variant in variants:
             for arm_id,arm in executable_arms(grid).items():
                 row={'task_digest':target.task.content_hash,'variant':variant,'arm_id':arm_id,'arm':arm.data(),'replicate':'r1'}
                 cells.append({**row,'cell_id':digest(row)})
-    return FrozenRecord.from_dict({'schema':'q63-train-phase-plan-v1','scope':'train_only_engineering','cells':cells,
+    extra={} if experiment_id=='Q6.3' else {'experiment_id':experiment_id,'manual_builder':manual_builder.record.data(),'manual_source':manual_source.data()}
+    return FrozenRecord.from_dict({**extra,'schema':'q63-train-phase-plan-v1','scope':'train_only_engineering','cells':cells,
         'targets':[t.binding.data() for t in targets],'histories':[h.binding.data() for h in histories],
         'parent_package':parent.record.data(),'fixed_builder':fixed_builder.record.data(),'baseline_digest':baseline_digest,
         'p0_control':p0_control.data(),'arm_grid':grid.data(),'image':image,'timeout_seconds':timeout_seconds,
@@ -252,26 +263,37 @@ class FrozenMetaTrainingPlan:
     histories: tuple[FrozenTrainHistory,...]
     parent: CandidatePackage
     fixed_builder: FrozenBuilderVersion
+    experiment_id: str = 'Q6.3'
+    manual_builder: FrozenBuilderVersion | None = None
+    manual_source: FrozenRecord | None = None
 
     def __post_init__(self):
         if not isinstance(self.record,FrozenRecord): raise ContractError('phase plan must be immutable')
         r=self.record.data()
         try:
             actual=_plan_material(self.targets,self.histories,self.parent,self.fixed_builder,r['baseline_digest'],
-                FrozenRecord.from_dict(r['p0_control']),r['image'],FrozenRecord.from_dict(r['model_config']),r['timeout_seconds'])
+                FrozenRecord.from_dict(r['p0_control']),r['image'],FrozenRecord.from_dict(r['model_config']),r['timeout_seconds'],
+                self.experiment_id,self.manual_builder,self.manual_source)
         except (KeyError,TypeError,AttributeError) as exc: raise ContractError('phase plan is not a closed typed reconstruction') from exc
         if actual!=self.record: raise ContractError('phase plan drifted from its frozen subjects')
 
     @classmethod
-    def freeze(cls,*,targets,histories,parent,fixed_builder,baseline_digest,p0_control,image,model_config,timeout_seconds=20):
+    def freeze(cls,*,targets,histories,parent,fixed_builder,baseline_digest,p0_control,image,model_config,timeout_seconds=20,
+               experiment_id='Q6.3',manual_builder=None,manual_source=None):
         targets=tuple(targets);histories=tuple(histories)
         for item in (*targets,*histories): item.verify()
-        return cls(_plan_material(targets,histories,parent,fixed_builder,baseline_digest,p0_control,image,model_config,timeout_seconds),
-            targets,histories,parent,fixed_builder)
+        return cls(_plan_material(targets,histories,parent,fixed_builder,baseline_digest,p0_control,image,model_config,timeout_seconds,
+                   experiment_id,manual_builder,manual_source),targets,histories,parent,fixed_builder,experiment_id,manual_builder,manual_source)
 
     def verify_sources(self):
         self.__post_init__()
         for item in (*self.targets,*self.histories): item.verify()
+
+    def selected_builder(self,proposed,cell):
+        if 'M9' not in cell['arm']['enabled']: return self.fixed_builder
+        if self.experiment_id=='Q6.2' and cell['variant']=='manual_train': return self.manual_builder
+        if cell['variant'] in {'train_proposed','automatic_train'}: return proposed
+        return self.fixed_builder
 
 
 def _exclusive(path,record):
@@ -405,7 +427,7 @@ def _run_cell(plan,cell,target,root,model,broker,audit_verifier):
             'response_digest':response.content_hash,'builder_digest':proposed.digest,'model_calls':1})
         proposal._terminal=True
         stage='post_proposal_preflight';plan.verify_sources()
-        selected=proposed if cell['variant']=='train_proposed' and 'M9' in cell['arm']['enabled'] else plan.fixed_builder
+        selected=plan.selected_builder(proposed,cell)
         _exclusive(root/'builder.json',selected.record)
         stage='builder_execution'
         phase.append('builder_request',{'builder_digest':selected.digest,'entrypoint':selected.entrypoint,
@@ -547,7 +569,7 @@ def _verify_cell(result,plan,cell,target,ledger):
     candidate=None;projection=None
     if builder_requests:
         if proposed is None or len(builder_requests)!=1: raise ContractError('builder execution lacks valid original proposal')
-        selected=proposed if cell['variant']=='train_proposed' and 'M9' in cell['arm']['enabled'] else plan.fixed_builder
+        selected=plan.selected_builder(proposed,cell)
         if (_read_record(root/'builder.json')!=selected.record
                 or row['selected_builder_digest']!=selected.digest or builder_requests[0]['data']!={
                     'builder_digest':selected.digest,'entrypoint':selected.entrypoint,'parent_digest':plan.parent.digest,'search_cost':1,'allocation':1}):

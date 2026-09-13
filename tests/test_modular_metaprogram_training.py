@@ -28,7 +28,7 @@ IMAGE='research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a389111
 def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def fixture(tmp_path,monkeypatch,*,fault=None,surface='prompt',history_failure=False):
+def fixture(tmp_path,monkeypatch,*,fault=None,surface='prompt',history_failure=False,max_calls=24):
     snapshot,custody=snapshot_and_custody(tmp_path)
     packets=TrainPacketExporter(custody,snapshot,tmp_path/'export').export(['discoverybench:synth:train:family_1_1','blade:fish'])
     manifest=TrainingManifest.freeze([p.task.identity for p in packets])
@@ -87,7 +87,7 @@ def fixture(tmp_path,monkeypatch,*,fault=None,surface='prompt',history_failure=F
             'outcome':'unknown','evidence_ids':[],
             'conclusion':body['module_context']['execution_feedback'][0]['stdout'] or 'Execution failed; unresolved',
             'programme_complete':False})
-    port=model_port(tmp_path/'stage-port',monkeypatch,max_calls=24,schemas=schemas,response_factory=response)
+    port=model_port(tmp_path/'stage-port',monkeypatch,max_calls=max_calls,schemas=schemas,response_factory=response)
     fixed=FrozenBuilderVersion.freeze({'entrypoint':'emit_literal_change_v1','surface':surface,
         'key':'lesson' if surface=='memory' else 'instructions','value':'Use statistic=sum'})
     plan=FrozenMetaTrainingPlan.freeze(targets=targets,histories=histories,parent=parent,fixed_builder=fixed,
