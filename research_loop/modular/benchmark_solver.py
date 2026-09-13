@@ -61,7 +61,9 @@ def run_benchmark_solve(*, task: PublicTask, public_inputs: Mapping[str, Path], 
                         package_digest: str, arm: FrozenRecord, objective: FrozenRecord,
                         sidecar: Path, broker: DockerExecutionBroker, model: ModelPort,
                         audit_verifier: AuditVerifier, timeout_seconds: int = 20,
-                        predecessor_context: FrozenRecord | None = None) -> BenchmarkSolveResult:
+                        predecessor_context: FrozenRecord | None = None,
+                        panel_cell_binding: FrozenRecord | None = None,
+                        mechanism_provenance: FrozenRecord | None = None) -> BenchmarkSolveResult:
     """Run analysis-program -> Docker -> final benchmark-answer on one train task.
 
     ``predecessor_context`` is an immutable Q-specific mechanism receipt or
@@ -74,8 +76,11 @@ def run_benchmark_solve(*, task: PublicTask, public_inputs: Mapping[str, Path], 
         raise ContractError("benchmark solve needs a restricted broker and model port")
     if not isinstance(timeout_seconds, int) or not 1 <= timeout_seconds <= 120:
         raise ContractError("benchmark solve timeout must be between 1 and 120 seconds")
-    if predecessor_context is not None and not isinstance(predecessor_context, FrozenRecord):
-        raise ContractError("predecessor context must be immutable")
+    if any(value is not None and not isinstance(value, FrozenRecord)
+           for value in (predecessor_context, panel_cell_binding, mechanism_provenance)):
+        raise ContractError("solver context must be immutable")
+    if (panel_cell_binding is None) != (mechanism_provenance is None):
+        raise ContractError("linked solver requires both panel binding and mechanism provenance")
     session = RunSession(task, package_digest=required_text(package_digest, "package digest"), arm=arm,
                          objective=objective, slots=(_ANALYSIS_SLOT, _FINAL_SLOT), execution_limit=1,
                          sidecar=sidecar, verifier=audit_verifier, required_audit=("measurement",))
@@ -89,6 +94,8 @@ def run_benchmark_solve(*, task: PublicTask, public_inputs: Mapping[str, Path], 
         "solver": "public-benchmark-solve-v1",
         "public_artifacts": [artifact.record.data() for artifact in artifacts],
         "predecessor_context": predecessor_context.data() if predecessor_context else None,
+        "panel_cell": panel_cell_binding.data() if panel_cell_binding else None,
+        "mechanism_provenance": mechanism_provenance.data() if mechanism_provenance else None,
     }
     try:
         analysis = workflow.invoke_model(
