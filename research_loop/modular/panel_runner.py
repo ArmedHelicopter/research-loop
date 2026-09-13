@@ -181,6 +181,9 @@ from research_loop.modular.prediction_panel_drivers import Q32JointSeparateDrive
 from research_loop.modular.polarity_goal_panel_drivers import Q25EvidencePolarityDriver, Q26GoalLockDriver
 from research_loop.modular.scheduler_panel_drivers import M8SchedulerDriver
 from research_loop.modular.semantic_panel_drivers import Q22CompletionSemanticsDriver, Q64ScorerRepairDriver
+from research_loop.modular.feasibility_panel_drivers import (
+    Q51FeasibilityDriver, Q52DistinguishabilityDriver, FeasibilityAuthorityPort, PublicInputResolver)
+from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 
 
 DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12DependencyDriver(),
@@ -190,6 +193,7 @@ DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12Dep
     "Q2.5": Q25EvidencePolarityDriver(), "Q2.6": Q26GoalLockDriver(),
     "Q2.2": Q22CompletionSemanticsDriver(), "Q6.4": Q64ScorerRepairDriver(),
     "Q3.1": Q31PredictionDriver(), "Q3.2": Q32JointSeparateDriver(), "Q5.3": Q53DedupDriver(),
+    "Q5.1": Q51FeasibilityDriver(None, None, None), "Q5.2": Q52DistinguishabilityDriver(None, None, None),
     "Q3.3": M8SchedulerDriver("Q3.3"), "Q3.4": M8SchedulerDriver("Q3.4"), "Q3.5": M8SchedulerDriver("Q3.5"),
     "Q4.1": Q41IndependenceDriver(), "Q4.2": Q42RoleDriver(), "Q4.3": Q43ReviewDriver(),
     "Q4.4": Q44CounterexampleDriver(), "Q4.5": Q45SelfCorrectionDriver()}
@@ -201,7 +205,10 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
                    scorer: ScorerPort | None = None, history_admission_port: AdmissionPort | None = None,
                    audit_receipt_port: AuditReceiptPort | None = None,
                    shadow_execution_port: ShadowExecutionPort | None = None,
-                   p0_control: FrozenRecord | None = None) -> TrainCellResult:
+                   p0_control: FrozenRecord | None = None,
+                   feasibility_broker: DockerExecutionBroker | None = None,
+                   feasibility_input_resolver: PublicInputResolver | None = None,
+                   feasibility_authority: FeasibilityAuthorityPort | None = None) -> TrainCellResult:
     """Run one predeclared training cell and return only trace-bound receipts.
 
     Validation is deliberately absent.  Driver selection is closed, so fixture
@@ -224,6 +231,11 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
     driver = DRIVERS.get(cell.coverage_id)
     if driver is None:
         raise ContractError("registered scenario has no production panel driver")
+    if isinstance(driver, (Q51FeasibilityDriver, Q52DistinguishabilityDriver)):
+        driver = replace(driver,
+            broker=feasibility_broker if feasibility_broker is not None else driver.broker,
+            input_resolver=feasibility_input_resolver if feasibility_input_resolver is not None else driver.input_resolver,
+            authority=feasibility_authority if feasibility_authority is not None else driver.authority)
     if p0_control is not None:
         if not isinstance(p0_control, FrozenRecord):
             raise ContractError("P0 control must be a caller-trusted frozen record")

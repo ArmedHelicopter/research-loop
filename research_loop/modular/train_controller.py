@@ -25,6 +25,7 @@ from research_loop.modular.panel_receipts import PanelReceiptVerifier, PanelVerd
 from research_loop.modular.panel_runner import DRIVERS, run_train_cell
 from research_loop.modular.history_panel_drivers import AdmissionPort
 from research_loop.modular.audit_panel_drivers import AuditReceiptPort, ShadowExecutionPort
+from research_loop.modular.feasibility_panel_drivers import FeasibilityAuthorityPort
 from research_loop.modular.benchmark_cell import LinkedBenchmarkCellResult, run_benchmark_cell, verify_linked_benchmark_cell
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.runtime import AuditVerifier
@@ -155,13 +156,18 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                         model: CodexModelPort, audit_verifier: AuditVerifier,
                         history_admission_port: AdmissionPort | None = None,
                         audit_receipt_port: AuditReceiptPort | None = None,
-                        shadow_execution_port: ShadowExecutionPort | None = None) -> TrainPanelRun:
+                        shadow_execution_port: ShadowExecutionPort | None = None,
+                        feasibility_authority: FeasibilityAuthorityPort | None = None) -> TrainPanelRun:
     """Export and execute every cell selected by closed production drivers."""
     if not isinstance(config, FrozenTrainControllerConfig) or not isinstance(custody, CustodyStore):
         raise ContractError("trusted typed controller inputs required")
     if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
         raise ContractError("controller requires the real model port and trusted audit verifier")
     data = config.data()
+    feasibility = bool(set(data["scope_ids"]) & {"Q5.1", "Q5.2"})
+    if feasibility and (not callable(getattr(feasibility_authority, "verify_stage", None))
+            or ("Q5.2" in data["scope_ids"] and not callable(getattr(feasibility_authority, "verify_prediction_outcome", None)))):
+        raise ContractError("feasibility controller requires its caller-owned verification ports before export")
     snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
     policy = _reviewed_model_policy(model)
     if (model.model != data["model"] or model.effort != data["effort"]
@@ -208,6 +214,21 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     runtimes = []
     linked_results = []
     try:
+        feasibility_broker = DockerExecutionBroker([exported, root]) if feasibility else None
+        packets_by_digest = {packet.task.content_hash: packet for packet in packets}
+        def feasibility_inputs(task, bundle):
+            packet = packets_by_digest.get(task.content_hash)
+            if packet is None or packet.task != task:
+                raise ContractError("feasibility input is not an exported train task")
+            # The core adapters export exactly one CSV. Every declared input
+            # must refer to that frozen train export; arbitrary source paths
+            # and additional caller files are not accepted by this controller.
+            rows = [row for key in ("q51", "q52") for row in bundle.data()[key].values()]
+            names = {tuple(sorted(row["inputs"])) for row in rows}
+            if len(names) != 1 or len(next(iter(names))) != 1:
+                raise ContractError("feasibility controller requires one shared exported CSV identity")
+            name = next(iter(names))[0]
+            return {name: packet.csv_path}
         for cell in compiled.panel.cells:
             objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
             if data.get("execution_mode") == "linked_benchmark_solve":
@@ -233,7 +254,9 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                 sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
                 model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
                 audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
-                p0_control=compiled.control)
+                p0_control=compiled.control, feasibility_broker=feasibility_broker,
+                feasibility_input_resolver=feasibility_inputs if feasibility else None,
+                feasibility_authority=feasibility_authority)
             runtimes.append(result.runtime)
             attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.runtime))
             attempt["runtime_trace_digests"].append(result.runtime.trace_digest)

@@ -52,7 +52,7 @@ def test_blocked_status_cannot_skip_measurement_or_validation() -> None:
     assert resumed.data()["Q2.1"]["status"] == "implemented"
 
 
-@pytest.mark.parametrize("coverage", tuple(name for name in registry() if name not in {"Q2.2", "Q2.5", "Q2.6", "Q3.2", "Q3.3", "Q3.4", "Q3.5", "Q5.3", "Q6.4"}))
+@pytest.mark.parametrize("coverage", tuple(name for name in registry() if name not in {"Q2.2", "Q2.5", "Q2.6", "Q3.2", "Q3.3", "Q3.4", "Q3.5", "Q5.1", "Q5.2", "Q5.3", "Q6.4"}))
 def test_added_runners_match_every_authoritative_variant(coverage):
     spec = registry()[coverage]
     for variant in spec.variants:

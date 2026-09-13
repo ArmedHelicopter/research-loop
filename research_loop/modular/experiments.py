@@ -94,13 +94,16 @@ def scenario(spec: ExperimentSpec, variant: str, *, inputs: ControllerInputs,
     elif spec.experiment_id in {"Q3.2", "Q5.3"}:
         from research_loop.modular.prediction_panel_drivers import prediction_panel_injection
         injection=dict(prediction_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
-    elif spec.experiment_id in {"Q3.1", "Q5.2", "Q5.4"}:
+    elif spec.experiment_id in {"Q5.1", "Q5.2"}:
+        from research_loop.modular.feasibility_panel_drivers import feasibility_panel_injection
+        injection=dict(feasibility_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
+    elif spec.experiment_id in {"Q3.1", "Q5.4"}:
         from research_loop.modular.scenarios_predictions import prediction_injection
         injection=dict(prediction_injection(spec.experiment_id, variant))
     elif spec.experiment_id in {"Q3.3", "Q3.4", "Q3.5"}:
         from research_loop.modular.scheduler_panel_drivers import scheduler_panel_injection
         injection=dict(scheduler_panel_injection(spec.experiment_id, variant, task=inputs.task, evidence=inputs.evidence))
-    elif spec.experiment_id in {"Q5.1", "Q5.5"}:
+    elif spec.experiment_id == "Q5.5":
         from research_loop.modular.scenarios_recovery import recovery_injection
         injection=dict(recovery_injection(spec.experiment_id, variant))
     elif spec.experiment_id in {"Q4.1", "Q4.2", "Q4.4", "Q4.5"}:
