@@ -183,7 +183,7 @@ def test_q84_material_must_keep_actual_document_and_budget_controls(tmp_path, fa
     material = bundle(packet).data()
     if fault == "text": material["sources"]["independent_roots"][0]["text"] = {"text": "different intervention"}
     elif fault == "count": material["sources"]["independent_roots"].pop()
-    elif fault == "root": material["sources"]["independent_roots"][0]["root_source_id"] = "experiment-1"
+    elif fault == "root": material["sources"]["independent_roots"][0]["root_source_id"] = material["sources"]["independent_roots"][1]["root_source_id"]
     else: material["budget"]["provider_calls"] = 9
     with pytest.raises(ContractError):
         freeze_retrieval_stage_bundle(packet.task, **{key: material[key] for key in ("query", "budget", "sources", "history", "execution")})
