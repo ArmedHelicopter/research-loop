@@ -1,0 +1,1262 @@
+{
+  "schema": "extended-exploration-driver-verification-v1",
+  "source_commit": "973f11290ecfcc897e44fdecb9bd6252668aef59",
+  "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\exploration-production-extended\\research_loop\\modular\\exploration_extended_panel_drivers.py",
+  "source_before_sha256": "9f17edfa1e0d5b60bd69e2578c02a033a8db6955aaef57da8853496a7f639629",
+  "source_git_blob_sha256": "9f17edfa1e0d5b60bd69e2578c02a033a8db6955aaef57da8853496a7f639629",
+  "source_after_sha256": "9f17edfa1e0d5b60bd69e2578c02a033a8db6955aaef57da8853496a7f639629",
+  "test_source_sha256": "ccdbdb94238ad963c58942b134a250d174affd9702590fc68eb74dc1a05cdbae",
+  "python_executable": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+  "python_version": "3.12.6 (tags/v3.12.6:a4a2d2b, Sep  6 2024, 20:11:23) [MSC v.1940 64 bit (AMD64)]",
+  "pytest_version": "8.4.2",
+  "pyyaml_version": "6.0.3",
+  "dependency_provenance": "existing isolated local distribution copies; original wheels unavailable",
+  "tests": [
+    {
+      "name": "preflight-r1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\preflight-r1.xml",
+      "sha256": "dbca6bf64677ab8a99dcc36bffa164b9293576cb178bc1e024fd123658936716",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 3.608
+    },
+    {
+      "name": "preflight-r2",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\preflight-r2.xml",
+      "sha256": "01481d3bdcb3d8dbb5cc034c567cb57f71bd58bb5d83b9b52ba0d353854384f4",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 41.054
+    },
+    {
+      "name": "live-r1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r1.xml",
+      "sha256": "9c3d73cd458b798f143ddf5e8d5546efe492f6d5307e61c5d906ed73972f36c1",
+      "tests": 9,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 40.719
+    },
+    {
+      "name": "live-r2",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r2.xml",
+      "sha256": "f4d3159c62378a9ff75accde716c76188211157d0e8e1ea48236ad0537344338",
+      "tests": 9,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 293.545
+    },
+    {
+      "name": "seam-r1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\seam-r1.xml",
+      "sha256": "87d8130659cdd58fbbbc77e56a5a6f02dad8f3556e515c4b45e542a48ffee392",
+      "tests": 2,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.383
+    },
+    {
+      "name": "seam-r2",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\seam-r2.xml",
+      "sha256": "dc2717c9e2da66c529017a248343c0c83ebbbb8a8d05bcedc944e7fddf400694",
+      "tests": 2,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.335
+    },
+    {
+      "name": "seam-r3",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\seam-r3.xml",
+      "sha256": "d77c16d52eaf588a93ac10460ee6b5a4a445bc3eb2994d23d290ca85cf39eb3a",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 0.313
+    },
+    {
+      "name": "real-seams-r1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\real-seams-r1.xml",
+      "sha256": "b27441014923f1d2744bcfe0b24311ae28b5a540cab3b94273918638b7bd31e4",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 8.42
+    },
+    {
+      "name": "live-r3",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3.xml",
+      "sha256": "89ed335ee70de967786b2903b6f5076494c1d9ced95a493795f0217e4f206e17",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 297.276
+    }
+  ],
+  "main_grid": {
+    "trace_count": 88,
+    "stage_counts": {
+      "model_request": 280,
+      "model_response": 280,
+      "model_failure": 0,
+      "execution_request": 160,
+      "execution_result": 160,
+      "execution_failure": 0,
+      "extended_verifier_request": 320,
+      "extended_verifier_response": 320,
+      "extended_verifier_result": 320,
+      "extended_verifier_failure": 0,
+      "extended_verifier_partial_response": 0,
+      "controller_failure": 0
+    },
+    "decisions": {
+      "proceed": 40,
+      "invalid": 24,
+      "closed_negative": 16,
+      "unknown": 8
+    },
+    "known_verifier_units": 320,
+    "unknown_verified_cost_count": 0,
+    "all_final_candidates_unchanged": true
+  },
+  "whole_final_suite": {
+    "trace_count": 127,
+    "stage_counts": {
+      "model_request": 391,
+      "model_response": 391,
+      "model_failure": 0,
+      "execution_request": 168,
+      "execution_result": 168,
+      "execution_failure": 0,
+      "extended_verifier_request": 384,
+      "extended_verifier_response": 382,
+      "extended_verifier_result": 382,
+      "extended_verifier_failure": 2,
+      "extended_verifier_partial_response": 2,
+      "controller_failure": 7
+    },
+    "decisions": {
+      "proceed": 41,
+      "invalid": 25,
+      "closed_negative": 17,
+      "unknown": 36,
+      "blocked": 1
+    },
+    "known_verifier_units": 382,
+    "unknown_verified_cost_count": 0,
+    "all_final_candidates_unchanged": true
+  },
+  "previous_live_attempts": {
+    "live-r1": {
+      "trace_count": 33,
+      "stage_counts": {
+        "model_request": 96,
+        "model_response": 96,
+        "model_failure": 0,
+        "execution_request": 4,
+        "execution_result": 4,
+        "execution_failure": 0,
+        "extended_verifier_request": 58,
+        "extended_verifier_response": 56,
+        "extended_verifier_result": 56,
+        "extended_verifier_failure": 2,
+        "extended_verifier_partial_response": 2,
+        "controller_failure": 5
+      },
+      "decisions": {
+        "unknown": 28
+      },
+      "known_verifier_units": 56,
+      "unknown_verified_cost_count": 0,
+      "all_final_candidates_unchanged": true
+    },
+    "live-r2": {
+      "trace_count": 74,
+      "stage_counts": {
+        "model_request": 218,
+        "model_response": 218,
+        "model_failure": 0,
+        "execution_request": 114,
+        "execution_result": 114,
+        "execution_failure": 0,
+        "extended_verifier_request": 278,
+        "extended_verifier_response": 276,
+        "extended_verifier_result": 276,
+        "extended_verifier_failure": 2,
+        "extended_verifier_partial_response": 2,
+        "controller_failure": 5
+      },
+      "decisions": {
+        "proceed": 25,
+        "invalid": 16,
+        "unknown": 28
+      },
+      "known_verifier_units": 276,
+      "unknown_verified_cost_count": 0,
+      "all_final_candidates_unchanged": true
+    }
+  },
+  "main_manifest_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\main-grid-manifest.json",
+  "main_manifest_sha256": "b4628448427c584ebb1d2cb3268ca6ef96c07205d9be3efe1733f0cff15a5911",
+  "ratio_selections": [
+    {
+      "identity": {
+        "benchmark": "blade",
+        "dataset_version": "synthetic-v2",
+        "domain": "train",
+        "group_id": "blade:extended",
+        "split_id": "8888888888888888888888888888888888888888888888888888888888888888",
+        "task_id": "extended-public"
+      },
+      "plan_digest": "9a21e456042d730dc3f39ec6d45160b140ef47ccd02fa3723f021a16200f7f06",
+      "rows": [
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 1,
+            "effective_percent": 25,
+            "main_units": 3,
+            "ratio_id": "ratio_0",
+            "requested_percent": 0
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": false,
+          "exploration_percent": 0,
+          "main_completed": 2,
+          "observation_digests": [
+            "770b9c3b8d9a018270a5a6dc7445c66e88f9bb6ffdcb0b6c48a47c2aaaae8d87",
+            "669cab654382df0112b5efd5fd6aa26155d6101fd58e46979baac8872811320e",
+            "cfc96822beed1420a8d8e0fb98790bec3b2575b500f513951892143b06018b01",
+            "401af3e14fe659d3fbc1c5ac7cf8a3eac367ee6d3063ab368132a51a055a86df"
+          ],
+          "ratio_id": "ratio_0",
+          "trace_digest": "298941cd055b6e3956216667e7449e243f1c5e9adc0909247f444bf98a389a9a",
+          "unknown": 0,
+          "waste": 0
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 0,
+            "effective_percent": 0,
+            "main_units": 4,
+            "ratio_id": "ratio_0",
+            "requested_percent": 0
+          },
+          "complete": true,
+          "effective_diagnostics": 0,
+          "enabled": true,
+          "exploration_percent": 0,
+          "main_completed": 2,
+          "observation_digests": [
+            "5fb56db437c7233c3ed26b8d985b44fe92b54d0087a32b62102ad09fa5ed18a5",
+            "c0f0cdec2b679b1560f72860d43272fb0274d7623574153e81de02c16e4a8ca4",
+            "7a0eeffdb629a99816d1b7b561c3f4d4622de1403592e92ed8fb02999e61877d",
+            "5641600a612722cbc12a77bdafc3b87aaaa5c8d8ee7ef518207116eb6d213764"
+          ],
+          "ratio_id": "ratio_0",
+          "trace_digest": "65b077f402122037724ac15d3507216530e668284252ee3b183296495f7f60bd",
+          "unknown": 0,
+          "waste": 0
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 1,
+            "effective_percent": 25,
+            "main_units": 3,
+            "ratio_id": "ratio_25",
+            "requested_percent": 25
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": false,
+          "exploration_percent": 25,
+          "main_completed": 2,
+          "observation_digests": [
+            "267fbe88c8734f45fb35d628b759f2746df321d1f6fa48cbeafdcd106cf01e9f",
+            "0fca8f18914494b94973f683faad649c4f3ddb252c118b05835392e40fbce7ba",
+            "76053786c6d4277b8be826c77c666255d715bcb355b95deac7dda7b1b955b177",
+            "d7aff3460d8c63eb95bb527c93a3e3f0e0c3aad2b1851e25e8ba77b6ebf635e9"
+          ],
+          "ratio_id": "ratio_25",
+          "trace_digest": "6107a10934122a9d7e9ad157a0a02814a435bcc6d871f6568f0a6166c4fb8de7",
+          "unknown": 0,
+          "waste": 0
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 1,
+            "effective_percent": 25,
+            "main_units": 3,
+            "ratio_id": "ratio_25",
+            "requested_percent": 25
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": true,
+          "exploration_percent": 25,
+          "main_completed": 2,
+          "observation_digests": [
+            "ddd0c9a5bfe2313038ab029e5addeb2e521521cb73fe3e8150b213d26bc90a61",
+            "987b9b7e992a1a9a0c0ca412ae9901d8f78277361a0e3146794f3477f0d0718a",
+            "20a5c7444b7d029879d95758ff1768f2b27e5dcf52dfec5a1ad35c5af2be4ba6",
+            "ea32974efe28f20b1fe92287d6ccf06182b7872cb38fd45c4130809a7a1ae0a7"
+          ],
+          "ratio_id": "ratio_25",
+          "trace_digest": "d7b1cee28e2ac173cea95330929bd24c1d0bfa3553b558ae7d608338e98fa3d8",
+          "unknown": 0,
+          "waste": 0
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 1,
+            "effective_percent": 25,
+            "main_units": 3,
+            "ratio_id": "ratio_50",
+            "requested_percent": 50
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": false,
+          "exploration_percent": 50,
+          "main_completed": 2,
+          "observation_digests": [
+            "f75ad6df7a4db10acbaf02d60733b870efb2c074e38d38e9ef42999be5815bc9",
+            "a63fcc5f5e650e0538489609460e74684d3052de9e8f0cab8752d0e654119cf7",
+            "d1c8777508088ef18e009906304cf9e1fb4a438093d6010c36464f10ccda4bda",
+            "c2ef3f2f910b209d3575514dc5719186d230ae5470fdb3679b4d8132777f3e08"
+          ],
+          "ratio_id": "ratio_50",
+          "trace_digest": "faec7d77bca45eac918d679ce5e403120c00719de52c9a3b3494fe4e80137301",
+          "unknown": 0,
+          "waste": 0
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 2,
+            "effective_percent": 50,
+            "main_units": 2,
+            "ratio_id": "ratio_50",
+            "requested_percent": 50
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": true,
+          "exploration_percent": 50,
+          "main_completed": 2,
+          "observation_digests": [
+            "8ab9718e5ce551eac248983fc81777cbc7d35d8e5a97980f915561c8856e4ef7",
+            "0dad0b68854ea4dd45bc27882451bac3bb9ff2b6b7251810e20a2180c93f5710",
+            "bc12ee498d0ce14dfdbc9ef5db0543bbb3379a36d12f0b72345942b73e54d38d",
+            "e8ff212096edcd2410cae99c8d936eb155eefe8ed2f268c915887d063e708bad"
+          ],
+          "ratio_id": "ratio_50",
+          "trace_digest": "a9fdc9c15b24294f14bf6e77296e3a50e154b994c103dd8c5cf7a3ba8baf6e20",
+          "unknown": 0,
+          "waste": 1
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 1,
+            "effective_percent": 25,
+            "main_units": 3,
+            "ratio_id": "ratio_75",
+            "requested_percent": 75
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": false,
+          "exploration_percent": 75,
+          "main_completed": 2,
+          "observation_digests": [
+            "924cdde3f4548a770ee05e24ae87895ea360f5ebf6ac50977fe40ac753f2a32a",
+            "c3f0decaad2f6f31d074c3d001c7aa56d772d7950d1885b3ca51b4dadf8a10f3",
+            "f72939749ff7d23b6bb87298161d1887fa804c945003cf8de105cee66942cd37",
+            "8b1f4a7950457d76310b56e47df204b738628af7e453d3de130388ac946c2b1a"
+          ],
+          "ratio_id": "ratio_75",
+          "trace_digest": "482fc9589d8c937e6b0ebecbfb0232574fe0aeb9cfd5e128b8a69add524a4e62",
+          "unknown": 0,
+          "waste": 0
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 3,
+            "effective_percent": 75,
+            "main_units": 1,
+            "ratio_id": "ratio_75",
+            "requested_percent": 75
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": true,
+          "exploration_percent": 75,
+          "main_completed": 1,
+          "observation_digests": [
+            "8e165c0d4b138879f26c5ebe9c8e6d8c1a4b6d18223062b967fd7b3bbec2b3e4",
+            "d2a7e90a064e4c2368013987ba0cafdf8f67dc0a1e5bb2187f8d9776cfd0c1df",
+            "ed9f13543bd0005d09f6d19b0e13608c852a9186d040031c9141bb389cad29c9",
+            "fdeb6cd9c934372fa456d1e968cd815b1d9c162c6cd249b65c805cd962ecb77b"
+          ],
+          "ratio_id": "ratio_75",
+          "trace_digest": "4927218cfad2cda65809b25962466f34dd2dcf23d8b057cb732405eb7e0b868f",
+          "unknown": 0,
+          "waste": 2
+        }
+      ],
+      "schema": "extended-ratio-selection-result-v1",
+      "scientific_efficacy_established": false,
+      "selected_ratio_id": "ratio_25",
+      "status": "selected_on_train"
+    },
+    {
+      "identity": {
+        "benchmark": "discoverybench",
+        "dataset_version": "synthetic-v2",
+        "domain": "train",
+        "group_id": "discoverybench:extended",
+        "split_id": "8888888888888888888888888888888888888888888888888888888888888888",
+        "task_id": "extended-public"
+      },
+      "plan_digest": "eb7a4cfe4da37d5fe8220ad02891076cd4c539b3b14f7ce3aac09a1afc11f8a6",
+      "rows": [
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 1,
+            "effective_percent": 25,
+            "main_units": 3,
+            "ratio_id": "ratio_0",
+            "requested_percent": 0
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": false,
+          "exploration_percent": 0,
+          "main_completed": 2,
+          "observation_digests": [
+            "6641b21c5f51465a4c652bc59dfb7e44bee604355123b283cea9c7b5eafe330e",
+            "cc79d9e0993aa5228c7c990b13372638fe01b2e027d0ea57e0de7ea005a18896",
+            "2e217a47dea3ce427190ae9e4c4612256dba84bdb2f45cbe4b7c99c8a6ba4dad",
+            "dcf0feb31ffa1a96f101350fdebc3ea0686eb3b86b52ce52f6b52b683936e305"
+          ],
+          "ratio_id": "ratio_0",
+          "trace_digest": "768eb1574d1b23f1e1db8764da9c2d0001fa66f7530755ee1528cd9fdea27379",
+          "unknown": 0,
+          "waste": 0
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 0,
+            "effective_percent": 0,
+            "main_units": 4,
+            "ratio_id": "ratio_0",
+            "requested_percent": 0
+          },
+          "complete": true,
+          "effective_diagnostics": 0,
+          "enabled": true,
+          "exploration_percent": 0,
+          "main_completed": 2,
+          "observation_digests": [
+            "18903c5c97282e62f2768a40aa664aa799f80d236f676fb9c6066e39118fce7a",
+            "3811ae5099b642cf9cf0becc5cec0b4374b159959d841aa851f97cfc4296c445",
+            "502ec65c912b903ae582332f51d0dc1c1fd2d488e88393095bd4dd0f9c85adfa",
+            "0a26939905f1b9699999185533fa8d0f97ac49d72a7896dc0d096dae62382c96"
+          ],
+          "ratio_id": "ratio_0",
+          "trace_digest": "0497af5f9ad2d2db53650c777af699f5acd407ff51a58fad29daa09205d9ff30",
+          "unknown": 0,
+          "waste": 0
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 1,
+            "effective_percent": 25,
+            "main_units": 3,
+            "ratio_id": "ratio_25",
+            "requested_percent": 25
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": false,
+          "exploration_percent": 25,
+          "main_completed": 2,
+          "observation_digests": [
+            "99abbb37f3d7f08e66cc3ea41a6205aafd451acb037d1405fd5d5451f4c14773",
+            "921d1f6f659209aa4e1f0223943a7eabe1b91ae9ec1cba0c9084663c7df1967f",
+            "5fada8635c0525aa6b0a8a75adc9afb767e5ff13ea746d60ae8f296e55402271",
+            "cd0bdce8640b2ebeadb848276d0d1cf1fd5c5b402f928738d3a802cb1ec61e84"
+          ],
+          "ratio_id": "ratio_25",
+          "trace_digest": "2521876a47102471e3811d488b152d34bde0f13d3130c83bbc24b7b6de71a96d",
+          "unknown": 0,
+          "waste": 0
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 1,
+            "effective_percent": 25,
+            "main_units": 3,
+            "ratio_id": "ratio_25",
+            "requested_percent": 25
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": true,
+          "exploration_percent": 25,
+          "main_completed": 2,
+          "observation_digests": [
+            "83f764d3731201bb18ec682d369aca226aef7e8c63b4b2b21f98d8e0254f6ce5",
+            "3c901532802ac00cf78ed3efbedd71756dd61761ce91542457add4108e69aaeb",
+            "659c664828c9c08bc0c146ed82efc8b7c075faf041132afb3e32dd488a4c3bd8",
+            "87645aaaf0f49757d0d8e03720df03bbe28e7a6e660d41c9488130cb01a46376"
+          ],
+          "ratio_id": "ratio_25",
+          "trace_digest": "286b5aa2e7ab9ed51eb4f9c8f21b87b763027a349b6994379acd81acb353ecc7",
+          "unknown": 0,
+          "waste": 0
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 1,
+            "effective_percent": 25,
+            "main_units": 3,
+            "ratio_id": "ratio_50",
+            "requested_percent": 50
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": false,
+          "exploration_percent": 50,
+          "main_completed": 2,
+          "observation_digests": [
+            "7f2dd7f7708ee976f2943ed0e4c3f126bd36b7486988981e4a51dfcabd25d872",
+            "ce9cdb1795d8ea2120c5e38a73918b820fe2fed7d8447575dda7017932efa8b3",
+            "463504ad6d3e7b8937b8758e0e1da3c9705d12456296c51de039b9d9c44d1ec5",
+            "0298d6d1d78c800bb884041772839770035343373d1c2cf0d890729c723f537f"
+          ],
+          "ratio_id": "ratio_50",
+          "trace_digest": "ef2a0059cc4ece15a9b3a276eb2dd9822b4454b9f1ac7ed6214bef75d20d180f",
+          "unknown": 0,
+          "waste": 0
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 2,
+            "effective_percent": 50,
+            "main_units": 2,
+            "ratio_id": "ratio_50",
+            "requested_percent": 50
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": true,
+          "exploration_percent": 50,
+          "main_completed": 2,
+          "observation_digests": [
+            "5123db4d6afd1ca3c7aee85152c3c0f090d229b09f4ceaf48b4cc479949518e9",
+            "d81f871e7f7f2ab8f6c2c83e3bc2266d65ad5a3729f17dad1fb07a2144b906f5",
+            "16899a998f7d82513a5194d9b9cb39635a65124fc4773e6196b147bb6754582f",
+            "f6b95662e6894338dccf32e664793bc0286dfda4430e4964b328e00b44d4df4e"
+          ],
+          "ratio_id": "ratio_50",
+          "trace_digest": "2b84c11c717228a13a6a39e46386b8b392926b8c1a76d0e348a242cf5e1e54db",
+          "unknown": 0,
+          "waste": 1
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 1,
+            "effective_percent": 25,
+            "main_units": 3,
+            "ratio_id": "ratio_75",
+            "requested_percent": 75
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": false,
+          "exploration_percent": 75,
+          "main_completed": 2,
+          "observation_digests": [
+            "9545d51e7b0ded1f39cd84602168466ca2e5d402c94ccb179105b1d9f8a56a4a",
+            "f8642159a43cab873473c14200ce038b2ab3b51ef74b9935bc86cb68e400f9e0",
+            "04af8c1ca59a6c6632e4af6edcca036ece466fdff39a8c8f670ba11f679492e5",
+            "97413c6e7a1b115ececf24c848047e5783c1813357465d0b896b0cd1a38182bd"
+          ],
+          "ratio_id": "ratio_75",
+          "trace_digest": "596df2a750c447436531cc64ff8ef4dd93be558087caa1b947315e9f5b4d62b9",
+          "unknown": 0,
+          "waste": 0
+        },
+        {
+          "allocation": {
+            "budget_after": {
+              "execution_limit": 4,
+              "execution_used": 4,
+              "token_limit": 4,
+              "token_used": 4
+            },
+            "diagnostic_units": 3,
+            "effective_percent": 75,
+            "main_units": 1,
+            "ratio_id": "ratio_75",
+            "requested_percent": 75
+          },
+          "complete": true,
+          "effective_diagnostics": 1,
+          "enabled": true,
+          "exploration_percent": 75,
+          "main_completed": 1,
+          "observation_digests": [
+            "b10b278910e1bfd00547e923185c633ed027149fc9720fce5620e934a04117e7",
+            "754fa3f7693f3eeaa71e3878a53571a3e1027afa9118f4a4c9fcaca1809dc4b4",
+            "595264f6bb9976d39ad15fd2d3f9862b5d5ad475e1825621b420f623d75b74a4",
+            "ae913a7d72e6b0c1512070db909e0a2d56540a3f65ca77cf6a7042d256e4ff4f"
+          ],
+          "ratio_id": "ratio_75",
+          "trace_digest": "26e08acc3fe45fed4e7548111cefa23d38d5a6681181939151d7de17a836bf7e",
+          "unknown": 0,
+          "waste": 2
+        }
+      ],
+      "schema": "extended-ratio-selection-result-v1",
+      "scientific_efficacy_established": false,
+      "selected_ratio_id": "ratio_25",
+      "status": "selected_on_train"
+    }
+  ],
+  "main_grid_traces": [
+    {
+      "index": 0,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\0\\trace.jsonl",
+      "sha256": "19594f50b3d4325cfa1a4f86522d663756ca42e5f6acb0a382ba8da009314d33",
+      "trace_digest": "768eb1574d1b23f1e1db8764da9c2d0001fa66f7530755ee1528cd9fdea27379"
+    },
+    {
+      "index": 1,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\1\\trace.jsonl",
+      "sha256": "6cef34ee29f179517c109e07a0892579390eb948495999eccc2d5cef98d045c2",
+      "trace_digest": "0497af5f9ad2d2db53650c777af699f5acd407ff51a58fad29daa09205d9ff30"
+    },
+    {
+      "index": 2,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\2\\trace.jsonl",
+      "sha256": "36fabfb723f7a918bc76beb1b9af7f63d1c4f80381442791a16c0e5ebae9e1da",
+      "trace_digest": "2521876a47102471e3811d488b152d34bde0f13d3130c83bbc24b7b6de71a96d"
+    },
+    {
+      "index": 3,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\3\\trace.jsonl",
+      "sha256": "28af71ffb86f47b1da6c5582c88f9a816a71fe1d0b122e3bdd752d59d701a947",
+      "trace_digest": "286b5aa2e7ab9ed51eb4f9c8f21b87b763027a349b6994379acd81acb353ecc7"
+    },
+    {
+      "index": 4,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\4\\trace.jsonl",
+      "sha256": "abe40e59ed81fda440c6db627910742684618ebce11a62fb25b7735fdbf713f0",
+      "trace_digest": "ef2a0059cc4ece15a9b3a276eb2dd9822b4454b9f1ac7ed6214bef75d20d180f"
+    },
+    {
+      "index": 5,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\5\\trace.jsonl",
+      "sha256": "1bf0750dfd56fd9e5b0db32ee0992f2d0b8fdb4201eb2e747e59c311bc11c853",
+      "trace_digest": "2b84c11c717228a13a6a39e46386b8b392926b8c1a76d0e348a242cf5e1e54db"
+    },
+    {
+      "index": 6,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\6\\trace.jsonl",
+      "sha256": "123e668140eca018cae9bb153a295731af1211679c26e79093be01db19b326d9",
+      "trace_digest": "596df2a750c447436531cc64ff8ef4dd93be558087caa1b947315e9f5b4d62b9"
+    },
+    {
+      "index": 7,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\7\\trace.jsonl",
+      "sha256": "0b8ed0dc260bb65b93e752faa4ddef41559870fbcc23163a0cf990d58f666513",
+      "trace_digest": "26e08acc3fe45fed4e7548111cefa23d38d5a6681181939151d7de17a836bf7e"
+    },
+    {
+      "index": 8,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\8\\trace.jsonl",
+      "sha256": "66b971e6259d1c1acd7403b6537451fcc9b34b804de81fcf177b8fd17b20d8c4",
+      "trace_digest": "298941cd055b6e3956216667e7449e243f1c5e9adc0909247f444bf98a389a9a"
+    },
+    {
+      "index": 9,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\9\\trace.jsonl",
+      "sha256": "fa6acd84cbb56589d3fcce2cfc2f66e374b844cdb4222f5852bc12d77bf07ca8",
+      "trace_digest": "65b077f402122037724ac15d3507216530e668284252ee3b183296495f7f60bd"
+    },
+    {
+      "index": 10,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\10\\trace.jsonl",
+      "sha256": "09fea9e608618639c6d3b6161bd7a72dff6aa35aa8c3ee730938df0b7358f3f2",
+      "trace_digest": "6107a10934122a9d7e9ad157a0a02814a435bcc6d871f6568f0a6166c4fb8de7"
+    },
+    {
+      "index": 11,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\11\\trace.jsonl",
+      "sha256": "5fbc756bf270dbe5419ca7424a86779f139142fb6c9fc3675eead4810f0199eb",
+      "trace_digest": "d7b1cee28e2ac173cea95330929bd24c1d0bfa3553b558ae7d608338e98fa3d8"
+    },
+    {
+      "index": 12,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\12\\trace.jsonl",
+      "sha256": "2492711a6b6ec9f9ad65a572749445edf5e8aded18a7039fbf315eb38e593ed9",
+      "trace_digest": "faec7d77bca45eac918d679ce5e403120c00719de52c9a3b3494fe4e80137301"
+    },
+    {
+      "index": 13,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\13\\trace.jsonl",
+      "sha256": "95e7db5ad92c62fe39141684d180297b56c732219901e1b1b1351dfbe7a04a49",
+      "trace_digest": "a9fdc9c15b24294f14bf6e77296e3a50e154b994c103dd8c5cf7a3ba8baf6e20"
+    },
+    {
+      "index": 14,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\14\\trace.jsonl",
+      "sha256": "cacb6ccdc41455c3ce390cda5d3af025f18670bf76023dc5ca1d11dcfce6c451",
+      "trace_digest": "482fc9589d8c937e6b0ebecbfb0232574fe0aeb9cfd5e128b8a69add524a4e62"
+    },
+    {
+      "index": 15,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\15\\trace.jsonl",
+      "sha256": "88f406b876ad1e223e90bbc2a794a5a6c6e05d3156cac3a2013c2415424e9591",
+      "trace_digest": "4927218cfad2cda65809b25962466f34dd2dcf23d8b057cb732405eb7e0b868f"
+    },
+    {
+      "index": 16,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\16\\trace.jsonl",
+      "sha256": "79dad76fd3e13cb454fe9ca975a135d8a99431aef4a5a73c612bae2730dd5539",
+      "trace_digest": "30ef23437cd3b08f4dff02fc568bae40431258e508d2e144e44cbdecbf8b5b3a"
+    },
+    {
+      "index": 17,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\17\\trace.jsonl",
+      "sha256": "34d2186ec4faa0456089b43dcc6eab011ac43b88cc3d9afd7d73589f1d4d660f",
+      "trace_digest": "da76fb36fbbbca28849be426bc6cd3548d3a4b4aa1290fea059dea7a71a17805"
+    },
+    {
+      "index": 18,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\18\\trace.jsonl",
+      "sha256": "4790118d5d78332247f5a5ed301a1187d7c398c39c460f06ae3c8b6b8a6877e3",
+      "trace_digest": "be67cf246bc91a5f58bee9d284631c425eba708423547b2b244afb01e9080c25"
+    },
+    {
+      "index": 19,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\19\\trace.jsonl",
+      "sha256": "665f65b66c8f7a0ad1ee62b2c5344a556ce93985a3fead046605fd857bfe3af1",
+      "trace_digest": "0e6065eaa79da143d55c644efa0c3f48402bbb72331cbce87520344b86e280d3"
+    },
+    {
+      "index": 20,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\20\\trace.jsonl",
+      "sha256": "eda15a669bc4482f2a9df864aa50590b79e47619b92502d15f5cc4fa5499a5ac",
+      "trace_digest": "fb3da0b0e9a5c505153cf0eb1ab28359b126e59d6c2f2d78b44f00848c97f36e"
+    },
+    {
+      "index": 21,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\21\\trace.jsonl",
+      "sha256": "2ec84df1aa4e9067e096e31fdac955dc152eca97eb15430f1f70f9e180abe5de",
+      "trace_digest": "804109c3bd429a731e23545cbed78c267a503830ba20e665f70ab02278aab907"
+    },
+    {
+      "index": 22,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\22\\trace.jsonl",
+      "sha256": "3007f4a4fdc3b20496e3594a0a9540df3f82bf89cf8b1fe60ba8403a6a5581bb",
+      "trace_digest": "3d5eb7a7b4c18c39efd8be6e54fa76a74e6e23b12cfa169f66642197a92255c6"
+    },
+    {
+      "index": 23,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\23\\trace.jsonl",
+      "sha256": "a04da57944e48dfc1715ed62e383d22587e6e7a5c8696ba1d7f216c52f8ac5c5",
+      "trace_digest": "f88098f3af848ccefdc761354aa1966c0cb8cd93ee12033d6637246eebfa4d39"
+    },
+    {
+      "index": 24,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\24\\trace.jsonl",
+      "sha256": "3960856e48c8c941bf04016811c30c17dd78f66d677400ee201cd61aae4efbef",
+      "trace_digest": "aa244c771467771ff14e02d5e5c12fa0dcaa07328ac504131aa43c97681e2def"
+    },
+    {
+      "index": 25,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\25\\trace.jsonl",
+      "sha256": "8613d01bfa5e30955ab1f9493f5872410b636838ac498aa8f92a7a24e6def9cd",
+      "trace_digest": "55436b97c4ef25c5e558056bbea460ba39321e629cc3a438c049fc339ed0f0e6"
+    },
+    {
+      "index": 26,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\26\\trace.jsonl",
+      "sha256": "2d623f2f94d540e063cde973acfbefad987f03529cf2ea86722fe13942f90201",
+      "trace_digest": "b1231a83b0c0f819877ebe50dad828886d53e53fa4c1ebeb208b1c3e58959a68"
+    },
+    {
+      "index": 27,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\27\\trace.jsonl",
+      "sha256": "12c801872b59ccd40bb2348ce9e0edd3cca21e5d3ab349af7daa132485e98a40",
+      "trace_digest": "40a2e50f8fec954d8243b05f81f787e807012ddd3858db237f3c3c8b733d5145"
+    },
+    {
+      "index": 28,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\28\\trace.jsonl",
+      "sha256": "de2e17f4c4b2f10595cc934b5cf351ee71e1fa4c998a8f83e299e09940ba2478",
+      "trace_digest": "3a298d113d86d96b7be4c31231007107b9a7153db54febb97c2074c7534d97cd"
+    },
+    {
+      "index": 29,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\29\\trace.jsonl",
+      "sha256": "5df76ec4bd021e186c9dc4abbeb936733795ea0299719f7dcc486134167eca61",
+      "trace_digest": "b7796ebef7e8cd38c1e13e9eb3540abe8f053d6be6498aee63282e049f041bf1"
+    },
+    {
+      "index": 30,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\30\\trace.jsonl",
+      "sha256": "a0cb4b52c832d35a20d23a96cb192fef3222616a9029acc333b000466b1fd2bb",
+      "trace_digest": "b21597a3764a955f25e19086f7bdc18df24c7c623cd5fa966e976f961046764e"
+    },
+    {
+      "index": 31,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\31\\trace.jsonl",
+      "sha256": "a6b7128a0961534e6e8845d88426230d5e442ea9dfdf75091e29e3b5fdc517f0",
+      "trace_digest": "fd66afde87b5d2808c8544e7ff323c0e067c7146ceb6a6d09ab27beb20f34d40"
+    },
+    {
+      "index": 32,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\32\\trace.jsonl",
+      "sha256": "b21930c4784311d6850bb8eb89054dae23044534ad17ede725c850f69c64ef5c",
+      "trace_digest": "9334f1ad8c4dffe0e8795d0d9d79d00378b4f4e00ad7a727dce114701a7b4d12"
+    },
+    {
+      "index": 33,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\33\\trace.jsonl",
+      "sha256": "18227825522bee0569003b17da05254a3db9a14abf7aa50105c28ef354b6c454",
+      "trace_digest": "88a76d88173388803b188e8521740f545fd4df0be10ca75fc0d872c91b7e0029"
+    },
+    {
+      "index": 34,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\34\\trace.jsonl",
+      "sha256": "ee20c29a820fb6140a3c64ba95106d5a49c1383100c56ce699a980154c88b6f2",
+      "trace_digest": "0380384d8a36ac44b460009bae795b1bd2f03a5f34905f63c1662ac55f4eac92"
+    },
+    {
+      "index": 35,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\35\\trace.jsonl",
+      "sha256": "4a93a811066168fdf19349e4ebaacfcc5fdb32519a67d29f15a5cecbf040d722",
+      "trace_digest": "50701a8067472c0231144222979fb4d61594ec7ad23a9eafa30d560a6d2f8879"
+    },
+    {
+      "index": 36,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\36\\trace.jsonl",
+      "sha256": "d8e92972bd913a28094e9edaeff23cf0786b9701f130d87b5955209fad5c9bc9",
+      "trace_digest": "9ecabfd3657c48f09de2f3a3a35bcc8304b2cc655b57ed68c7cc7253a7e3a4db"
+    },
+    {
+      "index": 37,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\37\\trace.jsonl",
+      "sha256": "06c972189689c7accbf94d19f338aacd5035aee7b6213092ce88de306c8cefa5",
+      "trace_digest": "cd9af07036558e0c77b401d8704b5f7d930f385b06d2b85ebf49fb4160ffd64b"
+    },
+    {
+      "index": 38,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\38\\trace.jsonl",
+      "sha256": "8d40ee9669a7ed09b9246746077293567625cb1d232b2d5c972b425492832eb7",
+      "trace_digest": "44330bb63d12cf6eca14181612c421e7a19bbef5e4939d816a63e933c4f704d8"
+    },
+    {
+      "index": 39,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\39\\trace.jsonl",
+      "sha256": "faf8973e798465675195ceef43e34ea645e69ca25c0e98e075f85e32eed352cb",
+      "trace_digest": "08f44ef68edf7602509eb86250f877b6bb1ce416780772645268a713c0788e14"
+    },
+    {
+      "index": 40,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\40\\trace.jsonl",
+      "sha256": "806e58954d36b4d2071f3c165535b85478d8fbe89384e41f8fa4184744844b99",
+      "trace_digest": "f7d450e872b4c4b27ba1b1ecf1bff16a0c2b68e9b87a373dced1ae67e46c1f7c"
+    },
+    {
+      "index": 41,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\41\\trace.jsonl",
+      "sha256": "59e63221f8bf1a37243334295c379e1644241cdc85fdbc1cdeaa498cf6ef6bef",
+      "trace_digest": "cc00d3e3e3656af9e3f888e6f5260a91a6cfcc5be4d8d0c1904c6c6da2d96f09"
+    },
+    {
+      "index": 42,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\42\\trace.jsonl",
+      "sha256": "50e5a65309de3a0482ec7c4f48165b84306a133d46dfd9e54edefdedd15ffecf",
+      "trace_digest": "5fcc85f4799d9dff2998418abe64914733ab884ea82875469763311701206ce9"
+    },
+    {
+      "index": 43,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\43\\trace.jsonl",
+      "sha256": "ea21202c55c924bfc33380e40f6fe39486a964318484a436e0fa24b74bb02138",
+      "trace_digest": "51d11f3dd109c75c202776394155f6a4b66ca78fc20e89d20e72e268f7f75dc1"
+    },
+    {
+      "index": 44,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\44\\trace.jsonl",
+      "sha256": "abf66c7189a715cea7a581906c5a9bd14452a7714c1477ceaa77c61f2c72021e",
+      "trace_digest": "240b32fe99e58b0856ff9a4a6249639755be1374020e403033be19d245bfbe6e"
+    },
+    {
+      "index": 45,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\45\\trace.jsonl",
+      "sha256": "619963aa5672594affe4aa93eb687e8fbeace4fb2db5d55b9ddfe974d288387b",
+      "trace_digest": "4928c274929e9c8b8d481dac79962395d5e8081c524b683bfc6e129645eb1188"
+    },
+    {
+      "index": 46,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\46\\trace.jsonl",
+      "sha256": "32af2a3d67ef6bfcfc4254c651caef0316d96bc1ca9162212d31f2521fa25129",
+      "trace_digest": "6f37eb266cf44b60f619ea65ee109c2436717335e6607a8e8ab06baee187cc5e"
+    },
+    {
+      "index": 47,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\47\\trace.jsonl",
+      "sha256": "cf5a441ca4129e623aface1ad8d1f42e55a5a2dd449102d895f08c4e596dec27",
+      "trace_digest": "38de5f24299813d66b24bf5cf1f7b667e4b873c91c1508350c47eeeef6abd324"
+    },
+    {
+      "index": 48,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\48\\trace.jsonl",
+      "sha256": "3ef52bce03a2fad24b299a4af0b6b82a2934aae3d2d80b7742432b206a16ee1f",
+      "trace_digest": "96a8bc5d17dc05177dc1e2bcfcc5d12688c13fa044e2b24b892be4227c3ba48d"
+    },
+    {
+      "index": 49,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\49\\trace.jsonl",
+      "sha256": "8366c41a6e776f7415b19f8c51883141ffc9567bf540b2c2aa69f0e708965cd7",
+      "trace_digest": "8bc152b11aac4ad5cbca9293f6858f1062e03f76ae917210204d200e4a45bb07"
+    },
+    {
+      "index": 50,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\50\\trace.jsonl",
+      "sha256": "1cf08f2338874e3ea5f34c2c0a93a3c30484157ceada93a304666bf177436ae9",
+      "trace_digest": "53a34061352786986960afaddb95b20198e2e932f805e22dd66977b3eb052dbd"
+    },
+    {
+      "index": 51,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\51\\trace.jsonl",
+      "sha256": "7d7f7d6bc286f41794f65c0384a62ef3ad3281ed1f0e81dce5e12b4c4e836c9c",
+      "trace_digest": "ee36828f6586be0cf9737a5ee4f7fd343849ee0683b92d034148103fc14e65fe"
+    },
+    {
+      "index": 52,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\52\\trace.jsonl",
+      "sha256": "662a7a732075f0d0b78340d43d4d7f201f07e277c6036c305f781d731fb84994",
+      "trace_digest": "2feff88dbdf69ba9af77c9f8b89a522e359bb2fa5941503bae167050cac28406"
+    },
+    {
+      "index": 53,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\53\\trace.jsonl",
+      "sha256": "87c1c90a7e07b543fbc6c92064f7a35196f43d3cda347c6838773e9dec27ddf4",
+      "trace_digest": "487f7c2da9299fca007e222f9f62cb4eacb879c5b4dc6226bd0eebb7acbe5976"
+    },
+    {
+      "index": 54,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\54\\trace.jsonl",
+      "sha256": "16339e54237a3b4ddae93a8e59d6e3a1fdb79b6093d15270fb4e108a0c7a81e4",
+      "trace_digest": "93f76d228958e4d67b067935dd27d005eef894d90ed2be775c499364b00b5402"
+    },
+    {
+      "index": 55,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\55\\trace.jsonl",
+      "sha256": "0bdafef378bd908dae3ad3a0a9eb57fc864bdbc9593acbf02ae9881294dbc800",
+      "trace_digest": "3223b25c01a0810d720417dad2fa02a2138ccef8bb904b0b92f77cea7ca54ceb"
+    },
+    {
+      "index": 56,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\56\\trace.jsonl",
+      "sha256": "94426fab0f28a78875b383b67361f911b6e701a210931d5d6bd4d4c14ccd594b",
+      "trace_digest": "ecfe9d567f8fb1fdeccdea595df10e275763a1f6e7c97fdd241c18e6e157f20a"
+    },
+    {
+      "index": 57,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\57\\trace.jsonl",
+      "sha256": "1ee9cd981a01f91d51c15558aa9757265f7845ed3242f5dd71db535bb33a89be",
+      "trace_digest": "41f738cc1111aaec1f71621ae8d800d28ee40b782bf82998dca56dc6615a2631"
+    },
+    {
+      "index": 58,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\58\\trace.jsonl",
+      "sha256": "05ae533c39c8ff675c53eef842c37dba0e5a368367ea384c8c111eee18950906",
+      "trace_digest": "a85220d4747c6a49e6f528cd0d1e294a3e6d247f485206c6315b04c89fb561b5"
+    },
+    {
+      "index": 59,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\59\\trace.jsonl",
+      "sha256": "25b1e28537fea179f74fd1af4d706d5530170f3ded3c5ce458ca8fe1d024552d",
+      "trace_digest": "7c1545537f4b97f5fc8a2ea955d1e80620b2f0075ee0c60334e42ce2757bd67e"
+    },
+    {
+      "index": 60,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\60\\trace.jsonl",
+      "sha256": "c7cbaa387391a232283c13b30ffcb2eee28d15f58ccc0e4e4e67d257629660a0",
+      "trace_digest": "74113c080e77529edc25171199b40656b964b64df928b94f19fa609a471edee9"
+    },
+    {
+      "index": 61,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\61\\trace.jsonl",
+      "sha256": "185bdda17da86d0ddf893814e8798e906ef3431fb71b09d306b18789044e1ba9",
+      "trace_digest": "57485c0eea20fb646907e70497eeb9bd0cf25c7edd37aa77c446d42ce67b0ea0"
+    },
+    {
+      "index": 62,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\62\\trace.jsonl",
+      "sha256": "bbb2ac6c3a29f0646a03f39b3b0329f73786b6a4afd01a0963872b4286c4f762",
+      "trace_digest": "cbe6a8a3beb83663a97af3b7eac9aa922681a959a18879ed87be8e4ffcdbe2c0"
+    },
+    {
+      "index": 63,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\63\\trace.jsonl",
+      "sha256": "1af531348a291931c9c4a78b80ef5c5a1067c136bfe2a2ad146ae697afabc543",
+      "trace_digest": "3ce5a22fa17edd27b486831a4401f51ad83a2c24e972bf9c2e9d3f78cb9e65d2"
+    },
+    {
+      "index": 64,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\64\\trace.jsonl",
+      "sha256": "acb129b306caac788d4ffa1f95c91092fbe534d57744270a74ea7fc023ae19fe",
+      "trace_digest": "ca9f37f90b774331cbceacf3500b02d0f560d74481da1903c50701432a1ab309"
+    },
+    {
+      "index": 65,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\65\\trace.jsonl",
+      "sha256": "6b04b657f29b7da3908c601cc1c9382d28a2413bdba198f4b6fcc97e08b6fe9d",
+      "trace_digest": "e1bc07ecfbbfde012a80f0d33ab9ae3b3682d834ec0f824839e0595005556d88"
+    },
+    {
+      "index": 66,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\66\\trace.jsonl",
+      "sha256": "da243abdbe8f177c4abcb900af2b9776f2acbedf91a4d118f3bf92d344b8ca30",
+      "trace_digest": "0878ef3325303b91fb94e3f96e4ff6d8b018bc6d8e4db45f06c97f9290c347d4"
+    },
+    {
+      "index": 67,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\67\\trace.jsonl",
+      "sha256": "2d4e9f1f63c93b38bcdb6c9a4df29c67d6cc5d0da6913bffe422359a233f93f7",
+      "trace_digest": "06062362c52391c63a00a0d6697ae012c039415540ed24771ea205e0718786d0"
+    },
+    {
+      "index": 68,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\68\\trace.jsonl",
+      "sha256": "40142f9eb0a34e9b59bcb9d066568acecc05c6856c6985067f007ba9e459e298",
+      "trace_digest": "6e20e35476bd983bc294079ba8e2f04ee0a0b43add9779357e36d11b9a45d3fb"
+    },
+    {
+      "index": 69,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\69\\trace.jsonl",
+      "sha256": "41dd21f90e8b7d0ab1b4494f86788625e32b63868650b5399a8b82349d7f77c3",
+      "trace_digest": "60ee4d1c95e2fb48d3a3e19a2a63ca21fee8dcd42241328092e401ae1c4fb96d"
+    },
+    {
+      "index": 70,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\70\\trace.jsonl",
+      "sha256": "19ff1091d5eaac39bea9d4eecbb1b20e585a62b6a2c79469c1761b91057aba8f",
+      "trace_digest": "24e4bfcf0cb294e275de25e209eaf70b8c542660f13226a269183c69a7e51abb"
+    },
+    {
+      "index": 71,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\71\\trace.jsonl",
+      "sha256": "3b451888dfac60b62f54fc06166df139a12cbc19bd95bb4e48b60d74d82a7e71",
+      "trace_digest": "457a9c93fd46c3e46b4e0ac2f82cecfe15b88e9e8dd1c5a179493b3169180f4b"
+    },
+    {
+      "index": 72,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\72\\trace.jsonl",
+      "sha256": "d67993377eba7d0540123f047cc7e7cad2fbca01b8e7a5659215ee04b085aed4",
+      "trace_digest": "59eb9569b83b0dcdbfd662bdf600ebbea4a39c40dad36d106e9aef05100e6bb9"
+    },
+    {
+      "index": 73,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\73\\trace.jsonl",
+      "sha256": "b94f339a9f95c86a4f399c04bad09ab3c3830d878424d52e9c0617e55ac998ad",
+      "trace_digest": "56f9b597c135be6b76b945d518882c994df6688933442d43efebd86c254de334"
+    },
+    {
+      "index": 74,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\74\\trace.jsonl",
+      "sha256": "19c90be7815f391b2fa3ebcdb7c7efa754cd64a881a02331b31ccceeb86fb836",
+      "trace_digest": "024d2a707f286a2bf784d71a1f7e8a9418555dd6fe181c238e59d465d38c22b7"
+    },
+    {
+      "index": 75,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\75\\trace.jsonl",
+      "sha256": "4acd3805a84acd7b115e8b14a0ac3a6f596b9be388e87c904e372e3daf61d7b4",
+      "trace_digest": "5361b55e892a6f3aa2d775ccd688f932422270309351a4192ea0d50281964ffe"
+    },
+    {
+      "index": 76,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\76\\trace.jsonl",
+      "sha256": "c71ddadd6998c4fa56a963f59ccc53125ef86dfc28dd857e2737df377c4bc355",
+      "trace_digest": "5fbbda0ed972a6acd0cc7b3b0a330b0c65750ddd71018cd06a71ae28d8b13f47"
+    },
+    {
+      "index": 77,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\77\\trace.jsonl",
+      "sha256": "47b660ac4fcb1a68ea0689e25727e579cc8837009cd639e6e034471f917da42f",
+      "trace_digest": "8a5c2f9ba2038838ae8722e7b18ed8b6c15c5341dc6f46007c02f72844a25da4"
+    },
+    {
+      "index": 78,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\78\\trace.jsonl",
+      "sha256": "b4e2193ce60a174f59f6760b339d034bb17b6599b904096aa8a928804ac8d4a7",
+      "trace_digest": "a33d40e127cdb32625b931a72b4590dad2e8c8093e5d4fd7a573194acfdaba0b"
+    },
+    {
+      "index": 79,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\79\\trace.jsonl",
+      "sha256": "6f4e80214490bf5e0d68153cfc3e2c8f6bff28167d056ae0151fd6a2ef470fde",
+      "trace_digest": "b50effe1fcbe23da6df2863100cf82445bb7bfb5c438ed2bd7baed32a67f5434"
+    },
+    {
+      "index": 80,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\80\\trace.jsonl",
+      "sha256": "4b86627e427d6b3df27b3940cd801c6c170fc03481226e8d47672aacea5f7c1e",
+      "trace_digest": "40c97b1c430cd54328ca1e2281a98d1b0fc0b762ac4b31896ae3d20d1e007d09"
+    },
+    {
+      "index": 81,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\81\\trace.jsonl",
+      "sha256": "938ef781d7b278b0c764f9cea575e5c97f798354239cdf890e573cff47a67bdc",
+      "trace_digest": "4db85d31270bdb7527c42f6ac28dee2537b7296e38fe190d58ef4e1e793f6187"
+    },
+    {
+      "index": 82,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\82\\trace.jsonl",
+      "sha256": "51503e88be06e80ab44b0e4f79d1de374a900690ffc448971098d222a98ca0e8",
+      "trace_digest": "ab61ec10189f4dc0e522f8d68abbc100d3ad45c09682dbcab8cd364db423b58f"
+    },
+    {
+      "index": 83,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\83\\trace.jsonl",
+      "sha256": "97fac00d3da79429792b25deba41c446f53e8df1dab87b12eee065eb27a3a14f",
+      "trace_digest": "5034da0a9f4afd0e436722bf2ea6f09d7696a0b6397dff8f94e8c852154d20f2"
+    },
+    {
+      "index": 84,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\84\\trace.jsonl",
+      "sha256": "9d6fed797435049f7980af5cb9e05cf21471acdfa2afdd589ff17b816312b6fb",
+      "trace_digest": "833dd4b1550f2278f3209dcd10b7379c2eaf073ea9c78ab04baddc7048a6547b"
+    },
+    {
+      "index": 85,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\85\\trace.jsonl",
+      "sha256": "c208f92fd63b7adcca704b1c5332f6422e62349163d29b2d83bd87b87023f285",
+      "trace_digest": "8ebabc7342f34656a8a9f376a876058115912fd9110883152102ffa68341e43a"
+    },
+    {
+      "index": 86,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\86\\trace.jsonl",
+      "sha256": "ad4e252456b4eab94a5dcf4c0749315ebf63bfbca9a59e4a2811e4b5765e71fc",
+      "trace_digest": "12a79ff75fdb20a9daa103ee1874ba66475f697812d613a3c177e8aff9babbed"
+    },
+    {
+      "index": 87,
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\exploration-extended-checks\\live-r3\\test_full_88_cell_real_docker_0\\runs\\87\\trace.jsonl",
+      "sha256": "76e09bfae18a26d76ec74067953acb6049d109b621d09c81a80e7028b62e63c1",
+      "trace_digest": "b6c15ebb51ef1d6adf989f1fccb5a6af045b1ff3c9240fb0febd1d92cf710e6f"
+    }
+  ],
+  "scope": "train-only public synthetic adapters and local synthetic model port; no paid/network/provider or validation I/O",
+  "p0_changed": false,
+  "scientific_efficacy_established": false,
+  "common_controller_wiring": "parent-owned; isolated test installs drivers explicitly",
+  "old_evidence_overclaim": "separate actual-Docker adversarial test; standard candidate unchanged to fixed P0"
+}
