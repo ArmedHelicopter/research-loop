@@ -16,7 +16,7 @@ from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import FrozenRecord, PublicTask, DataIdentity
 from research_loop.modular.lineage_combination_driver import _transition, _source_binding, _MemoryLog, _read_events, _verify_solver_files
 from research_loop.modular.lineage_combination_material import FrozenLineageMaterial, DualMaterialVerifier, check_material_inputs
-from research_loop.modular.modules.context import ContextCache
+from research_loop.modular.modules.context import ContextCache, ContextBuilder
 from research_loop.modular.modules.evidence import EvidenceLedger, ClaimLedger
 from research_loop.modular.modules.improvement import CandidatePackage
 from research_loop.modular.modules.retrieval import FrozenSourceBundle
@@ -27,7 +27,7 @@ from research_loop.modular.retrieval_review_combination_driver import (
     admission_receipt, _verify_sources, public_retrieval, BUDGET)
 from research_loop.modular.runtime import AuditVerifier, RunSession
 from research_loop.modular.workflow import ModularWorkflow
-from research_loop.ontology import ContractError
+from research_loop.ontology import ContractError, canonical
 
 DESIGNS = {'pair:M1+M6': ('M1', 'M6'), 'pair:M2+M6': ('M2', 'M6'), 'pair:M3+M6': ('M3', 'M6')}
 SLOTS = ('analysis_program', 'final_answer')
@@ -103,8 +103,14 @@ def _validate(panel, cell, task, scenario, package, material, source_verifier, r
         'design_digest': panel.design.content_hash, 'task_digest': task.content_hash,
         'replicate': cell.replicate, 'material_digest': material.record.content_hash,
         'source_verifier_binding': source_verifier.binding().data(),
-        'retrieval_verifier_binding': retrieval_verifier.binding().data()}
-    if scenario.data() != expected:
+        'retrieval_verifier_binding': retrieval_verifier.binding().data(),
+        'objective': scenario.data().get('objective'), 'image': scenario.data().get('image'),
+        'timeout_seconds': scenario.data().get('timeout_seconds')}
+    from research_loop.modular.benchmarks.execution import ExecutionRequest
+    if not isinstance(expected['objective'], dict) or not expected['objective']:
+        raise ContractError('scenario must freeze the public solver objective')
+    ExecutionRequest(task.identity, expected['image'], Path('analysis.py'), {}, expected['timeout_seconds'])
+    if type(expected['timeout_seconds']) is not int or scenario.data() != expected:
         raise ContractError('scenario must freeze exact material and configured authority keys')
     docs = check_retrieval(material.retrieval(), task)
     if freeze_material(task, state, material.retrieval().data()['original_sources'], material.retrieval().data()['query']['question']) != material:
@@ -138,6 +144,8 @@ def run_state_retrieval_cell(*, panel, cell, task, scenario, package, material, 
             or type(timeout_seconds) is not int or not 1 <= timeout_seconds <= 120):
         raise ContractError('closed runtime dependencies required')
     check_material_inputs(state, task, broker, public_inputs)
+    if objective.data() != scenario.data()['objective'] or image != scenario.data()['image'] or timeout_seconds != scenario.data()['timeout_seconds']:
+        raise ContractError('runtime objective or execution allocation differs from frozen scenario')
     binding = _source_binding(cell)
     source_path = sidecar / 'source-verification.json'
     source_hash = source_verifier.qualify(state, source_path, cell_binding=binding)
@@ -168,7 +176,9 @@ def run_state_retrieval_cell(*, panel, cell, task, scenario, package, material, 
             driver_id=cell.coverage_id, timeout_seconds=timeout_seconds)
     except Exception as exc:
         if not session._terminal:
-            session.controller_failure(driver_id=cell.coverage_id, error_type=type(exc).__name__, panel_cell=opaque_panel_cell_binding(cell))
+            session.controller_failure(driver_id=cell.coverage_id, error_type=type(exc).__name__, panel_cell={
+                'experiment_id': cell.coverage_id, 'variant': cell.variant, 'replicate': cell.replicate,
+                'arm_id': cell.arm_id, 'scenario_digest': cell.scenario_digest})
     status = 'succeeded' if solver is not None and solver.status == 'execution_succeeded' else 'failed'
     return StateRetrievalResult(cell, _runtime(cell, session, joint, status), solver, transition, retrieval, joint)
 
@@ -183,6 +193,11 @@ def verify_state_retrieval_cell(result, *, panel, task, scenario, package, mater
     check_material_inputs(state, task, broker, public_inputs)
     PanelReceiptVerifier()._verify_runtime(result.runtime, cell)
     path = result.runtime.trace_path; events = _read_events(path); binding = _source_binding(cell)
+    lock = events[0]['data']
+    if (lock['objective'] != scenario.data()['objective'] or lock['slots'] != list(SLOTS)
+            or lock['execution_limit'] != 1 or lock['context_budget'] != state.data()['context_budget_bytes']
+            or lock['required_audit'] != ['measurement']):
+        raise ContractError('runtime allocation or objective differs from frozen scenario')
     source_path = path.parent.parent / 'source-verification.json'
     source_hash = source_verifier.replay(state, source_path, cell_binding=binding)
     retrieval_hash = retrieval_verifier.replay(material, path.parent.parent / 'retrieval' / 'source-verification.json', cell_binding=binding)
@@ -223,10 +238,22 @@ def verify_state_retrieval_cell(result, *, panel, task, scenario, package, mater
         solver_state = _solver_journal_state(events); _compare_solver_result(result.solver, solver_state)
         if result.runtime.status != ('succeeded' if solver_state['status'] == 'execution_succeeded' else 'failed'):
             raise ContractError('solver failure was relabeled')
+        mode = 'candidate' if 'M3' in cell.runtime_arm.data()['enabled'] else 'baseline'
+        public_context = ContextBuilder(task.identity, budget_bytes=state.data()['context_budget_bytes'])
+        cache = ContextCache()
         for request in requests:
+            claims.refresh_after_withdrawal()
+            expected_context = cache.get_or_build(public_context, canonical(task.payload.data()), evidence, claims,
+                mode=mode, baseline_summary='').public_data()
+            if request['context'] != expected_context:
+                raise ContractError('model evidence context differs from actual post-transition state')
             context = request['module_context']
             if context.get('joint_mechanism') != joint.data() or context.get('joint_mechanism_digest') != joint.content_hash:
                 raise ContractError('solver omitted the actual state or retrieval context')
         _verify_solver_files(solver_state, events, path, state)
+        execution = solver_state['execution']
+        if execution is not None and execution.record.data().get('argv'):
+            if execution.record.data()['argv'][-3:] != [scenario.data()['image'], 'python3', '/task/analysis.py']:
+                raise ContractError('Docker execution image differs from frozen scenario')
     return FrozenRecord.from_dict({'schema': 'state-retrieval-verification-v1', 'engineering_verified': True,
         'cell_key': list(cell.key), 'status': result.runtime.status, 'scientific_effect': 'not_measured'})

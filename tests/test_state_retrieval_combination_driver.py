@@ -115,7 +115,8 @@ def fixture(root, obligation, source_fault=None):
         material=freeze_material(task,state_material(task,path,obligation=='pair:M1+M6'),docs,'Which observations distinguish the public explanations?')
         scenario=FrozenRecord.from_dict({'schema':'state-retrieval-combination-scenario-v1','obligation_id':obligation,
             'design_digest':design.content_hash,'task_digest':task.content_hash,'replicate':'r1','material_digest':material.record.content_hash,
-            'source_verifier_binding':source.binding().data(),'retrieval_verifier_binding':retrieval.binding().data()})
+            'source_verifier_binding':source.binding().data(),'retrieval_verifier_binding':retrieval.binding().data(),
+            'objective':{'goal':'public synthetic check'},'image':IMAGE,'timeout_seconds':20})
         for arm in design.data()['cells']:
             cell=PanelCell(obligation,task.identity,'r1','combination',arm['id'],FrozenRecord.from_dict(arm['arm']),task.content_hash,
                 scenario.content_hash,package.digest,'d'*64)
@@ -213,7 +214,7 @@ def test_original_material_files_and_signatures_are_rechecked(grid,fault):
     finally: path.write_bytes(before)
 
 
-@pytest.mark.parametrize('fault',['transition','source_item','source_budget','retrieval_projection','state_journal','joint','request_context','response_program','order'])
+@pytest.mark.parametrize('fault',['transition','source_item','source_budget','retrieval_projection','state_journal','joint','request_context','evidence_context','response_program','order'])
 def test_rehashed_forgeries_fail_independent_replay(grid,fault):
     result,args,*_=next(row for row in grid if row[0].cell.coverage_id=='pair:M3+M6' and row[0].cell.arm_id=='11')
     path=result.runtime.trace_path; before=path.read_bytes()
@@ -231,13 +232,29 @@ def test_rehashed_forgeries_fail_independent_replay(grid,fault):
         if fault=='retrieval_projection': next(e for e in events if e['stage']=='retrieval_review_sources')['data']['projection']['by_lane']['counter']=[]
         if fault=='joint': next(e for e in events if e['stage']=='state_retrieval_joint')['data']['joint']['state_projection']['observations']=[]
         if fault=='request_context': next(e for e in events if e['stage']=='model_request')['data']['request']['module_context']['joint_mechanism']['retrieval']['by_lane']['counter']=[]
+        if fault=='evidence_context': next(e for e in events if e['stage']=='model_request')['data']['request']['context']={}
         if fault=='response_program': next(e for e in events if e['stage']=='model_response')['data']['response']['program']='print(99)'
         if fault=='order':
             row=next(e for e in events if e['stage']=='state_retrieval_transition'); events.remove(row)
             events.insert(next(i for i,e in enumerate(events) if e['stage']=='model_request')+1,row)
     try:
-        digest=_rewrite_trace(path,mutate)
-        forged=replace(result,runtime=replace(result.runtime,trace_digest=digest))
+        def rehash_attack(events):
+            mutate(events)
+            # Repair request/response references, then outer chain and receipt output.
+            for event in events:
+                if event['stage']=='model_request':
+                    old=event['data']['request_digest']; new=FrozenRecord.from_dict(event['data']['request']).content_hash
+                    event['data']['request_digest']=new
+                    for other in events:
+                        if other['stage'] in ('model_response','model_failure') and other['data']['request_digest']==old:
+                            other['data']['request_digest']=new
+        digest=_rewrite_trace(path,rehash_attack)
+        events=[FrozenRecord(line).data() for line in path.read_text(encoding='utf-8').splitlines()]
+        output=FrozenRecord.from_dict({'responses':[e['data']['response'] for e in events if e['stage']=='model_response'],
+            'terminal':events[-1]['data']}).content_hash
+        forged=replace(result,runtime=replace(result.runtime,trace_digest=digest,output_digest=output))
+        from research_loop.modular.panel_receipts import PanelReceiptVerifier
+        PanelReceiptVerifier()._verify_runtime(forged.runtime,forged.cell)
         with pytest.raises(ContractError): verify_state_retrieval_cell(forged,**args)
     finally: path.write_bytes(before)
 
@@ -247,7 +264,7 @@ def test_exact_family_material_types_and_signed_corpus_admission_precede_io(tmp_
     seen=[]; provider_calls=[]
     with pytest.raises(ContractError):
         run_state_retrieval_cell(cell=cell,**args[cell.key],provider=Provider(provider_calls),model=model(seen),
-            objective=FrozenRecord.from_dict({'goal':'synthetic'}),sidecar=tmp_path/'failed',image=IMAGE,
+            objective=FrozenRecord.from_dict({'goal':'public synthetic check'}),sidecar=tmp_path/'failed',image=IMAGE,
             audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}))
     assert len(sources)==len(retrieval)==2 and not seen and not provider_calls
     b=registered_design('pair:M3+M6','a'*64).data(); assert b['background']==['M2']
