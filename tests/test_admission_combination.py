@@ -316,3 +316,14 @@ def test_gate_reacts_to_actual_qualified_state_without_variant_labels(grid,tmp_p
         actual=transition(e,c,ContextCache(),material,enabled,facts).data()
         assert len(actual['public']['observations'])==(0 if enabled and state!='valid' else 5)
         assert all(v['admitted'] is bool(enabled and state=='valid') for v in actual['decisions']['before'].values())
+
+
+@pytest.mark.parametrize('fault', ['v2_only', 'v1_flag', 'v2_flag', 'lineage_reference'])
+def test_shared_source_merge_keeps_admission_v1_closed(tmp_path, fault):
+    _, _, config, _, _ = fixture(tmp_path, sources([]))
+    body = config.data()
+    if fault.startswith('v2'): body['schema'] = 'admission-combination-train-config-v2'
+    if fault.endswith('flag'): body['export_mode'] = 'primary_prospective'
+    if fault == 'lineage_reference': body['lineage_reference_binding'] = {}
+    with pytest.raises(ContractError, match='closed lineage train scope'):
+        FrozenAdmissionTrainConfig(FrozenRecord.from_dict(body))
