@@ -3,7 +3,44 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Current useful-output control checkpoint (2026-09-13)
+## Current lineage review and qualification parity checkpoint (2026-09-13)
+
+Source `33296e4` passed 25 integrated checks with all 490 frozen source/document
+hashes unchanged. The seven lineage/admission panels now have an explicit v3
+primary-TRAIN recipe that retains both actual review outputs in every solver
+arm. M5-off uses sequential revision; M5-on uses the actual sealed review barrier.
+The original v1/v2 recipes and historical results remain separate.
+
+The closed grid includes 58 new-recipe cells, 24 drifting-qualification cells
+and 24 legacy admission cells: 106 actual bounded Docker executions and
+independent process scores, with 424 synthetic model calls. The normal v3
+admission grid retained three estimated contrasts and six semantically uniform
+task/pair groups. In the drift grid, every cell remained scored, but all three
+contrasts became inconclusive because the consumed qualification state differed
+across arms. The two structurally incomplete lineage contrasts remain
+`not_identifiable`. See [useful review controls](LINEAGE-USEFUL-CONTROLS.md) and
+[qualification parity](V3-ADMISSION-QUALIFICATION-PARITY.md).
+
+The root archive contains 12 files and 3,615 verified ZIP members under
+`results/modular-engineering-20260913/lineage-parity-root/`. Its earlier archive
+contains 18 indexed files and 5,437 members verified against actual and Git
+bytes. An initial audit used the wrong directory and a mistyped count; both
+that report and its correction are retained. Unlocated earlier parity test
+reports are not counted as proof; this source's original before/after and
+JUnit reports establish the current checkpoint.
+
+These are synthetic functional checks, not efficacy or throughput estimates.
+No actual model generation or validation access occurred in this checkpoint.
+Coverage remains 10/36 pairs and 2/5 triples pending complete verification of
+the new state/prediction and state/retrieval families. Real TRAIN effects,
+calibration, the remaining combinations and frozen validation remain open.
+
+The current deployment constraint permits no additional API fees. Grok CLI
+`grok 4.6` is authorized as a runtime candidate; its actual invocation and
+capacity/usage contract still need verification. The historical HTTP pricing
+contract is not satisfied by treating subscription quota as a zero USD tariff.
+
+## Prior useful-output control checkpoint (2026-09-13)
 
 Source `c846ea8` passed 25 integrated checks with 486 unchanged frozen
 source/document files. The explicit M4/M5 v3 primary-TRAIN configuration now

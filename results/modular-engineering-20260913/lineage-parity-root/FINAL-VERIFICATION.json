@@ -1,0 +1,30 @@
+{
+  "source_commit": "33296e42c875d6c407e9de5f59e71418989d411c",
+  "junit": {
+    "tests": 25,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "source_files": 490,
+  "source_unchanged": true,
+  "zip_members": 3615,
+  "zip_sha256": "82f54a2df2ab2d8df13c5f17d4caede9fa8537e2004109321f27aa247d35041e",
+  "total_actual_docker_cells": 106,
+  "total_scorer_opportunities": 106,
+  "total_fixture_model_calls": 424,
+  "normal_v3_admission_contrasts": "3 estimated with 6 semantically uniform task/pair groups",
+  "drifting_v3_admission_contrasts": "3 inconclusive with all 24 scored cells retained",
+  "historical_parity_report_claims": "not included as proof; original reports not located",
+  "audit_r1": "wrong lookup path and member-count typo retained; r2 verifies actual integration archive",
+  "exclusions": [
+    "private synthetic fixture reference stores",
+    "preparation files",
+    "keys",
+    "symlinks"
+  ],
+  "new_paid_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false,
+  "scope": "synthetic functional integration; concurrency prevents throughput inference"
+}

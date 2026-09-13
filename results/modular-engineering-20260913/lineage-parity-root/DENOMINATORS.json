@@ -1,0 +1,89 @@
+{
+  "test_all_58_cells_use_actual_r0": {
+    "cells": 34,
+    "docker": 34,
+    "source_calls": 68,
+    "scorer_calls": 34,
+    "model_usage": {
+      "known_model_tokens": 272,
+      "model_calls": 136,
+      "model_usage_incomplete": false
+    },
+    "contrast_statuses": [
+      "not_identifiable",
+      "estimated",
+      "estimated",
+      "not_identifiable"
+    ],
+    "semantic_distinct_counts": [],
+    "controller_receipt_sha256": "5a83b460250c508563483608584f953cfcad40d98a5c612b61beffd5444998c1"
+  },
+  "test_all_58_cells_use_actual_r1": {
+    "cells": 24,
+    "docker": 24,
+    "source_calls": 48,
+    "scorer_calls": 24,
+    "model_usage": {
+      "known_model_tokens": 192,
+      "model_calls": 96,
+      "model_usage_incomplete": false
+    },
+    "contrast_statuses": [
+      "estimated",
+      "estimated",
+      "estimated"
+    ],
+    "semantic_distinct_counts": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "controller_receipt_sha256": "6a98b6f479367c99479c7a66a85eba13d81803a3f2a7227da4f12708978adea3"
+  },
+  "test_v3_admission_qualificatio0": {
+    "cells": 24,
+    "docker": 24,
+    "source_calls": 48,
+    "scorer_calls": 24,
+    "model_usage": {
+      "known_model_tokens": 192,
+      "model_calls": 96,
+      "model_usage_incomplete": false
+    },
+    "contrast_statuses": [
+      "inconclusive",
+      "inconclusive",
+      "inconclusive"
+    ],
+    "semantic_distinct_counts": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "controller_receipt_sha256": "7493da3a13411dade2c4daead255b2e8a709f5f09d34734670afbd1b4fd0ef87"
+  },
+  "admission-grid0": {
+    "cells": 24,
+    "docker": 24,
+    "source_calls": 48,
+    "scorer_calls": 24,
+    "model_usage": {
+      "known_model_tokens": 192,
+      "model_calls": 96,
+      "model_usage_incomplete": false
+    },
+    "contrast_statuses": [
+      "estimated",
+      "estimated",
+      "estimated"
+    ],
+    "semantic_distinct_counts": [],
+    "controller_receipt_sha256": "38b1b30199ce6be351145a7ffa8f9457342e2a61e3bab25673192cab01394b36"
+  }
+}

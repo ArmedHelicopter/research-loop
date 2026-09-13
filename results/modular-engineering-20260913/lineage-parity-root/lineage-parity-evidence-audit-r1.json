@@ -1,0 +1,50 @@
+{
+  "schema": "lineage-parity-evidence-audit-r1",
+  "audit_scope": {
+    "performed_at": "2026-09-13",
+    "repository": "E:/_ryanDev/AI/ai4s-gate",
+    "root_integration_head": "now33296e42c875d6c407e9de5f59e71418989d411c",
+    "git_head_observed": "0be7dd6fdb53283645d558df16e80dff1f80b476",
+    "read_policy": "bounded metadata and hashes only; no settings, private references, or document bodies read"
+  },
+  "lineage_useful_controls": {
+    "path": "E:/_ryanDev/AI/research-loop-modular/work/results/modular-engineering-20260913/lineage-useful-controls",
+    "exists": false,
+    "claimed_file_count": 18,
+    "claimed_zip_member_count": 543,
+    "actual_file_count": null,
+    "actual_zip_member_count": null,
+    "sha256_index_verification": "not_verifiable_missing_tree",
+    "git_blob_verification": "not_verifiable_missing_tree",
+    "zip_member_index_verification": "not_verifiable_missing_tree",
+    "scope_exclusions_preserved": true,
+    "status": "missing"
+  },
+  "actual_calibration_deployment_preflight": {
+    "manifest": "E:/_ryanDev/AI/research-loop-modular/work/actual-calibration-deployment-preflight-r2/evidence-manifest.json",
+    "indexed_file_count": 12,
+    "actual_file_count": 12,
+    "indexed_bytes_total": 162308,
+    "byte_count_matches": true,
+    "sha256_matches": true,
+    "indexed_files": [
+      "claude-capability.json", "claude-native-capability.json", "claude-native-help.bin",
+      "claude-provider-metadata.json", "local-metadata.json", "preflight-result.json",
+      "PREFLIGHT.md", "provider-docs-app.js", "provider-docs-data.js",
+      "provider-docs-index.html", "provider-public-pricing-metadata.json",
+      "provider-public-pricing-response.bin"
+    ],
+    "private_settings_or_private_references_indexed": false,
+    "public_docs_or_pricing_present": true,
+    "public_evidence_assessment": "metadata indicates provider documentation assets and public pricing response are included; suitable as public-source evidence only for provenance/reference claims, subject to independent source and timestamp validation"
+  },
+  "parity_reports": {
+    "bounded_search": "work top-level and immediate child directories with names containing qualification or parity",
+    "candidate_directory": "E:/_ryanDev/AI/research-loop-modular/work/lineage-parity-integrated-r1",
+    "junit_or_source_report_found": false,
+    "found_artifacts": "frozen-config.json files only; no JUnit/source result report",
+    "prior_claim": "24-cell drift1pass39.62s; helper1pass3.12s",
+    "status": "missing_report_no_proof_manufactured"
+  },
+  "overall_status": "qualified_missing_archive_and_parity_reports"
+}

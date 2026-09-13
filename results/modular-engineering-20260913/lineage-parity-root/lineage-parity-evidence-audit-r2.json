@@ -1,0 +1,35 @@
+{
+  "schema": "lineage-parity-evidence-audit-r2",
+  "source_repo": "E:/_ryanDev/AI/research-loop-modular/integration",
+  "source_head": "33296e42c875d6c407e9de5f59e71418989d411c",
+  "archive": {
+    "path": "results/modular-engineering-20260913/lineage-useful-controls",
+    "sha256_index_files": 18,
+    "sha256_index_matches_actual_bytes": true,
+    "git_head_blob_bytes_match_worktree": true,
+    "zip_archives": {
+      "lineage-useful-grid-r1": {"index_members": 2074, "zip_members": 2074, "member_hashes_match": true},
+      "lineage-useful-final-r1": {"index_members": 3363, "zip_members": 3363, "member_hashes_match": true}
+    },
+    "total_zip_members": 5437,
+    "scope_exclusions": ["private fixture reference stores", "fixture preparation", "key files", "symlinks"],
+    "status": "verified"
+  },
+  "preflight_manifest": {
+    "path": "work/actual-calibration-deployment-preflight-r2/evidence-manifest.json",
+    "indexed_files": 12,
+    "actual_files": 12,
+    "byte_counts_match": true,
+    "sha256_match": true,
+    "public_docs_or_pricing_present": true,
+    "private_settings_or_references_indexed": false,
+    "public_evidence_suitable": "yes for public provenance/reference claims, with source and timestamp validation"
+  },
+  "parity": {
+    "current_live": "10991 with before manifest; missing final is expected",
+    "prior_reports_found": false,
+    "prior_claim_unverified": "24-cell drift1pass39.62s; helper1pass3.12s",
+    "status": "prior_report_missing"
+  },
+  "r1_audit_status": "superseded_path_error_preserved"
+}

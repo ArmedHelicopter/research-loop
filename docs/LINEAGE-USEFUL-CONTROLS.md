@@ -47,3 +47,11 @@ qualification parity across arms. Its passing synthetic grids do not establish
 a controlled causal comparison under varying qualifiers. A separate repair
 must freeze or compare the exact consumed qualification state before admitting
 an estimated module contrast; existing scores and costs remain auditable.
+
+The subsequent integrated source `33296e4` repairs this issue for the explicit
+v3 admission recipe. It compares the exact consumed qualification semantics
+within each matched task/replicate and retains every row, call and score when
+drift prevents a contrast. The root 25-check run includes a normal 24-cell grid
+with three estimated contrasts and a drifting 24-cell grid with three
+inconclusive contrasts. The original checkpoint above remains historical;
+see [the parity contract](V3-ADMISSION-QUALIFICATION-PARITY.md).

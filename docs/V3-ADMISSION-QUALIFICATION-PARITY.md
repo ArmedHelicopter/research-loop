@@ -26,3 +26,19 @@ This is an engineering comparability guard, not an effectiveness or
 calibration result. Non-admission lineage material provenance only accepts or
 rejects the exact frozen material and is not consumed by its transition, so it
 does not use this variable-assessment parity gate.
+
+## Integrated verification
+
+Source `33296e42c875d6c407e9de5f59e71418989d411c` passed 25 checks with 490
+unchanged frozen files. The normal v3 admission run scored all 24 cells; its
+six matched task/pair groups each had one consumed-semantics digest and its
+three contrasts were estimated. The adversarial source run also scored every
+cell, but each group had two semantic digests and all three contrasts were
+inconclusive. Legacy admission and both lineage dependency restrictions kept
+their original contrast behavior.
+
+Original JUnit, before/after hashes, controller and process journals, replay
+forgeries, exclusions and derived denominator checks are archived in
+`results/modular-engineering-20260913/lineage-parity-root/`. The archive contains
+12 files and 3,615 independently rehashed ZIP members, all synthetic. Earlier
+isolated parity-test reports were not located and are not used as evidence.

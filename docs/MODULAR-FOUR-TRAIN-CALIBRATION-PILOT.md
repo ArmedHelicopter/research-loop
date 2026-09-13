@@ -111,3 +111,15 @@ Docker, validation lease, split or hold was used or changed by this work.
 [Verification metadata](calibration-pilot-verification.json) identifies the exact
 JUnit and source hashes. The actual pilot still requires independently reviewed
 material/reviewer services and reliable model/context/pricing ports.
+
+## Deployment budget constraint (2026-09-13)
+
+The current run has no additional API-fee budget. Existing subscription or
+local resources may be used; Grok CLI `grok 4.6` is an explicitly authorized
+candidate. This does not assert that a CLI is free, capacity-qualified or
+already integrated. A new subscription/quota deployment must bind its actual
+authentication, model, request limits and usage receipts without fabricating
+a zero-USD API tariff or silently changing this historical HTTP contract.
+The four-task/nine-category diagnostic, frozen rubric and TRAIN-only boundary
+remain unchanged. No direct DragonAPI generation is scheduled under this
+constraint.
