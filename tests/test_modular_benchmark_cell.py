@@ -9,6 +9,7 @@ import pytest
 
 from research_loop.modular import benchmark_cell
 from research_loop.modular.benchmark_cell import run_benchmark_cell, verify_linked_benchmark_cell, verified_mechanism_provenance
+from research_loop.modular.linked_public_projection import project_linked_public_context, verify_linked_public_context
 from research_loop.modular.benchmark_solver import run_benchmark_solve
 from research_loop.modular.benchmarks import BladeAdapter, DiscoveryBenchAdapter, DockerExecutionBroker
 from research_loop.modular.combinations import default_compatibility
@@ -58,7 +59,8 @@ def _model(seen: list[dict]):
         row = request.data(); seen.append(row); slot = row["slot"]
         if slot == "analysis_program":
             provenance = row["module_context"]["mechanism_provenance"]
-            assert provenance["responses"] and provenance["mechanism_stages"]
+            assert provenance["schema"] == "linked-public-mechanism-context-v1"
+            assert provenance["mechanism_material"] and provenance["final_candidate"]
             return FrozenRecord.from_dict({"analysis": "calculate the public x mean", "program":
                 "import csv\nwith open('/input/public_csv', newline='') as f:\n rows=list(csv.DictReader(f))\nprint(sum(float(r['x']) for r in rows)/len(rows))"})
         if slot == "final_answer":
@@ -93,9 +95,64 @@ def test_linked_cell_uses_verified_mechanism_in_both_solver_calls_and_live_docke
     assert result.solver.answer is not None and result.solver.answer.data()["conclusion"] == "The synthetic mean is 2.0."
     solver_requests = [row for row in seen if row["slot"] in {"analysis_program", "final_answer"}]
     assert len(solver_requests) == 2
-    assert all(row["module_context"]["mechanism_provenance"] == result.provenance.data() for row in solver_requests)
+    projection = project_linked_public_context(provenance=result.provenance, cell=cell, task=task, scenario=controlled)
+    assert all(row["module_context"]["mechanism_provenance"] == projection.data() for row in solver_requests)
+    assert all(row["module_context"]["predecessor_context"] == projection.data() for row in solver_requests)
+    assert all(row["module_context"]["panel_cell"] == projection.data()["opaque_panel_cell"] for row in solver_requests)
+    assert result.provenance.data()["arm"] == cell.runtime_arm.data()
+    encoded = projection.encoded
+    assert all(marker not in encoded for marker in ("arm_id", "runtime_arm", "package_digest", "cell_key", "variant", "responses", "mechanism_stages", "request"))
+    assert verify_linked_public_context(projection=projection, provenance=result.provenance,
+        cell=cell, task=task, scenario=controlled).content_hash == projection.content_hash
+    forged = projection.data(); forged["controller_input"] = {"forged": True}
+    with pytest.raises(ContractError, match="exact verified reconstruction"):
+        verify_linked_public_context(projection=FrozenRecord.from_dict(forged), provenance=result.provenance,
+            cell=cell, task=task, scenario=controlled)
+    forged_provenance = result.provenance.data(); forged_provenance["mechanism_stages"] = []
+    with pytest.raises(ContractError, match="typed mechanism evidence"):
+        project_linked_public_context(provenance=FrozenRecord.from_dict(forged_provenance), cell=cell,
+            task=task, scenario=controlled)
+    forged_provenance = result.provenance.data(); forged_provenance["responses"][0]["request"]["slot"] = "forged"
+    with pytest.raises(ContractError, match="matching request"):
+        project_linked_public_context(provenance=FrozenRecord.from_dict(forged_provenance), cell=cell,
+            task=task, scenario=controlled)
     assert verify_linked_benchmark_cell(result, task=task, scenario=controlled, package=package).data()["engineering_verified"] is True
 
+
+
+@pytest.mark.parametrize(("mechanism", "enabled", "kind"), [
+    ("Q1.5", "M5", "historical_review"),
+    ("Q3.1", "M4", "prediction_plan"),
+    ("Q4.3", "M5", "sealed_review"),
+])
+def test_public_projection_keeps_only_actual_enabled_mechanism_material(tmp_path: Path, mechanism: str,
+                                                                          enabled: str, kind: str) -> None:
+    task, controlled, package, base_cell = _material("discoverybench", mechanism)
+    arm = default_compatibility("base").arm([enabled])
+    cell = replace(base_cell, runtime_arm=arm, arm_id="projection-" + enabled.lower())
+
+    def review_aware_model(request: FrozenRecord) -> FrozenRecord:
+        if request.data()["slot"] in {"initial_review", "reveal_review", "mechanism_initial", "measurement_initial",
+                                       "mechanism_revision", "measurement_revision"}:
+            return FrozenRecord.from_dict({"assessment": "concern", "evidence_refs": ["public"],
+                                             "counterexamples": [], "uncertainty": "synthetic"})
+        return _model([])(request)
+
+    mechanism_result = benchmark_cell.run_train_cell(cell, task=task, scenario=controlled, package=package,
+        objective=FrozenRecord.from_dict({"q": "projection"}), sidecar=tmp_path / "mechanism",
+        model=review_aware_model, audit_verifier=_audit())
+    assert mechanism_result.runtime.status == "succeeded"
+    provenance = verified_mechanism_provenance(cell=cell, task=task, scenario=controlled,
+        package=package, mechanism=mechanism_result)
+    projection = project_linked_public_context(provenance=provenance, cell=cell, task=task, scenario=controlled)
+    material = projection.data()["mechanism_material"]
+    assert material["kind"] == kind
+    if mechanism == "Q1.5":
+        assert material["sealed_review"] is not None
+    elif mechanism == "Q3.1":
+        assert material["prediction_plan"] is not None
+    else:
+        assert material["revealed_review"] is not None
 
 def test_linked_cell_keeps_mechanism_and_solver_failures_as_rows(tmp_path: Path) -> None:
     task, controlled, package, cell = _material("discoverybench", "Q3.1")

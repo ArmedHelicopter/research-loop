@@ -14,7 +14,8 @@ from research_loop.modular.benchmark_solver import BenchmarkSolveResult, run_ben
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker, ExecutionReceipt
 from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.modules.improvement import CandidatePackage
-from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier
+from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier, opaque_panel_cell_binding
+from research_loop.modular.linked_public_projection import project_linked_public_context, verify_linked_public_context
 from research_loop.modular.panel_runner import TrainCellResult, run_train_cell
 from research_loop.modular.protocol_trace import verify_protocol_trace
 from research_loop.modular.runtime import AuditVerifier
@@ -53,7 +54,6 @@ def run_benchmark_cell(*, cell: PanelCell, task: PublicTask, scenario: FrozenRec
     mechanism = run_train_cell(cell, task=task, scenario=scenario, package=package,
                                objective=objective, sidecar=mechanism_sidecar, model=model,
                                audit_verifier=audit_verifier)
-    binding = _binding(cell)
     if mechanism.runtime.status != "succeeded":
         return _result(cell, mechanism, None, None, "mechanism_" + mechanism.runtime.status)
     try:
@@ -62,11 +62,14 @@ def run_benchmark_cell(*, cell: PanelCell, task: PublicTask, scenario: FrozenRec
     except ContractError:
         # The preceding run exists but its receipt cannot be used as context.
         return _result(cell, mechanism, None, None, "mechanism_receipt_rejected")
+    public_projection = project_linked_public_context(provenance=provenance, cell=cell,
+        task=task, scenario=scenario)
+    opaque_binding = FrozenRecord.from_dict(opaque_panel_cell_binding(cell))
     solver = run_benchmark_solve(task=task, public_inputs=public_inputs, image=image,
         package_digest=package.digest, arm=cell.runtime_arm, objective=objective,
         sidecar=solver_sidecar, broker=broker, model=model, audit_verifier=audit_verifier,
-        timeout_seconds=timeout_seconds, predecessor_context=provenance,
-        panel_cell_binding=binding, mechanism_provenance=provenance)
+        timeout_seconds=timeout_seconds, predecessor_context=public_projection,
+        panel_cell_binding=opaque_binding, mechanism_provenance=public_projection)
     status = "linked_succeeded" if solver.status == "execution_succeeded" else "solver_" + solver.status
     return _result(cell, mechanism, solver, provenance, status)
 
@@ -154,12 +157,16 @@ def verify_linked_benchmark_cell(result: LinkedBenchmarkCellResult, *, task: Pub
         if result.status != derived_status:
             raise ContractError("linked result status is not derived from the solver journal")
         requests = [event["data"]["request"] for event in solver_events if event["stage"] == "model_request"]
-        binding, provenance = _binding(result.cell).data(), result.provenance.data()
-        if len(requests) and any(request.get("module_context", {}).get("panel_cell") != binding
-                                 or request.get("module_context", {}).get("mechanism_provenance") != provenance
-                                 or request.get("module_context", {}).get("predecessor_context") != provenance
+        public_projection = project_linked_public_context(provenance=expected, cell=result.cell,
+            task=task, scenario=scenario)
+        verify_linked_public_context(projection=public_projection, provenance=expected,
+            cell=result.cell, task=task, scenario=scenario)
+        opaque_binding = opaque_panel_cell_binding(result.cell)
+        if len(requests) and any(request.get("module_context", {}).get("panel_cell") != opaque_binding
+                                 or request.get("module_context", {}).get("mechanism_provenance") != public_projection.data()
+                                 or request.get("module_context", {}).get("predecessor_context") != public_projection.data()
                                  for request in requests):
-            raise ContractError("solver requests do not carry the verified mechanism context")
+            raise ContractError("solver requests do not carry the verified public mechanism context")
         if result.receipt.data().get("solver_trace_digest") != solver_trace.data()["trace_digest"]:
             raise ContractError("linked receipt has a solver trace digest mismatch")
     expected_receipt = _receipt(result.cell, result.mechanism, result.solver, result.provenance, result.status)
