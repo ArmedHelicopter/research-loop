@@ -137,14 +137,12 @@ def _trace(runtime):
 
 def test_compiled_q23_q24_grid_runs_real_audit_verifier_and_final_gate(tmp_path: Path, monkeypatch):
     compiled, tasks = _setup()
-    local = dict(panel_runner.DRIVERS)
-    install_drivers(local, receipt_port=_receipt_port, shadow_execution_port=_shadow)
-    monkeypatch.setattr(panel_runner, "DRIVERS", local)
     rows, runtimes = [], []
     for number, cell in enumerate(compiled.panel.cells):
         result = panel_runner.run_train_cell(cell, task=tasks[cell.identity.benchmark], scenario=compiled.scenarios[cell.key],
             package=compiled.packages[cell.runtime_arm.content_hash], objective=FrozenRecord.from_dict({"objective": "audit"}),
-            sidecar=tmp_path / str(number), model=_model(rows), audit_verifier=AuditVerifier(KEYS))
+            sidecar=tmp_path / str(number), model=_model(rows), audit_verifier=AuditVerifier(KEYS),
+            audit_receipt_port=_receipt_port, shadow_execution_port=_shadow)
         assert result.runtime.status == "succeeded"
         assert result.call_plan.data()["model_calls"] == 2 and result.call_plan.data()["execution_attempts"] == 1
         runtimes.append(result.runtime)

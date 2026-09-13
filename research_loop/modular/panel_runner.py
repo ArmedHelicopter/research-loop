@@ -176,12 +176,14 @@ from research_loop.modular.history_panel_drivers import Q11HistoryDriver, Q12Dep
 from research_loop.modular.pressure_panel_driver import Q21PressureDriver
 from research_loop.modular.support_panel_drivers import Q13RepresentationDriver, Q14SupportDriver
 from research_loop.modular.withdrawal_panel_drivers import Q16WithdrawalDriver, Q17TimeInformationDriver
+from research_loop.modular.audit_panel_drivers import Q23AuditFaultDriver, Q24AuditPairDriver, AuditReceiptPort, ShadowExecutionPort
 
 
 DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12DependencyDriver(),
     "Q1.3": Q13RepresentationDriver(), "Q1.4": Q14SupportDriver(),
     "Q1.5": Q15HistoryReviewDriver(), "Q1.6": Q16WithdrawalDriver(), "Q1.7": Q17TimeInformationDriver(),
-    "Q2.1": Q21PressureDriver(), "Q3.1": Q31PredictionDriver(),
+    "Q2.1": Q21PressureDriver(), "Q2.3": Q23AuditFaultDriver(), "Q2.4": Q24AuditPairDriver(),
+    "Q3.1": Q31PredictionDriver(),
     "Q4.1": Q41IndependenceDriver(), "Q4.2": Q42RoleDriver(), "Q4.3": Q43ReviewDriver(),
     "Q4.4": Q44CounterexampleDriver(), "Q4.5": Q45SelfCorrectionDriver()}
 
@@ -189,7 +191,9 @@ DRIVERS: dict[str, ScenarioDriver] = {"Q1.1": Q11HistoryDriver(), "Q1.2": Q12Dep
 def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
                    package: CandidatePackage, objective: FrozenRecord, sidecar: Path,
                    model: ModelPort, audit_verifier: AuditVerifier,
-                   scorer: ScorerPort | None = None, history_admission_port: AdmissionPort | None = None) -> TrainCellResult:
+                   scorer: ScorerPort | None = None, history_admission_port: AdmissionPort | None = None,
+                   audit_receipt_port: AuditReceiptPort | None = None,
+                   shadow_execution_port: ShadowExecutionPort | None = None) -> TrainCellResult:
     """Run one predeclared training cell and return only trace-bound receipts.
 
     Validation is deliberately absent.  Driver selection is closed, so fixture
@@ -218,6 +222,13 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
         if isinstance(driver, (Q11HistoryDriver, Q12DependencyDriver, Q13RepresentationDriver, Q14SupportDriver,
                                Q16WithdrawalDriver, Q17TimeInformationDriver)):
             driver = replace(driver, admission_port=history_admission_port)
+    for port in (audit_receipt_port, shadow_execution_port):
+        if port is not None and not callable(port):
+            raise ContractError("audit dependencies must be caller-owned ports")
+    if isinstance(driver, (Q23AuditFaultDriver, Q24AuditPairDriver)):
+        driver = replace(driver,
+            receipt_port=audit_receipt_port if audit_receipt_port is not None else driver.receipt_port,
+            shadow_execution_port=shadow_execution_port if shadow_execution_port is not None else driver.shadow_execution_port)
     if not isinstance(package, CandidatePackage) or package.digest != cell.package_digest:
         raise ContractError("package digest differs from panel cell")
     if not isinstance(objective, FrozenRecord) or not callable(model):

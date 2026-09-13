@@ -187,6 +187,33 @@ def test_withdrawal_drivers_reach_custody_controller_with_caller_admission(tmp_p
     assert admitted and all(row.status == "succeeded" for row in result.runtimes)
 
 
+@pytest.mark.parametrize("coverage,expected_cells", [("Q2.3", 28), ("Q2.4", 16)])
+def test_audit_drivers_reach_controller_with_bound_execution_and_receipt_ports(tmp_path, monkeypatch, coverage, expected_cells):
+    from test_modular_audit_panel_drivers import _bundle, _shadow, _receipt_port, KEYS
+    snapshot, custody = snapshot_and_custody(tmp_path)
+    base = config(custody, snapshot, tmp_path).data()
+    packets = TrainPacketExporter(custody, snapshot, tmp_path / "audit-material").export(base["item_ids"])
+    grids = obligation_grids((coverage,), baseline_digest=base["baseline_digest"], p0_control=FrozenRecord.from_dict(base["p0_control"]))
+    package = next(iter(base["packages_by_arm"].values()))
+    schemas = {"audit_initial": REVIEW, "final": FINAL}
+    frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+        "engineering_scope": "train_only_panel_engineering", "stage": "synthetic-audit-controller", "scope_ids": [coverage],
+        "evidence_by_task": {packet.task.content_hash: _bundle(packet.task).data() for packet in packets},
+        "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids[coverage]).values()},
+        "budget": {"model_calls": 2, "execution_limit": 1}, "max_calls": expected_cells * 2, "schemas": schemas}))
+    port = model_port(tmp_path, monkeypatch, max_calls=expected_cells * 2, schemas=schemas)
+    result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot,
+        export_root=tmp_path / "export", run_root=tmp_path / "run", model=port,
+        audit_verifier=AuditVerifier(KEYS), audit_receipt_port=_receipt_port, shadow_execution_port=_shadow)
+    assert result.receipt.data()["execution_status"] == "engineering_complete"
+    assert len(result.runtimes) == expected_cells and len(port.ledger["calls"]) == expected_cells * 2
+    assert all(row.status == "succeeded" for row in result.runtimes)
+    for runtime in result.runtimes:
+        events = [json.loads(line) for line in runtime.trace_path.read_text(encoding="utf-8").splitlines()]
+        assert sum(event["stage"] == "execution_result" for event in events) == 1
+        assert any(event["stage"] in {"host_audit_verified", "host_audit_rejected"} for event in events)
+
+
 def test_q43_closed_driver_runs_through_custody_export_and_frozen_policy(tmp_path: Path, monkeypatch) -> None:
     snapshot, custody = snapshot_and_custody(tmp_path)
     frozen = config(custody, snapshot, tmp_path)
