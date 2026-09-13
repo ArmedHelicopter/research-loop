@@ -12,7 +12,10 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from evaluation.modular.custody import CustodyStore
-from evaluation.modular.train_io import TrainPacketExporter, PublicTrainPacket
+from evaluation.modular.train_io import PublicTrainPacket
+from research_loop.modular.combination_train_source import (
+    CombinationTrainSource, source_schema_matches, source_item_matches, packet_index,
+)
 from evaluation.modular.combination_scoring import (
     CombinationAdaptedScoringService, issue_combination_score_input, verify_combination_adapted_receipt,
 )
@@ -77,7 +80,7 @@ class FrozenM4M5TrainConfig:
         fields = {"schema", "domain", "stage", "item_ids", "task_bindings", "baseline_digest", "packages_by_arm",
                   "scorer", "scorer_handle_bindings", "acceptance_criteria", "replicates", "model", "effort",
                   "max_calls", "max_tokens", "schemas", "allocation", "image", "timeout_seconds"}
-        if set(body) != fields or body["schema"] != "m4-m5-train-controller-config-v1" or body["domain"] != "train":
+        if not source_schema_matches(body, fields, "m4-m5-train-controller-config-v1") or body["domain"] != "train":
             raise ContractError("controller supports the exact train-only M4/M5 configuration")
         if not isinstance(body["stage"], str) or not body["stage"].strip() or not _names(body["item_ids"]) or not _names(body["replicates"]):
             raise ContractError("stage, train allowlist and replicates must be nonempty and unique")
@@ -93,7 +96,7 @@ class FrozenM4M5TrainConfig:
                 raise ContractError("task/source binding is malformed")
             identity = DataIdentity.parse(row["identity"])
             identity.require_train()
-            if item_id != f"{identity.benchmark}:{identity.task_id}":
+            if not source_item_matches(body, item_id, identity):
                 raise ContractError("allowlist and task identity differ")
             identities.append(identity)
         if {i.benchmark for i in identities} != {"blade", "discoverybench"} or len({i.split_id for i in identities}) != 1:
@@ -163,7 +166,7 @@ def compile_m4_m5_train_panel(config: FrozenM4M5TrainConfig, packets: tuple[Publ
     if not isinstance(config, FrozenM4M5TrainConfig) or not isinstance(packets, tuple) or any(not isinstance(p, PublicTrainPacket) for p in packets):
         raise ContractError("combination compilation needs frozen configuration and typed public packets")
     body = config.data()
-    by_item = {f"{p.task.identity.benchmark}:{p.task.identity.task_id}": p for p in packets}
+    by_item = packet_index(body, packets)
     if len(by_item) != len(packets) or set(by_item) != set(body["item_ids"]):
         raise ContractError("exported packets differ from the complete frozen allowlist")
     for item_id, packet in by_item.items():
@@ -239,22 +242,20 @@ def _usage(model):
             "model_usage_incomplete": model.ledger["usage_incomplete"]}
 
 
-def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStore, snapshot_root: Path,
+def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStore | None, snapshot_root: Path,
         export_root: Path, run_root: Path, model: CodexModelPort, audit_verifier: AuditVerifier,
         execution_authority: LinkedExecutionAuthority, scoring_service: CombinationAdaptedScoringService,
-        scorer_authority_keys: Mapping[str, bytes]) -> M4M5TrainRun:
+        scorer_authority_keys: Mapping[str, bytes], prospective_exporter=None) -> M4M5TrainRun:
     """Run the full frozen factorial once; any failed stage makes it inconclusive."""
-    if not isinstance(config, FrozenM4M5TrainConfig) or not isinstance(custody, CustodyStore) or not isinstance(audit_verifier, AuditVerifier):
+    if not isinstance(config, FrozenM4M5TrainConfig) or not isinstance(audit_verifier, AuditVerifier):
         raise ContractError("typed train controller, custody and audit dependencies required")
     _service_preflight(config, model, scoring_service, execution_authority, scorer_authority_keys)
     snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model.root)
     if root.exists() or exported.exists():
         raise ContractError("controller needs unused run and export roots; inspect earlier attempts instead of retrying")
     body = config.data()
-    # Exact custody provenance is checked without materializing any packet.
-    train_ids = {f"{i.benchmark}:{i.task_id}": i for i in custody.export_train()}
-    if any(item not in train_ids or train_ids[item].data() != body["task_bindings"][item]["identity"] for item in body["item_ids"]):
-        raise ContractError("frozen source identity is not in the current custody train allocation")
+    source = CombinationTrainSource(body, custody=custody, prospective_exporter=prospective_exporter,
+                                  snapshot=snapshot, exported=exported)
     expected_cells = len(body["item_ids"]) * len(body["replicates"]) * 4
     journal = {"schema": "m4-m5-train-controller-attempt-v1", "config_digest": config.record.content_hash,
         "status": "exporting", "expected_cells": expected_cells, "allocated_model_calls": body["max_calls"],
@@ -267,7 +268,7 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
         _write(root / "controller-attempt.json", journal)
     persist()
     try:
-        packets = TrainPacketExporter(custody, snapshot, exported).export(body["item_ids"])
+        packets = source.export()
         journal["packet_receipts"] = [p.receipt.data() for p in packets]
         compiled = compile_m4_m5_train_panel(config, packets)
         from evaluation.modular.scorer_process import CombinationScorerProcessClient
@@ -308,7 +309,7 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
             if model.ledger["usage_incomplete"]:
                 row.update(phase="model_allocation", status="blocked", reason="prior_model_usage_incomplete")
                 continue
-            binding = body["task_bindings"][f"{cell.identity.benchmark}:{cell.identity.task_id}"]
+            binding = next(b for b in body["task_bindings"].values() if b["identity"] == cell.identity.data())
             if (packet.task.content_hash != binding["task_digest"]
                     or hashlib.sha256(packet.csv_path.read_bytes()).hexdigest() != binding["csv_sha256"]):
                 raise ContractError("public source changed after compilation")

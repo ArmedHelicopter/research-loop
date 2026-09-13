@@ -3,8 +3,10 @@ from dataclasses import dataclass
 import hashlib
 from pathlib import Path
 
-from evaluation.modular.custody import CustodyStore
-from evaluation.modular.train_io import TrainPacketExporter, PublicTrainPacket
+from evaluation.modular.train_io import PublicTrainPacket
+from research_loop.modular.combination_train_source import (
+    CombinationTrainSource, source_schema_matches, source_item_matches, packet_index,
+)
 from evaluation.modular.scoring_service import ScorerConfig
 from evaluation.modular.combination_scoring import _score_input_payload, verify_combination_adapted_receipt
 from evaluation.modular.scorer_process import CombinationScorerProcessClient
@@ -38,7 +40,7 @@ class FrozenRetrievalReviewConfig:
         required = {'schema', 'domain', 'stage', 'item_ids', 'task_bindings', 'baseline_digest', 'packages_by_arm',
             'scorer', 'scorer_handle_bindings', 'acceptance_criteria', 'replicates', 'model', 'effort', 'max_calls',
             'max_tokens', 'schemas', 'allocation', 'image', 'timeout_seconds', 'materials_by_task'}
-        if (set(b) != required or b['schema'] != 'retrieval-review-combination-train-config-v1' or b['domain'] != 'train'
+        if (not source_schema_matches(b, required, 'retrieval-review-combination-train-config-v1') or b['domain'] != 'train'
                 or not isinstance(b['stage'], str) or not b['stage'].strip() or not _names(b['item_ids'])
                 or not _names(b['replicates']) or not _digest(b['baseline_digest'])):
             raise ContractError('closed retrieval review train scope or source list invalid')
@@ -50,7 +52,7 @@ class FrozenRetrievalReviewConfig:
             if not isinstance(row, dict) or set(row) != {'identity', 'task_digest', 'csv_sha256', 'csv_byte_count'}:
                 raise ContractError('source binding fields drift')
             identity = DataIdentity.parse(row['identity']); identity.require_train()
-            if (item != f'{identity.benchmark}:{identity.task_id}' or not _digest(row['task_digest'])
+            if (not source_item_matches(b, item, identity) or not _digest(row['task_digest'])
                     or not _digest(row['csv_sha256']) or type(row['csv_byte_count']) is not int or row['csv_byte_count'] < 0):
                 raise ContractError('source binding types or identity drift')
             identities.append(identity); task_digests.append(row['task_digest'])
@@ -107,7 +109,7 @@ class CompiledRetrievalReviewPanels:
 def compile_retrieval_review_panels(config, packets):
     if not isinstance(config, FrozenRetrievalReviewConfig) or not isinstance(packets, tuple) or any(not isinstance(p, PublicTrainPacket) for p in packets):
         raise ContractError('typed frozen configuration and exported custody packets required')
-    b = config.data(); by_item = {f'{p.task.identity.benchmark}:{p.task.identity.task_id}': p for p in packets}
+    b = config.data(); by_item = packet_index(b, packets)
     if len(by_item) != len(packets) or set(by_item) != set(b['item_ids']): raise ContractError('missing or duplicate exported task')
     for item, packet in by_item.items():
         binding = b['task_bindings'][item]
@@ -153,8 +155,8 @@ class RetrievalReviewRun:
 
 
 def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, run_root, model, audit_verifier,
-        provider, admission_port, execution_authority, scoring_services, scorer_authority_keys):
-    if (not isinstance(config, FrozenRetrievalReviewConfig) or not isinstance(custody, CustodyStore)
+        provider, admission_port, execution_authority, scoring_services, scorer_authority_keys, prospective_exporter=None):
+    if (not isinstance(config, FrozenRetrievalReviewConfig)
             or not isinstance(audit_verifier, AuditVerifier) or not callable(getattr(provider, 'search', None))
             or not callable(admission_port) or not isinstance(scoring_services, dict) or set(scoring_services) != set(DESIGNS)
             or any(not isinstance(v, CombinationScorerProcessClient) for v in scoring_services.values())):
@@ -163,9 +165,9 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
         _service_preflight(config, model, service, execution_authority, scorer_authority_keys)
     snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model.root)
     if root.exists() or exported.exists(): raise ContractError('closed controller requires unused roots and no retry')
-    b = config.data(); train_ids = {f'{i.benchmark}:{i.task_id}': i for i in custody.export_train()}
-    if any(item not in train_ids or train_ids[item].data() != b['task_bindings'][item]['identity'] for item in b['item_ids']):
-        raise ContractError('allowlist is not in the actual custody train split')
+    b = config.data()
+    source = CombinationTrainSource(b, custody=custody, prospective_exporter=prospective_exporter,
+                                  snapshot=snapshot, exported=exported)
     root.mkdir(parents=True)
     journal = {'schema': 'retrieval-review-train-attempt-v1', 'config_digest': config.record.content_hash, 'status': 'exporting',
         'allocation': b['allocation'], 'max_model_calls': b['max_calls'], 'max_model_tokens': b['max_tokens'], 'cells': [], 'actual_scorer_calls': 0}
@@ -173,7 +175,8 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
         journal['actual_model_usage'] = _usage(model); _write(root/'controller-attempt.json', journal)
     persist()
     try:
-        packets = TrainPacketExporter(custody, snapshot, exported).export(b['item_ids'])
+        packets = source.export()
+        journal['packet_receipts'] = [p.receipt.data() for p in packets]; persist()
         compiled = compile_retrieval_review_panels(config, packets)
         if any(scoring_services[p.obligation_id].panel != p for p in compiled.panels):
             raise ContractError('scorer process does not bind the exact compiled panel')
