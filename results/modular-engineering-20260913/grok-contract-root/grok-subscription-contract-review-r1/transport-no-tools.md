@@ -1,0 +1,45 @@
+---
+{
+  "name": "transport-no-tools",
+  "description": "Synthetic transport contract; no tool activity",
+  "discoverSkills": false,
+  "agentsMd": false,
+  "permissionMode": "dontAsk",
+  "disallowedTools": [
+    "Agent",
+    "ask_user_question",
+    "enter_plan_mode",
+    "exit_plan_mode",
+    "get_command_or_subagent_output",
+    "get_task_output",
+    "grep",
+    "image_edit",
+    "image_gen",
+    "image_to_video",
+    "kill_command_or_subagent",
+    "kill_task",
+    "list_dir",
+    "monitor",
+    "read_file",
+    "reference_to_video",
+    "run_terminal_cmd",
+    "run_terminal_command",
+    "scheduler_create",
+    "scheduler_delete",
+    "scheduler_list",
+    "search_replace",
+    "search_tool",
+    "send_feedback",
+    "spawn_subagent",
+    "task",
+    "todo_write",
+    "update_goal",
+    "use_tool",
+    "wait_tasks",
+    "web_fetch",
+    "web_search",
+    "write"
+  ]
+}
+---
+Respond to the supplied synthetic transport prompt. No tools are available.

@@ -1,0 +1,74 @@
+{
+  "archive_grok_contract_review.py": {
+    "bytes": 3243,
+    "sha256": "4a9223f334b8b7fb88650e3d7eb57a452c2fcd76aef4d1d0041afc095b08411e"
+  },
+  "FINAL-VERIFICATION.json": {
+    "bytes": 1214,
+    "sha256": "8fdd37ae6010d2981ef50cc8c666fd4f91a3926e42097d5f43b43f480d6b11bc"
+  },
+  "grok-protocol-r1-before.json": {
+    "bytes": 58611,
+    "sha256": "85a04b36983b55ad8df6f3b5b0e74bfc3c5317e50d07fee9145aa5ad7a6baf88"
+  },
+  "grok-protocol-r1-closed.json": {
+    "bytes": 58762,
+    "sha256": "494c4a973d9dee3359ebbbd3da592e31534808502d3c402438669d082fb93873"
+  },
+  "grok-protocol-r1.xml": {
+    "bytes": 5737,
+    "sha256": "7af4f6c5d1a6564b105ef5dd0326b3aedd68a09be6514c8177f1a06a10fabdff"
+  },
+  "grok-protocol-r2-before.json": {
+    "bytes": 58611,
+    "sha256": "cc78d7ce5b8e6c1df4e15f188cc1c5b19da42a02d0afaf1e498b48243ed87950"
+  },
+  "grok-protocol-r2-closed.json": {
+    "bytes": 58762,
+    "sha256": "67e1b46099876a053f32e6cf7eb068f415f67c3eb0d237579123ebf23e5d3f74"
+  },
+  "grok-protocol-r2.xml": {
+    "bytes": 6672,
+    "sha256": "e96e0c4af9fe9c406f84e1258f1acef623e38f0698bc68dedb1e66033ee6dde9"
+  },
+  "grok-subscription-contract-review-r1.md": {
+    "bytes": 9064,
+    "sha256": "96a4c934f4cc78c6d7e28d7bd548188a638b831ae27f03d2a14678150f71cee8"
+  },
+  "grok-subscription-contract-review-r1/billing-readonly-receipt.json": {
+    "bytes": 1328,
+    "sha256": "643887add004619a2931abe197f2e89b16ec05a2abae680e4ffc81f34deed95a"
+  },
+  "grok-subscription-contract-review-r1/billing-requests.json": {
+    "bytes": 474,
+    "sha256": "3ac1752620ac2f68a171c0eb1fa0c58722584357f22c08a9f64ed9f1200d1952"
+  },
+  "grok-subscription-contract-review-r1/candidate-agent-profile.json": {
+    "bytes": 923,
+    "sha256": "df3dee504c3191c2fb80428afd2fbedff9d10ca7a03ac02885c4df9f7c3998d8"
+  },
+  "grok-subscription-contract-review-r1/public-evidence-sha256.json": {
+    "bytes": 3874,
+    "sha256": "3aeac954d10497f3b5d496761d14cd6ee46532934b9f170fe038285f2212cfe4"
+  },
+  "grok-subscription-contract-review-r1/r5-usage-event-sanitized.json": {
+    "bytes": 228,
+    "sha256": "0caef200062d1d055163c6a99b140be77f7c5def6e0b54a929cf09006ced992b"
+  },
+  "grok-subscription-contract-review-r1/tool-preflight-receipt.json": {
+    "bytes": 3277,
+    "sha256": "4ec6667190ca7b8d49fda514e9ec551995bb0f3f050bb6d0385b7fa6e7a1fc40"
+  },
+  "grok-subscription-contract-review-r1/tool-preflight-requests.json": {
+    "bytes": 1815,
+    "sha256": "afa7664602a202c8950f2b7fd2df16e6a2383c9c9406ce4e1d35dd1ff38c06db"
+  },
+  "grok-subscription-contract-review-r1/transport-no-tools.md": {
+    "bytes": 1010,
+    "sha256": "f6a6cf16b7404b3ba44329d6f7e4d3851694a8561ec9c0ccbbef28d007c1253f"
+  },
+  "grok-subscription-contract-review-r1/windows-empty-argv-verification.json": {
+    "bytes": 408,
+    "sha256": "39663621e6f79b67f2e67c70d38dc87639da542f5fb3c31fbfd76b9c26f5fb53"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "windows_list2cmdline_roundtrip_equal": true,
+  "tools_value_original": "",
+  "tools_value_native_roundtrip": "",
+  "python_child_argv_probe": [
+    "--tools",
+    "",
+    "--disallowed-tools",
+    "search_tool,use_tool"
+  ],
+  "native_command_line_has_empty_tools": true,
+  "evidence_limit": "same Windows launch construction verified; no historical process-level argv capture was taken"
+}

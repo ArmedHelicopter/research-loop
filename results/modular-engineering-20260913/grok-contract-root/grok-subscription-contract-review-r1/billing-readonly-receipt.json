@@ -1,0 +1,54 @@
+{
+  "started_at": "2026-09-13T14:06:24.822580+00:00",
+  "model_generation_requests": 0,
+  "session_new_requests": 0,
+  "methods": [
+    "initialize",
+    "_x.ai/billing",
+    "_x.ai/auto-topup-rule"
+  ],
+  "command": [
+    "C:\\Users\\Administrator\\.grok\\bin\\grok.exe",
+    "--no-auto-update",
+    "--cwd",
+    "E:/_ryanDev/AI/research-loop-modular/work/grok-subscription-smoke-r5/public-cwd",
+    "agent",
+    "stdio"
+  ],
+  "elapsed_seconds": 4.391,
+  "responses": [
+    {
+      "id": 1,
+      "initialize_succeeded": true
+    },
+    {
+      "id": 2,
+      "result": {
+        "config": {
+          "currentPeriod": {
+            "type": "USAGE_PERIOD_TYPE_WEEKLY",
+            "start": "2026-09-13T08:25:07.753215+00:00",
+            "end": "2026-09-20T08:25:07.753215+00:00"
+          },
+          "onDemandCap": {
+            "val": 0
+          },
+          "onDemandUsed": {
+            "val": 0
+          },
+          "prepaidBalance": {
+            "val": 0
+          },
+          "isUnifiedBillingUser": true,
+          "billingPeriodStart": "2026-09-13T08:25:07.753215+00:00",
+          "billingPeriodEnd": "2026-09-20T08:25:07.753215+00:00"
+        },
+        "subscription_tier": "SuperGrok"
+      }
+    },
+    {
+      "id": 3,
+      "result": {}
+    }
+  ]
+}

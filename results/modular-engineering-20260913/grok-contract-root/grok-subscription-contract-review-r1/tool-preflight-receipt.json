@@ -1,0 +1,133 @@
+{
+  "model_generation_requests": 0,
+  "session_new_requests": 1,
+  "elapsed_seconds": 9.078,
+  "failure": null,
+  "responses": [
+    {
+      "id": 1,
+      "success": true,
+      "error": null
+    },
+    {
+      "id": 2,
+      "success": true,
+      "error": null
+    }
+  ],
+  "available_command_updates": [
+    {
+      "sessionUpdate": "available_commands_update",
+      "availableCommands": [
+        {
+          "name": "compact",
+          "description": "Compress conversation history to save context window",
+          "input": {
+            "hint": "optional context about what to preserve"
+          }
+        },
+        {
+          "name": "always-approve",
+          "description": "Toggle always-approve mode (skip all permission prompts)",
+          "input": {
+            "hint": "on|off"
+          }
+        },
+        {
+          "name": "context",
+          "description": "Show context window usage and session stats",
+          "input": null
+        },
+        {
+          "name": "session-info",
+          "description": "Show session details (model, turns, context usage)",
+          "input": null
+        },
+        {
+          "name": "feedback",
+          "description": "Send feedback about the current session",
+          "input": {
+            "hint": "feedback text"
+          }
+        }
+      ],
+      "_meta": {
+        "tools": []
+      }
+    },
+    {
+      "sessionUpdate": "available_commands_update",
+      "availableCommands": [
+        {
+          "name": "compact",
+          "description": "Compress conversation history to save context window",
+          "input": {
+            "hint": "optional context about what to preserve"
+          }
+        },
+        {
+          "name": "always-approve",
+          "description": "Toggle always-approve mode (skip all permission prompts)",
+          "input": {
+            "hint": "on|off"
+          }
+        },
+        {
+          "name": "context",
+          "description": "Show context window usage and session stats",
+          "input": null
+        },
+        {
+          "name": "session-info",
+          "description": "Show session details (model, turns, context usage)",
+          "input": null
+        },
+        {
+          "name": "feedback",
+          "description": "Send feedback about the current session",
+          "input": {
+            "hint": "feedback text"
+          }
+        }
+      ],
+      "_meta": {
+        "tools": []
+      }
+    }
+  ],
+  "denylist": [
+    "Agent",
+    "ask_user_question",
+    "enter_plan_mode",
+    "exit_plan_mode",
+    "get_command_or_subagent_output",
+    "get_task_output",
+    "grep",
+    "image_edit",
+    "image_gen",
+    "image_to_video",
+    "kill_command_or_subagent",
+    "kill_task",
+    "list_dir",
+    "monitor",
+    "read_file",
+    "reference_to_video",
+    "run_terminal_cmd",
+    "run_terminal_command",
+    "scheduler_create",
+    "scheduler_delete",
+    "scheduler_list",
+    "search_replace",
+    "search_tool",
+    "send_feedback",
+    "spawn_subagent",
+    "task",
+    "todo_write",
+    "update_goal",
+    "use_tool",
+    "wait_tasks",
+    "web_fetch",
+    "web_search",
+    "write"
+  ]
+}
