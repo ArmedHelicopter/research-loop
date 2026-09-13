@@ -258,6 +258,15 @@ def test_prior_art_observation_uses_real_task_ledger_contract():
     assert updated.status=='refuted' and evidence.is_active_admitted(root.root_id)
 
 
+@pytest.mark.parametrize('scope,variant',[('Q7.5','valid_known'),('Q7.6','contract_only'),('Q7.6','real_counterexample')])
+def test_real_claim_and_review_seams_before_complete_grid(tmp_path,monkeypatch,scope,variant):
+    compiled,tasks,authority,bundles=_compile(tmp_path,monkeypatch)
+    candidates=[c for c in compiled.panel.cells if c.coverage_id==scope and c.variant==variant]
+    cell=max(candidates,key=lambda c:len(c.runtime_arm.data()['enabled']))
+    seen=[]; result=_run(compiled,tasks,cell,tmp_path/'run',seen)
+    assert result.runtime.status=='succeeded',result.runtime.failure_reason
+
+
 @pytest.mark.parametrize('hard',['resource','authorization'])
 def test_typed_hard_missing_keeps_all_family_arm_denominators(tmp_path,monkeypatch,hard):
     compiled,tasks,authority,bundles=_compile(tmp_path,monkeypatch,hard=hard)
