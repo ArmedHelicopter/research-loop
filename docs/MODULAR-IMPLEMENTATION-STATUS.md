@@ -3,7 +3,45 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## C4 completion checks and Grok isolation repair (2026-09-14, current update)
+## Module artifact provenance and closed Q6 cases (2026-09-14, current update)
+
+The [module artifact provenance contract](MODULE-ARTIFACT-PROVENANCE.md) now
+applies to P0, M1–M9 and every singleton/combination study. It requires resolvable
+payloads, actual producer source/config bindings, typed dependency edges,
+append-only lifecycle events, a stage-bound terminal count/hash, explicit
+coverage gaps and separate TRAIN/VAL storage and access. The first isolated
+implementation `ae2e70b` is under repair: review found missing terminal anchors,
+insufficient payload/source binding and incomplete native stage verification.
+It is not integrated or accepted as complete provenance coverage.
+
+All twelve separately bounded native Q6/M9 engineering cases at `f0869c4`
+have now closed successfully. Root independently checked the twelve archive
+digests and all 17,990 original file members before importing 31 delivery files
+under `results/native-build-all12-20260914/`. The original 45-minute batch
+timeout remains a failed attempt. The delivery scope also records that one
+failed partial Q6.6 archive was deleted during its creation; its test originals
+and final archive remain, and the missing partial archive is not reconstructed
+or represented as retained. These are synthetic-model/actual-Docker engineering
+checks, with no actual benchmark effect or VAL acceptance.
+
+C5 complete-controller attempt r2 reached its original 45-minute limit with
+27/46 history builds completed and no target dispatched. The observed owned
+process tree was closed by its watchdog. No pytest pass or complete controller
+receipt exists. Its source, watchdog and partial denominator are retained at
+`results/modular-engineering-20260914/c5-common-timeout-r2/`; original stage
+files remain in the recorded work directory. Scoped replay performance repairs
+and the selected nine-component snapshot remain in isolated worktrees pending
+integration and complete verification.
+
+The initialize-only Grok A/B diagnostic timed out under both the previous
+configuration and the new isolation configuration. It sent no session or
+prompt request. It does not establish the isolation configuration as the
+cause. Sanitized exact source/configuration/closure evidence is retained under
+`results/modular-engineering-20260914/grok130-initialize-config-ab-r2/`.
+Usage and settlement remain unknown. All research questions and experiments
+remain in scope; no acceptance threshold or data isolation rule changed.
+
+## C4 completion checks and Grok isolation repair (2026-09-14, earlier update)
 
 C4 source `840697c` passed the complete success grid and unknown-MAIN
 denominator checks: 2/2 in 1104.297 seconds with 651 source files unchanged.

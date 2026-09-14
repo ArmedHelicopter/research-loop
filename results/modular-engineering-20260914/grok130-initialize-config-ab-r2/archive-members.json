@@ -1,0 +1,54 @@
+{
+  "members": [
+    {
+      "path": "prepare.py",
+      "bytes": 3775,
+      "sha256": "9cb6b4108c8a47fc66f357672fad0104a34ffd73cdbb51d2bdbae5d8cbe49d7f"
+    },
+    {
+      "path": "driver.py",
+      "bytes": 5944,
+      "sha256": "ac5f70a42cec3259082288180bead98b05b504a0274630e05d7296841dc2939a"
+    },
+    {
+      "path": "init_engine.py",
+      "bytes": 8730,
+      "sha256": "c24712cbf1f25f080123b019c1317ff58b6871bbcbee101aceb15933bbb3fbd2"
+    },
+    {
+      "path": "envelope.json",
+      "bytes": 2288,
+      "sha256": "2744fc066faf25a260448332e645c763cb67b25e6b5f45ce7b8a7272b78528c8"
+    },
+    {
+      "path": "prepare-receipt.json",
+      "bytes": 180,
+      "sha256": "e7cdb1731e5e7216f329bc79bee451824d39dd797576aa42e6c7b3e3b446e1d7"
+    },
+    {
+      "path": "closure.json",
+      "bytes": 8015,
+      "sha256": "03720a6f01e76d81b6bbbd6720ced5e32f076070fb64804abbd5088f504f8df8"
+    },
+    {
+      "path": "A/home/config.toml",
+      "bytes": 918,
+      "sha256": "22300d7f72ebb706d506ef7c0b1aa4a41f4c96e367155ece8cd94b219cac5b43"
+    },
+    {
+      "path": "B/home/config.toml",
+      "bytes": 2719,
+      "sha256": "560b4e770216e9d8d917d629c87da079cee4b9919c09ee19facc829dfec5201e"
+    },
+    {
+      "path": "A/safe-summary.json",
+      "bytes": 3318,
+      "sha256": "9633bc57062660be3caa079f7334f6129c42bf91e1ea03b39fbd2d9e5cc89d8a"
+    },
+    {
+      "path": "B/safe-summary.json",
+      "bytes": 3306,
+      "sha256": "d5328bc68f7976cd674610d776950c2333dddcd8c3c3880c6876da031d057b7d"
+    }
+  ]
+}

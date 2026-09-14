@@ -1,0 +1,65 @@
+{
+  "schema": "archive-integrity-v1",
+  "archives": [
+    {
+      "archive": "native-execution-complete-r2-closed-originals-r4.zip",
+      "sha256": "7ba7c40023be6606909c6e7c3b954c47a53c93e18955d4b3c101233559c649a8",
+      "members": 2320
+    },
+    {
+      "archive": "native-mechanism-complete-r2-closed-originals-r4.zip",
+      "sha256": "53011bdb084c1a5609c4f41390f3a9aed25045e9d2442ac4bc1ae8bbed1b9ec6",
+      "members": 2156
+    },
+    {
+      "archive": "native-state-complete-r2-closed-originals-r4.zip",
+      "sha256": "c5de514026074693aae60d92631d6c1ea164f2a000d7545b63d7529cfc4599f9",
+      "members": 1844
+    },
+    {
+      "archive": "native-lineage-retrieval-complete-r2-closed-originals-r4.zip",
+      "sha256": "df6f911452b474e8903e77e4566cd93c9fe3808f08009605fe9c8f05b4cf52e7",
+      "members": 1398
+    },
+    {
+      "archive": "native-q63-complete-r2-closed-originals-r4.zip",
+      "sha256": "1ec53a3167ed4539485e0e88d0242aaae2443d9f7cedf3b54b58927755ccff3d",
+      "members": 1175
+    },
+    {
+      "archive": "native-q62-complete-r2-closed-originals-r4.zip",
+      "sha256": "b3e5455e2d30ce50fe8a7cc7d5f88f215e929d5f806344e1684fd3c90c4ab05a",
+      "members": 1411
+    },
+    {
+      "archive": "native-q61-complete-r2-closed-originals-r5.zip",
+      "sha256": "e156e7b17b440221464f76863c2925e6a3cd1a3140d5691741421f9e1161e7c1",
+      "members": 1699
+    },
+    {
+      "archive": "native-q65-complete-r2-closed-originals-r5.zip",
+      "sha256": "3bf2a83caf2197ed3f3e7b75429f85a6c4993245366152a72785e0af3a8aa023",
+      "members": 1686
+    },
+    {
+      "archive": "native-q66-complete-r2-closed-originals-r5.zip",
+      "sha256": "d4ee887af5757c39c8cfd1bbc6121fe484ea12628c9c21292ef702b96dc23f19",
+      "members": 1738
+    },
+    {
+      "archive": "native-state-unknown-history-r2-closed-originals-r5.zip",
+      "sha256": "efaad0f1db00d1899d9be450773d1149af052025c3524c3307b0fb0cf8e58f52",
+      "members": 758
+    },
+    {
+      "archive": "native-state-unknown-target-r2-closed-originals-r5.zip",
+      "sha256": "826dabe7ce1cc32b251b952640e0be2a309765eae01a08db302602639a4a0ab1",
+      "members": 1046
+    },
+    {
+      "archive": "native-q63-unknown-r2-closed-originals-r5.zip",
+      "sha256": "271b6056dec141cd50975d0be0ef9b3200c0c94d8277982e1f3be0f11320ced4",
+      "members": 759
+    }
+  ]
+}

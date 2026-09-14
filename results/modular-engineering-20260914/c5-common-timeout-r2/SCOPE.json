@@ -1,0 +1,22 @@
+{
+  "schema": "c5-common-timeout-closure-v1",
+  "source_commit": "a2cdbe34d314f8cd079218a979d50173ba66481b",
+  "deadline": "2026-09-14T13:58:33.568216+08:00",
+  "deadline_seconds": 2700,
+  "pytest_exit_code": 1,
+  "pytest_pass_report_available": false,
+  "original_frozen_runner_closed_report_available": false,
+  "watchdog_termination_of_observed_owned_tree_verified": true,
+  "build_status": {
+    "succeeded": 27,
+    "not_started": 19
+  },
+  "target_status": {
+    "not_started": 118
+  },
+  "full_grid_complete": false,
+  "scientific_effectiveness_proven": false,
+  "validation_opened": false,
+  "archive_scope": "Frozen source, before metadata, watchdog and partial controller denominator. Original partial stage files remain in work path; not all stage files archived here.",
+  "original_partial_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-complete-r2"
+}
