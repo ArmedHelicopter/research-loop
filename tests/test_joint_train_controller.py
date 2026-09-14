@@ -7,7 +7,9 @@ from evaluation.modular.scorer_process import CombinationScorerProcessClient, se
 from evaluation.modular.scoring_service import ScorerConfig
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.joint_train_controller import run_joint_common_train, verify_joint_common_train_run
-from research_loop.modular.joint_train_selection import select_joint_common_train
+from research_loop.modular.joint_deployment import JointComponentVersion, JointDeploymentBundle
+from research_loop.modular.joint_selected_snapshot import freeze_selected_joint_snapshot
+from research_loop.modular.modules.improvement import TrainingManifest
 from research_loop.ontology import canonical
 from test_joint_train_runtime import executor, prepare
 from test_scorer_process import _command, _store
@@ -59,10 +61,27 @@ def test_complete_common_train_controller_uses_real_barrier_docker_and_independe
     assert receipt['actual']['model_calls'] == 930 and receipt['actual']['scorer_calls'] == 118
     assert all(row['status'] == 'scored' for row in receipt['targets'])
     assert run.targets[0].inner.solver.execution.record.data()['argv'][:4] == ['docker', 'run', '--pull', 'never']
-    # Selection owns the one complete same-run verifier boundary. Do not replay
-    # this entire grid a second time merely to call that verifier directly.
-    choice = select_joint_common_train(run, execution_authority_keys={EXEC.authority_id: EXEC.key},
-                                       scorer_authority_keys={SCORER.authority_id: SCORER.key}).data()
+    # Freeze owns selection's one complete same-run verifier boundary. Do not
+    # repeat that full boundary just to read the already frozen choice.
+    protocol = run.plan.protocol.record.data()
+    parent = JointDeploymentBundle.create(parent_digest=None,
+        baseline_digest=protocol['baseline_digest'], p0_digest=protocol['p0_digest'],
+        resource_schedule=FrozenRecord.from_dict({'stage': 'synthetic_preceding_snapshot'}),
+        components={name: JointComponentVersion(FrozenRecord.from_dict(value))
+                    for name, value in protocol['component_templates'].items()})
+    frozen = freeze_selected_joint_snapshot(run, parent=parent,
+        execution_authority_keys={EXEC.authority_id: EXEC.key},
+        scorer_authority_keys={SCORER.authority_id: SCORER.key}).data()
+    choice = frozen['selection']
+    selected = JointDeploymentBundle(FrozenRecord.from_dict(frozen['bundle']))
+    assert selected.digest == frozen['bundle_digest'] and selected.parent_digest == parent.digest
+    assert len(selected.components()) == 9
+    assert frozen['validation_access_authorized'] is frozen['deployment_authorized'] is False
+    exposure = {run.plan.history.task.identity, *[p.task.identity for p in run.plan.packets]}
+    for component in selected.components().values():
+        body = component.record.data()
+        assert set(TrainingManifest(FrozenRecord.from_dict(body['training_manifest'])).identities()) == exposure
+        assert body['state']['selected_package'] == run.panel.package_bundle.data()['packages'][choice['selected_arm']]
     assert choice['controller_receipt_digest'] == run.receipt.content_hash
     assert choice['expected_cells'] == choice['scored_cells'] == 118
     assert len(choice['combination_candidates_retained']) == 58 and len(choice['b0_reference']) == 2
