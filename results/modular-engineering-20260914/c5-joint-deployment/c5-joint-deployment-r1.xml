@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="20" skipped="0" tests="79" time="3.275" timestamp="2026-09-14T10:02:15.081880+08:00" hostname="SC-202507131830"><testcase classname="tests.test_joint_deployment" name="test_all_nine_components_reach_a_pinned_task_then_restore_exact_previous_snapshot" time="0.043"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_all_nine_components_reach0')
+
+    def test_all_nine_components_reach_a_pinned_task_then_restore_exact_previous_snapshot(tmp_path):
+&gt;       base, target, roots = fixtures(tmp_path)
+                              ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:63: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant[1]" time="0.012"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_failure_while_staging_any0')
+failure_index = 1
+
+    @pytest.mark.parametrize('failure_index', range(1, 10))
+    def test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant(tmp_path, failure_index):
+&gt;       base, target, roots = fixtures(tmp_path)
+                              ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant[2]" time="0.012"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_failure_while_staging_any1')
+failure_index = 2
+
+    @pytest.mark.parametrize('failure_index', range(1, 10))
+    def test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant(tmp_path, failure_index):
+&gt;       base, target, roots = fixtures(tmp_path)
+                              ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant[3]" time="0.013"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_failure_while_staging_any2')
+failure_index = 3
+
+    @pytest.mark.parametrize('failure_index', range(1, 10))
+    def test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant(tmp_path, failure_index):
+&gt;       base, target, roots = fixtures(tmp_path)
+                              ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant[4]" time="0.012"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_failure_while_staging_any3')
+failure_index = 4
+
+    @pytest.mark.parametrize('failure_index', range(1, 10))
+    def test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant(tmp_path, failure_index):
+&gt;       base, target, roots = fixtures(tmp_path)
+                              ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant[5]" time="0.013"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_failure_while_staging_any4')
+failure_index = 5
+
+    @pytest.mark.parametrize('failure_index', range(1, 10))
+    def test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant(tmp_path, failure_index):
+&gt;       base, target, roots = fixtures(tmp_path)
+                              ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant[6]" time="0.012"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_failure_while_staging_any5')
+failure_index = 6
+
+    @pytest.mark.parametrize('failure_index', range(1, 10))
+    def test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant(tmp_path, failure_index):
+&gt;       base, target, roots = fixtures(tmp_path)
+                              ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant[7]" time="0.013"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_failure_while_staging_any6')
+failure_index = 7
+
+    @pytest.mark.parametrize('failure_index', range(1, 10))
+    def test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant(tmp_path, failure_index):
+&gt;       base, target, roots = fixtures(tmp_path)
+                              ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant[8]" time="0.012"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_failure_while_staging_any7')
+failure_index = 8
+
+    @pytest.mark.parametrize('failure_index', range(1, 10))
+    def test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant(tmp_path, failure_index):
+&gt;       base, target, roots = fixtures(tmp_path)
+                              ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant[9]" time="0.013"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_failure_while_staging_any8')
+failure_index = 9
+
+    @pytest.mark.parametrize('failure_index', range(1, 10))
+    def test_failure_while_staging_any_component_leaves_whole_previous_bundle_and_unused_grant(tmp_path, failure_index):
+&gt;       base, target, roots = fixtures(tmp_path)
+                              ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_grant_cannot_change_c5_target_stage_or_parent[changes0]" time="0.012"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_grant_cannot_change_c5_ta0')
+changes = {'stage': 'Q6.3'}
+
+    @pytest.mark.parametrize('changes', [
+        {'stage':'Q6.3'}, {'allocation_stage':'V_pair'}, {'decision':'inconclusive'},
+        {'selection_digest':'not-a-digest'}, {'target_bundle_digest':'f'*64}, {'expected_active_digest':'f'*64},
+    ])
+    def test_grant_cannot_change_c5_target_stage_or_parent(tmp_path, changes):
+&gt;       base,target,roots=fixtures(tmp_path)
+                          ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_grant_cannot_change_c5_target_stage_or_parent[changes1]" time="0.013"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_grant_cannot_change_c5_ta1')
+changes = {'allocation_stage': 'V_pair'}
+
+    @pytest.mark.parametrize('changes', [
+        {'stage':'Q6.3'}, {'allocation_stage':'V_pair'}, {'decision':'inconclusive'},
+        {'selection_digest':'not-a-digest'}, {'target_bundle_digest':'f'*64}, {'expected_active_digest':'f'*64},
+    ])
+    def test_grant_cannot_change_c5_target_stage_or_parent(tmp_path, changes):
+&gt;       base,target,roots=fixtures(tmp_path)
+                          ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_grant_cannot_change_c5_target_stage_or_parent[changes2]" time="0.014"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_grant_cannot_change_c5_ta2')
+changes = {'decision': 'inconclusive'}
+
+    @pytest.mark.parametrize('changes', [
+        {'stage':'Q6.3'}, {'allocation_stage':'V_pair'}, {'decision':'inconclusive'},
+        {'selection_digest':'not-a-digest'}, {'target_bundle_digest':'f'*64}, {'expected_active_digest':'f'*64},
+    ])
+    def test_grant_cannot_change_c5_target_stage_or_parent(tmp_path, changes):
+&gt;       base,target,roots=fixtures(tmp_path)
+                          ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_grant_cannot_change_c5_target_stage_or_parent[changes3]" time="0.014"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_grant_cannot_change_c5_ta3')
+changes = {'selection_digest': 'not-a-digest'}
+
+    @pytest.mark.parametrize('changes', [
+        {'stage':'Q6.3'}, {'allocation_stage':'V_pair'}, {'decision':'inconclusive'},
+        {'selection_digest':'not-a-digest'}, {'target_bundle_digest':'f'*64}, {'expected_active_digest':'f'*64},
+    ])
+    def test_grant_cannot_change_c5_target_stage_or_parent(tmp_path, changes):
+&gt;       base,target,roots=fixtures(tmp_path)
+                          ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_grant_cannot_change_c5_target_stage_or_parent[changes4]" time="0.014"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_grant_cannot_change_c5_ta4')
+changes = {'target_bundle_digest': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}
+
+    @pytest.mark.parametrize('changes', [
+        {'stage':'Q6.3'}, {'allocation_stage':'V_pair'}, {'decision':'inconclusive'},
+        {'selection_digest':'not-a-digest'}, {'target_bundle_digest':'f'*64}, {'expected_active_digest':'f'*64},
+    ])
+    def test_grant_cannot_change_c5_target_stage_or_parent(tmp_path, changes):
+&gt;       base,target,roots=fixtures(tmp_path)
+                          ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_grant_cannot_change_c5_target_stage_or_parent[changes5]" time="0.016"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_grant_cannot_change_c5_ta5')
+changes = {'expected_active_digest': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}
+
+    @pytest.mark.parametrize('changes', [
+        {'stage':'Q6.3'}, {'allocation_stage':'V_pair'}, {'decision':'inconclusive'},
+        {'selection_digest':'not-a-digest'}, {'target_bundle_digest':'f'*64}, {'expected_active_digest':'f'*64},
+    ])
+    def test_grant_cannot_change_c5_target_stage_or_parent(tmp_path, changes):
+&gt;       base,target,roots=fixtures(tmp_path)
+                          ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:134: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_rollback_cannot_mix_old_state_or_restore_an_unaccepted_sibling" time="0.015"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_rollback_cannot_mix_old_s0')
+
+    def test_rollback_cannot_mix_old_state_or_restore_an_unaccepted_sibling(tmp_path):
+&gt;       base,target,roots=fixtures(tmp_path)
+                          ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_train_provenance_dependency_and_source_drift_are_enforced" time="0.014"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_train_provenance_dependen0')
+
+    def test_train_provenance_dependency_and_source_drift_are_enforced(tmp_path):
+&gt;       base,target,roots=fixtures(tmp_path)
+                          ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:157: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_a_task_keeps_its_whole_snapshot_when_another_connection_activates" time="0.015"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_a_task_keeps_its_whole_sn0')
+
+    def test_a_task_keeps_its_whole_snapshot_when_another_connection_activates(tmp_path):
+&gt;       base,target,roots=fixtures(tmp_path)
+                          ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:177: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_joint_deployment" name="test_two_process_writers_publish_one_complete_winner" time="0.018"><failure message="research_loop.ontology.ContractError: activation must be a collection of names">tmp_path = WindowsPath('C:/codex-modular-checks/c5-joint-deployment-r1/test_two_process_writers_publi0')
+
+    def test_two_process_writers_publish_one_complete_winner(tmp_path):
+&gt;       base,target,roots=fixtures(tmp_path)
+                          ^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_deployment.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_joint_deployment.py:36: in fixtures
+    base = JointDeploymentBundle.create(parent_digest=None, baseline_digest=H, p0_digest='b'*64,
+research_loop\modular\joint_deployment.py:116: in create
+    return cls(FrozenRecord.from_dict({'schema': 'joint-deployment-bundle-v1', 'parent_digest': parent_digest,
+&lt;string&gt;:4: in __init__
+    ???
+research_loop\modular\joint_deployment.py:105: in __post_init__
+    default_compatibility(b['baseline_digest']).arm(components)
+research_loop\modular\combinations.py:80: in arm
+    items = _names(enabled, "activation")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+values = {'M1': JointComponentVersion(record=FrozenRecord(encoded='{"config":{"instruction":"old-M1","slot":"M1"},"module_id":"...rce-group","split_id":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","task_id":"train"}]}}')), ...}
+field = 'activation'
+
+    def _names(values: Iterable[str], field: str, *, nonempty: bool = False) -&gt; tuple[str, ...]:
+        if isinstance(values, (str, bytes, dict)):
+&gt;           raise ContractError(f"{field} must be a collection of names")
+E           research_loop.ontology.ContractError: activation must be a collection of names
+
+research_loop\modular\combinations.py:18: ContractError</failure></testcase><testcase classname="tests.test_c5_frozen_handoff" name="test_original_typed_eight_cell_source_and_complete_c5_grid" time="0.183" /><testcase classname="tests.test_c5_frozen_handoff" name="test_direct_constructors_replay_and_bind_all_fields" time="0.118" /><testcase classname="tests.test_c5_frozen_handoff" name="test_exact_source_closures_reject_realistic_substitutions[swap_arms]" time="0.013" /><testcase classname="tests.test_c5_frozen_handoff" name="test_exact_source_closures_reject_realistic_substitutions[b0_package]" time="0.013" /><testcase classname="tests.test_c5_frozen_handoff" name="test_exact_source_closures_reject_realistic_substitutions[drop_arm]" time="0.012" /><testcase classname="tests.test_c5_frozen_handoff" name="test_exact_source_closures_reject_realistic_substitutions[extra_arm]" time="0.013" /><testcase classname="tests.test_c5_frozen_handoff" name="test_exact_source_closures_reject_realistic_substitutions[wrong_activation]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_exact_source_closures_reject_realistic_substitutions[background]" time="0.014" /><testcase classname="tests.test_c5_frozen_handoff" name="test_component_and_p0_projections_cannot_claim_unobserved_state" time="0.001" /><testcase classname="tests.test_c5_frozen_handoff" name="test_original_runtime_receipts_must_replay_exactly[missing]" time="0.001" /><testcase classname="tests.test_c5_frozen_handoff" name="test_original_runtime_receipts_must_replay_exactly[duplicate]" time="0.001" /><testcase classname="tests.test_c5_frozen_handoff" name="test_original_runtime_receipts_must_replay_exactly[relabeled]" time="0.001" /><testcase classname="tests.test_c5_frozen_handoff" name="test_original_runtime_receipts_must_replay_exactly[output]" time="0.002" /><testcase classname="tests.test_c5_frozen_handoff" name="test_original_runtime_receipts_must_replay_exactly[trace]" time="0.002" /><testcase classname="tests.test_c5_frozen_handoff" name="test_original_runtime_receipts_must_replay_exactly[failed]" time="0.001" /><testcase classname="tests.test_c5_frozen_handoff" name="test_original_runtime_receipts_must_replay_exactly[wrong_cell]" time="0.002" /><testcase classname="tests.test_c5_frozen_handoff" name="test_source_drift_after_preparation_is_rejected_at_c5_freeze" time="0.093" /><testcase classname="tests.test_c5_frozen_handoff" name="test_valid_protocol_with_substituted_package_context_is_not_a_supported_source" time="0.103" /><testcase classname="tests.test_c5_frozen_handoff" name="test_frozen_handoff_does_not_mutate_during_revalidation" time="0.032" /><testcase classname="tests.test_c5_frozen_handoff" name="test_unsupported_panel_family_and_validation_source_are_explicitly_refused" time="0.001" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_roles_are_not_overwritten_or_silently_reassigned[two_targets]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_roles_are_not_overwritten_or_silently_reassigned[two_baselines]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_roles_are_not_overwritten_or_silently_reassigned[missing_control]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_roles_are_not_overwritten_or_silently_reassigned[duplicate_id]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_roles_are_not_overwritten_or_silently_reassigned[wrong_b0]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_pairs_full_identity_and_every_source_group[version]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_pairs_full_identity_and_every_source_group[split]" time="0.016" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_pairs_full_identity_and_every_source_group[group]" time="0.017" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_pairs_full_identity_and_every_source_group[missing]" time="0.016" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_pairs_full_identity_and_every_source_group[duplicate]" time="0.016" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_pairs_full_identity_and_every_source_group[train_group]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_pairs_full_identity_and_every_source_group[extra_arm]" time="0.014" /><testcase classname="tests.test_c5_frozen_handoff" name="test_each_contrast_is_target_minus_exactly_one_comparator[positive]" time="0.016" /><testcase classname="tests.test_c5_frozen_handoff" name="test_each_contrast_is_target_minus_exactly_one_comparator[wrong_weight]" time="0.016" /><testcase classname="tests.test_c5_frozen_handoff" name="test_each_contrast_is_target_minus_exactly_one_comparator[boolean]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_each_contrast_is_target_minus_exactly_one_comparator[omit_comparison]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_each_contrast_is_target_minus_exactly_one_comparator[wrong_role]" time="0.014" /><testcase classname="tests.test_c5_frozen_handoff" name="test_each_contrast_is_target_minus_exactly_one_comparator[interaction]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_criteria_and_schedule_are_concrete_and_frozen[empty]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_criteria_and_schedule_are_concrete_and_frozen[missing_benchmark]" time="0.014" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_criteria_and_schedule_are_concrete_and_frozen[safety]" time="0.014" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_criteria_and_schedule_are_concrete_and_frozen[range]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_criteria_and_schedule_are_concrete_and_frozen[zero_cost]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_criteria_and_schedule_are_concrete_and_frozen[multiplicity]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_criteria_and_schedule_are_concrete_and_frozen[missing_policy]" time="0.015" /><testcase classname="tests.test_c5_frozen_handoff" name="test_c5_schedule_direct_constructor_and_freeze_cannot_drift" time="0.059" /><testcase classname="tests.test_modular_deployment" name="test_file_port_on_off_on_persists_and_rejects_drift_offline_replay_and_forgery" time="0.214" /><testcase classname="tests.test_modular_deployment" name="test_file_port_compare_and_swap_is_cross_process_and_preserves_previous_snapshot" time="0.446" /><testcase classname="tests.test_modular_deployment" name="test_m9_binds_locked_package_and_injects_frozen_payload_for_m4_m5_m6_and_final" time="0.045" /><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.256" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.025" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.030" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.110" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.095" /></testsuite></testsuites>

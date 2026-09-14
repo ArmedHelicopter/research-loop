@@ -3,6 +3,35 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## C5 atomic component snapshot and provider replay (2026-09-14)
+
+The C5 local deployment port now represents every enabled module with separate
+source, configuration, state and TRAIN provenance digests. It publishes the
+complete bundle and consumes the independent acceptance in one SQLite
+transaction. Rollback restores the exact prior bundle. Tasks keep one whole
+snapshot across concurrent activation. This is a new local port, separate from
+the older M4/M5 prepared handoff; its upstream C5 acceptance issuer and actual
+TRAIN-selected target are still missing.
+
+Frozen `fc11452` passed 82/82, including a real RunSession request carrying nine
+synthetic component payloads, competing processes, failure after each component
+write, transaction-tail failure, complete rollback, source drift and restart.
+The first attempt retained 20 failures caused by passing a mapping to the
+compatibility interface; its repair passed 79/79. Independent review then found
+that a different envelope could reuse an acceptance after rollback. The final
+repair uniquely consumes the original acceptance digest and reconstructs past
+consumption on reopen. Independent re-review found that defect closed.
+Exact tested sources and all attempts are retained under
+`results/modular-engineering-20260914/c5-joint-deployment/`.
+
+Separately, provider phase verification now performs one fresh original replay
+instead of two in the same call. Frozen `0c5c63e` passed 67/67 across both
+provider types, later file/configuration drift and terminal refusal. It is not
+a persistent cache and does not grant sealing or scoring authority. All red
+and repaired attempts remain in the `provider-observation/` archive. No overall
+throughput improvement is inferred. These are synthetic engineering results;
+neither checkpoint performs real model generation or validation acceptance.
+
 ## Final native provenance gates (2026-09-14)
 
 The native M4/M5 path now checks original records after scoring and at final

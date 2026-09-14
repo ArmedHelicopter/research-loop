@@ -1,0 +1,54 @@
+{
+  "integration_head": "4aa7a47d85ca582bb5b04e8d8ed0ba17de2ed1b7",
+  "checks": [
+    {
+      "commit": "133f8b4ce337257a904a02d1a5232ac310789328",
+      "source_unchanged": true,
+      "source_count": 621,
+      "exit_code": 1,
+      "wall_seconds": 3.9060000000026776,
+      "new_paid_calls": 0,
+      "report_sha256": "7d14dc23e5d07c00a5dd92875ef2a8002d80a995c6aac929e546328538de60f0",
+      "junit": {
+        "tests": 79,
+        "failures": 20,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "commit": "049b32315645968c4e83859ce15d786f9e626f4b",
+      "source_unchanged": true,
+      "source_count": 621,
+      "exit_code": 0,
+      "wall_seconds": 3.6719999999913853,
+      "new_paid_calls": 0,
+      "report_sha256": "1ce41d9deb953041c9cdada18404086951491e34c83df769d74b88c924f2cb2c",
+      "junit": {
+        "tests": 79,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "commit": "fc11452f47cec2c0b555355b915c56291662c227",
+      "source_unchanged": true,
+      "source_count": 621,
+      "exit_code": 0,
+      "wall_seconds": 4.0,
+      "new_paid_calls": 0,
+      "report_sha256": "0ce24d14a4a751eb5bdd4353ab8e37f6a20e93cf6b4f95c5d44b356751605145",
+      "junit": {
+        "tests": 82,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "new_paid_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false,
+  "independent_review": "c4_provider_port found re-enveloped acceptance replay on 049b323; re-reviewed fc11452 and found the repair closed"
+}
