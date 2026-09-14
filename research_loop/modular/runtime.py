@@ -247,8 +247,12 @@ class RunSession:
             "identity": task.identity.data(), "package_digest": required_text(package_digest, "package digest"),
             "arm": arm.data(), "objective": objective.data(), "slots": list(slots),
             "execution_limit": execution_limit, "required_audit": list(required_audit), "context_budget": context_budget})
-        self.evidence = EvidenceLedger(task.identity, storage_path=sidecar / "evidence.jsonl")
-        self.claims = ClaimLedger(self.evidence, storage_path=sidecar / "claims.jsonl")
+        from .evidence_artifacts import EvidenceArtifactBridge
+        self._evidence_artifacts = EvidenceArtifactBridge(self)
+        self.evidence = EvidenceLedger(task.identity, storage_path=sidecar / "evidence.jsonl",
+            event_sink=lambda event: self._evidence_artifacts.ledger('evidence', event), on_failure=self._audit_failure)
+        self.claims = ClaimLedger(self.evidence, storage_path=sidecar / "claims.jsonl",
+            event_sink=lambda event: self._evidence_artifacts.ledger('claims', event), on_failure=self._audit_failure)
         self._artifact_source = source_snapshot(Path(__file__))
         self._artifact_config = {"kind":"run_lock", "digest":self.lock.content_hash, "canonical":self.lock.data()}
         self.artifacts = ArtifactCatalogue(sidecar / "artifacts.jsonl", identity=task.identity,
@@ -285,6 +289,28 @@ class RunSession:
             raise
 
     def _record(self, stage: str, data: dict) -> FrozenRecord:
+        try:
+            return self._record_event(stage, data)
+        except Exception:
+            self._audit_failure()
+            raise
+
+    def _audit_failure(self) -> None:
+        self._terminal = True
+        marker = FrozenRecord.from_dict({'schema': 'runtime-audit-failure-v1',
+            'lock_digest': self.lock.content_hash, 'identity': self.task.identity.data(),
+            'audit_complete': False, 'terminal': True, 'scientific_validated': False})
+        try:
+            with (self.sidecar / 'audit-failure.json').open('xb') as stream:
+                stream.write((marker.encoded + '\n').encode('utf-8'))
+                stream.flush()
+                os.fsync(stream.fileno())
+        except OSError:
+            # Preserve the original failure if the storage cannot even retain
+            # this independent marker. The stage receipt still reports failure.
+            pass
+
+    def _record_event(self, stage: str, data: dict) -> FrozenRecord:
         event = FrozenRecord.from_dict({"sequence": len(self._events), "previous": self._events[-1].content_hash if self._events else None,
                                        "lock_digest": self.lock.content_hash, "stage": stage, "data": data})
         with (self.sidecar / "trace.jsonl").open("a", encoding="utf-8", newline="\n") as stream:
@@ -297,6 +323,7 @@ class RunSession:
             producer_source=self._artifact_source, config_refs=(self._artifact_config,),
             coverage='covered' if stage=='objective_lock' else 'uncovered')
         self._event_artifacts.append(descriptor.content_hash)
+        self._evidence_artifacts.admission(event)
         return event
 
     def record_artifact(self, *, kind: str, module: str, payload: FrozenRecord | Mapping[str, Any] | None,
