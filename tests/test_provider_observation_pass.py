@@ -29,7 +29,8 @@ def test_phase_verification_reads_each_original_once_but_never_reuses_old_pass(t
     session.verify()
     assert replayed == [1, 2], 'a later check must make a new original pass'
     if fault == 'original':
-        first = backend.calls_root/'0001-m4_plan'/('response.private.json' if kind == 'grok' else 'output.json')
+        call_root = backend.calls_root if kind == 'grok' else backend.call_root
+        first = call_root/'0001-m4_plan'/('response.private.json' if kind == 'grok' else 'output.json')
         first.write_bytes(first.read_bytes()+b' ')
     elif kind == 'grok':
         backend.slot_output_caps['m4_plan'] += 1
