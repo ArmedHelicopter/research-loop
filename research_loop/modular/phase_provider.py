@@ -12,10 +12,10 @@ from pathlib import Path
 
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.train_provider import (
-    CodexTrainProvider, GrokTrainProvider, FrozenTrainProviderLedgerV2)
+    CodexTrainProvider, GrokTrainProvider, GrokHeadlessTrainProvider, FrozenTrainProviderLedgerV2)
 from research_loop.ontology import ContractError
 
-PROVIDERS = (CodexTrainProvider, GrokTrainProvider)
+PROVIDERS = (CodexTrainProvider, GrokTrainProvider, GrokHeadlessTrainProvider)
 
 
 def _require(value, message):
@@ -50,15 +50,23 @@ def validate_configuration(config, *, schemas, main_opportunities, exact=True):
     _require(type(count) is int and (count==main_opportunities if exact else count>=main_opportunities)
         and native.get('max_calls')==count, 'complete MAIN opportunities required')
     _require(_record(native).content_hash==b.get('native_config_digest'), 'native configuration digest differs')
-    if b.get('provider_kind')=='grok-acp-public-train-v1':
-        _require(b.get('model')=='grok-4.6' and b.get('execution_mode')=='native_acp'
-            and native.get('schema')=='grok-train-solver-port-v1'
+    if b.get('provider_kind') in ('grok-acp-public-train-v1','grok-headless-public-train-v1'):
+        headless=b['provider_kind']=='grok-headless-public-train-v1'
+        _require(b.get('model')=='grok-4.6' and b.get('execution_mode')==('low' if headless else 'native_acp')
+            and native.get('schema')==('grok-headless-train-solver-port-v1' if headless else 'grok-train-solver-port-v1')
             and native.get('included_only') is True and native.get('api_key_route_permitted') is False
             and native.get('max_retries')==0 and limits.get('max_retries')==0
             and limits.get('lifetime_seconds')==60
             and limits.get('possible_initial_title_opportunities')==count
             and b.get('accounting_scope')=='native_main'
             and b.get('title_and_all_opportunity_settlement')=='unknown', 'native TRAIN policy differs')
+        if headless:
+            recovery=native.get('account_read_recovery')
+            _require(native.get('provider_kind')==b['provider_kind'] and native.get('reasoning_effort')=='low'
+                and native.get('timeout_seconds')==60 and native.get('paid_fallback') is False
+                and (recovery is None or (type(recovery) is dict
+                    and recovery=={'schema':'headless-account-read-recovery-v1','max_attempts':2}
+                    and type(recovery['max_attempts']) is int)), 'headless phase contract differs')
         _require(native.get('model')==b['model'] and native.get('title_opportunities_per_main')==1
             and native.get('title_usage_and_all_call_totals')=='unknown', 'native model/title contract differs')
         for key in ('prompt_byte_caps','requested_output_token_caps'):

@@ -9,6 +9,8 @@ from typing import TypeAlias
 
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.grok_train_solver import GrokTrainModelPort, _replay_native_call
+from research_loop.modular.grok_headless_train_solver import GrokHeadlessTrainModelPort
+from research_loop.modular import train_provider_headless as headless
 from research_loop.modular.grok_acp_transport import known_usage, run_native_train, TRAIN_OPPORTUNITY_CONTRACT, MODEL
 from research_loop.modular.model_port import (CodexModelPort, _events, _usage, _tool_events,
     _context_diagnostics, _base_context_bytes, _validate_schema)
@@ -42,6 +44,8 @@ def _original_files(root, grok):
 
 
 def _native_config(backend):
+    if type(backend) is GrokHeadlessTrainModelPort:
+        return headless.configuration(backend)
     config=_read(backend.ledger_path)['config']
     _require(config==backend.ledger['config'], 'native configuration memory/disk drift')
     _require(config['model']==backend.model and config['schemas']==backend.schemas
@@ -81,12 +85,15 @@ def _native_config(backend):
 
 
 def _configuration(backend):
-    native=_native_config(backend);grok=type(backend) is GrokTrainModelPort
+    native=_native_config(backend);grok=type(backend) in (GrokTrainModelPort,GrokHeadlessTrainModelPort)
     sources=[Path(__file__),Path(__file__).with_name('contracts.py'),
         Path(__file__).with_name('grok_train_solver.py'),Path(__file__).with_name('grok_acp_transport.py'),
         Path(__file__).with_name('model_port.py'),Path(__file__).parents[1]/'ontology.py']
+    if type(backend) is GrokHeadlessTrainModelPort:
+        sources.extend(Path(__file__).with_name(name) for name in (
+            'train_provider_headless.py','grok_headless_train_solver.py','grok_headless_transport.py','grok_cli_protocol.py'))
     return {'schema':'public-train-provider-config-v1','provider_kind':
-        'grok-acp-public-train-v1' if grok else 'codex-cli-public-train-v1',
+        backend.provider_kind if grok else 'codex-cli-public-train-v1',
         'model':backend.model,'execution_mode':backend.effort,'native_config':native,
         'native_config_digest':_record(native).content_hash,
         'adapter_source_files':{str(path.resolve()):_sha(path.read_bytes()) for path in sources},
@@ -104,6 +111,8 @@ def _configuration(backend):
 
 def _verify_call(backend, row, ledger):
     """Return checked originals and reported usage; failed attempts are never eligible."""
+    if type(backend) is GrokHeadlessTrainModelPort:
+        return headless.observation(backend,row)
     number=row['id'];slot=row['slot'];grok=type(backend) is GrokTrainModelPort
     root=(backend.calls_root if grok else backend.call_root)/f'{number:04d}-{slot}'
     prompt=root/('prompt.private.txt' if grok else 'prompt.txt')
@@ -208,6 +217,8 @@ def _failed_observation(backend,row,error):
     """Capture even unverifiable attempts; only independently parsed scalar usage
     survives. This record is never a response or a successful provenance claim.
     """
+    if type(backend) is GrokHeadlessTrainModelPort:
+        return headless.observation(backend,row,failure=error)
     grok=type(backend) is GrokTrainModelPort
     root=(backend.calls_root if grok else backend.call_root)/f'{row["id"]:04d}-{row["slot"]}'
     originals=_original_files(root,grok)
@@ -233,9 +244,10 @@ def _failed_observation(backend,row,error):
 
 
 class _TrainProvider:
-    """Only the two concrete wrappers below may own a provider session."""
+    """Only the concrete wrappers below may own a provider session."""
     def __init__(self, backend):
-        wanted={CodexTrainProvider:CodexModelPort,GrokTrainProvider:GrokTrainModelPort}.get(type(self))
+        wanted={CodexTrainProvider:CodexModelPort,GrokTrainProvider:GrokTrainModelPort,
+            GrokHeadlessTrainProvider:GrokHeadlessTrainModelPort}.get(type(self))
         _require(wanted is not None and type(backend) is wanted, 'exact admitted public TRAIN backend required')
         self.backend=backend;self.root=backend.root/'train-provider-v1';self.root.mkdir(exist_ok=True)
         self._last_verified_accounting=None
@@ -251,7 +263,7 @@ class _TrainProvider:
 
     def _remember_verified_accounting(self,calls):
         """Pin historical scalars only after a complete original inspection."""
-        rows=[c.data() for c in calls];grok=type(self) is GrokTrainProvider
+        rows=[c.data() for c in calls];grok=type(self) in (GrokTrainProvider,GrokHeadlessTrainProvider)
         record=_record({'schema':'public-train-provider-observed-accounting-v1',
             'configuration_digest':_record(self.state['configuration']).content_hash,
             'observed_main_opportunities':len(rows),
@@ -271,7 +283,7 @@ class _TrainProvider:
         not assert that any current original is still valid, or that no further
         opportunity occurred. It contains no request/response or eligible view.
         """
-        _require(type(self) in (CodexTrainProvider,GrokTrainProvider), 'closed provider required')
+        _require(type(self) in (CodexTrainProvider,GrokTrainProvider,GrokHeadlessTrainProvider), 'closed provider required')
         durable=_read(self.state_path)
         _require(durable.get('terminal_fault') is True and self.state.get('terminal_fault') is True,
             'existing durable terminal fault required')
@@ -349,11 +361,12 @@ class _TrainProvider:
         return self.inspect()[cursor:]
 
     def usage(self) -> FrozenRecord:
-        calls=self.inspect();grok=type(self) is GrokTrainProvider
+        calls=self.inspect();grok=type(self) in (GrokTrainProvider,GrokHeadlessTrainProvider)
         rows=[c.data() for c in calls];known=sum(c['known_tokens'] or 0 for c in rows)
         return _record({'schema':'public-train-provider-usage-v1','main_opportunities':len(rows),
             'known_reported_tokens':known,'known_usage_scope':'native_main' if grok else 'codex_turn_completed',
-            'legacy_ledger_reported_tokens':self.backend.ledger['tokens'],
+            'legacy_ledger_reported_tokens':(self.backend.ledger['known_main_tokens']
+                if type(self) is GrokHeadlessTrainProvider else self.backend.ledger['tokens']),
             'unknown_main_opportunities':sum(c['main_usage_incomplete'] for c in rows),
             'possible_initial_title_opportunities':len(rows) if grok else None,'title_tokens':None,
             'all_opportunity_tokens':None,'settled_additional_charge_usd':None,
@@ -412,12 +425,17 @@ class GrokTrainProvider(_TrainProvider):
     """Checked wrapper over an actual native GrokTrainModelPort."""
 
 
-TrainProvider: TypeAlias = CodexTrainProvider | GrokTrainProvider
+class GrokHeadlessTrainProvider(_TrainProvider):
+    """Checked wrapper over the distinct headless Grok TRAIN originals."""
 
 
-def wrap_train_provider(backend: CodexModelPort | GrokTrainModelPort) -> TrainProvider:
+TrainProvider: TypeAlias = CodexTrainProvider | GrokTrainProvider | GrokHeadlessTrainProvider
+
+
+def wrap_train_provider(backend: CodexModelPort | GrokTrainModelPort | GrokHeadlessTrainModelPort) -> TrainProvider:
     if type(backend) is CodexModelPort:return CodexTrainProvider(backend)
     if type(backend) is GrokTrainModelPort:return GrokTrainProvider(backend)
+    if type(backend) is GrokHeadlessTrainModelPort:return GrokHeadlessTrainProvider(backend)
     raise ContractError('unadmitted provider type; callable assertions are not evidence')
 
 
@@ -430,11 +448,11 @@ class FrozenTrainProviderLedgerV2:
     def verify_originals(self) -> FrozenRecord:
         try:return self._verify_originals()
         except Exception as exc:
-            if type(self.provider) in (CodexTrainProvider,GrokTrainProvider):self.provider._poison('sealed_provenance_fault')
+            if type(self.provider) in (CodexTrainProvider,GrokTrainProvider,GrokHeadlessTrainProvider):self.provider._poison('sealed_provenance_fault')
             raise ContractError('sealed provider provenance fault; dispatch closed') from exc
 
     def _verify_originals(self):
-        _require(type(self) is FrozenTrainProviderLedgerV2 and type(self.provider) in (CodexTrainProvider,GrokTrainProvider), 'typed provider seal required')
+        _require(type(self) is FrozenTrainProviderLedgerV2 and type(self.provider) in (CodexTrainProvider,GrokTrainProvider,GrokHeadlessTrainProvider), 'typed provider seal required')
         _require(self.path.read_bytes()==self.record.encoded.encode('utf-8'), 'sealed provider record drift')
         b=self.record.data();self.provider.inspect()
         # inspect() already bound the in-memory state and native ledger to their
@@ -454,7 +472,7 @@ class FrozenTrainProviderLedgerV2:
                     require_eligible: bool=True) -> tuple[int, ...]:
         try:return self._bind_events(events,expected_call_ids=expected_call_ids,require_eligible=require_eligible)
         except Exception as exc:
-            if type(self.provider) in (CodexTrainProvider,GrokTrainProvider):self.provider._poison('runtime_binding_fault')
+            if type(self.provider) in (CodexTrainProvider,GrokTrainProvider,GrokHeadlessTrainProvider):self.provider._poison('runtime_binding_fault')
             raise ContractError('runtime provider binding fault; dispatch closed') from exc
 
     def _bind_events(self,events,*,expected_call_ids,require_eligible):
