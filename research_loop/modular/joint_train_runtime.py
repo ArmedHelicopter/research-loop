@@ -173,6 +173,24 @@ class JointTrainStage:
     record: FrozenRecord
     inner: FullLooResult
     ledger: PhaseProviderLedger
+    barrier: object = None
+
+
+def _stage_record(plan, inner, ledger, barrier, *, status):
+    """Derive every outer binding from originals, never from a supplied outer body."""
+    data=inner.record.data();stage=data['stage'];recipe=data['recipe']
+    if recipe not in plan.recipes or stage not in ('history_build','target'):
+        raise ContractError('inner stage is outside the frozen common protocol')
+    trial=(history_build_id(plan.protocol,recipe) if stage=='history_build' else
+           plan.protocol.trial_binding(recipe['id'],inner.cell.task_digest).content_hash)
+    return R({'schema':'c5-common-stage-original-v1','plan_digest':plan.record.content_hash,'protocol_digest':plan.protocol.digest,
+        'trial_id':trial,'build_id':history_build_id(plan.protocol,recipe),'scope_id':'c5-stage-v1:'+stage+':'+trial,
+        'stage':stage,'recipe_id':recipe['id'],'status':status,'inner_pipeline_receipt_digest':inner.record.content_hash,
+        'provider_seal_digest':ledger.record.content_hash,
+        'component_digests':{k:JointComponentVersion(R(v)).digest for k,v in plan.protocol.record.data()['component_templates'].items()},
+        'target_binding_mode':'common_panel' if barrier is not None else 'stage_checkpoint',
+        'history_barrier_digest':None if barrier is None else barrier.record.content_hash,
+        'score_eligible':False,'original_experiments_completed':False})
 
 
 class JointTrainStageExecutor:
@@ -202,7 +220,7 @@ class JointTrainStageExecutor:
             'rows':rows,'allocation':self.plan.protocol.record.data()['allocation'],'provider_usage':self.session.usage().data(),
             'complete_grid_executed':False,'score_eligible':False,'original_experiments_completed':False}).data())
 
-    def execute(self, *, recipe_id, stage, target_digest=None, build=None):
+    def execute(self, *, recipe_id, stage, target_digest=None, build=None, barrier=None):
         if self.poisoned or self.session.terminal(): raise ContractError('common stage allocation is terminal')
         plan=self.plan; trial=None
         try:
@@ -214,7 +232,7 @@ class JointTrainStageExecutor:
             recipe=next((r for r in plan.recipes if r['id']==recipe_id),None)
             if recipe is None or stage not in ('history_build','target'): raise ContractError('unregistered common stage')
             if stage=='history_build':
-                if target_digest is not None or build is not None: raise ContractError('history stage cannot receive target evidence')
+                if target_digest is not None or build is not None or barrier is not None: raise ContractError('history stage cannot receive target evidence')
                 task=plan.history.task; package=plan.parent; inputs=dict(plan.history_inputs)
                 trial=history_build_id(plan.protocol,recipe)
             else:
@@ -231,6 +249,12 @@ class JointTrainStageExecutor:
             scenario=R({'schema':'c5-stage-scenario-v1','plan_digest':plan.record.content_hash,'trial_id':trial})
             cell=PanelCell(OBLIGATION,task.identity,'r1','combination',recipe_id,runtime_arm(plan.composition,recipe,stage),
                 task.content_hash,scenario.content_hash,package.digest,ScorerConfig(R(plan.protocol.record.data()['scorer'])).digest)
+            if barrier is not None:
+                if type(barrier) is not JointTrainBarrier or barrier.executor is not self:
+                    raise ContractError('formal target requires this exact executor history barrier')
+                panel,_=compile_panel(barrier)
+                cell=next(c for c in panel.cells if c.arm_id==recipe_id and c.task_digest==task.content_hash)
+                if cell.package_digest!=package.digest:raise ContractError('formal target package differs from its barrier')
             if stage=='history_build':check_history(plan.history,plan.material(task.content_hash).state(),self.broker,inputs)
             self.attempts[(stage,trial)]={'status':'reserved'};self._persist()
             with self.session.scope(scope) as scoped:
@@ -251,14 +275,10 @@ class JointTrainStageExecutor:
             except ContractError:
                 status='failed'
             if type(ledger) is not PhaseProviderLedger or self.session.terminal(): status='failed'
-            record=R({'schema':'c5-common-stage-original-v1','plan_digest':plan.record.content_hash,'protocol_digest':plan.protocol.digest,
-                'trial_id':trial,'build_id':history_build_id(plan.protocol,recipe),'scope_id':scope,'stage':stage,'recipe_id':recipe_id,
-                'status':status,'inner_pipeline_receipt_digest':inner.record.content_hash,'provider_seal_digest':ledger.record.content_hash,
-                'component_digests':{k:JointComponentVersion(R(v)).digest for k,v in plan.protocol.record.data()['component_templates'].items()},
-                'score_eligible':False,'original_experiments_completed':False})
+            record=_stage_record(plan,inner,ledger,barrier,status=status)
             _exclusive(self.root/(trial+'-stage.json'),record)
             # The outer record is outside the inner pipeline's original file inventory.
-            self.stages.append(JointTrainStage(record,inner,ledger))
+            self.stages.append(JointTrainStage(record,inner,ledger,barrier))
             if status!='succeeded': self.poisoned=True
             return self.stages[-1]
         except Exception:
@@ -270,9 +290,14 @@ class JointTrainStageExecutor:
     def verify(self, result):
         if type(result) is not JointTrainStage or result not in self.stages or type(result.ledger) is not PhaseProviderLedger:
             raise ContractError('original common stage and eligible provider seal required')
+        if result.barrier is not None and (type(result.barrier) is not JointTrainBarrier or result.barrier.executor is not self):
+            raise ContractError('common stage barrier origin differs')
+        expected=_stage_record(self.plan,result.inner,result.ledger,result.barrier,status='succeeded')
+        if result.record!=expected or result.inner.record.data()['status']!='succeeded':
+            raise ContractError('common outer receipt differs from complete original cross-binding')
         self.plan.verify_dependencies(provider=self.session.provider,source_verifier=self.source,corpus_verifier=self.corpus,
                                       scorer_handle_bindings=self.handles)
-        b=result.record.data(); recipe=next(r for r in self.plan.recipes if r['id']==b['recipe_id'])
+        b=expected.data(); recipe=result.inner.record.data()['recipe']
         if _read_record(self.root/(b['trial_id']+'-stage.json')) != result.record or b['status']!='succeeded':
             raise ContractError('original common stage unavailable')
         calls=result.ledger.calls_for_scope(b['scope_id'])
@@ -283,6 +308,15 @@ class JointTrainStageExecutor:
             build=next(s for s in self.stages if s.record.data()['stage']=='history_build' and s.record.data()['build_id']==b['build_id'])
             self.verify(build); package=CandidatePackage(_read_record(build.inner.root/'candidate.json'))
             inputs={'public_csv':next(p.csv_path for p in self.plan.packets if p.task==task)}
+        if result.barrier is not None:
+            if type(result.barrier) is not JointTrainBarrier or result.barrier.executor is not self or b['stage']!='target':
+                raise ContractError('common target barrier origin differs')
+            panel,_=compile_panel(result.barrier)
+            if result.inner.cell not in panel.cells:raise ContractError('formal target did not execute its exact common panel cell')
+        else:
+            scenario=R({'schema':'c5-stage-scenario-v1','plan_digest':self.plan.record.content_hash,'trial_id':b['trial_id']})
+            if result.inner.cell.scenario_digest!=scenario.content_hash:
+                raise ContractError('checkpoint stage scenario drift')
         return verify_stage(result.inner,plan=self.plan,recipe=recipe,stage=b['stage'],task=task,package=package,
             material=self.plan.material(task.content_hash),phase_material=self.plan.phase_material(task.content_hash),
             source_verifier=self.source,corpus_verifier=self.corpus,broker=self.broker,inputs=inputs,ledger=result.ledger,

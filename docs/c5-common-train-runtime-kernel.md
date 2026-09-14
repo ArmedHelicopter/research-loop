@@ -35,3 +35,13 @@ Root should compare/deduplicate this exact file when integrating the C4 branch.
 Tests use synthetic provider/qualification peers with actual restricted builder,
 Docker history/target execution and original replay. They never launch an actual
 model, use an API, score scientific outcomes or access validation.
+
+Formal target execution takes the exact sealed `JointTrainBarrier` owned by the
+same executor and derives its cell from `compile_panel`; it cannot take an
+arbitrary panel or retrofit a checkpoint scenario. The outer receipt records
+`common_panel` versus `stage_checkpoint` and the barrier digest. Full outer
+records are reconstructed from actual inner receipts, plan and provider seal on
+replay, including component identities and all false authority flags. The first
+bounded integration exercises the checkpoint path and rejects incomplete formal
+barriers; a successful full-barrier target path awaits the full-grid controller
+checkpoint and is not claimed as tested here.

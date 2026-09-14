@@ -107,6 +107,25 @@ def test_actual_history_target_pipeline_with_full_catalogue(tmp_path,monkeypatch
     assert checkpoint['score_eligible'] is checkpoint['complete_grid_executed'] is False
     assert all(r['status'] in ('succeeded','not_executed') for r in checkpoint['rows'])
     assert history.record.data()['original_experiments_completed'] is False
+    # A coherent rewritten outer file and matching in-memory record must still
+    # fail against actual inner/plan/ledger evidence, not merely file equality.
+    path=runner.root/(history.record.data()['trial_id']+'-stage.json');original=path.read_bytes()
+    replacements={key:'0'*64 for key in ('plan_digest','protocol_digest','trial_id','build_id',
+        'scope_id','recipe_id','inner_pipeline_receipt_digest','provider_seal_digest')}
+    replacements.update(schema='other',stage='target',status='failed',score_eligible=True,
+        original_experiments_completed=True,target_binding_mode='common_panel',history_barrier_digest='0'*64,
+        component_digests={k:'0'*64 for k in history.record.data()['component_digests']})
+    for key,value in replacements.items():
+        changed=R({**history.record.data(),key:value});forged=replace(history,record=changed)
+        path.write_bytes(changed.encoded.encode());runner.stages[0]=forged
+        try:
+            with pytest.raises(ContractError,match='cross-binding'):runner.verify(forged)
+        finally:
+            runner.stages[0]=history;path.write_bytes(original)
+    with pytest.raises(ContractError):
+        runner.execute(recipe_id=recipe['id'],stage='target',target_digest=plan.packets[1].task.content_hash,
+            build=history,barrier=JointTrainBarrier(R({'schema':'invented'}),runner,(history,)))
+    assert len(setup['common_logs'])==11
 
 
 @pytest.mark.parametrize('fault',['handles','template','parent','csv','material'])
