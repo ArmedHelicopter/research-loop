@@ -181,3 +181,15 @@ def test_completed_history_provenance_drift_blocks_target(tmp_path,monkeypatch):
     assert len(setup['common_logs'])==5 and runner.poisoned
     assert body['provider_usage']['known_reported_tokens']==60
     assert body['score_eligible'] is False and all(r['status'] in ('succeeded','blocked') for r in body['rows'])
+
+
+def test_original_protocol_file_whitespace_drift_blocks_dispatch(tmp_path,monkeypatch):
+    setup=prepare(tmp_path,monkeypatch);runner=executor(setup);path=runner.root/'protocol.json'
+    original=path.read_bytes();assert original==(runner.plan.protocol.record.encoded+'\n').encode()
+    # Same decoded record, different original bytes: a normalized digest cannot hide it.
+    path.write_bytes(original+b'\n')
+    with pytest.raises(ContractError,match='protocol bytes'):
+        runner.execute(recipe_id=full_recipe(runner.plan)['id'],stage='history_build')
+    assert not setup['common_logs'] and runner.poisoned
+    body=json.loads((runner.root/'checkpoint.json').read_bytes())
+    assert all(r['status']=='blocked' for r in body['rows']) and not body['score_eligible']

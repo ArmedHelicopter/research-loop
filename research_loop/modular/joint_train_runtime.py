@@ -202,11 +202,16 @@ class JointTrainStageExecutor:
                                  scorer_handle_bindings=scorer_handle_bindings)
         self.plan=plan; self.root=Path(root); self.root.mkdir(parents=True, exist_ok=False)
         _exclusive(self.root/'plan.json',plan.record)
+        _exclusive(self.root/'protocol.json',plan.protocol.record)
         self.session=PhaseProviderSession(provider,self.root/'provider-scopes.json')
         self.source=source_verifier; self.corpus=corpus_verifier; self.retrieval=retrieval_provider; self.audit=audit_verifier
         self.handles=dict(scorer_handle_bindings); self.stages=[]; self.poisoned=False; self.attempts={}
         self.broker=DockerExecutionBroker([self.root, *{p.csv_path.parent for p in plan.packets}, Path(plan.history_inputs[0][1]).parent])
         self._persist()
+
+    def _verify_protocol_file(self):
+        if (self.root/'protocol.json').read_bytes()!=(self.plan.protocol.record.encoded+'\n').encode('utf-8'):
+            raise ContractError('original common protocol bytes changed')
 
     def _persist(self):
         from research_loop.modular.metaprogram_training import _atomic
@@ -226,6 +231,7 @@ class JointTrainStageExecutor:
         try:
             plan.verify_dependencies(provider=self.session.provider,source_verifier=self.source,corpus_verifier=self.corpus,
                                      scorer_handle_bindings=self.handles)
+            self._verify_protocol_file()
             if _read_record(self.root/'plan.json') != plan.record: raise ContractError('original runtime plan drift')
             for previous in self.stages:
                 if previous.record.data()['status']=='succeeded': self.verify(previous)
@@ -261,6 +267,7 @@ class JointTrainStageExecutor:
                 def model(request):
                     plan.verify_dependencies(provider=self.session.provider,source_verifier=self.source,corpus_verifier=self.corpus,
                                              scorer_handle_bindings=self.handles)
+                    self._verify_protocol_file()
                     if _read_record(self.root/'plan.json')!=plan.record:raise ContractError('runtime plan changed before dispatch')
                     return scoped(request)
                 inner=run_stage(plan=plan,recipe=recipe,stage=stage,cell=cell,task=task,package=package,
@@ -270,6 +277,7 @@ class JointTrainStageExecutor:
             ledger=self.session.finish(self.root/(trial+'-provider.json'))
             status=inner.record.data()['status']
             try:
+                self._verify_protocol_file()
                 plan.verify_dependencies(provider=self.session.provider,source_verifier=self.source,corpus_verifier=self.corpus,
                                          scorer_handle_bindings=self.handles)
             except ContractError:
@@ -288,6 +296,7 @@ class JointTrainStageExecutor:
             self._persist()
 
     def verify(self, result):
+        self._verify_protocol_file()
         if type(result) is not JointTrainStage or result not in self.stages or type(result.ledger) is not PhaseProviderLedger:
             raise ContractError('original common stage and eligible provider seal required')
         if result.barrier is not None and (type(result.barrier) is not JointTrainBarrier or result.barrier.executor is not self):

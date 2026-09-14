@@ -48,3 +48,7 @@ checkpoint and is not claimed as tested here.
 
 Barrier replay also reconstructs the entire header from its actual plan and
 original build records, including component digests and false authority flags.
+
+Each fresh executor exclusively writes the complete protocol.json alongside its
+plan and checks exact bytes before dispatch, after stages and during replay.
+Even whitespace-only changes reject; an in-memory digest is not a substitute.
