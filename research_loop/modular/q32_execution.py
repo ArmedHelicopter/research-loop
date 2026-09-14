@@ -213,10 +213,20 @@ class Q32ExecutionStage:
 
     def run(self, model, broker):
         failure = None
+        native=self.compiled.data()['schema']=='q32-prospective-execution-v2'
+        def original_gate():
+            if native:
+                from research_loop.modular.phase_provider import PhaseProviderScope
+                if type(model) is not PhaseProviderScope or model.session.terminal():
+                    raise ContractError('native Q3.2 requires a healthy owned original call scope')
+                model.session.provider.inspect()
         try:
+            original_gate()
             seal = self.produce(model)
             for job in seal.data()["jobs"]:
+                original_gate()
                 self.execute_next(broker=broker, plan_id=job["plan_id"], program=job["program"], csv_path=self.packet.csv_path)
+                original_gate()
             plans = {p["plan_id"]: p for p in self._plans}
             handles = {pid: f"plan_{i + 1}" for i, pid in enumerate(plans)}
             public_rows = [{"plan": handles[r["plan_id"]], "measurement": r["measurement"], "status": r["status"],
@@ -236,8 +246,9 @@ class Q32ExecutionStage:
                 "status": "blocked", "execution_digest": None, "receipt": None, "observation": None,
                 "range_membership": compare(self._plans[i], measurement, None)})
         decision = self._session.finish(candidate)
-        result = FrozenRecord.from_dict({"cell": self.cell.data(), "rows": rows, "decision": decision.data(),
-            "failure": failure, "allocated": BUDGET, "model_attempts": self._session._next_call,
+        result = FrozenRecord.from_dict({**({'schema':'q32-native-runtime-result-v1'} if native else {}),
+            "cell": self.cell.data(), "rows": rows, "decision": decision.data(),
+            "failure": failure, "allocated": self.compiled.data()['budget'] if native else BUDGET, "model_attempts": self._session._next_call,
             "execution_attempts": self._session._attempts, "unattempted_executions": 3 - self._session._attempts,
             "scientific_validated": False, "programme_complete": False, "distinct_public_input_artifacts": 1,
             "independent_data_qualification": "not_established",
@@ -261,6 +272,9 @@ def run_q32_execution_panel(*, custody, snapshot_root: Path, export_root: Path, 
 
 
 def _run_q32_compiled(packets, compiled, export_root, run_root, model_factory, verifier):
+    if compiled.data()['schema']=='q32-prospective-execution-v2':
+        from research_loop.modular.q32_native_provider import run_native
+        return run_native(packets,compiled,export_root,run_root,model_factory,verifier)
     run_root.mkdir(parents=True, exist_ok=True)
     (run_root / "compiled.json").write_text(compiled.encoded, encoding="utf-8")
     packet_by_task = {p.task.content_hash: p for p in packets}
@@ -302,8 +316,10 @@ class FrozenQ32ProspectiveConfig:
         if type(record) is not FrozenRecord:
             raise ContractError('typed immutable Q3.2 source configuration required')
         b = record.data()
-        if (set(b) != {'schema', 'domain', 'export_mode', 'item_ids', 'task_bindings', 'material_by_task', 'image'}
-                or b['schema'] != 'q32-prospective-source-config-v2' or b['domain'] != 'train'
+        native=b.get('schema')=='q32-prospective-source-config-v3'
+        required={'schema', 'domain', 'export_mode', 'item_ids', 'task_bindings', 'material_by_task', 'image'}
+        if (set(b) != required|({'providers_by_cell','native_budget'} if native else set())
+                or b['schema'] not in {'q32-prospective-source-config-v2','q32-prospective-source-config-v3'} or b['domain'] != 'train'
                 or b['export_mode'] != 'primary_prospective' or not isinstance(b['item_ids'], list)
                 or len(b['item_ids']) != 2 or len(set(b['item_ids'])) != 2
                 or not isinstance(b['task_bindings'], dict) or set(b['task_bindings']) != set(b['item_ids'])
@@ -324,6 +340,9 @@ class FrozenQ32ProspectiveConfig:
         if ({i.benchmark for i in identities} != {'blade', 'discoverybench'} or len({i.split_id for i in identities}) != 1
                 or not isinstance(b['material_by_task'], dict) or set(b['material_by_task']) != set(tasks)):
             raise ContractError('Q3.2 requires both tasks in one TRAIN split and complete materials')
+        if native:
+            from research_loop.modular.q32_native_provider import validate_provider_map
+            validate_provider_map(b['providers_by_cell'],tasks,b['native_budget'])
 
     def data(self):
         return self.record.data()
@@ -346,7 +365,8 @@ def run_q32_prospective_execution_panel(config, *, prospective_exporter, snapsho
     source = CombinationTrainSource(b, custody=None, prospective_exporter=prospective_exporter,
                                     snapshot=snapshot, exported=exported)
     root.mkdir(parents=True)
-    journal = {'schema': 'q32-prospective-source-attempt-v1', 'source_config_digest': config.record.content_hash,
+    native=b['schema']=='q32-prospective-source-config-v3'
+    journal = {'schema': 'q32-prospective-source-attempt-v2' if native else 'q32-prospective-source-attempt-v1', 'source_config_digest': config.record.content_hash,
                'status': 'exporting', 'packet_receipts': [], 'compiled_digest': None, 'error_type': None}
     def persist(): _write(root / 'source-attempt.json', journal)
     persist()
@@ -360,10 +380,14 @@ def run_q32_prospective_execution_panel(config, *, prospective_exporter, snapsho
                     or receipt['csv_sha256'] != expected['csv_sha256'] or receipt['csv_byte_count'] != expected['csv_byte_count']):
                 raise ContractError('Q3.2 export differs from pre-frozen task/CSV binding')
         compiled = compile_q32_execution(packets, b['material_by_task'], image=b['image'])
+        if b['schema']=='q32-prospective-source-config-v3':
+            from research_loop.modular.q32_native_provider import compile_native
+            compiled=compile_native(compiled,b)
         journal.update(status='executing', compiled_digest=compiled.content_hash); persist()
         result = _run_q32_compiled(packets, compiled, exported, root, model_factory, verifier)
         journal['status'] = 'completed'; persist()
-        envelope = FrozenRecord.from_dict({'source_config_digest': config.record.content_hash, 'result': result.data()})
+        envelope = FrozenRecord.from_dict({**({'schema':'q32-native-prospective-source-result-v1'} if native else {}),
+            'source_config_digest': config.record.content_hash, 'result': result.data()})
         _write(root / 'source-result.json', envelope.data())
         return envelope
     except Exception as exc:

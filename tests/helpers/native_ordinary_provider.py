@@ -16,7 +16,16 @@ def native_ordinary_provider(root,patch,*,schemas,max_calls,response,fault_at=No
     source_pin=root/'synthetic-source-pin.py';source_pin.write_bytes(b'# frozen synthetic native source\n')
     home=root/'approved-login';home.mkdir();(home/'auth.json').write_text('{}')
     peer=(Path(__file__).parents[1]/'fixtures/grok_phase_peer.py').resolve();logs=[]
-    original=transport.ProcessTree
+    registry=getattr(patch,'_ordinary_native_peers',None)
+    if registry is None:
+        registry={};patch._ordinary_native_peers=registry
+        original=transport.ProcessTree
+        patch._ordinary_native_process=original
+        def dispatch(command,cwd,env,stderr):
+            assert command[0] in registry,'unregistered synthetic native executable'
+            return registry[command[0]](command,cwd,env,stderr)
+        patch.setattr(transport,'ProcessTree',dispatch)
+    original=patch._ordinary_native_process
     def spawn(command,cwd,env,stderr):
         assert list(command)==[str(exe.resolve()),'--no-auto-update','--cwd',str(cwd),'agent','stdio']
         assert not any(Path(cwd).iterdir())
@@ -31,7 +40,7 @@ def native_ordinary_provider(root,patch,*,schemas,max_calls,response,fault_at=No
         logs.append(log);fault='unknown_main' if len(logs)==fault_at else 'ok'
         return original([sys.executable,str(peer),str(log),fault],cwd,env,stderr)
     patch.setattr(transport,'EXECUTABLE_SHA256',transport.digest(exe.read_bytes()))
-    patch.setattr(transport,'ProcessTree',spawn)
+    registry[str(exe.resolve())]=spawn
     backend=GrokTrainModelPort(executable=exe,work_root=root/'native-ledger',private_home=home,
         private_profile=root/'profiles',public_cwd=root/'public-contexts',
         frozen_files={str(peer):transport.digest(peer.read_bytes()),
