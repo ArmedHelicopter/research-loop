@@ -1,0 +1,57 @@
+{
+  "schema": "historical-runtime-catalogue-check-v1",
+  "reader_commit": "128fad63aea95eb9e77d764e9fb17d1e858ef83a",
+  "witnesses": [
+    {
+      "prefix": "m1-m2-artifacts-r1",
+      "case": "test_actual_history_target_pip0",
+      "stage": "ade268568a9326175156198ccf7617a986f573c7ff451a9ba63aa935e4814512",
+      "status": "succeeded",
+      "descriptors": 61,
+      "trace_gap": 0,
+      "archived_producer_sources_verified": true,
+      "current_live_source_failure": "producer source drift",
+      "historical_catalogue_integrity_verified": true,
+      "semantic_replay_executed": false
+    },
+    {
+      "prefix": "m1-m2-artifacts-r1",
+      "case": "test_actual_history_target_pip0",
+      "stage": "d545a052a045ae26a78ca90ce869fe31f1fcd5d09652ff34eb8bbf00e7f381b0",
+      "status": "succeeded",
+      "descriptors": 60,
+      "trace_gap": 0,
+      "archived_producer_sources_verified": true,
+      "current_live_source_failure": "producer source drift",
+      "historical_catalogue_integrity_verified": true,
+      "semantic_replay_executed": false
+    },
+    {
+      "prefix": "m1-m2-artifacts-r1",
+      "case": "test_artifact_writer_failure_r0",
+      "stage": "da81a98b60d9ec512011716a80bc17c0e9e811d851d8d79ae249a4707ebbc57f",
+      "status": "failed",
+      "descriptors": 14,
+      "trace_gap": 1,
+      "archived_producer_sources_verified": true,
+      "current_live_source_failure": "producer source drift",
+      "historical_catalogue_integrity_verified": true,
+      "semantic_replay_executed": false
+    },
+    {
+      "prefix": "m1-m2-artifacts-r2",
+      "case": "test_artifact_writer_failure_r0",
+      "stage": "8c89042a1a34f4763e562bab1620abc65468cf054bce66d6a09855d98d4f5778",
+      "status": "failed",
+      "descriptors": 14,
+      "trace_gap": 1,
+      "archived_producer_sources_verified": true,
+      "current_live_source_failure": "producer source drift",
+      "historical_catalogue_integrity_verified": true,
+      "semantic_replay_executed": false
+    }
+  ],
+  "scientific_validated": false,
+  "original_failure_status_preserved": true,
+  "scope": "Archived producer bytes and catalogue integrity only; no semantic replay or environment reconstruction"
+}

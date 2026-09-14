@@ -1,0 +1,200 @@
+{
+  "schema": "artifact-delivery-originals-verification-v2",
+  "checks": [
+    {
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m3-context-artifact-r3",
+      "commit": "175996188147347b838b3b7348bd16470386223d",
+      "junit": {
+        "tests": 27,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 678,
+      "archive_sha256": "392d39d39693658b2f5b17a0e989e15e3e1a105ff610170c7787d472d420ec6c",
+      "report_sha256": "6159780f5fd571200685608efec6b698dad3428d4ab1fe428c5cceabedcfb5b1",
+      "source_unchanged": true,
+      "original_bytes_verified": true,
+      "wall_seconds": 118.03099999998813
+    },
+    {
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m3-context-artifact-r4",
+      "commit": "4fce9023c9e25f547a6950b5b5bf75baacb48ff4",
+      "junit": {
+        "tests": 27,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 678,
+      "archive_sha256": "be6bb4ef89a391eeb58278f0d4d9cfedd200d1cac52292722270d79cf9ec4f54",
+      "report_sha256": "c3e541419ae854c397c65c3515932908bb3f7b68bab08592d65d54aef43a0d46",
+      "source_unchanged": true,
+      "original_bytes_verified": true,
+      "wall_seconds": 131.76499999999942
+    },
+    {
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m3-context-artifact-r5",
+      "commit": "a9d7bcaa98a13c82145a2f0620b5d9185e8cfdc3",
+      "junit": {
+        "tests": 27,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 678,
+      "archive_sha256": "1938fe8555cdc398a5417e5152dce550f5af86c270e52ffb15cce4682c2bf06c",
+      "report_sha256": "4f228fcc3d3b1cb5ade8f93a0123f0ae700cf11bccf6ceb124beceff23dfd84c",
+      "source_unchanged": true,
+      "original_bytes_verified": true,
+      "wall_seconds": 64.6869999999908
+    },
+    {
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m3-context-native-r1",
+      "commit": "4fce9023c9e25f547a6950b5b5bf75baacb48ff4",
+      "junit": {
+        "tests": 2,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 678,
+      "archive_sha256": "10544496b7e6b491fc6d47db3ca437555d49a5ee4fbbce19a640ad453c7e7815",
+      "report_sha256": "866b2e39ea5bc983c9ea097715d6a02d3adfcf5e88a9c40f14b675baccf8ecfb",
+      "source_unchanged": true,
+      "original_bytes_verified": true,
+      "wall_seconds": 270.18799999999464
+    },
+    {
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m3-context-native-r2",
+      "commit": "1cd0f8e20aee9821c7d6232cd4bbdfc1f6d3a583",
+      "junit": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 678,
+      "archive_sha256": "109389d452ac169d0ac9b0806097355f531170689b114bff66f586b14d328c43",
+      "report_sha256": "8b4d53d2f6ce8efbbbec971810582c89cac5a4bb58303875d4f27377f06a19a6",
+      "source_unchanged": true,
+      "original_bytes_verified": true,
+      "wall_seconds": 297.9850000000006
+    },
+    {
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-review-provenance\\work\\m4-m5-artifacts-full-r1",
+      "commit": "ec8af2ff400c58f48584599f33272fd42e00687e",
+      "junit": {
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 679,
+      "archive_sha256": "3f210bd82ad464a062dab70f95bf7ac6e726a0f2052f15ad127be4c2e6613698",
+      "report_sha256": "38464b359a9ec9976f2f114a1b87e6db472bbe7655ee5ea4f057ae8cc1d58b81",
+      "source_unchanged": true,
+      "original_bytes_verified": true,
+      "wall_seconds": 37.15600000000268
+    },
+    {
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-review-provenance\\work\\m4-m5-artifacts-r2-full",
+      "commit": "32a1f96c2505cd92982c290f1c73743cf7f941cc",
+      "junit": {
+        "tests": 18,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 679,
+      "archive_sha256": "e5b69757375bf39048c62299457fdc0ffb746b54e309da8050d60d051c379897",
+      "report_sha256": "d2ace7bf2d483ad0255c34296c207889903a7929dbe066b62b4cd7c8f7704520",
+      "source_unchanged": true,
+      "original_bytes_verified": true,
+      "wall_seconds": 66.04700000000594
+    },
+    {
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-artifact-retrieval-r1",
+      "commit": "075feebf0f2841b2c8fea566446da619f938ea44",
+      "junit": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 678,
+      "archive_sha256": "920adb618ca893836297c72fad0ac190315db101cbef2f0115cb2d1661e61b59",
+      "report_sha256": "d1b1bb7f9b35c93f10a9e1cb974bd20852da312629428defd9710c1821c87653",
+      "source_unchanged": true,
+      "original_bytes_verified": true,
+      "wall_seconds": 11.514999999999418
+    },
+    {
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m6-artifact-retrieval-r2",
+      "commit": "a8f338f4645497427cd9bab6c1016f6c4925f75b",
+      "junit": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 678,
+      "archive_sha256": "d9b73e0204001c2ca4fca96cb5756283fb4cb705cfbd6f212bd72ac4cfb70d65",
+      "report_sha256": "e56a0c27b5e502dbecadafe9a46d1ef09db677894e3371bb766f6bab4473cbc0",
+      "source_unchanged": true,
+      "original_bytes_verified": true,
+      "wall_seconds": 66.51600000000326
+    },
+    {
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-source-archive\\work\\artifact-source-archive-r1",
+      "commit": "a6a23378e7b798c53292ed8d6333f565bba9ee2b",
+      "junit": {
+        "tests": 34,
+        "failures": 6,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 679,
+      "archive_sha256": "602366b27877f4883b49d482b775f9544d002611180ad12ff58b4a24d719919f",
+      "report_sha256": "c9c2091b56cb983a273a238a83b936f50970313b331860d1b7e198ed1e816b74",
+      "source_unchanged": true,
+      "original_bytes_verified": true,
+      "wall_seconds": 20.062999999994645
+    },
+    {
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\artifact-source-archive-r2",
+      "commit": "a6a23378e7b798c53292ed8d6333f565bba9ee2b",
+      "junit": {
+        "tests": 34,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 679,
+      "archive_sha256": "339bcf4f120bc2cfc5bd7cf88a238b487245437878779c187a17e9ae9ebc679c",
+      "report_sha256": "7845e3406b311ea19b52831c5bdb13c7752871a52e9bfb01af393906e248d2a5",
+      "source_unchanged": true,
+      "original_bytes_verified": true,
+      "wall_seconds": 75.43700000000536
+    },
+    {
+      "prefix": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\artifact-source-archive-r3",
+      "commit": "a6a23378e7b798c53292ed8d6333f565bba9ee2b",
+      "junit": {
+        "tests": 44,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_count": 679,
+      "archive_sha256": "a88bef59fe0ce4e2bc3a7cd78b387b111545cb4b9728a208e90e868db26b48bd",
+      "report_sha256": "d2690b714ad9921005e1cf486c3686f8c0a9edaf5f54b17b189716a2962312d0",
+      "source_unchanged": true,
+      "original_bytes_verified": true,
+      "wall_seconds": 63.375
+    }
+  ],
+  "all_original_bytes_consistent": true,
+  "scientific_validated": false,
+  "full_module_artifact_coverage_complete": false
+}

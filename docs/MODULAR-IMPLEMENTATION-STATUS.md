@@ -1300,3 +1300,37 @@ execution, complete component consumers, authenticated TRAIN selection, V_final
 custody/calibration/acceptance and the independent deployment-grant issuer remain
 required. All previous experimental obligations and separate Q6.3 remain open
 until their own required evidence exists; no scientific efficacy follows here.
+# 2026-09-14 M1–M6 artifact integration and independent review
+
+The artifact worktree now connects M1–M6 writers and readers to the actual C4
+stage. Context witnesses precede their matching requests; prediction/submission
+records precede C4 freeze/seal claims; each reveal uses only already submitted
+records. Disabled M4/M5 retain the ordinary control. Q8 events are registered
+immediately after their own fsync, and Q8.4's separate source ledger binds the
+complete PublicTask digest without becoming P0 scientific evidence.
+
+Frozen `128fad63` passed 82 unit/contract checks and two actual Docker plus
+synthetic-provider stage checks in separate runs. Independent review then
+demonstrated coherent-hash order and Q8.4 task-binding gaps. Frozen `73b4e743`
+repaired them and passed 46 focused checks including actual history→target
+execution; the unchanged writer-failure case was not repeated. All three runs
+retained 687 unchanged source files and used no paid API. These are engineering
+checks, not module efficacy, scorer calibration or VAL acceptance.
+
+Exact source ZIPs, reports, previous failures, five complete selected public
+stage directories and review records are under
+`results/modular-engineering-20260914/artifact-events-r2/` (179 files). Earlier
+M3/M4/M5/M6 helper checks remain attached to their original versions and do not
+inherit the repaired implementation's coverage. A separate real reader check
+reopened four previously committed catalogues through frozen source archives
+after live source changes; it verified historical byte integrity, not semantic
+execution in the original environment. Two completed M3 checks had left unsafe
+PID-only timeout watchers; root retired those exact watcher identities and
+retained the cleanup record. Subsequent root watchers bind PID, creation time
+and command and close when their owner exits.
+
+This work is in `codex/artifact-evidence-provenance`. Main integration remains
+frozen at `98eae28` while the complete C5 r3 engineering run is active. M7/M8/M9
+per-output stage wiring, other module entry points, cross-catalogue relationships,
+resource attribution and audit overhead remain required. All original 48
+questions and singleton/pair/triple/full/LOO studies remain in scope.

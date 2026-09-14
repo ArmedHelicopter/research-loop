@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="269.312" timestamp="2026-09-14T16:24:27.769104" hostname="SC-202507131830"><testcase classname="tests.test_joint_train_runtime" name="test_actual_history_target_pipeline_with_full_catalogue" time="217.259"><failure message="research_loop.ontology.ContractError: M3 invocation snapshot fields differ">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m3-context-native-r1/test_actual_history_target_pip0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000017AED6A9340&gt;
+
+    def test_actual_history_target_pipeline_with_full_catalogue(tmp_path,monkeypatch):
+        setup=prepare(tmp_path,monkeypatch);runner=executor(setup);plan=setup['common_plan'];recipe=full_recipe(plan)
+        assert len(plan.recipes)&gt;11 and plan.protocol.record.data()['allocation']['target_cells']&gt;22
+        history=runner.execute(recipe_id=recipe['id'],stage='history_build')
+        assert history.record.data()['status']=='succeeded',history.inner.record.data()
+&gt;       runner.verify(history)
+
+tests\test_joint_train_runtime.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\joint_train_runtime.py:345: in verify
+    return self._verify(result, None, passed)
+research_loop\modular\joint_train_runtime.py:393: in _verify
+    return verify_stage(result.inner,plan=self.plan,recipe=recipe,stage=b['stage'],task=task,package=package,
+research_loop\modular\full_loo_driver.py:189: in verify_stage
+    verify_session_context_artifacts(task=task, lock=FrozenRecord.from_dict(lock), events=events,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def verify_session_context_artifacts(*, task: PublicTask, lock: FrozenRecord,
+                                         events: Iterable[dict], catalogue,
+                                         invocation_snapshots: Mapping[str, Mapping[str, FrozenRecord]]) -&gt; None:
+        """Cross-check each persisted M3 record against its sealed trace request.
+    
+        ``catalogue`` is deliberately duck-typed here to avoid a dependency cycle;
+        callers must pass the already source-validated, sealed catalogue instance.
+        """
+        if type(task) is not PublicTask or type(lock) is not FrozenRecord or not isinstance(invocation_snapshots, Mapping):
+            raise ContractError('exact M3 replay task, lock and invocation snapshot map required')
+        lock_body = lock.data()
+        if lock_body.get('schema') != 'run-lock-v1' or lock_body.get('identity') != task.identity.data():
+            raise ContractError('M3 replay lock differs from task')
+        trace_requests: dict[str, tuple[dict, int]] = {}
+        projection_rows: dict[str, tuple[FrozenRecord, FrozenRecord, FrozenRecord, int]] = {}
+        rows = list(events)
+        for position, event in enumerate(rows):
+            if type(event) is not dict or not isinstance(event.get('data'), dict):
+                raise ContractError('M3 replay requires canonical trace event objects')
+            if event.get('stage') == 'q8_public_evidence_context':
+                data = event['data']
+                if set(data) != {'slot', 'controller_context', 'public_context', 'public_digest', 'projection_contract'}:
+                    raise ContractError('M3 projection trace fields differ')
+                before = FrozenRecord.from_dict(data['controller_context'])
+                after = FrozenRecord.from_dict(data['public_context'])
+                contract = FrozenRecord.from_dict(data['projection_contract'])
+                if (after.content_hash != data['public_digest'] or data['slot'] in projection_rows
+                        or replay_projection(contract, before) != after):
+                    raise ContractError('M3 projection trace is ambiguous or rehashed')
+                projection_rows[data['slot']] = (before, after, contract, position)
+            if event.get('stage') == 'model_request':
+                data = event['data']
+                if set(data) != {'request_digest', 'request'}:
+                    raise ContractError('M3 model request trace fields differ')
+                request = FrozenRecord.from_dict(data['request'])
+                if data['request_digest'] != request.content_hash or data['request_digest'] in trace_requests:
+                    raise ContractError('M3 model request trace digest is ambiguous or rehashed')
+                trace_requests[data['request_digest']] = (data['request'], position)
+        if set(invocation_snapshots) != set(trace_requests):
+            raise ContractError('M3 invocation snapshots do not cover the original request set')
+        expected_source = source_snapshot(Path(__file__).with_name('runtime.py'))
+        records = [descriptor.data() for descriptor in catalogue.records()
+                   if descriptor.data()['kind'] == 'model_context']
+        if len(records) != len(trace_requests):
+            raise ContractError('every model request needs exactly one M3 context artifact')
+        enabled = 'M3' in lock_body.get('arm', {}).get('enabled', [])
+        seen: set[str] = set()
+        for descriptor in records:
+            if (descriptor['module'] != 'M3' or descriptor['coverage'] != 'covered'
+                    or descriptor['status'] != ('produced' if enabled else 'not_applied')
+                    or descriptor['producer_source'] != expected_source):
+                raise ContractError('M3 artifact module activation differs from original lock')
+            record = FrozenRecord.from_dict(descriptor['payload']['canonical'])
+            data = record.data()
+            digest = data.get('request_digest')
+            if type(digest) is not str or digest in seen or digest not in trace_requests:
+                raise ContractError('M3 context artifact has no unique trace request')
+            trace_request, position = trace_requests[digest]
+            request = FrozenRecord.from_dict(trace_request)
+            if (data['identity'] != task.identity.data() or data['budget_bytes'] != lock_body.get('context_budget')
+                    or data['m3_enabled'] is not enabled or data['request'] != trace_request
+                    or request.data().get('lock_digest') != lock.content_hash):
+                raise ContractError('M3 artifact task, lock, budget or request differs')
+            slot = request.data().get('slot')
+            if data['slot'] != slot:
+                raise ContractError('M3 artifact slot differs from trace request')
+            projection = projection_rows.get(slot)
+            before = projection[0] if projection else FrozenRecord.from_dict(request.data()['context'])
+            if projection:
+                projected_before, projected_after, _contract, projection_position = projection
+                if (projection_position + 1 != position or projected_after.data() != request.data()['context']
+                        or projected_before.data() != data['before_projection']):
+                    raise ContractError('M3 projected context differs from actual request')
+            mode = data['mode']
+            if mode == 'evidence_only':
+                if set(before.data()) != {'identity', 'records', 'withdrawn'}:
+                    raise ContractError('M3 evidence-only context differs from raw evidence form')
+            elif mode != ('candidate' if enabled else 'baseline'):
+                raise ContractError('M3 context mode differs from runtime activation')
+            snapshots = invocation_snapshots[digest]
+            if (not isinstance(snapshots, Mapping) or set(snapshots) != {'evidence', 'claims'}
+                    or any(type(item) is not FrozenRecord for item in snapshots.values())):
+&gt;               raise ContractError('M3 invocation snapshot fields differ')
+E               research_loop.ontology.ContractError: M3 invocation snapshot fields differ
+
+research_loop\modular\context_artifact.py:215: ContractError</failure></testcase><testcase classname="tests.test_joint_train_runtime" name="test_artifact_writer_failure_retains_independent_failed_stage_receipt" time="49.817" /></testsuite></testsuites>

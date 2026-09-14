@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="27" time="117.054" timestamp="2026-09-14T16:16:13.508921" hostname="SC-202507131830"><testcase classname="tests.test_m3_context_artifact" name="test_actual_invoke_registers_exact_m3_context_and_request[modules0-candidate-produced]" time="5.223" /><testcase classname="tests.test_m3_context_artifact" name="test_actual_invoke_registers_exact_m3_context_and_request[modules1-baseline-not_applied]" time="4.658" /><testcase classname="tests.test_m3_context_artifact" name="test_projection_evidence_only_revalidates_every_snapshot_and_cross_domain" time="5.589"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m3-context-artifact-r3/test_projection_evidence_only_0')
+
+    def test_projection_evidence_only_revalidates_every_snapshot_and_cross_domain(tmp_path):
+        session, _, _ = session_at(tmp_path / 'run', modules=('M1', 'M2', 'M3'))
+        projector = M6PublicInputBoundary('Q8.1', 'fixture').project_evidence_context
+    
+        seen = []
+        session.invoke('final', lambda request: seen.append(request) or FrozenRecord.from_dict({'ok': True}),
+            instruction='Inspect.', evidence_only=True, context_projection=projector)
+        descriptor = _descriptor(session)
+        record = FrozenRecord.from_dict(descriptor['payload']['canonical'])
+        assert record.data()['mode'] == 'evidence_only'
+        before = FrozenRecord.from_dict(record.data()['before_projection'])
+        assert _verify(record, session, seen[0], before) == record
+        events = _trace_events(session)
+        verify_session_context_artifacts(task=session.task, lock=session.lock, events=events,
+            catalogue=session.artifacts, invocation_snapshots=_snapshots(session, events))
+    
+        for field, replacement in [
+            ('evidence_snapshot', {}), ('claims_snapshot', {}), ('before_projection', {}),
+            ('final_context', {}), ('baseline_summary', 'forged summary'), ('request', {}),
+        ]:
+            forged = record.data()
+            forged[field] = replacement
+&gt;           with pytest.raises(ContractError):
+E           Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+tests\test_m3_context_artifact.py:82: Failed</failure></testcase><testcase classname="tests.test_m3_context_artifact" name="test_rehashed_m3_payload_cannot_pass_trace_catalogue_replay" time="3.989" /><testcase classname="tests.test_m3_context_artifact" name="test_audit_write_failure_closes_before_any_model_call" time="1.209" /><testcase classname="tests.test_evidence_artifacts" name="test_actual_admission_direct_ledger_and_withdrawal_descendants_reconcile" time="9.201" /><testcase classname="tests.test_evidence_artifacts" name="test_disabled_modules_retain_actual_common_floor_without_false_activation" time="15.627" /><testcase classname="tests.test_evidence_artifacts" name="test_independent_replay_rejects_coherently_rehashed_forgery[output]" time="6.163" /><testcase classname="tests.test_evidence_artifacts" name="test_independent_replay_rejects_coherently_rehashed_forgery[cross_domain]" time="6.875" /><testcase classname="tests.test_evidence_artifacts" name="test_independent_replay_rejects_coherently_rehashed_forgery[refresh]" time="11.345" /><testcase classname="tests.test_evidence_artifacts" name="test_independent_replay_rejects_coherently_rehashed_forgery[activation]" time="11.420" /><testcase classname="tests.test_evidence_artifacts" name="test_independent_replay_rejects_coherently_rehashed_forgery[missing]" time="6.453" /><testcase classname="tests.test_evidence_artifacts" name="test_public_replay_recomputes_root_identity_even_if_source_journal_is_also_rehashed" time="3.402" /><testcase classname="tests.test_evidence_artifacts" name="test_audit_failure_after_mutation_stops_next_model_call_and_keeps_marker[catalogue]" time="3.417" /><testcase classname="tests.test_evidence_artifacts" name="test_audit_failure_after_mutation_stops_next_model_call_and_keeps_marker[source_journal]" time="3.098" /><testcase classname="tests.test_evidence_artifacts" name="test_rejected_admission_is_an_output_without_fabricating_evidence" time="2.531" /><testcase classname="tests.test_evidence_artifacts" name="test_each_model_request_receives_its_own_replayed_historical_inputs" time="14.742" /><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.575" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.027" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.007" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.785" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.499" /></testsuite></testsuites>

@@ -1,0 +1,18 @@
+[
+  {
+    "TestExit": 1,
+    "CommandLine": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -NoProfile -ExecutionPolicy Bypass -File E:\\_ryanDev\\AI\\research-loop-modular\\work\\m3-context-native-r1-watchdog.ps1",
+    "Stopped": true,
+    "Pid": 47948,
+    "CreationDate": "2026-09-14T16:24:26.45158+08:00",
+    "Reason": "completed checks; retired unsafe PID-only watcher"
+  },
+  {
+    "TestExit": 0,
+    "CommandLine": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\" -NoProfile -ExecutionPolicy Bypass -File E:\\_ryanDev\\AI\\research-loop-modular\\work\\m3-context-native-r2-watchdog.ps1",
+    "Stopped": true,
+    "Pid": 67112,
+    "CreationDate": "2026-09-14T16:32:48.126786+08:00",
+    "Reason": "completed checks; retired unsafe PID-only watcher"
+  }
+]
