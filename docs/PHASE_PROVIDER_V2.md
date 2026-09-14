@@ -43,3 +43,17 @@ After abort, exact unused MAIN and complete current totals are unknown. The
 snapshot's observed counts/tokens remain historical lower bounds with explicit
 unknown unobserved opportunities. Controller cleanup and complete planned rows
 remain required even when an eligible original seal cannot be issued.
+
+`inspect_configuration_and_calls()` returns configuration and call views from
+one fresh original inspection. `PhaseProviderSession.verify()` uses that one
+pass for both its configuration comparison and scope-count check. Previously,
+`configuration()` inspected the full prefix, then `inspect()` repeated it.
+No original file, source pin, scope rule or terminal behavior is skipped, and
+the returned tuple confers no seal or scoring authority. Subsequent verification
+still re-reads every original; there is no persistent cache or replay exemption.
+
+Both real provider types are exercised through their existing synthetic ports.
+The regression counts original call replays and changes original response bytes
+or configuration after a successful check. It requires the next fresh check to
+close dispatch. This demonstrates removal of one duplicate pass, not a measured
+end-to-end throughput improvement or scientific effectiveness.

@@ -308,6 +308,16 @@ class _TrainProvider:
     def configuration(self) -> FrozenRecord:
         self.inspect();return _record(self.state['configuration'])
 
+    def inspect_configuration_and_calls(self) -> tuple[FrozenRecord, tuple[FrozenRecord, ...]]:
+        """One fresh pass for callers that need both configuration and calls.
+
+        This is an immutable local observation, not a seal or scoring authority.
+        A subsequent call always inspects every original again; nothing is
+        cached between verification passes.
+        """
+        calls = self.inspect()
+        return _record(self.state['configuration']), calls
+
     def inspect(self) -> tuple[FrozenRecord, ...]:
         """Read-only successful/failed evidence audit; never promotes failed output."""
         try:

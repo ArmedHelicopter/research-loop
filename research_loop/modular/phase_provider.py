@@ -110,12 +110,13 @@ class PhaseProviderSession:
     def verify(self):
         _require(self.aborted is None, 'phase provider is aborted; no original replay is eligible')
         _require(self.path.read_bytes()==self.record.encoded.encode('utf-8'), 'provider scope journal drift')
-        _require(self.record.data()['configuration_digest']==self.provider.configuration().content_hash,
+        configuration, calls = self.provider.inspect_configuration_and_calls()
+        _require(self.record.data()['configuration_digest']==configuration.content_hash,
             'phase provider configuration drift')
         rows=self.record.data()['scopes'];flat=[n for row in rows for n in row['call_ids']]
         _require(flat==list(range(1,len(flat)+1)) and len({r['scope_id'] for r in rows})==len(rows),
             'global provider spans omit, reorder or reuse calls')
-        count=len(self.provider.inspect())
+        count=len(calls)
         _require(count>=len(flat) if self.active is not None else count==len(flat), 'unscoped original provider call')
 
     @contextmanager
