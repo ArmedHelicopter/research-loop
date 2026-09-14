@@ -6,8 +6,8 @@ session UUID itself. It creates `grok-headless-diagnostic-receipt-v1`; it is
 not an ACP receipt.  It binds the frozen prompt, schema, source manifest,
 reservation, exact command, private raw stream and private account observations.
 It reserves one main turn.  An initial title opportunity and all-opportunity
-usage remain `null`; server-reported cost is retained only inside the stream
-inspection and does not establish billing settlement.
+usage remain `null`; server-reported cost is retained as an observation in the
+stream inspection and consuming diagnostic ledger, not billing settlement.
 
 `verify_headless_request_binding(result, entry, directory, spec, frozen_files)`
 rereads `entry.private_request` (`{path,sha256}` with exact `{prompt,output_schema}`
@@ -54,6 +54,23 @@ the nine-category material validator, distinct signing authorities and the
 separate 180-review/evaluator allocation are unchanged. `known_headless_main_usage`
 remains separate from ACP `known_main_usage`. All expected rubric targets remain
 unknown, and no author assertion grants expert certification or VAL eligibility.
+
+Diagnostic reviewers and evaluators use this producer through explicit worker
+config v3 and `frozen-native-subscription-headless-deployment-v1`. Each call
+freezes its full rendered request and output schema before launch. The receipt
+pins that private descriptor, worker config, deployment, source files and exact
+native profile. The independent reader checks those disk bytes before a reviewer
+submission can be signed and consumed by the pilot. This signing identifies the
+local review role; it does not certify an external model's identity or expertise.
+
+This review policy retains its existing 60-second main timeout, output and input
+caps, zero retries and separate maximum 180-main design. It explicitly requests
+low reasoning effort. Missing materials remain in the 36-slot denominator and
+create no callable request. A rejected binding, malformed review or source drift
+closes further I/O while preserving its reservation, raw producer receipt and any
+observed main usage. The headless accounting fields remain separate from ACP;
+unknown launch counts, title usage and settlement remain unknown. The resulting
+observation is diagnostic only and cannot grant calibration or VAL eligibility.
 
 The retained startup-log comparison was refined on 2026-09-15 using the native
 `ts`/`msg`/`ctx` fields. Both runs had fetched a real model catalogue and observed
