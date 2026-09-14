@@ -19,6 +19,7 @@ from .benchmarks.execution import DockerExecutionBroker, ExecutionReceipt, Execu
 from .modules.admission import AuditItem, EvidenceAdmission, ScientificState
 from .modules.context import ContextBuilder, ContextCache
 from .modules.evidence import ClaimLedger, EvidenceLedger
+from .artifact_catalogue import ArtifactCatalogue
 from .combinations import default_compatibility
 from research_loop.ontology import canonical, digest
 
@@ -246,11 +247,14 @@ class RunSession:
             "execution_limit": execution_limit, "required_audit": list(required_audit), "context_budget": context_budget})
         self.evidence = EvidenceLedger(task.identity, storage_path=sidecar / "evidence.jsonl")
         self.claims = ClaimLedger(self.evidence, storage_path=sidecar / "claims.jsonl")
+        self.artifacts = ArtifactCatalogue(sidecar / "artifacts.jsonl", identity=task.identity,
+            run_id=self.lock.content_hash, experiment_id=None, lock_digest=self.lock.content_hash)
         self.cache = ContextCache()
         self.executions: dict[str, ExecutionReceipt] = {}
         self.admissions: dict[str, FrozenRecord] = {}
         self.admission_roots: dict[str, str] = {}
         self._events: list[FrozenRecord] = []
+        self._event_artifacts: list[str] = []
         self._next_call, self._attempts, self._terminal = 0, 0, False
         self._research_version = None
         self._record("objective_lock", self.lock.data())
@@ -283,7 +287,22 @@ class RunSession:
             stream.flush()
             os.fsync(stream.fileno())
         self._events.append(event)
+        descriptor = self.artifacts.append(kind="trace_event", module=None, payload=event,
+            parents=(() if len(self._events) == 1 else (self._event_artifacts[-1],)),
+            producer_source={"module": "research_loop.modular.runtime"}, config_refs=(self.lock.content_hash,),
+            coverage="uncovered")
+        self._event_artifacts.append(descriptor.content_hash)
         return event
+
+    def record_artifact(self, *, kind: str, module: str, payload: FrozenRecord | Mapping[str, Any] | None,
+                        parents: tuple[str, ...] = (), status: str = "produced", cost: Mapping[str, Any] | None = None,
+                        checks: tuple[str, ...] = (), optimizer_visible: bool = False) -> FrozenRecord:
+        """Attach a typed module output to the latest immutable trace event."""
+        trace_parent = self._event_artifacts[-1] if self._event_artifacts else None
+        return self.artifacts.append(kind=kind, module=module, payload=payload,
+            parents=(*parents, *((trace_parent,) if trace_parent else ())), status=status,
+            producer_source={"module": "research_loop.modular.runtime"}, config_refs=(self.lock.content_hash,),
+            cost=cost, checks=checks, optimizer_visible=optimizer_visible)
 
     def invoke(self, slot: str, model: Callable[[FrozenRecord], FrozenRecord], *, instruction: str,
                baseline_summary: str = "", module_context: FrozenRecord | None = None,

@@ -68,13 +68,24 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
         workflow=ModularWorkflow(session)
         transition=_transition(session.evidence,session.claims,session.cache,material.state(),workflow.enabled,qualification)
         session._record('c4_state',{'transition':transition.data(),'source_sha256':source,'corpus_sha256':corpus})
+        for module in ('M1','M2','M3'):
+            session.record_artifact(kind='lineage_transition',module=module,payload=transition)
         if nonbaseline:
+            def record(stage, data):
+                event=session._record(stage,data)
+                module={'c4_prediction_frozen':'M4','c4_review_sealed':'M5','c4_review_reveal':'M5','c4_choice_frozen':'M7'}.get(stage)
+                if module: session.record_artifact(kind=stage,module=module,payload=data)
+                return event
             prepared=prepare(cell=cell,task=task,package=package,transition=transition,predictions=workflow.predictions,reviews=workflow.reviews,
                 invoke=lambda slot,instruction,context:session.invoke(slot,model,instruction=instruction,module_context=context),
-                record=session._record,retrieve=lambda:execute_retrieval(session,task,material,provider,'M6' in workflow.enabled),phase_material=phase_material)
+                record=record,retrieve=lambda:execute_retrieval(session,task,material,provider,'M6' in workflow.enabled),phase_material=phase_material)
+            session.record_artifact(kind='retrieval_result',module='M6',payload=prepared.data()['retrieval'])
             phase=run_phase(material=phase_material,cell=cell,objective=plan.objective(stage),root=root/'phase',broker=broker,inputs=inputs,
                 image=plan.data()['image'],timeout_seconds=plan.data()['timeout_seconds'],selected_job_id=prepared.data()['choice']['job_id'])
             session._record('c4_phase',{'phase_digest':phase.content_hash})
+            for module in ('M7','M8'):
+                session.record_artifact(kind='exploration_phase_receipt',module=module,payload=phase,
+                    cost={'known': phase.data()['unknown_cost_attempts']==0,'units':phase.data()['execution_units_reserved'] if phase.data()['unknown_cost_attempts']==0 else None})
         joined=joint(prepared,phase,cell,task,package)
         session._record('c4_joint',{'joint':joined.data(),'joint_digest':joined.content_hash})
         if stage=='history_build':
@@ -89,6 +100,7 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
             _exclusive(root/'candidate.json',candidate.record);_exclusive(root/'builder.json',selected.record)
             _exclusive(root/'builder-receipt.json',receipt.record)
             session._record('c4_builder_result',{'candidate_digest':candidate.digest,'receipt':receipt.record.data()})
+            session.record_artifact(kind='training_limited_candidate',module='M9',payload=candidate.record,cost={'known':True,'units':1})
             session._record('c4_build_terminal',{'candidate_digest':candidate.digest});session._terminal=True
         else:
             solver=run_benchmark_solve_in_session(session=session,workflow=workflow,public_inputs=inputs,image=plan.data()['image'],broker=broker,

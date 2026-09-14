@@ -154,6 +154,13 @@ def test_actual_complete_22_cell_composition(grid):
     assert b['p0']['required'] is True and b['p0']['scientific_execution_qualified'] is False
     assert len(setup['retrieval_calls'])==87
     assert b['unchanged_parent_package_digest']==setup['plan'].parent.digest and b['candidate_activation']=='none_offline_experiment'
+    full_build=next(r for r in run.builds if r.cell.arm_id=='full')
+    full_target=next(r for r in run.results if r is not None and r.cell.arm_id=='full')
+    descriptors=[]
+    for result in (full_build,full_target):
+        descriptors.extend(json.loads(line) for line in (result.root/'runtime/artifacts.jsonl').read_text(encoding='utf-8').splitlines())
+    assert {d['module'] for d in descriptors if d['coverage']=='covered'} >= {f'M{i}' for i in range(1,10)}
+    assert all(d['scientific_validated'] is False for d in descriptors)
     recipes=setup['plan'].composition.data()['cells'];by_id={r['id']:r for r in recipes}
     assert run.barrier.package(by_id['full'])==run.barrier.package(by_id['without-M8'])
     assert run.barrier.package(by_id['B0'])==run.barrier.package(by_id['ordinary-control'])
