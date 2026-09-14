@@ -128,6 +128,35 @@ def test_opt_in_reader_rejects_winner_or_partial_tamper(tmp_path, monkeypatch):
     with pytest.raises(transport.ContractError): transport.verify_headless_request_binding(result,entry,directory,spec,kwargs['frozen_files'])
 
 
+def test_opt_in_exhausts_two_transient_account_attempts_without_main(tmp_path, monkeypatch):
+    _, kwargs, _, directory, calls, _ = prepared(tmp_path, monkeypatch)
+    kwargs['account_read_recovery']={'schema':'headless-account-read-recovery-v1','max_attempts':2}
+    class Down:
+        def open(self, request, timeout): raise transport.urllib.error.URLError('synthetic')
+    monkeypatch.setattr(transport.urllib.request, 'build_opener', lambda *args: Down())
+    result=transport.run_headless_diagnostic(**kwargs)
+    assert not result.receipt.data()['accepted'] and not calls
+    attempts=json.loads((directory/'native/billing-before/attempts.json').read_bytes())
+    assert [a['status'] for a in attempts['attempts']] == ['transient_failed','transient_failed']
+    assert result.receipt.data()['account_preflight_attempts_sha256'] == hashlib.sha256((directory/'native/billing-before/attempts.json').read_bytes()).hexdigest()
+
+
+def test_opt_in_reader_rejects_failed_partial_raw_tamper(tmp_path, monkeypatch):
+    entry, kwargs, spec, directory, _, _ = prepared(tmp_path, monkeypatch)
+    recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2}; kwargs['account_read_recovery']=recovery; spec['account_read_recovery']=recovery
+    spec['native_context']=dict(spec['native_context'],account_read_recovery=recovery)
+    original=transport.urllib.request.build_opener; count={'n':0}
+    class FailTopup:
+        def open(self, request, timeout):
+            count['n']+=1
+            if count['n']==5: raise transport.urllib.error.URLError('synthetic')
+            return original().open(request,timeout)
+    monkeypatch.setattr(transport.urllib.request,'build_opener',lambda *args: FailTopup())
+    result=transport.run_headless_diagnostic(**kwargs)
+    (directory/'native/billing-after/attempt-000/credits.private.json').write_bytes(b'{}')
+    with pytest.raises(transport.ContractError): transport.verify_headless_request_binding(result,entry,directory,spec,kwargs['frozen_files'])
+
+
 @pytest.mark.parametrize('value', [True, 2.0, 1, 3])
 def test_opt_in_recovery_requires_exact_integer_bound(tmp_path, monkeypatch, value):
     _, kwargs, _, _, _, _ = prepared(tmp_path, monkeypatch)
