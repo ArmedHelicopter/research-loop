@@ -1,101 +1,119 @@
-import hashlib
-import json
-from pathlib import Path
-import sys
-
+"""Current producer/reader contract using synthetic native/account processes."""
 import pytest
+import sys
+import json
+import hashlib
+from datetime import timedelta
 
 import research_loop.modular.grok_headless_transport as transport
-from research_loop.modular.grok_acp_transport import ProcessTree, diagnostic_config
-from research_loop.modular.contracts import FrozenRecord
-from research_loop.ontology import ContractError
-
-PEER = Path(__file__).parent / "fixtures" / "grok_headless_peer.py"
-SCHEMA = {"type": "object", "properties": {"ok": {"type": "boolean", "enum": [True]}},
-          "required": ["ok"], "additionalProperties": False}
-
-
-def account(time="2026-09-14T00:00:00+00:00"):
-    return {"issuer": "https://auth.x.ai", "client_id": "official-native-client", "endpoint": "/user?include=subscription",
-            "redirected": False, "api_key_auth": False, "account_id": "synthetic-account", "code_access": True,
-            "unified_pool": True, "remaining_percentage": 99, "onDemandCap": 0, "onDemandUsed": 0,
-            "prepaidBalance": 0, "auto_topup": False, "observed_at": time}
+from evaluation.modular.calibration_pilot_process import load_record
+from tests.helpers.headless_authoring_fixture import install_synthetic_native
+from tests.test_headless_material_authoring import prepare_headless
 
 
 def prepared(tmp_path, monkeypatch):
-    root = tmp_path / "slot"; home = root / "home"; profile = root / "profile"; native = root / "native"
-    for path in (home, profile, native): path.mkdir(parents=True)
-    (home / "auth.json").write_text('{"opaque":true}')
-    (home / "config.toml").write_bytes(diagnostic_config(8192).encode())
-    calls=[]
-    def fake_account(home_arg, dest):
-        dest.mkdir(); observed="2026-09-14T00:00:00+00:00"
-        raws={"credits":{"config":{"isUnifiedBillingUser":True,"onDemandCap":{"val":0},"onDemandUsed":{"val":0},"prepaidBalance":{"val":0},"creditUsagePercent":1,"currentPeriod":{"start":"2026-01-01T00:00:00+00:00","end":"2027-01-01T00:00:00+00:00"}},"on_demand_enabled":False},"topup":{},"user":{"userId":"synthetic","hasGrokCodeAccess":True,"userBlockedReason":None,"teamBlockedReasons":[]}}
-        raw_bytes={name:json.dumps(value,separators=(",", ":")).encode() for name,value in raws.items()}
-        for name, raw in raw_bytes.items(): (dest / (name+".private.json")).write_bytes(raw)
-        rows=[{"name":name,"method":"GET","url":transport.PROXY+route,"status":"received","http_status":200,"sha256":hashlib.sha256(raw_bytes[name]).hexdigest()} for name,route in transport.ACCOUNT_ROUTES]
-        (dest / "requests.json").write_bytes(json.dumps(rows,separators=(",", ":")).encode())
-        row=transport._project_account(raw_bytes, rows, observed); row["first_request_age_seconds"]=0.01
-        (dest / "observation.json").write_bytes(json.dumps(row, separators=(",", ":")).encode()); calls.append(dest); return row
-    monkeypatch.setattr(transport, "_account", fake_account)
-    exe = root / "grok.exe"; exe.write_bytes(b"synthetic pinned executable")
-    monkeypatch.setattr(transport, "EXECUTABLE_SHA256", hashlib.sha256(exe.read_bytes()).hexdigest())
-    seen = []
-    def spawn(command, cwd, env, stderr):
-        seen.append((command, cwd, env))
-        session = command[command.index("--session-id") + 1]
-        return ProcessTree([sys.executable, str(PEER), session], cwd=cwd, env=env, stderr=stderr)
-    monkeypatch.setattr(transport, "ProcessTree", spawn)
-    source = root / "source.py"; source.write_text("source")
-    descriptor = root / "request.json"; descriptor.write_bytes(json.dumps({"prompt": '{"question":"synthetic"}', "output_schema": SCHEMA}, separators=(",", ":")).encode())
-    return root, dict(executable=exe, cwd=root / "cwd", private_home=home, private_profile=profile,
-        private_dir=native, reservation=root / "native-reservation.json",
-        frozen_files={str(source): hashlib.sha256(source.read_bytes()).hexdigest()}, prompt='{"question":"synthetic"}',
-        schema=SCHEMA, main_output_cap=8192, observed_main_token_cap=262144, input_byte_cap=131072), seen, descriptor
+    metadata = prepare_headless(tmp_path, monkeypatch)
+    envelope = load_record(metadata['envelope']).data(); entry = envelope['entries'][0]
+    calls, gets = install_synthetic_native(monkeypatch, envelope)
+    slot = envelope['native_deployment']['slots'][entry['opportunity_id']]
+    request = load_record(entry['private_request']).data(); directory = tmp_path/'run'
+    context = slot | {'executable': envelope['native_deployment']['executable']}
+    kwargs = dict(executable=context['executable'], cwd=context['cwd'], private_home=context['private_home'], private_profile=context['private_profile'], private_dir=directory/'native', reservation=directory/'native-reservation.json', frozen_files=envelope['frozen_files'], prompt=request['prompt'], schema=request['output_schema'], main_output_cap=8192, observed_main_token_cap=131072, input_byte_cap=262144, timeout=240)
+    spec = {'main_output_cap':8192, 'observed_main_token_cap':131072, 'max_input_bytes':262144, 'timeout_seconds':240, 'native_context':context}
+    return entry, kwargs, spec, directory, calls, gets
 
 
-def test_producer_reader_seam_and_safe_unknown_totals(tmp_path, monkeypatch):
-    root, kwargs, seen, descriptor = prepared(tmp_path, monkeypatch); kwargs["cwd"].mkdir()
+def test_actual_producer_reader_and_unknown_totals(tmp_path, monkeypatch):
+    entry, kwargs, spec, directory, calls, gets = prepared(tmp_path, monkeypatch)
     result = transport.run_headless_diagnostic(**kwargs)
-    assert result.receipt.data()["accepted"] and result.response.data() == {"ok": True}
-    assert len(seen) == 1 and "XAI_API_KEY" not in seen[0][2]
-    entry = {"opportunity_id": "o1", "prompt_sha256": result.receipt.data()["prompt_sha256"],
-             "schema_digest": result.receipt.data()["schema_digest"], "input_bytes": len(kwargs["prompt"].encode()),
-             "private_request": {"path": str(descriptor), "sha256": hashlib.sha256(descriptor.read_bytes()).hexdigest()}}
-    summary = transport.verify_headless_request_binding(result, entry, root,
-        {"main_output_cap": 8192, "observed_main_token_cap": 262144, "max_input_bytes": 131072, "timeout_seconds": 240},
-        kwargs["frozen_files"]).data()
-    assert summary["accepted"] and summary["usage"]["main"]["total_tokens"] == 10
-    assert summary["usage"]["initial_title"] is None and summary["identity"]["request_id"] == "synthetic-request"
+    binding = transport.verify_headless_request_binding(result, entry, directory, spec, kwargs['frozen_files']).data()
+    assert binding['accepted'] and binding['usage']['main']['total_tokens'] == 10
+    assert binding['usage']['initial_title'] is None and binding['usage']['all_opportunities'] is None
+    assert len(calls) == 1 and len(gets) == 6
 
 
-@pytest.mark.parametrize("kind", ["stream", "source", "account", "account_raw"])
-def test_reader_rejects_tampering(tmp_path, monkeypatch, kind):
-    root, kwargs, _, descriptor = prepared(tmp_path, monkeypatch); kwargs["cwd"].mkdir(); result = transport.run_headless_diagnostic(**kwargs)
-    if kind == "stream": (root / "native" / "stdout.private.jsonl").write_bytes(b"bad")
-    elif kind == "source": Path(next(iter(kwargs["frozen_files"]))).write_text("changed")
-    elif kind == "account": (root / "native" / "billing-after" / "observation.json").write_text("bad")
-    else: (root / "native" / "billing-after" / "credits.private.json").write_text("{}")
-    entry = {"opportunity_id": "o1", "prompt_sha256": result.receipt.data()["prompt_sha256"], "schema_digest": result.receipt.data()["schema_digest"], "input_bytes": len(kwargs["prompt"].encode()), "private_request":{"path":str(descriptor),"sha256":hashlib.sha256(descriptor.read_bytes()).hexdigest()}}
-    with pytest.raises(ContractError):
-        transport.verify_headless_request_binding(result, entry, root, {"main_output_cap":8192,"observed_main_token_cap":262144,"max_input_bytes":131072,"timeout_seconds":240}, kwargs["frozen_files"])
+@pytest.mark.parametrize('path', ['command.json', 'process.json', 'billing-after/credits.private.json'])
+def test_reader_rejects_artifact_swaps(tmp_path, monkeypatch, path):
+    entry, kwargs, spec, directory, _, _ = prepared(tmp_path, monkeypatch)
+    result = transport.run_headless_diagnostic(**kwargs)
+    (directory/'native'/path).write_text('{}', encoding='utf-8')
+    with pytest.raises(transport.ContractError): transport.verify_headless_request_binding(result, entry, directory, spec, kwargs['frozen_files'])
 
 
-@pytest.mark.parametrize("field,value", [("remaining_percentage", 0), ("onDemandCap", 1), ("redirected", True)])
-def test_account_denial_happens_before_dispatch(tmp_path, monkeypatch, field, value):
-    root, kwargs, seen, _ = prepared(tmp_path, monkeypatch); kwargs["cwd"].mkdir(); row = account(); row[field] = value
-    def deny(home_arg,dest): raise ContractError("denied")
-    monkeypatch.setattr(transport,"_account",deny)
-    result=transport.run_headless_diagnostic(**kwargs)
-    assert not result.receipt.data()["accepted"] and not result.receipt.data()["prompt_process_launched"] and not seen
+def test_context_binding_rejects_swap(tmp_path, monkeypatch):
+    entry, kwargs, spec, directory, _, _ = prepared(tmp_path, monkeypatch)
+    result = transport.run_headless_diagnostic(**kwargs)
+    spec['native_context'] = dict(spec['native_context'], cwd=str(tmp_path/'foreign'))
+    with pytest.raises(transport.ContractError): transport.verify_headless_request_binding(result, entry, directory, spec, kwargs['frozen_files'])
 
 
-def test_source_and_config_denials_happen_before_dispatch(tmp_path, monkeypatch):
-    root, kwargs, seen, _ = prepared(tmp_path, monkeypatch); kwargs["cwd"].mkdir()
-    Path(next(iter(kwargs["frozen_files"]))).write_text("changed")
-    with pytest.raises(ContractError): transport.run_headless_diagnostic(**kwargs)
-    assert not seen
-    root, kwargs, seen, _ = prepared(tmp_path / "config", monkeypatch); kwargs["cwd"].mkdir()
-    (root / "home" / "config.toml").write_text("wrong")
-    with pytest.raises(ContractError): transport.run_headless_diagnostic(**kwargs)
-    assert not seen
+def test_preflight_denial_has_terminal_no_dispatch_receipt(tmp_path, monkeypatch):
+    entry, kwargs, spec, directory, calls, _ = prepared(tmp_path, monkeypatch)
+    monkeypatch.setattr(transport, '_account', lambda *args: (_ for _ in ()).throw(transport.ContractError('denied')))
+    result = transport.run_headless_diagnostic(**kwargs)
+    assert not result.receipt.data()['accepted'] and not result.receipt.data()['prompt_process_launched'] and not calls
+
+
+def test_postflight_failure_preserves_observed_stream(tmp_path, monkeypatch):
+    entry, kwargs, spec, directory, calls, _ = prepared(tmp_path, monkeypatch)
+    original, count = transport._account, {'n': 0}
+    def fail_after(*args):
+        count['n'] += 1
+        if count['n'] == 2: raise transport.ContractError('post failure')
+        return original(*args)
+    monkeypatch.setattr(transport, '_account', fail_after)
+    result = transport.run_headless_diagnostic(**kwargs)
+    assert not result.receipt.data()['accepted'] and result.receipt.data()['stream_inspection']['usage']['total_tokens'] == 10 and len(calls) == 1
+
+
+def test_short_timeout_closes_owned_process_tree(tmp_path):
+    raw, process = transport._child([sys.executable, '-c', 'import time; time.sleep(5)'],
+        {'cwd': str(tmp_path)}, {}, tmp_path/'timeout', 0.05)
+    assert process['timed_out'] and process['owned_tree_closed'] and process['process_exit_code'] is not None
+
+
+@pytest.mark.parametrize('change', ['command', 'environment', 'source_manifest'])
+def test_rehashed_reservation_cannot_change_frozen_execution_contract(tmp_path, monkeypatch, change):
+    entry, kwargs, spec, directory, _, _ = prepared(tmp_path, monkeypatch)
+    result = transport.run_headless_diagnostic(**kwargs)
+    path = directory/'native-reservation.json'; bound = json.loads(path.read_bytes())
+    receipt = result.receipt.data()
+    if change == 'command':
+        bound['command'].remove('--no-subagents')
+        transport._write(directory/'native/command.json', bound['command'])
+    elif change == 'environment':
+        bound['environment']['GROK_DISABLE_API_KEY_AUTH'] = '0'
+    else:
+        bound['frozen_files'] = {}
+    transport._write(path, bound)
+    receipt['reservation_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+    transport._write(directory/'native/observer-receipt.json', receipt)
+    swapped = transport.HeadlessResult(transport.FrozenRecord.from_dict(receipt), result.response)
+    with pytest.raises(transport.ContractError):
+        transport.verify_headless_request_binding(swapped, entry, directory, spec, kwargs['frozen_files'])
+
+
+def test_raw_account_gate_rejects_paid_blocked_and_unordered_observations(tmp_path, monkeypatch):
+    entry, kwargs, spec, directory, _, _ = prepared(tmp_path, monkeypatch)
+    transport.run_headless_diagnostic(**kwargs)
+    folder = directory/'native/billing-before'
+    rows = json.loads((folder/'requests.json').read_bytes())
+    original = {name:(folder/(name+'.private.json')).read_bytes() for name, _ in transport.ACCOUNT_ROUTES}
+    observed = json.loads((folder/'observation.json').read_bytes())['observed_at']
+    for change in ('paid', 'topup', 'blocked', 'no_balance', 'naive_time', 'unordered'):
+        raws = dict(original); records = json.loads(json.dumps(rows)); when = observed
+        if change in ('paid', 'no_balance'):
+            credits = json.loads(raws['credits'])
+            if change == 'paid': credits['config']['onDemandCap'] = {'val':1}
+            else: credits['config']['creditUsagePercent'] = 100
+            raws['credits'] = transport._canon(credits)
+        elif change == 'topup': raws['topup'] = b'{"rule":{"enabled":true}}'
+        elif change == 'blocked':
+            user = json.loads(raws['user']); user['hasGrokCodeAccess'] = False
+            raws['user'] = transport._canon(user)
+        elif change == 'naive_time': when = transport._instant(when).replace(tzinfo=None).isoformat()
+        else:
+            records[1]['started_at'] = (transport._instant(records[0]['started_at'])-timedelta(seconds=1)).isoformat()
+        for row in records:
+            row.update(sha256=hashlib.sha256(raws[row['name']]).hexdigest(), bytes=len(raws[row['name']]))
+        with pytest.raises(transport.ContractError): transport._project_account(raws, records, when)

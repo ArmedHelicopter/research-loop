@@ -26,3 +26,31 @@ response and account observations.  It returns `FrozenRecord` schema
 The reader never accepts a self-attested `accepted`, usage, source list, or
 billing flag.  A malformed/unknown/failed main has no response and must close
 later authoring.
+
+The reader's `spec.native_context` comes from the frozen authoring deployment:
+executable, cwd, private_home and private_profile. It compares that context to
+the reservation, reconstructs both commands and checks their recorded process
+environments. The account client makes exactly three official CLI-proxy GETs
+before and after the main call, disables ambient proxies and redirects, and
+uses only the copied native OIDC login. Raw responses stay private. Reader
+verification recomputes the included-pool/zero-paid-fallback projection from
+all six raw responses and their ordered request logs. The oldest preflight GET
+must be at most five seconds before launch; postflight starts after completion.
+Those observations are not an atomic spending lock or proof of settled charges.
+
+Before any process or account GET, the transport exclusively creates and fsyncs
+its reservation. A bounded `inspect --json` must observe empty external-context
+inventories and disabled API-key authentication in the same fresh home/profile/cwd.
+Windows Job ownership covers inspection and generation; timeout closes the Job
+before bounded reaping. A failure after reservation retains a terminal observer,
+and any already-observed MAIN usage remains available to the caller even when
+the response cannot be accepted. These records prove local observed execution
+and byte bindings; they are not provider-signed attestations.
+
+Material authoring selects this route only through explicit v3 config,
+deployment, envelope, reservation and outcome schemas. Its prospective per-main
+timeout is 240 seconds; v1/v2 ACP stays at 60. Full TRAIN task/reference inputs,
+the nine-category material validator, distinct signing authorities and the
+separate 180-review/evaluator allocation are unchanged. `known_headless_main_usage`
+remains separate from ACP `known_main_usage`. All expected rubric targets remain
+unknown, and no author assertion grants expert certification or VAL eligibility.

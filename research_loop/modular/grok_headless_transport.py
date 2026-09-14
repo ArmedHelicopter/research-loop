@@ -77,44 +77,13 @@ def _strict_json(raw: bytes):
                       parse_constant=lambda _: (_ for _ in ()).throw(ValueError("nonfinite")))
 
 
-def _account_projection(raw: bytes):
-    """Gate a private official-proxy observation and return a safe projection.
-
-    The provisioner owns the GET.  Its raw response is retained only under the
-    private native directory, while this projection keeps no email/name/token.
-    """
+def _instant(value):
     try:
-        value = _strict_json(raw)
-    except (TypeError, ValueError) as exc:
-        raise ContractError("invalid private account observation") from exc
-    _require(isinstance(value, dict), "invalid private account observation")
-    required = {"issuer", "client_id", "endpoint", "redirected", "api_key_auth", "account_id",
-                "code_access", "unified_pool", "remaining_percentage", "onDemandCap",
-                "onDemandUsed", "prepaidBalance", "auto_topup", "observed_at"}
-    _require(required <= set(value), "account observation fields missing")
-    _require(value["issuer"] == ACCOUNT_ISSUER and isinstance(value["client_id"], str)
-             and value["client_id"], "first party OIDC binding missing")
-    _require(value["endpoint"] == "/user?include=subscription" and value["redirected"] is False
-             and value["api_key_auth"] is False, "account query transport not admitted")
-    _require(isinstance(value["account_id"], str) and value["account_id"], "account identity missing")
-    _require(value["code_access"] is True and value["unified_pool"] is True, "account access unavailable")
-    remaining = value["remaining_percentage"]
-    _require(type(remaining) in (int, float) and not isinstance(remaining, bool)
-             and 0 < remaining <= 100, "included allowance unavailable")
-    for field in ("onDemandCap", "onDemandUsed", "prepaidBalance"):
-        _require(type(value[field]) in (int, float) and value[field] == 0, "paid fallback available")
-    _require(value["auto_topup"] is False, "auto topup available")
-    observed = value["observed_at"]
-    _require(isinstance(observed, str) and observed, "account observation time missing")
-    try:
-        datetime.fromisoformat(observed.replace("Z", "+00:00"))
-    except ValueError as exc:
-        raise ContractError("account observation time invalid") from exc
-    return {"raw_sha256": _sha(raw), "account_binding": _sha(value["account_id"].encode()),
-            "issuer": ACCOUNT_ISSUER, "client_id": value["client_id"], "endpoint": value["endpoint"],
-            "observed_at": observed, "remaining_percentage": remaining,
-            "code_access": True, "unified_pool": True, "on_demand_cap": 0,
-            "on_demand_used": 0, "prepaid_balance": 0, "auto_topup": False}
+        instant = datetime.fromisoformat(value.replace('Z', '+00:00'))
+        _require(instant.utcoffset() is not None, 'timestamp timezone missing')
+        return instant
+    except (AttributeError, TypeError, ValueError) as exc:
+        raise ContractError('invalid timestamp') from exc
 
 
 class _NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -130,14 +99,19 @@ def _project_account(raws, rows, observed_at, *, expected_user_id=None):
     _require(isinstance(raws, dict) and set(raws) == {name for name, _ in ACCOUNT_ROUTES},
              "account raw inventory")
     _require(isinstance(rows, list) and len(rows) == 3, "account request inventory")
+    now = _instant(observed_at)
+    previous = None
     for row, (name, route) in zip(rows, ACCOUNT_ROUTES):
         _require(isinstance(row, dict) and row.get("name") == name and row.get("method") == "GET"
                  and row.get("url") == PROXY + route and row.get("status") == "received"
                  and row.get("http_status") == 200 and row.get("sha256") == _sha(raws[name]),
                  "account request binding")
+        started, received = _instant(row.get('started_at')), _instant(row.get('received_at'))
+        _require((previous is None or previous <= started) and started <= received <= now
+                 and row.get('bytes') == len(raws[name]), 'account request timing')
+        previous = received
     try:
         credits, topup, user = (_strict_json(raws[name]) for name, _ in ACCOUNT_ROUTES)
-        now = datetime.fromisoformat(observed_at.replace("Z", "+00:00"))
     except (TypeError, ValueError) as exc:
         raise ContractError("invalid private account observation") from exc
     _require(isinstance(user, dict) and isinstance(user.get("userId"), str) and user["userId"],
@@ -155,8 +129,8 @@ def _project_account(raws, rows, observed_at, *, expected_user_id=None):
              "paid fallback")
     period = cfg.get("currentPeriod")
     try:
-        _require(isinstance(period, dict) and datetime.fromisoformat(period["start"].replace("Z", "+00:00"))
-                 <= now < datetime.fromisoformat(period["end"].replace("Z", "+00:00")), "period stale")
+        _require(isinstance(period, dict) and _instant(period["start"])
+                 <= now < _instant(period["end"]), "period stale")
     except (KeyError, TypeError, ValueError) as exc:
         raise ContractError("period stale") from exc
     percent = cfg.get("creditUsagePercent")
@@ -165,6 +139,7 @@ def _project_account(raws, rows, observed_at, *, expected_user_id=None):
     return {"raw_sha256": {name: _sha(raws[name]) for name, _ in ACCOUNT_ROUTES},
             "account_binding": _sha(user["userId"].encode()), "issuer": ACCOUNT_ISSUER,
             "client_id": "b1a00492-073a-47ea-816f-4c329264a828", "observed_at": observed_at,
+            "oldest_observed_at": rows[0]['started_at'],
             "remaining_percentage": 100-percent, "code_access": True, "unified_pool": True,
             "on_demand_cap": 0, "on_demand_used": 0, "prepaid_balance": 0, "auto_topup": False,
             "reported_subscription_tier": user.get("subscriptionTier")}
@@ -196,7 +171,6 @@ def _account(home: Path, destination: Path):
     projection = _project_account({name: _read(destination / (name + ".private.json"))
                                    for name, _ in ACCOUNT_ROUTES}, rows, datetime.now(timezone.utc).isoformat(),
                                   expected_user_id=auth["user_id"])
-    projection["first_request_age_seconds"] = time.monotonic()-first
     _write(destination/"observation.json",projection); return projection
 
 
@@ -210,208 +184,298 @@ def _fresh_env(home: Path, profile_dir: Path):
                  "LOCALAPPDATA": str(profile_dir / "AppData" / "Local"), "TEMP": str(temp), "TMP": str(temp),
                  "GROK_DISABLE_AUTOUPDATER": "1", "GROK_TITLE_REFRESH": "false",
                  "GROK_TURN_SUMMARY": "false", "GROK_MEMORY": "false", "GROK_WORKFLOWS": "false",
-                 "GROK_SUBAGENTS": "false"})
+                 "GROK_SUBAGENTS": "false", "GROK_DISABLE_API_KEY_AUTH": "1",
+                 "HOMEDRIVE": profile_dir.drive, "HOMEPATH": str(profile_dir)[len(profile_dir.drive):]})
     for key in ("APPDATA", "LOCALAPPDATA"):
         Path(keep[key]).mkdir(parents=True, exist_ok=True)
     return keep
 
 
-def _empty_fresh(path: Path, code: str):
-    _require(path.is_dir() and not path.is_symlink() and not any(path.iterdir()), code)
+def _plain(path):
+    path = Path(path)
+    _require(path.is_absolute(), 'absolute native path required')
+    for part in (path, *path.parents):
+        _require(not part.is_symlink() and not part.is_junction(), 'linked native path')
+    return path
 
 
-def _stream_session(raw: bytes):
-    for line in reversed(raw.decode("utf-8", "replace").splitlines()):
-        try:
-            item = _strict_json(line.encode())
-        except (TypeError, ValueError):
-            continue
-        if isinstance(item, dict) and item.get("type") == "end" and isinstance(item.get("sessionId"), str):
-            return item["sessionId"]
-    return "unobserved-session"
+def _sources(files):
+    _require(isinstance(files, dict) and files, 'frozen source inventory required')
+    for path, expected in files.items():
+        _require(_sha(_read(_plain(path))) == expected, 'frozen source changed')
 
 
-def _end_identity(raw: bytes):
-    """Read only the terminal public identifiers; stream validation remains authoritative."""
+def _command(context, native, session, schema):
+    return [context['executable'], '--no-auto-update', '--cwd', context['cwd'], '--model', MODEL,
+        '--prompt-file', str(native / 'prompt.private.txt'), '--json-schema', _canon(schema).decode(),
+        '--output-format', 'streaming-json', '--max-turns', '1', '--session-id', session,
+        '--no-subagents', '--no-plan', '--disable-web-search', '--disallowed-tools', ','.join(DENIED_TOOLS),
+        '--agents', _canon({'transport-no-tools': profile()}).decode(), '--agent', 'transport-no-tools',
+        '--permission-mode', 'dontAsk', '--deny', 'MCPTool', '--system-prompt-override',
+        'Return only the requested JSON. Do not use tools.', '--verbatim']
+
+
+def _inspect_command(context):
+    return [context['executable'], '--no-auto-update', '--cwd', context['cwd'], 'inspect', '--json']
+
+
+def _inspect(raw):
+    value = _strict_json(raw)
+    _require(isinstance(value, dict) and all(value.get(k) == [] for k in
+        ('skills', 'hooks', 'plugins', 'mcpServers', 'projectInstructions')), 'external native context')
+    _require(value.get('loginPolicy', {}).get('apiKeyAuthDisabled') is True,
+        'API key authentication disablement unobserved')
+    return value
+
+
+def _child(command, context, environment, directory, timeout):
+    directory.mkdir(parents=True, exist_ok=True)
+    started = datetime.now(timezone.utc).isoformat()
+    raw = error = b''; tree = None; expired = False; failure = None; closed = False; code = None
     try:
-        rows = [_strict_json(line.encode()) for line in raw.decode("utf-8").splitlines() if line.strip()]
-        ends = [row for row in rows if isinstance(row, dict) and row.get("type") == "end"]
-        if len(ends) == 1 and isinstance(ends[0].get("sessionId"), str) and isinstance(ends[0].get("requestId"), str):
-            return ends[0]["sessionId"], ends[0]["requestId"]
-    except (UnicodeError, TypeError, ValueError):
-        pass
-    return "unobserved-session", None
+        tree = ProcessTree(command, cwd=context['cwd'], env=environment, stderr=subprocess.PIPE)
+        try:
+            raw, error = tree.process.communicate(timeout=timeout)
+        except subprocess.TimeoutExpired as exc:
+            expired = True; raw, error = exc.stdout or b'', exc.stderr or b''
+            if tree.job is not None:
+                kernel, handle = tree.job; kernel.CloseHandle(handle); tree.job = None
+            else:
+                tree.process.kill()
+            try:
+                raw, error = tree.process.communicate(timeout=5)
+            except subprocess.TimeoutExpired:
+                failure = 'process_tree_shutdown_failed'
+        code = tree.process.poll()
+    except Exception:
+        failure = 'process_launch_or_io_failed'
+    finally:
+        if tree is not None:
+            try:
+                if os.name == 'nt' and tree.job is None:
+                    tree.process.wait(timeout=5)
+                    for stream in (tree.process.stdin, tree.process.stdout, tree.process.stderr):
+                        if stream is not None: stream.close()
+                else:
+                    tree.close()
+                closed = tree.job is None and tree.process.poll() is not None
+            except Exception:
+                failure = 'process_tree_shutdown_failed'
+        else:
+            closed = True
+    observation = {'command': command, 'environment': environment, 'cwd': context['cwd'],
+        'started_at': started, 'finished_at': datetime.now(timezone.utc).isoformat(),
+        'timeout_seconds': timeout, 'timed_out': expired, 'failure': failure,
+        'pid': tree.process.pid if tree is not None else None, 'launched': tree is not None,
+        'process_exit_code': code, 'owned_tree_closed': closed,
+        'stdout_sha256': _write(directory / 'stdout.private.jsonl', raw),
+        'stderr_sha256': _write(directory / 'stderr.private.txt', error)}
+    _write(directory / 'process.json', observation)
+    return raw, observation
+
+
+def _process_ok(process):
+    return (process.get('launched') is True and process.get('process_exit_code') == 0
+        and process.get('failure') is None and process.get('timed_out') is False
+        and process.get('owned_tree_closed') is True)
 
 
 def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, private_dir,
                             reservation, frozen_files, prompt, schema, main_output_cap,
                             observed_main_token_cap, input_byte_cap, timeout=240) -> HeadlessResult:
-    """Run exactly one headless main turn.  No retry is performed after reservation."""
-    executable, cwd = Path(executable).resolve(), Path(cwd).resolve()
-    home, user, native = Path(private_home).resolve(), Path(private_profile).resolve(), Path(private_dir).resolve()
-    _require(type(prompt) is str and isinstance(schema, dict), "headless request shape")
-    _require(type(main_output_cap) is int and main_output_cap > 0, "headless output cap")
-    _require(type(observed_main_token_cap) is int and observed_main_token_cap >= main_output_cap,
-             "headless observed cap")
-    _require(type(input_byte_cap) is int and 0 < len(prompt.encode("utf-8")) <= input_byte_cap,
-             "headless input bound")
-    _require(type(timeout) in (int, float) and 0 < timeout <= 240, "headless timeout")
-    _require(executable.is_file() and _sha(_read(executable)) == EXECUTABLE_SHA256, "headless executable pin")
-    _require((home / "auth.json").is_file() and _read(home / "config.toml") == diagnostic_config(main_output_cap).encode(),
-             "fresh headless provisioner contract")
-    _empty_fresh(cwd, "fresh cwd required")
-    _require(not home.is_symlink() and not user.is_symlink() and not native.is_symlink(), "linked private context")
-    _require(isinstance(frozen_files, dict) and frozen_files, "headless source manifest")
-    for path, digest in frozen_files.items():
-        _require(isinstance(path, str) and isinstance(digest, str) and _sha(_read(Path(path))) == digest,
-                 "frozen source changed")
-    native.mkdir(parents=True, exist_ok=True)
-    prompt_raw, schema_raw = prompt.encode("utf-8"), _canon(schema)
-    prompt_sha, schema_sha = _sha(prompt_raw), _sha(schema_raw)
-    reservation_path = Path(reservation)
-    _require(reservation_path.name == "native-reservation.json" and not reservation_path.exists(),
-             "exclusive reservation path required")
-    reservation_value = {"session_id": str(uuid.uuid4())}
-    reservation_body = {"schema": "grok-headless-reservation-v1", "reservation": reservation_value,
-                        "prompt_sha256": prompt_sha, "schema_digest": schema_sha, "input_bytes": len(prompt_raw),
-                        "main_output_cap": main_output_cap, "observed_main_token_cap": observed_main_token_cap,
-                        "timeout_seconds": timeout, "frozen_files": dict(sorted(frozen_files.items())), "retries": 0}
-    reservation_sha = _write(reservation_path, reservation_body)
-    _write(native / "prompt.private.txt", prompt_raw); _write(native / "schema.private.json", schema_raw)
-    inspect_dir=native/"inspect"
+    """Reserve once; inspect, query account, launch once, then retain a terminal receipt."""
+    context = {k: str(_plain(v)) for k, v in dict(executable=executable, cwd=cwd,
+        private_home=private_home, private_profile=private_profile).items()}
+    native = _plain(private_dir); reservation_path = _plain(reservation)
+    home, user = Path(context['private_home']), Path(context['private_profile'])
+    _require(type(prompt) is str and isinstance(schema, dict), 'headless request shape')
+    _require(type(main_output_cap) is int and main_output_cap > 0
+        and type(observed_main_token_cap) is int and observed_main_token_cap >= main_output_cap
+        and type(input_byte_cap) is int and 0 < len(prompt.encode()) <= input_byte_cap
+        and type(timeout) in (int, float) and 0 < timeout <= 240, 'headless request bounds')
+    _require(_sha(_read(Path(context['executable']))) == EXECUTABLE_SHA256, 'headless executable pin')
+    _require(home.is_dir() and {p.name for p in home.iterdir()} == {'auth.json', 'config.toml'}
+        and (home / 'auth.json').is_file()
+        and _read(home / 'config.toml') == diagnostic_config(main_output_cap).encode(), 'fresh native home')
+    for path in (Path(context['cwd']), user):
+        _require(path.is_dir() and not any(path.iterdir()), 'fresh native context')
+    _require(reservation_path == native.parent / 'native-reservation.json', 'reservation location')
+    _sources(frozen_files)
+    native.mkdir(parents=True, exist_ok=False)
+    for path in (context['executable'], str(home / 'config.toml')):
+        _require(frozen_files.get(path) == _sha(_read(Path(path))), 'native source not frozen')
+    environment = _fresh_env(home, user)
+    session = str(uuid.uuid4()); prompt_raw = prompt.encode(); schema_raw = _canon(schema)
+    command = _command(context, native, session, schema)
+    bound = {'schema': 'grok-headless-reservation-v1', 'session_id': session, 'context': context,
+        'environment': environment, 'prompt_sha256': _sha(prompt_raw), 'schema_digest': _sha(schema_raw),
+        'input_bytes': len(prompt_raw), 'input_byte_cap': input_byte_cap,
+        'main_output_cap': main_output_cap, 'observed_main_token_cap': observed_main_token_cap,
+        'timeout_seconds': timeout, 'frozen_files': frozen_files, 'retries': 0,
+        'reserved_at': datetime.now(timezone.utc).isoformat(), 'command': command,
+        'inspect_command': _inspect_command(context), 'inspect_timeout_seconds': 10}
+    # The exclusive file, with fsync, is the no-retry anchor before ANY process or GET.
+    with reservation_path.open('xb') as out:
+        out.write(_canon(bound)); out.flush(); os.fsync(out.fileno())
+    _write(native / 'prompt.private.txt', prompt_raw); _write(native / 'schema.private.json', schema_raw)
+    _write(native / 'command.json', command)
+    receipt = {'schema': RECEIPT_SCHEMA, 'accepted': False, 'faults': [],
+        'reservation_sha256': _sha(_canon(bound)), 'context': context,
+        'prompt_sha256': bound['prompt_sha256'], 'schema_digest': bound['schema_digest'],
+        'input_bytes': len(prompt_raw), 'requested_model': MODEL, 'frozen_files': frozen_files,
+        'inspect_process': None, 'native_process': None, 'stream_inspection': None,
+        'account_preflight': None, 'account_postflight': None, 'prompt_process_launched': False,
+        'response_sha256': None, 'initial_title_usage': None, 'all_opportunity_usage': None,
+        'billing_settlement': 'not_established_by_headless_receipt', 'output_cap_wire_certified': False}
+    response = None; stage = 'context_inspection'
     try:
-        pre = _account(home,native/"billing-before")
-    except Exception as exc:
-        receipt = FrozenRecord.from_dict({"schema": RECEIPT_SCHEMA,"accepted":False,"faults":["preflight_account_failed"],"requested_model":MODEL,"headless_profile":profile(),"denied_tools":list(DENIED_TOOLS),"prompt_sha256":prompt_sha,"schema_digest":schema_sha,"input_bytes":len(prompt_raw),"command_sha256":None,"reservation_sha256":reservation_sha,"frozen_files":dict(sorted(frozen_files.items())),"native":{"stream_sha256":None,"stderr_sha256":None,"process_exit_code":None,"launched_at":None,"session_id":reservation_value["session_id"],"terminal_session_id":None,"request_id":None},"stream_inspection":None,"account_preflight":None,"account_postflight":None,"prompt_process_launched":False,"response_sha256":None,"initial_title_usage":None,"all_opportunity_usage":None,"billing_settlement":"not_established_by_headless_receipt","output_cap_wire_certified":False})
-        _write(native/"observer-receipt.json",receipt.data()); return HeadlessResult(receipt,None)
-    command = [str(executable), "--no-auto-update", "--cwd", str(cwd), "--model", MODEL, "--prompt-file", str(native / "prompt.private.txt"), "--json-schema", _canon(schema).decode(), "--output-format", "streaming-json", "--max-turns", "1", "--session-id", reservation_value["session_id"], "--no-subagents", "--no-plan", "--disable-web-search", "--disallowed-tools", ",".join(DENIED_TOOLS), "--agents", _canon({"transport-no-tools":profile()}).decode(), "--agent", "transport-no-tools", "--permission-mode", "dontAsk", "--deny", "MCPTool", "--system-prompt-override", "Return only the requested JSON. Do not use tools.", "--verbatim"]
-    command_sha = _write(native / "command.json", command)
-    launched_at = datetime.now(timezone.utc).isoformat()
-    _require(pre["first_request_age_seconds"] <= 5, "account snapshot stale")
-    raw = b""; stderr = b""; exit_code = None; fault = None; launched = False
-    tree = None
-    try:
-        tree = ProcessTree(command, cwd=str(cwd), env=_fresh_env(home, user), stderr=subprocess.PIPE)
-        launched = True
-        raw, stderr = tree.process.communicate(timeout=timeout)
-        exit_code = tree.process.returncode
-    except subprocess.TimeoutExpired:
-        fault = "timeout"
-        if tree is not None:
-            # Closing the Windows KILL_ON_JOB_CLOSE handle kills descendants before
-            # the bounded reap; never wait indefinitely on an orphaned tree.
-            if tree.job is not None:
-                kernel, handle = tree.job; kernel.CloseHandle(handle); tree.job = None
-            else:
-                tree.process.kill()
-            try: raw, stderr = tree.process.communicate(timeout=5)
-            except subprocess.TimeoutExpired: fault = "process_tree_shutdown_failed"; raw = b""; stderr = b""; exit_code = -1
-            else: exit_code = tree.process.returncode
-    except (OSError, ContractError) as exc:
-        fault = "launch_failed"
-        stderr = str(exc).encode(); exit_code = -1
-    finally:
-        if tree is not None:
-            try: tree.close()
-            except (OSError, subprocess.TimeoutExpired): pass
-    stream_sha, stderr_sha = _write(native / "stdout.private.jsonl", raw), _write(native / "stderr.private.txt", stderr)
-    terminal_session, request_id = _end_identity(raw)
-    inspection = inspect_grok_stream(raw, schema=schema, session_id=reservation_value["session_id"], max_output_tokens=main_output_cap,
-                                     max_total_tokens=observed_main_token_cap, process_exit_code=exit_code if isinstance(exit_code, int) else -1)
-    response_sha = None
-    if inspection.response is not None:
-        response_sha = _write(native / "response.private.json", inspection.response.data())
-    post = None
-    try: post = _account(home,native/"billing-after")
-    except ContractError: fault = fault or "postflight_account_unavailable"
-    body = inspection.receipt.data(); faults = list(body["faults"])
-    if fault and fault not in faults: faults.append(fault)
-    if post is not None and post["account_binding"] != pre["account_binding"]: faults.append("account_identity_changed")
-    receipt = FrozenRecord.from_dict({"schema": RECEIPT_SCHEMA, "accepted": not faults, "faults": faults,
-        "requested_model": MODEL, "headless_profile": profile(), "denied_tools": list(DENIED_TOOLS),
-        "prompt_sha256": prompt_sha, "schema_digest": schema_sha, "input_bytes": len(prompt_raw),
-        "command_sha256": command_sha, "reservation_sha256": reservation_sha, "frozen_files": dict(sorted(frozen_files.items())),
-        "native": {"stream_sha256": stream_sha, "stderr_sha256": stderr_sha, "process_exit_code": exit_code,
-                   "launched_at": launched_at, "session_id": reservation_value["session_id"], "terminal_session_id": terminal_session, "request_id": request_id if terminal_session == reservation_value["session_id"] else None},
-        "stream_inspection": body, "account_preflight": pre, "account_postflight": post,
-        "prompt_process_launched": launched,
-        "response_sha256": response_sha,
-        "initial_title_usage": None, "all_opportunity_usage": None,
-        "billing_settlement": "not_established_by_headless_receipt", "output_cap_wire_certified": False})
-    _write(native / "observer-receipt.json", receipt.data())
-    return HeadlessResult(receipt, inspection.response if not faults else None)
+        raw, receipt['inspect_process'] = _child(bound['inspect_command'], context, environment, native/'inspect', 10)
+        _require(_process_ok(receipt['inspect_process']), 'context inspection process failed')
+        _inspect(raw)
+        stage = 'account_preflight'; receipt['account_preflight'] = _account(home, native/'billing-before')
+        stage = 'prelaunch_guard'; _sources(frozen_files)
+        age = (datetime.now(timezone.utc)-_instant(receipt['account_preflight']['oldest_observed_at'])).total_seconds()
+        _require(0 <= age <= 5, 'account snapshot stale')
+        stage = 'prompt_process'
+        raw, process = _child(command, context, environment, native, timeout)
+        receipt['native_process'] = process; receipt['prompt_process_launched'] = process['launched']
+        inspection = inspect_grok_stream(raw, schema=schema, session_id=session,
+            max_output_tokens=main_output_cap, max_total_tokens=observed_main_token_cap,
+            process_exit_code=process['process_exit_code'] if type(process['process_exit_code']) is int else -1)
+        receipt['stream_inspection'] = inspection.receipt.data()
+        receipt['faults'].extend(inspection.receipt.data()['faults'])
+        if not _process_ok(process): receipt['faults'].append('prompt_process_failed')
+        if inspection.response is not None:
+            response = inspection.response
+            receipt['response_sha256'] = _write(native/'response.private.json', response.data())
+        stage = 'account_postflight'; receipt['account_postflight'] = _account(home, native/'billing-after')
+        _require(receipt['account_preflight']['account_binding'] == receipt['account_postflight']['account_binding'],
+            'account identity changed')
+        stage = 'post_response_source_guard'; _sources(frozen_files)
+    except Exception:
+        receipt['faults'].append(stage + '_failed')
+    receipt['accepted'] = not receipt['faults'] and response is not None
+    _write(native/'observer-receipt.json', receipt)
+    return HeadlessResult(FrozenRecord.from_dict(receipt), response if receipt['accepted'] else None)
+
+
+def _reread_process(directory, expected_command, bound, timeout):
+    process = _strict_json(_read(directory/'process.json'))
+    raw = _read(directory/'stdout.private.jsonl'); error = _read(directory/'stderr.private.txt')
+    _require(process['command'] == expected_command and process['environment'] == bound['environment']
+        and process['cwd'] == bound['context']['cwd'] and process['timeout_seconds'] == timeout
+        and process['stdout_sha256'] == _sha(raw) and process['stderr_sha256'] == _sha(error),
+        'native process binding')
+    _require(_instant(bound['reserved_at']) <= _instant(process['started_at']) <= _instant(process['finished_at']),
+        'native process chronology')
+    return raw, process
+
+
+def _reread_account(folder):
+    saved = _strict_json(_read(folder/'observation.json'))
+    rows = _strict_json(_read(folder/'requests.json'))
+    rebuilt = _project_account({key: _read(folder/(key+'.private.json')) for key, _ in ACCOUNT_ROUTES},
+        rows, saved['observed_at'])
+    _require(rebuilt == saved, 'account projection binding')
+    return rebuilt
 
 
 def verify_headless_request_binding(result, entry, directory, spec, frozen_files) -> FrozenRecord:
-    """Independently reread every bound artifact; never trust receipt acceptance alone."""
-    _require(type(result) is HeadlessResult and type(result.receipt) is FrozenRecord, "headless result required")
-    _require(isinstance(entry, dict) and isinstance(spec, dict) and isinstance(frozen_files, dict), "binding shape")
-    directory = Path(directory); native = directory / "native"; receipt = result.receipt.data()
-    _require(receipt.get("schema") == RECEIPT_SCHEMA, "not a headless receipt")
-    _require(_strict_json(_read(native / "observer-receipt.json")) == receipt, "observer receipt changed")
-    for path, digest in frozen_files.items(): _require(_sha(_read(Path(path))) == digest, "frozen source changed")
-    for key in ("prompt_sha256", "schema_digest", "input_bytes"):
-        _require(entry.get(key) == receipt.get(key), "authoring entry binding mismatch")
-    descriptor = entry.get("private_request")
-    _require(isinstance(descriptor, dict) and set(descriptor) == {"path", "sha256"}
-             and isinstance(descriptor["path"], str) and isinstance(descriptor["sha256"], str),
-             "private request descriptor malformed")
-    descriptor_raw = _read(Path(descriptor["path"]))
-    _require(_sha(descriptor_raw) == descriptor["sha256"], "private request descriptor changed")
-    descriptor_body = _strict_json(descriptor_raw)
-    _require(isinstance(descriptor_body, dict) and set(descriptor_body) == {"prompt", "output_schema"}
-             and isinstance(descriptor_body["prompt"], str) and isinstance(descriptor_body["output_schema"], dict)
-             and _sha(descriptor_body["prompt"].encode()) == receipt["prompt_sha256"]
-             and _sha(_canon(descriptor_body["output_schema"])) == receipt["schema_digest"],
-             "private request contents mismatch")
-    reservation_path = directory / "native-reservation.json"
-    _require(spec.get("main_output_cap") == _strict_json(_read(reservation_path))["main_output_cap"], "main cap mismatch")
-    reservation = _strict_json(_read(reservation_path))
-    _require(_sha(_canon(reservation)) == receipt["reservation_sha256"], "reservation digest mismatch")
-    _require(receipt["native"]["session_id"] == reservation["reservation"]["session_id"], "reserved session mismatch")
-    _require(reservation["observed_main_token_cap"] == spec.get("observed_main_token_cap")
-             and reservation["input_bytes"] <= spec.get("max_input_bytes")
-             and reservation["timeout_seconds"] == spec.get("timeout_seconds"), "request bounds mismatch")
-    _require(_sha(_read(native / "prompt.private.txt")) == receipt["prompt_sha256"]
-             and _sha(_read(native / "schema.private.json")) == receipt["schema_digest"], "private request changed")
-    command = _strict_json(_read(native / "command.json")); _require(_sha(_canon(command)) == receipt["command_sha256"], "command changed")
-    raw = _read(native / "stdout.private.jsonl"); _require(_sha(raw) == receipt["native"]["stream_sha256"], "raw stream changed")
-    schema = _strict_json(_read(native / "schema.private.json")); session = receipt["native"]["session_id"]
-    inspected = inspect_grok_stream(raw, schema=schema, session_id=session, max_output_tokens=spec["main_output_cap"],
-                                    max_total_tokens=spec["observed_main_token_cap"], process_exit_code=receipt["native"]["process_exit_code"])
-    _require(inspected.receipt.data() == receipt["stream_inspection"], "stream inspection mismatch")
-    if inspected.response is None:
-        _require(receipt["response_sha256"] is None, "unexpected response artifact")
+    try:
+        return _verify_headless_request_binding(result, entry, directory, spec, frozen_files)
+    except (KeyError, TypeError, ValueError, AttributeError) as exc:
+        raise ContractError('malformed headless binding artifact') from exc
+
+
+def _verify_headless_request_binding(result, entry, directory, spec, frozen_files) -> FrozenRecord:
+    """Reread trusted request, reservation, runtime, streams and all six account GETs."""
+    _require(type(result) is HeadlessResult and type(result.receipt) is FrozenRecord, 'headless result required')
+    native = _plain(directory)/'native'; receipt = result.receipt.data()
+    _require(_strict_json(_read(native/'observer-receipt.json')) == receipt
+        and receipt['schema'] == RECEIPT_SCHEMA, 'headless observer binding')
+    _sources(frozen_files)
+    bound_raw = _read(Path(directory)/'native-reservation.json'); bound = _strict_json(bound_raw)
+    _require(_sha(bound_raw) == receipt['reservation_sha256'] and bound['schema'] == 'grok-headless-reservation-v1'
+        and bound['retries'] == 0 and bound['frozen_files'] == frozen_files == receipt['frozen_files'],
+        'headless reservation binding')
+    context = bound['context']
+    _require(context == spec['native_context'] == receipt['context'], 'native deployment binding')
+    for key in ('executable', 'cwd', 'private_home', 'private_profile'): _plain(context[key])
+    _require(_sha(_read(Path(context['executable']))) == EXECUTABLE_SHA256, 'headless executable pin')
+    config_path = str(Path(context['private_home'])/'config.toml')
+    _require(frozen_files.get(context['executable']) == EXECUTABLE_SHA256
+        and frozen_files.get(config_path) == _sha(diagnostic_config(spec['main_output_cap']).encode()),
+        'native configuration binding')
+    for key in ('main_output_cap', 'observed_main_token_cap', 'timeout_seconds'):
+        _require(bound[key] == spec[key], 'native bounds binding')
+    _require(bound['input_byte_cap'] == spec['max_input_bytes'], 'native input cap binding')
+    descriptor = entry['private_request']
+    private_raw = _read(_plain(descriptor['path']))
+    _require(set(descriptor) == {'path', 'sha256'} and _sha(private_raw) == descriptor['sha256']
+        and frozen_files.get(descriptor['path']) == descriptor['sha256'], 'private request descriptor binding')
+    private = _strict_json(private_raw)
+    _require(set(private) == {'prompt', 'output_schema'}, 'private request shape')
+    prompt, schema = private['prompt'], private['output_schema']
+    request = {'prompt_sha256': _sha(prompt.encode()), 'schema_digest': _sha(_canon(schema)),
+        'input_bytes': len(prompt.encode())}
+    for key, value in request.items():
+        _require(value == bound[key] == receipt[key] == entry[key], 'private request binding')
+    _require(request['input_bytes'] <= spec['max_input_bytes']
+        and _read(native/'prompt.private.txt') == prompt.encode()
+        and _read(native/'schema.private.json') == _canon(schema), 'native request bytes binding')
+    _require(bound['command'] == _command(context, native, bound['session_id'], schema)
+        == _strict_json(_read(native/'command.json')) and bound['inspect_command'] == _inspect_command(context)
+        and bound['inspect_timeout_seconds'] == 10, 'native command contract')
+    # Rebuild environment from the recorded non-secret OS values; ambient caller
+    # variables are not an authority for historical replay.
+    fixed = {'GROK_HOME': context['private_home'], 'USERPROFILE': context['private_profile'],
+        'HOME': context['private_profile'], 'GROK_DISABLE_API_KEY_AUTH': '1', 'GROK_DISABLE_AUTOUPDATER': '1',
+        'GROK_TITLE_REFRESH': 'false', 'GROK_TURN_SUMMARY': 'false', 'GROK_MEMORY': 'false',
+        'GROK_WORKFLOWS': 'false', 'GROK_SUBAGENTS': 'false'}
+    profile_path = Path(context['private_profile'])
+    fixed.update(APPDATA=str(profile_path/'AppData'/'Roaming'), LOCALAPPDATA=str(profile_path/'AppData'/'Local'),
+        TEMP=str(profile_path/'temp'), TMP=str(profile_path/'temp'), HOMEDRIVE=profile_path.drive,
+        HOMEPATH=str(profile_path)[len(profile_path.drive):])
+    allowed_os = {'SYSTEMROOT', 'WINDIR', 'SYSTEMDRIVE', 'COMSPEC', 'PATHEXT', 'PATH',
+        'NUMBER_OF_PROCESSORS', 'PROCESSOR_ARCHITECTURE', 'OS'}
+    _require(all(bound['environment'].get(k) == v for k, v in fixed.items())
+        and all(k in fixed or k.upper() in allowed_os for k in bound['environment']), 'native environment binding')
+    raw, inspect_process = _reread_process(native/'inspect', bound['inspect_command'], bound, 10)
+    _require(inspect_process == receipt['inspect_process'] and _process_ok(inspect_process), 'native inspect rejected')
+    _inspect(raw)
+    raw, process = _reread_process(native, bound['command'], bound, spec['timeout_seconds'])
+    _require(process == receipt['native_process'] and receipt['prompt_process_launched'] == process['launched'],
+        'native process receipt binding')
+    inspected = inspect_grok_stream(raw, schema=schema, session_id=bound['session_id'],
+        max_output_tokens=spec['main_output_cap'], max_total_tokens=spec['observed_main_token_cap'],
+        process_exit_code=process['process_exit_code'] if type(process['process_exit_code']) is int else -1)
+    _require(inspected.receipt.data() == receipt['stream_inspection'], 'native stream inspection binding')
+    if receipt['accepted']:
+        _require(inspected.response is not None and result.response == inspected.response
+            and receipt['response_sha256'] == _sha(_read(native/'response.private.json'))
+            and _strict_json(_read(native/'response.private.json')) == inspected.response.data(), 'native response binding')
     else:
-        _require(receipt["response_sha256"] == _sha(_read(native / "response.private.json"))
-                 and _strict_json(_read(native / "response.private.json")) == inspected.response.data(),
-                 "response artifact mismatch")
-        _require(result.response is not None and result.response.data() == inspected.response.data(),
-                 "result response swap")
-    def reread_account(name):
-        folder = native / name
-        try:
-            saved = _strict_json(_read(folder / "observation.json"))
-            rows = _strict_json(_read(folder / "requests.json"))
-            raws = {key: _read(folder / (key + ".private.json")) for key, _ in ACCOUNT_ROUTES}
-            rebuilt = _project_account(raws, rows, saved["observed_at"])
-            rebuilt["first_request_age_seconds"] = saved["first_request_age_seconds"]
-        except (KeyError, TypeError, ValueError) as exc:
-            raise ContractError("account observation changed") from exc
-        _require(rebuilt == saved and rebuilt["first_request_age_seconds"] <= 5,
-                 "account observation binding mismatch")
-        return rebuilt
-    pre, post = reread_account("billing-before"), reread_account("billing-after")
-    _require(pre == receipt["account_preflight"] and post == receipt["account_postflight"]
-             and pre["account_binding"] == post["account_binding"], "account observation binding mismatch")
-    _require(post["observed_at"] >= pre["observed_at"], "account observation ordering")
-    accepted = bool(receipt["accepted"] and inspected.receipt.data()["accepted"] and result.response is not None)
-    usage = inspected.receipt.data()["usage"]
-    return FrozenRecord.from_dict({"schema": "grok-headless-request-binding-v1", "accepted": accepted,
-        "opportunity_id": entry.get("opportunity_id"), "request": {"prompt_sha256": receipt["prompt_sha256"],
-        "schema_digest": receipt["schema_digest"], "input_bytes": receipt["input_bytes"]},
-        "identity": {"requested_model": MODEL, "accounting_model": inspected.receipt.data()["accounting_model"],
-        "session_id": session, "request_id": receipt["native"]["request_id"]}, "usage": {"main": usage,
-        "main_model_calls": inspected.receipt.data()["reported_main_model_calls"], "num_turns": 1 if usage is not None else None,
-        "initial_title": None, "all_opportunities": None}, "account": {"preflight": pre, "postflight": post,
-        "oldest_observed_at": min(pre["observed_at"], post["observed_at"])}, "faults": receipt["faults"]})
+        _require(result.response is None, 'rejected native response exposed')
+    pre, post = _reread_account(native/'billing-before'), _reread_account(native/'billing-after')
+    _require(pre == receipt['account_preflight'] and post == receipt['account_postflight']
+        and pre['account_binding'] == post['account_binding'], 'native account binding')
+    _require(_instant(inspect_process['finished_at']) <= _instant(pre['oldest_observed_at'])
+        <= _instant(pre['observed_at']) <= _instant(process['started_at'])
+        <= _instant(process['finished_at']) <= _instant(post['oldest_observed_at']), 'native account chronology')
+    _require(0 <= (_instant(process['started_at'])-_instant(pre['oldest_observed_at'])).total_seconds() <= 5,
+        'oldest account observation stale')
+    events = [_strict_json(line) for line in raw.splitlines() if line.strip()]
+    ends = [row for row in events if row.get('type') == 'end']
+    request_id = ends[0].get('requestId') if len(ends) == 1 else None
+    accepted = (receipt['accepted'] is True and receipt['faults'] == []
+        and inspected.receipt.data()['accepted'] is True and _process_ok(process))
+    observed = inspected.receipt.data()
+    return FrozenRecord.from_dict({'schema': 'grok-headless-request-binding-v1', 'accepted': accepted,
+        'opportunity_id': entry['opportunity_id'], 'request': request, 'context': context,
+        'identity': {'requested_model': MODEL, 'accounting_model': observed['accounting_model'],
+            'session_id': bound['session_id'], 'request_id': request_id},
+        'usage': {'main': observed['usage'], 'main_model_calls': observed['reported_main_model_calls'],
+            'num_turns': ends[0].get('num_turns') if len(ends) == 1 else None,
+            'initial_title': None, 'all_opportunities': None},
+        'account': {'preflight': pre, 'postflight': post, 'oldest_observed_at': pre['oldest_observed_at']},
+        'faults': receipt['faults']})
