@@ -23,6 +23,16 @@ R=FrozenRecord.from_dict
 
 
 def prepare(root, patch, fault_at=None):
+    # Set the synthetic history's real original identity before executing it.
+    # The older C4 fixture used a distinct placeholder split, which C5 rejects.
+    import test_execution_improvement_train_controller as history_fixture
+    original_primary=history_fixture.prepared_primary; identity_type=history_fixture.DataIdentity; split=[]
+    def primary(path):
+        prepared=original_primary(path);split.append(prepared[3][0].task.identity.split_id);return prepared
+    def identity(benchmark,task,group,version,old_split,domain):
+        return identity_type(benchmark,task,group,version,split[0] if task=='closed-history' else old_split,domain)
+    patch.setattr(history_fixture,'prepared_primary',primary)
+    patch.setattr(history_fixture,'DataIdentity',identity)
     setup=old_prepare(root,patch);old=setup['plan'];history=old.history;seen=[]
     def response(request):
         b=request.data();seen.append(b);m=b['module_context'];slot=b['slot']
