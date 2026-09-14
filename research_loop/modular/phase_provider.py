@@ -236,8 +236,18 @@ class PhaseProviderLedger:
         return selected
 
     def bind_events(self,events,*,scope_id,require_eligible=True):
+        return self.bind_events_with_calls(events,scope_id=scope_id,require_eligible=require_eligible)[0]
+
+    def bind_events_with_calls(self,events,*,scope_id,require_eligible=True):
+        """Return exact IDs and immutable calls from this fresh binding pass.
+
+        Consumers may use the returned views for the accounting they are already
+        verifying. They are not a reusable verification token or an eligible seal.
+        Every invocation still replays current session and original provider files.
+        """
         calls=self.calls_for_scope(scope_id)
-        return self.original.bind_events(events,expected_call_ids=tuple(c.data()['id'] for c in calls),require_eligible=require_eligible)
+        ids=self.original.bind_events(events,expected_call_ids=tuple(c.data()['id'] for c in calls),require_eligible=require_eligible)
+        return ids,calls
 
 
 @dataclass(frozen=True)
@@ -299,4 +309,7 @@ class PhaseProviderAbort:
             'status':'terminal_accounting_only'})
 
     def bind_events(self,*args,**kwargs):
+        raise ContractError('terminal phase accounting cannot bind a runtime or authorize scoring')
+
+    def bind_events_with_calls(self,*args,**kwargs):
         raise ContractError('terminal phase accounting cannot bind a runtime or authorize scoring')

@@ -47,6 +47,15 @@ def test_native_history_build_prefix_and_targets_have_disjoint_original_spans(tm
     assert ledger.bind_events(trace(request,response),scope_id='history')==(1,)
     assert final.bind_events(trace(request,second),scope_id='target-1')==(2,)
     assert final.bind_events(trace(request,third),scope_id='target-2')==(3,)
+    ids,bound=final.bind_events_with_calls(trace(request,second),scope_id='target-1')
+    assert ids==(2,) and type(bound) is tuple and all(type(call) is FrozenRecord for call in bound)
+    assert [call.data()['id'] for call in bound]==[2]
+    assert bound==final.calls_for_scope('target-1')
+    # Mutating a decoded accounting copy cannot rewrite its frozen observation.
+    decoded=bound[0].data();decoded['id']=999
+    assert bound[0].data()['id']==2
+    with pytest.raises(ContractError):final.bind_events_with_calls([],scope_id='target-1')
+    with pytest.raises(ContractError):final.bind_events_with_calls(trace(request,second),scope_id='absent')
     assert len(logs)==3
     usage=call_accounting(provider.inspect())
     assert usage['known_reported_tokens']==36 and usage['possible_initial_title_opportunities']==3
@@ -64,6 +73,9 @@ def test_failed_target_keeps_known_main_and_history_originals_without_score_elig
     final=session.seal(tmp_path/'final.json')
     assert history.verify().data()['originals_verified'] and not history.verify().data()['score_eligible']
     assert history.bind_events(trace(request,response),scope_id='history',require_eligible=False)==(1,)
+    ids,bound=history.bind_events_with_calls(trace(request,response),scope_id='history',require_eligible=False)
+    assert ids==(1,) and bound[0].data()['id']==1
+    with pytest.raises(ContractError):history.bind_events_with_calls(trace(request,response),scope_id='history')
     assert len(final.record.data()['scopes']['scopes'])==3 and len(logs)==2
     assert call_accounting(provider.inspect())['known_reported_tokens']==24
     assert call_accounting(provider.inspect())['unknown_main_opportunities']==1
@@ -133,6 +145,7 @@ def test_provenance_abort_retains_unresolved_scope_and_only_historical_lower_bou
     with pytest.raises(ContractError,match='originating'):replace(aborted,path=path,record=fabricated).verify()
     assert not (tmp_path/'finished-originals.json').exists()
     with pytest.raises(ContractError):aborted.bind_events([],scope_id='target')
+    with pytest.raises(ContractError):aborted.bind_events_with_calls([],scope_id='target')
     with pytest.raises(ContractError):
         with session.scope('later'):pass
 

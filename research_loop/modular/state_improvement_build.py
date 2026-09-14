@@ -222,8 +222,8 @@ def verify_build(result, *, recipe, plan_digest, history, material, qualifier, p
         raise ContractError('proposal request leaks or omits frozen consumed history')
     if native:
         if b['provider_scope']!='build:'+FrozenRecord.from_dict(recipe).content_hash: raise ContractError('original build provider scope differs')
-        used=ledger.bind_events(events,scope_id=b['provider_scope'],require_eligible=False)
-        provider_calls=[c.data() for c in ledger.calls_for_scope(b['provider_scope'])]
+        used,bound_calls=ledger.bind_events_with_calls(events,scope_id=b['provider_scope'],require_eligible=False)
+        provider_calls=[c.data() for c in bound_calls]
     else:
         used=ledger.bind_events(events)
         provider_calls=[_safe_call(c) for c in ledger.record.data()['calls'] if c['id'] in used]
