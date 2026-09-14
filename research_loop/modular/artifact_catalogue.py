@@ -4,6 +4,7 @@ import hashlib, math, os
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, required_text
+from research_loop.modular.artifact_source_archive import ArchivedSourceResolver
 from research_loop.ontology import ContractError
 
 STATUSES=frozenset({"produced","not_applied","failed","rejected","withdrawn","superseded","blocked"})
@@ -12,7 +13,7 @@ def source_snapshot(path: Path) -> dict[str, Any]:
     raw=path.resolve().read_bytes();return {"path":str(path.resolve()),"sha256":hashlib.sha256(raw).hexdigest(),"bytes":len(raw)}
 
 class ArtifactCatalogue:
-    def __init__(self,path:Path,*,identity:DataIdentity,run_id:str|None,experiment_id:str|None,lock_digest:str|None,producer_source:Mapping[str,Any]|None=None):
+    def __init__(self,path:Path,*,identity:DataIdentity,run_id:str|None,experiment_id:str|None,lock_digest:str|None,producer_source:Mapping[str,Any]|None=None,source_resolver:ArchivedSourceResolver|None=None):
         if type(identity) is not DataIdentity: raise ContractError("exact artifact identity required")
         identity.__post_init__()
         self.path,self.identity=Path(path),identity
@@ -20,11 +21,12 @@ class ArtifactCatalogue:
         self.binding={"run_id":run_id,"experiment_id":experiment_id,"lock_digest":lock_digest}
         for value in self.binding.values():
             if value is not None: required_text(value,'artifact binding')
-        self.producer_source=dict(producer_source or {});self._entries=[]
+        if source_resolver is not None and type(source_resolver) is not ArchivedSourceResolver: raise ContractError("source resolver must be an ArchivedSourceResolver")
+        self.producer_source=dict(producer_source or {});self.source_resolver=source_resolver;self._entries=[]
         self.verify()
     @classmethod
-    def external(cls,path:Path,*,identity:DataIdentity,experiment_id:str|None=None,producer_source:Mapping[str,Any]|None=None):
-        return cls(path,identity=identity,run_id=None,experiment_id=experiment_id,lock_digest=None,producer_source=producer_source)
+    def external(cls,path:Path,*,identity:DataIdentity,experiment_id:str|None=None,producer_source:Mapping[str,Any]|None=None,source_resolver:ArchivedSourceResolver|None=None):
+        return cls(path,identity=identity,run_id=None,experiment_id=experiment_id,lock_digest=None,producer_source=producer_source,source_resolver=source_resolver)
     def _read(self):
         if not self.path.exists():return []
         raw=self.path.read_bytes()
@@ -36,20 +38,23 @@ class ArtifactCatalogue:
         return rows
     def records(self):
         self.verify();return tuple(FrozenRecord.from_dict(e.data()["descriptor"]) for e in self._entries)
-    def _verify_source(self,source,cache=None):
+    def _verify_source(self,source,cache=None,*,allow_archived=False):
         if set(source)!={"path","sha256","bytes"}:raise ContractError("producer source requires an actual file snapshot")
         key=(source["path"],source["sha256"],source["bytes"])
         if cache is not None and key in cache:return
-        try:actual=source_snapshot(Path(source["path"]))
-        except OSError as exc:raise ContractError("producer source is no longer resolvable") from exc
-        if actual!=dict(source):raise ContractError("producer source drift")
+        if allow_archived and self.source_resolver is not None:
+            self.source_resolver.verify_snapshot(dict(source))
+        else:
+            try:actual=source_snapshot(Path(source["path"]))
+            except OSError as exc:raise ContractError("producer source is no longer resolvable") from exc
+            if actual!=dict(source):raise ContractError("producer source drift")
         if cache is not None:cache.add(key)
     def _verify_refs(self,refs):
         if type(refs) is not list: raise ContractError('artifact references must be a list')
         for ref in refs:
             if not isinstance(ref,Mapping) or set(ref)!={"kind","digest","canonical"} or not isinstance(ref["kind"],str) or not isinstance(ref["digest"],str) or FrozenRecord.from_dict(ref["canonical"]).content_hash!=ref["digest"]:raise ContractError("reference is not resolvable canonical data")
             required_text(ref['kind'],'reference kind')
-    def _validate_descriptor(self,body,seen,source_cache):
+    def _validate_descriptor(self,body,seen,source_cache,*,allow_archived=True):
         """One validator for new entries and every subsequent disk read."""
         required={"schema","kind","module","coverage","identity","binding","payload","parents","control_sources","status","cost","checks","producer_source","config_refs","optimizer_visible","scientific_validated"}
         if type(body) is not dict or set(body)!=required or body['schema']!='artifact-descriptor-v2':
@@ -89,7 +94,7 @@ class ArtifactCatalogue:
         if (not cost['known'] and units is not None or cost['known'] and
                 (type(units) not in (int,float) or not math.isfinite(units) or units<0)):
             raise ContractError('artifact cost units are invalid')
-        self._verify_source(body['producer_source'],source_cache)
+        self._verify_source(body['producer_source'],source_cache,allow_archived=allow_archived)
         self._verify_refs(body['config_refs']);self._verify_refs(body['checks'])
     def append(self,*,kind,module,payload,parents:Iterable[str]=(),control_sources:Iterable[FrozenRecord]=(),status="produced",producer_source=None,config_refs:Iterable[Mapping[str,Any]]=(),cost=None,checks:Iterable[Mapping[str,Any]]=(),optimizer_visible=False,coverage="covered"):
         self.verify()
@@ -111,7 +116,7 @@ class ArtifactCatalogue:
         if set(cost)!={"known","units"} or type(cost["known"]) is not bool or not cost["known"] and cost["units"] is not None:raise ContractError("artifact cost must preserve known versus unknown")
         source=dict(producer_source or self.producer_source);self._verify_source(source);refs=list(config_refs);checks=list(checks);self._verify_refs(refs);self._verify_refs(checks)
         d=FrozenRecord.from_dict({"schema":"artifact-descriptor-v2","kind":required_text(kind,"artifact kind"),"module":module,"coverage":coverage,"identity":self.identity.data(),"binding":self.binding,"payload":payload_body,"parents":parents,"control_sources":controls,"status":status,"cost":cost,"checks":checks,"producer_source":source,"config_refs":refs,"optimizer_visible":optimizer_visible,"scientific_validated":False})
-        self._validate_descriptor(d.data(),set(known),set())
+        self._validate_descriptor(d.data(),set(known),set(),allow_archived=False)
         if d.content_hash in known:raise ContractError("catalogue is append-only; duplicate descriptor")
         entry=FrozenRecord.from_dict({"schema":"artifact-catalogue-entry-v2","sequence":len(self._entries),"previous":self._entries[-1].content_hash if self._entries else None,"descriptor_digest":d.content_hash,"descriptor":d.data()})
         self.path.parent.mkdir(parents=True,exist_ok=True)
