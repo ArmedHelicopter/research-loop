@@ -132,6 +132,26 @@ def _verify_target_in_context(stage: JointTrainStage, *, barrier: JointTrainBarr
                  ledger=ledger, provider_scope_id=_scope(stage), require_provider_eligible=True)
 
 
+def _verify_final_targets_in_context(targets, rows, *, barrier, panel, ledger, context, inputs, scores,
+                                     execution_authority_keys, scorer_authority_keys, plan):
+    """Replay every final target under one active read-only barrier lease."""
+    for target, row in zip(targets, rows, strict=True):
+        if target is None or target.inner.cell.key not in inputs or target.inner.cell.key not in scores:
+            raise ContractError('common controller score binding is incomplete')
+        _verify_target_in_context(target, barrier=barrier, panel=panel, ledger=ledger, context=context)
+        score_input = inputs[target.inner.cell.key]
+        signed = verify_combination_score_input(score_input, authority_keys=execution_authority_keys, panel=panel, cell=target.inner.cell)
+        rebuilt = _score_input_payload(panel, target.inner)
+        if {key: value for key, value in signed.data().items() if key != 'authority'} != rebuilt.data():
+            raise ContractError('signed common score input differs from its replayed target candidate')
+        verify_combination_adapted_receipt(scores[target.inner.cell.key], authority_keys=scorer_authority_keys,
+                                           config=ScorerConfig(R(plan.protocol.record.data()['scorer'])), panel=panel,
+                                           cell=target.inner.cell, score_input=score_input,
+                                           execution_authority_keys=execution_authority_keys)
+    # Remains the last provider read of this final replay transaction.
+    ledger.verify()
+
+
 @dataclass(frozen=True)
 class JointCommonTrainRun:
     root: Path
@@ -406,20 +426,9 @@ def verify_joint_common_train_run(run: JointCommonTrainRun, *, execution_authori
     # replay serves its 118 target replays; each target still checks its own
     # original files, trace, provider scope, score input, and score receipt.
     with _barrier_validation_scope(run.barrier) as context:
-        for target, row in zip(run.targets, rows, strict=True):
-            if target is None or target.inner.cell.key not in inputs or target.inner.cell.key not in scores:
-                raise ContractError('common controller score binding is incomplete')
-            _verify_target_in_context(target, barrier=run.barrier, panel=run.panel, ledger=run.target_ledger, context=context)
-            score_input = inputs[target.inner.cell.key]
-            signed = verify_combination_score_input(score_input, authority_keys=execution_authority_keys, panel=run.panel, cell=target.inner.cell)
-            rebuilt = _score_input_payload(run.panel, target.inner)
-            if {key: value for key, value in signed.data().items() if key != 'authority'} != rebuilt.data():
-                raise ContractError('signed common score input differs from its replayed target candidate')
-            verify_combination_adapted_receipt(scores[target.inner.cell.key], authority_keys=scorer_authority_keys,
-                                               config=ScorerConfig(R(run.plan.protocol.record.data()['scorer'])), panel=run.panel,
-                                               cell=target.inner.cell, score_input=score_input,
-                                               execution_authority_keys=execution_authority_keys)
-        run.target_ledger.verify()
+        _verify_final_targets_in_context(run.targets, rows, barrier=run.barrier, panel=run.panel,
+            ledger=run.target_ledger, context=context, inputs=inputs, scores=scores,
+            execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys, plan=run.plan)
     if body['final_provider_eligible'] is not True or body['status'] != 'complete_train_engineering':
         raise ContractError('common controller output is not currently provenance eligible')
     return run.receipt
