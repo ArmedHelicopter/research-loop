@@ -87,6 +87,45 @@ def test_postflight_failure_preserves_observed_stream(tmp_path, monkeypatch):
     assert not result.receipt.data()['accepted'] and result.receipt.data()['stream_inspection']['usage']['total_tokens'] == 10 and len(calls) == 1
 
 
+def test_opt_in_postflight_account_read_retry_keeps_one_main_and_reader_binds_attempts(tmp_path, monkeypatch):
+    entry, kwargs, spec, directory, calls, gets = prepared(tmp_path, monkeypatch)
+    recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2}
+    kwargs['account_read_recovery']=recovery; spec['account_read_recovery']=recovery
+    original=transport.urllib.request.build_opener; count={'n':0}
+    class FailOnce:
+        def open(self, request, timeout):
+            count['n'] += 1
+            # preflight consumes three GETs; fail first postflight route once.
+            if count['n'] == 4: raise transport.urllib.error.URLError('synthetic')
+            return original().open(request, timeout)
+    monkeypatch.setattr(transport.urllib.request, 'build_opener', lambda *args: FailOnce())
+    result=transport.run_headless_diagnostic(**kwargs)
+    binding=transport.verify_headless_request_binding(result, entry, directory, spec, kwargs['frozen_files']).data()
+    assert result.receipt.data()['accepted'] and binding['accepted'] and len(calls)==1
+    manifest=json.loads((directory/'native/billing-after/attempts.json').read_bytes())
+    assert manifest['winning_attempt']==1 and len(manifest['attempts'])==2
+
+
+def test_opt_in_account_policy_error_does_not_retry(tmp_path, monkeypatch):
+    _, kwargs, _, directory, calls, _ = prepared(tmp_path, monkeypatch)
+    kwargs['account_read_recovery']={'schema':'headless-account-read-recovery-v1','max_attempts':2}
+    class Unauthorized:
+        def open(self, request, timeout):
+            raise transport.urllib.error.HTTPError(request.full_url, 401, 'x', None, None)
+    monkeypatch.setattr(transport.urllib.request, 'build_opener', lambda *args: Unauthorized())
+    result=transport.run_headless_diagnostic(**kwargs)
+    assert not result.receipt.data()['accepted'] and not calls
+    assert not (directory/'native/billing-before/attempt-001').exists()
+
+
+def test_opt_in_reader_rejects_winner_or_partial_tamper(tmp_path, monkeypatch):
+    entry, kwargs, spec, directory, _, _ = prepared(tmp_path, monkeypatch)
+    recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2}; kwargs['account_read_recovery']=recovery; spec['account_read_recovery']=recovery
+    result=transport.run_headless_diagnostic(**kwargs)
+    attempts=directory/'native/billing-before/attempts.json'; body=json.loads(attempts.read_bytes()); body['winning_attempt']=1; transport._write(attempts,body)
+    with pytest.raises(transport.ContractError): transport.verify_headless_request_binding(result,entry,directory,spec,kwargs['frozen_files'])
+
+
 def test_short_timeout_closes_owned_process_tree(tmp_path):
     raw, process = transport._child([sys.executable, '-c', 'import time; time.sleep(5)'],
         {'cwd': str(tmp_path)}, {}, tmp_path/'timeout', 0.05)

@@ -39,6 +39,7 @@ OBSERVATION_SCHEMA = 'four-train-diagnostic-subscription-observation-v1'
 CONFIG_SCHEMA = 'diagnostic-subscription-worker-config-v1'
 CONFIG_SCHEMA_V2 = 'diagnostic-subscription-worker-config-v2'
 CONFIG_SCHEMA_V3 = 'diagnostic-subscription-worker-config-v3'
+CONFIG_SCHEMA_V4 = 'diagnostic-subscription-worker-config-v4'
 OBSERVATION_SCHEMA_V2 = 'four-train-diagnostic-subscription-observation-v2'
 OBSERVATION_SCHEMA_V3 = 'four-train-diagnostic-subscription-observation-v3'
 LIMITS = {'reviewer1': 36, 'reviewer2': 36, 'arbitrator': 36, 'evaluator': 72}
@@ -404,8 +405,8 @@ def verify_native_request_binding(result, entry, directory, spec, frozen_files, 
 
 class PrivateSubscriptionPorts:
     def __init__(self, *, manifest, resolver, authorities, inventory, native_slots,
-                 frozen_files, executable, root, source_guard, fixture_factory=None, deployment=None,
-                 transport='acp'):
+                  frozen_files, executable, root, source_guard, fixture_factory=None, deployment=None,
+                  transport='acp', account_read_recovery=None):
         if transport not in ('acp', 'headless'):
             raise ContractError('subscription transport differs')
         self.deployment = None if deployment is None else checked_deployment(deployment)
@@ -418,6 +419,7 @@ class PrivateSubscriptionPorts:
         self.root = _plain(Path(root)); self.root.mkdir(parents=True, exist_ok=False)
         self.native_slots, self.frozen_files = native_slots, frozen_files
         self.executable, self.guard, self.fixture_factory, self.transport = executable, source_guard, fixture_factory, transport
+        self.account_read_recovery = account_read_recovery
         self.pending = {}; self.used = set(); self.halted = False
 
     def plan(self, role, request):
@@ -471,7 +473,8 @@ class PrivateSubscriptionPorts:
                         private_dir=directory / 'native', reservation=directory / 'native-reservation.json',
                         frozen_files=call_files, prompt=wire, schema=schema,
                         main_output_cap=spec['main_output_cap'], observed_main_token_cap=spec['observed_main_token_cap'],
-                        input_byte_cap=spec['max_input_bytes'], timeout=spec['timeout_seconds'], reasoning_effort='low')
+                        input_byte_cap=spec['max_input_bytes'], timeout=spec['timeout_seconds'], reasoning_effort='low',
+                        account_read_recovery=self.account_read_recovery)
                 else:
                     result = run_native_diagnostic(opportunity_contract=DIAGNOSTIC_OPPORTUNITY_CONTRACT,
                         executable=self.executable, cwd=slot['cwd'], private_home=slot['private_home'],
@@ -534,11 +537,13 @@ def load_private(config_descriptor):
     raw = load_record(config_descriptor).data()
     keys = ('schema', 'manifest', 'materials', 'key_files', 'reference_store', 'input_files',
         'journal_path', 'request_inventory', 'native_deployment')
-    c = exact(raw, keys + (('transport',) if raw.get('schema') == CONFIG_SCHEMA_V3 else ()))
-    if c['schema'] not in (CONFIG_SCHEMA, CONFIG_SCHEMA_V2, CONFIG_SCHEMA_V3):
+    c = exact(raw, keys + (('transport','account_read_recovery') if raw.get('schema') == CONFIG_SCHEMA_V4 else (('transport',) if raw.get('schema') == CONFIG_SCHEMA_V3 else ())) )
+    if c['schema'] not in (CONFIG_SCHEMA, CONFIG_SCHEMA_V2, CONFIG_SCHEMA_V3, CONFIG_SCHEMA_V4):
         raise ContractError('subscription worker schema differs')
-    if c['schema'] == CONFIG_SCHEMA_V3 and c['transport'] != 'headless':
+    if c['schema'] in (CONFIG_SCHEMA_V3, CONFIG_SCHEMA_V4) and c['transport'] != 'headless':
         raise ContractError('headless subscription transport differs')
+    if c['schema'] == CONFIG_SCHEMA_V4 and c['account_read_recovery'] != {'schema':'headless-account-read-recovery-v1','max_attempts':2}:
+        raise ContractError('headless account recovery differs')
     manifest = load_record(c['manifest']); b, _, _ = validate_manifest(manifest)
     if set(c['input_files']) != set(b['input_pins']):
         raise ContractError('subscription source inventory differs')
@@ -592,15 +597,20 @@ def run_private(config_descriptor, *, fixture_factory=None):
         if c['native_deployment'] is not None:
             load_record(c['native_deployment'])
     native_descriptor = None
-    headless = c['schema'] == CONFIG_SCHEMA_V3
+    headless = c['schema'] in (CONFIG_SCHEMA_V3, CONFIG_SCHEMA_V4)
     if fixture_factory is None:
         deployment = load_record(c['native_deployment']).data()
         versioned = deployment.get('schema') == 'frozen-native-subscription-deployment-v2'
         if not headless and versioned != (c['schema'] == CONFIG_SCHEMA_V2):
             raise ContractError('subscription worker/deployment version binding differs')
-        if headless and deployment.get('schema') != 'frozen-native-subscription-headless-deployment-v1':
+        if c['schema'] == CONFIG_SCHEMA_V3 and deployment.get('schema') != 'frozen-native-subscription-headless-deployment-v1':
             raise ContractError('headless subscription deployment differs')
-        exact(deployment, ('schema', 'executable', 'frozen_files', 'slots', *(['native'] if versioned else [])))
+        if c['schema'] == CONFIG_SCHEMA_V4:
+            exact(deployment, ('schema','executable','frozen_files','slots','account_read_recovery'))
+            if deployment['schema'] != 'frozen-native-subscription-headless-deployment-v2' or deployment['account_read_recovery'] != c['account_read_recovery']:
+                raise ContractError('headless recovery deployment differs')
+        else:
+            exact(deployment, ('schema', 'executable', 'frozen_files', 'slots', *(['native'] if versioned else [])))
         if not headless and not versioned and deployment['schema'] != 'frozen-native-subscription-deployment-v1':
             raise ContractError('native deployment schema differs')
         if versioned:
@@ -645,14 +655,15 @@ def run_private(config_descriptor, *, fixture_factory=None):
             for path, expected_hash in frozen.items():
                 _read_bound(Path(path), {pin(expected_hash)})
     else:
-        if c['schema'] in (CONFIG_SCHEMA_V2, CONFIG_SCHEMA_V3):
+        if c['schema'] in (CONFIG_SCHEMA_V2, CONFIG_SCHEMA_V3, CONFIG_SCHEMA_V4):
             raise ContractError('versioned subscription requires the native deployment entry')
         executable = None; slots = {}; frozen = {str(p): sha(p) for p in own_sources().values()}
     ports = PrivateSubscriptionPorts(manifest=manifest, resolver=resolver, authorities=authorities,
         inventory=inventory, native_slots=slots, frozen_files=frozen, executable=executable,
         root=Path(c['journal_path'] + ('.headless' if headless else '.acp')),
         source_guard=full_guard, fixture_factory=fixture_factory,
-        deployment=native_descriptor, transport='headless' if headless else 'acp')
+        deployment=native_descriptor, transport='headless' if headless else 'acp',
+        account_read_recovery=c.get('account_read_recovery'))
     pilot = SubscriptionPilot(manifest=manifest, resolver=resolver, materials=materials,
         keys={r: a.key for r, a in authorities.items()}, authority=authorities['diagnostic'],
         journal_path=Path(c['journal_path']), source_guard=full_guard, **ports.kwargs())

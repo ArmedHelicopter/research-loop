@@ -30,6 +30,9 @@ ALLOWED_REASONING_EFFORTS = frozenset({'low', 'medium', 'high', 'xhigh'})
 ACCOUNT_ISSUER = "https://auth.x.ai"
 PROXY = "https://cli-chat-proxy.grok.com/v1"
 RECEIPT_SCHEMA = "grok-headless-diagnostic-receipt-v1"
+RECOVERY_RECEIPT_SCHEMA = "grok-headless-diagnostic-receipt-v2"
+RECOVERY_RESERVATION_SCHEMA = "grok-headless-reservation-v2"
+ACCOUNT_RECOVERY_SCHEMA = 'headless-account-read-recovery-v1'
 
 
 @dataclass(frozen=True)
@@ -175,6 +178,81 @@ def _account(home: Path, destination: Path):
     _write(destination/"observation.json",projection); return projection
 
 
+class _AccountReadTransportError(ContractError):
+    def __init__(self, route, error_class, status=None):
+        super().__init__('account http error')
+        self.route, self.error_class, self.status = route, error_class, status
+
+
+def _recovery(value):
+    if value is None:
+        return None
+    _require(isinstance(value, dict) and set(value) == {'schema', 'max_attempts'}
+             and value['schema'] == ACCOUNT_RECOVERY_SCHEMA and value['max_attempts'] == 2,
+             'account recovery contract')
+    return dict(value)
+
+
+def _account_once(home: Path, destination: Path):
+    """One recorded full observation attempt; only named transient HTTP errors escape typed."""
+    destination.mkdir(exist_ok=False)
+    store = _strict_json(_read(home / 'auth.json'))
+    choices = [v for v in store.values() if type(v) is dict and v.get('auth_mode') == 'oidc'
+               and v.get('oidc_issuer') == ACCOUNT_ISSUER and v.get('oidc_client_id') == 'b1a00492-073a-47ea-816f-4c329264a828']
+    _require(len(choices) == 1, 'native login identity'); auth = choices[0]
+    _require(all(isinstance(auth.get(k), str) and auth[k] and '\n' not in auth[k] and '\r' not in auth[k] for k in ('key','user_id')), 'native login shape')
+    _require(datetime.fromisoformat(auth['expires_at'].replace('Z','+00:00')).timestamp() > time.time()+120, 'native login near expiry')
+    raws={}; rows=[]; opener=urllib.request.build_opener(urllib.request.ProxyHandler({}), _NoRedirect)
+    for name, route in ACCOUNT_ROUTES:
+        url=PROXY+route; request=urllib.request.Request(url, method='GET', headers={'Authorization':'Bearer '+auth['key'],'X-XAI-Token-Auth':'xai-grok-cli','x-userid':auth['user_id'],'x-grok-client-version':'1.0.13','Accept':'application/json'})
+        row={'name':name,'method':'GET','url':url,'status':'reserved','started_at':datetime.now(timezone.utc).isoformat()}; rows.append(row); _write(destination/'requests.json',rows)
+        try:
+            with opener.open(request, timeout=10) as response:
+                _require(response.geturl()==url, 'account redirect'); _require(response.status == 200, 'account status')
+                raw=response.read(1048577); _require(len(raw)<=1048576,'account response size'); row['http_status']=response.status
+        except urllib.error.HTTPError as exc:
+            row.update(status='failed', error_class='HTTPError', http_status=exc.code, received_at=datetime.now(timezone.utc).isoformat()); _write(destination/'requests.json',rows)
+            if exc.code in (429,502,503,504): raise _AccountReadTransportError(name, 'HTTPError', exc.code) from exc
+            raise ContractError('account http error') from exc
+        except (urllib.error.URLError, TimeoutError) as exc:
+            row.update(status='failed', error_class=type(exc).__name__, received_at=datetime.now(timezone.utc).isoformat()); _write(destination/'requests.json',rows)
+            raise _AccountReadTransportError(name, type(exc).__name__) from exc
+        except OSError as exc:
+            row.update(status='failed', error_class=type(exc).__name__, received_at=datetime.now(timezone.utc).isoformat()); _write(destination/'requests.json',rows)
+            raise _AccountReadTransportError(name, type(exc).__name__) from exc
+        _write(destination/(name+'.private.json'),raw); row.update(status='received',bytes=len(raw),sha256=_sha(raw),received_at=datetime.now(timezone.utc).isoformat()); _write(destination/'requests.json',rows); raws[name]=_strict_json(raw)
+        # A received bad account body is a contract failure, never a reason to
+        # retry a later transient route and discard the already retained bytes.
+        if name == 'credits':
+            cfg=raws[name].get('config') if isinstance(raws[name],dict) else None
+            _require(isinstance(cfg,dict) and cfg.get('isUnifiedBillingUser') is True
+                     and all(isinstance(cfg.get(k),dict) and cfg[k].get('val',0) == 0 for k in ('onDemandCap','onDemandUsed','prepaidBalance'))
+                     and raws[name].get('on_demand_enabled',False) is False, 'paid fallback')
+        elif name == 'topup':
+            _require(raws[name] in ({},{'rule':None}), 'paid fallback')
+        elif name == 'user':
+            _require(isinstance(raws[name],dict) and raws[name].get('hasGrokCodeAccess') is True
+                     and raws[name].get('userBlockedReason') in (None,'') and raws[name].get('teamBlockedReasons') == [], 'account access')
+    projection=_project_account({name:_read(destination/(name+'.private.json')) for name,_ in ACCOUNT_ROUTES},rows,datetime.now(timezone.utc).isoformat(),expected_user_id=auth['user_id'])
+    _write(destination/'observation.json',projection); return projection
+
+
+def _account_recovered(home: Path, destination: Path, recovery):
+    recovery=_recovery(recovery); destination.mkdir(exist_ok=False); attempts=[]
+    for index in range(recovery['max_attempts']):
+        attempt=destination/f'attempt-{index:03d}'
+        try:
+            projection=_account_once(home, attempt)
+            attempts.append({'index':index,'status':'accepted','projection_sha256':_sha(_read(attempt/'observation.json'))})
+            manifest={'schema':ACCOUNT_RECOVERY_SCHEMA,'recovery':recovery,'attempts':attempts,'winning_attempt':index,'projection':projection}
+            _write(destination/'attempts.json',manifest); return manifest
+        except _AccountReadTransportError as exc:
+            failure={'route':exc.route,'error_class':exc.error_class,'http_status':exc.status,'failed_at':datetime.now(timezone.utc).isoformat()}
+            _write(attempt/'failure.json',failure); attempts.append({'index':index,'status':'transient_failed','failure_sha256':_sha(_read(attempt/'failure.json'))})
+            _write(destination/'attempts.json',{'schema':ACCOUNT_RECOVERY_SCHEMA,'recovery':recovery,'attempts':attempts,'winning_attempt':None,'projection':None})
+    raise ContractError('account recovery exhausted')
+
+
 def _fresh_env(home: Path, profile_dir: Path):
     keep = {key: value for key, value in os.environ.items() if key.upper() in {
         "SYSTEMROOT", "WINDIR", "SYSTEMDRIVE", "COMSPEC", "PATHEXT", "PATH",
@@ -290,7 +368,7 @@ def _process_ok(process):
 def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, private_dir,
                             reservation, frozen_files, prompt, schema, main_output_cap,
                             observed_main_token_cap, input_byte_cap, timeout=240,
-                            reasoning_effort=None) -> HeadlessResult:
+                            reasoning_effort=None, account_read_recovery=None) -> HeadlessResult:
     """Reserve once; inspect, query account, launch once, then retain a terminal receipt."""
     context = {k: str(_plain(v)) for k, v in dict(executable=executable, cwd=cwd,
         private_home=private_home, private_profile=private_profile).items()}
@@ -305,6 +383,7 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
         and type(timeout) in (int, float) and 0 < timeout <= 240, 'headless request bounds')
     _require(reasoning_effort is None or reasoning_effort in ALLOWED_REASONING_EFFORTS,
         'unsupported headless reasoning effort')
+    recovery = _recovery(account_read_recovery)
     _require(_sha(_read(Path(context['executable']))) == EXECUTABLE_SHA256, 'headless executable pin')
     _require(home.is_dir() and {p.name for p in home.iterdir()} == {'auth.json', 'config.toml'}
         and (home / 'auth.json').is_file()
@@ -319,20 +398,21 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
     environment = _fresh_env(home, user)
     session = str(uuid.uuid4()); prompt_raw = prompt.encode(); schema_raw = _canon(schema)
     command = _command(context, native, session, schema, reasoning_effort)
-    bound = {'schema': 'grok-headless-reservation-v1', 'session_id': session, 'context': context,
+    bound = {'schema': RECOVERY_RESERVATION_SCHEMA if recovery else 'grok-headless-reservation-v1', 'session_id': session, 'context': context,
         'environment': environment, 'prompt_sha256': _sha(prompt_raw), 'schema_digest': _sha(schema_raw),
         'input_bytes': len(prompt_raw), 'input_byte_cap': input_byte_cap,
         'main_output_cap': main_output_cap, 'observed_main_token_cap': observed_main_token_cap,
         'reasoning_effort': reasoning_effort,
         'timeout_seconds': timeout, 'frozen_files': frozen_files, 'retries': 0,
         'reserved_at': datetime.now(timezone.utc).isoformat(), 'command': command,
-        'inspect_command': _inspect_command(context), 'inspect_timeout_seconds': 10}
+        'inspect_command': _inspect_command(context), 'inspect_timeout_seconds': 10,
+        **({'account_read_recovery': recovery} if recovery else {})}
     # The exclusive file, with fsync, is the no-retry anchor before ANY process or GET.
     with reservation_path.open('xb') as out:
         out.write(_canon(bound)); out.flush(); os.fsync(out.fileno())
     _write(native / 'prompt.private.txt', prompt_raw); _write(native / 'schema.private.json', schema_raw)
     _write(native / 'command.json', command)
-    receipt = {'schema': RECEIPT_SCHEMA, 'accepted': False, 'faults': [],
+    receipt = {'schema': RECOVERY_RECEIPT_SCHEMA if recovery else RECEIPT_SCHEMA, 'accepted': False, 'faults': [],
         'reservation_sha256': _sha(_canon(bound)), 'context': context,
         'prompt_sha256': bound['prompt_sha256'], 'schema_digest': bound['schema_digest'],
         'input_bytes': len(prompt_raw), 'requested_model': MODEL,
@@ -340,13 +420,15 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
         'inspect_process': None, 'native_process': None, 'stream_inspection': None,
         'account_preflight': None, 'account_postflight': None, 'prompt_process_launched': False,
         'response_sha256': None, 'initial_title_usage': None, 'all_opportunity_usage': None,
-        'billing_settlement': 'not_established_by_headless_receipt', 'output_cap_wire_certified': False}
+        'billing_settlement': 'not_established_by_headless_receipt', 'output_cap_wire_certified': False,
+        **({'account_read_recovery': recovery} if recovery else {})}
     response = None; stage = 'context_inspection'
     try:
         raw, receipt['inspect_process'] = _child(bound['inspect_command'], context, environment, native/'inspect', 10)
         _require(_process_ok(receipt['inspect_process']), 'context inspection process failed')
         _inspect(raw)
-        stage = 'account_preflight'; receipt['account_preflight'] = _account(home, native/'billing-before')
+        stage = 'account_preflight'; pre = _account_recovered(home, native/'billing-before', recovery) if recovery else _account(home, native/'billing-before')
+        receipt['account_preflight'] = pre['projection'] if recovery else pre
         stage = 'prelaunch_guard'; _sources(frozen_files)
         age = (datetime.now(timezone.utc)-_instant(receipt['account_preflight']['oldest_observed_at'])).total_seconds()
         _require(0 <= age <= 5, 'account snapshot stale')
@@ -362,7 +444,8 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
         if inspection.response is not None:
             response = inspection.response
             receipt['response_sha256'] = _write(native/'response.private.json', response.data())
-        stage = 'account_postflight'; receipt['account_postflight'] = _account(home, native/'billing-after')
+        stage = 'account_postflight'; post = _account_recovered(home, native/'billing-after', recovery) if recovery else _account(home, native/'billing-after')
+        receipt['account_postflight'] = post['projection'] if recovery else post
         _require(receipt['account_preflight']['account_binding'] == receipt['account_postflight']['account_binding'],
             'account identity changed')
         stage = 'post_response_source_guard'; _sources(frozen_files)
@@ -370,7 +453,10 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
         receipt['faults'].append(stage + '_failed')
     receipt['accepted'] = not receipt['faults'] and response is not None
     _write(native/'observer-receipt.json', receipt)
-    return HeadlessResult(FrozenRecord.from_dict(receipt), response if receipt['accepted'] else None)
+    # Return the persisted canonical bytes, so the producer and independent reader
+    # share one receipt object even for the recovery branch.
+    persisted = _strict_json(_read(native/'observer-receipt.json'))
+    return HeadlessResult(FrozenRecord.from_dict(persisted), response if persisted['accepted'] else None)
 
 
 def _reread_process(directory, expected_command, bound, timeout):
@@ -394,6 +480,29 @@ def _reread_account(folder):
     return rebuilt
 
 
+def _reread_recovered_account(folder, recovery):
+    manifest = _strict_json(_read(folder/'attempts.json')); recovery = _recovery(recovery)
+    _require(manifest.get('schema') == ACCOUNT_RECOVERY_SCHEMA and manifest.get('recovery') == recovery,
+             'account recovery manifest binding')
+    attempts=manifest.get('attempts'); winner=manifest.get('winning_attempt')
+    _require(isinstance(attempts,list) and 1 <= len(attempts) <= recovery['max_attempts']
+             and [a.get('index') for a in attempts] == list(range(len(attempts))), 'account recovery order')
+    accepted=[]
+    for row in attempts:
+        path=folder/f"attempt-{row['index']:03d}"
+        if row.get('status') == 'accepted':
+            projection=_reread_account(path); _require(row.get('projection_sha256') == _sha(_read(path/'observation.json')), 'account recovery projection')
+            accepted.append((row['index'],projection))
+        else:
+            failure=_strict_json(_read(path/'failure.json')); rows=_strict_json(_read(path/'requests.json'))
+            _require(row.get('status') == 'transient_failed' and row.get('failure_sha256') == _sha(_read(path/'failure.json'))
+                     and failure.get('route') in {n for n,_ in ACCOUNT_ROUTES} and failure.get('error_class') in {'HTTPError','URLError','TimeoutError'}, 'account recovery failure binding')
+            _require(any(r.get('status') == 'failed' for r in rows), 'account recovery partial binding')
+    _require(len(accepted) == 1 and winner == accepted[0][0] and winner == len(attempts)-1
+             and manifest.get('projection') == accepted[0][1], 'account recovery winner binding')
+    return accepted[0][1]
+
+
 def verify_headless_request_binding(result, entry, directory, spec, frozen_files) -> FrozenRecord:
     try:
         return _verify_headless_request_binding(result, entry, directory, spec, frozen_files)
@@ -406,14 +515,18 @@ def verify_headless_request_binding(result, entry, directory, spec, frozen_files
 def _verify_headless_request_binding(result, entry, directory, spec, frozen_files) -> FrozenRecord:
     """Reread trusted request, reservation, runtime, streams and all six account GETs."""
     _require(type(result) is HeadlessResult and type(result.receipt) is FrozenRecord, 'headless result required')
-    native = _plain(directory)/'native'; receipt = result.receipt.data()
-    _require(_strict_json(_read(native/'observer-receipt.json')) == receipt
-        and receipt['schema'] == RECEIPT_SCHEMA, 'headless observer binding')
+    native = _plain(directory)/'native'; persisted = _strict_json(_read(native/'observer-receipt.json'))
+    _require(FrozenRecord.from_dict(persisted) == result.receipt, 'headless observer binding')
+    receipt = persisted
     _sources(frozen_files)
     bound_raw = _read(Path(directory)/'native-reservation.json'); bound = _strict_json(bound_raw)
-    _require(_sha(bound_raw) == receipt['reservation_sha256'] and bound['schema'] == 'grok-headless-reservation-v1'
+    recovery = spec.get('account_read_recovery')
+    _require(_sha(bound_raw) == receipt['reservation_sha256'] and bound['schema'] == (RECOVERY_RESERVATION_SCHEMA if recovery else 'grok-headless-reservation-v1')
         and bound['retries'] == 0 and bound['frozen_files'] == frozen_files == receipt['frozen_files'],
         'headless reservation binding')
+    _require((recovery is None and 'account_read_recovery' not in bound and receipt['schema'] == RECEIPT_SCHEMA)
+             or (recovery is not None and _recovery(recovery) == bound.get('account_read_recovery') == receipt.get('account_read_recovery')
+                 and receipt['schema'] == RECOVERY_RECEIPT_SCHEMA), 'account recovery contract binding')
     expected_effort = spec.get('reasoning_effort')
     context = bound['context']
     _require(context.get('reasoning_effort') == expected_effort
@@ -479,7 +592,9 @@ def _verify_headless_request_binding(result, entry, directory, spec, frozen_file
             and _strict_json(_read(native/'response.private.json')) == inspected.response.data(), 'native response binding')
     else:
         _require(result.response is None, 'rejected native response exposed')
-    pre, post = _reread_account(native/'billing-before'), _reread_account(native/'billing-after')
+    reread = _reread_recovered_account if recovery else _reread_account
+    pre = reread(native/'billing-before', recovery) if recovery else reread(native/'billing-before')
+    post = reread(native/'billing-after', recovery) if recovery else reread(native/'billing-after')
     _require(pre == receipt['account_preflight'] and post == receipt['account_postflight']
         and pre['account_binding'] == post['account_binding'], 'native account binding')
     _require(_instant(inspect_process['finished_at']) <= _instant(pre['oldest_observed_at'])
