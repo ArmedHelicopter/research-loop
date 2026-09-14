@@ -1,0 +1,236 @@
+{
+  "schema": "native-authoring-observations-archive-v1",
+  "files": [
+    {
+      "file": "r2/public-observation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-request-r2\\public-observation.json",
+      "source_mtime_ns": 1789420145294309900,
+      "bytes": 3845,
+      "sha256": "82eb7cc0eefbf2221ea3ec4eb262e00a7e654c9713946deecb6062b072ddd96c"
+    },
+    {
+      "file": "r2/envelope.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-request-r2\\envelope.json",
+      "source_mtime_ns": 1789419831734909100,
+      "bytes": 20491,
+      "sha256": "500ff79b8b7c1f94c792c09f9f8ed347729cbba45c36b4d9bfcb3417de836cd9"
+    },
+    {
+      "file": "r2/reservation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-request-r2\\reservation.json",
+      "source_mtime_ns": 1789419895052813700,
+      "bytes": 20625,
+      "sha256": "a3a18b69303eca0b3187c47648f680876cb57693a2081963dbaef3b0427b09ad"
+    },
+    {
+      "file": "r2/observer.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_headless_instrumented_request_r2.py",
+      "source_mtime_ns": 1789419827362980400,
+      "bytes": 11837,
+      "sha256": "9268c2bfe7c84e97c55494715f2fd1a4417d2c054b15564c5a6b95aec7a480fa"
+    },
+    {
+      "file": "r2/config.toml",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-request-r2\\home\\config.toml",
+      "source_mtime_ns": 1789419830749852500,
+      "bytes": 872,
+      "sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+    },
+    {
+      "file": "r2/timeline.json",
+      "source": "derived from pinned originals",
+      "bytes": 1631,
+      "sha256": "9f2b36ff0f9ea0d67e2dd314781bff17dbb7d2dd398976a557ec058ef76e3a1a"
+    },
+    {
+      "file": "low-effort-r1/public-observation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-low-effort-request-r1\\public-observation.json",
+      "source_mtime_ns": 1789421370275469200,
+      "bytes": 3850,
+      "sha256": "83c3606914b733d181c55ce18c5fc8724b895a8a1605911ec238ba24cc570be1"
+    },
+    {
+      "file": "low-effort-r1/envelope.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-low-effort-request-r1\\envelope.json",
+      "source_mtime_ns": 1789421233529621500,
+      "bytes": 22132,
+      "sha256": "7fba09e42cf885513b0e689c9e98cf399a67264bb4c141202b3bc1c19f4e8c57"
+    },
+    {
+      "file": "low-effort-r1/reservation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-low-effort-request-r1\\reservation.json",
+      "source_mtime_ns": 1789421320911418200,
+      "bytes": 22266,
+      "sha256": "f7e1c4e485cfdc4d2fbee02096a0baf6662d407a47482b168db35f3d81eceabe"
+    },
+    {
+      "file": "low-effort-r1/observer.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_headless_low_effort_request_r1.py",
+      "source_mtime_ns": 1789421231961227800,
+      "bytes": 13662,
+      "sha256": "2b5e3d64989615ad9002dc1c42bdcb32abeb98bef5d7ef74c371c32fb2f44ce7"
+    },
+    {
+      "file": "low-effort-r1/config.toml",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-low-effort-request-r1\\home\\config.toml",
+      "source_mtime_ns": 1789421233196359000,
+      "bytes": 872,
+      "sha256": "65c5ee8eac33460c40ce7d712c28322038cd8918f2403ce6b002ddf8516a27f2"
+    },
+    {
+      "file": "low-effort-r1/timeline.json",
+      "source": "derived from pinned originals",
+      "bytes": 1623,
+      "sha256": "4fe5311e9beebe7678ce82725398ac86b50db5636f5a205ee1d07f1f3758a36e"
+    },
+    {
+      "file": "r2/postfailure-material-lint.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-request-r2\\postfailure-material-lint.json",
+      "source_mtime_ns": 1789420357231107500,
+      "bytes": 618,
+      "sha256": "160c9c42980771c46606ac763ebdcaeb52a9834c6c2226339c6f7025f9485dc4"
+    },
+    {
+      "file": "r2/postfailure-lint-detail.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-request-r2\\postfailure-lint-detail.json",
+      "source_mtime_ns": 1789420418525179900,
+      "bytes": 155,
+      "sha256": "c51444de149ff5db51f69ad61af9637c30184a758d5edbdade89b7879c878a1f"
+    },
+    {
+      "file": "r2/counterfactual-format-check.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-request-r2\\counterfactual-format-check.json",
+      "source_mtime_ns": 1789420512049505600,
+      "bytes": 318,
+      "sha256": "531afdf397b252d540e23a0911e7afad2c317708ba9545b0e31d1fe285230be6"
+    },
+    {
+      "file": "transport-check/closed.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-prerequisite-r1-closed.json",
+      "source_mtime_ns": 1789419252395558100,
+      "bytes": 88508,
+      "sha256": "800835b0671957607d367523c617dd32ab53cd351566796d5fc2d70562058efd"
+    },
+    {
+      "file": "transport-check/before.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-prerequisite-r1-before.json",
+      "source_mtime_ns": 1789419210164776600,
+      "bytes": 88404,
+      "sha256": "d63c135fe11a2a4076f8815decd4c3043cc6f46228eb092188c8e2f13d44d9b4"
+    },
+    {
+      "file": "transport-check/source-members.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-prerequisite-r1-source-members.json",
+      "source_mtime_ns": 1789419209896167700,
+      "bytes": 132328,
+      "sha256": "4af3613ef3e59f0cf6138c903719f7935ef851df65e416f72bc624897fb4c57b"
+    },
+    {
+      "file": "transport-check/sources.zip",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-prerequisite-r1-sources.zip",
+      "source_mtime_ns": 1789419209887416300,
+      "bytes": 2507315,
+      "sha256": "9b3d2bc67c3de606d75c0b467d9cdac851c34c1058f48f15ecd196b42e127a3a"
+    },
+    {
+      "file": "transport-check/junit.xml",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-prerequisite-r1.xml",
+      "source_mtime_ns": 1789419252237684400,
+      "bytes": 8588,
+      "sha256": "4c6d7f14c384deee9fcdf09e39823d34ead033d54845a67572cc3adfd08a0fbd"
+    },
+    {
+      "file": "prompt-check/closed.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-prompt-contract-r1-closed.json",
+      "source_mtime_ns": 1789420901368811600,
+      "bytes": 88508,
+      "sha256": "1a4c73c291874a29eb5efd366b10e2d42ae52397fda2881916655306cf08fa49"
+    },
+    {
+      "file": "prompt-check/before.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-prompt-contract-r1-before.json",
+      "source_mtime_ns": 1789420863090149500,
+      "bytes": 88420,
+      "sha256": "d4afb53ca658b46a4494d702d175fe097b9db5c4cb2c210d29d26fda09d1a63c"
+    },
+    {
+      "file": "prompt-check/source-members.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-prompt-contract-r1-source-members.json",
+      "source_mtime_ns": 1789420862833692300,
+      "bytes": 132328,
+      "sha256": "4f86a3b7bfa9385f8cdd2e4aa16160bab380f89a2539979c93882eaae2beb9fb"
+    },
+    {
+      "file": "prompt-check/sources.zip",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-prompt-contract-r1-sources.zip",
+      "source_mtime_ns": 1789420862823182500,
+      "bytes": 2507393,
+      "sha256": "4bbaa1cc7685dfee4c01dad53c77c6b2fad2e64b4d458671ae49d7452ab963e8"
+    },
+    {
+      "file": "prompt-check/junit.xml",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-prompt-contract-r1.xml",
+      "source_mtime_ns": 1789420901104468200,
+      "bytes": 5994,
+      "sha256": "ecd2993f2ac98f5d8ff7af50818cf47e6cdfa563617af4088b4cd82bc26ff9c3"
+    },
+    {
+      "file": "preparation/source-byte-sync-r1.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-source-byte-sync-r1.json",
+      "source_mtime_ns": 1789419604362526300,
+      "bytes": 4781,
+      "sha256": "e66172240ad8794a126a92b7b43758277dfcdcff735cf0fbe8ae5289391f50ea"
+    },
+    {
+      "file": "preparation/unlaunched-r1.json",
+      "source": "derived from pinned originals",
+      "bytes": 413,
+      "sha256": "ee75fc36b6fe727d24c046edb8edbad976b15bd60e052b478c1b5c0702176595"
+    },
+    {
+      "file": "sampling-source/grok-native-sampling-source-r1.md",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-native-sampling-source-r1.md",
+      "source_mtime_ns": 1789421074803276600,
+      "bytes": 3520,
+      "sha256": "c4aa5c663b7ae9c236ca651c5ac69e1525e76755accf1256e2c168496a4458d2"
+    },
+    {
+      "file": "sampling-source/grok-native-sampling-source-r1.metadata.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-native-sampling-source-r1.metadata.json",
+      "source_mtime_ns": 1789421074836643400,
+      "bytes": 3642,
+      "sha256": "300ab9773d41e3dba27760792c3bbc5def049fc5dea8420eae2fbe3a8c548238"
+    },
+    {
+      "file": "comparison.json",
+      "source": "derived from pinned originals",
+      "bytes": 3851,
+      "sha256": "bd895cc7b14f3e5da73b7fb341b0f9795f78ee6c00e8de19cabbf4c16fab2ec9"
+    },
+    {
+      "file": "preparation/installed-models-refresh-r2.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-installed-models-r2\\receipt.json",
+      "source_mtime_ns": 1789419324793050300,
+      "sha256": "0271edc5dfc024861f34d3d92c17a1ef1821279730e6190112b4c7a717fffe0a",
+      "bytes": 1288
+    },
+    {
+      "file": "archive-observations.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\archive_native_authoring_observations_r1.py",
+      "source_mtime_ns": 1789421517521800800,
+      "sha256": "4888ac7c31f0d8fcbb2ed52c10f7d0e9638aa1f6cc010369c39c4ba162cbce10",
+      "bytes": 8265
+    },
+    {
+      "file": "README.md",
+      "source": "authored summary of pinned observations",
+      "sha256": "a6299aef577016a30626a484ea431945f4ccb64fafde20341bea11cb9cc2868e",
+      "bytes": 2641
+    }
+  ],
+  "new_native_model_calls": 2,
+  "validation_access": false,
+  "materials_admitted": 0,
+  "private_payloads_remain_at_original_paths": true,
+  "extra_paid_api_budget": 0
+}

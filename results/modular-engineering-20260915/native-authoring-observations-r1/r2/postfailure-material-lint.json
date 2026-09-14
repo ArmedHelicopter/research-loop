@@ -1,0 +1,15 @@
+{
+  "schema": "rejected-native-response-postfailure-lint-v1",
+  "native_observation_sha256": "82eb7cc0eefbf2221ea3ec4eb262e00a7e654c9713946deecb6062b072ddd96c",
+  "response_digest": "0c0847c4b040f48ec63ed024539e8ce0fb6e6834a2218011fd680853889299a8",
+  "original_status": "rejected",
+  "original_fault": "native_acceptance:AssertionError",
+  "material_admitted": false,
+  "calibration_eligible": false,
+  "expected_dimensions_created": false,
+  "new_model_calls": 0,
+  "new_review_calls": 0,
+  "validation_access": false,
+  "shape_and_exact_excerpts_valid": false,
+  "lint_error_type": "ContractError"
+}

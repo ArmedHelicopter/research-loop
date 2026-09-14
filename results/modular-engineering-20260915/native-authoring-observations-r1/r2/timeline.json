@@ -1,0 +1,62 @@
+{
+  "schema": "safe-native-timeline-v1",
+  "log_sha256": "765d81fd7e5d7af97978b3fed33361620b7630fcc504495035a8ea2ec8847e04",
+  "debug_sha256": "1811d37be98dec9d403c04fbd8b4a6b403d23eadfb7d068938ebef9d541003a9",
+  "events": [
+    {
+      "ts": "2026-09-14T21:05:21.178Z",
+      "event": "startup complete",
+      "metrics": {
+        "total_ms": 23984,
+        "outcome": "ok",
+        "session_spawn_ms": 713
+      }
+    },
+    {
+      "ts": "2026-09-14T21:05:23.018Z",
+      "event": "shell.turn.inference_start",
+      "metrics": {
+        "loop_index": 1,
+        "elapsed_since_turn_start_ms": 29,
+        "transient_retry_attempts": 0
+      }
+    },
+    {
+      "ts": "2026-09-14T21:08:50.690Z",
+      "event": "shell.turn.inference_done",
+      "metrics": {
+        "loop_index": 1,
+        "model_elapsed_ms": 207672,
+        "elapsed_since_turn_start_ms": 207702,
+        "ttft_ms": 184315,
+        "itl_p50_ms": 0,
+        "attempts": 1,
+        "prompt_tokens": 3189,
+        "cached_prompt_tokens": 128,
+        "completion_tokens": 8666,
+        "reasoning_tokens": 7004
+      }
+    },
+    {
+      "ts": "2026-09-14T21:08:51.973Z",
+      "event": "shell.handle_prompt.done",
+      "metrics": {
+        "total_elapsed_ms": 210788,
+        "turn_elapsed_ms": 208984,
+        "pre_turn_ms": 1804,
+        "ok": true
+      }
+    },
+    {
+      "ts": "2026-09-14T21:08:56.898Z",
+      "event": "session_end.worker_join",
+      "metrics": {
+        "elapsed_ms": 799,
+        "outcome": "joined",
+        "notice_shown": false
+      }
+    }
+  ],
+  "debug_field_occurrences": [],
+  "provider_wire_enforcement_proven": false
+}

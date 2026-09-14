@@ -1,0 +1,96 @@
+{
+  "schema": "same-train-authoring-observation-comparison-v1",
+  "same_task_references_categories_schema": true,
+  "validation_access": false,
+  "formal_calibration": false,
+  "new_main_calls": 2,
+  "extra_paid_api_budget": 0,
+  "settled_additional_charge_usd": null,
+  "changes": [
+    "blank-control instruction clarification",
+    "explicit low reasoning effort"
+  ],
+  "individual_causal_effect_identifiable": false,
+  "wire_output_cap_proven": false,
+  "rejected_run_preserved": true,
+  "provisional_materials_admitted": false,
+  "original_raw_artifacts": [
+    {
+      "run": "r2",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-request-r2\\request.private.json",
+      "sha256": "57bf50a1ce5e17b9ea21cae92daa57d68faad7b5bc04a985ed7eae61693a64ae",
+      "bytes": 6635,
+      "archived_content": false
+    },
+    {
+      "run": "r2",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-request-r2\\native\\stdout.private.jsonl",
+      "sha256": "e0433fa37ce7c49429d085c9ed43ca4b3fc830c8081ed335d7d3335920cf5bf1",
+      "bytes": 107997,
+      "archived_content": false
+    },
+    {
+      "run": "r2",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-request-r2\\native\\stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "archived_content": false
+    },
+    {
+      "run": "r2",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-request-r2\\native\\debug.private.log",
+      "sha256": "1811d37be98dec9d403c04fbd8b4a6b403d23eadfb7d068938ebef9d541003a9",
+      "bytes": 630245,
+      "archived_content": false
+    },
+    {
+      "run": "r2",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-instrumented-request-r2\\home\\logs\\unified.jsonl",
+      "sha256": "765d81fd7e5d7af97978b3fed33361620b7630fcc504495035a8ea2ec8847e04",
+      "bytes": 18617,
+      "archived_content": false
+    },
+    {
+      "run": "low-effort-r1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-low-effort-request-r1\\request.private.json",
+      "sha256": "38786ddacf0a260bec797a656c028e98ce2d55f1cd8719c1dfa4d3bd05cfeea4",
+      "bytes": 6968,
+      "archived_content": false
+    },
+    {
+      "run": "low-effort-r1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-low-effort-request-r1\\native\\stdout.private.jsonl",
+      "sha256": "6d3a8ce76b56e9f0ac16199770b9b3e48a51d4fddc8a0ceaca7203abc9524f56",
+      "bytes": 48254,
+      "archived_content": false
+    },
+    {
+      "run": "low-effort-r1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-low-effort-request-r1\\native\\stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "archived_content": false
+    },
+    {
+      "run": "low-effort-r1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-low-effort-request-r1\\native\\debug.private.log",
+      "sha256": "fa08d8e3d556458ec7280fbc827cea5460217f2b5dfa79c64428e71d543cc1b6",
+      "bytes": 480894,
+      "archived_content": false
+    },
+    {
+      "run": "low-effort-r1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-low-effort-request-r1\\home\\logs\\unified.jsonl",
+      "sha256": "3fc895d32792f9e10af85c19f3380a03f361efd81e7102c600ae814d97afda1f",
+      "bytes": 18391,
+      "archived_content": false
+    },
+    {
+      "run": "low-effort-r1",
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-low-effort-request-r1\\native\\response.private.json",
+      "sha256": "13d9b1ca4f3fd1d710ad7be592d600a13c7d00ddaf3353dc8a2ab2df6c34a831",
+      "bytes": 4355,
+      "archived_content": false
+    }
+  ]
+}

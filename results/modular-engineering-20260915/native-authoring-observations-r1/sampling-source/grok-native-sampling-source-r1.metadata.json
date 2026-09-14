@@ -1,0 +1,101 @@
+{
+  "schema": "grok-native-sampling-source-metadata/v1",
+  "public_repository": "https://github.com/xai-org/grok-build",
+  "public_commit": "bc7f02eddd3d84085849dc19ed216f11c23b0571",
+  "network_after_task_assignment": false,
+  "binary_source_equivalence_verified": false,
+  "effective_catalog_key_confirmed_from_r2_cache": "grok-4.6",
+  "r2_catalogue_safe_fields": {
+    "catalog_key": "grok-4.6",
+    "id": "grok-4.6",
+    "routing_model": "grok-4.6",
+    "max_completion_tokens": null,
+    "supports_reasoning_effort": true,
+    "reasoning_effort": "high",
+    "reasoning_efforts": [
+      "xhigh",
+      "high",
+      "medium",
+      "low"
+    ]
+  },
+  "resolved_sources": [
+    {
+      "path": "crates/codegen/xai-grok-shell/src/agent/config.rs",
+      "url": "https://raw.githubusercontent.com/xai-org/grok-build/bc7f02eddd3d84085849dc19ed216f11c23b0571/crates/codegen/xai-grok-shell/src/agent/config.rs",
+      "local_copy_saved": false,
+      "relevant_lines": [
+        3729,
+        3746,
+        4116,
+        4117,
+        5248,
+        5291
+      ]
+    },
+    {
+      "path": "crates/codegen/xai-grok-shell/src/agent/models.rs",
+      "url": "https://raw.githubusercontent.com/xai-org/grok-build/bc7f02eddd3d84085849dc19ed216f11c23b0571/crates/codegen/xai-grok-shell/src/agent/models.rs",
+      "local_copy_saved": false,
+      "relevant_lines": [
+        1017,
+        1042
+      ]
+    },
+    {
+      "path": "crates/codegen/xai-grok-pager/src/app/cli.rs",
+      "url": "https://raw.githubusercontent.com/xai-org/grok-build/bc7f02eddd3d84085849dc19ed216f11c23b0571/crates/codegen/xai-grok-pager/src/app/cli.rs",
+      "local_copy_saved": false,
+      "relevant_lines": [
+        513,
+        523
+      ]
+    },
+    {
+      "path": "crates/codegen/xai-grok-pager/src/headless.rs",
+      "url": "https://raw.githubusercontent.com/xai-org/grok-build/bc7f02eddd3d84085849dc19ed216f11c23b0571/crates/codegen/xai-grok-pager/src/headless.rs",
+      "local_copy_saved": true,
+      "sha256": "df492c59af238ae9c012579eaedb87df28c3ba1dde24f0c0b52950510971af92",
+      "relevant_lines": [
+        670,
+        715
+      ]
+    },
+    {
+      "path": "crates/codegen/xai-grok-models/default_models.json",
+      "url": "https://raw.githubusercontent.com/xai-org/grok-build/bc7f02eddd3d84085849dc19ed216f11c23b0571/crates/codegen/xai-grok-models/default_models.json",
+      "local_copy_saved": false,
+      "relevant_model": "grok-4.6"
+    },
+    {
+      "path": "crates/codegen/xai-grok-shell/src/agent/config_model_override_parse.rs",
+      "url": "https://raw.githubusercontent.com/xai-org/grok-build/bc7f02eddd3d84085849dc19ed216f11c23b0571/crates/codegen/xai-grok-shell/src/agent/config_model_override_parse.rs",
+      "local_copy_saved": false,
+      "relevant_lines": [
+        1,
+        207,
+        235
+      ]
+    }
+  ],
+  "existing_source_archive": "work/grok-supported-route-source-r1/provenance.json",
+  "existing_r2_per_model_config": {
+    "table": "model.grok-4.6",
+    "max_completion_tokens": 8192,
+    "source_lines": [
+      9,
+      10
+    ],
+    "syntax_verified_against_pinned_parser": true
+  },
+  "debug_whitelist_observation": {
+    "path": "work/headless-instrumented-request-r2/native/debug.private.log",
+    "line": 74,
+    "field": "max_completion_tokens",
+    "numeric_value": 8192,
+    "request_marker": true,
+    "raw_text_retained": false,
+    "provider_enforcement_proven": false
+  },
+  "superseding_conclusion": "Existing exact-key per-model syntax is valid; cap breach remains unresolved and rejected."
+}
