@@ -57,3 +57,12 @@ The regression counts original call replays and changes original response bytes
 or configuration after a successful check. It requires the next fresh check to
 close dispatch. This demonstrates removal of one duplicate pass, not a measured
 end-to-end throughput improvement or scientific effectiveness.
+# Sealed-prefix observation
+
+`FrozenTrainProviderLedgerV2.verify_originals` also derives its eligibility from
+one fresh original inspection. That inspection already checks both persisted
+provider state and the native ledger against their memory representations.
+The immediately following terminal flag read uses those checked objects instead
+of calling `terminal()` and repeating all I/O. Later audits still inspect all
+current originals, including calls appended after the sealed prefix. No result
+is cached across calls and no terminal/failure eligibility rule is relaxed.

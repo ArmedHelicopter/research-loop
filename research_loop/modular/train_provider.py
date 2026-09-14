@@ -437,13 +437,17 @@ class FrozenTrainProviderLedgerV2:
         _require(type(self) is FrozenTrainProviderLedgerV2 and type(self.provider) in (CodexTrainProvider,GrokTrainProvider), 'typed provider seal required')
         _require(self.path.read_bytes()==self.record.encoded.encode('utf-8'), 'sealed provider record drift')
         b=self.record.data();self.provider.inspect()
+        # inspect() already bound the in-memory state and native ledger to their
+        # current original bytes. Derive eligibility from that same observation;
+        # terminal() would immediately replay the identical original set again.
+        terminal=bool(self.provider.state['terminal_fault'] or self.provider.backend.ledger['usage_incomplete'])
         _require(b['schema']=='frozen-train-provider-ledger-v2' and b['configuration']==self.provider.state['configuration']
             and b['original_ledger_path']==str(self.provider.backend.ledger_path)
             and b['prefix_length']==len(b['calls']) and b['calls']==self.provider.state['calls'][:b['prefix_length']], 'sealed original prefix differs')
         success=bool(b['calls']) and all(c['view']['originals_verified'] and c['view']['successful'] and not c['view']['main_usage_incomplete'] for c in b['calls'])
         return _record({'schema':'train-provider-seal-verification-v1','seal_digest':self.record.content_hash,
             'originals_verified':True,'successful_prefix':success,
-            'score_eligible':success and not b['terminal_at_seal'] and not self.provider.terminal(),
+            'score_eligible':success and not b['terminal_at_seal'] and not terminal,
             'later_calls':len(self.provider.state['calls'])-b['prefix_length']})
 
     def bind_events(self,events,*,expected_call_ids: tuple[int, ...] | None=None,
