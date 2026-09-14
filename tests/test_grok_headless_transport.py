@@ -4,6 +4,7 @@ import sys
 import json
 import hashlib
 from datetime import timedelta
+from pathlib import Path
 
 import research_loop.modular.grok_headless_transport as transport
 from evaluation.modular.calibration_pilot_process import load_record
@@ -155,6 +156,79 @@ def test_opt_in_reader_rejects_failed_partial_raw_tamper(tmp_path, monkeypatch):
     result=transport.run_headless_diagnostic(**kwargs)
     (directory/'native/billing-after/attempt-000/credits.private.json').write_bytes(b'{}')
     with pytest.raises(transport.ContractError): transport.verify_headless_request_binding(result,entry,directory,spec,kwargs['frozen_files'])
+
+
+def test_opt_in_reader_rejects_coherent_partial_raw_and_requests_rewrite(tmp_path, monkeypatch):
+    entry, kwargs, spec, directory, _, _ = prepared(tmp_path, monkeypatch)
+    recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2}; kwargs['account_read_recovery']=recovery; spec['account_read_recovery']=recovery
+    spec['native_context']=dict(spec['native_context'],account_read_recovery=recovery)
+    original=transport.urllib.request.build_opener; count={'n':0}
+    class FailTopup:
+        def open(self, request, timeout):
+            count['n']+=1
+            if count['n']==5: raise transport.urllib.error.URLError('synthetic')
+            return original().open(request,timeout)
+    monkeypatch.setattr(transport.urllib.request,'build_opener',lambda *args: FailTopup())
+    result=transport.run_headless_diagnostic(**kwargs); attempt=directory/'native/billing-after/attempt-000'
+    raw=b'{}'; (attempt/'credits.private.json').write_bytes(raw); rows=json.loads((attempt/'requests.json').read_bytes()); rows[0].update(sha256=hashlib.sha256(raw).hexdigest(),bytes=len(raw)); transport._write(attempt/'requests.json',rows)
+    with pytest.raises(transport.ContractError): transport.verify_headless_request_binding(result,entry,directory,spec,kwargs['frozen_files'])
+
+
+def _account_response(request, body, calls):
+    calls.append(request.full_url)
+    class Response:
+        status=200
+        def __enter__(self): return self
+        def __exit__(self,*args): pass
+        def geturl(self): return request.full_url
+        def read(self, maximum): return body
+    return Response()
+
+
+@pytest.mark.parametrize('kind', ['paid','malformed','period','percent'])
+def test_recovered_account_received_credit_prefix_is_terminal_not_retried(tmp_path, monkeypatch, kind):
+    _, kwargs, _, _, _, _ = prepared(tmp_path, monkeypatch)
+    calls=[]; now=transport.datetime.now(transport.timezone.utc)
+    config={'isUnifiedBillingUser':True,'onDemandCap':{},'onDemandUsed':{},'prepaidBalance':{},'on_demand_enabled':False,
+            'creditUsagePercent':2,'currentPeriod':{'start':(now-timedelta(days=1)).isoformat(),'end':(now+timedelta(days=1)).isoformat()}}
+    if kind=='paid': config['onDemandCap']={'val':1}
+    if kind=='period': config['currentPeriod']['end']=(now-timedelta(seconds=1)).isoformat()
+    if kind=='percent': config['creditUsagePercent']=100
+    body=b'{' if kind=='malformed' else json.dumps({'config':config}).encode()
+    class Opener:
+        def open(self, request, timeout): return _account_response(request,body,calls)
+    monkeypatch.setattr(transport.urllib.request,'build_opener',lambda *args: Opener())
+    folder=tmp_path/'account'; recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2}
+    with pytest.raises(transport.ContractError): transport._account_recovered(Path(kwargs['private_home']),folder,recovery)
+    manifest=json.loads((folder/'attempts.json').read_bytes())
+    assert len(calls)==1 and manifest['attempts'][0]['status']=='terminal_failed'
+
+
+@pytest.mark.parametrize('kind', ['identity','access'])
+def test_recovered_account_received_user_prefix_is_terminal_not_retried(tmp_path, monkeypatch, kind):
+    _, kwargs, _, _, _, _ = prepared(tmp_path, monkeypatch)
+    calls=[]; now=transport.datetime.now(transport.timezone.utc)
+    def body(url):
+        if 'billing?format=credits' in url: return {'config':{'isUnifiedBillingUser':True,'onDemandCap':{},'onDemandUsed':{},'prepaidBalance':{},'on_demand_enabled':False,'creditUsagePercent':2,'currentPeriod':{'start':(now-timedelta(days=1)).isoformat(),'end':(now+timedelta(days=1)).isoformat()}}}
+        if url.endswith('auto-topup-rule'): return {}
+        return {'userId':'' if kind=='identity' else 'synthetic-account','hasGrokCodeAccess':False if kind=='access' else True,'userBlockedReason':None,'teamBlockedReasons':[]}
+    class Opener:
+        def open(self, request, timeout): return _account_response(request,json.dumps(body(request.full_url)).encode(),calls)
+    monkeypatch.setattr(transport.urllib.request,'build_opener',lambda *args: Opener())
+    folder=tmp_path/'account'; recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2}
+    with pytest.raises(transport.ContractError): transport._account_recovered(Path(kwargs['private_home']),folder,recovery)
+    assert len(calls)==3 and json.loads((folder/'attempts.json').read_bytes())['attempts'][0]['status']=='terminal_failed'
+
+
+def test_recovered_preflight_stale_snapshot_blocks_main_and_retains_attempt(tmp_path, monkeypatch):
+    _, kwargs, _, directory, calls, _ = prepared(tmp_path, monkeypatch)
+    recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2}; kwargs['account_read_recovery']=recovery
+    original=transport._account_recovered
+    def stale(*args):
+        result=original(*args); result['projection']=dict(result['projection'],oldest_observed_at=(transport.datetime.now(transport.timezone.utc)-timedelta(seconds=6)).isoformat()); return result
+    monkeypatch.setattr(transport,'_account_recovered',stale)
+    result=transport.run_headless_diagnostic(**kwargs)
+    assert not result.receipt.data()['accepted'] and not calls and (directory/'native/billing-before/attempts.json').exists()
 
 
 @pytest.mark.parametrize('value', [True, 2.0, 1, 3])

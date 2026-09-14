@@ -243,19 +243,22 @@ def _account_recovered(home: Path, destination: Path, recovery):
         attempt=destination/f'attempt-{index:03d}'
         try:
             projection=_account_once(home, attempt)
-            attempts.append({'index':index,'status':'accepted','projection_sha256':_sha(_read(attempt/'observation.json'))})
+            attempts.append({'index':index,'status':'accepted','projection_sha256':_sha(_read(attempt/'observation.json')),
+                             'requests_sha256':_sha(_read(attempt/'requests.json'))})
             manifest={'schema':ACCOUNT_RECOVERY_SCHEMA,'recovery':recovery,'attempts':attempts,'winning_attempt':index,'projection':projection}
             _write(destination/'attempts.json',manifest); return manifest
         except _AccountReadTransportError as exc:
             failure={'route':exc.route,'error_class':exc.error_class,'http_status':exc.status,'failed_at':datetime.now(timezone.utc).isoformat()}
-            _write(attempt/'failure.json',failure); attempts.append({'index':index,'status':'transient_failed','failure_sha256':_sha(_read(attempt/'failure.json'))})
+            _write(attempt/'failure.json',failure); attempts.append({'index':index,'status':'transient_failed','failure_sha256':_sha(_read(attempt/'failure.json')),
+                                                                      'requests_sha256':_sha(_read(attempt/'requests.json'))})
             _write(destination/'attempts.json',{'schema':ACCOUNT_RECOVERY_SCHEMA,'recovery':recovery,'attempts':attempts,'winning_attempt':None,'projection':None})
         except (ContractError, ValueError, TypeError, KeyError):
             # Retain the received prefix and a non-secret terminal category; it
             # is policy/schema evidence, not a retryable transport condition.
             rows=_strict_json(_read(attempt/'requests.json')) if (attempt/'requests.json').exists() else []
             failure={'route':rows[-1]['name'] if rows else None,'error_class':'ContractError','http_status':None,'failed_at':datetime.now(timezone.utc).isoformat()}
-            _write(attempt/'failure.json',failure); attempts.append({'index':index,'status':'terminal_failed','failure_sha256':_sha(_read(attempt/'failure.json'))})
+            _write(attempt/'failure.json',failure); attempts.append({'index':index,'status':'terminal_failed','failure_sha256':_sha(_read(attempt/'failure.json')),
+                                                                      'requests_sha256':_sha(_read(attempt/'requests.json')) if rows else None})
             _write(destination/'attempts.json',{'schema':ACCOUNT_RECOVERY_SCHEMA,'recovery':recovery,'attempts':attempts,'winning_attempt':None,'projection':None})
             raise ContractError('account observation terminal failure') from None
     raise ContractError('account recovery exhausted')
@@ -507,9 +510,11 @@ def _reread_recovered_account(folder, recovery):
     for row in attempts:
         path=folder/f"attempt-{row['index']:03d}"
         if row.get('status') == 'accepted':
+            _require(row.get('requests_sha256') == _sha(_read(path/'requests.json')), 'account recovery requests binding')
             projection=_reread_account(path); _require(row.get('projection_sha256') == _sha(_read(path/'observation.json')), 'account recovery projection')
             accepted.append((row['index'],projection))
         else:
+            _require(row.get('requests_sha256') == _sha(_read(path/'requests.json')), 'account recovery requests binding')
             failure=_strict_json(_read(path/'failure.json')); rows=_strict_json(_read(path/'requests.json'))
             _require(row.get('status') in {'transient_failed','terminal_failed'} and row.get('failure_sha256') == _sha(_read(path/'failure.json'))
                      and ((row.get('status') == 'transient_failed' and failure.get('route') in {n for n,_ in ACCOUNT_ROUTES} and failure.get('error_class') in {'HTTPError','URLError','TimeoutError'})
