@@ -6,6 +6,7 @@ history prefix remains replayable after target calls append to the session.
 """
 from contextlib import contextmanager
 from dataclasses import dataclass
+import hashlib
 import json
 from pathlib import Path
 
@@ -100,13 +101,14 @@ class PhaseProviderSession:
     """Own the complete run allocation; no call may occur outside its scopes."""
     def __init__(self, provider, path):
         _require(type(self) is PhaseProviderSession and type(provider) in PROVIDERS, 'closed phase provider required')
-        self.provider=provider;self.path=Path(path);self.active=None
+        self.provider=provider;self.path=Path(path);self.active=None;self.aborted=None
         _require(not provider.inspect() and not provider.terminal(), 'phase requires a fresh healthy provider')
         self.record=_record({'schema':'train-phase-provider-scopes-v2',
             'configuration_digest':provider.configuration().content_hash,'scopes':[]})
         _write(self.path,self.record,exclusive=True)
 
     def verify(self):
+        _require(self.aborted is None, 'phase provider is aborted; no original replay is eligible')
         _require(self.path.read_bytes()==self.record.encoded.encode('utf-8'), 'provider scope journal drift')
         _require(self.record.data()['configuration_digest']==self.provider.configuration().content_hash,
             'phase provider configuration drift')
@@ -125,12 +127,57 @@ class PhaseProviderSession:
         self.active=scope
         try: yield scope
         finally:
-            _require(self.active is scope, 'active provider scope substituted')
-            calls=self.provider.calls_since(start)
-            row={'scope_id':scope_id,'start_cursor':start,'call_ids':[c.data()['id'] for c in calls],
-                'call_digests':[c.content_hash for c in calls]}
-            self.record=_record({**self.record.data(),'scopes':[*self.record.data()['scopes'],row]})
-            _write(self.path,self.record);self.active=None;self.verify()
+            if self.aborted is None:
+                try:
+                    _require(self.active is scope, 'active provider scope substituted')
+                    calls=self.provider.calls_since(start)
+                    row={'scope_id':scope_id,'start_cursor':start,'call_ids':[c.data()['id'] for c in calls],
+                        'call_digests':[c.content_hash for c in calls]}
+                    self.record=_record({**self.record.data(),'scopes':[*self.record.data()['scopes'],row]})
+                    _write(self.path,self.record);self.active=None;self.verify()
+                except ContractError:
+                    # Only an existing durable core fault can yield a snapshot.
+                    # Scope programming errors are not converted into valid evidence.
+                    self.abort()
+                    raise
+
+    def abort(self):
+        if self.aborted is not None:
+            self.aborted.verify();return self.aborted
+        snapshot=self.provider.failure_snapshot()
+        scope_raw=self.path.read_bytes()
+        _require(scope_raw==self.record.encoded.encode('utf-8'), 'aborted scope prefix lost its original journal')
+        record=_record({'schema':'train-phase-provider-abort-v2',
+            'completed_scope_prefix':self.record.data(),
+            'scope_journal_path':str(self.path),'scope_journal_sha256':hashlib.sha256(scope_raw).hexdigest(),
+            'unresolved_scope':None if self.active is None else {
+                'scope_id':self.active.scope_id,'start_cursor':self.active.start_cursor},
+            'provider_snapshot':snapshot.data(),'scope_partition_complete':False,
+            'current_originals_verified':False,'score_eligible':False,'eligible_original_seal_created':False})
+        path=self.path.with_name(self.path.stem+'-aborted.json')
+        _write(path,record,exclusive=True)
+        self.aborted=PhaseProviderAbort(path,record,snapshot,self.provider)
+        self.active=None;return self.aborted
+
+    def terminal(self):
+        if self.aborted is not None:return True
+        try:return self.provider.terminal()
+        except ContractError:
+            self.abort();return True
+
+    def usage(self):
+        if self.aborted is not None:
+            self.aborted.verify();return self.aborted.snapshot
+        try:return self.provider.usage()
+        except ContractError:return self.abort().snapshot
+
+    def finish(self,path):
+        """Explicit union: callers must reject aborts at every barrier/scorer."""
+        if self.aborted is None:
+            try:return self.seal(path)
+            except ContractError:self.abort()
+        self.aborted.verify();_write(path,self.aborted.record,exclusive=True)
+        return PhaseProviderAbort(Path(path),self.aborted.record,self.aborted.snapshot,self.provider)
 
     def seal(self,path):
         self.verify();_require(self.active is None, 'cannot seal an active provider scope')
@@ -189,3 +236,36 @@ class PhaseProviderLedger:
     def bind_events(self,events,*,scope_id,require_eligible=True):
         calls=self.calls_for_scope(scope_id)
         return self.original.bind_events(events,expected_call_ids=tuple(c.data()['id'] for c in calls),require_eligible=require_eligible)
+
+
+@dataclass(frozen=True)
+class PhaseProviderAbort:
+    """Disk-bound terminal accounting; never an original-evidence ledger."""
+    path: Path
+    record: FrozenRecord
+    snapshot: FrozenRecord
+    provider: object
+
+    def verify(self):
+        _require(type(self) is PhaseProviderAbort and type(self.provider) in PROVIDERS
+            and type(self.record) is FrozenRecord and type(self.snapshot) is FrozenRecord,
+            'exact typed phase abort required')
+        _require(self.path.read_bytes()==self.record.encoded.encode('utf-8'), 'terminal phase accounting bytes differ')
+        b=self.record.data();s=self.snapshot.data()
+        _require(set(b)=={'schema','completed_scope_prefix','scope_journal_path','scope_journal_sha256','unresolved_scope','provider_snapshot',
+                'scope_partition_complete','current_originals_verified','score_eligible','eligible_original_seal_created'}
+            and b['schema']=='train-phase-provider-abort-v2'
+            and all(b[k] is False for k in ('scope_partition_complete','current_originals_verified','score_eligible','eligible_original_seal_created'))
+            and b['provider_snapshot']==s and s.get('schema')=='public-train-provider-terminal-snapshot-v1'
+            and s.get('terminal_fault') is True and s.get('current_originals_verified') is False
+            and s.get('score_eligible') is False and self.provider.failure_snapshot()==self.snapshot,
+            'terminal phase snapshot is not the original noneligible accounting evidence')
+        raw=Path(b['scope_journal_path']).read_bytes()
+        _require(raw==_record(b['completed_scope_prefix']).encoded.encode('utf-8')
+            and hashlib.sha256(raw).hexdigest()==b['scope_journal_sha256'], 'terminal completed scope journal differs')
+        return _record({'schema':'train-phase-abort-verification-v2','accounting_record_bound':True,
+            'current_originals_verified':False,'score_eligible':False,'scope_partition_complete':False,
+            'status':'terminal_accounting_only'})
+
+    def bind_events(self,*args,**kwargs):
+        raise ContractError('terminal phase accounting cannot bind a runtime or authorize scoring')

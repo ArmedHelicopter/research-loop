@@ -5,7 +5,7 @@ import pytest
 
 from research_loop.modular.contracts import FrozenRecord, DataIdentity
 from research_loop.modular.phase_provider import (PhaseProviderSession, PhaseProviderLedger,
-    provider_configuration, validate_configuration, call_accounting)
+    PhaseProviderAbort, provider_configuration, validate_configuration, call_accounting)
 from research_loop.modular.metaprogram_training import metaprogram_schemas
 from research_loop.modular.modules.improvement import (TrainingManifest,CandidatePackage,
     FrozenBuilderVersion,RestrictedBuilderPort)
@@ -93,3 +93,42 @@ def test_coherently_rehashed_scope_reuse_rejected_against_original_partition(tmp
 def test_native_configuration_cannot_reinterpret_lifetime_or_allocation(tmp_path,monkeypatch,field,value):
     provider,_,_=fixture(tmp_path,monkeypatch);body=provider_configuration(provider).data();body['limits'][field]=value
     with pytest.raises(ContractError):validate_configuration(FrozenRecord.from_dict(body),schemas=provider.backend.schemas,main_opportunities=3)
+
+
+def test_provenance_abort_retains_unresolved_scope_and_only_historical_lower_bounds(tmp_path,monkeypatch):
+    provider,logs,request=fixture(tmp_path,monkeypatch)
+    session=PhaseProviderSession(provider,tmp_path/'scopes.json')
+    with session.scope('history') as model:model(request)
+    with pytest.raises(ContractError):
+        with session.scope('target') as model:
+            model(request)
+            original=provider.backend.calls_root/'0001-builder_proposal'/'response.private.json'
+            original.write_bytes(original.read_bytes()+b' ')
+    assert type(session.aborted) is PhaseProviderAbort and session.active is None
+    def forbidden(*args,**kwargs):raise AssertionError('terminal accounting attempted a new original inspection')
+    monkeypatch.setattr(provider,'inspect',forbidden)
+    snapshot=session.usage().data()
+    assert session.terminal() and snapshot['observed_main_opportunities_lower_bound']==2
+    assert snapshot['known_reported_tokens_lower_bound']==24 and snapshot['total_main_opportunities'] is None
+    assert snapshot['unknown_unobserved_opportunities'] and not snapshot['current_originals_verified']
+    aborted=session.finish(tmp_path/'finished.json')
+    assert type(aborted) is PhaseProviderAbort and type(aborted) is not PhaseProviderLedger
+    b=aborted.record.data()
+    assert b['unresolved_scope']=={'scope_id':'target','start_cursor':1}
+    assert [r['scope_id'] for r in b['completed_scope_prefix']['scopes']]==['history']
+    assert not b['scope_partition_complete'] and len(logs)==2
+    assert aborted.verify().data()['status']=='terminal_accounting_only'
+    assert not (tmp_path/'finished-originals.json').exists()
+    with pytest.raises(ContractError):aborted.bind_events([],scope_id='target')
+    with pytest.raises(ContractError):
+        with session.scope('later'):pass
+
+
+def test_phase_programming_error_does_not_manufacture_a_terminal_snapshot(tmp_path,monkeypatch):
+    provider,logs,_=fixture(tmp_path,monkeypatch)
+    session=PhaseProviderSession(provider,tmp_path/'scopes.json')
+    session.path.write_bytes(b'{}')
+    with pytest.raises(ContractError):session.finish(tmp_path/'invalid.json')
+    assert session.aborted is None and not logs
+    assert not (tmp_path/'invalid.json').exists()
+    assert not list(provider.root.glob('terminal-snapshot-*.json'))
