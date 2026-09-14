@@ -123,6 +123,7 @@ def run_review_scenario(
     frozen_controls: FrozenRecord,
     review_callback: Callable[[FrozenRecord], Mapping[str, Any]] | None = None,
     review_log_path: Path | None = None,
+    artifact_root: Path | None = None,
     reviewer_identities: Mapping[str, Mapping[str, Any]] | None = None,
 ) -> ReviewScenarioResult:
     """Exercise one Q4 fixture with sealed submissions and retained responses.
@@ -200,8 +201,12 @@ def run_review_scenario(
         "callback_payload_digests": [item.content_hash for item in payloads],
         "callback_response_digests": [item.content_hash for item in responses], "metrics": metrics,
         "limitation": "fixture-only mechanism trace; no benchmark efficacy, provider independence, or scientific validity claim"})
-    return ReviewScenarioResult(experiment_id, variant, tuple(payloads), tuple(responses),
-                                FrozenRecord.from_dict({"events": events}), record)
+    result = ReviewScenarioResult(experiment_id, variant, tuple(payloads), tuple(responses),
+                                  FrozenRecord.from_dict({"events": events}), record)
+    if artifact_root is not None:
+        from research_loop.modular.review_scenario_artifacts import write_review_artifacts
+        write_review_artifacts(artifact_root, task=task, controls=frozen_controls, result=result)
+    return result
 
 
 def _controls(task: PublicTask, frozen: FrozenRecord) -> dict[str, Any]:
