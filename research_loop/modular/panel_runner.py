@@ -393,6 +393,12 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
             "terminal": session._events[-1].data()["stage"]})
         return TrainCellResult(runtime, None, plan)
     terminal = session.finish(candidate)
+    if cell.coverage_id == "Q8.6":
+        from research_loop.modular.research_versions import verify_research_version_artifacts
+        session.artifacts.seal()
+        trace_rows = tuple(FrozenRecord(line).data() for line in (sidecar / "trace.jsonl").read_text(encoding="utf-8").splitlines())
+        verify_research_version_artifacts(sidecar, identity=cell.identity, task_digest=cell.task_digest,
+                                          lock=trace_rows[0]["data"], events=trace_rows)
     trace_path = sidecar / "trace.jsonl"
     trace_lines = trace_path.read_text(encoding="utf-8").splitlines()
     trace_digest = FrozenRecord(trace_lines[-1]).content_hash

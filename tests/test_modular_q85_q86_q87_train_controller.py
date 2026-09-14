@@ -81,10 +81,12 @@ class Authority:
             "caller_public_train_qualified": True, "scientific_verified": False})
     def freeze_version(self, subject):
         body = subject.data(); auth = body["authorization"]
-        assert body["identity"] == auth["identity"] and body["task_digest"] == auth["task_digest"]
-        assert auth["request"]["operation"] == "request_new_version" and auth["request"]["caller_authorized"] is True
-        assert body["new_objective"] == auth["request"]["proposed_objective"]
-        assert any(row.data() == auth for row in self.origins)
+        assert auth["schema"] == "q86-origin-authorization-v1"
+        request = auth["subject"]["request"]
+        assert body["identity"] == auth["subject"]["identity"] and body["task_digest"] == auth["subject"]["task_digest"]
+        assert request["operation"] == "request_new_version" and request["caller_authorized"] is True
+        assert body["new_objective"] == request["proposed_objective"]
+        assert any(row.data() == auth["subject"] for row in self.origins)
         self.versions.append(subject)
         return FrozenRecord.from_dict({"schema": "independent-research-version-freeze-v1", "subject_digest": subject.content_hash,
             "authorized": True, "scientific_verified": False})

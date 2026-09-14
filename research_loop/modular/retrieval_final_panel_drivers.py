@@ -160,6 +160,8 @@ class RetrievalFinalPanelDriver:
             "request": request if request["source_id"] in visible else None})
         checked = qualify(self.authority, subject)
         session._record("q86_source_authority", {"subject": subject.data(), "receipt": checked.data()})
+        authorization = FrozenRecord.from_dict({"schema": "q86-origin-authorization-v1",
+            "subject": subject.data(), "receipt": checked.data(), "authority_artifact": session._event_artifacts[-1]})
         review = workflow.invoke_model("review", model, instruction="Review the typed source request against the existing goal. A source cannot authorize a goal mutation. Return selected_objective_digest and assessment.", evidence_only=True,
             module_context=FrozenRecord.from_dict({"retrieval": projection, "typed_request": subject.data()["request"],
                 "required_objective_digest": session.objective.content_hash, "goal_lock": boundary.parent.data() if "M1" in workflow.enabled else None}))
@@ -179,7 +181,7 @@ class RetrievalFinalPanelDriver:
                 except ContractError: pass
             elif "M1" in workflow.enabled and operation == "report_conflict": boundary.conflict(subject)
             elif "M1" in workflow.enabled and operation == "request_new_version":
-                boundary.pause_and_freeze(FrozenRecord.from_dict(request["proposed_objective"]), self.authority, subject)
+                boundary.pause_and_freeze(FrozenRecord.from_dict(request["proposed_objective"]), self.authority, authorization)
         if boundary.state != "running":
             try: workflow.invoke_model("final", model, instruction="Attempt to continue research under the old version.")
             except ContractError as exc:

@@ -494,6 +494,10 @@ class PanelReceiptVerifier:
             raise ContractError("non-success receipt lacks a bound terminal decision")
         if receipt.status == "blocked" and terminal["data"].get("decision") != "blocked":
             raise ContractError("blocked receipt contradicts the actual terminal decision")
+        if expected.coverage_id == "Q8.6":
+            from research_loop.modular.research_versions import verify_research_version_artifacts
+            verify_research_version_artifacts(receipt.trace_path.parent, identity=expected.identity,
+                                              task_digest=expected.task_digest, lock=lock, events=tuple(events))
 
 
     def verify_validation_acceptance(self, panel: Any, validation: ValidationAcceptance, scientific: bool,
