@@ -69,11 +69,16 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
         payload = FrozenRecord.from_dict({"schema": "m9-public-fixture-callback-v1", "task": task.data(),
             "kind": kind, "fixture": injection.data(), "body": dict(body)})
         seen.append(payload)
-        result = callback(payload) if callback else FrozenRecord.from_dict({"kind": kind, "result": "fixture-callback-output"})
+        writer.callback_request(payload)
+        try:
+            result = callback(payload) if callback else FrozenRecord.from_dict({"kind": kind, "result": "fixture-callback-output"})
+        except Exception as exc:
+            writer.callback_failure(exc)
+            raise
+        writer.callback_return(result)
         if not isinstance(result, FrozenRecord):
             raise ContractError("improvement callback must return FrozenRecord")
         outputs.append(result)
-        writer.callback(payload, result)
         return result
 
     try:

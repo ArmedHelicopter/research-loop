@@ -40,7 +40,7 @@ def test_actual_offline_scenario_outputs_are_sealed_and_read_without_rerun(tmp_p
     assert result.callback_payloads == tuple(calls)
     terminal = FrozenRecord((root / "scenario-terminal.json").read_text(encoding="utf-8").strip()).data()
     assert terminal["status"] == "succeeded" and terminal["fixture_only"] is True
-    assert all(v.get("sqlite", {}).get("quick_check") == ["ok"] for k, v in terminal["files"].items() if k.endswith(".sqlite"))
+    assert all(set(v) == {"sha256", "bytes"} for v in terminal["files"].values())
     before = {p.relative_to(root).as_posix(): p.read_bytes() for p in root.rglob("*") if p.is_file()}
     monkeypatch.setattr("research_loop.modular.scenarios_improvement.ExecutionRuntime", lambda *a, **k: (_ for _ in ()).throw(AssertionError("reader activated runtime")))
     assert verify_scenario_artifacts(result, **args).data()["status"] == "succeeded"
@@ -68,3 +68,26 @@ def test_failed_callback_keeps_sealed_prefix_and_is_not_accepted(tmp_path):
                                                experiment_id="Q6.5", variant="sealed_calibrated").data()
     assert report["storage_integrity_verified"] and not report["acceptance_eligible"]
     assert before == {p.relative_to(root).as_posix(): p.read_bytes() for p in root.rglob("*") if p.is_file()}
+
+
+@pytest.mark.parametrize("returned", [None, {"not": "frozen"}])
+def test_first_callback_opportunity_and_invalid_return_are_retained(tmp_path, returned):
+    root = tmp_path / "run"
+    with pytest.raises(ContractError):
+        _run(root, "Q6.1", "change_rule", lambda _request: returned)
+    rows = [FrozenRecord(line).data()["descriptor"] for line in (root / "scenario-artifacts.jsonl").read_text(encoding="utf-8").splitlines()]
+    request = next(row for row in rows if row["kind"] == "scenario_callback_request")
+    outcome = next(row for row in rows if row["kind"] == "scenario_callback_return")
+    assert request["payload"]["canonical"]["kind"] == "privilege_attempt"
+    assert outcome["payload"]["canonical"]["returned_type"] == type(returned).__name__
+    assert outcome["status"] == "rejected"
+
+
+def test_throwing_first_callback_keeps_request_and_failure_outcome(tmp_path):
+    root = tmp_path / "run"; error = RuntimeError("fixture callback failure")
+    with pytest.raises(RuntimeError) as caught:
+        _run(root, "Q6.1", "change_rule", lambda _request: (_ for _ in ()).throw(error))
+    assert caught.value is error
+    rows = [FrozenRecord(line).data()["descriptor"] for line in (root / "scenario-artifacts.jsonl").read_text(encoding="utf-8").splitlines()]
+    outcome = next(row for row in rows if row["kind"] == "scenario_callback_return")
+    assert outcome["status"] == "failed" and outcome["payload"]["canonical"]["error"] == str(error)
