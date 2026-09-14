@@ -17,8 +17,8 @@ from evaluation.modular.calibration import CalibrationAuthority, COVERAGE_KINDS,
 from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.deployment import FileDeploymentPort
 from research_loop.modular.modules.improvement import (
-    AcceptanceAuthority, BoundedCandidateBuilder, BuilderRegistry, CandidatePackage,
-    ExecutionRuntime, FrozenBuilderVersion, MetaBuilderCandidate, RestrictedBuilderPort,
+    AcceptanceAuthority, BoundedCandidateBuilder, CandidatePackage,
+    ExecutionRuntime,
     SignedValidation, TrainingManifest, TrainOptimizer,
 )
 from research_loop.ontology import ContractError
@@ -56,6 +56,9 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
     injection = improvement_injection(experiment_id, variant)
     _controls(task, frozen_controls)
     sidecar.mkdir(parents=True, exist_ok=False)
+    if experiment_id == "Q6.3":
+        from research_loop.modular.fixture_builder_artifacts import run_q63_fixture
+        return run_q63_fixture(task=task,frozen_controls=frozen_controls,sidecar=sidecar,variant=variant,callback=callback)
     seen: list[FrozenRecord] = []
     outputs: list[FrozenRecord] = []
 
@@ -110,28 +113,6 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
             candidate = BoundedCandidateBuilder().build(manifest, base, changes, search_cost=2)
             optimizer = TrainOptimizer(sidecar / "optimizer.sqlite"); optimizer.register(base); optimizer.propose(BoundedCandidateBuilder(), manifest, base, changes, search_cost=2); optimizer.compare_train(base, candidate); optimizer.close()
         detail.update({"proposal_digest": proposal.content_hash if proposal else None, "candidate_digest": candidate.digest if candidate else None, "candidate_changes": candidate.record.data()["changes"] if candidate and variant != "fixed" else None, "rejected": rejected, "acceptance": "not_requested; validation-only acceptance is external", "cost": 0 if variant == "fixed" else 2, "fixed_identity_preserved": variant != "fixed" or candidate.digest == base.digest, "callback_calls": len(seen)})
-    elif experiment_id == "Q6.3":
-        builder_a = FrozenBuilderVersion.freeze({"entrypoint": "emit_literal_change_v1", "surface": "memory", "key": "mode", "value": "fixed-builder"})
-        port = RestrictedBuilderPort()
-        if variant == "fixed":
-            call("restricted_builder_execute", {"builder_digest": builder_a.digest, "phase": "fixed"})
-            candidate, receipt = port.execute(builder_a, manifest, base, expected_builder_digest=builder_a.digest, expected_entrypoint=builder_a.entrypoint, search_cost=2)
-            detail.update({"builder_digest": builder_a.digest, "candidate_digest": candidate.digest, "builder_receipt": receipt.record.data()})
-        else:
-            proposed = call("meta_builder_candidate", {"parent_builder_digest": builder_a.digest, "search_budget": 2, "allowed_dsl": ["entrypoint", "surface", "key", "value"]})
-            try:
-                source = proposed.data()["builder_dsl"] if set(proposed.data()) == {"builder_dsl"} else None
-                builder_b = FrozenBuilderVersion.freeze(source)
-            except (ContractError, KeyError, TypeError) as exc:
-                detail.update({"rejected": str(exc), "active_builder_digest": builder_a.digest, "candidate_digest": None})
-                return ImprovementScenarioResult(experiment_id, variant, tuple(seen), tuple(outputs), FrozenRecord.from_dict({"experiment_id": experiment_id, "variant": variant, "fixture_only": True, "journal_directory": str(sidecar), "callback_count": len(seen), "detail": detail, "limitation": "invalid builder proposal rejected before meta activation; fixture only"}))
-            meta = MetaBuilderCandidate.propose(parent_package=base, parent_builder=builder_a, next_builder=builder_b, manifest=manifest, search_cost=2)
-            authority = _authority(lambda: meta.package, lambda: base)
-            registry = BuilderRegistry(sidecar / "builders.sqlite", authority, builder_a)
-            registry.activate_meta(meta, authority.validate(meta.package, base.digest, _signed_validation()))
-            candidate, receipt = port.execute(registry.active(), manifest, base, expected_builder_digest=builder_b.digest, expected_entrypoint=builder_b.entrypoint, search_cost=2)
-            registry.close()
-            detail.update({"meta_package_digest": meta.package.digest, "active_builder_digest": builder_b.digest, "candidate_digest": candidate.digest, "builder_receipt": receipt.record.data()})
     elif experiment_id == "Q6.5":
         rounds, parent, bad_experience = [], base, 0
         deployment = FileDeploymentPort(sidecar / "shadow-deployment.json", base)
@@ -278,3 +259,10 @@ def _controls(task: PublicTask, controls: FrozenRecord) -> None:
     data = controls.data()
     if set(data) != {"task_digest", "budget_digest", "fixture_only"} or data["task_digest"] != task.content_hash or data["fixture_only"] is not True or not isinstance(data["budget_digest"], str) or not data["budget_digest"]:
         raise ContractError("improvement scenario requires matching frozen fixture controls")
+
+
+def verify_q63_fixture_artifacts(result: ImprovementScenarioResult, *, task: PublicTask,
+                                 frozen_controls: FrozenRecord, sidecar: Path, variant: str) -> FrozenRecord:
+    """Read original Q6.3 fixture outputs without rerunning callbacks or activation."""
+    from research_loop.modular.fixture_builder_artifacts import verify_q63_fixture
+    return verify_q63_fixture(result,task=task,frozen_controls=frozen_controls,sidecar=sidecar,variant=variant)
