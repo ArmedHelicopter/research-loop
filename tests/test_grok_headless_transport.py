@@ -29,7 +29,13 @@ def prepared(tmp_path, monkeypatch):
     (home / "config.toml").write_bytes(diagnostic_config(8192).encode())
     calls=[]
     def fake_account(home_arg, dest):
-        dest.mkdir(); row={"raw_sha256":{"credits":"a","topup":"b","user":"c"},"account_binding":"synthetic","issuer":"https://auth.x.ai","client_id":"official","observed_at":"2026-09-14T00:00:00+00:00","first_request_age_seconds":0.01,"remaining_percentage":99,"code_access":True,"unified_pool":True,"on_demand_cap":0,"on_demand_used":0,"prepaid_balance":0,"auto_topup":False}
+        dest.mkdir(); observed="2026-09-14T00:00:00+00:00"
+        raws={"credits":{"config":{"isUnifiedBillingUser":True,"onDemandCap":{"val":0},"onDemandUsed":{"val":0},"prepaidBalance":{"val":0},"creditUsagePercent":1,"currentPeriod":{"start":"2026-01-01T00:00:00+00:00","end":"2027-01-01T00:00:00+00:00"}},"on_demand_enabled":False},"topup":{},"user":{"userId":"synthetic","hasGrokCodeAccess":True,"userBlockedReason":None,"teamBlockedReasons":[]}}
+        raw_bytes={name:json.dumps(value,separators=(",", ":")).encode() for name,value in raws.items()}
+        for name, raw in raw_bytes.items(): (dest / (name+".private.json")).write_bytes(raw)
+        rows=[{"name":name,"method":"GET","url":transport.PROXY+route,"status":"received","http_status":200,"sha256":hashlib.sha256(raw_bytes[name]).hexdigest()} for name,route in transport.ACCOUNT_ROUTES]
+        (dest / "requests.json").write_bytes(json.dumps(rows,separators=(",", ":")).encode())
+        row=transport._project_account(raw_bytes, rows, observed); row["first_request_age_seconds"]=0.01
         (dest / "observation.json").write_bytes(json.dumps(row, separators=(",", ":")).encode()); calls.append(dest); return row
     monkeypatch.setattr(transport, "_account", fake_account)
     exe = root / "grok.exe"; exe.write_bytes(b"synthetic pinned executable")
@@ -63,12 +69,13 @@ def test_producer_reader_seam_and_safe_unknown_totals(tmp_path, monkeypatch):
     assert summary["usage"]["initial_title"] is None and summary["identity"]["request_id"] == "synthetic-request"
 
 
-@pytest.mark.parametrize("kind", ["stream", "source", "account"])
+@pytest.mark.parametrize("kind", ["stream", "source", "account", "account_raw"])
 def test_reader_rejects_tampering(tmp_path, monkeypatch, kind):
     root, kwargs, _, descriptor = prepared(tmp_path, monkeypatch); kwargs["cwd"].mkdir(); result = transport.run_headless_diagnostic(**kwargs)
     if kind == "stream": (root / "native" / "stdout.private.jsonl").write_bytes(b"bad")
     elif kind == "source": Path(next(iter(kwargs["frozen_files"]))).write_text("changed")
-    else: (root / "native" / "billing-after" / "observation.json").write_text("bad")
+    elif kind == "account": (root / "native" / "billing-after" / "observation.json").write_text("bad")
+    else: (root / "native" / "billing-after" / "credits.private.json").write_text("{}")
     entry = {"opportunity_id": "o1", "prompt_sha256": result.receipt.data()["prompt_sha256"], "schema_digest": result.receipt.data()["schema_digest"], "input_bytes": len(kwargs["prompt"].encode()), "private_request":{"path":str(descriptor),"sha256":hashlib.sha256(descriptor.read_bytes()).hexdigest()}}
     with pytest.raises(ContractError):
         transport.verify_headless_request_binding(result, entry, root, {"main_output_cap":8192,"observed_main_token_cap":262144,"max_input_bytes":131072,"timeout_seconds":240}, kwargs["frozen_files"])

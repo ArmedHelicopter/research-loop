@@ -121,6 +121,55 @@ class _NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl): return None
 
 
+ACCOUNT_ROUTES = (("credits", "/billing?format=credits"), ("topup", "/auto-topup-rule"),
+                  ("user", "/user?include=subscription"))
+
+
+def _project_account(raws, rows, observed_at, *, expected_user_id=None):
+    """Derive the safe account projection from the retained raw GET evidence."""
+    _require(isinstance(raws, dict) and set(raws) == {name for name, _ in ACCOUNT_ROUTES},
+             "account raw inventory")
+    _require(isinstance(rows, list) and len(rows) == 3, "account request inventory")
+    for row, (name, route) in zip(rows, ACCOUNT_ROUTES):
+        _require(isinstance(row, dict) and row.get("name") == name and row.get("method") == "GET"
+                 and row.get("url") == PROXY + route and row.get("status") == "received"
+                 and row.get("http_status") == 200 and row.get("sha256") == _sha(raws[name]),
+                 "account request binding")
+    try:
+        credits, topup, user = (_strict_json(raws[name]) for name, _ in ACCOUNT_ROUTES)
+        now = datetime.fromisoformat(observed_at.replace("Z", "+00:00"))
+    except (TypeError, ValueError) as exc:
+        raise ContractError("invalid private account observation") from exc
+    _require(isinstance(user, dict) and isinstance(user.get("userId"), str) and user["userId"],
+             "account identity")
+    _require(expected_user_id is None or user["userId"] == expected_user_id, "account binding")
+    _require(user.get("hasGrokCodeAccess") is True and user.get("userBlockedReason") in (None, "")
+             and user.get("teamBlockedReasons") == [], "account access")
+    cfg = credits.get("config") if isinstance(credits, dict) else None
+    _require(isinstance(cfg, dict) and cfg.get("isUnifiedBillingUser") is True, "unified pool")
+    for key in ("onDemandCap", "onDemandUsed", "prepaidBalance"):
+        _require(isinstance(cfg.get(key), dict) and set(cfg[key]) <= {"val"}
+                 and type(cfg[key].get("val", 0)) is int and cfg[key].get("val", 0) == 0,
+                 "paid fallback")
+    _require(credits.get("on_demand_enabled", False) is False and topup in ({}, {"rule": None}),
+             "paid fallback")
+    period = cfg.get("currentPeriod")
+    try:
+        _require(isinstance(period, dict) and datetime.fromisoformat(period["start"].replace("Z", "+00:00"))
+                 <= now < datetime.fromisoformat(period["end"].replace("Z", "+00:00")), "period stale")
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ContractError("period stale") from exc
+    percent = cfg.get("creditUsagePercent")
+    _require(type(percent) in (int, float) and not isinstance(percent, bool) and 0 <= percent < 100,
+             "included balance")
+    return {"raw_sha256": {name: _sha(raws[name]) for name, _ in ACCOUNT_ROUTES},
+            "account_binding": _sha(user["userId"].encode()), "issuer": ACCOUNT_ISSUER,
+            "client_id": "b1a00492-073a-47ea-816f-4c329264a828", "observed_at": observed_at,
+            "remaining_percentage": 100-percent, "code_access": True, "unified_pool": True,
+            "on_demand_cap": 0, "on_demand_used": 0, "prepaid_balance": 0, "auto_topup": False,
+            "reported_subscription_tier": user.get("subscriptionTier")}
+
+
 def _account(home: Path, destination: Path):
     """Three first-party CLI proxy GETs using only copied native OIDC."""
     destination.mkdir(exist_ok=False)
@@ -135,7 +184,7 @@ def _account(home: Path, destination: Path):
     _require(datetime.fromisoformat(auth["expires_at"].replace("Z", "+00:00")).timestamp() > time.time()+120,
              "native login near expiry")
     raws = {}; rows=[]; first=time.monotonic(); opener=urllib.request.build_opener(urllib.request.ProxyHandler({}), _NoRedirect)
-    for name, route in (("credits", "/billing?format=credits"), ("topup", "/auto-topup-rule"), ("user", "/user?include=subscription")):
+    for name, route in ACCOUNT_ROUTES:
         url=PROXY+route; request=urllib.request.Request(url, method="GET", headers={"Authorization":"Bearer "+auth["key"],"X-XAI-Token-Auth":"xai-grok-cli","x-userid":auth["user_id"],"x-grok-client-version":"1.0.13","Accept":"application/json"})
         row={"name":name,"method":"GET","url":url,"status":"reserved","started_at":datetime.now(timezone.utc).isoformat()}; rows.append(row); _write(destination/"requests.json",rows)
         try:
@@ -144,15 +193,10 @@ def _account(home: Path, destination: Path):
                 _require(response.status == 200, "account status"); raw=response.read(1048577); _require(len(raw)<=1048576,"account response size"); row["http_status"]=response.status
         except (urllib.error.HTTPError, urllib.error.URLError, OSError) as exc: raise ContractError("account http error") from exc
         _write(destination/(name+".private.json"),raw); row.update(status="received",bytes=len(raw),sha256=_sha(raw),received_at=datetime.now(timezone.utc).isoformat()); _write(destination/"requests.json",rows); raws[name]=_strict_json(raw)
-    credits,topup,user=raws["credits"],raws["topup"],raws["user"]
-    _require(user.get("userId")==auth["user_id"] and user.get("hasGrokCodeAccess") is True and user.get("userBlockedReason") in (None,"") and user.get("teamBlockedReasons")==[],"account access")
-    cfg=credits.get("config") if isinstance(credits,dict) else None; _require(isinstance(cfg,dict) and cfg.get("isUnifiedBillingUser") is True,"unified pool")
-    for k in ("onDemandCap","onDemandUsed","prepaidBalance"): _require(isinstance(cfg.get(k),dict) and set(cfg[k]) <= {"val"} and type(cfg[k].get("val",0)) is int and cfg[k].get("val",0)==0,"paid fallback")
-    _require(credits.get("on_demand_enabled", False) is False, "on demand enabled")
-    _require(topup in ({},{"rule":None}),"auto topup")
-    period=cfg.get("currentPeriod"); now=datetime.now(timezone.utc); _require(isinstance(period,dict) and datetime.fromisoformat(period["start"].replace("Z","+00:00"))<=now<datetime.fromisoformat(period["end"].replace("Z","+00:00")),"period stale")
-    pct=cfg.get("creditUsagePercent"); _require(type(pct) in (int,float) and not isinstance(pct,bool) and 0<=pct<100,"included balance")
-    projection={"raw_sha256":{k:_sha(_read(destination/(k+".private.json"))) for k in raws},"account_binding":_sha(auth["user_id"].encode()),"issuer":ACCOUNT_ISSUER,"client_id":"b1a00492-073a-47ea-816f-4c329264a828","observed_at":now.isoformat(),"first_request_age_seconds":time.monotonic()-first,"remaining_percentage":100-pct,"code_access":True,"unified_pool":True,"on_demand_cap":0,"on_demand_used":0,"prepaid_balance":0,"auto_topup":False,"reported_subscription_tier":user.get("subscriptionTier")}
+    projection = _project_account({name: _read(destination / (name + ".private.json"))
+                                   for name, _ in ACCOUNT_ROUTES}, rows, datetime.now(timezone.utc).isoformat(),
+                                  expected_user_id=auth["user_id"])
+    projection["first_request_age_seconds"] = time.monotonic()-first
     _write(destination/"observation.json",projection); return projection
 
 
@@ -344,12 +388,23 @@ def verify_headless_request_binding(result, entry, directory, spec, frozen_files
                  "response artifact mismatch")
         _require(result.response is not None and result.response.data() == inspected.response.data(),
                  "result response swap")
-    try:
-        pre = _strict_json(_read(native / "billing-before" / "observation.json")); post = _strict_json(_read(native / "billing-after" / "observation.json"))
-    except (TypeError, ValueError) as exc:
-        raise ContractError("account observation changed") from exc
+    def reread_account(name):
+        folder = native / name
+        try:
+            saved = _strict_json(_read(folder / "observation.json"))
+            rows = _strict_json(_read(folder / "requests.json"))
+            raws = {key: _read(folder / (key + ".private.json")) for key, _ in ACCOUNT_ROUTES}
+            rebuilt = _project_account(raws, rows, saved["observed_at"])
+            rebuilt["first_request_age_seconds"] = saved["first_request_age_seconds"]
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ContractError("account observation changed") from exc
+        _require(rebuilt == saved and rebuilt["first_request_age_seconds"] <= 5,
+                 "account observation binding mismatch")
+        return rebuilt
+    pre, post = reread_account("billing-before"), reread_account("billing-after")
     _require(pre == receipt["account_preflight"] and post == receipt["account_postflight"]
              and pre["account_binding"] == post["account_binding"], "account observation binding mismatch")
+    _require(post["observed_at"] >= pre["observed_at"], "account observation ordering")
     accepted = bool(receipt["accepted"] and inspected.receipt.data()["accepted"] and result.response is not None)
     usage = inspected.receipt.data()["usage"]
     return FrozenRecord.from_dict({"schema": "grok-headless-request-binding-v1", "accepted": accepted,
