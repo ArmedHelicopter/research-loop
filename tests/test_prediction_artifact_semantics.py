@@ -155,3 +155,26 @@ def test_real_registry_freezes_and_outcomes_are_registered_once_per_plan(tmp_pat
         assert sum(e["event"] == "freeze" for e in events) == plan_count
         assert sum(e["event"] == "outcome" for e in events) == plan_count
         assert all(set(e["classifications"].values()) == {"unknown"} for e in events if e["event"] == "outcome")
+
+
+@pytest.mark.parametrize("experiment,variant,port,module", [
+    ("Q5.2", "negative_control", "assess_feasibility", "M7"),
+    ("Q5.3", "same_mechanism", "deduplicate_mechanism_predictions", "M4"),
+    ("Q5.3", "title", "deduplicate_titles", "M4"),
+    ("Q5.4", "preregistered_cost", "select_claimed_diagnostic", "M7"),
+])
+def test_actual_mechanism_output_full_copy_and_coherent_forgery(tmp_path, experiment, variant, port, module):
+    task, original, target = public_task("discovery"), tmp_path / "original", tmp_path / "attack"
+    write(tmp_path / "independent-inputs.json", {"task": task.data(), "controls": controls(task).data(),
+        "experiment_id": experiment, "variant": variant})
+    scenario.run_prediction_scenario(experiment, variant, task=task, frozen_controls=controls(task), artifact_root=original)
+    shutil.copytree(original, target)
+    assert verify(target, task, experiment=experiment, variant=variant).data()["semantic_completion_verified"]
+    records = [FrozenRecord(line) for line in (target / JOURNAL).read_text().splitlines()]
+    rows = [(r.content_hash, r.data()) for r in records]
+    output = next(body for _, body in rows if body["kind"] == "mechanism_output" and body["data"]["port"] == port)
+    assert output["module"] == module and output["data"]["inputs"]
+    output["data"]["result"] = {"forged": "result"}
+    reseal(target, rows, json.loads((target / TERMINAL).read_bytes()), json.loads((target / CLOSURE).read_bytes()))
+    with pytest.raises(ContractError):
+        verify(target, task, experiment=experiment, variant=variant)

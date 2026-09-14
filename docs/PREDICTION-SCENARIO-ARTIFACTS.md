@@ -12,7 +12,9 @@ paths, and retained raw callback returns. It does not trust a self-declared
 source path or a terminal result as the expected experiment. It checks exact
 registry freeze/outcome events, requests, raw-to-typed conversion, trace,
 output, module attribution and typed parent links. The producer passes its own
-attempt ID to the return consumer. Historical reads require the original source
+attempt ID to the return consumer. M4 deduplication and M7 feasibility/diagnostic
+selection additionally retain their full actual input and output values.
+Historical reads require the original source
 paths; external identity attestation and complete environment replay remain
 outside this fixture seam.
 

@@ -22,6 +22,10 @@ def controls(task: PublicTask) -> FrozenRecord:
 
 
 def run(tmp_path, experiment_id, variant, **kwargs):
+    input_path = tmp_path / (experiment_id + "-" + variant + "-independent-inputs.json")
+    input_path.write_bytes((FrozenRecord.from_dict({"task": kwargs["task"].data(),
+        "controls": kwargs["frozen_controls"].data(), "experiment_id": experiment_id,
+        "variant": variant}).encoded + "\n").encode())
     return run_prediction_scenario(experiment_id, variant, artifact_root=tmp_path / (experiment_id + "-" + variant), **kwargs)
 
 

@@ -139,11 +139,11 @@ def _evaluate_prediction_scenario(experiment_id, variant, *, task, frozen_contro
     elif experiment_id == "Q5.2":
         if variant == "zero_exit_same_prediction":
             rejected = _reject_non_discriminating(registry, task, callbacks, callback_responses, plan_callback, writer, events)
-            report = _feasibility(task, rejected, "failed", "fixture-same-prediction-measurement")
+            report = _feasibility(task, rejected, "failed", "fixture-same-prediction-measurement", writer)
             plans = ()
         else:
             plan = _freeze_and_capture(registry, task, callbacks, callback_responses, plan_callback, writer, _negative_control_pair(), 2)
-            report = _feasibility(task, plan.payload, "passed", "fixture-negative-control-measurement")
+            report = _feasibility(task, plan.payload, "passed", "fixture-negative-control-measurement", writer)
             plans = (plan,)
         events.append({"event": "zero_exit_is_not_identifiability", "execution_status": "fixture_zero_exit",
                        "feasibility": dict(report.stages), "next_stage": report.next_stage,
@@ -153,6 +153,10 @@ def _evaluate_prediction_scenario(experiment_id, variant, *, task, frozen_contro
         proposals = _dedup_proposals(variant)
         kept, removed = deduplicate_mechanism_predictions(proposals)
         title_kept, title_removed = deduplicate_titles(proposals)
+        writer.mechanism_output("deduplicate_mechanism_predictions", {"proposals": proposals},
+                                {"kept": kept, "removed": removed})
+        writer.mechanism_output("deduplicate_titles", {"proposals": proposals},
+                                {"kept": title_kept, "removed": title_removed})
         callback_context["dedup"] = {"kept": kept, "removed": removed, "title_baseline": {"kept": title_kept, "removed": title_removed}}
         plan = _freeze_and_capture(registry, task, callbacks, callback_responses, plan_callback, writer, branches, 2, context=callback_context)
         plans = (plan,)
@@ -164,7 +168,12 @@ def _evaluate_prediction_scenario(experiment_id, variant, *, task, frozen_contro
         selection_plan = _exploration_plan(task)
         policy = FrozenRecord.from_dict({"policy_version": "fixture-frozen-selection-v1", "identity": task.identity.data(),
             "criterion": "subjective" if variant == "subjective" else "uncertainty_per_cost", "frozen_before_validation": True})
-        selected = select_claimed_diagnostic(selection_plan, policy, _diagnostics()).data()["diagnostic_id"]
+        candidates = _diagnostics()
+        selected_record = select_claimed_diagnostic(selection_plan, policy, candidates)
+        writer.mechanism_output("select_claimed_diagnostic", {
+            "plan": _exploration_data(selection_plan), "policy": policy.data(),
+            "candidates": [c.data() for c in candidates]}, selected_record.data())
+        selected = selected_record.data()["diagnostic_id"]
         callback_context["diagnostic_selection"] = {"selected": selected, "policy_digest": policy.content_hash,
                                                        "claimed_plan_digest": selection_plan.content_hash}
         plan = _freeze_and_capture(registry, task, callbacks, callback_responses, plan_callback, writer, _negative_control_pair(), 2, context=callback_context)
@@ -271,12 +280,23 @@ def _branch(identifier: str, key: str, mechanism: str, intervention: str, direct
             "elimination_condition": "declared prediction fails", "predictions": [prediction]}
 
 
-def _feasibility(task: PublicTask, frozen_plan: FrozenRecord, discriminating: str, measurement_id: str):
+def _exploration_data(plan):
+    return {"plan_id": plan.plan_id, "identity": plan.identity.data(),
+        "frozen_plan": plan.frozen_plan.data(), "closure": plan.closure.__dict__,
+        "plan_digest": plan.content_hash}
+
+
+def _feasibility(task: PublicTask, frozen_plan: FrozenRecord, discriminating: str, measurement_id: str, writer):
     exploration = ExplorationPlan("fixture-feasibility", task.identity, frozen_plan,
         ResourceClosure("fixture-public-data", "fixture-artifact", "fixture-negative-control", 1, 1))
-    return assess_feasibility(exploration, {"data": FeasibilityObservation("data", "passed", "fixture-data"),
+    observations = {"data": FeasibilityObservation("data", "passed", "fixture-data"),
         "minimal_run": FeasibilityObservation("minimal_run", "passed", "fixture-zero-exit"),
-        "discriminating_measurement": FeasibilityObservation("discriminating_measurement", discriminating, measurement_id)})
+        "discriminating_measurement": FeasibilityObservation("discriminating_measurement", discriminating, measurement_id)}
+    report = assess_feasibility(exploration, observations)
+    writer.mechanism_output("assess_feasibility", {"plan": _exploration_data(exploration),
+        "observations": {k: v.__dict__ for k, v in observations.items()}},
+        {"plan_digest": report.plan_digest, "stages": dict(report.stages), "next_stage": report.next_stage})
+    return report
 
 
 def _dedup_proposals(variant: str) -> list[dict[str, str]]:

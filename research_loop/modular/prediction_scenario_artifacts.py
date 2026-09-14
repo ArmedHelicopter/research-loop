@@ -118,13 +118,17 @@ class _Records:
             rows = matching({"callback_request"})[-1:]
         elif kind == "callback_return":
             rows = matching({"callback_raw"})[-1:]
+        elif kind == "mechanism_output":
+            rows = matching({"inputs"})
+            if data["port"] == "assess_feasibility":
+                rows += matching({"frozen_plan"})[-1:] + matching({"callback_return"})[-1:]
         elif kind == "registry_event":
             rows = [r for r in matching({"registry_event"}) if r.data()["data"].get("event") == "freeze"
                     and r.data()["data"].get("plan_id") == data["plan_id"]]
             # Unknown classifications follow all allocated fixture returns.
             rows += matching({"callback_return"})
         elif kind == "mechanism_trace":
-            rows = matching({"inputs", "registry_event", "callback_return", "frozen_plan"})
+            rows = matching({"inputs", "registry_event", "callback_return", "frozen_plan", "mechanism_output"})
         elif kind == "outcome":
             rows = matching({"mechanism_trace", "callback_return"})
         else:
@@ -133,6 +137,8 @@ class _Records:
 
     def append(self, kind, data, *, status="produced"):
         module = "P0" if kind in {"attempt", "inputs"} else ("M4" if kind in {"registry_event", "frozen_plan"} else None)
+        if kind == "mechanism_output":
+            module = "M4" if data["port"] in {"deduplicate_mechanism_predictions", "deduplicate_titles"} else "M7"
         record = FrozenRecord.from_dict({"schema": "prediction-scenario-artifact-v2",
             "sequence": len(self.entries), "previous": self.entries[-1].content_hash if self.entries else None,
             "kind": kind, "module": module, "status": status, "run_id": self.run_id,
@@ -174,6 +180,9 @@ class _Records:
 
     def outcome(self, record):
         self.append("outcome", record.data())
+
+    def mechanism_output(self, port, inputs, result):
+        self.append("mechanism_output", {"port": port, "inputs": inputs, "result": result})
 
     def replay_response(self):
         if not self.replay_responses:
