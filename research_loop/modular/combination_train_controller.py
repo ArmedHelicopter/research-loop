@@ -55,14 +55,14 @@ def _native_schema(body):
 
 
 def _native_model(model):
-    return type(model) in (GrokTrainModelPort,GrokHeadlessTrainModelPort)
+    return isinstance(model,GrokTrainModelPort) or type(model) is GrokHeadlessTrainModelPort
 
 
 def _replay_native_model(model):
     if type(model) is GrokHeadlessTrainModelPort:
         headless_configuration(model)
         replay_headless_train_ledger(model)
-    elif type(model) is GrokTrainModelPort:
+    elif isinstance(model,GrokTrainModelPort):
         replay_grok_train_ledger(model)
     else:
         raise ContractError('exact native TRAIN port required')
@@ -256,8 +256,9 @@ def _service_preflight(config, model, service, execution_authority, scorer_keys)
     from evaluation.modular.scorer_process import CombinationScorerProcessClient
     body = config.data()
     grok = _native_schema(body)
-    expected_model = GrokHeadlessTrainModelPort if body.get('schema')=='m4-m5-train-controller-config-v5' else GrokTrainModelPort
-    if not (type(model) is expected_model if grok else isinstance(model,CodexModelPort)) or not isinstance(service, (CombinationAdaptedScoringService, CombinationScorerProcessClient)) or not isinstance(execution_authority, LinkedExecutionAuthority):
+    admitted_model = (type(model) is GrokHeadlessTrainModelPort if body.get('schema')=='m4-m5-train-controller-config-v5'
+        else isinstance(model,GrokTrainModelPort) if grok else isinstance(model,CodexModelPort))
+    if not admitted_model or not isinstance(service, (CombinationAdaptedScoringService, CombinationScorerProcessClient)) or not isinstance(execution_authority, LinkedExecutionAuthority):
         raise ContractError("real model port, independent scoring service and execution authority are required")
     if not grok: _reviewed_model_policy(model)
     if grok:

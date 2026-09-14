@@ -75,3 +75,20 @@ def test_headless_factorial_rejects_acp_relabel_before_dispatch(tmp_path,monkeyp
     body=setup['config'].data();body['schema']='m4-m5-train-controller-config-v4'
     with pytest.raises(ContractError):controller.FrozenM4M5TrainConfig(FrozenRecord.from_dict(body))
     assert not calls and not gets
+
+
+def test_existing_acp_subclass_preflight_is_preserved(tmp_path,monkeypatch):
+    from test_grok_train_solver import default_port
+    from research_loop.modular.grok_train_solver import GrokTrainModelPort
+    setup,_,calls,gets=setup_headless(tmp_path,monkeypatch)
+    body=setup['config'].data();body.update(schema='m4-m5-train-controller-config-v4',effort='native_acp')
+    body['provider']['kind']='grok-acp-public-train-v1';body['provider'].pop('account_read_recovery')
+    config=controller.FrozenM4M5TrainConfig(FrozenRecord.from_dict(body));setup['config']=config
+    port,logs=default_port(tmp_path/'acp',monkeypatch,schemas=body['schemas'],caps=body['provider']['main_output_caps'],max_calls=40)
+    class ExistingACPSubclass(GrokTrainModelPort):pass
+    port.__class__=ExistingACPSubclass
+    with ExitStack() as stack:
+        service=processes(setup,stack)
+        controller._service_preflight(config,port,service,setup['module'].EXECUTION,
+            {setup['module'].SCORER.authority_id:setup['module'].SCORER.key})
+    assert controller._native_model(port) and not calls and not gets and not logs
