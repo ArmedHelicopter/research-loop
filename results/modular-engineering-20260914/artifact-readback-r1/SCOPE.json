@@ -1,0 +1,29 @@
+{
+  "schema": "committed-artifact-readback-records-v1",
+  "items": [
+    {
+      "path": "verify_phase_hosts_commit_r1.py",
+      "sha256": "a820ae5f39219ce1fab06c4fdf19961c600bf7254a9d1c852cf8a1b83b83e870",
+      "bytes": 3139
+    },
+    {
+      "path": "phase-hosts-committed-verification-r1.json",
+      "sha256": "ce2ed54d0eafbb3f6d73ff63173a1d42bb7687016ac96503b0936388b923f4fc",
+      "bytes": 637803
+    },
+    {
+      "path": "verify_proposal_builders_commit_r1.py",
+      "sha256": "4c99e3690ef5d950293278f557cdafc0d0e3ac0498985f8bf619cfe5f1a5fa6a",
+      "bytes": 3164
+    },
+    {
+      "path": "proposal-builders-committed-verification-r1.json",
+      "sha256": "2c756a8b6d651cc6eff0b43f14862be1e0136f374c19e4b40112d9d3b6369f75",
+      "bytes": 610689
+    }
+  ],
+  "verified_archived_files": 3343,
+  "catalogues_read": 182,
+  "descriptor_records": 3827,
+  "scope": "Byte-identical Git/disk/staging and original catalogue readers using archived source resolvers; not historical environment replay or scientific efficacy"
+}
