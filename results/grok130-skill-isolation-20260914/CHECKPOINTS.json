@@ -1,0 +1,107 @@
+[
+  {
+    "run": "grok130-skill-isolation-r1",
+    "check": {
+      "source_commit": "5407b5bd77d9d53d1cba4e792d62002d6d3e05a7",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_grok130_skill_isolation.py",
+        "tests/test_grok130_deployment.py",
+        "tests/test_grok_acp_transport.py",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-skill-isolation-r1\\pytest",
+        "-o",
+        "cache_dir=E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-skill-isolation-r1\\cache",
+        "--junitxml",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-skill-isolation-r1\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 78.46041178703308,
+      "source_hash_count": 692,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "pytest_counts": {
+      "tests": "105",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "exact_tested_source_zip_sha256": "d565dd327d195960d7d51951e672a1cfc65cbb573126dcc11ea445ee83a9420a"
+  },
+  {
+    "run": "grok130-skill-isolation-r2",
+    "check": {
+      "source_commit": "cad553b1b4bda06def42967a2e3e2b89611c34be",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_grok130_skill_isolation.py::test_config_link_is_rejected_before_reading_its_target",
+        "tests/test_grok130_skill_isolation.py::test_fresh_context_check_cannot_push_main_dispatch_past_deadline",
+        "--basetemp",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-skill-isolation-r2\\pytest",
+        "-o",
+        "cache_dir=E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-skill-isolation-r2\\cache",
+        "--junitxml",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-skill-isolation-r2\\pytest.xml"
+      ],
+      "exit_code": 1,
+      "seconds": 0.9702131748199463,
+      "source_hash_count": 692,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "pytest_counts": {
+      "tests": "2",
+      "failures": "2",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "exact_tested_source_zip_sha256": "89294728919cf589402e23cca51e64ee8f9a3b2b6f34d647816f03afd8c1dc42"
+  },
+  {
+    "run": "grok130-skill-isolation-r3",
+    "check": {
+      "source_commit": "b3b62c18e6cad0bc3b805f2d3d27bc5cc93abf06",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_grok130_skill_isolation.py",
+        "tests/test_grok130_deployment.py",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-skill-isolation-r3\\pytest",
+        "-o",
+        "cache_dir=E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-skill-isolation-r3\\cache",
+        "--junitxml",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-skill-isolation-r3\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 37.917020320892334,
+      "source_hash_count": 692,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "pytest_counts": {
+      "tests": "63",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "exact_tested_source_zip_sha256": "deb69a58d71d924d44f66aafd35d6584f68ac1d998ca7763d53a6d971e84a995"
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "schema": "grok130-skill-isolation-evidence-v1",
+  "base": "ddbc09c",
+  "source_chain": [
+    "5407b5bd77d9d53d1cba4e792d62002d6d3e05a7",
+    "cad553b1b4bda06def42967a2e3e2b89611c34be",
+    "b3b62c18e6cad0bc3b805f2d3d27bc5cc93abf06"
+  ],
+  "scope": "Explicit Windows 1.0.30 readiness deployment v2 only; native_launch and ACP stream synthetic integration.",
+  "runner_scope_correction": "Historical runner scope string ordinary TRAIN is not this checkpoint scope. Suite args and this summary apply.",
+  "checkpoints": {
+    "r1": "105/105 initial integration and legacy regression",
+    "r2": "2/2 regression failures retained: config-link target read and MAIN request written after expired deadline",
+    "r3": "63/63 final source; all 24 isolated-v2 cases, old 1.0.30 entry/material/diagnostic compatibility and label isolation"
+  },
+  "raw_members": 1349,
+  "all_original_zip_manifest_bytes_equal": true,
+  "exact_source_zips_match_all_692_frozen_disk_hashes_per_run": true,
+  "original_real_r2": "Untouched; MAIN and TITLE remain unknown. Its private capture is not copied into this synthetic archive.",
+  "real_model_or_api_calls": 0,
+  "validation_calls": 0,
+  "synthetic_child_models_public_prefix_filter_only": true,
+  "binary_public_source_equivalence_verified": false,
+  "real_effective_model_context_inspected": false,
+  "legacy_1013_and_default_contract_unchanged": true,
+  "material_and_diagnostic_v2_readiness_admission": "explicitly rejected; unsupported reader schema is not disguised",
+  "remaining": [
+    "Root independent review",
+    "Separately authorized frozen actual readiness probe, if root elects to proceed",
+    "Diagnostic/material portability of this new isolated context contract is outside this delivery"
+  ]
+}
