@@ -46,6 +46,25 @@ r2 timeout. No actual complete C5 selection, deployment or VAL acceptance is
 claimed. All original questions and singleton/combination experiments remain
 in scope, including combinations whose singletons are negative.
 
+The C5 selected-bundle registration adapter is also integrated. Registration
+authenticates the complete original TRAIN run, freezes the actual selected
+snapshot and exclusively writes its nine component digests, source, TRAIN
+history/selection provenance and component-to-bundle edges. Verification reads
+exact original bytes without writing and reauthenticates the run before comparing
+the complete registration. A bare record does not authenticate a run or grant
+validation, scientific or deployment authority. This independent registration
+does not yet connect general cross-subject edges into ArtifactCatalogue.
+
+Latest isolated source `8d1bad9` passed 34/34 focused checks in 121.546 seconds
+with 672 source files unchanged, including real snapshot projection across a
+controlled authentication boundary, rehashed semantic substitution, exact-byte
+rejection, exclusive creation and read-only verification. The complete-controller
+test now calls register and verify through the actual authentication entry; that
+full 930-synthetic-MAIN execution is still unclosed. Exact r1 and r2 originals are
+retained at `results/modular-engineering-20260914/c5-artifact-registration-r1/`.
+Root compared the tested Python sources with the integrated files and records
+any Git newline conversion separately from exact byte equality.
+
 ## Module artifact provenance and closed Q6 cases (2026-09-14, earlier update)
 
 The [module artifact provenance contract](MODULE-ARTIFACT-PROVENANCE.md) now
