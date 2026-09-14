@@ -166,7 +166,14 @@ def test_actual_complete_22_cell_composition(grid):
             assert len(out['auxiliary'])==2 and out['state'] and len(out['review_checks'])==2 and len(out['directions'])==3
             assert out['choice']['job_id']==r.phase.data()['selection']['selected'][-1]
             assert not r.phase.data()['remaining_leases'] and not r.phase.data()['residual_containers']
-            if 'M8' in r.cell.runtime_arm.data()['enabled']:assert r.phase.data()['overlap_ns']>0
+            phase=r.phase.data();scheduled='M8' in r.cell.runtime_arm.data()['enabled']
+            assert phase['peak_dispatches']==(2 if scheduled else 1)
+            assert phase['peak_leases']==(2 if scheduled else 0)
+            assert phase['actual_docker_attempts']==2
+            # Short tasks can have zero overlap under host scheduling. Preserve
+            # the observed interval without turning it into a throughput claim.
+            assert 0<=phase['overlap_ns']<=phase['wall_ns']
+            if not scheduled:assert phase['overlap_ns']==0
         enabled=set(r.cell.runtime_arm.data()['enabled'])
         events=[json.loads(x) for x in (r.root/'runtime/trace.jsonl').read_bytes().splitlines()]
         reviews=[e['data']['request']['module_context'] for e in events if e['stage']=='model_request' and e['data']['request']['slot'].startswith('review_')]

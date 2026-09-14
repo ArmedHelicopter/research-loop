@@ -218,24 +218,24 @@ def test_atomic_claims_from_independent_connections_never_duplicate(tmp_path):
 
 def test_ready_capacity_is_persisted_before_fast_worker_dispatch(grid,tmp_path,monkeypatch):
     """Slow lease persistence must not consume the independent worker window."""
-    import threading
+    from concurrent.futures import ThreadPoolExecutor
     from research_loop.modular.modules.scheduling import FifoScheduler
-    supplied=phase_args(grid,tmp_path,'normal');entered=threading.Event();claims=[]
-    original_claim=FifoScheduler.claim_next;original_execute=supplied['broker'].execute
+    supplied=phase_args(grid,tmp_path,'normal');claims=[];submissions=[]
+    original_claim=FifoScheduler.claim_next;original_submit=ThreadPoolExecutor.submit
     def claim(scheduler,*args,**kwargs):
-        if len(claims)==1:
-            # A bounded pause at the persistence seam exposes an early worker
-            # without assuming a particular Docker startup duration.
-            assert not entered.wait(.1), 'worker dispatched before ready capacity was reserved'
         lease=original_claim(scheduler,*args,**kwargs)
         if lease is not None:claims.append(lease.run_id)
         return lease
-    def execute(request):
-        entered.set();return original_execute(request)
+    def submit(pool,*args,**kwargs):
+        # This checks the dispatch boundary itself, regardless of when the OS
+        # happens to run a submitted worker. Both leases are already durable.
+        assert len(claims)==2, 'worker dispatched before ready capacity was reserved'
+        submissions.append(tuple(claims))
+        return original_submit(pool,*args,**kwargs)
     monkeypatch.setattr(FifoScheduler,'claim_next',claim)
-    monkeypatch.setattr(supplied['broker'],'execute',execute)
+    monkeypatch.setattr(ThreadPoolExecutor,'submit',submit)
     report=run_phase(**supplied)
-    assert len(claims)==2 and entered.is_set()
+    assert len(claims)==len(submissions)==2
     assert report.data()['status']=='succeeded' and report.data()['peak_leases']==2
     assert verify_phase(**{k:v for k,v in supplied.items() if k!='broker'})==report
 

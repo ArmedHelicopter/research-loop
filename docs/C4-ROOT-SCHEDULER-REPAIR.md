@@ -15,9 +15,19 @@ the existing durable scheduler. A dependency or resource conflict admits one
 worker, then the next scheduling round follows its completion. Timing values
 continue to come from original events; no minimum overlap is fabricated.
 
-A regression check pauses the second lease's persistence seam and verifies
-that productive work has not yet started. It then executes both real restricted
-Docker jobs and replays their actual phase records. The integration check also
+A regression check observes the pool submission boundary and requires both
+independent leases to be durable before either worker is submitted. It then
+executes both real restricted Docker jobs and replays their actual phase records.
+The integration check also
 retains dependency, resource-conflict, timeout-cleanup and completion-order
 cases. These checks concern engineering behavior; scientific effect and
 hardware throughput must still be measured in the frozen TRAIN experiments.
+
+Source `3e750beacc21b2e717711eb4410dc1e4398062a7` passed the 26-test root rerun,
+including all 22 C4 targets, without changing its 600 source/document hashes.
+Independent review subsequently removed a timing assumption from the regression
+test and corrected the C4 test's universal positive-overlap assertion. A two-job
+batch does not guarantee a positive observed interval under every host schedule.
+The C4 check now verifies dispatch capacity, charged attempts, interval bounds
+and serial behavior when M8 is absent, matching the existing pair protocol.
+The original failure remains evidence; no scientific threshold was changed.
