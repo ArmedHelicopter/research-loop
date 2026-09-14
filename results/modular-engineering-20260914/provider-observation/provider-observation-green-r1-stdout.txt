@@ -1,0 +1,40 @@
+.F.................................................................      [100%]
+================================== FAILURES ===================================
+_ test_phase_verification_reads_each_original_once_but_never_reuses_old_pass[original-codex] _
+
+tmp_path = WindowsPath('C:/codex-modular-checks/provider-observation-green-r1/test_phase_verification_reads_1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000142FC9717F0>
+kind = 'codex', fault = 'original'
+
+    @pytest.mark.parametrize('kind', ['grok', 'codex'])
+    @pytest.mark.parametrize('fault', ['original', 'configuration'])
+    def test_phase_verification_reads_each_original_once_but_never_reuses_old_pass(tmp_path, monkeypatch, kind, fault):
+        backend, calls = setup(kind, tmp_path/'provider', monkeypatch)
+        provider = core.wrap_train_provider(backend)
+        session = PhaseProviderSession(provider, tmp_path/'scopes.json')
+        for scope_id in ('history', 'target'):
+            with session.scope(scope_id) as model:
+                model(REQUEST)
+        assert len(calls) == 2
+        original_verify = core._verify_call
+        replayed = []
+        def verify_each_original(*args, **kwargs):
+            replayed.append(args[1]['id'])
+            return original_verify(*args, **kwargs)
+        monkeypatch.setattr(core, '_verify_call', verify_each_original)
+        session.verify()
+        assert replayed == [1, 2], 'one phase check should not replay the same native prefix twice'
+        replayed.clear()
+        session.verify()
+        assert replayed == [1, 2], 'a later check must make a new original pass'
+        if fault == 'original':
+>           first = backend.calls_root/'0001-m4_plan'/('response.private.json' if kind == 'grok' else 'output.json')
+                    ^^^^^^^^^^^^^^^^^^
+E           AttributeError: 'CodexModelPort' object has no attribute 'calls_root'. Did you mean: 'call_root'?
+
+tests\test_provider_observation_pass.py:32: AttributeError
+- generated xml file: C:\codex-modular-checks\provider-observation-green-r1.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_provider_observation_pass.py::test_phase_verification_reads_each_original_once_but_never_reuses_old_pass[original-codex]
+{"commit": "78481b6df9f162ea6b282f269fe8d0a832d36a7b", "source_unchanged": true, "source_count": 618, "exit_code": 1, "wall_seconds": 18.359000000011292, "new_paid_calls": 0, "report_sha256": "a11d993b9b7db240769e65c65146b5113b2444ad5a6402adc5ff22692c34f00a", "junit": {"tests": 67, "failures": 1, "errors": 0, "skipped": 0}}
+{"source_archive_matches_frozen_input": true, "source_files": 618, "source_archive_sha256": "bd7856c9c49c9e02d09cfd6699f0e2fb9aa5458c270c785a3231427040166c9b"}

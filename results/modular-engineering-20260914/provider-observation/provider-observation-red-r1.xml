@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="2.108" timestamp="2026-09-14T09:46:08.974426+08:00" hostname="SC-202507131830"><testcase classname="tests.test_provider_observation_pass" name="test_phase_verification_reads_each_original_once_but_never_reuses_old_pass[original-grok]" time="0.461"><failure message="AssertionError: one phase check should not replay the same native prefix twice&#10;assert [1, 2, 1, 2] == [1, 2]&#10;  &#10;  Left contains 2 more items, first extra item: 1&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/codex-modular-checks/provider-observation-red-r1/test_phase_verification_reads_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002982C63CE90&gt;
+kind = 'grok', fault = 'original'
+
+    @pytest.mark.parametrize('kind', ['grok', 'codex'])
+    @pytest.mark.parametrize('fault', ['original', 'configuration'])
+    def test_phase_verification_reads_each_original_once_but_never_reuses_old_pass(tmp_path, monkeypatch, kind, fault):
+        backend, calls = setup(kind, tmp_path/'provider', monkeypatch)
+        provider = core.wrap_train_provider(backend)
+        session = PhaseProviderSession(provider, tmp_path/'scopes.json')
+        for scope_id in ('history', 'target'):
+            with session.scope(scope_id) as model:
+                model(REQUEST)
+        assert len(calls) == 2
+        original_verify = core._verify_call
+        replayed = []
+        def verify_each_original(*args, **kwargs):
+            replayed.append(args[1]['id'])
+            return original_verify(*args, **kwargs)
+        monkeypatch.setattr(core, '_verify_call', verify_each_original)
+        session.verify()
+&gt;       assert replayed == [1, 2], 'one phase check should not replay the same native prefix twice'
+E       AssertionError: one phase check should not replay the same native prefix twice
+E       assert [1, 2, 1, 2] == [1, 2]
+E         
+E         Left contains 2 more items, first extra item: 1
+E         Use -v to get more diff
+
+tests\test_provider_observation_pass.py:27: AssertionError</failure></testcase><testcase classname="tests.test_provider_observation_pass" name="test_phase_verification_reads_each_original_once_but_never_reuses_old_pass[original-codex]" time="0.346"><failure message="AssertionError: one phase check should not replay the same native prefix twice&#10;assert [1, 2, 1, 2] == [1, 2]&#10;  &#10;  Left contains 2 more items, first extra item: 1&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/codex-modular-checks/provider-observation-red-r1/test_phase_verification_reads_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002982C8C6180&gt;
+kind = 'codex', fault = 'original'
+
+    @pytest.mark.parametrize('kind', ['grok', 'codex'])
+    @pytest.mark.parametrize('fault', ['original', 'configuration'])
+    def test_phase_verification_reads_each_original_once_but_never_reuses_old_pass(tmp_path, monkeypatch, kind, fault):
+        backend, calls = setup(kind, tmp_path/'provider', monkeypatch)
+        provider = core.wrap_train_provider(backend)
+        session = PhaseProviderSession(provider, tmp_path/'scopes.json')
+        for scope_id in ('history', 'target'):
+            with session.scope(scope_id) as model:
+                model(REQUEST)
+        assert len(calls) == 2
+        original_verify = core._verify_call
+        replayed = []
+        def verify_each_original(*args, **kwargs):
+            replayed.append(args[1]['id'])
+            return original_verify(*args, **kwargs)
+        monkeypatch.setattr(core, '_verify_call', verify_each_original)
+        session.verify()
+&gt;       assert replayed == [1, 2], 'one phase check should not replay the same native prefix twice'
+E       AssertionError: one phase check should not replay the same native prefix twice
+E       assert [1, 2, 1, 2] == [1, 2]
+E         
+E         Left contains 2 more items, first extra item: 1
+E         Use -v to get more diff
+
+tests\test_provider_observation_pass.py:27: AssertionError</failure></testcase><testcase classname="tests.test_provider_observation_pass" name="test_phase_verification_reads_each_original_once_but_never_reuses_old_pass[configuration-grok]" time="0.448"><failure message="AssertionError: one phase check should not replay the same native prefix twice&#10;assert [1, 2, 1, 2] == [1, 2]&#10;  &#10;  Left contains 2 more items, first extra item: 1&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/codex-modular-checks/provider-observation-red-r1/test_phase_verification_reads_2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002982C8D5970&gt;
+kind = 'grok', fault = 'configuration'
+
+    @pytest.mark.parametrize('kind', ['grok', 'codex'])
+    @pytest.mark.parametrize('fault', ['original', 'configuration'])
+    def test_phase_verification_reads_each_original_once_but_never_reuses_old_pass(tmp_path, monkeypatch, kind, fault):
+        backend, calls = setup(kind, tmp_path/'provider', monkeypatch)
+        provider = core.wrap_train_provider(backend)
+        session = PhaseProviderSession(provider, tmp_path/'scopes.json')
+        for scope_id in ('history', 'target'):
+            with session.scope(scope_id) as model:
+                model(REQUEST)
+        assert len(calls) == 2
+        original_verify = core._verify_call
+        replayed = []
+        def verify_each_original(*args, **kwargs):
+            replayed.append(args[1]['id'])
+            return original_verify(*args, **kwargs)
+        monkeypatch.setattr(core, '_verify_call', verify_each_original)
+        session.verify()
+&gt;       assert replayed == [1, 2], 'one phase check should not replay the same native prefix twice'
+E       AssertionError: one phase check should not replay the same native prefix twice
+E       assert [1, 2, 1, 2] == [1, 2]
+E         
+E         Left contains 2 more items, first extra item: 1
+E         Use -v to get more diff
+
+tests\test_provider_observation_pass.py:27: AssertionError</failure></testcase><testcase classname="tests.test_provider_observation_pass" name="test_phase_verification_reads_each_original_once_but_never_reuses_old_pass[configuration-codex]" time="0.327"><failure message="AssertionError: one phase check should not replay the same native prefix twice&#10;assert [1, 2, 1, 2] == [1, 2]&#10;  &#10;  Left contains 2 more items, first extra item: 1&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/codex-modular-checks/provider-observation-red-r1/test_phase_verification_reads_3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002982C8D6B40&gt;
+kind = 'codex', fault = 'configuration'
+
+    @pytest.mark.parametrize('kind', ['grok', 'codex'])
+    @pytest.mark.parametrize('fault', ['original', 'configuration'])
+    def test_phase_verification_reads_each_original_once_but_never_reuses_old_pass(tmp_path, monkeypatch, kind, fault):
+        backend, calls = setup(kind, tmp_path/'provider', monkeypatch)
+        provider = core.wrap_train_provider(backend)
+        session = PhaseProviderSession(provider, tmp_path/'scopes.json')
+        for scope_id in ('history', 'target'):
+            with session.scope(scope_id) as model:
+                model(REQUEST)
+        assert len(calls) == 2
+        original_verify = core._verify_call
+        replayed = []
+        def verify_each_original(*args, **kwargs):
+            replayed.append(args[1]['id'])
+            return original_verify(*args, **kwargs)
+        monkeypatch.setattr(core, '_verify_call', verify_each_original)
+        session.verify()
+&gt;       assert replayed == [1, 2], 'one phase check should not replay the same native prefix twice'
+E       AssertionError: one phase check should not replay the same native prefix twice
+E       assert [1, 2, 1, 2] == [1, 2]
+E         
+E         Left contains 2 more items, first extra item: 1
+E         Use -v to get more diff
+
+tests\test_provider_observation_pass.py:27: AssertionError</failure></testcase></testsuite></testsuites>

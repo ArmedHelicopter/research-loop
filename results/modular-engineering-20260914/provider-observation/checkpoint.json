@@ -1,0 +1,54 @@
+{
+  "integration_head": "8c469b0c8a2d4171354f79b8f17e4b9eb00703b7",
+  "checks": [
+    {
+      "commit": "33979c7e23450d80cc66a01ef7943ea1f9199305",
+      "source_unchanged": true,
+      "source_count": 618,
+      "exit_code": 1,
+      "wall_seconds": 2.7039999999979045,
+      "new_paid_calls": 0,
+      "report_sha256": "02b988c37fbc4465250c40ccff2f705516a287d5597632de919a0547ecdf5da4",
+      "junit": {
+        "tests": 4,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "commit": "78481b6df9f162ea6b282f269fe8d0a832d36a7b",
+      "source_unchanged": true,
+      "source_count": 618,
+      "exit_code": 1,
+      "wall_seconds": 18.359000000011292,
+      "new_paid_calls": 0,
+      "report_sha256": "a11d993b9b7db240769e65c65146b5113b2444ad5a6402adc5ff22692c34f00a",
+      "junit": {
+        "tests": 67,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "commit": "0c5c63e7ef5057693b10365b93439fd12c5dc7d2",
+      "source_unchanged": true,
+      "source_count": 618,
+      "exit_code": 0,
+      "wall_seconds": 16.577999999994063,
+      "new_paid_calls": 0,
+      "report_sha256": "928ce45d79b858876863bde44ff6fe375c709b4d7cf1addcfbd86103f53081ff",
+      "junit": {
+        "tests": 67,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "new_paid_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false,
+  "independent_review": "build_provider_phase reviewed production 78481b6; no concrete correctness issue found"
+}
