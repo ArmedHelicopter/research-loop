@@ -33,6 +33,29 @@ def _path(value):
     return value
 
 
+def validate_joint_activation(body, active, bundle, consumed_acceptances):
+    fields = {'schema','authority','stage','allocation_stage','target_bundle_digest','expected_active_digest',
+              'selection_digest','panel_digest','acceptance_digest','decision'}
+    if set(body) != fields or body['stage'] != 'C5' or body['allocation_stage'] != 'V_final' or body['decision'] != 'approved':
+        raise ContractError('joint activation requires the independent C5 approval')
+    for name in ('selection_digest','panel_digest','acceptance_digest'): _hash(body[name], name)
+    if body['acceptance_digest'] in consumed_acceptances:
+        raise ContractError('independent acceptance receipt was already consumed')
+    if (active is None or body['target_bundle_digest'] != bundle.digest
+            or body['expected_active_digest'] != active.digest or bundle.parent_digest != active.digest):
+        raise ContractError('joint approval is stale or targets a different bundle')
+    if any(bundle.record.data()[name] != active.record.data()[name] for name in ('baseline_digest', 'p0_digest')):
+        raise ContractError('joint deployment cannot replace the frozen baseline or P0 contract')
+
+
+def validate_joint_rollback(body, active):
+    if (set(body) != {'schema','authority','expected_active_digest','target_bundle_digest','reason'}
+            or not isinstance(body['reason'], str) or not body['reason'].strip()):
+        raise ContractError('joint rollback requires an exact independent authorization')
+    if active is None or body['expected_active_digest'] != active.digest or body['target_bundle_digest'] != active.parent_digest:
+        raise ContractError('joint rollback must restore the exact prior bundle')
+
+
 @dataclass(frozen=True)
 class JointComponentVersion:
     record: FrozenRecord
@@ -147,11 +170,15 @@ class JointDeploymentStore:
     snapshot for the task; fetching components separately is not this contract.
     No external per-component service can be atomically changed by this store.
     """
-    def __init__(self, path: Path, *, initial: JointDeploymentBundle, acceptance_keys, rollback_keys, source_roots):
+    def __init__(self, path: Path, *, initial: JointDeploymentBundle, acceptance_keys, rollback_keys, source_roots,
+                 task_domain='train', artifact_checkpoint=None):
         if type(initial) is not JointDeploymentBundle:
             raise ContractError('joint store requires a typed bootstrap bundle')
         self._acceptance_keys, self._rollback_keys = dict(acceptance_keys), dict(rollback_keys)
         self._roots = {k: Path(v).resolve() for k, v in source_roots.items()}
+        self.task_domain = task_domain
+        self._staging_attempt = None
+        self.last_operation_receipt = None
         self._db = sqlite3.connect(str(path), isolation_level=None, timeout=10)
         self._db.execute('PRAGMA foreign_keys=ON')
         self._db.execute('PRAGMA synchronous=FULL')
@@ -164,20 +191,63 @@ class JointDeploymentStore:
             CREATE TABLE IF NOT EXISTS consumed_acceptances (digest TEXT PRIMARY KEY,
                 grant_digest TEXT NOT NULL UNIQUE REFERENCES used_grants(digest));
         ''')
-        with self._transaction():
-            # Preserve one-use acceptance across reopening an earlier store.
-            # A different signed envelope must not reset its upstream receipt.
-            for grant_digest, encoded in self._db.execute('SELECT digest,record FROM used_grants').fetchall():
-                grant = FrozenRecord(encoded)
-                if grant.content_hash != grant_digest: raise ContractError('stored deployment grant drift')
-                if grant.data().get('body', {}).get('schema') == 'c5-joint-deployment-grant-v1':
-                    body = verify_signed(grant, self._acceptance_keys, schema='c5-joint-deployment-grant-v1')
-                    self._consume_acceptance(_hash(body['acceptance_digest'], 'acceptance receipt'), grant_digest)
+        try:
+            if task_domain not in {'train', 'validation'}:
+                raise ContractError('joint task domain must be train or validation')
+            if self._db.execute("SELECT 1 FROM sqlite_master WHERE name='deployment_audit_meta'").fetchone():
+                row = self._db.execute('SELECT record FROM deployment_audit_meta WHERE id=1').fetchone()
+                if row is not None and FrozenRecord(row[0]).data().get('domain') != task_domain:
+                    raise ContractError('deployment artifact store domain differs')
+            with self._transaction():
+                # Preserve one-use acceptance when reconstructing this derived
+                # table in an earlier store; no past execution is invented.
+                for grant_digest, encoded in self._db.execute('SELECT digest,record FROM used_grants').fetchall():
+                    grant = FrozenRecord(encoded)
+                    if grant.content_hash != grant_digest: raise ContractError('stored deployment grant drift')
+                    if grant.data().get('body', {}).get('schema') == 'c5-joint-deployment-grant-v1':
+                        body = verify_signed(grant, self._acceptance_keys, schema='c5-joint-deployment-grant-v1')
+                        self._consume_acceptance(_hash(body['acceptance_digest'], 'acceptance receipt'), grant_digest)
+            from research_loop.modular.joint_deployment_artifacts import JointDeploymentArtifacts
+            self._artifacts = JointDeploymentArtifacts(self, task_domain, artifact_checkpoint)
             if self._db.execute('SELECT digest FROM active WHERE id=1').fetchone() is None:
-                initial.verify_sources(self._roots)
-                self._stage_bundle(initial)
-                self._db.execute('INSERT INTO active VALUES(1,?)', (initial.digest,))
-            self._read_active().verify_sources(self._roots)
+                with self._transaction():
+                    attempt = self._artifacts.begin('bootstrap', initial, producer=self._stage_bundle)
+                self._artifacts.anchor = attempt['checkpoint']
+                try:
+                    with self._transaction():
+                        self._staging_attempt = attempt
+                        initial.verify_sources(self._roots)
+                        self._stage_bundle(initial)
+                        self._db.execute('INSERT INTO active VALUES(1,?)', (initial.digest,))
+                        anchor = self._artifacts.finish(attempt, initial.acknowledgement())
+                    self._remember(anchor)
+                except BaseException as error:
+                    self._failed(attempt, error)
+                    raise
+                finally:
+                    self._staging_attempt = None
+            self.active()
+        except BaseException:
+            self._db.close()
+            raise
+
+    def _remember(self, anchor):
+        self._artifacts.anchor = anchor
+        self.last_operation_receipt = anchor
+
+    def _failed(self, attempt, error):
+        try:
+            self._remember(self._artifacts.fail(attempt, error))
+        except BaseException as audit_error:
+            # The durable started record remains incomplete. Never replace the
+            # original failure with a made-up completed audit record.
+            error.add_note('Deployment failure audit remains incomplete: ' + type(audit_error).__name__)
+
+    def artifact_checkpoint(self):
+        with self._transaction():
+            anchor, _, _ = self._artifacts.verify()
+        self._artifacts.anchor = anchor
+        return anchor
 
     @contextmanager
     def _transaction(self):
@@ -198,7 +268,13 @@ class JointDeploymentStore:
             if self._read_bundle(bundle.digest) != bundle: raise ContractError('persisted joint bundle drift')
             return
         self._db.execute('INSERT INTO bundles VALUES(?,?)', (bundle.digest, bundle.record.encoded))
-        for name, component in bundle.components().items(): self._stage_component(bundle, name, component)
+        for name, component in bundle.components().items():
+            writer = self._stage_component
+            try:
+                writer(bundle, name, component)
+            finally:
+                if self._staging_attempt is not None:
+                    self._artifacts.observe(self._staging_attempt, bundle, name, writer)
 
     def _read_bundle(self, digest):
         row = self._db.execute('SELECT record FROM bundles WHERE digest=?', (digest,)).fetchone()
@@ -216,8 +292,10 @@ class JointDeploymentStore:
         # A read transaction pins both pointer and component rows across writers.
         self._db.execute('BEGIN')
         try:
+            anchor, _, _ = self._artifacts.verify()
             bundle = self._read_active()
             bundle.verify_sources(self._roots)
+            self._artifacts.anchor = anchor
             return bundle
         finally:
             self._db.execute('ROLLBACK')
@@ -238,53 +316,78 @@ class JointDeploymentStore:
 
     def activate(self, bundle: JointDeploymentBundle, grant: FrozenRecord):
         if type(bundle) is not JointDeploymentBundle: raise ContractError('joint activation requires an exact bundle')
+        if type(grant) is not FrozenRecord: raise ContractError('joint grant requires an exact signed record')
         with self._transaction():
-            b = self._grant(grant, 'c5-joint-deployment-grant-v1', self._acceptance_keys)
-            fields = {'schema','authority','stage','allocation_stage','target_bundle_digest','expected_active_digest',
-                      'selection_digest','panel_digest','acceptance_digest','decision'}
-            if set(b) != fields or b['stage'] != 'C5' or b['allocation_stage'] != 'V_final' or b['decision'] != 'approved':
-                raise ContractError('joint activation requires the independent C5 approval')
-            for name in ('selection_digest','panel_digest','acceptance_digest'): _hash(b[name], name)
-            if self._db.execute('SELECT 1 FROM consumed_acceptances WHERE digest=?', (b['acceptance_digest'],)).fetchone():
-                raise ContractError('independent acceptance receipt was already consumed')
-            active = self._read_active()
-            if (b['target_bundle_digest'] != bundle.digest or b['expected_active_digest'] != active.digest
-                    or bundle.parent_digest != active.digest):
-                raise ContractError('joint approval is stale or targets a different bundle')
-            if bundle.record.data()['baseline_digest'] != active.record.data()['baseline_digest'] or bundle.record.data()['p0_digest'] != active.record.data()['p0_digest']:
-                raise ContractError('joint deployment cannot replace the frozen baseline or P0 contract')
-            active.verify_sources(self._roots); bundle.verify_sources(self._roots)
-            self._stage_bundle(bundle)
-            # Re-read every staged component before publishing anything.
-            if self._read_bundle(bundle.digest).acknowledgement() != bundle.acknowledgement():
-                raise ContractError('partial joint deployment acknowledgement')
-            bundle.verify_sources(self._roots)
-            self._db.execute('UPDATE active SET digest=? WHERE id=1', (bundle.digest,))
-            self._db.execute('INSERT INTO used_grants VALUES(?,?)', (grant.content_hash, grant.encoded))
-            self._consume_acceptance(b['acceptance_digest'], grant.content_hash)
+            attempt = self._artifacts.begin('activate', bundle, grant=grant, producer=self.activate)
+        self._artifacts.anchor = attempt['checkpoint']
+        try:
+            with self._transaction():
+                self._staging_attempt = attempt
+                b = self._grant(grant, 'c5-joint-deployment-grant-v1', self._acceptance_keys)
+                active = self._read_active()
+                consumed = {r[0] for r in self._db.execute('SELECT digest FROM consumed_acceptances')}
+                validate_joint_activation(b, active, bundle, consumed)
+                active.verify_sources(self._roots); bundle.verify_sources(self._roots)
+                self._stage_bundle(bundle)
+                if self._read_bundle(bundle.digest).acknowledgement() != bundle.acknowledgement():
+                    raise ContractError('partial joint deployment acknowledgement')
+                bundle.verify_sources(self._roots)
+                self._db.execute('UPDATE active SET digest=? WHERE id=1', (bundle.digest,))
+                self._db.execute('INSERT INTO used_grants VALUES(?,?)', (grant.content_hash, grant.encoded))
+                self._consume_acceptance(b['acceptance_digest'], grant.content_hash)
+                anchor = self._artifacts.finish(attempt, bundle.acknowledgement())
+            self._remember(anchor)
+        except BaseException as error:
+            self._failed(attempt, error)
+            raise
+        finally:
+            self._staging_attempt = None
         return bundle.acknowledgement()
 
     def rollback(self, grant):
+        if type(grant) is not FrozenRecord: raise ContractError('joint grant requires an exact signed record')
         with self._transaction():
-            b = self._grant(grant, 'c5-joint-rollback-grant-v1', self._rollback_keys)
-            if (set(b) != {'schema','authority','expected_active_digest','target_bundle_digest','reason'}
-                    or not isinstance(b['reason'], str) or not b['reason'].strip()):
-                raise ContractError('joint rollback requires an exact independent authorization')
             active = self._read_active()
-            if b['expected_active_digest'] != active.digest or b['target_bundle_digest'] != active.parent_digest:
-                raise ContractError('joint rollback must restore the exact prior bundle')
-            previous = self._read_bundle(active.parent_digest)
-            previous.verify_sources(self._roots)
-            self._db.execute('UPDATE active SET digest=? WHERE id=1', (previous.digest,))
-            self._db.execute('INSERT INTO used_grants VALUES(?,?)', (grant.content_hash, grant.encoded))
+            proposed = self._read_bundle(active.parent_digest) if active.parent_digest else active
+            attempt = self._artifacts.begin('rollback', proposed, grant=grant, producer=self.rollback)
+        self._artifacts.anchor = attempt['checkpoint']
+        try:
+            with self._transaction():
+                b = self._grant(grant, 'c5-joint-rollback-grant-v1', self._rollback_keys)
+                active = self._read_active()
+                validate_joint_rollback(b, active)
+                previous = self._read_bundle(active.parent_digest)
+                previous.verify_sources(self._roots)
+                self._db.execute('UPDATE active SET digest=? WHERE id=1', (previous.digest,))
+                self._db.execute('INSERT INTO used_grants VALUES(?,?)', (grant.content_hash, grant.encoded))
+                anchor = self._artifacts.finish(attempt, previous.acknowledgement())
+            self._remember(anchor)
+        except BaseException as error:
+            self._failed(attempt, error)
+            raise
         return previous.acknowledgement()
 
     def run_task(self, identity: DataIdentity, executor):
         if type(identity) is not DataIdentity: raise ContractError('joint task needs a typed identity')
-        bundle = self.active()
-        result = executor(identity, bundle)
-        bundle.verify_sources(self._roots)
-        return FrozenRecord.from_dict({'schema':'joint-task-snapshot-receipt-v1', 'identity':identity.data(),
-            'snapshot':bundle.acknowledgement().data(), 'result':result})
+        if identity.domain != self.task_domain:
+            raise ContractError('joint task domain differs from its artifact store')
+        with self._transaction():
+            bundle = self._read_active()
+            bundle.verify_sources(self._roots)
+            attempt = self._artifacts.begin('task', bundle, identity=identity, producer=executor)
+        self._artifacts.anchor = attempt['checkpoint']
+        try:
+            result = executor(identity, bundle)
+            receipt = FrozenRecord.from_dict({'schema':'joint-task-snapshot-receipt-v1', 'identity':identity.data(),
+                'snapshot':bundle.acknowledgement().data(), 'result':result})
+            attempt['result'] = receipt.data()
+            with self._transaction():
+                bundle.verify_sources(self._roots)
+                anchor = self._artifacts.finish(attempt, receipt)
+            self._remember(anchor)
+            return receipt
+        except BaseException as error:
+            self._failed(attempt, error)
+            raise
 
     def close(self): self._db.close()
