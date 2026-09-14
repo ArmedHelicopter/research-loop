@@ -84,7 +84,7 @@ def test_real_native_entry_bundle_filter_and_exact_main_binding(tmp_path, monkey
     ('early_reload','internal_reload_session_binding'),('foreign_session','session_binding'),
     ('extra_command','isolated_command_inventory'),('tools','runtime_tools_not_empty'),
     ('plugin_arrival','skill_isolation_unexpected_discovery_source'),
-    ('managed_arrival','skill_isolation_unexpected_discovery_source'),('config_drift','frozen_file_changed'),
+    ('managed_arrival','skill_isolation_unexpected_discovery_source'),('config_drift','skill_isolation_config_changed'),
     ('no_main_result','timeout')])
 def test_native_stream_keeps_closed_protocol_and_context(tmp_path, monkeypatch, mode, fault):
     kwargs, _ = prepare(tmp_path/'run', monkeypatch, mode)

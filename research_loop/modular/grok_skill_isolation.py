@@ -69,8 +69,6 @@ def observe_context(record):
         # lexists rejects broken links too; never follows a discovery link.
         _require(not os.path.lexists(name), 'unexpected_discovery_source')
     _require(not any(roots[0].iterdir()), 'cwd_changed')
-    config = roots[1] / 'config.toml'
-    _require(config.read_text(encoding='utf-8') == isolated_config(*roots), 'config_changed')
     count = 0
     for root in roots:
         for directory, dirs, files in os.walk(root, followlinks=False):
@@ -80,6 +78,8 @@ def observe_context(record):
                 path = Path(directory) / name
                 _require(not (path.lstat().st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT),
                          'content_reparse_point')
+    config = roots[1] / 'config.toml'
+    _require(config.read_text(encoding='utf-8') == isolated_config(*roots), 'config_changed')
     return {'schema': 'grok130-readiness-context-observation-v1',
         'context_digest': record.content_hash, 'discovery_sources_absent': True,
         'ignored_bundle_present': (roots[1] / 'bundled').exists(),

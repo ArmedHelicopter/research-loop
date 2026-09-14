@@ -338,6 +338,15 @@ class SinglePromptACP:
 
     def verify_files(self):
         require(bool(self.frozen_files), 'source_manifest_empty')
+        if self.context is not None:
+            from research_loop.modular.grok_skill_isolation import observe_context
+            require(all(Path(p).name.lower() != 'auth.json' for p in self.frozen_files),
+                    'credential_manifest_disallowed')
+            try:
+                observation = observe_context(self.context)
+            except ContractError as exc:
+                raise Rejected(str(exc)) from None
+            self.context_observations.append(observation)
         if self.deployment is not None:
             try:
                 self.deployment.verify_executable(self.command[0])
@@ -347,13 +356,6 @@ class SinglePromptACP:
             require(all(self.frozen_files.get(k) == v for k, v in required.items()), 'deployment_source_manifest')
         for path, expected in self.frozen_files.items():
             require(digest(Path(path).read_bytes()) == expected, 'frozen_file_changed')
-        if self.context is not None:
-            from research_loop.modular.grok_skill_isolation import observe_context
-            try:
-                observation = observe_context(self.context)
-            except ContractError as exc:
-                raise Rejected(str(exc)) from None
-            self.context_observations.append(observation)
 
     def notification(self, row):
         method = row.get('method'); params = row.get('params')
@@ -524,6 +526,7 @@ class SinglePromptACP:
     def rpc(self, method, params):
         if self.context is not None:
             self.verify_files()
+            require(time.monotonic() < self.deadline, 'timeout')
         self.request_id += 1
         row = {'jsonrpc': '2.0', 'id': self.request_id, 'method': method, 'params': params}
         data = encoded(row) + b'\n'
@@ -619,6 +622,8 @@ class SinglePromptACP:
             try:
                 self.verify_files()
                 require(not self.reservation.exists(), 'reservation_already_exists')
+                if self.context is not None:
+                    require(time.monotonic() < self.deadline, 'timeout')
                 self.tree = ProcessTree(self.command, self.cwd, self.env, stderr)
                 def read():
                     try:
@@ -823,9 +828,10 @@ def native_launch(*, executable, cwd, private_home, private_profile, frozen_file
         require(all(frozen_files.get(k) == v for k, v in deployment.source_pins().items()),
                 'deployment_source_manifest')
         if deployment.skill_isolation:
-            from research_loop.modular.grok_skill_isolation import isolated_config
+            from research_loop.modular.grok_skill_isolation import isolated_config, context_record, observe_context
             require(expected_config == SAFE_CONFIG, 'isolated_readiness_only')
             expected_config = isolated_config(cwd, home, user)
+            observe_context(context_record(cwd, home, user))
     require((home / 'config.toml').read_text(encoding='utf-8') == expected_config, 'native_config_pin')
     require(set(p.name for p in home.iterdir()) == {'auth.json', 'config.toml'}, 'native_home_not_fresh')
     require(not any(cwd.iterdir()) and not any(user.iterdir()), 'native_context_not_empty')
