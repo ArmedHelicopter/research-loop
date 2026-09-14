@@ -238,14 +238,27 @@ def test_actual_ordinary_control_preserves_module_disabled_artifact_status(tmp_p
 def test_checkpoint_rows_are_frozen_at_executor_construction(tmp_path, monkeypatch):
     setup = prepare(tmp_path, monkeypatch)
     runner = executor(setup)
-    original = (runner.root / 'checkpoint.json').read_bytes()
+    original = json.loads((runner.root / 'checkpoint.json').read_bytes())
     def forbidden(*args, **kwargs):
         raise AssertionError('checkpoint persistence recomputed a frozen trial binding')
     monkeypatch.setattr(FrozenJointTrainProtocol, 'trial_binding', forbidden)
+    first_stage, first_trial = runner._planned_checkpoint_rows[0]
+    runner.attempts[(first_stage, first_trial)] = {'status': 'reserved'}
     runner._persist()
-    assert (runner.root / 'checkpoint.json').read_bytes() == original
-    rows = json.loads(original)['rows']
-    assert [(row['stage'], row['trial_id']) for row in rows] == list(runner._planned_checkpoint_rows)
+    reserved = json.loads((runner.root / 'checkpoint.json').read_bytes())
+    assert reserved['allocation'] == original['allocation']
+    assert reserved['provider_usage'] == original['provider_usage']
+    assert [(row['stage'], row['trial_id']) for row in reserved['rows']] == list(runner._planned_checkpoint_rows)
+    assert reserved['rows'][0]['status'] == 'reserved'
+    runner.attempts[(first_stage, first_trial)] = {'status': 'failed'}
+    runner.poisoned = True
+    runner._persist()
+    poisoned = json.loads((runner.root / 'checkpoint.json').read_bytes())
+    assert poisoned['allocation'] == original['allocation']
+    assert poisoned['provider_usage'] == original['provider_usage']
+    assert [(row['stage'], row['trial_id']) for row in poisoned['rows']] == list(runner._planned_checkpoint_rows)
+    assert poisoned['rows'][0]['status'] == 'failed'
+    assert all(row['status'] == 'blocked' for row in poisoned['rows'][1:])
 
 
 @pytest.mark.parametrize('fault',['handles','template','parent','csv','material'])
