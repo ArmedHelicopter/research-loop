@@ -1,6 +1,7 @@
 """Actual SQLite publication, failures and independent artifact consumers."""
 import hashlib
 import json
+import os
 from pathlib import Path
 import sqlite3
 
@@ -16,9 +17,18 @@ R = FrozenRecord.from_dict
 
 
 def read(path, checkpoint, domain='train'):
-    return verify_joint_deployment_artifacts(path, domain=domain, checkpoint=checkpoint,
+    # The caller retains its checkpoint before invoking the production reader.
+    # These harness writes are outside the reader's read-only implementation.
+    pins = Path(path).with_suffix('.caller-checkpoints.jsonl')
+    number = len(pins.read_bytes().splitlines()) + 1 if pins.exists() else 1
+    with pins.open('a', encoding='utf-8', newline='\n') as stream:
+        stream.write(R({'domain': domain, 'checkpoint': checkpoint.data()}).encoded+'\n')
+        stream.flush(); os.fsync(stream.fileno())
+    report = verify_joint_deployment_artifacts(path, domain=domain, checkpoint=checkpoint,
         acceptance_keys=KEYS, rollback_keys=ROLLBACK,
         component_source_roots={f'M{i}': Path(path).parent/'builds' for i in range(1, 10)}).data()
+    Path(path).with_suffix(f'.audit-read-{number:03d}.json').write_bytes((R(report).encoded+'\n').encode())
+    return report
 
 
 def events(runtime):
@@ -39,6 +49,7 @@ def test_actual_outputs_use_configuration_subjects_and_a_read_only_checkpoint(tm
     original = path.read_bytes()
     report = read(path, last)
     assert path.read_bytes() == original and report['pending_attempts'] == []
+    assert report['optimizer_visible'] is False  # V_final grant decisions are audit-only.
     assert read(path, initial)['checkpoint'] == last.data()  # A pinned prefix accepts a valid extension.
     rows = report['events']
     starts = [r for r in rows if r['kind'] == 'started']

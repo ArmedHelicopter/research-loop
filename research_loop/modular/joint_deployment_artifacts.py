@@ -363,6 +363,8 @@ def verify_joint_deployment_artifacts(path, *, domain, checkpoint, acceptance_ke
         return R({'schema': 'joint-deployment-artifact-verification-v1', 'checkpoint': anchor.data(),
                   'events': [e.data() for e in events], 'pending_attempts': list(pending),
                   'component_sources_verified': True,
-                  'optimizer_visible': domain == 'train', 'scientific_validated': False})
+                  # Even a TRAIN task store contains V_final grant decisions.
+                  # The full audit is never an optimizer input view.
+                  'optimizer_visible': False, 'scientific_validated': False})
     finally:
         db.close()

@@ -347,6 +347,7 @@ class JointDeploymentStore:
     def rollback(self, grant):
         if type(grant) is not FrozenRecord: raise ContractError('joint grant requires an exact signed record')
         with self._transaction():
+            self._artifacts.verify()
             active = self._read_active()
             proposed = self._read_bundle(active.parent_digest) if active.parent_digest else active
             attempt = self._artifacts.begin('rollback', proposed, grant=grant, producer=self.rollback)
@@ -372,6 +373,7 @@ class JointDeploymentStore:
         if identity.domain != self.task_domain:
             raise ContractError('joint task domain differs from its artifact store')
         with self._transaction():
+            self._artifacts.verify()
             bundle = self._read_active()
             bundle.verify_sources(self._roots)
             attempt = self._artifacts.begin('task', bundle, identity=identity, producer=executor)

@@ -10,7 +10,7 @@ from research_loop.modular.joint_deployment import JointComponentVersion, JointD
 from research_loop.modular.modules.improvement import TrainingManifest
 from research_loop.modular.panel_receipts import SignedAuthority
 from research_loop.modular.runtime import AuditVerifier, RunSession, verify_trace
-from research_loop.ontology import ContractError
+from research_loop.ontology import ContractError, canonical
 
 H = 'a' * 64
 KEYS = {'independent-c5': b'acceptance-fixture-key-32-bytes___'}
@@ -86,6 +86,7 @@ def test_all_nine_components_reach_a_pinned_task_then_restore_exact_previous_sna
     restored = runtime.run_task(identity('restored'), task_run)
     assert ack == target.acknowledgement()
     assert len(calls) == 3
+    assert all(name not in canonical(calls) for name in ('acceptance_digest', 'used_grants', 'deployment_audit'))
     for result, bundle, prefix in [(before,base,'old-'),(after,target,'new-'),(restored,base,'old-')]:
         body=result.data()
         assert body['snapshot'] == bundle.acknowledgement().data()
@@ -98,7 +99,14 @@ def test_all_nine_components_reach_a_pinned_task_then_restore_exact_previous_sna
     reopened = store(tmp_path/'joint.sqlite', base, roots)
     assert reopened.active() == base
     with pytest.raises(ContractError, match='already consumed'): reopened.activate(target, grant)
+    checkpoint = reopened.artifact_checkpoint()
+    (tmp_path/'joint.audit-checkpoint.json').write_bytes((checkpoint.encoded+'\n').encode())
     reopened.close()
+    from research_loop.modular.joint_deployment_artifacts import verify_joint_deployment_artifacts
+    audit = verify_joint_deployment_artifacts(tmp_path/'joint.sqlite', domain='train', checkpoint=checkpoint,
+        acceptance_keys=KEYS, rollback_keys=ROLLBACK, component_source_roots=roots)
+    assert audit.data()['optimizer_visible'] is False and audit.data()['pending_attempts'] == []
+    (tmp_path/'joint.audit-read.json').write_bytes((audit.encoded+'\n').encode())
 
 
 @pytest.mark.parametrize('failure_index', range(1, 10))
@@ -264,9 +272,11 @@ def test_two_process_writers_publish_one_complete_winner(tmp_path):
     assert len(winner.acknowledgement().data()['component_digests'])==9
     from research_loop.modular.joint_deployment_artifacts import verify_joint_deployment_artifacts
     checkpoint = runtime.artifact_checkpoint()
+    path.with_suffix('.audit-checkpoint.json').write_bytes((checkpoint.encoded+'\n').encode())
     runtime.close()
     audit = verify_joint_deployment_artifacts(path, domain='train', checkpoint=checkpoint,
         acceptance_keys=KEYS, rollback_keys=ROLLBACK, component_source_roots=roots).data()
     assert audit['pending_attempts'] == []
     assert sum(row['kind']=='committed' for row in audit['events']) == 2  # Bootstrap and one writer.
     assert sum(row['kind']=='failed' for row in audit['events']) == 1
+    path.with_suffix('.audit-read.json').write_bytes((record(audit).encoded+'\n').encode())
