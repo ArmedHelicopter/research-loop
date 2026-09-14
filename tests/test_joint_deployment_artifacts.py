@@ -17,7 +17,8 @@ R = FrozenRecord.from_dict
 
 def read(path, checkpoint, domain='train'):
     return verify_joint_deployment_artifacts(path, domain=domain, checkpoint=checkpoint,
-        acceptance_keys=KEYS, rollback_keys=ROLLBACK).data()
+        acceptance_keys=KEYS, rollback_keys=ROLLBACK,
+        component_source_roots={f'M{i}': Path(path).parent/'builds' for i in range(1, 10)}).data()
 
 
 def events(runtime):
@@ -222,3 +223,66 @@ def test_legacy_store_is_an_observed_baseline_without_inventing_old_operations(t
     assert rows[0]['payload']['history_complete'] is False
     checkpoint = reopened.artifact_checkpoint(); reopened.close()
     assert read(path, checkpoint)['pending_attempts'] == []
+
+
+def test_failed_return_cannot_be_rehashed_into_another_task(tmp_path):
+    base, target, roots = fixtures(tmp_path); path = tmp_path/'joint.sqlite'
+    runtime = store(path, base, roots)
+    source = roots['M4']/'M4.py'; original = source.read_bytes()
+    def task(*_):
+        source.write_bytes(original+b'# changed\n')
+        return {'answer': 7}
+    with pytest.raises(ContractError):
+        runtime.run_task(identity('actual-task'), task)
+    source.write_bytes(original); runtime.close()
+    def change(rows):
+        rows[-1]['payload']['result']['identity']['domain'] = 'validation'
+    checkpoint = _rehash(path, change)
+    with pytest.raises(ContractError, match='pinned configuration'):
+        read(path, checkpoint)
+
+
+def test_commit_survives_a_caller_delivery_failure_without_a_false_failed_transition(tmp_path):
+    base, target, roots = fixtures(tmp_path); path = tmp_path/'joint.sqlite'
+    class FailDelivery(JointDeploymentStore):
+        failing = False
+        def _remember(self, anchor):
+            if self.failing:
+                self.failing = False
+                raise OSError('synthetic failure after COMMIT')
+            return super()._remember(anchor)
+    runtime = store(path, base, roots, FailDelivery); runtime.failing = True
+    with pytest.raises(OSError, match='after COMMIT') as failure:
+        runtime.activate(target, approval(base, target))
+    assert any('durably committed' in note for note in failure.value.__notes__)
+    assert runtime.active() == target and events(runtime)[-1]['kind'] == 'committed'
+    assert runtime._db.execute('SELECT count(*) FROM used_grants').fetchone()[0] == 1
+    checkpoint = runtime.artifact_checkpoint(); runtime.close()
+    assert read(path, checkpoint)['pending_attempts'] == []
+
+
+def test_independent_reader_checks_actual_component_source_bytes(tmp_path):
+    base, target, roots = fixtures(tmp_path); path = tmp_path/'joint.sqlite'
+    runtime = store(path, base, roots); checkpoint = runtime.artifact_checkpoint(); runtime.close()
+    source = roots['M7']/'M7.py'; original = source.read_bytes()
+    source.write_bytes(original+b'# altered component\n')
+    with pytest.raises(ContractError, match='source drift'):
+        read(path, checkpoint)
+    source.write_bytes(original)
+    assert read(path, checkpoint)['component_sources_verified'] is True
+
+
+def test_component_subject_preserves_multiple_train_tasks_without_choosing_a_fake_owner(tmp_path):
+    from research_loop.modular.joint_deployment import JointDeploymentBundle
+    from research_loop.modular.modules.improvement import TrainingManifest
+    base, target, roots = fixtures(tmp_path); path = tmp_path/'joint.sqlite'
+    body = base.record.data()
+    for name, component in body['components'].items():
+        component['training_manifest'] = TrainingManifest.freeze([identity(), identity('source-'+name)]).record.data()
+    multi = JointDeploymentBundle(R(body))
+    runtime = store(path, multi, roots)
+    subject = events(runtime)[1]['payload']['subject']
+    assert len(subject['training_identities']) == 10
+    assert 'identity' not in subject and subject['kind'] == 'joint_configuration'
+    checkpoint = runtime.artifact_checkpoint(); runtime.close()
+    assert read(path, checkpoint)['component_sources_verified'] is True

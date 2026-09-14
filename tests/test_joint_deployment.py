@@ -262,4 +262,11 @@ def test_two_process_writers_publish_one_complete_winner(tmp_path):
     assert runtime._db.execute('SELECT count(*) FROM used_grants').fetchone()[0]==1
     assert runtime._db.execute('SELECT count(*) FROM bundles').fetchone()[0]==2
     assert len(winner.acknowledgement().data()['component_digests'])==9
+    from research_loop.modular.joint_deployment_artifacts import verify_joint_deployment_artifacts
+    checkpoint = runtime.artifact_checkpoint()
     runtime.close()
+    audit = verify_joint_deployment_artifacts(path, domain='train', checkpoint=checkpoint,
+        acceptance_keys=KEYS, rollback_keys=ROLLBACK, component_source_roots=roots).data()
+    assert audit['pending_attempts'] == []
+    assert sum(row['kind']=='committed' for row in audit['events']) == 2  # Bootstrap and one writer.
+    assert sum(row['kind']=='failed' for row in audit['events']) == 1

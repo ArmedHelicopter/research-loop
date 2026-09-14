@@ -209,6 +209,8 @@ def _verify(db, *, domain, acceptance_keys, rollback_keys, expected=None, source
             if type(payload['staged']) is not list:
                 raise ContractError('deployment staged observations differ')
             target = _bundle(attempt['request']['bundle'])
+            if [row.get('module') for row in payload['staged']] != list(target.components())[:len(payload['staged'])]:
+                raise ContractError('deployment staged observations are not the actual ordered prefix')
             seen = set()
             for observation in payload['staged']:
                 if (set(observation) != {'module', 'raw', 'sha256', 'bytes', 'producer'} or observation['module'] in seen
@@ -237,6 +239,11 @@ def _verify(db, *, domain, acceptance_keys, rollback_keys, expected=None, source
                     raise ContractError('deployment committed component inventory differs')
             elif state != body['state'] or type(payload['error']) is not str or not payload['error']:
                 raise ContractError('deployment failed attempt altered committed state')
+            elif payload['result'] is not None:
+                if attempt['request']['operation'] == 'task':
+                    _transition(state, attempt['request'], payload['result'], acceptance_keys, rollback_keys)
+                elif payload['result'] != target.acknowledgement().data():
+                    raise ContractError('deployment failed-return acknowledgement differs')
             attempt['terminal'] = True
         else:
             raise ContractError('deployment artifact event kind differs')
@@ -324,14 +331,20 @@ class JointDeploymentArtifacts:
         # Failed SQL work has already rolled back. Preserve observed uncommitted
         # bytes, without storing an exception message that might contain secrets.
         with self.store._transaction():
-            self.verify(check_sources=False)
+            anchor, events, _ = self.verify(check_sources=False)
+            terminal = next((e.data()['kind'] for e in reversed(events) if e.data()['attempt_id'] == attempt['id']
+                             and e.data()['kind'] in {'committed', 'failed'}), None)
+            if terminal is not None:
+                error.add_note('Deployment attempt is already durably ' + terminal + '; terminal record preserved.')
+                return anchor
             self._append('failed', attempt['id'], {'result': attempt['result'],
                          'error': type(error).__name__, 'staged': attempt['staged']})
             anchor = self.verify(check_sources=False)[0]
         return anchor
 
 
-def verify_joint_deployment_artifacts(path, *, domain, checkpoint, acceptance_keys, rollback_keys, source_resolver=None):
+def verify_joint_deployment_artifacts(path, *, domain, checkpoint, acceptance_keys, rollback_keys,
+                                      component_source_roots, source_resolver=None):
     """Independent read-only artifact/state replay against a caller-pinned checkpoint."""
     if type(checkpoint) is not FrozenRecord:
         raise ContractError('independent deployment artifact checkpoint required')
@@ -343,8 +356,13 @@ def verify_joint_deployment_artifacts(path, *, domain, checkpoint, acceptance_ke
         db.execute('PRAGMA query_only=ON'); db.execute('BEGIN')
         anchor, events, pending = _verify(db, domain=domain, expected=checkpoint,
             acceptance_keys=acceptance_keys, rollback_keys=rollback_keys, source_resolver=source_resolver)
+        # Resolve only caller-supplied component roots, not paths taken from a
+        # task result or a submitted grant. These are code files, not task data.
+        for _, encoded in events[-1].data()['state']['bundles']:
+            _bundle(encoded).verify_sources(component_source_roots)
         return R({'schema': 'joint-deployment-artifact-verification-v1', 'checkpoint': anchor.data(),
                   'events': [e.data() for e in events], 'pending_attempts': list(pending),
+                  'component_sources_verified': True,
                   'optimizer_visible': domain == 'train', 'scientific_validated': False})
     finally:
         db.close()
