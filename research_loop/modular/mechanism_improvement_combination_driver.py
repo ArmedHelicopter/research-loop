@@ -22,6 +22,7 @@ from research_loop.modular.workflow import ModularWorkflow
 from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.panel_receipts import PanelReceiptVerifier, opaque_panel_cell_binding
 from research_loop.ontology import ContractError, canonical
+from research_loop.modular.phase_provider import PhaseProviderLedger
 
 from research_loop.modular.mechanism_improvement_modules import slots, apply_target_module, execute_retrieval, _verify_sources, public_retrieval
 from research_loop.modular.modules.predictions import PredictionRegistry
@@ -113,7 +114,7 @@ def run_mechanism_improvement_cell(*,panel,cell,task,scenario,package,material,s
 
 
 def verify_mechanism_improvement_cell(result,*,panel,task,scenario,package,material,source_verifier,barrier,public_inputs,broker,ledger,retrieval_material=None,retrieval_verifier=None):
-    if type(result) is not MechanismImprovementResult or type(ledger) is not FrozenProviderLedger:
+    if type(result) is not MechanismImprovementResult or type(ledger) is not (PhaseProviderLedger if barrier.plan.data()['schema'].endswith('-v2') else FrozenProviderLedger):
         raise ContractError('typed target result and sealed provider ledger required')
     cell=result.cell;_validate(panel,cell,task,scenario,package,material,source_verifier,barrier,retrieval_material,retrieval_verifier)
     check_material_inputs(material,task,broker,public_inputs)
@@ -237,6 +238,8 @@ def verify_mechanism_improvement_cell(result,*,panel,task,scenario,package,mater
         if r['stage']=='target_ledger_sealed']
     if ledger.path!=barrier.root/'target-provider-ledger.json' or seals!=[{'digest':ledger.record.content_hash}]:
         raise ContractError('target provider ledger is not the original controller seal')
-    ledger.bind_events(events)
+    if type(ledger) is PhaseProviderLedger:
+        ledger.bind_events(events,scope_id='target:'+FrozenRecord.from_dict(cell.data()).content_hash)
+    else: ledger.bind_events(events)
     return FrozenRecord.from_dict({'schema':'mechanism-improvement-verification-v1','engineering_verified':True,
         'cell_key':list(cell.key),'status':result.runtime.status,'barrier_digest':barrier.record.content_hash,'scientific_effect':'not_measured'})

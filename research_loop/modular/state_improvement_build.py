@@ -21,6 +21,7 @@ from research_loop.modular.runtime import RunSession, verify_trace
 from research_loop.modular.workflow import ModularWorkflow
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.ontology import ContractError, canonical
+from research_loop.modular.phase_provider import PhaseProviderScope, PhaseProviderLedger
 
 PROPOSAL_INSTRUCTION = ('Propose a bounded emit_literal_change_v1 builder using the supplied existing public training observations. '
     'Return exactly entrypoint, surface, key and value. Use prompt/instructions or memory/lesson. '
@@ -102,10 +103,11 @@ def run_build(*, recipe, plan_digest, history, material, qualifier, parent, fixe
             'history_binding':history.binding.content_hash})
         def charged(request):
             phase.append('model_reservation',{'request_digest':request.content_hash,'slot':request.data()['slot']})
-            before=len(model.ledger['calls'])
+            before=model.cursor() if type(model) is PhaseProviderScope else len(model.ledger['calls'])
             try: return model(request)
             finally: phase.append('model_charge',{'request_digest':request.content_hash,
-                'provider_calls':[_safe_call(c) for c in model.ledger['calls'][before:]]})
+                'provider_calls':([c.data() for c in model.calls_since(before)] if type(model) is PhaseProviderScope
+                    else [_safe_call(c) for c in model.ledger['calls'][before:]])})
         response=session.invoke('builder_proposal',charged,instruction=PROPOSAL_INSTRUCTION,
             module_context=proposal_context(history,transition,binding))
         proposed=_builder(FrozenBuilderVersion(response))
@@ -130,7 +132,9 @@ def run_build(*, recipe, plan_digest, history, material, qualifier, parent, fixe
         phase.append('phase_failure',{'error_type':reason})
     phase.append('stage_result',{'status':status,'reason':reason})
     files={str(p.relative_to(root)).replace('\\','/'):_sha(p.read_bytes()) for p in root.rglob('*') if p.is_file()}
-    result=BuildResult(root,FrozenRecord.from_dict({'schema':'state-improvement-build-receipt-v1','recipe':recipe,
+    native=type(model) is PhaseProviderScope
+    result=BuildResult(root,FrozenRecord.from_dict({**({'provider_scope':model.scope_id} if native else {}),
+        'schema':'state-improvement-build-receipt-v2' if native else 'state-improvement-build-receipt-v1','recipe':recipe,
         'plan_digest':plan_digest,'status':status,'reason':reason,'candidate_digest':candidate.digest if status=='succeeded' else None,
         'files':files}))
     _exclusive(root/'build-receipt.json',result.record)
@@ -173,11 +177,13 @@ class FrozenProviderLedger:
 
 def verify_build(result, *, recipe, plan_digest, history, material, qualifier, parent, fixed_builder, broker, inputs, ledger):
     if type(result) is not BuildResult: raise ContractError('typed build result required')
-    if type(ledger) is not FrozenProviderLedger: raise ContractError('exact original build provider ledger required')
+    if type(ledger) not in (FrozenProviderLedger,PhaseProviderLedger): raise ContractError('exact original build provider ledger required')
     b=result.record.data();root=result.root
+    native=type(ledger) is PhaseProviderLedger
     if (_path(root/'build-receipt.json').read_bytes()!=(result.record.encoded+'\n').encode('utf-8')
-            or set(b)!={'schema','recipe','plan_digest','status','reason','candidate_digest','files'}
-            or b['schema']!='state-improvement-build-receipt-v1' or b['recipe']!=recipe or b['plan_digest']!=plan_digest
+            or set(b)!=({'schema','recipe','plan_digest','status','reason','candidate_digest','files'}|({'provider_scope'} if native else set()))
+            or b['schema']!=('state-improvement-build-receipt-v2' if native else 'state-improvement-build-receipt-v1')
+            or b['recipe']!=recipe or b['plan_digest']!=plan_digest
             or b['status']!='succeeded'):
         raise ContractError('successful original build receipt required')
     actual={str(p.relative_to(root)).replace('\\','/'):_sha(_path(p).read_bytes())
@@ -214,7 +220,13 @@ def verify_build(result, *, recipe, plan_digest, history, material, qualifier, p
             or request['slot']!='builder_proposal' or request['execution_feedback']!=[]
             or set(request)!={'schema','task','lock_digest','objective','slot','instruction','context','module_context','execution_feedback'}):
         raise ContractError('proposal request leaks or omits frozen consumed history')
-    used=ledger.bind_events(events)
+    if native:
+        if b['provider_scope']!='build:'+FrozenRecord.from_dict(recipe).content_hash: raise ContractError('original build provider scope differs')
+        used=ledger.bind_events(events,scope_id=b['provider_scope'],require_eligible=False)
+        provider_calls=[c.data() for c in ledger.calls_for_scope(b['provider_scope'])]
+    else:
+        used=ledger.bind_events(events)
+        provider_calls=[_safe_call(c) for c in ledger.record.data()['calls'] if c['id'] in used]
     proposed=_builder(FrozenBuilderVersion(FrozenRecord.from_dict(responses[0]['data']['response'])))
     selected=proposed if 'M9' in enabled else _builder(fixed_builder)
     if events[-1]['stage']!='state_improvement_proposal_terminal' or events[-1]['data']!={
@@ -229,7 +241,7 @@ def verify_build(result, *, recipe, plan_digest, history, material, qualifier, p
         raise ContractError('build side effect order differs')
     expected=[{'binding':binding.data(),'allocation':{'source_calls':2,'model_calls':1,'builder_executions':1}},
         {'request_digest':FrozenRecord.from_dict(request).content_hash,'slot':'builder_proposal'},
-        {'request_digest':FrozenRecord.from_dict(request).content_hash,'provider_calls':[_safe_call(c) for c in ledger.record.data()['calls'] if c['id'] in used]},
+        {'request_digest':FrozenRecord.from_dict(request).content_hash,'provider_calls':provider_calls},
         {'selected_builder_digest':selected.digest,'parent_digest':parent.digest,'search_cost':1},
         {'candidate':candidate.record.data(),'receipt':receipt.record.data()},
         {'candidate_digest':candidate.digest,'receipt_digest':receipt.record.content_hash}, {'status':'succeeded','reason':None}]

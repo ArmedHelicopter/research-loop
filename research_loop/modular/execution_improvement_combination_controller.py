@@ -5,6 +5,7 @@ A missing canonical build blocks the global candidate barrier;
 it never silently substitutes a package or drops a denominator.
 """
 from dataclasses import dataclass
+from contextlib import nullcontext
 import json
 from pathlib import Path
 from evaluation.modular.scorer_process import CombinationScorerProcessClient
@@ -33,6 +34,8 @@ from research_loop.modular.panel_receipts import PanelCell
 from research_loop.modular.combination_panels import CombinationPanelVerifier
 from research_loop.modular.execution_improvement_contrasts import estimate_execution_contrast, component_policy
 from research_loop.ontology import ContractError, canonical
+from research_loop.modular.phase_provider import (PROVIDERS, PhaseProviderSession, PhaseProviderLedger,
+    provider_configuration, validate_configuration)
 
 ALLOCATION={'arm_recipe_bindings':16,'build_recipes':6,'builder_proposals':6,'builder_executions':6,
     'target_cells':32,'structural_exclusions':0,'target_model_calls':64,'model_calls':70,
@@ -71,7 +74,7 @@ class FrozenExecutionImprovementPlan:
         required={'schema','export_mode','stage','domain','item_ids','task_bindings','baseline_digest','history_binding','history_inputs',
             'parent','fixed_builder','history_materials','target_materials','source_verifier_bindings','model_config',
             'scorer','scorer_handle_bindings','acceptance_criteria','objective','image','timeout_seconds','allocation','pipeline_estimand','candidate_selections','phase_materials'}
-        if (type(self) is not FrozenExecutionImprovementPlan or set(b)!=required or b['schema']!='execution-improvement-train-plan-v1'
+        if (type(self) is not FrozenExecutionImprovementPlan or set(b)!=required or b['schema'] not in {'execution-improvement-train-plan-v1','execution-improvement-train-plan-v2'}
                 or b['export_mode']!='primary_prospective' or b['domain']!='train' or b['allocation']!=ALLOCATION
                 or b['pipeline_estimand']!=ESTIMAND or b['candidate_selections']!=selections(b['baseline_digest'])
                 or not isinstance(b['stage'],str) or not b['stage'].strip() or type(self.history) is not FrozenTrainHistory
@@ -117,10 +120,13 @@ class FrozenExecutionImprovementPlan:
         if len(budgets)!=1 or len({v['cost_limit_per_call'] for v in b['source_verifier_bindings'].values()})!=1:
             raise ContractError('state context/source cost allocation must match')
         config=b['model_config']
-        if (set(config)!={'model','effort','max_calls','max_tokens','schemas','context_policy_sha256'}
-                or config['model']!='gpt-5.6-luna' or config['effort']!='low' or config['max_calls']!=70
-                or type(config['max_tokens']) is not int or config['max_tokens']<1 or config['schemas']!=model_schemas()):
-            raise ContractError('matched exact proposal and target model opportunities required')
+        if b['schema']=='execution-improvement-train-plan-v2':
+            validate_configuration(FrozenRecord.from_dict(config),schemas=model_schemas(),main_opportunities=70)
+        else:
+            if (set(config)!={'model','effort','max_calls','max_tokens','schemas','context_policy_sha256'}
+                    or config['model']!='gpt-5.6-luna' or config['effort']!='low' or config['max_calls']!=70
+                    or type(config['max_tokens']) is not int or config['max_tokens']<1 or config['schemas']!=model_schemas()):
+                raise ContractError('matched exact proposal and target model opportunities required')
         scorer=ScorerConfig(FrozenRecord.from_dict(b['scorer']))
         if (scorer.record.data()['rubric_digest']!=FrozenBenchmarkRubricEndpoint.rubric_digest()
                 or b['acceptance_criteria']!={'contrast_analysis':_ANALYSIS,'factorial_components':component_policy().data()}
@@ -218,7 +224,7 @@ class CandidateBarrier:
 
     def verify(self):
         if (type(self) is not CandidateBarrier or type(self.plan) is not FrozenExecutionImprovementPlan
-                or type(self.ledger) is not FrozenProviderLedger or type(self.builds) is not tuple
+                or type(self.ledger) is not (PhaseProviderLedger if self.plan.data()['schema'].endswith('-v2') else FrozenProviderLedger) or type(self.builds) is not tuple
                 or any(type(result) is not BuildResult for result in self.builds)):
             raise ContractError('exact barrier plan, builds and original provider ledger required')
         self.plan.check_packets(self.packets);self.ledger.verify()
@@ -228,7 +234,7 @@ class CandidateBarrier:
         if tuple(FrozenRecord.from_dict(r) for r in actual[:len(self.prefix)])!=self.prefix:
             raise ContractError('global build order/reservations changed before barrier')
         self._order(actual)
-        expected={'schema':'execution-improvement-candidate-barrier-v1','plan_digest':self.plan.record.content_hash,
+        expected={'schema':('execution-improvement-candidate-barrier-v2' if self.plan.data()['schema'].endswith('-v2') else 'execution-improvement-candidate-barrier-v1'),'plan_digest':self.plan.record.content_hash,
             'build_receipts':[r.record.content_hash for r in self.builds], 'provider_ledger_digest':self.ledger.record.content_hash,
             'candidate_selections':selections(self.plan.data()['baseline_digest']),
             'controller_prefix_digest':FrozenRecord.from_dict({'rows':[r.data() for r in self.prefix]}).content_hash}
@@ -294,8 +300,14 @@ def run_execution_improvement_train(plan,*,prospective_exporter,snapshot_root,ex
         source_verifiers,scorer_factory,execution_authority,scorer_authority_keys,custody=None):
     if type(plan) is not FrozenExecutionImprovementPlan: raise ContractError('exact immutable state improvement plan required')
     plan.__post_init__();b=plan.data()
-    if model_configuration(model).data()!=b['model_config'] or model.ledger['calls'] or model.ledger['tokens'] or model.ledger['usage_incomplete']:
+    native=b['schema']=='execution-improvement-train-plan-v2'
+    if native:
+        if type(model) not in PROVIDERS or provider_configuration(model).data()!=b['model_config'] or model.inspect() or model.terminal():
+            raise ContractError('fresh matched closed TRAIN provider required')
+    elif model_configuration(model).data()!=b['model_config'] or model.ledger['calls'] or model.ledger['tokens'] or model.ledger['usage_incomplete']:
         raise ContractError('fresh matched real model port required')
+    usage=lambda: model.usage().data() if native else _usage(model)
+    terminal=lambda: model.terminal() if native else model.ledger['usage_incomplete']
     if set(source_verifiers)!=set(DESIGNS) or not callable(scorer_factory): raise ContractError('exact source and scorer factories required')
     for pair,q in source_verifiers.items():
         qualifier_check(pair,plan.history_material(pair),q)
@@ -309,6 +321,7 @@ def run_execution_improvement_train(plan,*,prospective_exporter,snapshot_root,ex
         raise ContractError('fresh disjoint controller/source/provider roots required')
     source=CombinationTrainSource(b,custody=custody,prospective_exporter=prospective_exporter,snapshot=snapshot,exported=exported)
     root.mkdir(parents=True);_exclusive(root/'plan.json',plan.record)
+    scopes=PhaseProviderSession(model,root/'provider-scopes.json') if native else None
     excluded=[{'pair':p,'arm_id':c['id'],'reason':c['reason'],'task_digest':row['task_digest']}
         for p in DESIGNS for c in registered_design(p,b['baseline_digest']).data()['cells'] if c['status']!='executable'
         for row in b['task_bindings'].values()]
@@ -316,9 +329,9 @@ def run_execution_improvement_train(plan,*,prospective_exporter,snapshot_root,ex
         'target_recipes':target_recipes(b),'structural_exclusions':excluded,'allocation':ALLOCATION})
     buildrows=[{'recipe':r,'status':'not_started'} for r in recipes(b['baseline_digest'])]
     targets=[{**r,'status':'not_started','scorer_calls':0,'docker_attempts':0} for r in target_recipes(b)]
-    journal={'schema':'execution-improvement-controller-attempt-v1','plan_digest':plan.record.content_hash,'builds':buildrows,
+    journal={'schema':('execution-improvement-controller-attempt-v2' if b['schema'].endswith('-v2') else 'execution-improvement-controller-attempt-v1'),'plan_digest':plan.record.content_hash,'builds':buildrows,
         'targets':targets,'structural_exclusions':excluded,'allocation':ALLOCATION,'status':'exporting'}
-    def persist(): journal['model_usage']=_usage(model);_atomic(root/'controller-attempt.json',journal)
+    def persist(): journal['model_usage']=usage();_atomic(root/'controller-attempt.json',journal)
     persist()
     try:
         packets=tuple(source.export());plan.check_packets(packets)
@@ -334,27 +347,28 @@ def run_execution_improvement_train(plan,*,prospective_exporter,snapshot_root,ex
     builds=[];barrier=None;panels=();scenarios={};results=[];scores=[];score_inputs={};services={};poison=False
     for row in buildrows:
         recipe=row['recipe']
-        if poison or model.ledger['usage_incomplete']:
+        if poison or terminal():
             row.update(status='blocked',reason='prior_unknown_cost');phase.append('build_blocked',row.copy());persist();continue
         try:plan.check_packets(packets)
         except Exception as exc:
             poison=True;row.update(status='failed',reason='source_drift',error_type=type(exc).__name__)
             phase.append('build_preflight_failed',row.copy());persist();continue
         phase.append('build_reserved',{'recipe':recipe});row['status']='running';persist()
-        result=run_build(recipe=recipe,plan_digest=plan.record.content_hash,history=plan.history,material=plan.history_material(recipe['pair']),
-            qualifier=source_verifiers[recipe['pair']],parent=plan.parent,fixed_builder=plan.fixed_builder,broker=broker,
-            inputs=dict(plan.history_inputs),model=model,audit_verifier=audit_verifier,root=root/'builds'/str(len(builds)))
+        with (scopes.scope('build:'+FrozenRecord.from_dict(recipe).content_hash) if native else nullcontext(model)) as scoped_model:
+            result=run_build(recipe=recipe,plan_digest=plan.record.content_hash,history=plan.history,material=plan.history_material(recipe['pair']),
+                qualifier=source_verifiers[recipe['pair']],parent=plan.parent,fixed_builder=plan.fixed_builder,broker=broker,
+                inputs=dict(plan.history_inputs),model=scoped_model,audit_verifier=audit_verifier,root=root/'builds'/str(len(builds)))
         builds.append(result);row.update(status=result.record.data()['status'],receipt=result.record.data())
         sourcepath=result.root/'source'/'source-verification.json'
         if sourcepath.is_file():
             row['source']=json.loads(sourcepath.read_bytes())
             poison=poison or any(c.get('cost_units') is None for c in row['source'].get('calls',[]))
         phase.append('build_completed',{'receipt_digest':result.record.content_hash,'status':row['status']});persist()
-    buildledger=FrozenProviderLedger.freeze(model,root/'build-provider-ledger.json')
+    buildledger=(scopes.seal(root/'build-provider-ledger.json') if native else FrozenProviderLedger.freeze(model,root/'build-provider-ledger.json'))
     phase.append('build_ledger_sealed',{'digest':buildledger.record.content_hash})
     if len(builds)==6 and all(r.record.data()['status']=='succeeded' for r in builds):
         prefix=tuple(phase.rows)
-        record=FrozenRecord.from_dict({'schema':'execution-improvement-candidate-barrier-v1','plan_digest':plan.record.content_hash,
+        record=FrozenRecord.from_dict({'schema':('execution-improvement-candidate-barrier-v2' if b['schema'].endswith('-v2') else 'execution-improvement-candidate-barrier-v1'),'plan_digest':plan.record.content_hash,
             'build_receipts':[r.record.content_hash for r in builds],'provider_ledger_digest':buildledger.record.content_hash,
             'candidate_selections':selections(b['baseline_digest']),
             'controller_prefix_digest':FrozenRecord.from_dict({'rows':[r.data() for r in prefix]}).content_hash})
@@ -379,7 +393,7 @@ def run_execution_improvement_train(plan,*,prospective_exporter,snapshot_root,ex
     args_by_key={}
     for row in targets:
         result=None
-        if poison or model.ledger['usage_incomplete'] or not panels:
+        if poison or terminal() or not panels:
             row.update(status='blocked',reason='global_barrier_or_unknown_cost');phase.append('target_blocked',row.copy());persist();results.append(None);continue
         panel,cell=lookup[row['pair'],row['arm_id'],row['task_digest']];packet=next(p for p in packets if p.task.content_hash==cell.task_digest)
         args=dict(panel=panel,task=packet.task,scenario=scenarios[cell.key],package=barrier.package(panel.obligation_id,cell.arm_id),
@@ -389,7 +403,8 @@ def run_execution_improvement_train(plan,*,prospective_exporter,snapshot_root,ex
         args_by_key[cell.key]=args;cellroot=root/'targets'/FrozenRecord.from_dict(cell.data()).content_hash
         row['cell']=cell.data();row['status']='running';phase.append('target_reserved',{'cell':cell.data()});persist()
         try:
-            result=run_execution_improvement_cell(cell=cell,**args,sidecar=cellroot,model=model,audit_verifier=audit_verifier)
+            with (scopes.scope('target:'+FrozenRecord.from_dict(cell.data()).content_hash) if native else nullcontext(model)) as scoped_model:
+                result=run_execution_improvement_cell(cell=cell,**args,sidecar=cellroot,model=scoped_model,audit_verifier=audit_verifier)
             row.update(status='executed' if result.runtime.status=='succeeded' else 'failed',runtime_digest=result.runtime.trace_digest)
         except Exception as exc: row.update(status='failed',error_type=type(exc).__name__)
         sourcepath=cellroot/'source-verification.json'
@@ -410,7 +425,7 @@ def run_execution_improvement_train(plan,*,prospective_exporter,snapshot_root,ex
             row['solver_docker_attempts']=sum(FrozenRecord(line).data()['stage']=='execution_request' for line in result.runtime.trace_path.read_text().splitlines())
         row['docker_attempts']=row.get('auxiliary_docker_attempts',0)+row.get('solver_docker_attempts',0)
         results.append(result);phase.append('target_completed',{'cell_key':list(cell.key),'status':row['status']});persist()
-    ledger=FrozenProviderLedger.freeze(model,root/'target-provider-ledger.json');phase.append('target_ledger_sealed',{'digest':ledger.record.content_hash})
+    ledger=(scopes.seal(root/'target-provider-ledger.json') if native else FrozenProviderLedger.freeze(model,root/'target-provider-ledger.json'));phase.append('target_ledger_sealed',{'digest':ledger.record.content_hash})
     for row,result in zip(targets,results,strict=True):
         if result is None or row['status']!='executed': continue
         cell=result.cell;args=args_by_key[cell.key];service=services[cell.coverage_id]
@@ -441,11 +456,11 @@ def run_execution_improvement_train(plan,*,prospective_exporter,snapshot_root,ex
     sourcecalls=len(sourcecharges)
     buildercalls=sum(sum(x['stage']=='builder_request' for x in _phase_rows(r.root/'phase.jsonl')) for r in builds)
     dockercalls=sum(r['docker_attempts'] for r in targets);scorercalls=sum(r['scorer_calls'] for r in targets)
-    receipt=FrozenRecord.from_dict({'schema':'execution-improvement-train-receipt-v1','plan_digest':plan.record.content_hash,'allocation':ALLOCATION,
+    receipt=FrozenRecord.from_dict({'schema':('execution-improvement-train-receipt-v2' if b['schema'].endswith('-v2') else 'execution-improvement-train-receipt-v1'),'plan_digest':plan.record.content_hash,'allocation':ALLOCATION,
         'expected_builds':6,'arm_recipe_bindings':selections(b['baseline_digest']),'successful_builds':sum(r['status']=='succeeded' for r in buildrows),'expected_cells':32,
         'failed_builds':sum(r['status']=='failed' for r in buildrows),'blocked_builds':sum(r['status']=='blocked' for r in buildrows),
         'scored_cells':len(scores),'failed_cells':sum(r['status']=='failed' for r in targets),'blocked_cells':sum(r['status']=='blocked' for r in targets),
-        'actual_model_usage':_usage(model),'source_calls':sourcecalls,'actual_builder_executions':buildercalls,
+        'actual_model_usage':usage(),'source_calls':sourcecalls,'actual_builder_executions':buildercalls,
         'known_source_cost_units':sum(c['cost_units'] for c in sourcecharges if c.get('cost_units') is not None),
         'source_cost_unknown':any(c.get('cost_units') is None for c in sourcecharges),
         'actual_retrieval_calls':0,
@@ -455,7 +470,7 @@ def run_execution_improvement_train(plan,*,prospective_exporter,snapshot_root,ex
         'actual_solver_docker_attempts':sum(r.get('solver_docker_attempts',0) for r in targets),
         'actual_docker_attempts':dockercalls,'actual_scorer_calls':scorercalls,
         'unused_builder_opportunities':6-buildercalls,'unused_docker_opportunities':96-dockercalls,'unused_scorer_opportunities':32-scorercalls,
-        'unused_model_opportunities':70-len(model.ledger['calls']),'unused_source_opportunities':76-sourcecalls,
+        'unused_model_opportunities':70-(len(model.inspect()) if native else len(model.ledger['calls'])),'unused_source_opportunities':76-sourcecalls,
         'structural_exclusions':excluded,'pruned_cells':[],'contrasts':[c.data() for c in contrasts],
         'history_acquisition':{'model_requests':len(plan.history.binding.data()['request_digests']),'cost':'inherited_unknown_not_in_current_allocation'},
         'validation_opened':False,'scientific_effectiveness_proven':False,'scorer_usage_unknown':bool(scorercalls),
