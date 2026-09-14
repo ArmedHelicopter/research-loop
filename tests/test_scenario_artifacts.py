@@ -91,3 +91,37 @@ def test_throwing_first_callback_keeps_request_and_failure_outcome(tmp_path):
     rows = [FrozenRecord(line).data()["descriptor"] for line in (root / "scenario-artifacts.jsonl").read_text(encoding="utf-8").splitlines()]
     outcome = next(row for row in rows if row["kind"] == "scenario_callback_return")
     assert outcome["status"] == "failed" and outcome["payload"]["canonical"]["error"] == str(error)
+
+
+def test_failed_malformed_runtime_bytes_are_retained_without_success_parse(tmp_path):
+    root = tmp_path / "run"; error = RuntimeError("stop after malformed sidecar"); calls = 0
+    def callback(_request):
+        nonlocal calls
+        calls += 1
+        if calls == 2:
+            (root / "shadow-runtime.sqlite").write_bytes(b"partial sqlite bytes")
+            raise error
+        return FrozenRecord.from_dict({"reply": "first"})
+    with pytest.raises(RuntimeError):
+        _run(root, "Q6.5", "sealed_calibrated", callback)
+    terminal = FrozenRecord((root / "scenario-terminal.json").read_text(encoding="utf-8").strip()).data()
+    assert terminal["status"] == "failed" and terminal["files"]["shadow-runtime.sqlite"]["bytes"] > 0
+    report = inspect_scenario_artifact_failure(task=task_for("blade"), frozen_controls=controls(task_for("blade")),
+                                               sidecar=root, experiment_id="Q6.5", variant="sealed_calibrated")
+    assert report.data()["storage_integrity_verified"]
+
+
+def test_failed_reader_requires_every_sealed_blob(tmp_path):
+    root = tmp_path / "run"; calls = 0
+    def callback(_request):
+        nonlocal calls
+        calls += 1
+        if calls == 2: raise RuntimeError("stop")
+        return FrozenRecord.from_dict({"reply": "first"})
+    with pytest.raises(RuntimeError):
+        _run(root, "Q6.5", "sealed_calibrated", callback)
+    blob = next((root / "scenario-blobs").iterdir()); blob.unlink()
+    task = task_for("blade")
+    with pytest.raises(ContractError):
+        inspect_scenario_artifact_failure(task=task, frozen_controls=controls(task), sidecar=root,
+                                          experiment_id="Q6.5", variant="sealed_calibrated")
