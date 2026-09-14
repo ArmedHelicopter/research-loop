@@ -180,6 +180,10 @@ def test_closed_scorer_scope_and_history_removal(grid):
     assert parse_combination_panel(wire,full_loo=True)==run.panel
     for flags in ({},{'execution_improvement':True},{'mechanism_improvement':True},{'state_improvement':True},{'full_loo':1},{'full_loo':True,'execution_improvement':True}):
         with pytest.raises(ContractError):parse_combination_panel(wire,**flags)
+    for family in ('lineage_retrieval_improvement','mechanism_exploration',
+                   'mechanism_scheduling','admission_prediction_exploration'):
+        with pytest.raises(ContractError):parse_combination_panel(wire,**{family:True})
+        with pytest.raises(ContractError):parse_combination_panel(wire,full_loo=True,**{family:True})
     for build in run.builds:
         body=build.record.data();active=set(build.cell.runtime_arm.data()['enabled']);assert 'M8' not in active
         removed=body['recipe'].get('removed_module')
