@@ -79,6 +79,8 @@ def run_state_improvement_cell(*,panel,cell,task,scenario,package,material,sourc
     session=RunSession(task,package_digest=package.digest,arm=cell.runtime_arm,objective=FrozenRecord.from_dict(scenario.data()['objective']),
         slots=SLOTS,execution_limit=1,sidecar=sidecar/'runtime',verifier=audit_verifier,required_audit=('measurement',),
         context_budget=material.data()['context_budget_bytes'])
+    from research_loop.modular.state_configuration_artifacts import bind_state_configuration
+    bind_state_configuration(session,barrier=barrier,cell=cell,package=package)
     workflow=ModularWorkflow(session)
     transition=_transition(session.evidence,session.claims,session.cache,material,workflow.enabled,q)
     session._record('state_improvement_transition',{'transition':transition.data(),'source_sha256':source,
@@ -89,6 +91,7 @@ def run_state_improvement_cell(*,panel,cell,task,scenario,package,material,sourc
         image=scenario.data()['image'],broker=broker,model=model,analysis_slot=SLOTS[0],final_slot=SLOTS[1],
         joint_mechanism=joint,panel_cell_binding=FrozenRecord.from_dict(opaque_panel_cell_binding(cell)),
         driver_id=cell.coverage_id,timeout_seconds=scenario.data()['timeout_seconds'])
+    session.artifacts.seal()
     return StateImprovementResult(cell,_runtime(cell,session,joint,'succeeded' if solver.status=='execution_succeeded' else 'failed'),
         solver,transition,joint)
 
@@ -99,6 +102,8 @@ def verify_state_improvement_cell(result,*,panel,task,scenario,package,material,
     cell=result.cell;_validate(panel,cell,task,scenario,package,material,source_verifier,barrier)
     check_material_inputs(material,task,broker,public_inputs)
     PanelReceiptVerifier()._verify_runtime(result.runtime,cell)
+    from research_loop.modular.state_configuration_artifacts import verify_state_configuration
+    verify_state_configuration(trace_path=result.runtime.trace_path,barrier=barrier,cell=cell,package=package)
     path=result.runtime.trace_path;events=_read_events(path);lock=events[0]['data'];binding=_source_binding(cell)
     if (lock['objective']!=scenario.data()['objective'] or lock['slots']!=list(SLOTS) or lock['execution_limit']!=1
             or lock['context_budget']!=material.data()['context_budget_bytes'] or lock['required_audit']!=['measurement']):
