@@ -6,8 +6,8 @@
 
 | 模块/边界 | 当前实际接入 | 待补齐的逐产物覆盖 |
 | --- | --- | --- |
-| P0 | 运行任务锁、独立 run ID、冻结计划摘要；主 benchmark 与扩展导出器的实际 TRAIN 数据包、公共文件、逐包封存和原始批次完成锚点；普通/组合训练消费者及参考答案桥接校验；失败写入与曝光预约位置；旧 ExtendedTrainProjectionExporter 的公共输出、来源绑定、部分写入及实际返回关口；旧 TrainPacketExporter 的原始 CSV/public、首写前尝试 ID、独立 custody/source 核验和三处实际消费关口 | 完整私有划分台账、权限/租约及其余资源/读取入口的独立登记 |
-| M1、M2 | RunSession 每项准入输入/拒绝/决定；evidence/claims 原日志逐项事件、实际输出、修订/撤回及依赖传播；磁盘重读与按操作重放；Q8.4 独立来源 ledger 逐项观察 | 材料资格评估等其他 M1 入口；其他独立持久化 ledger 接入 |
+| P0 | 运行任务锁、独立 run ID、冻结计划摘要；主 benchmark 与扩展导出器的实际 TRAIN 数据包、公共文件、逐包封存和原始批次完成锚点；普通/组合训练消费者及参考答案桥接校验；失败写入与曝光预约位置；旧 ExtendedTrainProjectionExporter 的公共输出、来源绑定、部分写入及实际返回关口；旧 TrainPacketExporter 的原始 CSV/public、首写前尝试 ID、独立 custody/source 核验和三处实际消费关口；模块启用前的共用材料资格评估逐调用记录、中间版本、源码/输入绑定、失败字节及实际返回/宿主消费核验 | 完整私有划分台账、权限/租约及其余资源/读取入口的独立登记 |
+| M1、M2 | RunSession 每项准入输入/拒绝/决定；evidence/claims 原日志逐项事件、实际输出、修订/撤回及依赖传播；磁盘重读与按操作重放；Q8.4 独立来源 ledger 逐项观察；Admission 评估保留两方主体与结论一致性，并在资格封存前检查 | 其他准入入口盘点；其他独立持久化 ledger 接入 |
 | M3 | 每次实际调用的上下文、当时的 evidence/claims 快照、筛选/压缩及预算；公开投影重算；调用前的描述符位置与父项校验 | 历史版本的完整运行环境重建；其他上下文生产入口盘点 |
 | M4 | PredictionRegistry 每次 freeze/outcome 原始事件；C4 冻结声明必须对应此前产生的预测 | 其他宿主预测入口、跨目录适用范围及寿命管理 |
 | M5 | ReviewEngine 每次 open/submit/revise/score 与实际 reveal 返回；按当时已有提交检查封存/揭示；保留禁用时普通顺序评审 | 跨目录评审引用；其他宿主评审入口盘点 |
@@ -47,6 +47,10 @@ TRAIN/VAL 的描述符规则不等于操作系统权限隔离。优化器只能�
 新导出器的 v2 回执与公开读取边界详见 [P0 TRAIN 数据包产物](P0-TRAIN-PACKET-ARTIFACTS.md)。
 旧扩展格式单独见 [旧扩展 TRAIN 导出入口](P0-LEGACY-EXTENDED-ARTIFACTS.md)，不自动转换为 prospective v2。
 旧主 benchmark 格式及三处消费关口见 [旧主 TRAIN 数据包](P0-LEGACY-PRIMARY-ARTIFACTS.md)。
+共用资格评估及 Admission 的逐调用、中间回执和失败封存见
+[材料资格评估产物](MATERIAL-QUALIFICATION-ARTIFACTS.md)。67 项冻结检查通过，
+包含实际完整模块和普通对照的 history→target；24 份选定成功、拒绝、部分失败
+及篡改副本已只读回查。资格记录不代表 M1 启用，存储完整不代表资格通过。
 重复摘要计算的实现与检查范围见 [不可变记录摘要](IMMUTABLE-RECORD-DIGESTS.md)。
 九组件实际存储另见 [部署与回滚产物](JOINT-DEPLOYMENT-ARTIFACTS.md)。其完整审计
 包含验收授权信息，即使任务属于 TRAIN，也不能进入优化器上下文。

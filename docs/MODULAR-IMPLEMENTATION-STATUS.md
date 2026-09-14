@@ -3,6 +3,42 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Shared material qualification artifacts (2026-09-15)
+
+At `d1f6ca9fde8249ef0e45a0f6a1edba17c4584070`, the shared TRAIN qualifier
+retains each authority reservation, original typed/bounded return, checked
+outcome, cost state and every overwritten sidecar version. Exact input/source
+bindings, first-write attempt ID and independent complete/failed storage
+readers are wired into actual return and C4/C5 verification. Admission subject
+checks and agreement run before the accepted seal. Storage failure halts later
+calls and keeps the original cause without exposing free-form error text.
+See [the contract and remaining limits](MATERIAL-QUALIFICATION-ARTIFACTS.md).
+
+The authoritative frozen run passed 67/67 checks in 403.891 seconds, with 735
+source/document files byte-identical before and after. It includes 40 focused
+artifact cases, 13 qualifier failure cases, three actual host checks, ten label
+isolation checks and the existing ordinary-control history-to-target case.
+The two successful pipeline pairs used 22 synthetic MAIN opportunities and ten
+actual Docker executions; no new model service/API or real VAL calls occurred.
+Missing seals blocked work before the first model call. Coherent outer receipt
+rehashing did not admit altered qualification history. Readback made no new
+authority calls and left original files unchanged.
+
+`results/modular-engineering-20260915/material-qualification-artifacts-r1/`
+retains 39 original files/archives plus its manifests: 24 selected specimens,
+comprising five accepted qualifications, five complete rejections, seven
+storage-only failures, three incomplete prefixes and four rejected attack
+copies. Three original host directories and pre-producer input records are
+included. These are qualification outcomes, not five successful experiments.
+Source ZIP members and all retained bytes were checked independently.
+
+The provisional implementation and an initial consumer probe remain recorded.
+The earlier unfrozen 50-case run retained 49 passes and one failure during
+original qualification while code was being edited. It is not used as final
+verification; its JUnit/output and the incomplete earlier attempt are recorded
+separately. This change does not complete every module output, full C5, actual
+benchmark efficacy or VAL acceptance, and neither live C5 source tree changed.
+
 ## Headless material provenance and real rejection (2026-09-14)
 
 The four-TRAIN material authoring worker now has an explicit v3 headless route.

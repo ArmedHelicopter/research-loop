@@ -1,0 +1,86 @@
+........                       [100%]
+================================== FAILURES ===================================
+______ test_coherent_attacks_reject_and_leave_original_usable[authority] ______
+
+cls = <class 'research_loop.modular.material_qualification_artifacts.MaterialQualificationArtifacts'>
+receipt = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/material-own-r2/test_coherent_attacks_reject_a5/original/source.json')
+
+        _fields(data, 'label snapshot')
+        if data['label'] not in {'reserved-0','checked-0','reserved-1','checked-1'}: raise ContractError(_READER_ERROR)
+    elif kind == 'terminal':
+        _fields(data, 'status outcome receipt')
+>       if n != len(rows)-1 or data['status'] != 'completed' or data['outcome'] not in {'accepted','rejected'}: raise ContractError(_READER_ERROR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+research_loop\modular\material_qualification_artifacts.py:332: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'research_loop.modular.material_qualification_artifacts.MaterialQualificationArtifacts'>
+receipt = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/material-own-r2/test_coherent_attacks_reject_a5/original/source.json')
+
+                if key in data and data[key] is not None: raw(data[key])
+            for source in data.get('producer_sources', []):
+                if set(source) != {'path','snapshot'} or not isinstance(source['path'], str): raise ContractError('material artifact reader is non-accepted')
+                raw(source['snapshot'])
+        if rows[0]['kind'] != 'begin' or seal is None: raise ContractError(_READER_ERROR)
+        if seal and (seal['attempt_id'] != rows[0]['data']['attempt_id'] or rows[-1]['kind'] != 'terminal'): raise ContractError(_READER_ERROR)
+        attempt_raw = _read(root/'attempt.json'); attempt = json.loads(attempt_raw)
+        _fields(attempt, 'schema attempt_id request binding material cell_binding')
+        if (attempt['schema'] != 'material-qualification-attempt-v1' or attempt['attempt_id'] != rows[0]['data']['attempt_id']
+                or attempt_raw != (FrozenRecord.from_dict(attempt).encoded+'\n').encode()): raise ContractError(_READER_ERROR)
+        for name in ('request','binding','material','cell_binding'):
+            if raw(rows[0]['data'][name]) != FrozenRecord.from_dict(attempt[name]).encoded.encode(): raise ContractError(_READER_ERROR)
+        if set(inventory) != seen | {'attempt.json','journal.jsonl'} | ({'seal.json'} if seal else set()): raise ContractError(_READER_ERROR)
+        return root, rows, seal, raw
+    
+    @classmethod
+    def verify(cls, receipt: Path, *, request: FrozenRecord, binding: FrozenRecord,
+               material: FrozenRecord, cell_binding: FrozenRecord):
+        try:
+>           return cls._verify(receipt, request=request, binding=binding, material=material, cell_binding=cell_binding)
+                                                                                                       ^^^^^^^^^^^^^^^^^
+E           research_loop.ontology.ContractError: material artifact reader is non-accepted
+
+research_loop\modular\material_qualification_artifacts.py:355: ContractError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/material-own-r2/test_coherent_attacks_reject_a5')
+fault = 'authority'
+
+    @pytest.mark.parametrize('fault', ['event_extra', 'data_extra', 'sequence_bool', 'missing_return',
+        'untyped_return', 'authority', 'cost_bool', 'error_chain', 'terminal', 'attempt', 'sources_missing',
+        'source_path', 'source_bytes', 'extra_blob', 'snapshot_whitespace', 'snapshot_order', 'snapshot_prior_row'])
+    def test_coherent_attacks_reject_and_leave_original_usable(tmp_path, fault):
+>       verifier, material, cell, calls, original, receipt = _original_and_attack(tmp_path)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_material_qualification_artifacts.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_material_qualification_artifacts.py:78: in _original_and_attack
+    verifier.qualify(material, original, cell_binding=cell)
+research_loop\modular\lineage_combination_material.py:213: in qualify
+    return self.replay(material, path, cell_binding=cell_binding)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\lineage_combination_material.py:232: in replay
+    MaterialQualificationArtifacts.verify(path, request=request, binding=self.binding(),
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+cls = <class 'research_loop.modular.material_qualification_artifacts.MaterialQualificationArtifacts'>
+receipt = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/material-own-r2/test_coherent_attacks_reject_a5/original/source.json')
+
+        _fields(data, 'label snapshot')
+        if data['label'] not in {'reserved-0','checked-0','reserved-1','checked-1'}: raise ContractError(_READER_ERROR)
+    elif kind == 'terminal':
+        _fields(data, 'status outcome receipt')
+        if n != len(rows)-1 or data['status'] != 'completed' or data['outcome'] not in {'accepted','rejected'}: raise ContractError(_READER_ERROR)
+    else: raise ContractError(_READER_ERROR)
+>   if 'authority' in data and (type(data['authority']) is not str or not data['authority']): raise ContractError(_READER_ERROR)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   research_loop.ontology.ContractError: material artifact reader is non-accepted
+
+research_loop\modular\material_qualification_artifacts.py:334: ContractError
+- generated xml file: E:\_ryanDev\AI\research-loop-modular\work\material-own-r2.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_material_qualification_artifacts.py::test_coherent_attacks_reject_and_leave_original_usable[authority]
+

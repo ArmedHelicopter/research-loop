@@ -1,0 +1,40 @@
+{
+  "base_commit": "05018c7df97b1e29bebd5e9b30a137bb57dd752b",
+  "commit_status": "NOT COMMIT PURE: implementation agent edited worktree during review; source snapshots identify execution input",
+  "captured_companion_source_sha256": "6da894cbac1de71c2d79da222a21bfad9a25b2e4104659584027b7ea35d49859",
+  "captured_qualifier_source_sha256": "52b5aa0a4cb05810567320afdf51ac4fab45ba403461ed80d81742338c02f858",
+  "original_callbacks": 2,
+  "attacks": {
+    "remove_producers": {
+      "type": "ContractError",
+      "message": "material artifact reader is non-accepted"
+    },
+    "checked_error_chain": {
+      "type": "ContractError",
+      "message": "material artifact reader is non-accepted"
+    },
+    "extra_event_field": "ACCEPTED",
+    "malformed_data": {
+      "type": "TypeError",
+      "message": "argument of type 'NoneType' is not iterable"
+    }
+  },
+  "storage_failure": {
+    "type": "OSError",
+    "message": "synthetic-private-storage-text"
+  },
+  "storage_inspect": "ACCEPTED",
+  "storage_retained_names": [
+    "source.json",
+    "source.json.artifacts/blobs/19ceaa3906fe2f463cb9dcea2e17b7e07444166970482ce419a19c552ae44e36",
+    "source.json.artifacts/blobs/23a13637babea3b81575d7357234c741f44885f8573401eee4ff415ecfd0079e",
+    "source.json.artifacts/blobs/4abb2f4543e3f161f5d28e5772af8a7d6a01f66915bf80c85357e69c08f0de63",
+    "source.json.artifacts/blobs/52b5aa0a4cb05810567320afdf51ac4fab45ba403461ed80d81742338c02f858",
+    "source.json.artifacts/blobs/60b37fcaf8e74389f3c5f5f293fce9d4c7ac2905dc954a3563ceffae2f92c175",
+    "source.json.artifacts/blobs/6da894cbac1de71c2d79da222a21bfad9a25b2e4104659584027b7ea35d49859",
+    "source.json.artifacts/blobs/b3ea1fd727e933fc18e59b8600a0e7b3259f53ba6e01306ea19b47d605346f96",
+    "source.json.artifacts/blobs/c71b9a2ccc2261f9d7617e728c5353c67ab630d41bff15ddb6c9379fc0ad87bd",
+    "source.json.artifacts/journal.jsonl"
+  ],
+  "total_callbacks": 3
+}

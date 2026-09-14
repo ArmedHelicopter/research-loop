@@ -1,0 +1,15 @@
+{
+  "status": "verified",
+  "original_files": 39,
+  "specimens": 24,
+  "counts": {
+    "accepted": 5,
+    "rejected": 5,
+    "failed_storage_only": 7,
+    "incomplete": 3,
+    "attack_rejected": 4
+  },
+  "read_only": true,
+  "producers_rerun": false,
+  "callbacks_on_read": 0
+}
