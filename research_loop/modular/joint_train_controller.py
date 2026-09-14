@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Callable
 
 from evaluation.modular.combination_scoring import (
-    issue_combination_score_input,
+    _score_input_payload,
     verify_combination_adapted_receipt,
     verify_combination_score_input,
 )
@@ -149,8 +149,12 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
                    'recipe_id': recipe['id'], 'status': 'not_started'} for recipe in plan.builds]
     rows = [{'arm_id': recipe['id'], 'task_digest': packet.task.content_hash, 'status': 'not_started', 'scorer_calls': 0}
             for recipe in plan.recipes for packet in plan.packets]
-    if len(build_rows) != 46 or len(rows) != 118 or len(plan.recipes) != 59:
-        raise ContractError('common controller requires the fixed 46-build, 59-recipe, 118-target grid')
+    allocation = plan.protocol.record.data()['allocation']
+    if (len(plan.recipes) != 59 or len(build_rows) != allocation['unique_canonical_builds']
+            or len(rows) != allocation['target_cells']
+            or allocation['executable_arm_procedures'] != len(plan.recipes)
+            or allocation['target_cells'] != len(plan.recipes) * len(plan.packets)):
+        raise ContractError('common controller grid differs from the frozen recipe and target denominators')
 
     def persist(captured: dict | None = None) -> None:
         body = {'schema': 'c5-common-train-controller-attempts-v1', 'plan_digest': plan.record.content_hash,
@@ -262,9 +266,9 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
                     recipe = next(recipe for recipe in plan.recipes if recipe['id'] == row['arm_id'])
                     packet = next(packet for packet in plan.packets if packet.task.content_hash == row['task_digest'])
                     try:
-                        score_input = issue_combination_score_input(panel=panel, result=result.inner, task=packet.task,
-                                                                    scenario=scenarios[packet.task.content_hash], package=barrier.package(recipe),
-                                                                    authority=execution_authority)
+                        # _verify_target above is the C5-owned complete replay.
+                        # The common serializer then has no authority of its own.
+                        score_input = execution_authority.issue(_score_input_payload(panel, result.inner).data())
                         row['scorer_calls'] = 1
                         journal.append('scorer_reserved', {'arm_id': row['arm_id'], 'task_digest': row['task_digest'], 'input_digest': score_input.content_hash})
                         score = service.score_combination(panel=panel, cell=result.inner.cell, score_input=score_input)
@@ -315,7 +319,7 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
                  'historical_scorer_calls': len(scores), 'final_provider_eligible': final_provider_eligible,
                  'scorer_process': process, 'selection_opened': False, 'validation_opened': False,
                  'candidate_activation': 'none_offline_experiment', 'scientific_effectiveness_proven': False,
-                 'status': 'complete_train_engineering' if (len(scores) == 118 and process['closed'] is True and final_provider_eligible) else 'inconclusive'})
+                 'status': 'complete_train_engineering' if (len(scores) == len(rows) and process['closed'] is True and final_provider_eligible) else 'inconclusive'})
     _exclusive(root / 'common-controller-receipt.json', receipt)
     return JointCommonTrainRun(root, plan, executor, barrier, panel, tuple(builds), tuple(targets), target_ledger,
                                tuple(score_inputs), tuple(scores), receipt)
@@ -326,31 +330,63 @@ def verify_joint_common_train_run(run: JointCommonTrainRun, *, execution_authori
     """Freshly replay a complete controller output for a later TRAIN selector."""
     if type(run) is not JointCommonTrainRun or type(run.plan) is not FrozenJointTrainRuntimePlan:
         raise ContractError('exact common controller output required')
+    allocation = run.plan.protocol.record.data()['allocation']
+    expected_target_count = len(run.plan.recipes) * len(run.plan.packets)
     if (run.barrier is None or run.panel is None or type(run.target_ledger) is not PhaseProviderLedger
-            or len(run.builds) != 46 or len(run.targets) != 118 or len(run.scores) != 118 or len(run.score_inputs) != 118):
+            or len(run.builds) != len(run.plan.builds) or len(run.targets) != expected_target_count
+            or len(run.scores) != expected_target_count or len(run.score_inputs) != expected_target_count
+            or len(run.panel.cells) != expected_target_count
+            or allocation['unique_canonical_builds'] != len(run.plan.builds)
+            or allocation['target_cells'] != expected_target_count):
         raise ContractError('only a complete common TRAIN output can feed a later selector')
     if (run.root / 'common-controller-receipt.json').read_bytes() != run.receipt.encoded.encode('utf-8'):
         raise ContractError('common controller receipt bytes changed')
     run.plan.__post_init__(); run.barrier.verify(); panel, scenarios = compile_panel(run.barrier)
     if panel != run.panel:
         raise ContractError('common controller panel differs from sealed barrier')
-    rows = run.receipt.data()['targets']
-    if len(rows) != len(run.targets) or any(row['status'] != 'scored' for row in rows):
+    body = run.receipt.data()
+    required = {'schema', 'plan_digest', 'allocation', 'actual', 'unused', 'builds', 'targets', 'barrier_digest', 'panel_digest',
+                'target_provider_ledger_digest', 'target_provider_ledger_kind', 'native_accounting', 'historical_scorer_calls',
+                'final_provider_eligible', 'scorer_process', 'selection_opened', 'validation_opened', 'candidate_activation',
+                'scientific_effectiveness_proven', 'status'}
+    if set(body) != required or body['schema'] != _SCHEMA or body['plan_digest'] != run.plan.record.content_hash or body['allocation'] != allocation:
+        raise ContractError('common controller final receipt schema or plan binding differs')
+    rows = body['targets']
+    expected_cells = tuple(target.inner.cell for target in run.targets if target is not None)
+    if (len(rows) != len(run.targets) or len(expected_cells) != expected_target_count or tuple(run.panel.cells) != expected_cells
+            or tuple((row['arm_id'], row['task_digest']) for row in rows) != tuple((cell.arm_id, cell.task_digest) for cell in run.panel.cells)
+            or any(row['status'] != 'scored' for row in rows)):
         raise ContractError('common controller does not retain a complete scored denominator')
     inputs = {tuple(score_input.data()['body']['cell_key']): score_input for score_input in run.score_inputs}
     scores = {score.cell_key: score for score in run.scores}
+    keys = {cell.key for cell in run.panel.cells}
+    if len(inputs) != len(run.score_inputs) or len(scores) != len(run.scores) or set(inputs) != keys or set(scores) != keys:
+        raise ContractError('common controller score envelopes do not exactly cover the panel')
+    calls = tuple(R(row['view']) for row in run.target_ledger.original.record.data()['calls'])
+    accounting = call_accounting(calls)
+    actual = _actual(tuple([*run.builds, *[target for target in run.targets if target is not None]]), accounting, rows)
+    if (body['native_accounting'] != accounting or body['actual'] != actual
+            or body['unused'] != {key: allocation[key] - value for key, value in actual.items()}
+            or body['barrier_digest'] != run.barrier.record.content_hash or body['panel_digest'] != run.panel.digest
+            or body['target_provider_ledger_digest'] != run.target_ledger.record.content_hash
+            or body['target_provider_ledger_kind'] != 'PhaseProviderLedger' or body['historical_scorer_calls'] != len(run.scores)
+            or body['selection_opened'] is not False or body['validation_opened'] is not False
+            or body['candidate_activation'] != 'none_offline_experiment' or body['scientific_effectiveness_proven'] is not False):
+        raise ContractError('common controller final receipt cross-binding differs')
     for target, row in zip(run.targets, rows, strict=True):
         if target is None or target.inner.cell.key not in inputs or target.inner.cell.key not in scores:
             raise ContractError('common controller score binding is incomplete')
         _verify_target(target, barrier=run.barrier, panel=run.panel, ledger=run.target_ledger)
         score_input = inputs[target.inner.cell.key]
-        verify_combination_score_input(score_input, authority_keys=execution_authority_keys, panel=run.panel, cell=target.inner.cell)
+        signed = verify_combination_score_input(score_input, authority_keys=execution_authority_keys, panel=run.panel, cell=target.inner.cell)
+        rebuilt = _score_input_payload(run.panel, target.inner)
+        if {key: value for key, value in signed.data().items() if key != 'authority'} != rebuilt.data():
+            raise ContractError('signed common score input differs from its replayed target candidate')
         verify_combination_adapted_receipt(scores[target.inner.cell.key], authority_keys=scorer_authority_keys,
                                            config=ScorerConfig(R(run.plan.protocol.record.data()['scorer'])), panel=run.panel,
                                            cell=target.inner.cell, score_input=score_input,
                                            execution_authority_keys=execution_authority_keys)
     run.target_ledger.verify()
-    body = run.receipt.data()
     if body['final_provider_eligible'] is not True or body['status'] != 'complete_train_engineering':
         raise ContractError('common controller output is not currently provenance eligible')
     return run.receipt
