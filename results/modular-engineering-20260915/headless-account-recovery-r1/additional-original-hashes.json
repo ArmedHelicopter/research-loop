@@ -1,0 +1,682 @@
+{
+  "copied_originals": [
+    {
+      "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-source-byte-sync-r2.json",
+      "member": "additional-originals/headless-review-source-byte-sync-r2.json",
+      "sha256": "2e0addb8d341c2c8f924ce37183c4c176c8ada2273a0c9f2259e9f41bbfcb3b2",
+      "bytes": 5747,
+      "mtime_ns": 1789427494881305300
+    },
+    {
+      "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\create_headless_review_runtime_r2.py",
+      "member": "additional-originals/create_headless_review_runtime_r2.py",
+      "sha256": "e15e746c6d1b2361055abfa5b67da1fb05f0c031108f956ec2527c63e2ffad3f",
+      "bytes": 3007,
+      "mtime_ns": 1789427489057953300
+    },
+    {
+      "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prepare_headless_review_r2.py",
+      "member": "additional-originals/prepare_headless_review_r2.py",
+      "sha256": "ff10b1ec9d8032762240713f8d2dec05135ff6d587027bcaf9501028f8678c38",
+      "bytes": 15562,
+      "mtime_ns": 1789426669878121200
+    },
+    {
+      "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_headless_review_r2.py",
+      "member": "additional-originals/run_headless_review_r2.py",
+      "sha256": "820346a807ad9eb482634b1cfcfae28e03d4d974c246ecb0da4756e00f1a613b",
+      "bytes": 7574,
+      "mtime_ns": 1789426669878121200
+    },
+    {
+      "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-preparation-r2\\public-preparation.json",
+      "member": "additional-originals/public-preparation.json",
+      "sha256": "6f116656cfe65e743d37dd9ba9aa59164fa6e3461a5ddef1136d96d6f66c6eae",
+      "bytes": 5079,
+      "mtime_ns": 1789427523934581800
+    },
+    {
+      "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-preparation-r2\\allocation-envelope.json",
+      "member": "additional-originals/allocation-envelope.json",
+      "sha256": "87c1ab82e09933f83a0bf40be26ea3c606f8d5bae8b9dea2240f3de8d8ad114b",
+      "bytes": 1492,
+      "mtime_ns": 1789427521779520700
+    },
+    {
+      "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-recovery-integration-r1.junit.xml",
+      "member": "additional-originals/headless-recovery-integration-r1.junit.xml",
+      "sha256": "7e735b193454bec6f444333ffe15eb274a2203569b8bba665a6c3afce46cde9f",
+      "bytes": 5377,
+      "mtime_ns": 1789427209028414900
+    },
+    {
+      "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-recovery-integration-r1-note.json",
+      "member": "additional-originals/headless-recovery-integration-r1-note.json",
+      "sha256": "e2f971915622c67c35f111de842a133107a591fe1c356398faa5b51aa7d1d9b4",
+      "bytes": 583,
+      "mtime_ns": 1789426605160703300
+    },
+    {
+      "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-recovery-chronology-r1.xml",
+      "member": "additional-originals/headless-recovery-chronology-r1.xml",
+      "sha256": "19acb5feed350b735fed27fa4dd081b6f27365f13098ab462efef42871108335",
+      "bytes": 399,
+      "mtime_ns": 1789427274434563000
+    }
+  ],
+  "synthetic_samples": [
+    {
+      "archive": "test_recovered_account_snapsho0.zip",
+      "sha256": "02d8641b0943ff46323baecebd662b83ec86d258f65ee76cae0f0a741dfaff99",
+      "members": [
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl",
+          "member": "source/private-journal.jsonl",
+          "sha256": "8b1493513675cc308846f891d785883223c086e0861fd655e4438e3b77f5c890",
+          "bytes": 119255,
+          "mtime_ns": 1789427385503532900
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\headless-request.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/headless-request.private.json",
+          "sha256": "bb0fd2eb08425a34ca1a19705d49797b6daf82eb694edccd38c4f23b3f6ffd7c",
+          "bytes": 2718,
+          "mtime_ns": 1789427382529005200
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-000\\credits.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-000/credits.private.json",
+          "sha256": "f7e707eaf0d91ea9c72c45b841ff2a08fb39ec6198a573e20bcc489180d2d0fb",
+          "bytes": 263,
+          "mtime_ns": 1789427382927974500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-000\\failure.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-000/failure.json",
+          "sha256": "daabdbf50dd0a09edb207357af50cf730b23affd8a7a71a88d1f4c1a8227957a",
+          "bytes": 108,
+          "mtime_ns": 1789427382928974300
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-000\\requests.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-000/requests.json",
+          "sha256": "3532a2f2366c10b26febd403bca1b9cba503222917f91ebed57ac31086c581fd",
+          "bytes": 555,
+          "mtime_ns": 1789427382927974500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-001\\credits.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-001/credits.private.json",
+          "sha256": "90cb9c7bc4fcfa18966fe29ed6cbe4bcb791cfb661ff7bc7fdcf5a1ad53d0c08",
+          "bytes": 263,
+          "mtime_ns": 1789427382940317300
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-001\\observation.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-001/observation.json",
+          "sha256": "b48fe0999a79732bc2c0ecddd15447c5a914133a40533f145390830b8fa04b57",
+          "bytes": 692,
+          "mtime_ns": 1789427382948284100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-001\\requests.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-001/requests.json",
+          "sha256": "973e4737b30d8bcdce2817af2bddebab7ea7e07fa2e3c0f8f2f23cd431d26fc7",
+          "bytes": 959,
+          "mtime_ns": 1789427382942424300
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-001\\topup.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-001/topup.private.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "bytes": 2,
+          "mtime_ns": 1789427382941355900
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-001\\user.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-001/user.private.json",
+          "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762",
+          "bytes": 142,
+          "mtime_ns": 1789427382941876800
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempts.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempts.json",
+          "sha256": "edd75219936cfb5ff9c2bc390ac86f5a4a780707bf60762ab059193f56528996",
+          "bytes": 1273,
+          "mtime_ns": 1789427382960636900
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\credits.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/credits.private.json",
+          "sha256": "0e4d44ea44420d7ba58c77140d3ed41cda73c687edc28bb617833fb1eeeaba94",
+          "bytes": 263,
+          "mtime_ns": 1789427382775752800
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\observation.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/observation.json",
+          "sha256": "d9a257f3ce571acafa1a91b6233d12d90fc54d9cb7ed6ac26f5d3239776e45fd",
+          "bytes": 692,
+          "mtime_ns": 1789427382782750400
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\requests.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/requests.json",
+          "sha256": "de18aaac96ffbcbb1c33fd9cf8ea15d828c97f3dcc9d01a56ce0d0f989bd3716",
+          "bytes": 959,
+          "mtime_ns": 1789427382776751500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\topup.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/topup.private.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "bytes": 2,
+          "mtime_ns": 1789427382776751500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\user.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/user.private.json",
+          "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762",
+          "bytes": 142,
+          "mtime_ns": 1789427382776751500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempts.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempts.json",
+          "sha256": "a34f54940446e930a05fea18a6a53b4e4149cfe723af778f5d2a78deb91f507a",
+          "bytes": 1064,
+          "mtime_ns": 1789427382795111600
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\command.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/command.json",
+          "sha256": "630f232caac422718e63242e82be9f5a08649a55b3c092d0f3c5945b9fe2df17",
+          "bytes": 2815,
+          "mtime_ns": 1789427382706002400
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\inspect\\process.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/inspect/process.json",
+          "sha256": "0651f30d2da9f110412bc59d5afd4913d183277931ce20bf86e83c2cc5c145db",
+          "bytes": 6463,
+          "mtime_ns": 1789427382769751300
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\inspect\\stderr.private.txt",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/inspect/stderr.private.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "mtime_ns": 1789427382768751700
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\inspect\\stdout.private.jsonl",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/inspect/stdout.private.jsonl",
+          "sha256": "4ede3fe5926584428971f55e9d13e23b2f0a08b90a53ef91307d7dbb8d9b6a1a",
+          "bytes": 179,
+          "mtime_ns": 1789427382768751700
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\observer-receipt.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/observer-receipt.json",
+          "sha256": "140c23d1bd83b97acecf966c8b38b359476966d54992a79aa619cf8b3637d0e3",
+          "bytes": 72617,
+          "mtime_ns": 1789427383031980500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\process.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/process.json",
+          "sha256": "a61dd1263e579a0fccfce865e95db3697b7aaf6e6ce199864bf29f5425922372",
+          "bytes": 8898,
+          "mtime_ns": 1789427382925973400
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\prompt.private.txt",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/prompt.private.txt",
+          "sha256": "af18f1852a2d50e6f27d5c8ed068473a1fc281fb66f7ff669d6fde091f6600a8",
+          "bytes": 2054,
+          "mtime_ns": 1789427382696680500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\response.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/response.private.json",
+          "sha256": "7b036983d71c497f35d4924d45b67b6ef5eaf1a6512ce9e2dcdbc33975c61f4a",
+          "bytes": 72,
+          "mtime_ns": 1789427382926974700
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\schema.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/schema.private.json",
+          "sha256": "57bf52d73bbb96454bbf39d8e8781339fa9d0268b9043d8cfb47b08e3c02f35e",
+          "bytes": 444,
+          "mtime_ns": 1789427382696680500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\stderr.private.txt",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/stderr.private.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "mtime_ns": 1789427382925973400
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\stdout.private.jsonl",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/stdout.private.jsonl",
+          "sha256": "001e56492b45a71d65e47e679d20b19378ecbf7ff7ca2be15434b4232cf63fe4",
+          "bytes": 1063,
+          "mtime_ns": 1789427382925973400
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovered_account_snapsho0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native-reservation.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native-reservation.json",
+          "sha256": "869eb2488790b080615e9f6acb27ef5c7314e9810c32b202c3fd62d4897efcba",
+          "bytes": 63231,
+          "mtime_ns": 1789427382643550000
+        }
+      ]
+    },
+    {
+      "archive": "test_recovery_failure_preserve0.zip",
+      "sha256": "2d6f020ebe697d1793f2486d9b7a651bbca54ddef65999b3f3462c26121359ae",
+      "members": [
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl",
+          "member": "source/private-journal.jsonl",
+          "sha256": "fbf1cb5e5332b98522a6dc63ca7c068f6891055119523d83efb04ae339cd70d6",
+          "bytes": 116442,
+          "mtime_ns": 1789427390349004100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\headless-request.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/headless-request.private.json",
+          "sha256": "bb0fd2eb08425a34ca1a19705d49797b6daf82eb694edccd38c4f23b3f6ffd7c",
+          "bytes": 2718,
+          "mtime_ns": 1789427387560023800
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-000\\credits.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-000/credits.private.json",
+          "sha256": "ff721f7dd471721ad0a90c1257bbc182954a8676ce3cd601173970087e52035b",
+          "bytes": 263,
+          "mtime_ns": 1789427387936043500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-000\\failure.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-000/failure.json",
+          "sha256": "5ee78285dcb083254d7f3f4ea775be48f331da30a461a0cb73e3451667dba7ef",
+          "bytes": 108,
+          "mtime_ns": 1789427387937042200
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-000\\requests.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-000/requests.json",
+          "sha256": "3eff6272ea57f43082338be2992c6540d8b615bdd7f4253bed3608cc90d01354",
+          "bytes": 555,
+          "mtime_ns": 1789427387937042200
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-001\\credits.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-001/credits.private.json",
+          "sha256": "181290423dfc4072e9e554433e3f4b75bbaf931e70bdc68650224643d43c9c46",
+          "bytes": 263,
+          "mtime_ns": 1789427387949549500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-001\\failure.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-001/failure.json",
+          "sha256": "f7230e63b6d32b646945bc9b1ddf2691b49a0abab7fe0fbc1b69000a8b223673",
+          "bytes": 108,
+          "mtime_ns": 1789427387950554300
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-001\\requests.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-001/requests.json",
+          "sha256": "9ffa648eb3134474deddb5828eb966880663e6d053ae6894f98ff86ea1bdf332",
+          "bytes": 555,
+          "mtime_ns": 1789427387950554300
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempts.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempts.json",
+          "sha256": "cd9b91eeb72806a77f98a90d1f89d66613393c1891d0c535348c19101f1a7f7e",
+          "bytes": 593,
+          "mtime_ns": 1789427387961553500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\credits.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/credits.private.json",
+          "sha256": "218c7c9d8108a6b4433f858479569b8ab51ddf042193c95dbad60932e5e05fef",
+          "bytes": 263,
+          "mtime_ns": 1789427387769756700
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\observation.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/observation.json",
+          "sha256": "e67148cf1226363b0152f2bc99ac7cb92d91431d6fa7828bbf2db4ddbe9a94b6",
+          "bytes": 692,
+          "mtime_ns": 1789427387779545700
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\requests.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/requests.json",
+          "sha256": "0e133359de5ffce894310d8edcbf98652b1431bc3668ca29fa6c383179b3b609",
+          "bytes": 959,
+          "mtime_ns": 1789427387771386900
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\topup.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/topup.private.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "bytes": 2,
+          "mtime_ns": 1789427387770382100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\user.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/user.private.json",
+          "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762",
+          "bytes": 142,
+          "mtime_ns": 1789427387771386900
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempts.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempts.json",
+          "sha256": "7fd838f4825eb5d43ee50f29b1451495b2cb04c75330ac118f3c7897ad974063",
+          "bytes": 1064,
+          "mtime_ns": 1789427387794590600
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\command.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/command.json",
+          "sha256": "ef3cc209ab38fc570b90eff25d9bb5666632b05b69d6469ed8d87afcb632e880",
+          "bytes": 2815,
+          "mtime_ns": 1789427387686355200
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\inspect\\process.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/inspect/process.json",
+          "sha256": "c22c8cd5882970ac3c15b0b9958e2104993bd8d2f526dfc0fa1d630f276bb829",
+          "bytes": 6461,
+          "mtime_ns": 1789427387761394600
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\inspect\\stderr.private.txt",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/inspect/stderr.private.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "mtime_ns": 1789427387759875100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\inspect\\stdout.private.jsonl",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/inspect/stdout.private.jsonl",
+          "sha256": "4ede3fe5926584428971f55e9d13e23b2f0a08b90a53ef91307d7dbb8d9b6a1a",
+          "bytes": 179,
+          "mtime_ns": 1789427387759875100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\observer-receipt.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/observer-receipt.json",
+          "sha256": "cbd88ada6c73b5f51c1ba72ade0f85ca5da9f7a4e87cdc571eff1b395f0b4970",
+          "bytes": 71955,
+          "mtime_ns": 1789427387966647200
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\process.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/process.json",
+          "sha256": "297b554e47e7c404266a5a24eebd03f64b158ad18159313b1771cee669669caa",
+          "bytes": 8898,
+          "mtime_ns": 1789427387935040100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\prompt.private.txt",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/prompt.private.txt",
+          "sha256": "af18f1852a2d50e6f27d5c8ed068473a1fc281fb66f7ff669d6fde091f6600a8",
+          "bytes": 2054,
+          "mtime_ns": 1789427387685226700
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\response.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/response.private.json",
+          "sha256": "7b036983d71c497f35d4924d45b67b6ef5eaf1a6512ce9e2dcdbc33975c61f4a",
+          "bytes": 72,
+          "mtime_ns": 1789427387935040100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\schema.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/schema.private.json",
+          "sha256": "57bf52d73bbb96454bbf39d8e8781339fa9d0268b9043d8cfb47b08e3c02f35e",
+          "bytes": 444,
+          "mtime_ns": 1789427387685755800
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\stderr.private.txt",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/stderr.private.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "mtime_ns": 1789427387934041000
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\stdout.private.jsonl",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/stdout.private.jsonl",
+          "sha256": "9f3aa1da2f9638f5f3389caaaed8ff94d7cb90f6b32e68495c615f1ff0cd85b0",
+          "bytes": 1063,
+          "mtime_ns": 1789427387934041000
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve0\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native-reservation.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native-reservation.json",
+          "sha256": "4f42db25ca7c16e46d904ee3fa22c97164b4653f3299f4751bd80f0791646797",
+          "bytes": 63231,
+          "mtime_ns": 1789427387659375700
+        }
+      ]
+    },
+    {
+      "archive": "test_recovery_failure_preserve1.zip",
+      "sha256": "44d2477d944707c0e4dd9fe773f41253415deb2d38d019bb448f486609bbcab3",
+      "members": [
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl",
+          "member": "source/private-journal.jsonl",
+          "sha256": "f31bd4983110b254e0e4fdc641d3a5c626701bd02b54a828cbd432f147fba5bf",
+          "bytes": 117076,
+          "mtime_ns": 1789427395648685100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\headless-request.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/headless-request.private.json",
+          "sha256": "bb0fd2eb08425a34ca1a19705d49797b6daf82eb694edccd38c4f23b3f6ffd7c",
+          "bytes": 2718,
+          "mtime_ns": 1789427392122376700
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-000\\credits.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-000/credits.private.json",
+          "sha256": "6c00d4724a7e7f5a8a4ed941454a241ff7feedb50c82a8ec2707fe513a420385",
+          "bytes": 263,
+          "mtime_ns": 1789427392499229100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-000\\failure.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-000/failure.json",
+          "sha256": "1390c1d7dbd958e281fe43e38a5944e5a0f1b043f0c4c2c0d610fb46230a8739",
+          "bytes": 108,
+          "mtime_ns": 1789427392500234700
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-000\\requests.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-000/requests.json",
+          "sha256": "62ecf08a679767697d945f9517eaff96f568fa471babc2de27454dc19dbb5bbf",
+          "bytes": 555,
+          "mtime_ns": 1789427392499229100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-001\\credits.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-001/credits.private.json",
+          "sha256": "5ad0f2407c344b38416a902caf8f9c18fc92bb054f2f51c540c02ef5020a542b",
+          "bytes": 263,
+          "mtime_ns": 1789427392510754400
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-001\\observation.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-001/observation.json",
+          "sha256": "190c5ecc5eefdd6a29d81989f0aa938bd8df42eef19127b493316bf0b6ef34c3",
+          "bytes": 692,
+          "mtime_ns": 1789427392518754900
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-001\\requests.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-001/requests.json",
+          "sha256": "1196474a6e6c9c20d68693f69651f60d2ba2fa60afa2c6fb338a7b93ef126b50",
+          "bytes": 959,
+          "mtime_ns": 1789427392512755500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-001\\topup.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-001/topup.private.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "bytes": 2,
+          "mtime_ns": 1789427392511756400
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempt-001\\user.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempt-001/user.private.json",
+          "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762",
+          "bytes": 142,
+          "mtime_ns": 1789427392512755500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-after\\attempts.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/attempts.json",
+          "sha256": "c044c12392b6bb502b124ad3aaa6742a385c139e5c0a88b2787eb23362d26bcb",
+          "bytes": 1273,
+          "mtime_ns": 1789427392529268900
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\credits.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/credits.private.json",
+          "sha256": "910d781d8556e8b1c171adaf885afd140d43b43d0c390dba99e6356472e57967",
+          "bytes": 263,
+          "mtime_ns": 1789427392341800100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\observation.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/observation.json",
+          "sha256": "c6c8681979ed7e641eca778877434f05ff705e610230a5d92cd016cb5995b6f8",
+          "bytes": 692,
+          "mtime_ns": 1789427392349806100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\requests.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/requests.json",
+          "sha256": "cd67f2f0f0c887c293d9f31587fe7990e69ee34551913d9b90f690166f155174",
+          "bytes": 959,
+          "mtime_ns": 1789427392343801200
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\topup.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/topup.private.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "bytes": 2,
+          "mtime_ns": 1789427392342799500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempt-000\\user.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempt-000/user.private.json",
+          "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762",
+          "bytes": 142,
+          "mtime_ns": 1789427392342799500
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\billing-before\\attempts.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/attempts.json",
+          "sha256": "bbec785857a7503f522badc2e55e02a4b11a448ef5402a7d49c7b9c0fd237ceb",
+          "bytes": 1064,
+          "mtime_ns": 1789427392361322200
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\command.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/command.json",
+          "sha256": "f63c8e302b28ccf318c5d5b9fbdae3a6f2e7e98477de17d99336bfdd2059b9cd",
+          "bytes": 2815,
+          "mtime_ns": 1789427392272233800
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\inspect\\process.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/inspect/process.json",
+          "sha256": "6450808c89a9bfb568fe7afe656da1091a664a9125696039fc79ac80200eb9d7",
+          "bytes": 6463,
+          "mtime_ns": 1789427392335292800
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\inspect\\stderr.private.txt",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/inspect/stderr.private.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "mtime_ns": 1789427392334291200
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\inspect\\stdout.private.jsonl",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/inspect/stdout.private.jsonl",
+          "sha256": "4ede3fe5926584428971f55e9d13e23b2f0a08b90a53ef91307d7dbb8d9b6a1a",
+          "bytes": 179,
+          "mtime_ns": 1789427392334291200
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\observer-receipt.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/observer-receipt.json",
+          "sha256": "9ea6e7aedc26e65b08ad7fc91cdd80cb85b2ef1f6b5a462a3d4a3c4ead5f7a2d",
+          "bytes": 72617,
+          "mtime_ns": 1789427392595308900
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\process.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/process.json",
+          "sha256": "3c3c53967a5aa575c3a51d37180d383d27419f1ad83f084ace67c5d25987707e",
+          "bytes": 8898,
+          "mtime_ns": 1789427392498182100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\prompt.private.txt",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/prompt.private.txt",
+          "sha256": "af18f1852a2d50e6f27d5c8ed068473a1fc281fb66f7ff669d6fde091f6600a8",
+          "bytes": 2054,
+          "mtime_ns": 1789427392271228600
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\response.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/response.private.json",
+          "sha256": "7b036983d71c497f35d4924d45b67b6ef5eaf1a6512ce9e2dcdbc33975c61f4a",
+          "bytes": 72,
+          "mtime_ns": 1789427392498182100
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\schema.private.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/schema.private.json",
+          "sha256": "57bf52d73bbb96454bbf39d8e8781339fa9d0268b9043d8cfb47b08e3c02f35e",
+          "bytes": 444,
+          "mtime_ns": 1789427392271228600
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\stderr.private.txt",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/stderr.private.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "mtime_ns": 1789427392497662800
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native\\stdout.private.jsonl",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/stdout.private.jsonl",
+          "sha256": "9039e1763608481bd174937f0ec03e64fa145ffc5725d9fad9c8c8fd68295c0a",
+          "bytes": 1063,
+          "mtime_ns": 1789427392497662800
+        },
+        {
+          "original_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-account-recovery-root-r1\\test_recovery_failure_preserve1\\source\\private-journal.jsonl.headless\\f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2\\native-reservation.json",
+          "member": "source/private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native-reservation.json",
+          "sha256": "4a300a217b70e4c498180bdd9002716273bf650d67cb6a6a0ed5a44b3b4b29e3",
+          "bytes": 63231,
+          "mtime_ns": 1789427392235833600
+        }
+      ]
+    }
+  ]
+}

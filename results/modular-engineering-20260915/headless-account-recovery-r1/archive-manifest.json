@@ -1,0 +1,117 @@
+{
+  "schema": "headless-account-recovery-archive-v1",
+  "source_commit": "02959f51896332037cfeb46ed9ebb548039b85b1",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "additional-original-hashes.json",
+      "sha256": "51b6b51f9140c13a6df337e1fa9571b59b47d4e8746dcee6c8765b6fe808614b",
+      "bytes": 57341
+    },
+    {
+      "path": "additional-originals/allocation-envelope.json",
+      "sha256": "87c1ab82e09933f83a0bf40be26ea3c606f8d5bae8b9dea2240f3de8d8ad114b",
+      "bytes": 1492
+    },
+    {
+      "path": "additional-originals/create_headless_review_runtime_r2.py",
+      "sha256": "e15e746c6d1b2361055abfa5b67da1fb05f0c031108f956ec2527c63e2ffad3f",
+      "bytes": 3007
+    },
+    {
+      "path": "additional-originals/headless-recovery-chronology-r1.xml",
+      "sha256": "19acb5feed350b735fed27fa4dd081b6f27365f13098ab462efef42871108335",
+      "bytes": 399
+    },
+    {
+      "path": "additional-originals/headless-recovery-integration-r1-note.json",
+      "sha256": "e2f971915622c67c35f111de842a133107a591fe1c356398faa5b51aa7d1d9b4",
+      "bytes": 583
+    },
+    {
+      "path": "additional-originals/headless-recovery-integration-r1.junit.xml",
+      "sha256": "7e735b193454bec6f444333ffe15eb274a2203569b8bba665a6c3afce46cde9f",
+      "bytes": 5377
+    },
+    {
+      "path": "additional-originals/headless-review-source-byte-sync-r2.json",
+      "sha256": "2e0addb8d341c2c8f924ce37183c4c176c8ada2273a0c9f2259e9f41bbfcb3b2",
+      "bytes": 5747
+    },
+    {
+      "path": "additional-originals/prepare_headless_review_r2.py",
+      "sha256": "ff10b1ec9d8032762240713f8d2dec05135ff6d587027bcaf9501028f8678c38",
+      "bytes": 15562
+    },
+    {
+      "path": "additional-originals/public-preparation.json",
+      "sha256": "6f116656cfe65e743d37dd9ba9aa59164fa6e3461a5ddef1136d96d6f66c6eae",
+      "bytes": 5079
+    },
+    {
+      "path": "additional-originals/run_headless_review_r2.py",
+      "sha256": "820346a807ad9eb482634b1cfcfae28e03d4d974c246ecb0da4756e00f1a613b",
+      "bytes": 7574
+    },
+    {
+      "path": "frozen-originals/headless-account-recovery-root-r1-before.json",
+      "sha256": "832932ad725cb830bb9887ac52bc658b18c67478a057e9415f23ee938fac2ca6",
+      "bytes": 88642
+    },
+    {
+      "path": "frozen-originals/headless-account-recovery-root-r1-closed.json",
+      "sha256": "cf1f7bf6a65f8021bc3595ecc6b4c36082b589cf4e906c6daac3af0276b48893",
+      "bytes": 88626
+    },
+    {
+      "path": "frozen-originals/headless-account-recovery-root-r1-source-members.json",
+      "sha256": "c383ff8cf914757a4c1a3be22bd7f835632bb373d15e02454ce53cb7c9ef2452",
+      "bytes": 132506
+    },
+    {
+      "path": "frozen-originals/headless-account-recovery-root-r1-sources.zip",
+      "sha256": "21b5ac2953d586a02325d0f144c603ce467e3bce027e44e1823434f6abc5d891",
+      "bytes": 2522683
+    },
+    {
+      "path": "frozen-originals/headless-account-recovery-root-r1.xml",
+      "sha256": "ccf6f1a7b85e197120b45d47ec1e9b2823a6fd26de8f8ab40d38b0ba9649ea96",
+      "bytes": 8251
+    },
+    {
+      "path": "original-hash-manifest.json",
+      "sha256": "da44865119699e37e3728748808364a8472546a726b0a9e21cfaa150c5a13cbf",
+      "bytes": 1485
+    },
+    {
+      "path": "private-r1-retention-verification.json",
+      "sha256": "3543d590fecd1c4daf3b81749517f736c4ae5c7c48d354598538240b0356b996",
+      "bytes": 1100
+    },
+    {
+      "path": "README-zh.md",
+      "sha256": "8677669863b3aa1f6cdb229a1866599b6440055cd468884e75b5218ef701383f",
+      "bytes": 1605
+    },
+    {
+      "path": "test_recovered_account_snapsho0.zip",
+      "sha256": "02d8641b0943ff46323baecebd662b83ec86d258f65ee76cae0f0a741dfaff99",
+      "bytes": 67108
+    },
+    {
+      "path": "test_recovery_failure_preserve0.zip",
+      "sha256": "2d6f020ebe697d1793f2486d9b7a651bbca54ddef65999b3f3462c26121359ae",
+      "bytes": 65046
+    },
+    {
+      "path": "test_recovery_failure_preserve1.zip",
+      "sha256": "44d2477d944707c0e4dd9fe773f41253415deb2d38d019bb448f486609bbcab3",
+      "bytes": 66835
+    }
+  ],
+  "scope": "frozen synthetic engineering and closed preparation; not real r2 outcome"
+}
