@@ -8,7 +8,7 @@ from collections.abc import Mapping
 
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.phase_provider import validate_configuration
-from research_loop.modular.train_provider import GrokTrainProvider
+from research_loop.modular.train_provider import GrokTrainProvider, GrokHeadlessTrainProvider
 from research_loop.ontology import ContractError
 
 
@@ -68,7 +68,7 @@ def validate_native_declaration(body, *, family, schemas, main_opportunities):
     declared = FrozenRecord.from_dict(body['provider'])
     validate_configuration(declared, schemas=schemas, main_opportunities=main_opportunities)
     b = declared.data(); limits = b['limits']
-    if (b['provider_kind'] != 'grok-acp-public-train-v1'
+    if (b['provider_kind'] not in {'grok-acp-public-train-v1','grok-headless-public-train-v1'}
             or limits['prompt_byte_caps'] != {s:262144 for s in schemas}
             or limits['requested_output_token_caps'] != {s:8192 if s in PROGRAM_SLOTS else 2048 for s in schemas}
             or limits['observed_main_token_cap'] != 131072
@@ -81,7 +81,8 @@ def validate_native_declaration(body, *, family, schemas, main_opportunities):
 def native_provider_preflight(body, provider, *, family, schemas, main_opportunities):
     declared = validate_native_declaration(body, family=family, schemas=schemas,
         main_opportunities=main_opportunities)
-    if type(provider) is not GrokTrainProvider:
+    expected = GrokHeadlessTrainProvider if declared.data()['provider_kind']=='grok-headless-public-train-v1' else GrokTrainProvider
+    if type(provider) is not expected:
         raise ContractError('independent closed Grok TRAIN provider required')
     if provider.configuration() != declared:
         raise ContractError('live original provider configuration differs from declaration')

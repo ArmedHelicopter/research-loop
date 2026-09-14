@@ -41,7 +41,7 @@ from research_loop.modular.train_provider_preflight import (native_envelope, nat
 from research_loop.modular.ordinary_provider import (model_root as provider_root, provider_scope,
     provider_usage, bind_singleton_originals, final_provider_gate)
 from research_loop.modular.phase_provider import PhaseProviderSession
-from research_loop.modular.train_provider import GrokTrainProvider
+from research_loop.modular.train_provider import GrokTrainProvider, GrokHeadlessTrainProvider
 from research_loop.ontology import ContractError, canonical, digest
 
 
@@ -228,11 +228,12 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     prospective_export = custody is None and type(prospective_exporter) is PrimaryProspectiveTrainExporter
     if not isinstance(config, FrozenTrainControllerConfig) or not (legacy_export or prospective_export):
         raise ContractError("trusted typed controller inputs required")
-    native = native_envelope(config.data(), 'singleton')
-    if (not (type(model) is GrokTrainProvider if native else isinstance(model, CodexModelPort))
+    data = config.data()
+    native = native_envelope(data, 'singleton')
+    native_provider = GrokHeadlessTrainProvider if native and data.get('provider',{}).get('provider_kind')=='grok-headless-public-train-v1' else GrokTrainProvider
+    if (not (type(model) is native_provider if native else isinstance(model, CodexModelPort))
             or not isinstance(audit_verifier, AuditVerifier)):
         raise ContractError("controller requires the real model port and trusted audit verifier")
-    data = config.data()
     extended_exploration = bool(set(data["scope_ids"]) & set(EXTENDED_EXPLORATION_BUDGET))
     exploration = extended_exploration or bool(set(data["scope_ids"]) & {"Q7.1", "Q7.2"})
     diagnostic = "Q5.4" in data["scope_ids"]
