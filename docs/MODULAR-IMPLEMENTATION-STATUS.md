@@ -3,6 +3,42 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Common C5 scorer and native deployment checks (2026-09-14, later update)
+
+The new common TRAIN panel/scorer scope is integrated from `712d242`:44/44
+checks,639 unchanged source files. It preserves the full recipe-by-target grid,
+history-only packages, full-protocol build identities and the frozen ranking
+rule. A real independent scorer process accepted synthetic signed candidates
+from both primary benchmarks. The earlier43/44 fixture-hash failure is retained.
+This is a scoring boundary; actual common history/target execution, authenticated
+selection and validation acceptance remain outstanding.
+
+Isolated Grok1.0.30 deployment and its response-before-inventory compatibility
+repair are integrated. Independent frozen checks passed115/115 and124/124;
+root deltas passed30/30 and39/39. These are synthetic checks. Both imported
+archives have20 Git blobs and5,567 raw members verified against disk and ZIPs.
+
+Actual separately frozen readiness r1 returned a session but stopped before
+billing/prompt because inventory had not yet arrived. After the ordering repair,
+r2 received explicit empty-tool inventories and passed the included-subscription
+and no-topup check, then wrote one prompt. An unsolicited `skills-reload` response
+caused `rpc_binding` rejection before terminal usage. Its MAIN usage and possible
+initial TITLE/all-settlement totals remain UNKNOWN; this is a spent failed
+attempt, not a zero-cost success. No third probe or permissive reload handler was
+introduced. Exact source snapshots, closure and frame hashes are retained under
+`results/modular-engineering-20260914/grok130-readiness/`; private native streams
+and opaque login copies are not published. The pinned public implementation
+reloads skill baselines, so the response is not presumed harmless to context.
+
+The parallel C4 source `61fea55` closed its complete success check1/1. Its final
+accounting-drift assertion is repaired and being checked separately. The other
+12-case native build batch hit its45-minute wall; no final JUnit was emitted and
+no pytest pass count is claimed. Original state/mechanism controller receipts
+record22/22 and24/24 scores; remaining cases retain incomplete/not-started states.
+A bounded duplicate-replay repair at `f0869c4` passed58/58 independently, reducing
+one tested verify_build boundary from5 to3 fresh provider inspections. This is
+not yet evidence for complete-batch speed or completion of the12 cases.
+
 ## Ordinary native ports and Grok initialize observation (2026-09-14)
 
 The ordinary native source chain is integrated through `db11758`. Its independent

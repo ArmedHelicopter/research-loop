@@ -1,0 +1,138 @@
+{
+  ".gitattributes": {
+    "sha256": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992",
+    "bytes": 9
+  },
+  "archive_builder.py": {
+    "sha256": "905fe341c19af38cc4a226b65623d78fc26d0a10955dfe141da47038fe560411",
+    "bytes": 9122
+  },
+  "FINDING.md": {
+    "sha256": "28064c6eb165a3d2a88ff531a8427efe94dc4637e5ca2f7b7927ab3fd18d98b6",
+    "bytes": 1989
+  },
+  "frozen-source-map.json": {
+    "sha256": "d3ce229ef309ed0cbd17151cdcdc9f819d4e386387ae3a37b7fe415963f67af3",
+    "bytes": 3353
+  },
+  "imported-archive-verification.json": {
+    "sha256": "8b86ccffe3a12270a2bbbdf998de2022a4cf385e82991044696b389fe72a800c",
+    "bytes": 553
+  },
+  "observations.json": {
+    "sha256": "69db44e5bcb31bd1f096b9cc81297be2de67c8bf0c70520e4c960e22a36a5818",
+    "bytes": 763
+  },
+  "public-source-app.rs": {
+    "sha256": "7cd4023f956cc842dbc535350ba56e52aff21dd33c8d282870d09d5d494b8727",
+    "bytes": 96164
+  },
+  "public-source-session_setup.rs": {
+    "sha256": "c14d386dda141c3caf4cb6099fa1a5f110cd7b40a3de21719ac4fc8fd8e20c6b",
+    "bytes": 32745
+  },
+  "public-source-source-provenance.json": {
+    "sha256": "e8b9458232a078f4b687f702349ab974f70dffebe54d98163ccbdfa86dbcef54",
+    "bytes": 722
+  },
+  "r1-closure.json": {
+    "sha256": "03bc0ced1de9a7daf4c98db63975b443d699bba328533bf9fe480e7c5a9c3b64",
+    "bytes": 1263
+  },
+  "r1-driver.py": {
+    "sha256": "5fe10e114c13c88807a5074fe0f8af25a93fde99d8b12c19d06d8e36e7e1ab7c",
+    "bytes": 4110
+  },
+  "r1-envelope.json": {
+    "sha256": "0b0e62e9aef56f7a7852fbda7e5655fa6c730af3f3d609c216dc1c45f2c9ef57",
+    "bytes": 2558
+  },
+  "r1-frame-index.json": {
+    "sha256": "e97cdddbf8228aa11ff7423a62de2e5ac91bc693eb83723c512498c9f18f3aef",
+    "bytes": 7888
+  },
+  "r1-launch-reserved.json": {
+    "sha256": "824b56565793e4b5866ad1aec78de37a0466d82632a4dd420e25ccda98e1d312",
+    "bytes": 176
+  },
+  "r1-source-0-contracts.py": {
+    "sha256": "f21603596fa1780650ff7ec255917107117716a39cf6e070a44e773847dc1f75",
+    "bytes": 3221
+  },
+  "r1-source-1-grok_acp_transport.py": {
+    "sha256": "0661d1e6082c29fde850761731118cb9af36d85358d9a2a5c8a0f30b6c15e11f",
+    "bytes": 48248
+  },
+  "r1-source-2-grok_native_deployment.py": {
+    "sha256": "89e8c2655c3926cc10572f980729e7ba90c8f7ebde8453ace85a40c8c51648d1",
+    "bytes": 3026
+  },
+  "r1-source-3-model_port.py": {
+    "sha256": "c56bdaf3818841d0956a647c9e2ae012cc49d4a15dd94a5c91756c53a628d9b6",
+    "bytes": 51557
+  },
+  "r1-source-4-ontology.py": {
+    "sha256": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb",
+    "bytes": 8775
+  },
+  "r1-source-6-driver.py": {
+    "sha256": "5fe10e114c13c88807a5074fe0f8af25a93fde99d8b12c19d06d8e36e7e1ab7c",
+    "bytes": 4110
+  },
+  "r1-source-7-config.toml": {
+    "sha256": "22300d7f72ebb706d506ef7c0b1aa4a41f4c96e367155ece8cd94b219cac5b43",
+    "bytes": 918
+  },
+  "r2-closure.json": {
+    "sha256": "d6754c5109ad00fac2c6bf7a1fba71aacb5edc070a7187a22452f9abe339215b",
+    "bytes": 1312
+  },
+  "r2-driver.py": {
+    "sha256": "5fe10e114c13c88807a5074fe0f8af25a93fde99d8b12c19d06d8e36e7e1ab7c",
+    "bytes": 4110
+  },
+  "r2-envelope.json": {
+    "sha256": "d48c56b79e83908318f43c58cc8af4d1882658eecce1a2429a6d7bd68218974e",
+    "bytes": 2811
+  },
+  "r2-frame-index.json": {
+    "sha256": "ab3bd32bb3a8dc36c177167fd8989e6a01e1efc81c93dd7d16f540b95b205253",
+    "bytes": 10876
+  },
+  "r2-launch-reserved.json": {
+    "sha256": "ac8ee44e12a9e0e22492a65451302e28e2cccbdeca96bec39f95f78a51166b32",
+    "bytes": 176
+  },
+  "r2-prompt-reservation.json": {
+    "sha256": "bb6fb7b33b81cbe2d7dfc0b5db185030d41de872d051a95f1b976383da11bef0",
+    "bytes": 605
+  },
+  "r2-source-0-contracts.py": {
+    "sha256": "f21603596fa1780650ff7ec255917107117716a39cf6e070a44e773847dc1f75",
+    "bytes": 3221
+  },
+  "r2-source-1-grok_acp_transport.py": {
+    "sha256": "e898ffd4a4e21c952e2cef17eb16615904d50c26728bbeac96ed8354ca94424e",
+    "bytes": 48721
+  },
+  "r2-source-2-grok_native_deployment.py": {
+    "sha256": "89e8c2655c3926cc10572f980729e7ba90c8f7ebde8453ace85a40c8c51648d1",
+    "bytes": 3026
+  },
+  "r2-source-3-model_port.py": {
+    "sha256": "c56bdaf3818841d0956a647c9e2ae012cc49d4a15dd94a5c91756c53a628d9b6",
+    "bytes": 51557
+  },
+  "r2-source-4-ontology.py": {
+    "sha256": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb",
+    "bytes": 8775
+  },
+  "r2-source-6-driver.py": {
+    "sha256": "5fe10e114c13c88807a5074fe0f8af25a93fde99d8b12c19d06d8e36e7e1ab7c",
+    "bytes": 4110
+  },
+  "r2-source-7-config.toml": {
+    "sha256": "22300d7f72ebb706d506ef7c0b1aa4a41f4c96e367155ece8cd94b219cac5b43",
+    "bytes": 918
+  }
+}

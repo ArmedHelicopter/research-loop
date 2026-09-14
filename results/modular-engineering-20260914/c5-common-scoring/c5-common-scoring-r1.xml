@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="44" time="37.261" timestamp="2026-09-14T11:40:34.745172+08:00" hostname="SC-202507131830"><testcase classname="tests.test_joint_train_panel" name="test_complete_common_panel_roundtrip_preserves_all_candidates" time="3.223" /><testcase classname="tests.test_joint_train_panel" name="test_coherent_panel_changes_are_rejected[validation]" time="1.948" /><testcase classname="tests.test_joint_train_panel" name="test_coherent_panel_changes_are_rejected[missing]" time="2.128" /><testcase classname="tests.test_joint_train_panel" name="test_coherent_panel_changes_are_rejected[duplicate]" time="2.453" /><testcase classname="tests.test_joint_train_panel" name="test_coherent_panel_changes_are_rejected[scorer]" time="2.078" /><testcase classname="tests.test_joint_train_panel" name="test_coherent_panel_changes_are_rejected[runtime_arm]" time="2.061" /><testcase classname="tests.test_joint_train_panel" name="test_coherent_panel_changes_are_rejected[scenario]" time="2.272" /><testcase classname="tests.test_joint_train_panel" name="test_coherent_panel_changes_are_rejected[rule]" time="1.780" /><testcase classname="tests.test_joint_train_panel" name="test_coherent_panel_changes_are_rejected[build_reuse]" time="2.003" /><testcase classname="tests.test_joint_train_panel" name="test_coherent_panel_changes_are_rejected[package_exposure]" time="1.794" /><testcase classname="tests.test_joint_train_panel" name="test_coherent_panel_changes_are_rejected[protocol]" time="1.939" /><testcase classname="tests.test_joint_train_panel" name="test_coherent_panel_changes_are_rejected[shared_build]" time="2.283" /><testcase classname="tests.test_joint_train_panel" name="test_actual_common_scorer_process_both_benchmarks_and_closed_scope" time="5.137"><failure message="research_loop.ontology.ContractError: combination scorer startup binding differs from frozen configuration">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/c5-common-scoring-r1/test_actual_common_scorer_proc0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001868A3024E0&gt;
+
+    def test_actual_common_scorer_process_both_benchmarks_and_closed_scope(tmp_path, monkeypatch):
+        panel, args, _, logs = panel_fixture(tmp_path, monkeypatch)
+        store, handles, manifest = _store(tmp_path, {'tasks':{t.content_hash:t for t in args['targets']}})
+        (tmp_path/'exec.key').write_bytes(EXEC.key); (tmp_path/'scorer.key').write_bytes(SCORER.key)
+        config = {'schema':'c5-common-train-scorer-process-config-v1', 'panel':serialize_combination_panel(panel,joint_train=True),
+            'scorer_config':args['scorer'].record.data(),'scorer_config_digest':args['scorer'].digest,
+            'train_reference_store':{'root':str(store.resolve()),'manifest_sha256':manifest,
+                'inventory_digest':panel.cells[0].identity.dataset_version,'split_digest':panel.split_digest},
+            'task_handles':handles,'execution_authority_key_files':{EXEC.authority_id:str(tmp_path/'exec.key')},
+            'scorer_authority':{'id':SCORER.authority_id,'key_file':str(tmp_path/'scorer.key')},'evaluator':{'synthetic_mode':'normal'}}
+        assert type(parse_server_config(config).panel) is JointTrainPanel
+        with pytest.raises(ContractError): parse_server_config(dict(config,schema='c4-full-loo-scorer-process-config-v1'))
+        path=tmp_path/'server.json';path.write_text(canonical(config),encoding='utf-8')
+        worker=tmp_path/'worker.jsonl';client_log=tmp_path/'client.jsonl'
+        command=_command(path,worker);command[1]=str(Path(__file__).parent/'helpers/joint_train_scorer_process_helper.py')
+&gt;       client=CombinationScorerProcessClient(panel=panel,config=args['scorer'],joint_train=True,
+            command=command,journal_path=client_log,task_handle_bindings={k:digest(v) for k,v in handles.items()},
+            execution_authority_keys={EXEC.authority_id:EXEC.key},scorer_authority_keys={SCORER.authority_id:SCORER.key},
+            environment={**os.environ,'PYTHONIOENCODING':'gbk'})
+
+tests\test_joint_train_panel.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;evaluation.modular.scorer_process.CombinationScorerProcessClient object at 0x000001868AF69E50&gt;
+
+    def __init__(self, *, panel: CombinationPanel, config: ScorerConfig, command: list[str], journal_path: Path,
+                 task_handle_bindings: Mapping[str, str], execution_authority_keys: Mapping[str, bytes],
+                 scorer_authority_keys: Mapping[str, bytes], environment: Mapping[str, str] | None = None,
+                 response_timeout_seconds: int = 240, retrieval_review: bool = False, admission: bool = False,
+                 exploration_scheduler: bool = False, state_prediction: bool = False, state_retrieval: bool = False, state_exploration: bool = False, state_scheduling: bool = False, state_improvement: bool = False, mechanism_exploration: bool = False, mechanism_scheduling: bool = False, mechanism_improvement: bool = False, admission_prediction_exploration: bool = False, lineage_retrieval_improvement: bool = False, execution_improvement: bool = False, full_loo: bool = False, joint_train: bool = False):
+        serialize_combination_panel(panel, retrieval_review=retrieval_review, admission=admission,
+                                    exploration_scheduler=exploration_scheduler, state_prediction=state_prediction, state_retrieval=state_retrieval, state_exploration=state_exploration, state_scheduling=state_scheduling, state_improvement=state_improvement, mechanism_exploration=mechanism_exploration, mechanism_scheduling=mechanism_scheduling, mechanism_improvement=mechanism_improvement, admission_prediction_exploration=admission_prediction_exploration, lineage_retrieval_improvement=lineage_retrieval_improvement, execution_improvement=execution_improvement, full_loo=full_loo, joint_train=joint_train)
+        expected = scorer_process_binding(panel=panel, config=config, task_handle_bindings=task_handle_bindings,
+            execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
+        self.config, self.state_prediction, self.state_retrieval = config, state_prediction, state_retrieval
+        self.state_exploration = state_exploration
+        self.state_scheduling = state_scheduling
+        self.state_improvement = state_improvement
+        self.mechanism_exploration = mechanism_exploration
+        self.mechanism_scheduling = mechanism_scheduling
+        self.mechanism_improvement = mechanism_improvement
+        self.admission_prediction_exploration = admission_prediction_exploration
+        self.lineage_retrieval_improvement = lineage_retrieval_improvement
+        self.full_loo = full_loo
+        self.joint_train = joint_train
+        self.execution_improvement = execution_improvement
+        super().__init__(panel=panel, command=command, journal_path=journal_path,
+                         environment=environment, response_timeout_seconds=response_timeout_seconds)
+        try:
+            nonce = uuid.uuid4().hex
+            self.input.write(canonical({"schema": "scorer-process-binding-request-v1", "nonce": nonce}) + "\n")
+            self.input.flush()
+            response = json.loads(self._readline_bounded())
+            if response != {"schema": "scorer-process-binding-response-v1", "nonce": nonce, "binding": expected.data()}:
+&gt;               raise ContractError("combination scorer startup binding differs from frozen configuration")
+E               research_loop.ontology.ContractError: combination scorer startup binding differs from frozen configuration
+
+evaluation\modular\scorer_process.py:624: ContractError</failure></testcase><testcase classname="tests.test_joint_train_protocol" name="test_common_catalogue_retains_every_source_setting_and_real_stage_schedules" time="0.045" /><testcase classname="tests.test_joint_train_protocol" name="test_real_precommit_checks_original_sources_and_writes_exclusively" time="0.423" /><testcase classname="tests.test_joint_train_protocol" name="test_train_domain_and_whole_history_group_isolation[validation]" time="0.138" /><testcase classname="tests.test_joint_train_protocol" name="test_train_domain_and_whole_history_group_isolation[same_group]" time="0.170" /><testcase classname="tests.test_joint_train_protocol" name="test_changed_original_bytes_prevent_lock_write[csv]" time="0.242" /><testcase classname="tests.test_joint_train_protocol" name="test_changed_original_bytes_prevent_lock_write[runtime]" time="0.314" /><testcase classname="tests.test_joint_train_protocol" name="test_changed_original_bytes_prevent_lock_write[component]" time="0.294" /><testcase classname="tests.test_joint_train_protocol" name="test_coherent_frozen_record_changes_cannot_relax_common_contract[prune]" time="0.278" /><testcase classname="tests.test_joint_train_protocol" name="test_coherent_frozen_record_changes_cannot_relax_common_contract[merge]" time="0.299" /><testcase classname="tests.test_joint_train_protocol" name="test_coherent_frozen_record_changes_cannot_relax_common_contract[boundary]" time="0.232" /><testcase classname="tests.test_joint_train_protocol" name="test_coherent_frozen_record_changes_cannot_relax_common_contract[allocation]" time="0.241" /><testcase classname="tests.test_joint_train_protocol" name="test_coherent_frozen_record_changes_cannot_relax_common_contract[provider]" time="0.242" /><testcase classname="tests.test_joint_train_protocol" name="test_coherent_frozen_record_changes_cannot_relax_common_contract[issues]" time="0.249" /><testcase classname="tests.test_joint_train_protocol" name="test_coherent_frozen_record_changes_cannot_relax_common_contract[template]" time="0.208" /><testcase classname="tests.test_joint_train_protocol" name="test_coherent_frozen_record_changes_cannot_relax_common_contract[b0_rank]" time="0.244" /><testcase classname="tests.test_joint_train_protocol" name="test_coherent_frozen_record_changes_cannot_relax_common_contract[authority]" time="0.199" /><testcase classname="tests.test_joint_train_protocol" name="test_component_configuration_changes_pin_a_different_common_protocol" time="0.527" /><testcase classname="tests.test_full_loo_composition" name="test_c4_freezes_full_loo_controls_boundaries_and_actual_recipe_budget" time="0.004" /><testcase classname="tests.test_full_loo_composition" name="test_c4_rejects_mutation_and_module_smuggling" time="0.008" /><testcase classname="tests.test_full_loo_composition" name="test_v2_declares_sequential_ordinary_critique_and_canonical_dependencies" time="0.003" /><testcase classname="tests.test_full_loo_composition" name="test_v2_roundtrip_is_independent_of_process_hash_seed" time="0.385" /><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.291" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.025" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.029" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.116" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.089" /></testsuite></testsuites>

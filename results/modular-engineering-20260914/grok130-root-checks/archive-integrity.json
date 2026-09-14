@@ -1,0 +1,74 @@
+{
+  ".gitattributes": {
+    "sha256": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992",
+    "bytes": 9
+  },
+  "archive-members.json": {
+    "sha256": "f2dda840a3613be6c9f45e1fab4ed5a5d212b8ddd471f43b1f17c775f8a09397",
+    "bytes": 373330
+  },
+  "archive_builder.py": {
+    "sha256": "905fe341c19af38cc4a226b65623d78fc26d0a10955dfe141da47038fe560411",
+    "bytes": 9122
+  },
+  "excluded-paths.json": {
+    "sha256": "d13043ed9df6417afcc6177b76b1c0a80c70bd3a82eb57d228b510ea3e83d45e",
+    "bytes": 17259
+  },
+  "grok130-root-integration-r1-before.json": {
+    "sha256": "97dc5e01bcf7bced1902445c4d63431c1d16d4c8b119cd6d485187685d9f2c45",
+    "bytes": 74554
+  },
+  "grok130-root-integration-r1-closed.json": {
+    "sha256": "75cc24a95062027a33015431f42eda3e15faf305cd28b7ca18e4b725da293d76",
+    "bytes": 74693
+  },
+  "grok130-root-integration-r1-originals.zip": {
+    "sha256": "9988864829511e13c482a549337f1c43374a4c9a1b19612db499362ed7b20a1c",
+    "bytes": 400057
+  },
+  "grok130-root-integration-r1-source-members.json": {
+    "sha256": "b083a3aae8f2195160b7bc28c58e16f508f2e2bd44c62bd9194c11f210afaa54",
+    "bytes": 111569
+  },
+  "grok130-root-integration-r1-sources.zip": {
+    "sha256": "5e32d5be4a59176f69bb50067dc5ee5b9c6a09c4e2961c22b27bff993a0bb738",
+    "bytes": 2091893
+  },
+  "grok130-root-integration-r1.xml": {
+    "sha256": "bc7b2991a1e1b91a23fe577171a55bfc051c86961a2ff1bdd5f53ccf76f1f6aa",
+    "bytes": 4242
+  },
+  "grok130-root-inventory-r1-before.json": {
+    "sha256": "aa5ad5e2b989641785d6ad35c131b3f7962d96a1f6ae438445c6172c7efc15da",
+    "bytes": 74554
+  },
+  "grok130-root-inventory-r1-closed.json": {
+    "sha256": "4f777c48a9be0cfbec2fca834c80d526d9cbe4a8af98c4d658ab176b817fc8e4",
+    "bytes": 74693
+  },
+  "grok130-root-inventory-r1-originals.zip": {
+    "sha256": "5b01a8aff71e61a97088611d4404bc22312d72ac6af9ec906c1f879b96152623",
+    "bytes": 439987
+  },
+  "grok130-root-inventory-r1-source-members.json": {
+    "sha256": "812edd184b12b0d38f784fc5dc2ca591074fd08eaccc76294a5e4c35079d4ce8",
+    "bytes": 111569
+  },
+  "grok130-root-inventory-r1-sources.zip": {
+    "sha256": "4959321f41ad2fc4a3f921805e0db06791cf348a3509e73b694415454ae7e1ad",
+    "bytes": 2092998
+  },
+  "grok130-root-inventory-r1.xml": {
+    "sha256": "fa819ebd20a09e6de1fe4cfc97d6efdaf1111c0efec80e0191798c305daf8b18",
+    "bytes": 5671
+  },
+  "SCOPE.md": {
+    "sha256": "950897ae12c2500d543845c0849f72fb1051e1d2d58c3bf2f7fe7559356d8005",
+    "bytes": 506
+  },
+  "unavailable-stdout.json": {
+    "sha256": "2b13a91c53adf893029140c9907eeb335191fca6a2becd65b4745f1d5a0be0dd",
+    "bytes": 187
+  }
+}

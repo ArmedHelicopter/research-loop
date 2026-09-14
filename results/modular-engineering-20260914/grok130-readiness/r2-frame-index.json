@@ -1,0 +1,491 @@
+[
+  {
+    "index": 0,
+    "sha256": "d27053867581b8417b14b4491e9fbf06dcb95f27424de4d5dc5b077b2233919d",
+    "keys": [
+      "id",
+      "jsonrpc",
+      "result"
+    ],
+    "id": 1,
+    "method": null,
+    "params_keys": [],
+    "result_keys": [
+      "_meta",
+      "agentCapabilities",
+      "authMethods",
+      "protocolVersion"
+    ]
+  },
+  {
+    "index": 1,
+    "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/models/update",
+    "params_keys": [
+      "availableModels",
+      "currentModelId"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 2,
+    "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/models/update",
+    "params_keys": [
+      "availableModels",
+      "currentModelId"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 3,
+    "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/models/update",
+    "params_keys": [
+      "availableModels",
+      "currentModelId"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 4,
+    "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/models/update",
+    "params_keys": [
+      "availableModels",
+      "currentModelId"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 5,
+    "sha256": "2992362a559484aae43f59b88dffa481d436fd96c5e199061f9ed10dd5ea2b6b",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/settings/update",
+    "params_keys": [
+      "allow_access",
+      "announcements",
+      "auto_permission_mode_enabled",
+      "campaigns",
+      "collapsed_edit_blocks",
+      "consent_gate",
+      "dock_enabled",
+      "gate_label",
+      "gate_message",
+      "gate_url",
+      "group_tool_verbs",
+      "permission_mode",
+      "privacy_banner_reshow_days",
+      "privacy_notice_rollout",
+      "prompt_suggestions_enabled",
+      "session_picker_grouped",
+      "sharing_enabled",
+      "show_resolved_model",
+      "slash_command_tags",
+      "subscription_tier_display",
+      "subscription_watch_interval_secs",
+      "terminal_theme_enabled",
+      "tips"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 6,
+    "sha256": "df92b77bb31f429a94415078062ef3d59a18325fad95f902f8930e705365ace1",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/announcements/update",
+    "params_keys": [
+      "announcements",
+      "gen"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 7,
+    "sha256": "2992362a559484aae43f59b88dffa481d436fd96c5e199061f9ed10dd5ea2b6b",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/settings/update",
+    "params_keys": [
+      "allow_access",
+      "announcements",
+      "auto_permission_mode_enabled",
+      "campaigns",
+      "collapsed_edit_blocks",
+      "consent_gate",
+      "dock_enabled",
+      "gate_label",
+      "gate_message",
+      "gate_url",
+      "group_tool_verbs",
+      "permission_mode",
+      "privacy_banner_reshow_days",
+      "privacy_notice_rollout",
+      "prompt_suggestions_enabled",
+      "session_picker_grouped",
+      "sharing_enabled",
+      "show_resolved_model",
+      "slash_command_tags",
+      "subscription_tier_display",
+      "subscription_watch_interval_secs",
+      "terminal_theme_enabled",
+      "tips"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 8,
+    "sha256": "5943e03abe5c37269b173a63094ab595462dc2c859ef4a3aa094e951443d599e",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/announcements/update",
+    "params_keys": [
+      "announcements",
+      "gen"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 9,
+    "sha256": "7258a3cb4ca91d18c9d17a22cfc6791a820b4858d65574e5b6a3906c7249ee55",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/mcp/servers_updated",
+    "params_keys": [
+      "mcpServers"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 10,
+    "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/models/update",
+    "params_keys": [
+      "availableModels",
+      "currentModelId"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 11,
+    "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/models/update",
+    "params_keys": [
+      "availableModels",
+      "currentModelId"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 12,
+    "sha256": "2992362a559484aae43f59b88dffa481d436fd96c5e199061f9ed10dd5ea2b6b",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/settings/update",
+    "params_keys": [
+      "allow_access",
+      "announcements",
+      "auto_permission_mode_enabled",
+      "campaigns",
+      "collapsed_edit_blocks",
+      "consent_gate",
+      "dock_enabled",
+      "gate_label",
+      "gate_message",
+      "gate_url",
+      "group_tool_verbs",
+      "permission_mode",
+      "privacy_banner_reshow_days",
+      "privacy_notice_rollout",
+      "prompt_suggestions_enabled",
+      "session_picker_grouped",
+      "sharing_enabled",
+      "show_resolved_model",
+      "slash_command_tags",
+      "subscription_tier_display",
+      "subscription_watch_interval_secs",
+      "terminal_theme_enabled",
+      "tips"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 13,
+    "sha256": "2992362a559484aae43f59b88dffa481d436fd96c5e199061f9ed10dd5ea2b6b",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/settings/update",
+    "params_keys": [
+      "allow_access",
+      "announcements",
+      "auto_permission_mode_enabled",
+      "campaigns",
+      "collapsed_edit_blocks",
+      "consent_gate",
+      "dock_enabled",
+      "gate_label",
+      "gate_message",
+      "gate_url",
+      "group_tool_verbs",
+      "permission_mode",
+      "privacy_banner_reshow_days",
+      "privacy_notice_rollout",
+      "prompt_suggestions_enabled",
+      "session_picker_grouped",
+      "sharing_enabled",
+      "show_resolved_model",
+      "slash_command_tags",
+      "subscription_tier_display",
+      "subscription_watch_interval_secs",
+      "terminal_theme_enabled",
+      "tips"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 14,
+    "sha256": "67aa91ddc2d63488d5174c17b9e9b7d1d73f93c5894972c8a98dcc3ae8b29d39",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/announcements/update",
+    "params_keys": [
+      "announcements",
+      "gen"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 15,
+    "sha256": "b25fe16eea71ee9481430665a2b5414ac1f7b78250d0ccaece4e414f4716889a",
+    "keys": [
+      "id",
+      "jsonrpc",
+      "result"
+    ],
+    "id": 2,
+    "method": null,
+    "params_keys": [],
+    "result_keys": [
+      "_meta",
+      "configOptions",
+      "models",
+      "sessionId"
+    ]
+  },
+  {
+    "index": 16,
+    "sha256": "7bf9b7f2115005e9b9a5e6a98364751100cc2bfc961c22b9a891b88a97a94383",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/mcp_initialized",
+    "params_keys": [
+      "elapsedMs",
+      "mcpToolCount",
+      "sessionId"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 17,
+    "sha256": "084d669b40644a0d9524da286208b8a80a367b3903d5b914fb044222d89103a6",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "session/update",
+    "params_keys": [
+      "_meta",
+      "sessionId",
+      "update"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 18,
+    "sha256": "650a23f810f08e3115ca731a54a7a05102df091b76b9ed5873e6fe5ad3a0c186",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "session/update",
+    "params_keys": [
+      "_meta",
+      "sessionId",
+      "update"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 19,
+    "sha256": "acbcbe6fa41761cad72f4b160f1650992a2b8e60a91b5eb092142e1460af3d56",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/announcements/update",
+    "params_keys": [
+      "announcements",
+      "gen"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 20,
+    "sha256": "cbdaad9fe13b5e83f8b412cfe0c0011c391966751fc309758b2eeee41389ba7f",
+    "keys": [
+      "id",
+      "jsonrpc",
+      "result"
+    ],
+    "id": 3,
+    "method": null,
+    "params_keys": [],
+    "result_keys": [
+      "config",
+      "subscription_tier"
+    ]
+  },
+  {
+    "index": 21,
+    "sha256": "0672cee69de53900a7e3aa682e3c5d773a12129eb974bbd41b9e1ac9cf9ec86c",
+    "keys": [
+      "id",
+      "jsonrpc",
+      "result"
+    ],
+    "id": 4,
+    "method": null,
+    "params_keys": [],
+    "result_keys": []
+  },
+  {
+    "index": 22,
+    "sha256": "85ac0b7690e69e5b2717cd77b6ec7c99b006babd58930f29935858c73b9da964",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/queue/changed",
+    "params_keys": [
+      "entries",
+      "sessionId"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 23,
+    "sha256": "c54eb2f1f3b9e95a7cbfbcc09d2b075c6fb1f1e284ece7ffe445a390181b9725",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/queue/changed",
+    "params_keys": [
+      "entries",
+      "runningKind",
+      "runningPromptId",
+      "runningText",
+      "sessionId"
+    ],
+    "result_keys": []
+  },
+  {
+    "index": 24,
+    "sha256": "77a9e38b4f07baa71643feffe30c45b5583fd407c99c427ab00fbad876c0787b",
+    "keys": [
+      "id",
+      "jsonrpc",
+      "result"
+    ],
+    "id": "skills-reload",
+    "method": null,
+    "params_keys": [],
+    "result_keys": [
+      "result"
+    ]
+  }
+]

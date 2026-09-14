@@ -1,0 +1,33 @@
+[
+  {
+    "run": "r1",
+    "methods": {
+      "initialize": 1,
+      "session/new": 1
+    },
+    "source_unchanged": true,
+    "accepted": false,
+    "faults": [
+      "preprompt_inventory_missing"
+    ],
+    "known_usage": null,
+    "native_stream_sha256": "eef0ccab946d765490fad42004beca57f3d9dee18eb9ea7a5d88b3022124a781"
+  },
+  {
+    "run": "r2",
+    "methods": {
+      "initialize": 1,
+      "session/new": 1,
+      "_x.ai/billing": 1,
+      "_x.ai/auto-topup-rule": 1,
+      "session/prompt": 1
+    },
+    "source_unchanged": true,
+    "accepted": false,
+    "faults": [
+      "rpc_binding"
+    ],
+    "known_usage": null,
+    "native_stream_sha256": "123503be23076c2991e733b171cc9d92c0973f75b752053994ad38153b560c9c"
+  }
+]
