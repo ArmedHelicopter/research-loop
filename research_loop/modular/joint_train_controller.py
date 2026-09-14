@@ -105,7 +105,8 @@ def _verify_target(stage: JointTrainStage, *, barrier: JointTrainBarrier, panel:
         if panel != expected_panel or stage.inner.cell not in panel.cells:
             raise ContractError('common scorer panel differs from sealed history barrier')
         executor = barrier.executor
-        executor._verify(stage, context)
+        with executor._predispatch_verification_pass() as passed:
+            executor._verify(stage, context, passed)
         body = stage.record.data()
         if body['stage'] != 'target' or body['history_barrier_digest'] != barrier.record.content_hash:
             raise ContractError('common target did not bind its sealed history barrier')

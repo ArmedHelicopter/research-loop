@@ -177,6 +177,16 @@ class JointTrainStage:
     barrier: object = None
 
 
+class _PredispatchVerificationPass:
+    """Fresh, active-only shared dependency observation for one dispatch pass."""
+    __slots__=('executor','_active')
+    def __init__(self, executor): self.executor=executor; self._active=True
+    def close(self): self._active=False
+    def require(self, executor):
+        if not self._active or executor is not self.executor:
+            raise ContractError('predispatch verification pass is not active for this executor')
+
+
 def _stage_record(plan, inner, ledger, barrier, *, status):
     """Derive every outer binding from originals, never from a supplied outer body."""
     data=inner.record.data();stage=data['stage'];recipe=data['recipe']
@@ -214,6 +224,24 @@ class JointTrainStageExecutor:
         if (self.root/'protocol.json').read_bytes()!=(self.plan.protocol.record.encoded+'\n').encode('utf-8'):
             raise ContractError('original common protocol bytes changed')
 
+    @contextmanager
+    def _predispatch_verification_pass(self):
+        """One fresh dependency observation; never spans a model invocation."""
+        self.plan.verify_dependencies(provider=self.session.provider,source_verifier=self.source,corpus_verifier=self.corpus,
+                                      scorer_handle_bindings=self.handles)
+        self._verify_protocol_file()
+        if _read_record(self.root/'plan.json') != self.plan.record: raise ContractError('original runtime plan drift')
+        passed=_PredispatchVerificationPass(self)
+        try: yield passed
+        finally: passed.close()
+
+    def _verify_predecessors(self, *, context=None):
+        with self._predispatch_verification_pass() as passed:
+            for previous in self.stages:
+                if previous.record.data()['status']!='succeeded': continue
+                if context is not None and previous.record.data()['stage']=='history_build': context.require_build(previous)
+                else: self._verify(previous, context, passed)
+
     def _persist(self):
         from research_loop.modular.metaprogram_training import _atomic
         completed={**self.attempts, **{(s.record.data()['stage'],s.record.data()['trial_id']):s.record.data() for s in self.stages}}
@@ -230,15 +258,10 @@ class JointTrainStageExecutor:
         if self.poisoned or self.session.terminal(): raise ContractError('common stage allocation is terminal')
         plan=self.plan; trial=None
         try:
-            plan.verify_dependencies(provider=self.session.provider,source_verifier=self.source,corpus_verifier=self.corpus,
-                                     scorer_handle_bindings=self.handles)
-            self._verify_protocol_file()
-            if _read_record(self.root/'plan.json') != plan.record: raise ContractError('original runtime plan drift')
             recipe=next((r for r in plan.recipes if r['id']==recipe_id),None)
             if recipe is None or stage not in ('history_build','target'): raise ContractError('unregistered common stage')
             if stage=='history_build':
-                for previous in self.stages:
-                    if previous.record.data()['status']=='succeeded': self.verify(previous)
+                self._verify_predecessors()
                 if target_digest is not None or build is not None or barrier is not None: raise ContractError('history stage cannot receive target evidence')
                 task=plan.history.task; package=plan.parent; inputs=dict(plan.history_inputs)
                 trial=history_build_id(plan.protocol,recipe)
@@ -253,10 +276,11 @@ class JointTrainStageExecutor:
                     # The lease ends before any model call.  It is never kept
                     # for a later dispatch, score, or final verification.
                     with _barrier_validation_scope(barrier) as context:
-                        for previous in self.stages:
-                            if previous.record.data()['status']!='succeeded': continue
-                            if previous.record.data()['stage']=='history_build': context.require_build(previous)
-                            else: self._verify(previous, context)
+                        with self._predispatch_verification_pass() as passed:
+                            for previous in self.stages:
+                                if previous.record.data()['status']!='succeeded': continue
+                                if previous.record.data()['stage']=='history_build': context.require_build(previous)
+                                else: self._verify(previous, context, passed)
                         context.require_build(build)
                         if build.record.data()['stage']!='history_build' or build.record.data()['build_id']!=history_build_id(plan.protocol,recipe):
                             raise ContractError('target package belongs to a different history procedure')
@@ -267,8 +291,7 @@ class JointTrainStageExecutor:
                         cell=next(c for c in panel.cells if c.arm_id==recipe_id and c.task_digest==task.content_hash)
                         if cell.package_digest!=package.digest:raise ContractError('formal target package differs from its barrier')
                 else:
-                    for previous in self.stages:
-                        if previous.record.data()['status']=='succeeded': self.verify(previous)
+                    self._verify_predecessors()
                     self.verify(build)
                     if build.record.data()['stage']!='history_build' or build.record.data()['build_id']!=history_build_id(plan.protocol,recipe):
                         raise ContractError('target package belongs to a different history procedure')
@@ -315,13 +338,19 @@ class JointTrainStageExecutor:
             self._persist()
 
     def verify(self, result):
-        if type(result) is JointTrainStage and result.barrier is not None:
-            with _barrier_validation_scope(result.barrier) as context:
-                return self._verify(result, context)
-        return self._verify(result, None)
+        with self._predispatch_verification_pass() as passed:
+            if type(result) is JointTrainStage and result.barrier is not None:
+                with _barrier_validation_scope(result.barrier) as context:
+                    return self._verify(result, context, passed)
+            return self._verify(result, None, passed)
 
-    def _verify(self, result, context):
-        self._verify_protocol_file()
+    def _verify(self, result, context, passed):
+        if passed is None:
+            # Private callers without a shared pass retain a complete fresh check.
+            self._verify_protocol_file()
+            self.plan.verify_dependencies(provider=self.session.provider,source_verifier=self.source,corpus_verifier=self.corpus,
+                                          scorer_handle_bindings=self.handles)
+        else: passed.require(self)
         if type(result) is not JointTrainStage or result not in self.stages or type(result.ledger) is not PhaseProviderLedger:
             raise ContractError('original common stage and eligible provider seal required')
         if result.barrier is not None and (type(result.barrier) is not JointTrainBarrier or result.barrier.executor is not self):
@@ -333,8 +362,9 @@ class JointTrainStageExecutor:
         expected=_stage_record(self.plan,result.inner,result.ledger,result.barrier,status='succeeded')
         if result.record!=expected or result.inner.record.data()['status']!='succeeded':
             raise ContractError('common outer receipt differs from complete original cross-binding')
-        self.plan.verify_dependencies(provider=self.session.provider,source_verifier=self.source,corpus_verifier=self.corpus,
-                                      scorer_handle_bindings=self.handles)
+        if passed is None:
+            self.plan.verify_dependencies(provider=self.session.provider,source_verifier=self.source,corpus_verifier=self.corpus,
+                                          scorer_handle_bindings=self.handles)
         b=expected.data(); recipe=result.inner.record.data()['recipe']
         if _read_record(self.root/(b['trial_id']+'-stage.json')) != result.record or b['status']!='succeeded':
             raise ContractError('original common stage unavailable')
@@ -387,7 +417,8 @@ class JointTrainBarrier:
         if (len(executor.stages)!=len(plan.builds) or any(s.record.data()['stage']!='history_build' for s in executor.stages)
                 or {s.record.data()['build_id'] for s in executor.stages}!={history_build_id(plan.protocol,r) for r in plan.builds}):
             raise ContractError('complete canonical history grid required before common target panel')
-        for stage in executor.stages: executor.verify(stage)
+        with executor._predispatch_verification_pass() as passed:
+            for stage in executor.stages: executor._verify(stage, None, passed)
         record=_barrier_record(plan,executor.stages)
         _exclusive(executor.root/'common-history-barrier.json',record)
         return cls(record,executor,tuple(executor.stages))
@@ -408,7 +439,8 @@ class JointTrainBarrier:
                 or self.record.data()['build_receipts']!={s.record.data()['build_id']:s.record.content_hash for s in self.builds}
                 or set(self.record.data()['build_receipts'])!={history_build_id(plan.protocol,r) for r in plan.builds}):
             raise ContractError('common barrier lost complete original history evidence')
-        for stage in self.builds: self.executor.verify(stage)
+        with self.executor._predispatch_verification_pass() as passed:
+            for stage in self.builds: self.executor._verify(stage, None, passed)
 
     def package(self, recipe):
         self.verify()
