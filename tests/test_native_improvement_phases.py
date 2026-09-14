@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from research_loop.modular.contracts import FrozenRecord
-from research_loop.modular.phase_provider import PhaseProviderLedger, provider_configuration
+from research_loop.modular.phase_provider import PhaseProviderLedger, PhaseProviderAbort, provider_configuration
 from research_loop.modular.train_provider import GrokTrainProvider
 from research_loop.ontology import ContractError
 from helpers.native_phase_provider import native_phase_provider
@@ -78,3 +78,48 @@ def test_unknown_native_history_or_target_retains_complete_state_denominator(tmp
         run.barrier.verify()
         assert run.barrier.ledger.verify().data()['successful_prefix']
         assert not run.ledger.verify().data()['score_eligible']
+
+
+@pytest.mark.parametrize('boundary',['build','target'])
+def test_original_response_substitution_blocks_all_later_work_and_closes_owned_scorers(tmp_path,monkeypatch,boundary):
+    module,setup=prepare_native(tmp_path,monkeypatch,'state')
+    controller=importlib.import_module('research_loop.modular.state_improvement_combination_controller')
+    original_build=controller.run_build;original_target=controller.run_state_improvement_cell
+    def corrupt_call(number):
+        slot='builder_proposal' if number==1 else 'analysis_program'
+        path=setup['port'].backend.calls_root/f'{number:04d}-{slot}'/'response.private.json'
+        path.write_bytes(path.read_bytes()+b' ')
+    if boundary=='build':
+        def build(**kwargs):
+            result=original_build(**kwargs);corrupt_call(1);return result
+        monkeypatch.setattr(controller,'run_build',build)
+    else:
+        def target(**kwargs):
+            result=original_target(**kwargs);corrupt_call(12);return result
+        monkeypatch.setattr(controller,'run_state_improvement_cell',target)
+    owned=[];original_services=module.services
+    class NoExternalCleanup:
+        def callback(self,*args,**kwargs):pass
+    def services(setup,stack,panels,fault=None):
+        clients=original_services(setup,NoExternalCleanup(),panels,fault)
+        owned.extend(clients.values());return clients
+    monkeypatch.setattr(module,'services',services)
+    try:
+        run=module.invoke(setup,monkeypatch)
+        assert all(service.process.poll() is not None for service in owned)
+    finally:
+        # Cleanup after assertion only; it cannot make the ownership assertion pass.
+        for service in owned:service.close()
+    b=run.receipt.data();expected_calls=1 if boundary=='build' else 13
+    assert type(run.ledger) is PhaseProviderAbort and b['provider_provenance_failed']
+    assert b['expected_builds']==11 and b['expected_cells']==22 and len(b['structural_exclusions'])==2
+    assert b['blocked_cells']==(22 if boundary=='build' else 21)
+    assert b['failed_cells']==(0 if boundary=='build' else 1)
+    assert b['actual_scorer_calls']==b['scored_cells']==0 and b['unused_model_opportunities'] is None
+    assert b['actual_model_usage']['observed_main_opportunities_lower_bound']==expected_calls
+    assert b['actual_model_usage']['known_reported_tokens_lower_bound']==expected_calls*12
+    assert len(setup['native_logs'])==expected_calls and len(owned)==(0 if boundary=='build' else 3)
+    assert b['actual_docker_attempts']==(0 if boundary=='build' else 1)
+    assert run.ledger.verify().data()['status']=='terminal_accounting_only'
+    assert not (run.root/'target-provider-ledger-originals.json').exists()
+    assert not b['validation_opened'] and b['pruned_cells']==[]

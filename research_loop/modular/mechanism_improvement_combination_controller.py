@@ -34,7 +34,7 @@ from research_loop.modular.panel_receipts import PanelCell
 from research_loop.modular.combination_panels import CombinationPanelVerifier
 from research_loop.modular.combination_contrasts import estimate_grouped_contrast
 from research_loop.ontology import ContractError, canonical
-from research_loop.modular.phase_provider import (PROVIDERS, PhaseProviderSession, PhaseProviderLedger,
+from research_loop.modular.phase_provider import (PROVIDERS, PhaseProviderSession, PhaseProviderLedger, PhaseProviderAbort,
     provider_configuration, validate_configuration)
 
 ALLOCATION={'arm_recipe_bindings':12,'build_recipes':6,'builder_proposals':6,'builder_executions':6,
@@ -305,8 +305,8 @@ def run_mechanism_improvement_train(plan,*,prospective_exporter,snapshot_root,ex
             raise ContractError('fresh matched closed TRAIN provider required')
     elif model_configuration(model).data()!=b['model_config'] or model.ledger['calls'] or model.ledger['tokens'] or model.ledger['usage_incomplete']:
         raise ContractError('fresh matched real model port required')
-    usage=lambda: model.usage().data() if native else _usage(model)
-    terminal=lambda: model.terminal() if native else model.ledger['usage_incomplete']
+    usage=lambda: scopes.usage().data() if native else _usage(model)
+    terminal=lambda: scopes.terminal() if native else model.ledger['usage_incomplete']
     if set(source_verifiers)!=set(DESIGNS) or not callable(scorer_factory): raise ContractError('exact source and scorer factories required')
     for pair,q in source_verifiers.items():
         qualifier_check(pair,plan.history_material(pair),q)
@@ -347,136 +347,157 @@ def run_mechanism_improvement_train(plan,*,prospective_exporter,snapshot_root,ex
         for row in [*buildrows,*targets]: row.update(status='blocked',reason='source_preflight')
         journal.update(status='blocked_before_execution',error_type=type(exc).__name__);persist();raise
     builds=[];barrier=None;panels=();scenarios={};results=[];scores=[];score_inputs={};services={};poison=False
-    for row in buildrows:
-        recipe=row['recipe']
-        if poison or terminal():
-            row.update(status='blocked',reason='prior_unknown_cost');phase.append('build_blocked',row.copy());persist();continue
-        try:plan.check_packets(packets)
-        except Exception as exc:
-            poison=True;row.update(status='failed',reason='source_drift',error_type=type(exc).__name__)
-            phase.append('build_preflight_failed',row.copy());persist();continue
-        phase.append('build_reserved',{'recipe':recipe});row['status']='running';persist()
-        with (scopes.scope('build:'+FrozenRecord.from_dict(recipe).content_hash) if native else nullcontext(model)) as scoped_model:
-            result=run_build(recipe=recipe,plan_digest=plan.record.content_hash,history=plan.history,material=plan.history_material(recipe['pair']),
-                qualifier=source_verifiers[recipe['pair']],parent=plan.parent,fixed_builder=plan.fixed_builder,broker=broker,
-                inputs=dict(plan.history_inputs),model=scoped_model,audit_verifier=audit_verifier,root=root/'builds'/str(len(builds)))
-        builds.append(result);row.update(status=result.record.data()['status'],receipt=result.record.data())
-        sourcepath=result.root/'source'/'source-verification.json'
-        if sourcepath.is_file():
-            row['source']=json.loads(sourcepath.read_bytes())
-            poison=poison or any(c.get('cost_units') is None for c in row['source'].get('calls',[]))
-        phase.append('build_completed',{'receipt_digest':result.record.content_hash,'status':row['status']});persist()
-    buildledger=(scopes.seal(root/'build-provider-ledger.json') if native else FrozenProviderLedger.freeze(model,root/'build-provider-ledger.json'))
-    phase.append('build_ledger_sealed',{'digest':buildledger.record.content_hash})
-    if len(builds)==6 and all(r.record.data()['status']=='succeeded' for r in builds):
-        prefix=tuple(phase.rows)
-        record=FrozenRecord.from_dict({'schema':('mechanism-improvement-candidate-barrier-v2' if b['schema'].endswith('-v2') else 'mechanism-improvement-candidate-barrier-v1'),'plan_digest':plan.record.content_hash,
-            'build_receipts':[r.record.content_hash for r in builds],'provider_ledger_digest':buildledger.record.content_hash,
-            'candidate_selections':selections(b['baseline_digest']),
-            'controller_prefix_digest':FrozenRecord.from_dict({'rows':[r.data() for r in prefix]}).content_hash})
-        _exclusive(root/'candidate-barrier.json',record)
-        barrier=CandidateBarrier(root,record,plan,tuple(builds),buildledger,source_verifiers,broker,packets,prefix)
-        try:
-            panels,scenarios=compile_panels(barrier)
-            services=scorer_factory(panels)
-            if set(services)!=set(DESIGNS): raise ContractError('scorers must cover the exact frozen target panels')
-            for panel in panels:
-                service=services[panel.obligation_id]
-                if type(service) is not CombinationScorerProcessClient or service.mechanism_improvement is not True or service.panel!=panel:
-                    raise ContractError('exact state improvement process scorer required')
-                service.assert_configuration(config=ScorerConfig(FrozenRecord.from_dict(b['scorer'])),task_handle_bindings=b['scorer_handle_bindings'],
-                    execution_authority_keys={execution_authority.authority_id:execution_authority.key},scorer_authority_keys=scorer_authority_keys)
-            phase.append('candidate_barrier',{'digest':record.content_hash,'panels':[p.digest for p in panels]})
-            journal['panels']=[{'digest':p.digest,'cells':[c.data() for c in p.cells]} for p in panels];persist()
-        except Exception as exc:
-            poison=True;journal['barrier_error']=type(exc).__name__;phase.append('barrier_failed',{'error_type':type(exc).__name__})
-    else: poison=True
-    lookup={(p.obligation_id,c.arm_id,c.task_digest):(p,c) for p in panels for c in p.cells}
-    args_by_key={}
-    for row in targets:
-        result=None
-        if poison or terminal() or not panels:
-            row.update(status='blocked',reason='global_barrier_or_unknown_cost');phase.append('target_blocked',row.copy());persist();results.append(None);continue
-        panel,cell=lookup[row['pair'],row['arm_id'],row['task_digest']];packet=next(p for p in packets if p.task.content_hash==cell.task_digest)
-        args=dict(panel=panel,task=packet.task,scenario=scenarios[cell.key],package=barrier.package(panel.obligation_id,cell.arm_id),
-            material=plan.target_material(panel.obligation_id,cell.task_digest),source_verifier=source_verifiers[panel.obligation_id],
-            barrier=barrier,public_inputs={'public_csv':packet.csv_path},broker=broker,
-            retrieval_material=FrozenStateRetrievalMaterial(FrozenRecord.from_dict(b['retrieval_materials'][cell.task_digest])) if cell.coverage_id=='pair:M6+M9' else None,
-            retrieval_verifier=retrieval_verifier if cell.coverage_id=='pair:M6+M9' else None)
-        args_by_key[cell.key]=args;cellroot=root/'targets'/FrozenRecord.from_dict(cell.data()).content_hash
-        row['cell']=cell.data();row['status']='running';phase.append('target_reserved',{'cell':cell.data()});persist()
-        try:
-            with (scopes.scope('target:'+FrozenRecord.from_dict(cell.data()).content_hash) if native else nullcontext(model)) as scoped_model:
-                result=run_mechanism_improvement_cell(cell=cell,**args,sidecar=cellroot,model=scoped_model,audit_verifier=audit_verifier,
-                    provider=provider_factory(cell) if cell.coverage_id=='pair:M6+M9' else None)
-            row.update(status='executed' if result.runtime.status=='succeeded' else 'failed',runtime_digest=result.runtime.trace_digest)
-        except Exception as exc: row.update(status='failed',error_type=type(exc).__name__)
-        sourcepath=cellroot/'source-verification.json'
-        if sourcepath.is_file():
-            row['source']=json.loads(sourcepath.read_bytes())
-            poison=poison or any(c.get('cost_units') is None for c in row['source'].get('calls',[]))
-        retrievalpath=cellroot/'retrieval'/'source-verification.json'
-        if retrievalpath.is_file():
-            row['retrieval_source']=json.loads(retrievalpath.read_bytes())
-            poison=poison or any(c.get('cost_units') is None for c in row['retrieval_source'].get('calls',[]))
-        if result is not None:
-            row['retrieval_calls']=sum(FrozenRecord(line).data()['stage']=='q8_retrieval_request' for line in result.runtime.trace_path.read_text().splitlines())
-            row['docker_attempts']=sum(FrozenRecord(line).data()['stage']=='execution_request' for line in result.runtime.trace_path.read_text().splitlines())
-        results.append(result);phase.append('target_completed',{'cell_key':list(cell.key),'status':row['status']});persist()
-    ledger=(scopes.seal(root/'target-provider-ledger.json') if native else FrozenProviderLedger.freeze(model,root/'target-provider-ledger.json'));phase.append('target_ledger_sealed',{'digest':ledger.record.content_hash})
-    for row,result in zip(targets,results,strict=True):
-        if result is None or row['status']!='executed': continue
-        cell=result.cell;args=args_by_key[cell.key];service=services[cell.coverage_id]
-        try:
-            verified=verify_mechanism_improvement_cell(result,**args,ledger=ledger);row['verification']=verified.data()
-            if cell.coverage_id=='pair:M1+M9':
-                row['qualification_semantics_digest']=admission_qualification_semantics(cell,args['material'],args['source_verifier'],
-                    result.runtime.trace_path.parent.parent/'source-verification.json',b['source_verifier_bindings'][cell.coverage_id]).content_hash
-            scoreinput=issue_mechanism_improvement_score_input(authority=execution_authority,result=result,**args,ledger=ledger)
-            score_inputs[cell.key]=scoreinput;row['score_input']=scoreinput.data();row['scorer_calls']=1
-            phase.append('scorer_reserved',{'cell_key':list(cell.key),'input_digest':scoreinput.content_hash});persist()
-            score=service.score_combination(panel=args['panel'],cell=cell,score_input=scoreinput)
-            verify_combination_adapted_receipt(score,authority_keys=scorer_authority_keys,config=service.config,panel=args['panel'],cell=cell,
-                score_input=scoreinput,execution_authority_keys={execution_authority.authority_id:execution_authority.key})
-            scores.append(score);row.update(status='succeeded',score=score.receipt.data())
-        except Exception as exc: row.update(status='failed',error_type=type(exc).__name__)
-        phase.append('scorer_completed',{'cell_key':list(cell.key),'status':row['status']});persist()
-    contrasts=[]
-    for pair in DESIGNS:
-        panel=next((p for p in panels if p.obligation_id==pair),None)
-        try:
-            if panel is None: raise ContractError('candidate barrier unavailable')
-            if pair=='pair:M1+M9':
-                values=[qualification_semantics(plan.history_material(pair),source_verifiers[pair],r.root/'source'/'source-verification.json',
-                    build_binding(plan.record.content_hash,r.record.data()['recipe'])).content_hash for r in builds if r.record.data()['recipe']['pair']==pair]
-                if len(set(values))!=1 or admission_qualification_drift(panel,targets) is not None: raise ContractError('qualification_semantic_drift')
-            def verify_score(score,cell,owner):
-                verify_combination_adapted_receipt(score,authority_keys=scorer_authority_keys,config=services[pair].config,panel=owner,cell=cell,
-                    score_input=score_inputs[cell.key],execution_authority_keys={execution_authority.authority_id:execution_authority.key})
-            contrast=estimate_grouped_contrast(panel,runtime=[r.runtime for r in results if r is not None and r.cell.coverage_id==pair],
-                scorer_receipts=[s for s in scores if s.cell_key in {c.key for c in panel.cells}],verifier=CombinationPanelVerifier(scorer_verifier=verify_score))
-        except Exception as exc: contrast=FrozenRecord.from_dict({'pair':pair,'status':'inconclusive','reason':str(exc),'scientific_effect':'not_measured'})
-        contrasts.append(contrast)
-    sourcecharges=[c for r in [*buildrows,*targets] for source_key in ('source','retrieval_source') for c in r.get(source_key,{}).get('calls',[])]
-    sourcecalls=len(sourcecharges)
-    buildercalls=sum(sum(x['stage']=='builder_request' for x in _phase_rows(r.root/'phase.jsonl')) for r in builds)
-    dockercalls=sum(r['docker_attempts'] for r in targets);scorercalls=sum(r['scorer_calls'] for r in targets)
-    receipt=FrozenRecord.from_dict({'schema':('mechanism-improvement-train-receipt-v2' if b['schema'].endswith('-v2') else 'mechanism-improvement-train-receipt-v1'),'plan_digest':plan.record.content_hash,'allocation':ALLOCATION,
-        'expected_builds':6,'arm_recipe_bindings':selections(b['baseline_digest']),'successful_builds':sum(r['status']=='succeeded' for r in buildrows),'expected_cells':24,
-        'failed_builds':sum(r['status']=='failed' for r in buildrows),'blocked_builds':sum(r['status']=='blocked' for r in buildrows),
-        'scored_cells':len(scores),'failed_cells':sum(r['status']=='failed' for r in targets),'blocked_cells':sum(r['status']=='blocked' for r in targets),
-        'actual_model_usage':usage(),'source_calls':sourcecalls,'actual_builder_executions':buildercalls,
-        'known_source_cost_units':sum(c['cost_units'] for c in sourcecharges if c.get('cost_units') is not None),
-        'source_cost_unknown':any(c.get('cost_units') is None for c in sourcecharges),
-        'actual_retrieval_calls':sum(r.get('retrieval_calls',0) for r in targets),
-        'unused_retrieval_opportunities':24-sum(r.get('retrieval_calls',0) for r in targets),
-        'retrieval_cost_unknown':any(r.get('retrieval_calls',0)>0 for r in targets),
-        'actual_docker_attempts':dockercalls,'actual_scorer_calls':scorercalls,
-        'unused_builder_opportunities':6-buildercalls,'unused_docker_opportunities':24-dockercalls,'unused_scorer_opportunities':24-scorercalls,
-        'unused_model_opportunities':78-(len(model.inspect()) if native else len(model.ledger['calls'])),'unused_source_opportunities':76-sourcecalls,
-        'structural_exclusions':excluded,'pruned_cells':[],'contrasts':[c.data() for c in contrasts],
-        'history_acquisition':{'model_requests':len(plan.history.binding.data()['request_digests']),'cost':'inherited_unknown_not_in_current_allocation'},
-        'validation_opened':False,'scientific_effectiveness_proven':False,'scorer_usage_unknown':bool(scorercalls),
-        'status':'complete_train_engineering' if len(scores)==24 and all(c.data()['status'] in {'estimated','not_identifiable'} for c in contrasts) else 'inconclusive'})
-    _exclusive(root/'controller-receipt.json',receipt);journal['status']=receipt.data()['status'];persist()
-    return MechanismImprovementRun(root,barrier,panels,scenarios,tuple(results),tuple(scores),tuple(FrozenRecord.from_dict(r) for r in targets),tuple(builds),ledger,receipt)
+    try:
+        for row in buildrows:
+            recipe=row['recipe']
+            if poison or terminal():
+                row.update(status='blocked',reason='prior_unknown_cost');phase.append('build_blocked',row.copy());persist();continue
+            try:plan.check_packets(packets)
+            except Exception as exc:
+                poison=True;row.update(status='failed',reason='source_drift',error_type=type(exc).__name__)
+                phase.append('build_preflight_failed',row.copy());persist();continue
+            phase.append('build_reserved',{'recipe':recipe});row['status']='running';persist()
+            result=None
+            try:
+                with (scopes.scope('build:'+FrozenRecord.from_dict(recipe).content_hash) if native else nullcontext(model)) as scoped_model:
+                    result=run_build(recipe=recipe,plan_digest=plan.record.content_hash,history=plan.history,material=plan.history_material(recipe['pair']),
+                        qualifier=source_verifiers[recipe['pair']],parent=plan.parent,fixed_builder=plan.fixed_builder,broker=broker,
+                        inputs=dict(plan.history_inputs),model=scoped_model,audit_verifier=audit_verifier,root=root/'builds'/str(len(builds)))
+            except ContractError as exc:
+                if not native:raise
+                scopes.abort();poison=True
+                row.update(status='failed',reason='provider_provenance_fault',error_type=type(exc).__name__)
+                if result is None:
+                    phase.append('build_preflight_failed',row.copy());persist();continue
+            builds.append(result)
+            row.update(status='failed' if native and scopes.aborted is not None else result.record.data()['status'],receipt=result.record.data())
+            sourcepath=result.root/'source'/'source-verification.json'
+            if sourcepath.is_file():
+                row['source']=json.loads(sourcepath.read_bytes())
+                poison=poison or any(c.get('cost_units') is None for c in row['source'].get('calls',[]))
+            phase.append('build_completed',{'receipt_digest':result.record.content_hash,'status':row['status']});persist()
+        buildledger=(scopes.finish(root/'build-provider-ledger.json') if native else FrozenProviderLedger.freeze(model,root/'build-provider-ledger.json'))
+        phase.append('build_provider_aborted' if type(buildledger) is PhaseProviderAbort else 'build_ledger_sealed',{'digest':buildledger.record.content_hash})
+        if not poison and type(buildledger) is not PhaseProviderAbort and len(builds)==6 and all(r.record.data()['status']=='succeeded' for r in builds):
+            prefix=tuple(phase.rows)
+            record=FrozenRecord.from_dict({'schema':('mechanism-improvement-candidate-barrier-v2' if b['schema'].endswith('-v2') else 'mechanism-improvement-candidate-barrier-v1'),'plan_digest':plan.record.content_hash,
+                'build_receipts':[r.record.content_hash for r in builds],'provider_ledger_digest':buildledger.record.content_hash,
+                'candidate_selections':selections(b['baseline_digest']),
+                'controller_prefix_digest':FrozenRecord.from_dict({'rows':[r.data() for r in prefix]}).content_hash})
+            _exclusive(root/'candidate-barrier.json',record)
+            barrier=CandidateBarrier(root,record,plan,tuple(builds),buildledger,source_verifiers,broker,packets,prefix)
+            try:
+                panels,scenarios=compile_panels(barrier)
+                services=scorer_factory(panels)
+                if set(services)!=set(DESIGNS): raise ContractError('scorers must cover the exact frozen target panels')
+                for panel in panels:
+                    service=services[panel.obligation_id]
+                    if type(service) is not CombinationScorerProcessClient or service.mechanism_improvement is not True or service.panel!=panel:
+                        raise ContractError('exact state improvement process scorer required')
+                    service.assert_configuration(config=ScorerConfig(FrozenRecord.from_dict(b['scorer'])),task_handle_bindings=b['scorer_handle_bindings'],
+                        execution_authority_keys={execution_authority.authority_id:execution_authority.key},scorer_authority_keys=scorer_authority_keys)
+                phase.append('candidate_barrier',{'digest':record.content_hash,'panels':[p.digest for p in panels]})
+                journal['panels']=[{'digest':p.digest,'cells':[c.data() for c in p.cells]} for p in panels];persist()
+            except Exception as exc:
+                poison=True;journal['barrier_error']=type(exc).__name__;phase.append('barrier_failed',{'error_type':type(exc).__name__})
+        else: poison=True
+        lookup={(p.obligation_id,c.arm_id,c.task_digest):(p,c) for p in panels for c in p.cells}
+        args_by_key={}
+        for row in targets:
+            result=None
+            if poison or terminal() or not panels:
+                row.update(status='blocked',reason='global_barrier_or_unknown_cost');phase.append('target_blocked',row.copy());persist();results.append(None);continue
+            panel,cell=lookup[row['pair'],row['arm_id'],row['task_digest']];packet=next(p for p in packets if p.task.content_hash==cell.task_digest)
+            args=dict(panel=panel,task=packet.task,scenario=scenarios[cell.key],package=barrier.package(panel.obligation_id,cell.arm_id),
+                material=plan.target_material(panel.obligation_id,cell.task_digest),source_verifier=source_verifiers[panel.obligation_id],
+                barrier=barrier,public_inputs={'public_csv':packet.csv_path},broker=broker,
+                retrieval_material=FrozenStateRetrievalMaterial(FrozenRecord.from_dict(b['retrieval_materials'][cell.task_digest])) if cell.coverage_id=='pair:M6+M9' else None,
+                retrieval_verifier=retrieval_verifier if cell.coverage_id=='pair:M6+M9' else None)
+            args_by_key[cell.key]=args;cellroot=root/'targets'/FrozenRecord.from_dict(cell.data()).content_hash
+            row['cell']=cell.data();row['status']='running';phase.append('target_reserved',{'cell':cell.data()});persist()
+            try:
+                with (scopes.scope('target:'+FrozenRecord.from_dict(cell.data()).content_hash) if native else nullcontext(model)) as scoped_model:
+                    result=run_mechanism_improvement_cell(cell=cell,**args,sidecar=cellroot,model=scoped_model,audit_verifier=audit_verifier,
+                        provider=provider_factory(cell) if cell.coverage_id=='pair:M6+M9' else None)
+                row.update(status='executed' if result.runtime.status=='succeeded' else 'failed',runtime_digest=result.runtime.trace_digest)
+            except Exception as exc:
+                row.update(status='failed',error_type=type(exc).__name__)
+                if native and scopes.aborted is not None:poison=True
+            sourcepath=cellroot/'source-verification.json'
+            if sourcepath.is_file():
+                row['source']=json.loads(sourcepath.read_bytes())
+                poison=poison or any(c.get('cost_units') is None for c in row['source'].get('calls',[]))
+            retrievalpath=cellroot/'retrieval'/'source-verification.json'
+            if retrievalpath.is_file():
+                row['retrieval_source']=json.loads(retrievalpath.read_bytes())
+                poison=poison or any(c.get('cost_units') is None for c in row['retrieval_source'].get('calls',[]))
+            if result is not None:
+                row['retrieval_calls']=sum(FrozenRecord(line).data()['stage']=='q8_retrieval_request' for line in result.runtime.trace_path.read_text().splitlines())
+                row['docker_attempts']=sum(FrozenRecord(line).data()['stage']=='execution_request' for line in result.runtime.trace_path.read_text().splitlines())
+            results.append(result);phase.append('target_completed',{'cell_key':list(cell.key),'status':row['status']});persist()
+        ledger=(scopes.finish(root/'target-provider-ledger.json') if native else FrozenProviderLedger.freeze(model,root/'target-provider-ledger.json'));phase.append('target_provider_aborted' if type(ledger) is PhaseProviderAbort else 'target_ledger_sealed',{'digest':ledger.record.content_hash})
+        for row,result in zip(targets,results,strict=True):
+            if type(ledger) is PhaseProviderAbort:
+                if row['status']=='executed':row.update(status='failed',reason='provider_provenance_fault')
+                continue
+            if result is None or row['status']!='executed': continue
+            cell=result.cell;args=args_by_key[cell.key];service=services[cell.coverage_id]
+            try:
+                verified=verify_mechanism_improvement_cell(result,**args,ledger=ledger);row['verification']=verified.data()
+                if cell.coverage_id=='pair:M1+M9':
+                    row['qualification_semantics_digest']=admission_qualification_semantics(cell,args['material'],args['source_verifier'],
+                        result.runtime.trace_path.parent.parent/'source-verification.json',b['source_verifier_bindings'][cell.coverage_id]).content_hash
+                scoreinput=issue_mechanism_improvement_score_input(authority=execution_authority,result=result,**args,ledger=ledger)
+                score_inputs[cell.key]=scoreinput;row['score_input']=scoreinput.data();row['scorer_calls']=1
+                phase.append('scorer_reserved',{'cell_key':list(cell.key),'input_digest':scoreinput.content_hash});persist()
+                score=service.score_combination(panel=args['panel'],cell=cell,score_input=scoreinput)
+                verify_combination_adapted_receipt(score,authority_keys=scorer_authority_keys,config=service.config,panel=args['panel'],cell=cell,
+                    score_input=scoreinput,execution_authority_keys={execution_authority.authority_id:execution_authority.key})
+                scores.append(score);row.update(status='succeeded',score=score.receipt.data())
+            except Exception as exc: row.update(status='failed',error_type=type(exc).__name__)
+            phase.append('scorer_completed',{'cell_key':list(cell.key),'status':row['status']});persist()
+        contrasts=[]
+        for pair in DESIGNS:
+            panel=next((p for p in panels if p.obligation_id==pair),None)
+            try:
+                if panel is None: raise ContractError('candidate barrier unavailable')
+                if pair=='pair:M1+M9':
+                    values=[qualification_semantics(plan.history_material(pair),source_verifiers[pair],r.root/'source'/'source-verification.json',
+                        build_binding(plan.record.content_hash,r.record.data()['recipe'])).content_hash for r in builds if r.record.data()['recipe']['pair']==pair]
+                    if len(set(values))!=1 or admission_qualification_drift(panel,targets) is not None: raise ContractError('qualification_semantic_drift')
+                def verify_score(score,cell,owner):
+                    verify_combination_adapted_receipt(score,authority_keys=scorer_authority_keys,config=services[pair].config,panel=owner,cell=cell,
+                        score_input=score_inputs[cell.key],execution_authority_keys={execution_authority.authority_id:execution_authority.key})
+                contrast=estimate_grouped_contrast(panel,runtime=[r.runtime for r in results if r is not None and r.cell.coverage_id==pair],
+                    scorer_receipts=[s for s in scores if s.cell_key in {c.key for c in panel.cells}],verifier=CombinationPanelVerifier(scorer_verifier=verify_score))
+            except Exception as exc: contrast=FrozenRecord.from_dict({'pair':pair,'status':'inconclusive','reason':str(exc),'scientific_effect':'not_measured'})
+            contrasts.append(contrast)
+        sourcecharges=[c for r in [*buildrows,*targets] for source_key in ('source','retrieval_source') for c in r.get(source_key,{}).get('calls',[])]
+        sourcecalls=len(sourcecharges)
+        buildercalls=sum(sum(x['stage']=='builder_request' for x in _phase_rows(r.root/'phase.jsonl')) for r in builds)
+        dockercalls=sum(r['docker_attempts'] for r in targets);scorercalls=sum(r['scorer_calls'] for r in targets)
+        receipt=FrozenRecord.from_dict({'schema':('mechanism-improvement-train-receipt-v2' if b['schema'].endswith('-v2') else 'mechanism-improvement-train-receipt-v1'),'plan_digest':plan.record.content_hash,'allocation':ALLOCATION,
+            'expected_builds':6,'arm_recipe_bindings':selections(b['baseline_digest']),'successful_builds':sum(r['status']=='succeeded' for r in buildrows),'expected_cells':24,
+            'failed_builds':sum(r['status']=='failed' for r in buildrows),'blocked_builds':sum(r['status']=='blocked' for r in buildrows),
+            'scored_cells':len(scores),'failed_cells':sum(r['status']=='failed' for r in targets),'blocked_cells':sum(r['status']=='blocked' for r in targets),
+            'actual_model_usage':usage(),'source_calls':sourcecalls,'actual_builder_executions':buildercalls,
+            'known_source_cost_units':sum(c['cost_units'] for c in sourcecharges if c.get('cost_units') is not None),
+            'source_cost_unknown':any(c.get('cost_units') is None for c in sourcecharges),
+            'actual_retrieval_calls':sum(r.get('retrieval_calls',0) for r in targets),
+            'unused_retrieval_opportunities':24-sum(r.get('retrieval_calls',0) for r in targets),
+            'retrieval_cost_unknown':any(r.get('retrieval_calls',0)>0 for r in targets),
+            'actual_docker_attempts':dockercalls,'actual_scorer_calls':scorercalls,
+            'unused_builder_opportunities':6-buildercalls,'unused_docker_opportunities':24-dockercalls,'unused_scorer_opportunities':24-scorercalls,
+            'unused_model_opportunities':None if type(ledger) is PhaseProviderAbort else 78-(usage()['main_opportunities'] if native else len(model.ledger['calls'])),'unused_source_opportunities':76-sourcecalls,
+            'structural_exclusions':excluded,'pruned_cells':[],'contrasts':[c.data() for c in contrasts],
+            'history_acquisition':{'model_requests':len(plan.history.binding.data()['request_digests']),'cost':'inherited_unknown_not_in_current_allocation'},
+            **({'provider_provenance_failed':type(ledger) is PhaseProviderAbort,
+                'provider_abort_digest':ledger.record.content_hash if type(ledger) is PhaseProviderAbort else None} if native else {}),
+            'validation_opened':False,'scientific_effectiveness_proven':False,'scorer_usage_unknown':bool(scorercalls),
+            'status':'complete_train_engineering' if len(scores)==24 and all(c.data()['status'] in {'estimated','not_identifiable'} for c in contrasts) else 'inconclusive'})
+        _exclusive(root/'controller-receipt.json',receipt);journal['status']=receipt.data()['status'];persist()
+        return MechanismImprovementRun(root,barrier,panels,scenarios,tuple(results),tuple(scores),tuple(FrozenRecord.from_dict(r) for r in targets),tuple(builds),ledger,receipt)
+    finally:
+        if native:
+            for service in services.values():
+                if type(service) is CombinationScorerProcessClient:service.close()
