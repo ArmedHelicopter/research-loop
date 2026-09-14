@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import os
 
 from research_loop.modular.artifact_subjects import JointBundleSubject
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
@@ -18,6 +19,7 @@ from research_loop.ontology import ContractError
 
 @dataclass(frozen=True)
 class RegisteredSelectedBundle:
+    """Canonical registration consistency wrapper; it does not authenticate a run."""
     record: FrozenRecord
 
     def __post_init__(self):
@@ -51,7 +53,7 @@ class RegisteredSelectedBundle:
 
 
 def _registration_record(snapshot: FrozenRecord, protocol, parent: JointDeploymentBundle, timeout_seconds: int) -> RegisteredSelectedBundle:
-    """Pure projection-to-registration constructor; no authentication or disk I/O."""
+    """Pure projection-to-registration constructor; no writes or run authentication."""
     subject = JointBundleSubject.from_selected_snapshot(snapshot, protocol, parent=parent, timeout_seconds=timeout_seconds)
     data = snapshot.data(); p = protocol.record.data()
     return RegisteredSelectedBundle(FrozenRecord.from_dict({
@@ -83,12 +85,14 @@ def register_authenticated_selected_run(path: Path, run, *, parent: JointDeploym
     target.parent.mkdir(parents=True, exist_ok=True)
     with target.open("x", encoding="utf-8", newline="\n") as stream:
         stream.write(result.record.encoded + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
     return result
 
 
 def verify_registration(path: Path, run, *, parent: JointDeploymentBundle, execution_authority_keys, scorer_authority_keys) -> RegisteredSelectedBundle:
     """Re-authenticate the run and exactly compare the independently persisted record."""
-    raw = Path(path).read_text(encoding="utf-8")
+    raw = Path(path).read_bytes().decode("utf-8")
     if not raw.endswith("\n") or raw.count("\n") != 1:
         raise ContractError("registration file must contain one complete canonical record")
     persisted = RegisteredSelectedBundle(FrozenRecord(raw[:-1]))
