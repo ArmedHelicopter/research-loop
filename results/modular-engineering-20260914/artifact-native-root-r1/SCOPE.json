@@ -1,0 +1,470 @@
+{
+  "schema": "artifact-native-root-evidence-v1",
+  "commit": "11c81a0e2b8e37ed345bc0d31db49daa30fd9dcd",
+  "junit": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "source_files": 670,
+  "stages": [
+    {
+      "case": "test_actual_history_target_pip0",
+      "stage_id": "32b3858c8df4018390c37109eddff634ba44c354ae25fb7ed16a7c44fa25074d",
+      "stage": "history_build",
+      "status": "succeeded",
+      "catalogue_count": 47,
+      "catalogue_seal_verified": true,
+      "trace_catalogue_equal": true,
+      "failure_journal_present": false,
+      "outer_failed_status_preserved": false,
+      "groups": [
+        {
+          "module": "M1",
+          "kind": "lineage_transition",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M2",
+          "kind": "lineage_transition",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M3",
+          "kind": "lineage_transition",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M4",
+          "kind": "c4_prediction_frozen",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M5",
+          "kind": "c4_review_reveal",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M5",
+          "kind": "c4_review_sealed",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 2
+        },
+        {
+          "module": "M6",
+          "kind": "retrieval_result",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M7",
+          "kind": "c4_choice_frozen",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M7",
+          "kind": "exploration_phase_receipt",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M8",
+          "kind": "exploration_phase_receipt",
+          "status": "not_applied",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M9",
+          "kind": "training_limited_candidate",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "P0",
+          "kind": "trace_event",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "unassigned",
+          "kind": "trace_event",
+          "status": "produced",
+          "coverage": "uncovered",
+          "count": 34
+        }
+      ]
+    },
+    {
+      "case": "test_actual_history_target_pip0",
+      "stage_id": "4eb80de91cecc54132d48dda1e75784a3239bac5f6acd9bfa2fe02aa24ec00fa",
+      "stage": "target",
+      "status": "succeeded",
+      "catalogue_count": 48,
+      "catalogue_seal_verified": true,
+      "trace_catalogue_equal": true,
+      "failure_journal_present": false,
+      "outer_failed_status_preserved": false,
+      "groups": [
+        {
+          "module": "M1",
+          "kind": "lineage_transition",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M2",
+          "kind": "lineage_transition",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M3",
+          "kind": "lineage_transition",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M4",
+          "kind": "c4_prediction_frozen",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M5",
+          "kind": "c4_review_reveal",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M5",
+          "kind": "c4_review_sealed",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 2
+        },
+        {
+          "module": "M6",
+          "kind": "retrieval_result",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M7",
+          "kind": "c4_choice_frozen",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M7",
+          "kind": "exploration_phase_receipt",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M8",
+          "kind": "exploration_phase_receipt",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "P0",
+          "kind": "trace_event",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "unassigned",
+          "kind": "trace_event",
+          "status": "produced",
+          "coverage": "uncovered",
+          "count": 36
+        }
+      ]
+    },
+    {
+      "case": "test_artifact_writer_failure_r0",
+      "stage_id": "1609f057752e422cf5f26f7c9c70c17e996293111dabc8a735faa4d86602fca2",
+      "stage": "history_build",
+      "status": "failed",
+      "catalogue_count": 1,
+      "catalogue_seal_verified": true,
+      "trace_catalogue_equal": false,
+      "failure_journal_present": true,
+      "outer_failed_status_preserved": true,
+      "groups": [
+        {
+          "module": "P0",
+          "kind": "trace_event",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "case": "test_unknown_main_keeps_comple0",
+      "stage_id": "519124c520a64c508329b9e098c810a39d62de7ca9a135ee7cc1f7d2f9cd1699",
+      "stage": "history_build",
+      "status": "failed",
+      "catalogue_count": 7,
+      "catalogue_seal_verified": true,
+      "trace_catalogue_equal": true,
+      "failure_journal_present": false,
+      "outer_failed_status_preserved": true,
+      "groups": [
+        {
+          "module": "M1",
+          "kind": "lineage_transition",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M2",
+          "kind": "lineage_transition",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "M3",
+          "kind": "lineage_transition",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "P0",
+          "kind": "trace_event",
+          "status": "produced",
+          "coverage": "covered",
+          "count": 1
+        },
+        {
+          "module": "unassigned",
+          "kind": "trace_event",
+          "status": "produced",
+          "coverage": "uncovered",
+          "count": 3
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "path": "frozen/artifact-native-root-r1-before.json",
+      "bytes": 78793,
+      "sha256": "1e7f2e7f2fca7be5c686d2aa8de3f1b8311b0e3b40beae13110a5e4c5df42f3f"
+    },
+    {
+      "path": "frozen/artifact-native-root-r1-closed.json",
+      "bytes": 78700,
+      "sha256": "01a38b307915ef04797db19c6f2db12cb826e83274dd627f195d32c40ad78c4a"
+    },
+    {
+      "path": "frozen/artifact-native-root-r1-source-members.json",
+      "bytes": 117627,
+      "sha256": "e120ed9ff674eea1f68adf7684a3fbe1621bed8f2e2c201af7979c8644fb7f25"
+    },
+    {
+      "path": "frozen/artifact-native-root-r1-sources.zip",
+      "bytes": 2199659,
+      "sha256": "8614b76dbafbfc8d30daaf62e112032f4aeee193e615b81d6a219902e57e0672"
+    },
+    {
+      "path": "frozen/artifact-native-root-r1.xml",
+      "bytes": 664,
+      "sha256": "2f9381724460e2ee2c576a9c95efb420acfd9342b3d017846553387a1fed5eee"
+    },
+    {
+      "path": "frozen/artifact-native-root-r1-watchdog-config.json",
+      "bytes": 921,
+      "sha256": "018900a45ac399850d26b4df0174482c3eb0f295871b2824f3ca337a39fc4296"
+    },
+    {
+      "path": "frozen/artifact-native-root-r1-watchdog.jsonl",
+      "bytes": 258,
+      "sha256": "163d0c714d8bf37c20e176859473ca48a7e7ed0dc7eaf1ab3d87e571a5c6c2b5"
+    },
+    {
+      "path": "runtime/test_actual_history_target_pip0/common-run/checkpoint.json",
+      "bytes": 20496,
+      "sha256": "7805ab338db1a3822ba080e1073d8476d95455f7723a2a7a6825c6b2d63ac580"
+    },
+    {
+      "path": "runtime/test_actual_history_target_pip0/common-run/plan.json",
+      "bytes": 26691,
+      "sha256": "e6e9179ba236cad433781d607c31c40928282c30a7b967a513851540991d3f21"
+    },
+    {
+      "path": "runtime/test_actual_history_target_pip0/common-run/protocol.json",
+      "bytes": 287497,
+      "sha256": "61eb1c12e7b31374d59af4cfa6520b6365b74a0bdbe0e59089949864ea08afba"
+    },
+    {
+      "path": "runtime/test_actual_history_target_pip0/common-run/stages/32b3858c8df4018390c37109eddff634ba44c354ae25fb7ed16a7c44fa25074d/receipt.json",
+      "bytes": 7262,
+      "sha256": "2f191e82aca21afde83a1609e564de68316f7432563be199301d8f074ec556f3"
+    },
+    {
+      "path": "runtime/test_actual_history_target_pip0/common-run/32b3858c8df4018390c37109eddff634ba44c354ae25fb7ed16a7c44fa25074d-stage.json",
+      "bytes": 1589,
+      "sha256": "b8eda3b4d80ad970ad313d0abbfaa90cf79d37f5492615b61f29ecf1cbaa57e9"
+    },
+    {
+      "path": "runtime/test_actual_history_target_pip0/common-run/stages/32b3858c8df4018390c37109eddff634ba44c354ae25fb7ed16a7c44fa25074d/runtime/artifacts.jsonl",
+      "bytes": 248601,
+      "sha256": "7e0982359506ca0ac35e72952056a4c0dfa99449390dea3663c82235beb790d2"
+    },
+    {
+      "path": "runtime/test_actual_history_target_pip0/common-run/stages/32b3858c8df4018390c37109eddff634ba44c354ae25fb7ed16a7c44fa25074d/runtime/artifacts.jsonl.seal.json",
+      "bytes": 345,
+      "sha256": "ad44989b9063c8f5a4fddce9b125dbca5d562988652fa355a68f9fbcadb3a8a5"
+    },
+    {
+      "path": "runtime/test_actual_history_target_pip0/common-run/stages/32b3858c8df4018390c37109eddff634ba44c354ae25fb7ed16a7c44fa25074d/runtime/trace.jsonl",
+      "bytes": 76416,
+      "sha256": "417c50d89012503825e4a62a369fb34d7bd7879c9a42a84847c5116a4e9e5004"
+    },
+    {
+      "path": "runtime/test_actual_history_target_pip0/common-run/stages/4eb80de91cecc54132d48dda1e75784a3239bac5f6acd9bfa2fe02aa24ec00fa/receipt.json",
+      "bytes": 7171,
+      "sha256": "9b74b375ddaec8dd2e449ea690c5a98018c58b36355f040d1110e7705595be34"
+    },
+    {
+      "path": "runtime/test_actual_history_target_pip0/common-run/4eb80de91cecc54132d48dda1e75784a3239bac5f6acd9bfa2fe02aa24ec00fa-stage.json",
+      "bytes": 1575,
+      "sha256": "10eba92a35419cb59c74c5b21a76f31a935cd6e7f2744bd33ad8a2619672a7c1"
+    },
+    {
+      "path": "runtime/test_actual_history_target_pip0/common-run/stages/4eb80de91cecc54132d48dda1e75784a3239bac5f6acd9bfa2fe02aa24ec00fa/runtime/artifacts.jsonl",
+      "bytes": 276473,
+      "sha256": "c4022ad86eece862a949e7d7009b421cf82025fae77a5fc3369459135d8c9532"
+    },
+    {
+      "path": "runtime/test_actual_history_target_pip0/common-run/stages/4eb80de91cecc54132d48dda1e75784a3239bac5f6acd9bfa2fe02aa24ec00fa/runtime/artifacts.jsonl.seal.json",
+      "bytes": 345,
+      "sha256": "f76b8118a95cceb5c30d61ab9162da3ea42489e025bbc6dc0fd7ea39ff27e0ea"
+    },
+    {
+      "path": "runtime/test_actual_history_target_pip0/common-run/stages/4eb80de91cecc54132d48dda1e75784a3239bac5f6acd9bfa2fe02aa24ec00fa/runtime/trace.jsonl",
+      "bytes": 93943,
+      "sha256": "0b12ce1998e67f26365aee69e4ecbc192eae49625bd94446e02cf891b200eb3c"
+    },
+    {
+      "path": "runtime/test_artifact_writer_failure_r0/common-run/checkpoint.json",
+      "bytes": 20485,
+      "sha256": "2c19525170ae390358fdd964534d66f0a7610d141de4a02facedd2eca50ac383"
+    },
+    {
+      "path": "runtime/test_artifact_writer_failure_r0/common-run/plan.json",
+      "bytes": 26691,
+      "sha256": "fde6bd3d738c712e3c5d3824e2d7ee4436890b4488cb0429b0364086a1f48cef"
+    },
+    {
+      "path": "runtime/test_artifact_writer_failure_r0/common-run/protocol.json",
+      "bytes": 287497,
+      "sha256": "531417b32e72bb6e76eb65b243a76f1e241bb28d7a4f57c0bd9d8fdb5d966a59"
+    },
+    {
+      "path": "runtime/test_artifact_writer_failure_r0/common-run/stages/1609f057752e422cf5f26f7c9c70c17e996293111dabc8a735faa4d86602fca2/receipt.json",
+      "bytes": 6349,
+      "sha256": "6ebb617f03a9d07053b432ef69ac7c14a511d78463f9c5f15f86c00236877e34"
+    },
+    {
+      "path": "runtime/test_artifact_writer_failure_r0/common-run/1609f057752e422cf5f26f7c9c70c17e996293111dabc8a735faa4d86602fca2-stage.json",
+      "bytes": 1586,
+      "sha256": "8ed2b9add54fe4e7910db471b4e068ba5618020a9b36572a246da29bde6720cc"
+    },
+    {
+      "path": "runtime/test_artifact_writer_failure_r0/common-run/stages/1609f057752e422cf5f26f7c9c70c17e996293111dabc8a735faa4d86602fca2/runtime/artifacts.jsonl",
+      "bytes": 3430,
+      "sha256": "c0eb5e8fbc787f584820da72b02ce4b655b56ae26415c0ee98fb75e548132e34"
+    },
+    {
+      "path": "runtime/test_artifact_writer_failure_r0/common-run/stages/1609f057752e422cf5f26f7c9c70c17e996293111dabc8a735faa4d86602fca2/runtime/artifacts.jsonl.seal.json",
+      "bytes": 344,
+      "sha256": "d0657eeb79a6372b595a9332e3cd2a3698bac6f1a62b8da621ec8d1faaf38a7d"
+    },
+    {
+      "path": "runtime/test_artifact_writer_failure_r0/common-run/stages/1609f057752e422cf5f26f7c9c70c17e996293111dabc8a735faa4d86602fca2/runtime/trace.jsonl",
+      "bytes": 17127,
+      "sha256": "05f85ead369e25353debffeb23f342cbe0b0f1e2eabe354fa34a01f356395f4f"
+    },
+    {
+      "path": "runtime/test_artifact_writer_failure_r0/common-run/stages/1609f057752e422cf5f26f7c9c70c17e996293111dabc8a735faa4d86602fca2/artifact-journal-failure.json",
+      "bytes": 139,
+      "sha256": "1004083e9f22533d1522538e5d5d76bd592a8de65a405dd6903db149324a1eef"
+    },
+    {
+      "path": "runtime/test_unknown_main_keeps_comple0/common-run/checkpoint.json",
+      "bytes": 20486,
+      "sha256": "f7ae9bd25ae51647e84013907470c41593041b1e9e4e081c3d5336614edfb392"
+    },
+    {
+      "path": "runtime/test_unknown_main_keeps_comple0/common-run/plan.json",
+      "bytes": 26691,
+      "sha256": "4357d201483351b091ead6b9e5b27c447e8c23525066a440a602ed9c2d4ce890"
+    },
+    {
+      "path": "runtime/test_unknown_main_keeps_comple0/common-run/protocol.json",
+      "bytes": 287497,
+      "sha256": "95ada1338319b7ce024e659a543fb3ced1144b3f92ac91f59eed6fad3a7431e3"
+    },
+    {
+      "path": "runtime/test_unknown_main_keeps_comple0/common-run/stages/519124c520a64c508329b9e098c810a39d62de7ca9a135ee7cc1f7d2f9cd1699/receipt.json",
+      "bytes": 6250,
+      "sha256": "5f950ea4f187d8905070b0a16e3a09918cf0fc0264e6aaa0da4f3e1c78c12f1b"
+    },
+    {
+      "path": "runtime/test_unknown_main_keeps_comple0/common-run/519124c520a64c508329b9e098c810a39d62de7ca9a135ee7cc1f7d2f9cd1699-stage.json",
+      "bytes": 1586,
+      "sha256": "5b336e2f52043c2751ab665518e4b7f96c85bd736a205af4c12123e9ebd3c14c"
+    },
+    {
+      "path": "runtime/test_unknown_main_keeps_comple0/common-run/stages/519124c520a64c508329b9e098c810a39d62de7ca9a135ee7cc1f7d2f9cd1699/runtime/artifacts.jsonl",
+      "bytes": 84731,
+      "sha256": "0a22376e0bf1bf110d89a4f44579c5cf72df2117254ed4f0ff927a73094ebf83"
+    },
+    {
+      "path": "runtime/test_unknown_main_keeps_comple0/common-run/stages/519124c520a64c508329b9e098c810a39d62de7ca9a135ee7cc1f7d2f9cd1699/runtime/artifacts.jsonl.seal.json",
+      "bytes": 344,
+      "sha256": "d32224b24cf8a05e3f9baf24d122ce223b18f147f02c9b9362195661719954df"
+    },
+    {
+      "path": "runtime/test_unknown_main_keeps_comple0/common-run/stages/519124c520a64c508329b9e098c810a39d62de7ca9a135ee7cc1f7d2f9cd1699/runtime/trace.jsonl",
+      "bytes": 21918,
+      "sha256": "ee5e60ee5e2d5eb2b66f5714a1577b70af0b569d5e507c8c654f300161934215"
+    }
+  ],
+  "scope": "Actual Docker with synthetic model responses. Public stage originals only; auth, keys and private streams excluded. This archive does not reproduce the full environment. No real benchmark effect, complete C5 selection or VAL acceptance is established. Unassigned generic events are coverage gaps, not complete per-module coverage."
+}

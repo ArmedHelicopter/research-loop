@@ -1,0 +1,14 @@
+{
+  "schema": "artifact-check-import-v2",
+  "copied_items": 64,
+  "source_groups": [
+    "artifact-catalogue-root-r1",
+    "module-artifact-provenance-seam-r1",
+    "c5-replay-performance-r5",
+    "artifact-subject-contract-frozen-r1",
+    "artifact-subject-contract-frozen-r2",
+    "c5-selected-snapshot-r1",
+    "artifact-merged-unit-r2"
+  ],
+  "scope": "Byte-exact closed evidence only; no test/model execution and no auth, credentials, keys, or private streams. Partial native-r2 remains preserved, not passing evidence."
+}

@@ -3,7 +3,50 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Module artifact provenance and closed Q6 cases (2026-09-14, current update)
+## Module artifact provenance: integrated and exercised (2026-09-14, current update)
+
+The catalogue core and native history/target bridges are integrated. Descriptors
+bind canonical payloads, actual producer source, configuration/check references,
+task/domain identity and independent run IDs. Both append and disk reload reject
+unassigned events falsely marked covered, invalid costs and visible validation
+artifacts. Persistent seals bind count/head; the stage receipt independently
+binds the seal and original file inventory. Native replay compares catalogue
+trace entries to the original trace. A failed recovery journal preserves a
+separate failure receipt and stops subsequent work.
+
+Root source `9c07b35` passed 71/71 focused catalogue, runtime, typed-subject,
+selected-snapshot, selection, scoped-lease and label-isolation checks with 670
+source files unchanged. Root `11c81a0` then passed 3/3 actual native seam checks
+in 582.875 seconds, also with 670 unchanged source files: complete representative
+history-to-target execution, unknown MAIN failure, and artifact writer failure.
+Root independently re-read four stage catalogues and their seals; the two
+successful stages reconcile with trace, while the writer-failure stage retains
+the expected trace/catalogue gap and an outer failed record with zero MAIN calls.
+These use synthetic model responses and actual Docker, not real benchmark effect
+or validation acceptance. They do not execute the complete 46-build/118-target C5.
+
+Exact evidence is retained under
+`results/modular-engineering-20260914/artifact-provenance-closed-r1/` and
+`results/modular-engineering-20260914/artifact-native-root-r1/`. Root verified
+seven prior passing source archives against their frozen before/closed maps,
+JUnit and individual ZIP members, and separately verified the new native source
+archive. Older partial/failing attempts remain explicitly non-passing.
+
+The [coverage inventory](MODULE-ARTIFACT-COVERAGE.md) lists the actual boundaries.
+There are bridges for P0 and selected M1-M9 outputs; this is not every output
+of every module. Actual M3 contexts remain generic trace events. General typed
+cross-subject catalogue edges, lifecycle/affected-descendant processing and
+per-artifact environment/resource attribution remain outstanding. Tags cannot
+replace independent TRAIN/VAL storage and custody access enforcement.
+
+C5's complete controller, authenticated selector, scoped replay repairs and
+nine-component snapshot factory are now integrated. Focused selection and
+snapshot checks passed; the full controller remains unclosed after the retained
+r2 timeout. No actual complete C5 selection, deployment or VAL acceptance is
+claimed. All original questions and singleton/combination experiments remain
+in scope, including combinations whose singletons are negative.
+
+## Module artifact provenance and closed Q6 cases (2026-09-14, earlier update)
 
 The [module artifact provenance contract](MODULE-ARTIFACT-PROVENANCE.md) now
 applies to P0, M1–M9 and every singleton/combination study. It requires resolvable

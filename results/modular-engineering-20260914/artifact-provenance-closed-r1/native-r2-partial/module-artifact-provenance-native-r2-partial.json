@@ -1,0 +1,11 @@
+{
+  "started": "2026-09-14T14:12:47+08:00",
+  "exit_code": 1,
+  "source_prefix": "module-artifact-provenance-native-r2",
+  "stopped": "2026-09-14T14:19:51.7290642+08:00",
+  "source_mutation": "none",
+  "schema": "frozen-check-partial-v1",
+  "observation": "native-c40 last-write 2026-09-14T14:18:19+08:00; no test stdout before stop",
+  "runner_session_id": 66142,
+  "status": "interrupted_at_bound"
+}

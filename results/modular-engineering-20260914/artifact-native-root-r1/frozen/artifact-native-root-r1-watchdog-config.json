@@ -1,0 +1,9 @@
+{
+  "root_pid": 40484,
+  "root_creation_utc_ticks": 639249660925084270,
+  "root_command": "\"E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe\" E:/_ryanDev/AI/research-loop-modular/work/run_frozen_checks_with_source.py E:/_ryanDev/AI/research-loop-modular/integration E:/_ryanDev/AI/research-loop-modular/work/artifact-native-root-r1 tests/test_joint_train_runtime.py::test_artifact_writer_failure_retains_independent_failed_stage_receipt tests/test_joint_train_runtime.py::test_actual_history_target_pipeline_with_full_catalogue tests/test_joint_train_runtime.py::test_unknown_main_keeps_complete_denominator_and_stops",
+  "deadline": "2026-09-14T15:21:32.5084270+08:00",
+  "journal": "E:/_ryanDev/AI/research-loop-modular/work/artifact-native-root-r1-watchdog.jsonl",
+  "prefix": "E:/_ryanDev/AI/research-loop-modular/work/artifact-native-root-r1",
+  "expected_cases": 3
+}

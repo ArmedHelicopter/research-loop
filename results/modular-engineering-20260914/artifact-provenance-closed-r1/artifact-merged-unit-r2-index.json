@@ -1,0 +1,44 @@
+{
+  "schema": "exact-frozen-copy-v1",
+  "commit": "9c07b35fcc8470bbda0d947810540a514fce0e6c",
+  "tests": 71,
+  "files": [
+    {
+      "path": "artifact-merged-unit-r2/artifact-merged-unit-r2-before.json",
+      "sha256": "98a45120db180a6b0db5a679fa332c653c02f6c89ed1ad65c4b6c149a7d64e42",
+      "bytes": 78831
+    },
+    {
+      "path": "artifact-merged-unit-r2/artifact-merged-unit-r2-closed.json",
+      "sha256": "ffe195dea7811c3383ab57517568251aa0e4576b2033e98166339619562bb97b",
+      "bytes": 78701
+    },
+    {
+      "path": "artifact-merged-unit-r2/artifact-merged-unit-r2-source-members.json",
+      "sha256": "4d4509c3e7221d9df9f7d55d7244f7a592d824b4b0e102e1896a425884cf6abc",
+      "bytes": 117627
+    },
+    {
+      "path": "artifact-merged-unit-r2/artifact-merged-unit-r2-sources.zip",
+      "sha256": "a6472b1838fc3e6b7ed1535ca41310efc17a355603bedb76ee1ef7ff2d162bc6",
+      "bytes": 2199266
+    },
+    {
+      "path": "artifact-merged-unit-r2/artifact-merged-unit-r2-watchdog-config.json",
+      "sha256": "6b78624c5455ce0150227b70305cea264b2d18f0f479fa4df88937a95fab47b7",
+      "bytes": 946
+    },
+    {
+      "path": "artifact-merged-unit-r2/artifact-merged-unit-r2-watchdog.jsonl",
+      "sha256": "ca270f00660544e196f5ca9cb0bfe50d3c81bf6f1778d41ce1ebc8b302269d41",
+      "bytes": 258
+    },
+    {
+      "path": "artifact-merged-unit-r2/artifact-merged-unit-r2.xml",
+      "sha256": "f288835f377c9a1d6827dba975b9adf5b743a585acf4111c32214061bf76bd70",
+      "bytes": 10127
+    }
+  ],
+  "zip_members_verified": 670,
+  "scope": "Exact closed unit-check copy; excludes auth, credentials, keys, and private streams."
+}

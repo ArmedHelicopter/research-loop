@@ -1,0 +1,6 @@
+{
+  "recorded": "2026-09-14T14:24:51.5623356+08:00",
+  "corrects": "module-artifact-provenance-native-r2-partial.json",
+  "clarification": "The 14:20 bound was chosen by this agent because the then-current implementation had known core defects; it was not a deadline supplied by root.",
+  "schema": "frozen-check-partial-correction-v1"
+}
