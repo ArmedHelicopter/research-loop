@@ -37,7 +37,11 @@ from research_loop.modular.protocol_panel_driver import (ProtocolAuditPort, Prot
     verify_protocol_replay_receipt, _no_links)
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.modular.train_provider_preflight import (native_envelope, native_fields,
-    response_schemas, validate_native_declaration)
+    response_schemas, validate_native_declaration, native_provider_preflight)
+from research_loop.modular.ordinary_provider import (model_root as provider_root, provider_scope,
+    provider_usage, bind_singleton_originals, final_provider_gate)
+from research_loop.modular.phase_provider import PhaseProviderSession
+from research_loop.modular.train_provider import GrokTrainProvider
 from research_loop.ontology import ContractError, canonical, digest
 
 
@@ -170,6 +174,18 @@ class TrainPanelRun:
     linked_results: tuple[LinkedBenchmarkCellResult, ...] = ()
 
 
+@dataclass(frozen=True)
+class NativeTrainPanelRun:
+    """Native execution denominator; missing runtimes never become receipts."""
+    compiled: CompiledTrainPanel
+    packets: tuple[Any, ...]
+    runtimes: tuple[RuntimeReceipt, ...]
+    verdict: PanelVerdict | None
+    receipt: FrozenRecord
+    linked_results: tuple[LinkedBenchmarkCellResult, ...]
+    attempts: tuple[FrozenRecord, ...]
+
+
 def _driver_plan(scope_ids: Sequence[str], *, baseline_digest: str, p0_control: FrozenRecord,
                  item_count: int, replicates: Sequence[str], linked: bool = False) -> tuple[int, int]:
     """Return frozen complete-cell and model-call obligations before export."""
@@ -212,7 +228,9 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     prospective_export = custody is None and type(prospective_exporter) is PrimaryProspectiveTrainExporter
     if not isinstance(config, FrozenTrainControllerConfig) or not (legacy_export or prospective_export):
         raise ContractError("trusted typed controller inputs required")
-    if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):
+    native = native_envelope(config.data(), 'singleton')
+    if (not (type(model) is GrokTrainProvider if native else isinstance(model, CodexModelPort))
+            or not isinstance(audit_verifier, AuditVerifier)):
         raise ContractError("controller requires the real model port and trusted audit verifier")
     data = config.data()
     extended_exploration = bool(set(data["scope_ids"]) & set(EXTENDED_EXPLORATION_BUDGET))
@@ -242,29 +260,34 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
     if feasibility and (not callable(getattr(feasibility_authority, "verify_stage", None))
             or ("Q5.2" in data["scope_ids"] and not callable(getattr(feasibility_authority, "verify_prediction_outcome", None)))):
         raise ContractError("feasibility controller requires its caller-owned verification ports before export")
-    snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, model.root)
+    snapshot, exported, root, model_root = _checked_roots(snapshot_root, export_root, run_root, provider_root(model,native=native))
     if prospective_export and (snapshot != Path(prospective_exporter.config["snapshot_root"]).resolve()
                                or exported != prospective_exporter.output_root):
         raise ContractError("prospective exporter roots differ from the frozen controller roots")
-    policy = _reviewed_model_policy(model)
-    if (model.model != data["model"] or model.effort != data["effort"]
+    policy = None if native else _reviewed_model_policy(model)
+    if not native and (model.model != data["model"] or model.effort != data["effort"]
             or model.max_calls != data["max_calls"] or model.max_tokens != data["max_tokens"]
             or model.schemas != data["schemas"]):
         raise ContractError("live model port differs from frozen controller configuration")
-    if model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False:
+    if not native and (model.ledger.get("calls") or model.ledger.get("tokens") != 0 or model.ledger.get("usage_incomplete") is not False):
         raise ContractError("controller requires a fresh empty model ledger")
     expected_cells, expected_calls = _driver_plan(data["scope_ids"], baseline_digest=data["baseline_digest"],
         p0_control=_record(data["p0_control"], "p0 control"), item_count=len(data["item_ids"]), replicates=data["replicates"], linked=data.get("execution_mode") == "linked_benchmark_solve")
-    if model.max_calls < expected_calls:
+    if native:
+        native_provider_preflight(data,model,family='singleton',schemas=response_schemas(data,family='singleton'),
+            main_opportunities=expected_calls)
+    elif model.max_calls < expected_calls:
         raise ContractError("frozen model call capacity cannot cover complete panel")
     # The root and attempt receipt exist before export because export itself is
     # an irreversible materialization.  A subsequent rejection therefore has
     # an auditable blocked controller record rather than pretending no action.
     root.mkdir(parents=True, exist_ok=False)
-    attempt = {"schema": "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
+    provider_session = PhaseProviderSession(model,root/'provider-scopes.json') if native else None
+    attempt = {"schema": "train-panel-controller-attempt-v2" if native else "train-panel-controller-attempt-v1", "config_digest": config.record.content_hash,
                "scope": data["engineering_scope"], "scope_ids": data["scope_ids"], "expected_cells": expected_cells,
-               "expected_model_calls": expected_calls, "status": "exporting", "model_policy_sha256": model.frozen_base_context.sha256,
-               "model_context_binding_digest": digest(policy["binding"]), "model_root": str(model_root),
+               "expected_model_calls": expected_calls, "status": "exporting",
+               **({'provider':data['provider']} if native else {'model_policy_sha256':model.frozen_base_context.sha256,
+                   'model_context_binding_digest':digest(policy['binding'])}), "model_root": str(model_root),
                "snapshot_root": str(snapshot), "export_root": str(exported), "packet_receipts": [], "runtime_trace_digests": []}
     _write(root / "controller-attempt.json", attempt)
     try:
@@ -290,6 +313,8 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
         attempt.update({"status": "executing", "panel_digest": compiled.panel.digest,
                         "compiled_manifest": compiled.manifest.data(),
                         "cell_plan": [cell.data() for cell in compiled.panel.cells], "runtime_receipts": []})
+        if native:
+            attempt['cells']=[{'cell':cell.data(),'status':'not_started','phase':'planned'} for cell in compiled.panel.cells]
         _write(root / "controller-attempt.json", attempt)
     except Exception as exc:
         attempt.update({"status": "blocked_before_execution", "error_type": type(exc).__name__})
@@ -383,64 +408,127 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                 raise ContractError("linked lineage requires a caller-owned source admission port")
             for item in lineage_cells:
                 validate_lineage_material(cell=item, task=compiled.tasks[item.task_digest], scenario=compiled.scenarios[item.key])
-        for cell in compiled.panel.cells:
-            objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
-            if data.get("execution_mode") == "linked_benchmark_solve":
-                packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
-                result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
-                    package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
-                    mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
-                    solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
-                    public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
-                    broker=DockerExecutionBroker([exported, root]), model=model, audit_verifier=audit_verifier,
-                    retrieval_provider=retrieval_provider, retrieval_admission_port=retrieval_admission_port,
-                    history_admission_port=history_admission_port)
-                verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
-                    scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
-                if verification.data().get("engineering_verified") is not True:
-                    raise ContractError("linked cell verification did not establish engineering provenance")
-                linked_results.append(result); runtimes.append(result.mechanism.runtime)
-                attempt.setdefault("linked_receipts", []).append(result.receipt.data())
-                attempt.setdefault("linked_verifications", []).append(verification.data())
-                attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
-                attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
-                _write(root / "controller-attempt.json", attempt); continue
-            result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
-                package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
-                sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
-                model=model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
-                audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
-                p0_control=compiled.control, feasibility_broker=feasibility_broker,
-                feasibility_input_resolver=feasibility_inputs if feasibility else None,
-                feasibility_authority=feasibility_authority, protocol_broker=protocol_broker,
-                exploration_broker=exploration_broker,
-                exploration_input_resolver=exploration_inputs if exploration else None,
-                exploration_authority=exploration_authority,
-                diagnostic_broker=diagnostic_broker,
-                diagnostic_input_resolver=diagnostic_inputs if diagnostic else None,
-                diagnostic_authority=diagnostic_authority,
-                q55_broker=q55_broker, q55_input_resolver=q55_inputs if q55 else None,
-                q55_authority=q55_authority, q55_authority_keys=q55_authority_keys, q55_provider=q55_provider,
-                retrieval_provider=retrieval_provider,
-                retrieval_admission_port=retrieval_admission_port,
-                retrieval_final_authority=retrieval_final_authority,
-                retrieval_final_broker=retrieval_final_broker,
-                retrieval_final_input_resolver=retrieval_stage_inputs if retrieval_final else None,
-                retrieval_stage_authority=retrieval_stage_authority,
-                retrieval_stage_broker=retrieval_stage_broker,
-                retrieval_stage_input_resolver=retrieval_stage_inputs if retrieval_stage else None,
-                protocol_audit_port=protocol_audit_port, protocol_replay_authority=protocol_replay_authority)
-            runtimes.append(result.runtime)
-            attempt.setdefault("runtime_call_plans", []).append(result.call_plan.data())
-            attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.runtime))
-            attempt["runtime_trace_digests"].append(result.runtime.trace_digest)
-            _write(root / "controller-attempt.json", attempt)
+        for index, cell in enumerate(compiled.panel.cells):
+            result = None
+            if native:
+                row = attempt['cells'][index]
+                row.update(status='running', phase='execution', model_usage_before=provider_usage(provider_session,model))
+                if provider_session.terminal():
+                    row.update(status='blocked', phase='model_allocation', reason='prior_native_terminal',
+                        model_usage_after=provider_usage(provider_session,model))
+                    _write(root/'controller-attempt.json',attempt)
+                    continue
+            try:
+                with provider_scope(provider_session, model, cell) as scoped_model:
+                    objective = _record(data["objective_by_task"][cell.task_digest], "task objective") if "objective_by_task" in data else _record({"panel_digest": compiled.panel.digest}, "objective")
+                    if data.get("execution_mode") == "linked_benchmark_solve":
+                        packet = next(packet for packet in packets if packet.task.content_hash == cell.task_digest)
+                        result = run_benchmark_cell(cell=cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                            package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                            mechanism_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "mechanism",
+                            solver_sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash / "solver",
+                            public_inputs={"public_csv": packet.csv_path}, image="research-benchmark-python@sha256:1433f0d223b0773b0d8c3184fa4ff6ab0a3891113442f1592d8d7e883d21a349",
+                            broker=DockerExecutionBroker([exported, root]), model=scoped_model, audit_verifier=audit_verifier,
+                            retrieval_provider=retrieval_provider, retrieval_admission_port=retrieval_admission_port,
+                            history_admission_port=history_admission_port)
+                        verification = verify_linked_benchmark_cell(result, task=compiled.tasks[cell.task_digest],
+                            scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash])
+                        if verification.data().get("engineering_verified") is not True:
+                            raise ContractError("linked cell verification did not establish engineering provenance")
+                        linked_results.append(result); runtimes.append(result.mechanism.runtime)
+                        attempt.setdefault("linked_receipts", []).append(result.receipt.data())
+                        attempt.setdefault("linked_verifications", []).append(verification.data())
+                        attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.mechanism.runtime))
+                        attempt["runtime_trace_digests"].append(result.mechanism.runtime.trace_digest)
+                        _write(root / "controller-attempt.json", attempt); continue
+                    result = run_train_cell(cell, task=compiled.tasks[cell.task_digest], scenario=compiled.scenarios[cell.key],
+                        package=compiled.packages[cell.runtime_arm.content_hash], objective=objective,
+                        sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                        model=scoped_model, audit_verifier=audit_verifier, scorer=None, history_admission_port=history_admission_port,
+                        audit_receipt_port=audit_receipt_port, shadow_execution_port=shadow_execution_port,
+                        p0_control=compiled.control, feasibility_broker=feasibility_broker,
+                        feasibility_input_resolver=feasibility_inputs if feasibility else None,
+                        feasibility_authority=feasibility_authority, protocol_broker=protocol_broker,
+                        exploration_broker=exploration_broker,
+                        exploration_input_resolver=exploration_inputs if exploration else None,
+                        exploration_authority=exploration_authority,
+                        diagnostic_broker=diagnostic_broker,
+                        diagnostic_input_resolver=diagnostic_inputs if diagnostic else None,
+                        diagnostic_authority=diagnostic_authority,
+                        q55_broker=q55_broker, q55_input_resolver=q55_inputs if q55 else None,
+                        q55_authority=q55_authority, q55_authority_keys=q55_authority_keys, q55_provider=q55_provider,
+                        retrieval_provider=retrieval_provider,
+                        retrieval_admission_port=retrieval_admission_port,
+                        retrieval_final_authority=retrieval_final_authority,
+                        retrieval_final_broker=retrieval_final_broker,
+                        retrieval_final_input_resolver=retrieval_stage_inputs if retrieval_final else None,
+                        retrieval_stage_authority=retrieval_stage_authority,
+                        retrieval_stage_broker=retrieval_stage_broker,
+                        retrieval_stage_input_resolver=retrieval_stage_inputs if retrieval_stage else None,
+                        protocol_audit_port=protocol_audit_port, protocol_replay_authority=protocol_replay_authority)
+                    runtimes.append(result.runtime)
+                    attempt.setdefault("runtime_call_plans", []).append(result.call_plan.data())
+                    attempt["runtime_receipts"].append(PanelReceiptVerifier._runtime_data(result.runtime))
+                    attempt["runtime_trace_digests"].append(result.runtime.trace_digest)
+                    _write(root / "controller-attempt.json", attempt)
+            except Exception as exc:
+                if not native: raise
+                row.update(status='failed', error_type=type(exc).__name__)
+            finally:
+                if native:
+                    if row['status']=='running':
+                        if result is None:
+                            status='failed'
+                        elif data.get('execution_mode')=='linked_benchmark_solve':
+                            status='succeeded' if result.status=='linked_succeeded' else 'failed'
+                        else:
+                            status=result.runtime.status
+                        row.update(status=status,phase='original_binding')
+                    try:
+                        row['provider_seal_digest']=bind_singleton_originals(provider_session,cell,result,
+                            root/('provider-cell-'+FrozenRecord.from_dict(cell.data()).content_hash+'.json'),
+                            linked=data.get('execution_mode')=='linked_benchmark_solve')
+                    except Exception as exc:
+                        row.update(status='failed',original_binding_error=type(exc).__name__)
+                    row['model_usage_after']=provider_usage(provider_session,model)
+                    _write(root/'controller-attempt.json',attempt)
         post_verifier = protocol_post_runtime_verifier(compiled, protocol_replay_authority) if protocol else None
-        verdict = PanelReceiptVerifier(post_runtime_verifier=post_verifier).verify(compiled.panel, tuple(runtimes))
+        verdict = (None if native and len(runtimes)!=expected_cells else
+            PanelReceiptVerifier(post_runtime_verifier=post_verifier).verify(compiled.panel, tuple(runtimes)))
     except Exception as exc:
         attempt.update({"status": "execution_interrupted", "error_type": type(exc).__name__})
+        if native:
+            verdict=None
+            for row in attempt['cells']:
+                if row['status']=='not_started':row.update(status='blocked',phase='preflight',reason='execution_interrupted')
         _write(root / "controller-attempt.json", attempt)
-        raise
+        if not native: raise
+    if native:
+        final_gate=final_provider_gate(provider_session,root/'final-provider-ledger.json')
+        usage=provider_usage(provider_session,model)
+        complete=(verdict is not None and final_gate.data()['provider_evidence_eligible'] and not provider_session.terminal()
+            and verdict.decision=='engineering_verified' and not verdict.scientific_verified
+            and all(row['status']=='succeeded' for row in attempt['cells']))
+        receipt=FrozenRecord.from_dict({'schema':'train-panel-controller-receipt-v2',
+            'config_digest':config.record.content_hash,'panel_digest':compiled.panel.digest,
+            'provider':data['provider'],'provider_final_gate':final_gate.data(),
+            'actual_model_usage':usage,'expected_cells':expected_cells,
+            'expected_model_calls':expected_calls,'observed_runtime_cells':len(runtimes),
+            'failed_cells':sum(row['status']=='failed' for row in attempt['cells']),
+            'blocked_cells':sum(row['status']=='blocked' for row in attempt['cells']),
+            'unscored_cells':sum(row['status']=='unscored' for row in attempt['cells']),
+            'cell_attempts':attempt['cells'],'packet_receipts':[p.receipt.data() for p in packets],
+            'runtime_trace_digests':[r.trace_digest for r in runtimes],
+            'linked_receipt_digests':[r.receipt.content_hash for r in linked_results],
+            'verdict':None if verdict is None else verdict.__dict__,
+            'execution_status':'engineering_complete' if complete else 'execution_incomplete',
+            'scientific_status':'not_measured','scope':data['engineering_scope'],'scope_ids':data['scope_ids'],
+            'pruned_cells':[],'validation_opened':False,'scientific_effectiveness_proven':False})
+        _write(root/'controller-receipt.json',receipt.data())
+        attempt.update(status=receipt.data()['execution_status'],actual_model_usage=usage)
+        _write(root/'controller-attempt.json',attempt)
+        return NativeTrainPanelRun(compiled,tuple(packets),tuple(runtimes),verdict,receipt,tuple(linked_results),
+            tuple(FrozenRecord.from_dict(row) for row in attempt['cells']))
     if verdict.decision not in {"engineering_verified", "engineering_incomplete"} or verdict.scientific_verified:
         raise ContractError("production controller cannot claim scientific measurement")
     linked_complete = (data.get("execution_mode") != "linked_benchmark_solve"

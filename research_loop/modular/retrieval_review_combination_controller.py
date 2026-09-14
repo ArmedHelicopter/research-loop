@@ -1,6 +1,7 @@
 """Three closed retrieval/review designs, one shared session per cell."""
 from research_loop.modular.train_provider_preflight import (native_envelope, native_source_fields, response_schemas, validate_native_declaration)
 from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage, provider_terminal, unused_main_opportunities, provider_scope, bind_runtime_originals)
+from research_loop.modular.ordinary_provider import final_provider_gate, final_score_fields, unavailable_provider_contrast
 from research_loop.modular.phase_provider import PhaseProviderSession
 from dataclasses import dataclass
 import hashlib
@@ -227,7 +228,10 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
             row.update(phase='score_verification', scorer_receipt=score.receipt.data())
             verify_combination_adapted_receipt(score, authority_keys=scorer_authority_keys, config=scoring_service.config, panel=panel,
                 cell=cell, score_input=source, execution_authority_keys={execution_authority.authority_id: execution_authority.key})
-            scores.append(score); row.update(status='succeeded', phase='verified')
+            scores.append(score)
+            if native:
+                row['post_score_provider_seal_digest'] = bind_runtime_originals(provider_session, cell, result.runtime, cell_root/'post-score-provider-seal.json')
+            row.update(status='succeeded', phase='verified')
         except Exception as exc:
             row.update(status='failed', error_type=type(exc).__name__)
         finally:
@@ -242,8 +246,11 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
             row['docker_attempts'] = (sum(FrozenRecord(line).data()['stage'] == 'execution_request'
                 for line in result.runtime.trace_path.read_text(encoding='utf-8').splitlines()) if result else 0)
             results.append(result); persist()
+    final_gate = final_provider_gate(provider_session, root/'final-provider-ledger.json')
     contrasts = []
     for panel in compiled.panels:
+        if native and not final_gate.data()['provider_evidence_eligible']:
+            contrasts.append(unavailable_provider_contrast(panel, final_gate)); continue
         def verify_score(score, cell, owner):
             verify_combination_adapted_receipt(score, authority_keys=scorer_authority_keys, config=scoring_services[owner.obligation_id].config, panel=owner,
                 cell=cell, score_input=score_inputs[cell.key], execution_authority_keys={execution_authority.authority_id: execution_authority.key})
@@ -256,7 +263,7 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
                 'status': 'inconclusive', 'reason': 'incomplete_or_failed_cell', 'error_type': type(exc).__name__})
         contrasts.append(contrast)
     receipt = FrozenRecord.from_dict({'schema': ('retrieval-review-train-receipt-v2' if native else 'retrieval-review-train-receipt-v1'), 'config_digest': config.record.content_hash,
-        'expected_cells': len(journal['cells']), 'observed_cells': len(results), 'scored_cells': len(scores),
+        'expected_cells': len(journal['cells']), 'observed_cells': len(results), 'scored_cells': len(scores), **final_score_fields(final_gate, scores),
         'failed_cells': sum(r['status']=='failed' for r in journal['cells']), 'blocked_cells': sum(r['status']=='blocked' for r in journal['cells']),
         'allocation': b['allocation'], 'actual_model_usage': provider_usage(provider_session, model), 'actual_scorer_calls': journal['actual_scorer_calls'],
         'actual_docker_attempts': sum(r['docker_attempts'] for r in journal['cells']),

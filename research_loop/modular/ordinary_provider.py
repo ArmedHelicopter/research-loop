@@ -67,3 +67,45 @@ def bind_runtime_originals(session,cell,runtime,path):
     events=[FrozenRecord(line).data() for line in runtime.trace_path.read_text(encoding='utf-8').splitlines()]
     ledger.bind_events(events,scope_id=cell_scope_id(cell))
     return ledger.record.content_hash
+
+
+def bind_singleton_originals(session,cell,result,path,*,linked):
+    ledger=session.finish(path)
+    if type(ledger) is not PhaseProviderLedger or result is None:
+        raise ContractError('native singleton lacks a checked original runtime')
+    runtime=result.mechanism.runtime if linked else result.runtime
+    paths=[runtime.trace_path]
+    if linked and result.solver is not None:
+        paths.append(result.solver.session.sidecar/'trace.jsonl')
+    events=[FrozenRecord(line).data() for trace in paths for line in trace.read_text(encoding='utf-8').splitlines()]
+    ledger.bind_events(events,scope_id=cell_scope_id(cell),require_eligible=runtime.status=='succeeded')
+    return ledger.record.content_hash
+
+
+def final_provider_gate(session,path):
+    if session is None:return None
+    final=session.finish(path)
+    eligible=False;verification=None
+    if type(final) is PhaseProviderLedger:
+        verification=final.verify()
+        eligible=verification.data()['score_eligible'] is True
+    else:
+        verification=final.verify()
+    return FrozenRecord.from_dict({'schema':'ordinary-native-final-provider-gate-v1',
+        'provider_evidence_eligible':eligible,'final_record_schema':final.record.data()['schema'],
+        'final_record_digest':final.record.content_hash,'verification':verification.data(),
+        'current_accounting':session.usage().data()})
+
+
+def final_score_fields(gate,scores):
+    if gate is None:return {}
+    return {'provider_final_gate':gate.data(),
+        'eligible_scored_cells':len(scores) if gate.data()['provider_evidence_eligible'] else 0,
+        'historical_score_receipt_digests':[score.receipt.content_hash for score in scores]}
+
+
+def unavailable_provider_contrast(panel,gate):
+    return FrozenRecord.from_dict({'schema':'ordinary-native-inconclusive-contrast-v1',
+        'panel_digest':panel.digest,'status':'inconclusive',
+        'reason':'provider_final_provenance_unavailable','provider_final_gate_digest':gate.content_hash,
+        'scientific_status':'not_measured'})

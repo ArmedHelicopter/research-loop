@@ -231,6 +231,7 @@ from research_loop.modular.combination_train_controller import _service_prefligh
 
 
 from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage, provider_terminal, provider_scope, bind_runtime_originals)
+from research_loop.modular.ordinary_provider import final_provider_gate, final_score_fields, unavailable_provider_contrast
 from research_loop.modular.phase_provider import PhaseProviderSession
 
 
@@ -349,8 +350,10 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
             verification = verify_combination_adapted_receipt(score, authority_keys=scorer_authority_keys,
                 config=scoring_service.config, panel=compiled.panel, cell=cell, score_input=source,
                 execution_authority_keys={execution_authority.authority_id: execution_authority.key})
-            row.update(status="succeeded", phase="verified", score_verification_digest=verification.content_hash)
             scores.append(score)
+            if native:
+                row['post_score_provider_seal_digest'] = bind_runtime_originals(provider_session, cell, result.runtime, root/'cells'/FrozenRecord.from_dict(cell.data()).content_hash/'post-score-provider-seal.json')
+            row.update(status='succeeded', phase='verified', score_verification_digest=verification.content_hash)
         except Exception as exc:
             row.update(status="failed", error_type=type(exc).__name__)
         finally:
@@ -373,10 +376,13 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
         verify_combination_adapted_receipt(score, authority_keys=scorer_authority_keys, config=scoring_service.config,
             panel=panel, cell=cell, score_input=signed_inputs[cell.key],
             execution_authority_keys={execution_authority.authority_id: execution_authority.key})
-    complete = all(row["status"] == "succeeded" for row in journal["cells"])
+    final_gate = final_provider_gate(provider_session, root/'final-provider-ledger.json')
+    complete = all(row['status']=='succeeded' for row in journal['cells']) and (not native or final_gate.data()['provider_evidence_eligible'])
     contrast = FrozenRecord.from_dict({"schema": "exploration-scheduler-inconclusive-contrast-v1", "panel_digest": compiled.panel.digest,
         "status": "inconclusive", "reason": "at_least_one_planned_cell_failed_or_unscored", "expected_cells": expected_cells,
         "scored_cells": len(scores), "missing_policy": "incomplete_reject", "scientific_status": "not_measured"})
+    if native and not final_gate.data()['provider_evidence_eligible']:
+        contrast = unavailable_provider_contrast(compiled.panel, final_gate)
     if complete:
         try:
             contrast = estimate_grouped_contrast(compiled.panel, runtime=verified_runtime, scorer_receipts=scores,
@@ -388,7 +394,7 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
                 "scientific_status": "not_measured"})
     receipt = FrozenRecord.from_dict({"schema": ('exploration-scheduler-train-controller-receipt-v2' if native else 'exploration-scheduler-train-controller-receipt-v1'), "config_digest": config.record.content_hash,
         "panel_digest": compiled.panel.digest, "expected_cells": expected_cells, "observed_cells": len(journal["cells"]),
-        "successful_cells": sum(row["status"] == "succeeded" for row in journal["cells"]), "scored_cells": len(scores),
+        "successful_cells": sum(row["status"] == "succeeded" for row in journal["cells"]), "scored_cells": len(scores), **final_score_fields(final_gate, scores),
         "failed_cells": sum(row["status"] == "failed" for row in journal["cells"]),
         "blocked_cells": sum(row["status"] == "blocked" for row in journal["cells"]),
         "actual_docker_attempts": sum(row['docker_attempts'] for row in journal['cells']),

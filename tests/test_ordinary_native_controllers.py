@@ -67,7 +67,7 @@ def invoke_native(setup,patch,family,*,fault=None):
         native=converted(config,kwargs['model'],family)
         observed['config']=native
         (setup['root']/'native-config.json').write_bytes(native.record.encoded.encode())
-        if fault=='provenance':
+        if fault in {'provenance','last_provenance'}:
             # Corrupt a successful prefix only after the first independent score
             # has returned. Subsequent accounting must abort before dispatch.
             services=kwargs.get('scoring_services',kwargs.get('scoring_service'))
@@ -75,11 +75,15 @@ def invoke_native(setup,patch,family,*,fault=None):
             else:service=services
             score_name='score_lineage' if family=='lineage' else 'score_combination'
             score=getattr(service,score_name)
+            score_count=0
             def corrupt_after_score(**args):
+                nonlocal score_count
                 value=score(**args)
-                path=observed['provider'].backend.calls_root
-                target=next(path.glob('*/response.private.json'))
-                target.write_bytes(b'{"synthetic_original_drift":true}')
+                score_count+=1
+                if fault=='provenance' or score_count==8:
+                    path=observed['provider'].backend.calls_root
+                    target=next(path.glob('*/response.private.json'))
+                    target.write_bytes(b'{"synthetic_original_drift":true}')
                 return value
             patch.setattr(service,score_name,corrupt_after_score)
         return original(native,**kwargs)
@@ -125,6 +129,23 @@ def test_full_registered_family_default_native_docker_and_process_scores(tmp_pat
     assert result.receipt.data()['validation_opened'] is False
     assert set(p.obligation_id for p in panels)==set(p.obligation_id for p in (result.compiled.panels if hasattr(result.compiled,'panels') else (result.compiled.panel,)))
     assert all(r['docker_attempts']>=1 and r['scorer_calls']==1 for r in rows)
+    assert result.receipt.data()['provider_final_gate']['provider_evidence_eligible'] is True
+    assert result.receipt.data()['eligible_scored_cells']==expected_cells
+
+
+def test_last_score_original_fault_keeps_historical_scores_but_no_eligible_contrast(tmp_path,monkeypatch):
+    setup=prepared(tmp_path,'exploration_scheduler')
+    result,observed=invoke_native(setup,monkeypatch,'exploration_scheduler',fault='last_provenance')
+    receipt=result.receipt.data();rows=[r.data() for r in result.attempts]
+    assert len(rows)==len(result.scores)==8 and len(observed['logs'])==16
+    assert receipt['status']=='inconclusive' and receipt['pruned_cells']==[]
+    assert receipt['provider_final_gate']['provider_evidence_eligible'] is False
+    assert receipt['eligible_scored_cells']==0 and len(receipt['historical_score_receipt_digests'])==8
+    assert result.contrast.data()['reason']=='provider_final_provenance_unavailable'
+    assert result.contrast.data()['status']=='inconclusive'
+    assert receipt['actual_model_usage']['known_reported_tokens_lower_bound']==192
+    assert receipt['actual_model_usage']['current_originals_verified'] is False
+    assert rows[-1]['status']=='failed'
 
 
 @pytest.mark.parametrize('fault',['unknown_main','provenance'])
