@@ -112,9 +112,9 @@ class JointClosure:
         if p0 != {"schema": "c5-binding-source-p0-v1", "control_plane": "always_enabled",
                   "required_audit": ["measurement"], "terminal_stage": "final_decision"}:
             raise ContractError("closure requires the exact always-enabled P0 contract")
-        schedule = _record(self.resource_schedule, "resource schedule")
-        if schedule != {"schema": "c5-binding-source-schedule-v1", "slots": ["combination"],
-                        "execution_limit": 0, "context_budget": 12000}:
+        _record(self.resource_schedule, "resource schedule")
+        if self.resource_schedule != FrozenRecord.from_dict({"schema": "c5-binding-source-schedule-v1", "slots": ["combination"],
+                        "execution_limit": 0, "context_budget": 12000}):
             raise ContractError("closure resource schedule is outside the supported source adapter")
         object.__setattr__(self, "components", components)
 
@@ -209,14 +209,22 @@ class PreparedJointTrainHandoff:
     def __post_init__(self):
         closures = _map(self.closures, "prepared closures")
         receipts = tuple(self.source_runtime_receipts)
+        self.verify_original_sources()
+        object.__setattr__(self, "closures", closures)
+        object.__setattr__(self, "source_runtime_receipts", tuple(sorted(receipts, key=lambda r: r.cell_key)))
+
+    def verify_original_sources(self):
+        """Read-only revalidation; no source or already-frozen object is changed."""
+        closures = _map(self.closures, "prepared closures")
+        if any(type(value) is not JointClosure for value in closures.values()):
+            raise ContractError("prepared closures require exact typed source closures")
+        receipts = tuple(self.source_runtime_receipts)
         expected, journals = _source(self.source_panel, receipts)
         if self.proposed_target_arm != "11" or dict(closures) != dict(expected):
             raise ContractError("proposed full target and every closure must exactly match their source arm")
         if self.original_journals != journals or self.record != _handoff_record(
                 self.source_panel, receipts, self.proposed_target_arm, closures, journals):
             raise ContractError("prepared record differs from original source journals and exact closures")
-        object.__setattr__(self, "closures", closures)
-        object.__setattr__(self, "source_runtime_receipts", tuple(sorted(receipts, key=lambda r: r.cell_key)))
 
     @property
     def admission_status(self):
@@ -301,7 +309,7 @@ def _criteria(record, comparisons):
 def _panel_record(handoff, target, arms, cells, contrasts, criteria, schedule):
     if type(handoff) is not PreparedJointTrainHandoff:
         raise ContractError("C5 needs an exact prepared TRAIN handoff")
-    handoff.__post_init__()  # Original source drift invalidates every freeze path.
+    handoff.verify_original_sources()  # Original source drift invalidates every freeze path.
     if target != handoff.proposed_target_arm:
         raise ContractError("C5 target must equal the frozen prepared target")
     if (not arms or any(type(a) is not C5Arm for a in arms) or len({a.arm_id for a in arms}) != len(arms)

@@ -12,7 +12,7 @@ from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.panel_receipts import PanelCell
-from research_loop.modular.runtime import AuditVerifier
+from research_loop.modular.runtime import AuditVerifier, RunSession
 from research_loop.ontology import ContractError
 
 H = "a" * 64
@@ -175,6 +175,31 @@ def test_source_drift_after_preparation_is_rejected_at_c5_freeze(tmp_path):
     handoff = prepare_joint_train_handoff(source_panel=panel, source_runtime_receipts=rows, proposed_target_arm="11")
     rows[0].trace_path.write_text(rows[0].trace_path.read_text(encoding="utf-8") + "{}\n", encoding="utf-8")
     with pytest.raises(ContractError): freeze_c5_validation_panel(handoff, **arguments(handoff))
+
+
+def test_valid_protocol_with_substituted_package_context_is_not_a_supported_source(tmp_path, monkeypatch):
+    original = RunSession.invoke
+    def substitute(self, slot, model, **kwargs):
+        context = kwargs["module_context"].data()
+        context["candidate_package"]["changes"]["prompt"]["instructions"] = "Another package was supplied to the model"
+        kwargs["module_context"] = record(context)
+        return original(self, slot, model, **kwargs)
+    monkeypatch.setattr(RunSession, "invoke", substitute)
+    panel, rows = source(tmp_path / "substituted-context")
+    # Common runtime replay passes; the new exact source adapter must still reject it.
+    with pytest.raises(ContractError, match="exact package and source scenario"):
+        prepare_joint_train_handoff(source_panel=panel, source_runtime_receipts=rows, proposed_target_arm="11")
+
+
+def test_frozen_handoff_does_not_mutate_during_revalidation(prepared):
+    original_map, original_receipts = prepared.closures, prepared.source_runtime_receipts
+    freeze_c5_validation_panel(prepared, **arguments(prepared))
+    assert prepared.closures is original_map and prepared.source_runtime_receipts is original_receipts
+    with pytest.raises(ContractError, match="exact typed"):
+        replace(prepared, closures={name: object() for name in prepared.closures})
+    body = prepared.closures["00"].resource_schedule.data(); body["execution_limit"] = False
+    with pytest.raises(ContractError, match="schedule"):
+        replace(prepared.closures["00"], resource_schedule=record(body))
 
 
 def test_unsupported_panel_family_and_validation_source_are_explicitly_refused(prepared):
