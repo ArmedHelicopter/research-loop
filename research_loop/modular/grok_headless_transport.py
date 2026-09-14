@@ -262,7 +262,7 @@ def _child(command, context, environment, directory, timeout):
             except Exception:
                 failure = 'process_tree_shutdown_failed'
         else:
-            closed = True
+            closed = None
     observation = {'command': command, 'environment': environment, 'cwd': context['cwd'],
         'started_at': started, 'finished_at': datetime.now(timezone.utc).isoformat(),
         'timeout_seconds': timeout, 'timed_out': expired, 'failure': failure,
