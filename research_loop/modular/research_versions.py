@@ -17,9 +17,20 @@ _CHILD = "research-version-child.json"
 
 def _safe(path: Path) -> Path:
     path = Path(path)
-    attrs = path.parent.stat().st_file_attributes if hasattr(path.parent.stat(), "st_file_attributes") else 0
-    if path.is_symlink() or path.parent.is_symlink() or attrs & 0x400:
-        raise ContractError("research version path cannot be a link or junction")
+    # A junction can be hidden above the immediate parent on Windows.  Walk all
+    # extant ancestors so the sidecar cannot escape through a redirected root.
+    current = path if path.exists() else path.parent
+    while True:
+        try:
+            stat = current.stat()
+        except OSError as exc:
+            raise ContractError("research version path is inaccessible") from exc
+        attrs = getattr(stat, "st_file_attributes", 0)
+        if current.is_symlink() or attrs & 0x400:
+            raise ContractError("research version path cannot be a link or junction")
+        if current.parent == current:
+            break
+        current = current.parent
     return path
 
 
@@ -181,10 +192,29 @@ def _catalogue(sidecar: Path, identity) -> ArtifactCatalogue:
         raise ContractError("research version catalogue has no original binding") from exc
 
 
-def verify_research_version_artifacts(sidecar: Path, *, identity, task_digest: str,
+def verify_research_version_artifacts(sidecar: Path, *, cell, scenario: FrozenRecord, identity, task_digest: str,
                                       lock: Mapping[str, Any], events: tuple[Mapping[str, Any], ...]) -> FrozenRecord:
     """Read-only Q8.6 consumer gate, anchored in independent cell/task expectations."""
     sidecar = Path(sidecar)
+    # The caller holds the compiled scenario bytes.  Do not accept a digest
+    # newly supplied by the trace/cataloque as the authority for those bytes.
+    if scenario.content_hash != cell.scenario_digest or cell.identity != identity or cell.task_digest != task_digest:
+        raise ContractError("research version caller scenario does not match the expected panel cell")
+    scenario_data = scenario.data()
+    if scenario_data.get("experiment_id") != "Q8.6" or scenario_data.get("variant") != cell.variant:
+        raise ContractError("research version scenario is not the expected Q8.6 variant")
+    controller = scenario_data.get("controller_input")
+    if not isinstance(controller, dict) or controller.get("schema") != "retrieval-final-controller-v1":
+        raise ContractError("research version scenario controller input differs")
+    bundle = controller.get("bundle")
+    if not isinstance(bundle, dict) or bundle.get("schema") != "retrieval-final-bundle-v1" or bundle.get("task_digest") != task_digest:
+        raise ContractError("research version scenario task differs")
+    request_table = bundle.get("requests")
+    if not isinstance(request_table, dict) or cell.variant not in request_table:
+        raise ContractError("research version scenario lacks the expected typed request")
+    expected_request = request_table[cell.variant]
+    if not isinstance(expected_request, dict):
+        raise ContractError("research version typed request is malformed")
     if any(sidecar.glob("research-version-*.json.partial")):
         raise ContractError("research version retains an incomplete file prefix")
     lock_record = FrozenRecord.from_dict(dict(lock))
@@ -218,7 +248,17 @@ def verify_research_version_artifacts(sidecar: Path, *, identity, task_digest: s
     initial = {"parent_digest": parent.content_hash, "from": "running", "to": "running", "reason": "initial_freeze"}
     if not transitions or transitions[0] != initial:
         raise ContractError("research version initial transition differs")
-    state = transitions[-1]["to"]
+    enabled = set(cell.runtime_arm.data().get("enabled", ()))
+    visible = "M6" in enabled
+    if cell.variant == "pause_new_version" and "M1" in enabled and visible:
+        expected_state, expected_transition_count = "paused", 2
+    elif cell.variant == "conflict" and "M1" in enabled and visible:
+        expected_state, expected_transition_count = "needs_review", 2
+    else:
+        expected_state, expected_transition_count = "running", 1
+    if len(transitions) != expected_transition_count or transitions[-1].get("to") != expected_state:
+        raise ContractError("research version transition sequence differs from the expected arm and variant")
+    state = expected_state
     child_path = sidecar / _CHILD
     child_events = [row for row in events if row.get("stage") == "research_version_child_persisted"]
     frozen_events = [row for row in events if row.get("stage") == "research_version_child_frozen"]
@@ -262,7 +302,7 @@ def verify_research_version_artifacts(sidecar: Path, *, identity, task_digest: s
         if source_receipt.content_hash != expected_source_receipt.content_hash or source_subject.data().get("identity") != identity.data() or source_subject.data().get("task_digest") != task_digest:
             raise ContractError("research version origin receipt or subject binding differs")
         request = source_subject.data().get("request")
-        if not isinstance(request, dict) or request.get("operation") != "request_new_version" or request.get("caller_authorized") is not True:
+        if request != expected_request or request.get("operation") != "request_new_version" or request.get("caller_authorized") is not True:
             raise ContractError("paused research version lacks the locked new-version request")
         expected_child_subject = FrozenRecord.from_dict({"identity": identity.data(), "task_digest": task_digest,
             "parent_digest": parent.content_hash, "old_objective_digest": FrozenRecord.from_dict(lock["objective"]).content_hash,
@@ -275,5 +315,20 @@ def verify_research_version_artifacts(sidecar: Path, *, identity, task_digest: s
             "authorized": True, "scientific_verified": False})
         if receipt.content_hash != expected.content_hash or transitions[-1].get("reason") != child_subject.content_hash:
             raise ContractError("research version child receipt or transition differs")
+    source_events = [row for row in events if row.get("stage") == "q86_source_authority"]
+    if len(source_events) != 1:
+        raise ContractError("research version lacks exactly one origin qualification")
+    actual_request = source_events[0].get("data", {}).get("subject", {}).get("request")
+    if actual_request != (expected_request if visible else None):
+        raise ContractError("research version source request is not derived from the frozen scenario and arm")
+    # Q8.6 has exactly review/final in its frozen schedule.  A non-running
+    # parent refuses final before provider I/O, rather than adding an old-version
+    # model request after its transition.
+    slots = [row.get("data", {}).get("request", {}).get("slot") for row in events if row.get("stage") == "model_request"]
+    if slots != ["review", "final"]:
+        raise ContractError("research version model callback schedule differs")
+    refusal = [row for row in events if row.get("stage") == "q86_old_research_refused"]
+    if (state != "running") != bool(refusal) or len(refusal) > 1:
+        raise ContractError("research version old-version refusal position differs")
     return FrozenRecord.from_dict({"schema": "research-version-artifact-verification-v1", "parent_digest": parent.content_hash,
         "state": state, "child_present": state == "paused", "scientific_verified": False})

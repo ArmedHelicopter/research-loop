@@ -501,7 +501,8 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
                     _write(root/'controller-attempt.json',attempt)
         post_verifier = protocol_post_runtime_verifier(compiled, protocol_replay_authority) if protocol else None
         verdict = (None if native and len(runtimes)!=expected_cells else
-            PanelReceiptVerifier(post_runtime_verifier=post_verifier).verify(compiled.panel, tuple(runtimes)))
+            PanelReceiptVerifier(post_runtime_verifier=post_verifier).verify(compiled.panel, tuple(runtimes),
+                                                                               scenarios=compiled.scenarios))
     except Exception as exc:
         attempt.update({"status": "execution_interrupted", "error_type": type(exc).__name__})
         if native:

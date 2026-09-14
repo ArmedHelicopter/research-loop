@@ -136,6 +136,33 @@ def test_q85_q86_q87_full_production_grid(tmp_path, monkeypatch):
     (tmp_path/"independent-authority.json").write_text(json.dumps(report,indent=2),encoding="utf-8")
 
 
+def test_q86_synthetic_cells_bind_compiled_scenarios_before_receipt_return(tmp_path, monkeypatch):
+    """No Docker: both identities, all three variants, and enabled/off arms."""
+    snapshot, custody = snapshot_and_custody(tmp_path); base = config(custody, snapshot, tmp_path).data()
+    from evaluation.modular.train_io import TrainPacketExporter
+    packets = TrainPacketExporter(custody, snapshot, tmp_path / "material").export(base["item_ids"])
+    evidence = {packet.task.content_hash: bundle(packet).data() for packet in packets}
+    grids = obligation_grids(("Q8.6",), baseline_digest=base["baseline_digest"],
+                             p0_control=FrozenRecord.from_dict(base["p0_control"]))
+    package = next(iter(base["packages_by_arm"].values()))
+    frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema": "train-panel-controller-v1",
+        "engineering_scope": "train_only_panel_engineering", "stage": "q86-synthetic-artifact-consumer",
+        "scope_ids": ["Q8.6"], "evidence_by_task": evidence,
+        "packages_by_arm": {arm.content_hash: package for arm in executable_arms(grids["Q8.6"]).values()},
+        "budget": {"model_calls": 2, "retrieval_calls": 3, "execution_limit": 0}, "max_calls": 48, "max_tokens": 512,
+        "schemas": {"final": FINAL, "review": GOAL_REVIEW, "frontier_review_a": REVIEW,
+                    "frontier_review_b": REVIEW, "frontier": FRONTIER}}))
+    port = model_port(tmp_path, monkeypatch, max_calls=48, max_tokens=512,
+                      schemas={"final": FINAL, "review": GOAL_REVIEW, "frontier_review_a": REVIEW,
+                               "frontier_review_b": REVIEW, "frontier": FRONTIER}, response_factory=response)
+    result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+        run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}),
+        retrieval_provider=Provider(), retrieval_admission_port=admission, retrieval_final_authority=Authority())
+    assert len(result.runtimes) == 24
+    assert all(row.status == "succeeded" for row in result.runtimes)
+    assert result.verdict.engineering_verified is True
+
+
 def verify_grid(result):
     from test_m6_public_input_boundary import verify_actual_public_requests
     cells = {cell.key: cell for cell in result.compiled.panel.cells}; rows = []; counts = {key:0 for key in SCOPE}

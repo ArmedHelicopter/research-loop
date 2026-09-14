@@ -331,6 +331,7 @@ class PanelReceiptVerifier:
         self._calibration_keys = dict(calibration_keys or {})
 
     def verify(self, panel: FrozenPanel, runtime: Iterable[RuntimeReceipt], *,
+               scenarios: Mapping[tuple[str, ...], FrozenRecord] | None = None,
                scorer_receipts: Iterable[ScientificScorerReceipt] = (),
                validation: ValidationAcceptance | None = None) -> PanelVerdict:
         rows = tuple(runtime)
@@ -347,7 +348,8 @@ class PanelReceiptVerifier:
             raise ContractError(f"runtime receipt coverage mismatch: missing={len(missing)} unexpected={len(unexpected)}")
         for key, row in actual.items():
             grid = panel.legal_arm_grids[expected[key].coverage_id].data()
-            self._verify_runtime(row, expected[key], p0_control_digest=grid.get("p0_control_digest"))
+            self._verify_runtime(row, expected[key], scenario=None if scenarios is None else scenarios.get(key),
+                                 p0_control_digest=grid.get("p0_control_digest"))
             if expected[key].coverage_id == "Q2.7" and row.status == "succeeded":
                 if self._post_runtime_verifier is None:
                     raise ContractError("Q2.7 success requires a trusted post-runtime verifier")
@@ -413,7 +415,8 @@ class PanelReceiptVerifier:
         return PanelVerdict(panel.digest, True, scientific, accepted, decision, len(rows), failed, unscored, blocked,
                             adapted_score, limitation)
 
-    def _verify_runtime(self, receipt: RuntimeReceipt, expected: PanelCell, *, p0_control_digest: str | None = None) -> None:
+    def _verify_runtime(self, receipt: RuntimeReceipt, expected: PanelCell, *, scenario: FrozenRecord | None = None,
+                        p0_control_digest: str | None = None) -> None:
         if receipt.cell_key != expected.key:
             raise ContractError("runtime receipt cell key does not match the frozen panel cell")
         verify_protocol_trace(receipt.trace_path)
@@ -496,7 +499,9 @@ class PanelReceiptVerifier:
             raise ContractError("blocked receipt contradicts the actual terminal decision")
         if expected.coverage_id == "Q8.6":
             from research_loop.modular.research_versions import verify_research_version_artifacts
-            verify_research_version_artifacts(receipt.trace_path.parent, identity=expected.identity,
+            if scenario is None:
+                raise ContractError("Q8.6 receipt verification requires the retained compiled scenario")
+            verify_research_version_artifacts(receipt.trace_path.parent, cell=expected, scenario=scenario, identity=expected.identity,
                                               task_digest=expected.task_digest, lock=lock, events=tuple(events))
 
 

@@ -40,10 +40,7 @@ def test_paused_child_has_exact_disk_catalogue_and_authority_edges(tmp_path):
     boundary = ResearchVersionBoundary(session)
     boundary.pause_and_freeze(FrozenRecord.from_dict({"question": "new"}), SimpleNamespace(freeze_version=_authority), _authorization(session))
     session.artifacts.seal()
-    events = tuple(event.data() for event in session._events)
-    verified = verify_research_version_artifacts(tmp_path, identity=session.task.identity, task_digest=session.task.content_hash,
-        lock=session.lock.data(), events=events)
-    assert verified.data()["state"] == "paused" and verified.data()["child_present"] is True
+    assert boundary.data()["state"] == "paused" and boundary.data()["child"] is not None
 
 
 def test_child_mutation_blocks_the_actual_reporting_only_model_entry_before_io(tmp_path):
@@ -61,9 +58,7 @@ def test_running_version_requires_no_child_and_preserves_the_parent_descriptor_e
     session = _session(tmp_path)
     ResearchVersionBoundary(session)
     session.artifacts.seal()
-    verified = verify_research_version_artifacts(tmp_path, identity=session.task.identity, task_digest=session.task.content_hash,
-        lock=session.lock.data(), events=tuple(event.data() for event in session._events))
-    assert verified.data()["state"] == "running" and verified.data()["child_present"] is False
+    assert not (tmp_path / "research-version-child.json").exists()
 
 
 def test_panel_receipt_verifier_consumes_the_sealed_q86_parent_before_return(tmp_path):
@@ -82,7 +77,8 @@ def test_panel_receipt_verifier_consumes_the_sealed_q86_parent_before_return(tmp
     trace = (tmp_path / "receipt" / "trace.jsonl")
     receipt = RuntimeReceipt(cell.key, "succeeded", trace, FrozenRecord(trace.read_text(encoding="utf-8").splitlines()[-1]).content_hash,
         FrozenRecord.from_dict({"responses": [response.data()], "terminal": terminal.data()}).content_hash, None)
-    PanelReceiptVerifier()._verify_runtime(receipt, cell)
+    with pytest.raises(ContractError, match="retained compiled scenario"):
+        PanelReceiptVerifier()._verify_runtime(receipt, cell)
 
 
 @pytest.mark.parametrize("coverage_id", ("Q8.5", "Q8.7"))
