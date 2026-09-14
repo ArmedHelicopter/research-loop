@@ -6,7 +6,8 @@ stage, and C1–C5 combination experiments defined in the design documents.
 ## Common C5 scorer and native deployment checks (2026-09-14, later update)
 
 The new common TRAIN panel/scorer scope is integrated from `712d242`:44/44
-checks,639 unchanged source files. It preserves the full recipe-by-target grid,
+checks,639 unchanged source files. Root `b31acf2` subsequently passed23/23
+integration/label checks with639 unchanged files. It preserves the full recipe-by-target grid,
 history-only packages, full-protocol build identities and the frozen ranking
 rule. A real independent scorer process accepted synthetic signed candidates
 from both primary benchmarks. The earlier43/44 fixture-hash failure is retained.
