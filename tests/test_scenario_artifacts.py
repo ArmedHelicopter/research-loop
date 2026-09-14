@@ -1,5 +1,8 @@
 """Focused producer/reader checks for Q6 scenario sidecar artifacts."""
 from pathlib import Path
+from dataclasses import replace
+import hashlib
+import sqlite3
 
 import pytest
 
@@ -125,3 +128,240 @@ def test_failed_reader_requires_every_sealed_blob(tmp_path):
     with pytest.raises(ContractError):
         inspect_scenario_artifact_failure(task=task, frozen_controls=controls(task), sidecar=root,
                                           experiment_id="Q6.5", variant="sealed_calibrated")
+
+
+def _read_record(path):
+    return FrozenRecord(path.read_text(encoding="utf-8").strip())
+
+
+def _write_record(path, body):
+    path.write_bytes((FrozenRecord.from_dict(body).encoded + "\n").encode("utf-8"))
+
+
+def _reseal(root, *, result=None, mutate=None, omit=None):
+    """An attacker repairs every storage hash, preserving semantic falsifications.
+
+    Use the real catalogue reader to prove rejection is not a broken outer seal.
+    This intentionally does not use the scenario writer or its storage helpers.
+    """
+    from research_loop.modular.artifact_catalogue import ArtifactCatalogue
+    from research_loop.modular.contracts import DataIdentity
+    path = root / "scenario-artifacts.jsonl"
+    descriptors = [FrozenRecord(line).data()["descriptor"] for line in path.read_text(encoding="utf-8").splitlines()]
+    if result is not None:
+        _write_record(root / "scenario-result.json", result.record.data())
+    ignored = {"scenario-artifacts.jsonl", "scenario-artifacts.jsonl.seal.json", "scenario-terminal.json",
+               "scenario-closure.json", "scenario-file-manifest.json"}
+    files = {p.name: {"sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "bytes": p.stat().st_size}
+             for p in sorted(root.iterdir()) if p.is_file() and p.name not in ignored}
+    blobs = root / "scenario-blobs"
+    blobs.mkdir(exist_ok=True)
+    for blob in blobs.iterdir():
+        blob.unlink()
+    items = [{"file": name, "blob": "scenario-blobs/" + value["sha256"], **value} for name, value in files.items()]
+    for item in items:
+        (root / item["blob"]).write_bytes((root / item["file"]).read_bytes())
+    _write_record(root / "scenario-file-manifest.json", {"schema": "m9-scenario-file-manifest-v1", "files": items, "fixture_only": True})
+    terminal = _read_record(root / "scenario-terminal.json").data()
+    terminal["files"] = files
+    if result is not None:
+        terminal["result_digest"] = result.record.content_hash
+    _write_record(root / "scenario-terminal.json", terminal)
+
+    def snapshot(name):
+        raw = (root / name).read_bytes()
+        return {"file": name, "sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
+
+    entries, parent = [], None
+    for body in descriptors:
+        kind = body["kind"]
+        if omit is not None and omit(body):
+            continue
+        payload = body["payload"]["canonical"]
+        if kind in {"scenario_result", "scenario_terminal", "scenario_file_manifest"}:
+            payload = snapshot(payload["file"])
+        elif kind == "scenario_sidecar":
+            payload = next(item for item in items if item["file"] == payload["file"])
+        if mutate:
+            mutate(body, payload)
+        frozen = FrozenRecord.from_dict(payload)
+        body["payload"] = {"canonical": frozen.data(), "digest": frozen.content_hash,
+                           "bytes": len(frozen.encoded.encode()), "encoding": "canonical_json"}
+        body["parents"] = [parent] if parent else []
+        descriptor = FrozenRecord.from_dict(body)
+        entries.append(FrozenRecord.from_dict({"schema": "artifact-catalogue-entry-v2", "sequence": len(entries),
+            "previous": entries[-1].content_hash if entries else None, "descriptor_digest": descriptor.content_hash,
+            "descriptor": descriptor.data()}))
+        parent = descriptor.content_hash
+    path.write_text("".join(entry.encoded + "\n" for entry in entries), encoding="utf-8")
+    first = entries[0].data()["descriptor"]
+    seal = {"schema": "artifact-catalogue-seal-v1", "count": len(entries), "head": entries[-1].content_hash,
+            "binding": first["binding"]}
+    _write_record(root / "scenario-artifacts.jsonl.seal.json", seal)
+    _write_record(root / "scenario-closure.json", {"schema": "m9-scenario-closure-v1", "catalogue_seal": seal,
+                                                   "terminal": snapshot("scenario-terminal.json")})
+    ArtifactCatalogue(path, identity=DataIdentity.parse(first["identity"]), **first["binding"],
+                      producer_source=first["producer_source"]).verify(FrozenRecord.from_dict(seal))
+
+
+@pytest.mark.parametrize("experiment,variant", [
+    ("Q6.1", "change_rule"), ("Q6.1", "read_validation"), ("Q6.1", "forge_receipt"),
+    ("Q6.2", "fixed"), ("Q6.2", "manual_train"), ("Q6.2", "automatic_train"),
+    ("Q6.5", "sealed_calibrated"), ("Q6.6", "promote"), ("Q6.6", "drift"),
+    ("Q6.6", "offline"), ("Q6.6", "duplicate"),
+])
+def test_other_frozen_variants_have_independent_success_readers(tmp_path, experiment, variant):
+    result, args = _run(tmp_path / "run", experiment, variant)
+    assert verify_scenario_artifacts(result, **args).data()["scientific_validated"] is False
+
+
+@pytest.mark.parametrize("mutation", ["receipt_missing", "receipt_substituted", "package", "active", "extra_table"])
+def test_rehashed_runtime_state_cannot_change_registered_operation(tmp_path, mutation):
+    result, args = _run(tmp_path / "run", "Q6.6", "rollback")
+    root = args["sidecar"]
+    with sqlite3.connect(root / "runtime.sqlite") as db:
+        if mutation == "receipt_missing":
+            db.execute("DELETE FROM used_receipts")
+        elif mutation == "receipt_substituted":
+            db.execute("UPDATE used_receipts SET id=? WHERE id=(SELECT id FROM used_receipts LIMIT 1)", ("f" * 64,))
+        elif mutation == "package":
+            db.execute("UPDATE packages SET record=? WHERE digest=?", (FrozenRecord.from_dict({"forged": True}).encoded,
+                       result.record.data()["detail"]["baseline_digest"]))
+        elif mutation == "active":
+            db.execute("UPDATE state SET active_digest=?", (result.record.data()["detail"]["next_workflow"]["active_digest"],))
+        else:
+            db.execute("CREATE TABLE extra (claim TEXT)")
+    _reseal(root)
+    with pytest.raises(ContractError, match="sqlite"):
+        verify_scenario_artifacts(result, **args)
+
+
+@pytest.mark.parametrize("name,field", [("deployment.json", "memory_view"),
+    ("deployment.json.previous", "package"), ("deployment.json", "memory_digest")])
+def test_rehashed_deployment_pairs_require_full_expected_package(tmp_path, name, field):
+    result, args = _run(tmp_path / "run", "Q6.6", "rollback")
+    root = args["sidecar"]; body = _read_record(root / name).data()
+    body[field] = "f" * 64 if field == "memory_digest" else {"unexpected": "changed"}
+    raw = FrozenRecord.from_dict(body).encoded.encode()
+    (root / name).write_bytes(raw)
+    (root / (name + ".sha256")).write_bytes((hashlib.sha256(raw).hexdigest() + "\n").encode())
+    _reseal(root)
+    with pytest.raises(ContractError, match="deployment"):
+        verify_scenario_artifacts(result, **args)
+
+
+@pytest.mark.parametrize("mutation", ["scientific", "fixture_integer", "callback_bool", "baseline", "receipt_claim"])
+def test_rehashed_result_cannot_promote_or_redefine_operation(tmp_path, mutation):
+    result, args = _run(tmp_path / "run", "Q6.6", "promote")
+    body = result.record.data()
+    if mutation == "scientific": body["detail"]["scientific_validated"] = True
+    elif mutation == "fixture_integer": body["fixture_only"] = 1
+    elif mutation == "callback_bool": body["callback_count"] = True
+    elif mutation == "baseline": body["detail"]["baseline_digest"] = "f" * 64
+    else: body["detail"]["activation"]["online"] = 1
+    result = replace(result, record=FrozenRecord.from_dict(body))
+    _reseal(args["sidecar"], result=result)
+    with pytest.raises(ContractError):
+        verify_scenario_artifacts(result, **args)
+
+
+def _failed(root, *, returned=False):
+    task = task_for("blade")
+    args = dict(task=task, frozen_controls=controls(task), sidecar=root, experiment_id="Q6.6", variant="promote")
+    def callback(_):
+        if returned: return None
+        raise RuntimeError("retained failure")
+    with pytest.raises((ContractError, RuntimeError)):
+        run_improvement_scenario(callback=callback, **args)
+    assert inspect_scenario_artifact_failure(**args).data()["storage_integrity_verified"] is True
+    return args
+
+
+@pytest.mark.parametrize("failed", [True, False])
+@pytest.mark.parametrize("mutation", ["omitted_sidecar", "optimizer_visible", "checks"])
+def test_rehashed_descriptors_must_be_consumed_with_exact_metadata(tmp_path, failed, mutation):
+    root = tmp_path / "run"
+    result, args = (None, _failed(root)) if failed else _run(root, "Q6.6", "promote")
+    def change(body, payload):
+        if body["kind"] == "scenario_sidecar":
+            if mutation == "optimizer_visible": body["optimizer_visible"] = True
+            if mutation == "checks": body["checks"] = [{"kind": "validation", "canonical": {"approved": True},
+                "digest": FrozenRecord.from_dict({"approved": True}).content_hash}]
+    _reseal(root, mutate=change, omit=(lambda body: body["kind"] == "scenario_sidecar") if mutation == "omitted_sidecar" else None)
+    with pytest.raises(ContractError):
+        if failed: inspect_scenario_artifact_failure(**args)
+        else: verify_scenario_artifacts(result, **args)
+
+
+@pytest.mark.parametrize("mutation", ["produced_status", "outcome_fields", "terminal_error", "extra_blob", "nested_blob"])
+def test_failed_storage_reader_rejects_rehashed_outcome_or_blob_inventory(tmp_path, mutation):
+    root = tmp_path / "run"; args = _failed(root)
+    if mutation == "terminal_error":
+        body = _read_record(root / "scenario-terminal.json").data(); body["error"] = "different failure"
+        _write_record(root / "scenario-terminal.json", body)
+    def change(body, payload):
+        if body["kind"] == "scenario_callback_return":
+            if mutation == "produced_status": body["status"] = "produced"
+            elif mutation == "outcome_fields": payload["raw_content_available"] = True
+    _reseal(root, mutate=change)
+    if mutation == "extra_blob": (root / "scenario-blobs" / ("f" * 64)).write_bytes(b"unlisted")
+    if mutation == "nested_blob": (root / "scenario-blobs" / "nested").mkdir()
+    with pytest.raises(ContractError):
+        inspect_scenario_artifact_failure(**args)
+
+
+def test_rejected_callback_prefix_is_read_as_storage_only(tmp_path):
+    args = _failed(tmp_path / "run", returned=True)
+    assert inspect_scenario_artifact_failure(**args).data()["stage_semantics_verified"] is False
+
+
+@pytest.mark.parametrize("variant", ["automatic_train", "manual_train"])
+def test_coherent_optimizer_and_result_substitution_cannot_override_callback_or_variant(tmp_path, variant):
+    from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
+    proposal = FrozenRecord.from_dict({"changes": {"memory": {"mode": "callback-original"}}})
+    result, args = _run(tmp_path / "run", "Q6.2", variant, lambda _: proposal)
+    body = result.record.data(); detail = body["detail"]
+    substitute = CandidatePackage.create(parent_digest=detail["baseline_digest"],
+        manifest=TrainingManifest.freeze((args["task"].identity,)),
+        changes={"memory": {"mode": "unauthorized-substitute"}}, search_cost=2)
+    with sqlite3.connect(args["sidecar"] / "optimizer.sqlite") as db:
+        db.execute("DELETE FROM candidates WHERE digest=?", (detail["candidate_digest"],))
+        db.execute("INSERT INTO candidates VALUES (?, ?)", (substitute.digest, substitute.record.encoded))
+        db.execute("UPDATE comparisons SET candidate=?", (substitute.digest,))
+    detail.update(candidate_digest=substitute.digest, candidate_changes=substitute.record.data()["changes"])
+    result = replace(result, record=FrozenRecord.from_dict(body))
+    _reseal(args["sidecar"], result=result)
+    with pytest.raises(ContractError, match="sqlite"):
+        verify_scenario_artifacts(result, **args)
+
+
+def test_coherent_baseline_result_state_and_deployment_substitution_is_rejected(tmp_path):
+    from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
+    result, args = _run(tmp_path / "run", "Q6.1", "self_activate")
+    root = args["sidecar"]
+    substitute = CandidatePackage.create(parent_digest=None,
+        manifest=TrainingManifest.freeze((args["task"].identity,)), changes={"memory": {"mode": "on"}}, search_cost=2)
+    with sqlite3.connect(root / "runtime.sqlite") as db:
+        db.execute("DELETE FROM packages")
+        db.execute("INSERT INTO packages VALUES (?, ?)", (substitute.digest, substitute.record.encoded))
+        db.execute("UPDATE state SET active_digest=?", (substitute.digest,))
+    deployed = {"schema": "modular-file-deployment-v1", "active_digest": substitute.digest,
+        "package": substitute.record.data(), "memory_view": substitute.record.data()["changes"]["memory"],
+        "memory_digest": substitute.memory_digest}
+    raw = FrozenRecord.from_dict(deployed).encoded.encode()
+    (root / "active.json").write_bytes(raw)
+    (root / "active.json.sha256").write_bytes((hashlib.sha256(raw).hexdigest() + "\n").encode())
+    body = result.record.data(); body["detail"]["baseline_digest"] = substitute.digest
+    result = replace(result, record=FrozenRecord.from_dict(body))
+    _reseal(root, result=result)
+    with pytest.raises(ContractError, match="sqlite"):
+        verify_scenario_artifacts(result, **args)
+
+
+def test_rehashed_shadow_receipt_identity_matters_not_just_count(tmp_path):
+    result, args = _run(tmp_path / "run", "Q6.5", "unprotected")
+    with sqlite3.connect(args["sidecar"] / "shadow-runtime.sqlite") as db:
+        db.execute("UPDATE used_receipts SET id=? WHERE id=(SELECT id FROM used_receipts LIMIT 1)", ("e" * 64,))
+    _reseal(args["sidecar"])
+    with pytest.raises(ContractError, match="sqlite"):
+        verify_scenario_artifacts(result, **args)
