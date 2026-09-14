@@ -23,7 +23,7 @@ def _companion(receipt):
     return receipt.with_name(receipt.name + '.artifacts')
 
 
-def _independent_inputs(setup):
+def _independent_inputs(setup, monkeypatch):
     # Retain frozen inputs before either actual producer runs. The archive
     # reader must not invent expected subjects from the output being checked.
     plan = setup['common_plan']
@@ -31,6 +31,21 @@ def _independent_inputs(setup):
         'source_binding': setup['source'].binding().data(),
         'corpus_binding': setup['corpus'].binding().data()}
     (setup['root']/'qualification-host-inputs.json').write_bytes(R(value).encoded.encode())
+    from research_loop.modular.lineage_combination_material import DualMaterialVerifier
+    original_qualify = DualMaterialVerifier.qualify
+    expected_root = setup['root']/'qualification-expected'
+    expected_root.mkdir()
+
+    def retain_input(verifier, material, receipt, *, cell_binding):
+        relative = Path(receipt).relative_to(setup['root']).as_posix()
+        expected = {'receipt': relative, 'material_type': type(material).__name__,
+            'material': material.record.data(), 'cell_binding': cell_binding.data(),
+            'binding': verifier.binding().data(), 'request': verifier.request(material, cell_binding).data()}
+        with (expected_root/(hashlib.sha256(relative.encode()).hexdigest()+'.json')).open('xb') as stream:
+            stream.write(R(expected).encoded.encode())
+        return original_qualify(verifier, material, receipt, cell_binding=cell_binding)
+
+    monkeypatch.setattr(DualMaterialVerifier, 'qualify', retain_input)
 
 
 def _tree_bytes(root):
@@ -39,7 +54,7 @@ def _tree_bytes(root):
 
 def test_actual_history_target_consumers_reject_rehashed_qualification_history(tmp_path, monkeypatch):
     setup = prepare(tmp_path, monkeypatch)
-    _independent_inputs(setup)
+    _independent_inputs(setup, monkeypatch)
     runner = executor(setup)
     plan = setup['common_plan']
     recipe = full_recipe(plan)
@@ -120,7 +135,7 @@ def test_actual_history_target_consumers_reject_rehashed_qualification_history(t
 @pytest.mark.parametrize('role', ['source', 'corpus'])
 def test_missing_qualification_seal_blocks_actual_host_before_model(tmp_path, monkeypatch, role):
     setup = prepare(tmp_path, monkeypatch)
-    _independent_inputs(setup)
+    _independent_inputs(setup, monkeypatch)
     runner = executor(setup)
     # This shared qualifier also runs with M1 disabled. Failure is still a P0
     # custody failure; it must not be credited as enabled M1 behavior.
