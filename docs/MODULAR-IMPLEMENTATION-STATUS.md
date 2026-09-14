@@ -3,6 +3,29 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Ordinary native ports and Grok initialize observation (2026-09-14)
+
+The ordinary native source chain is integrated through `db11758`. Its independent
+11-family checkpoint passed82/82, with258 cells,816 synthetic MAIN opportunities,
+498 Docker attempts and258 scorer calls; Q3.2's final historical/current-status
+repair passed14/14. Root frozen `d40c6cd` then passed78/78 integration checks with
+632 unchanged source hashes, covering provider compatibility, singleton dispatch,
+Q3.2, final provenance faults and label isolation. The full family grid was not
+repeated. Exact sources, failures/qualifications and original receipts are retained
+in the ordinary archives; root verified their24 Git blobs and34,571 raw ZIP members.
+These are engineering checks, with no real model/API calls or validation access.
+
+One separately reviewed initialize-only Grok1.0.30 diagnostic returned its ACP
+response after29.844s and closed at30.0s, without session/account/prompt RPCs.
+Standard model/settings/announcement notifications then triggered the unchanged
+strict diagnostic's rejection. Its accepted_initialize=false remains preserved.
+The normal transport already handles those notification names. A returned
+initialize response does not prove generation, tool isolation or billing readiness;
+the minimal versioned native deployment/readiness path remains to be connected.
+Exact reviewed sources and numeric OS metadata are in
+`results/modular-engineering-20260914/grok-initialize-wct/`; raw native frames and
+opaque login copies are excluded. Earlier timeouts remain part of the record.
+
 ## C5 atomic component snapshot and provider replay (2026-09-14)
 
 The C5 local deployment port now represents every enabled module with separate

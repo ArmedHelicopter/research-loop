@@ -1,0 +1,57 @@
+{
+  "schema": "initialize-only-closure-v1",
+  "accepted_initialize": false,
+  "faults": [
+    "extra_captured_frame",
+    "unexpected_notification"
+  ],
+  "initialize_write_attempted": true,
+  "initialize_writes_completed": 1,
+  "outbound_method_counts": {
+    "initialize": 1,
+    "session/new": 0,
+    "authenticate": 0,
+    "_x.ai/billing": 0,
+    "_x.ai/auto-topup-rule": 0,
+    "session/prompt": 0
+  },
+  "stdout_frames_parsed": 2,
+  "server_requests_observed": 0,
+  "response": {
+    "protocol_version": 1,
+    "result_keys": [
+      "_meta",
+      "agentCapabilities",
+      "authMethods",
+      "protocolVersion"
+    ],
+    "response_sha256": "d39b51d58e5117dbe6d1858259efdb0dd351d9492887536909833187090405c1",
+    "response_elapsed_seconds": 29.843999999997322
+  },
+  "started_utc": "2026-09-14T02:56:05.456669+00:00",
+  "shutdown_started_seconds": 29.843999999997322,
+  "elapsed_seconds": 30.0,
+  "native_process_id": 68668,
+  "native_exit_code_after_shutdown": 0,
+  "process_tree_closed": true,
+  "stdout_bytes": 13466,
+  "stderr_bytes": 0,
+  "stream_hashes": {
+    "stdout.private.bin": "1e147a9ba9b888c66893272f6f390b4a1569439eacbdc7a32687c9de93033a64",
+    "stderr.private.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "retry_allowed": false,
+  "model_account_tools_verified": false,
+  "known_model_usage": null,
+  "settled_additional_charge_usd": null,
+  "global_auth_metadata_unchanged": true,
+  "private_auth_metadata_changed": true,
+  "auth_contents_read_or_hashed": false,
+  "observer_max_samples": 3,
+  "observer_status": {
+    "started": true,
+    "closed": true,
+    "fault": null
+  },
+  "model_readiness_verified": false
+}

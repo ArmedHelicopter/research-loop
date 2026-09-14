@@ -1,0 +1,17 @@
+{
+  "frozen_files_match": true,
+  "source_snapshot_files": 6,
+  "initialize_response_observed": true,
+  "strict_diagnostic_accepted_initialize": false,
+  "native_and_observer_closed": true,
+  "notification_counts": {
+    "_x.ai/models/update": 4,
+    "_x.ai/settings/update": 2,
+    "_x.ai/announcements/update": 2
+  },
+  "os_sample_count": 1,
+  "model_session_prompt_calls": 0,
+  "private_auth_content_or_hash_inspected": false,
+  "raw_native_frames_archived": false,
+  "model_tools_billing_readiness_established": false
+}

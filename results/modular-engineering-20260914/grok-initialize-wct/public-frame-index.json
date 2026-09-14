@@ -1,0 +1,176 @@
+[
+  {
+    "index": 0,
+    "sha256": "9235f8288dddc54a78511de6b0181616e058ec329f55214d673624610dc616f8",
+    "keys": [
+      "id",
+      "jsonrpc",
+      "result"
+    ],
+    "id": 1,
+    "method": null,
+    "parameter_keys": []
+  },
+  {
+    "index": 1,
+    "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/models/update",
+    "parameter_keys": [
+      "availableModels",
+      "currentModelId"
+    ]
+  },
+  {
+    "index": 2,
+    "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/models/update",
+    "parameter_keys": [
+      "availableModels",
+      "currentModelId"
+    ]
+  },
+  {
+    "index": 3,
+    "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/models/update",
+    "parameter_keys": [
+      "availableModels",
+      "currentModelId"
+    ]
+  },
+  {
+    "index": 4,
+    "sha256": "276c3f40b6dfe44dea3b1d427bf90176f3aff719ae0cea309de0cf5af1141145",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/models/update",
+    "parameter_keys": [
+      "availableModels",
+      "currentModelId"
+    ]
+  },
+  {
+    "index": 5,
+    "sha256": "2992362a559484aae43f59b88dffa481d436fd96c5e199061f9ed10dd5ea2b6b",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/settings/update",
+    "parameter_keys": [
+      "allow_access",
+      "announcements",
+      "auto_permission_mode_enabled",
+      "campaigns",
+      "collapsed_edit_blocks",
+      "consent_gate",
+      "dock_enabled",
+      "gate_label",
+      "gate_message",
+      "gate_url",
+      "group_tool_verbs",
+      "permission_mode",
+      "privacy_banner_reshow_days",
+      "privacy_notice_rollout",
+      "prompt_suggestions_enabled",
+      "session_picker_grouped",
+      "sharing_enabled",
+      "show_resolved_model",
+      "slash_command_tags",
+      "subscription_tier_display",
+      "subscription_watch_interval_secs",
+      "terminal_theme_enabled",
+      "tips"
+    ]
+  },
+  {
+    "index": 6,
+    "sha256": "60e597cc786169831cb8ad780127583d0d14c98be7cbac92a948611a54e41cc4",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/announcements/update",
+    "parameter_keys": [
+      "announcements",
+      "gen"
+    ]
+  },
+  {
+    "index": 7,
+    "sha256": "2992362a559484aae43f59b88dffa481d436fd96c5e199061f9ed10dd5ea2b6b",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/settings/update",
+    "parameter_keys": [
+      "allow_access",
+      "announcements",
+      "auto_permission_mode_enabled",
+      "campaigns",
+      "collapsed_edit_blocks",
+      "consent_gate",
+      "dock_enabled",
+      "gate_label",
+      "gate_message",
+      "gate_url",
+      "group_tool_verbs",
+      "permission_mode",
+      "privacy_banner_reshow_days",
+      "privacy_notice_rollout",
+      "prompt_suggestions_enabled",
+      "session_picker_grouped",
+      "sharing_enabled",
+      "show_resolved_model",
+      "slash_command_tags",
+      "subscription_tier_display",
+      "subscription_watch_interval_secs",
+      "terminal_theme_enabled",
+      "tips"
+    ]
+  },
+  {
+    "index": 8,
+    "sha256": "cec18f6efafd2a4a91034df986842e96313c09191352db4fd2e81acbeba8e3e1",
+    "keys": [
+      "jsonrpc",
+      "method",
+      "params"
+    ],
+    "id": null,
+    "method": "_x.ai/announcements/update",
+    "parameter_keys": [
+      "announcements",
+      "gen"
+    ]
+  }
+]
