@@ -1024,3 +1024,24 @@ score has been obtained from these four sources.
    freeze validation panels and run acceptance. Never tune from validation.
 5. Verify approved whole-package deployment and rollback on the intended host;
    report every Q/C obligation with evidence and unresolved limitations.
+# 2026-09-14 C5 common TRAIN precommit
+
+`joint_train_protocol.py` now freezes the union of C1/C2/C3/C4 legal factor
+settings as new common-procedure recipes, retaining structural exclusions and
+all 48 original issue/variant contracts. It fixes complete protocol/trial
+identity, TRAIN-only source inputs, history/target group isolation, separately
+versioned component templates, provider/scorer/rule and resource denominators.
+B0 remains a separately reported unequal-budget reference. Original family
+scores and candidate identities are not relabelled as common comparisons.
+
+Frozen `b3cd0459a1c09360608eb78f6c0d7a36f4223456` passed 31/31 checks with all
+625 source hashes unchanged; the preceding 461575a checkpoint also passed31.
+The original-byte verifier and exclusive disk lock are exercised with synthetic
+inputs, with no model/scorer/Docker calls. Exact sources and check originals are
+archived under `results/modular-engineering-20260914/c5-common-train/`.
+
+This closes the common comparison precommit boundary only. Actual common-grid
+execution, complete component consumers, authenticated TRAIN selection, V_final
+custody/calibration/acceptance and the independent deployment-grant issuer remain
+required. All previous experimental obligations and separate Q6.3 remain open
+until their own required evidence exists; no scientific efficacy follows here.
