@@ -14,6 +14,7 @@ from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.panel_receipts import _failed_solve_public_inputs
 from research_loop.modular.train_controller import _write
+from research_loop.modular.material_qualification_artifacts import MaterialQualificationArtifacts
 from research_loop.ontology import ContractError
 
 
@@ -144,27 +145,51 @@ class DualMaterialVerifier:
             'limits': {'calls': 1, 'cost_units': self.cost_limit_per_call}})
 
     def qualify(self, material, path, *, cell_binding):
+        path = Path(path)
+        if DockerExecutionBroker._has_link_component(path):
+            raise ContractError('material provenance storage path is unsafe')
         if path.exists():
             raise ContractError('material verification opportunities already used')
+        if DockerExecutionBroker._has_link_component(path.parent):
+            raise ContractError('material provenance storage path is unsafe')
         path.parent.mkdir(parents=True, exist_ok=False)
         request = self.request(material, cell_binding)
+        artifacts = MaterialQualificationArtifacts(path, request=request, binding=self.binding(),
+            material=material.record, cell_binding=cell_binding)
         rows = []
-        for a in self.authorities:
+        for number, a in enumerate(self.authorities):
             row = {'authority': a.authority.authority_id, 'request_digest': request.content_hash,
                    'limits': request.data()['limits'], 'status': 'reserved', 'response': None,
                    'cost_units': None, 'cost_unknown': True}
             rows.append(row)
             _write(path, {'request': request.data(), 'binding': self.binding().data(), 'calls': rows})
+            artifacts.snapshot('reserved-' + str(number))
+            artifacts.reserve(a.authority.authority_id, request)
+            response = None
             try:
                 response = a.verify(request)
-                if not isinstance(response, FrozenRecord):
-                    raise ContractError('material authority response must be frozen')
-                row['response'] = response.data()
-                b = self._response(a, request, response)
-                row.update(status=b['verdict'], cost_units=b['cost_units'], cost_unknown=b['cost_units'] is None)
             except Exception as exc:
+                # Capture failures outside the callback try: a custody I/O error
+                # must never be relabelled as an authority failure.
                 row.update(status='failed', error_type=type(exc).__name__)
+                artifacts.returned(a.authority.authority_id, None)
+                artifacts.checked(a.authority.authority_id, 'failed', None, None, exc)
+            else:
+                artifacts.returned(a.authority.authority_id, response)
+                try:
+                    if not isinstance(response, FrozenRecord):
+                        raise ContractError('material authority response must be frozen')
+                    row['response'] = response.data()
+                    b = self._response(a, request, response)
+                    row.update(status=b['verdict'], cost_units=b['cost_units'], cost_unknown=b['cost_units'] is None)
+                except Exception as exc:
+                    row.update(status='failed', error_type=type(exc).__name__)
+                    artifacts.checked(a.authority.authority_id, 'failed', response, None, exc)
+                else:
+                    artifacts.checked(a.authority.authority_id, b['verdict'], response, b['cost_units'])
             _write(path, {'request': request.data(), 'binding': self.binding().data(), 'calls': rows})
+            artifacts.snapshot('checked-' + str(number))
+        artifacts.terminal('accepted' if all(row['status'] == 'verified' for row in rows) else 'incomplete')
         return self.replay(material, path, cell_binding=cell_binding)
 
     def _response(self, authority, request, response):
@@ -182,6 +207,8 @@ class DualMaterialVerifier:
             raise ContractError('material provenance must be an existing regular sidecar')
         import json
         b = json.loads(path.read_text(encoding='utf-8')); request = self.request(material, cell_binding)
+        MaterialQualificationArtifacts.verify(path, request=request, binding=self.binding(),
+            material=material.record, cell_binding=cell_binding)
         if (set(b) != {'request', 'binding', 'calls'} or FrozenRecord.from_dict(b['request']) != request
                 or FrozenRecord.from_dict(b['binding']) != self.binding() or not isinstance(b['calls'], list) or len(b['calls']) != 2):
             raise ContractError('material provenance sidecar binding drift')
