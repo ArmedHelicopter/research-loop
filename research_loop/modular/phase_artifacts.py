@@ -12,6 +12,7 @@ import threading
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Mapping
+from types import MappingProxyType
 
 from research_loop.ontology import ContractError
 from research_loop.modular.artifact_catalogue import ArtifactCatalogue, source_snapshot
@@ -50,6 +51,8 @@ class PhaseArtifactContext:
             body = known[self.parents[role]]
             if body['kind'] != kind or body['module'] != module or body['identity'] != self.catalogue.identity.data():
                 raise ContractError('phase artifact parent has the wrong semantic role')
+        object.__setattr__(self, 'parents', MappingProxyType({role: self.parents[role]
+            for role in ('invocation', 'selection', 'source')}))
         root = self.artifact_root.resolve()
         if root.exists() and (root.is_symlink() or not root.is_dir()):
             raise ContractError('phase artifact root must be a regular directory')

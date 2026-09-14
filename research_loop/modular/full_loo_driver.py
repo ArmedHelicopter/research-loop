@@ -35,6 +35,26 @@ def files(root):
     return {p.relative_to(root).as_posix():_sha(_path(p).read_bytes()) for p in root.rglob('*') if p.is_file() and p.name!='receipt.json'}
 
 
+def _phase_artifact_bridge(catalogue, root, cell, prepared):
+    from research_loop.modular.phase_artifacts import PhaseArtifactBridge, PhaseArtifactContext
+    records = catalogue.records()
+    def unique(kind, module, matches):
+        found = [record for record in records if record.data()['kind'] == kind
+                 and record.data()['module'] == module and matches(record.data()['payload']['canonical'])]
+        if len(found) != 1:
+            raise ContractError('C4 phase lacks one original ' + kind + ' artifact')
+        return found[0].content_hash
+    state = prepared.data()
+    parents = {
+        'invocation': unique('model_context', 'M3', lambda value: value.get('slot') == 'bounded_choice'
+            and value['request']['module_context']['retrieval'] == state['retrieval']),
+        'selection': unique('c4_choice_frozen', 'M7', lambda value: value == {'choice': state['choice']}),
+        'source': unique('retrieval_result', 'M6', lambda value: value == state['retrieval']),
+    }
+    return PhaseArtifactBridge(PhaseArtifactContext(catalogue, root/'phase-artifacts', parents),
+        phase_root=root/'phase', enabled=set(cell.runtime_arm.data()['enabled']))
+
+
 @dataclass(frozen=True)
 class FullLooResult:
     root: Path
@@ -89,7 +109,8 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
             session.record_artifact(kind='retrieval_result',module='M6',payload=prepared.data()['retrieval'],
                 status='produced' if 'M6' in enabled else 'not_applied',producer_source=catalogue_source)
             phase=run_phase(material=phase_material,cell=cell,objective=plan.objective(stage),root=root/'phase',broker=broker,inputs=inputs,
-                image=plan.data()['image'],timeout_seconds=plan.data()['timeout_seconds'],selected_job_id=prepared.data()['choice']['job_id'])
+                image=plan.data()['image'],timeout_seconds=plan.data()['timeout_seconds'],selected_job_id=prepared.data()['choice']['job_id'],
+                artifact_bridge=_phase_artifact_bridge(session.artifacts, root, cell, prepared))
             session._record('c4_phase',{'phase_digest':phase.content_hash})
             for module in ('M7','M8'):
                 session.record_artifact(kind='exploration_phase_receipt',module=module,payload=phase,
@@ -101,12 +122,10 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
             response=session.invoke(slot,model,instruction=instruction,module_context=joined)
             selected=select_builder(response,recipe,plan.fixed_builder)
             session._record('c4_builder_request',{'builder':selected.record.data(),'parent':package.digest,'search_cost':1})
-            manifest=TrainingManifest(FrozenRecord.from_dict(package.record.data()['training_manifest']))
-            candidate,receipt=RestrictedBuilderPort().execute(selected,manifest,package,expected_builder_digest=selected.digest,
-                expected_entrypoint=selected.entrypoint,search_cost=1)
-            _checked_build(candidate,receipt,selected,package)
-            _exclusive(root/'candidate.json',candidate.record);_exclusive(root/'builder.json',selected.record)
-            _exclusive(root/'builder-receipt.json',receipt.record)
+            from research_loop.modular.builder_artifacts import begin_builder_artifacts
+            builder_artifacts = begin_builder_artifacts(session.artifacts, root=root, builder=selected, parent=package,
+                response=response, recipe=recipe, fixed_builder=plan.fixed_builder)
+            candidate,receipt=builder_artifacts.execute()
             session._record('c4_builder_result',{'candidate_digest':candidate.digest,'receipt':receipt.record.data()})
             session.record_artifact(kind='training_limited_candidate',module='M9',payload=candidate.record,
                 status='produced' if 'M9' in enabled else 'not_applied',producer_source=catalogue_source)
@@ -239,7 +258,9 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
         retrieval=_verify_sources(retrieval_events,task,material.retrieval(),'M6' in cell.runtime_arm.data()['enabled'])
         prepared=prepare(cell=cell,task=task,package=package,transition=transition,predictions=predictions,reviews=reviews,
             invoke=invoke,record=record,retrieve=lambda:public_retrieval(retrieval),phase_material=phase_material)
-        phase=verify_phase(material=phase_material,cell=cell,objective=plan.objective(stage),root=root/'phase',image=plan.data()['image'],
+        from research_loop.modular.phase_artifacts import verify_phase_artifacts
+        phase=verify_phase_artifacts(bridge=_phase_artifact_bridge(catalogue, root, cell, prepared),
+            material=phase_material,cell=cell,objective=plan.objective(stage),root=root/'phase',image=plan.data()['image'],
             timeout_seconds=plan.data()['timeout_seconds'],inputs=inputs,selected_job_id=prepared.data()['choice']['job_id'])
         if result.phase!=phase:raise ContractError('C4 phase result changed')
         record('c4_phase',{'phase_digest':phase.content_hash})
@@ -248,6 +269,9 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
     if stage=='history_build':
         response=invoke(slots(recipe,stage)[-1],PROPOSAL_INSTRUCTION if recipe['history_build_levels']['M9'] else REVISION_INSTRUCTION,joined)
         selected=select_builder(response,recipe,plan.fixed_builder)
+        from research_loop.modular.builder_artifacts import verify_builder_artifacts
+        verify_builder_artifacts(catalogue, root=root, builder=selected, parent=package,
+            response=response, recipe=recipe, fixed_builder=plan.fixed_builder)
         candidate=CandidatePackage(_read_record(root/'candidate.json'));receipt=BuilderRunReceipt(_read_record(root/'builder-receipt.json'))
         _checked_build(candidate,receipt,selected,package)
         if _read_record(root/'builder.json')!=selected.record or candidate.digest!=b['candidate_digest']:raise ContractError('C4 selected builder differs')

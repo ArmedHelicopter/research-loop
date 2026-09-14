@@ -114,6 +114,16 @@ def test_actual_history_target_pipeline_with_full_catalogue(tmp_path,monkeypatch
         trace=[json.loads(line) for line in (stage.inner.root/'runtime'/'trace.jsonl').read_text(encoding='utf-8').splitlines()]
         catalogue_trace=[row['payload']['canonical'] for row in rows if row['kind']=='trace_event']
         assert catalogue_trace==trace
+        kinds = [row['kind'] for row in rows]
+        assert {'model_context', 'journal_event', 'reveal_output', 'retrieval_event'} <= set(kinds)
+        assert kinds.count('phase_program') == kinds.count('phase_return') == 2
+        assert kinds.count('phase_allocation') == kinds.count('phase_receipt') == 1
+        assert kinds.count('phase_scheduler_event') == len((stage.inner.root/'phase/events.jsonl').read_bytes().splitlines())
+        assert kinds.count('phase_scheduler_sqlite') == int('M8' in stage.inner.cell.runtime_arm.data()['enabled'])
+        if stage is history:
+            assert {'m9_builder_selection', 'm9_builder_subjects', 'm9_builder_return', 'm9_builder_receipt',
+                    'm9_candidate', 'm9_build_terminal'} <= set(kinds)
+            assert json.loads((stage.inner.root/'m9-build-terminal.json').read_bytes())['status'] == 'succeeded'
     covered={row['module'] for row in [json.loads(line)['descriptor'] for line in (history.inner.root/'runtime'/'artifacts.jsonl').read_text(encoding='utf-8').splitlines()]
              + [json.loads(line)['descriptor'] for line in (target.inner.root/'runtime'/'artifacts.jsonl').read_text(encoding='utf-8').splitlines()] if row['coverage']=='covered' and row['status']=='produced'}
     assert covered >= {f'M{i}' for i in range(1,10)}
@@ -160,6 +170,30 @@ def test_actual_history_target_pipeline_with_full_catalogue(tmp_path,monkeypatch
         runner.execute(recipe_id=recipe['id'],stage='target',target_digest=plan.packets[1].task.content_hash,
             build=history,barrier=JointTrainBarrier(R({'schema':'invented'}),runner,(history,)))
     assert len(setup['common_logs'])==11
+
+
+def test_actual_ordinary_control_preserves_module_disabled_artifact_status(tmp_path, monkeypatch):
+    setup = prepare(tmp_path, monkeypatch)
+    runner = executor(setup)
+    recipe = next(recipe for recipe in runner.plan.recipes if recipe['id'] == 'ordinary-control')
+    history = runner.execute(recipe_id=recipe['id'], stage='history_build')
+    assert history.record.data()['status'] == 'succeeded', history.inner.record.data()
+    runner.verify(history)
+    target = runner.execute(recipe_id=recipe['id'], stage='target',
+        target_digest=runner.plan.packets[0].task.content_hash, build=history)
+    assert target.record.data()['status'] == 'succeeded', target.inner.record.data()
+    runner.verify(target)
+    for stage in (history, target):
+        rows = [json.loads(line)['descriptor'] for line in (stage.inner.root/'runtime/artifacts.jsonl').read_bytes().splitlines()]
+        for row in rows:
+            if (row['kind'] in {'model_context', 'retrieval_event'} or row['kind'].startswith(('phase_', 'm9_'))):
+                assert row['status'] == 'not_applied'
+        assert not any(row['kind'] == 'reveal_output' for row in rows)
+        assert not (stage.inner.root/'phase/queue.sqlite').exists()
+        assert sum(row['kind'] == 'phase_program' for row in rows) == 2
+    terminal = json.loads((history.inner.root/'m9-build-terminal.json').read_bytes())
+    assert terminal['status'] == 'succeeded' and terminal['activation'] == 'not_applied'
+    assert len(setup['common_logs']) == 11
 
 
 @pytest.mark.parametrize('fault',['handles','template','parent','csv','material'])
