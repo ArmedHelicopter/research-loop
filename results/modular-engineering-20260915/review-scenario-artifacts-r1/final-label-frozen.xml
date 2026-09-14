@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="10" time="0.116" timestamp="2026-09-15T02:47:33.608658+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001"><failure message="assert set()">def test_every_task_has_a_label():
+        task_ids = {p.stem for p in TASKS.glob("T*.json")}
+        label_ids = {p.stem for p in LABELS.glob("T*.json")}
+        assert task_ids == label_ids
+&gt;       assert task_ids
+E       assert set()
+
+tests\test_label_isolation.py:43: AssertionError</failure></testcase><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.000"><failure message="assert 0 &gt;= 4&#10; +  where 0 = len(set())">def test_error_catching_every_task_has_a_label():
+        task_ids = {p.stem for p in EC_TASKS.glob("EC*.json")}
+        label_ids = {p.stem for p in EC_LABELS.glob("EC*.json")}
+        assert task_ids == label_ids
+&gt;       assert len(task_ids) &gt;= 4
+E       assert 0 &gt;= 4
+E        +  where 0 = len(set())
+
+tests\test_label_isolation.py:76: AssertionError</failure></testcase><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.000"><failure message="assert 0 &gt;= 4&#10; +  where 0 = len(set())">def test_iteration_every_task_has_a_label():
+        task_ids = {p.stem for p in IT_TASKS.glob("I*.json")}
+        label_ids = {p.stem for p in IT_LABELS.glob("I*.json")}
+        assert task_ids == label_ids
+&gt;       assert len(task_ids) &gt;= 4
+E       assert 0 &gt;= 4
+E        +  where 0 = len(set())
+
+tests\test_label_isolation.py:104: AssertionError</failure></testcase><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.000"><failure message="assert 0 == 16&#10; +  where 0 = len(set())">def test_audit_contrast_every_task_has_a_label():
+        task_ids = {p.stem for p in AC_TASKS.glob("A*.json")}
+        label_ids = {p.stem for p in AC_LABELS.glob("A*.json")}
+        assert task_ids == label_ids
+&gt;       assert len(task_ids) == 16
+E       assert 0 == 16
+E        +  where 0 = len(set())
+
+tests\test_label_isolation.py:131: AssertionError</failure></testcase><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.000"><failure message="assert 0 == 16&#10; +  where 0 = len(set())">def test_true_lock_every_task_has_a_label():
+        task_ids = {p.stem for p in TL_TASKS.glob("LCK*.json")}
+        label_ids = {p.stem for p in TL_LABELS.glob("LCK*.json")}
+        assert task_ids == label_ids
+&gt;       assert len(task_ids) == 16
+E       assert 0 == 16
+E        +  where 0 = len(set())
+
+tests\test_label_isolation.py:149: AssertionError</failure></testcase><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.000" /></testsuite></testsuites>

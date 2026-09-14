@@ -51,3 +51,27 @@ of an external provider's authorship, independence, or faithful behavior. These
 are offline engineering fixtures. They dispatch no benchmark and establish no
 benchmark efficacy or scientific validity. Earlier v2 evidence is preserved;
 it is not promoted into the stronger v3 contract.
+
+The integrated source `cd38ab96` passed 135 frozen checks, with zero failures,
+errors or skips and 747 source/document files unchanged. This includes all 15
+registered variants on both synthetic benchmark identities, complete consumed
+parent references, recomputed-hash modifications, raw invalid responses,
+partial storage, actual return refusal, shared M4/M5 readers and label isolation.
+The coherent-copy helper remaps ordinary parent hashes as well as chronological
+hashes, so stale parent hashes alone do not explain content-modification rejection.
+
+The original runtime archive is
+`results/modular-engineering-20260915/review-scenario-artifacts-r1/`: 87 selected
+directories comprise 49 completed fixtures, five failed prefixes and 33 refused
+byte sets. It retains all 30 matrix cells and 30 coherently modified copies,
+independent pre-producer inputs for the matrix and sequential-copy tests,
+historical failed review findings, frozen sources and JUnit reports. Its 132
+original files plus attributes, manifest and verification total 135 files.
+Read-back preserved every selected runtime file's bytes and modification time.
+
+The root's first integrated check was interrupted because its launcher omitted
+explicit E-drive TEMP/TMP; it has no completed JUnit or passing closure. The
+corrected run used a new prefix. An older worker label-isolation run has five
+failures out of ten because that sparse worker omitted the required fixtures;
+those failures remain archived. The root's integrated label checks used its
+existing engineering fixtures. No model service, Docker or real VAL was used.

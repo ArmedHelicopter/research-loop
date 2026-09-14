@@ -1,0 +1,412 @@
+{
+  "commit": "f2d5c74b5f93e30f73cee86e034bbfbf2a2349bf",
+  "scope": "offline fixtures; no providers/models/API/Docker/VAL experiment",
+  "baselines": [
+    {
+      "adapter": "blade",
+      "experiment": "Q4.1",
+      "variant": "independent_samples",
+      "callbacks": 4
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.1",
+      "variant": "roles",
+      "callbacks": 4
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.1",
+      "variant": "single",
+      "callbacks": 1
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.2",
+      "variant": "alternative",
+      "callbacks": 1
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.2",
+      "variant": "experiment",
+      "callbacks": 1
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.2",
+      "variant": "generic",
+      "callbacks": 1
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.2",
+      "variant": "measurement",
+      "callbacks": 1
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.2",
+      "variant": "mechanism",
+      "callbacks": 1
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.3",
+      "variant": "sealed_then_exchange",
+      "callbacks": 4
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.3",
+      "variant": "sequential",
+      "callbacks": 4
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.4",
+      "variant": "defective",
+      "callbacks": 1
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.4",
+      "variant": "none_valid",
+      "callbacks": 1
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.5",
+      "variant": "heterogeneous",
+      "callbacks": 4
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.5",
+      "variant": "right_to_wrong",
+      "callbacks": 2
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q4.5",
+      "variant": "wrong_to_right",
+      "callbacks": 2
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.1",
+      "variant": "independent_samples",
+      "callbacks": 4
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.1",
+      "variant": "roles",
+      "callbacks": 4
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.1",
+      "variant": "single",
+      "callbacks": 1
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.2",
+      "variant": "alternative",
+      "callbacks": 1
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.2",
+      "variant": "experiment",
+      "callbacks": 1
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.2",
+      "variant": "generic",
+      "callbacks": 1
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.2",
+      "variant": "measurement",
+      "callbacks": 1
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.2",
+      "variant": "mechanism",
+      "callbacks": 1
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.3",
+      "variant": "sealed_then_exchange",
+      "callbacks": 4
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.3",
+      "variant": "sequential",
+      "callbacks": 4
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.4",
+      "variant": "defective",
+      "callbacks": 1
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.4",
+      "variant": "none_valid",
+      "callbacks": 1
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.5",
+      "variant": "heterogeneous",
+      "callbacks": 4
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.5",
+      "variant": "right_to_wrong",
+      "callbacks": 2
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q4.5",
+      "variant": "wrong_to_right",
+      "callbacks": 2
+    }
+  ],
+  "attacks": [
+    {
+      "name": "raw_typed_disagreement_original_result",
+      "intact_complete_copy_verified": true,
+      "fully_resealed": true,
+      "original_producer_result_supplied": true,
+      "accepted": true,
+      "check": {
+        "attempts": 19,
+        "schema": "q4-review-artifacts-verified-v2",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "error": null
+    },
+    {
+      "name": "negative_wrong_role_allocation_original_result",
+      "intact_complete_copy_verified": true,
+      "fully_resealed": true,
+      "original_producer_result_supplied": true,
+      "accepted": true,
+      "check": {
+        "attempts": 19,
+        "schema": "q4-review-artifacts-verified-v2",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "error": null
+    },
+    {
+      "name": "missing_one_m5_revision_original_result",
+      "intact_complete_copy_verified": true,
+      "fully_resealed": true,
+      "original_producer_result_supplied": true,
+      "accepted": true,
+      "check": {
+        "attempts": 18,
+        "schema": "q4-review-artifacts-verified-v2",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "error": null
+    },
+    {
+      "name": "missing_m5_score_original_result",
+      "intact_complete_copy_verified": true,
+      "fully_resealed": true,
+      "original_producer_result_supplied": true,
+      "accepted": true,
+      "check": {
+        "attempts": 18,
+        "schema": "q4-review-artifacts-verified-v2",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "error": null
+    },
+    {
+      "name": "m5_submissions_disagree_with_callbacks_original_result",
+      "intact_complete_copy_verified": true,
+      "fully_resealed": true,
+      "original_producer_result_supplied": true,
+      "accepted": true,
+      "check": {
+        "attempts": 19,
+        "schema": "q4-review-artifacts-verified-v2",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "error": null
+    },
+    {
+      "name": "sequential_and_revision_visibility_erased",
+      "intact_complete_copy_verified": true,
+      "fully_resealed": true,
+      "original_producer_result_supplied": false,
+      "accepted": true,
+      "check": {
+        "attempts": 19,
+        "schema": "q4-review-artifacts-verified-v2",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "error": null
+    },
+    {
+      "name": "forged_subject_budget_metrics_m4_trace",
+      "intact_complete_copy_verified": true,
+      "fully_resealed": true,
+      "original_producer_result_supplied": false,
+      "accepted": true,
+      "check": {
+        "attempts": 19,
+        "schema": "q4-review-artifacts-verified-v2",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "error": null
+    },
+    {
+      "name": "heterogeneous_provenance_collapsed",
+      "intact_complete_copy_verified": true,
+      "fully_resealed": true,
+      "original_producer_result_supplied": false,
+      "accepted": true,
+      "check": {
+        "attempts": 19,
+        "schema": "q4-review-artifacts-verified-v2",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "error": null
+    },
+    {
+      "name": "failed_history_erase_no_failure_event",
+      "intact_complete_copy_verified": true,
+      "fully_resealed": true,
+      "original_producer_result_supplied": false,
+      "accepted": true,
+      "check": {
+        "schema": "q4-review-artifacts-verified-v2",
+        "scientific_validated": false,
+        "status": "failed"
+      },
+      "error": null
+    },
+    {
+      "name": "unrelated_source_control",
+      "intact_complete_copy_verified": true,
+      "fully_resealed": true,
+      "original_producer_result_supplied": false,
+      "accepted": false,
+      "check": null,
+      "error": "review artifact task, cell, variant, controls, or producer source differs"
+    }
+  ],
+  "failures": [
+    {
+      "variant": "roles",
+      "position": 1,
+      "status": "failed"
+    },
+    {
+      "variant": "roles",
+      "position": 2,
+      "status": "failed"
+    },
+    {
+      "variant": "roles",
+      "position": 3,
+      "status": "failed"
+    },
+    {
+      "variant": "roles",
+      "position": 4,
+      "status": "failed"
+    },
+    {
+      "variant": "sequential",
+      "position": 1,
+      "status": "failed"
+    },
+    {
+      "variant": "sequential",
+      "position": 2,
+      "status": "failed"
+    },
+    {
+      "variant": "sequential",
+      "position": 3,
+      "status": "failed"
+    },
+    {
+      "variant": "sequential",
+      "position": 4,
+      "status": "failed"
+    },
+    {
+      "variant": "heterogeneous",
+      "position": 1,
+      "status": "failed"
+    },
+    {
+      "variant": "heterogeneous",
+      "position": 2,
+      "status": "failed"
+    },
+    {
+      "variant": "heterogeneous",
+      "position": 3,
+      "status": "failed"
+    },
+    {
+      "variant": "heterogeneous",
+      "position": 4,
+      "status": "failed"
+    }
+  ],
+  "post_callback_failure": {
+    "files": [
+      "review-attempts.jsonl",
+      "review-inputs.json"
+    ],
+    "error": "review artifact literal file inventory differs",
+    "readable": false
+  },
+  "bad_callback_raw": {
+    "status": "failed",
+    "raw_retained": false
+  },
+  "producer_return_without_verification": {
+    "returned": true,
+    "independent_verifier_rejected": true,
+    "error": "review artifact terminal inventory differs"
+  },
+  "m4_positive": {
+    "status": "on",
+    "journal_event_types": [
+      "audit_open",
+      "callback_payload",
+      "callback_reserved",
+      "callback_response",
+      "review_engine_event"
+    ],
+    "m4_plan_payload_recorded": false
+  }
+}
