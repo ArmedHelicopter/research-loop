@@ -135,11 +135,13 @@ def begin_builder_artifacts(catalogue, *, root, builder, parent, response, recip
 
 
 class BuilderArtifactBridge:
-    def __init__(self, catalogue, root, builder, parent, manifest, status, subjects):
+    def __init__(self, catalogue, root, builder, parent, manifest, status, subjects,
+                 *, search_cost=1, strict_projection=True):
         self.catalogue, self.root, self.builder, self.parent = catalogue, root, builder, parent
         self.manifest, self.status, self.subjects = manifest, status, subjects
         self.last, self.files = subjects, {}
         self.phase, self.terminal = 'before_execute', None
+        self.search_cost, self.strict_projection = search_cost, strict_projection
 
     def _observe(self, name):
         snapshot = _snapshot(self.root, name)
@@ -167,7 +169,7 @@ class BuilderArtifactBridge:
                 'phase': self.phase, 'error_type': type(error).__name__ if error else None,
                 'error': str(error) if error else None, 'files': self.files,
                 'builder_digest': self.builder.digest, 'parent_digest': self.parent.digest,
-                'manifest_digest': self.manifest.content_hash, 'search_cost': 1,
+                'manifest_digest': self.manifest.content_hash, 'search_cost': self.search_cost,
                 'builder_attempted': self.phase not in {'before_execute', 'write_builder'},
                 'scientific_validated': False}
         _exclusive(self.root / _TERMINAL, FrozenRecord.from_dict(body))
@@ -183,7 +185,7 @@ class BuilderArtifactBridge:
             raise ContractError('M9 failure must retain the original exception')
         return self._finish(error)
 
-    def execute(self):
+    def execute(self, *, on_return=None):
         if self.terminal is not None or self.phase != 'before_execute':
             raise ContractError('M9 build can execute only once')
         try:
@@ -191,7 +193,7 @@ class BuilderArtifactBridge:
             self._write('builder.json', self.builder.record)
             self.phase = 'execute'
             candidate, receipt = RestrictedBuilderPort().execute(self.builder, self.manifest, self.parent,
-                expected_builder_digest=self.builder.digest, expected_entrypoint=self.builder.entrypoint, search_cost=1)
+                expected_builder_digest=self.builder.digest, expected_entrypoint=self.builder.entrypoint, search_cost=self.search_cost)
             # Retain both serializable results before either individual writer
             # can fail, including a valid candidate with an invalid receipt.
             self.phase = 'write_return'
@@ -201,6 +203,8 @@ class BuilderArtifactBridge:
                 returned[name] = record.data() if type(record) is FrozenRecord else None
                 returned[name + '_type'] = type(value).__name__
             self._write(_RETURNED, FrozenRecord.from_dict(returned))
+            if on_return is not None:
+                on_return(candidate, receipt)
             # Keep returned records before semantic checks. Receipt precedes
             # candidate so its descriptor is a causal parent of that candidate.
             self.phase = 'write_receipt'
@@ -208,7 +212,9 @@ class BuilderArtifactBridge:
             self.phase = 'write_candidate'
             self._write('candidate.json', getattr(candidate, 'record', None))
             self.phase = 'validate'
-            _checked_build(candidate, receipt, self.builder, self.parent)
+            _checked_return(candidate, receipt, self.builder, self.parent, self.manifest, self.search_cost)
+            if self.strict_projection:
+                _checked_build(candidate, receipt, self.builder, self.parent)
             self.phase = 'complete'
             self._finish()
             return candidate, receipt
@@ -248,8 +254,59 @@ def verify_builder_artifacts(catalogue, *, root, builder, parent, response, reci
     _match(rows[0], _spec('m9_builder_selection',
         _selection(builder, response, recipe, fixed_builder, request, returned, enabled),
         (request.content_hash, returned.content_hash), status, 'selection'))
+    return _verify_bound_outputs(catalogue, root=root, builder=builder, parent=parent,
+        manifest=manifest, enabled=enabled, selection=rows[0], search_cost=1, strict_projection=True)
+
+
+def _checked_return(candidate, receipt, builder, parent, manifest, search_cost):
+    """Check literal-builder output without imposing a host's projection policy."""
+    if type(candidate) is not CandidatePackage or type(receipt) is not BuilderRunReceipt:
+        raise ContractError('restricted builder returned untyped artifacts')
+    source = builder.record.data()
+    expected = CandidatePackage.create(parent_digest=parent.digest, manifest=manifest,
+        changes={source['surface']: {source['key']: source['value']}}, search_cost=search_cost)
+    if candidate != expected or receipt.record.data() != {
+            'builder_digest': builder.digest, 'builder_source': source, 'builder_entrypoint': builder.entrypoint,
+            'parent_package_digest': parent.digest, 'training_manifest_digest': manifest.content_hash,
+            'output_candidate_digest': candidate.digest, 'search_cost': search_cost}:
+        raise ContractError('actual builder output does not bind its DSL and training subjects')
+
+
+def _begin_bound_outputs(catalogue, *, root, builder, parent, manifest, enabled,
+                         selection_spec, search_cost=1, strict_projection=False):
+    """Internal durable writer; each host owns and verifies its selection policy."""
+    if (type(catalogue) is not ArtifactCatalogue or type(builder) is not FrozenBuilderVersion
+            or type(parent) is not CandidatePackage or type(manifest) is not TrainingManifest
+            or type(enabled) is not bool or type(search_cost) is not int or search_cost < 0
+            or manifest.record.data() != parent.record.data()['training_manifest']):
+        raise ContractError('bound builder requires exact original inputs and allocation')
+    catalogue.identity.require_train()
+    root = Path(root)
+    if any(r.data()['kind'].startswith('m9_') for r in catalogue.records()):
+        raise ContractError('M9 build already began in this catalogue')
+    if any((root/name).exists() for name in (*_FILES, _TERMINAL)):
+        raise ContractError('M9 begin must precede all original builder output files')
+    status = 'produced' if enabled else 'not_applied'
+    selection = catalogue.append(**selection_spec)
+    subjects = catalogue.append(**_spec('m9_builder_subjects', {
+        'parent': parent.record.data(), 'parent_digest': parent.digest,
+        'manifest': manifest.record.data(), 'manifest_digest': manifest.content_hash, 'search_cost': search_cost},
+        (selection.content_hash,), status, 'builder'))
+    return BuilderArtifactBridge(catalogue, root, builder, parent, manifest, status, subjects,
+        search_cost=search_cost, strict_projection=strict_projection)
+
+
+def _verify_bound_outputs(catalogue, *, root, builder, parent, manifest, enabled,
+                          selection, search_cost=1, strict_projection=False):
+    """Read retained outputs without accepting a host's selection or stage success."""
+    root = Path(root)
+    records = catalogue.records()
+    rows = [r for r in records if r.data()['kind'].startswith('m9_')]
+    if len(rows) < 3 or rows[0] != selection:
+        raise ContractError('M9 build has no complete bound selection/terminal evidence')
+    status = 'produced' if enabled else 'not_applied'
     _match(rows[1], _spec('m9_builder_subjects', {'parent': parent.record.data(), 'parent_digest': parent.digest,
-        'manifest': manifest.record.data(), 'manifest_digest': manifest.content_hash, 'search_cost': 1},
+        'manifest': manifest.record.data(), 'manifest_digest': manifest.content_hash, 'search_cost': search_cost},
         (rows[0].content_hash,), status, 'builder'))
     terminal = _read(root, _TERMINAL).data()
     if (set(terminal) != {'schema', 'status', 'activation', 'phase', 'error_type', 'error', 'files',
@@ -258,7 +315,7 @@ def verify_builder_artifacts(catalogue, *, root, builder, parent, response, reci
             or terminal['activation'] != ('applied' if enabled else 'not_applied')
             or terminal['builder_digest'] != builder.digest or terminal['parent_digest'] != parent.digest
             or terminal['manifest_digest'] != manifest.content_hash
-            or type(terminal['search_cost']) is not int or terminal['search_cost'] != 1
+            or type(terminal['search_cost']) is not int or terminal['search_cost'] != search_cost
             or type(terminal['builder_attempted']) is not bool
             or terminal['scientific_validated'] is not False):
         raise ContractError('M9 terminal subject or status drift')
@@ -320,8 +377,10 @@ def verify_builder_artifacts(catalogue, *, root, builder, parent, response, reci
         candidate = CandidatePackage(_read(root, 'candidate.json'))
         receipt = BuilderRunReceipt(_read(root, 'builder-receipt.json'))
         replay_candidate, replay_receipt = RestrictedBuilderPort().execute(builder, manifest, parent,
-            expected_builder_digest=builder.digest, expected_entrypoint=builder.entrypoint, search_cost=1)
-        _checked_build(candidate, receipt, builder, parent)
+            expected_builder_digest=builder.digest, expected_entrypoint=builder.entrypoint, search_cost=search_cost)
+        _checked_return(candidate, receipt, builder, parent, manifest, search_cost)
+        if strict_projection:
+            _checked_build(candidate, receipt, builder, parent)
         if candidate != replay_candidate or receipt != replay_receipt:
             raise ContractError('M9 original outputs differ from restricted interpreter replay')
     elif (type(terminal['error_type']) is not str or not terminal['error_type'] or type(terminal['error']) is not str):

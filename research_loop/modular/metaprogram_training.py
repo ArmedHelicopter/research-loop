@@ -514,6 +514,23 @@ class MetaTrainingRun:
     provider_ledger: PhaseProviderLedger | PhaseProviderAbort | None = None
 
 
+def _artifact_inputs(plan, cell, target):
+    import inspect
+    from research_loop.modular.artifact_catalogue import source_snapshot
+    return FrozenRecord.from_dict({'task': target.task.data(), 'plan': plan.record.data(),
+        'cell': cell, 'target': target.binding.data(), 'histories': [h.binding.data() for h in plan.histories],
+        'selection_source': source_snapshot(Path(inspect.getfile(type(plan))))})
+
+
+def _builder_applied(plan, cell):
+    if plan.experiment_id=='Q6.5': return True  # Both shadow arms use the proposed DSL.
+    if 'M9' not in cell['arm']['enabled']: return False
+    if plan.experiment_id=='Q6.3': return cell['variant']=='train_proposed'
+    if plan.experiment_id=='Q6.2': return cell['variant'] in {'manual_train','automatic_train'}
+    if plan.experiment_id in {'Q6.1','Q6.6'}: return True
+    raise ContractError('builder artifact activation has no declared study policy')
+
+
 def _run_cell(plan,cell,target,root,model,broker,audit_verifier):
     native=type(model) is PhaseProviderScope
     root.mkdir(parents=True,exist_ok=False)
@@ -546,18 +563,17 @@ def _run_cell(plan,cell,target,root,model,broker,audit_verifier):
         proposal._terminal=True
         stage='post_proposal_preflight';plan.verify_sources()
         selected=plan.selected_builder(proposed,cell)
-        _exclusive(root/'builder.json',selected.record)
         stage='builder_execution'
         phase.append('builder_request',{'builder_digest':selected.digest,'entrypoint':selected.entrypoint,
             'parent_digest':plan.parent.digest,'search_cost':1,'allocation':1})
-        manifest=TrainingManifest(FrozenRecord.from_dict(plan.parent.record.data()['training_manifest']))
-        candidate,build_receipt=RestrictedBuilderPort().execute(selected,manifest,plan.parent,
-            expected_builder_digest=selected.digest,expected_entrypoint=selected.entrypoint,search_cost=1)
-        phase.append('builder_returned',{'candidate':candidate.record.data() if isinstance(candidate,CandidatePackage) else None,
-            'receipt':build_receipt.record.data() if isinstance(build_receipt,BuilderRunReceipt) else None,
-            'candidate_type':type(candidate).__name__,'receipt_type':type(build_receipt).__name__})
+        from research_loop.modular.proposal_builder_artifacts import execute_proposal_builder
+        candidate,build_receipt=execute_proposal_builder(proposal,root=root,host='metaprogram-training',
+            inputs=_artifact_inputs(plan,cell,target),selected=selected,parent=plan.parent,response=response,
+            enabled=_builder_applied(plan,cell),on_return=lambda c,r: phase.append('builder_returned',{
+                'candidate':c.record.data() if isinstance(c,CandidatePackage) else None,
+                'receipt':r.record.data() if isinstance(r,BuilderRunReceipt) else None,
+                'candidate_type':type(c).__name__,'receipt_type':type(r).__name__}))
         projection=_checked_build(candidate,build_receipt,selected,plan.parent)
-        _exclusive(root/'candidate.json',candidate.record);_exclusive(root/'builder-receipt.json',build_receipt.record)
         phase.append('builder_result',{'candidate_digest':candidate.digest,'receipt_digest':build_receipt.record.content_hash,
             'public_projection':projection.data()})
         stage='train_operation'
@@ -719,8 +735,12 @@ def _verify_cell(result,plan,cell,target,ledger):
                 or row['selected_builder_digest']!=selected.digest or builder_requests[0]['data']!={
                     'builder_digest':selected.digest,'entrypoint':selected.entrypoint,'parent_digest':plan.parent.digest,'search_cost':1,'allocation':1}):
             raise ContractError('selected builder does not follow the frozen M9 intervention')
+        from research_loop.modular.proposal_builder_artifacts import verify_proposal_builder
+        audited=verify_proposal_builder(root=root,host='metaprogram-training',inputs=_artifact_inputs(plan,cell,target),
+            selected=selected,parent=plan.parent,response=proposed.record,enabled=_builder_applied(plan,cell))
         if builder_results:
             if len(builder_results)!=1: raise ContractError('builder was executed more than once')
+            if audited.data()['status']!='succeeded': raise ContractError('successful training build requires successful audited builder')
             candidate=CandidatePackage(_read_record(root/'candidate.json'))
             receipt=BuilderRunReceipt(_read_record(root/'builder-receipt.json'))
             projection=_checked_build(candidate,receipt,selected,plan.parent)

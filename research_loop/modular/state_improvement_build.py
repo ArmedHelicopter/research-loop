@@ -74,6 +74,11 @@ def qualification_semantics(material, qualifier, path, binding):
         'assessments':qualifier.assessments(material,path,cell_binding=binding)})
 
 
+def _artifact_inputs(recipe, plan_digest, history, material, fixed_builder):
+    return FrozenRecord.from_dict({'task': history.task.data(), 'recipe': recipe, 'plan_digest': plan_digest,
+        'history': history.binding.data(), 'material': material.data(), 'fixed_builder': fixed_builder.record.data()})
+
+
 @dataclass(frozen=True)
 class BuildResult:
     root: Path
@@ -115,14 +120,13 @@ def run_build(*, recipe, plan_digest, history, material, qualifier, parent, fixe
         session._terminal=True
         check_history(history,material,broker,inputs)
         selected=proposed if 'M9' in recipe['arm']['enabled'] else _builder(fixed_builder)
-        _exclusive(root/'builder.json',selected.record)
-        manifest=TrainingManifest(FrozenRecord.from_dict(parent.record.data()['training_manifest']))
         phase.append('builder_request',{'selected_builder_digest':selected.digest,'parent_digest':parent.digest,'search_cost':1})
-        candidate,receipt=RestrictedBuilderPort().execute(selected,manifest,parent,expected_builder_digest=selected.digest,
-            expected_entrypoint=selected.entrypoint,search_cost=1)
-        phase.append('builder_returned',{'candidate':candidate.record.data(),'receipt':receipt.record.data()})
+        from research_loop.modular.proposal_builder_artifacts import execute_proposal_builder
+        candidate,receipt=execute_proposal_builder(session,root=root,host='state-improvement',
+            inputs=_artifact_inputs(recipe,plan_digest,history,material,fixed_builder),
+            selected=selected,parent=parent,response=response,enabled='M9' in recipe['arm']['enabled'],
+            on_return=lambda c,r: phase.append('builder_returned',{'candidate':c.record.data(),'receipt':r.record.data()}))
         _checked_build(candidate,receipt,selected,parent)
-        _exclusive(root/'candidate.json',candidate.record);_exclusive(root/'builder-receipt.json',receipt.record)
         phase.append('builder_result',{'candidate_digest':candidate.digest,'receipt_digest':receipt.record.content_hash})
         status='succeeded'
     except Exception as exc:
@@ -233,6 +237,11 @@ def verify_build(result, *, recipe, plan_digest, history, material, qualifier, p
             'response_digest':proposed.record.content_hash,'builder_digest':proposed.digest}:
         raise ContractError('proposal terminal differs from original provider response')
     if _read_record(root/'builder.json')!=selected.record: raise ContractError('selected builder violates frozen off/on policy')
+    from research_loop.modular.proposal_builder_artifacts import verify_proposal_builder
+    audited=verify_proposal_builder(root=root,host='state-improvement',
+        inputs=_artifact_inputs(recipe,plan_digest,history,material,fixed_builder),selected=selected,parent=parent,
+        response=proposed.record,enabled='M9' in enabled)
+    if audited.data()['status']!='succeeded': raise ContractError('successful state stage requires successful audited builder')
     candidate=CandidatePackage(_read_record(root/'candidate.json'));receipt=BuilderRunReceipt(_read_record(root/'builder-receipt.json'))
     _checked_build(candidate,receipt,selected,parent)
     if candidate.digest!=b['candidate_digest']: raise ContractError('candidate was replaced after build')
