@@ -30,10 +30,25 @@ def _reparse(path: Path) -> bool:
     return path.is_symlink() or bool(getattr(info, "st_file_attributes", 0) & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400))
 
 
+def _safe_path(path: Path) -> Path:
+    """Reject every existing reparse component before resolving or reading it."""
+    path = Path(path)
+    if ".." in path.parts:
+        raise ContractError("primary source/output paths cannot traverse parents")
+    path = path.absolute()
+    for item in (path, *path.parents):
+        try:
+            if _reparse(item):
+                raise ContractError("primary source/output path contains a link or reparse point")
+        except FileNotFoundError:
+            continue
+    return path
+
+
 def _safe_under(root: Path, relative: str) -> Path:
     if not isinstance(relative, str) or not relative or "\\" in relative or any(part in {"", ".", ".."} for part in relative.split("/")):
         raise ContractError("unsafe custody relative path")
-    root = root.resolve(strict=True)
+    root = _safe_path(root).resolve(strict=True)
     if _reparse(root):
         raise ContractError("source root is a reparse path")
     candidate = root.joinpath(*relative.split("/"))
@@ -49,6 +64,7 @@ def _safe_under(root: Path, relative: str) -> Path:
 
 
 def _public_file(path: Path, expected_hashes: set[str]) -> Path:
+    path = _safe_path(path)
     if _reparse(path) or not path.is_file() or any(token in path.name.lower() for token in ("answer", "annotation", "reference", "label", "scorer", "gold")):
         raise ContractError("non-public source file refused")
     if _sha(path) not in expected_hashes:
@@ -104,68 +120,148 @@ def prepare_primary_public_task(identity: DataIdentity, row: Mapping[str, Any], 
     raise ContractError("unsupported benchmark in custody export")
 
 
-class TrainPacketExporter:
-    def __init__(self, custody: CustodyExportPort, snapshot_root: Path, output_root: Path) -> None:
-        self.custody, self.snapshot_root, self.output_root = custody, snapshot_root, output_root
+@dataclass(frozen=True)
+class PrimaryTrainSource:
+    """Controller-only source buffers; never passed to the model or packet consumer."""
+    task: PublicTask
+    anchor: FrozenRecord
+    metadata: bytes
+    csv: bytes
+    receipt: FrozenRecord
 
-    def export(self, item_ids: Sequence[str]) -> tuple[PublicTrainPacket, ...]:
-        if not item_ids or len(set(item_ids)) != len(item_ids) or any(not isinstance(item, str) for item in item_ids):
-            raise ContractError("export requires an exact nonempty train item allowlist")
-        identities = self.custody.export_train()
-        state = self.custody.state
-        if not isinstance(state, Mapping) or not isinstance(state.get("inventory"), list) or not isinstance(state.get("split"), Mapping):
-            raise ContractError("custody state is incomplete")
-        inventory = {f"{row['benchmark']}:{row['task_id']}": row for row in state["inventory"]}
-        splits = {row["item"]: row for row in state["split"].get("rows", []) if row.get("domain") == "train"}
+    @property
+    def public(self) -> bytes:
+        return canonical({"task": self.task.data(), "receipt": self.receipt.data()}).encode("utf-8")
+
+
+def primary_train_allocations(custody: CustodyExportPort, item_ids: Sequence[str]):
+    """Validate the whole TRAIN selection before reading any snapshot content."""
+    if (not item_ids or any(type(item) is not str or not item for item in item_ids)
+            or len(set(item_ids)) != len(item_ids)):
+        raise ContractError("export requires an exact nonempty train item allowlist")
+    identities = custody.export_train()
+    state = custody.state
+    if not isinstance(state, Mapping) or not isinstance(state.get("inventory"), list) or not isinstance(state.get("split"), Mapping):
+        raise ContractError("custody state is incomplete")
+    try:
+        rows = state["inventory"]
+        inventory = {f"{row['benchmark']}:{row['task_id']}": row for row in rows}
+        split_rows = state["split"]["rows"]
+        splits = {row["item"]: row for row in split_rows}
         exported = {f"{identity.benchmark}:{identity.task_id}": identity for identity in identities}
+        if len(inventory) != len(rows) or len(splits) != len(split_rows) or len(exported) != len(identities):
+            raise ContractError("custody contains duplicate identities or allocation rows")
+        if digest(sorted(rows, key=lambda row: (row["benchmark"], row["task_id"]))) != state["inventory_digest"]:
+            raise ContractError("custody inventory digest drift")
+        # Minimal test ports use a rows-only split. CustodyStore uses the full
+        # frozen allocation payload, including seed and inventory version.
+        split_body = {key: value for key, value in state["split"].items() if key != "digest"}
+        split_material = split_rows if set(split_body) == {"rows"} else split_body
+        if digest(split_material) != state["split"]["digest"]:
+            raise ContractError("custody split digest drift")
         if not set(item_ids) <= set(exported):
             raise ContractError("requested item is not in custody train export")
-        packets = []
+        selected = []
         for key in item_ids:
             identity = exported[key]
+            if type(identity) is not DataIdentity:
+                raise ContractError("custody requires exact typed identities")
             identity.require_train()
-            key = f"{identity.benchmark}:{identity.task_id}"
-            row = inventory.get(key)
-            split = splits.get(key)
-            if row is None or split is None or row.get("benchmark") != identity.benchmark or identity.dataset_version != state.get("inventory_digest") or identity.split_id != state["split"].get("digest"):
+            row, split = inventory[key], splits[key]
+            if (split["domain"] != "train" or split["group"] != identity.group_id
+                    or split["official_split"] != row["official_split"]
+                    or identity.dataset_version != state["inventory_digest"]
+                    or identity.split_id != state["split"]["digest"]):
                 raise ContractError("custody export identity is not an exact frozen train allocation")
-            if split.get("group") != identity.group_id or split.get("official_split") != row.get("official_split"):
-                raise ContractError("custody source group or official split drift")
-            packet = self._one(identity, row, state["split"]["digest"])
-            packets.append(packet)
-        return tuple(packets)
+            selected.append((identity, FrozenRecord.from_dict(row), FrozenRecord.from_dict(split)))
+        return tuple(selected)
+    except (KeyError, TypeError, AttributeError) as exc:
+        raise ContractError("custody allocation schema is incomplete") from exc
 
-    def _one(self, identity: DataIdentity, row: Mapping[str, Any], split_digest: str) -> PublicTrainPacket:
+
+def read_primary_train_sources(custody: CustodyExportPort, snapshot_root: Path,
+                               item_ids: Sequence[str]) -> tuple[PrimaryTrainSource, ...]:
+    snapshot_root = _safe_path(snapshot_root)
+    allocations = primary_train_allocations(custody, item_ids)
+    result = []
+    for identity, frozen_row, allocation in allocations:
+        row = frozen_row.data()
         expected = set(row["content_hashes"])
-        source_selector = None
         if identity.benchmark == "discoverybench":
-            source = _safe_under(self.snapshot_root / "discovery" / "upstream" / "discoverybench", row["relative_path"])
-            metadata = _public_file(next(iter(sorted(source.glob("metadata_*.json")))), expected)
-            raw = json.loads(metadata.read_text(encoding="utf-8"))
-            source_selector = {"metadata_file": metadata.name, "metadata_sha256": _sha(metadata), "query_index": 0}
-            datasets = raw.get("datasets")
-            if not isinstance(datasets, list) or not datasets:
-                raise ContractError("Discovery public metadata is incomplete")
-            data_name = datasets[0].get("name") if isinstance(datasets[0], Mapping) else None
-            if not isinstance(data_name, str) or Path(data_name).name != data_name:
-                raise ContractError("Discovery public dataset name is unsafe")
-            data = _public_file(source / data_name, expected)
+            source = _safe_under(snapshot_root / "discovery" / "upstream" / "discoverybench", row["relative_path"])
+            candidates = sorted(source.glob("metadata_*.json"))
+            if not candidates:
+                raise ContractError("Discovery public metadata is missing")
+            metadata = _public_file(candidates[0], expected)
         elif identity.benchmark == "blade":
-            source = _safe_under(self.snapshot_root / "scienceagent" / "work" / "BLADE" / "blade_bench" / "datasets", row["relative_path"])
-            info = _public_file(source / "info.json", expected)
-            data = _public_file(source / "data.csv", expected)
-            raw = json.loads(info.read_text(encoding="utf-8"))
+            source = _safe_under(snapshot_root / "scienceagent" / "work" / "BLADE" / "blade_bench" / "datasets", row["relative_path"])
+            metadata = _public_file(source / "info.json", expected)
         else:
             raise ContractError("unsupported benchmark in custody export")
-        csv_bytes = data.read_bytes()
-        task = prepare_primary_public_task(identity, row, raw, csv_bytes)
-        destination = self.output_root / identity.benchmark / digest(identity.data())
-        csv_target = destination / "data.csv"
-        receipt = FrozenRecord.from_dict({"identity": identity.data(), "source_group": identity.group_id, "official_split": row["official_split"], "split_digest": split_digest, "csv_sha256": _sha(data), "packet_hash": task.content_hash})
-        if source_selector is not None:
-            receipt = FrozenRecord.from_dict({**receipt.data(), "source_selector": source_selector})
-        packet_path = destination / "public.json"
+        metadata_bytes = metadata.read_bytes()
+        try:
+            raw = json.loads(metadata_bytes.decode("utf-8"))
+            if type(raw) is not dict:
+                raise ContractError("public source metadata must be an object")
+            data_name = raw["datasets"][0]["name"] if identity.benchmark == "discoverybench" else "data.csv"
+            if (type(data_name) is not str or not data_name or data_name in {".", ".."}
+                    or Path(data_name).name != data_name or "/" in data_name or "\\" in data_name):
+                raise ContractError("public dataset name is unsafe")
+            data = _public_file(source / data_name, expected)
+            csv_bytes = data.read_bytes()
+            metadata_sha, csv_sha = hashlib.sha256(metadata_bytes).hexdigest(), hashlib.sha256(csv_bytes).hexdigest()
+            if metadata_sha not in expected or csv_sha not in expected:
+                raise ContractError("source buffer hash drift after inventory check")
+            task = prepare_primary_public_task(identity, row, raw, csv_bytes)
+        except (KeyError, IndexError, TypeError, UnicodeError, ValueError) as exc:
+            raise ContractError("public source projection is unreadable") from exc
+        selector = {"metadata_file": metadata.name, "metadata_sha256": metadata_sha, "query_index": 0}
+        receipt_body = {"identity": identity.data(), "source_group": identity.group_id,
+            "official_split": row["official_split"], "split_digest": identity.split_id,
+            "csv_sha256": csv_sha, "packet_hash": task.content_hash}
+        if identity.benchmark == "discoverybench":
+            receipt_body["source_selector"] = selector
+        anchor = FrozenRecord.from_dict({"schema": "legacy-primary-source-v2", "identity": identity.data(),
+            "inventory_digest": identity.dataset_version, "split_digest": identity.split_id,
+            "inventory_row": row, "allocation": allocation.data(), "source_selector": selector,
+            "metadata": {"file": metadata.name, "sha256": metadata_sha, "bytes": len(metadata_bytes)},
+            "csv": {"file": data.name, "sha256": csv_sha, "bytes": len(csv_bytes)}})
+        result.append(PrimaryTrainSource(task, anchor, metadata_bytes, csv_bytes, FrozenRecord.from_dict(receipt_body)))
+    return tuple(result)
+
+
+class TrainPacketExporter:
+    def __init__(self, custody: CustodyExportPort, snapshot_root: Path, output_root: Path) -> None:
+        self.custody = custody
+        self.snapshot_root, self.output_root = _safe_path(snapshot_root), _safe_path(output_root)
+
+    def export(self, item_ids: Sequence[str]) -> tuple[PublicTrainPacket, ...]:
+        _safe_path(self.output_root)
+        sources = read_primary_train_sources(self.custody, self.snapshot_root, item_ids)
+        packets = []
         from evaluation.modular.legacy_primary_packet_artifacts import write
-        anchor={'source_group':identity.group_id,'official_split':row['official_split'],'split_digest':split_digest,'csv_source_sha256':_sha(data)}
-        write(destination,task,anchor,csv_bytes,canonical({"task":task.data(),"receipt":receipt.data()}).encode('utf-8'))
-        return PublicTrainPacket(task, packet_path, csv_target, receipt)
+        for source in sources:
+            destination = self.output_root / source.task.identity.benchmark / digest(source.task.identity.data())
+            write(destination, source)
+            packets.append(PublicTrainPacket(source.task, destination / "public.json", destination / "data.csv", source.receipt))
+        return tuple(packets)
+
+
+def verify_primary_train_packets(packets, *, custody, snapshot_root, item_ids, output_root):
+    """Actual controller gate: derive expectations from custody, never packet claims."""
+    root = _safe_path(output_root)
+    if type(packets) is not tuple or any(type(packet) is not PublicTrainPacket for packet in packets):
+        raise ContractError("primary consumer requires exact immutable train packets")
+    sources = read_primary_train_sources(custody, snapshot_root, item_ids)
+    if len(packets) != len(sources):
+        raise ContractError("primary consumer packet count differs from frozen selection")
+    from evaluation.modular.legacy_primary_packet_artifacts import verify
+    for packet, source in zip(packets, sources):
+        destination = root / source.task.identity.benchmark / digest(source.task.identity.data())
+        if (type(packet.task) is not PublicTask or type(packet.receipt) is not FrozenRecord
+                or packet.task != source.task or packet.receipt != source.receipt
+                or _safe_path(packet.packet_path) != destination / "public.json"
+                or _safe_path(packet.csv_path) != destination / "data.csv"):
+            raise ContractError("primary consumer packet fields differ from independent source")
+        verify(destination, source)
+    return sources
