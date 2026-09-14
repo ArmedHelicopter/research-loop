@@ -10,7 +10,7 @@ import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Mapping, Sequence
+from typing import Any, Callable, Mapping, Sequence
 
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, required_text, strict_bool
 from research_loop.ontology import ContractError, canonical, digest
@@ -84,21 +84,35 @@ class ClaimRevision:
 
 
 class _JsonlLog:
-    def __init__(self, path: Path | None) -> None:
+    def __init__(self, path: Path | None, event_sink: Callable[[FrozenRecord], None] | None = None,
+                 on_failure: Callable[[], None] | None = None) -> None:
         self.path = path
+        self.event_sink = event_sink
+        self.on_failure = on_failure
         if path is not None:
             path.parent.mkdir(parents=True, exist_ok=True)
             if not path.exists():
                 path.touch()
 
     def append(self, event: Mapping[str, Any]) -> None:
-        if self.path is None:
-            return
-        encoded = canonical(dict(event)) + "\n"
-        with self.path.open("a", encoding="utf-8", newline="\n") as handle:
-            handle.write(encoded)
-            handle.flush()
-            os.fsync(handle.fileno())
+        try:
+            self._append(event)
+        except Exception:
+            if self.on_failure is not None:
+                self.on_failure()
+            raise
+
+    def _append(self, event: Mapping[str, Any]) -> None:
+        if self.path is not None:
+            encoded = canonical(dict(event)) + "\n"
+            with self.path.open("a", encoding="utf-8", newline="\n") as handle:
+                handle.write(encoded)
+                handle.flush()
+                os.fsync(handle.fileno())
+        # The durable source event precedes its derived audit record. A failed
+        # sink propagates; the owning run must stop and retain the visible gap.
+        if self.event_sink is not None:
+            self.event_sink(FrozenRecord.from_dict(event))
 
     def events(self) -> list[dict[str, Any]]:
         if self.path is None:
@@ -116,12 +130,14 @@ class _JsonlLog:
 
 
 class EvidenceLedger:
-    def __init__(self, identity: DataIdentity, *, storage_path: Path | None = None) -> None:
+    def __init__(self, identity: DataIdentity, *, storage_path: Path | None = None,
+                 event_sink: Callable[[FrozenRecord], None] | None = None,
+                 on_failure: Callable[[], None] | None = None) -> None:
         self.identity = identity
         self._records: dict[str, EvidenceRecord] = {}
         self._roots: dict[str, set[str]] = {}
         self._withdrawn: set[str] = set()
-        self._log = _JsonlLog(storage_path)
+        self._log = _JsonlLog(storage_path, event_sink, on_failure)
         for event in self._log.events():
             self._apply_event(event, persist=False)
 
@@ -249,11 +265,13 @@ class EvidenceLedger:
 
 
 class ClaimLedger:
-    def __init__(self, evidence: EvidenceLedger, *, storage_path: Path | None = None) -> None:
+    def __init__(self, evidence: EvidenceLedger, *, storage_path: Path | None = None,
+                 event_sink: Callable[[FrozenRecord], None] | None = None,
+                 on_failure: Callable[[], None] | None = None) -> None:
         self.evidence = evidence
         self.identity = evidence.identity
         self._claims: dict[str, ClaimRecord] = {}
-        self._log = _JsonlLog(storage_path)
+        self._log = _JsonlLog(storage_path, event_sink, on_failure)
         for event in self._log.events():
             self._apply_event(event, persist=False)
 

@@ -180,6 +180,8 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
     catalogue_trace=[d.data()['payload']['canonical'] for d in catalogue.records() if d.data()['kind']=='trace_event']
     if catalogue_trace!=events:
         raise ContractError('trace and catalogue journal transaction differs')
+    from research_loop.modular.evidence_artifacts import verify_evidence_artifacts
+    verify_evidence_artifacts(catalogue, root/'runtime')
     if (lock['task_digest']!=task.content_hash or lock['identity']!=task.identity.data() or lock['package_digest']!=package.digest
             or lock['arm']!=cell.runtime_arm.data() or lock['objective']!=plan.objective(stage).data() or lock['slots']!=list(slots(recipe,stage))
             or lock['execution_limit']!=int(stage=='target') or lock['required_audit']!=['measurement'] or lock['context_budget']!=material.state().data()['context_budget_bytes']):
