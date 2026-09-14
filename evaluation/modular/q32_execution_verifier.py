@@ -15,7 +15,17 @@ from research_loop.modular.runtime import verify_trace
 from research_loop.ontology import ContractError, digest
 
 
-def verify_q32_execution(path: Path, compiled: FrozenRecord) -> FrozenRecord:
+def verify_q32_execution(path: Path, compiled: FrozenRecord, *, cell: dict | None = None) -> FrozenRecord:
+    try:
+        from research_loop.modular.q32_artifacts import plain
+        return _verify_q32_execution(plain(path), compiled, cell=cell)
+    except ContractError:
+        raise
+    except (OSError, ValueError, TypeError, KeyError, IndexError) as exc:
+        raise ContractError('Q3.2 execution evidence is incomplete or malformed') from exc
+
+
+def _verify_q32_execution(path: Path, compiled: FrozenRecord, *, cell: dict | None) -> FrozenRecord:
     verify_trace(path)
     events = [json.loads(s) for s in path.read_text(encoding="utf-8").splitlines()]
     plans_event = [e for e in events if e["stage"] == "q32_plans_frozen"]
@@ -23,6 +33,8 @@ def verify_q32_execution(path: Path, compiled: FrozenRecord) -> FrozenRecord:
         raise ContractError("unique pre-production plans required")
     p = plans_event[0]
     frozen = p["data"]
+    if cell is not None and cell != frozen['cell']:
+        raise ContractError('Q3.2 consumer expected a different frozen cell')
     if frozen["compiled"] != compiled.data() or frozen["compiled_digest"] != compiled.content_hash or frozen["cell"] not in compiled.data()["cells"]:
         raise ContractError("external frozen compilation binding lost")
     task = compiled.data()["tasks"][frozen["cell"]["task_digest"]]
@@ -148,5 +160,7 @@ def verify_q32_execution(path: Path, compiled: FrozenRecord) -> FrozenRecord:
             or final["programme_complete"] is not False or final["decision"]["scientific_validated"] is not False
             or final["distinct_public_input_artifacts"] != 1 or final["independent_data_qualification"] != "not_established"):
         raise ContractError("final budget, P0, denominator or qualification differs")
+    from research_loop.modular.q32_artifacts import verify_q32_artifacts
+    verify_q32_artifacts(path.parent, compiled, cell=frozen['cell'])
     return FrozenRecord.from_dict({"verified": True, "cells": 1, "measurements": 3, "model_attempts": len(requests),
         "execution_attempts": len(executions), "scientific_validated": False})

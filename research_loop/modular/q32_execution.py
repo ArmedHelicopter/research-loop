@@ -20,6 +20,7 @@ from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.experiments import registry
 from research_loop.modular.modules.predictions import PredictionRegistry
 from research_loop.modular.runtime import RunSession, AuditVerifier
+from research_loop.modular.q32_artifacts import Q32ArtifactBridge, plain, write_new
 from research_loop.ontology import ContractError, canonical, digest
 
 SLOTS = ("program_1", "program_2", "program_3", "final")
@@ -133,6 +134,7 @@ def compare(plan, measurement, value):
 class Q32ExecutionStage:
     """One fresh owned session; no execution permitted before its complete seal."""
     def __init__(self, compiled: FrozenRecord, cell: dict, packet: PublicTrainPacket, *, sidecar: Path, verifier: AuditVerifier):
+        sidecar = plain(sidecar)
         body = compiled.data()
         if cell not in body["cells"] or packet.task.content_hash != cell["task_digest"]:
             raise ContractError("cell/task substitution")
@@ -145,22 +147,31 @@ class Q32ExecutionStage:
             arm=default_compatibility("a" * 64).arm(("M4",)),
             objective=FrozenRecord.from_dict({"question": "Compare declared predictions with prospectively executed public measurements."}),
             slots=SLOTS, execution_limit=3, sidecar=sidecar, verifier=verifier, required_audit=("independent_scientific_validation",))
-        self._registry = PredictionRegistry(packet.task.identity, storage_path=sidecar / "predictions.jsonl")
+        self._artifacts = Q32ArtifactBridge(self._session, compiled, cell)
+        self._registry = PredictionRegistry(packet.task.identity, storage_path=sidecar / "predictions.jsonl",
+            event_sink=lambda event: self._artifacts.predictions.journal('predictions', event))
         self._plans = [task["plans"][0]] * 3 if cell["variant"] == "joint" else task["plans"][1:]
-        for plan in self._plans:
-            actual = self._registry.freeze(plan["question"], plan["branches"], budget_units=plan["budget_units"])
-            if actual.data() != plan:
-                raise ContractError("compiled plan does not match registry")
-        self._session._record("q32_plans_frozen", {"compiled": compiled.data(), "compiled_digest": compiled.content_hash,
-            "cell": cell, "plans": self._plans, "input_artifact": task["input_artifact"]})
         self._programs, self._rows, self._seal = [], [], None
+        try:
+            # One declared joint plan supports three preallocated measurements.
+            for plan in {p['plan_id']: p for p in self._plans}.values():
+                actual = self._registry.freeze(plan["question"], plan["branches"], budget_units=plan["budget_units"])
+                if actual.data() != plan:
+                    raise ContractError("compiled plan does not match registry")
+            self._artifacts.record("q32_plans_frozen", {"compiled": compiled.data(), "compiled_digest": compiled.content_hash,
+                "cell": cell, "plans": self._plans, "input_artifact": task["input_artifact"]})
+            self._artifacts.check()
+        except Exception:
+            self._session._audit_failure()
+            raise
 
     def _invoke(self, slot, model, context):
+        self._artifacts.check()
         if len(canonical(context).encode()) > BUDGET["module_context_bytes"]:
             raise ContractError("public measurement context exceeds frozen equal allocation")
         def projected(request):
             visible = FrozenRecord.from_dict(public_request(request.data()))
-            self._session._record("q32_public_request", {"original_digest": request.content_hash, "request": visible.data()})
+            self._artifacts.record("q32_public_request", {"original_digest": request.content_hash, "request": visible.data()})
             return model(visible)
         return self._session.invoke(slot, projected, instruction="Perform the declared public measurement task. Return only the requested JSON.",
                                     module_context=FrozenRecord.from_dict(context))
@@ -182,14 +193,20 @@ class Q32ExecutionStage:
                 "program_sha256": hashlib.sha256(code.replace("\n", os.linesep).encode()).hexdigest(),
                 "response_digest": response.content_hash, "input_artifact": self._task.data()["input_artifact"]})
         self._seal = FrozenRecord.from_dict({"compiled_digest": self.compiled.content_hash, "jobs": self._programs})
-        (self._session.sidecar / "execution-seal.json").write_text(self._seal.encoded, encoding="utf-8")
-        self._session._record("q32_execution_seal", self._seal.data())
+        try:
+            write_new(self._session.sidecar / "execution-seal.json", self._seal)
+            self._artifacts.record("q32_execution_seal", self._seal.data())
+            self._artifacts.check()
+        except Exception:
+            self._session._audit_failure()
+            raise
         return self._seal
 
     def execute_next(self, *, broker: DockerExecutionBroker, plan_id: str, program: str, csv_path: Path):
         i = len(self._rows)
         if self._seal is None or i >= 3 or self._session._terminal:
             raise ContractError("all programs must be frozen before execution")
+        self._artifacts.check()
         if FrozenRecord((self._session.sidecar / "execution-seal.json").read_text(encoding="utf-8")) != self._seal:
             raise ContractError("durable execution seal was modified")
         job = self._seal.data()["jobs"][i]
@@ -197,7 +214,8 @@ class Q32ExecutionStage:
         if (job["plan_id"] != plan_id or digest(plan) != job["plan_digest"] or program != job["program"]
                 or csv_path.resolve() != self.packet.csv_path.resolve() or checked_packet(self.packet) != job["input_artifact"]):
             raise ContractError("frozen plan/program/input substitution before I/O")
-        self._session._record("q32_execution_binding", {"seal_digest": self._seal.content_hash, "ordinal": i, "job": job})
+        plain(self._session.sidecar / f'analysis-{i + 1}.py')
+        self._artifacts.record("q32_execution_binding", {"seal_digest": self._seal.content_hash, "ordinal": i, "job": job})
         receipt = self._session.execute(program, broker=broker, image=self.compiled.data()["image"],
             inputs={"public_csv": csv_path}, timeout_seconds=BUDGET["timeout_seconds"])
         if (receipt.identity != self.packet.task.identity or receipt.artifact is None or receipt.artifact.sha256 != job["program_sha256"]
@@ -208,10 +226,20 @@ class Q32ExecutionStage:
             "execution_digest": receipt.content_hash, "receipt": receipt.data(), "observation": value,
             "range_membership": compare(plan, job["measurement"], value)}
         self._rows.append(row)
-        self._session._record("q32_observation", row)
+        self._artifacts.record("q32_observation", row)
         return FrozenRecord.from_dict(row)
 
     def run(self, model, broker):
+        try:
+            result = self._run(model, broker)
+            from evaluation.modular.q32_execution_verifier import verify_q32_execution
+            verify_q32_execution(self._session.sidecar / 'trace.jsonl', self.compiled, cell=self.cell.data())
+            return result
+        except Exception:
+            self._session._audit_failure()
+            raise
+
+    def _run(self, model, broker):
         failure = None
         native=self.compiled.data()['schema']=='q32-prospective-execution-v2'
         def original_gate():
@@ -231,12 +259,12 @@ class Q32ExecutionStage:
             handles = {pid: f"plan_{i + 1}" for i, pid in enumerate(plans)}
             public_rows = [{"plan": handles[r["plan_id"]], "measurement": r["measurement"], "status": r["status"],
                             "observation": r["observation"], "range_membership": r["range_membership"]} for r in self._rows]
-            self._session._record("q32_comparison_ready", {"rows": self._rows, "seal_digest": self._seal.content_hash})
+            self._artifacts.record("q32_comparison_ready", {"rows": self._rows, "seal_digest": self._seal.content_hash})
             candidate = self._invoke("final", model, {"plans": {handles[k]: _public_plan(p) for k, p in plans.items()},
                 "measurements": public_rows, "required_objective_digest": self._session.objective.content_hash})
         except Exception as exc:
             failure = type(exc).__name__
-            self._session._record("q32_phase_failure", {"error_type": failure, "completed_observations": len(self._rows)})
+            self._artifacts.record("q32_phase_failure", {"error_type": failure, "completed_observations": len(self._rows)})
             candidate = FrozenRecord.from_dict({"objective_digest": self._session.objective.content_hash, "outcome": "unknown",
                 "evidence_ids": [], "conclusion": "Incomplete prospective execution; retain all allocated measurements.", "programme_complete": False})
         rows = list(self._rows)
@@ -256,8 +284,9 @@ class Q32ExecutionStage:
                 "reported_tokens": sum((row.get("usage") or {}).get("total_tokens", 0) for row in model.ledger["calls"]),
                 "calls": model.ledger["calls"]} if hasattr(model, "ledger") else None),
             "measurement_calibration": "unverified_caller_definition"})
-        self._session._record("q32_phase_result", result.data())
-        (self._session.sidecar / "result.json").write_text(result.encoded, encoding="utf-8")
+        self._artifacts.record("q32_phase_result", result.data())
+        write_new(self._session.sidecar / "result.json", result)
+        self._artifacts.close()
         return result
 
 

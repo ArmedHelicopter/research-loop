@@ -97,7 +97,16 @@ def run_native(packets,compiled,export_root,run_root,model_factory,verifier):
             raise ContractError('Q3.2 provider roots overlap execution or exports')
     run_root.mkdir(parents=True,exist_ok=True);_write(run_root/'compiled.json',b)
     broker=DockerExecutionBroker([export_root,run_root]);packet_by_task={p.task.content_hash:p for p in packets}
-    sessions=[];results=[];stopped=False
+    sessions=[];results=[];stopped=False;completed_stages=[]
+    def prior_artifacts_healthy():
+        healthy=True
+        for original_path,original_cell,original_model in completed_stages:
+            try:
+                verify_q32_execution(original_path,compiled,cell=original_cell)
+            except Exception:
+                original_model._poison('q32_original_artifact_drift')
+                healthy=False
+        return healthy
     def blocked(cell):
         task=b['tasks'][cell['task_digest']];plans=[task['plans'][0]]*3 if cell['variant']=='joint' else task['plans'][1:]
         return {'schema':'q32-native-cell-result-v1','cell':cell,'status':'blocked','failure':'prior_native_terminal',
@@ -108,16 +117,17 @@ def run_native(packets,compiled,export_root,run_root,model_factory,verifier):
             'runtime_result':None,'provider_final_gate':None,'score_eligible':False,'scientific_validated':False,'programme_complete':False}
     for i,(cell,model) in enumerate(zip(b['cells'],models)):
         # Replay all previous cells before a fresh port can dispatch.
-        stopped=stopped or any(session.terminal() for session in sessions)
+        artifacts_healthy=prior_artifacts_healthy()
+        stopped=stopped or not artifacts_healthy or any(session.terminal() for session in sessions)
         if stopped:results.append(blocked(cell));continue
         sidecar=run_root/str(i);sidecar.mkdir()
         session=PhaseProviderSession(model,sidecar/'provider-scopes.json');sessions.append(session)
-        stage=Q32ExecutionStage(compiled,cell,packet_by_task[cell['task_digest']],sidecar=sidecar/'runtime',verifier=verifier)
-        value=None;verification=None;projection=None;failure=None
+        stage=None;value=None;verification=None;projection=None;failure=None
         try:
+            stage=Q32ExecutionStage(compiled,cell,packet_by_task[cell['task_digest']],sidecar=sidecar/'runtime',verifier=verifier)
             with session.scope(cell['cell_id']) as scoped:value=stage.run(scoped,broker)
             try:
-                verification=verify_q32_execution(sidecar/'runtime/trace.jsonl',compiled)
+                verification=verify_q32_execution(sidecar/'runtime/trace.jsonl',compiled,cell=cell)
                 events,projection=projected_events(sidecar/'runtime/trace.jsonl',compiled,cell)
             except ContractError:
                 model._poison('q32_original_runtime_projection_fault')
@@ -126,17 +136,28 @@ def run_native(packets,compiled,export_root,run_root,model_factory,verifier):
             ledger=session.finish(sidecar/'provider-ledger.json')
             if type(ledger) is not PhaseProviderLedger:raise ContractError('Q3.2 terminal originals cannot authorize measurements')
             ledger.bind_events(events,scope_id=cell['cell_id'],require_eligible=value.data()['failure'] is None)
+            completed_stages.append((sidecar/'runtime/trace.jsonl',cell,model))
         except Exception as exc:
             failure=type(exc).__name__;stopped=True
         gate=final_provider_gate(session,sidecar/'final-provider-ledger.json')
         stopped=stopped or session.terminal() or not gate.data()['provider_evidence_eligible']
         row=blocked(cell) if value is None else value.data()
+        if value is None and stage is not None:
+            # Retained runtime facts remain historical when terminal storage
+            # fails. Never erase consumed opportunities to an all-zero row.
+            observed=list(stage._rows)
+            row.update(rows=observed+row['rows'][len(observed):],
+                model_attempts=stage._session._next_call,
+                execution_attempts=stage._session._attempts,
+                unattempted_executions=3-stage._session._attempts)
         row.update(schema='q32-native-cell-result-v1',status='incomplete' if stopped or row.get('failure') else 'completed',
             failure=failure or row.get('failure'),runtime_result=None if value is None else value.data(),
             provider_final_gate=gate.data(),score_eligible=not stopped and row.get('failure') is None,
             projection_digest=None if projection is None else projection.content_hash,
             execution_verification=None if verification is None else verification.data())
         results.append(row);_write(sidecar/'native-result.json',row)
+    artifacts_healthy=prior_artifacts_healthy()
+    stopped=stopped or not artifacts_healthy
     gates=[final_provider_gate(session,run_root/f'final-provider-{i}.json') for i,session in enumerate(sessions)]
     eligible=not stopped and len(sessions)==4 and all(g.data()['provider_evidence_eligible'] for g in gates) and all(r['status']=='completed' for r in results)
     for row in results:
