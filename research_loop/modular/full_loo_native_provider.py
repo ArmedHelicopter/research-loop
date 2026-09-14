@@ -174,6 +174,11 @@ def run_native_full_loo_train(plan, *, prospective_exporter, snapshot_root, expo
     def accounting():
         usage=session.usage().data()
         if usage['schema']=='public-train-provider-usage-v1':
+            if usage['unknown_main_opportunities']:
+                return {'schema':'train-phase-terminal-accounting-v2','provider_calls_lower_bound':usage['main_opportunities'],
+                    'known_reported_tokens_lower_bound':usage['known_reported_tokens'],'known_usage_scope':usage['known_usage_scope'],
+                    'unknown_unobserved_opportunities':True,'title_tokens':None,'all_opportunity_tokens':None,
+                    'settled_additional_charge_usd':None,'score_eligible':False}
             return {'schema':'train-phase-call-accounting-v2','provider_calls':usage['main_opportunities'],
                 'known_reported_tokens':usage['known_reported_tokens'],'known_usage_scope':usage['known_usage_scope'],
                 'unknown_main_opportunities':usage['unknown_main_opportunities'],
