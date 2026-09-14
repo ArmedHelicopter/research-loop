@@ -30,7 +30,7 @@ def test_invented_native_receipt_closes_ledger(tmp_path):
     assert port.ledger['usage_incomplete'] is True
 
 
-@pytest.mark.parametrize('fault', [None, 'unknown_main', 'provenance'])
+@pytest.mark.parametrize('fault', [None, 'unknown_main', 'provenance', 'last_score', 'final_accounting'])
 def test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer(tmp_path, monkeypatch, fault):
     """All 40 public slots use an ACP peer; Docker and rubric stay real seams."""
     from contextlib import ExitStack
@@ -65,11 +65,49 @@ def test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer(tmp
         monkeypatch.setattr(controller,'verify_m4_m5_combination_benchmark_cell',drift)
     with ExitStack() as stack:
         service=processes(setup, stack)
+        score_calls = []
+        if fault in {'last_score', 'final_accounting'}:
+            original_score = service.score_combination
+            def last_score(**kwargs):
+                value = original_score(**kwargs)
+                score_calls.append(value)
+                if len(score_calls) == 8 and fault == 'last_score':
+                    (port.calls_root/'0001-m4_plan/response.private.json').write_bytes(b'{"last_score_drift":true}')
+                return value
+            monkeypatch.setattr(service, 'score_combination', last_score)
+            if fault == 'final_accounting':
+                original_usage = controller._usage
+                injected = []
+                def last_accounting(model):
+                    value = original_usage(model)
+                    if len(score_calls) == 8 and not injected:
+                        injected.append(True)
+                        (port.calls_root/'0001-m4_plan/response.private.json').write_bytes(b'{"final_accounting_drift":true}')
+                    return value
+                monkeypatch.setattr(controller, '_usage', last_accounting)
         result=controller.run_m4_m5_train_panel(config, custody=None, prospective_exporter=setup['exporter'],
             snapshot_root=Path(setup['exporter'].config['snapshot_root']), export_root=setup['exporter'].output_root,
             run_root=tmp_path/'run-v4', model=port, audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}),
             execution_authority=setup['module'].EXECUTION, scoring_service=service,
             scorer_authority_keys={setup['module'].SCORER.authority_id:setup['module'].SCORER.key})
+    if fault in {'last_score', 'final_accounting'}:
+        receipt = result.receipt.data()
+        assert receipt['status'] == 'inconclusive'
+        assert result.contrast.data()['status'] == 'inconclusive'
+        assert receipt['eligible_scored_cells'] == 0
+        assert receipt['native_final_verification']['score_eligible'] is False
+        assert receipt['native_final_verification']['current_originals_verified'] is False
+        assert len(result.attempts) == len(result.scores) == len(score_calls) == 8
+        assert receipt['actual_scorer_calls'] == receipt['scored_cells'] == 8
+        assert len(logs) == len(port.ledger['calls']) == 40
+        assert port.ledger['tokens'] == 480 and port.ledger['usage_incomplete'] is True
+        assert all('scorer_receipt' in row.data() for row in result.attempts)
+        if fault == 'last_score':
+            assert result.attempts[-1].data()['status'] == 'failed'
+        else:
+            assert len(injected) == 1
+        assert receipt['validation_opened'] is False and receipt['pruned_cells'] == []
+        return
     if fault:
         assert result.receipt.data()['status']=='inconclusive'
         assert len(result.attempts)==8 and len(result.scores)==0
