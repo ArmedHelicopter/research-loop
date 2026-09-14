@@ -32,7 +32,7 @@ def _authenticated_snapshot(monkeypatch, snapshot, calls):
 
 
 def _write_record(path, body):
-    path.write_text(R(body).encoded + "\n", encoding="utf-8")
+    path.write_bytes((R(body).encoded + "\n").encode("utf-8"))
 
 
 def test_register_and_verify_reauthenticate_real_projection_without_writing_verify_path(tmp_path, monkeypatch):
@@ -47,15 +47,17 @@ def test_register_and_verify_reauthenticate_real_projection_without_writing_veri
         register_authenticated_selected_run(path, run, parent=parent,
             execution_authority_keys={"execution": b"e"}, scorer_authority_keys={"scorer": b"s"})
     assert path.read_bytes() == before
+    before_paths = {item.relative_to(tmp_path) for item in tmp_path.rglob("*")}
     opened = Path.open
     def no_verify_write(self, mode="r", *args, **kwargs):
-        if self == path and any(flag in mode for flag in ("w", "a", "x", "+")):
+        if any(flag in mode for flag in ("w", "a", "x", "+")):
             raise AssertionError("verification must not write the registration")
         return opened(self, mode, *args, **kwargs)
     monkeypatch.setattr(Path, "open", no_verify_write)
     assert verify_registration(path, run, parent=parent,
         execution_authority_keys={"execution": b"e"}, scorer_authority_keys={"scorer": b"s"}) == registered
-    assert path.read_bytes() == before and len(calls) == 3 and not logs
+    assert path.read_bytes() == before and {item.relative_to(tmp_path) for item in tmp_path.rglob("*")} == before_paths
+    assert len(calls) == 3 and not logs
 
 
 @pytest.mark.parametrize("fault", ("snapshot", "components", "edges", "provenance", "source", "falseflags"))
@@ -84,6 +86,18 @@ def test_verify_rejects_tampered_selected_registration(tmp_path, monkeypatch, fa
     with pytest.raises(ContractError):
         verify_registration(path, run, parent=parent, execution_authority_keys={}, scorer_authority_keys={})
     assert len(calls) == (2 if fault in {"snapshot", "provenance"} else 1) and not logs
+
+
+def test_verify_rejects_crlf_registration_bytes_before_reauthentication(tmp_path, monkeypatch):
+    run, parent, snapshot, logs = _actual_projection(tmp_path, monkeypatch)
+    calls = []
+    _authenticated_snapshot(monkeypatch, snapshot, calls)
+    path = tmp_path / "registered.json"
+    register_authenticated_selected_run(path, run, parent=parent, execution_authority_keys={}, scorer_authority_keys={})
+    path.write_bytes(path.read_bytes().replace(b"\n", b"\r\n"))
+    with pytest.raises(ContractError):
+        verify_registration(path, run, parent=parent, execution_authority_keys={}, scorer_authority_keys={})
+    assert len(calls) == 1 and not logs
 
 
 def test_failed_authentication_creates_no_registration(tmp_path, monkeypatch):
