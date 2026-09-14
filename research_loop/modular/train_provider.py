@@ -134,7 +134,11 @@ def _verify_call(backend, row, ledger):
             usage=known_usage(receipt.get('known_usage'))
             usage_bound=receipt.get('known_usage_binding_verified') is True
             _require(receipt.get('known_usage')==row.get('known_main_usage'), 'native reported usage drift')
-            _require(usage is None or usage in _native_usage_candidates(native/'stdout.private.jsonl'), 'native reported usage has no raw frame')
+            candidates=_native_usage_candidates(native/'stdout.private.jsonl')
+            _require(usage is None or usage in candidates, 'native reported usage has no raw frame')
+            if usage is None and row['status']!='succeeded' and len(candidates)==1:
+                usage=candidates[0]
+                usage_bound=False  # Scalar recovery does not repair a failed frame.
             if row['status']=='succeeded':
                 _require(receipt['accepted'] is True and receipt['requested_model']==backend.model, 'native success admission missing')
                 _require(_sha(Path(row['reservation_path']).read_bytes())==row['reservation_sha256'], 'native reservation drift')
@@ -189,9 +193,10 @@ def _native_usage_candidates(path):
     for raw in Path(path).read_bytes().splitlines():
         try:
             frame=json.loads(raw)
-            for candidate in (frame.get('result',{}).get('_meta',{}).get('usage'),
-                frame.get('params',{}).get('update',{}).get('usage'),
-                frame.get('error',{}).get('data',{}).get('promptUsage')):
+            for branch in (('result','_meta','usage'),('params','update','usage'),('error','data','promptUsage')):
+                candidate=frame
+                for key in branch:
+                    candidate=candidate.get(key) if isinstance(candidate,dict) else None
                 usage=known_usage(candidate)
                 if usage is not None and usage not in candidates:candidates.append(usage)
         except (ValueError,AttributeError):
@@ -380,22 +385,34 @@ class FrozenTrainProviderLedgerV2:
             'score_eligible':success and not b['terminal_at_seal'] and not self.provider.terminal(),
             'later_calls':len(self.provider.state['calls'])-b['prefix_length']})
 
-    def bind_events(self,events,*,require_eligible: bool=True) -> tuple[int, ...]:
-        try:return self._bind_events(events,require_eligible=require_eligible)
+    def bind_events(self,events,*,expected_call_ids: tuple[int, ...] | None=None,
+                    require_eligible: bool=True) -> tuple[int, ...]:
+        try:return self._bind_events(events,expected_call_ids=expected_call_ids,require_eligible=require_eligible)
         except Exception as exc:
             if type(self.provider) in (CodexTrainProvider,GrokTrainProvider):self.provider._poison('runtime_binding_fault')
             raise ContractError('runtime provider binding fault; dispatch closed') from exc
 
-    def _bind_events(self,events,*,require_eligible):
+    def _bind_events(self,events,*,expected_call_ids,require_eligible):
+        _require(type(require_eligible) is bool, 'eligibility mode must be an explicit bool')
+        _require(expected_call_ids is None or (type(expected_call_ids) is tuple
+            and all(type(number) is int and number>0 for number in expected_call_ids)
+            and all(a<b for a,b in zip(expected_call_ids,expected_call_ids[1:]))), 'immutable strictly ordered call IDs required')
         verified=self.verify_originals().data()
         _require(not require_eligible or verified['score_eligible'], 'terminal or failed evidence is not score-eligible')
         calls=self.record.data()['calls'];used=[];pending=None
+        if expected_call_ids is not None:
+            _require(set(expected_call_ids)<=set(c['view']['id'] for c in calls), 'declared call ID is outside sealed prefix')
         for event in events:
             if event['stage']=='model_request':
                 _require(pending is None or not pending['successful'], 'successful original response omitted from runtime')
                 request=_record(event['data']['request'])
-                matches=[c['view'] for c in calls if c['view']['request_digest']==request.content_hash
-                    and c['view']['id']>(used[-1] if used else 0)]
+                if expected_call_ids is not None:
+                    _require(len(used)<len(expected_call_ids), 'runtime exceeds declared call span')
+                    wanted=expected_call_ids[len(used)]
+                    matches=[c['view'] for c in calls if c['view']['id']==wanted and c['view']['request_digest']==request.content_hash]
+                else:
+                    matches=[c['view'] for c in calls if c['view']['request_digest']==request.content_hash
+                        and c['view']['id']>(used[-1] if used else 0)]
                 _require(matches, 'request lacks an ordered sealed original call')
                 pending=matches[0];used.append(pending['id'])
                 _require(pending['slot']==request.data()['slot'], 'sealed original slot mismatch')
@@ -405,5 +422,6 @@ class FrozenTrainProviderLedgerV2:
                 _require(pending['successful'] and _record(data['response']).content_hash==pending['response_digest'], 'runtime response differs from original provider')
                 pending=None
         _require(pending is None or not pending['successful'], 'successful original response omitted from runtime')
+        _require(expected_call_ids is None or tuple(used)==expected_call_ids, 'runtime omitted a declared original call')
         _require(used or not require_eligible, 'no runtime requests bound for eligibility')
         return tuple(used)
