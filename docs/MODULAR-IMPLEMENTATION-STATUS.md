@@ -3,6 +3,32 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Native Q6/M9 integration and common C5 runtime (2026-09-14, current update)
+
+The separate Q6 and M9 native provider implementation is now integrated through
+`5619cd5`. Its root check passed12/12 in65.985s with645 source hashes unchanged,
+including an actual restricted build, the complete separate Q6.3 fixture and
+its failed-call denominator. The owner execution-family check at `f0869c4`
+closed1/1 in956.546s: six builds,70 synthetic MAIN opportunities,96 Docker
+executions and32 independent scores. The previous12-case45-minute timeout is
+retained without a pytest pass claim. Other owner cases remain separate work;
+neither this one success nor partial earlier controller scores complete them.
+
+The C5 runtime kernel is integrated from `11243b2`. Root `0644e32` passed22/22
+runtime/panel checks in166.687s with648 unchanged source hashes. It uses actual
+module consumers, restricted builds and Docker, replays the original protocol
+file, and reconstructs stage/barrier bindings from original inputs. Its formal
+catalogue remains59 recipes,46 history builds and118 targets for two TRAIN tasks.
+The exercised kernel path contains only one history and one target with11
+synthetic MAIN opportunities. Successful full history barrier to formal target,
+complete-grid scoring, authenticated TRAIN selection and validation acceptance
+remain outstanding. No actual model efficacy or validation result is claimed.
+
+The imported kernel archive's10 Git blobs and5,936 raw ZIP members were checked
+against disk. Closed root and native owner evidence is retained under
+`results/modular-engineering-20260914/native-build-q6-root-r1/`,
+`c5-runtime-root-r1/` and `native-build-owner-closed/`.
+
 ## Common C5 scorer and native deployment checks (2026-09-14, later update)
 
 The new common TRAIN panel/scorer scope is integrated from `712d242`:44/44
