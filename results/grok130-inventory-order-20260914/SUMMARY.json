@@ -1,0 +1,25 @@
+{
+  "schema": "grok130-inventory-order-evidence-v1",
+  "source_commits": [
+    "8124b4744d41c3dd1ccc246419ffc5cd2f3433ac",
+    "a086d8a01cd643ea1b75f8ff6c58177200a5c608"
+  ],
+  "checkpoints": 2,
+  "raw_members": 1798,
+  "all_raw_bytes_equal_originals": true,
+  "exact_tested_source_zip_matches_every_frozen_disk_hash": true,
+  "scope": "Closed isolated 1.0.30 native deployment, diagnostic and material envelopes. Synthetic final-spawn peers exercise actual native launch preflight and original provenance readers. Legacy 1.0.13 default preserved; public TRAIN provider unchanged.",
+  "runner_scope_correction": "The reused runner labels ordinary TRAIN engineering; actual executed suites and source pins are authoritative. This archive is deployment plumbing only.",
+  "checkpoint_qualifications": {
+    "r1": "0 passed /9 failed at8124b474: all new response-before-inventory cases stopped at premature preprompt_inventory_missing. Original failures retained.",
+    "r2": "124 passed:29 deployment cases plus95 legacy cases; repaired sourcea086d8a. Explicit deployment waits under existing deadline; legacy unchanged."
+  },
+  "prior_archive": "8994eed3046b81aa703f551078bf5f7e06999e07 remains immutable; this is additive inventory ordering closure.",
+  "actual_readiness_failure": "root work/grok130-readiness-r1 remains unchanged, preprompt_inventory_missing,0prompt; not included because it contains actual private runtime data.",
+  "binary_sha256": "ca24ea63272ba7881261f4a52498d1f5bd884b01da25845990422a10dd315266",
+  "binary_source_equivalence_verified": false,
+  "readiness_proven": false,
+  "real_model_or_api_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}
