@@ -231,7 +231,7 @@ from research_loop.modular.combination_train_controller import _service_prefligh
 
 
 from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage, provider_terminal, provider_scope, bind_runtime_originals)
-from research_loop.modular.ordinary_provider import final_provider_gate, final_score_fields, unavailable_provider_contrast
+from research_loop.modular.ordinary_provider import final_provider_gate, final_score_fields, unavailable_provider_contrast, final_usage, final_unused
 from research_loop.modular.phase_provider import PhaseProviderSession
 
 
@@ -392,6 +392,11 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
                 "status": "inconclusive", "reason": "contrast_verification_failed", "error_type": type(exc).__name__,
                 "expected_cells": expected_cells, "scored_cells": len(scores), "missing_policy": "incomplete_reject",
                 "scientific_status": "not_measured"})
+    if native:
+        final_gate = final_provider_gate(provider_session, root/'report-provider-ledger.json')
+        if not final_gate.data()['provider_evidence_eligible']:
+            journal['historical_contrast_before_failed_final_gate'] = contrast.data()
+            contrast = unavailable_provider_contrast(compiled.panel, final_gate)
     receipt = FrozenRecord.from_dict({"schema": ('exploration-scheduler-train-controller-receipt-v2' if native else 'exploration-scheduler-train-controller-receipt-v1'), "config_digest": config.record.content_hash,
         "panel_digest": compiled.panel.digest, "expected_cells": expected_cells, "observed_cells": len(journal["cells"]),
         "successful_cells": sum(row["status"] == "succeeded" for row in journal["cells"]), "scored_cells": len(scores), **final_score_fields(final_gate, scores),
@@ -399,11 +404,11 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
         "blocked_cells": sum(row["status"] == "blocked" for row in journal["cells"]),
         "actual_docker_attempts": sum(row['docker_attempts'] for row in journal['cells']),
         "unused_docker_opportunities": 24-sum(row['docker_attempts'] for row in journal['cells']),
-        "allocation": body["allocation"], "actual_model_usage": provider_usage(provider_session, model), "actual_scorer_calls": journal["actual_scorer_calls"],
+        "allocation": body["allocation"], "actual_model_usage": final_usage(final_gate, model), "actual_scorer_calls": journal["actual_scorer_calls"],
         "scorer_usage": "not_provided_by_transport", "contrast": contrast.data(),
         "status": "estimated" if contrast.data()["status"] == "estimated" else "inconclusive",
         "scientific_effectiveness_proven": False, "validation_opened": False, "pruned_cells": []})
     _write(root / "controller-receipt.json", receipt.data())
     journal["status"] = receipt.data()["status"]
-    persist()
+    journal.update(actual_model_usage=receipt.data()['actual_model_usage']); _write(root/'controller-attempt.json',journal)
     return ExplorationSchedulerTrainRun(compiled, tuple(results), tuple(scores), tuple(FrozenRecord.from_dict(row) for row in journal["cells"]), contrast, receipt)

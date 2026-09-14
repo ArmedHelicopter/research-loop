@@ -67,6 +67,14 @@ def invoke_native(setup,patch,family,*,fault=None):
         native=converted(config,kwargs['model'],family)
         observed['config']=native
         (setup['root']/'native-config.json').write_bytes(native.record.encoded.encode())
+        if fault=='final_accounting':
+            controller=importlib.import_module(original.__module__)
+            gate=controller.final_provider_gate
+            def corrupt_before_final_gate(*args,**kw):
+                target=next(observed['provider'].backend.calls_root.glob('*/response.private.json'))
+                target.write_bytes(b'{"synthetic_reporting_drift":true}')
+                return gate(*args,**kw)
+            patch.setattr(controller,'final_provider_gate',corrupt_before_final_gate)
         if fault in {'provenance','last_provenance'}:
             # Corrupt a successful prefix only after the first independent score
             # has returned. Subsequent accounting must abort before dispatch.
@@ -133,9 +141,10 @@ def test_full_registered_family_default_native_docker_and_process_scores(tmp_pat
     assert result.receipt.data()['eligible_scored_cells']==expected_cells
 
 
-def test_last_score_original_fault_keeps_historical_scores_but_no_eligible_contrast(tmp_path,monkeypatch):
+@pytest.mark.parametrize('fault',['last_provenance','final_accounting'])
+def test_last_score_original_fault_keeps_historical_scores_but_no_eligible_contrast(tmp_path,monkeypatch,fault):
     setup=prepared(tmp_path,'exploration_scheduler')
-    result,observed=invoke_native(setup,monkeypatch,'exploration_scheduler',fault='last_provenance')
+    result,observed=invoke_native(setup,monkeypatch,'exploration_scheduler',fault=fault)
     receipt=result.receipt.data();rows=[r.data() for r in result.attempts]
     assert len(rows)==len(result.scores)==8 and len(observed['logs'])==16
     assert receipt['status']=='inconclusive' and receipt['pruned_cells']==[]
@@ -145,7 +154,7 @@ def test_last_score_original_fault_keeps_historical_scores_but_no_eligible_contr
     assert result.contrast.data()['status']=='inconclusive'
     assert receipt['actual_model_usage']['known_reported_tokens_lower_bound']==192
     assert receipt['actual_model_usage']['current_originals_verified'] is False
-    assert rows[-1]['status']=='failed'
+    assert rows[-1]['status']==('failed' if fault=='last_provenance' else 'succeeded')
 
 
 @pytest.mark.parametrize('fault',['unknown_main','provenance'])

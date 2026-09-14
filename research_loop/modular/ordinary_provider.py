@@ -84,6 +84,9 @@ def bind_singleton_originals(session,cell,result,path,*,linked):
 
 def final_provider_gate(session,path):
     if session is None:return None
+    # Accounting is replayed before the last provenance decision. The receipt
+    # consumes this captured view without starting another accounting read.
+    usage=session.usage().data()
     final=session.finish(path)
     eligible=False;verification=None
     if type(final) is PhaseProviderLedger:
@@ -94,7 +97,18 @@ def final_provider_gate(session,path):
     return FrozenRecord.from_dict({'schema':'ordinary-native-final-provider-gate-v1',
         'provider_evidence_eligible':eligible,'final_record_schema':final.record.data()['schema'],
         'final_record_digest':final.record.content_hash,'verification':verification.data(),
-        'current_accounting':session.usage().data()})
+        'current_accounting':usage})
+
+
+def final_usage(gate,model):
+    return provider_usage(None,model) if gate is None else gate.data()['current_accounting']
+
+
+def final_unused(gate,model,body):
+    if gate is None:return unused_main_opportunities(None,model,body)
+    usage=gate.data()['current_accounting']
+    if usage['schema']=='public-train-provider-terminal-snapshot-v1':return None
+    return body['provider']['limits']['main_opportunities']-usage['main_opportunities']
 
 
 def final_score_fields(gate,scores):

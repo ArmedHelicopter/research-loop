@@ -1,7 +1,7 @@
 """Three closed retrieval/review designs, one shared session per cell."""
 from research_loop.modular.train_provider_preflight import (native_envelope, native_source_fields, response_schemas, validate_native_declaration)
 from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage, provider_terminal, unused_main_opportunities, provider_scope, bind_runtime_originals)
-from research_loop.modular.ordinary_provider import final_provider_gate, final_score_fields, unavailable_provider_contrast
+from research_loop.modular.ordinary_provider import final_provider_gate, final_score_fields, unavailable_provider_contrast, final_usage, final_unused
 from research_loop.modular.phase_provider import PhaseProviderSession
 from dataclasses import dataclass
 import hashlib
@@ -262,12 +262,17 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
             contrast = FrozenRecord.from_dict({'schema': 'retrieval-review-inconclusive-contrast-v1', 'panel_digest': panel.digest,
                 'status': 'inconclusive', 'reason': 'incomplete_or_failed_cell', 'error_type': type(exc).__name__})
         contrasts.append(contrast)
+    if native:
+        final_gate = final_provider_gate(provider_session, root/'report-provider-ledger.json')
+        if not final_gate.data()['provider_evidence_eligible']:
+            journal['historical_contrasts_before_failed_final_gate'] = [c.data() for c in contrasts]
+            contrasts = [unavailable_provider_contrast(panel, final_gate) for panel in compiled.panels]
     receipt = FrozenRecord.from_dict({'schema': ('retrieval-review-train-receipt-v2' if native else 'retrieval-review-train-receipt-v1'), 'config_digest': config.record.content_hash,
         'expected_cells': len(journal['cells']), 'observed_cells': len(results), 'scored_cells': len(scores), **final_score_fields(final_gate, scores),
         'failed_cells': sum(r['status']=='failed' for r in journal['cells']), 'blocked_cells': sum(r['status']=='blocked' for r in journal['cells']),
-        'allocation': b['allocation'], 'actual_model_usage': provider_usage(provider_session, model), 'actual_scorer_calls': journal['actual_scorer_calls'],
+        'allocation': b['allocation'], 'actual_model_usage': final_usage(final_gate, model), 'actual_scorer_calls': journal['actual_scorer_calls'],
         'actual_docker_attempts': sum(r['docker_attempts'] for r in journal['cells']),
-        'unused_model_opportunities': unused_main_opportunities(provider_session, model, b),
+        'unused_model_opportunities': final_unused(final_gate, model, b),
         'unused_docker_opportunities': len(results) - sum(r['docker_attempts'] for r in journal['cells']),
         'scorer_usage_unknown': journal['actual_scorer_calls'] > 0,
         'source_calls': sum(r.get('source_calls', 0) for r in journal['cells']),
@@ -278,5 +283,5 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
         'contrasts': [c.data() for c in contrasts], 'pruned_cells': [], 'scientific_effectiveness_proven': False, 'validation_opened': False,
         'status': 'complete_engineering_grid_with_scientific_endpoint_gap' if len(scores)==len(results)
             and all(c.data()['status'] in {'estimated', 'not_identifiable'} for c in contrasts) else 'inconclusive'})
-    _write(root/'controller-receipt.json', receipt.data()); journal['status'] = receipt.data()['status']; persist()
+    _write(root/'controller-receipt.json', receipt.data()); journal['status'] = receipt.data()['status']; journal.update(actual_model_usage=receipt.data()['actual_model_usage']); _write(root/'controller-attempt.json',journal)
     return RetrievalReviewRun(compiled, tuple(results), tuple(scores), tuple(FrozenRecord.from_dict(r) for r in journal['cells']), tuple(contrasts), receipt)

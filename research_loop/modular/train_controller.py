@@ -505,8 +505,8 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
         if not native: raise
     if native:
         final_gate=final_provider_gate(provider_session,root/'final-provider-ledger.json')
-        usage=provider_usage(provider_session,model)
-        complete=(verdict is not None and final_gate.data()['provider_evidence_eligible'] and not provider_session.terminal()
+        usage=final_gate.data()['current_accounting']
+        complete=(verdict is not None and final_gate.data()['provider_evidence_eligible']
             and verdict.decision=='engineering_verified' and not verdict.scientific_verified
             and all(row['status']=='succeeded' for row in attempt['cells']))
         receipt=FrozenRecord.from_dict({'schema':'train-panel-controller-receipt-v2',
