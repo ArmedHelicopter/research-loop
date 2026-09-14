@@ -7,6 +7,7 @@ from evaluation.modular.scorer_process import CombinationScorerProcessClient, se
 from evaluation.modular.scoring_service import ScorerConfig
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.joint_train_controller import run_joint_common_train, verify_joint_common_train_run
+from research_loop.modular.joint_train_selection import select_joint_common_train
 from research_loop.ontology import canonical
 from test_joint_train_runtime import executor, prepare
 from test_scorer_process import _command, _store
@@ -57,6 +58,17 @@ def test_complete_common_train_controller_uses_real_barrier_docker_and_independe
     assert receipt['actual']['model_calls'] == 930 and receipt['actual']['scorer_calls'] == 118
     assert all(row['status'] == 'scored' for row in receipt['targets'])
     assert run.targets[0].inner.solver.execution.record.data()['argv'][:4] == ['docker', 'run', '--pull', 'never']
-    assert verify_joint_common_train_run(run, execution_authority_keys={EXEC.authority_id: EXEC.key},
-                                         scorer_authority_keys={SCORER.authority_id: SCORER.key}) == run.receipt
+    # Selection owns the one complete same-run verifier boundary. Do not replay
+    # this entire grid a second time merely to call that verifier directly.
+    choice = select_joint_common_train(run, execution_authority_keys={EXEC.authority_id: EXEC.key},
+                                       scorer_authority_keys={SCORER.authority_id: SCORER.key}).data()
+    assert choice['controller_receipt_digest'] == run.receipt.content_hash
+    assert choice['expected_cells'] == choice['scored_cells'] == 118
+    assert len(choice['combination_candidates_retained']) == 58 and len(choice['b0_reference']) == 2
+    assert choice['selected_arm'] != 'B0' and choice['b0_used_for_selection'] is False
+    assert choice['selected_subject']['recipe']['id'] == choice['selected_arm']
+    assert len(choice['selected_subject']['component_templates']) == 9
+    assert choice['selected_subject']['package_digest'] == choice['selected_package_digest']
+    assert choice['combination_pruning_authorized'] is choice['acceptance_verified'] is False
+    assert choice['validation_access_authorized'] is choice['deployment_authorized'] is False
     assert len(setup['common_logs']) == 930
