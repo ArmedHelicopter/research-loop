@@ -45,6 +45,26 @@ for line in sys.stdin:
             time.sleep(120)
         if scenario == 'unknown':
             send({'method': '_x.ai/future_work', 'params': {}})
+        if scenario.startswith('inventory_after_'):
+            send({'id': req['id'], 'result': {'sessionId': sid,
+                  'models': {'currentModelId': 'grok-4.6'}}})
+            if scenario == 'inventory_after_missing':
+                break
+            if scenario == 'inventory_after_timeout':
+                time.sleep(120)
+            time.sleep(0.05)
+            send({'method': '_x.ai/models/update', 'params': {'currentModelId': 'grok-4.6'}})
+            update = {'sessionUpdate': 'available_commands_update', 'availableCommands': [],
+                      '_meta': {'tools': []}}
+            if scenario == 'inventory_after_nonempty': update['_meta']['tools'] = ['read_file']
+            if scenario == 'inventory_after_meta': update['_meta'] = {}
+            if scenario == 'inventory_after_commands': update['availableCommands'] = 'invalid'
+            frame = {'method': 'session/update', 'params': {'sessionId':
+                '00000000-0000-4000-8000-000000000002' if scenario == 'inventory_after_foreign' else sid,
+                'update': update}}
+            if scenario == 'inventory_after_server_request': frame['id'] = 99
+            send(frame)
+            continue
         event('available_commands_update', availableCommands=[],
               _meta={'tools': ['read_file'] if scenario == 'tools' else []})
         result = {'sessionId': '00000000-0000-4000-8000-000000000002' if scenario == 'new_binding' else sid,

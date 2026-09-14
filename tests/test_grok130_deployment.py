@@ -54,7 +54,7 @@ def slot(root, cap=128):
     return paths, config
 
 
-def invoke(root, deployment, *, diagnostic=False, frozen_extra=None):
+def invoke(root, deployment, *, diagnostic=False, frozen_extra=None, timeout=60):
     paths, config = slot(root, 512 if diagnostic else 128)
     files = deployment.source_pins() | {deployment.executable: deployment.record.data()['executable_sha256'],
         str(config): acp.digest(config.read_bytes()), str(PEER): acp.digest(PEER.read_bytes())} | (frozen_extra or {})
@@ -65,7 +65,7 @@ def invoke(root, deployment, *, diagnostic=False, frozen_extra=None):
         result = acp.run_native_diagnostic(**common, opportunity_contract=acp.DIAGNOSTIC_OPPORTUNITY_CONTRACT,
             main_output_cap=512, observed_main_token_cap=262144, input_byte_cap=200000)
     else:
-        result = acp.run_native(**common, opportunity_contract=acp.OPPORTUNITY_CONTRACT)
+        result = acp.run_native(**common, opportunity_contract=acp.OPPORTUNITY_CONTRACT, timeout=timeout)
     return result, files
 
 
@@ -217,3 +217,34 @@ def test_postcall_executable_drift_retains_known_main_and_terminal_receipt(tmp_p
     assert not body['accepted'] and 'deployment_file_changed' in body['faults']
     assert body['known_usage']['totalTokens']==12 and body['prompt_may_have_been_dispatched']
     assert body['initial_title_usage'] is None and result.response is None and len(logs)==1
+
+
+@pytest.mark.parametrize('diagnostic', [False, True])
+def test_response_before_inventory_default_entry(tmp_path, monkeypatch, diagnostic):
+    deployment,logs=setup_native(tmp_path/'binary',monkeypatch,'inventory_after_ok')
+    result,_=invoke(tmp_path/'run',deployment,diagnostic=diagnostic)
+    body=result.receipt.data()
+    assert body['accepted'],body
+    assert body['runtime_empty_inventory_count']==1 and body['known_usage']['totalTokens']==12
+    frames=[json.loads(line) for line in (tmp_path/'run/native/stdout.private.jsonl').read_bytes().splitlines()]
+    response=next(i for i,row in enumerate(frames) if row.get('id')==2)
+    inventory=next(i for i,row in enumerate(frames) if row.get('params',{}).get('update',{}).get('sessionUpdate')=='available_commands_update')
+    assert response < inventory
+    assert [json.loads(line)['method'] for line in logs[0].read_text().splitlines()]==[
+        'initialize','session/new','_x.ai/billing','_x.ai/auto-topup-rule','session/prompt',
+        '_x.ai/billing','_x.ai/auto-topup-rule']
+
+
+@pytest.mark.parametrize('mode,fault',[
+    ('missing','unexpected_eof'),('nonempty','runtime_tools_not_empty'),
+    ('meta','runtime_tools_not_empty'),('commands','command_inventory_shape'),
+    ('foreign','session_binding'),('server_request','server_request_disallowed'),('timeout','timeout')])
+def test_response_before_inventory_rejects_without_billing_or_prompt(tmp_path,monkeypatch,mode,fault):
+    deployment,logs=setup_native(tmp_path/'binary',monkeypatch,'inventory_after_'+mode)
+    result,_=invoke(tmp_path/'run',deployment,timeout=0.75 if mode=='timeout' else 60)
+    body=result.receipt.data()
+    assert not body['accepted'] and fault in body['faults'],body
+    assert not body['prompt_may_have_been_dispatched'] and body['prompt_requests_reserved']==0
+    assert body['runtime_empty_inventory_count']==0 and body['known_usage'] is None
+    assert not (tmp_path/'run/native-reservation.json').exists()
+    assert [json.loads(line)['method'] for line in logs[0].read_text().splitlines()]==['initialize','session/new']
