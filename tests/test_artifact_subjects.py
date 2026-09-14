@@ -31,7 +31,8 @@ def output(task="train-task", domain="train"):
 
 def test_task_evidence_is_same_canonical_subject_only():
     same = output()
-    assert TaskEvidenceEdge("supports", same, same).relation == "supports"
+    different_claim = TaskOutputSubject(same.identity, FrozenRecord.from_dict({"claim": "independent evidence"}))
+    assert TaskEvidenceEdge("supports", same, different_claim).relation == "supports"
     with pytest.raises(ContractError, match="cross task"):
         TaskEvidenceEdge("refutes", same, output("foreign"))
 
@@ -68,3 +69,14 @@ def test_canonical_subjects_bind_real_component_and_bundle_digests():
         selection_digest="d" * 64, protocol_digest="e" * 64)
     assert candidate.record.data()["component_digest"] == component_subject.digest
     assert joint.record.data()["bundle_digest"] == bundle_subject.digest
+
+
+def test_subject_record_rejects_noncanonical_payload_or_target_order():
+    with pytest.raises(ContractError, match="sha256"):
+        ArtifactSubject(FrozenRecord.from_dict({"schema": "artifact-subject-v1", "kind": "task_output",
+            "identities": [identity().data()], "payload_digest": "bad"}))
+    train, a, b = identity(), identity("a"), identity("b")
+    source = CandidateComponentSubject(component("M1", train, a, b))
+    with pytest.raises(ContractError, match="provenance differs"):
+        ArtifactSubject.candidate_component(source, history=train, targets=[a, a], selection_digest="d" * 64,
+            protocol_digest="e" * 64)
