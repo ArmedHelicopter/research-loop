@@ -61,8 +61,12 @@ def source(root):
 
 @pytest.fixture(scope="module")
 def prepared(tmp_path_factory):
-    panel, receipts = source(tmp_path_factory.mktemp("c5-original-train"))
-    return prepare_joint_train_handoff(source_panel=panel, source_runtime_receipts=receipts, proposed_target_arm="11")
+    root = tmp_path_factory.mktemp("c5-original-train")
+    panel, receipts = source(root)
+    handoff = prepare_joint_train_handoff(source_panel=panel, source_runtime_receipts=receipts, proposed_target_arm="11")
+    (root / "prepared-handoff.json").write_text(handoff.record.encoded, encoding="utf-8")
+    (root / "original-journals.json").write_text(handoff.original_journals.encoded, encoding="utf-8")
+    return handoff
 
 
 def arguments(handoff):
@@ -87,7 +91,7 @@ def arguments(handoff):
                 acceptance_criteria=criteria, resource_schedule=handoff.closures["11"].resource_schedule)
 
 
-def test_original_typed_eight_cell_source_and_complete_c5_grid(prepared):
+def test_original_typed_eight_cell_source_and_complete_c5_grid(prepared, tmp_path):
     assert len(prepared.source_runtime_receipts) == 8
     assert prepared.source_panel.estimand == "interaction_on_scale"
     assert set(prepared.closures) == {"00", "01", "10", "11"}
@@ -98,6 +102,7 @@ def test_original_typed_eight_cell_source_and_complete_c5_grid(prepared):
     assert prepared.closures["00"].components == {}
     assert prepared.closures["00"].package.digest != prepared.closures["11"].package.digest
     panel = freeze_c5_validation_panel(prepared, **arguments(prepared))
+    (tmp_path / "c5-validation-preparation.json").write_text(panel.record.encoded, encoding="utf-8")
     assert len(panel.cells) == 32
     body = panel.record.data()
     assert len(body["contrast_matrix"]["rows"]) == 3
