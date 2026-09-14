@@ -36,6 +36,8 @@ from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.protocol_panel_driver import (ProtocolAuditPort, ProtocolReplayAuthority,
     verify_protocol_replay_receipt, _no_links)
 from research_loop.modular.runtime import AuditVerifier
+from research_loop.modular.train_provider_preflight import (native_envelope, native_fields,
+    response_schemas, validate_native_declaration)
 from research_loop.ontology import ContractError, canonical, digest
 
 
@@ -58,12 +60,15 @@ class FrozenTrainControllerConfig:
 
     def __post_init__(self) -> None:
         data = self.record.data()
+        native = native_envelope(data, 'singleton')
         required = {"schema", "engineering_scope", "stage", "scope_ids", "item_ids",
                     "evidence_by_task", "budget", "baseline_digest", "p0_control",
                     "packages_by_arm", "scorer", "acceptance_criteria", "replicates",
                     "model", "effort", "max_calls", "max_tokens", "schemas"}
-        if (not required <= set(data) or set(data) - required - {"execution_mode", "objective_by_task"}
-                or data["schema"] not in {_LEGACY_SCHEMA, _SCHEMA}):
+        legacy_fields = (required <= set(data) and not set(data) - required - {"execution_mode", "objective_by_task"}
+            and data["schema"] in {_LEGACY_SCHEMA, _SCHEMA})
+        if not (legacy_fields or native_fields(data, required, family='singleton',
+                optional=('execution_mode','objective_by_task'))):
             raise ContractError("unexpected train controller config schema")
         scope = tuple(data["scope_ids"]) if isinstance(data["scope_ids"], list) else ()
         if (not scope or len(set(scope)) != len(scope) or set(scope) - set(DRIVERS)
@@ -121,7 +126,7 @@ class FrozenTrainControllerConfig:
         if (not isinstance(data["replicates"], list) or not data["replicates"]
                 or len(set(data["replicates"])) != len(data["replicates"])):
             raise ContractError("replicates must be frozen and unique")
-        if (data["model"] != "gpt-5.6-luna" or data["effort"] != "low"
+        if not native and (data["model"] != "gpt-5.6-luna" or data["effort"] != "low"
                 or type(data["max_calls"]) is not int or data["max_calls"] < 1
                 or type(data["max_tokens"]) is not int or data["max_tokens"] < 1):
             raise ContractError("production controller requires frozen Luna/low budgets")
@@ -130,8 +135,14 @@ class FrozenTrainControllerConfig:
             raise ContractError("controller linked mode has an unsupported scope")
         expected_slots = {slot for coverage in scope for slot in DRIVERS[coverage].slots}
         if mode == "linked_benchmark_solve": expected_slots |= {"analysis_program", "final_answer"}
-        if not isinstance(data["schemas"], Mapping) or set(data["schemas"]) != expected_slots:
+        schemas = response_schemas(data, family='singleton')
+        if not isinstance(schemas, Mapping) or set(schemas) != expected_slots:
             raise ContractError("controller requires exact production-driver response schemas")
+        if native:
+            _, calls = _driver_plan(scope, baseline_digest=data['baseline_digest'],
+                p0_control=_record(data['p0_control'],'P0 control'), item_count=len(data['item_ids']),
+                replicates=data['replicates'], linked=mode=='linked_benchmark_solve')
+            validate_native_declaration(data, family='singleton', schemas=schemas, main_opportunities=calls)
 
     @classmethod
     def from_path(cls, path: Path, expected_sha256: str) -> "FrozenTrainControllerConfig":

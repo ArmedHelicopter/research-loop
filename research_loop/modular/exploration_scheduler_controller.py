@@ -33,6 +33,8 @@ from research_loop.modular.modules.improvement import CandidatePackage, Training
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier, ScientificScorerReceipt
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.modular.train_controller import _checked_roots, _reviewed_model_policy, _write
+from research_loop.modular.train_provider_preflight import (native_envelope, native_source_fields,
+    response_schemas, validate_native_declaration)
 from research_loop.ontology import ContractError
 
 
@@ -78,7 +80,9 @@ class FrozenExplorationSchedulerTrainConfig:
         fields = {"schema", "domain", "stage", "item_ids", "task_bindings", "baseline_digest", "packages_by_arm",
                   "scorer", "scorer_handle_bindings", "acceptance_criteria", "replicates", "model", "effort",
                   "max_calls", "max_tokens", "schemas", "allocation", "image", "timeout_seconds", "materials_by_task"}
-        if not source_schema_matches(body, fields, "exploration-scheduler-train-controller-config-v1") or body["domain"] != "train":
+        native = native_envelope(body, 'exploration_scheduler')
+        if not (source_schema_matches(body, fields, "exploration-scheduler-train-controller-config-v1")
+                or native_source_fields(body, fields, family='exploration_scheduler')) or body["domain"] != "train":
             raise ContractError("controller supports the exact train-only M7/M8 configuration")
         if not isinstance(body["stage"], str) or not body["stage"].strip() or not _names(body["item_ids"]) or not _names(body["replicates"]):
             raise ContractError("stage, train allowlist and replicates must be nonempty and unique")
@@ -144,21 +148,24 @@ class FrozenExplorationSchedulerTrainConfig:
                 or any(type(body["allocation"].get(k)) is not int for k in
                        ("docker_attempts_per_cell", "auxiliary_docker_attempts_per_cell", "scorer_calls_per_cell", "scorer_call_limit"))):
             raise ContractError("model slots, Docker attempts and scorer opportunities must be equally frozen")
-        if (body["model"] != "gpt-5.6-luna" or body["effort"] != "low"
+        if ((not native and (body["model"] != "gpt-5.6-luna" or body["effort"] != "low"
                 or type(body["max_calls"]) is not int or body["max_calls"] != cells * len(SLOTS)
-                or type(body["max_tokens"]) is not int or body["max_tokens"] < 1
+                or type(body["max_tokens"]) is not int or body["max_tokens"] < 1))
                 or type(body["timeout_seconds"]) is not int or not 1 <= body["timeout_seconds"] <= 120):
             raise ContractError("model and exact full-panel budgets must be frozen")
         if (not isinstance(body["image"], str) or "@sha256:" not in body["image"]
                 or not _digest(body["image"].rsplit("@sha256:", 1)[1])):
             raise ContractError("Docker image must be content pinned")
-        schemas = body["schemas"]
+        schemas = response_schemas(body, family='exploration_scheduler')
         if not isinstance(schemas, Mapping) or set(schemas) != set(SLOTS):
             raise ContractError("exact two response schemas are required")
         for schema in schemas.values():
             if not isinstance(schema, Mapping) or schema.get("type") != "object":
                 raise ContractError("response schemas must describe objects")
             _validate_schema(schema, _schema_witness(schema))
+        if native:
+            validate_native_declaration(body, family='exploration_scheduler', schemas=schemas,
+                main_opportunities=cells*len(SLOTS))
 
     def data(self):
         return self.record.data()
@@ -223,6 +230,10 @@ class ExplorationSchedulerTrainRun:
 from research_loop.modular.combination_train_controller import _service_preflight, _usage
 
 
+from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage, provider_terminal, provider_scope, bind_runtime_originals)
+from research_loop.modular.phase_provider import PhaseProviderSession
+
+
 def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrainConfig, *, custody: CustodyStore, snapshot_root: Path,
         export_root: Path, run_root: Path, model: CodexModelPort, audit_verifier: AuditVerifier,
         execution_authority: LinkedExecutionAuthority, scoring_service: CombinationAdaptedScoringService,
@@ -234,22 +245,23 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
     if type(scoring_service) is not CombinationScorerProcessClient:
         raise ContractError('independent primary scorer process required')
     serialize_combination_panel(scoring_service.panel, exploration_scheduler=True)
-    _service_preflight(config, model, scoring_service, execution_authority, scorer_authority_keys)
-    snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model.root)
+    family_service_preflight(config, model, scoring_service, execution_authority, scorer_authority_keys, family='exploration_scheduler')
+    native = native_envelope(config.data(), 'exploration_scheduler')
+    snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model_root(model, native=native))
     if root.exists() or exported.exists():
         raise ContractError("controller needs unused run and export roots; inspect earlier attempts instead of retrying")
     body = config.data()
     source = CombinationTrainSource(body, custody=custody, prospective_exporter=prospective_exporter,
                                     snapshot=snapshot, exported=exported)
     expected_cells = len(body["item_ids"]) * len(body["replicates"]) * 4
-    journal = {"schema": "exploration-scheduler-train-controller-attempt-v1", "config_digest": config.record.content_hash,
-        "status": "exporting", "expected_cells": expected_cells, "allocated_model_calls": body["max_calls"],
-        "allocated_model_token_limit": body["max_tokens"], "allocated_docker_attempts": expected_cells*3,
+    journal = {"schema": ('exploration-scheduler-train-controller-attempt-v2' if native else 'exploration-scheduler-train-controller-attempt-v1'), "config_digest": config.record.content_hash,
+        "status": "exporting", "expected_cells": expected_cells, **(allocation_fields(body, native=True) if native else {'allocated_model_calls':body['max_calls'], 'allocated_model_token_limit':body['max_tokens']}), "allocated_docker_attempts": expected_cells*3,
         "allocated_scorer_calls": expected_cells, "actual_scorer_calls": 0, "scorer_usage": "not_provided_by_transport",
-        "model_policy_sha256": model.frozen_base_context.sha256, "cells": [], "packet_receipts": []}
+        **({} if native else {'model_policy_sha256':model.frozen_base_context.sha256}), "cells": [], "packet_receipts": []}
     root.mkdir(parents=True, exist_ok=False)
+    provider_session = PhaseProviderSession(model, root/'provider-scopes.json') if native else None
     def persist():
-        journal["actual_model_usage"] = _usage(model)
+        journal["actual_model_usage"] = provider_usage(provider_session, model)
         _write(root / "controller-attempt.json", journal)
     persist()
     try:
@@ -283,7 +295,7 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
         row = journal["cells"][index]
         packet = by_task[cell.task_digest]
         result = None
-        row.update(phase="execution", status="running", model_usage_before=_usage(model))
+        row.update(phase="execution", status="running", model_usage_before=provider_usage(provider_session, model))
         persist()
         try:
             if broker is None:
@@ -291,20 +303,21 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
                 continue
             # A poisoned provider ledger is not retried for later cells. They
             # remain explicit planned denominator rows with no fabricated trace.
-            if model.ledger["usage_incomplete"]:
+            if provider_terminal(provider_session, model):
                 row.update(phase="model_allocation", status="blocked", reason="prior_model_usage_incomplete")
                 continue
             binding = next(v for v in body["task_bindings"].values() if v["identity"] == cell.identity.data())
             if (packet.task.content_hash != binding["task_digest"]
                     or hashlib.sha256(packet.csv_path.read_bytes()).hexdigest() != binding["csv_sha256"]):
                 raise ContractError("public source changed after compilation")
-            result = run_exploration_scheduler_cell(panel=compiled.panel, cell=cell, task=packet.task,
-                scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash],
-                material=FrozenExplorationSchedulerMaterial(FrozenRecord.from_dict(body['materials_by_task'][cell.task_digest])),
-                objective=FrozenRecord.from_dict({"panel_digest": compiled.panel.digest}),
-                sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
-                public_inputs={"public_csv": packet.csv_path}, image=body["image"], broker=broker, model=model,
-                audit_verifier=audit_verifier, timeout_seconds=body["timeout_seconds"])
+            with provider_scope(provider_session, model, cell) as scoped_model:
+                result = run_exploration_scheduler_cell(panel=compiled.panel, cell=cell, task=packet.task,
+                    scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash],
+                    material=FrozenExplorationSchedulerMaterial(FrozenRecord.from_dict(body['materials_by_task'][cell.task_digest])),
+                    objective=FrozenRecord.from_dict({"panel_digest": compiled.panel.digest}),
+                    sidecar=root / "cells" / FrozenRecord.from_dict(cell.data()).content_hash,
+                    public_inputs={"public_csv": packet.csv_path}, image=body["image"], broker=broker, model=scoped_model,
+                    audit_verifier=audit_verifier, timeout_seconds=body["timeout_seconds"])
             row["runtime"] = PanelReceiptVerifier._runtime_data(result.runtime)
             row.update(phase="source_verification")
             persist()
@@ -319,6 +332,8 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
             if result.runtime.status != "succeeded" or result.solver is None or result.solver.status != "execution_succeeded":
                 row.update(status="failed", phase="execution", reason="combination_execution_failed")
                 continue
+            if native:
+                row['provider_seal_digest'] = bind_runtime_originals(provider_session, cell, result.runtime, root/'cells'/FrozenRecord.from_dict(cell.data()).content_hash/'provider-seal.json')
             source = issue_exploration_scheduler_score_input(panel=compiled.panel, result=result, task=packet.task,
                 scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash], authority=execution_authority,
                 material=FrozenExplorationSchedulerMaterial(FrozenRecord.from_dict(body['materials_by_task'][cell.task_digest])),
@@ -339,7 +354,7 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
         except Exception as exc:
             row.update(status="failed", error_type=type(exc).__name__)
         finally:
-            row["model_usage_after"] = _usage(model)
+            row["model_usage_after"] = provider_usage(provider_session, model)
             if result is not None and result.solver is not None and result.solver.execution is not None:
                 row["execution_receipt"] = result.solver.execution.data()
             phase_path = root/'cells'/FrozenRecord.from_dict(cell.data()).content_hash/'phase'
@@ -371,14 +386,14 @@ def run_exploration_scheduler_train_panel(config: FrozenExplorationSchedulerTrai
                 "status": "inconclusive", "reason": "contrast_verification_failed", "error_type": type(exc).__name__,
                 "expected_cells": expected_cells, "scored_cells": len(scores), "missing_policy": "incomplete_reject",
                 "scientific_status": "not_measured"})
-    receipt = FrozenRecord.from_dict({"schema": "exploration-scheduler-train-controller-receipt-v1", "config_digest": config.record.content_hash,
+    receipt = FrozenRecord.from_dict({"schema": ('exploration-scheduler-train-controller-receipt-v2' if native else 'exploration-scheduler-train-controller-receipt-v1'), "config_digest": config.record.content_hash,
         "panel_digest": compiled.panel.digest, "expected_cells": expected_cells, "observed_cells": len(journal["cells"]),
         "successful_cells": sum(row["status"] == "succeeded" for row in journal["cells"]), "scored_cells": len(scores),
         "failed_cells": sum(row["status"] == "failed" for row in journal["cells"]),
         "blocked_cells": sum(row["status"] == "blocked" for row in journal["cells"]),
         "actual_docker_attempts": sum(row['docker_attempts'] for row in journal['cells']),
         "unused_docker_opportunities": 24-sum(row['docker_attempts'] for row in journal['cells']),
-        "allocation": body["allocation"], "actual_model_usage": _usage(model), "actual_scorer_calls": journal["actual_scorer_calls"],
+        "allocation": body["allocation"], "actual_model_usage": provider_usage(provider_session, model), "actual_scorer_calls": journal["actual_scorer_calls"],
         "scorer_usage": "not_provided_by_transport", "contrast": contrast.data(),
         "status": "estimated" if contrast.data()["status"] == "estimated" else "inconclusive",
         "scientific_effectiveness_proven": False, "validation_opened": False, "pruned_cells": []})

@@ -43,6 +43,23 @@ def native_fields(body, required, *, family, optional=()):
         and set(body)-set(optional) == (set(required)-LEGACY_TRANSPORT_FIELDS)|{'provider'})
 
 
+def native_source_fields(body, required, *, family, optional=()):
+    return (body.get('export_mode') == 'primary_prospective'
+        and native_fields(body,set(required)|{'export_mode'},family=family,optional=optional))
+
+
+def response_schemas(body, *, family):
+    if not native_envelope(body,family):
+        return body['schemas']
+    provider=body.get('provider')
+    if type(provider) is not dict or type(provider.get('native_config')) is not dict:
+        raise ContractError('original native provider configuration required')
+    schemas=provider['native_config'].get('schemas')
+    if type(schemas) is not dict:
+        raise ContractError('native response schema mapping required')
+    return schemas
+
+
 def validate_native_declaration(body, *, family, schemas, main_opportunities):
     if not native_envelope(body, family) or LEGACY_TRANSPORT_FIELDS & set(body):
         raise ContractError('explicit native envelope without legacy transport fields required')

@@ -1,4 +1,7 @@
 """Three closed retrieval/review designs, one shared session per cell."""
+from research_loop.modular.train_provider_preflight import (native_envelope, native_source_fields, response_schemas, validate_native_declaration)
+from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage, provider_terminal, unused_main_opportunities, provider_scope, bind_runtime_originals)
+from research_loop.modular.phase_provider import PhaseProviderSession
 from dataclasses import dataclass
 import hashlib
 from pathlib import Path
@@ -36,11 +39,11 @@ class FrozenRetrievalReviewConfig:
 
     def __post_init__(self):
         if not isinstance(self.record, FrozenRecord): raise ContractError('frozen retrieval review train configuration required')
-        b = self.data()
+        b = self.data(); native = native_envelope(b, 'retrieval_review')
         required = {'schema', 'domain', 'stage', 'item_ids', 'task_bindings', 'baseline_digest', 'packages_by_arm',
             'scorer', 'scorer_handle_bindings', 'acceptance_criteria', 'replicates', 'model', 'effort', 'max_calls',
             'max_tokens', 'schemas', 'allocation', 'image', 'timeout_seconds', 'materials_by_task'}
-        if (not source_schema_matches(b, required, 'retrieval-review-combination-train-config-v1') or b['domain'] != 'train'
+        if (not (source_schema_matches(b, required, 'retrieval-review-combination-train-config-v1') or native_source_fields(b, required, family='retrieval_review')) or b['domain'] != 'train'
                 or not isinstance(b['stage'], str) or not b['stage'].strip() or not _names(b['item_ids'])
                 or not _names(b['replicates']) or not _digest(b['baseline_digest'])):
             raise ContractError('closed retrieval review train scope or source list invalid')
@@ -83,16 +86,18 @@ class FrozenRetrievalReviewConfig:
             'scorer_call_limit': n, 'scorer_token_accounting': 'transport_not_provided', 'source_calls_per_cell': 3, 'source_cap_per_cell': 3, 'context_bytes_per_cell': 4096}
         if FrozenRecord.from_dict(b['allocation']) != FrozenRecord.from_dict(allocation):
             raise ContractError('five model, one Docker, three source and one scorer allocations must match')
-        if (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != n*5
-                or type(b['max_tokens']) is not int or b['max_tokens'] < 1 or type(b['timeout_seconds']) is not int
+        if ((not native and (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != n*5
+                or type(b['max_tokens']) is not int or b['max_tokens'] < 1)) or type(b['timeout_seconds']) is not int
                 or not 1 <= b['timeout_seconds'] <= 120 or not isinstance(b['image'], str) or '@sha256:' not in b['image']
                 or not _digest(b['image'].rsplit('@sha256:', 1)[1])):
             raise ContractError('bounded matched model and pinned Docker configuration required')
-        schemas = b['schemas']
+        schemas = response_schemas(b, family='retrieval_review')
         if not isinstance(schemas, dict) or set(schemas) != set(SLOTS): raise ContractError('exact five shared response schemas required')
         for schema in schemas.values():
             if not isinstance(schema, dict) or schema.get('type') != 'object': raise ContractError('object response schema required')
             _validate_schema(schema, _schema_witness(schema))
+        if native:
+            validate_native_declaration(b, family='retrieval_review', schemas=schemas, main_opportunities=n*5)
 
     def data(self): return self.record.data()
 
@@ -162,17 +167,19 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
             or any(not isinstance(v, CombinationScorerProcessClient) for v in scoring_services.values())):
         raise ContractError('closed train dependencies and separate scorer processes required')
     for service in scoring_services.values():
-        _service_preflight(config, model, service, execution_authority, scorer_authority_keys)
-    snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model.root)
+        family_service_preflight(config, model, service, execution_authority, scorer_authority_keys, family='retrieval_review')
+    native = native_envelope(config.data(), 'retrieval_review')
+    snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model_root(model, native=native))
     if root.exists() or exported.exists(): raise ContractError('closed controller requires unused roots and no retry')
     b = config.data()
     source = CombinationTrainSource(b, custody=custody, prospective_exporter=prospective_exporter,
                                   snapshot=snapshot, exported=exported)
     root.mkdir(parents=True)
-    journal = {'schema': 'retrieval-review-train-attempt-v1', 'config_digest': config.record.content_hash, 'status': 'exporting',
-        'allocation': b['allocation'], 'max_model_calls': b['max_calls'], 'max_model_tokens': b['max_tokens'], 'cells': [], 'actual_scorer_calls': 0}
+    provider_session = PhaseProviderSession(model, root/'provider-scopes.json') if native else None
+    journal = {'schema': ('retrieval-review-train-attempt-v2' if native else 'retrieval-review-train-attempt-v1'), 'config_digest': config.record.content_hash, 'status': 'exporting',
+        'allocation': b['allocation'], **allocation_fields(b, native=native), 'cells': [], 'actual_scorer_calls': 0}
     def persist():
-        journal['actual_model_usage'] = _usage(model); _write(root/'controller-attempt.json', journal)
+        journal['actual_model_usage'] = provider_usage(provider_session, model); _write(root/'controller-attempt.json', journal)
     persist()
     try:
         packets = source.export()
@@ -193,18 +200,19 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
     results, scores, score_inputs, runtime_by_panel = [], [], {}, {}
     for index, (panel, cell) in enumerate((p,c) for p in compiled.panels for c in p.cells):
         row = journal['cells'][index]; result = None
-        row.update(status='running', phase='material_verification', model_usage_before=_usage(model)); persist()
+        row.update(status='running', phase='material_verification', model_usage_before=provider_usage(provider_session, model)); persist()
         cell_root = root/'cells'/FrozenRecord.from_dict(cell.data()).content_hash
         try:
-            if model.ledger['usage_incomplete']:
+            if provider_terminal(provider_session, model):
                 row.update(status='blocked', phase='model_allocation', reason='prior_usage_incomplete'); continue
             packet = by_task[cell.task_digest]
             scoring_service = scoring_services[panel.obligation_id]
             args = dict(panel=panel, task=packet.task, scenario=compiled.scenarios[cell.key],
                 package=compiled.packages[cell.runtime_arm.content_hash], material=compiled.materials[cell.task_digest],
                 public_inputs={'public_csv': packet.csv_path}, broker=broker)
-            result = run_retrieval_review_cell(cell=cell, **args, provider=provider, admission_port=admission_port, objective=FrozenRecord.from_dict({'panel_digest': panel.digest}),
-                sidecar=cell_root, image=b['image'], model=model, audit_verifier=audit_verifier, timeout_seconds=b['timeout_seconds'])
+            with provider_scope(provider_session, model, cell) as scoped_model:
+                result = run_retrieval_review_cell(cell=cell, **args, provider=provider, admission_port=admission_port, objective=FrozenRecord.from_dict({'panel_digest': panel.digest}),
+                    sidecar=cell_root, image=b['image'], model=scoped_model, audit_verifier=audit_verifier, timeout_seconds=b['timeout_seconds'])
             row.update(phase='source_verification', runtime=PanelReceiptVerifier._runtime_data(result.runtime)); persist()
             if result.cell != cell or result.runtime.cell_key != cell.key: raise ContractError('foreign executor cell')
             verified = verify_retrieval_review_cell(result, **args)
@@ -212,6 +220,8 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
             if result.runtime.status != 'succeeded':
                 row.update(status='failed', phase='execution', reason='original_execution_failure'); continue
             source = execution_authority.issue(_score_input_payload(panel, result).data()); score_inputs[cell.key] = source
+            if native:
+                row['provider_seal_digest'] = bind_runtime_originals(provider_session, cell, result.runtime, cell_root/'provider-seal.json')
             row.update(phase='scoring', scorer_calls=1, score_input=source.data()); journal['actual_scorer_calls'] += 1; persist()
             score = scoring_service.score_combination(panel=panel, cell=cell, score_input=source)
             row.update(phase='score_verification', scorer_receipt=score.receipt.data())
@@ -221,7 +231,7 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
         except Exception as exc:
             row.update(status='failed', error_type=type(exc).__name__)
         finally:
-            row['model_usage_after'] = _usage(model)
+            row['model_usage_after'] = provider_usage(provider_session, model)
             if result:
                 ev = [FrozenRecord(line).data() for line in result.runtime.trace_path.read_text(encoding='utf-8').splitlines()]
                 row['source_calls'] = sum(e['stage']=='q8_retrieval_request' for e in ev)
@@ -245,12 +255,12 @@ def run_retrieval_review_panels(config, *, custody, snapshot_root, export_root, 
             contrast = FrozenRecord.from_dict({'schema': 'retrieval-review-inconclusive-contrast-v1', 'panel_digest': panel.digest,
                 'status': 'inconclusive', 'reason': 'incomplete_or_failed_cell', 'error_type': type(exc).__name__})
         contrasts.append(contrast)
-    receipt = FrozenRecord.from_dict({'schema': 'retrieval-review-train-receipt-v1', 'config_digest': config.record.content_hash,
+    receipt = FrozenRecord.from_dict({'schema': ('retrieval-review-train-receipt-v2' if native else 'retrieval-review-train-receipt-v1'), 'config_digest': config.record.content_hash,
         'expected_cells': len(journal['cells']), 'observed_cells': len(results), 'scored_cells': len(scores),
         'failed_cells': sum(r['status']=='failed' for r in journal['cells']), 'blocked_cells': sum(r['status']=='blocked' for r in journal['cells']),
-        'allocation': b['allocation'], 'actual_model_usage': _usage(model), 'actual_scorer_calls': journal['actual_scorer_calls'],
+        'allocation': b['allocation'], 'actual_model_usage': provider_usage(provider_session, model), 'actual_scorer_calls': journal['actual_scorer_calls'],
         'actual_docker_attempts': sum(r['docker_attempts'] for r in journal['cells']),
-        'unused_model_opportunities': b['max_calls'] - len(model.ledger['calls']),
+        'unused_model_opportunities': unused_main_opportunities(provider_session, model, b),
         'unused_docker_opportunities': len(results) - sum(r['docker_attempts'] for r in journal['cells']),
         'scorer_usage_unknown': journal['actual_scorer_calls'] > 0,
         'source_calls': sum(r.get('source_calls', 0) for r in journal['cells']),

@@ -1,4 +1,7 @@
 """Closed prospective TRAIN controller for the three state/prediction designs."""
+from research_loop.modular.train_provider_preflight import (native_envelope, native_source_fields, response_schemas, validate_native_declaration)
+from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage, provider_terminal, unused_main_opportunities, provider_scope, bind_runtime_originals)
+from research_loop.modular.phase_provider import PhaseProviderSession
 from dataclasses import dataclass
 import hashlib
 from pathlib import Path
@@ -58,14 +61,14 @@ class FrozenStatePredictionTrainConfig:
 
     def __post_init__(self):
         if not isinstance(self.record, FrozenRecord): raise ContractError('frozen state prediction train configuration required')
-        b = self.data()
+        b = self.data(); native = native_envelope(b, 'state_prediction')
         designs = DESIGNS
         schema = 'state-prediction-combination-train-config-v1'
         required = {'schema', 'domain', 'stage', 'item_ids', 'task_bindings', 'baseline_digest', 'packages_by_arm',
             'scorer', 'scorer_handle_bindings', 'acceptance_criteria', 'replicates', 'model', 'effort', 'max_calls',
             'max_tokens', 'schemas', 'allocation', 'image', 'timeout_seconds', 'materials_by_pair', 'source_verifier_bindings'}
         if (type(self) is not FrozenStatePredictionTrainConfig
-                or not source_schema_matches(b, required, schema)
+                or not (source_schema_matches(b, required, schema) or native_source_fields(b, required, family='state_prediction'))
                 or b.get('export_mode') != 'primary_prospective' or b['domain'] != 'train'
                 or not isinstance(b['stage'], str) or not b['stage'].strip()
                 or not _names(b['item_ids']) or len(b['item_ids']) != 2
@@ -122,16 +125,18 @@ class FrozenStatePredictionTrainConfig:
             'scorer_call_limit': n, 'scorer_token_accounting': 'transport_not_provided', 'source_calls_per_cell': 2}
         if FrozenRecord.from_dict(b['allocation']) != FrozenRecord.from_dict(allocation):
             raise ContractError('three model, one Docker, two source and one scorer allocations must match')
-        if (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != n*len(SLOTS)
-                or type(b['max_tokens']) is not int or b['max_tokens'] < 1 or type(b['timeout_seconds']) is not int
+        if ((not native and (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != n*len(SLOTS)
+                or type(b['max_tokens']) is not int or b['max_tokens'] < 1)) or type(b['timeout_seconds']) is not int
                 or not 1 <= b['timeout_seconds'] <= 120 or not isinstance(b['image'], str) or '@sha256:' not in b['image']
                 or not _digest(b['image'].rsplit('@sha256:', 1)[1])):
             raise ContractError('bounded matched model and pinned Docker configuration required')
-        schemas = b['schemas']
+        schemas = response_schemas(b, family='state_prediction')
         if not isinstance(schemas, dict) or set(schemas) != set(SLOTS): raise ContractError('exact three shared response schemas required')
         for schema in schemas.values():
             if not isinstance(schema, dict) or schema.get('type') != 'object': raise ContractError('object response schema required')
             _validate_schema(schema, _schema_witness(schema))
+        if native:
+            validate_native_declaration(b, family='state_prediction', schemas=schemas, main_opportunities=n*len(SLOTS))
         bindings = b['source_verifier_bindings']
         if not isinstance(bindings, dict) or set(bindings) != set(DESIGNS):
             raise ContractError('source verifiers must cover the exact pairs')
@@ -218,21 +223,23 @@ def run_state_prediction_train_panels(config, *, custody, snapshot_root, export_
         if (type(qualifier) is not expected or qualifier.binding().data() != b['source_verifier_bindings'][pair]
                 or service.state_prediction is not True or service.panel.obligation_id != pair):
             raise ContractError('pair-specific material qualifier or scorer process scope differs')
-        _service_preflight(config, model, service, execution_authority, scorer_authority_keys)
+        family_service_preflight(config, model, service, execution_authority, scorer_authority_keys, family='state_prediction')
         if any(a.authority.key in {execution_authority.key, *scorer_authority_keys.values()}
                or a.authority.authority_id in {execution_authority.authority_id, *scorer_authority_keys}
                for a in qualifier.authorities):
             raise ContractError('source, execution and scoring authority roles must be independent')
-    snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model.root)
+    native = native_envelope(config.data(), 'state_prediction')
+    snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model_root(model, native=native))
     if root.exists() or exported.exists(): raise ContractError('closed controller requires unused roots and no retry')
     b = config.data()
     source = CombinationTrainSource(b, custody=custody, prospective_exporter=prospective_exporter,
                                   snapshot=snapshot, exported=exported)
     root.mkdir(parents=True)
-    journal = {'schema': 'state-prediction-train-attempt-v1', 'config_digest': config.record.content_hash, 'status': 'exporting',
-        'allocation': b['allocation'], 'max_model_calls': b['max_calls'], 'max_model_tokens': b['max_tokens'], 'expected_cells': 24, 'cells': [], 'actual_scorer_calls': 0}
+    provider_session = PhaseProviderSession(model, root/'provider-scopes.json') if native else None
+    journal = {'schema': ('state-prediction-train-attempt-v2' if native else 'state-prediction-train-attempt-v1'), 'config_digest': config.record.content_hash, 'status': 'exporting',
+        'allocation': b['allocation'], **allocation_fields(b, native=native), 'expected_cells': 24, 'cells': [], 'actual_scorer_calls': 0}
     def persist():
-        journal['actual_model_usage'] = _usage(model); _write(root/'controller-attempt.json', journal)
+        journal['actual_model_usage'] = provider_usage(provider_session, model); _write(root/'controller-attempt.json', journal)
     persist()
     try:
         packets = source.export()
@@ -267,17 +274,18 @@ def run_state_prediction_train_panels(config, *, custody, snapshot_root, export_
         service = scoring_services[panel.obligation_id]
         source_verifier = source_verifiers[panel.obligation_id]
         row = journal['cells'][index]; result = None
-        row.update(status='running', phase='material_verification', model_usage_before=_usage(model)); persist()
+        row.update(status='running', phase='material_verification', model_usage_before=provider_usage(provider_session, model)); persist()
         cell_root = root/'cells'/FrozenRecord.from_dict(cell.data()).content_hash
         try:
-            if model.ledger['usage_incomplete']:
+            if provider_terminal(provider_session, model):
                 row.update(status='blocked', phase='model_allocation', reason='prior_usage_incomplete'); continue
             packet = by_task[cell.task_digest]
             args = dict(panel=panel, task=packet.task, scenario=compiled.scenarios[cell.key],
                 package=compiled.packages[cell.runtime_arm.content_hash], material=compiled.materials[panel.obligation_id][cell.task_digest],
                 source_verifier=source_verifier, public_inputs={'public_csv': packet.csv_path}, broker=broker)
-            result = run_state_prediction_combination_cell(cell=cell, **args, objective=FrozenRecord.from_dict({'panel_digest': panel.digest}),
-                sidecar=cell_root, image=b['image'], model=model, audit_verifier=audit_verifier, timeout_seconds=b['timeout_seconds'])
+            with provider_scope(provider_session, model, cell) as scoped_model:
+                result = run_state_prediction_combination_cell(cell=cell, **args, objective=FrozenRecord.from_dict({'panel_digest': panel.digest}),
+                    sidecar=cell_root, image=b['image'], model=scoped_model, audit_verifier=audit_verifier, timeout_seconds=b['timeout_seconds'])
             row.update(phase='source_verification', runtime=PanelReceiptVerifier._runtime_data(result.runtime)); persist()
             if result.cell != cell or result.runtime.cell_key != cell.key: raise ContractError('foreign executor cell')
             verified = verify_state_prediction_combination_cell(result, **args)
@@ -289,6 +297,8 @@ def run_state_prediction_train_panels(config, *, custody, snapshot_root, export_
             if result.runtime.status != 'succeeded':
                 row.update(status='failed', phase='execution', reason='original_execution_failure'); continue
             source = issue_state_prediction_score_input(authority=execution_authority, result=result, **args); score_inputs[cell.key] = source
+            if native:
+                row['provider_seal_digest'] = bind_runtime_originals(provider_session, cell, result.runtime, cell_root/'provider-seal.json')
             row.update(phase='scoring', scorer_calls=1, score_input=source.data()); journal['actual_scorer_calls'] += 1; persist()
             score = service.score_combination(panel=panel, cell=cell, score_input=source)
             row.update(phase='score_verification', scorer_receipt=score.receipt.data())
@@ -298,7 +308,7 @@ def run_state_prediction_train_panels(config, *, custody, snapshot_root, export_
         except Exception as exc:
             row.update(status='failed', error_type=type(exc).__name__)
         finally:
-            row['model_usage_after'] = _usage(model)
+            row['model_usage_after'] = provider_usage(provider_session, model)
             source_path = cell_root/'source-verification.json'
             if source_path.is_file():
                 import json
@@ -329,12 +339,12 @@ def run_state_prediction_train_panels(config, *, custody, snapshot_root, export_
                 contrast = FrozenRecord.from_dict({'schema': 'state-prediction-inconclusive-contrast-v1', 'panel_digest': panel.digest,
                     'status': 'inconclusive', 'reason': 'incomplete_or_failed_cell', 'error_type': type(exc).__name__})
         contrasts.append(contrast)
-    receipt = FrozenRecord.from_dict({'schema': 'state-prediction-train-receipt-v1', 'config_digest': config.record.content_hash,
+    receipt = FrozenRecord.from_dict({'schema': ('state-prediction-train-receipt-v2' if native else 'state-prediction-train-receipt-v1'), 'config_digest': config.record.content_hash,
         'expected_cells': 24, 'observed_cells': len(results), 'scored_cells': len(scores),
         'failed_cells': sum(r['status']=='failed' for r in journal['cells']), 'blocked_cells': sum(r['status']=='blocked' for r in journal['cells']),
-        'allocation': b['allocation'], 'actual_model_usage': _usage(model), 'actual_scorer_calls': journal['actual_scorer_calls'],
+        'allocation': b['allocation'], 'actual_model_usage': provider_usage(provider_session, model), 'actual_scorer_calls': journal['actual_scorer_calls'],
         'actual_docker_attempts': sum(r['docker_attempts'] for r in journal['cells']),
-        'unused_model_opportunities': b['max_calls'] - len(model.ledger['calls']),
+        'unused_model_opportunities': unused_main_opportunities(provider_session, model, b),
         'unused_docker_opportunities': 24 - sum(r['docker_attempts'] for r in journal['cells']),
         'scorer_usage_unknown': journal['actual_scorer_calls'] > 0,
         'unused_scorer_opportunities': 24-journal['actual_scorer_calls'],

@@ -1,4 +1,6 @@
 """Closed custody/compiler/controller for all four frozen lineage designs."""
+from research_loop.modular.ordinary_provider import (family_service_preflight, model_root, allocation_fields, provider_usage, provider_terminal, unused_main_opportunities, provider_scope, bind_runtime_originals)
+from research_loop.modular.phase_provider import PhaseProviderSession
 from dataclasses import dataclass
 import hashlib
 from pathlib import Path
@@ -23,6 +25,8 @@ from research_loop.modular.benchmarks.execution import DockerExecutionBroker
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier
 from research_loop.modular.runtime import AuditVerifier
 from research_loop.modular.lineage_useful_controls import source_contract_body
+from research_loop.modular.train_provider_preflight import (native_envelope, native_source_fields,
+    response_schemas, validate_native_declaration)
 from research_loop.modular.train_controller import _checked_roots, _write
 from research_loop.ontology import ContractError
 
@@ -48,13 +52,20 @@ class FrozenLineageTrainConfig:
         if not isinstance(self.record, FrozenRecord): raise ContractError('frozen lineage train configuration required')
         b = self.data()
         designs, material_type, schema, cell_count = self._contract()
+        family = 'admission' if schema == 'admission-combination-train-config-v1' else 'lineage'
+        native = native_envelope(b, family)
         required = {'schema', 'domain', 'stage', 'item_ids', 'task_bindings', 'baseline_digest', 'packages_by_arm',
             'scorer', 'scorer_handle_bindings', 'acceptance_criteria', 'replicates', 'model', 'effort', 'max_calls',
             'max_tokens', 'schemas', 'allocation', 'image', 'timeout_seconds', 'materials_by_task', 'source_verifier_binding'}
-        source_body = source_contract_body(b, schema)
+        source_body = b if native else source_contract_body(b, schema)
         schema_ok = (source_schema_matches(source_body, required, schema)
                      if schema == 'admission-combination-train-config-v1' else
                      source_schema_matches(source_body, required, schema, optional=('lineage_reference_binding',)))
+        if native:
+            from research_loop.modular.lineage_useful_controls import RECIPE
+            schema_ok = (native_source_fields(b, required|{'execution_recipe'}, family=family,
+                optional=('lineage_reference_binding',) if family=='lineage' else ())
+                and b.get('execution_recipe') == RECIPE.data())
         if (not schema_ok or b['domain'] != 'train'
                 or not isinstance(b['stage'], str) or not b['stage'].strip() or not _names(b['item_ids'])
                 or not _names(b['replicates']) or not _digest(b['baseline_digest'])):
@@ -116,16 +127,18 @@ class FrozenLineageTrainConfig:
             'scorer_call_limit': n, 'scorer_token_accounting': 'transport_not_provided', 'source_calls_per_cell': 2}
         if FrozenRecord.from_dict(b['allocation']) != FrozenRecord.from_dict(allocation):
             raise ContractError('four model, one Docker, two source and one scorer allocations must match')
-        if (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != n*4
-                or type(b['max_tokens']) is not int or b['max_tokens'] < 1 or type(b['timeout_seconds']) is not int
+        if ((not native and (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != n*4
+                or type(b['max_tokens']) is not int or b['max_tokens'] < 1)) or type(b['timeout_seconds']) is not int
                 or not 1 <= b['timeout_seconds'] <= 120 or not isinstance(b['image'], str) or '@sha256:' not in b['image']
                 or not _digest(b['image'].rsplit('@sha256:', 1)[1])):
             raise ContractError('bounded matched model and pinned Docker configuration required')
-        schemas = b['schemas']
+        schemas = response_schemas(b, family=family)
         if not isinstance(schemas, dict) or set(schemas) != set(SLOTS): raise ContractError('exact four shared response schemas required')
         for schema in schemas.values():
             if not isinstance(schema, dict) or schema.get('type') != 'object': raise ContractError('object response schema required')
             _validate_schema(schema, _schema_witness(schema))
+        if native:
+            validate_native_declaration(b, family=family, schemas=schemas, main_opportunities=n*4)
         source = b['source_verifier_binding']
         if (not isinstance(source, dict) or set(source) != {'authorities', 'cost_limit_per_call'}
                 or type(source['cost_limit_per_call']) is not int or source['cost_limit_per_call'] < 1
@@ -286,22 +299,24 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
     elif 'lineage_reference_binding' in config.data():
         raise ContractError('reference-bound lineage configuration requires the process pool')
     for service in scoring_service.values() if admission else (scoring_service,):
-        _service_preflight(config, model, service, execution_authority, scorer_authority_keys)
+        family_service_preflight(config, model, service, execution_authority, scorer_authority_keys, family=('admission' if admission else 'lineage'))
     score_verifier = verify_combination_adapted_receipt if admission else verify_lineage_score
     source_issuer = issue_admission_score_input if admission else issue_lineage_score_input
     def reference_options(cell):
         return {} if admission else {'expected_reference_digest': config.data().get('lineage_reference_binding', {}).get('references', {}).get(
             FrozenRecord.from_dict(cell.identity.data()).content_hash)}
-    snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model.root)
+    native = native_envelope(config.data(), ('admission' if admission else 'lineage'))
+    snapshot, exported, root, _ = _checked_roots(snapshot_root, export_root, run_root, model_root(model, native=native))
     if root.exists() or exported.exists(): raise ContractError('closed controller requires unused roots and no retry')
     b = config.data()
     source = CombinationTrainSource(b, custody=custody, prospective_exporter=prospective_exporter,
                                   snapshot=snapshot, exported=exported)
     root.mkdir(parents=True)
-    journal = {'schema': 'lineage-train-attempt-v1', 'config_digest': config.record.content_hash, 'status': 'exporting',
-        'allocation': b['allocation'], 'max_model_calls': b['max_calls'], 'max_model_tokens': b['max_tokens'], 'cells': [], 'actual_scorer_calls': 0}
+    provider_session = PhaseProviderSession(model, root/'provider-scopes.json') if native else None
+    journal = {'schema': ('lineage-train-attempt-v2' if native else 'lineage-train-attempt-v1'), 'config_digest': config.record.content_hash, 'status': 'exporting',
+        'allocation': b['allocation'], **allocation_fields(b, native=native), 'cells': [], 'actual_scorer_calls': 0}
     def persist():
-        journal['actual_model_usage'] = _usage(model); _write(root/'controller-attempt.json', journal)
+        journal['actual_model_usage'] = provider_usage(provider_session, model); _write(root/'controller-attempt.json', journal)
     persist()
     try:
         packets = source.export()
@@ -334,17 +349,18 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
     for index, (panel, cell) in enumerate((p,c) for p in compiled.panels for c in p.cells):
         service = scoring_service[panel.obligation_id] if admission else scoring_service
         row = journal['cells'][index]; result = None
-        row.update(status='running', phase='material_verification', model_usage_before=_usage(model)); persist()
+        row.update(status='running', phase='material_verification', model_usage_before=provider_usage(provider_session, model)); persist()
         cell_root = root/'cells'/FrozenRecord.from_dict(cell.data()).content_hash
         try:
-            if model.ledger['usage_incomplete']:
+            if provider_terminal(provider_session, model):
                 row.update(status='blocked', phase='model_allocation', reason='prior_usage_incomplete'); continue
             packet = by_task[cell.task_digest]
             args = dict(panel=panel, task=packet.task, scenario=compiled.scenarios[cell.key],
                 package=compiled.packages[cell.runtime_arm.content_hash], material=compiled.materials[cell.task_digest],
                 source_verifier=source_verifier, public_inputs={'public_csv': packet.csv_path}, broker=broker)
-            result = run_lineage_combination_cell(cell=cell, **args, objective=FrozenRecord.from_dict({'panel_digest': panel.digest}),
-                sidecar=cell_root, image=b['image'], model=model, audit_verifier=audit_verifier, timeout_seconds=b['timeout_seconds'])
+            with provider_scope(provider_session, model, cell) as scoped_model:
+                result = run_lineage_combination_cell(cell=cell, **args, objective=FrozenRecord.from_dict({'panel_digest': panel.digest}),
+                    sidecar=cell_root, image=b['image'], model=scoped_model, audit_verifier=audit_verifier, timeout_seconds=b['timeout_seconds'])
             row.update(phase='source_verification', runtime=PanelReceiptVerifier._runtime_data(result.runtime)); persist()
             if result.cell != cell or result.runtime.cell_key != cell.key: raise ContractError('foreign executor cell')
             verified = verify_lineage_combination_cell(result, **args)
@@ -356,6 +372,8 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
             if result.runtime.status != 'succeeded':
                 row.update(status='failed', phase='execution', reason='original_execution_failure'); continue
             source = source_issuer(authority=execution_authority, result=result, **args); score_inputs[cell.key] = source
+            if native:
+                row['provider_seal_digest'] = bind_runtime_originals(provider_session, cell, result.runtime, cell_root/'provider-seal.json')
             row.update(phase='scoring', scorer_calls=1, score_input=source.data()); journal['actual_scorer_calls'] += 1; persist()
             score = (service.score_combination if admission else service.score_lineage)(panel=panel, cell=cell, score_input=source)
             row.update(phase='score_verification', scorer_receipt=score.receipt.data())
@@ -367,7 +385,7 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
         finally:
             if isinstance(scoring_service, LineageScorerProcessPool) and row['scorer_calls']:
                 row['independent_scorer_usage'] = scoring_service.clients[panel.obligation_id].usage()
-            row['model_usage_after'] = _usage(model)
+            row['model_usage_after'] = provider_usage(provider_session, model)
             source_path = cell_root/'source-verification.json'
             if source_path.is_file():
                 import json
@@ -397,12 +415,12 @@ def run_lineage_train_panels(config, *, custody, snapshot_root, export_root, run
                 contrast = FrozenRecord.from_dict({'schema': 'lineage-inconclusive-contrast-v1', 'panel_digest': panel.digest,
                     'status': 'inconclusive', 'reason': 'incomplete_or_failed_cell', 'error_type': type(exc).__name__})
         contrasts.append(contrast)
-    receipt = FrozenRecord.from_dict({'schema': 'lineage-train-receipt-v1', 'config_digest': config.record.content_hash,
+    receipt = FrozenRecord.from_dict({'schema': ('lineage-train-receipt-v2' if native else 'lineage-train-receipt-v1'), 'config_digest': config.record.content_hash,
         'expected_cells': len(journal['cells']), 'observed_cells': len(results), 'scored_cells': len(scores),
         'failed_cells': sum(r['status']=='failed' for r in journal['cells']), 'blocked_cells': sum(r['status']=='blocked' for r in journal['cells']),
-        'allocation': b['allocation'], 'actual_model_usage': _usage(model), 'actual_scorer_calls': journal['actual_scorer_calls'],
+        'allocation': b['allocation'], 'actual_model_usage': provider_usage(provider_session, model), 'actual_scorer_calls': journal['actual_scorer_calls'],
         'actual_docker_attempts': sum(r['docker_attempts'] for r in journal['cells']),
-        'unused_model_opportunities': b['max_calls'] - len(model.ledger['calls']),
+        'unused_model_opportunities': unused_main_opportunities(provider_session, model, b),
         'unused_docker_opportunities': len(results) - sum(r['docker_attempts'] for r in journal['cells']),
         'scorer_usage_unknown': journal['actual_scorer_calls'] > 0,
         'source_calls': sum(len(r.get('source_verification', {}).get('calls', [])) for r in journal['cells']),
