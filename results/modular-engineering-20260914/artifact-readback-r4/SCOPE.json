@@ -1,0 +1,11 @@
+{
+  "schema": "P0-archive-readback-evidence-v1",
+  "verified_archive_head": "82e064080f44aa30fa63618d3353bfd18b77ebf8",
+  "files": 113,
+  "catalogues": 14,
+  "descriptors": 63,
+  "unsealed_prefixes": 1,
+  "scope": "Exact committed/disk/staging public evidence bytes and historical producer-source catalogue reads. Failed packet and interrupted prefix retained with their original states. No full historical exporter or private-source replay.",
+  "scientific_effectiveness_proven": false,
+  "validation_acceptance": false
+}
