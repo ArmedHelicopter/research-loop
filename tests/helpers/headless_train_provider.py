@@ -8,6 +8,7 @@ from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.grok_acp_transport import ProcessTree
 from research_loop.modular.grok_headless_train_solver import GrokHeadlessTrainModelPort
 from research_loop.modular.train_provider import GrokHeadlessTrainProvider
+from research_loop.modular.train_provider_preflight import PROGRAM_SLOTS
 from tests.helpers.headless_authoring_fixture import install_synthetic_native
 
 
@@ -42,6 +43,6 @@ def headless_train_provider(root,patch,*,schemas,max_calls,response,wrapped=True
         private_home=home,private_profile=root/'profiles',public_cwd=root/'contexts',
         frozen_files={str(p.resolve()):hashlib.sha256(p.read_bytes()).hexdigest() for p in (executable,peer)},
         max_calls=max_calls,schemas=schemas,
-        slot_output_caps={slot:8192 if slot in ('analysis_program','builder_program','auxiliary_program') else 2048 for slot in schemas},
+        slot_output_caps={slot:8192 if slot in PROGRAM_SLOTS else 2048 for slot in schemas},
         slot_input_byte_caps={slot:262144 for slot in schemas},observed_main_token_cap=131072)
     return (GrokHeadlessTrainProvider(backend) if wrapped else backend),calls,gets
