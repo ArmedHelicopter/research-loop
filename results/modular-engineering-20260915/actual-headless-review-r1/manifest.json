@@ -1,0 +1,200 @@
+{
+  "schema": "closed-native-review-archive-v1",
+  "source_commit": "a334cd63fbb61f767b34656bb10844ac0d73e692",
+  "copied_originals": [
+    {
+      "path": "public-parent-closure.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\public-parent-closure.json",
+      "bytes": 840,
+      "sha256": "010d574cf65498580fce5f5b6d1b2bc23f3e83b1439faa24be3d939f55cecc44"
+    },
+    {
+      "path": "parent-reservation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\parent-reservation.json",
+      "bytes": 84288,
+      "sha256": "20bb3610ab909eed6a2efb90819691489e38eb59d48d34ffbd324dc4e433a0d3"
+    },
+    {
+      "path": "diagnostic-result.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\diagnostic-result.private.json",
+      "bytes": 38696,
+      "sha256": "86003a6b1d654fc03646aaf24c60cd51ebdb53a1dd7fe1ff0779d137f3fcaa71"
+    },
+    {
+      "path": "public-preparation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-preparation-r1\\public-preparation.json",
+      "bytes": 3501,
+      "sha256": "06091b79d15bf70b02a413e5d6d3e2466b2080bfb0094db1f35d5c290f44c366"
+    },
+    {
+      "path": "independent-readback.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-independent-readback-r1.json",
+      "bytes": 168281,
+      "sha256": "275fde0086447697b169c105cb549196748fefd2317d17f705100ffa789666b1"
+    },
+    {
+      "path": "source-byte-sync.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-source-byte-sync-r1.json",
+      "bytes": 6224,
+      "sha256": "b7480e2ddfd6954a2aefc5af318a1a44a5d9f0e62768ec9597d72c224c39bb6d"
+    },
+    {
+      "path": "later-account-readonly-observation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-account-readonly-r1\\public-observation.json",
+      "bytes": 1258,
+      "sha256": "39a3027801d2e766e4a5d6b7be8939e7a4ad3513a2ee6f3d5676f733f2a1b1c0"
+    },
+    {
+      "path": "native-observers/07a4e9eb207b71fd169d17cf1a4e55f5f48d4c47ff41f8f30ab5ee1cf3cdcf40.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\review.private.jsonl.headless\\07a4e9eb207b71fd169d17cf1a4e55f5f48d4c47ff41f8f30ab5ee1cf3cdcf40\\native\\observer-receipt.json",
+      "bytes": 194998,
+      "sha256": "b2ff9adcad7fff331175a72a7cad828b6e146425dfb3ee58f650baddc536669c"
+    },
+    {
+      "path": "native-observers/081d3b1f5ae229b64083862689b880f8c4c30102e897e197ff3c67eb949905aa.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\review.private.jsonl.headless\\081d3b1f5ae229b64083862689b880f8c4c30102e897e197ff3c67eb949905aa\\native\\observer-receipt.json",
+      "bytes": 194328,
+      "sha256": "856596dd5ee6db4e6493010df5fbd9186ffc9fa6e45a3d9d314585d82302db40"
+    },
+    {
+      "path": "native-observers/41a056e78ab8f5ce7755d0ee6e829a56524de92e9ccc70508d6f2b9c9cd365c3.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\review.private.jsonl.headless\\41a056e78ab8f5ce7755d0ee6e829a56524de92e9ccc70508d6f2b9c9cd365c3\\native\\observer-receipt.json",
+      "bytes": 194987,
+      "sha256": "975282c3e8ddf4124c258c7924087d93238b330a34e1092ca6e9936fad56b7f3"
+    },
+    {
+      "path": "native-observers/4364130c7c72da84b03a76c8f9bbd4f22c1328988654928307c44310da492622.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\review.private.jsonl.headless\\4364130c7c72da84b03a76c8f9bbd4f22c1328988654928307c44310da492622\\native\\observer-receipt.json",
+      "bytes": 195001,
+      "sha256": "2076a999a3a222ca361e7cdead4572f79f4959398ee7e48ff894416eba26bc7c"
+    },
+    {
+      "path": "native-observers/6fdf46c741c5f383d342186997916cfee179c4ed364c8ca2efa84ebd2f8e7807.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\review.private.jsonl.headless\\6fdf46c741c5f383d342186997916cfee179c4ed364c8ca2efa84ebd2f8e7807\\native\\observer-receipt.json",
+      "bytes": 194989,
+      "sha256": "9f67f3e0f7a7fcd1895f9bb78850fe43b1d3b272e8b7bb7d563167071ac13357"
+    },
+    {
+      "path": "native-observers/874f597cee0e5076e5696ef7f6ceba00de5e6e408c48dfe5a38298e523f8d39f.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\review.private.jsonl.headless\\874f597cee0e5076e5696ef7f6ceba00de5e6e408c48dfe5a38298e523f8d39f\\native\\observer-receipt.json",
+      "bytes": 194990,
+      "sha256": "733e68256aa825b1b6a75029fa344870eb6871581cdd42bb3ba188ac23d877be"
+    },
+    {
+      "path": "native-observers/a0791aa5465f883469bfdb9db24490a6dbaef9a628c8c5df77f136d9de906080.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\review.private.jsonl.headless\\a0791aa5465f883469bfdb9db24490a6dbaef9a628c8c5df77f136d9de906080\\native\\observer-receipt.json",
+      "bytes": 195000,
+      "sha256": "779025489d8978e6d53131619e0f5f42a76318637148f369488c2a36760adc04"
+    },
+    {
+      "path": "native-observers/b7aeca946289c2ac599f9196373b0090141576194408b9fb2e7f3816ce0d3657.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\review.private.jsonl.headless\\b7aeca946289c2ac599f9196373b0090141576194408b9fb2e7f3816ce0d3657\\native\\observer-receipt.json",
+      "bytes": 194992,
+      "sha256": "7e006acbacb6c5af38193c7b61329aa898000b85caa0538271fdd79a8c8cd1fa"
+    },
+    {
+      "path": "native-observers/be440cc0b4db6c34a5f20fb6222efdc76b9512eb1710dc14ecf6cb8f02882cdf.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\review.private.jsonl.headless\\be440cc0b4db6c34a5f20fb6222efdc76b9512eb1710dc14ecf6cb8f02882cdf\\native\\observer-receipt.json",
+      "bytes": 194990,
+      "sha256": "12dbbfae072894eb5b4a3363a33055ece2423bf5bc8cc19ddecbc23e6e159775"
+    },
+    {
+      "path": "native-observers/c78a90ec1c82cbb46244ca56e597eab0fef14eced26ffa85367a04967004c373.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\review.private.jsonl.headless\\c78a90ec1c82cbb46244ca56e597eab0fef14eced26ffa85367a04967004c373\\native\\observer-receipt.json",
+      "bytes": 194999,
+      "sha256": "efbf1969224107eed1855a0a55fed8a070a599f374b086c1a6add2bdf4ca4966"
+    },
+    {
+      "path": "native-observers/ed185a15ce7e44e68bc4b695d6329589343afdb454bf7e50c9da3eddc77f38d8.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-run-r1\\review.private.jsonl.headless\\ed185a15ce7e44e68bc4b695d6329589343afdb454bf7e50c9da3eddc77f38d8\\native\\observer-receipt.json",
+      "bytes": 194989,
+      "sha256": "a718593f22c08c2ded541882fc21d5ad28e4668924471e2893912d1f037f5b9b"
+    },
+    {
+      "path": "helpers/prepare_headless_review_r1.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prepare_headless_review_r1.py",
+      "bytes": 9015,
+      "sha256": "978eac7fead0975d23b553bfcac214bf9cc2898147c350ad8a71d229eb50fc87"
+    },
+    {
+      "path": "helpers/run_headless_review_r1.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_headless_review_r1.py",
+      "bytes": 4820,
+      "sha256": "c4535e6bd0d920a879a6ce3c12cb2767817ccd850c4bd4daa8b9c6a7bbc2c26f"
+    },
+    {
+      "path": "helpers/audit_headless_review_r1.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\audit_headless_review_r1.py",
+      "bytes": 18056,
+      "sha256": "364e12fef8031dfe7a4598f9a8a4a44ed9ec0d224a062f9a4795c91f72395124"
+    },
+    {
+      "path": "helpers/create_headless_review_runtime_r1.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\create_headless_review_runtime_r1.py",
+      "bytes": 2449,
+      "sha256": "3c93cdb535b82f3cb40f02940df26eb5c0f41b5c1a971b9f0aa0fe8d6c5c4eea"
+    },
+    {
+      "path": "helpers/finalize_headless_review_runtime_r1.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\finalize_headless_review_runtime_r1.py",
+      "bytes": 2202,
+      "sha256": "3ffccdbae70f9014fe420b94aa5b977338e6074f3007c700475e904cf3a85dee"
+    },
+    {
+      "path": "helpers/check_headless_review_account_r1.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\check_headless_review_account_r1.py",
+      "bytes": 1628,
+      "sha256": "644ee87b49215f8c7de9eb105afe85644e4238c684c0cf871109275008d4a21d"
+    },
+    {
+      "path": "helpers/archive_actual_headless_review_r1.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\archive_actual_headless_review_r1.py",
+      "bytes": 5097,
+      "sha256": "d47e318e80cac8c1d2ecb91a68506289f6a5fcaeaee5c4915f684a62d752d05f"
+    }
+  ],
+  "source_check_archive": "../headless-review-adapter-r1",
+  "main_reservations": 11,
+  "accepted_native_and_consumer_calls": 10,
+  "rejected_with_known_usage": 1,
+  "evaluator_calls": 0,
+  "model_retries": 0,
+  "extra_paid_api_budget": 0,
+  "title_usage": null,
+  "all_opportunity_tokens": null,
+  "settled_additional_charge_usd": null,
+  "calibration_eligible": false,
+  "validation_access": false,
+  "limits": [
+    "The last call has a complete model stream but incomplete postflight account observation.",
+    "A later successful account GET cannot fill the historical missing observation.",
+    "No benchmark effectiveness or independent scientific sample claim follows from this diagnostic prefix."
+  ],
+  "derived_artifacts": [
+    {
+      "path": "lineage.json",
+      "bytes": 132208,
+      "sha256": "1677c4747930cb1841296878764159b03e9e40c1a2bfd5c9237b9ad381bbf6b9"
+    },
+    {
+      "path": "helpers/render_actual_review_lineage_r1.py",
+      "bytes": 5916,
+      "sha256": "6a06df1583c8ba05f6042f59b861133192b4d756a3528369d6b2cb7ccf195775"
+    },
+    {
+      "path": "private-artifact-inventory.json",
+      "bytes": 2139130,
+      "sha256": "a8aa881858c2280c0d1fe9561e84c41d279ba4bd6b8d3bd8d68c5341ee4a033c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3053,
+      "sha256": "a1e761ce1f9ea210b876125863a427840182e7757ae54921440b45fbbe5a5f67"
+    }
+  ],
+  "lineage": {
+    "nodes": 157,
+    "edges": 260,
+    "scope": "actual replay-verified TRAIN diagnostic prefix"
+  }
+}
