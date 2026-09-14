@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="9" time="32.821" timestamp="2026-09-15T04:06:59.781225+08:00" hostname="SC-202507131830"><testcase classname="tests.test_research_version_runner_failures" name="test_actual_runner_retains_failed_attempt_and_never_returns_success[seal]" time="5.323" /><testcase classname="tests.test_research_version_runner_failures" name="test_actual_runner_retains_failed_attempt_and_never_returns_success[consumer]" time="5.975" /><testcase classname="tests.test_research_version_runner_failures" name="test_actual_runner_retains_failed_attempt_and_never_returns_success[origin]" time="2.281"><failure message="research_loop.ontology.ContractError: protocol trace is incomplete without a terminal event">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-runner-dev-r1-temp/pytest/test_actual_runner_retains_fai2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000119E9F5AF00&gt;
+fault = 'origin'
+
+    @pytest.mark.parametrize("fault", ("seal", "consumer", "origin", "child_catalogue"))
+    def test_actual_runner_retains_failed_attempt_and_never_returns_success(tmp_path, monkeypatch, fault):
+        cell, scenario, calls, kwargs = _case(tmp_path)
+        def fail(*args, **kwargs):
+            raise OSError("injected " + fault)
+        if fault == "seal":
+            monkeypatch.setattr(ArtifactCatalogue, "seal", fail)
+        elif fault == "consumer":
+            monkeypatch.setattr(research_versions, "verify_research_version_artifacts", fail)
+        elif fault == "origin":
+            kwargs["retrieval_final_authority"].qualify_origin = fail
+        else:
+            original = ArtifactCatalogue.append
+            def append(self, **args):
+                if args["kind"] == "research_version_child":
+                    return fail()
+                return original(self, **args)
+            monkeypatch.setattr(ArtifactCatalogue, "append", append)
+        result = run_train_cell(cell, **kwargs)
+        assert result.runtime.status == "failed" and result.runtime.output_digest is None and result.scorer is None
+        assert calls == ([] if fault == "origin" else ["review"] if fault == "child_catalogue" else ["review", "final"])
+        sidecar = result.runtime.trace_path.parent
+        assert (sidecar / "research-version-failure.json").is_file()
+        events = [FrozenRecord(line).data() for line in result.runtime.trace_path.read_text(encoding="utf-8").splitlines()]
+        if fault in {"seal", "consumer"}:
+            assert events[-1]["stage"] == "final_decision"  # Original final decision is retained, not rewritten.
+        if fault == "origin":
+            assert any(row["stage"] == "research_version_origin_failure" for row in events)
+        if fault == "child_catalogue":
+            assert (sidecar / "research-version-child.json").is_file()
+        monkeypatch.undo()
+&gt;       PanelReceiptVerifier()._verify_runtime(result.runtime, cell, scenario=scenario)
+
+tests\test_research_version_runner_failures.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\panel_receipts.py:425: in _verify_runtime
+    verify_protocol_trace(receipt.trace_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-runner-dev-r1-temp/pytest/test_actual_runner_retains_fai2/runtime/trace.jsonl')
+
+    def verify_protocol_trace(path: Path) -&gt; FrozenRecord:
+        chain = verify_trace(path)
+        if not chain.data()["terminal"]:
+&gt;           raise ContractError("protocol trace is incomplete without a terminal event")
+E           research_loop.ontology.ContractError: protocol trace is incomplete without a terminal event
+
+research_loop\modular\protocol_trace.py:20: ContractError</failure></testcase><testcase classname="tests.test_research_version_runner_failures" name="test_actual_runner_retains_failed_attempt_and_never_returns_success[child_catalogue]" time="3.642"><failure message="research_loop.ontology.ContractError: protocol trace is incomplete without a terminal event">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-runner-dev-r1-temp/pytest/test_actual_runner_retains_fai3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000119E9F85100&gt;
+fault = 'child_catalogue'
+
+    @pytest.mark.parametrize("fault", ("seal", "consumer", "origin", "child_catalogue"))
+    def test_actual_runner_retains_failed_attempt_and_never_returns_success(tmp_path, monkeypatch, fault):
+        cell, scenario, calls, kwargs = _case(tmp_path)
+        def fail(*args, **kwargs):
+            raise OSError("injected " + fault)
+        if fault == "seal":
+            monkeypatch.setattr(ArtifactCatalogue, "seal", fail)
+        elif fault == "consumer":
+            monkeypatch.setattr(research_versions, "verify_research_version_artifacts", fail)
+        elif fault == "origin":
+            kwargs["retrieval_final_authority"].qualify_origin = fail
+        else:
+            original = ArtifactCatalogue.append
+            def append(self, **args):
+                if args["kind"] == "research_version_child":
+                    return fail()
+                return original(self, **args)
+            monkeypatch.setattr(ArtifactCatalogue, "append", append)
+        result = run_train_cell(cell, **kwargs)
+        assert result.runtime.status == "failed" and result.runtime.output_digest is None and result.scorer is None
+        assert calls == ([] if fault == "origin" else ["review"] if fault == "child_catalogue" else ["review", "final"])
+        sidecar = result.runtime.trace_path.parent
+        assert (sidecar / "research-version-failure.json").is_file()
+        events = [FrozenRecord(line).data() for line in result.runtime.trace_path.read_text(encoding="utf-8").splitlines()]
+        if fault in {"seal", "consumer"}:
+            assert events[-1]["stage"] == "final_decision"  # Original final decision is retained, not rewritten.
+        if fault == "origin":
+            assert any(row["stage"] == "research_version_origin_failure" for row in events)
+        if fault == "child_catalogue":
+            assert (sidecar / "research-version-child.json").is_file()
+        monkeypatch.undo()
+&gt;       PanelReceiptVerifier()._verify_runtime(result.runtime, cell, scenario=scenario)
+
+tests\test_research_version_runner_failures.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\panel_receipts.py:425: in _verify_runtime
+    verify_protocol_trace(receipt.trace_path)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-runner-dev-r1-temp/pytest/test_actual_runner_retains_fai3/runtime/trace.jsonl')
+
+    def verify_protocol_trace(path: Path) -&gt; FrozenRecord:
+        chain = verify_trace(path)
+        if not chain.data()["terminal"]:
+&gt;           raise ContractError("protocol trace is incomplete without a terminal event")
+E           research_loop.ontology.ContractError: protocol trace is incomplete without a terminal event
+
+research_loop\modular\protocol_trace.py:20: ContractError</failure></testcase><testcase classname="tests.test_research_version_runner_failures" name="test_m6_enabled_does_not_imply_new_version_request_is_visible[empty]" time="4.098" /><testcase classname="tests.test_research_version_runner_failures" name="test_m6_enabled_does_not_imply_new_version_request_is_visible[missing_request]" time="4.563" /><testcase classname="tests.test_research_version_runner_failures" name="test_m6_enabled_does_not_imply_new_version_request_is_visible[context_exclusion]" time="5.329"><failure message="AssertionError: assert {'caller_authorized': True, 'operation': 'request_new_version', 'proposed_objective': {'question': 'separately authorized public followup'}, 'source_id': 'method'} is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-runner-dev-r1-temp/pytest/test_m6_enabled_does_not_imply2')
+mode = 'context_exclusion'
+
+    @pytest.mark.parametrize("mode", ("empty", "missing_request", "context_exclusion"))
+    def test_m6_enabled_does_not_imply_new_version_request_is_visible(tmp_path, mode):
+        cell, scenario, calls, kwargs = _case(tmp_path, context_bytes=1024 if mode == "context_exclusion" else 4096)
+        if mode != "context_exclusion":
+            kwargs["retrieval_provider"] = SimpleNamespace(search=lambda **kw: iter(
+                [] if mode == "empty" else [doc for doc in kw["source_bundle"].documents if doc.lane == kw["lane"] and doc.source_id != "method"][:1]))
+        result = run_train_cell(cell, **kwargs)
+        assert result.runtime.status == "succeeded", result.runtime.failure_reason
+        assert calls == ["review", "final"]
+        events = [FrozenRecord(line).data() for line in result.runtime.trace_path.read_text(encoding="utf-8").splitlines()]
+        origin = next(row["data"]["subject"] for row in events if row["stage"] == "q86_source_authority")
+&gt;       assert origin["request"] is None
+E       AssertionError: assert {'caller_authorized': True, 'operation': 'request_new_version', 'proposed_objective': {'question': 'separately authorized public followup'}, 'source_id': 'method'} is None
+
+tests\test_research_version_runner_failures.py:93: AssertionError</failure></testcase><testcase classname="tests.test_research_version_runner_failures" name="test_raw_invalid_freeze_receipt_is_retained_and_reporting_is_terminal" time="0.856" /><testcase classname="tests.test_research_version_runner_failures" name="test_coherently_rehashed_live_journal_is_rejected_before_reporting" time="0.458" /></testsuite></testsuites>

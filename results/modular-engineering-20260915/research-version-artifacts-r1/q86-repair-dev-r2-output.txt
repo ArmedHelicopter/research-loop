@@ -1,0 +1,535 @@
+......F..EEEEEEEEE                                                       [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_q86_consumer_rejects_coherently_rehashed_mutations[paused-child_schema] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest')...E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def q86_actual_cases(tmp_path_factory):
+        """Build once with the production Q8.6 driver, then isolate each sidecar."""
+        tmp_path = tmp_path_factory.mktemp("q86-consumer-mutations")
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        from evaluation.modular.train_io import TrainPacketExporter
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "material").export(base["item_ids"])
+        evidence = {packet.task.content_hash: bundle(packet).data() for packet in packets}
+        grid = obligation_grids(("Q8.6",), baseline_digest=base["baseline_digest"],
+                                p0_control=FrozenRecord.from_dict(base["p0_control"]))["Q8.6"]
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"final": FINAL, "review": GOAL_REVIEW, "frontier_review_a": REVIEW,
+                   "frontier_review_b": REVIEW, "frontier": FRONTIER}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema":"train-panel-controller-v1",
+            "engineering_scope":"train_only_panel_engineering", "stage":"q86-consumer-mutation-fixture",
+            "scope_ids":["Q8.6"], "evidence_by_task":evidence,
+            "packages_by_arm":{arm.content_hash:package for arm in executable_arms(grid).values()},
+            "budget":{"model_calls":2,"retrieval_calls":3,"execution_limit":0}, "max_calls":48, "max_tokens":512,
+            "schemas":schemas}))
+        with pytest.MonkeyPatch.context() as patches:
+            port = model_port(tmp_path, patches, max_calls=48, max_tokens=512, schemas=schemas, response_factory=response)
+            result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+                run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a":b"a"*32,"b":b"b"*32}),
+                retrieval_provider=Provider(), retrieval_admission_port=admission, retrieval_final_authority=Authority())
+        cells = {cell.key: cell for cell in result.compiled.panel.cells}
+        selected = {}
+        for variant in ("pause_new_version", "conflict", "malicious_override"):
+            runtime = next(row for row in result.runtimes if cells[row.cell_key].variant == variant and "M1" in cells[row.cell_key].runtime_arm.data()["enabled"] and "M6" in cells[row.cell_key].runtime_arm.data()["enabled"])
+            cell = cells[runtime.cell_key]; original = runtime.trace_path.parent
+            copied = tmp_path / "copies" / variant; shutil.copytree(original, copied)
+>           lock = FrozenRecord((copied / "trace.jsonl").read_text().splitlines()[0]).data()["data"]
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_research_version_consumer_mutations.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest/q86-consumer-mutations0/copies/pause_new_version/trace.jsonl')
+encoding = 'locale', errors = None
+
+    def read_text(self, encoding=None, errors=None):
+        """
+        Open the file in text mode, read it, and close the file.
+        """
+        encoding = io.text_encoding(encoding)
+        with self.open(mode='r', encoding=encoding, errors=errors) as f:
+>           return f.read()
+                   ^^^^^^^^
+E           UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 11831: illegal multibyte sequence
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1028: UnicodeDecodeError
+_ ERROR at setup of test_q86_consumer_rejects_coherently_rehashed_mutations[paused-child_state] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest')...E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def q86_actual_cases(tmp_path_factory):
+        """Build once with the production Q8.6 driver, then isolate each sidecar."""
+        tmp_path = tmp_path_factory.mktemp("q86-consumer-mutations")
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        from evaluation.modular.train_io import TrainPacketExporter
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "material").export(base["item_ids"])
+        evidence = {packet.task.content_hash: bundle(packet).data() for packet in packets}
+        grid = obligation_grids(("Q8.6",), baseline_digest=base["baseline_digest"],
+                                p0_control=FrozenRecord.from_dict(base["p0_control"]))["Q8.6"]
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"final": FINAL, "review": GOAL_REVIEW, "frontier_review_a": REVIEW,
+                   "frontier_review_b": REVIEW, "frontier": FRONTIER}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema":"train-panel-controller-v1",
+            "engineering_scope":"train_only_panel_engineering", "stage":"q86-consumer-mutation-fixture",
+            "scope_ids":["Q8.6"], "evidence_by_task":evidence,
+            "packages_by_arm":{arm.content_hash:package for arm in executable_arms(grid).values()},
+            "budget":{"model_calls":2,"retrieval_calls":3,"execution_limit":0}, "max_calls":48, "max_tokens":512,
+            "schemas":schemas}))
+        with pytest.MonkeyPatch.context() as patches:
+            port = model_port(tmp_path, patches, max_calls=48, max_tokens=512, schemas=schemas, response_factory=response)
+            result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+                run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a":b"a"*32,"b":b"b"*32}),
+                retrieval_provider=Provider(), retrieval_admission_port=admission, retrieval_final_authority=Authority())
+        cells = {cell.key: cell for cell in result.compiled.panel.cells}
+        selected = {}
+        for variant in ("pause_new_version", "conflict", "malicious_override"):
+            runtime = next(row for row in result.runtimes if cells[row.cell_key].variant == variant and "M1" in cells[row.cell_key].runtime_arm.data()["enabled"] and "M6" in cells[row.cell_key].runtime_arm.data()["enabled"])
+            cell = cells[runtime.cell_key]; original = runtime.trace_path.parent
+            copied = tmp_path / "copies" / variant; shutil.copytree(original, copied)
+>           lock = FrozenRecord((copied / "trace.jsonl").read_text().splitlines()[0]).data()["data"]
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_research_version_consumer_mutations.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest/q86-consumer-mutations0/copies/pause_new_version/trace.jsonl')
+encoding = 'locale', errors = None
+
+    def read_text(self, encoding=None, errors=None):
+        """
+        Open the file in text mode, read it, and close the file.
+        """
+        encoding = io.text_encoding(encoding)
+        with self.open(mode='r', encoding=encoding, errors=errors) as f:
+>           return f.read()
+                   ^^^^^^^^
+E           UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 11831: illegal multibyte sequence
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1028: UnicodeDecodeError
+_ ERROR at setup of test_q86_consumer_rejects_coherently_rehashed_mutations[conflict-transition_from] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest')...E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def q86_actual_cases(tmp_path_factory):
+        """Build once with the production Q8.6 driver, then isolate each sidecar."""
+        tmp_path = tmp_path_factory.mktemp("q86-consumer-mutations")
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        from evaluation.modular.train_io import TrainPacketExporter
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "material").export(base["item_ids"])
+        evidence = {packet.task.content_hash: bundle(packet).data() for packet in packets}
+        grid = obligation_grids(("Q8.6",), baseline_digest=base["baseline_digest"],
+                                p0_control=FrozenRecord.from_dict(base["p0_control"]))["Q8.6"]
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"final": FINAL, "review": GOAL_REVIEW, "frontier_review_a": REVIEW,
+                   "frontier_review_b": REVIEW, "frontier": FRONTIER}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema":"train-panel-controller-v1",
+            "engineering_scope":"train_only_panel_engineering", "stage":"q86-consumer-mutation-fixture",
+            "scope_ids":["Q8.6"], "evidence_by_task":evidence,
+            "packages_by_arm":{arm.content_hash:package for arm in executable_arms(grid).values()},
+            "budget":{"model_calls":2,"retrieval_calls":3,"execution_limit":0}, "max_calls":48, "max_tokens":512,
+            "schemas":schemas}))
+        with pytest.MonkeyPatch.context() as patches:
+            port = model_port(tmp_path, patches, max_calls=48, max_tokens=512, schemas=schemas, response_factory=response)
+            result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+                run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a":b"a"*32,"b":b"b"*32}),
+                retrieval_provider=Provider(), retrieval_admission_port=admission, retrieval_final_authority=Authority())
+        cells = {cell.key: cell for cell in result.compiled.panel.cells}
+        selected = {}
+        for variant in ("pause_new_version", "conflict", "malicious_override"):
+            runtime = next(row for row in result.runtimes if cells[row.cell_key].variant == variant and "M1" in cells[row.cell_key].runtime_arm.data()["enabled"] and "M6" in cells[row.cell_key].runtime_arm.data()["enabled"])
+            cell = cells[runtime.cell_key]; original = runtime.trace_path.parent
+            copied = tmp_path / "copies" / variant; shutil.copytree(original, copied)
+>           lock = FrozenRecord((copied / "trace.jsonl").read_text().splitlines()[0]).data()["data"]
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_research_version_consumer_mutations.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest/q86-consumer-mutations0/copies/pause_new_version/trace.jsonl')
+encoding = 'locale', errors = None
+
+    def read_text(self, encoding=None, errors=None):
+        """
+        Open the file in text mode, read it, and close the file.
+        """
+        encoding = io.text_encoding(encoding)
+        with self.open(mode='r', encoding=encoding, errors=errors) as f:
+>           return f.read()
+                   ^^^^^^^^
+E           UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 11831: illegal multibyte sequence
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1028: UnicodeDecodeError
+_ ERROR at setup of test_q86_consumer_rejects_coherently_rehashed_mutations[conflict-transition_reason] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest')...E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def q86_actual_cases(tmp_path_factory):
+        """Build once with the production Q8.6 driver, then isolate each sidecar."""
+        tmp_path = tmp_path_factory.mktemp("q86-consumer-mutations")
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        from evaluation.modular.train_io import TrainPacketExporter
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "material").export(base["item_ids"])
+        evidence = {packet.task.content_hash: bundle(packet).data() for packet in packets}
+        grid = obligation_grids(("Q8.6",), baseline_digest=base["baseline_digest"],
+                                p0_control=FrozenRecord.from_dict(base["p0_control"]))["Q8.6"]
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"final": FINAL, "review": GOAL_REVIEW, "frontier_review_a": REVIEW,
+                   "frontier_review_b": REVIEW, "frontier": FRONTIER}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema":"train-panel-controller-v1",
+            "engineering_scope":"train_only_panel_engineering", "stage":"q86-consumer-mutation-fixture",
+            "scope_ids":["Q8.6"], "evidence_by_task":evidence,
+            "packages_by_arm":{arm.content_hash:package for arm in executable_arms(grid).values()},
+            "budget":{"model_calls":2,"retrieval_calls":3,"execution_limit":0}, "max_calls":48, "max_tokens":512,
+            "schemas":schemas}))
+        with pytest.MonkeyPatch.context() as patches:
+            port = model_port(tmp_path, patches, max_calls=48, max_tokens=512, schemas=schemas, response_factory=response)
+            result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+                run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a":b"a"*32,"b":b"b"*32}),
+                retrieval_provider=Provider(), retrieval_admission_port=admission, retrieval_final_authority=Authority())
+        cells = {cell.key: cell for cell in result.compiled.panel.cells}
+        selected = {}
+        for variant in ("pause_new_version", "conflict", "malicious_override"):
+            runtime = next(row for row in result.runtimes if cells[row.cell_key].variant == variant and "M1" in cells[row.cell_key].runtime_arm.data()["enabled"] and "M6" in cells[row.cell_key].runtime_arm.data()["enabled"])
+            cell = cells[runtime.cell_key]; original = runtime.trace_path.parent
+            copied = tmp_path / "copies" / variant; shutil.copytree(original, copied)
+>           lock = FrozenRecord((copied / "trace.jsonl").read_text().splitlines()[0]).data()["data"]
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_research_version_consumer_mutations.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest/q86-consumer-mutations0/copies/pause_new_version/trace.jsonl')
+encoding = 'locale', errors = None
+
+    def read_text(self, encoding=None, errors=None):
+        """
+        Open the file in text mode, read it, and close the file.
+        """
+        encoding = io.text_encoding(encoding)
+        with self.open(mode='r', encoding=encoding, errors=errors) as f:
+>           return f.read()
+                   ^^^^^^^^
+E           UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 11831: illegal multibyte sequence
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1028: UnicodeDecodeError
+_ ERROR at setup of test_q86_consumer_rejects_coherently_rehashed_mutations[paused-source_bundle] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest')...E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def q86_actual_cases(tmp_path_factory):
+        """Build once with the production Q8.6 driver, then isolate each sidecar."""
+        tmp_path = tmp_path_factory.mktemp("q86-consumer-mutations")
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        from evaluation.modular.train_io import TrainPacketExporter
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "material").export(base["item_ids"])
+        evidence = {packet.task.content_hash: bundle(packet).data() for packet in packets}
+        grid = obligation_grids(("Q8.6",), baseline_digest=base["baseline_digest"],
+                                p0_control=FrozenRecord.from_dict(base["p0_control"]))["Q8.6"]
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"final": FINAL, "review": GOAL_REVIEW, "frontier_review_a": REVIEW,
+                   "frontier_review_b": REVIEW, "frontier": FRONTIER}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema":"train-panel-controller-v1",
+            "engineering_scope":"train_only_panel_engineering", "stage":"q86-consumer-mutation-fixture",
+            "scope_ids":["Q8.6"], "evidence_by_task":evidence,
+            "packages_by_arm":{arm.content_hash:package for arm in executable_arms(grid).values()},
+            "budget":{"model_calls":2,"retrieval_calls":3,"execution_limit":0}, "max_calls":48, "max_tokens":512,
+            "schemas":schemas}))
+        with pytest.MonkeyPatch.context() as patches:
+            port = model_port(tmp_path, patches, max_calls=48, max_tokens=512, schemas=schemas, response_factory=response)
+            result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+                run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a":b"a"*32,"b":b"b"*32}),
+                retrieval_provider=Provider(), retrieval_admission_port=admission, retrieval_final_authority=Authority())
+        cells = {cell.key: cell for cell in result.compiled.panel.cells}
+        selected = {}
+        for variant in ("pause_new_version", "conflict", "malicious_override"):
+            runtime = next(row for row in result.runtimes if cells[row.cell_key].variant == variant and "M1" in cells[row.cell_key].runtime_arm.data()["enabled"] and "M6" in cells[row.cell_key].runtime_arm.data()["enabled"])
+            cell = cells[runtime.cell_key]; original = runtime.trace_path.parent
+            copied = tmp_path / "copies" / variant; shutil.copytree(original, copied)
+>           lock = FrozenRecord((copied / "trace.jsonl").read_text().splitlines()[0]).data()["data"]
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_research_version_consumer_mutations.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest/q86-consumer-mutations0/copies/pause_new_version/trace.jsonl')
+encoding = 'locale', errors = None
+
+    def read_text(self, encoding=None, errors=None):
+        """
+        Open the file in text mode, read it, and close the file.
+        """
+        encoding = io.text_encoding(encoding)
+        with self.open(mode='r', encoding=encoding, errors=errors) as f:
+>           return f.read()
+                   ^^^^^^^^
+E           UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 11831: illegal multibyte sequence
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1028: UnicodeDecodeError
+_ ERROR at setup of test_q86_consumer_rejects_coherently_rehashed_mutations[paused-visible_sources] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest')...E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def q86_actual_cases(tmp_path_factory):
+        """Build once with the production Q8.6 driver, then isolate each sidecar."""
+        tmp_path = tmp_path_factory.mktemp("q86-consumer-mutations")
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        from evaluation.modular.train_io import TrainPacketExporter
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "material").export(base["item_ids"])
+        evidence = {packet.task.content_hash: bundle(packet).data() for packet in packets}
+        grid = obligation_grids(("Q8.6",), baseline_digest=base["baseline_digest"],
+                                p0_control=FrozenRecord.from_dict(base["p0_control"]))["Q8.6"]
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"final": FINAL, "review": GOAL_REVIEW, "frontier_review_a": REVIEW,
+                   "frontier_review_b": REVIEW, "frontier": FRONTIER}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema":"train-panel-controller-v1",
+            "engineering_scope":"train_only_panel_engineering", "stage":"q86-consumer-mutation-fixture",
+            "scope_ids":["Q8.6"], "evidence_by_task":evidence,
+            "packages_by_arm":{arm.content_hash:package for arm in executable_arms(grid).values()},
+            "budget":{"model_calls":2,"retrieval_calls":3,"execution_limit":0}, "max_calls":48, "max_tokens":512,
+            "schemas":schemas}))
+        with pytest.MonkeyPatch.context() as patches:
+            port = model_port(tmp_path, patches, max_calls=48, max_tokens=512, schemas=schemas, response_factory=response)
+            result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+                run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a":b"a"*32,"b":b"b"*32}),
+                retrieval_provider=Provider(), retrieval_admission_port=admission, retrieval_final_authority=Authority())
+        cells = {cell.key: cell for cell in result.compiled.panel.cells}
+        selected = {}
+        for variant in ("pause_new_version", "conflict", "malicious_override"):
+            runtime = next(row for row in result.runtimes if cells[row.cell_key].variant == variant and "M1" in cells[row.cell_key].runtime_arm.data()["enabled"] and "M6" in cells[row.cell_key].runtime_arm.data()["enabled"])
+            cell = cells[runtime.cell_key]; original = runtime.trace_path.parent
+            copied = tmp_path / "copies" / variant; shutil.copytree(original, copied)
+>           lock = FrozenRecord((copied / "trace.jsonl").read_text().splitlines()[0]).data()["data"]
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_research_version_consumer_mutations.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest/q86-consumer-mutations0/copies/pause_new_version/trace.jsonl')
+encoding = 'locale', errors = None
+
+    def read_text(self, encoding=None, errors=None):
+        """
+        Open the file in text mode, read it, and close the file.
+        """
+        encoding = io.text_encoding(encoding)
+        with self.open(mode='r', encoding=encoding, errors=errors) as f:
+>           return f.read()
+                   ^^^^^^^^
+E           UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 11831: illegal multibyte sequence
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1028: UnicodeDecodeError
+_ ERROR at setup of test_q86_consumer_rejects_coherently_rehashed_mutations[paused-receipt_scientific] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest')...E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def q86_actual_cases(tmp_path_factory):
+        """Build once with the production Q8.6 driver, then isolate each sidecar."""
+        tmp_path = tmp_path_factory.mktemp("q86-consumer-mutations")
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        from evaluation.modular.train_io import TrainPacketExporter
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "material").export(base["item_ids"])
+        evidence = {packet.task.content_hash: bundle(packet).data() for packet in packets}
+        grid = obligation_grids(("Q8.6",), baseline_digest=base["baseline_digest"],
+                                p0_control=FrozenRecord.from_dict(base["p0_control"]))["Q8.6"]
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"final": FINAL, "review": GOAL_REVIEW, "frontier_review_a": REVIEW,
+                   "frontier_review_b": REVIEW, "frontier": FRONTIER}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema":"train-panel-controller-v1",
+            "engineering_scope":"train_only_panel_engineering", "stage":"q86-consumer-mutation-fixture",
+            "scope_ids":["Q8.6"], "evidence_by_task":evidence,
+            "packages_by_arm":{arm.content_hash:package for arm in executable_arms(grid).values()},
+            "budget":{"model_calls":2,"retrieval_calls":3,"execution_limit":0}, "max_calls":48, "max_tokens":512,
+            "schemas":schemas}))
+        with pytest.MonkeyPatch.context() as patches:
+            port = model_port(tmp_path, patches, max_calls=48, max_tokens=512, schemas=schemas, response_factory=response)
+            result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+                run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a":b"a"*32,"b":b"b"*32}),
+                retrieval_provider=Provider(), retrieval_admission_port=admission, retrieval_final_authority=Authority())
+        cells = {cell.key: cell for cell in result.compiled.panel.cells}
+        selected = {}
+        for variant in ("pause_new_version", "conflict", "malicious_override"):
+            runtime = next(row for row in result.runtimes if cells[row.cell_key].variant == variant and "M1" in cells[row.cell_key].runtime_arm.data()["enabled"] and "M6" in cells[row.cell_key].runtime_arm.data()["enabled"])
+            cell = cells[runtime.cell_key]; original = runtime.trace_path.parent
+            copied = tmp_path / "copies" / variant; shutil.copytree(original, copied)
+>           lock = FrozenRecord((copied / "trace.jsonl").read_text().splitlines()[0]).data()["data"]
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_research_version_consumer_mutations.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest/q86-consumer-mutations0/copies/pause_new_version/trace.jsonl')
+encoding = 'locale', errors = None
+
+    def read_text(self, encoding=None, errors=None):
+        """
+        Open the file in text mode, read it, and close the file.
+        """
+        encoding = io.text_encoding(encoding)
+        with self.open(mode='r', encoding=encoding, errors=errors) as f:
+>           return f.read()
+                   ^^^^^^^^
+E           UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 11831: illegal multibyte sequence
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1028: UnicodeDecodeError
+_ ERROR at setup of test_q86_consumer_rejects_coherently_rehashed_mutations[paused-producer_source] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest')...E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def q86_actual_cases(tmp_path_factory):
+        """Build once with the production Q8.6 driver, then isolate each sidecar."""
+        tmp_path = tmp_path_factory.mktemp("q86-consumer-mutations")
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        from evaluation.modular.train_io import TrainPacketExporter
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "material").export(base["item_ids"])
+        evidence = {packet.task.content_hash: bundle(packet).data() for packet in packets}
+        grid = obligation_grids(("Q8.6",), baseline_digest=base["baseline_digest"],
+                                p0_control=FrozenRecord.from_dict(base["p0_control"]))["Q8.6"]
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"final": FINAL, "review": GOAL_REVIEW, "frontier_review_a": REVIEW,
+                   "frontier_review_b": REVIEW, "frontier": FRONTIER}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema":"train-panel-controller-v1",
+            "engineering_scope":"train_only_panel_engineering", "stage":"q86-consumer-mutation-fixture",
+            "scope_ids":["Q8.6"], "evidence_by_task":evidence,
+            "packages_by_arm":{arm.content_hash:package for arm in executable_arms(grid).values()},
+            "budget":{"model_calls":2,"retrieval_calls":3,"execution_limit":0}, "max_calls":48, "max_tokens":512,
+            "schemas":schemas}))
+        with pytest.MonkeyPatch.context() as patches:
+            port = model_port(tmp_path, patches, max_calls=48, max_tokens=512, schemas=schemas, response_factory=response)
+            result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+                run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a":b"a"*32,"b":b"b"*32}),
+                retrieval_provider=Provider(), retrieval_admission_port=admission, retrieval_final_authority=Authority())
+        cells = {cell.key: cell for cell in result.compiled.panel.cells}
+        selected = {}
+        for variant in ("pause_new_version", "conflict", "malicious_override"):
+            runtime = next(row for row in result.runtimes if cells[row.cell_key].variant == variant and "M1" in cells[row.cell_key].runtime_arm.data()["enabled"] and "M6" in cells[row.cell_key].runtime_arm.data()["enabled"])
+            cell = cells[runtime.cell_key]; original = runtime.trace_path.parent
+            copied = tmp_path / "copies" / variant; shutil.copytree(original, copied)
+>           lock = FrozenRecord((copied / "trace.jsonl").read_text().splitlines()[0]).data()["data"]
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_research_version_consumer_mutations.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest/q86-consumer-mutations0/copies/pause_new_version/trace.jsonl')
+encoding = 'locale', errors = None
+
+    def read_text(self, encoding=None, errors=None):
+        """
+        Open the file in text mode, read it, and close the file.
+        """
+        encoding = io.text_encoding(encoding)
+        with self.open(mode='r', encoding=encoding, errors=errors) as f:
+>           return f.read()
+                   ^^^^^^^^
+E           UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 11831: illegal multibyte sequence
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1028: UnicodeDecodeError
+_ ERROR at setup of test_q86_consumer_rejects_coherently_rehashed_mutations[override-run_id] _
+
+tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest')...E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope="module")
+    def q86_actual_cases(tmp_path_factory):
+        """Build once with the production Q8.6 driver, then isolate each sidecar."""
+        tmp_path = tmp_path_factory.mktemp("q86-consumer-mutations")
+        snapshot, custody = snapshot_and_custody(tmp_path)
+        base = config(custody, snapshot, tmp_path).data()
+        from evaluation.modular.train_io import TrainPacketExporter
+        packets = TrainPacketExporter(custody, snapshot, tmp_path / "material").export(base["item_ids"])
+        evidence = {packet.task.content_hash: bundle(packet).data() for packet in packets}
+        grid = obligation_grids(("Q8.6",), baseline_digest=base["baseline_digest"],
+                                p0_control=FrozenRecord.from_dict(base["p0_control"]))["Q8.6"]
+        package = next(iter(base["packages_by_arm"].values()))
+        schemas = {"final": FINAL, "review": GOAL_REVIEW, "frontier_review_a": REVIEW,
+                   "frontier_review_b": REVIEW, "frontier": FRONTIER}
+        frozen = FrozenTrainControllerConfig(FrozenRecord.from_dict({**base, "schema":"train-panel-controller-v1",
+            "engineering_scope":"train_only_panel_engineering", "stage":"q86-consumer-mutation-fixture",
+            "scope_ids":["Q8.6"], "evidence_by_task":evidence,
+            "packages_by_arm":{arm.content_hash:package for arm in executable_arms(grid).values()},
+            "budget":{"model_calls":2,"retrieval_calls":3,"execution_limit":0}, "max_calls":48, "max_tokens":512,
+            "schemas":schemas}))
+        with pytest.MonkeyPatch.context() as patches:
+            port = model_port(tmp_path, patches, max_calls=48, max_tokens=512, schemas=schemas, response_factory=response)
+            result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+                run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a":b"a"*32,"b":b"b"*32}),
+                retrieval_provider=Provider(), retrieval_admission_port=admission, retrieval_final_authority=Authority())
+        cells = {cell.key: cell for cell in result.compiled.panel.cells}
+        selected = {}
+        for variant in ("pause_new_version", "conflict", "malicious_override"):
+            runtime = next(row for row in result.runtimes if cells[row.cell_key].variant == variant and "M1" in cells[row.cell_key].runtime_arm.data()["enabled"] and "M6" in cells[row.cell_key].runtime_arm.data()["enabled"])
+            cell = cells[runtime.cell_key]; original = runtime.trace_path.parent
+            copied = tmp_path / "copies" / variant; shutil.copytree(original, copied)
+>           lock = FrozenRecord((copied / "trace.jsonl").read_text().splitlines()[0]).data()["data"]
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_research_version_consumer_mutations.py:65: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest/q86-consumer-mutations0/copies/pause_new_version/trace.jsonl')
+encoding = 'locale', errors = None
+
+    def read_text(self, encoding=None, errors=None):
+        """
+        Open the file in text mode, read it, and close the file.
+        """
+        encoding = io.text_encoding(encoding)
+        with self.open(mode='r', encoding=encoding, errors=errors) as f:
+>           return f.read()
+                   ^^^^^^^^
+E           UnicodeDecodeError: 'gbk' codec can't decode byte 0x80 in position 11831: illegal multibyte sequence
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1028: UnicodeDecodeError
+================================== FAILURES ===================================
+_ test_m6_enabled_does_not_imply_new_version_request_is_visible[context_exclusion] _
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest/test_m6_enabled_does_not_imply2')
+mode = 'context_exclusion'
+
+    @pytest.mark.parametrize("mode", ("empty", "missing_request", "context_exclusion"))
+    def test_m6_enabled_does_not_imply_new_version_request_is_visible(tmp_path, mode):
+>       cell, scenario, calls, kwargs = _case(tmp_path, context_bytes=1024 if mode == "context_exclusion" else 4096)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_research_version_runner_failures.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q86-repair-dev-r2-temp/pytest/test_m6_enabled_does_not_imply2')
+
+    def _case(tmp_path, *, context_bytes=4096):
+        task = _task("blade")
+        csv = tmp_path / "public.csv"; csv.write_bytes(b"x,y\r\n1,2\r\n")
+        material = bundle(SimpleNamespace(task=task, csv_path=csv)).data()
+        material["budget"]["context_bytes"] = context_bytes
+        if context_bytes == 1024:
+>           next(doc for doc in material["sources"] if doc["source_id"] == "method")["text"] += " public text" * 500
+E           TypeError: unsupported operand type(s) for +=: 'dict' and 'str'
+
+tests\test_research_version_runner_failures.py:26: TypeError
+- generated xml file: E:\_ryanDev\AI\research-loop-modular\work\q86-repair-dev-r2.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_research_version_runner_failures.py::test_m6_enabled_does_not_imply_new_version_request_is_visible[context_exclusion]
+ERROR tests/test_research_version_consumer_mutations.py::test_q86_consumer_rejects_coherently_rehashed_mutations[paused-child_schema]
+ERROR tests/test_research_version_consumer_mutations.py::test_q86_consumer_rejects_coherently_rehashed_mutations[paused-child_state]
+ERROR tests/test_research_version_consumer_mutations.py::test_q86_consumer_rejects_coherently_rehashed_mutations[conflict-transition_from]
+ERROR tests/test_research_version_consumer_mutations.py::test_q86_consumer_rejects_coherently_rehashed_mutations[conflict-transition_reason]
+ERROR tests/test_research_version_consumer_mutations.py::test_q86_consumer_rejects_coherently_rehashed_mutations[paused-source_bundle]
+ERROR tests/test_research_version_consumer_mutations.py::test_q86_consumer_rejects_coherently_rehashed_mutations[paused-visible_sources]
+ERROR tests/test_research_version_consumer_mutations.py::test_q86_consumer_rejects_coherently_rehashed_mutations[paused-receipt_scientific]
+ERROR tests/test_research_version_consumer_mutations.py::test_q86_consumer_rejects_coherently_rehashed_mutations[paused-producer_source]
+ERROR tests/test_research_version_consumer_mutations.py::test_q86_consumer_rejects_coherently_rehashed_mutations[override-run_id]

@@ -1,0 +1,244 @@
+{
+  "schema": "q86-archive-inventory-r1",
+  "created_utc": "2026-09-14T20:15:54.4616877Z",
+  "scope": "named Q8.6 prefixes only; no running q86-repair-frozen-r1; no data or labels read",
+  "frozen_r4": {
+    "before": {
+      "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4-before.json",
+      "exists": true,
+      "bytes": 87865,
+      "sha256": "cc70424c8af9e2fd1299f30f9f9eb72f259748fa2fcc5800d1fea703da0ee8e5",
+      "last_write_utc": "2026-09-14T19:43:05.0557153Z"
+    },
+    "closed": {
+      "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4-closed.json",
+      "exists": true,
+      "bytes": 87912,
+      "sha256": "504e2698c77fc4b5748c4034a6956f612361c491beaddfee8d257b02f658a201",
+      "last_write_utc": "2026-09-14T19:44:32.3425033Z"
+    },
+    "junit": {
+      "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4.xml",
+      "exists": true,
+      "bytes": 1477,
+      "sha256": "4fefb6d53a0f705516321ff86902fe59f298304d991f65b86404d70ba9416c56",
+      "last_write_utc": "2026-09-14T19:44:32.1955141Z"
+    },
+    "source_zip": {
+      "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4-sources.zip",
+      "exists": true,
+      "bytes": 2488273,
+      "sha256": "cd0d7492e07cdaa77ddac6e55360de693e64a27fc7c4b838e13e1220ef556e6e",
+      "last_write_utc": "2026-09-14T19:43:04.7906805Z"
+    },
+    "source_members": {
+      "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4-source-members.json",
+      "exists": true,
+      "bytes": 131443,
+      "sha256": "b18551e05a66b04f6180acdb42cb31bb80bdc11730c6adf043da5da0c75bea62",
+      "last_write_utc": "2026-09-14T19:43:04.8001869Z"
+    },
+    "runtime_roots": [
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_child_mutation_blocks_the0",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_panel_receipt_verifier_co0\\receipt",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_paused_child_has_exact_di0",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\05c692757fa9c05d18fc8e62e62ae1f261d5a2cbee15c84b1cce48b0fdbae386",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\082b327d3876a1866ea67ed82d1abc4b8a86567c18ca86415f0639eaa0cfbbf5",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\0d4598c65231b7a086028b35fb18f45434a5aec770247557a443012cee6d2b4e",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\0f520ade9c55d2c7b7c6daf145fd15c8ce9bb844f89474fee181d758395e2579",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\2dd67f409f1774e38aac308330a70ec95c4afe7e9dcdc0275d0094eab298b8f9",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\31c779242241ca52f096fa3c53a1d4feb41cf803b154688738dd8280c54d430c",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\35dc96ac479d943e6532f78b14694e374984ffe68733cefc174cebda24a78ae0",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\3dd8359e71f2d3e4819be3c73d52f5445091ca50625492affee156079350ca3b",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\66fece8e693b2acb7bba0e581dd72bed7d32beb184ab1eede52026f8e33a0443",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\6acd3e368f685c665ce8937016a7853556f28590ba4ed509ccc84a31e63f0178",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\6fff7f6ae3880f7e3fc996b535ecabc573b475e831bdcf5da00c3788a7518d6c",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\776dec368488beafec295a2cb962f84974a708a8629bbf8d2adb30927ebce71b",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\9918fb4051379c935e7f5d0d55c94fc24a0ad41ce4a8ad92cd26064b945c94e0",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\9d3c92c904da0ca5b73b9d8d44b99ad16bf1acacdf6245272ac454b281270dfd",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\a56710577f0d96ebc36a467e03149d7aa7c11c38ba5907d55cbe45c57c66663d",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\a57fa8d7f45cc05005d5f81348279d6f0a7e0269bbbc4f86fbe79905fc725a36",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\d064c8a67cc3aadfd91fbd49cf1ffeac31c2ef865a6a7953d3f7ade2938ec978",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\d3d7201f0564cca39d3e31197b7dce11294b2fded27531d2ee836c2d89918b02",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\d6b60f1bfd6c9c2d93cf599d512a44b664b29acf60b81650943bbc6cd4153323",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\dcf3a92ce879c64a31a7bd74f8533db8eb4c60c76cc0041d4c1a89474ecbdd45",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\f4efe2887acda93e1864e45d3ea1b7eebba469004aad56335d0410f5e90a5475",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\f96fecf7cc83822e9987217f3f3177383e2bc46025447283b6f5c718ea4906a3",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\fbdd817cdc2ca7465400d7dcb1745494fda4b8b3e3b1bd68c2d335f5c8bb3637",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_q86_synthetic_cells_bind_0\\run\\cells\\fe0648e872146d6dca60b01f0edcd1598aea3707ae6fb9278b4cc50bfcc23c48",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      },
+      {
+        "path": "E:\\_codex_tasks\\research-version-artifacts\\q86-frozen-r4\\test_running_version_requires_0",
+        "classification": "original_or_unknown",
+        "evidence": "parent"
+      }
+    ]
+  },
+  "independent_reproduction": [
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\research-version-independent-2a8b360e\\probe.py",
+      "exists": true,
+      "bytes": 5210,
+      "sha256": "36b2fbd2372f9f69b2d9a2e51bdff45ebc65961d810cf75311243cedaee540a5",
+      "last_write_utc": "2026-09-14T19:47:09.842079Z"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\research-version-independent-2a8b360e\\results.json",
+      "exists": true,
+      "bytes": 1201,
+      "sha256": "47edbdd2bfec1a83cd3081365fb3e7afd00e33928bd124df7ed52c0ad9606ab3",
+      "last_write_utc": "2026-09-14T19:47:11.0469879Z"
+    },
+    {
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\research-version-independent-2a8b360e\\REPORT.md",
+      "exists": true,
+      "bytes": 2236,
+      "sha256": "57a39c9f08e39fcf40c41d5313a53c9e7efc0c43a08e5db9e52756d6daed7d60",
+      "last_write_utc": "2026-09-14T19:47:34.915025Z"
+    }
+  ],
+  "development_checks": {
+    "q86-repair-dev-r1": {
+      "exists": true,
+      "files": [],
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q86-repair-dev-r1-temp"
+    },
+    "q86-repair-grid-r1": {
+      "exists": true,
+      "files": [],
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q86-repair-grid-r1-temp"
+    },
+    "q86-coherent-probe-r1": {
+      "exists": true,
+      "files": [
+        {
+          "bytes": 1580,
+          "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q86-coherent-probe-r1\\results.json",
+          "sha256": "234e66c1f5292f09f1a07bddeae52e6ee22263ef3ebff105e9735673284b0f0d"
+        }
+      ],
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q86-coherent-probe-r1"
+    },
+    "q86-runner-dev-r1": {
+      "exists": true,
+      "files": [],
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q86-runner-dev-r1-temp"
+    },
+    "q86-repair-dev-r2": {
+      "exists": true,
+      "files": [],
+      "path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q86-repair-dev-r2-temp"
+    }
+  },
+  "notes": [
+    "Development checks are inventoried as found; absence of a source ZIP is not replaced with a claimed snapshot.",
+    "Runtime roots are path specimens, not deduplicated executions; copies/mutations remain marked original_or_unknown pending root classification."
+  ]
+}

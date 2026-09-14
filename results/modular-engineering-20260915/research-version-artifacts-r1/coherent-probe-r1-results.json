@@ -1,0 +1,56 @@
+[
+  {
+    "fault": "child_schema",
+    "mechanical_valid": true,
+    "rejected": true,
+    "reason": "research version disk bytes differ from frozen record"
+  },
+  {
+    "fault": "child_state",
+    "mechanical_valid": true,
+    "rejected": true,
+    "reason": "research version disk bytes differ from frozen record"
+  },
+  {
+    "fault": "transition_from",
+    "mechanical_valid": true,
+    "rejected": true,
+    "reason": "research version transition sequence differs"
+  },
+  {
+    "fault": "transition_reason",
+    "mechanical_valid": true,
+    "rejected": true,
+    "reason": "research version transition sequence differs"
+  },
+  {
+    "fault": "source_bundle",
+    "mechanical_valid": true,
+    "rejected": true,
+    "reason": "research version source authority differs from frozen retrieved material"
+  },
+  {
+    "fault": "visible_sources",
+    "mechanical_valid": true,
+    "rejected": true,
+    "reason": "research version source authority differs from frozen retrieved material"
+  },
+  {
+    "fault": "receipt_scientific",
+    "mechanical_valid": true,
+    "rejected": true,
+    "reason": "research version source authority differs from frozen retrieved material"
+  },
+  {
+    "fault": "producer_source",
+    "mechanical_valid": true,
+    "rejected": true,
+    "reason": "research version descriptor source or parents differ: research_version_inputs"
+  },
+  {
+    "fault": "run_id",
+    "mechanical_valid": true,
+    "rejected": true,
+    "reason": "research version run ID differs from the independent caller"
+  }
+]

@@ -1,0 +1,50 @@
+{
+  "worker_head": "2a8b360ecaf62e1f8945ab31f71d8f58b3a7d8f1",
+  "frozen_r4": {
+    "commit": "2a8b360ecaf62e1f8945ab31f71d8f58b3a7d8f1",
+    "exit_code": 0,
+    "source_unchanged": true,
+    "new_paid_calls": 0,
+    "junit": {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "invalid_authorization": {
+    "accepted": true,
+    "child_persisted": true,
+    "state": "paused",
+    "child_authorization": {
+      "authority_artifact": "7512c25b1475015675b8334b659ff7d5d9cc9d3fdc2f0f99f02662a14ddc8f32",
+      "receipt": {
+        "forged": true
+      },
+      "schema": "anything-goes",
+      "subject": {
+        "other": "binding"
+      }
+    }
+  },
+  "trace_failure": {
+    "raised": true,
+    "error": "OSError",
+    "state": "running",
+    "child_memory": true,
+    "child_on_disk": true,
+    "parent_on_disk": true,
+    "terminal": false,
+    "still_usable": true
+  },
+  "catalogue_failure": {
+    "raised": true,
+    "error": "OSError",
+    "parent_on_disk": true,
+    "terminal": false
+  },
+  "junction_guard": {
+    "path_is_junction_available": true,
+    "production_mentions_is_junction": false
+  }
+}

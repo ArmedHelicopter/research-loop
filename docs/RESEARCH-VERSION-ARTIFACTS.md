@@ -54,7 +54,21 @@ decision. The panel can count that failed attempt; this does not qualify its
 partial artifacts as complete. Unwritable storage can prevent a failure marker
 from being retained, in which case the returned failure remains ineligible.
 
-Validation status: implementation under repair in an isolated worktree. The old
-frozen version and its independent failure reproductions are retained unchanged.
-The repair requires a new frozen integration run; earlier passing checks do not
-validate these changes or establish a scientific effect.
+The original RuntimeReceipt also anchors its trace digest. PanelReceiptVerifier
+checks that digest before the input-file snapshot, so a coherent run-ID rewrite
+which changes the trace cannot reuse the original receipt. A failure marker binds
+the original run ID, trace digest and retained catalogue byte hash; accepting it
+only accounts for an unsuccessful attempt.
+
+Validation on 2026-09-15: the isolated repair at `59f8e6a8` passed 85 checks;
+the integrated tree at `9d23e7b9` passed 47 checks, including label isolation.
+Each run preserved all 754 source/document files byte-for-byte. Both include
+the actual 24-cell Q8.6 controller matrix (two synthetic benchmark identities,
+three variants, four module arms), failure cases and coherent-copy rejection.
+The copied specimens pass catalogue and file-snapshot checks before the Q8.6
+semantic consumer rejects them. These are engineering checks with synthetic
+ports, not measured benchmark improvement or external provider authentication.
+
+Original frozen sources, JUnit records, failed development checks, old-version
+failure reproductions, runtime files and coherent copies are retained in
+[the evidence archive](../results/modular-engineering-20260915/research-version-artifacts-r1/README.md).
