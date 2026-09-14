@@ -6,6 +6,7 @@ from research_loop.modular.benchmarks import BladeAdapter
 from research_loop.modular.artifact_catalogue import ArtifactCatalogue
 from research_loop.modular.context_artifact import verify_context_artifact, verify_session_context_artifacts
 from research_loop.modular.contracts import ContractError, DataIdentity, FrozenRecord
+from research_loop.modular.evidence_artifacts import verify_evidence_artifacts
 from research_loop.modular.m6_public_inputs import M6PublicInputBoundary
 from test_modular_runtime import session_at
 
@@ -28,6 +29,13 @@ def _snapshots(session, events):
     return {event['data']['request_digest']: {'evidence': session.evidence.snapshot(),
             'claims': session.claims.snapshot()}
         for event in events if event['stage'] == 'model_request'}
+
+
+def _audited_snapshots(session):
+    raw = verify_evidence_artifacts(session.artifacts, session.sidecar).data()['model_inputs']
+    return {request_digest: {'evidence': FrozenRecord.from_dict(snapshots['evidence_snapshot']),
+            'claims': FrozenRecord.from_dict(snapshots['claims_snapshot'])}
+        for request_digest, snapshots in raw.items()}
 
 
 @pytest.mark.parametrize('modules, mode, status', [
@@ -55,7 +63,7 @@ def test_actual_invoke_registers_exact_m3_context_and_request(tmp_path, modules,
     assert _verify(record, session, seen[0], FrozenRecord.from_dict(seen[0].data()['context'])) == record
     events = _trace_events(session)
     verify_session_context_artifacts(task=session.task, lock=session.lock, events=events,
-        catalogue=session.artifacts, invocation_snapshots=_snapshots(session, events))
+        catalogue=session.artifacts, invocation_snapshots=_audited_snapshots(session))
 
 
 def test_projection_evidence_only_revalidates_every_snapshot_and_cross_domain(tmp_path):
@@ -72,7 +80,7 @@ def test_projection_evidence_only_revalidates_every_snapshot_and_cross_domain(tm
     assert _verify(record, session, seen[0], before) == record
     events = _trace_events(session)
     verify_session_context_artifacts(task=session.task, lock=session.lock, events=events,
-        catalogue=session.artifacts, invocation_snapshots=_snapshots(session, events))
+        catalogue=session.artifacts, invocation_snapshots=_audited_snapshots(session))
 
     for field, replacement in [
         ('evidence_snapshot', {}), ('claims_snapshot', {}), ('before_projection', {}),
@@ -94,6 +102,7 @@ def test_rehashed_m3_payload_cannot_pass_trace_catalogue_replay(tmp_path):
     session, _, _ = session_at(tmp_path)
     session.invoke('final', lambda _: FrozenRecord.from_dict({'ok': True}), instruction='Inspect.')
     events = _trace_events(session)
+    audited = _audited_snapshots(session)
     session.artifacts.seal()
     path = session.sidecar / 'artifacts.jsonl'
     original = [json.loads(line) for line in path.read_text().splitlines()]
@@ -121,7 +130,7 @@ def test_rehashed_m3_payload_cannot_pass_trace_catalogue_replay(tmp_path):
 
     with pytest.raises(ContractError):
         verify_session_context_artifacts(task=session.task, lock=session.lock, events=events,
-            catalogue=catalogue, invocation_snapshots=_snapshots(session, events))
+            catalogue=catalogue, invocation_snapshots=audited)
 
 
 def test_audit_write_failure_closes_before_any_model_call(tmp_path, monkeypatch):
