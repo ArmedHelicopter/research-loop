@@ -5,6 +5,7 @@ import pytest
 from research_loop.modular.combinations import default_compatibility
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier, RuntimeReceipt, opaque_panel_cell_binding
+from research_loop.modular import research_versions
 from research_loop.modular.research_versions import ResearchVersionBoundary, verify_research_version_artifacts
 from research_loop.modular.runtime import AuditVerifier, RunSession
 from research_loop.ontology import ContractError
@@ -52,6 +53,16 @@ def test_child_mutation_blocks_the_actual_reporting_only_model_entry_before_io(t
     with pytest.raises(ContractError, match="disk bytes"):
         session.invoke("final", lambda _: called.append("model"), instruction="Report only.", reporting_only=True)
     assert called == []
+
+
+def test_publish_failure_retains_partial_prefix_without_replacing_a_final(tmp_path, monkeypatch):
+    record = FrozenRecord.from_dict({"schema": "research-version-v1", "test": "partial"})
+    final = tmp_path / "research-version-parent.json"
+    monkeypatch.setattr(research_versions.os, "link", lambda *_: (_ for _ in ()).throw(OSError("injected")))
+    with pytest.raises(OSError, match="injected"):
+        research_versions._publish(final, record)
+    partial = final.with_name(final.name + ".partial")
+    assert not final.exists() and partial.read_bytes() == (record.encoded + "\n").encode("utf-8")
 
 
 def test_running_version_requires_no_child_and_preserves_the_parent_descriptor_edge(tmp_path):
