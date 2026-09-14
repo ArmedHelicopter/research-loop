@@ -1,0 +1,555 @@
+{
+  "schema": "legacy-primary-artifact-archive-v1",
+  "source_commit": "eb33da6797c16ddda521809541af3ca32ac9ba18",
+  "source_root": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance",
+  "originals": [
+    {
+      "file": "legacy-primary-artifacts-frozen-r1-before.json",
+      "bytes": 85585,
+      "sha256": "e4a20b7d130724cb7d302f741df0c78374fd76190d9daa4366c6eeb437605646"
+    },
+    {
+      "file": "legacy-primary-artifacts-frozen-r1-closed.json",
+      "bytes": 85562,
+      "sha256": "ead2d5f466a209e1c7cdc111386366fd932b4e14dc39f63be70d566faf35281a"
+    },
+    {
+      "file": "legacy-primary-artifacts-frozen-r1.xml",
+      "bytes": 9324,
+      "sha256": "2196b7d72e895d75ed4426ce41b2066ecbe5f88a4bcbc1a608814e64de8131b7"
+    },
+    {
+      "file": "legacy-primary-artifacts-frozen-r1-sources.zip",
+      "bytes": 2414967,
+      "sha256": "28235e68bc9ee48dbdad23d398b50e93d119747285ae16317c68f4bc7c2052c3"
+    },
+    {
+      "file": "legacy-primary-artifacts-frozen-r1-source-members.json",
+      "bytes": 127923,
+      "sha256": "a9697a8b188a85cd3cd612ca83d499b1effd565ed5d2afca61839955e097ce07"
+    },
+    {
+      "file": "archive_legacy_primary_artifacts.py",
+      "bytes": 9057,
+      "sha256": "b998bfd032c9c36fb56bd176357a90c89b73e8d38c3b52a0d97aad6f3d72338e"
+    },
+    {
+      "file": "agent-verification-attempts.md",
+      "bytes": 6791,
+      "sha256": "22d3b652d3a708e48a22d87e4c66b7e2f196680de623addfcae23d366216d411"
+    },
+    {
+      "file": "agent-initial-verification-attempts.md",
+      "bytes": 7143,
+      "sha256": "76ba8718f7f4fe374118c68fbdc6aba7112f94874447b20fb2936b6aa85a8d14"
+    },
+    {
+      "file": "test_actual_exporter_and_consu0-78fa23810c366d7f578ef1ea4dd39d58313264559ea3600467040a3a34007da1.zip",
+      "bytes": 5547,
+      "sha256": "0565873a412bbfe6ef53c6f22d5789831fea2c25861237a712e583274724b8ff"
+    },
+    {
+      "file": "test_actual_exporter_and_consu0-c116024cb1ff5f2fce9c01bf0897dbcb416ad609846471774ab0eabe157def03.zip",
+      "bytes": 5724,
+      "sha256": "c2e93b3bf299a5fb45503b38c7e00cfa611110cfe9ef1e28cd27b620f6f38484"
+    },
+    {
+      "file": "test_failure_storage_failure_c0-packet.zip",
+      "bytes": 2981,
+      "sha256": "f3b6a5045b515bca5c56d4f630025749e896392b598597ea908fa112dd904f15"
+    },
+    {
+      "file": "test_partial_write_and_seal_fa0-packet.zip",
+      "bytes": 1639,
+      "sha256": "82bf77363a05126eaa905fdb452ac945ee2ec691decc9312bf1d69fd0ea0e055"
+    },
+    {
+      "file": "test_partial_write_and_seal_fa1-packet.zip",
+      "bytes": 4404,
+      "sha256": "f1e84a6d451e5d2e4bd21dc29d3f1769547e5c1e8ee0c0ff5fb00cf682f65924"
+    },
+    {
+      "file": "test_partial_write_and_seal_fa2-packet.zip",
+      "bytes": 4713,
+      "sha256": "203995eaccbe66bf91e25c7ed23b07acb0079da03e8eb2c4e86c4760b7625f19"
+    },
+    {
+      "file": "test_partial_write_and_seal_fa3-packet.zip",
+      "bytes": 5682,
+      "sha256": "2769fe03bf25fa14adbb45354b4a45b74a5bfe28d1480aed6e8fdd4e8f5cfa6b"
+    },
+    {
+      "file": "test_partial_write_and_seal_fa4-packet.zip",
+      "bytes": 6300,
+      "sha256": "c9d56032cc67395ad29065a10e049a3cbfceb375be25b15bdcaf5bae327d726d"
+    },
+    {
+      "file": "test_partial_write_and_seal_fa5-packet.zip",
+      "bytes": 5460,
+      "sha256": "907e1631725951bb9e2c3b4b141e634b6532aa1de5735b7dd135fa8e3c55efdc"
+    }
+  ],
+  "specimens": [
+    {
+      "file": "test_actual_exporter_and_consu0-78fa23810c366d7f578ef1ea4dd39d58313264559ea3600467040a3a34007da1.zip",
+      "bytes": 5547,
+      "sha256": "0565873a412bbfe6ef53c6f22d5789831fea2c25861237a712e583274724b8ff",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-primary-artifacts-frozen-r1\\test_actual_exporter_and_consu0\\out\\blade\\78fa23810c366d7f578ef1ea4dd39d58313264559ea3600467040a3a34007da1",
+      "status": "produced",
+      "report": {
+        "binding": {
+          "anchor": {
+            "allocation": {
+              "domain": "train",
+              "group": "blade-group",
+              "item": "blade:fish",
+              "official_split": "unsplit"
+            },
+            "csv": {
+              "bytes": 10,
+              "file": "data.csv",
+              "sha256": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4"
+            },
+            "identity": {
+              "benchmark": "blade",
+              "dataset_version": "c5b5f0eadb35580bde91007f404a11266e0d4458a0c51723f62acf130c44bdb0",
+              "domain": "train",
+              "group_id": "blade-group",
+              "split_id": "efcc0640e107f3704b9392bf94d12afedb91a77fe1363d385a7ce827736e602a",
+              "task_id": "fish"
+            },
+            "inventory_digest": "c5b5f0eadb35580bde91007f404a11266e0d4458a0c51723f62acf130c44bdb0",
+            "inventory_row": {
+              "benchmark": "blade",
+              "content_hashes": [
+                "a2158c172e17a5ff33b38935abf6560db584ee030c025046c7aa04ff76282ea0",
+                "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4"
+              ],
+              "exposure": "exposed",
+              "official_split": "unsplit",
+              "relative_path": "fish",
+              "source_group": "blade-group",
+              "task_id": "fish"
+            },
+            "metadata": {
+              "bytes": 125,
+              "file": "info.json",
+              "sha256": "a2158c172e17a5ff33b38935abf6560db584ee030c025046c7aa04ff76282ea0"
+            },
+            "schema": "legacy-primary-source-v2",
+            "source_selector": {
+              "metadata_file": "info.json",
+              "metadata_sha256": "a2158c172e17a5ff33b38935abf6560db584ee030c025046c7aa04ff76282ea0",
+              "query_index": 0
+            },
+            "split_digest": "efcc0640e107f3704b9392bf94d12afedb91a77fe1363d385a7ce827736e602a"
+          },
+          "attempt_id": "d72969dea0ab41c6b671a6e1c1dcfce8",
+          "identity": {
+            "benchmark": "blade",
+            "dataset_version": "c5b5f0eadb35580bde91007f404a11266e0d4458a0c51723f62acf130c44bdb0",
+            "domain": "train",
+            "group_id": "blade-group",
+            "split_id": "efcc0640e107f3704b9392bf94d12afedb91a77fe1363d385a7ce827736e602a",
+            "task_id": "fish"
+          },
+          "schema": "legacy-primary-packet-binding-v2",
+          "scientific_validated": false,
+          "sources": {
+            "adapter": {
+              "bytes": 19188,
+              "path": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance\\evaluation\\modular\\legacy_primary_packet_artifacts.py",
+              "sha256": "9e2845d1a8c5e0b3d496c2a544e963cd18e5e86b4ed5d2fb02c6b34e179b5c01"
+            },
+            "blade_projection": {
+              "bytes": 1966,
+              "path": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance\\research_loop\\modular\\benchmarks\\blade.py",
+              "sha256": "cfa5cf372ba4440e0c6a5c53211718d10b4bfd3c89e0852363fae3d28c2d37c7"
+            },
+            "discovery_projection": {
+              "bytes": 2791,
+              "path": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance\\research_loop\\modular\\benchmarks\\discovery.py",
+              "sha256": "521fae9137b74f9b6d206d1a95bb001601cb0daa01cfd55a9367e0c462ba85d5"
+            },
+            "exporter": {
+              "bytes": 15476,
+              "path": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance\\evaluation\\modular\\train_io.py",
+              "sha256": "52357318699cd2896fd2a933c1dfac5f299f3dc0b62916c81e153d5e2adfe46f"
+            },
+            "schema": "legacy-primary-producers-v2"
+          },
+          "task_sha256": "c0471b9b6f5138ff868b19a3242f9abeaecd57c47f12f1ff96ffb5016640ce2a",
+          "train_only": true
+        },
+        "schema": "legacy-primary-train-packet-v2",
+        "seal": {
+          "binding": {
+            "experiment_id": "P0:legacy-primary-export",
+            "lock_digest": "d051190466fce2b17b10109afc168f9b53c81fdd911fead61593c0c9b1a563af",
+            "run_id": "d72969dea0ab41c6b671a6e1c1dcfce8"
+          },
+          "count": 4,
+          "head": "acc9950f99d9bbf0906134df15f96f431fbfe84c49f7e2ad6db76bed90ac7538",
+          "schema": "artifact-catalogue-seal-v1"
+        },
+        "train_only": true
+      },
+      "independent_oracle": "original pre-export independent-custody.json, checked against frozen fixture constants and original source buffers",
+      "independent_custody_sha256": "d89aff4ce4112261cf160cd116ad15995293ad34ec636eaa5e1c9f1271332e79",
+      "task_digest": "c0471b9b6f5138ff868b19a3242f9abeaecd57c47f12f1ff96ffb5016640ce2a",
+      "source_anchor_digest": "3fbb138396a16fd51491f0b629bd23a884fb228efdc6697759658b929f8a85e5",
+      "read_only": true,
+      "source_archive_reverified": true,
+      "files": {
+        "data.csv": "5862881949e3a662534aa26be2ffd7ba1f6a54f4a755d1f3f4d2912b8549e9d4",
+        "legacy-primary-artifacts.jsonl": "e60424cc7a06a3db252a6ec954e023648d770fcc90e4839fb7174e0fe77ce37c",
+        "legacy-primary-artifacts.jsonl.seal.json": "1a828d747db8f4d797a7cbf13cde19f50da2fdc4f07915824490d6e4785e0e49",
+        "packet-seal.json": "13e5bfa977662fd4e2aadc37daf8c70b84734cfe529236474653dafda4baad47",
+        "public.json": "55262662205c91fb2580f4ff6176fdec53d308213aa1766579ef1621d76117c9",
+        "reservation.json": "d60d2cf413753a17919f3a643ae043e9cded676d7ba67d60c84100d3aa245052"
+      }
+    },
+    {
+      "file": "test_actual_exporter_and_consu0-c116024cb1ff5f2fce9c01bf0897dbcb416ad609846471774ab0eabe157def03.zip",
+      "bytes": 5724,
+      "sha256": "c2e93b3bf299a5fb45503b38c7e00cfa611110cfe9ef1e28cd27b620f6f38484",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-primary-artifacts-frozen-r1\\test_actual_exporter_and_consu0\\out\\discoverybench\\c116024cb1ff5f2fce9c01bf0897dbcb416ad609846471774ab0eabe157def03",
+      "status": "produced",
+      "report": {
+        "binding": {
+          "anchor": {
+            "allocation": {
+              "domain": "train",
+              "group": "disc-group",
+              "item": "discoverybench:synth:train:family_1_1",
+              "official_split": "synth/train"
+            },
+            "csv": {
+              "bytes": 6,
+              "file": "data.csv",
+              "sha256": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a"
+            },
+            "identity": {
+              "benchmark": "discoverybench",
+              "dataset_version": "c5b5f0eadb35580bde91007f404a11266e0d4458a0c51723f62acf130c44bdb0",
+              "domain": "train",
+              "group_id": "disc-group",
+              "split_id": "efcc0640e107f3704b9392bf94d12afedb91a77fe1363d385a7ce827736e602a",
+              "task_id": "synth:train:family_1_1"
+            },
+            "inventory_digest": "c5b5f0eadb35580bde91007f404a11266e0d4458a0c51723f62acf130c44bdb0",
+            "inventory_row": {
+              "benchmark": "discoverybench",
+              "content_hashes": [
+                "6fb26d56cdbad9146a9876f808f4da63604b2e08db773891eb2e79254b7bab10",
+                "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a"
+              ],
+              "exposure": "exposed",
+              "official_split": "synth/train",
+              "relative_path": "synth/train/family_1_1",
+              "source_group": "disc-group",
+              "task_id": "synth:train:family_1_1"
+            },
+            "metadata": {
+              "bytes": 160,
+              "file": "metadata_1.json",
+              "sha256": "6fb26d56cdbad9146a9876f808f4da63604b2e08db773891eb2e79254b7bab10"
+            },
+            "schema": "legacy-primary-source-v2",
+            "source_selector": {
+              "metadata_file": "metadata_1.json",
+              "metadata_sha256": "6fb26d56cdbad9146a9876f808f4da63604b2e08db773891eb2e79254b7bab10",
+              "query_index": 0
+            },
+            "split_digest": "efcc0640e107f3704b9392bf94d12afedb91a77fe1363d385a7ce827736e602a"
+          },
+          "attempt_id": "5f430ba83c8e411684afe17a86a03290",
+          "identity": {
+            "benchmark": "discoverybench",
+            "dataset_version": "c5b5f0eadb35580bde91007f404a11266e0d4458a0c51723f62acf130c44bdb0",
+            "domain": "train",
+            "group_id": "disc-group",
+            "split_id": "efcc0640e107f3704b9392bf94d12afedb91a77fe1363d385a7ce827736e602a",
+            "task_id": "synth:train:family_1_1"
+          },
+          "schema": "legacy-primary-packet-binding-v2",
+          "scientific_validated": false,
+          "sources": {
+            "adapter": {
+              "bytes": 19188,
+              "path": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance\\evaluation\\modular\\legacy_primary_packet_artifacts.py",
+              "sha256": "9e2845d1a8c5e0b3d496c2a544e963cd18e5e86b4ed5d2fb02c6b34e179b5c01"
+            },
+            "blade_projection": {
+              "bytes": 1966,
+              "path": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance\\research_loop\\modular\\benchmarks\\blade.py",
+              "sha256": "cfa5cf372ba4440e0c6a5c53211718d10b4bfd3c89e0852363fae3d28c2d37c7"
+            },
+            "discovery_projection": {
+              "bytes": 2791,
+              "path": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance\\research_loop\\modular\\benchmarks\\discovery.py",
+              "sha256": "521fae9137b74f9b6d206d1a95bb001601cb0daa01cfd55a9367e0c462ba85d5"
+            },
+            "exporter": {
+              "bytes": 15476,
+              "path": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance\\evaluation\\modular\\train_io.py",
+              "sha256": "52357318699cd2896fd2a933c1dfac5f299f3dc0b62916c81e153d5e2adfe46f"
+            },
+            "schema": "legacy-primary-producers-v2"
+          },
+          "task_sha256": "e1bc6773991c6181495fa665f6f8ba792e539c11c465f535a4f92464c1d810ab",
+          "train_only": true
+        },
+        "schema": "legacy-primary-train-packet-v2",
+        "seal": {
+          "binding": {
+            "experiment_id": "P0:legacy-primary-export",
+            "lock_digest": "2dbdb48307cbebdaefddaf7be50001815a9819d89ee30d2fee57441bf689773c",
+            "run_id": "5f430ba83c8e411684afe17a86a03290"
+          },
+          "count": 4,
+          "head": "078fb2486c440986d81c6e8046c49900be2c39d08547313babc76495b78ee021",
+          "schema": "artifact-catalogue-seal-v1"
+        },
+        "train_only": true
+      },
+      "independent_oracle": "original pre-export independent-custody.json, checked against frozen fixture constants and original source buffers",
+      "independent_custody_sha256": "d89aff4ce4112261cf160cd116ad15995293ad34ec636eaa5e1c9f1271332e79",
+      "task_digest": "e1bc6773991c6181495fa665f6f8ba792e539c11c465f535a4f92464c1d810ab",
+      "source_anchor_digest": "f5b335b02ac9c0fd6fea82d8cbdf2da034927601bd951996c7326071ce78f791",
+      "read_only": true,
+      "source_archive_reverified": true,
+      "files": {
+        "data.csv": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+        "legacy-primary-artifacts.jsonl": "374cf0381f872fed6a4958ef2c359e7e965e603174b203fd841e4efd47958ef6",
+        "legacy-primary-artifacts.jsonl.seal.json": "fa39b326f0e021edaeb51f06a193ad2a2fa2f0e282d948c9ddaa1766742fa1ea",
+        "packet-seal.json": "8c0e9bf206e57d8df5db83f6cd63719e00fb7c73190ca4923a4cd2ce5d5588fc",
+        "public.json": "7cde17f1d72fc46fa46376ef388ca327bfe534d954e4f54c11639599877224d3",
+        "reservation.json": "a257236b424df6de563d78681e52faf5036d7b796c7f22f820f33a35ef398f30"
+      }
+    },
+    {
+      "file": "test_failure_storage_failure_c0-packet.zip",
+      "bytes": 2981,
+      "sha256": "f3b6a5045b515bca5c56d4f630025749e896392b598597ea908fa112dd904f15",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-primary-artifacts-frozen-r1\\test_failure_storage_failure_c0\\packet",
+      "status": "incomplete",
+      "report": {
+        "storage_integrity_verified": false,
+        "reader_rejected_incomplete": true,
+        "operation_validated": false
+      },
+      "independent_oracle": "original pre-export independent-custody.json, checked against frozen fixture constants and original source buffers",
+      "independent_custody_sha256": "d89aff4ce4112261cf160cd116ad15995293ad34ec636eaa5e1c9f1271332e79",
+      "task_digest": "e1bc6773991c6181495fa665f6f8ba792e539c11c465f535a4f92464c1d810ab",
+      "source_anchor_digest": "f5b335b02ac9c0fd6fea82d8cbdf2da034927601bd951996c7326071ce78f791",
+      "read_only": true,
+      "source_archive_reverified": true,
+      "files": {
+        "data.csv": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+        "legacy-primary-artifacts.jsonl": "172607fedeff14243b263bf212587a65ce5c43b7a3d25b1636b01cedb6445dd5",
+        "reservation.json": "ba74ab2a027df850ee50fd77f5a30a38750119b8210a800e2561b59b1c537045"
+      }
+    },
+    {
+      "file": "test_partial_write_and_seal_fa0-packet.zip",
+      "bytes": 1639,
+      "sha256": "82bf77363a05126eaa905fdb452ac945ee2ec691decc9312bf1d69fd0ea0e055",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-primary-artifacts-frozen-r1\\test_partial_write_and_seal_fa0\\packet",
+      "status": "failed",
+      "report": {
+        "acceptance_eligible": false,
+        "attempt_id": "e7ceb6a1a34444be8c770951286887c8",
+        "error": null,
+        "error_type": "RuntimeError",
+        "operation_validated": false,
+        "schema": "legacy-primary-failure-inspected-v1",
+        "scientific_validated": false,
+        "stage": "reservation",
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "independent_oracle": "original pre-export independent-custody.json, checked against frozen fixture constants and original source buffers",
+      "independent_custody_sha256": "d89aff4ce4112261cf160cd116ad15995293ad34ec636eaa5e1c9f1271332e79",
+      "task_digest": "e1bc6773991c6181495fa665f6f8ba792e539c11c465f535a4f92464c1d810ab",
+      "source_anchor_digest": "f5b335b02ac9c0fd6fea82d8cbdf2da034927601bd951996c7326071ce78f791",
+      "read_only": true,
+      "source_archive_reverified": true,
+      "files": {
+        "failure.json": "5ca1ef466e30c5c0a0afb842f453c28437b66e0796c375c29250d8300f3d5204",
+        "failure.seal.json": "da2dd03fe962162de718d6c070a78577beec356e9aeb0feb04b50a07b335a741",
+        "reservation.json": "226c7d3003573e910b8626d9c7d7b5d71802a33293eebc92f665b7c2d810dc11"
+      }
+    },
+    {
+      "file": "test_partial_write_and_seal_fa1-packet.zip",
+      "bytes": 4404,
+      "sha256": "f1e84a6d451e5d2e4bd21dc29d3f1769547e5c1e8ee0c0ff5fb00cf682f65924",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-primary-artifacts-frozen-r1\\test_partial_write_and_seal_fa1\\packet",
+      "status": "failed",
+      "report": {
+        "acceptance_eligible": false,
+        "attempt_id": "82a8b98ee7264dd885eb8f1dbb114cbd",
+        "error": null,
+        "error_type": "RuntimeError",
+        "operation_validated": false,
+        "schema": "legacy-primary-failure-inspected-v1",
+        "scientific_validated": false,
+        "stage": "data.csv",
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "independent_oracle": "original pre-export independent-custody.json, checked against frozen fixture constants and original source buffers",
+      "independent_custody_sha256": "d89aff4ce4112261cf160cd116ad15995293ad34ec636eaa5e1c9f1271332e79",
+      "task_digest": "e1bc6773991c6181495fa665f6f8ba792e539c11c465f535a4f92464c1d810ab",
+      "source_anchor_digest": "f5b335b02ac9c0fd6fea82d8cbdf2da034927601bd951996c7326071ce78f791",
+      "read_only": true,
+      "source_archive_reverified": true,
+      "files": {
+        "data.csv": "226c7d3003573e910b8626d9c7d7b5d71802a33293eebc92f665b7c2d810dc11",
+        "failure.json": "3b752adc4676c8790800cb745b983fb58e7467f853a68d5a2323a4969caf1d10",
+        "failure.seal.json": "6dc5fb88dee9ca0214aeeabae7db219a01ae7949ccc25467455c49fa3bf70371",
+        "legacy-primary-artifacts.jsonl": "7afa570f239c6036a67e7454ba9265bd12d3593f1524f988ebd632307b0baaae",
+        "reservation.json": "34b05e2fb435d713a4e7fefb66adf92d248459d9b848628b77eca7350f51dbf1"
+      }
+    },
+    {
+      "file": "test_partial_write_and_seal_fa2-packet.zip",
+      "bytes": 4713,
+      "sha256": "203995eaccbe66bf91e25c7ed23b07acb0079da03e8eb2c4e86c4760b7625f19",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-primary-artifacts-frozen-r1\\test_partial_write_and_seal_fa2\\packet",
+      "status": "failed",
+      "report": {
+        "acceptance_eligible": false,
+        "attempt_id": "3c2150b4420346b29d0c0d74a3fc1b21",
+        "error": null,
+        "error_type": "RuntimeError",
+        "operation_validated": false,
+        "schema": "legacy-primary-failure-inspected-v1",
+        "scientific_validated": false,
+        "stage": "public.json",
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "independent_oracle": "original pre-export independent-custody.json, checked against frozen fixture constants and original source buffers",
+      "independent_custody_sha256": "d89aff4ce4112261cf160cd116ad15995293ad34ec636eaa5e1c9f1271332e79",
+      "task_digest": "e1bc6773991c6181495fa665f6f8ba792e539c11c465f535a4f92464c1d810ab",
+      "source_anchor_digest": "f5b335b02ac9c0fd6fea82d8cbdf2da034927601bd951996c7326071ce78f791",
+      "read_only": true,
+      "source_archive_reverified": true,
+      "files": {
+        "data.csv": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+        "failure.json": "aadd67bd4cd3ff516ff6a16b62e883a804dd1411a8827c017d7696f56c6a91e1",
+        "failure.seal.json": "c269ef5a163d76ac491db0bcc4b9639218b0b00f1ea280d8058175cbbf7bee7d",
+        "legacy-primary-artifacts.jsonl": "86f4c6fa0e781221c2b5cdd5ce81b4c14cf9f46f4863a83fcc9064750674bafd",
+        "public.json": "226c7d3003573e910b8626d9c7d7b5d71802a33293eebc92f665b7c2d810dc11",
+        "reservation.json": "cc25d8fbe44ac5bf2d420b5600f9b025c680b9e1c5661c355c1e286a18e2293f"
+      }
+    },
+    {
+      "file": "test_partial_write_and_seal_fa3-packet.zip",
+      "bytes": 5682,
+      "sha256": "2769fe03bf25fa14adbb45354b4a45b74a5bfe28d1480aed6e8fdd4e8f5cfa6b",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-primary-artifacts-frozen-r1\\test_partial_write_and_seal_fa3\\packet",
+      "status": "failed",
+      "report": {
+        "acceptance_eligible": false,
+        "attempt_id": "1d5035bd8f234c8fb0edcb1470bef4ed",
+        "error": null,
+        "error_type": "RuntimeError",
+        "operation_validated": false,
+        "schema": "legacy-primary-failure-inspected-v1",
+        "scientific_validated": false,
+        "stage": "catalogue_seal",
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "independent_oracle": "original pre-export independent-custody.json, checked against frozen fixture constants and original source buffers",
+      "independent_custody_sha256": "d89aff4ce4112261cf160cd116ad15995293ad34ec636eaa5e1c9f1271332e79",
+      "task_digest": "e1bc6773991c6181495fa665f6f8ba792e539c11c465f535a4f92464c1d810ab",
+      "source_anchor_digest": "f5b335b02ac9c0fd6fea82d8cbdf2da034927601bd951996c7326071ce78f791",
+      "read_only": true,
+      "source_archive_reverified": true,
+      "files": {
+        "data.csv": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+        "failure.json": "4d5ea1b992fd34522b4660338132745660823ed69ec5ee51ef1b771da6fe5dad",
+        "failure.seal.json": "f4a4d74259e99c3e9ac7c059ff134eb11aab96f987c3918773e85d57fc68b791",
+        "legacy-primary-artifacts.jsonl": "ff9a165ef888173a93468498cee96c8c362967e2747fe6027ff2ded6c1512d1e",
+        "public.json": "7cde17f1d72fc46fa46376ef388ca327bfe534d954e4f54c11639599877224d3",
+        "reservation.json": "0738ed24f1a558640a09ffd4896a12fd848a1726f112182e870974e7020e798d"
+      }
+    },
+    {
+      "file": "test_partial_write_and_seal_fa4-packet.zip",
+      "bytes": 6300,
+      "sha256": "c9d56032cc67395ad29065a10e049a3cbfceb375be25b15bdcaf5bae327d726d",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-primary-artifacts-frozen-r1\\test_partial_write_and_seal_fa4\\packet",
+      "status": "failed",
+      "report": {
+        "acceptance_eligible": false,
+        "attempt_id": "e962835fed7f4e5a9b5309f038bab9b1",
+        "error": null,
+        "error_type": "RuntimeError",
+        "operation_validated": false,
+        "schema": "legacy-primary-failure-inspected-v1",
+        "scientific_validated": false,
+        "stage": "packet_seal",
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "independent_oracle": "original pre-export independent-custody.json, checked against frozen fixture constants and original source buffers",
+      "independent_custody_sha256": "d89aff4ce4112261cf160cd116ad15995293ad34ec636eaa5e1c9f1271332e79",
+      "task_digest": "e1bc6773991c6181495fa665f6f8ba792e539c11c465f535a4f92464c1d810ab",
+      "source_anchor_digest": "f5b335b02ac9c0fd6fea82d8cbdf2da034927601bd951996c7326071ce78f791",
+      "read_only": true,
+      "source_archive_reverified": true,
+      "files": {
+        "data.csv": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+        "failure.json": "5e02d29aff67c1681e92c0c0cdab1f14b41237af907b8370b92ded3ec14a7877",
+        "failure.seal.json": "13ce688fde331bac61422ec860b46bf3de91373e19c9301643527ab1f55f9d69",
+        "legacy-primary-artifacts.jsonl": "e2b624586e037b90ef8013bff88178417a5c5455ff402783505890aff89bd5bc",
+        "legacy-primary-artifacts.jsonl.seal.json": "a53d988d691210c6f3d4e3eef2d20b976ebdf03c92cdd86a63e3d47a0e93b63a",
+        "packet-seal.json": "226c7d3003573e910b8626d9c7d7b5d71802a33293eebc92f665b7c2d810dc11",
+        "public.json": "7cde17f1d72fc46fa46376ef388ca327bfe534d954e4f54c11639599877224d3",
+        "reservation.json": "295878d027188e7f79e3d00bcefeed06f830043d33e77ab7edf90d47981b5cd4"
+      }
+    },
+    {
+      "file": "test_partial_write_and_seal_fa5-packet.zip",
+      "bytes": 5460,
+      "sha256": "907e1631725951bb9e2c3b4b141e634b6532aa1de5735b7dd135fa8e3c55efdc",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-primary-artifacts-frozen-r1\\test_partial_write_and_seal_fa5\\packet",
+      "status": "failed",
+      "report": {
+        "acceptance_eligible": false,
+        "attempt_id": "9c8c090103744f4eb763b33fe25225df",
+        "error": null,
+        "error_type": "RuntimeError",
+        "operation_validated": false,
+        "schema": "legacy-primary-failure-inspected-v1",
+        "scientific_validated": false,
+        "stage": "terminal",
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "independent_oracle": "original pre-export independent-custody.json, checked against frozen fixture constants and original source buffers",
+      "independent_custody_sha256": "d89aff4ce4112261cf160cd116ad15995293ad34ec636eaa5e1c9f1271332e79",
+      "task_digest": "e1bc6773991c6181495fa665f6f8ba792e539c11c465f535a4f92464c1d810ab",
+      "source_anchor_digest": "f5b335b02ac9c0fd6fea82d8cbdf2da034927601bd951996c7326071ce78f791",
+      "read_only": true,
+      "source_archive_reverified": true,
+      "files": {
+        "data.csv": "eacfc544fa2eb45c119cece76777d3b7087ba7ac82b26080c941bd65350f806a",
+        "failure.json": "31433360d9290b280f14a7de33052551613ff539009a2e06fd662ea5151f4785",
+        "failure.seal.json": "c2a6d9657fa20497e89848f9afec4d990028e0822afb997b3224a03f7e239b54",
+        "legacy-primary-artifacts.jsonl": "e0f68a60b7cc2f882f5601f9dba478196f891bb0f6236efdccf31abed802c9f4",
+        "public.json": "7cde17f1d72fc46fa46376ef388ca327bfe534d954e4f54c11639599877224d3",
+        "reservation.json": "c0c97fe58b2ba87d96fcb6d0f3a4ef26321e7763a7916fe6b912819a405fbc3c"
+      }
+    }
+  ],
+  "new_paid_api_calls": 0,
+  "scope": "two successful synthetic packets, six failed write/seal prefixes, one incomplete prefix; no source/private inventory copied",
+  "real_validation_access": false,
+  "scientific_effect": "not_measured"
+}
