@@ -291,8 +291,8 @@ def _validate_panel_inputs(panel: CombinationPanel, cell: PanelCell, task: Publi
 
 
 def _verify_module_logs(sidecar: Path, task: PublicTask, joint: Mapping, enabled: set[str]) -> None:
-    registry = PredictionRegistry(task.identity, storage_path=sidecar / "predictions.jsonl")
-    reviews = ReviewEngine(task.identity, storage_path=sidecar / "reviews.jsonl")
+    from research_loop.modular.m4_m5_artifacts import read_m4_m5_journals
+    registry, reviews, _ = read_m4_m5_journals(task.identity, sidecar)
     if "M4" in enabled:
         plan = registry.plan(joint["prediction_plan_id"])
         if plan.payload.content_hash != joint["prediction_plan_digest"] or plan.payload.data() != joint["prediction_plan"]:

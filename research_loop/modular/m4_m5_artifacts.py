@@ -8,6 +8,7 @@ acceptance claim.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -110,6 +111,14 @@ class M4M5ArtifactBridge:
 
 
 def _read_journal(path: Path) -> list[dict[str, Any]]:
+    path = Path(os.path.abspath(path))
+    for part in (path, *path.parents):
+        try:
+            info = part.lstat()
+        except FileNotFoundError:
+            continue
+        if part.is_symlink() or getattr(info, 'st_file_attributes', 0) & 0x400:
+            raise ContractError('M4/M5 source journal path traverses a link')
     raw = path.read_bytes()
     if raw and not raw.endswith(b'\n'):
         raise ContractError('M4/M5 source journal has an incomplete final line')
@@ -123,6 +132,23 @@ def _read_journal(path: Path) -> list[dict[str, Any]]:
             raise ContractError('M4/M5 source journal is not canonical')
         rows.append(event)
     return rows
+
+
+def read_m4_m5_journals(identity, sidecar: Path):
+    """Read existing canonical bytes and reconstruct modules without touching logs."""
+    try:
+        journals = {name: _read_journal(Path(sidecar) / (name + '.jsonl'))
+                    for name in ('predictions', 'reviews')}
+        registry, reviews = PredictionRegistry(identity), ReviewEngine(identity)
+        for event in journals['predictions']:
+            registry._apply(event, persist=False)
+        for event in journals['reviews']:
+            reviews._apply(event, persist=False)
+        return registry, reviews, journals
+    except ContractError:
+        raise
+    except (OSError, UnicodeError, ValueError, KeyError, TypeError, IndexError) as exc:
+        raise ContractError('M4/M5 source journals are missing or malformed') from exc
 
 
 def verify_m4_m5_artifacts(catalogue, sidecar):
@@ -141,12 +167,9 @@ def _verify_m4_m5_artifacts(catalogue, sidecar: Path):
     prediction_path, review_path = sidecar / 'predictions.jsonl', sidecar / 'reviews.jsonl'
     if not prediction_path.is_file() or not review_path.is_file():
         raise ContractError('M4/M5 source journals are missing')
-    # Construction replays each source journal using the module's validation;
-    # it checks plan/review IDs, identities, budget, duplicate roles, barrier,
-    # revisions and score semantics before descriptors are trusted.
-    PredictionRegistry(catalogue.identity, storage_path=prediction_path)
-    ReviewEngine(catalogue.identity, storage_path=review_path)
-    journals = {'predictions': _read_journal(prediction_path), 'reviews': _read_journal(review_path)}
+    # Replay module semantics in memory. Persistent constructors call touch(),
+    # so using them here would mutate the original journal during inspection.
+    _, _, journals = read_m4_m5_journals(catalogue.identity, sidecar)
     bridge = M4M5ArtifactBridge.__new__(M4M5ArtifactBridge)
     bridge.module_sources = {'predictions': source_snapshot(Path(predictions_module.__file__)),
                              'reviews': source_snapshot(Path(review_module.__file__))}
