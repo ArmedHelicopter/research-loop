@@ -21,6 +21,7 @@ from .modules.admission import AuditItem, EvidenceAdmission, ScientificState
 from .modules.context import ContextBuilder, ContextCache
 from .modules.evidence import ClaimLedger, EvidenceLedger
 from .artifact_catalogue import ArtifactCatalogue, source_snapshot
+from .context_artifact import context_artifact, verify_context_artifact
 from .combinations import default_compatibility
 from research_loop.ontology import canonical, digest
 
@@ -339,12 +340,28 @@ class RunSession:
             if not isinstance(context, FrozenRecord): raise ContractError('public evidence projection must be frozen')
             self._record('q8_public_evidence_context', {'slot': slot, 'controller_context': original_context.data(),
                 'public_context': context.data(), 'public_digest': context.content_hash})
+        else:
+            original_context = context
         request = FrozenRecord.from_dict({"schema": "public-model-request-v1", "task": self.task.data(),
             "lock_digest": self.lock.content_hash, "objective": self.objective.data(), "slot": slot,
             "instruction": required_text(instruction, "instruction"), "context": context.data(),
             "module_context": module_context.data() if module_context else {},
             "execution_feedback": [{"id": k, "status": e.status, "stdout": e.record.data().get("stdout", ""),
-                                    "stderr": e.record.data().get("stderr", "")} for k, e in self.executions.items()]})
+                                     "stderr": e.record.data().get("stderr", "")} for k, e in self.executions.items()]})
+        mode_name = 'evidence_only' if evidence_only else mode
+        evidence_snapshot = self.evidence.snapshot()
+        claims_snapshot = self.claims.snapshot()
+        try:
+            audit = context_artifact(task=self.task, slot=slot, mode=mode_name, m3_enabled='M3' in self.arm.data()['enabled'],
+                budget_bytes=self.context_budget, evidence=evidence_snapshot, claims=claims_snapshot,
+                before_projection=original_context, final_context=context, request=request)
+            verify_context_artifact(audit, task=self.task, request=request, evidence=evidence_snapshot,
+                claims=claims_snapshot, before_projection=original_context)
+            self.record_artifact(kind='model_context', module='M3', payload=audit,
+                status='produced' if 'M3' in self.arm.data()['enabled'] else 'not_applied')
+        except Exception:
+            self._terminal = True
+            raise
         self._next_call += 1  # Reserve before I/O; a failed call consumes its slot.
         self._record("model_request", {"request_digest": request.content_hash, "request": request.data()})
         try:
