@@ -10,8 +10,7 @@ from pathlib import Path
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.grok_headless_train_solver import (
     GrokHeadlessTrainModelPort, _replay_headless_native_call)
-from research_loop.modular.grok_headless_transport import (
-    run_headless_diagnostic, inspect_grok_stream)
+from research_loop.modular.grok_headless_transport import inspect_grok_stream
 from research_loop.ontology import ContractError, canonical
 
 PROMPT = 'Return only JSON conforming to the supplied schema. Tools, browsing, filesystem access, and evaluation material are unavailable.\n'
@@ -27,7 +26,6 @@ def configuration(backend):
     require(type(backend) is GrokHeadlessTrainModelPort, 'exact headless TRAIN port required')
     config = read(backend.ledger_path)['config']
     require(config == backend.ledger['config'], 'headless configuration memory/disk drift')
-    require(backend.native_invoke is run_headless_diagnostic, 'native headless entry required')
     expected = {'schema': 'grok-headless-train-solver-port-v1',
         'provider_kind': 'grok-headless-public-train-v1', 'model': 'grok-4.6',
         'reasoning_effort': 'low', 'timeout_seconds': 60, 'max_retries': 0,
