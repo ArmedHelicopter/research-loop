@@ -193,7 +193,9 @@ def _evaluate_review_scenario(experiment_id, variant, *, task, frozen_controls,
                            invocation="initial", prior_visible_submission=prior, case=case)
         audit.callback_payload(payload)
         response, candidate = _call(review_callback, payload, case, audit)
-        if candidate is not None: prediction_candidates.append(candidate)
+        if candidate is not None:
+            prediction_candidates.append(candidate)
+            audit.prediction_candidate(candidate)
         submission = engine.submit(session.review_id, role_id=role["role_id"],
                                    reviewer_id=identities[role["role_id"]]["reviewer_id"],
                                    response=response.data(), cost_units=allocation["fixture_units"])

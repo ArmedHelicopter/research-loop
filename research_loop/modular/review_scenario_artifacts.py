@@ -138,10 +138,75 @@ class _Records:
     def __init__(self, run_id):
         self.run_id, self.entries, self.replay_responses = run_id, [], None
 
+    def _parents(self, event, data):
+        """Exact consumed-record references, separate from chronological previous.
+
+        These edges name inputs to engineering operations. They do not claim
+        scientific causal support, independence, or external attestation.
+        """
+        def matching(*kinds):
+            return [row for row in self.entries if row.data()["event"] in kinds]
+
+        def review_events(*kinds):
+            return [row for row in matching("review_engine_event")
+                    if row.data()["review_event"]["event"] in kinds]
+
+        opened = matching("audit_open")
+        if event == "audit_open":
+            return [self.inputs.content_hash]
+        if event == "callback_reserved":
+            rows = opened
+        elif event == "callback_payload":
+            rows = matching("callback_reserved")[-1:] + review_events("open")
+            prior = data["payload"]["prior_visible_submission"]
+            if isinstance(prior, list):
+                rows += matching("review_reveal")[-1:]
+            elif prior is not None:
+                rows += [row for row in review_events("submit")
+                         if row.data()["review_event"]["before_hash"] == prior["before_hash"]]
+        elif event in {"callback_raw", "callback_failure"}:
+            rows = matching("callback_payload")[-1:]
+        elif event == "callback_response":
+            rows = matching("callback_raw")[-1:]
+        elif event == "review_engine_event":
+            mechanism = data["review_event"]
+            kind = mechanism["event"]
+            if kind == "open":
+                rows = opened
+            elif kind == "submit":
+                # Existing submissions are consumed by reviewer/budget checks.
+                rows = review_events("open", "submit") + matching("callback_reserved")[-1:] + matching("callback_response")[-1:]
+            elif kind == "revise":
+                rows = review_events("open") + [row for row in review_events("submit")
+                    if row.data()["review_event"]["role_id"] == mechanism["role_id"]]
+                rows += matching("review_reveal")[-1:] + matching("callback_reserved")[-1:] + matching("callback_response")[-1:]
+            elif kind == "score":
+                rows = review_events("open", "submit", "revise") + matching("review_reveal")
+            else:
+                raise ContractError("unrecognized review mechanism event")
+        elif event == "review_reveal":
+            rows = review_events("open", "submit")
+        elif event == "prediction_candidate":
+            rows = matching("callback_response")[-1:]
+        elif event == "prediction_registry_event":
+            rows = opened + matching("prediction_candidate")
+        elif event == "prediction_frozen_plan":
+            rows = matching("prediction_registry_event")[-1:]
+        elif event == "output":
+            rows = matching("audit_open", "callback_reserved", "callback_payload", "callback_response",
+                "review_engine_event", "review_reveal", "prediction_candidate", "prediction_registry_event", "prediction_frozen_plan")
+        elif event == "producer_failure":
+            # A failed closure consumes the entire retained prefix for audit.
+            rows = self.entries
+        else:
+            raise ContractError("unrecognized review artifact event")
+        return [row.content_hash for row in rows]
+
     def _event(self, event, **data):
-        module = "M5" if event in {"review_engine_event", "review_reveal"} else "M4" if event in {"prediction_registry_event", "prediction_frozen_plan"} else "P0"
+        module = "M5" if event in {"review_engine_event", "review_reveal"} else "M4" if event in {"prediction_candidate", "prediction_registry_event", "prediction_frozen_plan"} else "P0"
         record = FrozenRecord.from_dict({"sequence": len(self.entries), "event": event,
             "run_id": self.run_id, "module": module,
+            "parents": self._parents(event, data), "parent_relation": "consumes",
             "previous": self.entries[-1].content_hash if self.entries else None, **data})
         self._persist(record)
         self.entries.append(record)
@@ -174,6 +239,9 @@ class _Records:
 
     def reveal_event(self, event):
         self._event("review_reveal", reveal=event.data(), reveal_digest=event.content_hash)
+
+    def prediction_candidate(self, candidate):
+        self._event("prediction_candidate", candidate=candidate)
 
     def prediction_event(self, event):
         self._event("prediction_registry_event", prediction_event=event.data(), prediction_event_digest=event.content_hash)

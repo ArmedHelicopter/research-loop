@@ -294,3 +294,51 @@ def test_partial_journal_append_is_preserved(tmp_path, monkeypatch):
     assert (root / 'review-attempts.jsonl').read_bytes().endswith(b'{partial')
     assert json.loads((root / 'review-terminal.json').read_bytes())['status'] == 'failed'
     with pytest.raises(ContractError): _check(root, 'Q4.1', 'single')
+
+@pytest.mark.parametrize('attack', ['missing', 'wrong_reference'])
+def test_consumed_record_parents_are_exact_independently_of_chronology(tmp_path, attack):
+    original = tmp_path / 'original'
+    _produce(original)
+    entries = _read_rows(original)
+    input_digest = FrozenRecord.from_dict(json.loads((original / 'review-inputs.json').read_bytes())).content_hash
+    known = {input_digest}
+    for row in entries:
+        assert row['parent_relation'] == 'consumes'
+        assert row['parents'] and all(parent in known for parent in row['parents'])
+        known.add(FrozenRecord.from_dict(row).content_hash)
+    for index, kind in enumerate(('callback_reserved', 'callback_payload', 'callback_raw', 'callback_response',
+                                  'review_engine_event', 'review_reveal', 'output')):
+        copied = tmp_path / f'copy-{index}'
+        shutil.copytree(original, copied)
+        assert _check(copied).data()['status'] == 'succeeded'
+        rows = _read_rows(copied)
+        row = next(row for row in rows if row['event'] == kind)
+        if attack == 'missing': row.pop('parents')
+        else: row['parents'][0] = '0' * 64
+        _reseal(copied, rows)
+        with pytest.raises(ContractError): _check(copied)
+
+
+def test_reveal_revision_and_m4_references_name_actual_consumed_records(tmp_path):
+    sequential, prediction = tmp_path / 'sequential', tmp_path / 'prediction'
+    _produce(sequential)
+    rows = _read_rows(sequential)
+    reveal = next(row for row in rows if row['event'] == 'review_reveal')
+    reveal_digest = FrozenRecord.from_dict(reveal).content_hash
+    revision_payloads = [row for row in rows if row['event'] == 'callback_payload' and row['payload']['invocation'] == 'revision']
+    assert all(reveal_digest in row['parents'] for row in revision_payloads)
+    _produce(prediction, 'Q4.1', 'roles', review_callback=prediction_responder)
+    rows = _read_rows(prediction)
+    candidates = [FrozenRecord.from_dict(row).content_hash for row in rows if row['event'] == 'prediction_candidate']
+    freeze = next(row for row in rows if row['event'] == 'prediction_registry_event')
+    plan = next(row for row in rows if row['event'] == 'prediction_frozen_plan')
+    assert set(candidates) <= set(freeze['parents'])
+    assert plan['parents'] == [FrozenRecord.from_dict(freeze).content_hash]
+    for index, kind in enumerate(('prediction_candidate', 'prediction_registry_event', 'prediction_frozen_plan')):
+        copied = tmp_path / f'prediction-copy-{index}'
+        shutil.copytree(prediction, copied)
+        assert _check(copied, 'Q4.1', 'roles').data()['status'] == 'succeeded'
+        altered = _read_rows(copied)
+        next(row for row in altered if row['event'] == kind)['parents'] = []
+        _reseal(copied, altered)
+        with pytest.raises(ContractError): _check(copied, 'Q4.1', 'roles')
