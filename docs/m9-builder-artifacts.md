@@ -10,7 +10,8 @@ serve as invocation provenance.
 
 Call the returned bridge's `execute()` in place of the original restricted build
 and three file writes. It writes `builder.json`, invokes the existing local
-`RestrictedBuilderPort.execute`, writes `builder-receipt.json`, then writes
+`RestrictedBuilderPort.execute`, retains its returned records and type metadata
+in `m9-builder-return.json`, writes `builder-receipt.json`, then writes
 `candidate.json`. Each fsynced file immediately receives a descriptor; candidate
 parentage includes the preceding receipt and transitively the selected builder.
 The three files preserve their original canonical bytes and names. Their order
@@ -18,8 +19,11 @@ now ensures that the builder is durable before execution and the receipt is
 registered before the candidate. A separate `m9-build-terminal.json` binds the
 output inventory, cost, phase and success/failure.
 
-Original returned records are retained before `_checked_build` rejects semantic
-drift. Interrupted partial files are retained by byte count and SHA-256 even when
+Original returned records are retained before either individual serialization or
+`_checked_build` can fail, including a valid candidate with an invalid receipt.
+The fixed search allocation and actual interpreter attempt are separate: failure
+before execute retains allocation 1 and records zero interpreter attempts.
+Interrupted partial files are retained by byte count and SHA-256 even when
 they are not canonical JSON. The original exception escapes unchanged. If an
 intervening caller operation fails before execution, call `bridge.fail(exc)`;
 after an existing terminal this does not overwrite the build outcome. The caller
@@ -27,11 +31,11 @@ must retain a distinct failed stage receipt when a later trace operation fails,
 or when the artifact journal itself is unavailable.
 
 `verify_builder_artifacts` takes the same arguments, reads only original files,
-checks every descriptor and causal edge, and for successful builds replays
+checks the original trace prefix, every descriptor and causal edge, and for successful builds replays
 `select_builder`, `RestrictedBuilderPort.execute`, and `_checked_build`. This
 literal DSL replay performs no filesystem writes, model calls, network requests,
 task generation, or acceptance. Missing files are rejected, never recreated.
-Failure replay verifies retained evidence; it does not claim to reproduce an
+Failure replay verifies retained evidence and reachable phase/file states; it does not claim to reproduce an
 external filesystem failure or make the failed candidate eligible.
 
 M9-disabled ordinary revision runs retain `not_applied` descriptors and the fixed

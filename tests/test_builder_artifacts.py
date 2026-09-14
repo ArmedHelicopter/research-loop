@@ -70,8 +70,8 @@ def test_actual_invocation_precedes_build_and_each_durable_output_is_registered(
     registered = rows(session)
     assert [r.data()['kind'] for r in registered] == [
         'm9_builder_selection', 'm9_builder_subjects', 'm9_builder_file',
-        'm9_builder_receipt', 'm9_candidate', 'm9_build_terminal']
-    assert registered[4].data()['parents'] == [registered[3].content_hash]
+        'm9_builder_return', 'm9_builder_receipt', 'm9_candidate', 'm9_build_terminal']
+    assert registered[5].data()['parents'] == [registered[4].content_hash]
     assert all(r.data()['status'] == ('produced' if enabled else 'not_applied') for r in registered)
     assert all(Path(r.data()['producer_source']['path']).suffix == '.py' for r in registered)
     assert not any(r.data()['scientific_validated'] for r in registered)
@@ -204,6 +204,9 @@ def test_coherently_rehashed_candidate_receipt_files_and_terminal_fail_semantic_
     receipt = json.loads((tmp_path / 'builder-receipt.json').read_bytes())
     receipt['output_candidate_digest'] = changed.content_hash
     (tmp_path / 'builder-receipt.json').write_text(FrozenRecord.from_dict(receipt).encoded + '\n', encoding='utf-8', newline='\n')
+    returned = json.loads((tmp_path / artifacts._RETURNED).read_bytes())
+    returned.update(candidate=candidate, receipt=receipt)
+    (tmp_path / artifacts._RETURNED).write_text(FrozenRecord.from_dict(returned).encoded + '\n', encoding='utf-8', newline='\n')
     terminal = json.loads((tmp_path / 'm9-build-terminal.json').read_bytes())
     terminal['files'] = {name: artifacts._snapshot(tmp_path, name) for name in artifacts._FILES}
     (tmp_path / 'm9-build-terminal.json').write_text(FrozenRecord.from_dict(terminal).encoded + '\n', encoding='utf-8', newline='\n')
@@ -229,3 +232,71 @@ def test_missing_terminal_is_not_recreated_by_reader(tmp_path):
     with pytest.raises(ContractError, match='missing'):
         artifacts.verify_builder_artifacts(session.artifacts, **kwargs)
     assert tree_bytes(tmp_path) == before
+
+
+@pytest.mark.parametrize('missing', ['candidate', 'receipt'])
+def test_mixed_valid_invalid_returns_keep_each_original_record(tmp_path, monkeypatch, missing):
+    session, kwargs = fixture(tmp_path)
+    bridge = artifacts.begin_builder_artifacts(session.artifacts, **kwargs)
+    original = RestrictedBuilderPort.execute
+    actual = {}
+
+    def mixed(port, *args, **kw):
+        candidate, receipt = original(port, *args, **kw)
+        actual.update(candidate=candidate.record.data(), receipt=receipt.record.data())
+        return (None, receipt) if missing == 'candidate' else (candidate, None)
+
+    monkeypatch.setattr(RestrictedBuilderPort, 'execute', mixed)
+    with pytest.raises(ContractError, match='unrecordable'):
+        bridge.execute()
+    returned = json.loads((tmp_path / artifacts._RETURNED).read_bytes())
+    retained = 'receipt' if missing == 'candidate' else 'candidate'
+    assert returned[retained] == actual[retained] and returned[missing] is None
+    assert returned[missing + '_type'] == 'NoneType'
+    session.artifacts.seal()
+    before = tree_bytes(tmp_path)
+    assert artifacts.verify_builder_artifacts(session.artifacts, **kwargs).data()['status'] == 'failed'
+    assert tree_bytes(tmp_path) == before
+
+
+def test_failure_before_execute_preserves_allocation_without_charging_execution(tmp_path):
+    session, kwargs = fixture(tmp_path)
+    bridge = artifacts.begin_builder_artifacts(session.artifacts, **kwargs)
+    bridge.fail(ContractError('intervening caller failure'))
+    terminal = json.loads((tmp_path / 'm9-build-terminal.json').read_bytes())
+    assert terminal['search_cost'] == 1 and terminal['builder_attempted'] is False
+    assert rows(session)[-1].data()['cost'] == {'known': True, 'units': 0}
+    assert artifacts.verify_builder_artifacts(session.artifacts, **kwargs).data()['status'] == 'failed'
+
+
+def test_rehashed_impossible_failed_phase_is_rejected(tmp_path):
+    session, kwargs = fixture(tmp_path)
+    artifacts.begin_builder_artifacts(session.artifacts, **kwargs).execute()
+    session.artifacts.seal()
+    terminal = json.loads((tmp_path / 'm9-build-terminal.json').read_bytes())
+    terminal.update(status='failed', phase='before_execute', error_type='OSError', error='forged', builder_attempted=False)
+    (tmp_path / 'm9-build-terminal.json').write_text(FrozenRecord.from_dict(terminal).encoded + '\n', encoding='utf-8', newline='\n')
+
+    def edit(body):
+        if body['kind'] == 'm9_build_terminal':
+            body['payload']['canonical'] = artifacts._snapshot(tmp_path, 'm9-build-terminal.json')
+            body.update(status='failed', cost={'known': True, 'units': 0})
+
+    rewrite_catalogue(session, edit)
+    with pytest.raises(ContractError, match='phase cannot produce'):
+        artifacts.verify_builder_artifacts(session.artifacts, **kwargs)
+
+
+def test_original_trace_blocks_rehashed_substitute_response_before_begin(tmp_path):
+    session, kwargs = fixture(tmp_path)
+    response = FrozenRecord.from_dict({**kwargs['response'].data(), 'value': 'forged invocation'})
+
+    def edit(body):
+        if body['kind'] == 'trace_event' and body['payload']['canonical']['stage'] == 'model_response':
+            body['payload']['canonical']['data']['response'] = response.data()
+
+    rewrite_catalogue(session, edit)
+    other = {**kwargs, 'response': response, 'builder': select_builder(response, kwargs['recipe'], kwargs['fixed_builder'])}
+    with pytest.raises(ContractError, match='original trace'):
+        artifacts.begin_builder_artifacts(session.artifacts, **other)
+    assert not (tmp_path / 'builder.json').exists()

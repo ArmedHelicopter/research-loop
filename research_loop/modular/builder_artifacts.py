@@ -13,9 +13,10 @@ from research_loop.modular.modules.improvement import (
 )
 from research_loop.ontology import ContractError
 
-_FILES = ('builder.json', 'builder-receipt.json', 'candidate.json')
+_RETURNED = 'm9-builder-return.json'
+_FILES = ('builder.json', _RETURNED, 'builder-receipt.json', 'candidate.json')
 _TERMINAL = 'm9-build-terminal.json'
-_KINDS = dict(zip(_FILES, ('m9_builder_file', 'm9_builder_receipt', 'm9_candidate')))
+_KINDS = dict(zip(_FILES, ('m9_builder_file', 'm9_builder_return', 'm9_builder_receipt', 'm9_candidate')))
 _SOURCES = {'selection': Path(__file__).with_name('full_loo_modules.py'),
             'builder': Path(__file__).parent / 'modules' / 'improvement.py', 'bridge': Path(__file__)}
 
@@ -41,6 +42,14 @@ def _read(root, name):
 
 
 def _invocation(records, response, enabled, catalogue, parent):
+    prefix = [r.data()['payload']['canonical'] for r in records if r.data()['kind'] == 'trace_event']
+    try:
+        trace = [FrozenRecord(line).data() for line in
+                 (catalogue.path.parent / 'trace.jsonl').read_text(encoding='utf-8').splitlines()]
+    except OSError as exc:
+        raise ContractError('M9 original invocation trace is missing') from exc
+    if trace[:len(prefix)] != prefix:
+        raise ContractError('M9 invocation catalogue differs from the original trace')
     locks = [r.data()['payload']['canonical']['data'] for r in records
              if r.data()['kind'] == 'trace_event' and r.data()['payload']['canonical']['stage'] == 'objective_lock']
     if (len(locks) != 1 or FrozenRecord.from_dict(locks[0]).content_hash != catalogue.binding['lock_digest']
@@ -73,7 +82,10 @@ def _inputs(catalogue, builder, parent, response, recipe, fixed_builder):
             or type(fixed_builder) is not FrozenBuilderVersion or type(recipe) is not dict):
         raise ContractError('M9 requires exact immutable builder inputs')
     catalogue.identity.require_train()
-    level = recipe.get('history_build_levels', {}).get('M9')
+    levels = recipe.get('history_build_levels')
+    if type(levels) is not dict:
+        raise ContractError('M9 requires frozen recipe activation levels')
+    level = levels.get('M9')
     if type(level) is not int or level not in {0, 1}:
         raise ContractError('M9 activation must be the frozen recipe integer level')
     enabled = bool(level)
@@ -155,10 +167,12 @@ class BuilderArtifactBridge:
                 'phase': self.phase, 'error_type': type(error).__name__ if error else None,
                 'error': str(error) if error else None, 'files': self.files,
                 'builder_digest': self.builder.digest, 'parent_digest': self.parent.digest,
-                'manifest_digest': self.manifest.content_hash, 'search_cost': 1, 'scientific_validated': False}
+                'manifest_digest': self.manifest.content_hash, 'search_cost': 1,
+                'builder_attempted': self.phase not in {'before_execute', 'write_builder'},
+                'scientific_validated': False}
         _exclusive(self.root / _TERMINAL, FrozenRecord.from_dict(body))
         self.terminal = self.catalogue.append(**_spec('m9_build_terminal', _snapshot(self.root, _TERMINAL),
-            (self.last.content_hash,), 'failed' if error else self.status, units=1))
+            (self.last.content_hash,), 'failed' if error else self.status, units=int(body['builder_attempted'])))
         return self.terminal
 
     def fail(self, error):
@@ -178,6 +192,15 @@ class BuilderArtifactBridge:
             self.phase = 'execute'
             candidate, receipt = RestrictedBuilderPort().execute(self.builder, self.manifest, self.parent,
                 expected_builder_digest=self.builder.digest, expected_entrypoint=self.builder.entrypoint, search_cost=1)
+            # Retain both serializable results before either individual writer
+            # can fail, including a valid candidate with an invalid receipt.
+            self.phase = 'write_return'
+            returned = {}
+            for name, value in (('candidate', candidate), ('receipt', receipt)):
+                record = getattr(value, 'record', None)
+                returned[name] = record.data() if type(record) is FrozenRecord else None
+                returned[name + '_type'] = type(value).__name__
+            self._write(_RETURNED, FrozenRecord.from_dict(returned))
             # Keep returned records before semantic checks. Receipt precedes
             # candidate so its descriptor is a causal parent of that candidate.
             self.phase = 'write_receipt'
@@ -230,11 +253,13 @@ def verify_builder_artifacts(catalogue, *, root, builder, parent, response, reci
         (rows[0].content_hash,), status, 'builder'))
     terminal = _read(root, _TERMINAL).data()
     if (set(terminal) != {'schema', 'status', 'activation', 'phase', 'error_type', 'error', 'files',
-                         'builder_digest', 'parent_digest', 'manifest_digest', 'search_cost', 'scientific_validated'}
+                         'builder_digest', 'parent_digest', 'manifest_digest', 'search_cost', 'builder_attempted', 'scientific_validated'}
             or terminal['schema'] != 'm9-build-terminal-v1' or terminal['status'] not in {'failed', 'succeeded'}
             or terminal['activation'] != ('applied' if enabled else 'not_applied')
             or terminal['builder_digest'] != builder.digest or terminal['parent_digest'] != parent.digest
-            or terminal['manifest_digest'] != manifest.content_hash or terminal['search_cost'] != 1
+            or terminal['manifest_digest'] != manifest.content_hash
+            or type(terminal['search_cost']) is not int or terminal['search_cost'] != 1
+            or type(terminal['builder_attempted']) is not bool
             or terminal['scientific_validated'] is not False):
         raise ContractError('M9 terminal subject or status drift')
     snapshots = {name: _snapshot(root, name) for name in _FILES if (root / name).exists()}
@@ -251,8 +276,33 @@ def verify_builder_artifacts(catalogue, *, root, builder, parent, response, reci
     if observed != [name for name in _FILES if name in snapshots]:
         raise ContractError('M9 durable output order drift')
     failed = terminal['status'] == 'failed'
+    phase = terminal['phase']
+    reachable = {'before_execute': (0,), 'write_builder': (0, 1), 'execute': (1,),
+                 'write_return': (1, 2), 'write_receipt': (2, 3), 'write_candidate': (3, 4),
+                 'validate': (4,), 'complete': (4,)}
+    if (type(phase) is not str or phase not in reachable or len(observed) not in reachable[phase]
+            or observed != list(_FILES[:len(observed)])
+            or terminal['builder_attempted'] != (phase not in {'before_execute', 'write_builder'})):
+        raise ContractError('M9 terminal phase cannot produce its retained file state')
     _match(rows[-1], _spec('m9_build_terminal', _snapshot(root, _TERMINAL), (last.content_hash,),
-                          'failed' if failed else status, units=1))
+                          'failed' if failed else status, units=int(terminal['builder_attempted'])))
+    if _RETURNED in snapshots:
+        returned = snapshots[_RETURNED]['canonical']
+        if returned is None:
+            if not failed or phase != 'write_return':
+                raise ContractError('M9 original returned outputs are malformed')
+        else:
+            if (set(returned) != {'candidate', 'receipt', 'candidate_type', 'receipt_type'}
+                    or any(type(returned[k]) is not str or not returned[k] for k in ('candidate_type', 'receipt_type'))):
+                raise ContractError('M9 original returned output schema drift')
+            for key, name in (('candidate', 'candidate.json'), ('receipt', 'builder-receipt.json')):
+                value = returned[key]
+                if value is not None and type(value) is not dict:
+                    raise ContractError('M9 returned output must be a canonical record or absent')
+                if name in snapshots and snapshots[name]['canonical'] is not None and value != snapshots[name]['canonical']:
+                    raise ContractError('M9 original return differs from its output file')
+            if not failed and (returned['candidate_type'] != 'CandidatePackage' or returned['receipt_type'] != 'BuilderRunReceipt'):
+                raise ContractError('M9 successful build returned untyped outputs')
     if 'builder.json' in snapshots:
         if snapshots['builder.json']['canonical'] is None:
             if not failed or terminal['phase'] != 'write_builder':
@@ -270,8 +320,7 @@ def verify_builder_artifacts(catalogue, *, root, builder, parent, response, reci
         _checked_build(candidate, receipt, builder, parent)
         if candidate != replay_candidate or receipt != replay_receipt:
             raise ContractError('M9 original outputs differ from restricted interpreter replay')
-    elif (terminal['phase'] not in {'before_execute', 'write_builder', 'execute', 'write_receipt', 'write_candidate', 'validate', 'complete'}
-          or type(terminal['error_type']) is not str or not terminal['error_type'] or type(terminal['error']) is not str):
+    elif (type(terminal['error_type']) is not str or not terminal['error_type'] or type(terminal['error']) is not str):
         raise ContractError('M9 failed terminal lacks its original failure')
     return FrozenRecord.from_dict({'schema': 'm9-builder-artifacts-verified-v1',
         'status': terminal['status'], 'activation': terminal['activation'],
