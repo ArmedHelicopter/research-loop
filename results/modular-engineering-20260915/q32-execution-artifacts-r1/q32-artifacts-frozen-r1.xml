@@ -1,0 +1,802 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="28" skipped="0" tests="51" time="276.140" timestamp="2026-09-15T02:02:31.200916+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.006" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.003" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.003" /><testcase classname="tests.test_q32_artifact_attacks" name="test_unique_prediction_freezes_are_actual_durable_module_outputs[joint-1]" time="1.111" /><testcase classname="tests.test_q32_artifact_attacks" name="test_unique_prediction_freezes_are_actual_durable_module_outputs[separate-3]" time="1.263" /><testcase classname="tests.test_q32_artifact_attacks" name="test_exact_file_drift_is_rejected_without_callbacks_and_original_survives[predictions.jsonl]" time="3.941"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_exact_file_drift_is_rejec0')
+name = 'predictions.jsonl'
+
+    @pytest.mark.parametrize('name', ['predictions.jsonl','execution-seal.json','result.json','artifacts.jsonl.seal.json'])
+    def test_exact_file_drift_is_rejected_without_callbacks_and_original_survives(tmp_path, name):
+&gt;       stage, compiled, calls, broker = complete_case(tmp_path)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_exact_file_drift_is_rejec0')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_exact_file_drift_is_rejected_without_callbacks_and_original_survives[execution-seal.json]" time="4.258"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_exact_file_drift_is_rejec1')
+name = 'execution-seal.json'
+
+    @pytest.mark.parametrize('name', ['predictions.jsonl','execution-seal.json','result.json','artifacts.jsonl.seal.json'])
+    def test_exact_file_drift_is_rejected_without_callbacks_and_original_survives(tmp_path, name):
+&gt;       stage, compiled, calls, broker = complete_case(tmp_path)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_exact_file_drift_is_rejec1')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_exact_file_drift_is_rejected_without_callbacks_and_original_survives[result.json]" time="4.400"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_exact_file_drift_is_rejec2')
+name = 'result.json'
+
+    @pytest.mark.parametrize('name', ['predictions.jsonl','execution-seal.json','result.json','artifacts.jsonl.seal.json'])
+    def test_exact_file_drift_is_rejected_without_callbacks_and_original_survives(tmp_path, name):
+&gt;       stage, compiled, calls, broker = complete_case(tmp_path)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_exact_file_drift_is_rejec2')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_exact_file_drift_is_rejected_without_callbacks_and_original_survives[artifacts.jsonl.seal.json]" time="4.680"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_exact_file_drift_is_rejec3')
+name = 'artifacts.jsonl.seal.json'
+
+    @pytest.mark.parametrize('name', ['predictions.jsonl','execution-seal.json','result.json','artifacts.jsonl.seal.json'])
+    def test_exact_file_drift_is_rejected_without_callbacks_and_original_survives(tmp_path, name):
+&gt;       stage, compiled, calls, broker = complete_case(tmp_path)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:105: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_exact_file_drift_is_rejec3')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_missing_journal_reader_does_not_construct_or_touch_a_replay_writer" time="4.595"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_missing_journal_reader_do0')
+
+    def test_missing_journal_reader_does_not_construct_or_touch_a_replay_writer(tmp_path):
+&gt;       stage,compiled,calls,broker=complete_case(tmp_path); root=copy_case(stage,compiled,tmp_path)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_missing_journal_reader_do0')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_prediction_disk_drift_stops_before_second_model_callback" time="2.718" /><testcase classname="tests.test_q32_artifact_attacks" name="test_execution_seal_byte_drift_stops_before_first_broker_call" time="3.833" /><testcase classname="tests.test_q32_artifact_attacks" name="test_linked_original_outputs_are_rejected_before_content_reads[trace.jsonl]" time="4.183"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_linked_original_outputs_a0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226A16B30B0&gt;
+name = 'trace.jsonl'
+
+    @pytest.mark.parametrize('name', ['trace.jsonl','predictions.jsonl','execution-seal.json','result.json','artifacts.jsonl'])
+    def test_linked_original_outputs_are_rejected_before_content_reads(tmp_path,monkeypatch,name):
+&gt;       stage,compiled,calls,broker=complete_case(tmp_path); root=copy_case(stage,compiled,tmp_path)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_linked_original_outputs_a0')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_linked_original_outputs_are_rejected_before_content_reads[predictions.jsonl]" time="4.200"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_linked_original_outputs_a1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226A4200C50&gt;
+name = 'predictions.jsonl'
+
+    @pytest.mark.parametrize('name', ['trace.jsonl','predictions.jsonl','execution-seal.json','result.json','artifacts.jsonl'])
+    def test_linked_original_outputs_are_rejected_before_content_reads(tmp_path,monkeypatch,name):
+&gt;       stage,compiled,calls,broker=complete_case(tmp_path); root=copy_case(stage,compiled,tmp_path)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_linked_original_outputs_a1')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_linked_original_outputs_are_rejected_before_content_reads[execution-seal.json]" time="4.354"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_linked_original_outputs_a2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226A40668D0&gt;
+name = 'execution-seal.json'
+
+    @pytest.mark.parametrize('name', ['trace.jsonl','predictions.jsonl','execution-seal.json','result.json','artifacts.jsonl'])
+    def test_linked_original_outputs_are_rejected_before_content_reads(tmp_path,monkeypatch,name):
+&gt;       stage,compiled,calls,broker=complete_case(tmp_path); root=copy_case(stage,compiled,tmp_path)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_linked_original_outputs_a2')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_linked_original_outputs_are_rejected_before_content_reads[result.json]" time="4.813"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_linked_original_outputs_a3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226A4121B20&gt;
+name = 'result.json'
+
+    @pytest.mark.parametrize('name', ['trace.jsonl','predictions.jsonl','execution-seal.json','result.json','artifacts.jsonl'])
+    def test_linked_original_outputs_are_rejected_before_content_reads(tmp_path,monkeypatch,name):
+&gt;       stage,compiled,calls,broker=complete_case(tmp_path); root=copy_case(stage,compiled,tmp_path)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_linked_original_outputs_a3')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_linked_original_outputs_are_rejected_before_content_reads[artifacts.jsonl]" time="4.191"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_linked_original_outputs_a4')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226A401B5F0&gt;
+name = 'artifacts.jsonl'
+
+    @pytest.mark.parametrize('name', ['trace.jsonl','predictions.jsonl','execution-seal.json','result.json','artifacts.jsonl'])
+    def test_linked_original_outputs_are_rejected_before_content_reads(tmp_path,monkeypatch,name):
+&gt;       stage,compiled,calls,broker=complete_case(tmp_path); root=copy_case(stage,compiled,tmp_path)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:148: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_linked_original_outputs_a4')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_rehashed_missing_consumer_parents_fail_semantics_not_outer_checksums[q32_execution_seal]" time="4.650"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_rehashed_missing_consumer0')
+target = 'q32_execution_seal'
+
+    @pytest.mark.parametrize('target', ['q32_execution_seal','q32_observation','q32_comparison_ready','q32_phase_result'])
+    def test_rehashed_missing_consumer_parents_fail_semantics_not_outer_checksums(tmp_path,target):
+        from research_loop.modular.artifact_catalogue import ArtifactCatalogue
+        from research_loop.modular.q32_artifacts import CLOSURE, inventory
+&gt;       stage,compiled,calls,broker=complete_case(tmp_path); root=copy_case(stage,compiled,tmp_path)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_rehashed_missing_consumer0')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_rehashed_missing_consumer_parents_fail_semantics_not_outer_checksums[q32_observation]" time="4.142"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_rehashed_missing_consumer1')
+target = 'q32_observation'
+
+    @pytest.mark.parametrize('target', ['q32_execution_seal','q32_observation','q32_comparison_ready','q32_phase_result'])
+    def test_rehashed_missing_consumer_parents_fail_semantics_not_outer_checksums(tmp_path,target):
+        from research_loop.modular.artifact_catalogue import ArtifactCatalogue
+        from research_loop.modular.q32_artifacts import CLOSURE, inventory
+&gt;       stage,compiled,calls,broker=complete_case(tmp_path); root=copy_case(stage,compiled,tmp_path)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_rehashed_missing_consumer1')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_rehashed_missing_consumer_parents_fail_semantics_not_outer_checksums[q32_comparison_ready]" time="4.091"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_rehashed_missing_consumer2')
+target = 'q32_comparison_ready'
+
+    @pytest.mark.parametrize('target', ['q32_execution_seal','q32_observation','q32_comparison_ready','q32_phase_result'])
+    def test_rehashed_missing_consumer_parents_fail_semantics_not_outer_checksums(tmp_path,target):
+        from research_loop.modular.artifact_catalogue import ArtifactCatalogue
+        from research_loop.modular.q32_artifacts import CLOSURE, inventory
+&gt;       stage,compiled,calls,broker=complete_case(tmp_path); root=copy_case(stage,compiled,tmp_path)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_rehashed_missing_consumer2')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_rehashed_missing_consumer_parents_fail_semantics_not_outer_checksums[q32_phase_result]" time="4.123"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_rehashed_missing_consumer3')
+target = 'q32_phase_result'
+
+    @pytest.mark.parametrize('target', ['q32_execution_seal','q32_observation','q32_comparison_ready','q32_phase_result'])
+    def test_rehashed_missing_consumer_parents_fail_semantics_not_outer_checksums(tmp_path,target):
+        from research_loop.modular.artifact_catalogue import ArtifactCatalogue
+        from research_loop.modular.q32_artifacts import CLOSURE, inventory
+&gt;       stage,compiled,calls,broker=complete_case(tmp_path); root=copy_case(stage,compiled,tmp_path)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_rehashed_missing_consumer3')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_changed_literal_program_with_rehashed_inventory_is_not_original_execution" time="4.685"><failure message="AssertionError: assert 'ContractError' is None">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_changed_literal_program_w0')
+
+    def test_changed_literal_program_with_rehashed_inventory_is_not_original_execution(tmp_path):
+        from research_loop.modular.q32_artifacts import CLOSURE, inventory
+&gt;       stage,compiled,calls,broker=complete_case(tmp_path); root=copy_case(stage,compiled,tmp_path)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_q32_artifact_attacks.py:189: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_changed_literal_program_w0')
+variant = 'joint'
+
+    def complete_case(root, variant='joint'):
+        stage, compiled = make_case(root, variant); calls = []; broker = SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        result = stage.run(model, broker)
+&gt;       assert result.data()['failure'] is None
+E       AssertionError: assert 'ContractError' is None
+
+tests\test_q32_artifact_attacks.py:52: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_attacks" name="test_first_program_byte_drift_blocks_second_execution" time="3.724"><failure message="research_loop.ontology.ContractError: invalid immutable record">self = FrozenRecord(encoded='{"compiled_digest":"38ae5426d29ad69e5daab7290b2e3ced9ebbdf5f1ebaf228883289a63971dafb","jobs":[{"...50b62246460de87aeaa3a25b3e","response_digest":"a36af64c0c6892c25fa57cc6cb1bcfc6d9db4c2c0123dc0ae59be42ab8f78f76"}]}\n')
+
+    def __post_init__(self) -&gt; None:
+        try:
+            decoded = json.loads(self.encoded)
+            if not isinstance(decoded, dict) or canonical(decoded) != self.encoded:
+&gt;               raise ContractError("record must be a canonical JSON object")
+E               research_loop.ontology.ContractError: record must be a canonical JSON object
+
+research_loop\modular\contracts.py:45: ContractError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_first_program_byte_drift_0')
+
+    def test_first_program_byte_drift_blocks_second_execution(tmp_path):
+        stage,compiled=make_case(tmp_path); calls=[]; broker=SyntheticBroker()
+        def model(request): calls.append(request); return fixture_response(request)
+        seal=stage.produce(model)
+        def execute(job):
+            return stage.execute_next(broker=broker,plan_id=job['plan_id'],program=job['program'],csv_path=stage.packet.csv_path)
+&gt;       execute(seal.data()['jobs'][0])
+
+tests\test_q32_artifact_attacks.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_q32_artifact_attacks.py:203: in execute
+    return stage.execute_next(broker=broker,plan_id=job['plan_id'],program=job['program'],csv_path=stage.packet.csv_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\q32_execution.py:210: in execute_next
+    if FrozenRecord((self._session.sidecar / "execution-seal.json").read_text(encoding="utf-8")) != self._seal:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:4: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = FrozenRecord(encoded='{"compiled_digest":"38ae5426d29ad69e5daab7290b2e3ced9ebbdf5f1ebaf228883289a63971dafb","jobs":[{"...50b62246460de87aeaa3a25b3e","response_digest":"a36af64c0c6892c25fa57cc6cb1bcfc6d9db4c2c0123dc0ae59be42ab8f78f76"}]}\n')
+
+    def __post_init__(self) -&gt; None:
+        try:
+            decoded = json.loads(self.encoded)
+            if not isinstance(decoded, dict) or canonical(decoded) != self.encoded:
+                raise ContractError("record must be a canonical JSON object")
+        except (ValueError, TypeError) as exc:
+&gt;           raise ContractError("invalid immutable record") from exc
+E           research_loop.ontology.ContractError: invalid immutable record
+
+research_loop\modular\contracts.py:47: ContractError</failure></testcase><testcase classname="tests.test_q32_prospective_execution" name="test_actual_four_cell_grid_with_independent_csv_authority[False]" time="16.215"><failure message="assert 12 == 16&#10; +  where 12 = sum(&lt;generator object test_actual_four_cell_grid_with_independent_csv_authority.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000226A17018C0&gt;)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_actual_four_cell_grid_wit0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226A40C5700&gt;
+failure = False
+
+    @pytest.mark.parametrize("failure", [False, True])
+    def test_actual_four_cell_grid_with_independent_csv_authority(tmp_path, monkeypatch, failure):
+        snapshot, custody, packets, materials, verifier = setup(tmp_path)
+        requests = []
+        def transport(request):
+            requests.append(request.data())
+            return fixture_response(request, failure=failure)
+        ports = []
+        def factory(i):
+            port = model_port(tmp_path / f"port-{i}", monkeypatch, max_calls=4, max_tokens=BUDGET["model_token_stop_threshold"],
+                schemas={s: FINAL if s == "final" else PROGRAM_SCHEMA for s in SLOTS}, response_factory=transport)
+            ports.append(port)
+            return port
+        result = run_q32_execution_panel(custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+            run_root=tmp_path / "run", item_ids=ITEMS, material_by_task=materials, image=IMAGE, model_factory=factory, verifier=verifier).data()
+        assert result["cell_count"] == 4 and result["measurement_denominator"] == 12
+&gt;       assert len(requests) == sum(len(port.ledger["calls"]) for port in ports) == 16
+E       assert 12 == 16
+E        +  where 12 = sum(&lt;generator object test_actual_four_cell_grid_with_independent_csv_authority.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000226A17018C0&gt;)
+
+tests\test_q32_prospective_execution.py:108: AssertionError</failure></testcase><testcase classname="tests.test_q32_prospective_execution" name="test_actual_four_cell_grid_with_independent_csv_authority[True]" time="14.850"><failure message="assert 12 == 16&#10; +  where 12 = sum(&lt;generator object test_actual_four_cell_grid_with_independent_csv_authority.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000226A1666960&gt;)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_actual_four_cell_grid_wit1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226A4105910&gt;
+failure = True
+
+    @pytest.mark.parametrize("failure", [False, True])
+    def test_actual_four_cell_grid_with_independent_csv_authority(tmp_path, monkeypatch, failure):
+        snapshot, custody, packets, materials, verifier = setup(tmp_path)
+        requests = []
+        def transport(request):
+            requests.append(request.data())
+            return fixture_response(request, failure=failure)
+        ports = []
+        def factory(i):
+            port = model_port(tmp_path / f"port-{i}", monkeypatch, max_calls=4, max_tokens=BUDGET["model_token_stop_threshold"],
+                schemas={s: FINAL if s == "final" else PROGRAM_SCHEMA for s in SLOTS}, response_factory=transport)
+            ports.append(port)
+            return port
+        result = run_q32_execution_panel(custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
+            run_root=tmp_path / "run", item_ids=ITEMS, material_by_task=materials, image=IMAGE, model_factory=factory, verifier=verifier).data()
+        assert result["cell_count"] == 4 and result["measurement_denominator"] == 12
+&gt;       assert len(requests) == sum(len(port.ledger["calls"]) for port in ports) == 16
+E       assert 12 == 16
+E        +  where 12 = sum(&lt;generator object test_actual_four_cell_grid_with_independent_csv_authority.&lt;locals&gt;.&lt;genexpr&gt; at 0x00000226A1666960&gt;)
+
+tests\test_q32_prospective_execution.py:108: AssertionError</failure></testcase><testcase classname="tests.test_q32_prospective_execution" name="test_before_io_guards_for_early_observation_and_replacements" time="3.894"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'input'&#10; Input: 'invalid immutable record'">self = FrozenRecord(encoded='{"compiled_digest":"38ae5426d29ad69e5daab7290b2e3ced9ebbdf5f1ebaf228883289a63971dafb","jobs":[{"...50b62246460de87aeaa3a25b3e","response_digest":"a36af64c0c6892c25fa57cc6cb1bcfc6d9db4c2c0123dc0ae59be42ab8f78f76"}]}\n')
+
+    def __post_init__(self) -&gt; None:
+        try:
+            decoded = json.loads(self.encoded)
+            if not isinstance(decoded, dict) or canonical(decoded) != self.encoded:
+&gt;               raise ContractError("record must be a canonical JSON object")
+E               research_loop.ontology.ContractError: record must be a canonical JSON object
+
+research_loop\modular\contracts.py:45: ContractError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_before_io_guards_for_earl0')
+
+    def test_before_io_guards_for_early_observation_and_replacements(tmp_path):
+        from dataclasses import replace
+        stage, packet, _ = make_stage(tmp_path)
+        class NeverBroker:
+            def execute(self, request):
+                pytest.fail("rejected operation reached external I/O")
+        broker = NeverBroker()
+        with pytest.raises(ContractError, match="frozen"):
+            stage.execute_next(broker=broker, plan_id="not-yet", program="print(1)", csv_path=packet.csv_path)
+        seal = stage.produce(fixture_response)
+        job = seal.data()["jobs"][0]
+        for field, value in (("plan_id", "replaced"), ("program", "print(42)"), ("csv_path", tmp_path / "other.csv")):
+            args = {"plan_id": job["plan_id"], "program": job["program"], "csv_path": packet.csv_path, field: value}
+            with pytest.raises(ContractError):
+                stage.execute_next(broker=broker, **args)
+        original = packet.csv_path.read_bytes()
+        packet.csv_path.write_bytes(b"x\n99\n")
+        with pytest.raises(ContractError, match="input"):
+&gt;           stage.execute_next(broker=broker, plan_id=job["plan_id"], program=job["program"], csv_path=packet.csv_path)
+
+tests\test_q32_prospective_execution.py:183: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+research_loop\modular\q32_execution.py:210: in execute_next
+    if FrozenRecord((self._session.sidecar / "execution-seal.json").read_text(encoding="utf-8")) != self._seal:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+&lt;string&gt;:4: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = FrozenRecord(encoded='{"compiled_digest":"38ae5426d29ad69e5daab7290b2e3ced9ebbdf5f1ebaf228883289a63971dafb","jobs":[{"...50b62246460de87aeaa3a25b3e","response_digest":"a36af64c0c6892c25fa57cc6cb1bcfc6d9db4c2c0123dc0ae59be42ab8f78f76"}]}\n')
+
+    def __post_init__(self) -&gt; None:
+        try:
+            decoded = json.loads(self.encoded)
+            if not isinstance(decoded, dict) or canonical(decoded) != self.encoded:
+                raise ContractError("record must be a canonical JSON object")
+        except (ValueError, TypeError) as exc:
+&gt;           raise ContractError("invalid immutable record") from exc
+E           research_loop.ontology.ContractError: invalid immutable record
+
+research_loop\modular\contracts.py:47: ContractError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_before_io_guards_for_earl0')
+
+    def test_before_io_guards_for_early_observation_and_replacements(tmp_path):
+        from dataclasses import replace
+        stage, packet, _ = make_stage(tmp_path)
+        class NeverBroker:
+            def execute(self, request):
+                pytest.fail("rejected operation reached external I/O")
+        broker = NeverBroker()
+        with pytest.raises(ContractError, match="frozen"):
+            stage.execute_next(broker=broker, plan_id="not-yet", program="print(1)", csv_path=packet.csv_path)
+        seal = stage.produce(fixture_response)
+        job = seal.data()["jobs"][0]
+        for field, value in (("plan_id", "replaced"), ("program", "print(42)"), ("csv_path", tmp_path / "other.csv")):
+            args = {"plan_id": job["plan_id"], "program": job["program"], "csv_path": packet.csv_path, field: value}
+            with pytest.raises(ContractError):
+                stage.execute_next(broker=broker, **args)
+        original = packet.csv_path.read_bytes()
+        packet.csv_path.write_bytes(b"x\n99\n")
+&gt;       with pytest.raises(ContractError, match="input"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'input'
+E        Input: 'invalid immutable record'
+
+tests\test_q32_prospective_execution.py:182: AssertionError</failure></testcase><testcase classname="tests.test_q32_prospective_execution" name="test_producer_failure_preserves_all_slots_and_no_execution" time="3.545" /><testcase classname="tests.test_q32_prospective_execution" name="test_observation_and_p0_do_not_promote_execution_to_science[invalid_output]" time="4.313"><failure message="assert (0 == 3)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_observation_and_p0_do_not0')
+mode = 'invalid_output'
+
+    @pytest.mark.parametrize("mode", ["invalid_output", "positive"])
+    def test_observation_and_p0_do_not_promote_execution_to_science(tmp_path, mode):
+        stage, _, compiled = make_stage(tmp_path)
+        result = stage.run(lambda r: fixture_response(r, **{mode: True}), DockerExecutionBroker([tmp_path])).data()
+&gt;       assert result["execution_attempts"] == 3 and len(result["rows"]) == 3
+E       assert (0 == 3)
+
+tests\test_q32_prospective_execution.py:219: AssertionError</failure></testcase><testcase classname="tests.test_q32_prospective_execution" name="test_observation_and_p0_do_not_promote_execution_to_science[positive]" time="4.301"><failure message="assert (0 == 3)">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_observation_and_p0_do_not1')
+mode = 'positive'
+
+    @pytest.mark.parametrize("mode", ["invalid_output", "positive"])
+    def test_observation_and_p0_do_not_promote_execution_to_science(tmp_path, mode):
+        stage, _, compiled = make_stage(tmp_path)
+        result = stage.run(lambda r: fixture_response(r, **{mode: True}), DockerExecutionBroker([tmp_path])).data()
+&gt;       assert result["execution_attempts"] == 3 and len(result["rows"]) == 3
+E       assert (0 == 3)
+
+tests\test_q32_prospective_execution.py:219: AssertionError</failure></testcase><testcase classname="tests.test_q32_prospective_execution" name="test_explicit_new_entry_point" time="0.000" /><testcase classname="tests.test_q32_prospective_execution" name="test_terminal_broker_failure_retains_unused_opportunities" time="5.166"><failure message="assert 0 == 1">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_terminal_broker_failure_r0')
+
+    def test_terminal_broker_failure_retains_unused_opportunities(tmp_path):
+        from research_loop.modular.benchmarks.execution import ExecutionReceipt, validate_artifact
+        stage, _, compiled = make_stage(tmp_path)
+        class UnavailableBroker:
+            calls = 0
+            def execute(self, request):
+                self.calls += 1
+                artifact = validate_artifact(request.identity, "program", request.program)
+                return ExecutionReceipt(request.identity, "unavailable", artifact,
+                    FrozenRecord.from_dict({"status": "unavailable", "reason": "synthetic infrastructure failure",
+                        "input_artifacts": {"public_csv": validate_artifact(request.identity, "public_csv", request.inputs["public_csv"]).record.data()}}))
+        broker = UnavailableBroker()
+        result = stage.run(fixture_response, broker).data()
+&gt;       assert broker.calls == result["execution_attempts"] == 1
+E       assert 0 == 1
+
+tests\test_q32_prospective_execution.py:246: AssertionError</failure></testcase><testcase classname="tests.test_q32_native_provider" name="test_native_q32_prospective_execution_and_run_terminal_denominator[None]" time="29.021"><failure message="assert [3, 3, 3, 3] == [4, 4, 4, 4]&#10;  &#10;  At index 0 diff: 3 != 4&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_native_q32_prospective_ex0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226A304EC90&gt;
+fault = None
+
+    @pytest.mark.parametrize('fault',[None,'unknown_main','provenance','later_provenance'])
+    def test_native_q32_prospective_execution_and_run_terminal_denominator(tmp_path,monkeypatch,fault):
+        exporter,config,providers,logs=prepare(tmp_path,monkeypatch,fault=fault)
+        if fault=='provenance':
+            from research_loop.modular.q32_execution import Q32ExecutionStage
+            execute=Q32ExecutionStage.execute_next
+            def corrupt_after_execution(self,**kwargs):
+                result=execute(self,**kwargs)
+                next(providers[0].backend.calls_root.glob('*/response.private.json')).write_bytes(b'{"synthetic_drift":true}')
+                return result
+            monkeypatch.setattr(Q32ExecutionStage,'execute_next',corrupt_after_execution)
+        if fault=='later_provenance':
+            from research_loop.modular.q32_execution import Q32ExecutionStage
+            run=Q32ExecutionStage.run
+            def corrupt_prior_cell_after_later_cell(self,model,broker):
+                result=run(self,model,broker)
+                if model.session.provider is providers[1]:
+                    next(providers[0].backend.calls_root.glob('*/response.private.json')).write_bytes(b'{"synthetic_later_drift":true}')
+                return result
+            monkeypatch.setattr(Q32ExecutionStage,'run',corrupt_prior_cell_after_later_cell)
+        result=run_q32_prospective_execution_panel(config,prospective_exporter=exporter,
+            snapshot_root=exporter.config['snapshot_root'],export_root=exporter.output_root,run_root=tmp_path/'run',
+            model_factory=lambda i:providers[i],verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32})).data()['result']
+        assert result['schema']=='q32-native-panel-result-v2'
+        assert json.loads((tmp_path/'run/source-attempt.json').read_text())['status']==result['status']
+        assert all(r['schema']=='q32-native-cell-result-v2' for r in result['results'])
+        assert result['cell_count']==4 and result['measurement_denominator']==12
+        assert len(result['results'])==4 and sum(len(r['rows']) for r in result['results'])==12
+        assert all(not r['scientific_validated'] for r in result['results'])
+        if fault:
+            assert result['status']=='incomplete' and result['eligible_measurements']==0 and result['run_terminal']
+            assert [len(x) for x in logs]=={'unknown_main':[2,0,0,0],'provenance':[3,0,0,0],'later_provenance':[4,4,0,0]}[fault]
+            assert all(r['status']=='blocked' for r in result['results'][2 if fault=='later_provenance' else 1:])
+            assert result['historical_measurements']=={'unknown_main':0,'provenance':1,'later_provenance':6}[fault]
+            assert all(r['score_eligible'] is False for r in result['results'])
+            if fault=='later_provenance':
+                assert [r['historical_cell_score_eligible'] for r in result['results']]==[True,True,False,False]
+                assert json.loads((tmp_path/'run/0/native-result.json').read_text())['score_eligible'] is True
+        else:
+&gt;           assert [len(x) for x in logs]==[4,4,4,4]
+E           assert [3, 3, 3, 3] == [4, 4, 4, 4]
+E             
+E             At index 0 diff: 3 != 4
+E             Use -v to get more diff
+
+tests\test_q32_native_provider.py:75: AssertionError</failure></testcase><testcase classname="tests.test_q32_native_provider" name="test_native_q32_prospective_execution_and_run_terminal_denominator[unknown_main]" time="7.902" /><testcase classname="tests.test_q32_native_provider" name="test_native_q32_prospective_execution_and_run_terminal_denominator[provenance]" time="26.697"><failure message="assert [3, 3, 3, 3] == [3, 0, 0, 0]&#10;  &#10;  At index 1 diff: 3 != 0&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_native_q32_prospective_ex2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226A2FF2CF0&gt;
+fault = 'provenance'
+
+    @pytest.mark.parametrize('fault',[None,'unknown_main','provenance','later_provenance'])
+    def test_native_q32_prospective_execution_and_run_terminal_denominator(tmp_path,monkeypatch,fault):
+        exporter,config,providers,logs=prepare(tmp_path,monkeypatch,fault=fault)
+        if fault=='provenance':
+            from research_loop.modular.q32_execution import Q32ExecutionStage
+            execute=Q32ExecutionStage.execute_next
+            def corrupt_after_execution(self,**kwargs):
+                result=execute(self,**kwargs)
+                next(providers[0].backend.calls_root.glob('*/response.private.json')).write_bytes(b'{"synthetic_drift":true}')
+                return result
+            monkeypatch.setattr(Q32ExecutionStage,'execute_next',corrupt_after_execution)
+        if fault=='later_provenance':
+            from research_loop.modular.q32_execution import Q32ExecutionStage
+            run=Q32ExecutionStage.run
+            def corrupt_prior_cell_after_later_cell(self,model,broker):
+                result=run(self,model,broker)
+                if model.session.provider is providers[1]:
+                    next(providers[0].backend.calls_root.glob('*/response.private.json')).write_bytes(b'{"synthetic_later_drift":true}')
+                return result
+            monkeypatch.setattr(Q32ExecutionStage,'run',corrupt_prior_cell_after_later_cell)
+        result=run_q32_prospective_execution_panel(config,prospective_exporter=exporter,
+            snapshot_root=exporter.config['snapshot_root'],export_root=exporter.output_root,run_root=tmp_path/'run',
+            model_factory=lambda i:providers[i],verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32})).data()['result']
+        assert result['schema']=='q32-native-panel-result-v2'
+        assert json.loads((tmp_path/'run/source-attempt.json').read_text())['status']==result['status']
+        assert all(r['schema']=='q32-native-cell-result-v2' for r in result['results'])
+        assert result['cell_count']==4 and result['measurement_denominator']==12
+        assert len(result['results'])==4 and sum(len(r['rows']) for r in result['results'])==12
+        assert all(not r['scientific_validated'] for r in result['results'])
+        if fault:
+            assert result['status']=='incomplete' and result['eligible_measurements']==0 and result['run_terminal']
+&gt;           assert [len(x) for x in logs]=={'unknown_main':[2,0,0,0],'provenance':[3,0,0,0],'later_provenance':[4,4,0,0]}[fault]
+E           assert [3, 3, 3, 3] == [3, 0, 0, 0]
+E             
+E             At index 1 diff: 3 != 0
+E             Use -v to get more diff
+
+tests\test_q32_native_provider.py:67: AssertionError</failure></testcase><testcase classname="tests.test_q32_native_provider" name="test_native_q32_prospective_execution_and_run_terminal_denominator[later_provenance]" time="14.587"><failure message="assert [3, 3, 0, 0] == [4, 4, 0, 0]&#10;  &#10;  At index 0 diff: 3 != 4&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_native_q32_prospective_ex3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226A52E7E90&gt;
+fault = 'later_provenance'
+
+    @pytest.mark.parametrize('fault',[None,'unknown_main','provenance','later_provenance'])
+    def test_native_q32_prospective_execution_and_run_terminal_denominator(tmp_path,monkeypatch,fault):
+        exporter,config,providers,logs=prepare(tmp_path,monkeypatch,fault=fault)
+        if fault=='provenance':
+            from research_loop.modular.q32_execution import Q32ExecutionStage
+            execute=Q32ExecutionStage.execute_next
+            def corrupt_after_execution(self,**kwargs):
+                result=execute(self,**kwargs)
+                next(providers[0].backend.calls_root.glob('*/response.private.json')).write_bytes(b'{"synthetic_drift":true}')
+                return result
+            monkeypatch.setattr(Q32ExecutionStage,'execute_next',corrupt_after_execution)
+        if fault=='later_provenance':
+            from research_loop.modular.q32_execution import Q32ExecutionStage
+            run=Q32ExecutionStage.run
+            def corrupt_prior_cell_after_later_cell(self,model,broker):
+                result=run(self,model,broker)
+                if model.session.provider is providers[1]:
+                    next(providers[0].backend.calls_root.glob('*/response.private.json')).write_bytes(b'{"synthetic_later_drift":true}')
+                return result
+            monkeypatch.setattr(Q32ExecutionStage,'run',corrupt_prior_cell_after_later_cell)
+        result=run_q32_prospective_execution_panel(config,prospective_exporter=exporter,
+            snapshot_root=exporter.config['snapshot_root'],export_root=exporter.output_root,run_root=tmp_path/'run',
+            model_factory=lambda i:providers[i],verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32})).data()['result']
+        assert result['schema']=='q32-native-panel-result-v2'
+        assert json.loads((tmp_path/'run/source-attempt.json').read_text())['status']==result['status']
+        assert all(r['schema']=='q32-native-cell-result-v2' for r in result['results'])
+        assert result['cell_count']==4 and result['measurement_denominator']==12
+        assert len(result['results'])==4 and sum(len(r['rows']) for r in result['results'])==12
+        assert all(not r['scientific_validated'] for r in result['results'])
+        if fault:
+            assert result['status']=='incomplete' and result['eligible_measurements']==0 and result['run_terminal']
+&gt;           assert [len(x) for x in logs]=={'unknown_main':[2,0,0,0],'provenance':[3,0,0,0],'later_provenance':[4,4,0,0]}[fault]
+E           assert [3, 3, 0, 0] == [4, 4, 0, 0]
+E             
+E             At index 0 diff: 3 != 4
+E             Use -v to get more diff
+
+tests\test_q32_native_provider.py:67: AssertionError</failure></testcase><testcase classname="tests.test_q32_native_provider" name="test_native_q32_configuration_freezes_provider_budget_per_cell[lifetime]" time="2.247" /><testcase classname="tests.test_q32_native_provider" name="test_native_q32_configuration_freezes_provider_budget_per_cell[missing_cell]" time="2.015" /><testcase classname="tests.test_q32_native_provider" name="test_native_q32_configuration_freezes_provider_budget_per_cell[schema]" time="2.154" /><testcase classname="tests.test_q32_native_provider" name="test_native_q32_configuration_freezes_provider_budget_per_cell[call_budget]" time="2.180" /><testcase classname="tests.test_q32_native_provider" name="test_native_q32_configuration_freezes_provider_budget_per_cell[legacy_field]" time="2.212" /><testcase classname="tests.test_q32_artifact_native_failures" name="test_actual_native_artifact_failure_preserves_calls_and_panel_denominator[initial]" time="4.217" /><testcase classname="tests.test_q32_artifact_native_failures" name="test_actual_native_artifact_failure_preserves_calls_and_panel_denominator[terminal]" time="9.050"><failure message="assert [3, 0, 0, 0] == [4, 0, 0, 0]&#10;  &#10;  At index 0 diff: 3 != 4&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_actual_native_artifact_fa1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226A16C0170&gt;
+fault = 'terminal'
+
+    @pytest.mark.parametrize('fault', ['initial', 'terminal', 'later', 'final'])
+    def test_actual_native_artifact_failure_preserves_calls_and_panel_denominator(tmp_path, monkeypatch, fault):
+        exporter, config, providers, logs = prepare(tmp_path, monkeypatch)
+        (tmp_path / 'independent-config-before-producer.json').write_text(config.record.encoded, encoding='utf-8')
+        if fault == 'initial':
+            original = M4M5ArtifactBridge.journal
+            def fail_first_freeze(self, journal, event):
+                original(self, journal, event)
+                raise OSError('synthetic failure after first durable prediction')
+            monkeypatch.setattr(M4M5ArtifactBridge, 'journal', fail_first_freeze)
+        elif fault == 'terminal':
+            original = Q32ArtifactBridge.close
+            def fail_after_close(self):
+                original(self)
+                raise OSError('synthetic delivery failure after durable closure')
+            monkeypatch.setattr(Q32ArtifactBridge, 'close', fail_after_close)
+        else:
+            original = Q32ExecutionStage.run
+            def corrupt_prior_after_later_stage(self, model, broker):
+                result = original(self, model, broker)
+                trigger = providers[1] if fault == 'later' else providers[3]
+                if model.session.provider is trigger:
+                    source = tmp_path / 'run/0/runtime' / ('predictions.jsonl' if fault == 'later' else 'result.json')
+                    (tmp_path / ('original-' + source.name)).write_bytes(source.read_bytes())
+                    source.write_bytes(b'{}\n')
+                return result
+            monkeypatch.setattr(Q32ExecutionStage, 'run', corrupt_prior_after_later_stage)
+        result = run_q32_prospective_execution_panel(config, prospective_exporter=exporter,
+            snapshot_root=exporter.config['snapshot_root'], export_root=exporter.output_root,
+            run_root=tmp_path/'run', model_factory=lambda i: providers[i],
+            verifier=AuditVerifier({'a': b'a'*32, 'b': b'b'*32})).data()['result']
+        expected_calls = {'initial': [0, 0, 0, 0], 'terminal': [4, 0, 0, 0],
+                          'later': [4, 4, 0, 0], 'final': [4, 4, 4, 4]}[fault]
+&gt;       assert [len(log) for log in logs] == expected_calls
+E       assert [3, 0, 0, 0] == [4, 0, 0, 0]
+E         
+E         At index 0 diff: 3 != 4
+E         Use -v to get more diff
+
+tests\test_q32_artifact_native_failures.py:46: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_native_failures" name="test_actual_native_artifact_failure_preserves_calls_and_panel_denominator[later]" time="15.587"><failure message="assert [3, 3, 0, 0] == [4, 4, 0, 0]&#10;  &#10;  At index 0 diff: 3 != 4&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_actual_native_artifact_fa2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226A41D2DE0&gt;
+fault = 'later'
+
+    @pytest.mark.parametrize('fault', ['initial', 'terminal', 'later', 'final'])
+    def test_actual_native_artifact_failure_preserves_calls_and_panel_denominator(tmp_path, monkeypatch, fault):
+        exporter, config, providers, logs = prepare(tmp_path, monkeypatch)
+        (tmp_path / 'independent-config-before-producer.json').write_text(config.record.encoded, encoding='utf-8')
+        if fault == 'initial':
+            original = M4M5ArtifactBridge.journal
+            def fail_first_freeze(self, journal, event):
+                original(self, journal, event)
+                raise OSError('synthetic failure after first durable prediction')
+            monkeypatch.setattr(M4M5ArtifactBridge, 'journal', fail_first_freeze)
+        elif fault == 'terminal':
+            original = Q32ArtifactBridge.close
+            def fail_after_close(self):
+                original(self)
+                raise OSError('synthetic delivery failure after durable closure')
+            monkeypatch.setattr(Q32ArtifactBridge, 'close', fail_after_close)
+        else:
+            original = Q32ExecutionStage.run
+            def corrupt_prior_after_later_stage(self, model, broker):
+                result = original(self, model, broker)
+                trigger = providers[1] if fault == 'later' else providers[3]
+                if model.session.provider is trigger:
+                    source = tmp_path / 'run/0/runtime' / ('predictions.jsonl' if fault == 'later' else 'result.json')
+                    (tmp_path / ('original-' + source.name)).write_bytes(source.read_bytes())
+                    source.write_bytes(b'{}\n')
+                return result
+            monkeypatch.setattr(Q32ExecutionStage, 'run', corrupt_prior_after_later_stage)
+        result = run_q32_prospective_execution_panel(config, prospective_exporter=exporter,
+            snapshot_root=exporter.config['snapshot_root'], export_root=exporter.output_root,
+            run_root=tmp_path/'run', model_factory=lambda i: providers[i],
+            verifier=AuditVerifier({'a': b'a'*32, 'b': b'b'*32})).data()['result']
+        expected_calls = {'initial': [0, 0, 0, 0], 'terminal': [4, 0, 0, 0],
+                          'later': [4, 4, 0, 0], 'final': [4, 4, 4, 4]}[fault]
+&gt;       assert [len(log) for log in logs] == expected_calls
+E       assert [3, 3, 0, 0] == [4, 4, 0, 0]
+E         
+E         At index 0 diff: 3 != 4
+E         Use -v to get more diff
+
+tests\test_q32_artifact_native_failures.py:46: AssertionError</failure></testcase><testcase classname="tests.test_q32_artifact_native_failures" name="test_actual_native_artifact_failure_preserves_calls_and_panel_denominator[final]" time="27.388"><failure message="assert [3, 3, 3, 3] == [4, 4, 4, 4]&#10;  &#10;  At index 0 diff: 3 != 4&#10;  Use -v to get more diff">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/q32-artifacts-frozen-r1/test_actual_native_artifact_fa3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000226A4067BC0&gt;
+fault = 'final'
+
+    @pytest.mark.parametrize('fault', ['initial', 'terminal', 'later', 'final'])
+    def test_actual_native_artifact_failure_preserves_calls_and_panel_denominator(tmp_path, monkeypatch, fault):
+        exporter, config, providers, logs = prepare(tmp_path, monkeypatch)
+        (tmp_path / 'independent-config-before-producer.json').write_text(config.record.encoded, encoding='utf-8')
+        if fault == 'initial':
+            original = M4M5ArtifactBridge.journal
+            def fail_first_freeze(self, journal, event):
+                original(self, journal, event)
+                raise OSError('synthetic failure after first durable prediction')
+            monkeypatch.setattr(M4M5ArtifactBridge, 'journal', fail_first_freeze)
+        elif fault == 'terminal':
+            original = Q32ArtifactBridge.close
+            def fail_after_close(self):
+                original(self)
+                raise OSError('synthetic delivery failure after durable closure')
+            monkeypatch.setattr(Q32ArtifactBridge, 'close', fail_after_close)
+        else:
+            original = Q32ExecutionStage.run
+            def corrupt_prior_after_later_stage(self, model, broker):
+                result = original(self, model, broker)
+                trigger = providers[1] if fault == 'later' else providers[3]
+                if model.session.provider is trigger:
+                    source = tmp_path / 'run/0/runtime' / ('predictions.jsonl' if fault == 'later' else 'result.json')
+                    (tmp_path / ('original-' + source.name)).write_bytes(source.read_bytes())
+                    source.write_bytes(b'{}\n')
+                return result
+            monkeypatch.setattr(Q32ExecutionStage, 'run', corrupt_prior_after_later_stage)
+        result = run_q32_prospective_execution_panel(config, prospective_exporter=exporter,
+            snapshot_root=exporter.config['snapshot_root'], export_root=exporter.output_root,
+            run_root=tmp_path/'run', model_factory=lambda i: providers[i],
+            verifier=AuditVerifier({'a': b'a'*32, 'b': b'b'*32})).data()['result']
+        expected_calls = {'initial': [0, 0, 0, 0], 'terminal': [4, 0, 0, 0],
+                          'later': [4, 4, 0, 0], 'final': [4, 4, 4, 4]}[fault]
+&gt;       assert [len(log) for log in logs] == expected_calls
+E       assert [3, 3, 3, 3] == [4, 4, 4, 4]
+E         
+E         At index 0 diff: 3 != 4
+E         Use -v to get more diff
+
+tests\test_q32_artifact_native_failures.py:46: AssertionError</failure></testcase></testsuite></testsuites>

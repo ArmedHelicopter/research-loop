@@ -1,0 +1,396 @@
+{
+  "schema": "q32-frozen-execution-accounting-v1",
+  "source_commit": "4798e81a354d5c8203f1b88dada35cc2643c98f1",
+  "scope": "original fixture trace requests; no synthetic receipt interpreted as a real Docker invocation",
+  "original_traces": 48,
+  "model_requests": 172,
+  "execution_requests": 117,
+  "distinct_actual_docker_receipts": 70,
+  "rows": [
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit0\\run\\0\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-9515d2675eb662dc5ac4",
+        "research-loop-bd124428c97d9c37fbea",
+        "research-loop-f0a2bfcfadb10edb0a05"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit0\\run\\1\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-d5407a9f6604fad82ff7",
+        "research-loop-7070c0fe1f0c48bc8f12",
+        "research-loop-829530990b35f30060a5"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit0\\run\\2\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-a5c19a15fe467975f576",
+        "research-loop-de81fa186edcf8dc90e4",
+        "research-loop-fd08cb20887cd6f7d0a2"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit0\\run\\3\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-110f05881a29291b1603",
+        "research-loop-263508cb87ba0c8db0c8",
+        "research-loop-34ba91ff4e85e31296c6"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit1\\run\\0\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-6405fe6c0f216d6edc8d",
+        "research-loop-37c40bddc2dcf4009875",
+        "research-loop-793319aacfa48a84840c"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit1\\run\\1\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-d8ed695d6e6ecc5a4a0d",
+        "research-loop-09d35638a8defef293aa",
+        "research-loop-2b549bf08de137556d5e"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit1\\run\\2\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-905d0cb894edddf65dff",
+        "research-loop-983adfb1255960243547",
+        "research-loop-8d936ecdc26bc408c52d"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit1\\run\\3\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-9d3582fe3ac53ddfa8f0",
+        "research-loop-077635bfce6550b1afa5",
+        "research-loop-6538834ef2d7cb16f9c1"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa1\\run\\0\\runtime\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-dda98e3bbd1ec69c1bcf",
+        "research-loop-8716680582f35010df23",
+        "research-loop-d6aaa3c5cbc2813ab82c"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa2\\run\\0\\runtime\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-c4af804891d158448928",
+        "research-loop-d7ec3392a4d1a56aa6d4",
+        "research-loop-8105d7ae40c510dc4be5"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa2\\run\\1\\runtime\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-ba48d6faa90e376ef517",
+        "research-loop-1615e63ba091d95fd18a",
+        "research-loop-e5ff5ca29ebeed99dea8"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa3\\run\\0\\runtime\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-692f67f4aff963bc5c89",
+        "research-loop-2d93256e0b8593930000",
+        "research-loop-3dbeb40dd0968874c239"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa3\\run\\1\\runtime\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-f443bd49628e8f3e51a1",
+        "research-loop-dd18bb6da6d88b6ff79a",
+        "research-loop-2c2f42c56ffec446cece"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa3\\run\\2\\runtime\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-2ae153a5e1291826c57f",
+        "research-loop-213fe686e65afd7be510",
+        "research-loop-28c026e421c1a329388a"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa3\\run\\3\\runtime\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-1ea4567e5f5fa238258c",
+        "research-loop-6b6460bd5c18e70e40cb",
+        "research-loop-3e41a1936c781d17a15f"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_before_io_guards_for_earl0\\stage\\trace.jsonl",
+      "model_requests": 3,
+      "execution_requests": 0,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_changed_literal_program_w0\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec0\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec1\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec2\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec3\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_execution_seal_byte_drift0\\original\\trace.jsonl",
+      "model_requests": 3,
+      "execution_requests": 0,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_first_program_byte_drift_0\\original\\trace.jsonl",
+      "model_requests": 3,
+      "execution_requests": 1,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_linked_original_outputs_a0\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_linked_original_outputs_a1\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_linked_original_outputs_a2\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_linked_original_outputs_a3\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_linked_original_outputs_a4\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_missing_journal_reader_do0\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex0\\run\\0\\runtime\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-899c4c636748ffd0a595",
+        "research-loop-08b779cb3deb15421697",
+        "research-loop-cdd248087f4b733a5c99"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex0\\run\\1\\runtime\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-f252bd3440ac3553b464",
+        "research-loop-7c4c9ffeece787b2aedb",
+        "research-loop-88fda658390ae9df3e32"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex0\\run\\2\\runtime\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-d351b3d534c168f24909",
+        "research-loop-84f68779597dced2c2c2",
+        "research-loop-1cae18a7f68ff84e363e"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex0\\run\\3\\runtime\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-a89b6bcbf5f79b1ff175",
+        "research-loop-ce081791f0c525b14215",
+        "research-loop-dedde17e6adb519aa580"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex1\\run\\0\\runtime\\trace.jsonl",
+      "model_requests": 2,
+      "execution_requests": 0,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex2\\run\\0\\runtime\\trace.jsonl",
+      "model_requests": 3,
+      "execution_requests": 1,
+      "actual_docker_invocations": [
+        "research-loop-c9cae78ad9d72ab1fdce"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex3\\run\\0\\runtime\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-fc4a3dd6f3577c2c1353",
+        "research-loop-296e2d68ad075543ffd3",
+        "research-loop-5f7b9b4ecc4644390907"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex3\\run\\1\\runtime\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-db24164b3fd8fe39f0ef",
+        "research-loop-68d5daf1ae2a8f54561b",
+        "research-loop-8c72c23af738a64a64e9"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_observation_and_p0_do_not0\\stage\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-48c2926470a3fd689509",
+        "research-loop-75bcc49d6ddd5e7b18fc",
+        "research-loop-9666651dcea8b7d4d337"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_observation_and_p0_do_not1\\stage\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": [
+        "research-loop-f4c2dd9bf23fc0293570",
+        "research-loop-27b678f7013eddd9de68",
+        "research-loop-d86b61d16aef0b428029"
+      ]
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_prediction_disk_drift_sto0\\original\\trace.jsonl",
+      "model_requests": 1,
+      "execution_requests": 0,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_producer_failure_preserve0\\stage\\trace.jsonl",
+      "model_requests": 2,
+      "execution_requests": 0,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer0\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer1\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer2\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer3\\original\\trace.jsonl",
+      "model_requests": 4,
+      "execution_requests": 3,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_terminal_broker_failure_r0\\stage\\trace.jsonl",
+      "model_requests": 3,
+      "execution_requests": 1,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_unique_prediction_freezes0\\original\\trace.jsonl",
+      "model_requests": 0,
+      "execution_requests": 0,
+      "actual_docker_invocations": []
+    },
+    {
+      "trace": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_unique_prediction_freezes1\\original\\trace.jsonl",
+      "model_requests": 0,
+      "execution_requests": 0,
+      "actual_docker_invocations": []
+    }
+  ],
+  "model_transport": "synthetic; no service dispatch",
+  "new_paid_api_calls": 0,
+  "real_val_access": false
+}

@@ -1,0 +1,28 @@
+{
+  "scope": "non-frozen debugging probe; synthetic callbacks; no API/Docker/VAL",
+  "before": {
+    "binding": {
+      "experiment_id": null,
+      "lock_digest": "20756e1de98899bb11ad8fef2d3063e80d98b8c9ac22ace58ff96a7c047a994d",
+      "run_id": "5afa66c87ebb42349dbea0cf5b62c3a3"
+    },
+    "complete": false,
+    "outputs": 1,
+    "prediction_events": 1,
+    "schema": "q32-artifact-check-v1",
+    "scientific_validated": false
+  },
+  "after": {
+    "binding": {
+      "experiment_id": null,
+      "lock_digest": "20756e1de98899bb11ad8fef2d3063e80d98b8c9ac22ace58ff96a7c047a994d",
+      "run_id": "5afa66c87ebb42349dbea0cf5b62c3a3"
+    },
+    "complete": false,
+    "outputs": 5,
+    "prediction_events": 1,
+    "schema": "q32-artifact-check-v1",
+    "scientific_validated": false
+  },
+  "jobs": 3
+}

@@ -1,0 +1,2057 @@
+{
+  "schema": "q32-runtime-artifact-archive-v1",
+  "source_commit": "4798e81a354d5c8203f1b88dada35cc2643c98f1",
+  "originals": [
+    {
+      "file": "q32-artifacts-frozen-r1-before.json",
+      "bytes": 86735,
+      "sha256": "01d9a655d87594080eff184b181d52c1c7cb2bd6cdb8e9b933d5300712d5aaba"
+    },
+    {
+      "file": "q32-artifacts-frozen-r1-closed.json",
+      "bytes": 86742,
+      "sha256": "e3faf19647da219d5b7bcd106ef4cee670a21818e9d5dfdea6e6b4924ac0e94c"
+    },
+    {
+      "file": "q32-artifacts-frozen-r1.xml",
+      "bytes": 61453,
+      "sha256": "6c26a0227671dc427c93f28e7dd5b54c7c580a3df5a17f608fe67d90be57eefd"
+    },
+    {
+      "file": "q32-artifacts-frozen-r1-sources.zip",
+      "bytes": 2450251,
+      "sha256": "115254ca602811f87571360d924489226ddc1502bdc78fc72e27c5d809eb11f3"
+    },
+    {
+      "file": "q32-artifacts-frozen-r1-source-members.json",
+      "bytes": 129686,
+      "sha256": "2d96df32dc3087f7075704374b84351aafd370fc45f543014072d5bcddc47c7c"
+    },
+    {
+      "file": "q32-artifacts-frozen-r1-accounting.json",
+      "bytes": 13516,
+      "sha256": "f3bc309326b852f26ef113db4c03d4817b28d84c3e2b80ef203e18316d7e508a"
+    },
+    {
+      "file": "q32-artifacts-frozen-r2-before.json",
+      "bytes": 86735,
+      "sha256": "e38470739951d1ba3909760892aef2d34f4f0516ab1fd6929060cf31de039738"
+    },
+    {
+      "file": "q32-artifacts-frozen-r2-closed.json",
+      "bytes": 86741,
+      "sha256": "ea476fdc532450d2ae664549d28bd4d353aee33f7351a22879ca8987fa102e12"
+    },
+    {
+      "file": "q32-artifacts-frozen-r2.xml",
+      "bytes": 7722,
+      "sha256": "9bc61420e4f299658484ad08484efc84598143566e2e43dec4529fa817269e65"
+    },
+    {
+      "file": "q32-artifacts-frozen-r2-sources.zip",
+      "bytes": 2450270,
+      "sha256": "1663e32187fbccf661c52a9db55d80d07a25d8c9d0bfb91876325f1b560f58ae"
+    },
+    {
+      "file": "q32-artifacts-frozen-r2-source-members.json",
+      "bytes": 129686,
+      "sha256": "6afb9702bdb36a97e1f44209581b70fa44c10e3ab8a6993d535073cddbf470a3"
+    },
+    {
+      "file": "q32-artifacts-frozen-r2-accounting.json",
+      "bytes": 16100,
+      "sha256": "f1e0e1ba70caa2bb11c1eef218b9ce7f7e7a5bbafcabbfdca1e1b558a98310c6"
+    },
+    {
+      "file": "archive_q32_artifacts_r1.py",
+      "bytes": 8452,
+      "sha256": "2240dfd8d8082abac8a18becaefc47864d02337ae3b77848ed6fa26ba27e0952"
+    },
+    {
+      "file": "q32-artifact-independent-review-r1.md",
+      "bytes": 12790,
+      "sha256": "ee7d7b62643feb326238834d6235b1a5b3455b1e40e7c0bb1013a00af3bcecaf"
+    },
+    {
+      "file": "q32-artifact-local-probe-r1.py",
+      "bytes": 961,
+      "sha256": "7096f058efd1b2a78c441ae5d66c973303498cf6a09d71e22505b31fdd943587"
+    },
+    {
+      "file": "count_q32_frozen_execution_r1.py",
+      "bytes": 2211,
+      "sha256": "c22a2e62bf57b352d3b188ba4681dfe7eecff281877d1a7d4216b358d74deade"
+    },
+    {
+      "file": "non-frozen-local-probe-outcome.json",
+      "bytes": 830,
+      "sha256": "9096db74a9f235ce0a2458d4a0b78aa698c7fbde2805d258ffe9d2ea39de0265"
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit0-cell-0.zip",
+      "bytes": 51302,
+      "sha256": "87a34f86b1ad3ef456b763c39cd0abc33a8c42d3ef9cce701d3b7379c853abd1"
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit0-cell-1.zip",
+      "bytes": 52345,
+      "sha256": "ca43ababffbb6f58869ec05e410dcf97c89a29547cb111908c2a6df70c7d472a"
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit0-cell-2.zip",
+      "bytes": 51022,
+      "sha256": "ffe61f11c33aad009a08d6bf4acdd8a6fa3bf725eb9d5775a7c30dd06d79ca50"
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit0-cell-3.zip",
+      "bytes": 52343,
+      "sha256": "a2e7e6f9c3f501246a7a9dbf9337367149b9a53612d489e6066c7eaf6da9eda5"
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit0-panel-result.json",
+      "bytes": 80456,
+      "sha256": "4d75e00b76a12e5404a58e55f113054debb56a2278ded4ff727e764b5fe14b7e"
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit1-cell-0.zip",
+      "bytes": 51964,
+      "sha256": "ca344d8f809075c203734c695143867c01a3b8287a283073583fffe2ca74a485"
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit1-cell-1.zip",
+      "bytes": 53127,
+      "sha256": "59c74eff40fc39977595dfe52ca9adb51dd60b7ea5f2c529e8c6e2179307499b"
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit1-cell-2.zip",
+      "bytes": 51614,
+      "sha256": "311b6d048af72eb201c8fb70f122ecc61db3550ad30125424ccd0bc2c0758e51"
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit1-cell-3.zip",
+      "bytes": 53069,
+      "sha256": "d605e1e8d212bb01142821bd7651afb6fcc18439384c0f390700afe02aed0b14"
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit1-panel-result.json",
+      "bytes": 80756,
+      "sha256": "0d02be0f006c4b7576c19640992c853e1923b02f16a9da0dfb8a6042dd421fac"
+    },
+    {
+      "file": "test_actual_native_artifact_fa0-cell-0.zip",
+      "bytes": 14067,
+      "sha256": "6b02718e6e887add889e7a08591044c70ea06d299297b75c6b490d6ad773fdeb"
+    },
+    {
+      "file": "test_actual_native_artifact_fa0-panel-result.json",
+      "bytes": 9937,
+      "sha256": "a88874e519b2930b4b3d6aee19098f53d04d032f1283ba837435b59bb80344b5"
+    },
+    {
+      "file": "test_actual_native_artifact_fa0-source-attempt.json",
+      "bytes": 2345,
+      "sha256": "4e894ff8d56859b32d5777fc8e224bddb0c8bfc8165d03a84d2670e1fb29ea7d"
+    },
+    {
+      "file": "test_actual_native_artifact_fa1-cell-0.zip",
+      "bytes": 56960,
+      "sha256": "17d2ae00289fe08ae54fb6d416f83e6e9a2c96d006ead104c58ff168bf3d432f"
+    },
+    {
+      "file": "test_actual_native_artifact_fa1-panel-result.json",
+      "bytes": 16890,
+      "sha256": "5950fdebca1b7306a0bd8f7d7418e4592679e44825c3202ea956ddc8f1d458f4"
+    },
+    {
+      "file": "test_actual_native_artifact_fa1-source-attempt.json",
+      "bytes": 2345,
+      "sha256": "192f250901e3b8bd44bb2531c023ad508b9241ee79314985f19797d56132a210"
+    },
+    {
+      "file": "test_actual_native_artifact_fa2-cell-0.zip",
+      "bytes": 55767,
+      "sha256": "031d7110bad33852f57b4843f6aa7d75536a8595faf750b0ca91196daed0844d"
+    },
+    {
+      "file": "test_actual_native_artifact_fa2-cell-1.zip",
+      "bytes": 57165,
+      "sha256": "b963d299be357317b5ddc37757b235d78d7a53d6f79bd40c67b9e1b995401496"
+    },
+    {
+      "file": "test_actual_native_artifact_fa2-panel-result.json",
+      "bytes": 46633,
+      "sha256": "9800d060b0280c6df8eeaaa4fe79f4e0ad019f88368f79d41713124ef62f2d75"
+    },
+    {
+      "file": "test_actual_native_artifact_fa2-source-attempt.json",
+      "bytes": 2345,
+      "sha256": "01ca203b5516841984ec2073ee39ea1103f7f5344f71efdf6b76eecd37ab7c90"
+    },
+    {
+      "file": "test_actual_native_artifact_fa3-cell-0.zip",
+      "bytes": 54380,
+      "sha256": "ecf8c3e7b598117075f6ab33ed5682e72fd14fe09c490f8a8b6d02a9ca22625f"
+    },
+    {
+      "file": "test_actual_native_artifact_fa3-cell-1.zip",
+      "bytes": 57347,
+      "sha256": "aa4f063d89447c632fa533009fd1728bbc68cc0e84510d6f15dfd1b944a63ff7"
+    },
+    {
+      "file": "test_actual_native_artifact_fa3-cell-2.zip",
+      "bytes": 56522,
+      "sha256": "8689c81ef5dfb7bfffb54dc7fd9cbcdb5f160807106361ae349b8e85d7fc612b"
+    },
+    {
+      "file": "test_actual_native_artifact_fa3-cell-3.zip",
+      "bytes": 57252,
+      "sha256": "1195bfb24b1e99afd7228355c2f1803acfc510456a6c541f8229193b8e7ee7af"
+    },
+    {
+      "file": "test_actual_native_artifact_fa3-panel-result.json",
+      "bytes": 84468,
+      "sha256": "4f5676990b68462686d581bb2601c320b42333ac6bb22e0d65517982e580fd3b"
+    },
+    {
+      "file": "test_actual_native_artifact_fa3-source-attempt.json",
+      "bytes": 2345,
+      "sha256": "5018eedab0cef7c1691efce34984f61a8fa6ad37c9dca5c77de80afae4fec519"
+    },
+    {
+      "file": "test_changed_literal_program_w0-original.zip",
+      "bytes": 45772,
+      "sha256": "d18853ec30d39f76b6080efdea8bf7332ce3d123b60fb8a375f078b0f24b843c"
+    },
+    {
+      "file": "test_changed_literal_program_w0-attack.zip",
+      "bytes": 45666,
+      "sha256": "f1d40deb708d8b643c495b90c8d29db6f9938a702d74de11d8c5fbcefabfc054"
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec0-original.zip",
+      "bytes": 45788,
+      "sha256": "c0a719719c90b6d677a61fa069c7ec366177fc1c13c2ae79296b4560294d1f22"
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec0-attack.zip",
+      "bytes": 45789,
+      "sha256": "32fe70613834e33522fed4453c005874497663c534a9bf8a6069e850ff61417f"
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec1-original.zip",
+      "bytes": 45781,
+      "sha256": "7baaeedfcaaa9acd4d4ca5f7db40ffeafe6496e9107347b658b8f1a15232ec66"
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec1-attack.zip",
+      "bytes": 45781,
+      "sha256": "126bf3fc22cf1a87260ce5cd1d68511fe9ca4ab22e7201ef823a278c467c2f33"
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec2-original.zip",
+      "bytes": 45767,
+      "sha256": "ea8556c57be3f31e7635b7cac13ed3a1dff028270d5a985866499a043fac8e02"
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec2-attack.zip",
+      "bytes": 45768,
+      "sha256": "a6aa54a4b369e55edb7c35fa7f8f85b1869c0c8bce9ce6ea382c1ea108074178"
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec3-original.zip",
+      "bytes": 45795,
+      "sha256": "39c699765b274f8835eb25627af003beb9d2ff5d17409e9cfa84219b8b2d1441"
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec3-attack.zip",
+      "bytes": 45797,
+      "sha256": "68576670097429c6c35e539ac71ebc9197a878828af9bb4924cf47e8af27fc1c"
+    },
+    {
+      "file": "test_execution_seal_byte_drift0-original.zip",
+      "bytes": 30725,
+      "sha256": "672cbb4a4fdd3ab4fb738e87c4ee23d9f01214e62281d369675ace8399b5c241"
+    },
+    {
+      "file": "test_first_program_byte_drift_0-original.zip",
+      "bytes": 33031,
+      "sha256": "871de6d1466de36211ba3baaab802ba12e1c29110722ccbddc8bd2ed8adef213"
+    },
+    {
+      "file": "test_missing_journal_reader_do0-original.zip",
+      "bytes": 45807,
+      "sha256": "e6d67dc048a934a5bd090ffb7a7ab254ddf53c667087c601915bab7071f0d995"
+    },
+    {
+      "file": "test_missing_journal_reader_do0-attack.zip",
+      "bytes": 45017,
+      "sha256": "cf9074a87ad4a9dace2c649f28efac782983d1fe4e2d285f2ae393b2668ec310"
+    },
+    {
+      "file": "test_native_q32_prospective_ex0-cell-0.zip",
+      "bytes": 56403,
+      "sha256": "b9b7ed84d705fbcd6910e250d6a4fc6c4f7ebce3f6f8b920f6e31e43957585d2"
+    },
+    {
+      "file": "test_native_q32_prospective_ex0-cell-1.zip",
+      "bytes": 57294,
+      "sha256": "f286e7cff666960fb2a645ee1f9db5507772986eced4d3094883a1571d9fe150"
+    },
+    {
+      "file": "test_native_q32_prospective_ex0-cell-2.zip",
+      "bytes": 56519,
+      "sha256": "243b72b0cfb6729bab1832120744a656af1c48ff11c3bd8f028050de0305b683"
+    },
+    {
+      "file": "test_native_q32_prospective_ex0-cell-3.zip",
+      "bytes": 57203,
+      "sha256": "d2e07235a442c327cf775128c46b227d23aab7c573fa81527775d40d147c7a1c"
+    },
+    {
+      "file": "test_native_q32_prospective_ex0-panel-result.json",
+      "bytes": 84459,
+      "sha256": "73bdc9fc8e61ac68dd28ea35ede02124db410fdc890ec1d41873329d37eef848"
+    },
+    {
+      "file": "test_native_q32_prospective_ex0-source-attempt.json",
+      "bytes": 2344,
+      "sha256": "8d5cc51cc046925b1a83396342f5bc993bd20d05996bc926e74272d814cbe8b3"
+    },
+    {
+      "file": "test_native_q32_prospective_ex1-cell-0.zip",
+      "bytes": 38021,
+      "sha256": "5d9531978ddc96c028992f7bf969018ab82d3f3a0c80f8564102ba4e9461165a"
+    },
+    {
+      "file": "test_native_q32_prospective_ex1-panel-result.json",
+      "bytes": 13681,
+      "sha256": "3701d607986ec22e9148f23b08d57ba8bf7eaa6f5ab1fa344473cca23e0b0512"
+    },
+    {
+      "file": "test_native_q32_prospective_ex1-source-attempt.json",
+      "bytes": 2345,
+      "sha256": "b934116498c6d7a1d4e38453a4615fcc1c1984261aeca98b674106df13ca99a1"
+    },
+    {
+      "file": "test_native_q32_prospective_ex2-cell-0.zip",
+      "bytes": 46654,
+      "sha256": "c4ca260fd03ce2e297e22808ee95ec40847512fded36d9a0794e85924a4bdc66"
+    },
+    {
+      "file": "test_native_q32_prospective_ex2-panel-result.json",
+      "bytes": 20959,
+      "sha256": "0c2e21d2b76d16a8c96b9692366d454d91347911b5f305857f667fbe9cf66716"
+    },
+    {
+      "file": "test_native_q32_prospective_ex2-source-attempt.json",
+      "bytes": 2345,
+      "sha256": "6f4e93b438c7b5d4071853c6e87c98e9e233a8467505ad2ffbe8e78bf366ec3c"
+    },
+    {
+      "file": "test_native_q32_prospective_ex3-cell-0.zip",
+      "bytes": 56449,
+      "sha256": "a14da3998efc4cea6733b730473a9cfee507b620dce05b90242fcc5a44b5bd67"
+    },
+    {
+      "file": "test_native_q32_prospective_ex3-cell-1.zip",
+      "bytes": 57205,
+      "sha256": "09a62d745fbd6465803bffba272bb56745ae5370e9ad2aa15d256fc29f0c3541"
+    },
+    {
+      "file": "test_native_q32_prospective_ex3-panel-result.json",
+      "bytes": 47962,
+      "sha256": "f50841f8ecf6fdb614fc7e413116129554391e948a0c91ffb2fce40e742d6d80"
+    },
+    {
+      "file": "test_native_q32_prospective_ex3-source-attempt.json",
+      "bytes": 2345,
+      "sha256": "bc7a449c80a9e19e6faac9045712337cf08bd8fddd981bdb8e1acc328bfc89f4"
+    },
+    {
+      "file": "test_prediction_disk_drift_sto0-original.zip",
+      "bytes": 27864,
+      "sha256": "a2d79d9bd0e0ab0044291ee60dfb37bf4d0148e34462a752d0eb34848f382dfe"
+    },
+    {
+      "file": "test_rehashed_missing_consumer0-original.zip",
+      "bytes": 45791,
+      "sha256": "2ac4a04ca92b5e38f2e1695bf3bfe070bff280551463e376770259e346c2b73b"
+    },
+    {
+      "file": "test_rehashed_missing_consumer0-attack.zip",
+      "bytes": 45740,
+      "sha256": "d417ac6233f3d27b31530c67d443be941888decf7938028d0c67ea2f650d3f92"
+    },
+    {
+      "file": "test_rehashed_missing_consumer1-original.zip",
+      "bytes": 45811,
+      "sha256": "e813ca27137e5944681845fbd897b92429cc55e9c4448d031a13d5582ab4201f"
+    },
+    {
+      "file": "test_rehashed_missing_consumer1-attack.zip",
+      "bytes": 45786,
+      "sha256": "2b517ecab98ee088ff2414ae08e4e73ba9783f0c9cbc1423d38c11ddd3b17ad1"
+    },
+    {
+      "file": "test_rehashed_missing_consumer2-original.zip",
+      "bytes": 45800,
+      "sha256": "a82b3bcdd4554049b5887edf68d62af944f9a0dbe1489bdf628b28df03d1c0c7"
+    },
+    {
+      "file": "test_rehashed_missing_consumer2-attack.zip",
+      "bytes": 45710,
+      "sha256": "fca8a704140c8c452012ba7dfa9d66353ea9110edaab9a5d529cf084be42f21b"
+    },
+    {
+      "file": "test_rehashed_missing_consumer3-original.zip",
+      "bytes": 45804,
+      "sha256": "b06183e9c9bbc9f0b638686421473b28a87d546e0f9cb7cf5f676aca26dd2c35"
+    },
+    {
+      "file": "test_rehashed_missing_consumer3-attack.zip",
+      "bytes": 45674,
+      "sha256": "28cb26ee541c18880a05829c00af352b846f850d1b5c3cc7957f0efa6fc5638c"
+    },
+    {
+      "file": "test_unique_prediction_freezes0-original.zip",
+      "bytes": 20232,
+      "sha256": "5811b59a15bffa4d0c6ce302bb5046fbb6093a96c2c14177b53adfecb611bf53"
+    },
+    {
+      "file": "test_unique_prediction_freezes1-original.zip",
+      "bytes": 20491,
+      "sha256": "5328a195f5a7f6a6e7cd3933931598452abe4c34a7305c0998ce2104162ce33f"
+    },
+    {
+      "file": "original-failed-r1-example.zip",
+      "bytes": 29909,
+      "sha256": "b9ab80eabc18044c7b98864e76ed1969febefd6e3e4f0d6eb1dd297082030e81"
+    }
+  ],
+  "specimens": [
+    {
+      "file": "test_actual_four_cell_grid_wit0-cell-0.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit0\\run\\0",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit0\\run\\compiled.json",
+      "original_control_sha256": "38ae5426d29ad69e5daab7290b2e3ced9ebbdf5f1ebaf228883289a63971dafb",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "b5a414838e52e90ca705974990e87702efdc5791372d0fc8f848cdb3259e8e29",
+        "artifacts.jsonl.seal.json": "21dc2e58e388aeb6113047a0692587da1f98eac8d8c37d4a6d464d2067d6364b",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "6d7b42e621c0ed26da7aab922d60573b56a414db95cb0e6c78249a36e667b41e",
+        "result.json": "c41a27c33fa0371c735c58331a55e3156147cebe3c6d8260ae0f35c5634da203",
+        "trace.jsonl": "531772bdb2358e276d3ccd013483dd6262cbcab9a327161bd377d11665548656"
+      }
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit0-cell-1.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit0\\run\\1",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit0\\run\\compiled.json",
+      "original_control_sha256": "38ae5426d29ad69e5daab7290b2e3ced9ebbdf5f1ebaf228883289a63971dafb",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "00407915665be6e9c8f2937233170b7b9b5c9a3bdab7d14f469d22d9fad3ee4a",
+        "artifacts.jsonl.seal.json": "cec9fe76dfef5250a03f781105757aafe76e1d636d1a46e4cf850502e2ba35f7",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "1429968b3d49f21ce97f177686846e1fe646f33beeac0fb126dbe2dee95794b1",
+        "predictions.jsonl": "6da99bb3af8bc5f909d4c24d005458cb68abf6080cdd44c4302a4126d4e33652",
+        "q32-artifacts-seal.json": "294d1c19bbc70a47d94eaced9c7f87319eeea1d636d2f8ca48148736d60ae883",
+        "result.json": "eb342aed796b6368d62cd56894c85e6c37b045916a68423881270d5772f2bd0f",
+        "trace.jsonl": "e360f11d738cb262bbe062846fca0fc34c283357a46ebf4cdf68421e10d27960"
+      }
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit0-cell-2.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit0\\run\\2",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit0\\run\\compiled.json",
+      "original_control_sha256": "38ae5426d29ad69e5daab7290b2e3ced9ebbdf5f1ebaf228883289a63971dafb",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "c83b658e0ed80361416981751a4d71a64e7df63702bdc65272bad57a6a9d2c4d",
+        "artifacts.jsonl.seal.json": "3f40021efecc671b7eeaf47076f585b1d612cccec6b52aa884a8dcf8065937d8",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f8cb3cc6b1835af1a402efa23ebcd6b368e3a85911786f8198581bec5558ffc8",
+        "predictions.jsonl": "554b21651a1747fc855d086f5c702954b36369f8c8065f1dae9ea30f648a9ab6",
+        "q32-artifacts-seal.json": "10b4bf2f15d1d9fa46f201e228e61417523ecf6a57100bdd9eb325534025eb1d",
+        "result.json": "ab6684d6a6bb00a507abb3e1fdd3119104a810ba4caefa6f97f4b69aacd07c2f",
+        "trace.jsonl": "7e7726e7450cbba16673289bc75561e9909f588dff0723dc53e54a8172c180dd"
+      }
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit0-cell-3.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit0\\run\\3",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit0\\run\\compiled.json",
+      "original_control_sha256": "38ae5426d29ad69e5daab7290b2e3ced9ebbdf5f1ebaf228883289a63971dafb",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "a07e70f0f4879189db9549b7943815cee0210d7b0aa6817eae4167da4afdb131",
+        "artifacts.jsonl.seal.json": "1dab5fb0b14f95a3adf6eb455ad9b18cbb498df9c89cc1df011e79eacda175d3",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "fcaef2105c153bfa1edce3a59d880f97fa39c9ff8b313cafa6b8bafa67a6195c",
+        "predictions.jsonl": "f50341713bc6bb7661089cefd0152c22fa37ef4af97735c065a98e697f5f0648",
+        "q32-artifacts-seal.json": "4191b6dd658cedaf95c6ac1149e7a609b85b654ca7314bf9add379f8b88e97df",
+        "result.json": "d6d1199474ba915800f9a4cc670ed218cddabd23557ffefceec702598fc47fb0",
+        "trace.jsonl": "a42076b775c188cf16ec3e740d006dbcda53f69c5449ba68f07dd5c205562aa7"
+      }
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit1-cell-0.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit1\\run\\0",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit1\\run\\compiled.json",
+      "original_control_sha256": "38ae5426d29ad69e5daab7290b2e3ced9ebbdf5f1ebaf228883289a63971dafb",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "failed",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "33a0625ea198306565822f03315a009b5998c7ca7efb64990206de362fce3572",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "1d5da236b7d163b6f6e0dd72e6ffd5809adb7bc290103b058d1f273ab4b64676",
+        "artifacts.jsonl.seal.json": "f944b949a47c14b12ff051181162be4f23a8e853d9021248164d121f19271260",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "49e57dc479b8bfb16a7625acbf4c34e507c5ae1ca4a5dfec33bbbc4a820793ec",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "9e516e45af96f7e87ceea78e1932838de5690fcc1eb5265b0d90d3c9df40b3ce",
+        "result.json": "41296628dbaf9a8ab6ae05980acb20c7b9ee1573a1d6c2d386180247f0ba116a",
+        "trace.jsonl": "ead207bc8302d651c86c9874ab4e4b24df22a8c529a106ce7ac766b7f51369cf"
+      }
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit1-cell-1.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit1\\run\\1",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit1\\run\\compiled.json",
+      "original_control_sha256": "38ae5426d29ad69e5daab7290b2e3ced9ebbdf5f1ebaf228883289a63971dafb",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "failed",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "33a0625ea198306565822f03315a009b5998c7ca7efb64990206de362fce3572",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "8ac2174b128c32f147f4e7ec6e9a9359c399c44f3b7c014e69e76908e576276f",
+        "artifacts.jsonl.seal.json": "c00f08419aba89eedda2dc53fcd81cd1ed3f39c39c79962c65523f678379e4f5",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "01290b7148b0a8bff1a17ba17059e8934372d05094d88a2d89c6b32affb4a4dc",
+        "predictions.jsonl": "6da99bb3af8bc5f909d4c24d005458cb68abf6080cdd44c4302a4126d4e33652",
+        "q32-artifacts-seal.json": "d02de18132f93986cd52021e01ec75881d31e86018980b9223e63d3e599f6106",
+        "result.json": "dc0d89dbb107ab4268a0caf0531bf16593503f73b205e15f32ae35a8ad1c32d7",
+        "trace.jsonl": "704e34e70f8b6a8f995f3fba0eaca1ee0108744d7524d7f33c074c9a39c82c46"
+      }
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit1-cell-2.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit1\\run\\2",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit1\\run\\compiled.json",
+      "original_control_sha256": "38ae5426d29ad69e5daab7290b2e3ced9ebbdf5f1ebaf228883289a63971dafb",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "failed",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "33a0625ea198306565822f03315a009b5998c7ca7efb64990206de362fce3572",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "f4ee3ff4fe8fbc1ab3388d7462861926551b77995007856aaeec4a139a60cae0",
+        "artifacts.jsonl.seal.json": "c1e8afa3c90b361154090173d3b21796eead1d2c518104ab7b16ec89c96f0f37",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "32d83a6f831fad4fc3e40bf2d4492552ca400e826511358ad7c07d2cf985a726",
+        "predictions.jsonl": "554b21651a1747fc855d086f5c702954b36369f8c8065f1dae9ea30f648a9ab6",
+        "q32-artifacts-seal.json": "7aee7f19d158e7691bfe8672d5708530e0dd21f8669ecd9b366edab4ac3a3cd4",
+        "result.json": "5412cedb1f90b139234d8a025269021e91467dc1fb1ea1406dd5f2303e98d1f5",
+        "trace.jsonl": "74f732d29962043da5d28094a8939b6b3b2893f48ad4d8bc3f857e8f73506ccd"
+      }
+    },
+    {
+      "file": "test_actual_four_cell_grid_wit1-cell-3.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit1\\run\\3",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_four_cell_grid_wit1\\run\\compiled.json",
+      "original_control_sha256": "38ae5426d29ad69e5daab7290b2e3ced9ebbdf5f1ebaf228883289a63971dafb",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "failed",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "33a0625ea198306565822f03315a009b5998c7ca7efb64990206de362fce3572",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "75370d8537ac1c6bccc3b0200d480ad49c036f5cda958da4c58f943465daceb5",
+        "artifacts.jsonl.seal.json": "72ec9eaf351927629f24f104234a48da944f43120eab41c5a77a82b305278ef2",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "b099a5cbb015b8deed62742120bdac31c4af3db0b66f98bd1e32c2768db320fc",
+        "predictions.jsonl": "f50341713bc6bb7661089cefd0152c22fa37ef4af97735c065a98e697f5f0648",
+        "q32-artifacts-seal.json": "3ae52a17cb8d4549afb1b86ff8071916da3b6074be088103193caa047a5aa8cb",
+        "result.json": "441454fd302db2a5e1d3a0815f52ed144d732b77e2aa2d3581711ecc2131e51c",
+        "trace.jsonl": "6997fad62918935b3d5cac6603d068599a6f87969c91d1071dcc5d93998601c7"
+      }
+    },
+    {
+      "file": "test_actual_native_artifact_fa0-cell-0.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa0\\run\\0\\runtime",
+      "status": "nonaccepted_retained_bytes",
+      "attack": false,
+      "original_files": 6,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa0\\run\\compiled.json",
+      "original_control_sha256": "eb3ece9962098c1eb78b28337947c2d9e010d62d2b80914d9f94caa624fb49b7",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "artifacts.jsonl": "482f43fc5d58cabb05bc4e7d2d0e67bab500f9d6be9da3b781273e2aa79c224b",
+        "audit-failure.json": "69e2b16b654b640559490490fda65c149649ef595651bfbde2807a21bbc4e7c6",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "predictions.jsonl": "7e863277a3152c8e840e41e5e0b3a6f47def4861839c41a11a86e9d369e7ed02",
+        "trace.jsonl": "e942d61bc96dee2e44ffe15e128935cccd840af45bc4e96e33fb8bde6bc58e8a"
+      }
+    },
+    {
+      "file": "test_actual_native_artifact_fa1-cell-0.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa1\\run\\0\\runtime",
+      "status": "nonaccepted_retained_bytes",
+      "attack": false,
+      "original_files": 13,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa1\\run\\compiled.json",
+      "original_control_sha256": "26e8518d58957b6e58c40d66590075e7b8965f56b9c67e6ba1b8579207070ad7",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "d7dc7a81e2ec7fa80deba448c57c2740196a4b0766d66477bee7cbb03b0f8315",
+        "artifacts.jsonl.seal.json": "48ad390966c4a39fe01ee54bb033301d6681c0423ef1ea08ae083070ea9090a4",
+        "audit-failure.json": "df7fcabd425ef82663fa2deea067c5426cadb787cf3f3ce36e487b9eac8b9bf9",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "5d769d2c4a626fc9f4aef06eb1a0eef9b8fefccc67d3242362ab8ddd2daf70ed",
+        "predictions.jsonl": "2625d009c2ea925bd4f2da3811cb63f166a1a575b5b0313e9fd882d436ca4fb1",
+        "q32-artifacts-seal.json": "a906a5783d5eab088cf5db810fd4a5e832dcffcf84b68ed5311387408635f9da",
+        "result.json": "bb92e612e9e2a10d144e4da74d072507f93b1d5616648029498ec525497a627d",
+        "trace.jsonl": "2334d93f863e380c52d9aa644f2f35d70334c4712e8cde974724498ce5bbf44f"
+      }
+    },
+    {
+      "file": "test_actual_native_artifact_fa2-cell-0.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa2\\run\\0\\runtime",
+      "status": "nonaccepted_retained_bytes",
+      "attack": false,
+      "original_files": 12,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa2\\run\\compiled.json",
+      "original_control_sha256": "cbaf64eb548041343239ee25486f251bdf92db42a2abac06ec2c674ee02778ba",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "1860803cb1d76a400164ba2f8a6cc5e58c11a42be957f04750573933f4c6283e",
+        "artifacts.jsonl.seal.json": "527d49e9953b60ed0d1ce491d3c285f00c06da643a77c917f776772977fcc1b4",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "03b803a12e5daa1cfb882308fcaec3ac2288f3eb9b109ae3a13ca3b8b6b31ac6",
+        "predictions.jsonl": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "q32-artifacts-seal.json": "cac4148f8dfd50472ec45df6e5f71ba65654a65b437c7b2a1747f0247f269094",
+        "result.json": "9ad6761bbb26711b07dc6784e34a1eb51b18584c8f5b488256fba78102b396e9",
+        "trace.jsonl": "575e34d20359226b2bfc91e4b540aebe5745a72dc500f5c6f59ccc3f72365d9d"
+      }
+    },
+    {
+      "file": "test_actual_native_artifact_fa2-cell-1.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa2\\run\\1\\runtime",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa2\\run\\compiled.json",
+      "original_control_sha256": "cbaf64eb548041343239ee25486f251bdf92db42a2abac06ec2c674ee02778ba",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "faa1ced2370ad0520e8863c1c9805252a934c234ec7a28fc760f367c2fca2491",
+        "artifacts.jsonl.seal.json": "9e95eca4ab43d15780b217fe2fa39be7923cc6e087e5b0a47428308b01cc1d37",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "a3c9a1a06214d26fddc699a68379998d712989566c565535013b72b8a15590cb",
+        "predictions.jsonl": "35a91c2746c2975f5f92a88b872fb4e23a946b89b84384ecec12e82a69bba4aa",
+        "q32-artifacts-seal.json": "8f77ad5cde57081face99d9d02f858e7722e8e0a3ffe1e8fd199ceb31b8ab304",
+        "result.json": "99d04ebd605737483f180bed940b5a5ebe92c7525c763abb1b6bd3361c50effd",
+        "trace.jsonl": "e65318a549f328bc2efc1a9589a32967aa0d8a9ea820609aac3ef22a4d1b329c"
+      }
+    },
+    {
+      "file": "test_actual_native_artifact_fa3-cell-0.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa3\\run\\0\\runtime",
+      "status": "nonaccepted_retained_bytes",
+      "attack": false,
+      "original_files": 12,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa3\\run\\compiled.json",
+      "original_control_sha256": "53f124d78baaf5f5ef2fa25ee9b601f63c02b5e2c683ac888a45796140543d72",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "077dd13db83c194fa4cf0a2c2a88e6da5eaf7218e968bb4e701d08f60cdbbcd1",
+        "artifacts.jsonl.seal.json": "1f923ca980ce5583271d729aeb777565a6bbbe3ea15fc109129012b60a8eae6b",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "64f0e37f3361e070ea73108f965bc80b8d163d2c5c25ab4989e18912d5d7f935",
+        "predictions.jsonl": "6463ed495fd280ff9bb7d2d6b304994c8dfc81311c8258994991ed82f0913fe2",
+        "q32-artifacts-seal.json": "2eb98850b73ca6119527a8e89175fecb5d153cff9f0ef0b17ee992d7c52191ba",
+        "result.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+        "trace.jsonl": "5e20bea3ca71ea19062a25d69d132cf75af8990bf622406ac67d7ef960032e91"
+      }
+    },
+    {
+      "file": "test_actual_native_artifact_fa3-cell-1.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa3\\run\\1\\runtime",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa3\\run\\compiled.json",
+      "original_control_sha256": "53f124d78baaf5f5ef2fa25ee9b601f63c02b5e2c683ac888a45796140543d72",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "4d584f7f078de6def46d1fe5f68372922eb79c40bfd53fefe215878c77152419",
+        "artifacts.jsonl.seal.json": "1b81a0a09d2bb254b6ad68f308bdbc23fa63a8c52639521493aca5ea8a63630a",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "af8e088f73dabddaffc31cc3fd1b2b66e9833950a9a18679f7ed07b5e9c40c81",
+        "predictions.jsonl": "0e70210ac36e9a3e834d35a69071e011cc5a88cbb7d271fcbc3c2645a76590c7",
+        "q32-artifacts-seal.json": "9c4db9812b5df3c58bbe26fdc010d9520c9582aff0501b36ec90ce8ad4f8a6cc",
+        "result.json": "610d6a115edb6b416c155b2d6d5719400f9a02b123c5a808dd18668e6b685df7",
+        "trace.jsonl": "5e0ee6c3bae8ddae85e9ce33f55ee2bf01c778a5de69e4ef74781ebcca52bd73"
+      }
+    },
+    {
+      "file": "test_actual_native_artifact_fa3-cell-2.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa3\\run\\2\\runtime",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa3\\run\\compiled.json",
+      "original_control_sha256": "53f124d78baaf5f5ef2fa25ee9b601f63c02b5e2c683ac888a45796140543d72",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "a78bea8933ba6f45c02382caa06be5bf2bbcfa2d122dc63db8876114c7ae1611",
+        "artifacts.jsonl.seal.json": "797d077f7b389c74dd28136bdd80c2a3eae887cdd7aad8bd3d56003eac3630f9",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "ec1abdb68f915110fffd8ce1430bb480db1a59e4d60fe41a9206b46be16a2699",
+        "predictions.jsonl": "aad8bb7d998f001a94bc4eced5eee95ff2a11dd9197138f671915afe6b88abd7",
+        "q32-artifacts-seal.json": "7fec2c2220d4c36bf3ca2e6155c60a5094a5331b43103ca70b2a7053fff2ca97",
+        "result.json": "eaa747ff197dc10f3ffd39913b98c96767a9216fae3333475448d23a85b060f1",
+        "trace.jsonl": "851322dd8dc04c9806d5df2c8480b45963ee4d3772e535696cede2d9bd76428d"
+      }
+    },
+    {
+      "file": "test_actual_native_artifact_fa3-cell-3.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa3\\run\\3\\runtime",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_actual_native_artifact_fa3\\run\\compiled.json",
+      "original_control_sha256": "53f124d78baaf5f5ef2fa25ee9b601f63c02b5e2c683ac888a45796140543d72",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "7c85669eb75d489e6f650b6fc485fec2bbf93ea4e0034216155c5d1789515c55",
+        "artifacts.jsonl.seal.json": "0562b5383cfb2271e3c757c30ecdd72db0c8cf44d45c08e0aa510294ee53106c",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "a9ca3182f3af146de89e52910685ccb4ade349e87e1209120ecfbd6b77184ae9",
+        "predictions.jsonl": "4ac3922fa783fa2084364980ef15ab26026679d3357ae57e03663a2044cd08bf",
+        "q32-artifacts-seal.json": "857eab46163d9f2aba765695109db03c6878cc1829a454ab6c02c8555bf9d819",
+        "result.json": "0680e1217336967779a72408fa6e89c5f52faea2bc5c2437b18ab2ffcd864c9a",
+        "trace.jsonl": "695b96aec281017abc21386357080266502500168b586fc0e63dc5088fe135c3"
+      }
+    },
+    {
+      "file": "test_changed_literal_program_w0-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_changed_literal_program_w0\\original",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_changed_literal_program_w0\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "b6db95999627b1da4b1f3dde3dae77e89608cd1202091b6eefbcbf4fc5f334e4",
+        "artifacts.jsonl.seal.json": "701a7c56d729ba2506606257947c34e3434142267af72b5217beb815d8d9baa8",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "a37d82237cdfccad5d14f1671b477a277da54bf13de618cf25976c096fa52360",
+        "result.json": "3e50bbc6185769f5a4c12efbbcc72131f7a3b90de601c978ed2a187fe76298e7",
+        "trace.jsonl": "a02f03011777c7034705534987fd18648c6c3e4937f62d01f47a745de840062b"
+      }
+    },
+    {
+      "file": "test_changed_literal_program_w0-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_changed_literal_program_w0\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "original_files": 12,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_changed_literal_program_w0\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "7f985c841ba051160c69699aa713a5369915dd29c59b34cea10372c79310defc",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "b6db95999627b1da4b1f3dde3dae77e89608cd1202091b6eefbcbf4fc5f334e4",
+        "artifacts.jsonl.seal.json": "701a7c56d729ba2506606257947c34e3434142267af72b5217beb815d8d9baa8",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "4bb85b76f6a9568981ac5da69007894ad57285c40ac0e6b18accd39c0d6c21a0",
+        "result.json": "3e50bbc6185769f5a4c12efbbcc72131f7a3b90de601c978ed2a187fe76298e7",
+        "trace.jsonl": "a02f03011777c7034705534987fd18648c6c3e4937f62d01f47a745de840062b"
+      }
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec0-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec0\\original",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec0\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "0f7eeb5e6484480d6355c6f4f76ccff9456f5fe03555592fcc7c9fa85e130749",
+        "artifacts.jsonl.seal.json": "d292f81e5ac16161ac39e34fb268b6b98b0dbef4d1b302cfa53bb62330b4bb9a",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "5f040007548313a3d30e442a742d850e57e45714508e6bd79e568179360cf106",
+        "result.json": "cd5da47ead72bef602c8a3ba11f2cfd91b25fbda3813fa6c0106e5aa55e7f2d3",
+        "trace.jsonl": "cf345de23198e4f59a89c69b5dd7fc041be37e0859c40b23e55e03d4d63f26a1"
+      }
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec0-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec0\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "original_files": 12,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec0\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "0f7eeb5e6484480d6355c6f4f76ccff9456f5fe03555592fcc7c9fa85e130749",
+        "artifacts.jsonl.seal.json": "d292f81e5ac16161ac39e34fb268b6b98b0dbef4d1b302cfa53bb62330b4bb9a",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "53a963b998a9355d18ca4580fb928223ab4f635d25bf9a469cac247aff22866f",
+        "q32-artifacts-seal.json": "5f040007548313a3d30e442a742d850e57e45714508e6bd79e568179360cf106",
+        "result.json": "cd5da47ead72bef602c8a3ba11f2cfd91b25fbda3813fa6c0106e5aa55e7f2d3",
+        "trace.jsonl": "cf345de23198e4f59a89c69b5dd7fc041be37e0859c40b23e55e03d4d63f26a1"
+      }
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec1-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec1\\original",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec1\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "62a37c346d6875901f6db3a80652c33cd7736e25233570768cce86302356e6a9",
+        "artifacts.jsonl.seal.json": "3f06b85c809cfd8cfff11cf48c311632d4b7f4bf403ca9557e39f82829747485",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "f75b14fe6a738f8c2cae5903a5f042af275d3abe125ecdefd35d6a1fc2fb170d",
+        "result.json": "37a7554ef1efaff0a5b757b10832a91eb415b4483b2030089ac09ec33b3f98f6",
+        "trace.jsonl": "d2d94acde4e5dc344ae8db0ab81d385c43c933623b1569d3a0a5f43fbee70eb9"
+      }
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec1-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec1\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "original_files": 12,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec1\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "62a37c346d6875901f6db3a80652c33cd7736e25233570768cce86302356e6a9",
+        "artifacts.jsonl.seal.json": "3f06b85c809cfd8cfff11cf48c311632d4b7f4bf403ca9557e39f82829747485",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "6aa2b90503194f98d51dd659620a5b0ccf2ea1d9cfd8d83a7439562a960ff517",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "f75b14fe6a738f8c2cae5903a5f042af275d3abe125ecdefd35d6a1fc2fb170d",
+        "result.json": "37a7554ef1efaff0a5b757b10832a91eb415b4483b2030089ac09ec33b3f98f6",
+        "trace.jsonl": "d2d94acde4e5dc344ae8db0ab81d385c43c933623b1569d3a0a5f43fbee70eb9"
+      }
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec2-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec2\\original",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec2\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "10080d362a92133974787d561ec06ba84780506f85c9a2d20cc6e74946bbd054",
+        "artifacts.jsonl.seal.json": "3273d4713996ae9a07050f5ab6c671fc18bc37f6aefe88ecaeca180bd0d3938c",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "12aa27b363467a84df7966177d77a928a0032cb3814a27024fd33f20665fb0bf",
+        "result.json": "8550cbac38cb17256ccf73724245d9a378c1b79c23e453c329ef5de2cac6bc3f",
+        "trace.jsonl": "8a3bd5dbb7974d36123fa11fb48722c4e55a59f59ea9480b90840694b25d6413"
+      }
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec2-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec2\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "original_files": 12,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec2\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "10080d362a92133974787d561ec06ba84780506f85c9a2d20cc6e74946bbd054",
+        "artifacts.jsonl.seal.json": "3273d4713996ae9a07050f5ab6c671fc18bc37f6aefe88ecaeca180bd0d3938c",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "12aa27b363467a84df7966177d77a928a0032cb3814a27024fd33f20665fb0bf",
+        "result.json": "56089bdb7e18d7a8138434fbbbeff35f67706e06898b23366494451f0b812dfe",
+        "trace.jsonl": "8a3bd5dbb7974d36123fa11fb48722c4e55a59f59ea9480b90840694b25d6413"
+      }
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec3-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec3\\original",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec3\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "13da04536cc852b6577f2e0060fafb9ef9eab2a5822ad30ecc4a76e4219867b3",
+        "artifacts.jsonl.seal.json": "b77dc59385aa8bd27ea7636cb42515196aa925d0190afb5928377bad80ef6529",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "d92bbf2903099da9ffe28b871ff02f941387c8dcb387c04f165cce61cff95277",
+        "result.json": "1c0d082626c84768186033c2c7094f7b80701ded2cba006520923868f82f8233",
+        "trace.jsonl": "ac4e8cfc53b0f288455891e59c6fa5abcfb7f5a9f9d894fbbe2fed741d9956bd"
+      }
+    },
+    {
+      "file": "test_exact_file_drift_is_rejec3-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec3\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "original_files": 12,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_exact_file_drift_is_rejec3\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "13da04536cc852b6577f2e0060fafb9ef9eab2a5822ad30ecc4a76e4219867b3",
+        "artifacts.jsonl.seal.json": "2c60b1785f1545a185032ef801e6efe78de2a6e482cfef03d7e44c0a45e2ad1e",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "d92bbf2903099da9ffe28b871ff02f941387c8dcb387c04f165cce61cff95277",
+        "result.json": "1c0d082626c84768186033c2c7094f7b80701ded2cba006520923868f82f8233",
+        "trace.jsonl": "ac4e8cfc53b0f288455891e59c6fa5abcfb7f5a9f9d894fbbe2fed741d9956bd"
+      }
+    },
+    {
+      "file": "test_execution_seal_byte_drift0-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_execution_seal_byte_drift0\\original",
+      "status": "nonaccepted_retained_bytes",
+      "attack": false,
+      "original_files": 7,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_execution_seal_byte_drift0\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "artifacts.jsonl": "f4b597b32205d45431a9ba0c718ae68609f93c72af2233f7732d3037012df9aa",
+        "audit-failure.json": "ad3917a02eadc631a0274eb72c96b8752b856a96079f9a7d7949fba169e1e9cb",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "6aa2b90503194f98d51dd659620a5b0ccf2ea1d9cfd8d83a7439562a960ff517",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "trace.jsonl": "7f65c9bec6e329bf797f099ca673f5ac810a8c2657d25439c5906e482101e049"
+      }
+    },
+    {
+      "file": "test_first_program_byte_drift_0-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_first_program_byte_drift_0\\original",
+      "status": "nonaccepted_retained_bytes",
+      "attack": false,
+      "original_files": 8,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_first_program_byte_drift_0\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "469fdde72e9a70171a19a2efdc7abac7fbea16cb2ff6df523c78dd5958e24890",
+        "artifacts.jsonl": "1e00af16e65c9eb67d689097c1d53743bd17e48714d73ae2dda2eac5628ac8de",
+        "audit-failure.json": "ad3917a02eadc631a0274eb72c96b8752b856a96079f9a7d7949fba169e1e9cb",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "trace.jsonl": "bf612860b27ca6edd2b2afec13f138bde79fe10a6c7908fdd46b4f5d830ea1f2"
+      }
+    },
+    {
+      "file": "test_missing_journal_reader_do0-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_missing_journal_reader_do0\\original",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_missing_journal_reader_do0\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "a72c31c533cce82b34cb522539aa654fbba1fd8e83e1642c3a5e26c4750919b2",
+        "artifacts.jsonl.seal.json": "59736d09581a01fe57ad6875eb5760aa07eeadf15cddb3f91b0f0414c2376e0d",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "dfc20fab521b16ab849932914602a0a85fbabf943e61f52d402bf559b35675af",
+        "result.json": "8d3eecdbc18541a5b38a728fd402f147ed4500f0893ff89d63d71001cc21c626",
+        "trace.jsonl": "c5909532bfbd88a22e942af56493ce693236651f13230b8903919b7475299353"
+      }
+    },
+    {
+      "file": "test_missing_journal_reader_do0-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_missing_journal_reader_do0\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "original_files": 11,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_missing_journal_reader_do0\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "a72c31c533cce82b34cb522539aa654fbba1fd8e83e1642c3a5e26c4750919b2",
+        "artifacts.jsonl.seal.json": "59736d09581a01fe57ad6875eb5760aa07eeadf15cddb3f91b0f0414c2376e0d",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "q32-artifacts-seal.json": "dfc20fab521b16ab849932914602a0a85fbabf943e61f52d402bf559b35675af",
+        "result.json": "8d3eecdbc18541a5b38a728fd402f147ed4500f0893ff89d63d71001cc21c626",
+        "trace.jsonl": "c5909532bfbd88a22e942af56493ce693236651f13230b8903919b7475299353"
+      }
+    },
+    {
+      "file": "test_native_q32_prospective_ex0-cell-0.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex0\\run\\0\\runtime",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex0\\run\\compiled.json",
+      "original_control_sha256": "e730ea542cbea122e31f81550d71a45ee9fd86029c29b062c6de3dd102b5dcb8",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "546da65db61c08dd2f834e22ef0d79efc0ff01fd0aacbb653553b8357164ac08",
+        "artifacts.jsonl.seal.json": "d15fe8f9f3c8066cf077a5ca5d2b9ac59b372ee1d48e14dadea13c6dc7a0564a",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "28315e2f0436090d4382fe2d84b7b987c7bb7e8d662beb4f11ffc2eecb7035e2",
+        "predictions.jsonl": "76a382104ea344efa4a76289dfe4a07262b100da579def38f5a13f16f2a5b59e",
+        "q32-artifacts-seal.json": "24edae31db793bb002c588c60474828aab11d3eaadd77f53d944d9874c05a421",
+        "result.json": "beb50a633e732a9da62200b84b34417104a5b841444e15a9d18e124a884bb947",
+        "trace.jsonl": "117aeccfca5fb0d0e764191dcde6f795d13b159090893901cac00fccf513b55d"
+      }
+    },
+    {
+      "file": "test_native_q32_prospective_ex0-cell-1.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex0\\run\\1\\runtime",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex0\\run\\compiled.json",
+      "original_control_sha256": "e730ea542cbea122e31f81550d71a45ee9fd86029c29b062c6de3dd102b5dcb8",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "0867537fb3f0afaea01183432e31ae551bd46aecf667b0df98b8463b5877a8ee",
+        "artifacts.jsonl.seal.json": "52238e279d2461a3dcf34098613bbb8e335ae7d35611d3a463583fe18b023355",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "fa71627d4d4fd253055dda0c5fd314ea61d243886fbb061a532fcc464598b5e7",
+        "predictions.jsonl": "11ecf6a433e8127ca37afdb9a9ca457fbed3dcac7f61c612623f273dd5184544",
+        "q32-artifacts-seal.json": "e15ca0aaaa276bc6614ded69393180e9c0c60df46c8244bb588420c22cd48c2b",
+        "result.json": "1f5376c2e5c0b0f81bb80cb570a8f0f96d71808a7aa9d0bf5a86329ab2b39b5b",
+        "trace.jsonl": "9a3c5f6a690a3b5ff8f35e7399680e66b27207d7494e1d06e3bc498b01e3ce95"
+      }
+    },
+    {
+      "file": "test_native_q32_prospective_ex0-cell-2.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex0\\run\\2\\runtime",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex0\\run\\compiled.json",
+      "original_control_sha256": "e730ea542cbea122e31f81550d71a45ee9fd86029c29b062c6de3dd102b5dcb8",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "3696ee6b80a05ab399cca5e76b21d032013f5a266eb8f46608c7fccb9fba327b",
+        "artifacts.jsonl.seal.json": "3912b237881ef59adfd0d75cd2ca0bf1afb9e3f38f7ae0eb77fea4ca85a04228",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "cde30c8e7709ae9675bd2aaa05bb6901fecf2d031d953a4dc1a059fa23e6702e",
+        "predictions.jsonl": "2384c4a3f17e866fa1542db8f6b7ca5dccfc5cbc63eafc770056204b321d549c",
+        "q32-artifacts-seal.json": "fbd5a15d176d40144f78d9e8e4d13e5fe1e7eee8f5465dfc75cbdd37272fdee0",
+        "result.json": "c42e83128df3b134e32cf389de9683668e3ad514aa917abca3169f608e2f7f4b",
+        "trace.jsonl": "355c6c994c91a2d63ae889e0078cb661543bb856d7775579449dd1fe64f08372"
+      }
+    },
+    {
+      "file": "test_native_q32_prospective_ex0-cell-3.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex0\\run\\3\\runtime",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex0\\run\\compiled.json",
+      "original_control_sha256": "e730ea542cbea122e31f81550d71a45ee9fd86029c29b062c6de3dd102b5dcb8",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "a5efda0640a2dbdb8c29dc9989f8409193bfe2d99379d8d7faa7004e8b66cfa2",
+        "artifacts.jsonl.seal.json": "823bf483af75b489cd5de3fe634ee5db509154b9bec0268da822ae40ad3a5630",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "107225bac634e3df794b49551edc96ee676c7207486ff80973c0834134ed7260",
+        "predictions.jsonl": "83e6d4e419adc36b655ede8a51fb2999fe938b3ca2c2db08cc1821df6736cc6a",
+        "q32-artifacts-seal.json": "2ec84fa9870bfef087bac90a43fb67e0c245b24628ea54c1988980d31aa259a5",
+        "result.json": "569fa93553495cba91935b5b564e4ce19802bf6fdec7de09220e96618df92b35",
+        "trace.jsonl": "4763ea1fb1175aa4d35869add87109a674d55ebd6a9b60d77bcb01f12f2ede8e"
+      }
+    },
+    {
+      "file": "test_native_q32_prospective_ex1-cell-0.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex1\\run\\0\\runtime",
+      "status": "verified_failure_envelope",
+      "attack": false,
+      "original_files": 8,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 0,
+        "measurements": 3,
+        "model_attempts": 2,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex1\\run\\compiled.json",
+      "original_control_sha256": "c4b8f634809bfacebc4681d8b4ed3407cc1e995e7ee4ffa61fc65a4c6ca39952",
+      "failure": "ContractError",
+      "measurement_statuses": [
+        "blocked",
+        "blocked",
+        "blocked"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "artifacts.jsonl": "3579e546774051fc113c66338099cba510278af078c1d88908a34774c973ac37",
+        "artifacts.jsonl.seal.json": "c20ed2c5317afd877ca3dbe2e2b5637e03106a6598de877bc56c04dd8997bde1",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "predictions.jsonl": "9f64be1156282007ecb22d556f78d383c14cff2ef17994c27b4b0f6dd5c25c88",
+        "q32-artifacts-seal.json": "6542122f2565d67beb175cb1205ad47ed51923672f30e9b1c70dfebb1d7b7190",
+        "result.json": "d8c59a0b112b5245a70307c157b484ea40e698790f1b6f6e41bb1a9f5f3dbbbd",
+        "trace.jsonl": "d54081f0af1dad639dc4fb541caa1e8419b23bde1ea3fe75fe6a0b93f3ed05a3"
+      }
+    },
+    {
+      "file": "test_native_q32_prospective_ex2-cell-0.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex2\\run\\0\\runtime",
+      "status": "verified_failure_envelope",
+      "attack": false,
+      "original_files": 10,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 1,
+        "measurements": 3,
+        "model_attempts": 3,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex2\\run\\compiled.json",
+      "original_control_sha256": "ffc569ffd74e056a7c7ec3c0dc0285e207bedc6a412996431610032f2974ebc5",
+      "failure": "ContractError",
+      "measurement_statuses": [
+        "succeeded",
+        "blocked",
+        "blocked"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "artifacts.jsonl": "b9ec00266c995d4b0c7df649759c0b38cf1a9cef3bd1724bd43c50d0cfb22a2b",
+        "artifacts.jsonl.seal.json": "9635c6a78afcc76f4b7a4b0e8fea0c07a06d54e708c9857817cf0847c368efbb",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "a17a2aad573fa21acb1ee15a635e5fa0860bbd9039b1666483dd52c2682829bd",
+        "predictions.jsonl": "9da0d64a6335dca91a52bbb145b436b7dc47623cc5f50aa09a59e6117b471465",
+        "q32-artifacts-seal.json": "8d8475fe5c3454dd0e45b8ec30b243ca38396fc749fcd080b3768a2e57819644",
+        "result.json": "6ecb1cc73acbde29157136520f8bd24e119ded87de97ae823fe281f20b7cc4c8",
+        "trace.jsonl": "152aef9ad6427e7fdad56b3da66245870d24035e2ee01d8136e97678817b4fcb"
+      }
+    },
+    {
+      "file": "test_native_q32_prospective_ex3-cell-0.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex3\\run\\0\\runtime",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex3\\run\\compiled.json",
+      "original_control_sha256": "046ace9ef4f565749aa99e420c5bd65f764bea85a5b53d8b818f28636933a389",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "c8a4679d839c78e95280486a9a1a15dd3a2b6a299b6821e916b573e420e6a4a9",
+        "artifacts.jsonl.seal.json": "64d3ab3a8fdad2869255e2eec5205618c455337c8426ff38289be5735fccc50d",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "968b6654a77f5bc5596b0e571d25c173912c80ff96068d72d263e657cde59e01",
+        "predictions.jsonl": "de3950196902f2e721b8892511033d975e250aee20f76ff324745fc4f6467817",
+        "q32-artifacts-seal.json": "e19dd5e1491af87beda77f17bddf6570f4dd470b36a5dc8e262be175e7cc4588",
+        "result.json": "c625ed8d86af85c4792aaac8668ea788534a8e185833be7ab4e53bf61f0b0078",
+        "trace.jsonl": "f322d41c462bdd952a1b514f1332314f2dcbbbcdb3ca588db73cae49b43f73b5"
+      }
+    },
+    {
+      "file": "test_native_q32_prospective_ex3-cell-1.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex3\\run\\1\\runtime",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_native_q32_prospective_ex3\\run\\compiled.json",
+      "original_control_sha256": "046ace9ef4f565749aa99e420c5bd65f764bea85a5b53d8b818f28636933a389",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "3d1bb758d00b30be72111a01ff8510eaa47b976b487efeb0b659edc27a9cdb02",
+        "artifacts.jsonl.seal.json": "915b555f2d7d16493b5cc314e6e5b8ddcd1e23a394b0305005de865e90eabafe",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "c9e93e0d899062944e2c1d4f202b7b17919cd722b000bd3e28df70c56f33a6a0",
+        "predictions.jsonl": "ca1f9e32b3be40c8f40242a585bc0bf58ee11538a47063467dce7e07a707b555",
+        "q32-artifacts-seal.json": "b78e7eaf2d0ce46dd23aa94cdc8489eca257fea514b4263333cc001da529a5d3",
+        "result.json": "0f4a4fe58101a96285f24f87074032a398839c23dc58050ec37f0bc468342865",
+        "trace.jsonl": "3e9b54af521687b9e1e7f27421d3888b9d3a5fa67b259a313001f459343e5e65"
+      }
+    },
+    {
+      "file": "test_prediction_disk_drift_sto0-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_prediction_disk_drift_sto0\\original",
+      "status": "nonaccepted_retained_bytes",
+      "attack": false,
+      "original_files": 7,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_prediction_disk_drift_sto0\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "artifacts.jsonl": "55e4db2e4e49958e923186fb75cefa7e330fc9c9865caa878fd64b2147999b9b",
+        "audit-failure.json": "ad3917a02eadc631a0274eb72c96b8752b856a96079f9a7d7949fba169e1e9cb",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "predictions.jsonl": "53a963b998a9355d18ca4580fb928223ab4f635d25bf9a469cac247aff22866f",
+        "result.json": "1657a8c6cdb36e125faef87874063f6e35e2f27ef68c6d09b76431769b272f7a",
+        "trace.jsonl": "8b77d9f384c0a684a46edfaafb5be508cbf96b1ccf6b64016528a1096a0aaa80"
+      }
+    },
+    {
+      "file": "test_rehashed_missing_consumer0-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer0\\original",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer0\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "a7a53c50e79e72df729cc17cd1ba73123e9e343407c3dac66598d969f14a5916",
+        "artifacts.jsonl.seal.json": "70c5136516c0e562ae14d118d6c4ca2129971cf2f1828fe77d2977b00f5fc6e1",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "603b46ae4d50dae787da7fa5b7c5b6df849582ae551b7fbc21a2f70346171c4a",
+        "result.json": "7ef1320b532c30e31bad3c74677b1405995848bbee319124b090404b0fd486eb",
+        "trace.jsonl": "ed65c39949fdb2e06a1b76ff866ae8edbe1fa49c87da626f0bfe8ded9a25e9e5"
+      }
+    },
+    {
+      "file": "test_rehashed_missing_consumer0-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer0\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "original_files": 12,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer0\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "efa95ed02421729cd39a21096fa01b42f11ed503a50bffb8929b1d6ad350ac58",
+        "artifacts.jsonl.seal.json": "481b38344c5ddd592ff77eb5c9e27acb81560f28e787a7885c87dd3b16eb1df2",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "819db91b55d5192e6b13f5be52146cda70287142384e8bf1afb966509244b3c5",
+        "result.json": "7ef1320b532c30e31bad3c74677b1405995848bbee319124b090404b0fd486eb",
+        "trace.jsonl": "ed65c39949fdb2e06a1b76ff866ae8edbe1fa49c87da626f0bfe8ded9a25e9e5"
+      }
+    },
+    {
+      "file": "test_rehashed_missing_consumer1-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer1\\original",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer1\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "a89e38041668a51e20e556a546e17305d63c5490b202481854414244b17e2514",
+        "artifacts.jsonl.seal.json": "bd8f0e65c9a53b4f0d71b7fabdf0f6822b30f30b944f5704e9f5cb75c1d41b18",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "3cc734e10d6d53f201849439e68607addc88a3f6e6b3a22a2e405a8d4497f38e",
+        "result.json": "c1a7f90fb558fbece33b5d6c3fe2def33f42e60ec905f9a9c4d8c21a545aa694",
+        "trace.jsonl": "c46fe096dca87ee6f5d67ce08fa5f15e3c2a18e5d36a2d8c444d4e94f30481cd"
+      }
+    },
+    {
+      "file": "test_rehashed_missing_consumer1-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer1\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "original_files": 12,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer1\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "1f5a6a382c71c87877287ac52d584a20f72562cf7668f2dd59c42248e1367648",
+        "artifacts.jsonl.seal.json": "163fcffe629cd576e395bcc0300445cfac1e02495c0df0c753debcd3ddf45c80",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "cd02e9e0d4440ffb503cca7dc2b4153ffcabbf785d89e81024439089155c4a89",
+        "result.json": "c1a7f90fb558fbece33b5d6c3fe2def33f42e60ec905f9a9c4d8c21a545aa694",
+        "trace.jsonl": "c46fe096dca87ee6f5d67ce08fa5f15e3c2a18e5d36a2d8c444d4e94f30481cd"
+      }
+    },
+    {
+      "file": "test_rehashed_missing_consumer2-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer2\\original",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer2\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "7b5e80653825886056fc04f3eba3bb4d00bb3f610fcfadf535dbaff4e28b8217",
+        "artifacts.jsonl.seal.json": "4db087b2fc6aff7705affbdf7931c52de6a320394594ef16b3f48d3ef902f9dd",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "070ea02c846e5c8dc69b169cbd3f0fe52e49c89afd7b2ae298a9516606c1f5e7",
+        "result.json": "3df222aada164c1afdeb5135d42568fc807e345ebc36ec310953eb68c125d0dd",
+        "trace.jsonl": "7dc23dbfd5a01f12eec0ba4871264d518860b2390a703812c6bf9d6767d5e549"
+      }
+    },
+    {
+      "file": "test_rehashed_missing_consumer2-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer2\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "original_files": 12,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer2\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "9b25c7217168287a23eb77fbf74b1673b40181cb7de9b4e068f6858f47332225",
+        "artifacts.jsonl.seal.json": "b42359236aa08f625cb859f93b54288532f95818f360948464f2a74204bf09f2",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "f299e869c6e7f0932ff8967dc2f48020a81122c7bb7dc1a6d3815f2ee13a091d",
+        "result.json": "3df222aada164c1afdeb5135d42568fc807e345ebc36ec310953eb68c125d0dd",
+        "trace.jsonl": "7dc23dbfd5a01f12eec0ba4871264d518860b2390a703812c6bf9d6767d5e549"
+      }
+    },
+    {
+      "file": "test_rehashed_missing_consumer3-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer3\\original",
+      "status": "verified_completed_allocation",
+      "attack": false,
+      "original_files": 12,
+      "verification": {
+        "cells": 1,
+        "execution_attempts": 3,
+        "measurements": 3,
+        "model_attempts": 4,
+        "scientific_validated": false,
+        "verified": true
+      },
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer3\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": [
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ],
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "4d01388f9ddc62ab383632ba178ae624c09cb94736297f90768b0ecc0026e0f5",
+        "artifacts.jsonl.seal.json": "ecefb9a5954a46181ca37cc082dd84d82f785b3c67fa8edd8e6ed76581d64dfb",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "a93ff0d59a6ebc373e6c8d502b68770f9dd90250fdce158ff75c8bdfb9b31c67",
+        "result.json": "f324010241eccf8d3fb78c5a31c5d2595987dbcdf41ada86abaa801e5d0d2428",
+        "trace.jsonl": "36f18f44ddb1334ca7a617bfe093756b0e54368e872f514b8de23a42bccdc416"
+      }
+    },
+    {
+      "file": "test_rehashed_missing_consumer3-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer3\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "original_files": 12,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_rehashed_missing_consumer3\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "analysis-1.py": "898eca75d7f009d1106f78a62a3a21889164dc7b6d03959da1a0a40e3854d326",
+        "analysis-2.py": "77a67697cbd79d146b7c5ed972842685b3ab234b159d85ac51602db4143b301e",
+        "analysis-3.py": "cc55b16091bed26fbcc41aecd89474a9fe39db50b62246460de87aeaa3a25b3e",
+        "artifacts.jsonl": "8cd8d48c595aa65c1ecdcc5c00c6ba8502a446f7a585e7ad62fb909c21380005",
+        "artifacts.jsonl.seal.json": "d4246fffb0d3386aed19d246fd28f41da02fffd1bf9720015e0faea7e52d7abf",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution-seal.json": "f4cc8d4813b0b1cc26bdabcedfe3d021a658b8187d6bce2b8e986a5eb1ef7856",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "q32-artifacts-seal.json": "3a3d8d148c97b983c9d385cca7870cafcc99d7648bbdbe97c2a121ac1ad5f6af",
+        "result.json": "f324010241eccf8d3fb78c5a31c5d2595987dbcdf41ada86abaa801e5d0d2428",
+        "trace.jsonl": "36f18f44ddb1334ca7a617bfe093756b0e54368e872f514b8de23a42bccdc416"
+      }
+    },
+    {
+      "file": "test_unique_prediction_freezes0-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_unique_prediction_freezes0\\original",
+      "status": "prefix_only",
+      "attack": false,
+      "original_files": 5,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_unique_prediction_freezes0\\independent-inputs.json",
+      "original_control_sha256": "90832b9e9dee3df1078ad576cc29b16f96c4ec19d654b6daa96955f4ed755590",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "artifacts.jsonl": "48fb6bee1c72856c77b7ad10693d9b4eeeb5e151f40735a37eb7115e84cf63d8",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "predictions.jsonl": "9db845d6d2b0822c1858e38c238ad9961b301ec45d6631ca6b90585680b82c33",
+        "trace.jsonl": "3202fd0dc0de3ae18ba77541ba1442b8387a89131b3529b7b07faafb29e38f0d"
+      }
+    },
+    {
+      "file": "test_unique_prediction_freezes1-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_unique_prediction_freezes1\\original",
+      "status": "prefix_only",
+      "attack": false,
+      "original_files": 5,
+      "verification": null,
+      "original_control_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\q32-artifacts-frozen-r2\\test_unique_prediction_freezes1\\independent-inputs.json",
+      "original_control_sha256": "0f00130c895bcd41c9b1ea797ebedeec8415cb14bfb9d375e8c8ad5529f59406",
+      "failure": null,
+      "measurement_statuses": null,
+      "unchanged_after_read": true,
+      "original_sha256": {
+        "artifacts.jsonl": "758e268ff0bdaae4055892f364e07927919439485f2bf2fda25c981dbc3c983e",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "predictions.jsonl": "6da99bb3af8bc5f909d4c24d005458cb68abf6080cdd44c4302a4126d4e33652",
+        "trace.jsonl": "2d1bf7003ad7b23a08146f0a98401d42acc2ad6e70ba1b527275bd41342e6d7b"
+      }
+    }
+  ],
+  "counts": {
+    "verified_completed_allocation": 28,
+    "verified_failure_envelope": 2,
+    "prefix_only": 2,
+    "nonaccepted_retained_bytes": 17
+  },
+  "scope": "runtime producer-consumer artifacts only; not full relocated native provider/environment replay",
+  "new_model_calls": 0,
+  "new_docker_calls": 0,
+  "validation_access": false,
+  "prior_failed_run_retained": true
+}
