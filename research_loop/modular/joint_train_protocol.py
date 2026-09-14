@@ -165,6 +165,16 @@ class FrozenJointTrainProtocol:
     @property
     def digest(self): return self.record.content_hash
 
+    def trial_binding(self, recipe_id, task_digest):
+        """A bare recipe alias never identifies a build or result across locks."""
+        self.__post_init__()
+        b = self.record.data()
+        if (recipe_id not in {r['recipe']['id'] for r in b['catalogue']['recipes']}
+                or task_digest not in {r['task_digest'] for r in b['targets']}):
+            raise ContractError('trial must bind an exact frozen common recipe and TRAIN target')
+        return R({'schema': 'c5-common-train-trial-binding-v1', 'protocol_digest': self.digest,
+                  'recipe_id': recipe_id, 'task_digest': task_digest, 'replicate': b['replicate']})
+
     @classmethod
     def freeze(cls, *, baseline_digest, p0_digest, runtime_sources, history, targets, public_csv,
                builder_digest, history_binding_digest, component_templates, context_bytes,

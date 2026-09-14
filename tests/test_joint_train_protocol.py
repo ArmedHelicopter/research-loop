@@ -140,4 +140,8 @@ def test_component_configuration_changes_pin_a_different_common_protocol(tmp_pat
     assert first.digest != second.digest
     assert first.record.data()['catalogue']==second.record.data()['catalogue']
     # Recipe aliases do not identify the complete executable protocol/configuration.
+    task = args['targets'][0].content_hash
+    assert first.trial_binding('ordinary-control',task) != second.trial_binding('ordinary-control',task)
+    with pytest.raises(ContractError): first.trial_binding('ordinary-control',args['history'].content_hash)
+    with pytest.raises(ContractError): first.trial_binding('foreign-recipe',task)
     assert not logs

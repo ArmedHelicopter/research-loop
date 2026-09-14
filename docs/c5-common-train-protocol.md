@@ -3,6 +3,9 @@
 `FrozenJointTrainProtocol` freezes a new common-procedure candidate catalogue
 before TRAIN execution. C1, C2, C3 and C4 originally use different procedures,
 budgets and estimands. Their raw scores cannot be pooled to choose a C5 winner.
+`trial_binding()` binds the complete protocol digest, recipe, target and
+replicate. Bare recipe aliases cannot key build or result reuse across locks:
+component configurations, provider or scorer changes produce a different lock.
 
 The catalogue includes the union of all legal settings in the nine conditional
 singleton designs, 36 pair designs, five triple designs and full/leave-one-out
