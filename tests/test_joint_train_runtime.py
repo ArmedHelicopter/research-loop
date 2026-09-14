@@ -235,6 +235,19 @@ def test_actual_ordinary_control_preserves_module_disabled_artifact_status(tmp_p
     assert len(setup['common_logs']) == 11
 
 
+def test_checkpoint_rows_are_frozen_at_executor_construction(tmp_path, monkeypatch):
+    setup = prepare(tmp_path, monkeypatch)
+    runner = executor(setup)
+    original = (runner.root / 'checkpoint.json').read_bytes()
+    def forbidden(*args, **kwargs):
+        raise AssertionError('checkpoint persistence recomputed a frozen trial binding')
+    monkeypatch.setattr(FrozenJointTrainProtocol, 'trial_binding', forbidden)
+    runner._persist()
+    assert (runner.root / 'checkpoint.json').read_bytes() == original
+    rows = json.loads(original)['rows']
+    assert [(row['stage'], row['trial_id']) for row in rows] == list(runner._planned_checkpoint_rows)
+
+
 @pytest.mark.parametrize('fault',['handles','template','parent','csv','material'])
 def test_preflight_drift_blocks_all_native_calls(tmp_path,monkeypatch,fault):
     setup=prepare(tmp_path,monkeypatch);plan=setup['common_plan'];b=plan.data();p=plan.protocol.record.data()

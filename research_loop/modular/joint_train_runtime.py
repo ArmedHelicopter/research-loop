@@ -218,6 +218,13 @@ class JointTrainStageExecutor:
         self.source=source_verifier; self.corpus=corpus_verifier; self.retrieval=retrieval_provider; self.audit=audit_verifier
         self.handles=dict(scorer_handle_bindings); self.stages=[]; self.poisoned=False; self.attempts={}
         self.broker=DockerExecutionBroker([self.root, *{p.csv_path.parent for p in plan.packets}, Path(plan.history_inputs[0][1]).parent])
+        # Trial bindings are a pure projection of the frozen protocol and
+        # packet list.  Keep the exact old order, but do not rebuild the full
+        # grid every time a reservation or stage terminal is checkpointed.
+        self._planned_checkpoint_rows = tuple(
+            [('history_build', history_build_id(plan.protocol, recipe)) for recipe in plan.builds]
+            + [('target', plan.protocol.trial_binding(recipe['id'], packet.task.content_hash).content_hash)
+               for recipe in plan.recipes for packet in plan.packets])
         self._persist()
 
     def _verify_protocol_file(self):
@@ -245,11 +252,8 @@ class JointTrainStageExecutor:
     def _persist(self):
         from research_loop.modular.metaprogram_training import _atomic
         completed={**self.attempts, **{(s.record.data()['stage'],s.record.data()['trial_id']):s.record.data() for s in self.stages}}
-        planned=[('history_build',history_build_id(self.plan.protocol,r)) for r in self.plan.builds]
-        planned += [('target',self.plan.protocol.trial_binding(r['id'],p.task.content_hash).content_hash)
-                    for r in self.plan.recipes for p in self.plan.packets]
         rows=[{'stage':stage,'trial_id':key,'status':completed.get((stage,key),{}).get('status','blocked' if self.poisoned else 'not_executed')}
-              for stage,key in planned]
+              for stage,key in self._planned_checkpoint_rows]
         _atomic(self.root/'checkpoint.json',R({'schema':'c5-common-stage-checkpoint-v1','plan_digest':self.plan.record.content_hash,
             'rows':rows,'allocation':self.plan.protocol.record.data()['allocation'],'provider_usage':self.session.usage().data(),
             'complete_grid_executed':False,'score_eligible':False,'original_experiments_completed':False}).data())
