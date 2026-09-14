@@ -171,6 +171,10 @@ def _fresh_env(home: Path, profile_dir: Path):
     return keep
 
 
+def _empty_fresh(path: Path, code: str):
+    _require(path.is_dir() and not path.is_symlink() and not any(path.iterdir()), code)
+
+
 def _stream_session(raw: bytes):
     for line in reversed(raw.decode("utf-8", "replace").splitlines()):
         try:
@@ -210,6 +214,8 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
     _require(executable.is_file() and _sha(_read(executable)) == EXECUTABLE_SHA256, "headless executable pin")
     _require((home / "auth.json").is_file() and _read(home / "config.toml") == diagnostic_config(main_output_cap).encode(),
              "fresh headless provisioner contract")
+    _empty_fresh(cwd, "fresh cwd required")
+    _require(not home.is_symlink() and not user.is_symlink() and not native.is_symlink(), "linked private context")
     _require(isinstance(frozen_files, dict) and frozen_files, "headless source manifest")
     for path, digest in frozen_files.items():
         _require(isinstance(path, str) and isinstance(digest, str) and _sha(_read(Path(path))) == digest,
@@ -227,7 +233,12 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
                         "timeout_seconds": timeout, "frozen_files": dict(sorted(frozen_files.items())), "retries": 0}
     reservation_sha = _write(reservation_path, reservation_body)
     _write(native / "prompt.private.txt", prompt_raw); _write(native / "schema.private.json", schema_raw)
-    inspect_dir=native/"inspect"; pre = _account(home,native/"billing-before")
+    inspect_dir=native/"inspect"
+    try:
+        pre = _account(home,native/"billing-before")
+    except Exception as exc:
+        receipt = FrozenRecord.from_dict({"schema": RECEIPT_SCHEMA,"accepted":False,"faults":["preflight_account_failed"],"requested_model":MODEL,"headless_profile":profile(),"denied_tools":list(DENIED_TOOLS),"prompt_sha256":prompt_sha,"schema_digest":schema_sha,"input_bytes":len(prompt_raw),"command_sha256":None,"reservation_sha256":reservation_sha,"frozen_files":dict(sorted(frozen_files.items())),"native":{"stream_sha256":None,"stderr_sha256":None,"process_exit_code":None,"launched_at":None,"session_id":reservation_value["session_id"],"terminal_session_id":None,"request_id":None},"stream_inspection":None,"account_preflight":None,"account_postflight":None,"prompt_process_launched":False,"response_sha256":None,"initial_title_usage":None,"all_opportunity_usage":None,"billing_settlement":"not_established_by_headless_receipt","output_cap_wire_certified":False})
+        _write(native/"observer-receipt.json",receipt.data()); return HeadlessResult(receipt,None)
     command = [str(executable), "--no-auto-update", "--cwd", str(cwd), "--model", MODEL, "--prompt-file", str(native / "prompt.private.txt"), "--json-schema", _canon(schema).decode(), "--output-format", "streaming-json", "--max-turns", "1", "--session-id", reservation_value["session_id"], "--no-subagents", "--no-plan", "--disable-web-search", "--disallowed-tools", ",".join(DENIED_TOOLS), "--agents", _canon({"transport-no-tools":profile()}).decode(), "--agent", "transport-no-tools", "--permission-mode", "dontAsk", "--deny", "MCPTool", "--system-prompt-override", "Return only the requested JSON. Do not use tools.", "--verbatim"]
     command_sha = _write(native / "command.json", command)
     launched_at = datetime.now(timezone.utc).isoformat()
@@ -242,7 +253,15 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
     except subprocess.TimeoutExpired:
         fault = "timeout"
         if tree is not None:
-            tree.process.kill(); raw, stderr = tree.process.communicate(); exit_code = tree.process.returncode
+            # Closing the Windows KILL_ON_JOB_CLOSE handle kills descendants before
+            # the bounded reap; never wait indefinitely on an orphaned tree.
+            if tree.job is not None:
+                kernel, handle = tree.job; kernel.CloseHandle(handle); tree.job = None
+            else:
+                tree.process.kill()
+            try: raw, stderr = tree.process.communicate(timeout=5)
+            except subprocess.TimeoutExpired: fault = "process_tree_shutdown_failed"; raw = b""; stderr = b""; exit_code = -1
+            else: exit_code = tree.process.returncode
     except (OSError, ContractError) as exc:
         fault = "launch_failed"
         stderr = str(exc).encode(); exit_code = -1
@@ -322,6 +341,8 @@ def verify_headless_request_binding(result, entry, directory, spec, frozen_files
         _require(receipt["response_sha256"] == _sha(_read(native / "response.private.json"))
                  and _strict_json(_read(native / "response.private.json")) == inspected.response.data(),
                  "response artifact mismatch")
+        _require(result.response is not None and result.response.data() == inspected.response.data(),
+                 "result response swap")
     try:
         pre = _strict_json(_read(native / "billing-before" / "observation.json")); post = _strict_json(_read(native / "billing-after" / "observation.json"))
     except (TypeError, ValueError) as exc:
