@@ -254,10 +254,11 @@ class SubscriptionBudget:
                 inspection = r.get('stream_inspection') if isinstance(r, dict) else None
                 usage = inspection.get('usage') if isinstance(inspection, dict) else None
                 if not (isinstance(usage, dict) and all(type(usage.get(k)) is int and usage[k] >= 0
-                        for k in ('input_tokens', 'output_tokens', 'cached_read_tokens', 'cache_creation_tokens',
+                        for k in ('input_tokens', 'output_tokens', 'cache_read_input_tokens', 'cache_creation_input_tokens',
                                   'reasoning_tokens', 'total_tokens'))
                         and usage['reasoning_tokens'] <= usage['output_tokens']
-                        and usage['total_tokens'] == usage['input_tokens'] + usage['output_tokens']):
+                        and usage['total_tokens'] == (usage['input_tokens'] + usage['cache_read_input_tokens']
+                            + usage['cache_creation_input_tokens'] + usage['output_tokens'])):
                     usage = None
                 row.update(native_receipt_digest=result.native.content_hash,
                     known_headless_main_usage=usage, native_accepted=r.get('accepted'), native_faults=r.get('faults'),
@@ -330,7 +331,7 @@ class SubscriptionBudget:
             row['status'] = 'known_main_expected_unknown_title'
         except Exception:
             self.halt('blocked_native_or_source_fault')
-            if row['known_main_usage'] is not None:
+            if row['known_main_usage'] is not None or row['known_headless_main_usage'] is not None:
                 row['status'] = 'rejected_with_known_usage_preserved'
             elif row.get('main_dispatch_state') == 'not_dispatched':
                 row['status'] = 'rejected_before_prompt_dispatch'
@@ -466,7 +467,7 @@ class PrivateSubscriptionPorts:
                         private_dir=directory / 'native', reservation=directory / 'native-reservation.json',
                         frozen_files=call_files, prompt=wire, schema=schema,
                         main_output_cap=spec['main_output_cap'], observed_main_token_cap=spec['observed_main_token_cap'],
-                        input_byte_cap=spec['max_input_bytes'], timeout=240, reasoning_effort='low')
+                        input_byte_cap=spec['max_input_bytes'], timeout=spec['timeout_seconds'], reasoning_effort='low')
                 else:
                     result = run_native_diagnostic(opportunity_contract=DIAGNOSTIC_OPPORTUNITY_CONTRACT,
                         executable=self.executable, cwd=slot['cwd'], private_home=slot['private_home'],
@@ -480,17 +481,24 @@ class PrivateSubscriptionPorts:
                     raise ContractError('headless result type differs')
                 slot = self.native_slots[entry['opportunity_id']]
                 context = slot | {'executable': self.executable, 'reasoning_effort': 'low'}
-                binding = verify_headless_request_binding(result, {'opportunity_id': entry['opportunity_id'],
-                    'private_request': private_request,
-                    'prompt_sha256': entry['prompt_sha256'], 'schema_digest': entry['schema_digest'],
-                    'input_bytes': entry['input_bytes']}, directory,
-                    spec | {'native_context': context, 'reasoning_effort': 'low'}, call_files)
                 output = result.response
+                binding = None
+                try:
+                    binding = verify_headless_request_binding(result, {'opportunity_id': entry['opportunity_id'],
+                        'private_request': private_request,
+                        'prompt_sha256': entry['prompt_sha256'], 'schema_digest': entry['schema_digest'],
+                        'input_bytes': entry['input_bytes']}, directory,
+                        spec | {'native_context': context, 'reasoning_effort': 'low'}, call_files)
+                    if output is not None and role != 'evaluator':
+                        target(output.data(), request.data()['benchmark'])
+                        output = self.authorities[role].issue(role, request.content_hash, output.data())
+                except Exception:
+                    # The producer receipt remains the durable accounting record even
+                    # when its independent binding or review semantics are rejected.
+                    self.halted = True
+                    output = None
                 if not result.receipt.data().get('accepted'):
                     self.halted = True
-                if output is not None and role != 'evaluator':
-                    target(output.data(), request.data()['benchmark'])
-                    output = self.authorities[role].issue(role, request.content_hash, output.data())
                 return SubscriptionResult(output, result.receipt, record(entry), None, 'headless', binding)
             if not isinstance(result, AcpResult):
                 raise ContractError('native result type differs')

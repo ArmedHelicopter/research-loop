@@ -369,7 +369,14 @@ def _validate_schema(schema: Any, value: Any) -> None:
     kind = schema.get("type")
     if isinstance(kind, list):
         if kind != ["string", "null"] or set(schema) != {"type"}:
-            raise ContractError("only the closed nullable string schema is supported")
+            if kind != ["object", "null"]:
+                raise ContractError("only closed nullable string or object schemas are supported")
+            if value is None:
+                return
+            narrowed = dict(schema)
+            narrowed["type"] = "object"
+            _validate_schema(narrowed, value)
+            return
         if value is not None and not isinstance(value, str):
             raise ContractError("model output violates nullable string schema")
         return
