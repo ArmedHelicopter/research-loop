@@ -32,6 +32,7 @@ from research_loop.modular.joint_train_runtime import (
     compile_panel,
     _barrier_validation_scope,
     _compile_panel_from_context,
+    _VerifiedJointTrainBarrier,
 )
 from research_loop.modular.metaprogram_training import _Journal, _exclusive
 from research_loop.modular.phase_provider import PhaseProviderAbort, PhaseProviderLedger, call_accounting
@@ -101,25 +102,34 @@ def _verify_target(stage: JointTrainStage, *, barrier: JointTrainBarrier, panel:
     if type(stage) is not JointTrainStage or type(barrier) is not JointTrainBarrier or type(panel) is not JointTrainPanel:
         raise ContractError('typed common target and panel required')
     with _barrier_validation_scope(barrier) as context:
-        expected_panel, _ = _compile_panel_from_context(context)
-        if panel != expected_panel or stage.inner.cell not in panel.cells:
-            raise ContractError('common scorer panel differs from sealed history barrier')
-        executor = barrier.executor
-        with executor._predispatch_verification_pass() as passed:
-            executor._verify(stage, context, passed)
-        body = stage.record.data()
-        if body['stage'] != 'target' or body['history_barrier_digest'] != barrier.record.content_hash:
-            raise ContractError('common target did not bind its sealed history barrier')
-        recipe = next(recipe for recipe in executor.plan.recipes if recipe['id'] == stage.inner.cell.arm_id)
-        calls = ledger.calls_for_scope(_scope(stage))
-        if tuple(call.data()['slot'] for call in calls) != slots(recipe, 'target'):
-            raise ContractError('common target scope has a missing, foreign, or reordered slot')
-        packet = next(packet for packet in executor.plan.packets if packet.task.content_hash == stage.inner.cell.task_digest)
-        verify_stage(stage.inner, plan=executor.plan, recipe=recipe, stage='target', task=packet.task,
-                     package=context.package(recipe), material=executor.plan.material(packet.task.content_hash),
-                     phase_material=executor.plan.phase_material(packet.task.content_hash), source_verifier=executor.source,
-                     corpus_verifier=executor.corpus, broker=executor.broker, inputs={'public_csv': packet.csv_path},
-                     ledger=ledger, provider_scope_id=_scope(stage), require_provider_eligible=True)
+        _verify_target_in_context(stage, barrier=barrier, panel=panel, ledger=ledger, context=context)
+
+
+def _verify_target_in_context(stage: JointTrainStage, *, barrier: JointTrainBarrier, panel: JointTrainPanel,
+                              ledger: PhaseProviderLedger, context) -> None:
+    """Private target replay under one already-fresh active barrier lease."""
+    if type(context) is not _VerifiedJointTrainBarrier:
+        raise ContractError('exact active common barrier lease required')
+    context.require(barrier)
+    expected_panel, _ = _compile_panel_from_context(context)
+    if panel != expected_panel or stage.inner.cell not in panel.cells:
+        raise ContractError('common scorer panel differs from sealed history barrier')
+    executor = barrier.executor
+    with executor._predispatch_verification_pass() as passed:
+        executor._verify(stage, context, passed)
+    body = stage.record.data()
+    if body['stage'] != 'target' or body['history_barrier_digest'] != barrier.record.content_hash:
+        raise ContractError('common target did not bind its sealed history barrier')
+    recipe = next(recipe for recipe in executor.plan.recipes if recipe['id'] == stage.inner.cell.arm_id)
+    calls = ledger.calls_for_scope(_scope(stage))
+    if tuple(call.data()['slot'] for call in calls) != slots(recipe, 'target'):
+        raise ContractError('common target scope has a missing, foreign, or reordered slot')
+    packet = next(packet for packet in executor.plan.packets if packet.task.content_hash == stage.inner.cell.task_digest)
+    verify_stage(stage.inner, plan=executor.plan, recipe=recipe, stage='target', task=packet.task,
+                 package=context.package(recipe), material=executor.plan.material(packet.task.content_hash),
+                 phase_material=executor.plan.phase_material(packet.task.content_hash), source_verifier=executor.source,
+                 corpus_verifier=executor.corpus, broker=executor.broker, inputs={'public_csv': packet.csv_path},
+                 ledger=ledger, provider_scope_id=_scope(stage), require_provider_eligible=True)
 
 
 @dataclass(frozen=True)
@@ -392,20 +402,24 @@ def verify_joint_common_train_run(run: JointCommonTrainRun, *, execution_authori
             or body['selection_opened'] is not False or body['validation_opened'] is not False
             or body['candidate_activation'] != 'none_offline_experiment' or body['scientific_effectiveness_proven'] is not False):
         raise ContractError('common controller final receipt cross-binding differs')
-    for target, row in zip(run.targets, rows, strict=True):
-        if target is None or target.inner.cell.key not in inputs or target.inner.cell.key not in scores:
-            raise ContractError('common controller score binding is incomplete')
-        _verify_target(target, barrier=run.barrier, panel=run.panel, ledger=run.target_ledger)
-        score_input = inputs[target.inner.cell.key]
-        signed = verify_combination_score_input(score_input, authority_keys=execution_authority_keys, panel=run.panel, cell=target.inner.cell)
-        rebuilt = _score_input_payload(run.panel, target.inner)
-        if {key: value for key, value in signed.data().items() if key != 'authority'} != rebuilt.data():
-            raise ContractError('signed common score input differs from its replayed target candidate')
-        verify_combination_adapted_receipt(scores[target.inner.cell.key], authority_keys=scorer_authority_keys,
-                                           config=ScorerConfig(R(run.plan.protocol.record.data()['scorer'])), panel=run.panel,
-                                           cell=target.inner.cell, score_input=score_input,
-                                           execution_authority_keys=execution_authority_keys)
-    run.target_ledger.verify()
+    # This entire final pass is synchronous and read-only.  One fresh barrier
+    # replay serves its 118 target replays; each target still checks its own
+    # original files, trace, provider scope, score input, and score receipt.
+    with _barrier_validation_scope(run.barrier) as context:
+        for target, row in zip(run.targets, rows, strict=True):
+            if target is None or target.inner.cell.key not in inputs or target.inner.cell.key not in scores:
+                raise ContractError('common controller score binding is incomplete')
+            _verify_target_in_context(target, barrier=run.barrier, panel=run.panel, ledger=run.target_ledger, context=context)
+            score_input = inputs[target.inner.cell.key]
+            signed = verify_combination_score_input(score_input, authority_keys=execution_authority_keys, panel=run.panel, cell=target.inner.cell)
+            rebuilt = _score_input_payload(run.panel, target.inner)
+            if {key: value for key, value in signed.data().items() if key != 'authority'} != rebuilt.data():
+                raise ContractError('signed common score input differs from its replayed target candidate')
+            verify_combination_adapted_receipt(scores[target.inner.cell.key], authority_keys=scorer_authority_keys,
+                                               config=ScorerConfig(R(run.plan.protocol.record.data()['scorer'])), panel=run.panel,
+                                               cell=target.inner.cell, score_input=score_input,
+                                               execution_authority_keys=execution_authority_keys)
+        run.target_ledger.verify()
     if body['final_provider_eligible'] is not True or body['status'] != 'complete_train_engineering':
         raise ContractError('common controller output is not currently provenance eligible')
     return run.receipt
