@@ -1,0 +1,26 @@
+{
+  "head": "a1b415130ea26f5c307be5aa3531168bfeea02b0",
+  "archives": [
+    {
+      "archive": "results/train-provider-core-repair-20260914",
+      "files_including_outer": 22,
+      "zip_sha256": "3490ccecb954d716fb765bf595f5e17d9d33e1a83430f4eb104137d1912296d5",
+      "nested_counts": {
+        "repair_originals": 740,
+        "checkpoint_originals": 1370
+      }
+    },
+    {
+      "archive": "results/ordinary-provider-foundation-20260914",
+      "files_including_outer": 9,
+      "zip_sha256": "453090dbd3d3dac25158ce4c16f042779e48ef27bdb6fd4c03bf993f977a1ad7",
+      "nested_counts": {
+        "raw_originals": 2330,
+        "frozen_source_members": 14
+      }
+    }
+  ],
+  "total_git_blobs": 31,
+  "disk_equals_git": true,
+  "all_outer_and_nested_manifest_hashes_match": true
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "c4-imported-archive-byte-verification-v1",
+  "integration_commit": "29f4b738519c355befec12f10a81cb2390f70c92",
+  "source_commit": "47d020097629a7d6915676fe26917fcfc59ddc54",
+  "files_checked": 36,
+  "zip_original_members_checked": 16359,
+  "merged_source_differences": [
+    "evaluation/modular/scorer_process.py",
+    "tests/test_full_loo_runtime.py"
+  ],
+  "failures": [],
+  "passed": true,
+  "scope": "artifact_integrity_only",
+  "new_model_calls": 0,
+  "validation_opened": false
+}

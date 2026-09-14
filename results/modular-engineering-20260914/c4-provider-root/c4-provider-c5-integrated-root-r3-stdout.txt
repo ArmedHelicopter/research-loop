@@ -1,0 +1,31 @@
+...F.................................................................... [ 50%]
+.......................................................................  [100%]
+================================== FAILURES ===================================
+_ test_actual_docker_dependency_resource_timeout_and_completion_mapping[timeout] _
+
+grid = (ExplorationSchedulerTrainRun(compiled=CompiledExplorationSchedulerTrainPanel(panel=CombinationPanel(stage='synthetic-...conds":20}')), WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/c4-provider-c5-integrated-root-r3/actual-grid0'))
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/c4-provider-c5-integrated-root-r3/test_actual_docker_dependency_2')
+mode = 'timeout'
+
+    @pytest.mark.parametrize('mode',['dependency','conflict','timeout','order'])
+    def test_actual_docker_dependency_resource_timeout_and_completion_mapping(grid,tmp_path,mode):
+        supplied=phase_args(grid,tmp_path,mode);report=run_phase(**supplied);replay={k:v for k,v in supplied.items() if k!='broker'}
+        assert verify_phase(**replay)==report
+        b=report.data();assert b['actual_docker_attempts']==b['execution_units_reserved']==2 and b['remaining_leases']==[]
+        if mode in {'dependency','conflict'}:assert b['peak_leases']==1 and b['overlap_ns']==0
+        if mode=='timeout':
+            assert b['status']=='failed' and b['residual_containers']==[]
+            for path in supplied['root'].glob('*.json'):
+                data=json.loads(path.read_bytes())
+                if data.get('schema')=='exploration-scheduler-job-return-v1':
+>                   assert data['execution']['status']=='timed_out' and data['execution']['record']['cleanup']['removed'] is True
+E                   AssertionError: assert ('failed' == 'timed_out'
+E                     
+E                     - timed_out
+E                     + failed)
+
+tests\test_exploration_scheduler_combination.py:198: AssertionError
+- generated xml file: E:\_ryanDev\AI\research-loop-modular\work\c4-provider-c5-integrated-root-r3.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_exploration_scheduler_combination.py::test_actual_docker_dependency_resource_timeout_and_completion_mapping[timeout]
+{"commit": "ea0d9d7a649991b9f4563dcac2f52e1d48b3f1c1", "source_unchanged": true, "source_count": 611, "exit_code": 1, "wall_seconds": 445.42200000000594, "new_paid_calls": 0, "report_sha256": "9b08eb91b3909a94c9e09f9fe380213658b59a6007e2f190fe9a785df2910ccf", "junit": {"tests": 143, "failures": 1, "errors": 0, "skipped": 0}}

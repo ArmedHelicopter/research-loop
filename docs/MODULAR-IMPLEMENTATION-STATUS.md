@@ -3,6 +3,47 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## C4 runtime and shared provider checkpoint (2026-09-14)
+
+The full/leave-one-out controller now completes its 22-cell engineering grid:
+nine canonical history builds, 169 scripted model calls, 80 actual Docker jobs
+and 22 independent process scores. All legal removals, B0, the useful ordinary
+control and both structurally unavailable minus-M2 rows remain represented.
+M8 changes target scheduling only; M9 builds candidates from TRAIN history.
+
+Root checks retained two real integration failures and their repairs. Initial
+source `29f4b7` passed 20/21 checks and exposed short workers finishing before
+the next ready lease was persisted. Source `3e750be` passed 26/26 after batching
+ready reservations. The later merged source `ea0d9d7` passed 142/143, including
+C4, but found two equal timeout jobs colliding on a clock-derived container
+name. Per-invocation nonces repair that collision. Final focused source
+`a1b4151` passed 104/104 with 617 source/document hashes unchanged, including
+fixed-clock concurrent naming and actual timeout cleanup. These checkpoints
+provide accumulated coverage, not one final 143-test rerun. Original evidence
+is in `results/modular-engineering-20260914/c4-provider-root/`.
+
+The core provider and ordinary native preflight now bind original native
+configuration, explicit per-cell call spans, historical usage and terminal
+failure snapshots. These snapshots cannot authorize scoring. The C5 preparation
+also replays original M4/M5 source journals and freezes a complete synthetic
+target/control/ablation identity grid; it cannot select, lease, accept or deploy.
+Their source archives, original failures and nested ZIP members were verified
+against committed bytes after integration.
+
+The 90-entry routing inventory retains 48 question IDs, 36 pairs, five triples
+and C4, with Q6.3 counted once inside the 48. Native execution coverage remains
+under implementation in three isolated worktree lines: ordinary experiments,
+Q6/M9 history phases, and C4. Their subsequent controller closures are not
+established by these foundational checks. C5 joint selection and acceptance
+remain separate unfinished work.
+
+Two isolated Grok CLI 1.0.30 initialize-only runs timed out, including a bounded
+128-output-cap comparison. Each sent one initialize and no model prompt; both
+cleaned up. This establishes neither startup readiness nor the failure's cause.
+Safe original evidence is retained under
+`results/modular-engineering-20260914/grok-130-initialize/`. Real authoring,
+calibration, TRAIN effects and sealed validation acceptance remain unfinished.
+
 ## Merged native TRAIN provider repair (2026-09-14)
 
 Root source `834b3b6` passed 33 integration checks with all 588 frozen

@@ -1,0 +1,5827 @@
+{
+  "schema": "provider-route-coverage-inventory-v1",
+  "scope": "read_only_static_public_source_inventory_not_runtime_test_or_scientific_coverage",
+  "frozen_commits": {
+    "integration": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+    "full-loo": "47d020097629a7d6915676fe26917fcfc59ddc54"
+  },
+  "coverage_check": {
+    "issues": 48,
+    "pairs": 36,
+    "triples": 5,
+    "C4": 1,
+    "unique_obligations": 90,
+    "missing_ids": [],
+    "duplicate_ids": [],
+    "registered_without_runtime_entry": [],
+    "singleton_driver_ids": 43,
+    "additional_q32_route": true,
+    "Q6.3_counted_once_with_separate_phase": true
+  },
+  "registry_refs": [
+    {
+      "source": "integration",
+      "path": "research_loop/modular/experiments.py",
+      "line": 27,
+      "end_line": 36,
+      "symbol": null
+    },
+    {
+      "source": "integration",
+      "path": "research_loop/modular/panel_receipts.py",
+      "line": 29,
+      "end_line": 34,
+      "symbol": null
+    },
+    {
+      "source": "integration",
+      "path": "research_loop/modular/combination_panels.py",
+      "line": 278,
+      "end_line": 291,
+      "symbol": null
+    }
+  ],
+  "C4_shared_source_equivalence": {
+    "metaprogram_training.py": "96f0e9343acd266ed75147508e799d10582bf002",
+    "state_improvement_build.py": "f37a7ddf7ac73a2b361764e3c9d6a2c11ecf2560",
+    "verified": "Git blobs identical between integration66d5b2a and full-loo47d0200; shared build policy refs apply to both."
+  },
+  "policy_checks": {
+    "singleton_codex": {
+      "admission": "CodexModelPort isinstance; exact frozen Luna/low, schema union and fresh empty ledger; CLI constructs CodexModelPort.",
+      "model_policy": "_reviewed_model_policy rejects mock/unreviewed/drifted frozen context.",
+      "ledger": "Live calls/tokens/usage_incomplete and persistent ledger/config digest; no Grok-native replay path.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/train_controller.py",
+          "line": 54,
+          "end_line": 149,
+          "symbol": "FrozenTrainControllerConfig"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/train_controller.py",
+          "line": 204,
+          "end_line": 246,
+          "symbol": null
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/train_controller.py",
+          "line": 541,
+          "end_line": 547,
+          "symbol": "_reviewed_model_policy"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/train_controller.py",
+          "line": 565,
+          "end_line": 581,
+          "symbol": "main"
+        }
+      ]
+    },
+    "combination_codex": {
+      "admission": "Shared _service_preflight selects CodexModelPort for every schema except exact m4-m5-train-controller-config-v4; family validator independently freezes Luna/low and slots/budgets.",
+      "model_policy": "Shared _reviewed_model_policy required on the Codex branch.",
+      "ledger": "Fresh calls/tokens/usage_incomplete; family loops read calls and usage_incomplete directly; _usage uses Codex tokens. No native-original binding for these schemas.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/combination_train_controller.py",
+          "line": 229,
+          "end_line": 265,
+          "symbol": "_service_preflight"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/combination_train_controller.py",
+          "line": 268,
+          "end_line": 274,
+          "symbol": "_usage"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/train_controller.py",
+          "line": 541,
+          "end_line": 547,
+          "symbol": "_reviewed_model_policy"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/combination_train_source.py",
+          "line": 58,
+          "end_line": 65,
+          "symbol": "source_schema_matches"
+        }
+      ]
+    },
+    "m4_m5_v4": {
+      "admission": "Only v4 selects isinstance(model, GrokTrainModelPort); provider kind, output/input caps, frozen files and 8-cell/5-slot configuration must match exactly. v1/v2/v3 remain Codex.",
+      "model_policy": "v4: grok-4.6/native_acp, included-only, no API route, 60s, no retry, native empty-context/tool/config/source evidence; Codex branch keeps reviewed-context policy.",
+      "ledger": "40 MAIN +40 possible title opportunities; fresh native ledger, per-cell original request/response binding, replay_grok_train_ledger; title/all-call settlement remains unknown.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/combination_train_controller.py",
+          "line": 139,
+          "end_line": 169,
+          "symbol": null
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/combination_train_controller.py",
+          "line": 229,
+          "end_line": 265,
+          "symbol": "_service_preflight"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/combination_train_controller.py",
+          "line": 277,
+          "end_line": 291,
+          "symbol": "_verify_grok_cell_native_binding"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/grok_train_solver.py",
+          "line": 29,
+          "end_line": 153,
+          "symbol": "GrokTrainModelPort"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/grok_train_solver.py",
+          "line": 197,
+          "end_line": 207,
+          "symbol": "replay_grok_train_ledger"
+        }
+      ]
+    },
+    "build_codex": {
+      "admission": "model_configuration requires CodexModelPort; exact family model_config and empty calls/tokens/usage_incomplete. Exact FrozenProviderLedger required across builds/barrier/targets.",
+      "model_policy": "Luna/low and reviewed context SHA frozen; no native descriptor or native accounting version admitted.",
+      "ledger": "_safe_call projects request_hash/output_hash/usage.total_tokens. FrozenProviderLedger.bind_events requires those Codex keys and non-null usage; sealed build prefix and final target ledgers.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/metaprogram_training.py",
+          "line": 191,
+          "end_line": 195,
+          "symbol": "model_configuration"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/metaprogram_training.py",
+          "line": 338,
+          "end_line": 339,
+          "symbol": "_safe_call"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/state_improvement_build.py",
+          "line": 141,
+          "end_line": 171,
+          "symbol": "FrozenProviderLedger"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/state_improvement_build.py",
+          "line": 82,
+          "end_line": 137,
+          "symbol": "run_build"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/state_improvement_build.py",
+          "line": 174,
+          "end_line": 237,
+          "symbol": "verify_build"
+        }
+      ]
+    },
+    "phase_codex": {
+      "admission": "model_configuration requires actual CodexModelPort and plan match; empty calls/tokens/usage_incomplete before phase. Q6 operation adds independent host authority descriptor.",
+      "model_policy": "Exact model_config Luna/low/reviewed-context SHA; phase replay checks context_mode=reviewed and context_policy.sha256.",
+      "ledger": "Per-opportunity reservation/charge from _safe_call; original persistent ledger SHA; _verify_cell binds request_hash/output_hash and known Codex usage. No native seal/charge version.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/metaprogram_training.py",
+          "line": 191,
+          "end_line": 195,
+          "symbol": "model_configuration"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/metaprogram_training.py",
+          "line": 338,
+          "end_line": 339,
+          "symbol": "_safe_call"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/metaprogram_training.py",
+          "line": 480,
+          "end_line": 518,
+          "symbol": "run_metaprogram_training"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/metaprogram_training.py",
+          "line": 646,
+          "end_line": 698,
+          "symbol": null
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/train_operations.py",
+          "line": 426,
+          "end_line": 453,
+          "symbol": "run_train_operations"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/train_operations.py",
+          "line": 472,
+          "end_line": 493,
+          "symbol": "verify_train_operations"
+        }
+      ]
+    },
+    "q32_codex": {
+      "admission": "isinstance(CodexModelPort) per compiled cell; max_calls=4, max_tokens=12000, Luna/low, timeout=180s, empty calls; roots cannot be shared. No explicit model.schemas equality or tokens/usage_incomplete equality check in _run_q32_compiled.",
+      "model_policy": "Dedicated factory ownership; controller does not call _reviewed_model_policy. CodexModelPort._invoke_protected invokes _require_frozen_context; explicit mock context is limited to non-subprocess fixture runners. Native 60s needs a new allocation.",
+      "ledger": "Four request opportunities, three Docker/measurement slots; raw model.ledger tokens/usage.total_tokens/calls retained per cell; no native replay gate.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/q32_execution.py",
+          "line": 263,
+          "end_line": 290,
+          "symbol": "_run_q32_compiled"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/q32_execution.py",
+          "line": 23,
+          "end_line": 35,
+          "symbol": null
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/q32_execution.py",
+          "line": 241,
+          "end_line": 247,
+          "symbol": null
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/q32_execution.py",
+          "line": 332,
+          "end_line": 372,
+          "symbol": "run_q32_prospective_execution_panel"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/model_port.py",
+          "line": 429,
+          "end_line": 518,
+          "symbol": "CodexModelPort.__init__"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/model_port.py",
+          "line": 530,
+          "end_line": 612,
+          "symbol": "CodexModelPort._invoke_protected"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/model_port.py",
+          "line": 635,
+          "end_line": 665,
+          "symbol": "CodexModelPort._require_frozen_context"
+        }
+      ]
+    }
+  },
+  "adapter_families": {
+    "singleton": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/train_controller.py",
+        "line": 180,
+        "end_line": 454,
+        "symbol": "run_train_panel"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/train_controller.py",
+        "line": 54,
+        "end_line": 149,
+        "symbol": "FrozenTrainControllerConfig"
+      },
+      "accepted_schemas": [
+        "q31-train-controller-v1",
+        "train-panel-controller-v1"
+      ],
+      "policy_checks": "singleton_codex",
+      "required_adapter_family": "ordinary_singleton",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 124,
+          "text": "if (data[\"model\"] != \"gpt-5.6-luna\" or data[\"effort\"] != \"low\""
+        },
+        {
+          "line": 204,
+          "text": "if not isinstance(model, CodexModelPort) or not isinstance(audit_verifier, AuditVerifier):"
+        },
+        {
+          "line": 243,
+          "text": "if model.ledger.get(\"calls\") or model.ledger.get(\"tokens\") != 0 or model.ledger.get(\"usage_incomplete\") is not False:"
+        },
+        {
+          "line": 448,
+          "text": "\"model_ledger_config_digest\": digest(model.ledger[\"config\"])})"
+        }
+      ],
+      "native_schemas": [],
+      "codex_schemas": [
+        "q31-train-controller-v1",
+        "train-panel-controller-v1"
+      ]
+    },
+    "q32_execution": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/q32_execution.py",
+        "line": 332,
+        "end_line": 372,
+        "symbol": "run_q32_prospective_execution_panel"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/q32_execution.py",
+        "line": 294,
+        "end_line": 329,
+        "symbol": "FrozenQ32ProspectiveConfig"
+      },
+      "accepted_schemas": [
+        "q32-prospective-source-config-v2"
+      ],
+      "policy_checks": "q32_codex",
+      "required_adapter_family": "ordinary_q32_owned_port",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 97,
+          "text": "\"model\": \"gpt-5.6-luna\", \"effort\": \"low\", \"measurement_calibration\": \"unverified_caller_definition\"})"
+        },
+        {
+          "line": 244,
+          "text": "\"model_usage\": ({\"tokens\": model.ledger[\"tokens\"], \"usage_incomplete\": model.ledger[\"usage_incomplete\"],"
+        },
+        {
+          "line": 245,
+          "text": "\"reported_tokens\": sum((row.get(\"usage\") or {}).get(\"total_tokens\", 0) for row in model.ledger[\"calls\"]),"
+        },
+        {
+          "line": 246,
+          "text": "\"calls\": model.ledger[\"calls\"]} if hasattr(model, \"ledger\") else None),"
+        },
+        {
+          "line": 274,
+          "text": "if (not isinstance(model, CodexModelPort) or model.max_calls != 4"
+        },
+        {
+          "line": 277,
+          "text": "or model.timeout_seconds != BUDGET[\"model_timeout_seconds\"] or model.ledger[\"calls\"]):"
+        }
+      ],
+      "legacy_entry": {
+        "source": "integration",
+        "path": "research_loop/modular/q32_execution.py",
+        "line": 253,
+        "end_line": 260,
+        "symbol": "run_q32_execution_panel"
+      },
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/q32_execution.py",
+        "line": 214,
+        "end_line": 250,
+        "symbol": "Q32ExecutionStage.run"
+      },
+      "compiled_schema": "q32-prospective-execution-v1",
+      "native_schemas": [],
+      "codex_schemas": [
+        "q32-prospective-source-config-v2"
+      ]
+    },
+    "q62": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/improvement_training.py",
+        "line": 32,
+        "end_line": 36,
+        "symbol": "run_candidate_training"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/metaprogram_training.py",
+        "line": 260,
+        "end_line": 300,
+        "symbol": "FrozenMetaTrainingPlan"
+      },
+      "accepted_schemas": [
+        "q63-train-phase-plan-v1"
+      ],
+      "policy_checks": "phase_codex",
+      "required_adapter_family": "build_candidate_phase",
+      "native_admitted": false,
+      "implementation_check_refs": [],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/metaprogram_training.py",
+        "line": 404,
+        "end_line": 477,
+        "symbol": "_run_cell"
+      },
+      "experiment_ids": [
+        "Q6.2"
+      ],
+      "native_schemas": [],
+      "codex_schemas": [
+        "q63-train-phase-plan-v1"
+      ]
+    },
+    "q63": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/metaprogram_training.py",
+        "line": 480,
+        "end_line": 518,
+        "symbol": "run_metaprogram_training"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/metaprogram_training.py",
+        "line": 260,
+        "end_line": 300,
+        "symbol": "FrozenMetaTrainingPlan"
+      },
+      "accepted_schemas": [
+        "q63-train-phase-plan-v1"
+      ],
+      "policy_checks": "phase_codex",
+      "required_adapter_family": "build_metaprogram_phase",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 191,
+          "text": "def model_configuration(model):"
+        },
+        {
+          "line": 192,
+          "text": "if not isinstance(model,CodexModelPort): raise ContractError('the actual CodexModelPort is required')"
+        },
+        {
+          "line": 195,
+          "text": "'schemas':model.schemas,'context_policy_sha256':model.frozen_base_context.sha256})"
+        },
+        {
+          "line": 236,
+          "text": "if not isinstance(model_config,FrozenRecord): raise ContractError('model configuration must be frozen')"
+        },
+        {
+          "line": 238,
+          "text": "if (set(config)!={'model','effort','max_calls','max_tokens','schemas','context_policy_sha256'} or config['model']!='gpt-5.6-luna'"
+        },
+        {
+          "line": 242,
+          "text": "_digest(config['context_policy_sha256'],'reviewed model policy')"
+        },
+        {
+          "line": 411,
+          "text": "before=len(model.ledger['calls'])"
+        },
+        {
+          "line": 414,
+          "text": "phase.append('model_charge',{'request_digest':request.content_hash,'provider_calls':[_safe_call(c) for c in model.ledger['calls'][before:]]})"
+        },
+        {
+          "line": 484,
+          "text": "if model_configuration(model).data()!=plan.record.data()['model_config']:"
+        },
+        {
+          "line": 486,
+          "text": "if model.ledger['calls'] or model.ledger['tokens']!=0 or model.ledger['usage_incomplete']is not False:"
+        },
+        {
+          "line": 512,
+          "text": "'model_ledger_sha256':_sha(model.ledger_path.read_bytes()),'scientific_effect':'not_measured',"
+        },
+        {
+          "line": 516,
+          "text": "result=MetaTrainingRun(root,model.ledger_path,tuple(cells),receipt)"
+        },
+        {
+          "line": 689,
+          "text": "or config.get('context_mode')!='reviewed' or config.get('context_policy',{}).get('sha256')!=expected['context_policy_sha256']):"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/metaprogram_training.py",
+        "line": 404,
+        "end_line": 477,
+        "symbol": "_run_cell"
+      },
+      "experiment_ids": [
+        "Q6.3"
+      ],
+      "native_schemas": [],
+      "codex_schemas": [
+        "q63-train-phase-plan-v1"
+      ]
+    },
+    "q6_operations": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/train_operations.py",
+        "line": 426,
+        "end_line": 453,
+        "symbol": "run_train_operations"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/train_operations.py",
+        "line": 186,
+        "end_line": 207,
+        "symbol": "FrozenTrainOperationPlan"
+      },
+      "accepted_schemas": [
+        "train-operation-plan-v1"
+      ],
+      "policy_checks": "phase_codex",
+      "required_adapter_family": "build_operation_phase",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 430,
+          "text": "if authority.descriptor!=plan.record.data()['authority'] or shared.model_configuration(model).data()!=config:"
+        },
+        {
+          "line": 433,
+          "text": "if model.ledger['calls'] or model.ledger['tokens'] or model.ledger['usage_incomplete']: raise ContractError('fresh operation model ledger required')"
+        },
+        {
+          "line": 450,
+          "text": "record=_result_record(plan,cells,model.ledger_path)"
+        },
+        {
+          "line": 452,
+          "text": "result=shared.MetaTrainingRun(root,model.ledger_path,cells,record)"
+        },
+        {
+          "line": 481,
+          "text": "or config.get('context_mode')!='reviewed' or config.get('context_policy',{}).get('sha256')!=expected['context_policy_sha256']):"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/train_operations.py",
+        "line": 219,
+        "end_line": 307,
+        "symbol": "_operation"
+      },
+      "attempt_driver": {
+        "source": "integration",
+        "path": "research_loop/modular/metaprogram_training.py",
+        "line": 404,
+        "end_line": 477,
+        "symbol": "_run_cell"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "train-operation-plan-v1"
+      ],
+      "experiment_ids": [
+        "Q6.1",
+        "Q6.5",
+        "Q6.6"
+      ]
+    },
+    "admission": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/admission_combination_controller.py",
+        "line": 24,
+        "end_line": 28,
+        "symbol": "run_admission_train_panels"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/admission_combination_controller.py",
+        "line": 6,
+        "end_line": 14,
+        "symbol": "FrozenAdmissionTrainConfig"
+      },
+      "accepted_schemas": [
+        "admission-combination-train-config-v1",
+        "admission-combination-train-config-v2",
+        "admission-combination-train-config-v3"
+      ],
+      "policy_checks": "combination_codex",
+      "required_adapter_family": "ordinary_admission",
+      "native_admitted": false,
+      "implementation_check_refs": [],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_combination_driver.py",
+        "line": 162,
+        "end_line": 220,
+        "symbol": "run_lineage_combination_cell"
+      },
+      "inherited_controller": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_combination_controller.py",
+        "line": 261,
+        "end_line": 413,
+        "symbol": "run_lineage_train_panels"
+      },
+      "inherited_validator": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_combination_controller.py",
+        "line": 36,
+        "end_line": 139,
+        "symbol": "FrozenLineageTrainConfig"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "admission-combination-train-config-v1",
+        "admission-combination-train-config-v2",
+        "admission-combination-train-config-v3"
+      ]
+    },
+    "lineage": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_combination_controller.py",
+        "line": 261,
+        "end_line": 413,
+        "symbol": "run_lineage_train_panels"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_combination_controller.py",
+        "line": 36,
+        "end_line": 139,
+        "symbol": "FrozenLineageTrainConfig"
+      },
+      "accepted_schemas": [
+        "lineage-combination-train-config-v1",
+        "lineage-combination-train-config-v2",
+        "lineage-combination-train-config-v3"
+      ],
+      "policy_checks": "combination_codex",
+      "required_adapter_family": "ordinary_lineage",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 108,
+          "text": "or limits['model'] != 'gpt-5.6-luna' or limits['effort'] != 'low'"
+        },
+        {
+          "line": 119,
+          "text": "if (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != n*4"
+        },
+        {
+          "line": 289,
+          "text": "_service_preflight(config, model, service, execution_authority, scorer_authority_keys)"
+        },
+        {
+          "line": 340,
+          "text": "if model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 405,
+          "text": "'unused_model_opportunities': b['max_calls'] - len(model.ledger['calls']),"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_combination_driver.py",
+        "line": 162,
+        "end_line": 220,
+        "symbol": "run_lineage_combination_cell"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "lineage-combination-train-config-v1",
+        "lineage-combination-train-config-v2",
+        "lineage-combination-train-config-v3"
+      ]
+    },
+    "state_prediction": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/state_prediction_combination_controller.py",
+        "line": 205,
+        "end_line": 346,
+        "symbol": "run_state_prediction_train_panels"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/state_prediction_combination_controller.py",
+        "line": 56,
+        "end_line": 143,
+        "symbol": "FrozenStatePredictionTrainConfig"
+      },
+      "accepted_schemas": [
+        "state-prediction-combination-train-config-v1",
+        "state-prediction-combination-train-config-v2"
+      ],
+      "policy_checks": "combination_codex",
+      "required_adapter_family": "ordinary_state_prediction",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 125,
+          "text": "if (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != n*len(SLOTS)"
+        },
+        {
+          "line": 221,
+          "text": "_service_preflight(config, model, service, execution_authority, scorer_authority_keys)"
+        },
+        {
+          "line": 273,
+          "text": "if model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 337,
+          "text": "'unused_model_opportunities': b['max_calls'] - len(model.ledger['calls']),"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/state_prediction_combination_driver.py",
+        "line": 106,
+        "end_line": 145,
+        "symbol": "run_state_prediction_combination_cell"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "state-prediction-combination-train-config-v1",
+        "state-prediction-combination-train-config-v2"
+      ]
+    },
+    "state_retrieval": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/state_retrieval_combination_controller.py",
+        "line": 221,
+        "end_line": 384,
+        "symbol": "run_state_retrieval_train_panels"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/state_retrieval_combination_controller.py",
+        "line": 56,
+        "end_line": 156,
+        "symbol": "FrozenStateRetrievalTrainConfig"
+      },
+      "accepted_schemas": [
+        "state-retrieval-combination-train-config-v1",
+        "state-retrieval-combination-train-config-v2"
+      ],
+      "policy_checks": "combination_codex",
+      "required_adapter_family": "ordinary_state_retrieval",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 131,
+          "text": "if (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != n*len(SLOTS)"
+        },
+        {
+          "line": 242,
+          "text": "_service_preflight(config, model, service, execution_authority, scorer_authority_keys)"
+        },
+        {
+          "line": 296,
+          "text": "if model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 371,
+          "text": "'unused_model_opportunities': b['max_calls'] - len(model.ledger['calls']),"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/state_retrieval_combination_driver.py",
+        "line": 151,
+        "end_line": 195,
+        "symbol": "run_state_retrieval_cell"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "state-retrieval-combination-train-config-v1",
+        "state-retrieval-combination-train-config-v2"
+      ]
+    },
+    "state_exploration": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/state_exploration_combination_controller.py",
+        "line": 214,
+        "end_line": 367,
+        "symbol": "run_state_exploration_train_panels"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/state_exploration_combination_controller.py",
+        "line": 56,
+        "end_line": 150,
+        "symbol": "FrozenStateExplorationTrainConfig"
+      },
+      "accepted_schemas": [
+        "state-exploration-combination-train-config-v1",
+        "state-exploration-combination-train-config-v2"
+      ],
+      "policy_checks": "combination_codex",
+      "required_adapter_family": "ordinary_state_exploration",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 130,
+          "text": "if (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != n*len(SLOTS)"
+        },
+        {
+          "line": 230,
+          "text": "_service_preflight(config, model, service, execution_authority, scorer_authority_keys)"
+        },
+        {
+          "line": 284,
+          "text": "if model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 356,
+          "text": "'unused_model_opportunities': b['max_calls'] - len(model.ledger['calls']),"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/state_exploration_combination_driver.py",
+        "line": 151,
+        "end_line": 194,
+        "symbol": "run_state_exploration_cell"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "state-exploration-combination-train-config-v1",
+        "state-exploration-combination-train-config-v2"
+      ]
+    },
+    "state_scheduling": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/state_scheduling_combination_controller.py",
+        "line": 214,
+        "end_line": 367,
+        "symbol": "run_state_scheduling_train_panels"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/state_scheduling_combination_controller.py",
+        "line": 56,
+        "end_line": 150,
+        "symbol": "FrozenStateSchedulingTrainConfig"
+      },
+      "accepted_schemas": [
+        "state-scheduling-combination-train-config-v1",
+        "state-scheduling-combination-train-config-v2"
+      ],
+      "policy_checks": "combination_codex",
+      "required_adapter_family": "ordinary_state_scheduling",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 130,
+          "text": "if (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != n*len(SLOTS)"
+        },
+        {
+          "line": 230,
+          "text": "_service_preflight(config, model, service, execution_authority, scorer_authority_keys)"
+        },
+        {
+          "line": 284,
+          "text": "if model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 356,
+          "text": "'unused_model_opportunities': b['max_calls'] - len(model.ledger['calls']),"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/state_scheduling_combination_driver.py",
+        "line": 152,
+        "end_line": 195,
+        "symbol": "run_state_scheduling_cell"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "state-scheduling-combination-train-config-v1",
+        "state-scheduling-combination-train-config-v2"
+      ]
+    },
+    "retrieval_review": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_review_combination_controller.py",
+        "line": 157,
+        "end_line": 265,
+        "symbol": "run_retrieval_review_panels"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_review_combination_controller.py",
+        "line": 34,
+        "end_line": 97,
+        "symbol": "FrozenRetrievalReviewConfig"
+      },
+      "accepted_schemas": [
+        "retrieval-review-combination-train-config-v1",
+        "retrieval-review-combination-train-config-v2"
+      ],
+      "policy_checks": "combination_codex",
+      "required_adapter_family": "ordinary_retrieval_review",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 86,
+          "text": "if (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != n*5"
+        },
+        {
+          "line": 165,
+          "text": "_service_preflight(config, model, service, execution_authority, scorer_authority_keys)"
+        },
+        {
+          "line": 199,
+          "text": "if model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 253,
+          "text": "'unused_model_opportunities': b['max_calls'] - len(model.ledger['calls']),"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_review_combination_driver.py",
+        "line": 103,
+        "end_line": 168,
+        "symbol": "run_retrieval_review_cell"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "retrieval-review-combination-train-config-v1",
+        "retrieval-review-combination-train-config-v2"
+      ]
+    },
+    "mechanism_exploration": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_exploration_combination_controller.py",
+        "line": 210,
+        "end_line": 357,
+        "symbol": "run_mechanism_exploration_train_panels"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_exploration_combination_controller.py",
+        "line": 52,
+        "end_line": 146,
+        "symbol": "FrozenMechanismExplorationTrainConfig"
+      },
+      "accepted_schemas": [
+        "mechanism-exploration-combination-train-config-v1",
+        "mechanism-exploration-combination-train-config-v2"
+      ],
+      "policy_checks": "combination_codex",
+      "required_adapter_family": "ordinary_mechanism_exploration",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 126,
+          "text": "if (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != 8*sum(map(len,SLOTS.values()))"
+        },
+        {
+          "line": 227,
+          "text": "_service_preflight(config, model, service, execution_authority, scorer_authority_keys)"
+        },
+        {
+          "line": 276,
+          "text": "if model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 344,
+          "text": "'unused_model_opportunities': b['max_calls'] - len(model.ledger['calls']),"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_exploration_combination_driver.py",
+        "line": 176,
+        "end_line": 209,
+        "symbol": "run_mechanism_exploration_cell"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "mechanism-exploration-combination-train-config-v1",
+        "mechanism-exploration-combination-train-config-v2"
+      ]
+    },
+    "mechanism_scheduling": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_scheduling_combination_controller.py",
+        "line": 210,
+        "end_line": 357,
+        "symbol": "run_mechanism_scheduling_train_panels"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_scheduling_combination_controller.py",
+        "line": 52,
+        "end_line": 146,
+        "symbol": "FrozenMechanismSchedulingTrainConfig"
+      },
+      "accepted_schemas": [
+        "mechanism-scheduling-combination-train-config-v1",
+        "mechanism-scheduling-combination-train-config-v2"
+      ],
+      "policy_checks": "combination_codex",
+      "required_adapter_family": "ordinary_mechanism_scheduling",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 126,
+          "text": "if (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != 8*sum(map(len,SLOTS.values()))"
+        },
+        {
+          "line": 227,
+          "text": "_service_preflight(config, model, service, execution_authority, scorer_authority_keys)"
+        },
+        {
+          "line": 276,
+          "text": "if model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 344,
+          "text": "'unused_model_opportunities': b['max_calls'] - len(model.ledger['calls']),"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_scheduling_combination_driver.py",
+        "line": 176,
+        "end_line": 209,
+        "symbol": "run_mechanism_scheduling_cell"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "mechanism-scheduling-combination-train-config-v1",
+        "mechanism-scheduling-combination-train-config-v2"
+      ]
+    },
+    "admission_prediction_exploration": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/admission_prediction_exploration_controller.py",
+        "line": 214,
+        "end_line": 362,
+        "symbol": "run_admission_prediction_exploration_train_panels"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/admission_prediction_exploration_controller.py",
+        "line": 56,
+        "end_line": 150,
+        "symbol": "FrozenAdmissionPredictionExplorationTrainConfig"
+      },
+      "accepted_schemas": [
+        "admission-prediction-exploration-combination-train-config-v1",
+        "admission-prediction-exploration-combination-train-config-v2"
+      ],
+      "policy_checks": "combination_codex",
+      "required_adapter_family": "ordinary_admission_prediction_exploration",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 130,
+          "text": "if (b['model'] != 'gpt-5.6-luna' or b['effort'] != 'low' or type(b['max_calls']) is not int or b['max_calls'] != n*len(SLOTS)"
+        },
+        {
+          "line": 230,
+          "text": "_service_preflight(config, model, service, execution_authority, scorer_authority_keys)"
+        },
+        {
+          "line": 279,
+          "text": "if model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 351,
+          "text": "'unused_model_opportunities': b['max_calls'] - len(model.ledger['calls']),"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/admission_prediction_exploration_driver.py",
+        "line": 147,
+        "end_line": 179,
+        "symbol": "run_admission_prediction_exploration_cell"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "admission-prediction-exploration-combination-train-config-v1",
+        "admission-prediction-exploration-combination-train-config-v2"
+      ]
+    },
+    "m4_m5": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/combination_train_controller.py",
+        "line": 294,
+        "end_line": 438,
+        "symbol": "run_m4_m5_train_panel"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/combination_train_controller.py",
+        "line": 75,
+        "end_line": 170,
+        "symbol": "FrozenM4M5TrainConfig"
+      },
+      "accepted_schemas": [
+        "m4-m5-train-controller-config-v1",
+        "m4-m5-train-controller-config-v2",
+        "m4-m5-train-controller-config-v3",
+        "m4-m5-train-controller-config-v4"
+      ],
+      "policy_checks": "m4_m5_v4",
+      "required_adapter_family": "existing_m4_m5_v4",
+      "native_admitted": true,
+      "implementation_check_refs": [
+        {
+          "line": 152,
+          "text": "if ((not grok and (body[\"model\"] != \"gpt-5.6-luna\" or body[\"effort\"] != \"low\"))"
+        },
+        {
+          "line": 229,
+          "text": "def _service_preflight(config, model, service, execution_authority, scorer_keys):"
+        },
+        {
+          "line": 233,
+          "text": "if not isinstance(model, (GrokTrainModelPort if grok else CodexModelPort)) or not isinstance(service, (CombinationAdaptedScoringService, CombinationScorerProcessClient)) or not isinstance(execution_authority, LinkedExecutionAuthority):"
+        },
+        {
+          "line": 242,
+          "text": "or model.ledger['config'].get('frozen_files') != model.frozen_files):"
+        },
+        {
+          "line": 246,
+          "text": "or model.ledger.get(\"calls\") or model.ledger.get(\"tokens\") != 0 or model.ledger.get(\"usage_incomplete\") is not False):"
+        },
+        {
+          "line": 269,
+          "text": "base={\"model_calls\": len(model.ledger[\"calls\"]), \"known_model_tokens\": model.ledger[\"tokens\"],"
+        },
+        {
+          "line": 270,
+          "text": "\"model_usage_incomplete\": model.ledger[\"usage_incomplete\"]}"
+        },
+        {
+          "line": 271,
+          "text": "if isinstance(model, GrokTrainModelPort):"
+        },
+        {
+          "line": 272,
+          "text": "base.update(possible_initial_title_opportunities=len(model.ledger['calls']),"
+        },
+        {
+          "line": 282,
+          "text": "rows=model.ledger['calls'][-len(requests):]"
+        },
+        {
+          "line": 301,
+          "text": "_service_preflight(config, model, scoring_service, execution_authority, scorer_authority_keys)"
+        },
+        {
+          "line": 358,
+          "text": "if model.ledger[\"usage_incomplete\"]:"
+        },
+        {
+          "line": 383,
+          "text": "if isinstance(model, GrokTrainModelPort):"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/combination_benchmark_driver.py",
+        "line": 48,
+        "end_line": 76,
+        "symbol": "run_m4_m5_combination_benchmark_cell"
+      },
+      "native_schemas": [
+        "m4-m5-train-controller-config-v4"
+      ],
+      "codex_schemas": [
+        "m4-m5-train-controller-config-v1",
+        "m4-m5-train-controller-config-v2",
+        "m4-m5-train-controller-config-v3"
+      ]
+    },
+    "exploration_scheduler": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_scheduler_controller.py",
+        "line": 226,
+        "end_line": 388,
+        "symbol": "run_exploration_scheduler_train_panel"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_scheduler_controller.py",
+        "line": 70,
+        "end_line": 164,
+        "symbol": "FrozenExplorationSchedulerTrainConfig"
+      },
+      "accepted_schemas": [
+        "exploration-scheduler-train-controller-config-v1",
+        "exploration-scheduler-train-controller-config-v2"
+      ],
+      "policy_checks": "combination_codex",
+      "required_adapter_family": "ordinary_exploration_scheduler",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 147,
+          "text": "if (body[\"model\"] != \"gpt-5.6-luna\" or body[\"effort\"] != \"low\""
+        },
+        {
+          "line": 237,
+          "text": "_service_preflight(config, model, scoring_service, execution_authority, scorer_authority_keys)"
+        },
+        {
+          "line": 294,
+          "text": "if model.ledger[\"usage_incomplete\"]:"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_scheduler_combination.py",
+        "line": 345,
+        "end_line": 362,
+        "symbol": "run_exploration_scheduler_cell"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "exploration-scheduler-train-controller-config-v1",
+        "exploration-scheduler-train-controller-config-v2"
+      ]
+    },
+    "state_improvement": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/state_improvement_combination_controller.py",
+        "line": 264,
+        "end_line": 422,
+        "symbol": "run_state_improvement_train"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/state_improvement_combination_controller.py",
+        "line": 48,
+        "end_line": 131,
+        "symbol": "FrozenStateImprovementPlan"
+      },
+      "accepted_schemas": [
+        "state-improvement-train-plan-v1"
+      ],
+      "policy_checks": "build_codex",
+      "required_adapter_family": "build_state_improvement",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 15,
+          "text": "from research_loop.modular.state_improvement_build import (BuildResult, FrozenProviderLedger, material_class, qualifier_check,"
+        },
+        {
+          "line": 104,
+          "text": "if (set(config)!={'model','effort','max_calls','max_tokens','schemas','context_policy_sha256'}"
+        },
+        {
+          "line": 105,
+          "text": "or config['model']!='gpt-5.6-luna' or config['effort']!='low' or config['max_calls']!=55"
+        },
+        {
+          "line": 140,
+          "text": "ledger: FrozenProviderLedger"
+        },
+        {
+          "line": 195,
+          "text": "or type(self.ledger) is not FrozenProviderLedger or type(self.builds) is not tuple"
+        },
+        {
+          "line": 260,
+          "text": "ledger: FrozenProviderLedger"
+        },
+        {
+          "line": 268,
+          "text": "if model_configuration(model).data()!=b['model_config'] or model.ledger['calls'] or model.ledger['tokens'] or model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 306,
+          "text": "if poison or model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 322,
+          "text": "buildledger=FrozenProviderLedger.freeze(model,root/'build-provider-ledger.json')"
+        },
+        {
+          "line": 350,
+          "text": "if poison or model.ledger['usage_incomplete'] or not panels:"
+        },
+        {
+          "line": 369,
+          "text": "ledger=FrozenProviderLedger.freeze(model,root/'target-provider-ledger.json');phase.append('target_ledger_sealed',{'digest':ledger.record.content_hash})"
+        },
+        {
+          "line": 416,
+          "text": "'unused_model_opportunities':55-len(model.ledger['calls']),'unused_source_opportunities':66-sourcecalls,"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/state_improvement_combination_driver.py",
+        "line": 65,
+        "end_line": 92,
+        "symbol": "run_state_improvement_cell"
+      },
+      "allocation": {
+        "build_recipes": 11,
+        "builder_proposals": 11,
+        "builder_executions": 11,
+        "target_cells": 22,
+        "structural_exclusions": 2,
+        "target_model_calls": 44,
+        "model_calls": 55,
+        "source_calls": 66,
+        "docker_attempts": 22,
+        "scorer_calls": 22
+      },
+      "build_driver": {
+        "source": "integration",
+        "path": "research_loop/modular/state_improvement_build.py",
+        "line": 82,
+        "end_line": 137,
+        "symbol": "run_build"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "state-improvement-train-plan-v1"
+      ]
+    },
+    "mechanism_improvement": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_improvement_combination_controller.py",
+        "line": 292,
+        "end_line": 467,
+        "symbol": "run_mechanism_improvement_train"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_improvement_combination_controller.py",
+        "line": 64,
+        "end_line": 155,
+        "symbol": "FrozenMechanismImprovementPlan"
+      },
+      "accepted_schemas": [
+        "mechanism-improvement-train-plan-v1"
+      ],
+      "policy_checks": "build_codex",
+      "required_adapter_family": "build_mechanism_improvement",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 19,
+          "text": "from research_loop.modular.state_improvement_build import (BuildResult, FrozenProviderLedger, material_class, qualifier_check,"
+        },
+        {
+          "line": 120,
+          "text": "if (set(config)!={'model','effort','max_calls','max_tokens','schemas','context_policy_sha256'}"
+        },
+        {
+          "line": 121,
+          "text": "or config['model']!='gpt-5.6-luna' or config['effort']!='low' or config['max_calls']!=78"
+        },
+        {
+          "line": 164,
+          "text": "ledger: FrozenProviderLedger"
+        },
+        {
+          "line": 219,
+          "text": "or type(self.ledger) is not FrozenProviderLedger or type(self.builds) is not tuple"
+        },
+        {
+          "line": 288,
+          "text": "ledger: FrozenProviderLedger"
+        },
+        {
+          "line": 296,
+          "text": "if model_configuration(model).data()!=b['model_config'] or model.ledger['calls'] or model.ledger['tokens'] or model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 339,
+          "text": "if poison or model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 355,
+          "text": "buildledger=FrozenProviderLedger.freeze(model,root/'build-provider-ledger.json')"
+        },
+        {
+          "line": 384,
+          "text": "if poison or model.ledger['usage_incomplete'] or not panels:"
+        },
+        {
+          "line": 411,
+          "text": "ledger=FrozenProviderLedger.freeze(model,root/'target-provider-ledger.json');phase.append('target_ledger_sealed',{'digest':ledger.record.content_hash})"
+        },
+        {
+          "line": 461,
+          "text": "'unused_model_opportunities':78-len(model.ledger['calls']),'unused_source_opportunities':76-sourcecalls,"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_improvement_combination_driver.py",
+        "line": 71,
+        "end_line": 112,
+        "symbol": "run_mechanism_improvement_cell"
+      },
+      "allocation": {
+        "arm_recipe_bindings": 12,
+        "build_recipes": 6,
+        "builder_proposals": 6,
+        "builder_executions": 6,
+        "target_cells": 24,
+        "structural_exclusions": 0,
+        "target_model_calls": 72,
+        "model_calls": 78,
+        "source_calls": 76,
+        "retrieval_calls": 24,
+        "docker_attempts": 24,
+        "scorer_calls": 24
+      },
+      "build_driver": {
+        "source": "integration",
+        "path": "research_loop/modular/state_improvement_build.py",
+        "line": 82,
+        "end_line": 137,
+        "symbol": "run_build"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "mechanism-improvement-train-plan-v1"
+      ]
+    },
+    "execution_improvement": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/execution_improvement_combination_controller.py",
+        "line": 293,
+        "end_line": 464,
+        "symbol": "run_execution_improvement_train"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/execution_improvement_combination_controller.py",
+        "line": 64,
+        "end_line": 157,
+        "symbol": "FrozenExecutionImprovementPlan"
+      },
+      "accepted_schemas": [
+        "execution-improvement-train-plan-v1"
+      ],
+      "policy_checks": "build_codex",
+      "required_adapter_family": "build_execution_improvement",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 19,
+          "text": "from research_loop.modular.state_improvement_build import (BuildResult, FrozenProviderLedger, material_class, qualifier_check,"
+        },
+        {
+          "line": 120,
+          "text": "if (set(config)!={'model','effort','max_calls','max_tokens','schemas','context_policy_sha256'}"
+        },
+        {
+          "line": 121,
+          "text": "or config['model']!='gpt-5.6-luna' or config['effort']!='low' or config['max_calls']!=70"
+        },
+        {
+          "line": 166,
+          "text": "ledger: FrozenProviderLedger"
+        },
+        {
+          "line": 221,
+          "text": "or type(self.ledger) is not FrozenProviderLedger or type(self.builds) is not tuple"
+        },
+        {
+          "line": 289,
+          "text": "ledger: FrozenProviderLedger"
+        },
+        {
+          "line": 297,
+          "text": "if model_configuration(model).data()!=b['model_config'] or model.ledger['calls'] or model.ledger['tokens'] or model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 337,
+          "text": "if poison or model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 353,
+          "text": "buildledger=FrozenProviderLedger.freeze(model,root/'build-provider-ledger.json')"
+        },
+        {
+          "line": 382,
+          "text": "if poison or model.ledger['usage_incomplete'] or not panels:"
+        },
+        {
+          "line": 413,
+          "text": "ledger=FrozenProviderLedger.freeze(model,root/'target-provider-ledger.json');phase.append('target_ledger_sealed',{'digest':ledger.record.content_hash})"
+        },
+        {
+          "line": 458,
+          "text": "'unused_model_opportunities':70-len(model.ledger['calls']),'unused_source_opportunities':76-sourcecalls,"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/execution_improvement_combination_driver.py",
+        "line": 63,
+        "end_line": 98,
+        "symbol": "run_execution_improvement_cell"
+      },
+      "allocation": {
+        "arm_recipe_bindings": 16,
+        "build_recipes": 6,
+        "builder_proposals": 6,
+        "builder_executions": 6,
+        "target_cells": 32,
+        "structural_exclusions": 0,
+        "target_model_calls": 64,
+        "model_calls": 70,
+        "source_calls": 76,
+        "retrieval_calls": 0,
+        "docker_attempts": 96,
+        "auxiliary_docker_attempts": 64,
+        "solver_docker_attempts": 32,
+        "scorer_calls": 32
+      },
+      "build_driver": {
+        "source": "integration",
+        "path": "research_loop/modular/state_improvement_build.py",
+        "line": 82,
+        "end_line": 137,
+        "symbol": "run_build"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "execution-improvement-train-plan-v1"
+      ]
+    },
+    "lineage_retrieval_improvement": {
+      "controller": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_retrieval_improvement_combination_controller.py",
+        "line": 292,
+        "end_line": 460,
+        "symbol": "run_lineage_retrieval_improvement_train"
+      },
+      "validator": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_retrieval_improvement_combination_controller.py",
+        "line": 64,
+        "end_line": 155,
+        "symbol": "FrozenLineageRetrievalImprovementPlan"
+      },
+      "accepted_schemas": [
+        "lineage-retrieval-improvement-train-plan-v1"
+      ],
+      "policy_checks": "build_codex",
+      "required_adapter_family": "build_lineage_retrieval_improvement",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 19,
+          "text": "from research_loop.modular.state_improvement_build import (BuildResult, FrozenProviderLedger, material_class, qualifier_check,"
+        },
+        {
+          "line": 120,
+          "text": "if (set(config)!={'model','effort','max_calls','max_tokens','schemas','context_policy_sha256'}"
+        },
+        {
+          "line": 121,
+          "text": "or config['model']!='gpt-5.6-luna' or config['effort']!='low' or config['max_calls']!=34"
+        },
+        {
+          "line": 164,
+          "text": "ledger: FrozenProviderLedger"
+        },
+        {
+          "line": 219,
+          "text": "or type(self.ledger) is not FrozenProviderLedger or type(self.builds) is not tuple"
+        },
+        {
+          "line": 288,
+          "text": "ledger: FrozenProviderLedger"
+        },
+        {
+          "line": 296,
+          "text": "if model_configuration(model).data()!=b['model_config'] or model.ledger['calls'] or model.ledger['tokens'] or model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 339,
+          "text": "if poison or model.ledger['usage_incomplete']:"
+        },
+        {
+          "line": 355,
+          "text": "buildledger=FrozenProviderLedger.freeze(model,root/'build-provider-ledger.json')"
+        },
+        {
+          "line": 384,
+          "text": "if poison or model.ledger['usage_incomplete'] or not panels:"
+        },
+        {
+          "line": 411,
+          "text": "ledger=FrozenProviderLedger.freeze(model,root/'target-provider-ledger.json');phase.append('target_ledger_sealed',{'digest':ledger.record.content_hash})"
+        },
+        {
+          "line": 454,
+          "text": "'unused_model_opportunities':34-len(model.ledger['calls']),'unused_source_opportunities':68-sourcecalls,"
+        }
+      ],
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_retrieval_improvement_combination_driver.py",
+        "line": 69,
+        "end_line": 108,
+        "symbol": "run_lineage_retrieval_improvement_cell"
+      },
+      "allocation": {
+        "arm_recipe_bindings": 8,
+        "build_recipes": 2,
+        "builder_proposals": 2,
+        "builder_executions": 2,
+        "target_cells": 16,
+        "structural_exclusions": 0,
+        "target_model_calls": 32,
+        "model_calls": 34,
+        "source_calls": 68,
+        "retrieval_operations": 16,
+        "retrieval_calls": 48,
+        "docker_attempts": 16,
+        "scorer_calls": 16
+      },
+      "build_driver": {
+        "source": "integration",
+        "path": "research_loop/modular/state_improvement_build.py",
+        "line": 82,
+        "end_line": 137,
+        "symbol": "run_build"
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "lineage-retrieval-improvement-train-plan-v1"
+      ]
+    },
+    "c4": {
+      "controller": {
+        "source": "full-loo",
+        "path": "research_loop/modular/full_loo_controller.py",
+        "line": 250,
+        "end_line": 390,
+        "symbol": "run_full_loo_train"
+      },
+      "validator": {
+        "source": "full-loo",
+        "path": "research_loop/modular/full_loo_controller.py",
+        "line": 33,
+        "end_line": 102,
+        "symbol": "FrozenFullLooRuntimePlan"
+      },
+      "accepted_schemas": [
+        "c4-full-loo-runtime-plan-v1"
+      ],
+      "policy_checks": "build_codex",
+      "required_adapter_family": "c4_full_loo",
+      "native_admitted": false,
+      "implementation_check_refs": [
+        {
+          "line": 17,
+          "text": "from research_loop.modular.state_improvement_build import FrozenProviderLedger, check_history"
+        },
+        {
+          "line": 89,
+          "text": "if (config['max_calls']!=c['allocation']['model_calls'] or config['schemas']!=model_schemas() or config['model']!='gpt-5.6-luna'"
+        },
+        {
+          "line": 118,
+          "text": "ledger: FrozenProviderLedger"
+        },
+        {
+          "line": 129,
+          "text": "if type(self) is not FullLooBarrier or type(self.plan) is not FrozenFullLooRuntimePlan or type(self.ledger) is not FrozenProviderLedger or len(self.builds)!=len(recipes(self.plan)):raise ContractError('complete original C4 candidate barrier required')"
+        },
+        {
+          "line": 245,
+          "text": "ledger: FrozenProviderLedger"
+        },
+        {
+          "line": 254,
+          "text": "if model_configuration(model).data()!=b['model_config'] or model.ledger['calls'] or model.ledger['usage_incomplete']:raise ContractError('fresh C4 matched model port required')"
+        },
+        {
+          "line": 282,
+          "text": "return model.ledger['usage_incomplete']"
+        },
+        {
+          "line": 294,
+          "text": "buildledger=FrozenProviderLedger.freeze(model,root/'build-provider-ledger.json');journal.append('build_ledger_sealed',{'digest':buildledger.record.content_hash})"
+        },
+        {
+          "line": 316,
+          "text": "ledger=FrozenProviderLedger.freeze(model,root/'target-provider-ledger.json');journal.append('target_ledger_sealed',{'digest':ledger.record.content_hash})"
+        },
+        {
+          "line": 376,
+          "text": "actual={'model_calls':len(model.ledger['calls']),'builder_executions':buildercalls,'independent_source_qualification_calls':len(sourcecalls),"
+        }
+      ],
+      "driver": {
+        "source": "full-loo",
+        "path": "research_loop/modular/full_loo_driver.py",
+        "line": 47,
+        "end_line": 107,
+        "symbol": "run_stage"
+      },
+      "barrier": {
+        "source": "full-loo",
+        "path": "research_loop/modular/full_loo_controller.py",
+        "line": 113,
+        "end_line": 199,
+        "symbol": "FullLooBarrier"
+      },
+      "composition_schema": "c4-full-loo-composition-v2",
+      "allocation": {
+        "unique_builds": 9,
+        "history_model_calls": 45,
+        "target_model_calls": 124,
+        "model_calls": 169,
+        "target_cells": 22,
+        "structural_rows": 2,
+        "docker_calls": 80,
+        "scorer_calls": 22
+      },
+      "native_schemas": [],
+      "codex_schemas": [
+        "c4-full-loo-runtime-plan-v1"
+      ]
+    }
+  },
+  "obligations": [
+    {
+      "id": "Q1.1",
+      "kind": "issue",
+      "modules": [
+        "M3"
+      ],
+      "registry_endpoint": "context_rebuild",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 28,
+        "end_line": 28,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/history_panel_drivers.py",
+        "line": 203,
+        "end_line": 244,
+        "symbol": "Q11HistoryDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 200,
+        "end_line": 200,
+        "symbol": null
+      },
+      "slots": [
+        "history_baseline",
+        "history_rebuilt",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/history_panel_drivers.py",
+        "line": 205,
+        "end_line": 205,
+        "symbol": null
+      },
+      "linked_benchmark_mode": true,
+      "linked_additional_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "Q1.2",
+      "kind": "issue",
+      "modules": [
+        "M2",
+        "M3"
+      ],
+      "registry_endpoint": "claim_revision_context",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 28,
+        "end_line": 28,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/history_panel_drivers.py",
+        "line": 248,
+        "end_line": 305,
+        "symbol": "Q12DependencyDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 200,
+        "end_line": 200,
+        "symbol": null
+      },
+      "slots": [
+        "upstream_before_withdrawal",
+        "downstream_after_withdrawal",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/history_panel_drivers.py",
+        "line": 250,
+        "end_line": 250,
+        "symbol": null
+      },
+      "linked_benchmark_mode": true,
+      "linked_additional_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "Q1.3",
+      "kind": "issue",
+      "modules": [
+        "M2"
+      ],
+      "registry_endpoint": "evidence_root_dedup",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 28,
+        "end_line": 28,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/support_panel_drivers.py",
+        "line": 150,
+        "end_line": 173,
+        "symbol": "Q13RepresentationDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 201,
+        "end_line": 201,
+        "symbol": null
+      },
+      "slots": [
+        "representation_initial",
+        "representation_next",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/support_panel_drivers.py",
+        "line": 151,
+        "end_line": 151,
+        "symbol": null
+      },
+      "linked_benchmark_mode": true,
+      "linked_additional_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "Q1.4",
+      "kind": "issue",
+      "modules": [
+        "M2"
+      ],
+      "registry_endpoint": "support_recheck",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 28,
+        "end_line": 28,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/support_panel_drivers.py",
+        "line": 177,
+        "end_line": 208,
+        "symbol": "Q14SupportDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 201,
+        "end_line": 201,
+        "symbol": null
+      },
+      "slots": [
+        "support_initial",
+        "support_rechecked",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/support_panel_drivers.py",
+        "line": 178,
+        "end_line": 178,
+        "symbol": null
+      },
+      "linked_benchmark_mode": true,
+      "linked_additional_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "Q1.5",
+      "kind": "issue",
+      "modules": [
+        "M5"
+      ],
+      "registry_endpoint": "sealed_review",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 28,
+        "end_line": 28,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/q15_panel_driver.py",
+        "line": 18,
+        "end_line": 87,
+        "symbol": "Q15HistoryReviewDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 202,
+        "end_line": 202,
+        "symbol": null
+      },
+      "slots": [
+        "initial_review",
+        "reveal_review",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/q15_panel_driver.py",
+        "line": 21,
+        "end_line": 21,
+        "symbol": null
+      },
+      "linked_benchmark_mode": true,
+      "linked_additional_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "Q1.6",
+      "kind": "issue",
+      "modules": [
+        "M1",
+        "M2"
+      ],
+      "registry_endpoint": "claim_withdraw",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 28,
+        "end_line": 28,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/withdrawal_panel_drivers.py",
+        "line": 112,
+        "end_line": 139,
+        "symbol": "Q16WithdrawalDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 202,
+        "end_line": 202,
+        "symbol": null
+      },
+      "slots": [
+        "initial",
+        "invalidation",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/withdrawal_panel_drivers.py",
+        "line": 113,
+        "end_line": 113,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q1.7",
+      "kind": "issue",
+      "modules": [
+        "M3"
+      ],
+      "registry_endpoint": "context_rebuild",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 28,
+        "end_line": 28,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/withdrawal_panel_drivers.py",
+        "line": 142,
+        "end_line": 160,
+        "symbol": "Q17TimeInformationDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 202,
+        "end_line": 202,
+        "symbol": null
+      },
+      "slots": [
+        "initial",
+        "reconstructed",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/withdrawal_panel_drivers.py",
+        "line": 143,
+        "end_line": 143,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q2.1",
+      "kind": "issue",
+      "modules": [
+        "M1",
+        "M5"
+      ],
+      "registry_endpoint": "admission_review",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 29,
+        "end_line": 29,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/pressure_panel_driver.py",
+        "line": 203,
+        "end_line": 296,
+        "symbol": "Q21PressureDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 203,
+        "end_line": 203,
+        "symbol": null
+      },
+      "slots": [
+        "review_1",
+        "review_2",
+        "review_3",
+        "review_4",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/pressure_panel_driver.py",
+        "line": 207,
+        "end_line": 207,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q2.2",
+      "kind": "issue",
+      "modules": [
+        "P0"
+      ],
+      "registry_endpoint": "completion_scorer",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 29,
+        "end_line": 29,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/semantic_panel_drivers.py",
+        "line": 240,
+        "end_line": 267,
+        "symbol": "Q22CompletionSemanticsDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 205,
+        "end_line": 205,
+        "symbol": null
+      },
+      "slots": [
+        "semantic_judgement",
+        "alternative_analysis",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/semantic_panel_drivers.py",
+        "line": 242,
+        "end_line": 242,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q2.3",
+      "kind": "issue",
+      "modules": [
+        "M1"
+      ],
+      "registry_endpoint": "runner_admission",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 29,
+        "end_line": 29,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/audit_panel_drivers.py",
+        "line": 273,
+        "end_line": 274,
+        "symbol": "Q23AuditFaultDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 203,
+        "end_line": 203,
+        "symbol": null
+      },
+      "slots": [
+        "audit_initial",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/audit_panel_drivers.py",
+        "line": 203,
+        "end_line": 203,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q2.4",
+      "kind": "issue",
+      "modules": [
+        "M1"
+      ],
+      "registry_endpoint": "dual_audit",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 29,
+        "end_line": 29,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/audit_panel_drivers.py",
+        "line": 278,
+        "end_line": 279,
+        "symbol": "Q24AuditPairDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 203,
+        "end_line": 203,
+        "symbol": null
+      },
+      "slots": [
+        "audit_initial",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/audit_panel_drivers.py",
+        "line": 203,
+        "end_line": 203,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q2.5",
+      "kind": "issue",
+      "modules": [
+        "M1"
+      ],
+      "registry_endpoint": "evidence_admission",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 29,
+        "end_line": 29,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/polarity_goal_panel_drivers.py",
+        "line": 242,
+        "end_line": 243,
+        "symbol": "Q25EvidencePolarityDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 204,
+        "end_line": 204,
+        "symbol": null
+      },
+      "slots": [
+        "assessment",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/polarity_goal_panel_drivers.py",
+        "line": 170,
+        "end_line": 170,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q2.6",
+      "kind": "issue",
+      "modules": [
+        "M1"
+      ],
+      "registry_endpoint": "goal_lock",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 29,
+        "end_line": 29,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/polarity_goal_panel_drivers.py",
+        "line": 247,
+        "end_line": 248,
+        "symbol": "Q26GoalLockDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 204,
+        "end_line": 204,
+        "symbol": null
+      },
+      "slots": [
+        "assessment",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/polarity_goal_panel_drivers.py",
+        "line": 170,
+        "end_line": 170,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q2.7",
+      "kind": "issue",
+      "modules": [
+        "P0"
+      ],
+      "registry_endpoint": "trace_validator",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 29,
+        "end_line": 29,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/protocol_panel_driver.py",
+        "line": 287,
+        "end_line": 345,
+        "symbol": "Q27ProtocolDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 204,
+        "end_line": 204,
+        "symbol": null
+      },
+      "slots": [
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/protocol_panel_driver.py",
+        "line": 293,
+        "end_line": 293,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q3.1",
+      "kind": "issue",
+      "modules": [
+        "M4"
+      ],
+      "registry_endpoint": "prediction_matrix",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 30,
+        "end_line": 30,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 51,
+        "end_line": 94,
+        "symbol": "Q31PredictionDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 206,
+        "end_line": 206,
+        "symbol": null
+      },
+      "slots": [
+        "scenario",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 54,
+        "end_line": 54,
+        "symbol": null
+      },
+      "linked_benchmark_mode": true,
+      "linked_additional_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "Q3.2",
+      "kind": "issue",
+      "modules": [
+        "M4"
+      ],
+      "registry_endpoint": "multiarm_plan",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 30,
+        "end_line": 30,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/prediction_panel_drivers.py",
+        "line": 292,
+        "end_line": 337,
+        "symbol": "Q32JointSeparateDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 206,
+        "end_line": 206,
+        "symbol": null
+      },
+      "slots": [
+        "plan_1",
+        "plan_2",
+        "plan_3",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/prediction_panel_drivers.py",
+        "line": 294,
+        "end_line": 294,
+        "symbol": null
+      },
+      "linked_benchmark_mode": true,
+      "linked_additional_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "additional_required_route": "q32_execution",
+      "note": "Plan-only/linked singleton driver is distinct from the three-execution prospective panel; port both.",
+      "native_admitted": false
+    },
+    {
+      "id": "Q3.3",
+      "kind": "issue",
+      "modules": [
+        "M8"
+      ],
+      "registry_endpoint": "fifo_scheduler",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 30,
+        "end_line": 30,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/scheduler_panel_drivers.py",
+        "line": 215,
+        "end_line": 260,
+        "symbol": "M8SchedulerDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 215,
+        "end_line": 215,
+        "symbol": null
+      },
+      "slots": [
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/scheduler_panel_drivers.py",
+        "line": 218,
+        "end_line": 218,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q3.4",
+      "kind": "issue",
+      "modules": [
+        "M8"
+      ],
+      "registry_endpoint": "merge_barrier",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 30,
+        "end_line": 30,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/scheduler_panel_drivers.py",
+        "line": 215,
+        "end_line": 260,
+        "symbol": "M8SchedulerDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 215,
+        "end_line": 215,
+        "symbol": null
+      },
+      "slots": [
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/scheduler_panel_drivers.py",
+        "line": 218,
+        "end_line": 218,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q3.5",
+      "kind": "issue",
+      "modules": [
+        "M8"
+      ],
+      "registry_endpoint": "lease_recovery",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 30,
+        "end_line": 30,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/scheduler_panel_drivers.py",
+        "line": 215,
+        "end_line": 260,
+        "symbol": "M8SchedulerDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 215,
+        "end_line": 215,
+        "symbol": null
+      },
+      "slots": [
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/scheduler_panel_drivers.py",
+        "line": 218,
+        "end_line": 218,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q4.1",
+      "kind": "issue",
+      "modules": [
+        "M4",
+        "M5"
+      ],
+      "registry_endpoint": "sealed_review",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 31,
+        "end_line": 31,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/q4_panel_drivers.py",
+        "line": 109,
+        "end_line": 160,
+        "symbol": "Q41IndependenceDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 216,
+        "end_line": 216,
+        "symbol": null
+      },
+      "slots": [
+        "initial_1",
+        "initial_2",
+        "initial_3",
+        "initial_4",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/q4_panel_drivers.py",
+        "line": 112,
+        "end_line": 112,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q4.2",
+      "kind": "issue",
+      "modules": [
+        "M5"
+      ],
+      "registry_endpoint": "sealed_review",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 31,
+        "end_line": 31,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/q4_panel_drivers.py",
+        "line": 163,
+        "end_line": 195,
+        "symbol": "Q42RoleDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 216,
+        "end_line": 216,
+        "symbol": null
+      },
+      "slots": [
+        "initial",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/q4_panel_drivers.py",
+        "line": 165,
+        "end_line": 165,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q4.3",
+      "kind": "issue",
+      "modules": [
+        "M5"
+      ],
+      "registry_endpoint": "sealed_review",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 31,
+        "end_line": 31,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 97,
+        "end_line": 170,
+        "symbol": "Q43ReviewDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 216,
+        "end_line": 216,
+        "symbol": null
+      },
+      "slots": [
+        "mechanism_initial",
+        "measurement_initial",
+        "mechanism_revision",
+        "measurement_revision",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 100,
+        "end_line": 101,
+        "symbol": null
+      },
+      "linked_benchmark_mode": true,
+      "linked_additional_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "Q4.4",
+      "kind": "issue",
+      "modules": [
+        "M5"
+      ],
+      "registry_endpoint": "sealed_review",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 31,
+        "end_line": 31,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/q4_panel_drivers.py",
+        "line": 198,
+        "end_line": 226,
+        "symbol": "Q44CounterexampleDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 217,
+        "end_line": 217,
+        "symbol": null
+      },
+      "slots": [
+        "initial",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/q4_panel_drivers.py",
+        "line": 165,
+        "end_line": 165,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q4.5",
+      "kind": "issue",
+      "modules": [
+        "M5"
+      ],
+      "registry_endpoint": "sealed_review",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 31,
+        "end_line": 31,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/q4_panel_drivers.py",
+        "line": 229,
+        "end_line": 280,
+        "symbol": "Q45SelfCorrectionDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 217,
+        "end_line": 217,
+        "symbol": null
+      },
+      "slots": [
+        "initial_1",
+        "initial_2",
+        "revision_1",
+        "revision_2",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/q4_panel_drivers.py",
+        "line": 231,
+        "end_line": 231,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q5.1",
+      "kind": "issue",
+      "modules": [
+        "M7"
+      ],
+      "registry_endpoint": "feasibility_stages",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 32,
+        "end_line": 32,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/feasibility_panel_drivers.py",
+        "line": 420,
+        "end_line": 430,
+        "symbol": "Q51FeasibilityDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 207,
+        "end_line": 207,
+        "symbol": null
+      },
+      "slots": [
+        "subjective",
+        "diagnostic",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/feasibility_panel_drivers.py",
+        "line": 425,
+        "end_line": 425,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q5.2",
+      "kind": "issue",
+      "modules": [
+        "M4",
+        "M7"
+      ],
+      "registry_endpoint": "feasibility_stages",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 32,
+        "end_line": 32,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/feasibility_panel_drivers.py",
+        "line": 434,
+        "end_line": 435,
+        "symbol": "Q52DistinguishabilityDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 207,
+        "end_line": 207,
+        "symbol": null
+      },
+      "slots": [
+        "subjective",
+        "diagnostic",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/feasibility_panel_drivers.py",
+        "line": 425,
+        "end_line": 425,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q5.3",
+      "kind": "issue",
+      "modules": [
+        "M4"
+      ],
+      "registry_endpoint": "prediction_matrix",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 32,
+        "end_line": 32,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/prediction_panel_drivers.py",
+        "line": 341,
+        "end_line": 390,
+        "symbol": "Q53DedupDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 206,
+        "end_line": 206,
+        "symbol": null
+      },
+      "slots": [
+        "dedup",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/prediction_panel_drivers.py",
+        "line": 343,
+        "end_line": 343,
+        "symbol": null
+      },
+      "linked_benchmark_mode": true,
+      "linked_additional_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "Q5.4",
+      "kind": "issue",
+      "modules": [
+        "M4",
+        "M7"
+      ],
+      "registry_endpoint": "exploration_admission",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 32,
+        "end_line": 32,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/q54_causal_driver.py",
+        "line": 126,
+        "end_line": 222,
+        "symbol": "Q54CausalDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 210,
+        "end_line": 210,
+        "symbol": null
+      },
+      "slots": [
+        "ranking",
+        "diagnostic",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/q54_causal_driver.py",
+        "line": 131,
+        "end_line": 131,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q5.5",
+      "kind": "issue",
+      "modules": [
+        "M6",
+        "M7"
+      ],
+      "registry_endpoint": "resource_closure",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 32,
+        "end_line": 32,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/q55_causal_driver.py",
+        "line": 334,
+        "end_line": 439,
+        "symbol": "Q55Driver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 211,
+        "end_line": 211,
+        "symbol": null
+      },
+      "slots": [
+        "diagnostic",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/q55_causal_driver.py",
+        "line": 341,
+        "end_line": 341,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q6.1",
+      "kind": "issue",
+      "modules": [
+        "P0",
+        "M9"
+      ],
+      "registry_endpoint": "custody_boundary",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 33,
+        "end_line": 33,
+        "symbol": null
+      },
+      "family_id": "q6_operations",
+      "slots": [
+        "builder_proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/metaprogram_training.py",
+        "line": 179,
+        "end_line": 188,
+        "symbol": "metaprogram_schemas"
+      },
+      "separate_phase": true,
+      "native_admitted": false
+    },
+    {
+      "id": "Q6.2",
+      "kind": "issue",
+      "modules": [
+        "M9"
+      ],
+      "registry_endpoint": "candidate_builder",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 33,
+        "end_line": 33,
+        "symbol": null
+      },
+      "family_id": "q62",
+      "slots": [
+        "builder_proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/metaprogram_training.py",
+        "line": 179,
+        "end_line": 188,
+        "symbol": "metaprogram_schemas"
+      },
+      "separate_phase": true,
+      "native_admitted": false
+    },
+    {
+      "id": "Q6.3",
+      "kind": "issue",
+      "modules": [
+        "M9"
+      ],
+      "registry_endpoint": "meta_candidate_builder",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 33,
+        "end_line": 33,
+        "symbol": null
+      },
+      "family_id": "q63",
+      "slots": [
+        "builder_proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/metaprogram_training.py",
+        "line": 179,
+        "end_line": 188,
+        "symbol": "metaprogram_schemas"
+      },
+      "separate_phase": true,
+      "note": "Independent metaprogram phase; not covered by C4, pair/triple M9 runs, or Q6.2 despite shared q63 schema names.",
+      "native_admitted": false
+    },
+    {
+      "id": "Q6.4",
+      "kind": "issue",
+      "modules": [
+        "P0"
+      ],
+      "registry_endpoint": "scorer_versioning",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 33,
+        "end_line": 33,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/semantic_panel_drivers.py",
+        "line": 271,
+        "end_line": 309,
+        "symbol": "Q64ScorerRepairDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 205,
+        "end_line": 205,
+        "symbol": null
+      },
+      "slots": [
+        "first_semantic_judgement",
+        "first_alternative_analysis",
+        "second_semantic_judgement",
+        "second_alternative_analysis",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/semantic_panel_drivers.py",
+        "line": 273,
+        "end_line": 274,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q6.5",
+      "kind": "issue",
+      "modules": [
+        "M9"
+      ],
+      "registry_endpoint": "promotion_guard",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 33,
+        "end_line": 33,
+        "symbol": null
+      },
+      "family_id": "q6_operations",
+      "slots": [
+        "builder_proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/metaprogram_training.py",
+        "line": 179,
+        "end_line": 188,
+        "symbol": "metaprogram_schemas"
+      },
+      "separate_phase": true,
+      "rounds_per_variant_arm": 2,
+      "native_admitted": false
+    },
+    {
+      "id": "Q6.6",
+      "kind": "issue",
+      "modules": [
+        "M9"
+      ],
+      "registry_endpoint": "deployment_ack",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 33,
+        "end_line": 33,
+        "symbol": null
+      },
+      "family_id": "q6_operations",
+      "slots": [
+        "builder_proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/metaprogram_training.py",
+        "line": 179,
+        "end_line": 188,
+        "symbol": "metaprogram_schemas"
+      },
+      "separate_phase": true,
+      "native_admitted": false
+    },
+    {
+      "id": "Q7.1",
+      "kind": "issue",
+      "modules": [
+        "M1",
+        "M7"
+      ],
+      "registry_endpoint": "exploration_admission",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 34,
+        "end_line": 34,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_panel_drivers.py",
+        "line": 435,
+        "end_line": 445,
+        "symbol": "Q71ExplorationAdmissionDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 208,
+        "end_line": 208,
+        "symbol": null
+      },
+      "slots": [
+        "prospective",
+        "diagnostic",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_panel_drivers.py",
+        "line": 440,
+        "end_line": 440,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q7.2",
+      "kind": "issue",
+      "modules": [
+        "M7"
+      ],
+      "registry_endpoint": "veto_appeal",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 34,
+        "end_line": 34,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_panel_drivers.py",
+        "line": 449,
+        "end_line": 450,
+        "symbol": "Q72FeasibilityAppealDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 208,
+        "end_line": 208,
+        "symbol": null
+      },
+      "slots": [
+        "prospective",
+        "diagnostic",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_panel_drivers.py",
+        "line": 440,
+        "end_line": 440,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q7.3",
+      "kind": "issue",
+      "modules": [
+        "M7"
+      ],
+      "registry_endpoint": "train_ratio_selection",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 34,
+        "end_line": 34,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_extended_panel_drivers.py",
+        "line": 380,
+        "end_line": 394,
+        "symbol": "ExtendedExplorationDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 209,
+        "end_line": 209,
+        "symbol": null
+      },
+      "slots": [
+        "prospective",
+        "diagnostic",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_extended_panel_drivers.py",
+        "line": 387,
+        "end_line": 388,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q7.4",
+      "kind": "issue",
+      "modules": [
+        "M1",
+        "M7"
+      ],
+      "registry_endpoint": "instrument_repair",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 34,
+        "end_line": 34,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_extended_panel_drivers.py",
+        "line": 380,
+        "end_line": 394,
+        "symbol": "ExtendedExplorationDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 209,
+        "end_line": 209,
+        "symbol": null
+      },
+      "slots": [
+        "prospective",
+        "diagnostic",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_extended_panel_drivers.py",
+        "line": 387,
+        "end_line": 388,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q7.5",
+      "kind": "issue",
+      "modules": [
+        "M1",
+        "M2"
+      ],
+      "registry_endpoint": "state_separation",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 34,
+        "end_line": 34,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_extended_panel_drivers.py",
+        "line": 380,
+        "end_line": 394,
+        "symbol": "ExtendedExplorationDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 209,
+        "end_line": 209,
+        "symbol": null
+      },
+      "slots": [
+        "prospective",
+        "diagnostic",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_extended_panel_drivers.py",
+        "line": 387,
+        "end_line": 388,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q7.6",
+      "kind": "issue",
+      "modules": [
+        "M1",
+        "M5"
+      ],
+      "registry_endpoint": "scientific_review",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 34,
+        "end_line": 34,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_extended_panel_drivers.py",
+        "line": 380,
+        "end_line": 394,
+        "symbol": "ExtendedExplorationDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 209,
+        "end_line": 209,
+        "symbol": null
+      },
+      "slots": [
+        "prospective",
+        "semantic_review",
+        "diagnostic",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_extended_panel_drivers.py",
+        "line": 387,
+        "end_line": 388,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "native_admitted": false
+    },
+    {
+      "id": "Q8.1",
+      "kind": "issue",
+      "modules": [
+        "P0",
+        "M6",
+        "M5"
+      ],
+      "registry_endpoint": "stage_trace",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 35,
+        "end_line": 35,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_stage_panel_drivers.py",
+        "line": 91,
+        "end_line": 238,
+        "symbol": "RetrievalStagePanelDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 213,
+        "end_line": 213,
+        "symbol": null
+      },
+      "slots": [
+        "research",
+        "competition",
+        "distinguish",
+        "review_a",
+        "review_b",
+        "retro_blind",
+        "retro_reveal",
+        "frontier",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_stage_panel_drivers.py",
+        "line": 98,
+        "end_line": 98,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "variant_slots": {
+        "research": [
+          "research",
+          "final"
+        ],
+        "competition": [
+          "competition",
+          "final"
+        ],
+        "distinguish": [
+          "distinguish",
+          "final"
+        ],
+        "adversarial": [
+          "review_a",
+          "review_b",
+          "final"
+        ],
+        "retrospective": [
+          "retro_blind",
+          "retro_reveal",
+          "final"
+        ],
+        "frontier": [
+          "frontier",
+          "final"
+        ]
+      },
+      "native_admitted": false
+    },
+    {
+      "id": "Q8.2",
+      "kind": "issue",
+      "modules": [
+        "M6"
+      ],
+      "registry_endpoint": "three_lane_retrieval",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 35,
+        "end_line": 35,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_panel_drivers.py",
+        "line": 166,
+        "end_line": 204,
+        "symbol": "RetrievalPanelDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 212,
+        "end_line": 212,
+        "symbol": null
+      },
+      "slots": [
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_panel_drivers.py",
+        "line": 170,
+        "end_line": 170,
+        "symbol": null
+      },
+      "linked_benchmark_mode": true,
+      "linked_additional_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "Q8.3",
+      "kind": "issue",
+      "modules": [
+        "M6"
+      ],
+      "registry_endpoint": "three_lane_retrieval",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 35,
+        "end_line": 35,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_panel_drivers.py",
+        "line": 166,
+        "end_line": 204,
+        "symbol": "RetrievalPanelDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 212,
+        "end_line": 212,
+        "symbol": null
+      },
+      "slots": [
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_panel_drivers.py",
+        "line": 170,
+        "end_line": 170,
+        "symbol": null
+      },
+      "linked_benchmark_mode": true,
+      "linked_additional_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "Q8.4",
+      "kind": "issue",
+      "modules": [
+        "M6",
+        "M2"
+      ],
+      "registry_endpoint": "source_root_dedup",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 35,
+        "end_line": 35,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_stage_panel_drivers.py",
+        "line": 91,
+        "end_line": 238,
+        "symbol": "RetrievalStagePanelDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 213,
+        "end_line": 213,
+        "symbol": null
+      },
+      "slots": [
+        "research",
+        "competition",
+        "distinguish",
+        "review_a",
+        "review_b",
+        "retro_blind",
+        "retro_reveal",
+        "frontier",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_stage_panel_drivers.py",
+        "line": 98,
+        "end_line": 98,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "actual_slots": [
+        "final"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "Q8.5",
+      "kind": "issue",
+      "modules": [
+        "M6"
+      ],
+      "registry_endpoint": "retrieval_trigger_policy",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 35,
+        "end_line": 35,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_final_panel_drivers.py",
+        "line": 97,
+        "end_line": 261,
+        "symbol": "RetrievalFinalPanelDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 214,
+        "end_line": 214,
+        "symbol": null
+      },
+      "slots": [
+        "review",
+        "frontier_review_a",
+        "frontier_review_b",
+        "frontier",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_final_panel_drivers.py",
+        "line": 104,
+        "end_line": 104,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "actual_slots": [
+        "final"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "Q8.6",
+      "kind": "issue",
+      "modules": [
+        "M1",
+        "M6"
+      ],
+      "registry_endpoint": "goal_lock",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 35,
+        "end_line": 35,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_final_panel_drivers.py",
+        "line": 97,
+        "end_line": 261,
+        "symbol": "RetrievalFinalPanelDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 214,
+        "end_line": 214,
+        "symbol": null
+      },
+      "slots": [
+        "review",
+        "frontier_review_a",
+        "frontier_review_b",
+        "frontier",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_final_panel_drivers.py",
+        "line": 104,
+        "end_line": 104,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "actual_slots": [
+        "review",
+        "final"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "Q8.7",
+      "kind": "issue",
+      "modules": [
+        "M4",
+        "M5"
+      ],
+      "registry_endpoint": "frontier_audit",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/experiments.py",
+        "line": 35,
+        "end_line": 35,
+        "symbol": null
+      },
+      "family_id": "singleton",
+      "driver": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_final_panel_drivers.py",
+        "line": 97,
+        "end_line": 261,
+        "symbol": "RetrievalFinalPanelDriver"
+      },
+      "driver_registration_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/panel_runner.py",
+        "line": 214,
+        "end_line": 214,
+        "symbol": null
+      },
+      "slots": [
+        "review",
+        "frontier_review_a",
+        "frontier_review_b",
+        "frontier",
+        "final"
+      ],
+      "slot_contract_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_final_panel_drivers.py",
+        "line": 104,
+        "end_line": 104,
+        "symbol": null
+      },
+      "linked_benchmark_mode": false,
+      "actual_slots": [
+        "frontier_review_a",
+        "frontier_review_b",
+        "frontier",
+        "final"
+      ],
+      "native_admitted": false
+    },
+    {
+      "id": "pair:M1+M2",
+      "kind": "pair",
+      "modules": [
+        "M1",
+        "M2"
+      ],
+      "family_id": "admission",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/admission_combination.py",
+        "line": 13,
+        "end_line": 13,
+        "symbol": null
+      },
+      "slots": [
+        "lineage_review",
+        "measurement_review",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M1+M3",
+      "kind": "pair",
+      "modules": [
+        "M1",
+        "M3"
+      ],
+      "family_id": "admission",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/admission_combination.py",
+        "line": 13,
+        "end_line": 13,
+        "symbol": null
+      },
+      "slots": [
+        "lineage_review",
+        "measurement_review",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M1+M5",
+      "kind": "pair",
+      "modules": [
+        "M1",
+        "M5"
+      ],
+      "family_id": "admission",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/admission_combination.py",
+        "line": 13,
+        "end_line": 13,
+        "symbol": null
+      },
+      "slots": [
+        "lineage_review",
+        "measurement_review",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M2+M3",
+      "kind": "pair",
+      "modules": [
+        "M2",
+        "M3"
+      ],
+      "family_id": "lineage",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_combination_driver.py",
+        "line": 26,
+        "end_line": 27,
+        "symbol": null
+      },
+      "slots": [
+        "lineage_review",
+        "measurement_review",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": [
+        "01"
+      ]
+    },
+    {
+      "id": "pair:M2+M5",
+      "kind": "pair",
+      "modules": [
+        "M2",
+        "M5"
+      ],
+      "family_id": "lineage",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_combination_driver.py",
+        "line": 26,
+        "end_line": 27,
+        "symbol": null
+      },
+      "slots": [
+        "lineage_review",
+        "measurement_review",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M3+M5",
+      "kind": "pair",
+      "modules": [
+        "M3",
+        "M5"
+      ],
+      "family_id": "lineage",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_combination_driver.py",
+        "line": 26,
+        "end_line": 27,
+        "symbol": null
+      },
+      "slots": [
+        "lineage_review",
+        "measurement_review",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "triple:M2+M3+M5",
+      "kind": "triple",
+      "modules": [
+        "M2",
+        "M3",
+        "M5"
+      ],
+      "family_id": "lineage",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_combination_driver.py",
+        "line": 26,
+        "end_line": 27,
+        "symbol": null
+      },
+      "slots": [
+        "lineage_review",
+        "measurement_review",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": [
+        "010",
+        "011"
+      ]
+    },
+    {
+      "id": "pair:M1+M4",
+      "kind": "pair",
+      "modules": [
+        "M1",
+        "M4"
+      ],
+      "family_id": "state_prediction",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_prediction_combination_driver.py",
+        "line": 26,
+        "end_line": 26,
+        "symbol": null
+      },
+      "slots": [
+        "m4_plan",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M2+M4",
+      "kind": "pair",
+      "modules": [
+        "M2",
+        "M4"
+      ],
+      "family_id": "state_prediction",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_prediction_combination_driver.py",
+        "line": 26,
+        "end_line": 26,
+        "symbol": null
+      },
+      "slots": [
+        "m4_plan",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M3+M4",
+      "kind": "pair",
+      "modules": [
+        "M3",
+        "M4"
+      ],
+      "family_id": "state_prediction",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_prediction_combination_driver.py",
+        "line": 26,
+        "end_line": 26,
+        "symbol": null
+      },
+      "slots": [
+        "m4_plan",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M1+M6",
+      "kind": "pair",
+      "modules": [
+        "M1",
+        "M6"
+      ],
+      "family_id": "state_retrieval",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_retrieval_combination_driver.py",
+        "line": 32,
+        "end_line": 32,
+        "symbol": null
+      },
+      "slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M2+M6",
+      "kind": "pair",
+      "modules": [
+        "M2",
+        "M6"
+      ],
+      "family_id": "state_retrieval",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_retrieval_combination_driver.py",
+        "line": 32,
+        "end_line": 32,
+        "symbol": null
+      },
+      "slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M3+M6",
+      "kind": "pair",
+      "modules": [
+        "M3",
+        "M6"
+      ],
+      "family_id": "state_retrieval",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_retrieval_combination_driver.py",
+        "line": 32,
+        "end_line": 32,
+        "symbol": null
+      },
+      "slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M1+M7",
+      "kind": "pair",
+      "modules": [
+        "M1",
+        "M7"
+      ],
+      "family_id": "state_exploration",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_exploration_combination_driver.py",
+        "line": 31,
+        "end_line": 31,
+        "symbol": null
+      },
+      "slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M2+M7",
+      "kind": "pair",
+      "modules": [
+        "M2",
+        "M7"
+      ],
+      "family_id": "state_exploration",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_exploration_combination_driver.py",
+        "line": 31,
+        "end_line": 31,
+        "symbol": null
+      },
+      "slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M3+M7",
+      "kind": "pair",
+      "modules": [
+        "M3",
+        "M7"
+      ],
+      "family_id": "state_exploration",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_exploration_combination_driver.py",
+        "line": 31,
+        "end_line": 31,
+        "symbol": null
+      },
+      "slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M1+M8",
+      "kind": "pair",
+      "modules": [
+        "M1",
+        "M8"
+      ],
+      "family_id": "state_scheduling",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_scheduling_combination_driver.py",
+        "line": 32,
+        "end_line": 32,
+        "symbol": null
+      },
+      "slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M2+M8",
+      "kind": "pair",
+      "modules": [
+        "M2",
+        "M8"
+      ],
+      "family_id": "state_scheduling",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_scheduling_combination_driver.py",
+        "line": 32,
+        "end_line": 32,
+        "symbol": null
+      },
+      "slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M3+M8",
+      "kind": "pair",
+      "modules": [
+        "M3",
+        "M8"
+      ],
+      "family_id": "state_scheduling",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_scheduling_combination_driver.py",
+        "line": 32,
+        "end_line": 32,
+        "symbol": null
+      },
+      "slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M4+M6",
+      "kind": "pair",
+      "modules": [
+        "M4",
+        "M6"
+      ],
+      "family_id": "retrieval_review",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_review_combination_driver.py",
+        "line": 22,
+        "end_line": 23,
+        "symbol": null
+      },
+      "slots": [
+        "proposal",
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M5+M6",
+      "kind": "pair",
+      "modules": [
+        "M5",
+        "M6"
+      ],
+      "family_id": "retrieval_review",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_review_combination_driver.py",
+        "line": 22,
+        "end_line": 23,
+        "symbol": null
+      },
+      "slots": [
+        "proposal",
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "triple:M4+M5+M6",
+      "kind": "triple",
+      "modules": [
+        "M4",
+        "M5",
+        "M6"
+      ],
+      "family_id": "retrieval_review",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/retrieval_review_combination_driver.py",
+        "line": 22,
+        "end_line": 23,
+        "symbol": null
+      },
+      "slots": [
+        "proposal",
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M4+M7",
+      "kind": "pair",
+      "modules": [
+        "M4",
+        "M7"
+      ],
+      "family_id": "mechanism_exploration",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_exploration_combination_driver.py",
+        "line": 34,
+        "end_line": 34,
+        "symbol": null
+      },
+      "slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M5+M7",
+      "kind": "pair",
+      "modules": [
+        "M5",
+        "M7"
+      ],
+      "family_id": "mechanism_exploration",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_exploration_combination_driver.py",
+        "line": 34,
+        "end_line": 34,
+        "symbol": null
+      },
+      "slots": [
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M6+M7",
+      "kind": "pair",
+      "modules": [
+        "M6",
+        "M7"
+      ],
+      "family_id": "mechanism_exploration",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_exploration_combination_driver.py",
+        "line": 34,
+        "end_line": 34,
+        "symbol": null
+      },
+      "slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M4+M8",
+      "kind": "pair",
+      "modules": [
+        "M4",
+        "M8"
+      ],
+      "family_id": "mechanism_scheduling",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_scheduling_combination_driver.py",
+        "line": 34,
+        "end_line": 34,
+        "symbol": null
+      },
+      "slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M5+M8",
+      "kind": "pair",
+      "modules": [
+        "M5",
+        "M8"
+      ],
+      "family_id": "mechanism_scheduling",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_scheduling_combination_driver.py",
+        "line": 34,
+        "end_line": 34,
+        "symbol": null
+      },
+      "slots": [
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M6+M8",
+      "kind": "pair",
+      "modules": [
+        "M6",
+        "M8"
+      ],
+      "family_id": "mechanism_scheduling",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_scheduling_combination_driver.py",
+        "line": 34,
+        "end_line": 34,
+        "symbol": null
+      },
+      "slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "triple:M1+M4+M7",
+      "kind": "triple",
+      "modules": [
+        "M1",
+        "M4",
+        "M7"
+      ],
+      "family_id": "admission_prediction_exploration",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/admission_prediction_exploration_driver.py",
+        "line": 28,
+        "end_line": 28,
+        "symbol": null
+      },
+      "slots": [
+        "proposal",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M4+M5",
+      "kind": "pair",
+      "modules": [
+        "M4",
+        "M5"
+      ],
+      "family_id": "m4_m5",
+      "slots": [
+        "m4_plan",
+        "m5_mechanism",
+        "m5_measurement",
+        "analysis_program",
+        "final_answer"
+      ],
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/combination_train_controller.py",
+        "line": 45,
+        "end_line": 45,
+        "symbol": null
+      },
+      "native_admitted": true,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M7+M8",
+      "kind": "pair",
+      "modules": [
+        "M7",
+        "M8"
+      ],
+      "family_id": "exploration_scheduler",
+      "slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/exploration_scheduler_controller.py",
+        "line": 40,
+        "end_line": 40,
+        "symbol": null
+      },
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M1+M9",
+      "kind": "pair",
+      "modules": [
+        "M1",
+        "M9"
+      ],
+      "family_id": "state_improvement",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_improvement_panel.py",
+        "line": 9,
+        "end_line": 9,
+        "symbol": null
+      },
+      "history_slots": [
+        "builder_proposal"
+      ],
+      "target_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M2+M9",
+      "kind": "pair",
+      "modules": [
+        "M2",
+        "M9"
+      ],
+      "family_id": "state_improvement",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_improvement_panel.py",
+        "line": 9,
+        "end_line": 9,
+        "symbol": null
+      },
+      "history_slots": [
+        "builder_proposal"
+      ],
+      "target_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [],
+      "structural_unavailable_arm_ids": [
+        "01"
+      ]
+    },
+    {
+      "id": "pair:M3+M9",
+      "kind": "pair",
+      "modules": [
+        "M3",
+        "M9"
+      ],
+      "family_id": "state_improvement",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/state_improvement_panel.py",
+        "line": 9,
+        "end_line": 9,
+        "symbol": null
+      },
+      "history_slots": [
+        "builder_proposal"
+      ],
+      "target_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M4+M9",
+      "kind": "pair",
+      "modules": [
+        "M4",
+        "M9"
+      ],
+      "family_id": "mechanism_improvement",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_improvement_panel.py",
+        "line": 9,
+        "end_line": 9,
+        "symbol": null
+      },
+      "history_slots": [
+        "builder_proposal"
+      ],
+      "target_slots": [
+        "m4_plan",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M5+M9",
+      "kind": "pair",
+      "modules": [
+        "M5",
+        "M9"
+      ],
+      "family_id": "mechanism_improvement",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_improvement_panel.py",
+        "line": 9,
+        "end_line": 9,
+        "symbol": null
+      },
+      "history_slots": [
+        "builder_proposal"
+      ],
+      "target_slots": [
+        "review_first",
+        "review_second",
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M6+M9",
+      "kind": "pair",
+      "modules": [
+        "M6",
+        "M9"
+      ],
+      "family_id": "mechanism_improvement",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/mechanism_improvement_panel.py",
+        "line": 9,
+        "end_line": 9,
+        "symbol": null
+      },
+      "history_slots": [
+        "builder_proposal"
+      ],
+      "target_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M7+M9",
+      "kind": "pair",
+      "modules": [
+        "M7",
+        "M9"
+      ],
+      "family_id": "execution_improvement",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/execution_improvement_panel.py",
+        "line": 9,
+        "end_line": 9,
+        "symbol": null
+      },
+      "history_slots": [
+        "builder_proposal"
+      ],
+      "target_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "pair:M8+M9",
+      "kind": "pair",
+      "modules": [
+        "M8",
+        "M9"
+      ],
+      "family_id": "execution_improvement",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/execution_improvement_panel.py",
+        "line": 9,
+        "end_line": 9,
+        "symbol": null
+      },
+      "history_slots": [
+        "builder_proposal"
+      ],
+      "target_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "triple:M7+M8+M9",
+      "kind": "triple",
+      "modules": [
+        "M7",
+        "M8",
+        "M9"
+      ],
+      "family_id": "execution_improvement",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/execution_improvement_panel.py",
+        "line": 9,
+        "end_line": 9,
+        "symbol": null
+      },
+      "history_slots": [
+        "builder_proposal"
+      ],
+      "target_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "triple:M3+M6+M9",
+      "kind": "triple",
+      "modules": [
+        "M3",
+        "M6",
+        "M9"
+      ],
+      "family_id": "lineage_retrieval_improvement",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/lineage_retrieval_improvement_panel.py",
+        "line": 9,
+        "end_line": 9,
+        "symbol": null
+      },
+      "history_slots": [
+        "builder_proposal"
+      ],
+      "target_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "native_admitted": false,
+      "fixed_background": [
+        "M2"
+      ],
+      "structural_unavailable_arm_ids": []
+    },
+    {
+      "id": "C4",
+      "kind": "full_loo",
+      "modules": [
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5",
+        "M6",
+        "M7",
+        "M8",
+        "M9"
+      ],
+      "family_id": "c4",
+      "registry_id": "full-loo",
+      "execution_obligation_id": "c4-full-loo-joint-v1",
+      "registry_ref": {
+        "source": "integration",
+        "path": "research_loop/modular/combination_panels.py",
+        "line": 277,
+        "end_line": 299,
+        "symbol": null
+      },
+      "target_slots": [
+        "m4_plan",
+        "review_first",
+        "review_second",
+        "bounded_choice",
+        "analysis_program",
+        "final_answer"
+      ],
+      "B0_target_slots": [
+        "analysis_program",
+        "final_answer"
+      ],
+      "structural_unavailable": [
+        "without-M2"
+      ],
+      "note": "M8 target-only; M9 history-only; composition does not cover separate Q6.3 phase.",
+      "native_admitted": false,
+      "history_prefix_slots": [
+        "m4_plan",
+        "review_first",
+        "review_second",
+        "bounded_choice"
+      ],
+      "history_terminal_slot_by_M9": {
+        "on": "builder_proposal",
+        "off": "ordinary_revision"
+      },
+      "slot_contract_ref": {
+        "source": "full-loo",
+        "path": "research_loop/modular/full_loo_modules.py",
+        "line": 24,
+        "end_line": 27,
+        "symbol": "slots"
+      }
+    }
+  ],
+  "separate_phases": [
+    {
+      "obligation_id": "Q6.3",
+      "family_id": "q63",
+      "counts_as_additional_obligation": false
+    }
+  ],
+  "actionable_gaps": [
+    {
+      "id": "G1",
+      "severity": "routing",
+      "detail": "Only pair:M4+M5 v4 admits Grok. All 89 other unique obligations and the extra Q3.2 execution route require versioned provider admission/ledger integration. A callable ModelPort protocol is not controller admission.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/combination_train_controller.py",
+          "line": 229,
+          "end_line": 265,
+          "symbol": "_service_preflight"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/train_controller.py",
+          "line": 204,
+          "end_line": 204,
+          "symbol": null
+        }
+      ]
+    },
+    {
+      "id": "G2",
+      "severity": "coverage",
+      "detail": "Q6.1/Q6.2/Q6.3/Q6.5/Q6.6 are absent from the 43-entry singleton DRIVERS; they have separate actual phase entries. Never report train_controller as all48 execution coverage.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/panel_runner.py",
+          "line": 200,
+          "end_line": 217,
+          "symbol": null
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/train_operations.py",
+          "line": 25,
+          "end_line": 27,
+          "symbol": null
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/improvement_training.py",
+          "line": 32,
+          "end_line": 36,
+          "symbol": "run_candidate_training"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/metaprogram_training.py",
+          "line": 480,
+          "end_line": 518,
+          "symbol": "run_metaprogram_training"
+        }
+      ]
+    },
+    {
+      "id": "G3",
+      "severity": "separate_seam",
+      "detail": "Q3.2 singleton Q32JointSeparateDriver is a planning route; the prospective execution route owns four calls and three measurements per cell with independent 180s Codex ports. Port both routes, without double-counting the Q ID.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/prediction_panel_drivers.py",
+          "line": 292,
+          "end_line": 337,
+          "symbol": "Q32JointSeparateDriver"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/q32_execution.py",
+          "line": 263,
+          "end_line": 290,
+          "symbol": "_run_q32_compiled"
+        }
+      ]
+    },
+    {
+      "id": "G4",
+      "severity": "misleading_shared_names",
+      "detail": "Q6.2 intentionally reuses q63 plan/receipt types but is a separate experiment. M9 pair/triple builders and C4 are not Q6.3 metaprogram coverage.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/improvement_training.py",
+          "line": 14,
+          "end_line": 29,
+          "symbol": "freeze_candidate_training"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/metaprogram_training.py",
+          "line": 260,
+          "end_line": 300,
+          "symbol": "FrozenMetaTrainingPlan"
+        },
+        {
+          "source": "full-loo",
+          "path": "research_loop/modular/full_loo_controller.py",
+          "line": 250,
+          "end_line": 390,
+          "symbol": "run_full_loo_train"
+        }
+      ]
+    },
+    {
+      "id": "G5",
+      "severity": "misleading_family_text",
+      "detail": "Execution-improvement and lineage-retrieval-improvement inherit error messages saying state improvement; their exact DESIGNS are two pairs plus M7/M8/M9 triple, and M3/M6/M9 triple respectively. Dead pair:M1+M9 conditionals in mechanism/state-derived families do not expand their DESIGNS.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/execution_improvement_panel.py",
+          "line": 9,
+          "end_line": 24,
+          "symbol": null
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/lineage_retrieval_improvement_panel.py",
+          "line": 9,
+          "end_line": 24,
+          "symbol": null
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/mechanism_improvement_combination_controller.py",
+          "line": 417,
+          "end_line": 435,
+          "symbol": null
+        }
+      ]
+    },
+    {
+      "id": "G6",
+      "severity": "generic_scaffold_not_composition",
+      "detail": "Generic run_combination_cell and generic full-loo design registration are not the actual C4 nine-module runtime. C4 uses explicit FullLooPanel and its own closed scorer obligation.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/combination_panels.py",
+          "line": 330,
+          "end_line": 373,
+          "symbol": "run_combination_cell"
+        },
+        {
+          "source": "full-loo",
+          "path": "research_loop/modular/full_loo_panel.py",
+          "line": 20,
+          "end_line": 79,
+          "symbol": "FullLooPanel"
+        },
+        {
+          "source": "full-loo",
+          "path": "research_loop/modular/full_loo_controller.py",
+          "line": 250,
+          "end_line": 390,
+          "symbol": "run_full_loo_train"
+        }
+      ]
+    },
+    {
+      "id": "G7",
+      "severity": "native_phase_cost_boundary",
+      "detail": "FrozenProviderLedger can copy a dict but bind_events/phase _safe_call require Codex field names and reviewed context. A broad type-gate change would leave replay/accounting invalid.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/state_improvement_build.py",
+          "line": 141,
+          "end_line": 171,
+          "symbol": "FrozenProviderLedger"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/metaprogram_training.py",
+          "line": 338,
+          "end_line": 339,
+          "symbol": "_safe_call"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/metaprogram_training.py",
+          "line": 685,
+          "end_line": 698,
+          "symbol": null
+        }
+      ]
+    },
+    {
+      "id": "G8",
+      "severity": "q32_preflight_difference",
+      "detail": "Q3.2 dedicated controller checks type, counts, token threshold, model/effort, timeout and empty calls, but not schema equality or the reviewed-policy helper. The Codex port still applies protected-call context checks and restricts mock context to explicit non-subprocess fixtures. Freeze this distinct policy boundary in its native adapter rather than claiming parity with singleton preflight.",
+      "refs": [
+        {
+          "source": "integration",
+          "path": "research_loop/modular/q32_execution.py",
+          "line": 263,
+          "end_line": 290,
+          "symbol": "_run_q32_compiled"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/model_port.py",
+          "line": 429,
+          "end_line": 518,
+          "symbol": "CodexModelPort.__init__"
+        },
+        {
+          "source": "integration",
+          "path": "research_loop/modular/model_port.py",
+          "line": 530,
+          "end_line": 612,
+          "symbol": "CodexModelPort._invoke_protected"
+        }
+      ]
+    }
+  ],
+  "source_files": {
+    "full-loo/research_loop/modular/full_loo_controller.py": {
+      "scope": "full-loo",
+      "commit": "47d020097629a7d6915676fe26917fcfc59ddc54",
+      "path": "research_loop/modular/full_loo_controller.py",
+      "git_blob": "1dd3e97cb4752a315468babc5967ecb2132bf621",
+      "sha256": "8ab2ea5992c2b2ca7b8ad13ab5796e79dcec7b64eb4bc2c136b4c4218ce6efb1"
+    },
+    "full-loo/research_loop/modular/full_loo_driver.py": {
+      "scope": "full-loo",
+      "commit": "47d020097629a7d6915676fe26917fcfc59ddc54",
+      "path": "research_loop/modular/full_loo_driver.py",
+      "git_blob": "3a1b0767f25aa745dcbb1befe354f94f2caa41fe",
+      "sha256": "09c0e7add2b3cc09b7ff803f1b07d7011f9c40652c1df0164ccf3f046dd4ddb6"
+    },
+    "full-loo/research_loop/modular/full_loo_modules.py": {
+      "scope": "full-loo",
+      "commit": "47d020097629a7d6915676fe26917fcfc59ddc54",
+      "path": "research_loop/modular/full_loo_modules.py",
+      "git_blob": "4972b14915fe9026a38e54751260f78aede134b2",
+      "sha256": "030de34cb22f05aefc3e974015c204b60cfc01e30ff30e23a8f1d56c5284dfe6"
+    },
+    "full-loo/research_loop/modular/full_loo_panel.py": {
+      "scope": "full-loo",
+      "commit": "47d020097629a7d6915676fe26917fcfc59ddc54",
+      "path": "research_loop/modular/full_loo_panel.py",
+      "git_blob": "f467d8756466bf37c4f9c75e92c572ea46e01f2c",
+      "sha256": "b0aa82fa149b342e64b82565b0932ed8406a176f1c440c72c408c46206edcb1d"
+    },
+    "integration/research_loop/modular/admission_combination.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/admission_combination.py",
+      "git_blob": "2cc1677c45e2cdba85db60978dc28d8374f39c16",
+      "sha256": "03b6c441c394667e26d7596593012b27376f5a796f4f423ef473d172f102ccea"
+    },
+    "integration/research_loop/modular/admission_combination_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/admission_combination_controller.py",
+      "git_blob": "945c1a1e916ca850f5f06dffd744c3b9cf6ab9ec",
+      "sha256": "2eecaae5e9483b972d547bde78e1f5c28383090c5748d0f78d3fd194bd9481f4"
+    },
+    "integration/research_loop/modular/admission_prediction_exploration_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/admission_prediction_exploration_controller.py",
+      "git_blob": "9ed4ab72c9f729551e196b4f298cc6f42ac75e7e",
+      "sha256": "cec0774d6290e33b729f7dd7f1292441b40d6a5d9c22982655fedd42e4f10a96"
+    },
+    "integration/research_loop/modular/admission_prediction_exploration_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/admission_prediction_exploration_driver.py",
+      "git_blob": "c77e42bdc6c38529feaaa58d151ce9a8eb450901",
+      "sha256": "b25f03d2ed1d7351a8f155b1e75804b37f76d380a53cea3688bb8ba7c815f1de"
+    },
+    "integration/research_loop/modular/audit_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/audit_panel_drivers.py",
+      "git_blob": "7d8bd1af5c91aed6ab774e824af22b885acfb08b",
+      "sha256": "72c568b84ce6bcbb6819aa6c8f6943f757bae55cccd4a009fba416e148e558b9"
+    },
+    "integration/research_loop/modular/combination_benchmark_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/combination_benchmark_driver.py",
+      "git_blob": "6a306f5bd5cb5913c52829bd68ddf17f61f7acbe",
+      "sha256": "5f167d27b45e5113b369e624b4a4645c0f454ddffce2b1787afeabce574fde48"
+    },
+    "integration/research_loop/modular/combination_panels.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/combination_panels.py",
+      "git_blob": "3f61a03f633b6e3b7ee9dc41060f86042da28774",
+      "sha256": "a852b4f1c7875b6e9524dbb9f52d06b9ea15056b8eb956bb01655f06cb310945"
+    },
+    "integration/research_loop/modular/combination_train_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/combination_train_controller.py",
+      "git_blob": "6a8cce239975d1638d4e1ef68355e492d50dce84",
+      "sha256": "83497c4027338c6ad9830139c22314c22d78f61b8b8b1df65d04014a2c930025"
+    },
+    "integration/research_loop/modular/combination_train_source.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/combination_train_source.py",
+      "git_blob": "2bf76f7a75aadc8cf04df85e5c4ec70379e5c780",
+      "sha256": "b5124a188e0ee4d0842394b68d7d909a624736fbee08895590e15a816d4f1300"
+    },
+    "integration/research_loop/modular/execution_improvement_combination_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/execution_improvement_combination_controller.py",
+      "git_blob": "e8d2d2e0106089332522d30e119522c4132b89d5",
+      "sha256": "311f0d7b657dc961c1baecca91d2ac9aba802804b2cc1c72028422bf2a64b906"
+    },
+    "integration/research_loop/modular/execution_improvement_combination_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/execution_improvement_combination_driver.py",
+      "git_blob": "7c07ccc2e657ebb5bcfbd7f4bd542adefcabd122",
+      "sha256": "3e642221cdee820e339ef4fac2d6421e1a8bd579ffc185c52e3b92b5c11b6fa0"
+    },
+    "integration/research_loop/modular/execution_improvement_panel.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/execution_improvement_panel.py",
+      "git_blob": "0ec4906bb9cbaf96ee7cc99daa8c2c3fd5f8e75b",
+      "sha256": "ff32c953df7106d2aeb85ea6c832c84949e56e30399e57fcede76422473fba9c"
+    },
+    "integration/research_loop/modular/experiments.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/experiments.py",
+      "git_blob": "e2fb075507587db67c92b1bb4eacb47f56371308",
+      "sha256": "a96b6217ee6d2d4ef2426cd4ab3609f0cc080a903a28e43ea938466dbca67924"
+    },
+    "integration/research_loop/modular/exploration_extended_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/exploration_extended_panel_drivers.py",
+      "git_blob": "417732f83f1dcacc20379f2d532f0a56d3d35389",
+      "sha256": "8b273cbb88e2e8bff0472ea3d83359b935e0e0544f4d31d5a673508ad6b8ffe3"
+    },
+    "integration/research_loop/modular/exploration_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/exploration_panel_drivers.py",
+      "git_blob": "c0089ccc2de8565d7e761c0cd2f65fc868285fa8",
+      "sha256": "fd7b12c36e9e4de5a2688f798e159e3c1437c190ceb459867f9a109245546147"
+    },
+    "integration/research_loop/modular/exploration_scheduler_combination.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/exploration_scheduler_combination.py",
+      "git_blob": "b94ddfcbd410ff13e13d0878129ada86607ff5b5",
+      "sha256": "22e73d28b056468f6f94b24ce62c3b1a7621f6b0c3d633dc5366201b105b3d94"
+    },
+    "integration/research_loop/modular/exploration_scheduler_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/exploration_scheduler_controller.py",
+      "git_blob": "c95a82f46ccb360bb97e2dbfb42f41db7912528a",
+      "sha256": "a82fa6d19a74a9ac4136b795b1a0551273452703a7cb6b7414373ef445850c4f"
+    },
+    "integration/research_loop/modular/feasibility_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/feasibility_panel_drivers.py",
+      "git_blob": "e67c08eb45f133b6131fded94a142b23e0621a3e",
+      "sha256": "cfc79740fb95a430fcf463f078e637d7cb527355bb4ac6dc46480730952b7508"
+    },
+    "integration/research_loop/modular/grok_train_solver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/grok_train_solver.py",
+      "git_blob": "7d03793743c8f78464b898e5a54c6a147e9f6f87",
+      "sha256": "262281de5f1fc24e3fec97d1eb5f908ba7ddc6ecae3535e95430ead2e7431074"
+    },
+    "integration/research_loop/modular/history_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/history_panel_drivers.py",
+      "git_blob": "21b3145e667fa226dce97cd41afa3cdba011b082",
+      "sha256": "51aef76541a7b704d2c334197165803f38c79127abaaa964dae1f67afd86136f"
+    },
+    "integration/research_loop/modular/improvement_training.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/improvement_training.py",
+      "git_blob": "11250b7fa0aad07057fe2d4a3d4f3e2f42894a69",
+      "sha256": "bb4927177b49440fd40b4fecab0fda1a292d623d0ce2c813a88042708b55afd1"
+    },
+    "integration/research_loop/modular/lineage_combination_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/lineage_combination_controller.py",
+      "git_blob": "3108fb9b37ddd89f272a7fba563744af8b609df7",
+      "sha256": "0d97696587ad1c581c20d8cd28e9da9c9aed3024b9a14a26ebd926b3d22d7965"
+    },
+    "integration/research_loop/modular/lineage_combination_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/lineage_combination_driver.py",
+      "git_blob": "fe6187bc2cf53f3748e159a5b2d7767f89450366",
+      "sha256": "ed05df8fb3f6ba17c2a841b74edfebb8377d72485d0de9a76981294658f998b7"
+    },
+    "integration/research_loop/modular/lineage_retrieval_improvement_combination_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/lineage_retrieval_improvement_combination_controller.py",
+      "git_blob": "0ce069b78b22a22663713aa15a250bf39ad59cd3",
+      "sha256": "baee8c1c3952b13981563394ba081325b1ad7e0ac4cfa149e4bfd68bcf620d6e"
+    },
+    "integration/research_loop/modular/lineage_retrieval_improvement_combination_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/lineage_retrieval_improvement_combination_driver.py",
+      "git_blob": "6bc09d6924c6192aaf0fedbe01d07087acb5fdbe",
+      "sha256": "c6f3a07629d23469e279a2a208f6e1804120adf43ab8d89b277fdcd260c6d618"
+    },
+    "integration/research_loop/modular/lineage_retrieval_improvement_panel.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/lineage_retrieval_improvement_panel.py",
+      "git_blob": "6316dd32891dacbe08dfd0cd9d8fa4b459c414c1",
+      "sha256": "2de06f82a324896e4ef49cf653f9a8b2a467253b5debe3151ae3ab0b0d093dde"
+    },
+    "integration/research_loop/modular/mechanism_exploration_combination_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/mechanism_exploration_combination_controller.py",
+      "git_blob": "485c53b95dd8f90220257a1eaffaa01684ea40b5",
+      "sha256": "bb9464396d60a89309bb8a9dba5b88e7ae00d92f775e4820a5db226572dd5467"
+    },
+    "integration/research_loop/modular/mechanism_exploration_combination_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/mechanism_exploration_combination_driver.py",
+      "git_blob": "052728a681d31d8706e41d63608fdc29278af90b",
+      "sha256": "ae76ded72106af944118e6edcee0db6e8179c29cf18b01e9dce39ae0aea86dce"
+    },
+    "integration/research_loop/modular/mechanism_improvement_combination_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/mechanism_improvement_combination_controller.py",
+      "git_blob": "08d08587f30db008c02ba462ad71018dc361cad3",
+      "sha256": "39b82ab61411294c5bc43f03ea00063ee49eea11b20d47f636913f37fb9a9b89"
+    },
+    "integration/research_loop/modular/mechanism_improvement_combination_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/mechanism_improvement_combination_driver.py",
+      "git_blob": "4f0970f9dfcc1ffba9d67082447f0596ac37bf0d",
+      "sha256": "0f4416dddda2b0735e4c96eb743badadff84bef909a17493f23c60c2096c3899"
+    },
+    "integration/research_loop/modular/mechanism_improvement_panel.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/mechanism_improvement_panel.py",
+      "git_blob": "61f4c96fc0a5c68175016f1fc3d9acabd5b4c748",
+      "sha256": "b083e7ac9d7ba9a660b4b35cd729c340c88dfe2d80fc61b17c20ef0da736731f"
+    },
+    "integration/research_loop/modular/mechanism_scheduling_combination_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/mechanism_scheduling_combination_controller.py",
+      "git_blob": "714acf5dc9cd121cd8a463f719de9a791954e5f5",
+      "sha256": "9aa6d767d8bea012b83833e9c002dabd5edbccad7f6b76fb8fbcf820e31738ee"
+    },
+    "integration/research_loop/modular/mechanism_scheduling_combination_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/mechanism_scheduling_combination_driver.py",
+      "git_blob": "747e8d52affb7969a1997d85e373056187e7b5bd",
+      "sha256": "f3d6f1868760054535de6e9172c74b591e3c9678a701a50b01f36221631f53f6"
+    },
+    "integration/research_loop/modular/metaprogram_training.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/metaprogram_training.py",
+      "git_blob": "96f0e9343acd266ed75147508e799d10582bf002",
+      "sha256": "a850bc91f00533338e2240921817befaac2e5472ec22563d80e1cff886a536de"
+    },
+    "integration/research_loop/modular/model_port.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/model_port.py",
+      "git_blob": "30411d50c5e1f12d8f8bacda91bf350f6746c22a",
+      "sha256": "982e6df8dd3490bf3424407a45354567261287a83ea81eef7f3e76d45e899ba8"
+    },
+    "integration/research_loop/modular/panel_receipts.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/panel_receipts.py",
+      "git_blob": "0eb1590c65367582e08a4a69fb49dd08186537be",
+      "sha256": "c37d01329ea2fd0f3394797c4631157cafafe78aa4856ca7c2c6dc5bcd32f028"
+    },
+    "integration/research_loop/modular/panel_runner.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/panel_runner.py",
+      "git_blob": "e642eef94633af20710544db4f28c4a031cb5d00",
+      "sha256": "1e4d2462df3a09a861e7ff278399d9e061d3ce5ed19f44928a5d435480dab2c4"
+    },
+    "integration/research_loop/modular/polarity_goal_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/polarity_goal_panel_drivers.py",
+      "git_blob": "9e549e7f955d3988e76d706c046dfa884c77abf4",
+      "sha256": "5e74b42929c6d15a9864dbdd29196c3dffbe5fac277887d4802249e7f6c163d9"
+    },
+    "integration/research_loop/modular/prediction_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/prediction_panel_drivers.py",
+      "git_blob": "cbc8d7d63c85be0ac31adfacb24484a6458170ba",
+      "sha256": "76aac2e6ba66be3b2bc2b73e2f23736dabecf2c1518f28f4963fcf8ebbf3a8af"
+    },
+    "integration/research_loop/modular/pressure_panel_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/pressure_panel_driver.py",
+      "git_blob": "caa759d368566732b9e8866d7f91b020b41b748d",
+      "sha256": "02a584e9e2a075a477af5d0bc65024a9ffa14991816f996dea0efaaa3d69e99a"
+    },
+    "integration/research_loop/modular/protocol_panel_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/protocol_panel_driver.py",
+      "git_blob": "0d4523ee75ee9beedbabaddd216b5135208f2376",
+      "sha256": "6751d385754cfe8d16691357600880f9d7c600bf1f00eb8c1968ca2dc0ec142b"
+    },
+    "integration/research_loop/modular/q15_panel_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/q15_panel_driver.py",
+      "git_blob": "9b5704e29dc6b285ed66b5428cb596cc53cf822a",
+      "sha256": "62437a59a9b860d3fc06932e4bb53e22ed5577c3cbe28c7db9b3c2973d5bbd6a"
+    },
+    "integration/research_loop/modular/q32_execution.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/q32_execution.py",
+      "git_blob": "0e02b9540cd5fa0b6d51505f40674125f2e688c9",
+      "sha256": "339fad40ddedad2c1d7abc77c693d1f4661b430eeea52a37dd990b0a92571ee6"
+    },
+    "integration/research_loop/modular/q4_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/q4_panel_drivers.py",
+      "git_blob": "715996c17cdc0204ad808309bb503829b30a666a",
+      "sha256": "fec352a14c2487fe62d288eb7635519509cb12481382dc74a57dc003cc301b72"
+    },
+    "integration/research_loop/modular/q54_causal_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/q54_causal_driver.py",
+      "git_blob": "493b53c797070267f82c0cdd27944fb1b51aa328",
+      "sha256": "d8d7147c0b7993d2b7289a6648c504144c91f1754fae299b02b0858c3f8a0c10"
+    },
+    "integration/research_loop/modular/q55_causal_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/q55_causal_driver.py",
+      "git_blob": "33df3ac13395c2872661a906d14d28e828da8d8c",
+      "sha256": "a29751f56390675ee6c6b076033a955a88b23f27cad84ebf315e5976bc7c842a"
+    },
+    "integration/research_loop/modular/retrieval_final_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/retrieval_final_panel_drivers.py",
+      "git_blob": "4e8972615ff3e9e89ff62291041b1acb76b93fdf",
+      "sha256": "aa650bec9dc92c66fcd8489e48dca39f5646b722692a4e0264f7a69c545087dd"
+    },
+    "integration/research_loop/modular/retrieval_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/retrieval_panel_drivers.py",
+      "git_blob": "25596d68e84a5ff1661e06b7f866bd681f17496f",
+      "sha256": "8da9ad687eff8b662250cf93aad573f319d291971cf7c189115548e7537ecc2c"
+    },
+    "integration/research_loop/modular/retrieval_review_combination_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/retrieval_review_combination_controller.py",
+      "git_blob": "6a42a44b131829add313217deaac04174841a8a6",
+      "sha256": "e093a5761c65ebadff567b4cded81ff817b3afcff2cfeb2d019cd609669ba1bb"
+    },
+    "integration/research_loop/modular/retrieval_review_combination_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/retrieval_review_combination_driver.py",
+      "git_blob": "cd7118449c49f300d783eb3c870b7fa8b67210cb",
+      "sha256": "305ab46cf51ca421db5d4c0584c81cce6936ae715b1e731586153661b30d34a2"
+    },
+    "integration/research_loop/modular/retrieval_stage_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/retrieval_stage_panel_drivers.py",
+      "git_blob": "8193e7a4ee74409692c691a26002303b13840c94",
+      "sha256": "1148b635c7e9ef2f3df3d941e79e64b393a14a279f8b12fbd000c327a4842466"
+    },
+    "integration/research_loop/modular/scheduler_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/scheduler_panel_drivers.py",
+      "git_blob": "6c90f6ad34f25f1326d6276dc8897c82c69cc7b0",
+      "sha256": "43bcf0a814affce7cd924846d207273d3ab00ad2fd5e03d4e54a8cb7bd96dc01"
+    },
+    "integration/research_loop/modular/semantic_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/semantic_panel_drivers.py",
+      "git_blob": "85ae72fcafe852480f0e320d06875a18a6f3a349",
+      "sha256": "f9df313e1b7397f24b9574358bceb59afd5730827e67662c84e2260abc18c70f"
+    },
+    "integration/research_loop/modular/state_exploration_combination_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/state_exploration_combination_controller.py",
+      "git_blob": "9349a054fccd49ec16bfd1d24a4b8b4669ca63fb",
+      "sha256": "725c269474f486f3e7eb8f3618d2ebd91d78bbee014ed3ed7a518ae4a40c6771"
+    },
+    "integration/research_loop/modular/state_exploration_combination_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/state_exploration_combination_driver.py",
+      "git_blob": "2ca06f6359025d04aab75bc39e79d5f9ecf2db99",
+      "sha256": "44b2095ecd4ccdbc9df5c56ac9294b349258216b640135c49f2adc102008f104"
+    },
+    "integration/research_loop/modular/state_improvement_build.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/state_improvement_build.py",
+      "git_blob": "f37a7ddf7ac73a2b361764e3c9d6a2c11ecf2560",
+      "sha256": "5425d65ae36c34ee11c562ab793eeac2d9d9350f102a38525bf5f84aaddd93f8"
+    },
+    "integration/research_loop/modular/state_improvement_combination_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/state_improvement_combination_controller.py",
+      "git_blob": "0fadf1d5c7b89674b73d8e02beed4a1b6d2d925f",
+      "sha256": "857cf89c043753f15e2c365c7ae357f1d78b1d051d83426b28e1d20c1fd76d1c"
+    },
+    "integration/research_loop/modular/state_improvement_combination_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/state_improvement_combination_driver.py",
+      "git_blob": "addd9dc018b5acd94d4d1464b1da65ed8f1a66ee",
+      "sha256": "fc1ca1dde8d37c153501475916d4c32971d9d6490b46aa8f4f918ff724b5143b"
+    },
+    "integration/research_loop/modular/state_improvement_panel.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/state_improvement_panel.py",
+      "git_blob": "9317d047594d009e1d60fa446de8fb0bf4e8a4bd",
+      "sha256": "b322956141dc1b82a9915fdaebc4ce2b48e679d0d972d8d9aa74ae76171b15a4"
+    },
+    "integration/research_loop/modular/state_prediction_combination_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/state_prediction_combination_controller.py",
+      "git_blob": "723096494f597a18e07cee30ea45a54e57a55f59",
+      "sha256": "56da63f4b26844d0db0af684f14f94422aaea2b2efcefe0c81886256975850f4"
+    },
+    "integration/research_loop/modular/state_prediction_combination_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/state_prediction_combination_driver.py",
+      "git_blob": "6305a725163eaeff1a853faffd551c20f0cbbbf3",
+      "sha256": "7e85e83db869d6c82ef88bf50c5ea3a540210d915634637458543fbfaab656b6"
+    },
+    "integration/research_loop/modular/state_retrieval_combination_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/state_retrieval_combination_controller.py",
+      "git_blob": "2fea8d023371e63ae36eab4315a4ce3def8a3cc8",
+      "sha256": "addb1052bafa8a246164f54d860394d1e9eee93f10775ec8aca4fdcfdf2d41cf"
+    },
+    "integration/research_loop/modular/state_retrieval_combination_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/state_retrieval_combination_driver.py",
+      "git_blob": "59a3ad2fcf9c7b521a39979679b0228735a4546a",
+      "sha256": "d23914543eec8df98b1fdf0fa1db5f42a28c384c9e7ab5b929dee1a2e4459648"
+    },
+    "integration/research_loop/modular/state_scheduling_combination_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/state_scheduling_combination_controller.py",
+      "git_blob": "f8486bfae737eab3e5e682e77ab455f8c4cdcf8e",
+      "sha256": "233b2d6b8bbf28b503cbfbbdcd6d37a11f86e8d8843e63b39b91e5905665f2ba"
+    },
+    "integration/research_loop/modular/state_scheduling_combination_driver.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/state_scheduling_combination_driver.py",
+      "git_blob": "119b19d0cda960613c26dc87179112672efbfab7",
+      "sha256": "4c52d91986609814fcc4846d7370a0542593a0c1a21f8a73c8a229bbdd968ffc"
+    },
+    "integration/research_loop/modular/support_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/support_panel_drivers.py",
+      "git_blob": "064ba5d960e73cdad087bbefe2d81f308768cae4",
+      "sha256": "2f5dc45d3860b6180bf52d2cf85a4fd86054a87fcc4f22084c1c3ac865c82c8f"
+    },
+    "integration/research_loop/modular/train_controller.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/train_controller.py",
+      "git_blob": "1e03f99ca69bae7ee27eab1e3dd38edceb3f56d4",
+      "sha256": "0e4753de0dc5f97ff0cd496f34ad2a26dc8952717e055630e14a1d49612b534a"
+    },
+    "integration/research_loop/modular/train_operations.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/train_operations.py",
+      "git_blob": "62349075d6f5c736d4afcbc65fe5c2c53fad1247",
+      "sha256": "503cd6c97e51f5c6ef0a6fc42c41b47cee5998dc3df7a9cc4904f92c7aa15a2e"
+    },
+    "integration/research_loop/modular/withdrawal_panel_drivers.py": {
+      "scope": "integration",
+      "commit": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+      "path": "research_loop/modular/withdrawal_panel_drivers.py",
+      "git_blob": "f3934dfb511f55cb0b5640c6bbf7ddd0d2b77ff3",
+      "sha256": "6267b22874b745177aa9e64779b87c181a6c87c01d12dca74747e7cbd6c28066"
+    }
+  },
+  "limits": [
+    "Static route existence is not exercised native coverage, P0 qualification or science.",
+    "No tests, model/API calls, private/reference material or validation access.",
+    "Preserve legacy schemas and source/scorer contracts; names of required adapter families are assignment labels, not newly admitted versions.",
+    "C5 selection and validation lifecycle remain outside this inventory."
+  ]
+}

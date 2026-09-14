@@ -1,0 +1,6 @@
+{
+  "observed_head": "66d5b2a0550e2aa4ec2f1ad916181999b954afba",
+  "reason": "Stale sequencer after last patch 24490df was committed as cd2a4e0; archive bytes subsequently verified at e1fa60c. Quit preserves all commits and working tree.",
+  "todo": "pick 24490df Preserve archive evidence bytes across Git checkouts\n",
+  "sequencer_head": "637cea1b588f06f03301308f2a16aeb566c538ed\n"
+}

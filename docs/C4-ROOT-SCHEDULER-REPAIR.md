@@ -41,7 +41,7 @@ time, which cannot uniquely identify concurrent identical jobs.
 
 Container names now include a fresh per-invocation UUID nonce while retaining
 the existing digest format and subject bindings in the execution receipt. A
-32-worker regression fixes the clock and checks distinct names and exact cleanup
+32-invocation regression fixes the clock and checks distinct names and exact cleanup
 ownership. The real concurrent timeout case also fixes the clock and requires
 both jobs to time out and clean up individually. The original collision remains
 archived; existing one-second Docker timeouts and resource limits are unchanged.

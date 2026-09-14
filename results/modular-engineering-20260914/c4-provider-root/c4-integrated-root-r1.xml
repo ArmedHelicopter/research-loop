@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="21" time="1205.817" timestamp="2026-09-14T08:12:27.156269+08:00" hostname="SC-202507131830"><testcase classname="tests.test_full_loo_composition" name="test_c4_freezes_full_loo_controls_boundaries_and_actual_recipe_budget" time="0.004" /><testcase classname="tests.test_full_loo_composition" name="test_c4_rejects_mutation_and_module_smuggling" time="0.009" /><testcase classname="tests.test_full_loo_composition" name="test_v2_declares_sequential_ordinary_critique_and_canonical_dependencies" time="0.004" /><testcase classname="tests.test_full_loo_composition" name="test_v2_roundtrip_is_independent_of_process_hash_seed" time="0.323" /><testcase classname="tests.test_full_loo_runtime" name="test_actual_complete_22_cell_composition" time="1043.867"><failure message="assert 0 &gt; 0">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...s":0,"model_calls":0,"retrieval_requests":0,"scorer_calls":0,"solver_docker_attempts":0},"validation_opened":false}')))
+
+    def test_actual_complete_22_cell_composition(grid):
+        setup,run=grid;b=run.receipt.data()
+        assert b['status']=='complete_train_engineering',b
+        assert len(run.builds)==9 and len(run.results)==len(run.scores)==22 and len(b['structural'])==2
+        assert b['actual']=={'model_calls':169,'builder_executions':9,'independent_source_qualification_calls':62,'corpus_qualification_calls':58,
+            'retrieval_requests':87,'auxiliary_docker_attempts':58,'solver_docker_attempts':22,'docker_attempts':80,'scorer_calls':22}
+        assert not any(b['unused'].values()) and len(setup['seen'])==169 and len(setup['state_calls'])==62 and len(setup['corpus_calls'])==58
+        assert b['scorer_process']['closed'] is True and b['scorer_process']['close_attempts']==1
+        assert all(c.process.poll() is not None for c in setup['clients'])
+        assert b['p0']['required'] is True and b['p0']['scientific_execution_qualified'] is False
+        assert len(setup['retrieval_calls'])==87
+        assert b['unchanged_parent_package_digest']==setup['plan'].parent.digest and b['candidate_activation']=='none_offline_experiment'
+        recipes=setup['plan'].composition.data()['cells'];by_id={r['id']:r for r in recipes}
+        assert run.barrier.package(by_id['full'])==run.barrier.package(by_id['without-M8'])
+        assert run.barrier.package(by_id['B0'])==run.barrier.package(by_id['ordinary-control'])
+        for r in run.results:
+            verify_full_loo_cell(r,barrier=run.barrier,panel=run.panel,ledger=run.ledger)
+            out=json.loads(r.solver.execution.record.data()['stdout'])
+            assert 'candidate' in out
+            if r.cell.arm_id=='B0':assert out['auxiliary']==out['state']==out['review_checks']==[]
+            else:
+                assert len(out['auxiliary'])==2 and out['state'] and len(out['review_checks'])==2 and len(out['directions'])==3
+                assert out['choice']['job_id']==r.phase.data()['selection']['selected'][-1]
+                assert not r.phase.data()['remaining_leases'] and not r.phase.data()['residual_containers']
+&gt;               if 'M8' in r.cell.runtime_arm.data()['enabled']:assert r.phase.data()['overlap_ns']&gt;0
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               assert 0 &gt; 0
+
+tests\test_full_loo_runtime.py:169: AssertionError</failure></testcase><testcase classname="tests.test_full_loo_runtime" name="test_closed_scorer_scope_and_history_removal" time="0.101" /><testcase classname="tests.test_full_loo_runtime" name="test_coherently_rehashed_prediction_after_choice_rejected" time="1.232" /><testcase classname="tests.test_full_loo_runtime" name="test_composed_candidate_whole_package_durable_rollback" time="2.237" /><testcase classname="tests.test_full_loo_runtime" name="test_original_input_and_candidate_barrier_bytes_replayed" time="0.060" /><testcase classname="tests.test_exploration_scheduler_combination" name="test_full_8_actual_cells_24_docker_16_model_and_8_independent_scores" time="25.805" /><testcase classname="tests.test_lineage_retrieval_improvement_train_controller" name="test_new_exposure_and_process_scope_leave_old_exact_panel_contract" time="76.171" /><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.643" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.562" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.046" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.498" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.176" /></testsuite></testsuites>
