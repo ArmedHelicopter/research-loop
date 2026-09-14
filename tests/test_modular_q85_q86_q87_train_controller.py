@@ -155,12 +155,23 @@ def test_q86_synthetic_cells_bind_compiled_scenarios_before_receipt_return(tmp_p
     port = model_port(tmp_path, monkeypatch, max_calls=48, max_tokens=512,
                       schemas={"final": FINAL, "review": GOAL_REVIEW, "frontier_review_a": REVIEW,
                                "frontier_review_b": REVIEW, "frontier": FRONTIER}, response_factory=response)
+    provider = Provider()
     result = run_train_panel(frozen, custody=custody, snapshot_root=snapshot, export_root=tmp_path / "export",
         run_root=tmp_path / "run", model=port, audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}),
-        retrieval_provider=Provider(), retrieval_admission_port=admission, retrieval_final_authority=Authority())
+        retrieval_provider=provider, retrieval_admission_port=admission, retrieval_final_authority=Authority())
     assert len(result.runtimes) == 24
     assert all(row.status == "succeeded" for row in result.runtimes)
     assert result.verdict.engineering_verified is True
+    # The consumer is a reader: rechecking complete sidecars neither calls the
+    # retrieval/provider ports nor changes the audited parent/child bytes.
+    q86_files = [path for row in result.runtimes for path in (
+        row.trace_path.parent / "research-version-parent.json", row.trace_path.parent / "research-version-child.json") if path.exists()]
+    before = {path: (path.read_bytes(), path.stat().st_mtime_ns) for path in q86_files}
+    calls = len(provider.calls)
+    from research_loop.modular.panel_receipts import PanelReceiptVerifier
+    PanelReceiptVerifier().verify(result.compiled.panel, result.runtimes, scenarios=result.compiled.scenarios)
+    assert len(provider.calls) == calls
+    assert {path: (path.read_bytes(), path.stat().st_mtime_ns) for path in q86_files} == before
 
 
 def verify_grid(result):
