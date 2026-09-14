@@ -207,7 +207,7 @@ class Q32ExecutionStage:
         if self._seal is None or i >= 3 or self._session._terminal:
             raise ContractError("all programs must be frozen before execution")
         self._artifacts.check()
-        if FrozenRecord((self._session.sidecar / "execution-seal.json").read_text(encoding="utf-8")) != self._seal:
+        if plain(self._session.sidecar / "execution-seal.json").read_bytes() != (self._seal.encoded + '\n').encode('utf-8'):
             raise ContractError("durable execution seal was modified")
         job = self._seal.data()["jobs"][i]
         plan = self._registry.plan(plan_id).data()
