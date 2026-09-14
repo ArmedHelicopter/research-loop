@@ -23,7 +23,7 @@ from evaluation.modular.scoring_service import ScorerConfig
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.full_loo_driver import verify_stage
 from research_loop.modular.full_loo_modules import slots
-from research_loop.modular.joint_train_panel import JointTrainPanel
+from research_loop.modular.joint_train_panel import JointTrainPanel, history_build_id
 from research_loop.modular.joint_train_runtime import (
     FrozenJointTrainRuntimePlan,
     JointTrainBarrier,
@@ -145,7 +145,7 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
     plan.__post_init__()
     root = executor.root
     journal = _Journal(root / 'common-controller.jsonl')
-    build_rows = [{'build_id': __import__('research_loop.modular.joint_train_panel', fromlist=['history_build_id']).history_build_id(plan.protocol, recipe),
+    build_rows = [{'build_id': history_build_id(plan.protocol, recipe),
                    'recipe_id': recipe['id'], 'status': 'not_started'} for recipe in plan.builds]
     rows = [{'arm_id': recipe['id'], 'task_digest': packet.task.content_hash, 'status': 'not_started', 'scorer_calls': 0}
             for recipe in plan.recipes for packet in plan.packets]
@@ -213,7 +213,7 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
             target_map[key] = None; targets.append(None); journal.append('target_blocked', {'arm_id': key[0], 'task_digest': key[1]}); persist(); continue
         recipe = next(recipe for recipe in plan.recipes if recipe['id'] == key[0])
         build = next(build for build in barrier.builds if build.record.data()['build_id'] ==
-                     __import__('research_loop.modular.joint_train_panel', fromlist=['history_build_id']).history_build_id(plan.protocol, recipe))
+                     history_build_id(plan.protocol, recipe))
         journal.append('target_reserved', {'arm_id': key[0], 'task_digest': key[1]}); persist()
         try:
             result = executor.execute(recipe_id=key[0], stage='target', target_digest=key[1], build=build, barrier=barrier)
@@ -344,6 +344,10 @@ def verify_joint_common_train_run(run: JointCommonTrainRun, *, execution_authori
     run.plan.__post_init__(); run.barrier.verify(); panel, scenarios = compile_panel(run.barrier)
     if panel != run.panel:
         raise ContractError('common controller panel differs from sealed barrier')
+    if (run.barrier.executor is not run.executor or run.executor.plan is not run.plan
+            or run.root != run.executor.root or run.builds != run.barrier.builds
+            or tuple(run.executor.stages) != run.builds + run.targets):
+        raise ContractError('common run does not own its exact original stage sequence')
     body = run.receipt.data()
     required = {'schema', 'plan_digest', 'allocation', 'actual', 'unused', 'builds', 'targets', 'barrier_digest', 'panel_digest',
                 'target_provider_ledger_digest', 'target_provider_ledger_kind', 'native_accounting', 'historical_scorer_calls',
@@ -362,6 +366,18 @@ def verify_joint_common_train_run(run: JointCommonTrainRun, *, execution_authori
     keys = {cell.key for cell in run.panel.cells}
     if len(inputs) != len(run.score_inputs) or len(scores) != len(run.scores) or set(inputs) != keys or set(scores) != keys:
         raise ContractError('common controller score envelopes do not exactly cover the panel')
+    expected_builds = [{'build_id': history_build_id(run.plan.protocol, recipe), 'recipe_id': recipe['id'],
+                       'status': 'succeeded', 'receipt_digest': build.record.content_hash}
+                      for recipe, build in zip(run.plan.builds, run.builds, strict=True)]
+    expected_rows = [{'arm_id': target.inner.cell.arm_id, 'task_digest': target.inner.cell.task_digest,
+                     'status': 'scored', 'scorer_calls': 1, 'receipt_digest': target.record.content_hash,
+                     'score': scores[target.inner.cell.key].receipt.data()} for target in run.targets]
+    if body['builds'] != expected_builds or rows != expected_rows:
+        raise ContractError('common controller rows differ from original builds, targets or scores')
+    process = body['scorer_process']
+    if process != {'startup_attempts': 1, 'startup_status': 'ready', 'close_attempts': 1,
+                   'closed': True, 'error': None}:
+        raise ContractError('common controller scorer did not close successfully')
     calls = tuple(R(row['view']) for row in run.target_ledger.original.record.data()['calls'])
     accounting = call_accounting(calls)
     actual = _actual(tuple([*run.builds, *[target for target in run.targets if target is not None]]), accounting, rows)

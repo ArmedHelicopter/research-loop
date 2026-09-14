@@ -385,7 +385,16 @@ class JointTrainBarrier:
 def compile_panel(barrier):
     if type(barrier) is not JointTrainBarrier: raise ContractError('original common history barrier required')
     barrier.verify(); plan=barrier.executor.plan; protocol=plan.protocol; body=protocol.record.data()
-    packages={recipe['id']:barrier.package(recipe) for recipe in plan.recipes}
+    # This invocation already replayed every original build above. Read each
+    # selected package once and bind it to that verified build; do not replay
+    # the whole history grid once again for each recipe alias.
+    by_build={}
+    for build in barrier.builds:
+        package=CandidatePackage(_read_record(build.inner.root/'candidate.json'))
+        if package.digest!=build.inner.record.data()['candidate_digest']:
+            raise ContractError('common package differs from its verified original build')
+        by_build[build.record.data()['build_id']]=package
+    packages={recipe['id']:by_build[history_build_id(protocol,recipe)] for recipe in plan.recipes}
     scenarios={p.task.content_hash:R({'schema':'c5-common-target-scenario-v1','protocol_digest':protocol.digest,
         'runtime_plan_digest':plan.record.content_hash,'barrier_digest':barrier.record.content_hash,
         'task_digest':p.task.content_hash,'material_digest':plan.material(p.task.content_hash).record.content_hash,
