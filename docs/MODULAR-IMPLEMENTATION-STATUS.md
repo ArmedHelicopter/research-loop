@@ -1467,3 +1467,54 @@ audit overhead remain open. The complete C5 run still owns frozen integration
 `98eae28`; these changes reside in the artifact worktree. All original questions
 and combination studies remain required. No real module efficacy, scientific
 calibration, VAL acceptance or production promotion is claimed.
+
+# 2026-09-14 Independent Q6.3 fixture builder and registry outputs
+
+The actual `run_improvement_scenario` Q6.3 branch now records immutable task and
+control inputs, callback requests before dispatch, original typed callback
+returns, selected DSL, meta package, fixture acceptance request/return and local
+registry state. Initial and activated SQLite bytes have separate immutable
+content-addressed copies. The existing restricted output writer retains its
+two-unit search allocation, original builder return, candidate/receipt files and
+failure terminal. Fixed controls retain their ignored callback and fixed DSL;
+their M9 records are `not_applied`. Overall result bookkeeping belongs to P0.
+
+`verify_q63_fixture_artifacts` compares the original returned result and callback
+records, rederives fixed/proposed selection, checks the fixture acceptance
+binding, reads registry byte copies in an in-memory SQLite connection, verifies
+the actual final registry, and requires successful inner builder output for a
+successful result. It does not dispatch callbacks or initialize/activate a
+registry. The original result, full owned file inventory, catalogue seal and
+closure are checked together. Missing originals are never recreated.
+
+`inspect_q63_fixture_failure` reads a failed attempt's retained storage and
+original error, and explicitly reports `stage_semantics_verified=false` and
+`acceptance_eligible=false`. Its scope is storage integrity, not execution
+acceptance. A failure after the real registry commit retains both the initial
+byte snapshot and the changed original database; the observer does not roll
+back or hide the side effect. Unrecordable callback object types are identified
+without fabricating their raw contents.
+
+Frozen `9786bd0` passed 84 checks in 61.609s. The public failure inspection and
+truncated-catalogue contract checks at `a240f8c` passed 86 checks in 64.156s.
+Both retained 699 unchanged source files and incurred no paid provider calls.
+The latest set consists of 17 fixture artifact cases, 40 existing M9 scenario
+cases, 19 existing builder cases and 10 label-isolation cases. It covers actual
+fixed/proposed/rejected fixtures, partial writes, callback/interpreter failures,
+the post-commit registry failure and coherently rehashed control/candidate
+selection or terminal substitutions. These use the real local restricted DSL,
+SQLite and filesystem with synthetic callbacks; they do not execute Docker or
+model APIs. The overlapping 84/86 batches are version-specific evidence.
+
+`results/modular-engineering-20260914/fixture-builder-artifacts-r1/` preserves
+167 files: both exact source ZIPs and check reports, plus 19 complete selected
+public fixture directories containing 191 descriptors. These are repeated
+engineering executions, not unique benchmark subjects. Historical byte
+integrity is distinct from replaying the original execution environment.
+
+The other fixture optimizer and activation/rollback outputs, P0 custody,
+cross-catalogue TRAIN configuration edges, generic lifecycle and resource
+attribution, audit overhead and all original scientific experiments remain
+open. Existing C5 integration is still frozen for its original live run. This
+fixture uses only synthetic acceptance material; no real VAL acceptance or
+production authorization is created.
