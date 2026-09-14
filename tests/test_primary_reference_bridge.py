@@ -220,6 +220,9 @@ def test_repinning_forged_public_material_does_not_replace_source_proof(tmp_path
     counterfeit=tmp_path/'counterfeit-public-packet'
     writer=TrainPacketArtifacts(counterfeit,exporter=bridge.exporter,item=requests[0].item,task=packet.task,
         attempt=1,request_digest=receipt['request_sha256'],source_digests=receipt['source_receipt_digests'])
+    for name in ('public.json','receipt.json'):
+        path=packet.packet_path.parent/name
+        path.write_bytes((FrozenRecord.from_dict(json.loads(path.read_bytes())).encoded+'\n').encode('utf-8'))
     for name in ('public.json','data.csv','receipt.json'):
         (counterfeit/name).write_bytes((packet.packet_path.parent/name).read_bytes())
     anchor=writer.finish(metadata)
