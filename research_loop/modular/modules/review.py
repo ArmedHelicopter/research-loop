@@ -11,7 +11,7 @@ import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Mapping, Sequence
+from typing import Any, Callable, Mapping, Sequence
 
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, required_text, strict_bool
 from research_loop.ontology import ContractError, canonical, digest
@@ -118,13 +118,15 @@ class ReviewScoreReceipt:
 class ReviewEngine:
     """A persistent review barrier, independent of any model provider."""
 
-    def __init__(self, identity: DataIdentity, *, storage_path: Path | None = None) -> None:
+    def __init__(self, identity: DataIdentity, *, storage_path: Path | None = None,
+                 event_sink: Callable[[FrozenRecord], None] | None = None) -> None:
         self.identity = identity
         self._sessions: dict[str, ReviewSession] = {}
         self._submissions: dict[tuple[str, str], ReviewSubmission] = {}
         self._revisions: dict[tuple[str, str], ReviewRevision] = {}
         self._scores: dict[str, ReviewScoreReceipt] = {}
         self._log = _JsonlLog(storage_path)
+        self._event_sink = event_sink
         for event in self._log.events():
             self._apply(event, persist=False)
 
@@ -264,7 +266,7 @@ class ReviewEngine:
                 raise ContractError("persisted revision violates review barrier")
             payload = self._response(event.get("response")); after = required_text(event.get("after_hash"), "after hash")
             expected = digest({"before_hash": previous.before_hash, "response": payload.data()})
-            if after != expected:
+            if after != expected or (session.review_id, role) in self._revisions:
                 raise ContractError("revision hash invalid")
             result = ReviewRevision(session.review_id, role, reviewer, payload, after); self._revisions[(session.review_id, role)] = result
         elif kind == "score":
@@ -278,9 +280,13 @@ class ReviewEngine:
                 parsed.append((item["role_id"], item["before"], item["after"]))
             if {item[0] for item in parsed} != {item.role_id for item in session.roles}:
                 raise ContractError("persisted score lacks roles")
+            if session.review_id in self._scores:
+                raise ContractError("persisted score is duplicated")
             result = ReviewScoreReceipt(session.review_id, required_text(event.get("scorer"), "trusted scorer"), tuple(sorted(parsed))); self._scores[session.review_id] = result
         else:
             raise ContractError("unknown review event")
         if persist:
             self._log.append(event)
+            if self._event_sink is not None:
+                self._event_sink(FrozenRecord.from_dict(dict(event)))
         return result

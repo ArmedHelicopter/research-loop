@@ -11,7 +11,7 @@ import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Mapping, Sequence
+from typing import Any, Callable, Mapping, Sequence
 
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, required_text, strict_bool
 from research_loop.ontology import ContractError, canonical, digest
@@ -145,11 +145,13 @@ def _prediction(value: Any) -> OperationalPrediction:
 class PredictionRegistry:
     """Append-only plans and evaluator-originated per-hypothesis updates."""
 
-    def __init__(self, identity: DataIdentity, *, storage_path: Path | None = None) -> None:
+    def __init__(self, identity: DataIdentity, *, storage_path: Path | None = None,
+                 event_sink: Callable[[FrozenRecord], None] | None = None) -> None:
         self.identity = identity
         self._plans: dict[str, PredictionPlan] = {}
         self._updates: dict[tuple[str, str], PredictionUpdate] = {}
         self._log = _JsonlLog(storage_path)
+        self._event_sink = event_sink
         for event in self._log.events():
             self._apply(event, persist=False)
 
@@ -261,11 +263,13 @@ class PredictionRegistry:
                 raise ContractError("prediction plan id does not bind its frozen payload")
             plan = PredictionPlan(expected, self.identity, question, tuple(parsed), budget, True, payload)
             existing = self._plans.get(expected)
-            if existing is not None and existing != plan:
-                raise ContractError("prediction plan id collision")
+            if existing is not None:
+                raise ContractError("prediction plan is already frozen")
             self._plans[expected] = plan
             if persist:
                 self._log.append(event)
+                if self._event_sink is not None:
+                    self._event_sink(FrozenRecord.from_dict(dict(event)))
             return plan
         if event.get("event") != "outcome":
             raise ContractError("unknown prediction event")
@@ -281,11 +285,13 @@ class PredictionRegistry:
         update = PredictionUpdate(plan.plan_id, discriminator, required_text(event.get("outcome_id"), "outcome id"), tuple(sorted(classifications.items())), required_text(event.get("evaluator"), "trusted evaluator"))
         key = (plan.plan_id, discriminator)
         existing = self._updates.get(key)
-        if existing is not None and existing != update:
-            raise ContractError("a frozen discriminator already has a different outcome")
+        if existing is not None:
+            raise ContractError("a frozen discriminator already has an outcome")
         self._updates[key] = update
         if persist:
             self._log.append(event)
+            if self._event_sink is not None:
+                self._event_sink(FrozenRecord.from_dict(dict(event)))
         return update
 
 
