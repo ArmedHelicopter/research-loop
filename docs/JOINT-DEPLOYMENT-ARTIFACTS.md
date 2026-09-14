@@ -17,6 +17,10 @@
 提交、只在向调用方交付结果时报错时，保留 committed 事实，不追加虚假的失败切换。
 回滚恢复原来的整个配置，旧组件记录和验收授权的消费记录保持可查。
 
+`committed` 只说明本地事务已提交，不证明外部调用方已经收到回执或任意外部服务
+已经切换。现有 acknowledgement 和任务返回格式保持不变；独立审计锚点通过
+`last_operation_receipt` / `artifact_checkpoint()` 获取，调用方的传输日志另行保留。
+
 `deployment_audit_meta` 保存存储身份及任务域，`deployment_audit_events` 保存
 规范事件、前项摘要和 SQL 状态快照，`deployment_audit_head` 固定当前尾部。
 成功的组件清单必须完整；失败的组件观察必须是实际顺序的前缀。读取器重建状态

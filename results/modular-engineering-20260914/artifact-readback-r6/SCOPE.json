@@ -1,0 +1,12 @@
+{
+  "schema": "artifact-readback-proof-v1",
+  "raw_archive_head": "c3959a42902bb2b1040754436f9f2a965e359648",
+  "committed_files_verified": 143,
+  "databases": 10,
+  "events": 63,
+  "started": 27,
+  "committed": 20,
+  "failed": 6,
+  "pending": 1,
+  "scope": "Git blobs match original disk and staging; independently pinned SQLite transition replay and producer/component source bytes verified. Historical code not executed; no scientific or VAL acceptance claim."
+}
