@@ -8,6 +8,7 @@ from contextlib import closing
 from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import sqlite3
@@ -29,6 +30,7 @@ from research_loop.modular.lineage_combination_driver import _verify_solver_file
 from research_loop.modular.combination_benchmark_driver import _runtime, _close_failure, _private_arm_marker
 from research_loop.modular.panel_receipts import PanelReceiptVerifier
 from research_loop.modular.panel_receipts import opaque_panel_cell_binding
+from research_loop.modular.phase_artifacts import PhaseArtifactBridge
 
 SLOTS = ('analysis_program', 'final_answer')
 OBLIGATION = 'pair:M7+M8'
@@ -51,7 +53,14 @@ def _read(path):
 
 def _write_new(path, body):
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open('x', encoding='utf-8', newline='\n') as stream: stream.write(_record(body).encoded)
+    with path.open('x', encoding='utf-8', newline='\n') as stream:
+        stream.write(_record(body).encoded); stream.flush(); os.fsync(stream.fileno())
+
+
+def _write_bytes_new(path, body):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('xb') as stream:
+        stream.write(body); stream.flush(); os.fsync(stream.fileno())
 
 
 @dataclass(frozen=True)
@@ -128,12 +137,15 @@ def _snapshot(material, cell, objective):
     return {'evidence': material.record.content_hash, 'rules': objective.content_hash, 'package': cell.package_digest}
 
 
-def run_phase(*, material, cell, objective, root, broker, inputs, image, timeout_seconds, selected_job_id=None):
+def run_phase(*, material, cell, objective, root, broker, inputs, image, timeout_seconds, selected_job_id=None,
+              artifact_bridge=None):
     """A single immutable phase; worker threads only touch their own Docker job."""
     if (type(material) is not FrozenExplorationSchedulerMaterial or type(objective) is not FrozenRecord
             or not isinstance(broker,DockerExecutionBroker) or type(timeout_seconds) is not int or not 1<=timeout_seconds<=120
             or material.data()['identity']!=cell.identity.data() or material.data()['task_digest']!=cell.task_digest):
         raise ContractError('typed bound auxiliary phase required')
+    if artifact_bridge is not None and type(artifact_bridge) is not PhaseArtifactBridge:
+        raise ContractError('typed optional phase artifact bridge required')
     artifacts=broker.validate_inputs(cell.identity,inputs)
     if [{'artifact':a.record.data(),'container_path':'/input/'+a.artifact_id} for a in artifacts]!=material.data()['public_artifacts']:
         raise ContractError('data feasibility requires exact actual public bytes before permit')
@@ -142,15 +154,20 @@ def run_phase(*, material, cell, objective, root, broker, inputs, image, timeout
     enabled = set(cell.runtime_arm.data()['enabled']); chosen = selection(material, enabled, selected_job_id)
     jobs = {j['id']: j for j in material.data()['jobs'] if j['id'] in chosen.data()['selected']}
     snapshot = _snapshot(material, cell, objective); experiment = _record(cell.data()).content_hash
+    if artifact_bridge is not None and (artifact_bridge.phase_root != root.resolve() or artifact_bridge.enabled != frozenset(enabled)):
+        raise ContractError('phase artifact bridge root or module activation differs')
     events, lock = [], threading.Lock()
     def emit(kind, **data):
         with lock:
             row = {'sequence':len(events),'time_ns':time.monotonic_ns(),'kind':kind,**data}
-            with (root/'events.jsonl').open('a',encoding='utf-8',newline='\n') as stream: stream.write(_record(row).encoded+'\n')
+            with (root/'events.jsonl').open('a',encoding='utf-8',newline='\n') as stream:
+                stream.write(_record(row).encoded+'\n'); stream.flush(); os.fsync(stream.fileno())
             events.append(row)
+            if artifact_bridge is not None: artifact_bridge.event(root/'events.jsonl',row)
     _write_new(root/'allocation.json', {'cell':cell.data(),'material_digest':material.record.content_hash,
         'objective':objective.data(),'selection':chosen.data(),'image':image,'timeout_seconds':timeout_seconds,'docker_limit':2,
         'input_paths':{k:str(v.absolute()) for k,v in inputs.items()}})
+    if artifact_bridge is not None: artifact_bridge.allocation(root/'allocation.json')
     scheduler = FifoScheduler(root/'queue.sqlite',max_concurrency=2,total_budget=2) if 'M8' in enabled else None
     run_ids = {}
     for job in jobs.values():
@@ -159,7 +176,8 @@ def run_phase(*, material, cell, objective, root, broker, inputs, image, timeout
             _record({'experiment_id':experiment,'task_id':job['id'],'attempt':1}).content_hash)
         emit('enqueue',job=job['id'],run_id=run_ids[job['id']])
     def work(job):
-        path=root/(job['id']+'.py'); path.write_bytes(job['program'].encode('utf-8'))
+        path=root/(job['id']+'.py'); _write_bytes_new(path,job['program'].encode('utf-8'))
+        if artifact_bridge is not None: artifact_bridge.program(path,job['id'])
         emit('start',job=job['id'])
         try:
             receipt=broker.execute(ExecutionRequest(DataIdentity.parse(material.data()['identity']),image,path,inputs,timeout_seconds))
@@ -169,6 +187,7 @@ def run_phase(*, material, cell, objective, root, broker, inputs, image, timeout
         result={'schema':'exploration-scheduler-job-return-v1','job':job['id'],'run_id':run_ids[job['id']],
             'attempt':1,'cost_units':1,'snapshot_digest':_record(snapshot).content_hash,**payload}
         _write_new(root/(job['id']+'.json'),result)
+        if artifact_bridge is not None: artifact_bridge.returned(root/(job['id']+'.json'),job['id'])
         emit('finish',job=job['id'],return_digest=_record(result).content_hash)
         return result
     completed = {}
@@ -207,7 +226,9 @@ def run_phase(*, material, cell, objective, root, broker, inputs, image, timeout
             complete(job['id'],work(job))
             emit('merge',jobs=[job['id']])
     report = _phase_projection(material,cell,objective,root,image,timeout_seconds,inputs,selected_job_id)
+    if artifact_bridge is not None and 'M8' in enabled: artifact_bridge.sqlite_snapshot(root/'queue.sqlite')
     _write_new(root/'receipt.json',report.data())
+    if artifact_bridge is not None: artifact_bridge.receipt(root/'receipt.json')
     return report
 
 
