@@ -1,0 +1,9 @@
+{
+  "root_pid": 20876,
+  "root_creation_utc_ticks": 639249856842103280,
+  "root_command": "\"E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe\" E:/_ryanDev/AI/research-loop-modular/work/run_frozen_checks_with_source.py E:/_ryanDev/AI/research-loop-modular/artifact-evidence-provenance E:/_ryanDev/AI/research-loop-modular/work/train-packet-artifacts-r3 tests/test_label_isolation.py tests/test_train_packet_artifacts.py tests/test_prospective_train_exporter.py tests/test_primary_prospective_exporter.py tests/test_primary_reference_bridge.py tests/test_combination_prospective_train_source.py::test_all_three_actual_controllers_consume_primary_packets[m4] -x",
+  "deadline": "2026-09-14T21:13:54.4100919+08:00",
+  "prefix": "E:/_ryanDev/AI/research-loop-modular/work/train-packet-artifacts-r3",
+  "journal": "E:/_ryanDev/AI/research-loop-modular/work/train-packet-artifacts-r3-watchdog.json",
+  "expected_cases": "Complete P0 source and controller checks after canonical counterfeit repair"
+}

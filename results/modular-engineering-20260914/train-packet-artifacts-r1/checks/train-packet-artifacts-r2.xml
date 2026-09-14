@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="82" time="144.755" timestamp="2026-09-14T20:23:50.997035+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.006" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.003" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.003" /><testcase classname="tests.test_train_packet_artifacts" name="test_real_export_files_and_batch_anchor_are_read_without_private_sources[primary]" time="2.122" /><testcase classname="tests.test_train_packet_artifacts" name="test_real_export_files_and_batch_anchor_are_read_without_private_sources[extended]" time="1.445" /><testcase classname="tests.test_train_packet_artifacts" name="test_validation_task_is_rejected_before_any_file_read" time="2.680" /><testcase classname="tests.test_train_packet_artifacts" name="test_actual_output_tamper_is_refused_against_original_batch[public.json]" time="2.335" /><testcase classname="tests.test_train_packet_artifacts" name="test_actual_output_tamper_is_refused_against_original_batch[data.csv]" time="2.505" /><testcase classname="tests.test_train_packet_artifacts" name="test_actual_output_tamper_is_refused_against_original_batch[artifacts.jsonl]" time="2.320" /><testcase classname="tests.test_train_packet_artifacts" name="test_actual_output_tamper_is_refused_against_original_batch[artifacts.jsonl.seal.json]" time="2.094" /><testcase classname="tests.test_train_packet_artifacts" name="test_actual_partial_write_failure_retains_files_and_redacted_P0_terminal" time="1.442" /><testcase classname="tests.test_train_packet_artifacts" name="test_audit_writer_failure_preserves_exposure_and_unsealed_prefix" time="1.349" /><testcase classname="tests.test_train_packet_artifacts" name="test_reference_bridge_rechecks_catalogue_after_private_reference_reader_returns" time="3.198" /><testcase classname="tests.test_prospective_train_exporter" name="test_pinned_source_to_seal_to_real_adapter_projection_seam" time="1.758" /><testcase classname="tests.test_prospective_train_exporter" name="test_validation_rejected_before_snapshot_read_projection_or_output" time="0.382" /><testcase classname="tests.test_prospective_train_exporter" name="test_caller_identity_drift_rejected_before_source_read[source]" time="0.397" /><testcase classname="tests.test_prospective_train_exporter" name="test_caller_identity_drift_rejected_before_source_read[group_sha256]" time="0.563" /><testcase classname="tests.test_prospective_train_exporter" name="test_caller_identity_drift_rejected_before_source_read[source_receipt_digest]" time="0.491" /><testcase classname="tests.test_prospective_train_exporter" name="test_sealed_split_tamper_cannot_be_rehashed_by_caller" time="0.441" /><testcase classname="tests.test_prospective_train_exporter" name="test_original_receipt_input_or_actual_snapshot_drift_blocks_before_payload_write[original_receipt]" time="0.536" /><testcase classname="tests.test_prospective_train_exporter" name="test_original_receipt_input_or_actual_snapshot_drift_blocks_before_payload_write[snapshot]" time="0.437" /><testcase classname="tests.test_prospective_train_exporter" name="test_original_receipt_input_or_actual_snapshot_drift_blocks_before_payload_write[audit_ledger]" time="0.437" /><testcase classname="tests.test_prospective_train_exporter" name="test_bytes_changed_after_first_source_check_are_rejected_before_projection" time="0.575" /><testcase classname="tests.test_prospective_train_exporter" name="test_failure_retains_reserved_partial_exposure_without_raw_exception" time="1.534" /><testcase classname="tests.test_prospective_train_exporter" name="test_failure_ledger_is_append_only_and_tamper_is_not_reset" time="0.605" /><testcase classname="tests.test_prospective_train_exporter" name="test_output_cannot_overlap_private_snapshot_or_sealed_validation" time="0.512" /><testcase classname="tests.test_primary_prospective_exporter" name="test_real_public_adapters_and_standard_controller_packet_shape" time="2.198" /><testcase classname="tests.test_primary_prospective_exporter" name="test_metadata_denial_precedes_source_read_and_exposure_reservation[validation]" time="0.422" /><testcase classname="tests.test_primary_prospective_exporter" name="test_metadata_denial_precedes_source_read_and_exposure_reservation[source]" time="0.409" /><testcase classname="tests.test_primary_prospective_exporter" name="test_metadata_denial_precedes_source_read_and_exposure_reservation[group]" time="0.698" /><testcase classname="tests.test_primary_prospective_exporter" name="test_metadata_denial_precedes_source_read_and_exposure_reservation[input]" time="0.661" /><testcase classname="tests.test_primary_prospective_exporter" name="test_metadata_denial_precedes_source_read_and_exposure_reservation[schema]" time="0.862" /><testcase classname="tests.test_primary_prospective_exporter" name="test_metadata_denial_precedes_source_read_and_exposure_reservation[hold]" time="0.413" /><testcase classname="tests.test_primary_prospective_exporter" name="test_metadata_denial_precedes_source_read_and_exposure_reservation[held_group]" time="0.828" /><testcase classname="tests.test_primary_prospective_exporter" name="test_metadata_denial_precedes_source_read_and_exposure_reservation[held_token]" time="0.583" /><testcase classname="tests.test_primary_prospective_exporter" name="test_frozen_pins_drift_refused_before_public_materialization[input]" time="0.723" /><testcase classname="tests.test_primary_prospective_exporter" name="test_frozen_pins_drift_refused_before_public_materialization[source]" time="0.471" /><testcase classname="tests.test_primary_prospective_exporter" name="test_frozen_pins_drift_refused_before_public_materialization[eligibility]" time="0.608" /><testcase classname="tests.test_primary_prospective_exporter" name="test_frozen_pins_drift_refused_before_public_materialization[split]" time="0.427" /><testcase classname="tests.test_primary_prospective_exporter" name="test_frozen_pins_drift_refused_before_public_materialization[audit]" time="0.440" /><testcase classname="tests.test_primary_prospective_exporter" name="test_data_changed_after_source_check_is_not_projected_or_written" time="0.892" /><testcase classname="tests.test_primary_prospective_exporter" name="test_same_byte_symlink_swap_is_rejected_by_concrete_reader" time="0.464" /><testcase classname="tests.test_primary_prospective_exporter" name="test_partial_failure_keeps_exposure_and_fixed_cost_receipts" time="2.242" /><testcase classname="tests.test_primary_prospective_exporter" name="test_actual_controller_consumes_prospective_packets_without_custody_conversion[None]" time="15.929" /><testcase classname="tests.test_primary_prospective_exporter" name="test_actual_controller_consumes_prospective_packets_without_custody_conversion[validation]" time="2.529" /><testcase classname="tests.test_primary_prospective_exporter" name="test_actual_controller_consumes_prospective_packets_without_custody_conversion[hold]" time="2.432" /><testcase classname="tests.test_primary_prospective_exporter" name="test_actual_controller_consumes_prospective_packets_without_custody_conversion[roots]" time="1.970" /><testcase classname="tests.test_primary_prospective_exporter" name="test_actual_controller_consumes_prospective_packets_without_custody_conversion[both_ports]" time="2.076" /><testcase classname="tests.test_primary_prospective_exporter" name="test_actual_controller_consumes_prospective_packets_without_custody_conversion[packet_catalogue]" time="3.786" /><testcase classname="tests.test_primary_prospective_exporter" name="test_actual_controller_consumes_prospective_packets_without_custody_conversion[completion_anchor]" time="4.488" /><testcase classname="tests.test_primary_reference_bridge" name="test_primary_new_identity_reaches_standard_frozen_reference_resolver" time="3.768" /><testcase classname="tests.test_primary_reference_bridge" name="test_complete_denial_before_source_or_reference_reads[validation]" time="2.622" /><testcase classname="tests.test_primary_reference_bridge" name="test_complete_denial_before_source_or_reference_reads[held_token]" time="2.424" /><testcase classname="tests.test_primary_reference_bridge" name="test_complete_denial_before_source_or_reference_reads[held_group]" time="2.413" /><testcase classname="tests.test_primary_reference_bridge" name="test_complete_denial_before_source_or_reference_reads[wrong_task]" time="2.420" /><testcase classname="tests.test_primary_reference_bridge" name="test_complete_denial_before_source_or_reference_reads[task_digest]" time="2.693" /><testcase classname="tests.test_primary_reference_bridge" name="test_complete_denial_before_source_or_reference_reads[public_digest]" time="2.730" /><testcase classname="tests.test_primary_reference_bridge" name="test_complete_denial_before_source_or_reference_reads[csv_digest]" time="2.441" /><testcase classname="tests.test_primary_reference_bridge" name="test_complete_denial_before_source_or_reference_reads[receipt_digest]" time="2.594" /><testcase classname="tests.test_primary_reference_bridge" name="test_complete_denial_before_source_or_reference_reads[selector]" time="2.559" /><testcase classname="tests.test_primary_reference_bridge" name="test_complete_denial_before_source_or_reference_reads[public_file]" time="2.573" /><testcase classname="tests.test_primary_reference_bridge" name="test_complete_denial_before_source_or_reference_reads[export_receipt]" time="2.430" /><testcase classname="tests.test_primary_reference_bridge" name="test_complete_denial_before_source_or_reference_reads[foreign_packet_root]" time="2.430" /><testcase classname="tests.test_primary_reference_bridge" name="test_complete_denial_before_source_or_reference_reads[unknown_schema]" time="2.471" /><testcase classname="tests.test_primary_reference_bridge" name="test_source_or_audit_bytes_drift_before_reference_parse[csv]" time="2.462" /><testcase classname="tests.test_primary_reference_bridge" name="test_source_or_audit_bytes_drift_before_reference_parse[source_metadata]" time="2.539" /><testcase classname="tests.test_primary_reference_bridge" name="test_source_or_audit_bytes_drift_before_reference_parse[annotation]" time="2.578" /><testcase classname="tests.test_primary_reference_bridge" name="test_source_or_audit_bytes_drift_before_reference_parse[history]" time="2.746" /><testcase classname="tests.test_primary_reference_bridge" name="test_answer_key_hash_refused_before_parser_and_read_reservation_preserved" time="2.970" /><testcase classname="tests.test_primary_reference_bridge" name="test_same_byte_reparse_answer_key_rejected" time="2.867" /><testcase classname="tests.test_primary_reference_bridge" name="test_partial_read_and_publication_failures_keep_hashchain_and_safe_error[publish_io]" time="3.793" /><testcase classname="tests.test_primary_reference_bridge" name="test_partial_read_and_publication_failures_keep_hashchain_and_safe_error[hold_after_read]" time="2.991" /><testcase classname="tests.test_primary_reference_bridge" name="test_partial_read_and_publication_failures_keep_hashchain_and_safe_error[key_after_read]" time="3.289" /><testcase classname="tests.test_primary_reference_bridge" name="test_corrupt_journal_cannot_restart_reference_reads" time="2.326" /><testcase classname="tests.test_primary_reference_bridge" name="test_repinning_forged_public_material_does_not_replace_source_proof[task]" time="2.361"><failure message="research_loop.ontology.ContractError: public export file is not canonical JSON">self = FrozenRecord(encoded='{"task": {"identity": {"benchmark": "discoverybench", "task_id": "synth:test:case2", "group_id":...a5e5e914d16", "query_index": 0}, "split_digest": "4863dc122cdf13757c937bc7311a699630310742f771fb5404b618e8f61c6bc3"}}')
+
+    def __post_init__(self) -&gt; None:
+        try:
+            decoded = json.loads(self.encoded)
+            if not isinstance(decoded, dict) or canonical(decoded) != self.encoded:
+&gt;               raise ContractError("record must be a canonical JSON object")
+E               research_loop.ontology.ContractError: record must be a canonical JSON object
+
+research_loop\modular\contracts.py:36: ContractError
+
+The above exception was the direct cause of the following exception:
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/train-packet-artifacts-r2/test_repinning_forged_public_m0/counterfeit-public-packet/public.json')
+
+    def _record_file(path):
+        raw = _path(path).read_bytes()
+&gt;       try: record = FrozenRecord(raw.decode('utf-8').removesuffix('\n'))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+evaluation\modular\train_packet_artifacts.py:33: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = FrozenRecord(encoded='{"task": {"identity": {"benchmark": "discoverybench", "task_id": "synth:test:case2", "group_id":...a5e5e914d16", "query_index": 0}, "split_digest": "4863dc122cdf13757c937bc7311a699630310742f771fb5404b618e8f61c6bc3"}}')
+
+    def __post_init__(self) -&gt; None:
+        try:
+            decoded = json.loads(self.encoded)
+            if not isinstance(decoded, dict) or canonical(decoded) != self.encoded:
+                raise ContractError("record must be a canonical JSON object")
+        except (ValueError, TypeError) as exc:
+&gt;           raise ContractError("invalid immutable record") from exc
+E           research_loop.ontology.ContractError: invalid immutable record
+
+research_loop\modular\contracts.py:38: ContractError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/train-packet-artifacts-r2/test_repinning_forged_public_m0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000015A2F7043E0&gt;
+fault = 'task'
+
+    @pytest.mark.parametrize("fault", ["task", "selector", "csv"])
+    def test_repinning_forged_public_material_does_not_replace_source_proof(tmp_path, monkeypatch, fault):
+        bridge, requests, packets, _ = material(tmp_path)
+        packets = list(packets)
+        packet = packets[0]
+        metadata = packet.receipt.data()
+        if fault == "task":
+            packet = replace(packet, task=replace(packet.task, payload=FrozenRecord.from_dict({**packet.task.payload.data(), "question": "Forged"})))
+            metadata["packet_hash"] = packet.task.content_hash
+        elif fault == "selector":
+            metadata["source_selector"]["metadata_file"] = "metadata_other.json"
+        else:
+            packet.csv_path.write_bytes(b"x\n9999\n")
+            metadata["csv_sha256"] = pin(packet.csv_path)["sha256"]
+            metadata["csv_byte_count"] = packet.csv_path.stat().st_size
+        packet = replace(packet, receipt=FrozenRecord.from_dict(metadata))
+        packets[0] = packet
+        write(packet.packet_path, {"task": packet.task.data(), "receipt": metadata})
+        write(packet.packet_path.parent / "receipt.json", metadata)
+        export_path = bridge.exporter.output_root / "export-receipt.json"
+        receipt = json.loads(export_path.read_bytes())
+        receipt["packets"] = [metadata if row["export_token"] == requests[0].item.token else row for row in receipt["packets"]]
+        # A v2 export also pins public P0 catalogues. Forge those coherently, so this
+        # existing counterexample still reaches the independent original-source
+        # check rather than stopping at an unrevised public byte commitment.
+        from evaluation.modular.train_packet_artifacts import TrainPacketArtifacts
+        counterfeit=tmp_path/'counterfeit-public-packet'
+        writer=TrainPacketArtifacts(counterfeit,exporter=bridge.exporter,item=requests[0].item,task=packet.task,
+            attempt=1,request_digest=receipt['request_sha256'],source_digests=receipt['source_receipt_digests'])
+        for name in ('public.json','data.csv','receipt.json'):
+            (counterfeit/name).write_bytes((packet.packet_path.parent/name).read_bytes())
+&gt;       anchor=writer.finish(metadata)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_primary_reference_bridge.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+evaluation\modular\train_packet_artifacts.py:122: in finish
+    _public_files(self.root,self.task,metadata,self.primary)
+evaluation\modular\train_packet_artifacts.py:52: in _public_files
+    if _record_file(root/'public.json').data() != expected or _record_file(root/'receipt.json').data() != metadata:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/train-packet-artifacts-r2/test_repinning_forged_public_m0/counterfeit-public-packet/public.json')
+
+    def _record_file(path):
+        raw = _path(path).read_bytes()
+        try: record = FrozenRecord(raw.decode('utf-8').removesuffix('\n'))
+        except (UnicodeError, ContractError) as exc:
+&gt;           raise ContractError('public export file is not canonical JSON') from exc
+E           research_loop.ontology.ContractError: public export file is not canonical JSON
+
+evaluation\modular\train_packet_artifacts.py:35: ContractError</failure></testcase></testsuite></testsuites>

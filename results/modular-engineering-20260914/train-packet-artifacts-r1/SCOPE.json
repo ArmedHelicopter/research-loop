@@ -1,0 +1,934 @@
+{
+  "schema": "train-packet-artifact-public-archive-v1",
+  "checks": [
+    {
+      "prefix": "train-packet-artifacts-r1",
+      "commit": "ec5b3ee6970d50178c84dd6e2c5c8d0afb78a422",
+      "source_unchanged": true,
+      "source_count": 704,
+      "exit_code": 1,
+      "wall_seconds": 152.5,
+      "new_paid_calls": 0,
+      "report_sha256": "3c8eadfe380e0caae4ea43eaa9ac8a40e74c1f2b640884720d414e599b47441d",
+      "junit": {
+        "tests": 80,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_archive_sha256": "a28d5c7f5b5d4008450cffdb56af7d36c95c6ff0165649d081aaf0b3a538d78d"
+    },
+    {
+      "prefix": "train-packet-combination-r1",
+      "commit": "ec5b3ee6970d50178c84dd6e2c5c8d0afb78a422",
+      "source_unchanged": true,
+      "source_count": 704,
+      "exit_code": 0,
+      "wall_seconds": 40.655999999988126,
+      "new_paid_calls": 0,
+      "report_sha256": "4179feea1d7dce92c0258db6b724f28ffe9f273425a780cac355d916c273c7a4",
+      "junit": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_archive_sha256": "3d9e0ba18939516d38fa32cdb596aeb67e2708bbf3a4b4b6ac1f7ec356e27568"
+    },
+    {
+      "prefix": "train-packet-artifacts-r2",
+      "commit": "1441bcf51852c61e4d3c568d4679eed6b57b9302",
+      "source_unchanged": true,
+      "source_count": 704,
+      "exit_code": 1,
+      "wall_seconds": 145.28100000001723,
+      "new_paid_calls": 0,
+      "report_sha256": "fc5d518864a1d43e7e4790692033d29ef6b630134d60271de6ae3c27ada54835",
+      "junit": {
+        "tests": 82,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_archive_sha256": "4595f749b04ad1091645c7a8838f075d515611a74c336454d90ae5775b9b1da1"
+    },
+    {
+      "prefix": "train-packet-artifacts-r3",
+      "commit": "8e74d9bc331f90d59a6afa2c680c7541d375059f",
+      "source_unchanged": true,
+      "source_count": 704,
+      "exit_code": 0,
+      "wall_seconds": 180.625,
+      "new_paid_calls": 0,
+      "report_sha256": "3e788bc12bb7dd1a44f114e5c080711d5e26870ba097d2c61a33782876fdac65",
+      "junit": {
+        "tests": 87,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_archive_sha256": "8403d871f6e8ef9e1c6fe5ed82014a80fa908cb80d7a303a31ed5c0918676f57"
+    }
+  ],
+  "exports": [
+    {
+      "case": "test_real_export_files_and_bat0",
+      "folder": "export",
+      "audit": "export-audit",
+      "status": "completed",
+      "packets": 2,
+      "source_event_prefix_verified": true,
+      "private_source_archived": false
+    },
+    {
+      "case": "test_real_export_files_and_bat1",
+      "folder": "public-train",
+      "audit": "export-audit",
+      "status": "completed",
+      "packets": 2,
+      "source_event_prefix_verified": true,
+      "private_source_archived": false
+    },
+    {
+      "case": "test_actual_partial_write_fail0",
+      "folder": "export-audit/attempt-000001/staging",
+      "audit": "export-audit",
+      "status": "failed",
+      "packets": 1,
+      "source_event_prefix_verified": true,
+      "private_source_archived": false
+    },
+    {
+      "case": "test_audit_writer_failure_pres0",
+      "folder": "export-audit/attempt-000001/staging",
+      "audit": "export-audit",
+      "status": "incomplete",
+      "packets": 1,
+      "source_event_prefix_verified": true,
+      "private_source_archived": false
+    },
+    {
+      "case": "test_actual_controller_consume0",
+      "folder": "controller-export",
+      "audit": "controller-export-audit",
+      "status": "completed",
+      "packets": 2,
+      "source_event_prefix_verified": true,
+      "private_source_archived": false
+    },
+    {
+      "case": "test_actual_controller_consume0",
+      "folder": "fixture/pre-export",
+      "audit": "fixture/export-audit",
+      "status": "completed",
+      "packets": 2,
+      "source_event_prefix_verified": true,
+      "private_source_archived": false
+    },
+    {
+      "case": "test_all_three_actual_controll0",
+      "folder": "export",
+      "audit": "export-audit",
+      "status": "completed",
+      "packets": 2,
+      "source_event_prefix_verified": true,
+      "private_source_archived": false
+    },
+    {
+      "case": "test_all_three_actual_controll0",
+      "folder": "primary/prepared",
+      "audit": "primary/export-audit",
+      "status": "completed",
+      "packets": 2,
+      "source_event_prefix_verified": true,
+      "private_source_archived": false
+    }
+  ],
+  "catalogues": [
+    {
+      "path": "public/test_real_export_files_and_bat0/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "descriptors": 5,
+      "sealed": true,
+      "state": "completed",
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "public/test_real_export_files_and_bat0/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl",
+      "descriptors": 5,
+      "sealed": true,
+      "state": "completed",
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "public/test_real_export_files_and_bat1/public-train/00070e8dce9131dafb015e36c736b871ee00fedc47cde122317819fd2957198e/artifacts.jsonl",
+      "descriptors": 4,
+      "sealed": true,
+      "state": "completed",
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "public/test_real_export_files_and_bat1/public-train/00cf4e8f9f90a4f814142be9f1fe9e229ec8a81f2517365a2bb6aeee24fe811b/artifacts.jsonl",
+      "descriptors": 4,
+      "sealed": true,
+      "state": "completed",
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "public/test_actual_partial_write_fail0/export-audit/attempt-000001/staging/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "descriptors": 4,
+      "sealed": true,
+      "state": "failed",
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "public/test_audit_writer_failure_pres0/export-audit/attempt-000001/staging/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "descriptors": 1,
+      "sealed": false,
+      "state": "incomplete",
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "descriptors": 5,
+      "sealed": true,
+      "state": "completed",
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl",
+      "descriptors": 5,
+      "sealed": true,
+      "state": "completed",
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/pre-export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "descriptors": 5,
+      "sealed": true,
+      "state": "completed",
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/pre-export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl",
+      "descriptors": 5,
+      "sealed": true,
+      "state": "completed",
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "descriptors": 5,
+      "sealed": true,
+      "state": "completed",
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl",
+      "descriptors": 5,
+      "sealed": true,
+      "state": "completed",
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/prepared/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "descriptors": 5,
+      "sealed": true,
+      "state": "completed",
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/prepared/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl",
+      "descriptors": 5,
+      "sealed": true,
+      "state": "completed",
+      "historical_semantic_replay_executed": false
+    }
+  ],
+  "controller_observations": [
+    {
+      "case": "test_actual_controller_consume0",
+      "tracefiles": 12,
+      "observed_docker_run_receipts": 0
+    },
+    {
+      "case": "test_all_three_actual_controll0",
+      "tracefiles": 8,
+      "observed_docker_run_receipts": 8
+    }
+  ],
+  "items": [
+    {
+      "path": "checks/train-packet-artifacts-r1-before.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r1-before.json",
+      "bytes": 82652,
+      "sha256": "b8684c30b1bb629c7385c22b93adfac5c5e68a3d7d0e8d90788d02651ee9e5b0"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r1-closed.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r1-closed.json",
+      "bytes": 82627,
+      "sha256": "0374fcdd8a13089919f576e746693bb487efc41acca78e876d3e26385ad39d65"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r1-source-members.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r1-source-members.json",
+      "bytes": 123538,
+      "sha256": "b1cd47fc742fc2f0d35b0d225af02de362173b17d5a8a6ef20bc067c5e5c3de7"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r1-sources.zip",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r1-sources.zip",
+      "bytes": 2313710,
+      "sha256": "a28d5c7f5b5d4008450cffdb56af7d36c95c6ff0165649d081aaf0b3a538d78d"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r1.xml",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r1.xml",
+      "bytes": 14818,
+      "sha256": "3c8eadfe380e0caae4ea43eaa9ac8a40e74c1f2b640884720d414e599b47441d"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r1-watchdog-config.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r1-watchdog-config.json",
+      "bytes": 965,
+      "sha256": "40bfe636be79f6939f20427ef0783bb2e7876356ad57c1e207445cf57c0f643f"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r1-watchdog.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r1-watchdog.json",
+      "bytes": 258,
+      "sha256": "faea3acca5ab22d5978446cec1dcd24e6666e7fe978f3d807623954c4d913bc9"
+    },
+    {
+      "path": "checks/train-packet-combination-r1-before.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-combination-r1-before.json",
+      "bytes": 82544,
+      "sha256": "e5566f20d00a4c14ebfb205e0268634e6dcd4d23af8f8e338afb86a82bba45c9"
+    },
+    {
+      "path": "checks/train-packet-combination-r1-closed.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-combination-r1-closed.json",
+      "bytes": 82639,
+      "sha256": "b28562789d9e1400c20be59bc325b30d206ca107d5620c220cdd0289ab7c3f11"
+    },
+    {
+      "path": "checks/train-packet-combination-r1-source-members.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-combination-r1-source-members.json",
+      "bytes": 123538,
+      "sha256": "cec1821a2b320a54706f933ac77f3317e04c15e6afd8e9e7249455939bdd25f7"
+    },
+    {
+      "path": "checks/train-packet-combination-r1-sources.zip",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-combination-r1-sources.zip",
+      "bytes": 2313710,
+      "sha256": "3d9e0ba18939516d38fa32cdb596aeb67e2708bbf3a4b4b6ac1f7ec356e27568"
+    },
+    {
+      "path": "checks/train-packet-combination-r1.xml",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-combination-r1.xml",
+      "bytes": 407,
+      "sha256": "4179feea1d7dce92c0258db6b724f28ffe9f273425a780cac355d916c273c7a4"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r2-before.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r2-before.json",
+      "bytes": 82774,
+      "sha256": "99a6163a64345e9f98fc54ee2318c25903431d9503438ac7fbdc8eca6e330f5e"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r2-closed.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r2-closed.json",
+      "bytes": 82640,
+      "sha256": "adc225f655810f82b57e8629bd6095cc4cc073d3e3f9b7ea80058075c7459433"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r2-source-members.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r2-source-members.json",
+      "bytes": 123538,
+      "sha256": "4985ca703f9f82c8f584ab20d43fb069bd0d9a18d5f07d72e29f5be8f9dffddc"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r2-sources.zip",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r2-sources.zip",
+      "bytes": 2314433,
+      "sha256": "4595f749b04ad1091645c7a8838f075d515611a74c336454d90ae5775b9b1da1"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r2.xml",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r2.xml",
+      "bytes": 18426,
+      "sha256": "fc5d518864a1d43e7e4790692033d29ef6b630134d60271de6ae3c27ada54835"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r2-watchdog-config.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r2-watchdog-config.json",
+      "bytes": 1088,
+      "sha256": "84c48504385dc0a77c868e858f613b12d18389bdeed2ef7cf06f82dd52321ae6"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r2-watchdog.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r2-watchdog.json",
+      "bytes": 258,
+      "sha256": "d09e037eea193d99460d6af6f916f118344cb54f9082ca6444f52dee69c66642"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r3-before.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3-before.json",
+      "bytes": 82774,
+      "sha256": "eee3470f6f2d88c51d3effc471a29b601eea1a15591c1e08881433153e4a0947"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r3-closed.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3-closed.json",
+      "bytes": 82629,
+      "sha256": "d6c019fe9025017c989d1c465214015edec75c385d5ca9ac199329f135ffaba5"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r3-source-members.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3-source-members.json",
+      "bytes": 123538,
+      "sha256": "973d182990f55165dc525925182c074f2b207191744bb338d62980d3a50a0e7b"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r3-sources.zip",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3-sources.zip",
+      "bytes": 2314475,
+      "sha256": "8403d871f6e8ef9e1c6fe5ed82014a80fa908cb80d7a303a31ed5c0918676f57"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r3.xml",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3.xml",
+      "bytes": 13251,
+      "sha256": "3e788bc12bb7dd1a44f114e5c080711d5e26870ba097d2c61a33782876fdac65"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r3-watchdog-config.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3-watchdog-config.json",
+      "bytes": 1040,
+      "sha256": "810670ce0bb32feee848fbc5ffee418e4ed47d55598e2588f837821729a0e702"
+    },
+    {
+      "path": "checks/train-packet-artifacts-r3-watchdog.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3-watchdog.json",
+      "bytes": 258,
+      "sha256": "2f4f6a5d0c85ab033718dc669c8104d5a0b04bd3bc30003050ef31d98aa568ea"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat0/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\artifacts.jsonl",
+      "bytes": 11421,
+      "sha256": "f938672b4e49181afc2bef1aa52fb2a9a3dcb5a5214390e81d9edb105326ee93"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat0/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "6864011818607ad0610e80c38355f8e91a44566d41957c9c36a34386b39d28f5"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat0/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv",
+      "bytes": 5,
+      "sha256": "a03ee9e888b907f64a30915cf5d04520078779a38422a89e02ed1718c30b8f40"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat0/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\public.json",
+      "bytes": 1656,
+      "sha256": "98ebaab2c8fe05f4f01100a5a686c1fcbe86ac17018149a8ccd1e5d16c0aab81"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat0/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\receipt.json",
+      "bytes": 1121,
+      "sha256": "d87875411d740e7504665aca7acb35a183ddaf35e1032a01ff171625edc6b38d"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat0/export/export-receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat0\\export\\export-receipt.json",
+      "bytes": 9166,
+      "sha256": "5bcfa8afcd9f4cde89cadce9d58b98c3c133f4165fbf2995c44487eb8eea8c6c"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat0/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\artifacts.jsonl",
+      "bytes": 11112,
+      "sha256": "095527cb1f8e0a4ef7777fc9798553d741712598b04917aa1b2e569eec4f0327"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat0/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "8348a4dadb93a8e86eabb40f9a4b3f2f89a33a5f0e8c5bdfacbb5e02772482af"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat0/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/data.csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\data.csv",
+      "bytes": 5,
+      "sha256": "e99561343117bad50b537bcf4f4f3ccd592ece4a9506669ea383464784314cf2"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat0/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\public.json",
+      "bytes": 1478,
+      "sha256": "ea20cda147e7d76b14920978350aa9e4b7d02af845a34dd5511884a2e1c8e62a"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat0/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\receipt.json",
+      "bytes": 943,
+      "sha256": "195bef1ba15ba0eaedc49f9b3dc997bd6beed32d257a0aa1b01f758179af1ea2"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat0/export-audit/exports.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat0\\export-audit\\exports.jsonl",
+      "bytes": 5121,
+      "sha256": "07c14fc25f201616f64866b74156491098e8a964085406e12c48d5ec6598d77b"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat1/public-train/00070e8dce9131dafb015e36c736b871ee00fedc47cde122317819fd2957198e/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat1\\public-train\\00070e8dce9131dafb015e36c736b871ee00fedc47cde122317819fd2957198e\\artifacts.jsonl",
+      "bytes": 8899,
+      "sha256": "baa7a8d5889514f510a45fe06f5eceb706e3ba937bf29cbb465bb84bb1356f2e"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat1/public-train/00070e8dce9131dafb015e36c736b871ee00fedc47cde122317819fd2957198e/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat1\\public-train\\00070e8dce9131dafb015e36c736b871ee00fedc47cde122317819fd2957198e\\artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "27f45fff4c81d17e6fa36776542c767059195490ad1708e4fa1330eed9f1e631"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat1/public-train/00070e8dce9131dafb015e36c736b871ee00fedc47cde122317819fd2957198e/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat1\\public-train\\00070e8dce9131dafb015e36c736b871ee00fedc47cde122317819fd2957198e\\public.json",
+      "bytes": 548,
+      "sha256": "019cc9f9b3a0bbd87217552d150de92f471aa6a5675d2916e13614800c2753ed"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat1/public-train/00070e8dce9131dafb015e36c736b871ee00fedc47cde122317819fd2957198e/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat1\\public-train\\00070e8dce9131dafb015e36c736b871ee00fedc47cde122317819fd2957198e\\receipt.json",
+      "bytes": 432,
+      "sha256": "21533b193bf6815d069fc69ff54d637319063d5164aae30edf717b1b70705690"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat1/public-train/00cf4e8f9f90a4f814142be9f1fe9e229ec8a81f2517365a2bb6aeee24fe811b/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat1\\public-train\\00cf4e8f9f90a4f814142be9f1fe9e229ec8a81f2517365a2bb6aeee24fe811b\\artifacts.jsonl",
+      "bytes": 9299,
+      "sha256": "aa38a2c58ec26617cfe317980899a132d4f391df6ebfad6b661045837dd71435"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat1/public-train/00cf4e8f9f90a4f814142be9f1fe9e229ec8a81f2517365a2bb6aeee24fe811b/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat1\\public-train\\00cf4e8f9f90a4f814142be9f1fe9e229ec8a81f2517365a2bb6aeee24fe811b\\artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "4967c8ba74c06a6ed24c8b918b1b371add789c08b940e1750a5978412b9d0496"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat1/public-train/00cf4e8f9f90a4f814142be9f1fe9e229ec8a81f2517365a2bb6aeee24fe811b/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat1\\public-train\\00cf4e8f9f90a4f814142be9f1fe9e229ec8a81f2517365a2bb6aeee24fe811b\\public.json",
+      "bytes": 673,
+      "sha256": "d6ab5c697a923e4734cf2e4c536bd7eb7a74a03d50894d66518f3a3c8b53bf81"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat1/public-train/00cf4e8f9f90a4f814142be9f1fe9e229ec8a81f2517365a2bb6aeee24fe811b/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat1\\public-train\\00cf4e8f9f90a4f814142be9f1fe9e229ec8a81f2517365a2bb6aeee24fe811b\\receipt.json",
+      "bytes": 442,
+      "sha256": "8aa6734a2f511543704f4372ffad45433c4df08bf828dd375408584433c03f8b"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat1/public-train/export-receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat1\\public-train\\export-receipt.json",
+      "bytes": 8038,
+      "sha256": "db3263f219e67e7a7b946c03f9472ec21a2eeeca2b4798a8e61ad229e7e5f2b7"
+    },
+    {
+      "path": "public/test_real_export_files_and_bat1/export-audit/exports.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_real_export_files_and_bat1\\export-audit\\exports.jsonl",
+      "bytes": 5146,
+      "sha256": "fba891d6e2fbebcf95687bcb71be5294bebb74679b659b573805107917580214"
+    },
+    {
+      "path": "public/test_actual_partial_write_fail0/export-audit/attempt-000001/staging/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_partial_write_fail0\\export-audit\\attempt-000001\\staging\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\artifacts.jsonl",
+      "bytes": 8689,
+      "sha256": "7548d721b7c7ead3dbcc2365f9ed974716680bb1d59cff5bc98c427b7470f332"
+    },
+    {
+      "path": "public/test_actual_partial_write_fail0/export-audit/attempt-000001/staging/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_partial_write_fail0\\export-audit\\attempt-000001\\staging\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "5a7da3a40617deca14ab69655b710963b7c3bdf4915c8015460d26dcad56e24f"
+    },
+    {
+      "path": "public/test_actual_partial_write_fail0/export-audit/attempt-000001/staging/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_partial_write_fail0\\export-audit\\attempt-000001\\staging\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv",
+      "bytes": 5,
+      "sha256": "a03ee9e888b907f64a30915cf5d04520078779a38422a89e02ed1718c30b8f40"
+    },
+    {
+      "path": "public/test_actual_partial_write_fail0/export-audit/attempt-000001/staging/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_partial_write_fail0\\export-audit\\attempt-000001\\staging\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\public.json",
+      "bytes": 1656,
+      "sha256": "28849e9495657a3ec4df8f07703a05f13cb4cd3147f5d49921f8feb1bf94fc2e"
+    },
+    {
+      "path": "public/test_actual_partial_write_fail0/export-audit/exports.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_partial_write_fail0\\export-audit\\exports.jsonl",
+      "bytes": 4024,
+      "sha256": "89a5125793bab06af5b1671d263210550f171b8dd103abb6425e599dc70e9c15"
+    },
+    {
+      "path": "public/test_audit_writer_failure_pres0/export-audit/attempt-000001/staging/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_audit_writer_failure_pres0\\export-audit\\attempt-000001\\staging\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\artifacts.jsonl",
+      "bytes": 3552,
+      "sha256": "d1b2a333cd35bf514e1720ab011120271e8be55a5260ab6ffe892e4fa3057c5f"
+    },
+    {
+      "path": "public/test_audit_writer_failure_pres0/export-audit/attempt-000001/staging/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_audit_writer_failure_pres0\\export-audit\\attempt-000001\\staging\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv",
+      "bytes": 5,
+      "sha256": "a03ee9e888b907f64a30915cf5d04520078779a38422a89e02ed1718c30b8f40"
+    },
+    {
+      "path": "public/test_audit_writer_failure_pres0/export-audit/attempt-000001/staging/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_audit_writer_failure_pres0\\export-audit\\attempt-000001\\staging\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\public.json",
+      "bytes": 1656,
+      "sha256": "9b6943368a94bcf908c0be128f84a904f63614266938ceda983a02328a06077e"
+    },
+    {
+      "path": "public/test_audit_writer_failure_pres0/export-audit/attempt-000001/staging/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_audit_writer_failure_pres0\\export-audit\\attempt-000001\\staging\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\receipt.json",
+      "bytes": 1121,
+      "sha256": "2cbf9c0cabbeba3805a429e5c0e087c43df61916a5072ec083a77826d26999a8"
+    },
+    {
+      "path": "public/test_audit_writer_failure_pres0/export-audit/exports.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_audit_writer_failure_pres0\\export-audit\\exports.jsonl",
+      "bytes": 4024,
+      "sha256": "5f6d90cfdf5747eef7397df7868a72dbb23a9a4ea6eac88320fb5f60a9038235"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\controller-export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\artifacts.jsonl",
+      "bytes": 11421,
+      "sha256": "bd5606e138ea5c259a5bbdfc64a24b783bd9bbd9835706522d9519c8c65357fe"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\controller-export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "31cd56976afe35626afc744ca3c2b07b3f51c7b10085744bf0fb649be6a988b5"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\controller-export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv",
+      "bytes": 5,
+      "sha256": "a03ee9e888b907f64a30915cf5d04520078779a38422a89e02ed1718c30b8f40"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\controller-export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\public.json",
+      "bytes": 1656,
+      "sha256": "16cd58ed7484f5d56a3989391ab7f6286b572178f113390a258e6fb7bd98d852"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\controller-export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\receipt.json",
+      "bytes": 1121,
+      "sha256": "8d151967d74bb4ac5128ec249fca3e44f8fe8088f1aec66ec5987699cc31dc75"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export/export-receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\controller-export\\export-receipt.json",
+      "bytes": 9166,
+      "sha256": "a176d4e97b247efc7fa3de542323b48fba63dc3f2b534e09e56e74a697c811c0"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\controller-export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\artifacts.jsonl",
+      "bytes": 11112,
+      "sha256": "5d26ed1f08a5b4c9f19bcf28a0050acf6998cb8c148542e927c246341798301c"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\controller-export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "4937f39ce2e609f75f0276037a217395c2a49f08c5799b4872522e32adb71059"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/data.csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\controller-export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\data.csv",
+      "bytes": 5,
+      "sha256": "e99561343117bad50b537bcf4f4f3ccd592ece4a9506669ea383464784314cf2"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\controller-export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\public.json",
+      "bytes": 1478,
+      "sha256": "57b0e134faee8cabfcb990c142da8a85592f701d9fa06caa05b6096b236bce9f"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\controller-export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\receipt.json",
+      "bytes": 943,
+      "sha256": "74973a2fbc8bc73f939e220b5c0625f3289b53164099f2d57a5d797b3e19824d"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/controller-export-audit/exports.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\controller-export-audit\\exports.jsonl",
+      "bytes": 5121,
+      "sha256": "6b7ae4a999d466d24322b43b721d5fa3884ddcb1f30d68aad9001f956e1b6e83"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/pre-export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\fixture\\pre-export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\artifacts.jsonl",
+      "bytes": 11421,
+      "sha256": "c2e253f0a1e60666a15ea5be6d349a4ae11a168d3097b4853b9866e6118b8529"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/pre-export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\fixture\\pre-export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "4c313b2cb81141681d140d9dbb2a08a061ad7851821910ce7c360b8e27df0dba"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/pre-export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\fixture\\pre-export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv",
+      "bytes": 5,
+      "sha256": "a03ee9e888b907f64a30915cf5d04520078779a38422a89e02ed1718c30b8f40"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/pre-export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\fixture\\pre-export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\public.json",
+      "bytes": 1656,
+      "sha256": "16cd58ed7484f5d56a3989391ab7f6286b572178f113390a258e6fb7bd98d852"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/pre-export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\fixture\\pre-export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\receipt.json",
+      "bytes": 1121,
+      "sha256": "8d151967d74bb4ac5128ec249fca3e44f8fe8088f1aec66ec5987699cc31dc75"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/pre-export/export-receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\fixture\\pre-export\\export-receipt.json",
+      "bytes": 9166,
+      "sha256": "b1675edf488441d29317bde66a1d3b64d5463e5626b1780caeb3d1e511f5e0f0"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/pre-export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\fixture\\pre-export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\artifacts.jsonl",
+      "bytes": 11112,
+      "sha256": "2cb37710d3b92b09cddf16bd327f7ef2b601c7807864ba97c214e2ed131b30fd"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/pre-export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\fixture\\pre-export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "10a3599baca570081359f3a52df8ca7d5e701c612d3880c14dbdfb543bccd84d"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/pre-export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/data.csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\fixture\\pre-export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\data.csv",
+      "bytes": 5,
+      "sha256": "e99561343117bad50b537bcf4f4f3ccd592ece4a9506669ea383464784314cf2"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/pre-export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\fixture\\pre-export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\public.json",
+      "bytes": 1478,
+      "sha256": "57b0e134faee8cabfcb990c142da8a85592f701d9fa06caa05b6096b236bce9f"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/pre-export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\fixture\\pre-export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\receipt.json",
+      "bytes": 943,
+      "sha256": "74973a2fbc8bc73f939e220b5c0625f3289b53164099f2d57a5d797b3e19824d"
+    },
+    {
+      "path": "public/test_actual_controller_consume0/fixture/export-audit/exports.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\fixture\\export-audit\\exports.jsonl",
+      "bytes": 5121,
+      "sha256": "726f3dc5ef5f97fa0c348a4eb2d5a426961806302d2116633d8dd9e4442ce71a"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\artifacts.jsonl",
+      "bytes": 11421,
+      "sha256": "10cd83f5562c1986de612f671fc984b44e69a5d074906e4bfe326f33fdf73570"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "70a2d2d089b39387d3a48bacc49e6806e6ae83ab51f683636910a5e8ebace2b3"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv",
+      "bytes": 5,
+      "sha256": "a03ee9e888b907f64a30915cf5d04520078779a38422a89e02ed1718c30b8f40"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\public.json",
+      "bytes": 1656,
+      "sha256": "94a309646c8e68b4b79681e2239c0b8bdc680b1575d7a0ebfe22458bca30f7e1"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\export\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\receipt.json",
+      "bytes": 1121,
+      "sha256": "eed9325aeeb9a5bdedccd8d8ed48fba76e96d09941171fce95dc5c63b93fb034"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export/export-receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\export\\export-receipt.json",
+      "bytes": 9166,
+      "sha256": "617b600492657a125ea85b5e2007a383a6cff011c17d3404d6f0b45e12b36fdb"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\artifacts.jsonl",
+      "bytes": 11112,
+      "sha256": "0e306006e486505af1171393123245d0e3d50cc4c0cf20bfbaa994db967b83a5"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "234cc8f31e1408a3bb4503ead33ff3a944679b7f5aee3be04b9c8b0c500f6bcc"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/data.csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\data.csv",
+      "bytes": 5,
+      "sha256": "e99561343117bad50b537bcf4f4f3ccd592ece4a9506669ea383464784314cf2"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\public.json",
+      "bytes": 1478,
+      "sha256": "e63020e4bc13856eadc93cfc568eb8c6f8bec4f5ceba3056126f8ec79d2ebe91"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\export\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\receipt.json",
+      "bytes": 943,
+      "sha256": "eaa57a936faf1d2b4788952ba0bbcfe306e54568e760969fe1d292a6f8d30822"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/export-audit/exports.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\export-audit\\exports.jsonl",
+      "bytes": 5121,
+      "sha256": "98cefb85e248b853b9eccdb6e964bd510eb648742b573bb727ff69764a245525"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/prepared/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\primary\\prepared\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\artifacts.jsonl",
+      "bytes": 11421,
+      "sha256": "aab5642565771215b2667fe5f388b86b12a18feec276eb4874962e6c3f7db817"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/prepared/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\primary\\prepared\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "0c7beedbdb538944bcd4e1143f93fec4da095358dcf019708ef67812c1207141"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/prepared/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/data.csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\primary\\prepared\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\data.csv",
+      "bytes": 5,
+      "sha256": "a03ee9e888b907f64a30915cf5d04520078779a38422a89e02ed1718c30b8f40"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/prepared/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\primary\\prepared\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\public.json",
+      "bytes": 1656,
+      "sha256": "94a309646c8e68b4b79681e2239c0b8bdc680b1575d7a0ebfe22458bca30f7e1"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/prepared/7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\primary\\prepared\\7736f9f63d05fa7c620b51e97aacb85599b950e98ca23bca92e6de9eddd15916\\receipt.json",
+      "bytes": 1121,
+      "sha256": "eed9325aeeb9a5bdedccd8d8ed48fba76e96d09941171fce95dc5c63b93fb034"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/prepared/export-receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\primary\\prepared\\export-receipt.json",
+      "bytes": 9166,
+      "sha256": "eebfa2f33c2ee9fede7d7cf3260b1cf0bbfc589c2dc0c057a448033cbe728f76"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/prepared/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\primary\\prepared\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\artifacts.jsonl",
+      "bytes": 11112,
+      "sha256": "0de05f5f76176e1bc6f0402c1f2766a2f5c03fd59f769aa825fb5c770215300b"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/prepared/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\primary\\prepared\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "30e7fccb2f929fbf658c8b3506210dfd7e44fff7da3a5b9fc48e2a355e75ade8"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/prepared/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/data.csv",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\primary\\prepared\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\data.csv",
+      "bytes": 5,
+      "sha256": "e99561343117bad50b537bcf4f4f3ccd592ece4a9506669ea383464784314cf2"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/prepared/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/public.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\primary\\prepared\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\public.json",
+      "bytes": 1478,
+      "sha256": "e63020e4bc13856eadc93cfc568eb8c6f8bec4f5ceba3056126f8ec79d2ebe91"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/prepared/f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\primary\\prepared\\f9926849bb77ac350906471811b606b45d656dc6de5469e397ba039bc27dbd28\\receipt.json",
+      "bytes": 943,
+      "sha256": "eaa57a936faf1d2b4788952ba0bbcfe306e54568e760969fe1d292a6f8d30822"
+    },
+    {
+      "path": "public/test_all_three_actual_controll0/primary/export-audit/exports.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\primary\\export-audit\\exports.jsonl",
+      "bytes": 5121,
+      "sha256": "98a8b1b15c6a9db41125f21f595d53f115131ff73e73bb3a7c456a7e474f8bec"
+    },
+    {
+      "path": "controllers/test_actual_controller_consume0/controller-attempt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\run\\controller-attempt.json",
+      "bytes": 33391,
+      "sha256": "508bb940579c60b9be88c5be3c3f16f1a67e1530adc5e7c8540c5022c04f3a98"
+    },
+    {
+      "path": "controllers/test_actual_controller_consume0/controller-receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_actual_controller_consume0\\run\\controller-receipt.json",
+      "bytes": 3963,
+      "sha256": "fa8efbc824fc5291351f598e5d8e23623a444e96a472189285d155c8f3357442"
+    },
+    {
+      "path": "controllers/test_all_three_actual_controll0/controller-attempt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\run\\controller-attempt.json",
+      "bytes": 74883,
+      "sha256": "92bb774a33ec36f4b6c0852d791a870f4a1b85f1b6d92373c2b5c511ca82555a"
+    },
+    {
+      "path": "controllers/test_all_three_actual_controll0/controller-receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\train-packet-artifacts-r3\\test_all_three_actual_controll0\\run\\controller-receipt.json",
+      "bytes": 5518,
+      "sha256": "122ca821431e9960750110e0c8c0d3e5106c563ad9a60706011669ba3ba66170"
+    },
+    {
+      "path": "tools/archive_train_packet_artifacts_r1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\archive_train_packet_artifacts_r1.py",
+      "bytes": 9307,
+      "sha256": "7fa6c38349742492a33e123e60f9cb7bd6fb36057ccfa32a9db74ca1aeea2a55"
+    }
+  ],
+  "source_prefix": "train-packet-artifacts-r3",
+  "source_archive_sha256": "8403d871f6e8ef9e1c6fe5ed82014a80fa908cb80d7a303a31ed5c0918676f57",
+  "new_paid_calls": 0,
+  "scientific_effectiveness_proven": false,
+  "validation_acceptance": false,
+  "all_P0_output_coverage_complete": false,
+  "scope": "All frozen check receipts, including failed attempts. Selected final-version complete public TRAIN export directories and redacted export journals, including a sealed failed packet and an unsealed interrupted prefix. Earlier runtime directories and deliberately corrupted counterexamples are not copied. Private source snapshots, split/VAL indexes, scorer stores, provider streams and credentials are excluded. Public packet semantics were checked against live originals before archiving; archived catalogue/source integrity readback is not full historical exporter replay."
+}
