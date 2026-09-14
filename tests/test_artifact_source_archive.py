@@ -80,6 +80,9 @@ def test_archive_reader_rejects_bad_archive_binding_without_writing(tmp_path, mo
     [("../pkg/producer.py", b"ORIGINAL PRODUCER\n")],
     [("/pkg/producer.py", b"ORIGINAL PRODUCER\n")],
     [("C:/pkg/producer.py", b"ORIGINAL PRODUCER\n")],
+    [("pkg//producer.py", b"ORIGINAL PRODUCER\n")],
+    [("pkg/./producer.py", b"ORIGINAL PRODUCER\n")],
+    [("pkg/producer.py:other", b"ORIGINAL PRODUCER\n")],
     [("pkg/producer.py", b"ORIGINAL PRODUCER\n"), ("pkg/producer.py", b"ORIGINAL PRODUCER\n")],
 ])
 def test_archive_reader_rejects_unsafe_duplicate_or_crossroot_members(tmp_path, members):
@@ -99,3 +102,29 @@ def test_append_remains_live_source_bound_even_when_reader_has_an_archive(tmp_pa
     reopened = reader(path, snapshot, archive, digest, root)
     with pytest.raises(ContractError, match="no longer resolvable"):
         reopened.append(kind="late", module="M5", payload={"n": 2})
+
+
+def test_source_root_and_recorded_path_must_be_absolute_before_normalizing(tmp_path):
+    path, root, producer, snapshot, seal, archive, digest = recorded_catalogue(tmp_path)
+    with pytest.raises(ContractError, match='absolute'):
+        ArchivedSourceResolver(archive, digest, Path('relative-source-root'))
+    resolver = ArchivedSourceResolver(archive, digest, root)
+    with pytest.raises(ContractError, match='snapshot'):
+        resolver.verify_snapshot({**snapshot, 'path': 'pkg/producer.py'})
+
+
+def test_archive_member_read_uses_exact_already_hashed_bytes(tmp_path, monkeypatch):
+    path, root, producer, snapshot, seal, archive, digest = recorded_catalogue(tmp_path)
+    original_read = Path.read_bytes
+    def replace_after_read(candidate):
+        raw = original_read(candidate)
+        if candidate == archive:
+            candidate.write_bytes(b'replaced after original bytes were hashed')
+        return raw
+    monkeypatch.setattr(Path, 'read_bytes', replace_after_read)
+    # One verification can finish from its immutable in-memory byte snapshot.
+    # A later verification must fail against the replacement on disk.
+    resolver = ArchivedSourceResolver(archive, digest, root)
+    resolver.verify_snapshot(snapshot)
+    with pytest.raises(ContractError, match='digest differs'):
+        resolver.verify_snapshot(snapshot)
