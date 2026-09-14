@@ -112,3 +112,10 @@ trace 与目录不一致、跨对象证据替换、VAL 及其索引泄漏，以�
 字节和时间戳保持不变，登录凭据及私钥不在复制范围内。定位与核验结果见
 [私有原件保留回执](../results/modular-engineering-20260915/headless-account-recovery-r1/private-r1-retention-verification.json)。
 它补充持久保存，不把运行目录副本当作包含全部外部数据、配置和源码的独立复现包。
+
+训练实验还提供[独立的 headless Grok 产物契约](GROK-HEADLESS-TRAIN-PROVIDER.md)：
+从冻结公共请求、实际原始返回，经 provider 封存，追踪到模块或组合单元消费的
+确切调用编号。M4/M5 的 v5 入口保留完整四臂，评分之后仍重读原件；末次评分
+返回后发现替换，也保留历史评分并拒绝有效对比。原始输出存在但后置检查失败、
+未知用量、损坏回执等情况，均保留失败分母。工程执行与真实 benchmark 效果
+仍分别记录，实际覆盖和冻结检查版本以覆盖清单为准。
