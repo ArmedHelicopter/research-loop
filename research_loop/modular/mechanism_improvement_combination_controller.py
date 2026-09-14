@@ -167,7 +167,7 @@ class CandidateBarrier:
     record: FrozenRecord
     plan: FrozenMechanismImprovementPlan
     builds: tuple
-    ledger: FrozenProviderLedger
+    ledger: FrozenProviderLedger | PhaseProviderLedger
     qualifiers: dict
     broker: object
     packets: tuple
@@ -291,7 +291,7 @@ class MechanismImprovementRun:
     scores: tuple
     attempts: tuple
     builds: tuple
-    ledger: FrozenProviderLedger
+    ledger: FrozenProviderLedger | PhaseProviderLedger | PhaseProviderAbort
     receipt: FrozenRecord
 
 
