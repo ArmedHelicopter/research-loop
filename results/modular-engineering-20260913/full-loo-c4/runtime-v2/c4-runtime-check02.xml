@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="49.754" timestamp="2026-09-14T07:06:45.131445+08:00" hostname="SC-202507131830"><testcase classname="tests.test_full_loo_runtime" name="test_actual_complete_22_cell_composition" time="49.237"><failure message="AssertionError: {'active_package_digest': 'f07e09a2950b1fbb6b73ebef42a3c893bd3d3acb55d35aed69f26e4d08ba48c0', 'actual': {'auxiliary_do...', 'candidate_selection_stage': 'history_build_only', 'comparison': 'F-minus', ...}, 'status': 'succeeded'}, ...], ...}&#10;assert 'inconclusive' == 'complete_train_engineering'&#10;  &#10;  - complete_train_engineering&#10;  + inconclusive">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95..."model_calls":124,"retrieval_requests":60,"scorer_calls":22,"solver_docker_attempts":22},"validation_opened":false}')))
+
+    def test_actual_complete_22_cell_composition(grid):
+        setup,run=grid;b=run.receipt.data()
+&gt;       assert b['status']=='complete_train_engineering',b
+E       AssertionError: {'active_package_digest': 'f07e09a2950b1fbb6b73ebef42a3c893bd3d3acb55d35aed69f26e4d08ba48c0', 'actual': {'auxiliary_do...', 'candidate_selection_stage': 'history_build_only', 'comparison': 'F-minus', ...}, 'status': 'succeeded'}, ...], ...}
+E       assert 'inconclusive' == 'complete_train_engineering'
+E         
+E         - complete_train_engineering
+E         + inconclusive
+
+tests\test_full_loo_runtime.py:141: AssertionError</failure></testcase></testsuite></testsuites>

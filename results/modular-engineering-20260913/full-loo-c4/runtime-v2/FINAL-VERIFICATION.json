@@ -1,0 +1,290 @@
+{
+  "schema": "c4-runtime-engineering-closure-v2",
+  "tested_source_commit": "47d020097629a7d6915676fe26917fcfc59ddc54",
+  "scope": "synthetic_model_source_and_scorer_with_actual_restricted_builders_docker_and_independent_process",
+  "checks": [
+    {
+      "prefix": "c4-runtime-check01",
+      "commit": "8a6a0a052fd4cdebc23e20bf9346291180ca737b",
+      "source_unchanged": true,
+      "exit_code": 1,
+      "junit": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "new_paid_calls": 0,
+      "wall_seconds": 11.187999999994645,
+      "pytest_args": [
+        "tests/test_full_loo_runtime.py",
+        "tests/test_full_loo_composition.py",
+        "tests/test_label_isolation.py",
+        "-x"
+      ],
+      "files_sha256": {
+        "c4-runtime-check01-before.json": "b20c17011b81cb7049ed8999e9ef7f768f92a5b69c92698a105d951579110648",
+        "c4-runtime-check01-closed.json": "7b280eaf3fed04050c6df30687eccc3ea7a8b2de487d072c6f6b5d8b5d13b0e0",
+        "c4-runtime-check01.xml": "fab6dfe16b2a476749a235bbcc076fb62be8b2a3308649fbdcef553349de1d1b"
+      }
+    },
+    {
+      "prefix": "c4-runtime-check02",
+      "commit": "cb5d4776c971694a69e64ebf4967349666c286b6",
+      "source_unchanged": true,
+      "exit_code": 1,
+      "junit": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "new_paid_calls": 0,
+      "wall_seconds": 50.219000000011874,
+      "pytest_args": [
+        "tests/test_full_loo_runtime.py",
+        "tests/test_full_loo_composition.py",
+        "tests/test_label_isolation.py",
+        "-x"
+      ],
+      "files_sha256": {
+        "c4-runtime-check02-before.json": "ea4454b78b276e046b7c4a9abaaff0424e850b401e02ab839b015bf7b384f9be",
+        "c4-runtime-check02-closed.json": "9d901b1cfd472f717bc78b484136bd043af0c2b8cb6999d0c9f335135e46a4f6",
+        "c4-runtime-check02.xml": "7e581807f85e25308b3494907fb35a0f6d118a491e09ce055ad32d68eee9d88a"
+      }
+    },
+    {
+      "prefix": "c4-runtime-check03",
+      "commit": "714374be65d0d41526374a85d7153dfb6bd0b70b",
+      "source_unchanged": true,
+      "exit_code": 1,
+      "junit": {
+        "tests": 7,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "new_paid_calls": 0,
+      "wall_seconds": 334.5789999999979,
+      "pytest_args": [
+        "tests/test_full_loo_runtime.py",
+        "tests/test_full_loo_composition.py",
+        "tests/test_label_isolation.py",
+        "-x"
+      ],
+      "files_sha256": {
+        "c4-runtime-check03-before.json": "23cb5b749d7e7aef22020e4a579d7bc96e5c3324a94227bb65fafae04f8a9be6",
+        "c4-runtime-check03-closed.json": "1bd2c32ef5ab3c31d87c47cce903f69b0d30b8ebeaea582f851bf5fec7f56a4a",
+        "c4-runtime-check03.xml": "a185403f272007d8902a6f13338d66e7e4907d50dd27df89ce9ed5f8806fb707"
+      }
+    },
+    {
+      "prefix": "c4-runtime-check04",
+      "commit": "5c60ebdd7861a3a38157901bd2f9a1aa4d26cd28",
+      "source_unchanged": true,
+      "exit_code": 1,
+      "junit": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 1,
+        "skipped": 0
+      },
+      "new_paid_calls": 0,
+      "wall_seconds": 129.51499999999942,
+      "pytest_args": [
+        "tests/test_full_loo_runtime.py",
+        "tests/test_full_loo_composition.py",
+        "tests/test_label_isolation.py",
+        "-x"
+      ],
+      "files_sha256": {
+        "c4-runtime-check04-before.json": "e39e64f45a0afebb631e8f44be30075f3bcc8c2a7bdfbf924d23fc2cb7fc87ae",
+        "c4-runtime-check04-closed.json": "bc97696f9f16e119105c9c19a8fa636933f63a90b5b0aea9c16da44271a5d9b3",
+        "c4-runtime-check04.xml": "9a34f253eb906b3687eec453b58bf024a128db6fac75d4a619027bde8fafae31"
+      }
+    },
+    {
+      "prefix": "c4-runtime-check05",
+      "commit": "47d020097629a7d6915676fe26917fcfc59ddc54",
+      "source_unchanged": true,
+      "exit_code": 0,
+      "junit": {
+        "tests": 28,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "new_paid_calls": 0,
+      "wall_seconds": 1483.3910000000033,
+      "pytest_args": [
+        "tests/test_full_loo_composition.py",
+        "tests/test_label_isolation.py",
+        "tests/test_full_loo_runtime.py",
+        "-x"
+      ],
+      "files_sha256": {
+        "c4-runtime-check05-before.json": "202750fe97d571f3ceaf170ec4ba4f2328e15694089961ee8f53985d0e0efc13",
+        "c4-runtime-check05-closed.json": "66076c27ac233974ef7f5ad5f79f986b0dafc815e3714c06e1572dba3ca23c8a",
+        "c4-runtime-check05.xml": "2b6bbd7f93f31c191135a4ab3b2a3f548395cd3847be16261c785ac8b78c8c11"
+      }
+    },
+    {
+      "prefix": "c4-shared-check01",
+      "commit": "47d020097629a7d6915676fe26917fcfc59ddc54",
+      "source_unchanged": true,
+      "exit_code": 0,
+      "junit": {
+        "tests": 43,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "new_paid_calls": 0,
+      "wall_seconds": 385.79700000000594,
+      "pytest_args": [
+        "tests/test_exploration_scheduler_combination.py",
+        "tests/test_execution_improvement_train_controller.py::test_new_exposure_and_process_scope_leave_old_exact_panel_contract",
+        "tests/test_modular_improvement.py",
+        "-x"
+      ],
+      "files_sha256": {
+        "c4-shared-check01-before.json": "af1c412c2cd1672ee7f04be105202ce4f6a244a332bde1164a62b83870b7020d",
+        "c4-shared-check01-closed.json": "830995a08a58f8b850c429658e61058114deba42f9242a1249f5877eea749592",
+        "c4-shared-check01.xml": "99fd0ae7c7608e2c06d88baf8f27ba3448ec26a175b78634f8a532a72aa87023"
+      }
+    }
+  ],
+  "archives": [
+    {
+      "file": "c4-runtime-check01-originals.zip",
+      "sha256": "70d477fb34edfb8236bdf5bc7f55eba2cf302a63aa79691b015a16f4390e877a",
+      "bytes": 80259,
+      "index": "c4-runtime-check01-originals.index.json",
+      "index_sha256": "a33e1d13327e89381d602993f8273f77044857375705830ba9f245c22f110f6d",
+      "original_files": 66
+    },
+    {
+      "file": "c4-runtime-check02-originals.zip",
+      "sha256": "3db453d0828a44e51c208fa671df166950985e4fbf693e6a2821c513e5572383",
+      "bytes": 476773,
+      "index": "c4-runtime-check02-originals.index.json",
+      "index_sha256": "18e74e11e43ce71a0d591b7e913291bdf8cb65b55bf3b09da2d8f493fe6a412f",
+      "original_files": 491
+    },
+    {
+      "file": "c4-runtime-check03-originals.zip",
+      "sha256": "d7adb9422838e36c83bf4883f5bdd71fd59cf622eca373ee6636a79e3270e778",
+      "bytes": 2790350,
+      "index": "c4-runtime-check03-originals.index.json",
+      "index_sha256": "3f99957f99b6ace5c527e318c3397f940002e952e67f35ce941a26824791316f",
+      "original_files": 2586
+    },
+    {
+      "file": "c4-runtime-check04-originals.zip",
+      "sha256": "18ba31b8dceab5aced8c9618deee329ff94caf896238689d4d01dbd52bf2a984",
+      "bytes": 1690619,
+      "index": "c4-runtime-check04-originals.index.json",
+      "index_sha256": "113e8d104fd073038fecf5fe3f21600aa1b33e43294c9fa59c30c08eb4edfddd",
+      "original_files": 1586
+    },
+    {
+      "file": "c4-runtime-check05-originals.zip",
+      "sha256": "bf240a7cc37d19ca7be63c749115cf07ef6c4b923af7963217e0f21c29a90c87",
+      "bytes": 10339232,
+      "index": "c4-runtime-check05-originals.index.json",
+      "index_sha256": "4937e4d7088bb783492d7be2618edc9b7d2964f9610f4496aacc9e9cbd25730d",
+      "original_files": 9432
+    },
+    {
+      "file": "c4-shared-check01-originals.zip",
+      "sha256": "00de9886fb4953dbd48569037203e971cc8b1252b8a8f2269f70f8d77a8b950e",
+      "bytes": 2296888,
+      "index": "c4-shared-check01-originals.index.json",
+      "index_sha256": "9c056111b9fca9a5fb891c032db6a37e21a38889582e0ad443370fe55eca456a",
+      "original_files": 2198
+    }
+  ],
+  "runtime_source_sha256": {
+    "evaluation/modular/full_loo_scoring.py": "ab7a2a75c66a7b102835fc1d67632636df13690de89fe753a675aefdb0cf6bce",
+    "evaluation/modular/scorer_process.py": "234678f3e94ed036b8c0a9170c94758599d4a892199e70c4e49a6ed31dc46e45",
+    "research_loop/modular/exploration_scheduler_combination.py": "08778e2c83f72505e423bccd103f50bccd686665829a61030fb3bcb105e59897",
+    "research_loop/modular/full_loo_composition.py": "86c92eb803099a9e5c51f6cd5602dcc2ece35f67d53ed790167f0bf9cc837b18",
+    "research_loop/modular/full_loo_controller.py": "723f6edbaa3c3a735346e2fa6e15b43a29fb58ee1927144583b0ba13a82fd04f",
+    "research_loop/modular/full_loo_driver.py": "cbec12e8d0c15e42ca5e155cdd02c545c43ab7d124256bcffdc9c91375f695b5",
+    "research_loop/modular/full_loo_modules.py": "030de34cb22f05aefc3e974015c204b60cfc01e30ff30e23a8f1d56c5284dfe6",
+    "research_loop/modular/full_loo_panel.py": "b0aa82fa149b342e64b82565b0932ed8406a176f1c440c72c408c46206edcb1d",
+    "tests/helpers/full_loo_scorer_process_helper.py": "4dc51b55952136fde76defe7c6ca70587f38321c1bbb5c862daf03d522c4f4e8",
+    "tests/test_full_loo_composition.py": "d227f00f065a4eb231dbe67a879566071e9e32ec28c162445ea73419676d2f26",
+    "tests/test_full_loo_runtime.py": "f12b64c1b6f1a1699c25c91100dc4a4680c9740964932cdfa3a678cb380d736b"
+  },
+  "committed_runtime_source_sha256": {
+    "evaluation/modular/full_loo_scoring.py": "ab7a2a75c66a7b102835fc1d67632636df13690de89fe753a675aefdb0cf6bce",
+    "evaluation/modular/scorer_process.py": "9918ed3b6d2d74cb0e2f7937841a2002b8573a05c350fa83ec6b8e8d4c1a6513",
+    "research_loop/modular/exploration_scheduler_combination.py": "30ee20f61e86f74484fccd69baa7ba4f96aacbd33a277e777659b51f94b72caf",
+    "research_loop/modular/full_loo_composition.py": "86c92eb803099a9e5c51f6cd5602dcc2ece35f67d53ed790167f0bf9cc837b18",
+    "research_loop/modular/full_loo_controller.py": "8ab2ea5992c2b2ca7b8ad13ab5796e79dcec7b64eb4bc2c136b4c4218ce6efb1",
+    "research_loop/modular/full_loo_driver.py": "09c0e7add2b3cc09b7ff803f1b07d7011f9c40652c1df0164ccf3f046dd4ddb6",
+    "research_loop/modular/full_loo_modules.py": "030de34cb22f05aefc3e974015c204b60cfc01e30ff30e23a8f1d56c5284dfe6",
+    "research_loop/modular/full_loo_panel.py": "b0aa82fa149b342e64b82565b0932ed8406a176f1c440c72c408c46206edcb1d",
+    "tests/helpers/full_loo_scorer_process_helper.py": "f74777a8e253dd043efee14bcd70fa018761ddd2ad5e2442fef5cc296971a1de",
+    "tests/test_full_loo_composition.py": "d227f00f065a4eb231dbe67a879566071e9e32ec28c162445ea73419676d2f26",
+    "tests/test_full_loo_runtime.py": "f12b64c1b6f1a1699c25c91100dc4a4680c9740964932cdfa3a678cb380d736b"
+  },
+  "working_to_git_blob": {
+    "evaluation/modular/full_loo_scoring.py": "identical",
+    "evaluation/modular/scorer_process.py": "CRLF-to-LF only (core.autocrlf=true)",
+    "research_loop/modular/exploration_scheduler_combination.py": "CRLF-to-LF only (core.autocrlf=true)",
+    "research_loop/modular/full_loo_composition.py": "identical",
+    "research_loop/modular/full_loo_controller.py": "CRLF-to-LF only (core.autocrlf=true)",
+    "research_loop/modular/full_loo_driver.py": "CRLF-to-LF only (core.autocrlf=true)",
+    "research_loop/modular/full_loo_modules.py": "identical",
+    "research_loop/modular/full_loo_panel.py": "identical",
+    "tests/helpers/full_loo_scorer_process_helper.py": "CRLF-to-LF only (core.autocrlf=true)",
+    "tests/test_full_loo_composition.py": "identical",
+    "tests/test_full_loo_runtime.py": "identical"
+  },
+  "controller_receipt_sha256": "3f8c27ed97982d8a373c3924792aa5e8c1ea9e002a6894d2dcbfb2bae4200732",
+  "controller_status": "complete_train_engineering",
+  "actual": {
+    "auxiliary_docker_attempts": 58,
+    "builder_executions": 9,
+    "corpus_qualification_calls": 58,
+    "docker_attempts": 80,
+    "independent_source_qualification_calls": 62,
+    "model_calls": 169,
+    "retrieval_requests": 87,
+    "scorer_calls": 22,
+    "solver_docker_attempts": 22
+  },
+  "structural_rows": 2,
+  "scorer_process": {
+    "close_attempts": 1,
+    "closed": true,
+    "error": null,
+    "startup_attempts": 1,
+    "startup_status": "ready"
+  },
+  "p0": {
+    "control_plane": "RunSession.finish",
+    "promotion_allowed": false,
+    "required": true,
+    "scientific_execution_qualified": false
+  },
+  "new_paid_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false,
+  "provider_scope": "CodexModelPort only; separate GrokTrainModelPort and default Grok entry unsupported",
+  "remaining_obligations": [
+    "P0 scientific qualification",
+    "C5 final TRAIN-selected bundle and independent validation acceptance",
+    "Q6.3 separate metaprogram"
+  ],
+  "archive_exclusions": [
+    "primary upstream synthetic repository",
+    "private-scorer-store synthetic reference body",
+    "authority .key files",
+    "symbolic links or junction aliases",
+    "Python bytecode caches"
+  ],
+  "provenance_limit": "Original host absolute paths retained; original E-work evidence retained; hashes are integrity evidence, not hostile-host attestation."
+}

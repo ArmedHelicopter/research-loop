@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="7" time="334.088" timestamp="2026-09-14T07:08:13.551495+08:00" hostname="SC-202507131830"><testcase classname="tests.test_full_loo_runtime" name="test_actual_complete_22_cell_composition" time="256.454" /><testcase classname="tests.test_full_loo_runtime" name="test_closed_scorer_scope_and_history_removal" time="0.040" /><testcase classname="tests.test_full_loo_runtime" name="test_failure_denominators_no_candidate_activation[source_unknown]" time="6.260" /><testcase classname="tests.test_full_loo_runtime" name="test_failure_denominators_no_candidate_activation[model_unknown]" time="4.608" /><testcase classname="tests.test_full_loo_runtime" name="test_failure_denominators_no_candidate_activation[builder_failed]" time="37.437" /><testcase classname="tests.test_full_loo_runtime" name="test_failure_denominators_no_candidate_activation[auxiliary_failed]" time="28.894" /><testcase classname="tests.test_full_loo_runtime" name="test_coherently_rehashed_prediction_after_choice_rejected" time="0.004"><failure message="TypeError: 'list' object is not callable">grid = ({'all_items': {'train': [PrimaryTrainExportItem(source='discoverybench', token='7736f9f63d05fa7c620b51e97aacb85599b95...s":0,"model_calls":0,"retrieval_requests":0,"scorer_calls":0,"solver_docker_attempts":0},"validation_opened":false}')))
+
+    def test_coherently_rehashed_prediction_after_choice_rejected(grid):
+        _,run=grid;r=run.results[0];path=r.root/'runtime/trace.jsonl';raw=path.read_bytes()
+        try:
+            rows=[json.loads(x) for x in raw.splitlines()]
+            pred=next(e for e in rows if e['stage']=='c4_prediction_frozen');rows.remove(pred)
+            rows.insert(next(i for i,e in enumerate(rows) if e['stage']=='c4_choice_frozen')+1,pred)
+&gt;           _rewrite_trace(path,rows);verify_trace(path)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_full_loo_runtime.py:201: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/c4-runtime-check03/full-loo0/run/targets/3a0b5645b641aea8f7271ca51137d69af0a6b9d37d0d37d435a781fa6fe435a0/runtime/trace.jsonl')
+change = [{'data': {'arm': {'baseline_digest': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'compatibili...836519df862', 'previous': '61af515580bba18b279a6250d59ac7d9005ac8956f4a150b175c58b90390bb32', 'sequence': 6, ...}, ...]
+
+    def _rewrite_trace(path: Path, change) -&gt; str:
+        """Apply an adversarial trace edit while retaining a valid hash chain."""
+        events = [FrozenRecord(line).data() for line in path.read_text(encoding="utf-8").splitlines()]
+&gt;       change(events)
+E       TypeError: 'list' object is not callable
+
+tests\test_modular_combination_benchmark_driver.py:89: TypeError</failure></testcase></testsuite></testsuites>

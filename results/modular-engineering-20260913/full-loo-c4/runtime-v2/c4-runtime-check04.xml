@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="129.039" timestamp="2026-09-14T07:16:23.682589+08:00" hostname="SC-202507131830"><testcase classname="tests.test_full_loo_runtime" name="test_actual_complete_22_cell_composition" time="128.523"><error message="failed on setup with &quot;research_loop.ontology.ContractError: combination scorer startup did not return its bound configuration&quot;">self = &lt;evaluation.modular.scorer_process.CombinationScorerProcessClient object at 0x0000024FF6065FA0&gt;
+
+    def __init__(self, *, panel: CombinationPanel, config: ScorerConfig, command: list[str], journal_path: Path,
+                 task_handle_bindings: Mapping[str, str], execution_authority_keys: Mapping[str, bytes],
+                 scorer_authority_keys: Mapping[str, bytes], environment: Mapping[str, str] | None = None,
+                 response_timeout_seconds: int = 240, retrieval_review: bool = False, admission: bool = False,
+                 exploration_scheduler: bool = False, state_prediction: bool = False, state_retrieval: bool = False, state_exploration: bool = False, state_scheduling: bool = False, state_improvement: bool = False, mechanism_improvement: bool = False, execution_improvement: bool = False, full_loo: bool = False):
+        serialize_combination_panel(panel, retrieval_review=retrieval_review, admission=admission,
+                                    exploration_scheduler=exploration_scheduler, state_prediction=state_prediction, state_retrieval=state_retrieval, state_exploration=state_exploration, state_scheduling=state_scheduling, state_improvement=state_improvement, mechanism_improvement=mechanism_improvement, execution_improvement=execution_improvement, full_loo=full_loo)
+        expected = scorer_process_binding(panel=panel, config=config, task_handle_bindings=task_handle_bindings,
+            execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
+        self.config, self.state_prediction, self.state_retrieval = config, state_prediction, state_retrieval
+        self.state_exploration = state_exploration
+        self.state_scheduling = state_scheduling
+        self.state_improvement = state_improvement
+        self.mechanism_improvement = mechanism_improvement
+        self.full_loo = full_loo
+        self.execution_improvement = execution_improvement
+        super().__init__(panel=panel, command=command, journal_path=journal_path,
+                         environment=environment, response_timeout_seconds=response_timeout_seconds)
+        try:
+            nonce = uuid.uuid4().hex
+            self.input.write(canonical({"schema": "scorer-process-binding-request-v1", "nonce": nonce}) + "\n")
+            self.input.flush()
+&gt;           response = json.loads(self._readline_bounded())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+evaluation\modular\scorer_process.py:595: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:346: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;json.decoder.JSONDecoder object at 0x0000024FF3161070&gt;, s = '', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+            obj, end = self.scan_once(s, idx)
+        except StopIteration as err:
+&gt;           raise JSONDecodeError("Expecting value", s, err.value) from None
+E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:355: JSONDecodeError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path_factory = TempPathFactory(_given_basetemp=WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/c4-runtime-check04'), _trace=&lt;p...ndowsPath('E:/_ryanDev/AI/research-loop-modular/work/c4-runtime-check04'), _retention_count=3, _retention_policy='all')
+
+    @pytest.fixture(scope='module')
+    def grid(tmp_path_factory):
+        with pytest.MonkeyPatch.context() as patch:
+&gt;           setup=prepare(tmp_path_factory.mktemp('full-loo'),patch);run=invoke(setup,patch)
+                                                                         ^^^^^^^^^^^^^^^^^^^
+
+tests\test_full_loo_runtime.py:137: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_full_loo_runtime.py:128: in invoke
+    return run_full_loo_train(setup['plan'],prospective_exporter=exporter,snapshot_root=Path(exporter.config['snapshot_root']),
+research_loop\modular\full_loo_controller.py:308: in run_full_loo_train
+    service=scorer_factory(panel)
+            ^^^^^^^^^^^^^^^^^^^^^
+tests\test_full_loo_runtime.py:131: in &lt;lambda&gt;
+    scorer_factory=lambda panel:service(setup,stack,panel,fault),execution_authority=EXECUTION,scorer_authority_keys={SCORER.authority_id:SCORER.key})
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_full_loo_runtime.py:116: in service
+    client=CombinationScorerProcessClient(panel=panel,config=rubric,full_loo=True,command=command,journal_path=root/'c4-client.jsonl',
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;evaluation.modular.scorer_process.CombinationScorerProcessClient object at 0x0000024FF6065FA0&gt;
+
+    def __init__(self, *, panel: CombinationPanel, config: ScorerConfig, command: list[str], journal_path: Path,
+                 task_handle_bindings: Mapping[str, str], execution_authority_keys: Mapping[str, bytes],
+                 scorer_authority_keys: Mapping[str, bytes], environment: Mapping[str, str] | None = None,
+                 response_timeout_seconds: int = 240, retrieval_review: bool = False, admission: bool = False,
+                 exploration_scheduler: bool = False, state_prediction: bool = False, state_retrieval: bool = False, state_exploration: bool = False, state_scheduling: bool = False, state_improvement: bool = False, mechanism_improvement: bool = False, execution_improvement: bool = False, full_loo: bool = False):
+        serialize_combination_panel(panel, retrieval_review=retrieval_review, admission=admission,
+                                    exploration_scheduler=exploration_scheduler, state_prediction=state_prediction, state_retrieval=state_retrieval, state_exploration=state_exploration, state_scheduling=state_scheduling, state_improvement=state_improvement, mechanism_improvement=mechanism_improvement, execution_improvement=execution_improvement, full_loo=full_loo)
+        expected = scorer_process_binding(panel=panel, config=config, task_handle_bindings=task_handle_bindings,
+            execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
+        self.config, self.state_prediction, self.state_retrieval = config, state_prediction, state_retrieval
+        self.state_exploration = state_exploration
+        self.state_scheduling = state_scheduling
+        self.state_improvement = state_improvement
+        self.mechanism_improvement = mechanism_improvement
+        self.full_loo = full_loo
+        self.execution_improvement = execution_improvement
+        super().__init__(panel=panel, command=command, journal_path=journal_path,
+                         environment=environment, response_timeout_seconds=response_timeout_seconds)
+        try:
+            nonce = uuid.uuid4().hex
+            self.input.write(canonical({"schema": "scorer-process-binding-request-v1", "nonce": nonce}) + "\n")
+            self.input.flush()
+            response = json.loads(self._readline_bounded())
+            if response != {"schema": "scorer-process-binding-response-v1", "nonce": nonce, "binding": expected.data()}:
+                raise ContractError("combination scorer startup binding differs from frozen configuration")
+            self.binding = expected
+        except Exception as exc:
+            self._stop_unknown_worker()
+            if isinstance(exc, ContractError):
+                raise
+&gt;           raise ContractError("combination scorer startup did not return its bound configuration") from exc
+E           research_loop.ontology.ContractError: combination scorer startup did not return its bound configuration
+
+evaluation\modular\scorer_process.py:603: ContractError</error></testcase></testsuite></testsuites>

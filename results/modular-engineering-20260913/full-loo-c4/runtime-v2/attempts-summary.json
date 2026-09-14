@@ -1,0 +1,825 @@
+[
+  {
+    "check": "c4-runtime-check01",
+    "path": "full-loo0/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "failed": 9
+    },
+    "target_states": {
+      "blocked": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 0,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 0,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 0,
+        "docker_attempts": 0,
+        "independent_source_qualification_calls": 0,
+        "model_calls": 0,
+        "retrieval_requests": 0,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 58,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 58,
+        "docker_attempts": 80,
+        "independent_source_qualification_calls": 62,
+        "model_calls": 169,
+        "retrieval_requests": 87,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "source_cost_unknown": false
+    }
+  },
+  {
+    "check": "c4-runtime-check02",
+    "path": "full-loo0/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "succeeded": 9
+    },
+    "target_states": {
+      "blocked": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 90,
+      "model_calls": 45,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 18,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 18,
+        "docker_attempts": 18,
+        "independent_source_qualification_calls": 18,
+        "model_calls": 45,
+        "retrieval_requests": 27,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 40,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 40,
+        "docker_attempts": 62,
+        "independent_source_qualification_calls": 44,
+        "model_calls": 124,
+        "retrieval_requests": 60,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "source_cost_unknown": false
+    }
+  },
+  {
+    "check": "c4-runtime-check03",
+    "path": "full-loo0/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "succeeded": 9
+    },
+    "target_states": {
+      "scored": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 338,
+      "model_calls": 169,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "complete_train_engineering",
+      "actual": {
+        "auxiliary_docker_attempts": 58,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 58,
+        "docker_attempts": 80,
+        "independent_source_qualification_calls": 62,
+        "model_calls": 169,
+        "retrieval_requests": 87,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 0,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 0,
+        "docker_attempts": 0,
+        "independent_source_qualification_calls": 0,
+        "model_calls": 0,
+        "retrieval_requests": 0,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "source_cost_unknown": false
+    }
+  },
+  {
+    "check": "c4-runtime-check03",
+    "path": "test_failure_denominators_no_c0/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "failed": 1,
+      "blocked": 8
+    },
+    "target_states": {
+      "blocked": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 0,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 0,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 0,
+        "docker_attempts": 0,
+        "independent_source_qualification_calls": 2,
+        "model_calls": 0,
+        "retrieval_requests": 0,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 58,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 58,
+        "docker_attempts": 80,
+        "independent_source_qualification_calls": 60,
+        "model_calls": 169,
+        "retrieval_requests": 87,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "source_cost_unknown": true
+    }
+  },
+  {
+    "check": "c4-runtime-check03",
+    "path": "test_failure_denominators_no_c1/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "failed": 1,
+      "blocked": 8
+    },
+    "target_states": {
+      "blocked": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 1,
+      "model_usage_incomplete": true
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 0,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 2,
+        "docker_attempts": 0,
+        "independent_source_qualification_calls": 2,
+        "model_calls": 1,
+        "retrieval_requests": 0,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 58,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 56,
+        "docker_attempts": 80,
+        "independent_source_qualification_calls": 60,
+        "model_calls": 168,
+        "retrieval_requests": 87,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "source_cost_unknown": false
+    }
+  },
+  {
+    "check": "c4-runtime-check03",
+    "path": "test_failure_denominators_no_c2/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "failed": 9
+    },
+    "target_states": {
+      "blocked": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 90,
+      "model_calls": 45,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 18,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 18,
+        "docker_attempts": 18,
+        "independent_source_qualification_calls": 18,
+        "model_calls": 45,
+        "retrieval_requests": 27,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 40,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 40,
+        "docker_attempts": 62,
+        "independent_source_qualification_calls": 44,
+        "model_calls": 124,
+        "retrieval_requests": 60,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "source_cost_unknown": false
+    }
+  },
+  {
+    "check": "c4-runtime-check03",
+    "path": "test_failure_denominators_no_c3/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "failed": 9
+    },
+    "target_states": {
+      "blocked": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 72,
+      "model_calls": 36,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 18,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 18,
+        "docker_attempts": 18,
+        "independent_source_qualification_calls": 18,
+        "model_calls": 36,
+        "retrieval_requests": 27,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 40,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 40,
+        "docker_attempts": 62,
+        "independent_source_qualification_calls": 44,
+        "model_calls": 133,
+        "retrieval_requests": 60,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "source_cost_unknown": false
+    }
+  },
+  {
+    "check": "c4-runtime-check04",
+    "path": "full-loo0/run/attempts.json",
+    "terminal_receipt_present": false,
+    "build_states": {
+      "succeeded": 9
+    },
+    "target_states": {
+      "succeeded": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 338,
+      "model_calls": 169,
+      "model_usage_incomplete": false
+    },
+    "terminal": null
+  },
+  {
+    "check": "c4-runtime-check05",
+    "path": "full-loo0/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "succeeded": 9
+    },
+    "target_states": {
+      "scored": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 338,
+      "model_calls": 169,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "complete_train_engineering",
+      "actual": {
+        "auxiliary_docker_attempts": 58,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 58,
+        "docker_attempts": 80,
+        "independent_source_qualification_calls": 62,
+        "model_calls": 169,
+        "retrieval_requests": 87,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 0,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 0,
+        "docker_attempts": 0,
+        "independent_source_qualification_calls": 0,
+        "model_calls": 0,
+        "retrieval_requests": 0,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "source_cost_unknown": false,
+      "scorer_process": {
+        "close_attempts": 1,
+        "closed": true,
+        "error": null,
+        "startup_attempts": 1,
+        "startup_status": "ready"
+      }
+    }
+  },
+  {
+    "check": "c4-runtime-check05",
+    "path": "test_failure_denominators_no_c0/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "failed": 1,
+      "blocked": 8
+    },
+    "target_states": {
+      "blocked": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 0,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 0,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 0,
+        "docker_attempts": 0,
+        "independent_source_qualification_calls": 2,
+        "model_calls": 0,
+        "retrieval_requests": 0,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 58,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 58,
+        "docker_attempts": 80,
+        "independent_source_qualification_calls": 60,
+        "model_calls": 169,
+        "retrieval_requests": 87,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "source_cost_unknown": true,
+      "scorer_process": {
+        "close_attempts": 0,
+        "closed": null,
+        "error": null,
+        "startup_attempts": 0,
+        "startup_status": "not_started"
+      }
+    }
+  },
+  {
+    "check": "c4-runtime-check05",
+    "path": "test_failure_denominators_no_c1/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "failed": 1,
+      "blocked": 8
+    },
+    "target_states": {
+      "blocked": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 0,
+      "model_calls": 1,
+      "model_usage_incomplete": true
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 0,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 2,
+        "docker_attempts": 0,
+        "independent_source_qualification_calls": 2,
+        "model_calls": 1,
+        "retrieval_requests": 0,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 58,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 56,
+        "docker_attempts": 80,
+        "independent_source_qualification_calls": 60,
+        "model_calls": 168,
+        "retrieval_requests": 87,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "source_cost_unknown": false,
+      "scorer_process": {
+        "close_attempts": 0,
+        "closed": null,
+        "error": null,
+        "startup_attempts": 0,
+        "startup_status": "not_started"
+      }
+    }
+  },
+  {
+    "check": "c4-runtime-check05",
+    "path": "test_failure_denominators_no_c2/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "failed": 9
+    },
+    "target_states": {
+      "blocked": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 90,
+      "model_calls": 45,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 18,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 18,
+        "docker_attempts": 18,
+        "independent_source_qualification_calls": 18,
+        "model_calls": 45,
+        "retrieval_requests": 27,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 40,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 40,
+        "docker_attempts": 62,
+        "independent_source_qualification_calls": 44,
+        "model_calls": 124,
+        "retrieval_requests": 60,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "source_cost_unknown": false,
+      "scorer_process": {
+        "close_attempts": 0,
+        "closed": null,
+        "error": null,
+        "startup_attempts": 0,
+        "startup_status": "not_started"
+      }
+    }
+  },
+  {
+    "check": "c4-runtime-check05",
+    "path": "test_failure_denominators_no_c3/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "failed": 9
+    },
+    "target_states": {
+      "blocked": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 72,
+      "model_calls": 36,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 18,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 18,
+        "docker_attempts": 18,
+        "independent_source_qualification_calls": 18,
+        "model_calls": 36,
+        "retrieval_requests": 27,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 40,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 40,
+        "docker_attempts": 62,
+        "independent_source_qualification_calls": 44,
+        "model_calls": 133,
+        "retrieval_requests": 60,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "source_cost_unknown": false,
+      "scorer_process": {
+        "close_attempts": 0,
+        "closed": null,
+        "error": null,
+        "startup_attempts": 0,
+        "startup_status": "not_started"
+      }
+    }
+  },
+  {
+    "check": "c4-runtime-check05",
+    "path": "test_failure_denominators_no_c4/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "succeeded": 9
+    },
+    "target_states": {
+      "blocked": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 90,
+      "model_calls": 45,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 18,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 18,
+        "docker_attempts": 18,
+        "independent_source_qualification_calls": 18,
+        "model_calls": 45,
+        "retrieval_requests": 27,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 40,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 40,
+        "docker_attempts": 62,
+        "independent_source_qualification_calls": 44,
+        "model_calls": 124,
+        "retrieval_requests": 60,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "source_cost_unknown": false,
+      "scorer_process": {
+        "close_attempts": 0,
+        "closed": null,
+        "error": null,
+        "startup_attempts": 0,
+        "startup_status": "not_started"
+      }
+    }
+  },
+  {
+    "check": "c4-runtime-check05",
+    "path": "test_scorer_startup_rejection_0/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "succeeded": 9
+    },
+    "target_states": {
+      "scoring_blocked": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 338,
+      "model_calls": 169,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 58,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 58,
+        "docker_attempts": 80,
+        "independent_source_qualification_calls": 62,
+        "model_calls": 169,
+        "retrieval_requests": 87,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 22
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 0,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 0,
+        "docker_attempts": 0,
+        "independent_source_qualification_calls": 0,
+        "model_calls": 0,
+        "retrieval_requests": 0,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 0
+      },
+      "source_cost_unknown": false,
+      "scorer_process": {
+        "close_attempts": 0,
+        "closed": null,
+        "error": "OSError: synthetic scorer factory startup outage",
+        "startup_attempts": 1,
+        "startup_status": "failed"
+      }
+    }
+  },
+  {
+    "check": "c4-runtime-check05",
+    "path": "test_scorer_startup_rejection_1/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "succeeded": 9
+    },
+    "target_states": {
+      "scoring_blocked": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 338,
+      "model_calls": 169,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 58,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 58,
+        "docker_attempts": 80,
+        "independent_source_qualification_calls": 62,
+        "model_calls": 169,
+        "retrieval_requests": 87,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 22
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 0,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 0,
+        "docker_attempts": 0,
+        "independent_source_qualification_calls": 0,
+        "model_calls": 0,
+        "retrieval_requests": 0,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 0
+      },
+      "source_cost_unknown": false,
+      "scorer_process": {
+        "close_attempts": 1,
+        "closed": true,
+        "error": "ContractError: exact closed C4 independent process scorer required",
+        "startup_attempts": 1,
+        "startup_status": "failed"
+      }
+    }
+  },
+  {
+    "check": "c4-runtime-check05",
+    "path": "test_target_and_independent_sc0/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "succeeded": 9
+    },
+    "target_states": {
+      "failed": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 338,
+      "model_calls": 169,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 58,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 58,
+        "docker_attempts": 80,
+        "independent_source_qualification_calls": 62,
+        "model_calls": 169,
+        "retrieval_requests": 87,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 22
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 0,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 0,
+        "docker_attempts": 0,
+        "independent_source_qualification_calls": 0,
+        "model_calls": 0,
+        "retrieval_requests": 0,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 0
+      },
+      "source_cost_unknown": false,
+      "scorer_process": {
+        "close_attempts": 1,
+        "closed": true,
+        "error": null,
+        "startup_attempts": 1,
+        "startup_status": "ready"
+      }
+    }
+  },
+  {
+    "check": "c4-runtime-check05",
+    "path": "test_target_and_independent_sc1/run/attempts.json",
+    "terminal_receipt_present": true,
+    "build_states": {
+      "succeeded": 9
+    },
+    "target_states": {
+      "failed": 22
+    },
+    "structural_rows": 2,
+    "model_usage": {
+      "known_model_tokens": 338,
+      "model_calls": 169,
+      "model_usage_incomplete": false
+    },
+    "terminal": {
+      "status": "inconclusive",
+      "actual": {
+        "auxiliary_docker_attempts": 58,
+        "builder_executions": 9,
+        "corpus_qualification_calls": 58,
+        "docker_attempts": 80,
+        "independent_source_qualification_calls": 62,
+        "model_calls": 169,
+        "retrieval_requests": 87,
+        "scorer_calls": 22,
+        "solver_docker_attempts": 22
+      },
+      "unused": {
+        "auxiliary_docker_attempts": 0,
+        "builder_executions": 0,
+        "corpus_qualification_calls": 0,
+        "docker_attempts": 0,
+        "independent_source_qualification_calls": 0,
+        "model_calls": 0,
+        "retrieval_requests": 0,
+        "scorer_calls": 0,
+        "solver_docker_attempts": 0
+      },
+      "source_cost_unknown": false,
+      "scorer_process": {
+        "close_attempts": 1,
+        "closed": true,
+        "error": null,
+        "startup_attempts": 1,
+        "startup_status": "ready"
+      }
+    }
+  }
+]
