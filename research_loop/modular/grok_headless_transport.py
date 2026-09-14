@@ -188,7 +188,7 @@ def _recovery(value):
     if value is None:
         return None
     _require(isinstance(value, dict) and set(value) == {'schema', 'max_attempts'}
-             and value['schema'] == ACCOUNT_RECOVERY_SCHEMA and value['max_attempts'] == 2,
+             and value['schema'] == ACCOUNT_RECOVERY_SCHEMA and type(value['max_attempts']) is int and value['max_attempts'] == 2,
              'account recovery contract')
     return dict(value)
 
@@ -217,21 +217,18 @@ def _account_once(home: Path, destination: Path):
         except (urllib.error.URLError, TimeoutError) as exc:
             row.update(status='failed', error_class=type(exc).__name__, received_at=datetime.now(timezone.utc).isoformat()); _write(destination/'requests.json',rows)
             raise _AccountReadTransportError(name, type(exc).__name__) from exc
-        except OSError as exc:
-            row.update(status='failed', error_class=type(exc).__name__, received_at=datetime.now(timezone.utc).isoformat()); _write(destination/'requests.json',rows)
-            raise _AccountReadTransportError(name, type(exc).__name__) from exc
         _write(destination/(name+'.private.json'),raw); row.update(status='received',bytes=len(raw),sha256=_sha(raw),received_at=datetime.now(timezone.utc).isoformat()); _write(destination/'requests.json',rows); raws[name]=_strict_json(raw)
         # A received bad account body is a contract failure, never a reason to
         # retry a later transient route and discard the already retained bytes.
         if name == 'credits':
             cfg=raws[name].get('config') if isinstance(raws[name],dict) else None
             _require(isinstance(cfg,dict) and cfg.get('isUnifiedBillingUser') is True
-                     and all(isinstance(cfg.get(k),dict) and cfg[k].get('val',0) == 0 for k in ('onDemandCap','onDemandUsed','prepaidBalance'))
+                     and all(isinstance(cfg.get(k),dict) and set(cfg[k]) <= {'val'} and type(cfg[k].get('val',0)) is int and cfg[k].get('val',0) == 0 for k in ('onDemandCap','onDemandUsed','prepaidBalance'))
                      and raws[name].get('on_demand_enabled',False) is False, 'paid fallback')
         elif name == 'topup':
             _require(raws[name] in ({},{'rule':None}), 'paid fallback')
         elif name == 'user':
-            _require(isinstance(raws[name],dict) and raws[name].get('hasGrokCodeAccess') is True
+            _require(isinstance(raws[name],dict) and isinstance(raws[name].get('userId'),str) and raws[name]['userId'] and raws[name].get('hasGrokCodeAccess') is True
                      and raws[name].get('userBlockedReason') in (None,'') and raws[name].get('teamBlockedReasons') == [], 'account access')
     projection=_project_account({name:_read(destination/(name+'.private.json')) for name,_ in ACCOUNT_ROUTES},rows,datetime.now(timezone.utc).isoformat(),expected_user_id=auth['user_id'])
     _write(destination/'observation.json',projection); return projection
@@ -250,6 +247,14 @@ def _account_recovered(home: Path, destination: Path, recovery):
             failure={'route':exc.route,'error_class':exc.error_class,'http_status':exc.status,'failed_at':datetime.now(timezone.utc).isoformat()}
             _write(attempt/'failure.json',failure); attempts.append({'index':index,'status':'transient_failed','failure_sha256':_sha(_read(attempt/'failure.json'))})
             _write(destination/'attempts.json',{'schema':ACCOUNT_RECOVERY_SCHEMA,'recovery':recovery,'attempts':attempts,'winning_attempt':None,'projection':None})
+        except ContractError as exc:
+            # Retain the received prefix and a non-secret terminal category; it
+            # is policy/schema evidence, not a retryable transport condition.
+            rows=_strict_json(_read(attempt/'requests.json'))
+            failure={'route':rows[-1]['name'] if rows else None,'error_class':'ContractError','http_status':None,'failed_at':datetime.now(timezone.utc).isoformat()}
+            _write(attempt/'failure.json',failure); attempts.append({'index':index,'status':'terminal_failed','failure_sha256':_sha(_read(attempt/'failure.json'))})
+            _write(destination/'attempts.json',{'schema':ACCOUNT_RECOVERY_SCHEMA,'recovery':recovery,'attempts':attempts,'winning_attempt':None,'projection':None})
+            raise
     raise ContractError('account recovery exhausted')
 
 
@@ -384,6 +389,8 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
     _require(reasoning_effort is None or reasoning_effort in ALLOWED_REASONING_EFFORTS,
         'unsupported headless reasoning effort')
     recovery = _recovery(account_read_recovery)
+    if recovery:
+        context['account_read_recovery'] = recovery
     _require(_sha(_read(Path(context['executable']))) == EXECUTABLE_SHA256, 'headless executable pin')
     _require(home.is_dir() and {p.name for p in home.iterdir()} == {'auth.json', 'config.toml'}
         and (home / 'auth.json').is_file()
@@ -429,6 +436,7 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
         _inspect(raw)
         stage = 'account_preflight'; pre = _account_recovered(home, native/'billing-before', recovery) if recovery else _account(home, native/'billing-before')
         receipt['account_preflight'] = pre['projection'] if recovery else pre
+        if recovery: receipt['account_preflight_attempts_sha256'] = _sha(_read(native/'billing-before/attempts.json'))
         stage = 'prelaunch_guard'; _sources(frozen_files)
         age = (datetime.now(timezone.utc)-_instant(receipt['account_preflight']['oldest_observed_at'])).total_seconds()
         _require(0 <= age <= 5, 'account snapshot stale')
@@ -446,6 +454,7 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
             receipt['response_sha256'] = _write(native/'response.private.json', response.data())
         stage = 'account_postflight'; post = _account_recovered(home, native/'billing-after', recovery) if recovery else _account(home, native/'billing-after')
         receipt['account_postflight'] = post['projection'] if recovery else post
+        if recovery: receipt['account_postflight_attempts_sha256'] = _sha(_read(native/'billing-after/attempts.json'))
         _require(receipt['account_preflight']['account_binding'] == receipt['account_postflight']['account_binding'],
             'account identity changed')
         stage = 'post_response_source_guard'; _sources(frozen_files)
@@ -495,9 +504,23 @@ def _reread_recovered_account(folder, recovery):
             accepted.append((row['index'],projection))
         else:
             failure=_strict_json(_read(path/'failure.json')); rows=_strict_json(_read(path/'requests.json'))
-            _require(row.get('status') == 'transient_failed' and row.get('failure_sha256') == _sha(_read(path/'failure.json'))
-                     and failure.get('route') in {n for n,_ in ACCOUNT_ROUTES} and failure.get('error_class') in {'HTTPError','URLError','TimeoutError'}, 'account recovery failure binding')
-            _require(any(r.get('status') == 'failed' for r in rows), 'account recovery partial binding')
+            _require(row.get('status') in {'transient_failed','terminal_failed'} and row.get('failure_sha256') == _sha(_read(path/'failure.json'))
+                     and ((row.get('status') == 'transient_failed' and failure.get('route') in {n for n,_ in ACCOUNT_ROUTES} and failure.get('error_class') in {'HTTPError','URLError','TimeoutError'})
+                          or (row.get('status') == 'terminal_failed' and failure.get('route') in {n for n,_ in ACCOUNT_ROUTES} and failure.get('error_class') == 'ContractError')), 'account recovery failure binding')
+            _require(isinstance(rows,list) and rows and [r.get('name') for r in rows] == [n for n,_ in ACCOUNT_ROUTES[:len(rows)]]
+                     and all(r.get('method') == 'GET' and r.get('url') == PROXY + ACCOUNT_ROUTES[i][1]
+                             and r.get('status') in {'received','failed'} and isinstance(r.get('started_at'),str)
+                             for i,r in enumerate(rows)), 'account recovery partial order')
+            last=rows[-1]
+            _require((row.get('status') == 'transient_failed' and last.get('status') == 'failed'
+                      and failure.get('route') == last.get('name') and failure.get('error_class') == last.get('error_class')
+                      and failure.get('http_status') == last.get('http_status'))
+                     or (row.get('status') == 'terminal_failed' and last.get('status') == 'received'
+                         and failure.get('route') == last.get('name')), 'account recovery terminal row binding')
+            for request in rows:
+                if request.get('status') == 'received':
+                    raw=_read(path/(request['name']+'.private.json'))
+                    _require(request.get('sha256') == _sha(raw) and request.get('bytes') == len(raw), 'account recovery raw binding')
     _require(len(accepted) == 1 and winner == accepted[0][0] and winner == len(attempts)-1
              and manifest.get('projection') == accepted[0][1], 'account recovery winner binding')
     return accepted[0][1]
@@ -593,6 +616,9 @@ def _verify_headless_request_binding(result, entry, directory, spec, frozen_file
     else:
         _require(result.response is None, 'rejected native response exposed')
     reread = _reread_recovered_account if recovery else _reread_account
+    if recovery:
+        _require(receipt.get('account_preflight_attempts_sha256') == _sha(_read(native/'billing-before/attempts.json'))
+                 and receipt.get('account_postflight_attempts_sha256') == _sha(_read(native/'billing-after/attempts.json')), 'account attempts receipt binding')
     pre = reread(native/'billing-before', recovery) if recovery else reread(native/'billing-before')
     post = reread(native/'billing-after', recovery) if recovery else reread(native/'billing-after')
     _require(pre == receipt['account_preflight'] and post == receipt['account_postflight']

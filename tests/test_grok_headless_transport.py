@@ -91,6 +91,7 @@ def test_opt_in_postflight_account_read_retry_keeps_one_main_and_reader_binds_at
     entry, kwargs, spec, directory, calls, gets = prepared(tmp_path, monkeypatch)
     recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2}
     kwargs['account_read_recovery']=recovery; spec['account_read_recovery']=recovery
+    spec['native_context']=dict(spec['native_context'], account_read_recovery=recovery)
     original=transport.urllib.request.build_opener; count={'n':0}
     class FailOnce:
         def open(self, request, timeout):
@@ -121,9 +122,17 @@ def test_opt_in_account_policy_error_does_not_retry(tmp_path, monkeypatch):
 def test_opt_in_reader_rejects_winner_or_partial_tamper(tmp_path, monkeypatch):
     entry, kwargs, spec, directory, _, _ = prepared(tmp_path, monkeypatch)
     recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2}; kwargs['account_read_recovery']=recovery; spec['account_read_recovery']=recovery
+    spec['native_context']=dict(spec['native_context'], account_read_recovery=recovery)
     result=transport.run_headless_diagnostic(**kwargs)
     attempts=directory/'native/billing-before/attempts.json'; body=json.loads(attempts.read_bytes()); body['winning_attempt']=1; transport._write(attempts,body)
     with pytest.raises(transport.ContractError): transport.verify_headless_request_binding(result,entry,directory,spec,kwargs['frozen_files'])
+
+
+@pytest.mark.parametrize('value', [True, 2.0, 1, 3])
+def test_opt_in_recovery_requires_exact_integer_bound(tmp_path, monkeypatch, value):
+    _, kwargs, _, _, _, _ = prepared(tmp_path, monkeypatch)
+    kwargs['account_read_recovery']={'schema':'headless-account-read-recovery-v1','max_attempts':value}
+    with pytest.raises(transport.ContractError): transport.run_headless_diagnostic(**kwargs)
 
 
 def test_short_timeout_closes_owned_process_tree(tmp_path):
