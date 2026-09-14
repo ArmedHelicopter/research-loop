@@ -266,7 +266,10 @@ def _child(command, context, environment, directory, timeout):
     observation = {'command': command, 'environment': environment, 'cwd': context['cwd'],
         'started_at': started, 'finished_at': datetime.now(timezone.utc).isoformat(),
         'timeout_seconds': timeout, 'timed_out': expired, 'failure': failure,
-        'pid': tree.process.pid if tree is not None else None, 'launched': tree is not None,
+        'pid': tree.process.pid if tree is not None else None,
+        # A constructor may spawn and then fail while assigning the Job. Without
+        # a returned process handle, absence of a launch is not established.
+        'launched': True if tree is not None else None,
         'process_exit_code': code, 'owned_tree_closed': closed,
         'stdout_sha256': _write(directory / 'stdout.private.jsonl', raw),
         'stderr_sha256': _write(directory / 'stderr.private.txt', error)}

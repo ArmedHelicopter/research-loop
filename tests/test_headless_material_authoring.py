@@ -147,5 +147,8 @@ def test_headless_mismatch_retains_observed_usage_and_unexecuted_denominators(tm
     assert first['native_prompt_may_have_been_dispatched'] is True
     assert all(row['status'] == 'blocked_prior_authoring' and row['known_headless_main_usage'] is None
         and row['native_prompt_may_have_been_dispatched'] is False for row in rest)
-    with pytest.raises((FileExistsError, ContractError) if mutation == 'private_request' else FileExistsError):
+    reservation = Path(metadata['envelope']['path']).with_suffix('.run-reservation.json')
+    reserved = reservation.read_bytes()
+    with pytest.raises((FileExistsError, ContractError)):
         authoring.run_authoring(metadata['envelope'], tmp_path / 'retry')
+    assert reservation.read_bytes() == reserved and len(calls) == 1 and len(gets) == 6

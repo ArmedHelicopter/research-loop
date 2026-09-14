@@ -72,6 +72,14 @@ def test_short_timeout_closes_owned_process_tree(tmp_path):
     assert process['timed_out'] and process['owned_tree_closed'] and process['process_exit_code'] is not None
 
 
+def test_constructor_failure_does_not_claim_no_launch(tmp_path, monkeypatch):
+    def failed(*args, **kwargs): raise OSError('synthetic constructor failure')
+    monkeypatch.setattr(transport, 'ProcessTree', failed)
+    _, process = transport._child(['synthetic'], {'cwd':str(tmp_path)}, {}, tmp_path/'failed', 1)
+    assert process['launched'] is None and process['process_exit_code'] is None
+    assert process['failure'] == 'process_launch_or_io_failed'
+
+
 @pytest.mark.parametrize('change', ['command', 'environment', 'source_manifest'])
 def test_rehashed_reservation_cannot_change_frozen_execution_contract(tmp_path, monkeypatch, change):
     entry, kwargs, spec, directory, _, _ = prepared(tmp_path, monkeypatch)
