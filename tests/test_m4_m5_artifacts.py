@@ -31,6 +31,37 @@ def history(tmp_path, modules=('M4', 'M5')):
     return session, workflow
 
 
+def c4_reveal_history(tmp_path):
+    session, workflow = history(tmp_path)
+    output = next(d.data()['payload']['canonical']['output'] for d in session.artifacts.records()
+                  if d.data()['kind'] == 'reveal_output')
+    session._record_event('c4_review_reveal', {'submissions': output['submissions']})
+    return session, workflow
+
+
+def coherently_rehash_catalogue(session, rows):
+    """Model an attacker who recomputes every catalogue hash and the seal."""
+    replacements, previous, rebuilt = {}, None, []
+    for number, row in enumerate(rows):
+        descriptor, old = row['descriptor'], row['descriptor_digest']
+        descriptor['parents'] = [replacements.get(parent, parent) for parent in descriptor['parents']]
+        payload = descriptor['payload']['canonical']
+        if payload is not None:
+            frozen_payload = FrozenRecord.from_dict(payload)
+            descriptor['payload'].update(digest=frozen_payload.content_hash, bytes=len(frozen_payload.encoded.encode()))
+        frozen_descriptor = FrozenRecord.from_dict(descriptor)
+        replacements[old] = frozen_descriptor.content_hash
+        row.update(sequence=number, previous=previous, descriptor_digest=frozen_descriptor.content_hash)
+        entry = FrozenRecord.from_dict(row)
+        previous = entry.content_hash
+        rebuilt.append(entry.encoded)
+    session.artifacts.path.write_bytes(('\n'.join(rebuilt) + '\n').encode())
+    seal = FrozenRecord.from_dict({'schema': 'artifact-catalogue-seal-v1', 'count': len(rebuilt),
+        'head': previous, 'binding': session.artifacts.binding})
+    session.artifacts.seal_path.write_bytes((seal.encoded + '\n').encode())
+    return seal
+
+
 def test_workflow_captures_each_fsynced_prediction_and_review_event(tmp_path):
     session, _ = history(tmp_path)
     checked = verify_m4_m5_artifacts(session.artifacts, session.sidecar).data()
@@ -92,6 +123,45 @@ def test_missing_source_journal_is_rejected_without_recreating_it(tmp_path):
     with pytest.raises(ContractError, match='source journals are missing'):
         verify_m4_m5_artifacts(session.artifacts, session.sidecar)
     assert not missing.exists() and sorted(path.name for path in session.sidecar.iterdir()) == before
+
+
+def test_c4_reveal_trace_requires_one_preceding_actual_output_after_coherent_rehash(tmp_path):
+    session, _ = c4_reveal_history(tmp_path)
+    assert verify_m4_m5_artifacts(session.artifacts, session.sidecar).data()['reveal_outputs'] == 1
+    session.artifacts.seal()
+    rows = [json.loads(line) for line in session.artifacts.path.read_bytes().splitlines()]
+    rows = [row for row in rows if row['descriptor']['kind'] != 'reveal_output']
+    seal = coherently_rehash_catalogue(session, rows)
+    session.artifacts.verify(seal)
+    with pytest.raises(ContractError, match='preceding actual output'):
+        verify_m4_m5_artifacts(session.artifacts, session.sidecar)
+
+
+def test_c4_reveal_trace_rejects_coherently_rehashed_submission_order(tmp_path):
+    session, _ = c4_reveal_history(tmp_path)
+    session.artifacts.seal()
+    rows = [json.loads(line) for line in session.artifacts.path.read_bytes().splitlines()]
+    trace = next(row['descriptor']['payload']['canonical']['data'] for row in rows
+                 if row['descriptor']['kind'] == 'trace_event'
+                 and row['descriptor']['payload']['canonical']['stage'] == 'c4_review_reveal')
+    trace['submissions'].reverse()
+    seal = coherently_rehash_catalogue(session, rows)
+    session.artifacts.verify(seal)
+    with pytest.raises(ContractError, match='preceding actual output'):
+        verify_m4_m5_artifacts(session.artifacts, session.sidecar)
+
+
+def test_trace_parent_chain_rejects_coherently_rehashed_new_root(tmp_path):
+    session, _ = c4_reveal_history(tmp_path)
+    session.artifacts.seal()
+    rows = [json.loads(line) for line in session.artifacts.path.read_bytes().splitlines()]
+    trace = next(row['descriptor'] for row in rows if row['descriptor']['kind'] == 'trace_event'
+                 and row['descriptor']['payload']['canonical']['stage'] == 'c4_review_reveal')
+    trace['parents'] = []
+    seal = coherently_rehash_catalogue(session, rows)
+    session.artifacts.verify(seal)
+    with pytest.raises(ContractError, match='arbitrary causal parent'):
+        verify_m4_m5_artifacts(session.artifacts, session.sidecar)
 
 
 def test_rehashed_catalogue_chain_and_seal_cannot_cross_task_identity(tmp_path):
