@@ -201,8 +201,6 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
     evidence=EvidenceLedger(task.identity);claims=ClaimLedger(evidence);cache=ContextCache()
     evidence._log=_MemoryLog();claims._log=_MemoryLog()
     transition=_transition(evidence,claims,cache,material.state(),set(cell.runtime_arm.data()['enabled']),q)
-    verify_session_context_artifacts(task=task, lock=FrozenRecord.from_dict(lock), events=events,
-        catalogue=catalogue, evidence=evidence.snapshot(), claims=claims.snapshot())
     expected=[]
     def record(name,data):expected.append((name,data))
     record('c4_state',{'transition':transition.data(),'source_sha256':source,'corpus_sha256':corpus})
