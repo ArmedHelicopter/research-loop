@@ -40,6 +40,19 @@ def final_candidate(session, execution, outcome="positive"):
         "evidence_ids": [execution.content_hash], "conclusion": "fixture observation", "programme_complete": False})
 
 
+def test_identical_contracts_keep_distinct_artifact_run_identifiers(tmp_path):
+    first,_,_=session_at(tmp_path/'first')
+    second=RunSession(first.task,package_digest='package',arm=first.arm,objective=first.objective,
+        slots=first.slots,execution_limit=first.execution_limit,sidecar=tmp_path/'second',
+        verifier=AuditVerifier(KEYS),required_audit=first.required_audit)
+    assert first.lock==second.lock
+    assert first.artifacts.binding['run_id']!=second.artifacts.binding['run_id']
+    for session in (first,second):
+        descriptor=session.artifacts.records()[0].data()
+        assert descriptor['module']=='P0' and descriptor['coverage']=='covered'
+        assert descriptor['binding']['lock_digest']==session.lock.content_hash
+
+
 @pytest.mark.parametrize("modules", [("M1",), ("M1", "M2")])
 def test_invoke_respects_m2_control_but_withdrawal_still_blocks_scientific_final(tmp_path, modules):
     session, execution, receipts = session_at(tmp_path / "run", modules=modules)

@@ -7,6 +7,7 @@ from research_loop.modular.contracts import DataIdentity, FrozenRecord, required
 from research_loop.ontology import ContractError
 
 STATUSES=frozenset({"produced","not_applied","failed","rejected","withdrawn","superseded","blocked"})
+MODULES=frozenset({'P0', *(f'M{i}' for i in range(1,10))})
 def source_snapshot(path: Path) -> dict[str, Any]:
     raw=path.resolve().read_bytes();return {"path":str(path.resolve()),"sha256":hashlib.sha256(raw).hexdigest(),"bytes":len(raw)}
 
@@ -55,9 +56,9 @@ class ArtifactCatalogue:
             raise ContractError('catalogue descriptor schema is invalid')
         required_text(body['kind'],'artifact kind')
         if (type(body['status']) is not str or body['status'] not in STATUSES
-                or body['module'] is not None and (type(body['module']) is not str or body['module'] not in {f'M{i}' for i in range(1,10)})
+                or body['module'] is not None and (type(body['module']) is not str or body['module'] not in MODULES)
                 or type(body['coverage']) is not str or body['coverage'] not in {'covered','uncovered'}
-                or body['coverage']=='uncovered' and body['module'] is not None):
+                or (body['coverage']=='uncovered') != (body['module'] is None)):
             raise ContractError('catalogue descriptor fields are invalid')
         if type(body['optimizer_visible']) is not bool or body['scientific_validated'] is not False:
             raise ContractError('catalogue validation flags are invalid')
@@ -94,8 +95,8 @@ class ArtifactCatalogue:
         self.verify()
         if self.seal_path.exists(): raise ContractError('sealed catalogue cannot accept another artifact')
         if status not in STATUSES:raise ContractError("artifact status is not recognized")
-        if module is not None and module not in {f"M{i}" for i in range(1,10)}:raise ContractError("artifact module must be M1 through M9 or explicitly uncovered")
-        if coverage not in {"covered","uncovered"} or coverage=="uncovered" and module is not None:raise ContractError("unknown module/event must be explicitly uncovered")
+        if module is not None and module not in MODULES:raise ContractError("artifact module must be P0 or M1 through M9 or explicitly uncovered")
+        if coverage not in {"covered","uncovered"} or (coverage=="uncovered") != (module is None):raise ContractError("unknown module/event must be explicitly uncovered")
         if self.identity.domain=="validation" and optimizer_visible:raise ContractError("validation artifacts cannot enter optimizer context")
         known={e.data()['descriptor_digest']:FrozenRecord.from_dict(e.data()['descriptor']) for e in self._entries};parents=list(parents)
         if len(set(parents))!=len(parents) or any(p not in known for p in parents):raise ContractError("artifact parent is missing from this immutable catalogue")

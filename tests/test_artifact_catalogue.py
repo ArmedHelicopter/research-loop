@@ -72,6 +72,7 @@ def test_seal_survives_reopen_and_rejects_append_and_tail_deletion(tmp_path):
     {'status': 'success_without_check'}, {'scientific_validated': True},
     {'cost': {'known': True, 'units': None}}, {'cost': {'known': True, 'units': -1}},
     {'kind': ''}, {'parents': {}}, {'module': 'M99'}, {'optimizer_visible': 'false'},
+    {'module': None, 'coverage': 'covered'},
 ])
 def test_reload_applies_same_semantic_contract_even_if_attacker_rehashes(change, tmp_path):
     path = tmp_path / 'artifacts.jsonl'
@@ -114,3 +115,11 @@ def test_current_source_bytes_and_partial_write_are_checked_on_each_read(tmp_pat
     catalogue.path.write_bytes(catalogue.path.read_bytes().rstrip(b'\n'))
     with pytest.raises(ContractError, match='incomplete'):
         catalogue.records()
+
+
+def test_unassigned_artifact_cannot_claim_coverage(tmp_path):
+    catalogue=make_catalogue(tmp_path/'artifacts.jsonl',identity_value=identity())
+    with pytest.raises(ContractError,match='uncovered'):
+        catalogue.append(kind='unassigned',module=None,payload={'x':1},coverage='covered')
+    p0=catalogue.append(kind='frozen_protocol',module='P0',payload={'protocol':'fixture'})
+    assert p0.data()['coverage']=='covered'

@@ -12,6 +12,7 @@ import hmac
 import json
 import os
 from pathlib import Path
+from uuid import uuid4
 from typing import Any, Callable, Mapping
 
 from .contracts import ContractError, DataIdentity, FrozenRecord, PublicTask, required_text, strict_bool
@@ -217,7 +218,7 @@ class RunSession:
     def __init__(self, task: PublicTask, *, package_digest: str, arm: FrozenRecord,
                  objective: FrozenRecord, slots: tuple[str, ...], execution_limit: int,
                  sidecar: Path, verifier: AuditVerifier, required_audit: tuple[str, ...],
-                 context_budget: int = 12000):
+                 context_budget: int = 12000, experiment_id: str | None = None):
         if not slots or len(set(slots)) != len(slots) or any(not isinstance(x, str) or not x for x in slots):
             raise ContractError("unique frozen call slots required")
         if type(execution_limit) is not int or execution_limit < 0:
@@ -250,7 +251,7 @@ class RunSession:
         self._artifact_source = source_snapshot(Path(__file__))
         self._artifact_config = {"kind":"run_lock", "digest":self.lock.content_hash, "canonical":self.lock.data()}
         self.artifacts = ArtifactCatalogue(sidecar / "artifacts.jsonl", identity=task.identity,
-            run_id=self.lock.content_hash, experiment_id=None, lock_digest=self.lock.content_hash,
+            run_id=uuid4().hex, experiment_id=experiment_id, lock_digest=self.lock.content_hash,
             producer_source=self._artifact_source)
         self.cache = ContextCache()
         self.executions: dict[str, ExecutionReceipt] = {}
@@ -290,10 +291,10 @@ class RunSession:
             stream.flush()
             os.fsync(stream.fileno())
         self._events.append(event)
-        descriptor = self.artifacts.append(kind="trace_event", module=None, payload=event,
+        descriptor = self.artifacts.append(kind="trace_event", module='P0' if stage=='objective_lock' else None, payload=event,
             parents=(() if len(self._events) == 1 else (self._event_artifacts[-1],)),
             producer_source=self._artifact_source, config_refs=(self._artifact_config,),
-            coverage="uncovered")
+            coverage='covered' if stage=='objective_lock' else 'uncovered')
         self._event_artifacts.append(descriptor.content_hash)
         return event
 

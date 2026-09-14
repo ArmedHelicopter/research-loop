@@ -101,8 +101,11 @@ def test_actual_history_target_pipeline_with_full_catalogue(tmp_path,monkeypatch
     runner.verify(target);runner.verify(history)
     assert len(setup['common_logs'])==11
     assert target.inner.solver.execution.record.data()['argv'][:4]==['docker','run','--pull','never']
+    assert history.inner.record.data()['artifact_catalogue_seal']['binding']['run_id']!=target.inner.record.data()['artifact_catalogue_seal']['binding']['run_id']
     for stage in (history, target):
         receipt=stage.inner.record.data();seal=receipt['artifact_catalogue_seal']
+        assert seal['binding']['experiment_id']==plan.record.content_hash
+        assert (stage.inner.root/'runtime'/'artifacts.jsonl.seal.json').is_file()
         journal=stage.inner.root/'runtime'/'artifacts.jsonl'
         rows=[json.loads(line)['descriptor'] for line in journal.read_text(encoding='utf-8').splitlines()]
         assert seal['count']==len(rows) and seal['head'] is not None

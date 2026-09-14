@@ -171,45 +171,24 @@ class JointBundleSubject:
                                  for component in self.bundle.components().values())
 
     @classmethod
-    def from_selected_snapshot(cls, snapshot: FrozenRecord, protocol: FrozenJointTrainProtocol) -> "JointBundleSubject":
-        """Bind the exact C5 selected snapshot without treating it as a run receipt."""
+    def from_selected_snapshot(cls, snapshot: FrozenRecord, protocol: FrozenJointTrainProtocol, *,
+                               parent: JointDeploymentBundle, timeout_seconds: int) -> "JointBundleSubject":
+        """Reconstruct the canonical projection; complete-run authentication is separate."""
+        from research_loop.modular.joint_selected_snapshot import _project
+        from research_loop.modular.modules.improvement import CandidatePackage
         if type(snapshot) is not FrozenRecord or type(protocol) is not FrozenJointTrainProtocol:
-            raise ContractError("selected snapshot and protocol require exact typed records")
-        protocol.__post_init__()
-        data = snapshot.data()
-        required = {"schema", "protocol_digest", "selection", "selection_digest", "selected_subject_digest",
-                    "package_digest", "parent_digest", "bundle", "bundle_digest", "component_digests",
-                    "training_provenance", "status", "validation_access_authorized", "acceptance_verified",
-                    "deployment_authorized"}
-        if (set(data) != required or data["schema"] != "c5-selected-joint-snapshot-v1"
-                or data["protocol_digest"] != protocol.digest):
-            raise ContractError("selected snapshot schema is invalid")
-        bundle = JointDeploymentBundle(FrozenRecord.from_dict(data["bundle"]))
-        subject = cls(bundle)
-        if data["bundle_digest"] != subject.digest or data["component_digests"] != subject.component_digests:
-            raise ContractError("selected snapshot bundle or component digest differs")
-        p = protocol.record.data()
-        expected = {DataIdentity.parse(row["identity"]) for row in [p["history"], *p["targets"]]}
-        manifest = TrainingManifest(FrozenRecord.from_dict(data["training_provenance"]))
-        if set(manifest.identities()) != expected or subject.train_identities != expected:
-            raise ContractError("selected snapshot TRAIN provenance is not in the bundle")
-        choice = FrozenRecord.from_dict(data["selection"])
-        selected = choice.data().get("selected_subject")
-        recipes = {row["recipe"]["id"]: row["recipe"] for row in p["catalogue"]["recipes"]}
-        if (choice.content_hash != data["selection_digest"] or choice.data().get("protocol_digest") != protocol.digest
-                or choice.data().get("selected_subject_digest") != data["selected_subject_digest"]
-                or not isinstance(selected, dict) or FrozenRecord.from_dict(selected).content_hash != data["selected_subject_digest"]
-                or selected.get("recipe") != recipes.get(choice.data().get("selected_arm"))
-                or selected.get("package_digest") != data["package_digest"]):
-            raise ContractError("selected snapshot selection binding differs")
-        for name, component in bundle.components().items():
-            body = component.record.data()
-            selected_package = body["state"].get("selected_package")
-            if (body["config"].get("module_id") != name or body["state"].get("selection_digest") != data["selection_digest"]
-                    or not isinstance(selected_package, dict)
-                    or FrozenRecord.from_dict(selected_package).content_hash != data["package_digest"]):
-                raise ContractError("selected snapshot component state differs")
-        return subject
+            raise ContractError('selected snapshot and protocol require exact typed records')
+        try:
+            body=snapshot.data()
+            bundle=JointDeploymentBundle(FrozenRecord.from_dict(body['bundle']))
+            package=CandidatePackage(FrozenRecord.from_dict(
+                bundle.components()['M1'].record.data()['state']['selected_package']))
+            expected=_project(protocol,FrozenRecord.from_dict(body['selection']),package,parent,timeout_seconds)
+        except (KeyError,TypeError,ValueError) as exc:
+            raise ContractError('selected snapshot projection is incomplete') from exc
+        if snapshot!=expected:
+            raise ContractError('selected snapshot differs from the complete frozen projection')
+        return cls(bundle)
 
 
 @dataclass(frozen=True)

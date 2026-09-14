@@ -66,7 +66,8 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
                 raise ContractError('unknown corpus cost blocks work')
         session=RunSession(task,package_digest=package.digest,arm=cell.runtime_arm,objective=plan.objective(stage),
             slots=slots(recipe,stage),execution_limit=int(stage=='target'),sidecar=root/'runtime',verifier=audit_verifier,
-            required_audit=('measurement',),context_budget=material.state().data()['context_budget_bytes'])
+            required_audit=('measurement',),context_budget=material.state().data()['context_budget_bytes'],
+            experiment_id=plan.record.content_hash)
         workflow=ModularWorkflow(session)
         transition=_transition(session.evidence,session.claims,session.cache,material.state(),workflow.enabled,qualification)
         session._record('c4_state',{'transition':transition.data(),'source_sha256':source,'corpus_sha256':corpus})
@@ -169,9 +170,13 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
     check_material_inputs(material.state(),task,broker,inputs);check_inputs(phase_material,task,broker,inputs)
     if stage=='history_build':check_history(plan.history,material.state(),broker,inputs)
     path=root/'runtime'/'trace.jsonl';verify_trace(path);events=_read_events(path);lock=events[0]['data']
-    catalogue=ArtifactCatalogue(root/'runtime'/'artifacts.jsonl',identity=task.identity,run_id=FrozenRecord.from_dict(lock).content_hash,
-        experiment_id=None,lock_digest=FrozenRecord.from_dict(lock).content_hash,producer_source=source_snapshot(Path(__file__)))
-    catalogue.verify(FrozenRecord.from_dict(b['artifact_catalogue_seal']))
+    catalogue_seal=FrozenRecord.from_dict(b['artifact_catalogue_seal'])
+    run_id=catalogue_seal.data().get('binding',{}).get('run_id')
+    if type(run_id) is not str or len(run_id)!=32 or any(c not in '0123456789abcdef' for c in run_id):
+        raise ContractError('catalogue has no original run identifier')
+    catalogue=ArtifactCatalogue(root/'runtime'/'artifacts.jsonl',identity=task.identity,run_id=run_id,
+        experiment_id=plan.record.content_hash,lock_digest=FrozenRecord.from_dict(lock).content_hash,producer_source=source_snapshot(Path(__file__)))
+    catalogue.verify(catalogue_seal)
     catalogue_trace=[d.data()['payload']['canonical'] for d in catalogue.records() if d.data()['kind']=='trace_event']
     if catalogue_trace!=events:
         raise ContractError('trace and catalogue journal transaction differs')
