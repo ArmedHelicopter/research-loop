@@ -12,14 +12,14 @@ import hmac
 import json
 import os
 from pathlib import Path
-from typing import Callable, Mapping
+from typing import Any, Callable, Mapping
 
 from .contracts import ContractError, DataIdentity, FrozenRecord, PublicTask, required_text, strict_bool
 from .benchmarks.execution import DockerExecutionBroker, ExecutionReceipt, ExecutionRequest
 from .modules.admission import AuditItem, EvidenceAdmission, ScientificState
 from .modules.context import ContextBuilder, ContextCache
 from .modules.evidence import ClaimLedger, EvidenceLedger
-from .artifact_catalogue import ArtifactCatalogue
+from .artifact_catalogue import ArtifactCatalogue, source_snapshot
 from .combinations import default_compatibility
 from research_loop.ontology import canonical, digest
 
@@ -247,8 +247,11 @@ class RunSession:
             "execution_limit": execution_limit, "required_audit": list(required_audit), "context_budget": context_budget})
         self.evidence = EvidenceLedger(task.identity, storage_path=sidecar / "evidence.jsonl")
         self.claims = ClaimLedger(self.evidence, storage_path=sidecar / "claims.jsonl")
+        self._artifact_source = source_snapshot(Path(__file__))
+        self._artifact_config = {"kind":"run_lock", "digest":self.lock.content_hash, "canonical":self.lock.data()}
         self.artifacts = ArtifactCatalogue(sidecar / "artifacts.jsonl", identity=task.identity,
-            run_id=self.lock.content_hash, experiment_id=None, lock_digest=self.lock.content_hash)
+            run_id=self.lock.content_hash, experiment_id=None, lock_digest=self.lock.content_hash,
+            producer_source=self._artifact_source)
         self.cache = ContextCache()
         self.executions: dict[str, ExecutionReceipt] = {}
         self.admissions: dict[str, FrozenRecord] = {}
@@ -289,19 +292,20 @@ class RunSession:
         self._events.append(event)
         descriptor = self.artifacts.append(kind="trace_event", module=None, payload=event,
             parents=(() if len(self._events) == 1 else (self._event_artifacts[-1],)),
-            producer_source={"module": "research_loop.modular.runtime"}, config_refs=(self.lock.content_hash,),
+            producer_source=self._artifact_source, config_refs=(self._artifact_config,),
             coverage="uncovered")
         self._event_artifacts.append(descriptor.content_hash)
         return event
 
     def record_artifact(self, *, kind: str, module: str, payload: FrozenRecord | Mapping[str, Any] | None,
                         parents: tuple[str, ...] = (), status: str = "produced", cost: Mapping[str, Any] | None = None,
-                        checks: tuple[str, ...] = (), optimizer_visible: bool = False) -> FrozenRecord:
+                        checks: tuple[Mapping[str, Any], ...] = (), optimizer_visible: bool = False,
+                        producer_source: Mapping[str, Any] | None = None) -> FrozenRecord:
         """Attach a typed module output to the latest immutable trace event."""
         trace_parent = self._event_artifacts[-1] if self._event_artifacts else None
         return self.artifacts.append(kind=kind, module=module, payload=payload,
             parents=(*parents, *((trace_parent,) if trace_parent else ())), status=status,
-            producer_source={"module": "research_loop.modular.runtime"}, config_refs=(self.lock.content_hash,),
+            producer_source=producer_source or self._artifact_source, config_refs=(self._artifact_config,),
             cost=cost, checks=checks, optimizer_visible=optimizer_visible)
 
     def invoke(self, slot: str, model: Callable[[FrozenRecord], FrozenRecord], *, instruction: str,

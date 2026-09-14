@@ -23,6 +23,7 @@ from research_loop.modular.benchmark_cell import _solver_journal_state, _compare
 from research_loop.modular.combination_benchmark_driver import _runtime, _private_arm_marker
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier, opaque_panel_cell_binding
 from research_loop.modular.runtime import RunSession, verify_trace
+from research_loop.modular.artifact_catalogue import source_snapshot, ArtifactCatalogue
 from research_loop.modular.workflow import ModularWorkflow
 from research_loop.modular.state_retrieval_combination_driver import _INSTRUCTIONS
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
@@ -49,6 +50,7 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
     """One immutable recipe; exceptions close a charged failed denominator."""
     root.mkdir(parents=True,exist_ok=False)
     session=solver=prepared=phase=joined=transition=candidate=None; reason=None
+    catalogue_source=source_snapshot(Path(__file__))
     try:
         check_material_inputs(material.state(),task,broker,inputs);check_inputs(phase_material,task,broker,inputs)
         binding=_source_binding(cell)
@@ -68,23 +70,28 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
         workflow=ModularWorkflow(session)
         transition=_transition(session.evidence,session.claims,session.cache,material.state(),workflow.enabled,qualification)
         session._record('c4_state',{'transition':transition.data(),'source_sha256':source,'corpus_sha256':corpus})
+        enabled=set(workflow.enabled)
         for module in ('M1','M2','M3'):
-            session.record_artifact(kind='lineage_transition',module=module,payload=transition)
+            session.record_artifact(kind='lineage_transition',module=module,payload=transition,
+                status='produced' if module in enabled else 'not_applied',producer_source=catalogue_source)
         if nonbaseline:
             def record(stage, data):
                 event=session._record(stage,data)
                 module={'c4_prediction_frozen':'M4','c4_review_sealed':'M5','c4_review_reveal':'M5','c4_choice_frozen':'M7'}.get(stage)
-                if module: session.record_artifact(kind=stage,module=module,payload=data)
+                if module: session.record_artifact(kind=stage,module=module,payload=data,
+                    status='produced' if module in enabled else 'not_applied',producer_source=catalogue_source)
                 return event
             prepared=prepare(cell=cell,task=task,package=package,transition=transition,predictions=workflow.predictions,reviews=workflow.reviews,
                 invoke=lambda slot,instruction,context:session.invoke(slot,model,instruction=instruction,module_context=context),
                 record=record,retrieve=lambda:execute_retrieval(session,task,material,provider,'M6' in workflow.enabled),phase_material=phase_material)
-            session.record_artifact(kind='retrieval_result',module='M6',payload=prepared.data()['retrieval'])
+            session.record_artifact(kind='retrieval_result',module='M6',payload=prepared.data()['retrieval'],
+                status='produced' if 'M6' in enabled else 'not_applied',producer_source=catalogue_source)
             phase=run_phase(material=phase_material,cell=cell,objective=plan.objective(stage),root=root/'phase',broker=broker,inputs=inputs,
                 image=plan.data()['image'],timeout_seconds=plan.data()['timeout_seconds'],selected_job_id=prepared.data()['choice']['job_id'])
             session._record('c4_phase',{'phase_digest':phase.content_hash})
             for module in ('M7','M8'):
                 session.record_artifact(kind='exploration_phase_receipt',module=module,payload=phase,
+                    status='produced' if module in enabled else 'not_applied',producer_source=catalogue_source,
                     cost={'known': phase.data()['unknown_cost_attempts']==0,'units':phase.data()['execution_units_reserved'] if phase.data()['unknown_cost_attempts']==0 else None})
         joined=joint(prepared,phase,cell,task,package)
         session._record('c4_joint',{'joint':joined.data(),'joint_digest':joined.content_hash})
@@ -100,7 +107,8 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
             _exclusive(root/'candidate.json',candidate.record);_exclusive(root/'builder.json',selected.record)
             _exclusive(root/'builder-receipt.json',receipt.record)
             session._record('c4_builder_result',{'candidate_digest':candidate.digest,'receipt':receipt.record.data()})
-            session.record_artifact(kind='training_limited_candidate',module='M9',payload=candidate.record,cost={'known':True,'units':1})
+            session.record_artifact(kind='training_limited_candidate',module='M9',payload=candidate.record,
+                status='produced' if 'M9' in enabled else 'not_applied',producer_source=catalogue_source)
             session._record('c4_build_terminal',{'candidate_digest':candidate.digest});session._terminal=True
         else:
             solver=run_benchmark_solve_in_session(session=session,workflow=workflow,public_inputs=inputs,image=plan.data()['image'],broker=broker,
@@ -113,8 +121,10 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
     # Explicit separate success predicates prevent an auxiliary success from
     # promoting a missing common solve or missing restricted build.
     status='succeeded' if (candidate is not None if stage=='history_build' else solver is not None and solver.status=='execution_succeeded') and reason is None else 'failed'
-    record=FrozenRecord.from_dict({'schema':'c4-stage-receipt-v1','plan_digest':plan.record.content_hash,'recipe':recipe,'stage':stage,
-        'cell':cell.data(),'status':status,'reason':reason,'candidate_digest':candidate.digest if status=='succeeded' and candidate else None,'files':files(root)})
+    seal=session.artifacts.seal() if session is not None else None
+    record=FrozenRecord.from_dict({'schema':'c4-stage-receipt-v2','plan_digest':plan.record.content_hash,'recipe':recipe,'stage':stage,
+        'cell':cell.data(),'status':status,'reason':reason,'candidate_digest':candidate.digest if status=='succeeded' and candidate else None,
+        'artifact_catalogue_seal':seal.data() if seal else None,'files':files(root)})
     _exclusive(root/'receipt.json',record)
     return FullLooResult(root,record,cell,_runtime(cell,session,joined,status) if session else None,solver,joined,phase)
 
@@ -137,7 +147,7 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
     if type(source_verifier) is not AdmissionMaterialVerifier or type(corpus_verifier) is not DualMaterialVerifier:
         raise ContractError('C4 replay requires exact source authority verifiers')
     root=result.root;cell=result.cell;b=result.record.data()
-    if (set(b)!={'schema','plan_digest','recipe','stage','cell','status','reason','candidate_digest','files'} or b['schema']!='c4-stage-receipt-v1'
+    if (set(b)!={'schema','plan_digest','recipe','stage','cell','status','reason','candidate_digest','artifact_catalogue_seal','files'} or b['schema']!='c4-stage-receipt-v2'
             or _read_record(root/'receipt.json')!=result.record or b!={**b,'plan_digest':plan.record.content_hash,'recipe':recipe,'stage':stage,'cell':cell.data()}
             or b['status']!='succeeded' or b['files']!=files(root) or cell.task_digest!=task.content_hash or cell.identity!=task.identity
             or cell.package_digest!=package.digest or cell.runtime_arm!=runtime_arm(plan.composition,recipe,stage)):
@@ -145,6 +155,12 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
     check_material_inputs(material.state(),task,broker,inputs);check_inputs(phase_material,task,broker,inputs)
     if stage=='history_build':check_history(plan.history,material.state(),broker,inputs)
     path=root/'runtime'/'trace.jsonl';verify_trace(path);events=_read_events(path);lock=events[0]['data']
+    catalogue=ArtifactCatalogue(root/'runtime'/'artifacts.jsonl',identity=task.identity,run_id=FrozenRecord.from_dict(lock).content_hash,
+        experiment_id=None,lock_digest=FrozenRecord.from_dict(lock).content_hash,producer_source=source_snapshot(Path(__file__)))
+    catalogue.verify(FrozenRecord.from_dict(b['artifact_catalogue_seal']))
+    catalogue_trace=[d.data()['payload']['canonical'] for d in catalogue.records() if d.data()['kind']=='trace_event']
+    if catalogue_trace!=events:
+        raise ContractError('trace and catalogue journal transaction differs')
     if (lock['task_digest']!=task.content_hash or lock['identity']!=task.identity.data() or lock['package_digest']!=package.digest
             or lock['arm']!=cell.runtime_arm.data() or lock['objective']!=plan.objective(stage).data() or lock['slots']!=list(slots(recipe,stage))
             or lock['execution_limit']!=int(stage=='target') or lock['required_audit']!=['measurement'] or lock['context_budget']!=material.state().data()['context_budget_bytes']):

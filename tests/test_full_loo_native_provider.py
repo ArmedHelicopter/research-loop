@@ -78,6 +78,13 @@ def test_complete_native_c4_grid_uses_scoped_grok_main_and_engine_seams(native_g
     assert all(row['accepted'] and row['main_opportunity']==1 and row['possible_initial_title_opportunity']==1 for row in setup['native_backend'].ledger['calls'])
     assert len(set(row['public_cwd'] for row in setup['native_backend'].ledger['calls']))==169
     assert len(setup['native_logs'])==169 and all(json.loads(log.read_text().splitlines()[1])['method']=='session/new' for log in setup['native_logs'])
+    full_build=next(result for result in run.builds if result.cell.arm_id=='full')
+    full_target=next(result for result in run.results if result is not None and result.cell.arm_id=='full')
+    descriptors=[]
+    for result in (full_build,full_target):
+        descriptors.extend(json.loads(line)['descriptor'] for line in (result.root/'runtime/artifacts.jsonl').read_text(encoding='utf-8').splitlines())
+    assert {row['module'] for row in descriptors if row['coverage']=='covered'} >= {f'M{i}' for i in range(1,10)}
+    assert all(row['scientific_validated'] is False for row in descriptors)
     assert run.barrier.package(next(r for r in setup['native_plan'].composition.data()['cells'] if r['id']=='full')) == run.barrier.package(next(r for r in setup['native_plan'].composition.data()['cells'] if r['id']=='without-M8'))
     assert run.barrier.package(next(r for r in setup['native_plan'].composition.data()['cells'] if r['id']=='B0')) == run.barrier.package(next(r for r in setup['native_plan'].composition.data()['cells'] if r['id']=='ordinary-control'))
     # The real controller already verifies every cell before its scorer RPC.
