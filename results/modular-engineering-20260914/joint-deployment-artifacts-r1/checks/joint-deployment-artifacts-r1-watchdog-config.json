@@ -1,0 +1,10 @@
+{
+  "root_pid": 40724,
+  "root_creation_utc_ticks": 639249887899260670,
+  "root_command": "\"E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe\" E:/_ryanDev/AI/research-loop-modular/work/run_frozen_checks_with_source.py E:/_ryanDev/AI/research-loop-modular/artifact-evidence-provenance E:/_ryanDev/AI/research-loop-modular/work/joint-deployment-artifacts-r1 tests/test_joint_deployment_artifacts.py tests/test_joint_deployment.py tests/test_artifact_subjects.py tests/test_selected_artifact_subject.py tests/test_c5_selected_artifact_registration.py tests/test_modular_deployment.py tests/test_label_isolation.py -x",
+  "deadline": "2026-09-14T21:35:36.1793088+08:00",
+  "journal": "E:/_ryanDev/AI/research-loop-modular/work/joint-deployment-artifacts-r1-watchdog.jsonl",
+  "prefix": "E:/_ryanDev/AI/research-loop-modular/work/joint-deployment-artifacts-r1",
+  "new_paid_calls": 0,
+  "scope": "Frozen joint deployment artifact integration, real SQLite and synthetic callbacks/grants; existing C5 runs untouched"
+}

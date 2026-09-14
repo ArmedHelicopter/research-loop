@@ -1,0 +1,1105 @@
+{
+  "schema": "joint-deployment-artifact-engineering-archive-v1",
+  "checks": [
+    {
+      "prefix": "joint-deployment-artifacts-r1",
+      "commit": "2968711d1f90f0d6d7a336b2a7df1ddbd915eed0",
+      "source_unchanged": true,
+      "source_count": 709,
+      "exit_code": 0,
+      "wall_seconds": 120.59399999998277,
+      "new_paid_calls": 0,
+      "report_sha256": "d3c0d07907bb91988d97deb323431eb7647460ce714c65d2c7a1100e19f92b12",
+      "junit": {
+        "tests": 74,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_archive_sha256": "3ab511f806fc0faa1d1cfa10862d00b9149ba10bdb390729f753d666bcb0f6f3"
+    },
+    {
+      "prefix": "joint-deployment-artifacts-r2",
+      "commit": "114a73f7075ebcdda51fcd9fc9bc2344be403952",
+      "source_unchanged": true,
+      "source_count": 709,
+      "exit_code": 0,
+      "wall_seconds": 125.85899999999674,
+      "new_paid_calls": 0,
+      "report_sha256": "849f395832315d67bb896579a16475dc7d5545525c4f4f9cf027d3393508230e",
+      "junit": {
+        "tests": 78,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_archive_sha256": "ba851751cb6a88a45be2f41d70f92498644bd46472cebb9353e90f939d584b8d"
+    },
+    {
+      "prefix": "joint-deployment-artifacts-r3",
+      "commit": "330835b47dccedc5b32791b89fcfe10fd6bdc58e",
+      "source_unchanged": true,
+      "source_count": 709,
+      "exit_code": 0,
+      "wall_seconds": 129.78200000000652,
+      "new_paid_calls": 0,
+      "report_sha256": "63ea5637c5a632c05632575d19c963ea06c99dd99ee658cb2e8a247d776699ce",
+      "junit": {
+        "tests": 78,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_archive_sha256": "51789ee6376a988c5097d70f32fb6aa682a5a49c7426f05861f840dcfeafc617"
+    }
+  ],
+  "files": [
+    {
+      "path": "checks/joint-deployment-artifacts-r1-before.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r1-before.json",
+      "bytes": 83308,
+      "sha256": "55fa8acb2bf2a8ca60cd0f193eb6db42297c4f86d86b5dd6075a771bd1148a1f"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r1-closed.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r1-closed.json",
+      "bytes": 83215,
+      "sha256": "e2fc87fd453f548c9f985a65df84da8e84ef671b18216ff8064190b980500179"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r1-source-members.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r1-source-members.json",
+      "bytes": 124406,
+      "sha256": "db524d62c631f564d04b72094e567389eea7e6737a0ee474f1baf2cbcd61e4c2"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r1-sources.zip",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r1-sources.zip",
+      "bytes": 2331347,
+      "sha256": "3ab511f806fc0faa1d1cfa10862d00b9149ba10bdb390729f753d666bcb0f6f3"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r1.xml",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r1.xml",
+      "bytes": 11125,
+      "sha256": "d3c0d07907bb91988d97deb323431eb7647460ce714c65d2c7a1100e19f92b12"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r1-watchdog-config.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r1-watchdog-config.json",
+      "bytes": 1060,
+      "sha256": "cc628e74d60e7737396779d364213572888a2b8f77125744926e7254857ff3f4"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r1-watchdog.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r1-watchdog.jsonl",
+      "bytes": 258,
+      "sha256": "1f6040517cd4b5f350ae78b80173b73e5e6dee59ec81f4a44a6acb2f97f3016b"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r2-before.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r2-before.json",
+      "bytes": 83308,
+      "sha256": "8115fcc59e13c6bdebb6838ccd4c233c2eb1ad63141dc33ad0502bf570526b12"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r2-closed.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r2-closed.json",
+      "bytes": 83215,
+      "sha256": "3925ab034848e4f24a3ef8f9ba371a465ad88e6209b10d551649a95cc6c36036"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r2-source-members.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r2-source-members.json",
+      "bytes": 124406,
+      "sha256": "5b92c7bb508b67e9c1ef9756b45ce8d4227560fffb4746fa1c1a637bf83f2813"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r2-sources.zip",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r2-sources.zip",
+      "bytes": 2332420,
+      "sha256": "ba851751cb6a88a45be2f41d70f92498644bd46472cebb9353e90f939d584b8d"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r2.xml",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r2.xml",
+      "bytes": 11735,
+      "sha256": "849f395832315d67bb896579a16475dc7d5545525c4f4f9cf027d3393508230e"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r3-before.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3-before.json",
+      "bytes": 83308,
+      "sha256": "7d546d92d7fb966bde777321bc0adbe6cfabbf4dc6a2dc8baa1b0e903bfd3069"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r3-closed.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3-closed.json",
+      "bytes": 83215,
+      "sha256": "5f3ad8dcb41a8fed1a43bfbd4c0de2c94752abf53f17219dd7be4ea887bb0a09"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r3-source-members.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3-source-members.json",
+      "bytes": 124406,
+      "sha256": "6f6ea0eea02f751c64c89ebed6de139b5a7463b4699591e4eb28e71ce9c97df6"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r3-sources.zip",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3-sources.zip",
+      "bytes": 2332951,
+      "sha256": "51789ee6376a988c5097d70f32fb6aa682a5a49c7426f05861f840dcfeafc617"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r3.xml",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3.xml",
+      "bytes": 11735,
+      "sha256": "63ea5637c5a632c05632575d19c963ea06c99dd99ee658cb2e8a247d776699ce"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r3-watchdog-config.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3-watchdog-config.json",
+      "bytes": 1015,
+      "sha256": "b61074f013cd2bd774ca9f7705ab770716cb16c93339fbade98662fa11378068"
+    },
+    {
+      "path": "checks/joint-deployment-artifacts-r3-watchdog.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3-watchdog.jsonl",
+      "bytes": 258,
+      "sha256": "d201c069c7ca9cc06d7d700d1b09f3f2d80d74ad401d07da24334e6655dcb7e9"
+    },
+    {
+      "path": "stores/test_actual_outputs_use_config0/joint.sqlite",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_actual_outputs_use_config0\\joint.sqlite",
+      "bytes": 258048,
+      "sha256": "f42438ee09582aafc92332731b0a6b53f0fcab89257bdfded592216a639f2823"
+    },
+    {
+      "path": "stores/test_actual_outputs_use_config0/joint.caller-checkpoints.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_actual_outputs_use_config0\\joint.caller-checkpoints.jsonl",
+      "bytes": 628,
+      "sha256": "6cddcaa157c98b73d33b06760acfca9de14dfc78bb760e9f5b3e943ae34c0ba8"
+    },
+    {
+      "path": "stores/test_actual_outputs_use_config0/joint.audit-read-001.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_actual_outputs_use_config0\\joint.audit-read-001.json",
+      "bytes": 171390,
+      "sha256": "977ff1c04ca6602f91f7ea88a2871bb570a48dc22945c57334546863537f13c6"
+    },
+    {
+      "path": "stores/test_actual_outputs_use_config0/joint.audit-read-002.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_actual_outputs_use_config0\\joint.audit-read-002.json",
+      "bytes": 171390,
+      "sha256": "977ff1c04ca6602f91f7ea88a2871bb570a48dc22945c57334546863537f13c6"
+    },
+    {
+      "path": "stores/test_actual_outputs_use_config0/builds/M1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_actual_outputs_use_config0\\builds\\M1.py",
+      "bytes": 31,
+      "sha256": "32dd17ea93dc957fd1df1463e026d65b198a907a4c7429d2751fbb843377461a"
+    },
+    {
+      "path": "stores/test_actual_outputs_use_config0/builds/M2.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_actual_outputs_use_config0\\builds\\M2.py",
+      "bytes": 31,
+      "sha256": "088069c83c8176d63aae238c0156058dd6529ae98afdfaab063d7eeae11bfb70"
+    },
+    {
+      "path": "stores/test_actual_outputs_use_config0/builds/M3.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_actual_outputs_use_config0\\builds\\M3.py",
+      "bytes": 31,
+      "sha256": "9bc4d478d349d6c62976e4e10e22bb296607ae77c2a6774938590acc605a5beb"
+    },
+    {
+      "path": "stores/test_actual_outputs_use_config0/builds/M4.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_actual_outputs_use_config0\\builds\\M4.py",
+      "bytes": 31,
+      "sha256": "c9324188bed925fb4faa5467812adaf246ae37963755b3a6aa5e6a1144e900d7"
+    },
+    {
+      "path": "stores/test_actual_outputs_use_config0/builds/M5.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_actual_outputs_use_config0\\builds\\M5.py",
+      "bytes": 31,
+      "sha256": "99521353eb39009afeb064a778be97fc50a161091a6cc1d576475c36cb13943d"
+    },
+    {
+      "path": "stores/test_actual_outputs_use_config0/builds/M6.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_actual_outputs_use_config0\\builds\\M6.py",
+      "bytes": 31,
+      "sha256": "02a16b5400106782bfae59293d7f43aa6ff3638770772580397b6614dd48ab63"
+    },
+    {
+      "path": "stores/test_actual_outputs_use_config0/builds/M7.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_actual_outputs_use_config0\\builds\\M7.py",
+      "bytes": 31,
+      "sha256": "adf513f44ea7652e2a74b72be5f4553441401a7ea03567ee252a9bd2ead94435"
+    },
+    {
+      "path": "stores/test_actual_outputs_use_config0/builds/M8.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_actual_outputs_use_config0\\builds\\M8.py",
+      "bytes": 31,
+      "sha256": "9ccea3e3f82c054de34ff56e3a54dd1e6f2d1e0ce81272e50c410732361a23f1"
+    },
+    {
+      "path": "stores/test_actual_outputs_use_config0/builds/M9.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_actual_outputs_use_config0\\builds\\M9.py",
+      "bytes": 31,
+      "sha256": "108394a7db39e3b63d0cdabba1003fce28507dc21effe2701c0d4577fc5088be"
+    },
+    {
+      "path": "stores/test_partial_component_writes_0/joint.sqlite",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_partial_component_writes_0\\joint.sqlite",
+      "bytes": 208896,
+      "sha256": "20105fa4c8e5eaa72d135b83957bbf29dfa1d95e7bd106eef3924177c3c47a72"
+    },
+    {
+      "path": "stores/test_partial_component_writes_0/joint.caller-checkpoints.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_partial_component_writes_0\\joint.caller-checkpoints.jsonl",
+      "bytes": 314,
+      "sha256": "0e9d049b602335b7d60006429f25b5c41816be1423af66ed7e2edc1a66b97037"
+    },
+    {
+      "path": "stores/test_partial_component_writes_0/joint.audit-read-001.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_partial_component_writes_0\\joint.audit-read-001.json",
+      "bytes": 117943,
+      "sha256": "3d7ed39490a31939b749c7c3a39da0a1dbaabe460766a93e26be37c432f99b51"
+    },
+    {
+      "path": "stores/test_partial_component_writes_0/builds/M1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_partial_component_writes_0\\builds\\M1.py",
+      "bytes": 31,
+      "sha256": "32dd17ea93dc957fd1df1463e026d65b198a907a4c7429d2751fbb843377461a"
+    },
+    {
+      "path": "stores/test_partial_component_writes_0/builds/M2.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_partial_component_writes_0\\builds\\M2.py",
+      "bytes": 31,
+      "sha256": "088069c83c8176d63aae238c0156058dd6529ae98afdfaab063d7eeae11bfb70"
+    },
+    {
+      "path": "stores/test_partial_component_writes_0/builds/M3.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_partial_component_writes_0\\builds\\M3.py",
+      "bytes": 31,
+      "sha256": "9bc4d478d349d6c62976e4e10e22bb296607ae77c2a6774938590acc605a5beb"
+    },
+    {
+      "path": "stores/test_partial_component_writes_0/builds/M4.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_partial_component_writes_0\\builds\\M4.py",
+      "bytes": 31,
+      "sha256": "c9324188bed925fb4faa5467812adaf246ae37963755b3a6aa5e6a1144e900d7"
+    },
+    {
+      "path": "stores/test_partial_component_writes_0/builds/M5.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_partial_component_writes_0\\builds\\M5.py",
+      "bytes": 31,
+      "sha256": "99521353eb39009afeb064a778be97fc50a161091a6cc1d576475c36cb13943d"
+    },
+    {
+      "path": "stores/test_partial_component_writes_0/builds/M6.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_partial_component_writes_0\\builds\\M6.py",
+      "bytes": 31,
+      "sha256": "02a16b5400106782bfae59293d7f43aa6ff3638770772580397b6614dd48ab63"
+    },
+    {
+      "path": "stores/test_partial_component_writes_0/builds/M7.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_partial_component_writes_0\\builds\\M7.py",
+      "bytes": 31,
+      "sha256": "adf513f44ea7652e2a74b72be5f4553441401a7ea03567ee252a9bd2ead94435"
+    },
+    {
+      "path": "stores/test_partial_component_writes_0/builds/M8.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_partial_component_writes_0\\builds\\M8.py",
+      "bytes": 31,
+      "sha256": "9ccea3e3f82c054de34ff56e3a54dd1e6f2d1e0ce81272e50c410732361a23f1"
+    },
+    {
+      "path": "stores/test_partial_component_writes_0/builds/M9.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_partial_component_writes_0\\builds\\M9.py",
+      "bytes": 31,
+      "sha256": "108394a7db39e3b63d0cdabba1003fce28507dc21effe2701c0d4577fc5088be"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ0/joint.sqlite",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ0\\joint.sqlite",
+      "bytes": 151552,
+      "sha256": "326e3bdeed8f09f9fc0bd2718cc615bc581143fcde9bac758d08b2e506f928ed"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ0/joint.caller-checkpoints.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ0\\joint.caller-checkpoints.jsonl",
+      "bytes": 314,
+      "sha256": "e3565a2ebddade0c0a7eee7b13f9dad732ebcb65c7b87955ebbdd56da66789ad"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ0/joint.audit-read-001.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ0\\joint.audit-read-001.json",
+      "bytes": 71033,
+      "sha256": "c13e35ec98f7168914813424a94adc42899594bafebdb5bb83f15130f3db6de1"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ0/builds/M1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ0\\builds\\M1.py",
+      "bytes": 31,
+      "sha256": "32dd17ea93dc957fd1df1463e026d65b198a907a4c7429d2751fbb843377461a"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ0/builds/M2.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ0\\builds\\M2.py",
+      "bytes": 31,
+      "sha256": "088069c83c8176d63aae238c0156058dd6529ae98afdfaab063d7eeae11bfb70"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ0/builds/M3.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ0\\builds\\M3.py",
+      "bytes": 31,
+      "sha256": "9bc4d478d349d6c62976e4e10e22bb296607ae77c2a6774938590acc605a5beb"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ0/builds/M4.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ0\\builds\\M4.py",
+      "bytes": 31,
+      "sha256": "c9324188bed925fb4faa5467812adaf246ae37963755b3a6aa5e6a1144e900d7"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ0/builds/M5.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ0\\builds\\M5.py",
+      "bytes": 31,
+      "sha256": "99521353eb39009afeb064a778be97fc50a161091a6cc1d576475c36cb13943d"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ0/builds/M6.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ0\\builds\\M6.py",
+      "bytes": 31,
+      "sha256": "02a16b5400106782bfae59293d7f43aa6ff3638770772580397b6614dd48ab63"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ0/builds/M7.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ0\\builds\\M7.py",
+      "bytes": 31,
+      "sha256": "adf513f44ea7652e2a74b72be5f4553441401a7ea03567ee252a9bd2ead94435"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ0/builds/M8.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ0\\builds\\M8.py",
+      "bytes": 31,
+      "sha256": "9ccea3e3f82c054de34ff56e3a54dd1e6f2d1e0ce81272e50c410732361a23f1"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ0/builds/M9.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ0\\builds\\M9.py",
+      "bytes": 31,
+      "sha256": "108394a7db39e3b63d0cdabba1003fce28507dc21effe2701c0d4577fc5088be"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ1/joint.sqlite",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ1\\joint.sqlite",
+      "bytes": 126976,
+      "sha256": "dc9318748be636375a12ffb9b970536377d0d1f87141added6c01e65aea1e3f3"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ1/joint.caller-checkpoints.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ1\\joint.caller-checkpoints.jsonl",
+      "bytes": 314,
+      "sha256": "ead06ebe3664d9e6b6b8545d050dea5297593755385a202a20f2d2ee33803f5a"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ1/joint.audit-read-001.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ1\\joint.audit-read-001.json",
+      "bytes": 49292,
+      "sha256": "4428cfbf051cd030af177cd9b0c3baad00860b29b204337f3a994cb72a043c5c"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ1/builds/M1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ1\\builds\\M1.py",
+      "bytes": 31,
+      "sha256": "32dd17ea93dc957fd1df1463e026d65b198a907a4c7429d2751fbb843377461a"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ1/builds/M2.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ1\\builds\\M2.py",
+      "bytes": 31,
+      "sha256": "088069c83c8176d63aae238c0156058dd6529ae98afdfaab063d7eeae11bfb70"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ1/builds/M3.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ1\\builds\\M3.py",
+      "bytes": 31,
+      "sha256": "9bc4d478d349d6c62976e4e10e22bb296607ae77c2a6774938590acc605a5beb"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ1/builds/M4.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ1\\builds\\M4.py",
+      "bytes": 31,
+      "sha256": "c9324188bed925fb4faa5467812adaf246ae37963755b3a6aa5e6a1144e900d7"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ1/builds/M5.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ1\\builds\\M5.py",
+      "bytes": 31,
+      "sha256": "99521353eb39009afeb064a778be97fc50a161091a6cc1d576475c36cb13943d"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ1/builds/M6.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ1\\builds\\M6.py",
+      "bytes": 31,
+      "sha256": "02a16b5400106782bfae59293d7f43aa6ff3638770772580397b6614dd48ab63"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ1/builds/M7.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ1\\builds\\M7.py",
+      "bytes": 31,
+      "sha256": "adf513f44ea7652e2a74b72be5f4553441401a7ea03567ee252a9bd2ead94435"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ1/builds/M8.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ1\\builds\\M8.py",
+      "bytes": 31,
+      "sha256": "9ccea3e3f82c054de34ff56e3a54dd1e6f2d1e0ce81272e50c410732361a23f1"
+    },
+    {
+      "path": "stores/test_audit_failure_cannot_publ1/builds/M9.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_audit_failure_cannot_publ1\\builds\\M9.py",
+      "bytes": 31,
+      "sha256": "108394a7db39e3b63d0cdabba1003fce28507dc21effe2701c0d4577fc5088be"
+    },
+    {
+      "path": "stores/test_returned_task_output_is_r0/joint.sqlite",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_returned_task_output_is_r0\\joint.sqlite",
+      "bytes": 139264,
+      "sha256": "4555c2f5f5313ac3b6a1fe4643d31121725c7a3ef45cd08e6022d11def86c5aa"
+    },
+    {
+      "path": "stores/test_returned_task_output_is_r0/joint.caller-checkpoints.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_returned_task_output_is_r0\\joint.caller-checkpoints.jsonl",
+      "bytes": 314,
+      "sha256": "215a13af646d3b1cb85cf27e5b833b9f146268a10f6e3d948a75976eb9246de4"
+    },
+    {
+      "path": "stores/test_returned_task_output_is_r0/joint.audit-read-001.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_returned_task_output_is_r0\\joint.audit-read-001.json",
+      "bytes": 62398,
+      "sha256": "88ebc5d1c988d38d6ea72c6d83f396550fb7e71ffa3e67ac8002f1b7877d8df2"
+    },
+    {
+      "path": "stores/test_returned_task_output_is_r0/builds/M1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_returned_task_output_is_r0\\builds\\M1.py",
+      "bytes": 31,
+      "sha256": "32dd17ea93dc957fd1df1463e026d65b198a907a4c7429d2751fbb843377461a"
+    },
+    {
+      "path": "stores/test_returned_task_output_is_r0/builds/M2.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_returned_task_output_is_r0\\builds\\M2.py",
+      "bytes": 31,
+      "sha256": "088069c83c8176d63aae238c0156058dd6529ae98afdfaab063d7eeae11bfb70"
+    },
+    {
+      "path": "stores/test_returned_task_output_is_r0/builds/M3.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_returned_task_output_is_r0\\builds\\M3.py",
+      "bytes": 31,
+      "sha256": "9bc4d478d349d6c62976e4e10e22bb296607ae77c2a6774938590acc605a5beb"
+    },
+    {
+      "path": "stores/test_returned_task_output_is_r0/builds/M4.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_returned_task_output_is_r0\\builds\\M4.py",
+      "bytes": 31,
+      "sha256": "c9324188bed925fb4faa5467812adaf246ae37963755b3a6aa5e6a1144e900d7"
+    },
+    {
+      "path": "stores/test_returned_task_output_is_r0/builds/M5.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_returned_task_output_is_r0\\builds\\M5.py",
+      "bytes": 31,
+      "sha256": "99521353eb39009afeb064a778be97fc50a161091a6cc1d576475c36cb13943d"
+    },
+    {
+      "path": "stores/test_returned_task_output_is_r0/builds/M6.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_returned_task_output_is_r0\\builds\\M6.py",
+      "bytes": 31,
+      "sha256": "02a16b5400106782bfae59293d7f43aa6ff3638770772580397b6614dd48ab63"
+    },
+    {
+      "path": "stores/test_returned_task_output_is_r0/builds/M7.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_returned_task_output_is_r0\\builds\\M7.py",
+      "bytes": 31,
+      "sha256": "adf513f44ea7652e2a74b72be5f4553441401a7ea03567ee252a9bd2ead94435"
+    },
+    {
+      "path": "stores/test_returned_task_output_is_r0/builds/M8.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_returned_task_output_is_r0\\builds\\M8.py",
+      "bytes": 31,
+      "sha256": "9ccea3e3f82c054de34ff56e3a54dd1e6f2d1e0ce81272e50c410732361a23f1"
+    },
+    {
+      "path": "stores/test_returned_task_output_is_r0/builds/M9.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_returned_task_output_is_r0\\builds\\M9.py",
+      "bytes": 31,
+      "sha256": "108394a7db39e3b63d0cdabba1003fce28507dc21effe2701c0d4577fc5088be"
+    },
+    {
+      "path": "stores/test_commit_survives_a_caller_0/joint.sqlite",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_commit_survives_a_caller_0\\joint.sqlite",
+      "bytes": 167936,
+      "sha256": "2827cf0872f1cfa5574a36206bcb5cb7da11c24fe82f7ec5d37ea745f327ac04"
+    },
+    {
+      "path": "stores/test_commit_survives_a_caller_0/joint.caller-checkpoints.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_commit_survives_a_caller_0\\joint.caller-checkpoints.jsonl",
+      "bytes": 314,
+      "sha256": "ca20e79ac8136c771eb289741c44930738aa13734f16f74bac9821621b6ad119"
+    },
+    {
+      "path": "stores/test_commit_survives_a_caller_0/joint.audit-read-001.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_commit_survives_a_caller_0\\joint.audit-read-001.json",
+      "bytes": 82916,
+      "sha256": "44aa0f6c15ddd09d8b026ce664d7340cdd3ec17945a0a22a767d4d3e639a1409"
+    },
+    {
+      "path": "stores/test_commit_survives_a_caller_0/builds/M1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_commit_survives_a_caller_0\\builds\\M1.py",
+      "bytes": 31,
+      "sha256": "32dd17ea93dc957fd1df1463e026d65b198a907a4c7429d2751fbb843377461a"
+    },
+    {
+      "path": "stores/test_commit_survives_a_caller_0/builds/M2.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_commit_survives_a_caller_0\\builds\\M2.py",
+      "bytes": 31,
+      "sha256": "088069c83c8176d63aae238c0156058dd6529ae98afdfaab063d7eeae11bfb70"
+    },
+    {
+      "path": "stores/test_commit_survives_a_caller_0/builds/M3.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_commit_survives_a_caller_0\\builds\\M3.py",
+      "bytes": 31,
+      "sha256": "9bc4d478d349d6c62976e4e10e22bb296607ae77c2a6774938590acc605a5beb"
+    },
+    {
+      "path": "stores/test_commit_survives_a_caller_0/builds/M4.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_commit_survives_a_caller_0\\builds\\M4.py",
+      "bytes": 31,
+      "sha256": "c9324188bed925fb4faa5467812adaf246ae37963755b3a6aa5e6a1144e900d7"
+    },
+    {
+      "path": "stores/test_commit_survives_a_caller_0/builds/M5.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_commit_survives_a_caller_0\\builds\\M5.py",
+      "bytes": 31,
+      "sha256": "99521353eb39009afeb064a778be97fc50a161091a6cc1d576475c36cb13943d"
+    },
+    {
+      "path": "stores/test_commit_survives_a_caller_0/builds/M6.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_commit_survives_a_caller_0\\builds\\M6.py",
+      "bytes": 31,
+      "sha256": "02a16b5400106782bfae59293d7f43aa6ff3638770772580397b6614dd48ab63"
+    },
+    {
+      "path": "stores/test_commit_survives_a_caller_0/builds/M7.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_commit_survives_a_caller_0\\builds\\M7.py",
+      "bytes": 31,
+      "sha256": "adf513f44ea7652e2a74b72be5f4553441401a7ea03567ee252a9bd2ead94435"
+    },
+    {
+      "path": "stores/test_commit_survives_a_caller_0/builds/M8.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_commit_survives_a_caller_0\\builds\\M8.py",
+      "bytes": 31,
+      "sha256": "9ccea3e3f82c054de34ff56e3a54dd1e6f2d1e0ce81272e50c410732361a23f1"
+    },
+    {
+      "path": "stores/test_commit_survives_a_caller_0/builds/M9.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_commit_survives_a_caller_0\\builds\\M9.py",
+      "bytes": 31,
+      "sha256": "108394a7db39e3b63d0cdabba1003fce28507dc21effe2701c0d4577fc5088be"
+    },
+    {
+      "path": "stores/test_component_subject_preserv0/joint.sqlite",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_component_subject_preserv0\\joint.sqlite",
+      "bytes": 114688,
+      "sha256": "3169a46a3833fe7c56a44a3dd47f30ffcaaf27cffbb913464e1ae46124cdbc87"
+    },
+    {
+      "path": "stores/test_component_subject_preserv0/joint.caller-checkpoints.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_component_subject_preserv0\\joint.caller-checkpoints.jsonl",
+      "bytes": 314,
+      "sha256": "b4e773300149efcc404d81ba1f449492bcb7e0eb5ad2b59efb10da4b3a670480"
+    },
+    {
+      "path": "stores/test_component_subject_preserv0/joint.audit-read-001.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_component_subject_preserv0\\joint.audit-read-001.json",
+      "bytes": 40436,
+      "sha256": "2160702b767982ad317f05482491f6682c280add70c3daae4e44c69558edc1c8"
+    },
+    {
+      "path": "stores/test_component_subject_preserv0/builds/M1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_component_subject_preserv0\\builds\\M1.py",
+      "bytes": 31,
+      "sha256": "32dd17ea93dc957fd1df1463e026d65b198a907a4c7429d2751fbb843377461a"
+    },
+    {
+      "path": "stores/test_component_subject_preserv0/builds/M2.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_component_subject_preserv0\\builds\\M2.py",
+      "bytes": 31,
+      "sha256": "088069c83c8176d63aae238c0156058dd6529ae98afdfaab063d7eeae11bfb70"
+    },
+    {
+      "path": "stores/test_component_subject_preserv0/builds/M3.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_component_subject_preserv0\\builds\\M3.py",
+      "bytes": 31,
+      "sha256": "9bc4d478d349d6c62976e4e10e22bb296607ae77c2a6774938590acc605a5beb"
+    },
+    {
+      "path": "stores/test_component_subject_preserv0/builds/M4.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_component_subject_preserv0\\builds\\M4.py",
+      "bytes": 31,
+      "sha256": "c9324188bed925fb4faa5467812adaf246ae37963755b3a6aa5e6a1144e900d7"
+    },
+    {
+      "path": "stores/test_component_subject_preserv0/builds/M5.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_component_subject_preserv0\\builds\\M5.py",
+      "bytes": 31,
+      "sha256": "99521353eb39009afeb064a778be97fc50a161091a6cc1d576475c36cb13943d"
+    },
+    {
+      "path": "stores/test_component_subject_preserv0/builds/M6.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_component_subject_preserv0\\builds\\M6.py",
+      "bytes": 31,
+      "sha256": "02a16b5400106782bfae59293d7f43aa6ff3638770772580397b6614dd48ab63"
+    },
+    {
+      "path": "stores/test_component_subject_preserv0/builds/M7.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_component_subject_preserv0\\builds\\M7.py",
+      "bytes": 31,
+      "sha256": "adf513f44ea7652e2a74b72be5f4553441401a7ea03567ee252a9bd2ead94435"
+    },
+    {
+      "path": "stores/test_component_subject_preserv0/builds/M8.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_component_subject_preserv0\\builds\\M8.py",
+      "bytes": 31,
+      "sha256": "9ccea3e3f82c054de34ff56e3a54dd1e6f2d1e0ce81272e50c410732361a23f1"
+    },
+    {
+      "path": "stores/test_component_subject_preserv0/builds/M9.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_component_subject_preserv0\\builds\\M9.py",
+      "bytes": 31,
+      "sha256": "108394a7db39e3b63d0cdabba1003fce28507dc21effe2701c0d4577fc5088be"
+    },
+    {
+      "path": "stores/test_two_process_writers_publi0/joint.sqlite",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_two_process_writers_publi0\\joint.sqlite",
+      "bytes": 225280,
+      "sha256": "60ec9636fb342cfe2def70f29aa00bb368c5a22c8900639acffdbd6b6ea48513"
+    },
+    {
+      "path": "stores/test_two_process_writers_publi0/joint.audit-checkpoint.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_two_process_writers_publi0\\joint.audit-checkpoint.json",
+      "bytes": 282,
+      "sha256": "28afb4d0d19105e76c96a2c1aba882045350bd6dd49beecd061490d86dc4da9e"
+    },
+    {
+      "path": "stores/test_two_process_writers_publi0/joint.audit-read.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_two_process_writers_publi0\\joint.audit-read.json",
+      "bytes": 137478,
+      "sha256": "cbb845373bc6e79df4e81b17c5e8b08135635c26a97e1e7d76d9b7c3ab57423e"
+    },
+    {
+      "path": "stores/test_two_process_writers_publi0/builds/M1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_two_process_writers_publi0\\builds\\M1.py",
+      "bytes": 31,
+      "sha256": "32dd17ea93dc957fd1df1463e026d65b198a907a4c7429d2751fbb843377461a"
+    },
+    {
+      "path": "stores/test_two_process_writers_publi0/builds/M2.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_two_process_writers_publi0\\builds\\M2.py",
+      "bytes": 31,
+      "sha256": "088069c83c8176d63aae238c0156058dd6529ae98afdfaab063d7eeae11bfb70"
+    },
+    {
+      "path": "stores/test_two_process_writers_publi0/builds/M3.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_two_process_writers_publi0\\builds\\M3.py",
+      "bytes": 31,
+      "sha256": "9bc4d478d349d6c62976e4e10e22bb296607ae77c2a6774938590acc605a5beb"
+    },
+    {
+      "path": "stores/test_two_process_writers_publi0/builds/M4.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_two_process_writers_publi0\\builds\\M4.py",
+      "bytes": 31,
+      "sha256": "c9324188bed925fb4faa5467812adaf246ae37963755b3a6aa5e6a1144e900d7"
+    },
+    {
+      "path": "stores/test_two_process_writers_publi0/builds/M5.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_two_process_writers_publi0\\builds\\M5.py",
+      "bytes": 31,
+      "sha256": "99521353eb39009afeb064a778be97fc50a161091a6cc1d576475c36cb13943d"
+    },
+    {
+      "path": "stores/test_two_process_writers_publi0/builds/M6.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_two_process_writers_publi0\\builds\\M6.py",
+      "bytes": 31,
+      "sha256": "02a16b5400106782bfae59293d7f43aa6ff3638770772580397b6614dd48ab63"
+    },
+    {
+      "path": "stores/test_two_process_writers_publi0/builds/M7.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_two_process_writers_publi0\\builds\\M7.py",
+      "bytes": 31,
+      "sha256": "adf513f44ea7652e2a74b72be5f4553441401a7ea03567ee252a9bd2ead94435"
+    },
+    {
+      "path": "stores/test_two_process_writers_publi0/builds/M8.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_two_process_writers_publi0\\builds\\M8.py",
+      "bytes": 31,
+      "sha256": "9ccea3e3f82c054de34ff56e3a54dd1e6f2d1e0ce81272e50c410732361a23f1"
+    },
+    {
+      "path": "stores/test_two_process_writers_publi0/builds/M9.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_two_process_writers_publi0\\builds\\M9.py",
+      "bytes": 31,
+      "sha256": "108394a7db39e3b63d0cdabba1003fce28507dc21effe2701c0d4577fc5088be"
+    },
+    {
+      "path": "stores/test_all_nine_components_reach0/joint.sqlite",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_all_nine_components_reach0\\joint.sqlite",
+      "bytes": 495616,
+      "sha256": "3b716ff299f625001ebcfe5e886d5e812b3f34aa323cbe6a43d7ea2cc1189f0b"
+    },
+    {
+      "path": "stores/test_all_nine_components_reach0/joint.audit-checkpoint.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_all_nine_components_reach0\\joint.audit-checkpoint.json",
+      "bytes": 283,
+      "sha256": "3b2139456e54d108378648b5cdac71c24246628e4b01450584c99ecb1bc00a3e"
+    },
+    {
+      "path": "stores/test_all_nine_components_reach0/joint.audit-read.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_all_nine_components_reach0\\joint.audit-read.json",
+      "bytes": 399941,
+      "sha256": "086bf312b16bb6a0ca4a658171b859a04d724aedb148bb8e5f5bc86784d15014"
+    },
+    {
+      "path": "stores/test_all_nine_components_reach0/builds/M1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_all_nine_components_reach0\\builds\\M1.py",
+      "bytes": 31,
+      "sha256": "32dd17ea93dc957fd1df1463e026d65b198a907a4c7429d2751fbb843377461a"
+    },
+    {
+      "path": "stores/test_all_nine_components_reach0/builds/M2.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_all_nine_components_reach0\\builds\\M2.py",
+      "bytes": 31,
+      "sha256": "088069c83c8176d63aae238c0156058dd6529ae98afdfaab063d7eeae11bfb70"
+    },
+    {
+      "path": "stores/test_all_nine_components_reach0/builds/M3.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_all_nine_components_reach0\\builds\\M3.py",
+      "bytes": 31,
+      "sha256": "9bc4d478d349d6c62976e4e10e22bb296607ae77c2a6774938590acc605a5beb"
+    },
+    {
+      "path": "stores/test_all_nine_components_reach0/builds/M4.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_all_nine_components_reach0\\builds\\M4.py",
+      "bytes": 31,
+      "sha256": "c9324188bed925fb4faa5467812adaf246ae37963755b3a6aa5e6a1144e900d7"
+    },
+    {
+      "path": "stores/test_all_nine_components_reach0/builds/M5.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_all_nine_components_reach0\\builds\\M5.py",
+      "bytes": 31,
+      "sha256": "99521353eb39009afeb064a778be97fc50a161091a6cc1d576475c36cb13943d"
+    },
+    {
+      "path": "stores/test_all_nine_components_reach0/builds/M6.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_all_nine_components_reach0\\builds\\M6.py",
+      "bytes": 31,
+      "sha256": "02a16b5400106782bfae59293d7f43aa6ff3638770772580397b6614dd48ab63"
+    },
+    {
+      "path": "stores/test_all_nine_components_reach0/builds/M7.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_all_nine_components_reach0\\builds\\M7.py",
+      "bytes": 31,
+      "sha256": "adf513f44ea7652e2a74b72be5f4553441401a7ea03567ee252a9bd2ead94435"
+    },
+    {
+      "path": "stores/test_all_nine_components_reach0/builds/M8.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_all_nine_components_reach0\\builds\\M8.py",
+      "bytes": 31,
+      "sha256": "9ccea3e3f82c054de34ff56e3a54dd1e6f2d1e0ce81272e50c410732361a23f1"
+    },
+    {
+      "path": "stores/test_all_nine_components_reach0/builds/M9.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_all_nine_components_reach0\\builds\\M9.py",
+      "bytes": 31,
+      "sha256": "108394a7db39e3b63d0cdabba1003fce28507dc21effe2701c0d4577fc5088be"
+    },
+    {
+      "path": "stores/test_legacy_store_is_an_observ0/joint.sqlite",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_legacy_store_is_an_observ0\\joint.sqlite",
+      "bytes": 167936,
+      "sha256": "149dff16f5f5c6219a00c89f5456c12acb36306209d1b7e8c4d2a02e04926202"
+    },
+    {
+      "path": "stores/test_legacy_store_is_an_observ0/joint.caller-checkpoints.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_legacy_store_is_an_observ0\\joint.caller-checkpoints.jsonl",
+      "bytes": 314,
+      "sha256": "115bcf4534de5da56455333e4db487439d356cb61dbde0a9ee024f1c9e9ffcb0"
+    },
+    {
+      "path": "stores/test_legacy_store_is_an_observ0/joint.audit-read-001.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_legacy_store_is_an_observ0\\joint.audit-read-001.json",
+      "bytes": 24002,
+      "sha256": "8b150427f44a41519e0b1b9aae9a5c16f2fc501cd75892ce9deda6db0f412a5d"
+    },
+    {
+      "path": "stores/test_legacy_store_is_an_observ0/builds/M1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_legacy_store_is_an_observ0\\builds\\M1.py",
+      "bytes": 31,
+      "sha256": "32dd17ea93dc957fd1df1463e026d65b198a907a4c7429d2751fbb843377461a"
+    },
+    {
+      "path": "stores/test_legacy_store_is_an_observ0/builds/M2.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_legacy_store_is_an_observ0\\builds\\M2.py",
+      "bytes": 31,
+      "sha256": "088069c83c8176d63aae238c0156058dd6529ae98afdfaab063d7eeae11bfb70"
+    },
+    {
+      "path": "stores/test_legacy_store_is_an_observ0/builds/M3.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_legacy_store_is_an_observ0\\builds\\M3.py",
+      "bytes": 31,
+      "sha256": "9bc4d478d349d6c62976e4e10e22bb296607ae77c2a6774938590acc605a5beb"
+    },
+    {
+      "path": "stores/test_legacy_store_is_an_observ0/builds/M4.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_legacy_store_is_an_observ0\\builds\\M4.py",
+      "bytes": 31,
+      "sha256": "c9324188bed925fb4faa5467812adaf246ae37963755b3a6aa5e6a1144e900d7"
+    },
+    {
+      "path": "stores/test_legacy_store_is_an_observ0/builds/M5.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_legacy_store_is_an_observ0\\builds\\M5.py",
+      "bytes": 31,
+      "sha256": "99521353eb39009afeb064a778be97fc50a161091a6cc1d576475c36cb13943d"
+    },
+    {
+      "path": "stores/test_legacy_store_is_an_observ0/builds/M6.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_legacy_store_is_an_observ0\\builds\\M6.py",
+      "bytes": 31,
+      "sha256": "02a16b5400106782bfae59293d7f43aa6ff3638770772580397b6614dd48ab63"
+    },
+    {
+      "path": "stores/test_legacy_store_is_an_observ0/builds/M7.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_legacy_store_is_an_observ0\\builds\\M7.py",
+      "bytes": 31,
+      "sha256": "adf513f44ea7652e2a74b72be5f4553441401a7ea03567ee252a9bd2ead94435"
+    },
+    {
+      "path": "stores/test_legacy_store_is_an_observ0/builds/M8.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_legacy_store_is_an_observ0\\builds\\M8.py",
+      "bytes": 31,
+      "sha256": "9ccea3e3f82c054de34ff56e3a54dd1e6f2d1e0ce81272e50c410732361a23f1"
+    },
+    {
+      "path": "stores/test_legacy_store_is_an_observ0/builds/M9.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\joint-deployment-artifacts-r3\\test_legacy_store_is_an_observ0\\builds\\M9.py",
+      "bytes": 31,
+      "sha256": "108394a7db39e3b63d0cdabba1003fce28507dc21effe2701c0d4577fc5088be"
+    },
+    {
+      "path": "archive_joint_deployment_artifacts_r1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\archive_joint_deployment_artifacts_r1.py",
+      "bytes": 7801,
+      "sha256": "ffb6312862dd81315800514be14baf1d50805ddc9002f8e8c3cae0ee1bd3ba24"
+    }
+  ],
+  "original_tree": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance",
+  "source_prefix": "joint-deployment-artifacts-r3",
+  "source_archive_sha256": "51789ee6376a988c5097d70f32fb6aa682a5a49c7426f05861f840dcfeafc617",
+  "databases": [
+    {
+      "case": "test_actual_outputs_use_config0",
+      "path": "stores/test_actual_outputs_use_config0/joint.sqlite",
+      "checkpoint": {
+        "count": 9,
+        "domain": "train",
+        "head": "4af497e2b7115bac2ac16a46266d1a5e588a7d6a4ae6470b1cbcf0576dfd4f41",
+        "schema": "joint-deployment-artifact-checkpoint-v1",
+        "state_digest": "92fb4d6ac3c6e60909438ee8c71daa5fcb260a77461dd869d16a9714c83cc93d",
+        "store_id": "6ef0a4d77d18433fbae41db54ed78f41"
+      },
+      "events": 9,
+      "started": 4,
+      "committed": 4,
+      "failed": 0,
+      "pending": 0,
+      "history_complete": true,
+      "report_digest": "19ed41117e9ae62309fe56bb441cf23fc3cb679630a6c956dcd74ca38a479c31"
+    },
+    {
+      "case": "test_partial_component_writes_0",
+      "path": "stores/test_partial_component_writes_0/joint.sqlite",
+      "checkpoint": {
+        "count": 7,
+        "domain": "train",
+        "head": "5bbc47567c9c3da83cb85c6bfeb5d8815967ddb03358547bc0d1951742fbd8c0",
+        "schema": "joint-deployment-artifact-checkpoint-v1",
+        "state_digest": "663e3e33aec9a79999a6580d009e4e6baf1ec3dbee391f3df397501954034b05",
+        "store_id": "92356587668041afae81f306c2e80207"
+      },
+      "events": 7,
+      "started": 3,
+      "committed": 2,
+      "failed": 1,
+      "pending": 0,
+      "history_complete": true,
+      "report_digest": "e32266018faf87b6de1ee84e05ade3cb007c49d42f56af344d25d135630b999f"
+    },
+    {
+      "case": "test_audit_failure_cannot_publ0",
+      "path": "stores/test_audit_failure_cannot_publ0/joint.sqlite",
+      "checkpoint": {
+        "count": 5,
+        "domain": "train",
+        "head": "33d1447178300727b63f2c899dd2f872e37560a917c2c2b7f609a6139ad584d0",
+        "schema": "joint-deployment-artifact-checkpoint-v1",
+        "state_digest": "eb7ebc995b273c0c2c1d03cf32ac1878c90f1c802f93fdaaf571bb800a8b4752",
+        "store_id": "7ec45d718ef84494ba2c2b0dc3c9f081"
+      },
+      "events": 5,
+      "started": 2,
+      "committed": 1,
+      "failed": 1,
+      "pending": 0,
+      "history_complete": true,
+      "report_digest": "675085a8372d111b3b0b5cd1a7eb9c2a6a4995c7cd82fa636b6a1d1391e38e91"
+    },
+    {
+      "case": "test_audit_failure_cannot_publ1",
+      "path": "stores/test_audit_failure_cannot_publ1/joint.sqlite",
+      "checkpoint": {
+        "count": 4,
+        "domain": "train",
+        "head": "8b4d3c2605402fe11ca8bd1e3ff9f5bc3b3cd070ca97c8c0de2a5ade6f425eab",
+        "schema": "joint-deployment-artifact-checkpoint-v1",
+        "state_digest": "eb7ebc995b273c0c2c1d03cf32ac1878c90f1c802f93fdaaf571bb800a8b4752",
+        "store_id": "9c2b96cde9b0476fb7ed0b2d321c966e"
+      },
+      "events": 4,
+      "started": 2,
+      "committed": 1,
+      "failed": 0,
+      "pending": 1,
+      "history_complete": true,
+      "report_digest": "099dc78f6ddc6d7bda4e93530f822939a515ee3726295ec606544279ce9a7b5c"
+    },
+    {
+      "case": "test_returned_task_output_is_r0",
+      "path": "stores/test_returned_task_output_is_r0/joint.sqlite",
+      "checkpoint": {
+        "count": 5,
+        "domain": "train",
+        "head": "e5494aa551022363eb68c29af478c75e1694a686d8508c7345381f57b2ac326e",
+        "schema": "joint-deployment-artifact-checkpoint-v1",
+        "state_digest": "eb7ebc995b273c0c2c1d03cf32ac1878c90f1c802f93fdaaf571bb800a8b4752",
+        "store_id": "48017a4ad1b648b5b0a33fd540d6f6e8"
+      },
+      "events": 5,
+      "started": 2,
+      "committed": 1,
+      "failed": 1,
+      "pending": 0,
+      "history_complete": true,
+      "report_digest": "6b42355122bc778f51e8f7fa0136904b37e5b3b38469836ddad216fe46f3016b"
+    },
+    {
+      "case": "test_commit_survives_a_caller_0",
+      "path": "stores/test_commit_survives_a_caller_0/joint.sqlite",
+      "checkpoint": {
+        "count": 5,
+        "domain": "train",
+        "head": "81deab84a8a526f4eecdac5067498b99192cf3c96be1ed5fa25b9d30fe050e71",
+        "schema": "joint-deployment-artifact-checkpoint-v1",
+        "state_digest": "663e3e33aec9a79999a6580d009e4e6baf1ec3dbee391f3df397501954034b05",
+        "store_id": "88adcb7a9dbb4333b4c699aa4b003497"
+      },
+      "events": 5,
+      "started": 2,
+      "committed": 2,
+      "failed": 0,
+      "pending": 0,
+      "history_complete": true,
+      "report_digest": "2ac7e61a5fef9b28e86a69978fc05b3c70a90324e9c3330fbad3e32f97db4384"
+    },
+    {
+      "case": "test_component_subject_preserv0",
+      "path": "stores/test_component_subject_preserv0/joint.sqlite",
+      "checkpoint": {
+        "count": 3,
+        "domain": "train",
+        "head": "4abf9805ef7a610a26511c88824fd9cde6bdddd4c6249528b231699d99daf203",
+        "schema": "joint-deployment-artifact-checkpoint-v1",
+        "state_digest": "a4a574e24648f73234d2fdabe31278affcec2da3707e273a44a512acc7fb012d",
+        "store_id": "c4565559fe904fe89f9ee441ad2f31d2"
+      },
+      "events": 3,
+      "started": 1,
+      "committed": 1,
+      "failed": 0,
+      "pending": 0,
+      "history_complete": true,
+      "report_digest": "e36adcea749a7307d58da37ec4ecb73fb62476640e8cf82b4edece9697aef3a8"
+    },
+    {
+      "case": "test_two_process_writers_publi0",
+      "path": "stores/test_two_process_writers_publi0/joint.sqlite",
+      "checkpoint": {
+        "count": 7,
+        "domain": "train",
+        "head": "578e1cdd20adda9783cae4f27cc0e5fdefda6b912b75cc210bd1f1e5a14faf0b",
+        "schema": "joint-deployment-artifact-checkpoint-v1",
+        "state_digest": "ec700e450f2d1427d62f053010970f9b471458110ab3d2c393e8232aeb2891e0",
+        "store_id": "b0ab7c0bf132453b8a0e3ddae49fa2e0"
+      },
+      "events": 7,
+      "started": 3,
+      "committed": 2,
+      "failed": 1,
+      "pending": 0,
+      "history_complete": true,
+      "report_digest": "5b4f8a7b9f36cf884ef981548936060f7dd6c030a33a2c1febe27877c290a77e"
+    },
+    {
+      "case": "test_all_nine_components_reach0",
+      "path": "stores/test_all_nine_components_reach0/joint.sqlite",
+      "checkpoint": {
+        "count": 17,
+        "domain": "train",
+        "head": "b09af2916e7e365fde7dfffa7a982e82b7c8cdc1fecd9d57909854b910a6946a",
+        "schema": "joint-deployment-artifact-checkpoint-v1",
+        "state_digest": "92fb4d6ac3c6e60909438ee8c71daa5fcb260a77461dd869d16a9714c83cc93d",
+        "store_id": "5813821b1522457183d4504df1cf5af9"
+      },
+      "events": 17,
+      "started": 8,
+      "committed": 6,
+      "failed": 2,
+      "pending": 0,
+      "history_complete": true,
+      "report_digest": "70f39d163ce1bedd425c0fbafc76407a690bbc6f69e837b8df9cb03fcb413b60"
+    },
+    {
+      "case": "test_legacy_store_is_an_observ0",
+      "path": "stores/test_legacy_store_is_an_observ0/joint.sqlite",
+      "checkpoint": {
+        "count": 1,
+        "domain": "train",
+        "head": "013870ab00623acad85d599d4a19da157881019217f815db3e2ae22e5d900465",
+        "schema": "joint-deployment-artifact-checkpoint-v1",
+        "state_digest": "663e3e33aec9a79999a6580d009e4e6baf1ec3dbee391f3df397501954034b05",
+        "store_id": "655c309f566046a8b09fe1697d61d740"
+      },
+      "events": 1,
+      "started": 0,
+      "committed": 0,
+      "failed": 0,
+      "pending": 0,
+      "history_complete": false,
+      "report_digest": "37f5b8cc53af26a35980dfbe1f567d28cc7ad14bffff1fc36f61872e1e8ea083"
+    }
+  ],
+  "scope": "Ten selected actual public synthetic SQLite stores, caller-retained checkpoints, actual readback outputs and all declared component build sources. Includes atomic publication, rollback, failed staging, audit-writer failure, task returns, post-COMMIT delivery failure, process concurrency and explicitly observed legacy history.",
+  "exclusions": "No validation store or validation output is copied; private keys, private reference stores and real datasets are excluded. Other counterexample case originals remain in work.",
+  "limits": "The three check versions are not independent scientific samples. SQL replay checks recorded transitions and source bytes; it does not execute historical source or establish model efficacy, VAL acceptance or operating-system isolation.",
+  "scientific_effectiveness_proven": false,
+  "validation_acceptance": false,
+  "new_paid_calls": 0
+}
