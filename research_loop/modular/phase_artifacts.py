@@ -30,6 +30,17 @@ def _regular(path: Path) -> bytes:
     return path.read_bytes()
 
 
+def _verify_witness_metadata(body):
+    fields = {'phase_allocation':set(), 'phase_program':{'job'}, 'phase_return':{'job'},
+        'phase_scheduler_event':{'sequence','event'}, 'phase_scheduler_sqlite':set(), 'phase_receipt':set()}
+    payload = body.get('payload',{}).get('canonical')
+    extra = payload.get('extra') if type(payload) is dict else None
+    if (body['kind'] not in fields or type(extra) is not dict or set(extra) != fields[body['kind']]
+            or body['cost'] != {'known':False,'units':None} or body['optimizer_visible']
+            or body['control_sources'] or body['checks']):
+        raise ContractError('phase witness cost, visibility or extra metadata differs')
+
+
 @dataclass(frozen=True)
 class PhaseArtifactContext:
     """Authenticated catalogue parents supplied by the stage owner."""
@@ -191,6 +202,7 @@ def verify_phase_artifacts(*, bridge: PhaseArtifactBridge, material, cell, objec
     allocation = programs = returns = sqlite = receipt = None
     events: list[tuple[int, str, dict]] = []
     for digest, body in descriptors:
+        _verify_witness_metadata(body)
         if body['producer_source'] != expected_source:
             raise ContractError('phase witness producer source differs')
         if body['config_refs'] != [expected_ref]: raise ContractError('phase witness bridge source differs')
@@ -285,6 +297,7 @@ def verify_phase_artifact_prefix(*, bridge: PhaseArtifactBridge) -> None:
         body = descriptor.data()
         if not body['kind'].startswith('phase_'):
             continue
+        _verify_witness_metadata(body)
         payload = body['payload']['canonical']
         expected_module = 'M8' if body['kind'] in {'phase_scheduler_event','phase_scheduler_sqlite'} else 'M7'
         expected_status = 'produced' if expected_module in bridge.enabled else 'not_applied'

@@ -1,5 +1,6 @@
 """Bounded actual host seams; synthetic public TRAIN tasks, no paid provider."""
 import importlib
+from dataclasses import replace
 import json
 from pathlib import Path
 from types import SimpleNamespace
@@ -50,6 +51,21 @@ def check_outputs(result, verify, kwargs, *, tamper):
         if seal_before is None: catalogue.seal_path.unlink()
         else: catalogue.seal_path.write_bytes(seal_before)
     verify(result, **kwargs)
+    if result.cell.coverage_id == 'pair:M7+M8':
+        for field in ('cost','optimizer_visible','extra'):
+            def change_metadata(body):
+                if body['kind']=='phase_allocation':
+                    if field=='extra': body['payload']['canonical']['extra']={'invented':True}
+                    else: body[field]={'known':True,'units':0} if field=='cost' else True
+            try:
+                rewrite_catalogue(SimpleNamespace(artifacts=catalogue),change_metadata)
+                with pytest.raises(ContractError,match='cost, visibility or extra metadata differs'):
+                    verify(result, **kwargs)
+            finally:
+                path.write_bytes(raw)
+                if seal_before is None: catalogue.seal_path.unlink()
+                else: catalogue.seal_path.write_bytes(seal_before)
+        verify(result, **kwargs)
     blob = path.parent.parent/'phase-artifacts/blobs'/phase[0]['payload']['canonical']['bytes']['sha256']
     original = blob.read_bytes()
     try:
@@ -118,3 +134,15 @@ def test_actual_phase_before_any_model_call_needs_no_invented_model_parent(tmp_p
     index=next(i for i,row in enumerate(rows) if row['kind']=='execution_phase_inputs')
     assert not any(row['kind']=='model_context' for row in rows[:index])
     assert len(seen)==(0 if mode=='phase_failure' else 2)
+    if mode=='phase_failure':
+        from research_loop.modular.panel_receipts import PanelReceiptVerifier
+        from test_modular_combination_benchmark_driver import _rewrite_trace
+        original=result.runtime.trace_path.read_bytes()
+        def foreign_binding(events):
+            events[-1]['data']['panel_cell']={'schema':'opaque-panel-cell-binding-v1','cell_digest':'0'*64}
+        try:
+            digest=_rewrite_trace(result.runtime.trace_path,foreign_binding)
+            with pytest.raises(ContractError,match='bound task and scenario'):
+                PanelReceiptVerifier()._verify_runtime(replace(result.runtime,trace_digest=digest),cell)
+        finally: result.runtime.trace_path.write_bytes(original)
+        verify_exploration_scheduler_cell(result,**kwargs)

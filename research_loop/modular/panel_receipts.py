@@ -444,7 +444,7 @@ class PanelReceiptVerifier:
                             and request.get("module_context", {}).get("panel_cell") in (expected_binding, expected_opaque_binding)
                             for request in requests)
         bound_early_failure = (not requests and events[-1].get("stage") == "controller_failure"
-                               and events[-1].get("data", {}).get("panel_cell") == expected_binding)
+                               and events[-1].get("data", {}).get("panel_cell") in (expected_binding, expected_opaque_binding))
         if not bound_request and not bound_early_failure and not bound_protocol_failure:
             raise ContractError("runtime trace lacks a bound task and scenario request")
         pending = None
