@@ -245,7 +245,17 @@ class JointTrainStageExecutor:
                 packet=next((p for p in plan.packets if p.task.content_hash==target_digest),None)
                 if packet is None or type(build) is not JointTrainStage or build not in self.stages:
                     raise ContractError('target requires original bound history stage')
-                self.verify(build)
+                verified_barrier = None
+                if barrier is not None:
+                    if type(barrier) is not JointTrainBarrier or barrier.executor is not self:
+                        raise ContractError('formal target requires this exact executor history barrier')
+                    # This context is local to this dispatch.  Its construction
+                    # freshly replays every history build before the selected
+                    # package is read, so the build need not be replayed twice.
+                    verified_barrier = _verified_barrier_context(barrier)
+                    verified_barrier.require_build(build)
+                else:
+                    self.verify(build)
                 if build.record.data()['stage']!='history_build' or build.record.data()['build_id']!=history_build_id(plan.protocol,recipe):
                     raise ContractError('target package belongs to a different history procedure')
                 task=packet.task; package=CandidatePackage(_read_record(build.inner.root/'candidate.json')); inputs={'public_csv':packet.csv_path}
@@ -256,9 +266,7 @@ class JointTrainStageExecutor:
             cell=PanelCell(OBLIGATION,task.identity,'r1','combination',recipe_id,runtime_arm(plan.composition,recipe,stage),
                 task.content_hash,scenario.content_hash,package.digest,ScorerConfig(R(plan.protocol.record.data()['scorer'])).digest)
             if barrier is not None:
-                if type(barrier) is not JointTrainBarrier or barrier.executor is not self:
-                    raise ContractError('formal target requires this exact executor history barrier')
-                panel,_=compile_panel(barrier)
+                panel,_=compile_panel(barrier,verified_context=verified_barrier)
                 cell=next(c for c in panel.cells if c.arm_id==recipe_id and c.task_digest==task.content_hash)
                 if cell.package_digest!=package.digest:raise ContractError('formal target package differs from its barrier')
             if stage=='history_build':check_history(plan.history,plan.material(task.content_hash).state(),self.broker,inputs)
@@ -295,12 +303,18 @@ class JointTrainStageExecutor:
         finally:
             self._persist()
 
-    def verify(self, result):
+    def verify(self, result, *, verified_context=None, verified_panel=None):
         self._verify_protocol_file()
         if type(result) is not JointTrainStage or result not in self.stages or type(result.ledger) is not PhaseProviderLedger:
             raise ContractError('original common stage and eligible provider seal required')
         if result.barrier is not None and (type(result.barrier) is not JointTrainBarrier or result.barrier.executor is not self):
             raise ContractError('common stage barrier origin differs')
+        if verified_context is not None:
+            if result.barrier is None or type(verified_context) is not _VerifiedJointTrainBarrier:
+                raise ContractError('verified common context applies only to its target barrier')
+            verified_context.require(result.barrier)
+        if verified_panel is not None and type(verified_panel) is not JointTrainPanel:
+            raise ContractError('exact verified common panel required')
         expected=_stage_record(self.plan,result.inner,result.ledger,result.barrier,status='succeeded')
         if result.record!=expected or result.inner.record.data()['status']!='succeeded':
             raise ContractError('common outer receipt differs from complete original cross-binding')
@@ -315,12 +329,19 @@ class JointTrainStageExecutor:
         if b['stage']=='history_build': package=self.plan.parent; inputs=dict(self.plan.history_inputs)
         else:
             build=next(s for s in self.stages if s.record.data()['stage']=='history_build' and s.record.data()['build_id']==b['build_id'])
-            self.verify(build); package=CandidatePackage(_read_record(build.inner.root/'candidate.json'))
+            if verified_context is None:
+                self.verify(build)
+            else:
+                verified_context.require_build(build)
+            package=CandidatePackage(_read_record(build.inner.root/'candidate.json'))
             inputs={'public_csv':next(p.csv_path for p in self.plan.packets if p.task==task)}
         if result.barrier is not None:
             if type(result.barrier) is not JointTrainBarrier or result.barrier.executor is not self or b['stage']!='target':
                 raise ContractError('common target barrier origin differs')
-            panel,_=compile_panel(result.barrier)
+            panel = verified_panel
+            if panel is None:
+                context = _verified_barrier_context(result.barrier) if verified_context is None else verified_context
+                panel,_=compile_panel(result.barrier,verified_context=context)
             if result.inner.cell not in panel.cells:raise ContractError('formal target did not execute its exact common panel cell')
         else:
             scenario=R({'schema':'c5-stage-scenario-v1','plan_digest':self.plan.record.content_hash,'trial_id':b['trial_id']})
@@ -382,9 +403,53 @@ class JointTrainBarrier:
         return CandidatePackage(_read_record(build.inner.root/'candidate.json'))
 
 
-def compile_panel(barrier):
+@dataclass(frozen=True)
+class _VerifiedJointTrainBarrier:
+    """An unpersisted proof valid only for the caller's synchronous replay."""
+    barrier: JointTrainBarrier
+    barrier_digest: str
+    plan_digest: str
+    protocol_digest: str
+    build_receipts: tuple[tuple[str, str], ...]
+
+    def require(self, barrier):
+        if (type(barrier) is not JointTrainBarrier or barrier is not self.barrier
+                or barrier.record.content_hash != self.barrier_digest
+                or barrier.executor.plan.record.content_hash != self.plan_digest
+                or barrier.executor.plan.protocol.digest != self.protocol_digest
+                or tuple(sorted(barrier.record.data()['build_receipts'].items())) != self.build_receipts):
+            raise ContractError('verified common barrier context differs from this fresh replay')
+
+    def require_build(self, build):
+        self.require(self.barrier)
+        if type(build) is not JointTrainStage or build not in self.barrier.builds:
+            raise ContractError('verified common barrier does not own this history build')
+
+    def package(self, recipe):
+        self.require(self.barrier)
+        build=next(s for s in self.barrier.builds if s.record.data()['build_id']==history_build_id(self.barrier.executor.plan.protocol,recipe))
+        self.require_build(build)
+        return CandidatePackage(_read_record(build.inner.root/'candidate.json'))
+
+
+def _verified_barrier_context(barrier):
+    """Freshly seal a barrier for one call stack; never cache or serialize it."""
+    if type(barrier) is not JointTrainBarrier:
+        raise ContractError('exact common history barrier required')
+    barrier.verify()
+    return _VerifiedJointTrainBarrier(barrier, barrier.record.content_hash, barrier.executor.plan.record.content_hash,
+        barrier.executor.plan.protocol.digest, tuple(sorted(barrier.record.data()['build_receipts'].items())))
+
+
+def compile_panel(barrier, *, verified_context=None):
     if type(barrier) is not JointTrainBarrier: raise ContractError('original common history barrier required')
-    barrier.verify(); plan=barrier.executor.plan; protocol=plan.protocol; body=protocol.record.data()
+    if verified_context is None:
+        barrier.verify()
+    elif type(verified_context) is _VerifiedJointTrainBarrier:
+        verified_context.require(barrier)
+    else:
+        raise ContractError('exact verified common barrier context required')
+    plan=barrier.executor.plan; protocol=plan.protocol; body=protocol.record.data()
     # This invocation already replayed every original build above. Read each
     # selected package once and bind it to that verified build; do not replay
     # the whole history grid once again for each recipe alias.

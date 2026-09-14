@@ -10,7 +10,7 @@ from research_loop.modular.full_loo_modules import model_schemas, MEASUREMENT
 from research_loop.modular.full_loo_composition import derive_allocation
 from research_loop.modular.joint_train_protocol import FrozenJointTrainProtocol, common_recipes, OBLIGATION
 from research_loop.modular.joint_train_runtime import (FrozenJointTrainRuntimePlan, JointTrainStageExecutor,
-    JointTrainBarrier, component_templates, runtime_sources)
+    JointTrainBarrier, _barrier_record, _verified_barrier_context, component_templates, runtime_sources)
 from research_loop.modular.phase_provider import provider_configuration
 from research_loop.modular.train_selection import FrozenTrainSelectionRule
 from research_loop.ontology import ContractError
@@ -181,6 +181,22 @@ def test_completed_history_provenance_drift_blocks_target(tmp_path,monkeypatch):
     assert len(setup['common_logs'])==5 and runner.poisoned
     assert body['provider_usage']['known_reported_tokens']==60
     assert body['score_eligible'] is False and all(r['status'] in ('succeeded','blocked') for r in body['rows'])
+
+
+def test_verified_barrier_context_is_fresh_and_cannot_transfer(tmp_path,monkeypatch):
+    setup=prepare(tmp_path,monkeypatch);runner=executor(setup);recipe=full_recipe(runner.plan)
+    history=runner.execute(recipe_id=recipe['id'],stage='history_build')
+    partial=JointTrainBarrier(_barrier_record(runner.plan,(history,)),runner,(history,))
+    calls=[]
+    def replay(self): calls.append(self)
+    monkeypatch.setattr(JointTrainBarrier,'verify',replay)
+    first=_verified_barrier_context(partial)
+    first.require(partial)
+    second=_verified_barrier_context(partial)
+    assert calls==[partial,partial] and first is not second
+    other=JointTrainBarrier(partial.record,runner,(history,))
+    with pytest.raises(ContractError,match='context differs'):
+        first.require(other)
 
 
 def test_original_protocol_file_whitespace_drift_blocks_dispatch(tmp_path,monkeypatch):
