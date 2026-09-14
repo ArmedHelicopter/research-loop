@@ -523,8 +523,8 @@ def _artifact_inputs(plan, cell, target):
 
 
 def _builder_applied(plan, cell):
-    if plan.experiment_id=='Q6.5': return True  # Both shadow arms use the proposed DSL.
     if 'M9' not in cell['arm']['enabled']: return False
+    if plan.experiment_id=='Q6.5': return True  # Shared proposal use alone does not enable M9.
     if plan.experiment_id=='Q6.3': return cell['variant']=='train_proposed'
     if plan.experiment_id=='Q6.2': return cell['variant'] in {'manual_train','automatic_train'}
     if plan.experiment_id in {'Q6.1','Q6.6'}: return True

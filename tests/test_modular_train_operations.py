@@ -68,6 +68,17 @@ def test_full_operation_grids_execute_and_consume_actual_shadow_results(tmp_path
     assert verify_train_operations(run,plan=plan,authority=args['authority']).data()['observed_cells']==len(run.cells)
     declared=plan.record.data()['cells']
     for cell,result in zip(declared,run.cells):
+        descriptors=[json.loads(line)['descriptor'] for line in
+            (result.root/'proposal/artifacts.jsonl').read_text(encoding='utf-8').splitlines()]
+        built=[r for r in descriptors if r['kind'].startswith('m9_')]
+        assert len(built)==7
+        if 'M9' not in cell['arm']['enabled']:
+            assert all(r['status']=='not_applied' for r in built)
+            assert built[0]['payload']['canonical']['activation']=='not_applied'
+        if experiment=='Q6.5':
+            # Both controls actually use the proposed DSL; this is not module activation.
+            witness=built[0]['payload']['canonical']
+            assert witness['builder']==witness['response']
         operation=json.loads((result.root/'host-operation'/'receipt.json').read_text(encoding='utf-8'))['record']
         assert operation['production_promotion']=='not_authorized'
         if experiment=='Q6.1': assert operation['status']=='rejected'
