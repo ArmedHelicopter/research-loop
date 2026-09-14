@@ -127,6 +127,45 @@ def test_actual_history_target_pipeline_with_full_catalogue(tmp_path,monkeypatch
     covered={row['module'] for row in [json.loads(line)['descriptor'] for line in (history.inner.root/'runtime'/'artifacts.jsonl').read_text(encoding='utf-8').splitlines()]
              + [json.loads(line)['descriptor'] for line in (target.inner.root/'runtime'/'artifacts.jsonl').read_text(encoding='utf-8').splitlines()] if row['coverage']=='covered' and row['status']=='produced'}
     assert covered >= {f'M{i}' for i in range(1,10)}
+    # A coherently sealed failed builder is valid audit evidence, but cannot
+    # support a successful enclosing history stage. Rehash both receipt levels
+    # so rejection must come from this state mismatch, not stale checksums.
+    from types import SimpleNamespace
+    from research_loop.modular import builder_artifacts
+    from research_loop.modular.artifact_catalogue import ArtifactCatalogue
+    from research_loop.modular.joint_train_runtime import _stage_record
+    from research_loop.modular.full_loo_driver import files
+    from test_builder_artifacts import rewrite_catalogue
+    stage_root = history.inner.root
+    outer_path = runner.root/(history.record.data()['trial_id']+'-stage.json')
+    changed_paths = [stage_root/'m9-build-terminal.json', stage_root/'runtime/artifacts.jsonl',
+        stage_root/'runtime/artifacts.jsonl.seal.json', stage_root/'receipt.json', outer_path]
+    originals = {path: path.read_bytes() for path in changed_paths}
+    binding = history.inner.record.data()['artifact_catalogue_seal']['binding']
+    catalogue = ArtifactCatalogue(stage_root/'runtime/artifacts.jsonl', identity=plan.history.task.identity,
+        run_id=binding['run_id'], experiment_id=binding['experiment_id'], lock_digest=binding['lock_digest'])
+    terminal = json.loads(changed_paths[0].read_bytes())
+    terminal.update(status='failed', error_type='OSError', error='terminal publication failed')
+    changed_paths[0].write_bytes((R(terminal).encoded+'\n').encode())
+    def change_terminal(body):
+        if body['kind'] == 'm9_build_terminal':
+            body['status'] = 'failed'
+            body['payload']['canonical'] = builder_artifacts._snapshot(stage_root, 'm9-build-terminal.json')
+    try:
+        rewrite_catalogue(SimpleNamespace(artifacts=catalogue), change_terminal)
+        inner_record = R({**history.inner.record.data(), 'files': files(stage_root),
+            'artifact_catalogue_seal': json.loads(changed_paths[2].read_bytes())})
+        changed_paths[3].write_bytes(inner_record.encoded.encode())
+        inner = replace(history.inner, record=inner_record)
+        forged = replace(history, inner=inner, record=_stage_record(plan, inner, history.ledger, history.barrier, status='succeeded'))
+        outer_path.write_bytes(forged.record.encoded.encode())
+        runner.stages[0] = forged
+        with pytest.raises(ContractError, match='successful C4 history requires a successful M9 build'):
+            runner.verify(forged)
+    finally:
+        for path, original in originals.items(): path.write_bytes(original)
+        runner.stages[0] = history
+    runner.verify(history)
     receipt_path=history.inner.root/'receipt.json';original_receipt=receipt_path.read_bytes();changed=history.inner.record.data()
     changed['artifact_catalogue_seal']={**changed['artifact_catalogue_seal'],'head':'0'*64}
     receipt_path.write_bytes(R(changed).encoded.encode())
