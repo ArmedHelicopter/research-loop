@@ -7,6 +7,7 @@ structure against caller-frozen bytes, not provider or scientific truth.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from contextlib import nullcontext
 import hashlib
 import json
 import os
@@ -25,6 +26,8 @@ from research_loop.modular.panel_plan import obligation_grids, executable_arms
 from research_loop.modular.runtime import AuditVerifier, RunSession, verify_trace
 from research_loop.modular.train_controller import _reviewed_model_policy
 from research_loop.ontology import ContractError, canonical, digest
+from research_loop.modular.phase_provider import (PROVIDERS,PhaseProviderSession,PhaseProviderScope,PhaseProviderLedger,
+    provider_configuration,validate_configuration,call_accounting)
 
 
 _ALLOCATION={'builder_proposals':1,'builder_executions':1,'analysis_program_calls':1,'docker_attempts':1,'final_answer_calls':1}
@@ -235,11 +238,15 @@ def _plan_material(targets,histories,parent,fixed_builder,baseline_digest,p0_con
     for target in targets: ExecutionRequest(target.task.identity,image,Path('planned.py'),target.public_inputs,timeout_seconds)
     if not isinstance(model_config,FrozenRecord): raise ContractError('model configuration must be frozen')
     config=model_config.data()
-    if (set(config)!={'model','effort','max_calls','max_tokens','schemas','context_policy_sha256'} or config['model']!='gpt-5.6-luna'
-            or config['effort']!='low' or config['schemas']!=metaprogram_schemas()
-            or type(config['max_calls'])is not int or config['max_calls']<len(targets)*len(variants)*6
-            or type(config['max_tokens'])is not int or config['max_tokens']<1): raise ContractError('matched complete model budget and exact schemas required')
-    _digest(config['context_policy_sha256'],'reviewed model policy')
+    native=config.get('schema')=='public-train-provider-config-v1'
+    if native:
+        validate_configuration(model_config,schemas=metaprogram_schemas(),main_opportunities=len(targets)*len(variants)*6,exact=False)
+    else:
+        if (set(config)!={'model','effort','max_calls','max_tokens','schemas','context_policy_sha256'} or config['model']!='gpt-5.6-luna'
+                or config['effort']!='low' or config['schemas']!=metaprogram_schemas()
+                or type(config['max_calls'])is not int or config['max_calls']<len(targets)*len(variants)*6
+                or type(config['max_tokens'])is not int or config['max_tokens']<1): raise ContractError('matched complete model budget and exact schemas required')
+        _digest(config['context_policy_sha256'],'reviewed model policy')
     grid=obligation_grids((experiment_id,),baseline_digest=baseline_digest,p0_control=p0_control)[experiment_id]
     cells=[]
     for target in sorted(targets,key=lambda t:t.task.content_hash):
@@ -248,7 +255,7 @@ def _plan_material(targets,histories,parent,fixed_builder,baseline_digest,p0_con
                 row={'task_digest':target.task.content_hash,'variant':variant,'arm_id':arm_id,'arm':arm.data(),'replicate':'r1'}
                 cells.append({**row,'cell_id':digest(row)})
     extra={} if experiment_id=='Q6.3' else {'experiment_id':experiment_id,'manual_builder':manual_builder.record.data(),'manual_source':manual_source.data()}
-    return FrozenRecord.from_dict({**extra,'schema':'q63-train-phase-plan-v1','scope':'train_only_engineering','cells':cells,
+    return FrozenRecord.from_dict({**extra,'schema':'q63-train-phase-plan-v2' if native else 'q63-train-phase-plan-v1','scope':'train_only_engineering','cells':cells,
         'targets':[t.binding.data() for t in targets],'histories':[h.binding.data() for h in histories],
         'parent_package':parent.record.data(),'fixed_builder':fixed_builder.record.data(),'baseline_digest':baseline_digest,
         'p0_control':p0_control.data(),'arm_grid':grid.data(),'image':image,'timeout_seconds':timeout_seconds,
@@ -360,6 +367,40 @@ def _total(cells):
     return counts
 
 
+
+def _phase_actual(rows,solver_rows=(),*,native=False):
+    if not native:return _actual(rows,solver_rows)
+    calls=[c for row in rows if row['stage']=='model_charge' for c in row['data']['provider_calls']]
+    return {**call_accounting(calls),
+        'model_requests':sum(r['stage']=='model_reservation' for r in rows),
+        'builder_attempts':sum(r['stage']=='builder_request' for r in rows),
+        'docker_attempts':sum(r['stage']=='execution_request' for r in solver_rows)}
+
+
+def _phase_total(cells):
+    if not cells or cells[0].record.data()['schema']=='q63-training-cell-receipt-v1':return _total(cells)
+    rows=[c.record.data()['actual'] for c in cells]
+    scopes={r['known_usage_scope'] for r in rows if r['known_usage_scope'] is not None}
+    if len(scopes)>1:raise ContractError('phase mixed provider accounting scopes')
+    keys=('provider_calls','known_reported_tokens','unknown_main_opportunities','unsuccessful_opportunities',
+        'possible_initial_title_opportunities','model_requests','builder_attempts','docker_attempts')
+    return {'schema':'train-phase-call-accounting-v2',**{k:sum(r[k] for r in rows) for k in keys},
+        'known_usage_scope':next(iter(scopes),None),'title_tokens':None,'all_opportunity_tokens':None,
+        'settled_additional_charge_usd':None}
+
+
+def _phase_ledger(result,expected):
+    ledger=result.provider_ledger
+    if (type(ledger) is not PhaseProviderLedger or result.model_ledger_path!=ledger.path
+            or ledger.original.record.data()['configuration']!=expected):
+        raise ContractError('original typed phase provider seal/configuration differs')
+    ledger.verify();return ledger
+
+
+def _ledger_ids(ledger):
+    return ([c['view']['id'] for c in ledger.original.record.data()['calls']]
+        if type(ledger) is PhaseProviderLedger else [c['id'] for c in ledger['calls']])
+
 def _projection(candidate):
     changes=candidate.record.data()['changes']
     if len(changes)!=1: raise ContractError('generated package has an unsupported public change set')
@@ -399,19 +440,21 @@ class MetaTrainingRun:
     model_ledger_path: Path
     cells: tuple[MetaTrainingCell,...]
     receipt: FrozenRecord
+    provider_ledger: PhaseProviderLedger | None = None
 
 
 def _run_cell(plan,cell,target,root,model,broker,audit_verifier):
+    native=type(model) is PhaseProviderScope
     root.mkdir(parents=True,exist_ok=False)
     phase=_Journal(root/'phase.jsonl');phase.append('phase_lock',{'plan_digest':plan.record.content_hash,'cell':cell,'allocation':_ALLOCATION})
     proposal=None;solver=None;candidate=None;selected=None;build_receipt=None;stage='preflight';status='failed';reason=None
     def charged_model(request):
         phase.append('model_reservation',{'request_digest':request.content_hash,'slot':request.data()['slot'],
             'limits':plan.record.data()['model_config'],'cost':'reported_or_unknown'})
-        before=len(model.ledger['calls'])
+        before=model.cursor() if native else len(model.ledger['calls'])
         try: return model(request)
         finally:
-            phase.append('model_charge',{'request_digest':request.content_hash,'provider_calls':[_safe_call(c) for c in model.ledger['calls'][before:]]})
+            phase.append('model_charge',{'request_digest':request.content_hash,'provider_calls':([c.data() for c in model.calls_since(before)] if native else [_safe_call(c) for c in model.ledger['calls'][before:]])})
     try:
         plan.verify_sources()
         stage='builder_proposal'
@@ -467,8 +510,8 @@ def _run_cell(plan,cell,target,root,model,broker,audit_verifier):
     phase.append('stage_result',{'status':status,'stage':stage,'reason':reason})
     solver_path=root/'solver'/'trace.jsonl';proposal_path=root/'proposal'/'trace.jsonl'
     rows=[r.data() for r in phase.rows];solver_rows=_events(solver_path) if solver_path.exists() else []
-    record=FrozenRecord.from_dict({'schema':'q63-training-cell-receipt-v1','cell_id':cell['cell_id'],'plan_digest':plan.record.content_hash,
-        'status':status,'stage':stage,'reason':reason,'allocation':_ALLOCATION,'actual':_actual(rows,solver_rows),
+    record=FrozenRecord.from_dict({'schema':'q63-training-cell-receipt-v2' if native else 'q63-training-cell-receipt-v1','cell_id':cell['cell_id'],'plan_digest':plan.record.content_hash,
+        'status':status,'stage':stage,'reason':reason,'allocation':_ALLOCATION,'actual':_phase_actual(rows,solver_rows,native=native),
         'selected_builder_digest':selected.digest if selected else None,'candidate_digest':candidate.digest if isinstance(candidate,CandidatePackage) else None,
         'builder_receipt_digest':build_receipt.record.content_hash if isinstance(build_receipt,BuilderRunReceipt) else None,
         'phase_trace':_proof(root/'phase.jsonl'),'proposal_trace':_proof(proposal_path) if proposal_path.exists() else None,
@@ -481,9 +524,11 @@ def run_metaprogram_training(plan,*,run_root,model,audit_verifier):
     if not isinstance(plan,FrozenMetaTrainingPlan) or not isinstance(audit_verifier,AuditVerifier):
         raise ContractError('typed train phase plan and verifier required')
     plan.verify_sources()
-    if model_configuration(model).data()!=plan.record.data()['model_config']:
+    native=plan.record.data()['schema']=='q63-train-phase-plan-v2'
+    configuration=provider_configuration(model) if native else model_configuration(model)
+    if configuration.data()!=plan.record.data()['model_config']:
         raise ContractError('live model schema or budget differs from frozen phase')
-    if model.ledger['calls'] or model.ledger['tokens']!=0 or model.ledger['usage_incomplete']is not False:
+    if (bool(model.inspect()) or model.terminal()) if native else (model.ledger['calls'] or model.ledger['tokens']!=0 or model.ledger['usage_incomplete']is not False):
         raise ContractError('training phase requires a fresh independent model ledger')
     root=_path(run_root,exists=False)
     if root.exists(): raise ContractError('phase root is already used; no retry or overwrite')
@@ -492,28 +537,32 @@ def run_metaprogram_training(plan,*,run_root,model,audit_verifier):
     for path in [h.trace_path for h in plan.histories]+[p for t in plan.targets for _,p in t.inputs]:
         if root==path or root in path.parents: raise ContractError('phase root may not contain frozen source inputs')
     root.mkdir(parents=True,exist_ok=False);_exclusive(root/'plan.json',plan.record)
-    attempt={'schema':'q63-training-attempt-v1','plan_digest':plan.record.content_hash,'status':'allocating',
+    scopes=PhaseProviderSession(model,root/'provider-scopes.json') if native else None
+    attempt={'schema':'q63-training-attempt-v2' if native else 'q63-training-attempt-v1','plan_digest':plan.record.content_hash,'status':'allocating',
         'expected_cells':len(plan.record.data()['cells']),'cell_receipts':[]}
     _atomic(root/'training-attempt.json',attempt)
     try:
         broker=DockerExecutionBroker([root,*sorted({p.parent for t in plan.targets for _,p in t.inputs})])
         cells=[];targets={t.task.content_hash:t for t in plan.targets}
         for cell in plan.record.data()['cells']:
-            result=_run_cell(plan,cell,targets[cell['task_digest']],root/'cells'/cell['cell_id'],model,broker,audit_verifier)
+            with (scopes.scope(cell['cell_id']) if native else nullcontext(model)) as scoped:
+                result=_run_cell(plan,cell,targets[cell['task_digest']],root/'cells'/cell['cell_id'],scoped,broker,audit_verifier)
             cells.append(result);attempt.update(status='executing',cell_receipts=[c.record.data() for c in cells])
             _atomic(root/'training-attempt.json',attempt)
     except Exception as exc:
         attempt.update(status='interrupted',error_type=type(exc).__name__);_atomic(root/'training-attempt.json',attempt);raise
+    provider_ledger=scopes.seal(root/'provider-ledger.json') if native else None
+    ledger_path=provider_ledger.path if native else model.ledger_path
     complete=all(c.record.data()['status']=='succeeded' for c in cells)
-    receipt=FrozenRecord.from_dict({'schema':'q63-training-phase-receipt-v1','plan_digest':plan.record.content_hash,
+    receipt=FrozenRecord.from_dict({'schema':'q63-training-phase-receipt-v2' if native else 'q63-training-phase-receipt-v1','plan_digest':plan.record.content_hash,
         'status':'engineering_complete' if complete else 'engineering_incomplete','observed_cells':len(cells),
-        'cell_receipt_digests':[c.record.content_hash for c in cells],'actual':_total(cells),
+        'cell_receipt_digests':[c.record.content_hash for c in cells],'actual':_phase_total(cells),
         'allocated':{'cells':len(cells),'per_cell':_ALLOCATION,'model_calls':len(cells)*3},
-        'model_ledger_sha256':_sha(model.ledger_path.read_bytes()),'scientific_effect':'not_measured',
+        'model_ledger_sha256':_sha(ledger_path.read_bytes()),'scientific_effect':'not_measured',
         'builder_activation':'not_performed','scoring':'not_configured','history_acquisition_cost':'inherited; not included in phase calls'})
     _exclusive(root/'training-receipt.json',receipt)
     attempt.update(status=receipt.data()['status']);_atomic(root/'training-attempt.json',attempt)
-    result=MetaTrainingRun(root,model.ledger_path,tuple(cells),receipt)
+    result=MetaTrainingRun(root,ledger_path,tuple(cells),receipt,provider_ledger)
     verify_metaprogram_training(result,plan=plan)
     return result
 
@@ -555,11 +604,11 @@ def _verify_proposal(path,proof,plan,cell,target):
 
 
 def _verify_cell(result,plan,cell,target,ledger):
-    root=result.root;record=result.record;row=record.data()
+    root=result.root;record=result.record;row=record.data();native=type(ledger) is PhaseProviderLedger
     _path(root/'cell-receipt.json')
     if _read_record(root/'cell-receipt.json')!=record:
         raise ContractError('cell receipt differs from immutable sidecar')
-    if (row.get('schema')!='q63-training-cell-receipt-v1' or row.get('cell_id')!=cell['cell_id']
+    if (row.get('schema')!=('q63-training-cell-receipt-v2' if native else 'q63-training-cell-receipt-v1') or row.get('cell_id')!=cell['cell_id']
             or row.get('plan_digest')!=plan.record.content_hash or row.get('allocation')!=_ALLOCATION):
         raise ContractError('foreign meta-training cell receipt')
     _check_trace_proof(root/'phase.jsonl',row['phase_trace']);phase=_phase_rows(root/'phase.jsonl')
@@ -652,23 +701,36 @@ def _verify_cell(result,plan,cell,target,ledger):
     outputs={e['data']['request_digest']:FrozenRecord.from_dict(e['data']['response']).content_hash
         for e in (*proposal_rows,*solver_rows) if e['stage']=='model_response'}
     used=[]
+    native_calls=ledger.calls_for_scope(cell['cell_id']) if native else ()
     for charge in charges:
         recorded=charge['provider_calls']
         if len(recorded)>1: raise ContractError('one request cannot consume multiple provider attempts')
-        actual=[_safe_call(c) for c in ledger['calls'] if c['id'] in [r['id'] for r in recorded]]
-        if recorded!=actual or any(c['request_hash']!=charge['request_digest'] or c['slot']!=source_slots[charge['request_digest']] for c in actual):
+        ids=[r['id'] for r in recorded]
+        actual=([c.data() for c in native_calls if c.data()['id'] in ids] if native
+            else [_safe_call(c) for c in ledger['calls'] if c['id'] in ids])
+        request_key='request_digest' if native else 'request_hash'
+        response_key='response_digest' if native else 'output_hash'
+        status_key='native_status' if native else 'status'
+        if recorded!=actual or any(c[request_key]!=charge['request_digest'] or c['slot']!=source_slots[charge['request_digest']] for c in actual):
             raise ContractError('actual provider ledger differs from retained costs')
         response_hash=outputs.get(charge['request_digest'])
-        if response_hash is not None and (len(actual)!=1 or actual[0]['status']!='succeeded' or actual[0]['output_hash']!=response_hash):
+        if response_hash is not None and (len(actual)!=1 or actual[0][status_key]!='succeeded' or actual[0][response_key]!=response_hash):
             raise ContractError('actual model response differs from provider output binding')
-        if response_hash is None and any(c['status']=='succeeded' for c in actual):
+        if response_hash is None and any(c[status_key]=='succeeded' for c in actual):
             raise ContractError('provider response is absent from its original runtime source')
         used.extend(c['id'] for c in actual)
-    actual=_actual(phase,solver_rows)
+    if native:
+        consumed={c.data()['request_digest'] for c in native_calls}
+        events=[e for e in (*proposal_rows,*solver_rows) if e['stage'] not in {'model_request','model_response'}
+            or (FrozenRecord.from_dict(e['data']['request']).content_hash if e['stage']=='model_request'
+                else e['data']['request_digest']) in consumed]
+        bound=ledger.bind_events(events,scope_id=cell['cell_id'],require_eligible=False)
+        if list(bound)!=used:raise ContractError('cell charge order omits or reuses a native original')
+    actual=_phase_actual(phase,solver_rows,native=native)
     if actual!=row['actual'] or actual['model_requests']>3 or actual['builder_attempts']>1 or actual['docker_attempts']>1:
         raise ContractError('phase actual usage exceeds or contradicts frozen allocation')
     if row['status']=='succeeded' and (actual['model_requests']!=3 or actual['provider_calls']!=3
-            or actual['unknown_cost'] or actual['provider_usage_incomplete'] or actual['builder_attempts']!=1 or actual['docker_attempts']!=1):
+            or (bool(actual['unknown_main_opportunities'] or actual['unsuccessful_opportunities']) if native else (actual['unknown_cost'] or actual['provider_usage_incomplete'])) or actual['builder_attempts']!=1 or actual['docker_attempts']!=1):
         raise ContractError('successful phase lacks its matched actual opportunities')
     return used
 
@@ -682,12 +744,16 @@ def verify_metaprogram_training(result,*,plan):
         raise ContractError('actual phase plan differs from expected caller plan')
     if _read_record(root/'training-receipt.json')!=result.receipt:
         raise ContractError('actual phase receipt differs from returned record')
-    row=result.receipt.data();ledger_raw=result.model_ledger_path.read_bytes();ledger=json.loads(ledger_raw)
-    if _sha(ledger_raw)!=row['model_ledger_sha256']: raise ContractError('model ledger bytes changed after phase freeze')
-    config=ledger['config'];expected=plan.record.data()['model_config']
-    if (any(config.get(k)!=expected[k] for k in ('model','effort','max_calls','max_tokens','schemas'))
-            or config.get('context_mode')!='reviewed' or config.get('context_policy',{}).get('sha256')!=expected['context_policy_sha256']):
-        raise ContractError('provider ledger does not bind frozen model and reviewed context')
+    native=plan.record.data()['schema']=='q63-train-phase-plan-v2'
+    row=result.receipt.data();ledger_raw=result.model_ledger_path.read_bytes()
+    if _sha(ledger_raw)!=row['model_ledger_sha256']:raise ContractError('model ledger bytes changed after phase freeze')
+    expected=plan.record.data()['model_config']
+    if native:ledger=_phase_ledger(result,expected)
+    else:
+        ledger=json.loads(ledger_raw);config=ledger['config']
+        if (any(config.get(k)!=expected[k] for k in ('model','effort','max_calls','max_tokens','schemas'))
+                or config.get('context_mode')!='reviewed' or config.get('context_policy',{}).get('sha256')!=expected['context_policy_sha256']):
+            raise ContractError('provider ledger does not bind frozen model and reviewed context')
     declared=plan.record.data()['cells'];expected_ids=[c['cell_id'] for c in declared]
     if ([c.record.data()['cell_id'] for c in result.cells]!=expected_ids
             or len({c.root.resolve() for c in result.cells})!=len(expected_ids)
@@ -695,15 +761,15 @@ def verify_metaprogram_training(result,*,plan):
         raise ContractError('full frozen meta-training denominator or paths changed')
     targets={t.task.content_hash:t for t in plan.targets};used=[]
     for cell,actual in zip(declared,result.cells): used.extend(_verify_cell(actual,plan,cell,targets[cell['task_digest']],ledger))
-    if sorted(used)!=[c['id'] for c in ledger['calls']]: raise ContractError('phase costs omit or duplicate a real provider call')
+    if (used if native else sorted(used))!=_ledger_ids(ledger): raise ContractError('phase costs omit or duplicate a real provider call')
     complete=all(c.record.data()['status']=='succeeded' for c in result.cells)
-    expected_record=FrozenRecord.from_dict({'schema':'q63-training-phase-receipt-v1','plan_digest':plan.record.content_hash,
+    expected_record=FrozenRecord.from_dict({'schema':'q63-training-phase-receipt-v2' if native else 'q63-training-phase-receipt-v1','plan_digest':plan.record.content_hash,
         'status':'engineering_complete' if complete else 'engineering_incomplete','observed_cells':len(result.cells),
-        'cell_receipt_digests':[c.record.content_hash for c in result.cells],'actual':_total(result.cells),
+        'cell_receipt_digests':[c.record.content_hash for c in result.cells],'actual':_phase_total(result.cells),
         'allocated':{'cells':len(result.cells),'per_cell':_ALLOCATION,'model_calls':len(result.cells)*3},
         'model_ledger_sha256':_sha(ledger_raw),'scientific_effect':'not_measured','builder_activation':'not_performed',
         'scoring':'not_configured','history_acquisition_cost':'inherited; not included in phase calls'})
     if result.receipt!=expected_record: raise ContractError('phase totals or evidence claims contradict actual complete denominator')
-    return FrozenRecord.from_dict({'schema':'q63-training-verification-v1','observed_cells':len(result.cells),
+    return FrozenRecord.from_dict({'schema':'q63-training-verification-v2' if native else 'q63-training-verification-v1','observed_cells':len(result.cells),
         'status':row['status'],'plan_digest':plan.record.content_hash,'actual':row['actual'],
         'scientific_effect':'not_measured','builder_activation':'not_performed'})

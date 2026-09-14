@@ -5,6 +5,8 @@ separate schema and type and cannot authorize the production ExecutionRuntime.
 Host signatures authenticate configured provenance, never scientific validity.
 """
 from __future__ import annotations
+from contextlib import nullcontext
+from research_loop.modular.phase_provider import PhaseProviderSession,provider_configuration
 from dataclasses import dataclass, replace
 import hashlib
 import hmac
@@ -174,8 +176,10 @@ def _material(targets,histories,parent,fixed,experiment,baseline,p0,image,config
                     row={'task_digest':target.task.content_hash,'variant':variant,'arm_id':arm_id,'arm':arm.data(),
                         'replicate':'r1','round':iteration+1,'previous_cell':previous}
                     row={**row,'cell_id':digest(row)};cells.append(row);previous=row['cell_id']
-    if config.data()['max_calls']<len(cells)*3: raise ContractError('complete operation grid model allocation missing')
-    return FrozenRecord.from_dict({'schema':'train-operation-plan-v1','experiment_id':experiment,
+    native=config.data().get('schema')=='public-train-provider-config-v1'
+    if native:shared.validate_configuration(config,schemas=shared.metaprogram_schemas(),main_opportunities=len(cells)*3,exact=False)
+    elif config.data()['max_calls']<len(cells)*3: raise ContractError('complete operation grid model allocation missing')
+    return FrozenRecord.from_dict({'schema':'train-operation-plan-v2' if native else 'train-operation-plan-v1','experiment_id':experiment,
         'common':common,'cells':cells,'arm_grid':grid.data(),'authority':authority.data(),'feedback_rules':rules.data() if rules else None,
         'budget':{'cells':len(cells),'rounds':rounds,'model_calls':len(cells)*3,'per_cell':shared._ALLOCATION,
             'feedback_opportunities':len(cells) if rules else 0,'staging_mutations_per_cell':3},
@@ -427,29 +431,35 @@ def run_train_operations(plan,*,run_root,model,audit_verifier,authority):
     if not isinstance(plan,FrozenTrainOperationPlan) or not isinstance(authority,TrainOperationAuthority) or not isinstance(audit_verifier,AuditVerifier):
         raise ContractError('typed train operation dependencies required')
     plan.verify_sources();config=plan.record.data()['common']['model_config']
-    if authority.descriptor!=plan.record.data()['authority'] or shared.model_configuration(model).data()!=config:
+    native=plan.record.data()['schema']=='train-operation-plan-v2'
+    configuration=provider_configuration(model) if native else shared.model_configuration(model)
+    if authority.descriptor!=plan.record.data()['authority'] or configuration.data()!=config:
         raise ContractError('train operation authority or model configuration drift')
     if plan.record.data()['experiment_id']=='Q6.5' and authority.feedback is None: raise ContractError('independent feedback port missing')
-    if model.ledger['calls'] or model.ledger['tokens'] or model.ledger['usage_incomplete']: raise ContractError('fresh operation model ledger required')
+    if (bool(model.inspect()) or model.terminal()) if native else (model.ledger['calls'] or model.ledger['tokens'] or model.ledger['usage_incomplete']):raise ContractError('fresh operation model ledger required')
     root=shared._path(run_root,exists=False)
     if root.exists(): raise ContractError('operation root already exists')
     if root==model.root.resolve() or root in model.root.resolve().parents or model.root.resolve() in root.parents:
         raise ContractError('model and operation roots must be separate')
     root.mkdir();shared._exclusive(root/'plan.json',plan.record)
+    scopes=PhaseProviderSession(model,root/'provider-scopes.json') if native else None
     shared._atomic(root/'attempt.json',{'plan_digest':plan.record.content_hash,
         'allocated_cells':[c['cell_id'] for c in plan.record.data()['cells']],'cells':[]})
     broker=shared.DockerExecutionBroker([root,*{p.parent for t in plan.targets for _,p in t.inputs}])
     completed={};targets={t.task.content_hash:t for t in plan.targets}
     for cell in plan.record.data()['cells']:
         adapter=_attempt(plan,cell,completed,authority)
-        result=shared._run_cell(adapter,cell,targets[cell['task_digest']],root/'cells'/cell['cell_id'],model,broker,audit_verifier)
+        with (scopes.scope(cell['cell_id']) if native else nullcontext(model)) as scoped:
+            result=shared._run_cell(adapter,cell,targets[cell['task_digest']],root/'cells'/cell['cell_id'],scoped,broker,audit_verifier)
         completed[cell['cell_id']]=result
         shared._atomic(root/'attempt.json',{'plan_digest':plan.record.content_hash,
             'allocated_cells':[c['cell_id'] for c in plan.record.data()['cells']],'cells':[c.record.data() for c in completed.values()]})
     cells=tuple(completed.values())
-    record=_result_record(plan,cells,model.ledger_path)
+    provider_ledger=scopes.seal(root/'provider-ledger.json') if native else None
+    ledger_path=provider_ledger.path if native else model.ledger_path
+    record=_result_record(plan,cells,ledger_path)
     shared._exclusive(root/'receipt.json',record)
-    result=shared.MetaTrainingRun(root,model.ledger_path,cells,record)
+    result=shared.MetaTrainingRun(root,ledger_path,cells,record,provider_ledger)
     verify_train_operations(result,plan=plan,authority=authority);return result
 
 
@@ -460,8 +470,8 @@ def _result_record(plan,cells,ledger):
         if path.exists():
             value=shared._read_record(path).data()['record']['feedback']
             if value: feedback.append(value)
-    return FrozenRecord.from_dict({'schema':'train-operation-phase-receipt-v1','plan_digest':plan.record.content_hash,
-        'cell_receipt_digests':[c.record.content_hash for c in cells],'actual':shared._total(cells),
+    return FrozenRecord.from_dict({'schema':'train-operation-phase-receipt-v2' if plan.record.data()['schema']=='train-operation-plan-v2' else 'train-operation-phase-receipt-v1','plan_digest':plan.record.content_hash,
+        'cell_receipt_digests':[c.record.content_hash for c in cells],'actual':shared._phase_total(cells),
         'feedback_actual':{'calls':len(feedback),'reported_units':sum(x['units'] or 0 for x in feedback),
             'unknown_cost':any(x['usage_unknown'] for x in feedback)},'allocated':plan.record.data()['budget'],
         'status':'engineering_complete' if all(c.record.data()['status']=='succeeded' for c in cells)
@@ -475,17 +485,20 @@ def verify_train_operations(result,*,plan,authority):
         raise ContractError('operation verification authority or frozen plan differs')
     if shared._read_record(result.root/'receipt.json')!=result.receipt: raise ContractError('actual operation receipt differs')
     if len(result.cells)!=len(plan.record.data()['cells']): raise ContractError('operation phase omitted allocated denominator cells')
-    ledger=json.loads(result.model_ledger_path.read_bytes());completed={};used=[]
-    expected=plan.record.data()['common']['model_config'];config=ledger['config']
-    if (any(config.get(k)!=expected[k] for k in ('model','effort','max_calls','max_tokens','schemas'))
-            or config.get('context_mode')!='reviewed' or config.get('context_policy',{}).get('sha256')!=expected['context_policy_sha256']):
-        raise ContractError('operation provider ledger differs from original frozen model configuration')
+    native=plan.record.data()['schema']=='train-operation-plan-v2';completed={};used=[]
+    expected=plan.record.data()['common']['model_config']
+    if native:ledger=shared._phase_ledger(result,expected)
+    else:
+        ledger=json.loads(result.model_ledger_path.read_bytes());config=ledger['config']
+        if (any(config.get(k)!=expected[k] for k in ('model','effort','max_calls','max_tokens','schemas'))
+                or config.get('context_mode')!='reviewed' or config.get('context_policy',{}).get('sha256')!=expected['context_policy_sha256']):
+            raise ContractError('operation provider ledger differs from original frozen model configuration')
     targets={t.task.content_hash:t for t in plan.targets}
     for cell,actual in zip(plan.record.data()['cells'],result.cells):
         if actual.root!=(result.root/'cells'/cell['cell_id']): raise ContractError('operation cell source path differs')
         adapter=_attempt(plan,cell,completed,authority)
         used.extend(shared._verify_cell(actual,adapter,cell,targets[cell['task_digest']],ledger));completed[cell['cell_id']]=actual
-    if sorted(used)!=sorted(row['id'] for row in ledger['calls']) or len(used)!=len(set(used)):
+    if (used if native else sorted(used))!=(shared._ledger_ids(ledger) if native else sorted(shared._ledger_ids(ledger))) or len(used)!=len(set(used)):
         raise ContractError('operation provider costs omitted or duplicated')
     if _result_record(plan,result.cells,result.model_ledger_path)!=result.receipt:
         raise ContractError('operation totals or original ledger bytes differ')
