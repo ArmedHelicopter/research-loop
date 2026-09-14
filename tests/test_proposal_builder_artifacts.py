@@ -30,7 +30,8 @@ def fixture(root, host, enabled):
         arm=default_compatibility('fixture').arm(('M1','M2','M9') if enabled else ()),
         objective=FrozenRecord.from_dict({'question':'public'}), slots=('builder_proposal',), execution_limit=0,
         sidecar=root/'proposal', verifier=AuditVerifier({'first':b'a'*32,'second':b'b'*32}), required_audit=('measurement',))
-    response = session.invoke('builder_proposal', lambda request: proposed.record, evidence_only=True)
+    response = session.invoke('builder_proposal', lambda request: proposed.record, evidence_only=True,
+        instruction='Propose a bounded literal change from public training history.')
     terminal = 'state_improvement_proposal_terminal' if host=='state-improvement' else 'metaprogram_proposal_terminal'
     session._record(terminal, {'response_digest':response.content_hash,'builder_digest':proposed.digest})
     session._terminal = True
