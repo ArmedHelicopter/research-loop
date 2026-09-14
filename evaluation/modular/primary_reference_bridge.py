@@ -14,7 +14,7 @@ from evaluation.modular.primary_prospective_exporter import PrimaryProspectiveTr
 from evaluation.modular.prospective_train_exporter import _concrete
 from evaluation.modular.reference_store import _discovery, _blade, publish_train_reference_records, FrozenTrainReferenceResolver
 from evaluation.modular.train_io import PublicTrainPacket
-from research_loop.modular.contracts import FrozenRecord
+from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask
 from research_loop.ontology import canonical, digest
 
 ZERO = "0" * 64
@@ -117,12 +117,27 @@ class PrimaryProspectiveReferenceBridge:
                 raise CustodyError()
         raw = self._bytes(self.exporter.output_root / "export-receipt.json", self.export_receipt_sha256)
         receipt = json.loads(raw)
-        if (receipt.get("schema") != "prospective-train-export-receipt-v1"
+        if (receipt.get("schema") != "prospective-train-export-receipt-v2"
                 or receipt.get("split_sha256") != self.exporter.expected_split_digest
                 or receipt.get("audit_sha256") != self.exporter.expected_audit_digest
                 or receipt.get("validation_projection_count") != 0 or receipt.get("public_projection_written") is not True):
             raise CustodyError()
         records = receipt["packets"]
+        from evaluation.modular.train_packet_artifacts import verify_train_export_artifacts
+        # The batch may contain more tasks than this reference request. Rebuild
+        # only its already public task views; no private source is opened here.
+        export_tasks = []
+        for anchor in receipt['artifact_catalogues']:
+            DataIdentity.parse(anchor['identity']).require_train()
+        for anchor in receipt['artifact_catalogues']:
+            token = anchor['token']
+            if not isinstance(token,str) or len(token)!=64 or any(c not in '0123456789abcdef' for c in token):
+                raise CustodyError()
+            public = json.loads(_concrete(self.exporter.output_root/token/'public.json').read_bytes())['task']
+            export_tasks.append(PublicTask.create(DataIdentity.parse(public['identity']),public['payload']))
+        verified = verify_train_export_artifacts(self.exporter.output_root,FrozenRecord.from_dict(receipt),tuple(export_tasks))
+        for relative, expected in verified.data()['observed_public_files'].items():
+            self._bytes(self.exporter.output_root/relative,expected)
         by_token = {row["export_token"]: row for row in records}
         if len(by_token) != len(records):
             raise CustodyError()

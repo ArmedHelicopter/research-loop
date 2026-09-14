@@ -291,7 +291,7 @@ class ProspectiveTrainExporter:
                 phase = "materialization"
                 staging = self.audit_root / f"attempt-{attempt:06d}" / "staging"
                 staging.mkdir(parents=True, exist_ok=False)
-                packets = []
+                packets = []; artifact_catalogues = []
                 for item, task in zip(items, tasks):
                     self._before_exposure()
                     possible.append(item.token)
@@ -299,19 +299,30 @@ class ProspectiveTrainExporter:
                     self._event("exposure_reserved", request_sha=request_sha, attempt=attempt, phase=phase,
                                 possible=possible, source_digests=source_digests)
                     target = staging / item.token
-                    packet = self._write_public_packet(target, item, task, material[item.token])
-                    _write_new(target / "receipt.json", packet)
+                    from evaluation.modular.train_packet_artifacts import TrainPacketArtifacts
+                    artifacts = TrainPacketArtifacts(target,exporter=self,item=item,task=task,attempt=attempt,
+                        request_digest=request_sha,source_digests=source_digests)
+                    try:
+                        packet = self._write_public_packet(target, item, task, material[item.token])
+                        _write_new(target / "receipt.json", packet)
+                        artifact_catalogues.append(artifacts.finish(packet))
+                    except Exception as packet_error:
+                        artifacts.fail(packet_error)
+                        raise
                     packets.append(packet)
-                receipt = FrozenRecord.from_dict({"schema": "prospective-train-export-receipt-v1",
+                receipt = FrozenRecord.from_dict({"schema": "prospective-train-export-receipt-v2",
                     "split_sha256": self.expected_split_digest, "audit_sha256": self.expected_audit_digest,
                     "request_sha256": request_sha, "source_receipt_digests": source_digests,
-                    "packets": packets, "public_projection_written": True, "typed_public_tasks_available_on_success": True,
+                    "packets": packets, "artifact_catalogues":artifact_catalogues,
+                    "public_projection_written": True, "typed_public_tasks_available_on_success": True,
                     "raw_private_payload_returned": False, "validation_projection_count": 0,
                     "scientific_execution_qualified": False, "legacy_custody_mutated": False,
                     "model_calls": 0, "network_calls": 0, "known_cost_units": 0,
                     "output_root_locator_sha256": digest(str(self.output_root))})
                 _write_new(staging / "export-receipt.json", receipt.data())
                 self._before_publish()
+                from evaluation.modular.train_packet_artifacts import verify_train_export_artifacts
+                verify_train_export_artifacts(staging,receipt,tuple(tasks))
                 self.output_root.parent.mkdir(parents=True, exist_ok=True)
                 _concrete(self.output_root)
                 if self.output_root.exists():

@@ -28,11 +28,11 @@ def _batch_receipt(body, packets):
     root = roots.pop()
     record = FrozenRecord.from_dict(json.loads(_concrete(root/'export-receipt.json').read_bytes()))
     b = record.data()
-    fixed = {'schema':'prospective-train-export-receipt-v1', 'public_projection_written':True,
+    fixed = {'schema':'prospective-train-export-receipt-v2', 'public_projection_written':True,
              'typed_public_tasks_available_on_success':True, 'raw_private_payload_returned':False,
              'validation_projection_count':0, 'scientific_execution_qualified':False,
              'legacy_custody_mutated':False, 'model_calls':0, 'network_calls':0, 'known_cost_units':0}
-    if (set(b) != set(fixed) | {'split_sha256','audit_sha256','request_sha256','source_receipt_digests','packets','output_root_locator_sha256'}
+    if (set(b) != set(fixed) | {'split_sha256','audit_sha256','request_sha256','source_receipt_digests','packets','artifact_catalogues','output_root_locator_sha256'}
             or any(type(b[k]) is not type(v) or b[k] != v for k,v in fixed.items())
             or b['output_root_locator_sha256'] != digest(str(root)) or not _is_digest(b['audit_sha256'])):
         raise ContractError('prospective batch receipt contract differs')
@@ -52,6 +52,8 @@ def _batch_receipt(body, packets):
                for token in body['item_ids']]
     if digest(request) != b['request_sha256']:
         raise ContractError('prospective batch source request differs')
+    from evaluation.modular.train_packet_artifacts import verify_train_export_artifacts
+    verify_train_export_artifacts(root,record,tuple(by_token[token].task for token in body['item_ids']))
     return record
 
 
