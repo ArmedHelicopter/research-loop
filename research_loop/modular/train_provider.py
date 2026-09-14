@@ -238,6 +238,7 @@ class _TrainProvider:
         wanted={CodexTrainProvider:CodexModelPort,GrokTrainProvider:GrokTrainModelPort}.get(type(self))
         _require(wanted is not None and type(backend) is wanted, 'exact admitted public TRAIN backend required')
         self.backend=backend;self.root=backend.root/'train-provider-v1';self.root.mkdir(exist_ok=True)
+        self._last_verified_accounting=None
         self.state_path=self.root/'state.json';config=_configuration(backend)
         if self.state_path.exists():
             self.state=_read(self.state_path);_require(self.state['configuration']==config, 'provider wrapper configuration changed')
@@ -246,6 +247,54 @@ class _TrainProvider:
             _require(not backend.ledger['calls'], 'new adapter requires a fresh backend; no imported callable assertions')
             self.state={'schema':'public-train-provider-state-v1','configuration':config,'terminal_fault':False,'reason':None,'calls':[]}
             _write(self.state_path,self.state)
+        self._remember_verified_accounting(self.inspect())
+
+    def _remember_verified_accounting(self,calls):
+        """Pin historical scalars only after a complete original inspection."""
+        rows=[c.data() for c in calls];grok=type(self) is GrokTrainProvider
+        record=_record({'schema':'public-train-provider-observed-accounting-v1',
+            'configuration_digest':_record(self.state['configuration']).content_hash,
+            'observed_main_opportunities':len(rows),
+            'known_reported_tokens':sum(c['known_tokens'] or 0 for c in rows),
+            'known_usage_scope':'native_main' if grok else 'codex_turn_completed',
+            'observed_unknown_main_opportunities':sum(c['main_usage_incomplete'] for c in rows),
+            'possible_initial_title_opportunities':len(rows) if grok else None})
+        path=self.root/('observed-accounting-'+record.content_hash+'.json')
+        if not path.exists():_exclusive(path,record.encoded.encode())
+        _require(path.read_bytes()==record.encoded.encode(), 'observed accounting checkpoint drift')
+        self._last_verified_accounting=(path,record)
+
+    def failure_snapshot(self) -> FrozenRecord:
+        """Non-eligible terminal accounting; never inspect or retry the backend.
+
+        A retained checkpoint says what was observed before the fault. It does
+        not assert that any current original is still valid, or that no further
+        opportunity occurred. It contains no request/response or eligible view.
+        """
+        _require(type(self) in (CodexTrainProvider,GrokTrainProvider), 'closed provider required')
+        durable=_read(self.state_path)
+        _require(durable.get('terminal_fault') is True and self.state.get('terminal_fault') is True,
+            'existing durable terminal fault required')
+        checkpoint=self._last_verified_accounting;historical=None;binding=None
+        if checkpoint is not None:
+            path,record=checkpoint
+            if path.is_file() and path.read_bytes()==record.encoded.encode():
+                historical=record.data();binding={'path':str(path),'sha256':_sha(path.read_bytes())}
+        faults={str(self.root/name):_sha((self.root/name).read_bytes())
+            for name in ('fault-state.json','fault-native-ledger.json') if (self.root/name).is_file()}
+        body={'schema':'public-train-provider-terminal-snapshot-v1',
+            'terminal_fault':True,'score_eligible':False,'current_originals_verified':False,
+            'reason':durable.get('reason'),'historical_observation':historical,
+            'historical_observation_binding':binding,'preserved_fault_files':faults,
+            'observed_main_opportunities_lower_bound':None if historical is None else historical['observed_main_opportunities'],
+            'known_reported_tokens_lower_bound':None if historical is None else historical['known_reported_tokens'],
+            'unknown_unobserved_opportunities':True,'current_main_usage_complete':False,
+            'total_main_opportunities':None,'total_main_tokens':None,
+            'title_tokens':None,'all_opportunity_tokens':None,'settled_additional_charge_usd':None}
+        record=_record(body);path=self.root/('terminal-snapshot-'+record.content_hash+'.json')
+        if not path.exists():_exclusive(path,record.encoded.encode())
+        _require(path.read_bytes()==record.encoded.encode(), 'terminal snapshot bytes differ')
+        return record
 
     def _poison(self, reason):
         # Keep pre-stop disk evidence even if the fault is memory/disk mismatch.
@@ -324,9 +373,11 @@ class _TrainProvider:
             if not snapshot.exists():_exclusive(snapshot,self.backend.ledger_path.read_bytes())
             _write(self.state_path,self.state)
             if failure is not None or not rows or not rows[0]['status']=='succeeded':
-                self._poison('backend_failure');raise ContractError('provider attempt failed; original evidence retained') from failure
+                self._poison('backend_failure')
+                self._remember_verified_accounting(self.inspect())
+                raise ContractError('provider attempt failed; original evidence retained') from failure
             _require(type(response) is FrozenRecord and response.content_hash==self.state['calls'][-1]['view']['response_digest'], 'returned response differs from originals')
-            self.inspect();return response
+            self._remember_verified_accounting(self.inspect());return response
         except Exception as exc:
             self._poison('terminal_call_failure')
             raise ContractError('provider call is terminal; inspect retained evidence') from exc

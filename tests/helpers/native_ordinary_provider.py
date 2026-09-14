@@ -13,6 +13,7 @@ from research_loop.modular.train_provider_preflight import PROGRAM_SLOTS
 def native_ordinary_provider(root,patch,*,schemas,max_calls,response,fault_at=None):
     root.mkdir(parents=True,exist_ok=True)
     exe=root/'synthetic-grok.exe';exe.write_bytes(b'phase fixture executable identity; never launched')
+    source_pin=root/'synthetic-source-pin.py';source_pin.write_bytes(b'# frozen synthetic native source\n')
     home=root/'approved-login';home.mkdir();(home/'auth.json').write_text('{}')
     peer=(Path(__file__).parents[1]/'fixtures/grok_phase_peer.py').resolve();logs=[]
     original=transport.ProcessTree
@@ -33,7 +34,8 @@ def native_ordinary_provider(root,patch,*,schemas,max_calls,response,fault_at=No
     patch.setattr(transport,'ProcessTree',spawn)
     backend=GrokTrainModelPort(executable=exe,work_root=root/'native-ledger',private_home=home,
         private_profile=root/'profiles',public_cwd=root/'public-contexts',
-        frozen_files={str(peer):transport.digest(peer.read_bytes())},max_calls=max_calls,schemas=schemas,
+        frozen_files={str(peer):transport.digest(peer.read_bytes()),
+            str(source_pin.resolve()):transport.digest(source_pin.read_bytes())},max_calls=max_calls,schemas=schemas,
         slot_output_caps={s:8192 if s in PROGRAM_SLOTS else 2048 for s in schemas},
         slot_input_byte_caps={s:262144 for s in schemas},observed_main_token_cap=131072)
     return GrokTrainProvider(backend),logs
