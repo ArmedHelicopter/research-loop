@@ -35,3 +35,21 @@ The complete fixture still uses eight real Docker executions and an independent
 scorer process. These tests establish engineering behavior, not actual Grok
 execution or scientific effectiveness. No real provider call is part of this
 repair or its frozen verification.
+
+The native M4/M5 attempt and controller receipts now use v2. Authenticated
+scorer responses remain in the historical score collection even when native
+originals change during the final score return. A post-score replay precedes
+cell success, and final replay gates both contrast calculation and report
+eligibility. The receipt separately records `scored_cells`,
+`eligible_scored_cells`, and `native_final_verification`. An original replay
+or unknown-usage failure sets eligible scores to zero and makes every exposed
+contrast inconclusive; complete historical score counts cannot override it.
+This replay makes no further model calls and does not establish scientific
+qualification. Legacy Codex receipt schemas remain v1.
+
+Two full eight-cell synthetic regressions preserve 40 native MAIN records,
+eight Docker executions, and all eight independent scorer returns. They
+inject original drift on the final score return and in final accounting after
+post-score verification. Both must retain the full denominator and historical
+scores while refusing an eligible contrast. Their uncorrected source version
+is retained separately as a failing checkpoint.

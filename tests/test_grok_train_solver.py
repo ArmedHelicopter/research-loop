@@ -118,6 +118,9 @@ def test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer(tmp
         assert json.loads((tmp_path/'run-v4/controller-attempt.json').read_text())['actual_scorer_calls']==0
         return
     assert result.receipt.data()['status']=='estimated'
+    assert result.receipt.data()['eligible_scored_cells'] == 8
+    assert result.receipt.data()['native_final_verification']['score_eligible'] is True
+    assert result.receipt.data()['native_final_verification']['current_originals_verified'] is True
     assert len(result.attempts)==len(result.scores)==8
     assert len(logs)==len(port.ledger['calls'])==40
     assert {row['slot'] for row in port.ledger['calls']} == set(provider['main_output_caps'])

@@ -291,6 +291,21 @@ def _verify_grok_cell_native_binding(model, runtime):
             raise ContractError('runtime trace differs from native public solver originals')
 
 
+def _grok_final_provider_gate(model):
+    """Fresh original replay after all side effects; old scores remain history."""
+    body = {'schema': 'm4-m5-final-native-provenance-v1',
+            'current_originals_verified': False, 'score_eligible': False}
+    try:
+        replay_grok_train_ledger(model)
+    except ContractError as exc:
+        return {**body, 'status': 'ineligible', 'reason': 'native_original_replay_failed',
+                'error_type': type(exc).__name__}
+    body['current_originals_verified'] = True
+    if model.ledger['usage_incomplete']:
+        return {**body, 'status': 'ineligible', 'reason': 'native_usage_incomplete'}
+    return {**body, 'status': 'verified', 'score_eligible': True}
+
+
 def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStore | None, snapshot_root: Path,
         export_root: Path, run_root: Path, model: CodexModelPort, audit_verifier: AuditVerifier,
         execution_authority: LinkedExecutionAuthority, scoring_service: CombinationAdaptedScoringService,
@@ -303,10 +318,11 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
     if root.exists() or exported.exists():
         raise ContractError("controller needs unused run and export roots; inspect earlier attempts instead of retrying")
     body = config.data()
+    native = isinstance(model, GrokTrainModelPort)
     source = CombinationTrainSource(body, custody=custody, prospective_exporter=prospective_exporter,
                                   snapshot=snapshot, exported=exported)
     expected_cells = len(body["item_ids"]) * len(body["replicates"]) * 4
-    journal = {"schema": "m4-m5-train-controller-attempt-v1", "config_digest": config.record.content_hash,
+    journal = {"schema": ("m4-m5-train-controller-attempt-v2" if native else "m4-m5-train-controller-attempt-v1"), "config_digest": config.record.content_hash,
         "status": "exporting", "expected_cells": expected_cells, "allocated_model_calls": body["max_calls"],
         "allocated_model_token_limit": body["max_tokens"], "allocated_docker_attempts": expected_cells,
         "allocated_scorer_calls": expected_cells, "actual_scorer_calls": 0, "scorer_usage": "not_provided_by_transport",
@@ -396,8 +412,14 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
             verification = verify_combination_adapted_receipt(score, authority_keys=scorer_authority_keys,
                 config=scoring_service.config, panel=compiled.panel, cell=cell, score_input=source,
                 execution_authority_keys={execution_authority.authority_id: execution_authority.key})
-            row.update(status="succeeded", phase="verified", score_verification_digest=verification.content_hash)
+            # Preserve the actual authenticated scorer response even when a
+            # subsequent original replay makes it ineligible for a contrast.
             scores.append(score)
+            if native:
+                row.update(phase='post_score_native_verification')
+                replay_grok_train_ledger(model)
+                _verify_grok_cell_native_binding(model, result.runtime)
+            row.update(status="succeeded", phase="verified", score_verification_digest=verification.content_hash)
         except Exception as exc:
             row.update(status="failed", error_type=type(exc).__name__)
         finally:
@@ -410,7 +432,8 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
         verify_combination_adapted_receipt(score, authority_keys=scorer_authority_keys, config=scoring_service.config,
             panel=panel, cell=cell, score_input=signed_inputs[cell.key],
             execution_authority_keys={execution_authority.authority_id: execution_authority.key})
-    complete = all(row["status"] == "succeeded" for row in journal["cells"])
+    final_gate = _grok_final_provider_gate(model) if native else None
+    complete = all(row["status"] == "succeeded" for row in journal["cells"]) and (not native or final_gate['score_eligible'])
     contrast = FrozenRecord.from_dict({"schema": "m4-m5-inconclusive-contrast-v1", "panel_digest": compiled.panel.digest,
         "status": "inconclusive", "reason": "at_least_one_planned_cell_failed_or_unscored", "expected_cells": expected_cells,
         "scored_cells": len(scores), "missing_policy": "incomplete_reject", "scientific_status": "not_measured"})
@@ -423,11 +446,28 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
                 "status": "inconclusive", "reason": "contrast_verification_failed", "error_type": type(exc).__name__,
                 "expected_cells": expected_cells, "scored_cells": len(scores), "missing_policy": "incomplete_reject",
                 "scientific_status": "not_measured"})
-    receipt = FrozenRecord.from_dict({"schema": "m4-m5-train-controller-receipt-v1", "config_digest": config.record.content_hash,
+    # Contrast verification also reads original journals. Close the provider
+    # evidence again at the reporting boundary, without another model call.
+    if native:
+        if final_gate['score_eligible']:
+            final_gate = _grok_final_provider_gate(model)
+        if not final_gate['score_eligible']:
+            if contrast.data()['status'] == 'estimated':
+                journal['historical_contrast_before_failed_final_gate'] = contrast.data()
+            contrast = FrozenRecord.from_dict({'schema': 'm4-m5-inconclusive-contrast-v1',
+                'panel_digest': compiled.panel.digest, 'status': 'inconclusive',
+                'reason': 'final_native_provider_evidence_ineligible', 'expected_cells': expected_cells,
+                'scored_cells': len(scores), 'eligible_scored_cells': 0,
+                'missing_policy': 'incomplete_reject', 'scientific_status': 'not_measured'})
+        journal['native_final_verification'] = final_gate
+        journal['eligible_scored_cells'] = len(scores) if final_gate['score_eligible'] else 0
+    receipt = FrozenRecord.from_dict({"schema": ("m4-m5-train-controller-receipt-v2" if native else "m4-m5-train-controller-receipt-v1"), "config_digest": config.record.content_hash,
         "panel_digest": compiled.panel.digest, "expected_cells": expected_cells, "observed_cells": len(journal["cells"]),
         "successful_cells": sum(row["status"] == "succeeded" for row in journal["cells"]), "scored_cells": len(scores),
         "failed_cells": sum(row["status"] == "failed" for row in journal["cells"]),
         "blocked_cells": sum(row["status"] == "blocked" for row in journal["cells"]),
+        **({'native_final_verification': final_gate,
+            'eligible_scored_cells': len(scores) if final_gate['score_eligible'] else 0} if native else {}),
         "allocation": body["allocation"], "actual_model_usage": _usage(model), "actual_scorer_calls": journal["actual_scorer_calls"],
         "scorer_usage": "not_provided_by_transport", "contrast": contrast.data(),
         "status": "estimated" if contrast.data()["status"] == "estimated" else "inconclusive",
