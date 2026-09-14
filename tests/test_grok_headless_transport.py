@@ -238,6 +238,34 @@ def test_opt_in_recovery_requires_exact_integer_bound(tmp_path, monkeypatch, val
     with pytest.raises(transport.ContractError): transport.run_headless_diagnostic(**kwargs)
 
 
+def test_recovery_reader_rejects_rehashed_failure_after_winning_snapshot(tmp_path, monkeypatch):
+    _, kwargs, _, _, calls, _ = prepared(tmp_path, monkeypatch)
+    original = transport.urllib.request.build_opener
+    count = 0
+    class FirstFault:
+        def open(self, request, timeout):
+            nonlocal count
+            count += 1
+            if count == 1:
+                raise transport.urllib.error.URLError('synthetic timeout')
+            return original().open(request, timeout)
+    monkeypatch.setattr(transport.urllib.request, 'build_opener', lambda *args: FirstFault())
+    folder = tmp_path/'chronology'
+    recovery = {'schema': 'headless-account-read-recovery-v1', 'max_attempts': 2}
+    transport._account_recovered(Path(kwargs['private_home']), folder, recovery)
+    transport._reread_recovered_account(folder, recovery)
+    manifest = json.loads((folder/'attempts.json').read_bytes())
+    failure_path = folder/'attempt-000/failure.json'
+    failure = json.loads(failure_path.read_bytes())
+    failure['failed_at'] = (transport._instant(manifest['projection']['observed_at']) + timedelta(seconds=10)).isoformat()
+    transport._write(failure_path, failure)
+    manifest['attempts'][0]['failure_sha256'] = hashlib.sha256(failure_path.read_bytes()).hexdigest()
+    transport._write(folder/'attempts.json', manifest)
+    with pytest.raises(transport.ContractError, match='chronology'):
+        transport._reread_recovered_account(folder, recovery)
+    assert calls == []
+
+
 def test_short_timeout_closes_owned_process_tree(tmp_path):
     raw, process = transport._child([sys.executable, '-c', 'import time; time.sleep(5)'],
         {'cwd': str(tmp_path)}, {}, tmp_path/'timeout', 0.05)

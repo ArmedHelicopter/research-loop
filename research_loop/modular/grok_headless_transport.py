@@ -512,6 +512,8 @@ def _reread_recovered_account(folder, recovery):
         if row.get('status') == 'accepted':
             _require(row.get('requests_sha256') == _sha(_read(path/'requests.json')), 'account recovery requests binding')
             projection=_reread_account(path); _require(row.get('projection_sha256') == _sha(_read(path/'observation.json')), 'account recovery projection')
+            _require(previous_time is None or previous_time <= _instant(projection['oldest_observed_at']),
+                     'account recovery chronology')
             accepted.append((row['index'],projection))
         else:
             _require(row.get('requests_sha256') == _sha(_read(path/'requests.json')), 'account recovery requests binding')
@@ -532,8 +534,13 @@ def _reread_recovered_account(folder, recovery):
                 if request.get('status') == 'received':
                     raw=_read(path/(request['name']+'.private.json'))
                     _require(request.get('sha256') == _sha(raw) and request.get('bytes') == len(raw), 'account recovery raw binding')
-                received=_instant(request.get('received_at'))
-                _require(previous_time is None or previous_time <= received, 'account recovery chronology'); previous_time=received
+                started, received = _instant(request.get('started_at')), _instant(request.get('received_at'))
+                _require(started <= received and (previous_time is None or previous_time <= started),
+                         'account recovery chronology')
+                previous_time = received
+            failed_at = _instant(failure.get('failed_at'))
+            _require(previous_time <= failed_at, 'account recovery chronology')
+            previous_time = failed_at
     _require(len(accepted) == 1 and winner == accepted[0][0] and winner == len(attempts)-1
              and all(a.get('status') == 'transient_failed' for a in attempts[:winner])
              and manifest.get('projection') == accepted[0][1], 'account recovery winner binding')
