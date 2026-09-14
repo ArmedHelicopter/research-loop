@@ -23,9 +23,10 @@ def controls(task: PublicTask) -> FrozenRecord:
 
 def run(tmp_path, experiment_id, variant, **kwargs):
     input_path = tmp_path / (experiment_id + "-" + variant + "-independent-inputs.json")
-    input_path.write_bytes((FrozenRecord.from_dict({"task": kwargs["task"].data(),
-        "controls": kwargs["frozen_controls"].data(), "experiment_id": experiment_id,
-        "variant": variant}).encoded + "\n").encode())
+    with input_path.open("xb") as stream:
+        stream.write((FrozenRecord.from_dict({"task": kwargs["task"].data(),
+            "controls": kwargs["frozen_controls"].data(), "experiment_id": experiment_id,
+            "variant": variant}).encoded + "\n").encode())
     return run_prediction_scenario(experiment_id, variant, artifact_root=tmp_path / (experiment_id + "-" + variant), **kwargs)
 
 
@@ -88,12 +89,18 @@ def test_q54_selection_is_within_claimed_item_and_leaves_outer_fifo_untouched(tm
     assert event(diagnostic)["selected"] == "focused"
     assert event(diagnostic)["outer_queue"] == {"policy": "FIFO", "position": 7, "changed": False}
     validation = public_task("blade", "validation")
-    with pytest.raises(ContractError): run(tmp_path, "Q5.4", "subjective", task=validation, frozen_controls=controls(validation))
+    with pytest.raises(ContractError):
+        run_prediction_scenario("Q5.4", "subjective", task=validation, frozen_controls=controls(validation),
+                                artifact_root=tmp_path / "invalid-validation")
+    assert not (tmp_path / "invalid-validation").exists()
 
 
 def test_closed_controls_and_callback_classification_boundaries(tmp_path):
     task = public_task("discovery")
     with pytest.raises(ContractError):
-        run(tmp_path, "Q3.1", "mechanism", task=task, frozen_controls=FrozenRecord.from_dict({"task_digest": task.content_hash, "budget_digest": "b", "fixture_only": False}))
+        run_prediction_scenario("Q3.1", "mechanism", task=task,
+            frozen_controls=FrozenRecord.from_dict({"task_digest": task.content_hash, "budget_digest": "b", "fixture_only": False}),
+            artifact_root=tmp_path / "invalid-controls")
+    assert not (tmp_path / "invalid-controls").exists()
     result = run(tmp_path, "Q3.1", "mechanism", task=task, frozen_controls=controls(task), plan_callback=lambda _payload: {"ordinary_model_text": "not a scientific verdict"})
     assert result.callback_responses[0].data()["response"]["ordinary_model_text"] == "not a scientific verdict"
