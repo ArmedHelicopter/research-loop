@@ -84,9 +84,10 @@ class ReviewArtifactSession:
         _append(self.root / _ATTEMPTS, {"sequence": self._sequence, "event": event, **data}); self._sequence += 1
     def reserve(self, allocation: Mapping[str, Any]) -> None: self._event("callback_reserved", allocation=dict(allocation), reserved_before_callback=True)
     def callback_payload(self, payload: FrozenRecord) -> None: self._event("callback_payload", payload=payload.data(), payload_digest=payload.content_hash)
-    def callback_response(self, *, raw: FrozenRecord, typed: FrozenRecord, candidate: Mapping[str, Any] | None) -> None:
-        self._event("callback_response", raw_response=raw.data(), raw_digest=raw.content_hash, typed_response=typed.data(), typed_digest=typed.content_hash, prediction_candidate=dict(candidate) if candidate is not None else None)
+    def callback_response(self, *, raw: FrozenRecord, typed: FrozenRecord, candidate: Any) -> None:
+        self._event("callback_response", raw_response=raw.data(), raw_digest=raw.content_hash, typed_response=typed.data(), typed_digest=typed.content_hash, prediction_candidate=candidate)
     def review_event(self, event: FrozenRecord) -> None: self._event("review_engine_event", review_event=event.data(), review_event_digest=event.content_hash)
+    def prediction_event(self, event: FrozenRecord) -> None: self._event("prediction_registry_event", prediction_event=event.data(), prediction_event_digest=event.content_hash)
     def complete(self, result: Any) -> None:
         _write_new(self.root / _OUTPUTS, FrozenRecord.from_dict({"schema": "q4-review-artifact-outputs-v2", "fixture_only": True,
             "result": result.record.data(), "mechanism_trace": result.mechanism_trace.data(), "callback_payloads": [x.data() for x in result.callback_payloads], "callback_responses": [x.data() for x in result.callback_responses]}))
@@ -146,6 +147,8 @@ def _verify_attempts(rows: list[dict[str, Any]], *, task: PublicTask, controls: 
             outstanding = None
         elif event == "review_engine_event":
             if set(row) != {"sequence", "event", "review_event", "review_event_digest"} or FrozenRecord.from_dict(row["review_event"]).content_hash != row["review_event_digest"]: raise ContractError("review engine journal event differs")
+        elif event == "prediction_registry_event":
+            if set(row) != {"sequence", "event", "prediction_event", "prediction_event_digest"} or FrozenRecord.from_dict(row["prediction_event"]).content_hash != row["prediction_event_digest"]: raise ContractError("prediction registry journal event differs")
         elif event == "producer_failure":
             if set(row) != {"sequence", "event", "exception_type", "message"} or type(row["exception_type"]) is not str or type(row["message"]) is not str: raise ContractError("review producer failure is malformed")
         elif event != "audit_open": raise ContractError("review artifact event is unrecognized")
@@ -185,11 +188,10 @@ def _verify_semantics(rows: list[dict[str, Any]], outputs: dict[str, Any], *, ta
         candidate = None
         if set(raw) == {"review", "prediction_candidate"}:
             review, candidate = raw["review"], raw["prediction_candidate"]
-            if candidate is not None and not isinstance(candidate, dict): raise ContractError("raw prediction candidate is malformed")
         typed = ReviewEngine._response(review).data()
-        if typed != row["typed_response"] or (dict(candidate) if candidate is not None else None) != row["prediction_candidate"]:
+        if typed != row["typed_response"] or candidate != row["prediction_candidate"]:
             raise ContractError("raw callback return does not produce the retained typed response")
-        candidates.append(dict(candidate) if candidate is not None else None)
+        candidates.append(candidate)
     engine = ReviewEngine(task.identity)
     for event in engine_rows: engine._apply(event, persist=False)
     session = engine.session(review_id)
@@ -218,6 +220,18 @@ def _verify_semantics(rows: list[dict[str, Any]], outputs: dict[str, Any], *, ta
     m4 = _freeze_callback_predictions(task, experiment_id, [item for item in candidates[:len(roles)] if item is not None], plan)
     if record.get("m4") != m4:
         raise ContractError("review prediction extraction differs from raw callback candidates")
+    from research_loop.modular.modules.predictions import PredictionRegistry
+    prediction_events = [row["prediction_event"] for row in rows if row["event"] == "prediction_registry_event"]
+    if m4["status"] == "on":
+        if len(prediction_events) != 1 or prediction_events[0].get("event") != "freeze":
+            raise ContractError("frozen M4 plan journal is missing")
+        registry = PredictionRegistry(task.identity)
+        registry._apply(prediction_events[0], persist=False)
+        frozen = registry.plan(m4["plan_id"])
+        if frozen.payload.content_hash != m4["plan_digest"]:
+            raise ContractError("frozen M4 plan payload differs from result metadata")
+    elif prediction_events:
+        raise ContractError("rejected or disabled M4 has an unexpected journal")
     trace = outputs["mechanism_trace"].get("events")
     if not isinstance(trace, list) or not any(event.get("event") == "sealed_barrier_revealed" for event in trace) or not any(event.get("event") == "independent_fixture_oracle" for event in trace) or not any(event.get("event") == "callback_prediction_extraction" for event in trace):
         raise ContractError("review reveal, score, or prediction extraction output is missing")

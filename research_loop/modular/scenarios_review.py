@@ -210,12 +210,17 @@ def run_review_scenario(
         events.append({"event": "post_reveal_revisions", "before_hashes": [item.before_hash for item in revealed],
                        "after_hashes": [item.after_hash for item in revisions]})
 
-    score_changes, metrics = _fixture_oracle(case, revealed, revisions)
-    receipt = engine.record_score(session.review_id, changes=score_changes,
-                                  scorer_receipt={"trusted_scorer": "fixture-oracle-v1", "verified": True})
-    events.append({"event": "independent_fixture_oracle", "score_receipt": receipt.data(), "metrics": metrics,
-                   "oracle_not_exposed_to_callback": True})
-    m4 = _freeze_callback_predictions(task, experiment_id, prediction_candidates, call_plan)
+    try:
+        score_changes, metrics = _fixture_oracle(case, revealed, revisions)
+        receipt = engine.record_score(session.review_id, changes=score_changes,
+                                      scorer_receipt={"trusted_scorer": "fixture-oracle-v1", "verified": True})
+        events.append({"event": "independent_fixture_oracle", "score_receipt": receipt.data(), "metrics": metrics,
+                       "oracle_not_exposed_to_callback": True})
+        m4 = _freeze_callback_predictions(task, experiment_id, prediction_candidates, call_plan,
+                                          event_sink=audit.prediction_event)
+    except Exception as exc:
+        audit.fail(exc)
+        raise
     events.append({"event": "callback_prediction_extraction", **m4})
     record = FrozenRecord.from_dict({"fixture_only": True, "experiment_id": experiment_id, "variant": variant,
         "task_digest": task.content_hash, "controls_digest": frozen_controls.content_hash,
@@ -350,20 +355,19 @@ def _call(callback, payload, case) -> tuple[FrozenRecord, Mapping[str, Any] | No
     if set(value) == {"review", "prediction_candidate"}:
         candidate = value["prediction_candidate"]
         value = value["review"]
-        if candidate is not None and not isinstance(candidate, Mapping):
-            raise ContractError("prediction candidate must be a mapping or null")
-    return FrozenRecord.from_dict(dict(value)), dict(candidate) if candidate is not None else None, raw
+    return FrozenRecord.from_dict(dict(value)), candidate if candidate is not None else None, raw
 
 
 def _freeze_callback_predictions(task: PublicTask, experiment_id: str,
-                                 candidates: list[Mapping[str, Any]], call_plan: list[dict[str, Any]]) -> dict[str, Any]:
+                                 candidates: list[Mapping[str, Any]], call_plan: list[dict[str, Any]],
+                                 event_sink: Callable[[FrozenRecord], None] | None = None) -> dict[str, Any]:
     """Use only callback-provided M4 branches; never fill in missing structure."""
     if experiment_id != "Q4.1":
         return {"status": "off", "reason": "Q4.1 is the only M4/M5 review scenario"}
     if len(candidates) < 2:
         return {"status": "rejected", "reason": "fewer than two callback prediction candidates", "candidate_count": len(candidates)}
     try:
-        plan = freeze_shared_experiment(PredictionRegistry(task.identity), _question(task), candidates,
+        plan = freeze_shared_experiment(PredictionRegistry(task.identity, event_sink=event_sink), _question(task), candidates,
                                         budget_units=sum(item["fixture_units"] for item in call_plan))
     except ContractError as exc:
         return {"status": "rejected", "reason": str(exc), "candidate_count": len(candidates)}
