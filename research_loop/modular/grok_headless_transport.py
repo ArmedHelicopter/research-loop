@@ -134,20 +134,21 @@ def _account(home: Path, destination: Path):
                  for k in ("key", "user_id")), "native login shape")
     _require(datetime.fromisoformat(auth["expires_at"].replace("Z", "+00:00")).timestamp() > time.time()+120,
              "native login near expiry")
-    raws = {}; rows=[]; first=time.monotonic(); opener=urllib.request.build_opener(_NoRedirect)
+    raws = {}; rows=[]; first=time.monotonic(); opener=urllib.request.build_opener(urllib.request.ProxyHandler({}), _NoRedirect)
     for name, route in (("credits", "/billing?format=credits"), ("topup", "/auto-topup-rule"), ("user", "/user?include=subscription")):
         url=PROXY+route; request=urllib.request.Request(url, method="GET", headers={"Authorization":"Bearer "+auth["key"],"X-XAI-Token-Auth":"xai-grok-cli","x-userid":auth["user_id"],"x-grok-client-version":"1.0.13","Accept":"application/json"})
         row={"name":name,"method":"GET","url":url,"status":"reserved","started_at":datetime.now(timezone.utc).isoformat()}; rows.append(row); _write(destination/"requests.json",rows)
         try:
             with opener.open(request, timeout=10) as response:
                 _require(response.geturl()==url, "account redirect")
-                raw=response.read(1048577); _require(len(raw)<=1048576,"account response size"); row["http_status"]=response.status
-        except urllib.error.HTTPError as exc: raise ContractError("account http error") from exc
+                _require(response.status == 200, "account status"); raw=response.read(1048577); _require(len(raw)<=1048576,"account response size"); row["http_status"]=response.status
+        except (urllib.error.HTTPError, urllib.error.URLError, OSError) as exc: raise ContractError("account http error") from exc
         _write(destination/(name+".private.json"),raw); row.update(status="received",bytes=len(raw),sha256=_sha(raw),received_at=datetime.now(timezone.utc).isoformat()); _write(destination/"requests.json",rows); raws[name]=_strict_json(raw)
     credits,topup,user=raws["credits"],raws["topup"],raws["user"]
     _require(user.get("userId")==auth["user_id"] and user.get("hasGrokCodeAccess") is True and user.get("userBlockedReason") in (None,"") and user.get("teamBlockedReasons")==[],"account access")
     cfg=credits.get("config") if isinstance(credits,dict) else None; _require(isinstance(cfg,dict) and cfg.get("isUnifiedBillingUser") is True,"unified pool")
-    for k in ("onDemandCap","onDemandUsed","prepaidBalance"): _require(isinstance(cfg.get(k),dict) and type(cfg[k].get("val")) is int and cfg[k]["val"]==0,"paid fallback")
+    for k in ("onDemandCap","onDemandUsed","prepaidBalance"): _require(isinstance(cfg.get(k),dict) and set(cfg[k]) <= {"val"} and type(cfg[k].get("val",0)) is int and cfg[k].get("val",0)==0,"paid fallback")
+    _require(credits.get("on_demand_enabled", False) is False, "on demand enabled")
     _require(topup in ({},{"rule":None}),"auto topup")
     period=cfg.get("currentPeriod"); now=datetime.now(timezone.utc); _require(isinstance(period,dict) and datetime.fromisoformat(period["start"].replace("Z","+00:00"))<=now<datetime.fromisoformat(period["end"].replace("Z","+00:00")),"period stale")
     pct=cfg.get("creditUsagePercent"); _require(type(pct) in (int,float) and not isinstance(pct,bool) and 0<=pct<100,"included balance")
