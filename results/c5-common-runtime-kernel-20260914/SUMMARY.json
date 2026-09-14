@@ -1,0 +1,51 @@
+{
+  "schema": "c5-common-runtime-kernel-evidence-v1",
+  "source_commits": [
+    "11243b269e86e57c5a710310b150357a4e3b51e2",
+    "9a62ea967ad4c13b0120433231c2ea27d9029075",
+    "9c80611e8fc80c660694bae6f3c775eacad7ee8f",
+    "a2e60d8f6933b54971c87277e4c9f6db9db7f834",
+    "dd88ed9030c66cde69cdbf9e7c064137caca8673"
+  ],
+  "checkpoints": 5,
+  "raw_members": 5936,
+  "all_raw_bytes_equal_originals": true,
+  "exact_tested_source_zip_matches_every_frozen_disk_hash": true,
+  "scope": "Complete formal common TRAIN catalogue; bounded actual history+target pipeline using native-entry synthetic peers, real restricted builder/Docker and original replay. Not full-grid scoring or selection.",
+  "runner_scope_correction": "Reused runner scope label ordinary TRAIN refers to its historical origin. Actual suite arguments and this C5 kernel scope control qualification.",
+  "checkpoint_qualifications": {
+    "r1": "49 passed/8 failed: inherited synthetic history used a different split than actual targets. Correctly blocked at protocol freeze; preserved.",
+    "r2": "8 passed after synthetic original history identity fix before execution; unchanged production admission.",
+    "r3": "57 passed including coherent whole-stage outer swaps and exact formal-barrier target binding code.",
+    "r4": "18 passed after reconstructing complete barrier headers; incomplete barriers still reject.",
+    "r5": "2 focused final-source tests: actual history-target pipeline and exact protocol-file whitespace drift before native dispatch."
+  },
+  "formal_catalogue": {
+    "recipes": 59,
+    "canonical_history_builds": 46,
+    "targets": 118,
+    "main_opportunities": 930,
+    "total_build_target_rows": 164
+  },
+  "bounded_success_path": {
+    "history_stages": 1,
+    "target_stages": 1,
+    "native_synthetic_main": 11,
+    "known_main_tokens": 132,
+    "actual_restricted_builder": 1,
+    "pipeline_auxiliary_docker": 4,
+    "pipeline_solver_docker": 1,
+    "score_eligible": false
+  },
+  "remaining": [
+    "successful complete history barrier to exact formal target cell integration",
+    "full common grid controller and final provenance closure",
+    "authenticated original-stage scoring and selection",
+    "separate validation and acceptance/deployment authority"
+  ],
+  "dependency": "full_loo_driver.py PhaseProvider verify extension only, froma08dc1c/021c40d via8b103fc; no C4 native controller/plan/panel import",
+  "inner_pipeline_qualification": "c4-stage-v1 records describe reused pipeline execution, not completed C4 or original Q experiments",
+  "real_model_or_api_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}

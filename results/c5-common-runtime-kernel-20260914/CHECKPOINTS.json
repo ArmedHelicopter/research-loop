@@ -1,0 +1,177 @@
+[
+  {
+    "run": "c5-common-runtime-r1",
+    "pytest_counts": {
+      "tests": "57",
+      "failures": "8",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "dd88ed9030c66cde69cdbf9e7c064137caca8673",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_joint_train_runtime.py",
+        "tests/test_joint_train_protocol.py",
+        "tests/test_joint_train_panel.py",
+        "tests/test_phase_provider.py",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r1\\pytest",
+        "-o",
+        "cache_dir=E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r1\\cache",
+        "--junitxml",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r1\\pytest.xml"
+      ],
+      "exit_code": 1,
+      "seconds": 70.92417359352112,
+      "source_hash_count": 682,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "01cd33036d4b81716fe720b2ef2e2e513e346fabb147e4126f2c9ea23851397d"
+  },
+  {
+    "run": "c5-common-runtime-r2",
+    "pytest_counts": {
+      "tests": "8",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "a2e60d8f6933b54971c87277e4c9f6db9db7f834",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_joint_train_runtime.py",
+        "--basetemp",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r2\\pytest",
+        "-o",
+        "cache_dir=E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r2\\cache",
+        "--junitxml",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r2\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 157.0327537059784,
+      "source_hash_count": 682,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "2c25d2b70bd3135a27c6583d119835a776efb879b2009147a2603a80e45ec4fe"
+  },
+  {
+    "run": "c5-common-runtime-r3",
+    "pytest_counts": {
+      "tests": "57",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "9a62ea967ad4c13b0120433231c2ea27d9029075",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_joint_train_runtime.py",
+        "tests/test_joint_train_protocol.py",
+        "tests/test_joint_train_panel.py",
+        "tests/test_phase_provider.py",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r3\\pytest",
+        "-o",
+        "cache_dir=E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r3\\cache",
+        "--junitxml",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r3\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 204.31801223754883,
+      "source_hash_count": 682,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "044b0d1f67b5755a9d65ab0e13f8abd016ecf357eece5a006072bc2e6af8945d"
+  },
+  {
+    "run": "c5-common-runtime-r4",
+    "pytest_counts": {
+      "tests": "18",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "9c80611e8fc80c660694bae6f3c775eacad7ee8f",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_joint_train_runtime.py",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r4\\pytest",
+        "-o",
+        "cache_dir=E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r4\\cache",
+        "--junitxml",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r4\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 162.56760430335999,
+      "source_hash_count": 682,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "902a4e27554a82fd117e16681664e187700e1c309f781eeffe31f1eddd196a61"
+  },
+  {
+    "run": "c5-common-runtime-r5",
+    "pytest_counts": {
+      "tests": "2",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "11243b269e86e57c5a710310b150357a4e3b51e2",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_joint_train_runtime.py::test_actual_history_target_pipeline_with_full_catalogue",
+        "tests/test_joint_train_runtime.py::test_original_protocol_file_whitespace_drift_blocks_dispatch",
+        "--basetemp",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r5\\pytest",
+        "-o",
+        "cache_dir=E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r5\\cache",
+        "--junitxml",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-runtime-r5\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 88.85495376586914,
+      "source_hash_count": 682,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "ca9c569a92396bad7eb7ea60221a3078f6c27b89159b7509d9eafb663b847d66"
+  }
+]
