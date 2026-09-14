@@ -149,4 +149,5 @@ def test_final_accounting_drift_retains_historical_scores_but_closes_eligibility
     assert len(receipt['targets'])==22 and receipt['historical_scorer_calls']==22
     assert all(row['status']=='scoring_ineligible' and row['execution_status']=='scored' for row in receipt['targets'])
     assert all(c['provenance_status']=='historical_ineligible' for c in receipt['contrasts'])
-    assert receipt['native_accounting']['provider_calls']==169
+    assert receipt['native_accounting']['schema']=='train-phase-terminal-accounting-v2'
+    assert receipt['native_accounting']['provider_calls_lower_bound']==169
