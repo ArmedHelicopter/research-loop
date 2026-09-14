@@ -215,17 +215,30 @@ def test_artifact_writer_failure_retains_independent_failed_stage_receipt(tmp_pa
     assert result is None or result.record.data()['status']=='failed'
     assert runner.poisoned and not setup['common_logs']
     stage_root=runner.root/'stages'/history_build_id(runner.plan.protocol,recipe)
-    failure=json.loads((stage_root/'artifact-journal-failure.json').read_bytes())
+    failure=json.loads((stage_root/'runtime'/'audit-failure.json').read_bytes())
     receipt=json.loads((stage_root/'receipt.json').read_bytes())
-    assert failure['journal_error_type']=='OSError'
+    assert failure['schema']=='runtime-audit-failure-v1'
+    assert failure['terminal'] is True and failure['audit_complete'] is False
+    assert failure['scientific_validated'] is False
     assert receipt['status']=='failed' and receipt['candidate_digest'] is None
-    assert 'failure_journal:OSError' in receipt['reason']
+    assert receipt['reason']=='OSError: synthetic artifact writer failure'
     journal=stage_root/'runtime'/'artifacts.jsonl'
     assert journal.exists()
     rows=[json.loads(line)['descriptor'] for line in journal.read_text(encoding='utf-8').splitlines()]
-    assert len(rows)==1 and rows[0]['module']=='P0'
-    assert receipt['artifact_catalogue_seal']['count']==1
-    assert receipt['files']['artifact-journal-failure.json']
+    trace=[json.loads(line) for line in (stage_root/'runtime'/'trace.jsonl').read_bytes().splitlines()]
+    covered_trace=[row['payload']['canonical'] for row in rows if row['kind']=='trace_event']
+    assert covered_trace==trace[:-1] and trace[-1]['stage']=='c4_state'
+    assert rows[0]['module']=='P0'
+    # M2 wrote real lineage events before the failed c4_state trace. Retain all
+    # of them instead of expecting the old one-descriptor-only directory.
+    ledger_rows=[row['payload']['canonical'] for row in rows if row['kind']=='ledger_event']
+    for journal_name in ('evidence','claims'):
+        original=[json.loads(line) for line in (stage_root/'runtime'/(journal_name+'.jsonl')).read_bytes().splitlines()]
+        assert [row['event'] for row in ledger_rows if row['journal']==journal_name]==original
+    assert len(rows)==1+len(ledger_rows) and ledger_rows
+    assert receipt['artifact_catalogue_seal']['count']==len(rows)
+    assert failure['lock_digest']==receipt['artifact_catalogue_seal']['binding']['lock_digest']
+    assert receipt['files']['runtime/audit-failure.json']
     checkpoint=json.loads((runner.root/'checkpoint.json').read_bytes())
     assert checkpoint['score_eligible'] is False
     assert all(row['status'] in ('failed','blocked') for row in checkpoint['rows'])
