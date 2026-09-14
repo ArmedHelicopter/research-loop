@@ -79,8 +79,8 @@ def test_account_denial_happens_before_dispatch(tmp_path, monkeypatch, field, va
     root, kwargs, seen, _ = prepared(tmp_path, monkeypatch); kwargs["cwd"].mkdir(); row = account(); row[field] = value
     def deny(home_arg,dest): raise ContractError("denied")
     monkeypatch.setattr(transport,"_account",deny)
-    with pytest.raises(ContractError): transport.run_headless_diagnostic(**kwargs)
-    assert not seen
+    result=transport.run_headless_diagnostic(**kwargs)
+    assert not result.receipt.data()["accepted"] and not result.receipt.data()["prompt_process_launched"] and not seen
 
 
 def test_source_and_config_denials_happen_before_dispatch(tmp_path, monkeypatch):
