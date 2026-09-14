@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 
 from research_loop.modular.contracts import FrozenRecord
+from research_loop.modular.grok_acp_transport import TRAIN_OPPORTUNITY_CONTRACT
 from research_loop.modular.train_provider import (
     CodexTrainProvider, GrokTrainProvider, GrokHeadlessTrainProvider, FrozenTrainProviderLedgerV2)
 from research_loop.ontology import ContractError
@@ -63,6 +64,7 @@ def validate_configuration(config, *, schemas, main_opportunities, exact=True):
         if headless:
             recovery=native.get('account_read_recovery')
             _require(native.get('provider_kind')==b['provider_kind'] and native.get('reasoning_effort')=='low'
+                and native.get('opportunity_contract')==TRAIN_OPPORTUNITY_CONTRACT
                 and native.get('timeout_seconds')==60 and native.get('paid_fallback') is False
                 and (recovery is None or (type(recovery) is dict
                     and recovery=={'schema':'headless-account-read-recovery-v1','max_attempts':2}

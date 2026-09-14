@@ -33,6 +33,8 @@ from research_loop.modular.combination_benchmark_driver import (
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.model_port import CodexModelPort, _validate_schema, _schema_witness
 from research_loop.modular.grok_train_solver import GrokTrainModelPort, replay_grok_train_ledger
+from research_loop.modular.grok_headless_train_solver import GrokHeadlessTrainModelPort, replay_headless_train_ledger
+from research_loop.modular.train_provider_headless import configuration as headless_configuration
 from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier, ScientificScorerReceipt
 from research_loop.modular.runtime import AuditVerifier
@@ -46,6 +48,24 @@ _PAIR = "pair:M4+M5"
 _ANALYSIS = {"schema": "frozen-combination-contrast-analysis-v1", "direction": "higher_better",
              "value_range": [0.0, 1.0], "scale": "unit", "missing_policy": "incomplete_reject",
              "group_weighting": "task_replicate_mean_then_equal_group_mean"}
+
+
+def _native_schema(body):
+    return body.get('schema') in ('m4-m5-train-controller-config-v4','m4-m5-train-controller-config-v5')
+
+
+def _native_model(model):
+    return type(model) in (GrokTrainModelPort,GrokHeadlessTrainModelPort)
+
+
+def _replay_native_model(model):
+    if type(model) is GrokHeadlessTrainModelPort:
+        headless_configuration(model)
+        replay_headless_train_ledger(model)
+    elif type(model) is GrokTrainModelPort:
+        replay_grok_train_ledger(model)
+    else:
+        raise ContractError('exact native TRAIN port required')
 
 
 def _digest(value: Any) -> bool:
@@ -137,18 +157,24 @@ class FrozenM4M5TrainConfig:
                 or any(type(body["allocation"].get(k)) is not int for k in
                        ("docker_attempts_per_cell", "scorer_calls_per_cell", "scorer_call_limit"))):
             raise ContractError("model slots, Docker attempts and scorer opportunities must be equally frozen")
-        grok = body.get('schema') == 'm4-m5-train-controller-config-v4'
+        grok = _native_schema(body)
         if grok:
             if len(identities) != 2 or len(body['replicates']) != 1 or cells != 8:
-                raise ContractError('v4 admits exactly one eight-cell core TRAIN panel')
+                raise ContractError('native versions admit exactly one eight-cell core TRAIN panel')
             provider = body.get('provider')
             expected = {'kind':'grok-acp-public-train-v1','model':'grok-4.6','opportunity_contract':'public-train-main-and-initial-title-v1',
                 'included_only':True,'api_key_route_permitted':False,'main_calls':cells*len(SLOTS),
                 'possible_initial_title_calls':cells*len(SLOTS),'main_output_caps':{'m4_plan':2048,'m5_mechanism':2048,'m5_measurement':2048,'analysis_program':8192,'final_answer':2048},
                 'input_byte_cap_per_request':262144,'observed_main_token_cap':131072,'title_requested_output_cap':100,
                 'wall_timeout_seconds':60,'max_retries':0,'title_usage_and_all_call_totals':'unknown'}
-            if provider != expected or body['model'] != 'grok-4.6' or body['effort'] != 'native_acp':
-                raise ContractError('v4 requires the exact public Grok TRAIN provider allocation')
+            headless=body['schema']=='m4-m5-train-controller-config-v5'
+            if headless:
+                expected.update(kind='grok-headless-public-train-v1',
+                    account_read_recovery={'schema':'headless-account-read-recovery-v1','max_attempts':2})
+                if not isinstance(provider,dict) or type(provider.get('account_read_recovery',{}).get('max_attempts')) is not int:
+                    raise ContractError('headless account recovery requires an exact integer bound')
+            if provider != expected or body['model'] != 'grok-4.6' or body['effort'] != ('low' if headless else 'native_acp'):
+                raise ContractError('exact versioned public Grok TRAIN provider allocation required')
         if ((not grok and (body["model"] != "gpt-5.6-luna" or body["effort"] != "low"))
                 or (grok and (body['max_tokens'] != 131072 * cells * len(SLOTS)))
                 or type(body["max_calls"]) is not int or body["max_calls"] != cells * len(SLOTS)
@@ -229,12 +255,17 @@ class M4M5TrainRun:
 def _service_preflight(config, model, service, execution_authority, scorer_keys):
     from evaluation.modular.scorer_process import CombinationScorerProcessClient
     body = config.data()
-    grok = body.get('schema') == 'm4-m5-train-controller-config-v4'
-    if not isinstance(model, (GrokTrainModelPort if grok else CodexModelPort)) or not isinstance(service, (CombinationAdaptedScoringService, CombinationScorerProcessClient)) or not isinstance(execution_authority, LinkedExecutionAuthority):
+    grok = _native_schema(body)
+    expected_model = GrokHeadlessTrainModelPort if body.get('schema')=='m4-m5-train-controller-config-v5' else GrokTrainModelPort
+    if not (type(model) is expected_model if grok else isinstance(model,CodexModelPort)) or not isinstance(service, (CombinationAdaptedScoringService, CombinationScorerProcessClient)) or not isinstance(execution_authority, LinkedExecutionAuthority):
         raise ContractError("real model port, independent scoring service and execution authority are required")
     if not grok: _reviewed_model_policy(model)
     if grok:
         declared=body['provider']
+        if type(model) is GrokHeadlessTrainModelPort:
+            headless_configuration(model)
+            if model.account_read_recovery != declared['account_read_recovery']:
+                raise ContractError('headless recovery differs from frozen declaration')
         if (model.provider_kind != declared['kind'] or model.slot_output_caps != declared['main_output_caps']
                 or set(model.slot_input_byte_caps) != set(SLOTS)
                 or any(model.slot_input_byte_caps[s] != declared['input_byte_cap_per_request'] for s in SLOTS)
@@ -268,7 +299,7 @@ def _service_preflight(config, model, service, execution_authority, scorer_keys)
 def _usage(model):
     base={"model_calls": len(model.ledger["calls"]), "known_model_tokens": model.ledger["tokens"],
             "model_usage_incomplete": model.ledger["usage_incomplete"]}
-    if isinstance(model, GrokTrainModelPort):
+    if _native_model(model):
         base.update(possible_initial_title_opportunities=len(model.ledger['calls']),
             title_and_all_opportunity_settlement='unknown')
     return base
@@ -296,7 +327,7 @@ def _grok_final_provider_gate(model):
     body = {'schema': 'm4-m5-final-native-provenance-v1',
             'current_originals_verified': False, 'score_eligible': False}
     try:
-        replay_grok_train_ledger(model)
+        _replay_native_model(model)
     except ContractError as exc:
         return {**body, 'status': 'ineligible', 'reason': 'native_original_replay_failed',
                 'error_type': type(exc).__name__}
@@ -318,7 +349,7 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
     if root.exists() or exported.exists():
         raise ContractError("controller needs unused run and export roots; inspect earlier attempts instead of retrying")
     body = config.data()
-    native = isinstance(model, GrokTrainModelPort)
+    native = _native_model(model)
     source = CombinationTrainSource(body, custody=custody, prospective_exporter=prospective_exporter,
                                   snapshot=snapshot, exported=exported)
     expected_cells = len(body["item_ids"]) * len(body["replicates"]) * 4
@@ -326,7 +357,7 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
         "status": "exporting", "expected_cells": expected_cells, "allocated_model_calls": body["max_calls"],
         "allocated_model_token_limit": body["max_tokens"], "allocated_docker_attempts": expected_cells,
         "allocated_scorer_calls": expected_cells, "actual_scorer_calls": 0, "scorer_usage": "not_provided_by_transport",
-        "model_policy_sha256": None if body.get('schema') == 'm4-m5-train-controller-config-v4' else model.frozen_base_context.sha256, "provider_kind": getattr(model, 'provider_kind', 'codex-cli'), "cells": [], "packet_receipts": []}
+        "model_policy_sha256": None if _native_schema(body) else model.frozen_base_context.sha256, "provider_kind": getattr(model, 'provider_kind', 'codex-cli'), "cells": [], "packet_receipts": []}
     root.mkdir(parents=True, exist_ok=False)
     def persist():
         journal["actual_model_usage"] = _usage(model)
@@ -396,8 +427,8 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
             if result.runtime.status != "succeeded" or result.solver is None or result.solver.status != "execution_succeeded":
                 row.update(status="failed", phase="execution", reason="combination_execution_failed")
                 continue
-            if isinstance(model, GrokTrainModelPort):
-                replay_grok_train_ledger(model)
+            if _native_model(model):
+                _replay_native_model(model)
                 _verify_grok_cell_native_binding(model, result.runtime)
             source = issue_combination_score_input(panel=compiled.panel, result=result, task=packet.task,
                 scenario=compiled.scenarios[cell.key], package=compiled.packages[cell.runtime_arm.content_hash], authority=execution_authority)
@@ -417,7 +448,7 @@ def run_m4_m5_train_panel(config: FrozenM4M5TrainConfig, *, custody: CustodyStor
             scores.append(score)
             if native:
                 row.update(phase='post_score_native_verification')
-                replay_grok_train_ledger(model)
+                _replay_native_model(model)
                 _verify_grok_cell_native_binding(model, result.runtime)
             row.update(status="succeeded", phase="verified", score_verification_digest=verification.content_hash)
         except Exception as exc:

@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 from research_loop.modular.contracts import FrozenRecord
+from research_loop.modular.grok_acp_transport import TRAIN_OPPORTUNITY_CONTRACT
 from research_loop.modular.grok_headless_train_solver import (
     GrokHeadlessTrainModelPort, _replay_headless_native_call)
 from research_loop.modular.grok_headless_transport import inspect_grok_stream
@@ -28,6 +29,7 @@ def configuration(backend):
     require(config == backend.ledger['config'], 'headless configuration memory/disk drift')
     expected = {'schema': 'grok-headless-train-solver-port-v1',
         'provider_kind': 'grok-headless-public-train-v1', 'model': 'grok-4.6',
+        'opportunity_contract': TRAIN_OPPORTUNITY_CONTRACT,
         'reasoning_effort': 'low', 'timeout_seconds': 60, 'max_retries': 0,
         'paid_fallback': False, 'included_only': True, 'api_key_route_permitted': False,
         'title_opportunities_per_main': 1, 'title_usage_and_all_call_totals': 'unknown',
@@ -70,7 +72,7 @@ def observed_usage(backend, row, directory):
             max_total_tokens=backend.observed_main_token_cap,
             process_exit_code=process['process_exit_code'] if type(process.get('process_exit_code')) is int else -1)
         return result.receipt.data().get('usage')
-    except (OSError, ValueError, KeyError, ContractError):
+    except (OSError, ValueError, KeyError, TypeError, AttributeError, ContractError):
         return None
 
 

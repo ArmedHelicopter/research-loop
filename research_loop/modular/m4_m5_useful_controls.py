@@ -24,8 +24,8 @@ REVISION_INSTRUCTION = (
 
 
 def source_contract_body(body):
-    """Normalize only the explicitly frozen v3 recipe for the existing source gate."""
-    if body.get('schema') == 'm4-m5-train-controller-config-v4':
+    """Normalize explicit native versions and the frozen v3 recipe for source custody."""
+    if body.get('schema') in ('m4-m5-train-controller-config-v4','m4-m5-train-controller-config-v5'):
         normalized = dict(body)
         normalized.pop('provider', None)
         normalized['schema'] = 'm4-m5-train-controller-config-v3'

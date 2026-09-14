@@ -97,7 +97,31 @@ def test_unknown_main_usage_keeps_the_spent_opportunity(tmp_path,monkeypatch):
     assert len(calls)==1
 
 
-@pytest.mark.parametrize('change',['kind','effort','recovery','source'])
+@pytest.mark.parametrize('original',['process','reservation'])
+def test_malformed_original_keeps_failed_provider_row(tmp_path,monkeypatch,original):
+    backend=port(tmp_path,max_calls=2)
+    calls,_=synthetic_native(tmp_path,monkeypatch,backend)
+    provider=wrap_train_provider(backend)
+    import research_loop.modular.grok_headless_transport as transport
+    account=transport._account_recovered
+    def corrupt_after(home,destination,recovery):
+        result=account(home,destination,recovery)
+        if Path(destination).name=='billing-after':
+            native=Path(destination).parent
+            path=native/'process.json' if original=='process' else native.parent/'native-reservation.json'
+            path.write_bytes(b'[]')
+        return result
+    monkeypatch.setattr(transport,'_account_recovered',corrupt_after)
+    with pytest.raises(ContractError):provider(REQUEST)
+    views=provider.inspect()
+    assert len(views)==1 and views[0].data()['known_tokens'] is None
+    assert not views[0].data()['successful'] and views[0].data()['main_usage_incomplete']
+    assert provider.usage().data()['main_opportunities']==1
+    with pytest.raises(ContractError):provider(REQUEST)
+    assert len(calls)==1
+
+
+@pytest.mark.parametrize('change',['kind','effort','recovery','source','opportunity_contract'])
 def test_headless_configuration_cannot_be_relabelled_or_relaxed(tmp_path,monkeypatch,change):
     backend=port(tmp_path)
     calls,_=synthetic_native(tmp_path,monkeypatch,backend)
@@ -109,6 +133,9 @@ def test_headless_configuration_cannot_be_relabelled_or_relaxed(tmp_path,monkeyp
     else:
         if change=='kind':config['provider_kind']='grok-acp-public-train-v1'
         if change=='effort':config['execution_mode']='high'
+        if change=='opportunity_contract':
+            config['native_config']['opportunity_contract']='foreign'
+            config['native_config_digest']=FrozenRecord.from_dict(config['native_config']).content_hash
         if change=='recovery':
             config['native_config']['account_read_recovery']['max_attempts']=3
             config['native_config_digest']=FrozenRecord.from_dict(config['native_config']).content_hash
