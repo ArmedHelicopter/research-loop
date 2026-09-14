@@ -8,9 +8,18 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from functools import lru_cache
 from typing import Any, Mapping
 
 from research_loop.ontology import ContractError, canonical, digest
+
+
+@lru_cache(maxsize=16)
+def _large_record_digest(encoded: str) -> str:
+    # Cache only this pure value computation. File reads, source checks and
+    # validation leases still run at their existing call sites. The key is the
+    # complete current string, never a path, object id or claimed digest.
+    return digest(json.loads(encoded))
 
 
 def required_text(value: Any, field: str) -> str:
@@ -46,6 +55,9 @@ class FrozenRecord:
 
     @property
     def content_hash(self) -> str:
+        if (type(self) is FrozenRecord and type(self.encoded) is str
+                and 4096 <= len(self.encoded) <= 524288):
+            return _large_record_digest(self.encoded)
         return digest(self.data())
 
 
