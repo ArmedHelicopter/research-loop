@@ -1,0 +1,39 @@
+{
+  "integration_head": "0936872f7c4b68e2c483b42b2aa0b98f294df9f1",
+  "checks": [
+    {
+      "commit": "f2f28d2d2bb12ae32938f09f891ffe4e1cc018f7",
+      "source_unchanged": true,
+      "source_count": 619,
+      "exit_code": 1,
+      "wall_seconds": 1.8279999999940628,
+      "new_paid_calls": 0,
+      "report_sha256": "40b9bc220ea40e622cf38c014056e2899305bf54be244eaf8c6036c7836da1f2",
+      "junit": {
+        "tests": 4,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "commit": "d7935c119e8f98fe541011c3b5d54eb0909ae201",
+      "source_unchanged": true,
+      "source_count": 619,
+      "exit_code": 0,
+      "wall_seconds": 19.171999999991385,
+      "new_paid_calls": 0,
+      "report_sha256": "bf8c1152553e838855b06c4ecc30a9de037fb59ed80817a942e134a7a1fd40d8",
+      "junit": {
+        "tests": 71,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "new_paid_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false,
+  "independent_review": "build_provider_phase reviewed d7935c1; same terminal flag logic after fresh original inspection, no persistent cache"
+}

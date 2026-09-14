@@ -1,0 +1,118 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+_ test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift[seal-grok] _
+
+tmp_path = WindowsPath('C:/codex-modular-checks/provider-seal-observation-red-r1/test_seal_audit_reads_once_and0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000160AEDB3EC0>
+kind = 'grok', fault = 'seal'
+
+    @pytest.mark.parametrize('kind', ['grok','codex'])
+    @pytest.mark.parametrize('fault', ['seal','response'])
+    def test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift(tmp_path,monkeypatch,kind,fault):
+        backend,calls=setup(kind,tmp_path/'provider',monkeypatch)
+        provider=core.wrap_train_provider(backend)
+        provider.call(REQUEST);provider.call(REQUEST)
+        prefix=provider.seal(tmp_path/'sealed-prefix.json')
+        original=core._verify_call;replayed=[]
+        def observe(*args,**kwargs):
+            replayed.append(args[1]['id'])
+            return original(*args,**kwargs)
+        monkeypatch.setattr(core,'_verify_call',observe)
+        assert prefix.verify_originals().data()['score_eligible'] is True
+>       assert replayed==[1,2], 'eligibility must use the same freshly checked originals'
+E       AssertionError: eligibility must use the same freshly checked originals
+E       assert [1, 2, 1, 2] == [1, 2]
+E         
+E         Left contains 2 more items, first extra item: 1
+E         Use -v to get more diff
+
+tests\test_provider_seal_observation.py:21: AssertionError
+_ test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift[seal-codex] _
+
+tmp_path = WindowsPath('C:/codex-modular-checks/provider-seal-observation-red-r1/test_seal_audit_reads_once_and1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000160AEDE5430>
+kind = 'codex', fault = 'seal'
+
+    @pytest.mark.parametrize('kind', ['grok','codex'])
+    @pytest.mark.parametrize('fault', ['seal','response'])
+    def test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift(tmp_path,monkeypatch,kind,fault):
+        backend,calls=setup(kind,tmp_path/'provider',monkeypatch)
+        provider=core.wrap_train_provider(backend)
+        provider.call(REQUEST);provider.call(REQUEST)
+        prefix=provider.seal(tmp_path/'sealed-prefix.json')
+        original=core._verify_call;replayed=[]
+        def observe(*args,**kwargs):
+            replayed.append(args[1]['id'])
+            return original(*args,**kwargs)
+        monkeypatch.setattr(core,'_verify_call',observe)
+        assert prefix.verify_originals().data()['score_eligible'] is True
+>       assert replayed==[1,2], 'eligibility must use the same freshly checked originals'
+E       AssertionError: eligibility must use the same freshly checked originals
+E       assert [1, 2, 1, 2] == [1, 2]
+E         
+E         Left contains 2 more items, first extra item: 1
+E         Use -v to get more diff
+
+tests\test_provider_seal_observation.py:21: AssertionError
+_ test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift[response-grok] _
+
+tmp_path = WindowsPath('C:/codex-modular-checks/provider-seal-observation-red-r1/test_seal_audit_reads_once_and2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000160AEDE7CB0>
+kind = 'grok', fault = 'response'
+
+    @pytest.mark.parametrize('kind', ['grok','codex'])
+    @pytest.mark.parametrize('fault', ['seal','response'])
+    def test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift(tmp_path,monkeypatch,kind,fault):
+        backend,calls=setup(kind,tmp_path/'provider',monkeypatch)
+        provider=core.wrap_train_provider(backend)
+        provider.call(REQUEST);provider.call(REQUEST)
+        prefix=provider.seal(tmp_path/'sealed-prefix.json')
+        original=core._verify_call;replayed=[]
+        def observe(*args,**kwargs):
+            replayed.append(args[1]['id'])
+            return original(*args,**kwargs)
+        monkeypatch.setattr(core,'_verify_call',observe)
+        assert prefix.verify_originals().data()['score_eligible'] is True
+>       assert replayed==[1,2], 'eligibility must use the same freshly checked originals'
+E       AssertionError: eligibility must use the same freshly checked originals
+E       assert [1, 2, 1, 2] == [1, 2]
+E         
+E         Left contains 2 more items, first extra item: 1
+E         Use -v to get more diff
+
+tests\test_provider_seal_observation.py:21: AssertionError
+_ test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift[response-codex] _
+
+tmp_path = WindowsPath('C:/codex-modular-checks/provider-seal-observation-red-r1/test_seal_audit_reads_once_and3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000160AEE5EC60>
+kind = 'codex', fault = 'response'
+
+    @pytest.mark.parametrize('kind', ['grok','codex'])
+    @pytest.mark.parametrize('fault', ['seal','response'])
+    def test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift(tmp_path,monkeypatch,kind,fault):
+        backend,calls=setup(kind,tmp_path/'provider',monkeypatch)
+        provider=core.wrap_train_provider(backend)
+        provider.call(REQUEST);provider.call(REQUEST)
+        prefix=provider.seal(tmp_path/'sealed-prefix.json')
+        original=core._verify_call;replayed=[]
+        def observe(*args,**kwargs):
+            replayed.append(args[1]['id'])
+            return original(*args,**kwargs)
+        monkeypatch.setattr(core,'_verify_call',observe)
+        assert prefix.verify_originals().data()['score_eligible'] is True
+>       assert replayed==[1,2], 'eligibility must use the same freshly checked originals'
+E       AssertionError: eligibility must use the same freshly checked originals
+E       assert [1, 2, 1, 2] == [1, 2]
+E         
+E         Left contains 2 more items, first extra item: 1
+E         Use -v to get more diff
+
+tests\test_provider_seal_observation.py:21: AssertionError
+- generated xml file: C:\codex-modular-checks\provider-seal-observation-red-r1.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_provider_seal_observation.py::test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift[seal-grok]
+FAILED tests/test_provider_seal_observation.py::test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift[seal-codex]
+FAILED tests/test_provider_seal_observation.py::test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift[response-grok]
+FAILED tests/test_provider_seal_observation.py::test_seal_audit_reads_once_and_remains_fresh_after_append_or_original_drift[response-codex]
+{"commit": "f2f28d2d2bb12ae32938f09f891ffe4e1cc018f7", "source_unchanged": true, "source_count": 619, "exit_code": 1, "wall_seconds": 1.8279999999940628, "new_paid_calls": 0, "report_sha256": "40b9bc220ea40e622cf38c014056e2899305bf54be244eaf8c6036c7836da1f2", "junit": {"tests": 4, "failures": 4, "errors": 0, "skipped": 0}}
+{"source_archive_matches_frozen_input": true, "source_files": 619, "source_archive_sha256": "1758dfba22beddf47c846805ea3c60d4e77c2c673a2be6ae993b5856b3ef3b06"}
