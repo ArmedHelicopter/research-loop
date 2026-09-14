@@ -1641,3 +1641,21 @@ cd607467 为旧 ExtendedTrainProjectionExporter 接入实际 P0 预约、公共�
 完整私有来源与 custody 文件未复制。见 [接口与剩余范围](P0-LEGACY-EXTENDED-ARTIFACTS.md)。
 TRAIN 操作的来源补充另通过 21/21 检查，其 11 个目录和 191 条描述符位于
 `train-operation-artifacts-r2`，与首轮原件分开保留，不相加为独立实验样本。
+
+# 2026-09-15：M9 离线场景的逐产物核验
+
+5d3cf88d 接入 Q6.1/6.2/6.5/6.6 实际 fixture 的回调、优化器/执行 SQLite、
+部署完整副本、内容寻址字节、结果与终态；返回成功结果前必须通过独立读取器。
+读取从 TRAIN 任务、注册操作和真实回调重建预期状态，核验回执 ID、完整包和
+memory，不以输出自述摘要为预期。Windows junction 在创建或读取前被拒绝。
+
+107/107 冻结检查通过，151.141 秒，726 份源码字节前后相同；没有模型、Docker
+或真实 VAL 调用。32 份正常目录、6 份 storage-only 失败和 2 份不完整前缀完成
+只读回查，共 366 条描述符；源码 ZIP、JUnit、原始目录 ZIP 和先前失败尝试
+保存在 `results/modular-engineering-20260915/scenario-artifacts-r1/`，共 52 文件。
+第一次归档 helper 的 pytest 截短目录模式少匹配四份原件，计数断言失败；修正
+模式后回查完成，原 helper 和失败记录保留，没有改动测试输出或重跑实验。
+
+见 [实际接口与边界](SCENARIO-ARTIFACTS.md)。任意回调额外输出仍须专用语义
+适配；全模块覆盖、跨目录生命周期、实际资源分摊和真实效果实验仍未完成。
+两个 C5 工作树保持原冻结代码；此工程检查不代替 C5 或 VAL 验收。

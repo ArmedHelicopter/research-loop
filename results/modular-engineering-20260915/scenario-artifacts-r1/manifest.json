@@ -1,0 +1,1650 @@
+{
+  "schema": "scenario-artifact-evidence-archive-v1",
+  "source_commit": "5d3cf88daccf841cc88fe7a32242e5b5862218e5",
+  "source_root": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance",
+  "originals": [
+    {
+      "file": "scenario-artifacts-frozen-r1-before.json",
+      "bytes": 85110,
+      "sha256": "4c8e2063693d8b46793501e39d56d69b0cf832b378f0e684353f304e6ec0ec09"
+    },
+    {
+      "file": "scenario-artifacts-frozen-r1-closed.json",
+      "bytes": 85209,
+      "sha256": "86464360800e1a36833c0731c842bd098bb954d7def652aeb3f2681012739c98"
+    },
+    {
+      "file": "scenario-artifacts-frozen-r1.xml",
+      "bytes": 16346,
+      "sha256": "f3574a8a9f02deb88786112cf2f64c3f6d03cc1c56e4f08a732fcec931454664"
+    },
+    {
+      "file": "scenario-artifacts-frozen-r1-sources.zip",
+      "bytes": 2399267,
+      "sha256": "ea67fb4ae2d77e17314863e7ede79fb3c501bd9d0c26da1b109264993978224e"
+    },
+    {
+      "file": "scenario-artifacts-frozen-r1-source-members.json",
+      "bytes": 127391,
+      "sha256": "aa36451cb87f83f219e1633966e5ecc7d9f76cf86c3e2864981e3b8dd0612c23"
+    },
+    {
+      "file": "archive_scenario_artifacts_r1.py",
+      "bytes": 8568,
+      "sha256": "094c8fcbae8ea6e7b09bd7aad2c665f42db349269136e12484452c8cb91d79d3"
+    },
+    {
+      "file": "archive_scenario_artifacts_first_attempt.py",
+      "bytes": 8255,
+      "sha256": "dda4b000c4da73decaeb53f682e5d558a07f2e7fbb001faedd82f19281dc8b38"
+    },
+    {
+      "file": "scenario-artifacts-archive-first-attempt.json",
+      "bytes": 7462,
+      "sha256": "33381fa26cbc787467783d3f3ff779415bf543fd091723068276befd8a1c3f25"
+    },
+    {
+      "file": "agent-verification-attempts.md",
+      "bytes": 5818,
+      "sha256": "e2d658d669a5ff86a23d4ab51bc496d8467d3021db3ff8bfb667dfc3c0140028"
+    },
+    {
+      "file": "test_actual_offline_scenario_o0-run.zip",
+      "bytes": 9871,
+      "sha256": "719725c74686e7eda3eb90ebb02bc556b1a45ba33990afa65a93e41907562b08"
+    },
+    {
+      "file": "test_actual_offline_scenario_o1-run.zip",
+      "bytes": 7967,
+      "sha256": "72ac0eeb8a65f81853798babab71e400e0fd3bca8ae1afef956c0ca991216612"
+    },
+    {
+      "file": "test_actual_offline_scenario_o2-run.zip",
+      "bytes": 13939,
+      "sha256": "d8b7d082a37b31cf801f0fd34e96962097e149293de7d794b50a4dea0c97827b"
+    },
+    {
+      "file": "test_actual_offline_scenario_o3-run.zip",
+      "bytes": 12918,
+      "sha256": "3f0b1f6411c6cefef6d9b329229a932da4dcddf8dc4c6c92048099ee5c2e240d"
+    },
+    {
+      "file": "test_actual_return_gate_requir0-run.zip",
+      "bytes": 4444,
+      "sha256": "5273074bc34b5f609f1e4085e18c7e9bb6c12cf07313acd0a904037527896e4a"
+    },
+    {
+      "file": "test_callback_link_preserves_o0-run.zip",
+      "bytes": 1588,
+      "sha256": "790846bdedfaf2f6a99fa527dc556385314d840181658a3bf6d77f48b6cbad71"
+    },
+    {
+      "file": "test_callback_subclass_is_reje0-run.zip",
+      "bytes": 3328,
+      "sha256": "8c090040fb9eb8c330dc63b9132e67ad9413e818d29cc1762342f0889da5fef0"
+    },
+    {
+      "file": "test_failed_callback_keeps_sea0-run.zip",
+      "bytes": 8235,
+      "sha256": "c210f20a9272458cb559c435e58a778f48d4547003b0e9bf66fd75f6bf2c4ddc"
+    },
+    {
+      "file": "test_failed_malformed_runtime_0-run.zip",
+      "bytes": 6828,
+      "sha256": "e67c10330d1c524dd9280b55d3ff76477e9f028e69c703eb8e18097d2dd383a1"
+    },
+    {
+      "file": "test_first_callback_opportunit0-run.zip",
+      "bytes": 3325,
+      "sha256": "8464361d458dc07c0f419c0cb510217533e69ae22238b8436c6cbc466ce5e646"
+    },
+    {
+      "file": "test_first_callback_opportunit1-run.zip",
+      "bytes": 3321,
+      "sha256": "0e8e8f4effe66083f1d1878580686c80a86563de3bb261ec11a82d4d7a8edda7"
+    },
+    {
+      "file": "test_m9_variants_retain_public0-change_rule.zip",
+      "bytes": 5518,
+      "sha256": "285b735c56906fc66444f0e35fa6bdc2258a58d5eb0c89552acd0d8f102b0d5f"
+    },
+    {
+      "file": "test_m9_variants_retain_public1-change_rule.zip",
+      "bytes": 5538,
+      "sha256": "f2af493f4882cbda26e20f5f8ab643c6b6f9e754deb766b6cf768330c37f7019"
+    },
+    {
+      "file": "test_m9_variants_retain_public10-manual_train.zip",
+      "bytes": 8024,
+      "sha256": "6d362e65d76571fd02c673cdaa4a34e201e3b438119459cf14cdb6cec1aa0427"
+    },
+    {
+      "file": "test_m9_variants_retain_public11-manual_train.zip",
+      "bytes": 8051,
+      "sha256": "b07b4a75c886da58a0089d1f9a584a9ca3bc82b2cd3783fb5182e4b2d3790f42"
+    },
+    {
+      "file": "test_m9_variants_retain_public12-automatic_train.zip",
+      "bytes": 5584,
+      "sha256": "6bb3eb58249c177b69e3fd69a3ff68a49845246f05ca4a373d31f5e2a65f9120"
+    },
+    {
+      "file": "test_m9_variants_retain_public13-automatic_train.zip",
+      "bytes": 5602,
+      "sha256": "6819a3092908956b58221579a36f1d104b13f8bfa8e39efd2dd5be3f4b256045"
+    },
+    {
+      "file": "test_m9_variants_retain_public18-unprotected.zip",
+      "bytes": 13970,
+      "sha256": "d363bf4cff06a2166c42afefaef18bcf6cf1debec93ba347ce78961137c15c23"
+    },
+    {
+      "file": "test_m9_variants_retain_public19-unprotected.zip",
+      "bytes": 14015,
+      "sha256": "2bd8f05a3ce2510634f14a12a400a539d141227a2a22e3cd9b3b3377bcd0ad5c"
+    },
+    {
+      "file": "test_m9_variants_retain_public2-read_validation.zip",
+      "bytes": 5509,
+      "sha256": "7e16e7a8d0c7a6f1c236c455f902fd47f0bea527c74ab235c0e05335991dd7d6"
+    },
+    {
+      "file": "test_m9_variants_retain_public20-sealed_calibrated.zip",
+      "bytes": 10759,
+      "sha256": "a9a3e7f8d4419d0badc7d7fe6c733d722a4e197483b33a0a3d6983147becdc9e"
+    },
+    {
+      "file": "test_m9_variants_retain_public21-sealed_calibrated.zip",
+      "bytes": 10798,
+      "sha256": "46af09207a7cf74f3eec5e5cc5cac76d00c0ee8c6da7aebde5da261daa35d526"
+    },
+    {
+      "file": "test_m9_variants_retain_public22-promote.zip",
+      "bytes": 12834,
+      "sha256": "85dbf4125401fc9e921ff47b6c9afa63b3fd06bb120f1fbb4042cf94d1ef1a4e"
+    },
+    {
+      "file": "test_m9_variants_retain_public23-promote.zip",
+      "bytes": 12899,
+      "sha256": "a8e549ace5b0e6a839a582b7a6eee4b9fc8e6a57f52367b72ef220dd39f2deb0"
+    },
+    {
+      "file": "test_m9_variants_retain_public24-rollback.zip",
+      "bytes": 12938,
+      "sha256": "f9a3253040f901e0180c1d22f46569ae7349bf04580538fb8d019950e7db9b96"
+    },
+    {
+      "file": "test_m9_variants_retain_public25-rollback.zip",
+      "bytes": 12999,
+      "sha256": "3f14bd641d5a8e5f12143f7100460e19a35e4bca69402f1b91e31cbcc1ff3b80"
+    },
+    {
+      "file": "test_m9_variants_retain_public26-drift.zip",
+      "bytes": 12856,
+      "sha256": "998aef200b3e309c2af1f5bc0ebfbe9107647deb857d930909022f4b95022810"
+    },
+    {
+      "file": "test_m9_variants_retain_public27-drift.zip",
+      "bytes": 12928,
+      "sha256": "c91706f948123ce0ea66e6498125d91c9690485676ad4b813fe6110667532f87"
+    },
+    {
+      "file": "test_m9_variants_retain_public28-offline.zip",
+      "bytes": 12871,
+      "sha256": "49d910f4de6395b2b6aa195c882a4713735da318b3e48de99b4301296a2fa8d8"
+    },
+    {
+      "file": "test_m9_variants_retain_public29-offline.zip",
+      "bytes": 12932,
+      "sha256": "10eae32e93c908e4d199cb7601a303a7ac86222bf745fcdb0ed1b800f2e5768b"
+    },
+    {
+      "file": "test_m9_variants_retain_public3-read_validation.zip",
+      "bytes": 5526,
+      "sha256": "955cbc0cf5e186f7b3410f10c184e78b1bff3f4ee919f4688387e1e981df604b"
+    },
+    {
+      "file": "test_m9_variants_retain_public30-duplicate.zip",
+      "bytes": 12983,
+      "sha256": "5148c74c13b121a48a797134307e676bef172317626503a1ad91ffbab5795faa"
+    },
+    {
+      "file": "test_m9_variants_retain_public31-duplicate.zip",
+      "bytes": 13050,
+      "sha256": "c99ac42ec846e0311f572f24c9d2ac51e09643d56301299b5d90fc29eed7549f"
+    },
+    {
+      "file": "test_m9_variants_retain_public4-forge_receipt.zip",
+      "bytes": 5489,
+      "sha256": "3808965ad47dae32c875d597ac363a0594440ac2ca113e643a3dbc58c2c83099"
+    },
+    {
+      "file": "test_m9_variants_retain_public5-forge_receipt.zip",
+      "bytes": 5508,
+      "sha256": "33908322e9c6e7b3e7b78c3d394dedd3db3ddcffc398fc975c3c7bc834169405"
+    },
+    {
+      "file": "test_m9_variants_retain_public6-self_activate.zip",
+      "bytes": 9887,
+      "sha256": "de033d917bc82f7964fb53f0a603664810cee87bab00bd4a0ff65413fa54b785"
+    },
+    {
+      "file": "test_m9_variants_retain_public7-self_activate.zip",
+      "bytes": 9931,
+      "sha256": "5de1843203d71024159e5bb57bba22314e17ff2d539f3bf12878ab1261787bf2"
+    },
+    {
+      "file": "test_m9_variants_retain_public8-fixed.zip",
+      "bytes": 4885,
+      "sha256": "4a87bf5e66467e1cc8b075d267675febe58b0fc278015d77c5f3b504f5079ddc"
+    },
+    {
+      "file": "test_m9_variants_retain_public9-fixed.zip",
+      "bytes": 4893,
+      "sha256": "7cfe34732ccb67561f129f27cf8efe1140722b295f89471e42dd9247cf003fec"
+    },
+    {
+      "file": "test_throwing_first_callback_k0-run.zip",
+      "bytes": 3305,
+      "sha256": "0cc3fadbed93a1eab4b6be5b3e1246af4f5964911ac829a0b40b135898209dae"
+    }
+  ],
+  "specimens": [
+    {
+      "file": "test_actual_offline_scenario_o0-run.zip",
+      "bytes": 9871,
+      "sha256": "719725c74686e7eda3eb90ebb02bc556b1a45ba33990afa65a93e41907562b08",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_actual_offline_scenario_o0\\run",
+      "status": "succeeded",
+      "descriptors": 10,
+      "experiment_id": "Q6.1",
+      "variant": "self_activate",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 10,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "active.json": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "active.json.sha256": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "runtime.sqlite": "73379c7ab414ca286d8c8817c2eab850a7232846f36b669ebb8be4a4b380acb0",
+        "scenario-artifacts.jsonl": "1471b3203467119b897f2713dc936b031a4b66a0df1559a4ee4dade5f4fd7162",
+        "scenario-artifacts.jsonl.seal.json": "78fb988a78096e3a7cd7e95bdbe12fe6663369a8b5c3224093754b3d9b66d899",
+        "scenario-blobs/0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "scenario-blobs/3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "scenario-blobs/5e4a86d19a0428f2af1cb9001658f14629d53ef66e14dbe18da7cf7001afe770": "5e4a86d19a0428f2af1cb9001658f14629d53ef66e14dbe18da7cf7001afe770",
+        "scenario-blobs/73379c7ab414ca286d8c8817c2eab850a7232846f36b669ebb8be4a4b380acb0": "73379c7ab414ca286d8c8817c2eab850a7232846f36b669ebb8be4a4b380acb0",
+        "scenario-closure.json": "79e267f7585cfc5bd5112cd58fac66e47d03f82dba74efb9f4d6963dd5b1387a",
+        "scenario-file-manifest.json": "19a799b1e1d830068441cb0787890dfd8ae31b4c748f6113cf6560704ee5736b",
+        "scenario-result.json": "5e4a86d19a0428f2af1cb9001658f14629d53ef66e14dbe18da7cf7001afe770",
+        "scenario-terminal.json": "acb8dbb7498ec5b539f0e799adcffe7ceb1daf78eb23aedec00a37b7780255ca"
+      }
+    },
+    {
+      "file": "test_actual_offline_scenario_o1-run.zip",
+      "bytes": 7967,
+      "sha256": "72ac0eeb8a65f81853798babab71e400e0fd3bca8ae1afef956c0ca991216612",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_actual_offline_scenario_o1\\run",
+      "status": "succeeded",
+      "descriptors": 8,
+      "experiment_id": "Q6.2",
+      "variant": "automatic_train",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 8,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "optimizer.sqlite": "ecf3689ebf98dd5f5b8ed9b71a12416d6caad25f791ebca732ad690b51a1c771",
+        "scenario-artifacts.jsonl": "9655751b0f4f6d5aa8b7cd2d6c5fb49f9305ef52084f5dc328394350c1d54704",
+        "scenario-artifacts.jsonl.seal.json": "dfb8d8325777ac2215764bde17cbae2524facceb632d6be8a3c64be8aacc1890",
+        "scenario-blobs/9577d51547cd9c854fc15fb4a14dd99ed7f9cc39070907d9b5ce27b94ff706d0": "9577d51547cd9c854fc15fb4a14dd99ed7f9cc39070907d9b5ce27b94ff706d0",
+        "scenario-blobs/ecf3689ebf98dd5f5b8ed9b71a12416d6caad25f791ebca732ad690b51a1c771": "ecf3689ebf98dd5f5b8ed9b71a12416d6caad25f791ebca732ad690b51a1c771",
+        "scenario-closure.json": "11ea590a579462786ad9a32aba35ce9268cb99550635dc1a3a836b0d17ab3adc",
+        "scenario-file-manifest.json": "afa4d157f61b37d86ef1316c9500193b5c5cb47ffee2587952971d363a564553",
+        "scenario-result.json": "9577d51547cd9c854fc15fb4a14dd99ed7f9cc39070907d9b5ce27b94ff706d0",
+        "scenario-terminal.json": "0d7218bcda47f9a86a190ac28c76ede59e8554e1eac6bfcf3243fba2f3d7e86d"
+      }
+    },
+    {
+      "file": "test_actual_offline_scenario_o2-run.zip",
+      "bytes": 13939,
+      "sha256": "d8b7d082a37b31cf801f0fd34e96962097e149293de7d794b50a4dea0c97827b",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_actual_offline_scenario_o2\\run",
+      "status": "succeeded",
+      "descriptors": 14,
+      "experiment_id": "Q6.5",
+      "variant": "unprotected",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 14,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "cc162826ea14c55831fc2f1cd74390b3c296b19a21046004531d93bcbc59f21a",
+        "scenario-artifacts.jsonl.seal.json": "e7c5ab0fa76148e5a4089592d19163cba0c8983e4301b7f9c9868d1dd5d8f5a2",
+        "scenario-blobs/1da11d810e1d6a6050351df9e211ff8d61f059e6d08f8172e82dded5c32bbd9b": "1da11d810e1d6a6050351df9e211ff8d61f059e6d08f8172e82dded5c32bbd9b",
+        "scenario-blobs/46fe9fbb9ab1b159655b22d9be65b17ec66441aee31d5b455f528b7caaec08a0": "46fe9fbb9ab1b159655b22d9be65b17ec66441aee31d5b455f528b7caaec08a0",
+        "scenario-blobs/d391cb08844fa707694ec2359f4bc2fcdbcb97e157fdf9c1eed87036060ecf3c": "d391cb08844fa707694ec2359f4bc2fcdbcb97e157fdf9c1eed87036060ecf3c",
+        "scenario-blobs/e335b913853b80dc1c575470a85b29de39a2ac0045bb4d4358f760296f1fbdac": "e335b913853b80dc1c575470a85b29de39a2ac0045bb4d4358f760296f1fbdac",
+        "scenario-blobs/effe8c498760d82c6bd25c6b287771322ab273873f05139e78ec95ba16a4d0e2": "effe8c498760d82c6bd25c6b287771322ab273873f05139e78ec95ba16a4d0e2",
+        "scenario-blobs/fef2af0080cb21e47aafc6095066705e4ed483219d40fe3838a56a26bc1e085a": "fef2af0080cb21e47aafc6095066705e4ed483219d40fe3838a56a26bc1e085a",
+        "scenario-closure.json": "050ea96f0ae9ce6a3ad1dbb585319ab8cd41ec3a51b72a19fa7fa1bed0203606",
+        "scenario-file-manifest.json": "11bb27bba65e0040c3df9bbf732346e324c2c7e2f8b53f258d593984346f69fd",
+        "scenario-result.json": "e335b913853b80dc1c575470a85b29de39a2ac0045bb4d4358f760296f1fbdac",
+        "scenario-terminal.json": "585e404f428fbdfa747d80dd97afd6f47f0c3fa53d613839643d021905ecb755",
+        "shadow-deployment.json": "fef2af0080cb21e47aafc6095066705e4ed483219d40fe3838a56a26bc1e085a",
+        "shadow-deployment.json.previous": "effe8c498760d82c6bd25c6b287771322ab273873f05139e78ec95ba16a4d0e2",
+        "shadow-deployment.json.previous.sha256": "46fe9fbb9ab1b159655b22d9be65b17ec66441aee31d5b455f528b7caaec08a0",
+        "shadow-deployment.json.sha256": "d391cb08844fa707694ec2359f4bc2fcdbcb97e157fdf9c1eed87036060ecf3c",
+        "shadow-runtime.sqlite": "1da11d810e1d6a6050351df9e211ff8d61f059e6d08f8172e82dded5c32bbd9b"
+      }
+    },
+    {
+      "file": "test_actual_offline_scenario_o3-run.zip",
+      "bytes": 12918,
+      "sha256": "3f0b1f6411c6cefef6d9b329229a932da4dcddf8dc4c6c92048099ee5c2e240d",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_actual_offline_scenario_o3\\run",
+      "status": "succeeded",
+      "descriptors": 12,
+      "experiment_id": "Q6.6",
+      "variant": "rollback",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 12,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "deployment.json": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "deployment.json.previous": "9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0",
+        "deployment.json.previous.sha256": "cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a",
+        "deployment.json.sha256": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "runtime.sqlite": "efc30e3577896e2d2b7fe5caa4e1ccae9871a753529ec494c618a0dd1ca72064",
+        "scenario-artifacts.jsonl": "ce3fd433597e1c0c42f81c9b580d1c2ca8c5138e80992d54e4a943013fbf2876",
+        "scenario-artifacts.jsonl.seal.json": "d14ea29930f07ce42cea4503573ddd7efec615dbd8fd2fc54ed0372c8317dfa1",
+        "scenario-blobs/0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "scenario-blobs/153a75f11e8c3bf505bff5f229b02e749e1f1940cf3e7393f01c26d5dcaa6312": "153a75f11e8c3bf505bff5f229b02e749e1f1940cf3e7393f01c26d5dcaa6312",
+        "scenario-blobs/3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "scenario-blobs/9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0": "9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0",
+        "scenario-blobs/cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a": "cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a",
+        "scenario-blobs/efc30e3577896e2d2b7fe5caa4e1ccae9871a753529ec494c618a0dd1ca72064": "efc30e3577896e2d2b7fe5caa4e1ccae9871a753529ec494c618a0dd1ca72064",
+        "scenario-closure.json": "118dfc6b7cf1377c967368cae35c89ecc15a210f87eb390e1dfa227dd9ced3a1",
+        "scenario-file-manifest.json": "bfb82435d2f835fe7ee27915f538c9ff73eab9e60e84773fe6c779b5a9c17299",
+        "scenario-result.json": "153a75f11e8c3bf505bff5f229b02e749e1f1940cf3e7393f01c26d5dcaa6312",
+        "scenario-terminal.json": "324724b9b007d555295241e365120b4ab8686ee390c54281d88f7fdd26e9af4d"
+      }
+    },
+    {
+      "file": "test_actual_return_gate_requir0-run.zip",
+      "bytes": 4444,
+      "sha256": "5273074bc34b5f609f1e4085e18c7e9bb6c12cf07313acd0a904037527896e4a",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_actual_return_gate_requir0\\run",
+      "status": "incomplete",
+      "descriptors": 5,
+      "experiment_id": "Q6.2",
+      "variant": "fixed",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "reader_rejected_incomplete": true,
+        "storage_integrity_verified": false,
+        "stage_semantics_verified": false,
+        "acceptance_eligible": false
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "6f7087a14b7b6d1d0d68f528f6fcda36822a8e85f18a97b217835b51d67494bb",
+        "scenario-artifacts.jsonl.seal.json": "1b83f644079f55c34f7a3075be8b017370485176e685775aa225d15e55c66f36",
+        "scenario-blobs/3727623b638dde45ca44e393307e50f2e6111603099d83780949f1b78e84271d": "3727623b638dde45ca44e393307e50f2e6111603099d83780949f1b78e84271d",
+        "scenario-file-manifest.json": "c907da5e8b06a94d12708b85f83c7aa2244b9e43a0d5755faad72e914212b16e",
+        "scenario-result.json": "3727623b638dde45ca44e393307e50f2e6111603099d83780949f1b78e84271d",
+        "scenario-terminal.json": "c3286b9451d45f246d13067b5cbbb4df3f71c9f34bef9c765b1c1086875249db"
+      }
+    },
+    {
+      "file": "test_callback_link_preserves_o0-run.zip",
+      "bytes": 1588,
+      "sha256": "790846bdedfaf2f6a99fa527dc556385314d840181658a3bf6d77f48b6cbad71",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_callback_link_preserves_o0\\run",
+      "status": "incomplete",
+      "descriptors": 3,
+      "experiment_id": "Q6.1",
+      "variant": "change_rule",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "reader_rejected_incomplete": true,
+        "storage_integrity_verified": false,
+        "stage_semantics_verified": false,
+        "acceptance_eligible": false
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "07a0bc6de3ad99a1a11ddf5e7095448746a6f5db74b5038f0e28916fed1c0de1"
+      }
+    },
+    {
+      "file": "test_callback_subclass_is_reje0-run.zip",
+      "bytes": 3328,
+      "sha256": "8c090040fb9eb8c330dc63b9132e67ad9413e818d29cc1762342f0889da5fef0",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_callback_subclass_is_reje0\\run",
+      "status": "failed",
+      "descriptors": 5,
+      "experiment_id": "Q6.1",
+      "variant": "change_rule",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "acceptance_eligible": false,
+        "descriptor_count": 5,
+        "error": "improvement callback must return FrozenRecord",
+        "error_type": "ContractError",
+        "files": {},
+        "schema": "m9-scenario-failure-storage-v1",
+        "scientific_validated": false,
+        "stage": "callback",
+        "stage_semantics_verified": false,
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "3df2aef286f176ac713940d9425f4698295cbbb41e487f30f57385d938c1cde6",
+        "scenario-artifacts.jsonl.seal.json": "4e6e6fc4d0cddbaae3a4b38c150088c6f8faff56090fddeb44aee5f2761ed1f8",
+        "scenario-closure.json": "9011ae78a894a60864cec9b6feebf173d940b3937c7198482f559a12fd5bd16e",
+        "scenario-file-manifest.json": "8616833ee47c6a10f08f0acad6d83eb2a9c8598417b85f7b6f9fe927d3ed2ba4",
+        "scenario-terminal.json": "50c81c4f263f9fb0f94bc24a7365bc36c8f4a9060dfabcc867f7606ad1df9c7c"
+      }
+    },
+    {
+      "file": "test_failed_callback_keeps_sea0-run.zip",
+      "bytes": 8235,
+      "sha256": "c210f20a9272458cb559c435e58a778f48d4547003b0e9bf66fd75f6bf2c4ddc",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_failed_callback_keeps_sea0\\run",
+      "status": "failed",
+      "descriptors": 10,
+      "experiment_id": "Q6.5",
+      "variant": "sealed_calibrated",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "acceptance_eligible": false,
+        "descriptor_count": 10,
+        "error": "fixture callback stopped",
+        "error_type": "ContractError",
+        "files": {
+          "shadow-deployment.json": {
+            "bytes": 613,
+            "sha256": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2"
+          },
+          "shadow-deployment.json.sha256": {
+            "bytes": 65,
+            "sha256": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2"
+          },
+          "shadow-runtime.sqlite": {
+            "bytes": 24576,
+            "sha256": "73379c7ab414ca286d8c8817c2eab850a7232846f36b669ebb8be4a4b380acb0"
+          }
+        },
+        "schema": "m9-scenario-failure-storage-v1",
+        "scientific_validated": false,
+        "stage": "callback",
+        "stage_semantics_verified": false,
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "71f4772613fbf46ede57124dc43ed79f79a0ae7887ac61a2d529fdcb2d1261d9",
+        "scenario-artifacts.jsonl.seal.json": "966e19a1f201870763d5c3d249764605a721680f7128220edbf8258aeddfbe1d",
+        "scenario-blobs/0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "scenario-blobs/3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "scenario-blobs/73379c7ab414ca286d8c8817c2eab850a7232846f36b669ebb8be4a4b380acb0": "73379c7ab414ca286d8c8817c2eab850a7232846f36b669ebb8be4a4b380acb0",
+        "scenario-closure.json": "82c75379fa6a27260a5399a6161ef22c98069a0aa45e72ec112b44ba73a24643",
+        "scenario-file-manifest.json": "34b2ed49e98a8c2203b0e5b3c14f99edd57543b341063d0ab4a79c9fabe42c69",
+        "scenario-terminal.json": "03e16bbfb319ed7a88a5fe19369c4001f42b0444d9c573a6beafc711b6a6c867",
+        "shadow-deployment.json": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "shadow-deployment.json.sha256": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "shadow-runtime.sqlite": "73379c7ab414ca286d8c8817c2eab850a7232846f36b669ebb8be4a4b380acb0"
+      }
+    },
+    {
+      "file": "test_failed_malformed_runtime_0-run.zip",
+      "bytes": 6828,
+      "sha256": "e67c10330d1c524dd9280b55d3ff76477e9f028e69c703eb8e18097d2dd383a1",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_failed_malformed_runtime_0\\run",
+      "status": "failed",
+      "descriptors": 10,
+      "experiment_id": "Q6.5",
+      "variant": "sealed_calibrated",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "acceptance_eligible": false,
+        "descriptor_count": 10,
+        "error": "stop after malformed sidecar",
+        "error_type": "RuntimeError",
+        "files": {
+          "shadow-deployment.json": {
+            "bytes": 613,
+            "sha256": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2"
+          },
+          "shadow-deployment.json.sha256": {
+            "bytes": 65,
+            "sha256": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2"
+          },
+          "shadow-runtime.sqlite": {
+            "bytes": 20,
+            "sha256": "6e9de3f733e8318811ba7705515fae47ec4eb73a5649664efed8e82761a601f3"
+          }
+        },
+        "schema": "m9-scenario-failure-storage-v1",
+        "scientific_validated": false,
+        "stage": "callback",
+        "stage_semantics_verified": false,
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "00930993c338a34c9ddf3a293a43ad9851d459972c432ed59a537aaa61c254cf",
+        "scenario-artifacts.jsonl.seal.json": "6702c455abf8c1384a2aa3cef70771923c936c312da680057e905a681dfcd6a7",
+        "scenario-blobs/0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "scenario-blobs/3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "scenario-blobs/6e9de3f733e8318811ba7705515fae47ec4eb73a5649664efed8e82761a601f3": "6e9de3f733e8318811ba7705515fae47ec4eb73a5649664efed8e82761a601f3",
+        "scenario-closure.json": "005c054521fe60dabc6c8e29f373ae97f952a20f0c89631a04c9f836228d66bd",
+        "scenario-file-manifest.json": "20dfdc97a3721e7215e3c917179607868674da839b4c9e341b6e2f354d9f7b6c",
+        "scenario-terminal.json": "59d86600c18b5682d7c86b6a3102ea74e4047357ba451e8bbfdf470843203caf",
+        "shadow-deployment.json": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "shadow-deployment.json.sha256": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "shadow-runtime.sqlite": "6e9de3f733e8318811ba7705515fae47ec4eb73a5649664efed8e82761a601f3"
+      }
+    },
+    {
+      "file": "test_first_callback_opportunit0-run.zip",
+      "bytes": 3325,
+      "sha256": "8464361d458dc07c0f419c0cb510217533e69ae22238b8436c6cbc466ce5e646",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_first_callback_opportunit0\\run",
+      "status": "failed",
+      "descriptors": 5,
+      "experiment_id": "Q6.1",
+      "variant": "change_rule",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "acceptance_eligible": false,
+        "descriptor_count": 5,
+        "error": "improvement callback must return FrozenRecord",
+        "error_type": "ContractError",
+        "files": {},
+        "schema": "m9-scenario-failure-storage-v1",
+        "scientific_validated": false,
+        "stage": "callback",
+        "stage_semantics_verified": false,
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "974aa5139c2c42ff273aec0669d83124c4b65ab9bbc8f1e898dcf2599393a5f5",
+        "scenario-artifacts.jsonl.seal.json": "b6a11288afcf45f1fe150494558e77867e5f4e3637d714d2eb4394ea5bdf4561",
+        "scenario-closure.json": "c534729e2c579966a2dbbb73c0b6c5c8b2aa8c7b1727489a8c02020b01c65672",
+        "scenario-file-manifest.json": "8616833ee47c6a10f08f0acad6d83eb2a9c8598417b85f7b6f9fe927d3ed2ba4",
+        "scenario-terminal.json": "50c81c4f263f9fb0f94bc24a7365bc36c8f4a9060dfabcc867f7606ad1df9c7c"
+      }
+    },
+    {
+      "file": "test_first_callback_opportunit1-run.zip",
+      "bytes": 3321,
+      "sha256": "0e8e8f4effe66083f1d1878580686c80a86563de3bb261ec11a82d4d7a8edda7",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_first_callback_opportunit1\\run",
+      "status": "failed",
+      "descriptors": 5,
+      "experiment_id": "Q6.1",
+      "variant": "change_rule",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "acceptance_eligible": false,
+        "descriptor_count": 5,
+        "error": "improvement callback must return FrozenRecord",
+        "error_type": "ContractError",
+        "files": {},
+        "schema": "m9-scenario-failure-storage-v1",
+        "scientific_validated": false,
+        "stage": "callback",
+        "stage_semantics_verified": false,
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "e6b0187c505be467e9b1a4082b040e92c6d5479683c917115992b31aac845f1b",
+        "scenario-artifacts.jsonl.seal.json": "77ece9ff64d60898c825b783d20213ea6f6457ba3bd4cf465a87163413a76d0f",
+        "scenario-closure.json": "c361261fb94c56cbd254e72beec22f2e260a76ed0ff42eba468b813cc4721565",
+        "scenario-file-manifest.json": "8616833ee47c6a10f08f0acad6d83eb2a9c8598417b85f7b6f9fe927d3ed2ba4",
+        "scenario-terminal.json": "50c81c4f263f9fb0f94bc24a7365bc36c8f4a9060dfabcc867f7606ad1df9c7c"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public0-change_rule.zip",
+      "bytes": 5518,
+      "sha256": "285b735c56906fc66444f0e35fa6bdc2258a58d5eb0c89552acd0d8f102b0d5f",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public0\\Q6.1\\change_rule",
+      "status": "succeeded",
+      "descriptors": 7,
+      "experiment_id": "Q6.1",
+      "variant": "change_rule",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 7,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "380e4746d47a405c9476d85d13127b7caa8465485e96a4d59b147375f3c2aae2",
+        "scenario-artifacts.jsonl.seal.json": "e45affc152e5d0d9eda05d0e4ad9e0ffecdf150192c0ff22f79d03a2b652ed3f",
+        "scenario-blobs/67ce202a3a4f8765bc913205792b83f64f9f12a47a8083d1b935477281e85c94": "67ce202a3a4f8765bc913205792b83f64f9f12a47a8083d1b935477281e85c94",
+        "scenario-closure.json": "1e0a564002a53e0bd2f03acfb4d120e12df4ab509aa41dc6e1545514aed27915",
+        "scenario-file-manifest.json": "13265ed686ad7a4877490e7d155bcc6bb605ce7fefdb954cffe5659bbcc7cc37",
+        "scenario-result.json": "67ce202a3a4f8765bc913205792b83f64f9f12a47a8083d1b935477281e85c94",
+        "scenario-terminal.json": "b1aec41f5986555ba2c8dfc573675c81af1e499f1473a76c1a2f5e8145ffd233"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public1-change_rule.zip",
+      "bytes": 5538,
+      "sha256": "f2af493f4882cbda26e20f5f8ab643c6b6f9e754deb766b6cf768330c37f7019",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public1\\Q6.1\\change_rule",
+      "status": "succeeded",
+      "descriptors": 7,
+      "experiment_id": "Q6.1",
+      "variant": "change_rule",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 7,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "b1185c9a6edd16ce64579662a5b690a98ccd18fcb6f6c9a5d23021b01e4dd2c5",
+        "scenario-artifacts.jsonl.seal.json": "3bcd38a5aa8b1908e36c0c41417aa3aa4b5f9d256372ad4102b0dd4777720359",
+        "scenario-blobs/f249dab14f1012dd8c9630551428ee7715e3d1fda6d308632de9b9313e918ef9": "f249dab14f1012dd8c9630551428ee7715e3d1fda6d308632de9b9313e918ef9",
+        "scenario-closure.json": "e77d71e927ebd9786a54ac43c726a54b97675f66fbabdffec70a3a42c00807f4",
+        "scenario-file-manifest.json": "2d1394ae8e55e21ced984f8a3e6d52b8721855d72dff719afdde974e13442bf4",
+        "scenario-result.json": "f249dab14f1012dd8c9630551428ee7715e3d1fda6d308632de9b9313e918ef9",
+        "scenario-terminal.json": "7914e1ca99d5957abb5c97b69904e8ab65ab99a846d775a1c8d54ac934c1e53f"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public10-manual_train.zip",
+      "bytes": 8024,
+      "sha256": "6d362e65d76571fd02c673cdaa4a34e201e3b438119459cf14cdb6cec1aa0427",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public10\\Q6.2\\manual_train",
+      "status": "succeeded",
+      "descriptors": 8,
+      "experiment_id": "Q6.2",
+      "variant": "manual_train",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 8,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "optimizer.sqlite": "75aef16046d3bfaa10448f7c4d722ace30810e98a2d07c313d3696cd018b6af5",
+        "scenario-artifacts.jsonl": "9b7cc37ebb215f99911fec51f8b6d178a255276e8f7a17c40d45c2ff182eaf57",
+        "scenario-artifacts.jsonl.seal.json": "62f1a4ad1be8eec3b726e333b90b72856b396dc45f67c9ed7eb6ba9c56f56832",
+        "scenario-blobs/00e9b9b7ad5bd50b418587d213554d8ca5da45494444b6f399cb2b8773dbfa5a": "00e9b9b7ad5bd50b418587d213554d8ca5da45494444b6f399cb2b8773dbfa5a",
+        "scenario-blobs/75aef16046d3bfaa10448f7c4d722ace30810e98a2d07c313d3696cd018b6af5": "75aef16046d3bfaa10448f7c4d722ace30810e98a2d07c313d3696cd018b6af5",
+        "scenario-closure.json": "c67c41c2219e404b2f910752bedec56fb5dd88165cb82e025ed5ca672ed2cc74",
+        "scenario-file-manifest.json": "66763c6e176be445d60d79e5a8b4fb5e764dc98d77ea9fbf0e93f2bd2f0f5956",
+        "scenario-result.json": "00e9b9b7ad5bd50b418587d213554d8ca5da45494444b6f399cb2b8773dbfa5a",
+        "scenario-terminal.json": "2e40084024b40bde40ac5c189484117576a823155b0c67f80f4f50310f86ef6b"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public11-manual_train.zip",
+      "bytes": 8051,
+      "sha256": "b07b4a75c886da58a0089d1f9a584a9ca3bc82b2cd3783fb5182e4b2d3790f42",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public11\\Q6.2\\manual_train",
+      "status": "succeeded",
+      "descriptors": 8,
+      "experiment_id": "Q6.2",
+      "variant": "manual_train",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 8,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "optimizer.sqlite": "e006283c6f3613b6f9c503aecd9a49fc31d35ec150c65458487a2c1cc99aef25",
+        "scenario-artifacts.jsonl": "903d9c3dab58c87d6aedcda41061d88876e503ac09ebe3b8546da2c441b11396",
+        "scenario-artifacts.jsonl.seal.json": "0cd5cbfa6f21358fc0c730faf7067baa50c4d7242bfae23a64c620d9262a4603",
+        "scenario-blobs/bb95ccd2ca829efd58563387bf1aa51b0daed616da4c8c2dcb608ad656628eb3": "bb95ccd2ca829efd58563387bf1aa51b0daed616da4c8c2dcb608ad656628eb3",
+        "scenario-blobs/e006283c6f3613b6f9c503aecd9a49fc31d35ec150c65458487a2c1cc99aef25": "e006283c6f3613b6f9c503aecd9a49fc31d35ec150c65458487a2c1cc99aef25",
+        "scenario-closure.json": "836a7627f8e03a3fc2d8cb16a095ccba2280f0f88c56c08f9a011c6865cac429",
+        "scenario-file-manifest.json": "5160d6a8be6d405b52421b9e963319309cfa5ffb206f8b55224fc5125f412f09",
+        "scenario-result.json": "bb95ccd2ca829efd58563387bf1aa51b0daed616da4c8c2dcb608ad656628eb3",
+        "scenario-terminal.json": "b17c4280b644e208def27e7253890f7628159e99995fe55c9c5949f7d06632b1"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public12-automatic_train.zip",
+      "bytes": 5584,
+      "sha256": "6bb3eb58249c177b69e3fd69a3ff68a49845246f05ca4a373d31f5e2a65f9120",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public12\\Q6.2\\automatic_train",
+      "status": "succeeded",
+      "descriptors": 7,
+      "experiment_id": "Q6.2",
+      "variant": "automatic_train",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 7,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "ef2c667d51bc467ce0fa959d6edcd4dc134291d10a4177c47dc6efabc8da11fa",
+        "scenario-artifacts.jsonl.seal.json": "4f9203a7b8e6d19ed12a43deff845c175effa0f12d1f706d73609ba470cd538d",
+        "scenario-blobs/c07c31ef58652808d204cfabe3cb9fc3d2be6ea91ee3705fd6ef4b1562290b6d": "c07c31ef58652808d204cfabe3cb9fc3d2be6ea91ee3705fd6ef4b1562290b6d",
+        "scenario-closure.json": "9c223675b57725c4f424f8be0ec63d375b900cfee47acd96d7873dc4b2b3dc25",
+        "scenario-file-manifest.json": "6ceaea73cf737660dd77c25e7c8dd69a0452ff2296051fa5fa1bf7c1916ace9f",
+        "scenario-result.json": "c07c31ef58652808d204cfabe3cb9fc3d2be6ea91ee3705fd6ef4b1562290b6d",
+        "scenario-terminal.json": "d8ab58acbbc67a8b0c66b2eaef9977d12c0b918d2b6d3a4869cf8ef4975f82ca"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public13-automatic_train.zip",
+      "bytes": 5602,
+      "sha256": "6819a3092908956b58221579a36f1d104b13f8bfa8e39efd2dd5be3f4b256045",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public13\\Q6.2\\automatic_train",
+      "status": "succeeded",
+      "descriptors": 7,
+      "experiment_id": "Q6.2",
+      "variant": "automatic_train",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 7,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "7b78b4878cfd297932ae2ec0e13fbacc431de857faf1a2dfd9744e03261a17a1",
+        "scenario-artifacts.jsonl.seal.json": "6a87cb8d9632db11cfecb0d163a62de23c2268f8ebc36a5f29ecfb837f941290",
+        "scenario-blobs/4d3f4ea7e549d7c54dda044de7a04623c3b577deb9e22fed144bcb889795bf38": "4d3f4ea7e549d7c54dda044de7a04623c3b577deb9e22fed144bcb889795bf38",
+        "scenario-closure.json": "6200a38badfad8adcddf09b905a83956b1fb922a1ef3ceb09747fc94b3b1cfff",
+        "scenario-file-manifest.json": "79d592b7e0a242f98395f67ea8f06d476c9cf1952e2eb7652247c72367b9b5d3",
+        "scenario-result.json": "4d3f4ea7e549d7c54dda044de7a04623c3b577deb9e22fed144bcb889795bf38",
+        "scenario-terminal.json": "3116c63fb961bfbf09cdd214e805dfed692767d21ddd9637cacbf779d5c16b5a"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public18-unprotected.zip",
+      "bytes": 13970,
+      "sha256": "d363bf4cff06a2166c42afefaef18bcf6cf1debec93ba347ce78961137c15c23",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public18\\Q6.5\\unprotected",
+      "status": "succeeded",
+      "descriptors": 14,
+      "experiment_id": "Q6.5",
+      "variant": "unprotected",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 14,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "b57969610b5d2b7f62ad53f4ae7ab9fbf4411d6ef880fe722e4b20c0acb77f2d",
+        "scenario-artifacts.jsonl.seal.json": "1786cf8b4dda0a28f635ef0bcfbcf55656820d40e97dc4335c1895c18b8dc94f",
+        "scenario-blobs/07c15a4230497e0a4c0b4d12da79495a86119a5ea43cfa001cc775631ec80847": "07c15a4230497e0a4c0b4d12da79495a86119a5ea43cfa001cc775631ec80847",
+        "scenario-blobs/09c34aafb5e5d83cef4bad3a98bba709358932245b00d378221dfaabe90845d2": "09c34aafb5e5d83cef4bad3a98bba709358932245b00d378221dfaabe90845d2",
+        "scenario-blobs/18fa9ff66e0a3be4243a174462458194822d764a9a5b4b0231dceafc1e85e1d8": "18fa9ff66e0a3be4243a174462458194822d764a9a5b4b0231dceafc1e85e1d8",
+        "scenario-blobs/5b9f8cda8a69588771f127085fd9d358ce5306ba5ab456ca313a82113ae73912": "5b9f8cda8a69588771f127085fd9d358ce5306ba5ab456ca313a82113ae73912",
+        "scenario-blobs/a3255a7972d7a0029df7c83c391b6536c07849de82f27c608b61b0c6439551bf": "a3255a7972d7a0029df7c83c391b6536c07849de82f27c608b61b0c6439551bf",
+        "scenario-blobs/ca511a770afc6db72bbd2d4dba628d67cd457364da56153b2be72ebf792fb2e8": "ca511a770afc6db72bbd2d4dba628d67cd457364da56153b2be72ebf792fb2e8",
+        "scenario-closure.json": "c303ff3fc793ba28b910a784e304fa8545dea462d2af8f7990bec0c01cdf560f",
+        "scenario-file-manifest.json": "769bedf71c40ee84aa986a0f5f7a5aedf1811f9cbbaa9e5339a91caa5b3cd4e3",
+        "scenario-result.json": "ca511a770afc6db72bbd2d4dba628d67cd457364da56153b2be72ebf792fb2e8",
+        "scenario-terminal.json": "adef37e42bd30136e10170568b2556f7952dcdb44426ba6248856ae64986b8ab",
+        "shadow-deployment.json": "18fa9ff66e0a3be4243a174462458194822d764a9a5b4b0231dceafc1e85e1d8",
+        "shadow-deployment.json.previous": "5b9f8cda8a69588771f127085fd9d358ce5306ba5ab456ca313a82113ae73912",
+        "shadow-deployment.json.previous.sha256": "07c15a4230497e0a4c0b4d12da79495a86119a5ea43cfa001cc775631ec80847",
+        "shadow-deployment.json.sha256": "a3255a7972d7a0029df7c83c391b6536c07849de82f27c608b61b0c6439551bf",
+        "shadow-runtime.sqlite": "09c34aafb5e5d83cef4bad3a98bba709358932245b00d378221dfaabe90845d2"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public19-unprotected.zip",
+      "bytes": 14015,
+      "sha256": "2bd8f05a3ce2510634f14a12a400a539d141227a2a22e3cd9b3b3377bcd0ad5c",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public19\\Q6.5\\unprotected",
+      "status": "succeeded",
+      "descriptors": 14,
+      "experiment_id": "Q6.5",
+      "variant": "unprotected",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 14,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "b75f7e13c195bd7ccf94da853853caa230d7d54dad5c0dd1a7156a7472bad767",
+        "scenario-artifacts.jsonl.seal.json": "3fb61425fb259329133f1583aab9c6672f5c45ef95e100a09b7460548582b6d3",
+        "scenario-blobs/5896f90ffd19e1b64144026c7896c255772afe2ecb4ac3bdf91b6a4a2cfe10c8": "5896f90ffd19e1b64144026c7896c255772afe2ecb4ac3bdf91b6a4a2cfe10c8",
+        "scenario-blobs/69d60a908da593de198dcb76d8ec2750b23314dc68017ac6c486516a995705b2": "69d60a908da593de198dcb76d8ec2750b23314dc68017ac6c486516a995705b2",
+        "scenario-blobs/7a053ed104e5ab42b6ca690eff22f609d740d2fbb8b8b242c18b30133ee5bc8b": "7a053ed104e5ab42b6ca690eff22f609d740d2fbb8b8b242c18b30133ee5bc8b",
+        "scenario-blobs/e8158eafc6e1e1be9fba4389b54eca396cb02e4bed0833a5172b3d56e302a50b": "e8158eafc6e1e1be9fba4389b54eca396cb02e4bed0833a5172b3d56e302a50b",
+        "scenario-blobs/ec995327c85e2e35dc58df6cd4c183f312050364572364035bcbc8f8ec2322f3": "ec995327c85e2e35dc58df6cd4c183f312050364572364035bcbc8f8ec2322f3",
+        "scenario-blobs/fd3b559f322b0fe246f014348c9909ca071d5c16fea21c145a4ebb608b270676": "fd3b559f322b0fe246f014348c9909ca071d5c16fea21c145a4ebb608b270676",
+        "scenario-closure.json": "773e95a9a215deaa77e200737c0c67f83463108e5ecdecd84674610e0b6dd420",
+        "scenario-file-manifest.json": "bd8189f6f93bd16348451be59c5263457b24aaac6e1bbb7d00a5dc7e7b3e5554",
+        "scenario-result.json": "fd3b559f322b0fe246f014348c9909ca071d5c16fea21c145a4ebb608b270676",
+        "scenario-terminal.json": "bbe70e0b1614835e527d1c8c7b5d7a69175860a803816f556a74bd5a248c4a92",
+        "shadow-deployment.json": "7a053ed104e5ab42b6ca690eff22f609d740d2fbb8b8b242c18b30133ee5bc8b",
+        "shadow-deployment.json.previous": "ec995327c85e2e35dc58df6cd4c183f312050364572364035bcbc8f8ec2322f3",
+        "shadow-deployment.json.previous.sha256": "5896f90ffd19e1b64144026c7896c255772afe2ecb4ac3bdf91b6a4a2cfe10c8",
+        "shadow-deployment.json.sha256": "e8158eafc6e1e1be9fba4389b54eca396cb02e4bed0833a5172b3d56e302a50b",
+        "shadow-runtime.sqlite": "69d60a908da593de198dcb76d8ec2750b23314dc68017ac6c486516a995705b2"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public2-read_validation.zip",
+      "bytes": 5509,
+      "sha256": "7e16e7a8d0c7a6f1c236c455f902fd47f0bea527c74ab235c0e05335991dd7d6",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public2\\Q6.1\\read_validation",
+      "status": "succeeded",
+      "descriptors": 7,
+      "experiment_id": "Q6.1",
+      "variant": "read_validation",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 7,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "e4320b98e08e071ca2bf9681b507c99b1334c55d138611dd0aa5e4568cc7d83d",
+        "scenario-artifacts.jsonl.seal.json": "93243bffd75aa59ef275a8c9bfd22ef84083b2700d5e5380ccb178f3dd2f4ed6",
+        "scenario-blobs/9f336cf265ae77f6d573c2a2e901f87592e2d42712b4a399a99bcde02ba37564": "9f336cf265ae77f6d573c2a2e901f87592e2d42712b4a399a99bcde02ba37564",
+        "scenario-closure.json": "7ceb87de30ace31348799839e46594b82db6a96416a640e16851ace9ca046a14",
+        "scenario-file-manifest.json": "f913c4f70b0af8297180815719f0f2e22aaae4159860d671ece14bf2bcc7485c",
+        "scenario-result.json": "9f336cf265ae77f6d573c2a2e901f87592e2d42712b4a399a99bcde02ba37564",
+        "scenario-terminal.json": "c9952f19591a0944a5968c7d9d528e9f398ef3272d4ace296f756ae800faa3b3"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public20-sealed_calibrated.zip",
+      "bytes": 10759,
+      "sha256": "a9a3e7f8d4419d0badc7d7fe6c733d722a4e197483b33a0a3d6983147becdc9e",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public20\\Q6.5\\sealed_calibrated",
+      "status": "succeeded",
+      "descriptors": 12,
+      "experiment_id": "Q6.5",
+      "variant": "sealed_calibrated",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 12,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "1ddbb8f91a6d765a198361fed2a0ac1607482542c58daa6acee51abb9e00f747",
+        "scenario-artifacts.jsonl.seal.json": "6348beb7f21a4d50a5fbc57e2772f57fe075ebb41981f70d0434d76787b414c5",
+        "scenario-blobs/0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "scenario-blobs/3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "scenario-blobs/73379c7ab414ca286d8c8817c2eab850a7232846f36b669ebb8be4a4b380acb0": "73379c7ab414ca286d8c8817c2eab850a7232846f36b669ebb8be4a4b380acb0",
+        "scenario-blobs/96f77fb08a25c652ff9c01ff81b9b0cf960dc9eb1529c6e23d4f415bc7de1f0b": "96f77fb08a25c652ff9c01ff81b9b0cf960dc9eb1529c6e23d4f415bc7de1f0b",
+        "scenario-closure.json": "d41f5ace2b048d76299c9f5bdc5e2d072738d51c5b4bb1c7fd8701f9cfe9cedb",
+        "scenario-file-manifest.json": "47371b72cb0b5e03ce6728e5105a48536a65cc8249354447d671a05424707628",
+        "scenario-result.json": "96f77fb08a25c652ff9c01ff81b9b0cf960dc9eb1529c6e23d4f415bc7de1f0b",
+        "scenario-terminal.json": "80ecd3948bca5c7e64e7bb6160f9c6e033952cae2da82ee27ed47a545e9250b7",
+        "shadow-deployment.json": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "shadow-deployment.json.sha256": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "shadow-runtime.sqlite": "73379c7ab414ca286d8c8817c2eab850a7232846f36b669ebb8be4a4b380acb0"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public21-sealed_calibrated.zip",
+      "bytes": 10798,
+      "sha256": "46af09207a7cf74f3eec5e5cc5cac76d00c0ee8c6da7aebde5da261daa35d526",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public21\\Q6.5\\sealed_calibrated",
+      "status": "succeeded",
+      "descriptors": 12,
+      "experiment_id": "Q6.5",
+      "variant": "sealed_calibrated",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 12,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "3ce406602254c3f68a7e2ffcadc7b3fe7ac11b2f063643a634164b71bea37775",
+        "scenario-artifacts.jsonl.seal.json": "8fa14ed05a789bdf6db10d82ff1c573683d7adaa39eb9205ad8b27e1bb801d31",
+        "scenario-blobs/390dfffcf97a8d470f364fe31a353598e167241cb39ebc6dba50b46741212f4a": "390dfffcf97a8d470f364fe31a353598e167241cb39ebc6dba50b46741212f4a",
+        "scenario-blobs/3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "scenario-blobs/b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "scenario-blobs/f8706d01d0d75d94ff02bec757fb16ec39573c99744ad5c85dd596b64e63eb8d": "f8706d01d0d75d94ff02bec757fb16ec39573c99744ad5c85dd596b64e63eb8d",
+        "scenario-closure.json": "5e092278afcb19396fa1c22b6ab24e7c2dfdc8c7b84ac424f1110e1f288fb4cd",
+        "scenario-file-manifest.json": "1a24b48d33fe00f6633355fced2c025956d5bee334349d97d4eba86b334ebb89",
+        "scenario-result.json": "f8706d01d0d75d94ff02bec757fb16ec39573c99744ad5c85dd596b64e63eb8d",
+        "scenario-terminal.json": "2e483822cba44d29f6680a09cde3f798163076f867ea5436df41575c9b775d9f",
+        "shadow-deployment.json": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "shadow-deployment.json.sha256": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "shadow-runtime.sqlite": "390dfffcf97a8d470f364fe31a353598e167241cb39ebc6dba50b46741212f4a"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public22-promote.zip",
+      "bytes": 12834,
+      "sha256": "85dbf4125401fc9e921ff47b6c9afa63b3fd06bb120f1fbb4042cf94d1ef1a4e",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public22\\Q6.6\\promote",
+      "status": "succeeded",
+      "descriptors": 12,
+      "experiment_id": "Q6.6",
+      "variant": "promote",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 12,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "deployment.json": "9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0",
+        "deployment.json.previous": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "deployment.json.previous.sha256": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "deployment.json.sha256": "cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a",
+        "runtime.sqlite": "602155a3f8cca759e9135c9db0e054bdaf90b88c251b3e2bb4238d1d7788959d",
+        "scenario-artifacts.jsonl": "3c90b6c1e1a6d7b65646f3efb3f0025a54ff428f39d572cff756e2800ad41a1d",
+        "scenario-artifacts.jsonl.seal.json": "b0ed7ee51eab3b93f024a6aed9f14fce12913b1795561739f36dd8cb7645da0d",
+        "scenario-blobs/0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "scenario-blobs/3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "scenario-blobs/602155a3f8cca759e9135c9db0e054bdaf90b88c251b3e2bb4238d1d7788959d": "602155a3f8cca759e9135c9db0e054bdaf90b88c251b3e2bb4238d1d7788959d",
+        "scenario-blobs/9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0": "9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0",
+        "scenario-blobs/c27ec8538baa4df7ebc1beee55a4726ece6309dbbfb9db41e0a32171062e7fee": "c27ec8538baa4df7ebc1beee55a4726ece6309dbbfb9db41e0a32171062e7fee",
+        "scenario-blobs/cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a": "cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a",
+        "scenario-closure.json": "13b7d14e6b9fa29b2e559b7438482e8f9a9b04b807dfb38d57f2196ed1899867",
+        "scenario-file-manifest.json": "11745b08c832873ca80a1822296649c80be95e2590aca7ec6ccf040816d2b716",
+        "scenario-result.json": "c27ec8538baa4df7ebc1beee55a4726ece6309dbbfb9db41e0a32171062e7fee",
+        "scenario-terminal.json": "b9d9d6c7cadf4e2e8fb640ac1e30b9ff2057e0e2e585fcffc14105d0cde0db67"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public23-promote.zip",
+      "bytes": 12899,
+      "sha256": "a8e549ace5b0e6a839a582b7a6eee4b9fc8e6a57f52367b72ef220dd39f2deb0",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public23\\Q6.6\\promote",
+      "status": "succeeded",
+      "descriptors": 12,
+      "experiment_id": "Q6.6",
+      "variant": "promote",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 12,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "deployment.json": "8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e",
+        "deployment.json.previous": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "deployment.json.previous.sha256": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "deployment.json.sha256": "c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d",
+        "runtime.sqlite": "e7bbd09a7b0e910506f21976ebe4a21d83e44853121bb03e2796beb21023a0c8",
+        "scenario-artifacts.jsonl": "c049796774114367c7ae369eb926eceac950361c7bfc820b8c1e41e63f28109a",
+        "scenario-artifacts.jsonl.seal.json": "b164ad6a5967fbde7cf1320be677948173cfe7c1eba896cb04366e56596d75a9",
+        "scenario-blobs/36ea90e59ecdc01060463278a4595b5d0a4ff87950ffd1bfd2dbc5ad5a07b27e": "36ea90e59ecdc01060463278a4595b5d0a4ff87950ffd1bfd2dbc5ad5a07b27e",
+        "scenario-blobs/3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "scenario-blobs/8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e": "8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e",
+        "scenario-blobs/b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "scenario-blobs/c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d": "c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d",
+        "scenario-blobs/e7bbd09a7b0e910506f21976ebe4a21d83e44853121bb03e2796beb21023a0c8": "e7bbd09a7b0e910506f21976ebe4a21d83e44853121bb03e2796beb21023a0c8",
+        "scenario-closure.json": "9d3f91998c06b423b99bc2bc77a548f52bf88d2e0eea24a4cd53629bb9fc6e3d",
+        "scenario-file-manifest.json": "3368162172a540f31997e6dee3ab5cf16766bee62e11736e3fd48e77d75f80fd",
+        "scenario-result.json": "36ea90e59ecdc01060463278a4595b5d0a4ff87950ffd1bfd2dbc5ad5a07b27e",
+        "scenario-terminal.json": "429c49ff61d19028cec120590503f1d35105c060bcc1975d6eb754eaec325264"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public24-rollback.zip",
+      "bytes": 12938,
+      "sha256": "f9a3253040f901e0180c1d22f46569ae7349bf04580538fb8d019950e7db9b96",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public24\\Q6.6\\rollback",
+      "status": "succeeded",
+      "descriptors": 12,
+      "experiment_id": "Q6.6",
+      "variant": "rollback",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 12,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "deployment.json": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "deployment.json.previous": "9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0",
+        "deployment.json.previous.sha256": "cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a",
+        "deployment.json.sha256": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "runtime.sqlite": "efc30e3577896e2d2b7fe5caa4e1ccae9871a753529ec494c618a0dd1ca72064",
+        "scenario-artifacts.jsonl": "c7fec2a5f47231d538bb35a13a6e03985ff39b9d49ee744db15db42b1112f0f9",
+        "scenario-artifacts.jsonl.seal.json": "48eb201c45f673f504e7d81646e326b424b4a390efaf300a8440f12b84ec2b6a",
+        "scenario-blobs/0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "scenario-blobs/3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "scenario-blobs/9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0": "9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0",
+        "scenario-blobs/bd8d88b92f56e771ece2c27cfe0d98ecdaa0a6c10a920f59e7837644276d8030": "bd8d88b92f56e771ece2c27cfe0d98ecdaa0a6c10a920f59e7837644276d8030",
+        "scenario-blobs/cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a": "cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a",
+        "scenario-blobs/efc30e3577896e2d2b7fe5caa4e1ccae9871a753529ec494c618a0dd1ca72064": "efc30e3577896e2d2b7fe5caa4e1ccae9871a753529ec494c618a0dd1ca72064",
+        "scenario-closure.json": "36e617901074d099b7d5dbb36f708a77b2082b949a15f4d36ef1506c6aeaf783",
+        "scenario-file-manifest.json": "c2257d612fcece5a103bc9c75773d30a0e3bd19de4889497028f651cb1c10ff0",
+        "scenario-result.json": "bd8d88b92f56e771ece2c27cfe0d98ecdaa0a6c10a920f59e7837644276d8030",
+        "scenario-terminal.json": "85ad4f1c7859f2398c0894f93d6825e11dcc11db3bac7ded92f4764054da7960"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public25-rollback.zip",
+      "bytes": 12999,
+      "sha256": "3f14bd641d5a8e5f12143f7100460e19a35e4bca69402f1b91e31cbcc1ff3b80",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public25\\Q6.6\\rollback",
+      "status": "succeeded",
+      "descriptors": 12,
+      "experiment_id": "Q6.6",
+      "variant": "rollback",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 12,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "deployment.json": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "deployment.json.previous": "8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e",
+        "deployment.json.previous.sha256": "c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d",
+        "deployment.json.sha256": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "runtime.sqlite": "bc70e2ae06425e5395fadc950530d2305b748601756091838b9b8c65e4079d40",
+        "scenario-artifacts.jsonl": "1a57d34507ea30448e052ec995b5f4037559615e117c32834c3618db252ff11e",
+        "scenario-artifacts.jsonl.seal.json": "21553e2b51a4ef16951e4db050bc97f9d43cfdc064b8019c38d77d23e6ab8869",
+        "scenario-blobs/3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "scenario-blobs/8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e": "8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e",
+        "scenario-blobs/b90c396d86fd56ca499d021042684c6aaf8a53c7c41f32fb2ef6b04ace3b9e60": "b90c396d86fd56ca499d021042684c6aaf8a53c7c41f32fb2ef6b04ace3b9e60",
+        "scenario-blobs/b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "scenario-blobs/bc70e2ae06425e5395fadc950530d2305b748601756091838b9b8c65e4079d40": "bc70e2ae06425e5395fadc950530d2305b748601756091838b9b8c65e4079d40",
+        "scenario-blobs/c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d": "c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d",
+        "scenario-closure.json": "441b5af78a3feb6b35fc79a2175f815e8618dd4de2a5007c1f8ab3cadf2f2372",
+        "scenario-file-manifest.json": "5b4225f94a1e1c2d8efe31b6843f8883b61529edfb44dbf77d88d9afff5745ac",
+        "scenario-result.json": "b90c396d86fd56ca499d021042684c6aaf8a53c7c41f32fb2ef6b04ace3b9e60",
+        "scenario-terminal.json": "4ff9ea745156ddd51fc798f5286ec6f3453b7cb510bd02d2975f50c73d3f6a26"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public26-drift.zip",
+      "bytes": 12856,
+      "sha256": "998aef200b3e309c2af1f5bc0ebfbe9107647deb857d930909022f4b95022810",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public26\\Q6.6\\drift",
+      "status": "succeeded",
+      "descriptors": 12,
+      "experiment_id": "Q6.6",
+      "variant": "drift",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 12,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "deployment.json": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "deployment.json.previous": "9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0",
+        "deployment.json.previous.sha256": "cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a",
+        "deployment.json.sha256": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "runtime.sqlite": "602155a3f8cca759e9135c9db0e054bdaf90b88c251b3e2bb4238d1d7788959d",
+        "scenario-artifacts.jsonl": "b2a0af7b321b9d9c1ea592f3dad161319f48ca5814ff0f0d647fa9b081dd1cd0",
+        "scenario-artifacts.jsonl.seal.json": "f34144a96ac89a9e8b6d1d0cf23635d2e451113b8be3b0399fc2d465b8b94564",
+        "scenario-blobs/0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "scenario-blobs/3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "scenario-blobs/602155a3f8cca759e9135c9db0e054bdaf90b88c251b3e2bb4238d1d7788959d": "602155a3f8cca759e9135c9db0e054bdaf90b88c251b3e2bb4238d1d7788959d",
+        "scenario-blobs/9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0": "9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0",
+        "scenario-blobs/c529f390461ca15eb76dba918b3f51f0b28e6686d031264ec9c29914da3ac9bf": "c529f390461ca15eb76dba918b3f51f0b28e6686d031264ec9c29914da3ac9bf",
+        "scenario-blobs/cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a": "cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a",
+        "scenario-closure.json": "e392e2ad6092fdee7dfeca6a9687978fce416be79c4c24d79bb8c73dbff97f87",
+        "scenario-file-manifest.json": "35d3b57f411e6a56c94dee4f1534d63da71b1b98924db954d47418a93e548d16",
+        "scenario-result.json": "c529f390461ca15eb76dba918b3f51f0b28e6686d031264ec9c29914da3ac9bf",
+        "scenario-terminal.json": "6e2a6364995d3d29c7f560c658e1a8180ef5ce6a42c8f34ffaf73ada871c7201"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public27-drift.zip",
+      "bytes": 12928,
+      "sha256": "c91706f948123ce0ea66e6498125d91c9690485676ad4b813fe6110667532f87",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public27\\Q6.6\\drift",
+      "status": "succeeded",
+      "descriptors": 12,
+      "experiment_id": "Q6.6",
+      "variant": "drift",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 12,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "deployment.json": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "deployment.json.previous": "8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e",
+        "deployment.json.previous.sha256": "c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d",
+        "deployment.json.sha256": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "runtime.sqlite": "e7bbd09a7b0e910506f21976ebe4a21d83e44853121bb03e2796beb21023a0c8",
+        "scenario-artifacts.jsonl": "8b1ba6a2ad6cb217f99a5c01d24adbe5831d40a514cbcb9349f5db3ecc0e22d9",
+        "scenario-artifacts.jsonl.seal.json": "cba13f2604d98318bcac62593fb9a1ea2bd6338368d9efafbbafe5e0df19068e",
+        "scenario-blobs/3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "scenario-blobs/896b7897261db15d19f7dbb6d019be7bf255478a7647c1ea07976b009fd8697b": "896b7897261db15d19f7dbb6d019be7bf255478a7647c1ea07976b009fd8697b",
+        "scenario-blobs/8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e": "8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e",
+        "scenario-blobs/b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "scenario-blobs/c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d": "c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d",
+        "scenario-blobs/e7bbd09a7b0e910506f21976ebe4a21d83e44853121bb03e2796beb21023a0c8": "e7bbd09a7b0e910506f21976ebe4a21d83e44853121bb03e2796beb21023a0c8",
+        "scenario-closure.json": "4ede8a3fc47cc65afdcf2300067aa22941ffde12e4088b493f9c772727780860",
+        "scenario-file-manifest.json": "f32a2f78330c8af4144d06c22e7de39ee6002740be7f973687186c284dda5080",
+        "scenario-result.json": "896b7897261db15d19f7dbb6d019be7bf255478a7647c1ea07976b009fd8697b",
+        "scenario-terminal.json": "40fe2dc559cbefb118eb29b537216d72836cf8a604e6b8b558377698875030e2"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public28-offline.zip",
+      "bytes": 12871,
+      "sha256": "49d910f4de6395b2b6aa195c882a4713735da318b3e48de99b4301296a2fa8d8",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public28\\Q6.6\\offline",
+      "status": "succeeded",
+      "descriptors": 12,
+      "experiment_id": "Q6.6",
+      "variant": "offline",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 12,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "deployment.json": "9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0",
+        "deployment.json.previous": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "deployment.json.previous.sha256": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "deployment.json.sha256": "cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a",
+        "runtime.sqlite": "602155a3f8cca759e9135c9db0e054bdaf90b88c251b3e2bb4238d1d7788959d",
+        "scenario-artifacts.jsonl": "56ed5f492fc5f9361ec185ee094a6e67837096926d383867f82bbe4034669a17",
+        "scenario-artifacts.jsonl.seal.json": "6c4ac2b5be648b019ce95a68493e8d10f1990f7f65ae165b6f766bb596b9cbb3",
+        "scenario-blobs/0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "scenario-blobs/3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "scenario-blobs/602155a3f8cca759e9135c9db0e054bdaf90b88c251b3e2bb4238d1d7788959d": "602155a3f8cca759e9135c9db0e054bdaf90b88c251b3e2bb4238d1d7788959d",
+        "scenario-blobs/9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0": "9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0",
+        "scenario-blobs/cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a": "cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a",
+        "scenario-blobs/eb5cf6c67a5e0800fa280608ea76110e1728409be1d0caa0afee4a694fc810e4": "eb5cf6c67a5e0800fa280608ea76110e1728409be1d0caa0afee4a694fc810e4",
+        "scenario-closure.json": "91cf362c1c4994cca27ddffb4aa116abfd06fcf46faf7268d46af842b82ea880",
+        "scenario-file-manifest.json": "96ea18255f91ea7ea70d4baaf3fb1171782b942728e56c5d2e8579fe5e793390",
+        "scenario-result.json": "eb5cf6c67a5e0800fa280608ea76110e1728409be1d0caa0afee4a694fc810e4",
+        "scenario-terminal.json": "6dea24db37060a3aeb0af1fb91e532ad6989d0558edfbf53e2e03af2e2527082"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public29-offline.zip",
+      "bytes": 12932,
+      "sha256": "10eae32e93c908e4d199cb7601a303a7ac86222bf745fcdb0ed1b800f2e5768b",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public29\\Q6.6\\offline",
+      "status": "succeeded",
+      "descriptors": 12,
+      "experiment_id": "Q6.6",
+      "variant": "offline",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 12,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "deployment.json": "8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e",
+        "deployment.json.previous": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "deployment.json.previous.sha256": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "deployment.json.sha256": "c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d",
+        "runtime.sqlite": "e7bbd09a7b0e910506f21976ebe4a21d83e44853121bb03e2796beb21023a0c8",
+        "scenario-artifacts.jsonl": "bd67837ae209770837fdf6ea4e610e70328f9f1207c3a6798913eddbf3049ef1",
+        "scenario-artifacts.jsonl.seal.json": "3518002841618142bdd1d8b1118d90cb818d36e1cad21f79bf023b83ff71c15b",
+        "scenario-blobs/3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "scenario-blobs/71b7f1b76713bd27549fa54b85d1f2f6b85f10f866d6ea7323b82a6699b26342": "71b7f1b76713bd27549fa54b85d1f2f6b85f10f866d6ea7323b82a6699b26342",
+        "scenario-blobs/8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e": "8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e",
+        "scenario-blobs/b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "scenario-blobs/c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d": "c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d",
+        "scenario-blobs/e7bbd09a7b0e910506f21976ebe4a21d83e44853121bb03e2796beb21023a0c8": "e7bbd09a7b0e910506f21976ebe4a21d83e44853121bb03e2796beb21023a0c8",
+        "scenario-closure.json": "d551bcec570d35a394d32b44bb4cd6a8850424b09057afb0df687b5ad06c5d48",
+        "scenario-file-manifest.json": "176a4aa3eefb0858617572eb1d419680856da3373868e7beefc4bd66cba17500",
+        "scenario-result.json": "71b7f1b76713bd27549fa54b85d1f2f6b85f10f866d6ea7323b82a6699b26342",
+        "scenario-terminal.json": "ac9eee4e304cd1e977673d1c6a1e41148e48fb6a5494c4bcb29604bc1dfad036"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public3-read_validation.zip",
+      "bytes": 5526,
+      "sha256": "955cbc0cf5e186f7b3410f10c184e78b1bff3f4ee919f4688387e1e981df604b",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public3\\Q6.1\\read_validation",
+      "status": "succeeded",
+      "descriptors": 7,
+      "experiment_id": "Q6.1",
+      "variant": "read_validation",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 7,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "e127326e3d62def33f0289699d067329ec19ccdeb33d21f97382172bf889f339",
+        "scenario-artifacts.jsonl.seal.json": "d67d3f8bf667ab5aede08acf3abfa3cd6ff65973bdf77fff21d2d32c903ca9c9",
+        "scenario-blobs/4d59f0c44ed117f9b06e098874d85afcc32c962afdcc09f203ea85d073cf9456": "4d59f0c44ed117f9b06e098874d85afcc32c962afdcc09f203ea85d073cf9456",
+        "scenario-closure.json": "8c6903fd44cbc92aa91988deb1b80e66723a5d5d44ee450903dfa95233a38572",
+        "scenario-file-manifest.json": "76571fc5e5f68499704eff826f7aef99eca7c201af629096198cddb00cb2a05d",
+        "scenario-result.json": "4d59f0c44ed117f9b06e098874d85afcc32c962afdcc09f203ea85d073cf9456",
+        "scenario-terminal.json": "5eb4c9813e0d1e1df9a550620b024de39fa430f88ea2325eaf9c2bf7ab2166d3"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public30-duplicate.zip",
+      "bytes": 12983,
+      "sha256": "5148c74c13b121a48a797134307e676bef172317626503a1ad91ffbab5795faa",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public30\\Q6.6\\duplicate",
+      "status": "succeeded",
+      "descriptors": 12,
+      "experiment_id": "Q6.6",
+      "variant": "duplicate",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 12,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "deployment.json": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "deployment.json.previous": "9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0",
+        "deployment.json.previous.sha256": "cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a",
+        "deployment.json.sha256": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "runtime.sqlite": "efc30e3577896e2d2b7fe5caa4e1ccae9871a753529ec494c618a0dd1ca72064",
+        "scenario-artifacts.jsonl": "0ef1a778e84de16e214a36d2cf9be3c896e09b6c117807fe0404a902d1abb315",
+        "scenario-artifacts.jsonl.seal.json": "4a88f5356faa5c83bffe7e5430ee92c30b1939f01e7d6472e6858f4c43ed758b",
+        "scenario-blobs/0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "scenario-blobs/3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "scenario-blobs/9c7dcb4417f414c563d92ac1ce43ac9b0c6e239c29a734688c7d45ffba2c8d99": "9c7dcb4417f414c563d92ac1ce43ac9b0c6e239c29a734688c7d45ffba2c8d99",
+        "scenario-blobs/9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0": "9f6ab11f89d3497a4ed276c25859dc38a179f42c9da640308eab65d3eb5818e0",
+        "scenario-blobs/cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a": "cd2ca2569f417057d61b2a0f522bd03cc88601798e19572e00be29d76fb50c7a",
+        "scenario-blobs/efc30e3577896e2d2b7fe5caa4e1ccae9871a753529ec494c618a0dd1ca72064": "efc30e3577896e2d2b7fe5caa4e1ccae9871a753529ec494c618a0dd1ca72064",
+        "scenario-closure.json": "d6db321cc738671b6ca986095a4537ddb2cd35437b29dfeb07f9e02b8f9034de",
+        "scenario-file-manifest.json": "a7c58276160bee00f48e4dfe956730681520c4105101b9f5fdd616fa8e47f82a",
+        "scenario-result.json": "9c7dcb4417f414c563d92ac1ce43ac9b0c6e239c29a734688c7d45ffba2c8d99",
+        "scenario-terminal.json": "b99ed595783295ec99feafd818f1b96d144408550f0ab75e37f91904e2949ffd"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public31-duplicate.zip",
+      "bytes": 13050,
+      "sha256": "c99ac42ec846e0311f572f24c9d2ac51e09643d56301299b5d90fc29eed7549f",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public31\\Q6.6\\duplicate",
+      "status": "succeeded",
+      "descriptors": 12,
+      "experiment_id": "Q6.6",
+      "variant": "duplicate",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 12,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "deployment.json": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "deployment.json.previous": "8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e",
+        "deployment.json.previous.sha256": "c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d",
+        "deployment.json.sha256": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "runtime.sqlite": "bc70e2ae06425e5395fadc950530d2305b748601756091838b9b8c65e4079d40",
+        "scenario-artifacts.jsonl": "384418e1ac9b38ab4e187ae2dceb6e228723db8ac30eee398f3278924b31e0c2",
+        "scenario-artifacts.jsonl.seal.json": "1ba0f6d7de7b44376c3a99a1761affa25f8a9800ba4974b565fa5685689256cb",
+        "scenario-blobs/3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "scenario-blobs/8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e": "8f3f1b8c5abb8f0b00594d5b54d70bf6299b2afdf84d175956ed8c9e07a3e24e",
+        "scenario-blobs/b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "scenario-blobs/bc70e2ae06425e5395fadc950530d2305b748601756091838b9b8c65e4079d40": "bc70e2ae06425e5395fadc950530d2305b748601756091838b9b8c65e4079d40",
+        "scenario-blobs/c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d": "c4b2d7cfce34e03cd94e815fc4181489ef61fe587f0923ca371b7525058dd69d",
+        "scenario-blobs/f6991e2c921590cf0ba4d084de0c80841784b20aa1e6eb2ec5560f6abde3788e": "f6991e2c921590cf0ba4d084de0c80841784b20aa1e6eb2ec5560f6abde3788e",
+        "scenario-closure.json": "1350a79edcd6c9fe551cfff15fb249b9cd2fda7938994803ae35bfbd0ce2db37",
+        "scenario-file-manifest.json": "2bbc59a4d2ca470a74c906d5f19d431dd7f4246d3d5c2f89ad878c49889f7290",
+        "scenario-result.json": "f6991e2c921590cf0ba4d084de0c80841784b20aa1e6eb2ec5560f6abde3788e",
+        "scenario-terminal.json": "5eae0dad552854ec20a9873ec3bf320f92cab15b734ea0bd1845c31c0bdb9abc"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public4-forge_receipt.zip",
+      "bytes": 5489,
+      "sha256": "3808965ad47dae32c875d597ac363a0594440ac2ca113e643a3dbc58c2c83099",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public4\\Q6.1\\forge_receipt",
+      "status": "succeeded",
+      "descriptors": 7,
+      "experiment_id": "Q6.1",
+      "variant": "forge_receipt",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 7,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "966170c3187d4f255311f8ec36651a5dc0fb30e6edafa2e30b4c2df01dcafb43",
+        "scenario-artifacts.jsonl.seal.json": "a974fe693e32a8f02e05768c12baf6d3737811f3214d6f457a9104d9acd154a3",
+        "scenario-blobs/6f13a6aff5c6159604acea7a10658e37892d3273f132b02fead34be342328017": "6f13a6aff5c6159604acea7a10658e37892d3273f132b02fead34be342328017",
+        "scenario-closure.json": "00a11f309292986bb3e86027e09c18a372c295de62f47f81d926fd693bea0978",
+        "scenario-file-manifest.json": "6429d8fc4856294c7973395453a991192aa1fd2e1591690e06a7aa8cdfef6c19",
+        "scenario-result.json": "6f13a6aff5c6159604acea7a10658e37892d3273f132b02fead34be342328017",
+        "scenario-terminal.json": "4a158d3a327f5a20aa8191dd11d9bfe50486e3e29ead83a47d890582d34de09b"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public5-forge_receipt.zip",
+      "bytes": 5508,
+      "sha256": "33908322e9c6e7b3e7b78c3d394dedd3db3ddcffc398fc975c3c7bc834169405",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public5\\Q6.1\\forge_receipt",
+      "status": "succeeded",
+      "descriptors": 7,
+      "experiment_id": "Q6.1",
+      "variant": "forge_receipt",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 7,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "f7c65a9c5bfed87c9bd2906ae899b26be418c08e03f002a525a47561d7470d78",
+        "scenario-artifacts.jsonl.seal.json": "f571bc480fc9f8862b2e8718289dd42fc90bea836aa62944bf068748a603793e",
+        "scenario-blobs/7b0763c23355c205fa2db91b6362ecfab6bf82751f2d4befd859b458e7a01a75": "7b0763c23355c205fa2db91b6362ecfab6bf82751f2d4befd859b458e7a01a75",
+        "scenario-closure.json": "b7a0583a16556f89c149a1b5e3d3225ae68507883972963db87085378d4fb7fc",
+        "scenario-file-manifest.json": "7ddda55a22d863d15144e27218f58a8433a3a5893f7d39263b7ab350609ba812",
+        "scenario-result.json": "7b0763c23355c205fa2db91b6362ecfab6bf82751f2d4befd859b458e7a01a75",
+        "scenario-terminal.json": "bf52a574b3547704fe6175500bc80b30001620445dbde96ec57823713bea4618"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public6-self_activate.zip",
+      "bytes": 9887,
+      "sha256": "de033d917bc82f7964fb53f0a603664810cee87bab00bd4a0ff65413fa54b785",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public6\\Q6.1\\self_activate",
+      "status": "succeeded",
+      "descriptors": 10,
+      "experiment_id": "Q6.1",
+      "variant": "self_activate",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 10,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "active.json": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "active.json.sha256": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "runtime.sqlite": "73379c7ab414ca286d8c8817c2eab850a7232846f36b669ebb8be4a4b380acb0",
+        "scenario-artifacts.jsonl": "f99d2395c27e46010db71e31815e6451f0932259d09f966af1ad72ff3461b359",
+        "scenario-artifacts.jsonl.seal.json": "301c1182e0cef72ca85c73f87228a8218c3bc4b25ef1a5c6ac03f87b453e8d61",
+        "scenario-blobs/0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2": "0f9b4da3286a6db6b78ac899797845f71abcb6dfadc232a290012e655c974ed2",
+        "scenario-blobs/3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2": "3c7d47efa62c0f6e55afa547c65769e767624cba7bb6763b519e84295e9525c2",
+        "scenario-blobs/73379c7ab414ca286d8c8817c2eab850a7232846f36b669ebb8be4a4b380acb0": "73379c7ab414ca286d8c8817c2eab850a7232846f36b669ebb8be4a4b380acb0",
+        "scenario-blobs/e26f25feed78047f445bfba0e27225bf7ab6476860c6c3a06e0c5e978c8cb4fa": "e26f25feed78047f445bfba0e27225bf7ab6476860c6c3a06e0c5e978c8cb4fa",
+        "scenario-closure.json": "b45bbc1e12b0bd73695d21faf50069df460856bd3f45fb6a2e646f2b4b1bbf59",
+        "scenario-file-manifest.json": "aacef4ff1c7ce26378082c8c362c95be750500be86d12549dd364c13eb9124e2",
+        "scenario-result.json": "e26f25feed78047f445bfba0e27225bf7ab6476860c6c3a06e0c5e978c8cb4fa",
+        "scenario-terminal.json": "08eaefeaefc5c27ab263db3c1f1b7a4e1967528f31493960635a3f35a26a88ff"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public7-self_activate.zip",
+      "bytes": 9931,
+      "sha256": "5de1843203d71024159e5bb57bba22314e17ff2d539f3bf12878ab1261787bf2",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public7\\Q6.1\\self_activate",
+      "status": "succeeded",
+      "descriptors": 10,
+      "experiment_id": "Q6.1",
+      "variant": "self_activate",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 10,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "active.json": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "active.json.sha256": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "runtime.sqlite": "390dfffcf97a8d470f364fe31a353598e167241cb39ebc6dba50b46741212f4a",
+        "scenario-artifacts.jsonl": "c5dc4a12ba79e2770afc26eb7dd26703d9d688d81ccb86d5f1df0be0522754cc",
+        "scenario-artifacts.jsonl.seal.json": "b71aa9428cf0eb12eeeede9126beaa1aa510d14fa04a01c9dbfedb5f690e9618",
+        "scenario-blobs/2e34c73ab9cb7ae0b2f99af1caba62734a55c79306de81c467d9f6f68279ea58": "2e34c73ab9cb7ae0b2f99af1caba62734a55c79306de81c467d9f6f68279ea58",
+        "scenario-blobs/390dfffcf97a8d470f364fe31a353598e167241cb39ebc6dba50b46741212f4a": "390dfffcf97a8d470f364fe31a353598e167241cb39ebc6dba50b46741212f4a",
+        "scenario-blobs/3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189": "3fd9714967d72d8333f8494427eecd0dcadf7a2bebc1394846bbd5aad3e03189",
+        "scenario-blobs/b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717": "b94c1ce3b7e4dbde74a6294ddd04bcfea21055bb0bdbcbb0e3b982a8bd098717",
+        "scenario-closure.json": "1e52ad9547de6dd96288f2fca3b763b1edd448522ed97a818f0ce76e2194c03c",
+        "scenario-file-manifest.json": "b3708af1bbe465afe090e15241eaa4549af00122c39278f1b14a4d350283122b",
+        "scenario-result.json": "2e34c73ab9cb7ae0b2f99af1caba62734a55c79306de81c467d9f6f68279ea58",
+        "scenario-terminal.json": "63735ee02436b7223bd6a0d3cc695fd00679f2f13c1f7fb077d8050cd8f77c51"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public8-fixed.zip",
+      "bytes": 4885,
+      "sha256": "4a87bf5e66467e1cc8b075d267675febe58b0fc278015d77c5f3b504f5079ddc",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public8\\Q6.2\\fixed",
+      "status": "succeeded",
+      "descriptors": 5,
+      "experiment_id": "Q6.2",
+      "variant": "fixed",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 5,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "4c2a85edfb25f320e57432e4ba2e977236254d915622408b166c7e3a1b9f574f",
+        "scenario-artifacts.jsonl.seal.json": "fbf83f02242d0719c0eb93c0e928c3cb2c04e89449c8844cf907411073d9c595",
+        "scenario-blobs/11d7383cf2c0dfe86054952f5085fa933e9fc9f7198f7ab6ce654fb16528022f": "11d7383cf2c0dfe86054952f5085fa933e9fc9f7198f7ab6ce654fb16528022f",
+        "scenario-closure.json": "9edb8b3930733129e32c6cf51787fdcde3b3e35ebd959695021f6119abe7cbb7",
+        "scenario-file-manifest.json": "1a3dda053dded37fa97afb23f376122bc4e37426abc2605858995096666d7ae4",
+        "scenario-result.json": "11d7383cf2c0dfe86054952f5085fa933e9fc9f7198f7ab6ce654fb16528022f",
+        "scenario-terminal.json": "5588dfe4cb47ae152f00e052de8ff0e932477fd9e1d2784cab53ea2489e2f71c"
+      }
+    },
+    {
+      "file": "test_m9_variants_retain_public9-fixed.zip",
+      "bytes": 4893,
+      "sha256": "7cfe34732ccb67561f129f27cf8efe1140722b295f89471e42dd9247cf003fec",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_m9_variants_retain_public9\\Q6.2\\fixed",
+      "status": "succeeded",
+      "descriptors": 5,
+      "experiment_id": "Q6.2",
+      "variant": "fixed",
+      "benchmark": "discoverybench",
+      "read_only": true,
+      "report": {
+        "descriptor_count": 5,
+        "schema": "m9-scenario-artifacts-verified-v1",
+        "scientific_effect": "not_measured",
+        "scientific_validated": false,
+        "status": "succeeded"
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "10c2d3f507ed21f60ee0d1c8cf497d28e74023be5a9531fa88423c092ae8e7dc",
+        "scenario-artifacts.jsonl.seal.json": "8c3b860f5c438448d85c5bbea36507cfbb6b54b53ed8a7729a07b68be07e9cf9",
+        "scenario-blobs/989eaed6adaac5b29e48de465cd61b48549ecd9074f9b5621384da99ddcd559e": "989eaed6adaac5b29e48de465cd61b48549ecd9074f9b5621384da99ddcd559e",
+        "scenario-closure.json": "81afdaa99ca885bfce7824a2c9e8a3425499db96895f4a5c3db5ab7f4991bda5",
+        "scenario-file-manifest.json": "1a4069f312f48d28dcf8b36492fd8f50decf7717e8ec908bf5a47452419bdffe",
+        "scenario-result.json": "989eaed6adaac5b29e48de465cd61b48549ecd9074f9b5621384da99ddcd559e",
+        "scenario-terminal.json": "d9cdfd46c9317928a0e35f5252c061a1f8031026338eed9f78daaeac33f61bd2"
+      }
+    },
+    {
+      "file": "test_throwing_first_callback_k0-run.zip",
+      "bytes": 3305,
+      "sha256": "0cc3fadbed93a1eab4b6be5b3e1246af4f5964911ac829a0b40b135898209dae",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\scenario-artifacts-frozen-r1\\test_throwing_first_callback_k0\\run",
+      "status": "failed",
+      "descriptors": 5,
+      "experiment_id": "Q6.1",
+      "variant": "change_rule",
+      "benchmark": "blade",
+      "read_only": true,
+      "report": {
+        "acceptance_eligible": false,
+        "descriptor_count": 5,
+        "error": "fixture callback failure",
+        "error_type": "RuntimeError",
+        "files": {},
+        "schema": "m9-scenario-failure-storage-v1",
+        "scientific_validated": false,
+        "stage": "callback",
+        "stage_semantics_verified": false,
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "source_archive_reverified": true,
+      "files": {
+        "scenario-artifacts.jsonl": "a09fcfc0a289aa24dfc620bbba566300d4aaeea6ca953821c9faa31a7efa9db9",
+        "scenario-artifacts.jsonl.seal.json": "1ec4473673dc48c056a4cba706b67a0f16326c1a779b2621cb4bef8587044bd3",
+        "scenario-closure.json": "1320a71fbe96b9f76a7375687f77a92942ef279ddf5adf3874bf433145dda098",
+        "scenario-file-manifest.json": "8616833ee47c6a10f08f0acad6d83eb2a9c8598417b85f7b6f9fe927d3ed2ba4",
+        "scenario-terminal.json": "3b0811a4895306e2bbffa01c52a07dbb61db3f02b387110a17e9c57a64b7455f"
+      }
+    }
+  ],
+  "scope": "actual local offline producers with synthetic callbacks; 28 two-benchmark fixture variants, four explicit callback fixtures, six failures and two incomplete prefixes",
+  "new_paid_api_calls": 0,
+  "model_calls": 0,
+  "docker_calls": 0,
+  "real_validation_access": false,
+  "scientific_effect": "not_measured",
+  "agent_attempt_note_scope": "earlier separate branch attempts, not root frozen run"
+}
