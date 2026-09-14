@@ -217,12 +217,20 @@ def _subject(plan,cell,candidate,parent):
 
 
 def _files(root):
-    return {p.relative_to(root).as_posix():shared._sha(p.read_bytes()) for p in sorted(root.rglob('*')) if p.is_file()}
+    from research_loop.modular.train_operation_artifacts import _safe
+    _safe(root)
+    result={}
+    for path in sorted(root.rglob('*')):
+        _safe(path)
+        if path.is_file(): result[path.relative_to(root).as_posix()]=shared._sha(path.read_bytes())
+    return result
 
 
 def _operation(plan,cell,parent,candidate,histories,root,authority):
+    from research_loop.modular.train_operation_artifacts import OperationArtifacts
     root.mkdir(exist_ok=False);subject=_subject(plan,cell,candidate,parent)
-    journal=shared._Journal(root/'operations.jsonl');journal.append('phase_lock',{'subject':subject,'mutation_limit':3,
+    journal=OperationArtifacts(root,plan,cell,parent,candidate,histories,authority)
+    journal.append('phase_lock',{'subject':subject,'mutation_limit':3,
         'feedback_limits':plan.record.data()['feedback_rules'],'cost':'reported_or_unknown'})
     experiment=plan.record.data()['experiment_id'];variant=cell['variant'];actions=[]
     selected=candidate;status='completed';feedback=None
@@ -243,7 +251,9 @@ def _operation(plan,cell,parent,candidate,histories,root,authority):
                     production.verify(AcceptanceReceipt(FrozenRecord.from_dict(subject),payload))
                 else:
                     runtime=ExecutionRuntime(root/'shadow.sqlite',FileDeploymentPort(root/'deployment.json',parent),production,parent)
-                    try: runtime.activate(AcceptanceReceipt(FrozenRecord.from_dict(subject),payload),candidate)
+                    try:
+                        journal.checkpoint('initialized')
+                        runtime.activate(AcceptanceReceipt(FrozenRecord.from_dict(subject),payload),candidate)
                     finally: runtime.close()
             except ContractError as exc:
                 actions.append({'operation':variant,'status':'rejected','error_type':type(exc).__name__})
@@ -282,8 +292,10 @@ def _operation(plan,cell,parent,candidate,histories,root,authority):
         else:
             runtime=_StagingRuntime(root,parent,authority,subject)
             try:
+                journal.checkpoint('initialized')
                 token=authority.staging_authorization(candidate,parent,subject)
                 ack=runtime.activate(token,candidate);actions.append({'operation':'promote','ack':ack.__dict__})
+                journal.checkpoint('promote')
                 if variant=='rollback':
                     rollback=authority.staging_authorization(parent,candidate,subject)
                     ack=runtime.activate(rollback,parent);actions.append({'operation':'rollback','ack':ack.__dict__})
@@ -296,6 +308,7 @@ def _operation(plan,cell,parent,candidate,histories,root,authority):
                     # Delete only the experiment-owned acknowledgement checksum;
                     # current() now observes an actual unavailable file pair.
                     (root/'deployment.json.sha256').unlink();actions.append({'operation':'offline','transport_file_absent':True})
+                if variant!='promote': journal.checkpoint(variant)
                 try: selected=runtime.checked_package()
                 except ContractError: selected=None;status='blocked'
             finally: runtime.db.close()
@@ -304,20 +317,32 @@ def _operation(plan,cell,parent,candidate,histories,root,authority):
     public={'status':status,'feedback_status':feedback['status'] if feedback else None}
     journal.append('operation_result',{'subject':subject,'actions':actions,'status':status,
         'selected_package':selected.record.data() if selected else None,'public':public})
-    record=FrozenRecord.from_dict({'schema':'train-operation-receipt-v1','subject':subject,'actions':actions,'status':status,
-        'selected_package':selected.record.data() if selected else None,'public':public,'feedback':feedback,
+    outcome={'subject':subject,'actions':actions,'status':status,
+        'selected_package':selected.record.data() if selected else None,'public':public,'feedback':feedback}
+    artifacts=journal.close(outcome)
+    record=FrozenRecord.from_dict({'schema':'train-operation-receipt-v2',**outcome,'artifacts':artifacts,
         'files':_files(root),'authority':authority.descriptor,'production_promotion':'not_authorized'})
     shared._exclusive(root/'receipt.json',FrozenRecord.from_dict({'record':record.data(),'signature':authority.sign(record)}))
     return _verify_operation(plan,cell,parent,candidate,histories,root,authority)
 
 
 def _verify_operation(plan,cell,parent,candidate,histories,root,authority):
+    from research_loop.modular.train_operation_artifacts import verify_operation_artifacts
     envelope=shared._read_record(root/'receipt.json').data();record=FrozenRecord.from_dict(envelope['record']);r=record.data()
     authority.verify(record,envelope['signature'])
+    if (set(envelope)!={'record','signature'} or set(r)!={'schema','subject','actions','status','selected_package',
+            'public','feedback','artifacts','files','authority','production_promotion'}
+            or r['production_promotion']!='not_authorized'):
+        raise ContractError('operation receipt schema or authorization scope differs')
     if r['subject']!=_subject(plan,cell,candidate,parent) or r['authority']!=authority.descriptor:
         raise ContractError('operation receipt binds another frozen source or authority')
     actual=_files(root);actual.pop('receipt.json')
     if r['files']!=actual: raise ContractError('actual host operation artifacts changed')
+    if r.get('schema')!='train-operation-receipt-v2':
+        raise ContractError('operation requires original per-output provenance; legacy receipts need their frozen reader')
+    outcome={key:r[key] for key in ('subject','actions','status','selected_package','public','feedback')}
+    verify_operation_artifacts(root,plan=plan,cell=cell,parent=parent,candidate=candidate,
+        histories=histories,authority=authority,outcome=outcome,binding=r['artifacts'])
     rows=shared._phase_rows(root/'operations.jsonl')
     if rows[0]['data']!={'subject':r['subject'],'mutation_limit':3,
             'feedback_limits':plan.record.data()['feedback_rules'],'cost':'reported_or_unknown'}:
@@ -328,18 +353,40 @@ def _verify_operation(plan,cell,parent,candidate,histories,root,authority):
     selected=CandidatePackage(FrozenRecord.from_dict(r['selected_package'])) if r['selected_package'] else None
     if selected is not None and selected not in (parent,candidate): raise ContractError('host selected a foreign package')
     experiment=plan.record.data()['experiment_id']
+    legal_status={'Q6.1':{'rejected'},'Q6.5':{'retained','adopted'},'Q6.6':{'completed','blocked'}}[experiment]
+    if (r['status'] not in legal_status|{'operation_failed'} or r['public']!={
+            'status':r['status'],'feedback_status':r['feedback']['status'] if r['feedback'] else None}):
+        raise ContractError('operation status or public projection differs from the frozen experiment')
+    if experiment!='Q6.5' and r['feedback'] is not None:
+        raise ContractError('operation invented an unallocated feedback opportunity')
+    def ack(package):
+        return {'active_digest':package.digest,'memory_digest':package.memory_digest,'online':True}
+    expected_actions=None
+    if experiment=='Q6.6':
+        expected_actions=[{'operation':'promote','ack':ack(candidate)}]
+        extra={'rollback':{'operation':'rollback','ack':ack(parent)},
+            'drift':{'operation':'drift','ack':ack(parent)},
+            'offline':{'operation':'offline','transport_file_absent':True},
+            'duplicate':{'operation':'duplicate','status':'rejected','error_type':'ContractError'}}
+        if cell['variant']!='promote': expected_actions.append(extra[cell['variant']])
+    elif experiment=='Q6.1':
+        expected_actions=[{'operation':cell['variant'],'status':'rejected','error_type':'ContractError'}]
     if r['status']=='operation_failed':
-        if selected is not None or not r['actions'] or r['actions'][-1].get('operation')!='host' or r['actions'][-1].get('status')!='failed':
+        failure=r['actions'][-1] if r['actions'] else {}
+        if (selected is not None or set(failure)!={'operation','status','error_type'}
+                or failure['operation']!='host' or failure['status']!='failed'
+                or type(failure['error_type']) is not str or not failure['error_type']
+                or expected_actions is not None and canonical(r['actions'][:-1])!=canonical(expected_actions[:len(r['actions'])-1])):
             raise ContractError('failed host operation invented a successor package')
     elif experiment=='Q6.1':
-        if (len(r['actions'])!=1 or r['actions'][0]['operation']!=cell['variant']
-                or r['actions'][0]['status']!=r['status']):
+        if canonical(r['actions'])!=canonical(expected_actions) or selected!=candidate:
             raise ContractError('capability result does not bind the frozen challenge')
     elif experiment=='Q6.6':
-        expected_actions=['promote']+([] if cell['variant']=='promote' else [cell['variant']])
-        if [a['operation'] for a in r['actions']]!=expected_actions:
+        if canonical(r['actions'])!=canonical(expected_actions):
             raise ContractError('actual staging actions differ from the frozen operation')
         blocked=cell['variant'] in {'drift','offline'}
+        if r['status']!=('blocked' if blocked else 'completed'):
+            raise ContractError('staging status differs from actual frozen fault injection')
         expected=parent if cell['variant']=='rollback' else candidate
         db=sqlite3.connect((root/'state.sqlite').as_uri()+'?mode=ro',uri=True)
         try:
@@ -382,7 +429,10 @@ def _verify_operation(plan,cell,parent,candidate,histories,root,authority):
         elif r['feedback']['status']!='unknown': raise ContractError('unqualified feedback may only remain unknown')
         guarded=cell['variant']=='sealed_calibrated' and 'M9' in cell['arm']['enabled']
         expected=parent if guarded and r['feedback']['status']!='eligible' else candidate
-        if selected!=expected: raise ContractError('feedback adoption does not implement frozen guard')
+        expected_status='retained' if expected==parent else 'adopted'
+        if selected!=expected or r['status']!=expected_status or r['actions']!=[{
+                'operation':'feedback_selection','status':expected_status,'feedback_status':r['feedback']['status']}]:
+            raise ContractError('feedback adoption does not implement frozen guard')
     if selected is None: return None
     projection=shared._projection(selected).data();projection['operation_observation']=r['public']
     return selected,FrozenRecord.from_dict(projection)
