@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="33.787" timestamp="2026-09-14T09:24:18.668709+08:00" hostname="SC-202507131830"><testcase classname="tests.test_grok_train_solver" name="test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer[last_score]" time="16.742"><failure message="AssertionError: assert 'estimated' == 'inconclusive'&#10;  &#10;  - inconclusive&#10;  + estimated">tmp_path = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-red-r1/test_v4_full_useful_eight_cell0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002B25A3781D0&gt;
+fault = 'last_score'
+
+    @pytest.mark.parametrize('fault', [None, 'unknown_main', 'provenance', 'last_score', 'final_accounting'])
+    def test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer(tmp_path, monkeypatch, fault):
+        """All 40 public slots use an ACP peer; Docker and rubric stay real seams."""
+        from contextlib import ExitStack
+        from evaluation.modular.scoring_service import ScorerConfig
+        from research_loop.modular import combination_train_controller as controller
+        from research_loop.modular.runtime import AuditVerifier
+        from test_combination_prospective_train_source import prepare, processes
+        from test_m4_m5_useful_controls import RECIPE
+    
+        setup = prepare(tmp_path, 'm4')
+        body = setup['config'].data()
+        provider = {'kind':'grok-acp-public-train-v1','model':'grok-4.6','opportunity_contract':'public-train-main-and-initial-title-v1',
+            'included_only':True,'api_key_route_permitted':False,'main_calls':40,'possible_initial_title_calls':40,
+            'main_output_caps':{'m4_plan':2048,'m5_mechanism':2048,'m5_measurement':2048,'analysis_program':8192,'final_answer':2048},
+            'input_byte_cap_per_request':262144,'observed_main_token_cap':131072,'title_requested_output_cap':100,
+            'wall_timeout_seconds':60,'max_retries':0,'title_usage_and_all_call_totals':'unknown'}
+        body.update(schema='m4-m5-train-controller-config-v4', execution_recipe=RECIPE, provider=provider,
+            model='grok-4.6', effort='native_acp', max_tokens=131072*40, timeout_seconds=60)
+        config = controller.FrozenM4M5TrainConfig(FrozenRecord.from_dict(body))
+        setup['config'] = config
+        setup['compiled'] = controller.compile_m4_m5_train_panel(config, setup['packets'])
+        assert len(setup['compiled'].panel.cells) == 8
+        port, logs = default_port(tmp_path, monkeypatch, schemas=body['schemas'],
+            caps=provider['main_output_caps'], max_calls=40,
+            scenario='train_unknown_main' if fault=='unknown_main' else 'train_panel')
+        if fault=='provenance':
+            verify=controller.verify_m4_m5_combination_benchmark_cell
+            def drift(*args, **kwargs):
+                result=verify(*args, **kwargs)
+                (port.calls_root/'0001-m4_plan/response.private.json').write_text('{"foreign":true}')
+                return result
+            monkeypatch.setattr(controller,'verify_m4_m5_combination_benchmark_cell',drift)
+        with ExitStack() as stack:
+            service=processes(setup, stack)
+            score_calls = []
+            if fault in {'last_score', 'final_accounting'}:
+                original_score = service.score_combination
+                def last_score(**kwargs):
+                    value = original_score(**kwargs)
+                    score_calls.append(value)
+                    if len(score_calls) == 8 and fault == 'last_score':
+                        (port.calls_root/'0001-m4_plan/response.private.json').write_bytes(b'{"last_score_drift":true}')
+                    return value
+                monkeypatch.setattr(service, 'score_combination', last_score)
+                if fault == 'final_accounting':
+                    original_usage = controller._usage
+                    injected = []
+                    def last_accounting(model):
+                        value = original_usage(model)
+                        if len(score_calls) == 8 and not injected:
+                            injected.append(True)
+                            (port.calls_root/'0001-m4_plan/response.private.json').write_bytes(b'{"final_accounting_drift":true}')
+                        return value
+                    monkeypatch.setattr(controller, '_usage', last_accounting)
+            result=controller.run_m4_m5_train_panel(config, custody=None, prospective_exporter=setup['exporter'],
+                snapshot_root=Path(setup['exporter'].config['snapshot_root']), export_root=setup['exporter'].output_root,
+                run_root=tmp_path/'run-v4', model=port, audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}),
+                execution_authority=setup['module'].EXECUTION, scoring_service=service,
+                scorer_authority_keys={setup['module'].SCORER.authority_id:setup['module'].SCORER.key})
+        if fault in {'last_score', 'final_accounting'}:
+            receipt = result.receipt.data()
+&gt;           assert receipt['status'] == 'inconclusive'
+E           AssertionError: assert 'estimated' == 'inconclusive'
+E             
+E             - inconclusive
+E             + estimated
+
+tests\test_grok_train_solver.py:95: AssertionError</failure></testcase><testcase classname="tests.test_grok_train_solver" name="test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer[final_accounting]" time="16.835"><failure message="AssertionError: assert 'estimated' == 'inconclusive'&#10;  &#10;  - inconclusive&#10;  + estimated">tmp_path = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-red-r1/test_v4_full_useful_eight_cell1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002B25AEB9E20&gt;
+fault = 'final_accounting'
+
+    @pytest.mark.parametrize('fault', [None, 'unknown_main', 'provenance', 'last_score', 'final_accounting'])
+    def test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer(tmp_path, monkeypatch, fault):
+        """All 40 public slots use an ACP peer; Docker and rubric stay real seams."""
+        from contextlib import ExitStack
+        from evaluation.modular.scoring_service import ScorerConfig
+        from research_loop.modular import combination_train_controller as controller
+        from research_loop.modular.runtime import AuditVerifier
+        from test_combination_prospective_train_source import prepare, processes
+        from test_m4_m5_useful_controls import RECIPE
+    
+        setup = prepare(tmp_path, 'm4')
+        body = setup['config'].data()
+        provider = {'kind':'grok-acp-public-train-v1','model':'grok-4.6','opportunity_contract':'public-train-main-and-initial-title-v1',
+            'included_only':True,'api_key_route_permitted':False,'main_calls':40,'possible_initial_title_calls':40,
+            'main_output_caps':{'m4_plan':2048,'m5_mechanism':2048,'m5_measurement':2048,'analysis_program':8192,'final_answer':2048},
+            'input_byte_cap_per_request':262144,'observed_main_token_cap':131072,'title_requested_output_cap':100,
+            'wall_timeout_seconds':60,'max_retries':0,'title_usage_and_all_call_totals':'unknown'}
+        body.update(schema='m4-m5-train-controller-config-v4', execution_recipe=RECIPE, provider=provider,
+            model='grok-4.6', effort='native_acp', max_tokens=131072*40, timeout_seconds=60)
+        config = controller.FrozenM4M5TrainConfig(FrozenRecord.from_dict(body))
+        setup['config'] = config
+        setup['compiled'] = controller.compile_m4_m5_train_panel(config, setup['packets'])
+        assert len(setup['compiled'].panel.cells) == 8
+        port, logs = default_port(tmp_path, monkeypatch, schemas=body['schemas'],
+            caps=provider['main_output_caps'], max_calls=40,
+            scenario='train_unknown_main' if fault=='unknown_main' else 'train_panel')
+        if fault=='provenance':
+            verify=controller.verify_m4_m5_combination_benchmark_cell
+            def drift(*args, **kwargs):
+                result=verify(*args, **kwargs)
+                (port.calls_root/'0001-m4_plan/response.private.json').write_text('{"foreign":true}')
+                return result
+            monkeypatch.setattr(controller,'verify_m4_m5_combination_benchmark_cell',drift)
+        with ExitStack() as stack:
+            service=processes(setup, stack)
+            score_calls = []
+            if fault in {'last_score', 'final_accounting'}:
+                original_score = service.score_combination
+                def last_score(**kwargs):
+                    value = original_score(**kwargs)
+                    score_calls.append(value)
+                    if len(score_calls) == 8 and fault == 'last_score':
+                        (port.calls_root/'0001-m4_plan/response.private.json').write_bytes(b'{"last_score_drift":true}')
+                    return value
+                monkeypatch.setattr(service, 'score_combination', last_score)
+                if fault == 'final_accounting':
+                    original_usage = controller._usage
+                    injected = []
+                    def last_accounting(model):
+                        value = original_usage(model)
+                        if len(score_calls) == 8 and not injected:
+                            injected.append(True)
+                            (port.calls_root/'0001-m4_plan/response.private.json').write_bytes(b'{"final_accounting_drift":true}')
+                        return value
+                    monkeypatch.setattr(controller, '_usage', last_accounting)
+            result=controller.run_m4_m5_train_panel(config, custody=None, prospective_exporter=setup['exporter'],
+                snapshot_root=Path(setup['exporter'].config['snapshot_root']), export_root=setup['exporter'].output_root,
+                run_root=tmp_path/'run-v4', model=port, audit_verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}),
+                execution_authority=setup['module'].EXECUTION, scoring_service=service,
+                scorer_authority_keys={setup['module'].SCORER.authority_id:setup['module'].SCORER.key})
+        if fault in {'last_score', 'final_accounting'}:
+            receipt = result.receipt.data()
+&gt;           assert receipt['status'] == 'inconclusive'
+E           AssertionError: assert 'estimated' == 'inconclusive'
+E             
+E             - inconclusive
+E             + estimated
+
+tests\test_grok_train_solver.py:95: AssertionError</failure></testcase></testsuite></testsuites>

@@ -3,6 +3,32 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Final native provenance gates (2026-09-14)
+
+The native M4/M5 path now checks original records after scoring and at final
+contrast/report boundaries. Two complete eight-cell regressions reproduced
+the old error: a late original-file change still released an estimated
+contrast. The repair retains every authenticated scorer return but exposes
+zero eligible scores and an inconclusive contrast when provenance fails.
+Native attempt/receipt schemas are v2; legacy Codex schemas remain v1.
+
+Frozen source `acde220` passed 42/42, including the complete native grid, both
+late-fault cases, old useful controls and label isolation. The earlier run on
+the same source passed 35/42 because seven legacy fixture preflights detected
+the real user configuration above their temporary directory. No admission
+rule was relaxed; a fresh C:/codex-modular-checks directory outside that user
+profile resolved this environment issue. Both runs and the initial 2/2 failing
+regressions remain archived with exact tested source bytes.
+
+Root source `75056cf` separately passed 25/25 for originating-session-bound
+phase aborts, terminal usage snapshots and labels. Integration `2f37cee`
+combines these source closures; no additional combined rerun is claimed.
+The archive at `results/modular-engineering-20260914/final-provider-provenance/`
+also retains earlier helper failures, explicit archive exclusions and source
+recovery receipts. New frozen runs save source ZIPs before execution.
+These are synthetic engineering checks; real calibration, remaining native
+controller grids and C5 TRAIN selection/independent acceptance remain pending.
+
 ## C4 runtime and shared provider checkpoint (2026-09-14)
 
 The full/leave-one-out controller now completes its 22-cell engineering grid:

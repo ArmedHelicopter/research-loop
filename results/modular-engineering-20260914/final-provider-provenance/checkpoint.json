@@ -1,0 +1,71 @@
+{
+  "integration_head": "2f37cee3776391f8392fa9b3150f3b94288d4b87",
+  "checks": [
+    {
+      "commit": "75056cf6f130960baefd109e710151b067093e29",
+      "source_unchanged": true,
+      "source_count": 617,
+      "exit_code": 0,
+      "wall_seconds": 8.75,
+      "new_paid_calls": 0,
+      "report_sha256": "2164c79bfdfe2ea1b2e406e7d8dc9660307cd780bf25ef559a831d2c92c7c08c",
+      "junit": {
+        "tests": 25,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "commit": "06254b2cd7f24bfd5e4ab2d4607169f41153e0de",
+      "source_unchanged": true,
+      "source_count": 617,
+      "exit_code": 1,
+      "wall_seconds": 34.84399999999732,
+      "new_paid_calls": 0,
+      "report_sha256": "f31032deab88297da1dfd8241b3555321a4d4223eecfea0bd0c16c2f818bd233",
+      "junit": {
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "commit": "acde2205ca0334b0b5058e1401047839a25256ef",
+      "source_unchanged": true,
+      "source_count": 617,
+      "exit_code": 1,
+      "wall_seconds": 88.57799999999406,
+      "new_paid_calls": 0,
+      "report_sha256": "e2a91bf7530e8043d095e993725c3ae03930c93f6dc0bf33211368f89abf0f77",
+      "junit": {
+        "tests": 42,
+        "failures": 7,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "commit": "acde2205ca0334b0b5058e1401047839a25256ef",
+      "source_unchanged": true,
+      "source_count": 617,
+      "exit_code": 0,
+      "wall_seconds": 100.31200000000536,
+      "new_paid_calls": 0,
+      "report_sha256": "fa1838132838e3374751bc92d731b38f61bd1103c38e51b6810cc2ea371a36a5",
+      "junit": {
+        "tests": 42,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "exact_tested_sources_verified": true,
+  "source_composition": "M4/M5 source equals acde220; only phase_provider.py/test_phase_provider.py differ and equal root25-pass75056cf",
+  "independent_review": "grok_provider_independent_review read acde220: no concrete blocking defect; source review only",
+  "real_provider_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}

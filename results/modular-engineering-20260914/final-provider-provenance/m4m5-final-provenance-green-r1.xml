@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="42" time="87.998" timestamp="2026-09-14T09:27:59.557194+08:00" hostname="SC-202507131830"><testcase classname="tests.test_grok_train_solver" name="test_invented_native_receipt_closes_ledger" time="0.051" /><testcase classname="tests.test_grok_train_solver" name="test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer[None]" time="18.288" /><testcase classname="tests.test_grok_train_solver" name="test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer[unknown_main]" time="2.779" /><testcase classname="tests.test_grok_train_solver" name="test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer[provenance]" time="4.021" /><testcase classname="tests.test_grok_train_solver" name="test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer[last_score]" time="17.586" /><testcase classname="tests.test_grok_train_solver" name="test_v4_full_useful_eight_cell_native_peer_docker_and_independent_scorer[final_accounting]" time="17.738" /><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[wire]" time="0.168" /><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[coherent_wire]" time="0.163" /><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[coherent_request]" time="0.146" /><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[reservation]" time="0.171" /><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[coherent_reservation]" time="0.157" /><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[response]" time="0.155" /><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[coherent_response]" time="0.164" /><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[config]" time="0.161" /><testcase classname="tests.test_grok_train_solver" name="test_native_original_substitution_closes_before_later_io[observer_billing]" time="0.161" /><testcase classname="tests.test_grok_train_solver" name="test_unknown_reserved_opportunity_stays_closed_after_restart" time="0.156" /><testcase classname="tests.test_grok_train_solver" name="test_v4_wrong_admission_stops_before_native_or_scoring[wrong_provider]" time="1.412" /><testcase classname="tests.test_grok_train_solver" name="test_v4_wrong_admission_stops_before_native_or_scoring[wrong_scorer]" time="1.376" /><testcase classname="tests.test_grok_train_solver" name="test_v4_wrong_admission_stops_before_native_or_scoring[extra_replicate]" time="1.463" /><testcase classname="tests.test_m4_m5_useful_controls" name="test_explicit_recipe_frozen_into_every_cell" time="1.464" /><testcase classname="tests.test_m4_m5_useful_controls" name="test_recipe_rejects_silent_migration_and_mutation[legacy_flag]" time="1.403" /><testcase classname="tests.test_m4_m5_useful_controls" name="test_recipe_rejects_silent_migration_and_mutation[missing_recipe]" time="1.472" /><testcase classname="tests.test_m4_m5_useful_controls" name="test_recipe_rejects_silent_migration_and_mutation[changed_recipe]" time="1.405" /><testcase classname="tests.test_m4_m5_useful_controls" name="test_recipe_rejects_silent_migration_and_mutation[legacy_source]" time="1.819" /><testcase classname="tests.test_m4_m5_useful_controls" name="test_eight_cell_useful_output_grid" time="1.447"><failure message="research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled">tmp_path = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_eight_cell_useful_output_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000260639EF5F0&gt;
+
+    def test_eight_cell_useful_output_grid(tmp_path, monkeypatch):
+        setup = configured(tmp_path)
+&gt;       result, port, seen, _ = run(setup, monkeypatch)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_m4_m5_useful_controls.py:67: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_combination_prospective_train_source.py:122: in run
+    port=model_port(root/'port',monkeypatch,max_calls=b['max_calls'],max_tokens=b['max_tokens'],schemas=b['schemas'],response_factory=response)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_modular_train_controller.py:59: in model_port
+    candidate = audit_base_context(cli, cwd, root / "context-audit", config_overrides=('mcp_servers.fixture.enabled=false',), context_probe_runner=probe)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\model_port.py:317: in audit_base_context
+    binding = _runtime_binding(str(cli), cwd, environment, args, specs, overrides)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+executable = 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_eight_cell_useful_output_0\\port\\codex.exe'
+cwd = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_eight_cell_useful_output_0/port/reviewed-empty-cwd')
+environment = {'ALLUSERSPROFILE': 'C:\\ProgramData', 'APPDATA': 'C:\\Users\\Administrator\\AppData\\Roaming', 'BASH_ENV': '/etc/bash.bashrc', 'CLION': 'D:\\Program Files\\JetBrains\\CLion 2025.3.1\\bin', ...}
+args = ['-c', 'mcp_servers.fixture.enabled=false', '-c', 'model="gpt-5.6-luna"', '-c', 'model_reasoning_effort="low"', ...]
+specs = [{'path': 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_eight_cell_usef...mp\\modular-checks\\m4m5-final-provenance-green-r1\\test_eight_cell_useful_output_0\\port\\user\\.codex\\skills'}, ...]
+overrides = ['mcp_servers.fixture.enabled=false']
+
+    def _runtime_binding(executable: str, cwd: Path, environment: dict[str, str], args: list[str],
+                         specs: list[dict[str, str]], overrides: list[str]) -&gt; dict[str, Any]:
+        _require_empty_public_cwd(cwd)
+        cli = Path(executable).resolve(strict=True)
+        if os.name == "nt" and cli.suffix.lower() != ".exe":
+            raise ContractError("reviewed context requires a direct CLI executable, not an unhashed launcher chain")
+        home = Path(environment.get("CODEX_HOME") or str(Path(environment.get("USERPROFILE") or environment.get("HOME") or str(Path.home())) / ".codex")).resolve()
+        catalogs = [override.split("=", 1)[1] for override in overrides if override.startswith("model_catalog_json=")]
+        if len(catalogs) &gt; 1:
+            raise ContractError("one frozen model catalog override permitted")
+        catalog = None
+        if catalogs:
+            try:
+                catalog_value = json.loads(catalogs[0])
+                if not isinstance(catalog_value, str) or not Path(catalog_value).is_absolute():
+                    raise ValueError("absolute catalog path required")
+                catalog = Path(catalog_value).resolve(strict=True)
+                catalog_data = json.loads(catalog.read_bytes())
+                if not isinstance(catalog_data, dict) or set(catalog_data) != {"models"} or not isinstance(catalog_data["models"], list) or not catalog_data["models"]:
+                    raise ValueError("nonempty local model catalog required")
+            except (ValueError, OSError, TypeError) as exc:
+                raise ContractError("invalid frozen local model catalog") from exc
+        required = {canonical(spec) for spec in context_source_specs(home, cwd, model_catalog_path=catalog, environment=environment)}
+        if not required &lt;= {canonical(spec) for spec in specs}:
+            raise ContractError("frozen context omits mandatory default configuration sources")
+        sources = _source_manifest(specs)
+        for spec in specs:
+            source = Path(spec["path"])
+            if "glob" not in spec and source.suffix == ".toml" and source.is_file():
+                config = tomllib.loads(source.read_text(encoding="utf-8"))
+                for name in config.get("mcp_servers", {}):
+                    if f'mcp_servers.{name}.enabled=false' not in overrides:
+&gt;                       raise ContractError("every configured MCP server must be explicitly disabled")
+E                       research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled
+
+research_loop\modular\model_port.py:285: ContractError</failure></testcase><testcase classname="tests.test_m4_m5_useful_controls" name="test_replay_rejects_useful_output_substitution_and_review_contamination" time="2.905" /><testcase classname="tests.test_m4_m5_useful_controls" name="test_malformed_reviews_keep_full_denominator_and_stop_rule[provider_contract]" time="1.371"><failure message="research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled">tmp_path = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_malformed_reviews_keep_fu0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002606397AEA0&gt;
+fault = 'provider_contract'
+
+    @pytest.mark.parametrize('fault', ['provider_contract', 'runtime_review'])
+    def test_malformed_reviews_keep_full_denominator_and_stop_rule(tmp_path, monkeypatch, fault):
+        setup = configured(tmp_path); ordinary = setup['module']._model
+        def factory(seen):
+            original = ordinary(seen)
+            def respond(request):
+                if request.data()['slot'] == 'm5_mechanism':
+                    seen.append(request.data())
+                    return FrozenRecord.from_dict({'invalid_review': True} if fault == 'provider_contract' else
+                        {'assessment':'unknown', 'evidence_refs':[], 'counterexamples':[], 'uncertainty':''})
+                return original(request)
+            return respond
+        monkeypatch.setattr(setup['module'], '_model', factory)
+&gt;       result, port, seen, _ = run(setup, monkeypatch)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_m4_m5_useful_controls.py:163: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_combination_prospective_train_source.py:122: in run
+    port=model_port(root/'port',monkeypatch,max_calls=b['max_calls'],max_tokens=b['max_tokens'],schemas=b['schemas'],response_factory=response)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_modular_train_controller.py:59: in model_port
+    candidate = audit_base_context(cli, cwd, root / "context-audit", config_overrides=('mcp_servers.fixture.enabled=false',), context_probe_runner=probe)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\model_port.py:317: in audit_base_context
+    binding = _runtime_binding(str(cli), cwd, environment, args, specs, overrides)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+executable = 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_malformed_reviews_keep_fu0\\port\\codex.exe'
+cwd = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_malformed_reviews_keep_fu0/port/reviewed-empty-cwd')
+environment = {'ALLUSERSPROFILE': 'C:\\ProgramData', 'APPDATA': 'C:\\Users\\Administrator\\AppData\\Roaming', 'BASH_ENV': '/etc/bash.bashrc', 'CLION': 'D:\\Program Files\\JetBrains\\CLion 2025.3.1\\bin', ...}
+args = ['-c', 'mcp_servers.fixture.enabled=false', '-c', 'model="gpt-5.6-luna"', '-c', 'model_reasoning_effort="low"', ...]
+specs = [{'path': 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_malformed_revie...mp\\modular-checks\\m4m5-final-provenance-green-r1\\test_malformed_reviews_keep_fu0\\port\\user\\.codex\\skills'}, ...]
+overrides = ['mcp_servers.fixture.enabled=false']
+
+    def _runtime_binding(executable: str, cwd: Path, environment: dict[str, str], args: list[str],
+                         specs: list[dict[str, str]], overrides: list[str]) -&gt; dict[str, Any]:
+        _require_empty_public_cwd(cwd)
+        cli = Path(executable).resolve(strict=True)
+        if os.name == "nt" and cli.suffix.lower() != ".exe":
+            raise ContractError("reviewed context requires a direct CLI executable, not an unhashed launcher chain")
+        home = Path(environment.get("CODEX_HOME") or str(Path(environment.get("USERPROFILE") or environment.get("HOME") or str(Path.home())) / ".codex")).resolve()
+        catalogs = [override.split("=", 1)[1] for override in overrides if override.startswith("model_catalog_json=")]
+        if len(catalogs) &gt; 1:
+            raise ContractError("one frozen model catalog override permitted")
+        catalog = None
+        if catalogs:
+            try:
+                catalog_value = json.loads(catalogs[0])
+                if not isinstance(catalog_value, str) or not Path(catalog_value).is_absolute():
+                    raise ValueError("absolute catalog path required")
+                catalog = Path(catalog_value).resolve(strict=True)
+                catalog_data = json.loads(catalog.read_bytes())
+                if not isinstance(catalog_data, dict) or set(catalog_data) != {"models"} or not isinstance(catalog_data["models"], list) or not catalog_data["models"]:
+                    raise ValueError("nonempty local model catalog required")
+            except (ValueError, OSError, TypeError) as exc:
+                raise ContractError("invalid frozen local model catalog") from exc
+        required = {canonical(spec) for spec in context_source_specs(home, cwd, model_catalog_path=catalog, environment=environment)}
+        if not required &lt;= {canonical(spec) for spec in specs}:
+            raise ContractError("frozen context omits mandatory default configuration sources")
+        sources = _source_manifest(specs)
+        for spec in specs:
+            source = Path(spec["path"])
+            if "glob" not in spec and source.suffix == ".toml" and source.is_file():
+                config = tomllib.loads(source.read_text(encoding="utf-8"))
+                for name in config.get("mcp_servers", {}):
+                    if f'mcp_servers.{name}.enabled=false' not in overrides:
+&gt;                       raise ContractError("every configured MCP server must be explicitly disabled")
+E                       research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled
+
+research_loop\modular\model_port.py:285: ContractError</failure></testcase><testcase classname="tests.test_m4_m5_useful_controls" name="test_malformed_reviews_keep_full_denominator_and_stop_rule[runtime_review]" time="1.436"><failure message="research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled">tmp_path = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_malformed_reviews_keep_fu1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026063991F40&gt;
+fault = 'runtime_review'
+
+    @pytest.mark.parametrize('fault', ['provider_contract', 'runtime_review'])
+    def test_malformed_reviews_keep_full_denominator_and_stop_rule(tmp_path, monkeypatch, fault):
+        setup = configured(tmp_path); ordinary = setup['module']._model
+        def factory(seen):
+            original = ordinary(seen)
+            def respond(request):
+                if request.data()['slot'] == 'm5_mechanism':
+                    seen.append(request.data())
+                    return FrozenRecord.from_dict({'invalid_review': True} if fault == 'provider_contract' else
+                        {'assessment':'unknown', 'evidence_refs':[], 'counterexamples':[], 'uncertainty':''})
+                return original(request)
+            return respond
+        monkeypatch.setattr(setup['module'], '_model', factory)
+&gt;       result, port, seen, _ = run(setup, monkeypatch)
+                                ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_m4_m5_useful_controls.py:163: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_combination_prospective_train_source.py:122: in run
+    port=model_port(root/'port',monkeypatch,max_calls=b['max_calls'],max_tokens=b['max_tokens'],schemas=b['schemas'],response_factory=response)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_modular_train_controller.py:59: in model_port
+    candidate = audit_base_context(cli, cwd, root / "context-audit", config_overrides=('mcp_servers.fixture.enabled=false',), context_probe_runner=probe)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\model_port.py:317: in audit_base_context
+    binding = _runtime_binding(str(cli), cwd, environment, args, specs, overrides)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+executable = 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_malformed_reviews_keep_fu1\\port\\codex.exe'
+cwd = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_malformed_reviews_keep_fu1/port/reviewed-empty-cwd')
+environment = {'ALLUSERSPROFILE': 'C:\\ProgramData', 'APPDATA': 'C:\\Users\\Administrator\\AppData\\Roaming', 'BASH_ENV': '/etc/bash.bashrc', 'CLION': 'D:\\Program Files\\JetBrains\\CLion 2025.3.1\\bin', ...}
+args = ['-c', 'mcp_servers.fixture.enabled=false', '-c', 'model="gpt-5.6-luna"', '-c', 'model_reasoning_effort="low"', ...]
+specs = [{'path': 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_malformed_revie...mp\\modular-checks\\m4m5-final-provenance-green-r1\\test_malformed_reviews_keep_fu1\\port\\user\\.codex\\skills'}, ...]
+overrides = ['mcp_servers.fixture.enabled=false']
+
+    def _runtime_binding(executable: str, cwd: Path, environment: dict[str, str], args: list[str],
+                         specs: list[dict[str, str]], overrides: list[str]) -&gt; dict[str, Any]:
+        _require_empty_public_cwd(cwd)
+        cli = Path(executable).resolve(strict=True)
+        if os.name == "nt" and cli.suffix.lower() != ".exe":
+            raise ContractError("reviewed context requires a direct CLI executable, not an unhashed launcher chain")
+        home = Path(environment.get("CODEX_HOME") or str(Path(environment.get("USERPROFILE") or environment.get("HOME") or str(Path.home())) / ".codex")).resolve()
+        catalogs = [override.split("=", 1)[1] for override in overrides if override.startswith("model_catalog_json=")]
+        if len(catalogs) &gt; 1:
+            raise ContractError("one frozen model catalog override permitted")
+        catalog = None
+        if catalogs:
+            try:
+                catalog_value = json.loads(catalogs[0])
+                if not isinstance(catalog_value, str) or not Path(catalog_value).is_absolute():
+                    raise ValueError("absolute catalog path required")
+                catalog = Path(catalog_value).resolve(strict=True)
+                catalog_data = json.loads(catalog.read_bytes())
+                if not isinstance(catalog_data, dict) or set(catalog_data) != {"models"} or not isinstance(catalog_data["models"], list) or not catalog_data["models"]:
+                    raise ValueError("nonempty local model catalog required")
+            except (ValueError, OSError, TypeError) as exc:
+                raise ContractError("invalid frozen local model catalog") from exc
+        required = {canonical(spec) for spec in context_source_specs(home, cwd, model_catalog_path=catalog, environment=environment)}
+        if not required &lt;= {canonical(spec) for spec in specs}:
+            raise ContractError("frozen context omits mandatory default configuration sources")
+        sources = _source_manifest(specs)
+        for spec in specs:
+            source = Path(spec["path"])
+            if "glob" not in spec and source.suffix == ".toml" and source.is_file():
+                config = tomllib.loads(source.read_text(encoding="utf-8"))
+                for name in config.get("mcp_servers", {}):
+                    if f'mcp_servers.{name}.enabled=false' not in overrides:
+&gt;                       raise ContractError("every configured MCP server must be explicitly disabled")
+E                       research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled
+
+research_loop\modular\model_port.py:285: ContractError</failure></testcase><testcase classname="tests.test_m4_m5_useful_controls" name="test_new_recipe_keeps_primary_source_fail_closed[validation]" time="1.405"><failure message="research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled">tmp_path = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_new_recipe_keeps_primary_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000260639BC770&gt;
+fault = 'validation'
+
+    @pytest.mark.parametrize('fault', ['validation', 'swapped_tokens', 'export_receipt', 'completion_anchor'])
+    def test_new_recipe_keeps_primary_source_fail_closed(tmp_path, monkeypatch, fault):
+&gt;       run(configured(tmp_path), monkeypatch, fault=fault)
+
+tests\test_m4_m5_useful_controls.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_combination_prospective_train_source.py:122: in run
+    port=model_port(root/'port',monkeypatch,max_calls=b['max_calls'],max_tokens=b['max_tokens'],schemas=b['schemas'],response_factory=response)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_modular_train_controller.py:59: in model_port
+    candidate = audit_base_context(cli, cwd, root / "context-audit", config_overrides=('mcp_servers.fixture.enabled=false',), context_probe_runner=probe)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\model_port.py:317: in audit_base_context
+    binding = _runtime_binding(str(cli), cwd, environment, args, specs, overrides)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+executable = 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_new_recipe_keeps_primary_0\\port\\codex.exe'
+cwd = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_new_recipe_keeps_primary_0/port/reviewed-empty-cwd')
+environment = {'ALLUSERSPROFILE': 'C:\\ProgramData', 'APPDATA': 'C:\\Users\\Administrator\\AppData\\Roaming', 'BASH_ENV': '/etc/bash.bashrc', 'CLION': 'D:\\Program Files\\JetBrains\\CLion 2025.3.1\\bin', ...}
+args = ['-c', 'mcp_servers.fixture.enabled=false', '-c', 'model="gpt-5.6-luna"', '-c', 'model_reasoning_effort="low"', ...]
+specs = [{'path': 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_new_recipe_keep...mp\\modular-checks\\m4m5-final-provenance-green-r1\\test_new_recipe_keeps_primary_0\\port\\user\\.codex\\skills'}, ...]
+overrides = ['mcp_servers.fixture.enabled=false']
+
+    def _runtime_binding(executable: str, cwd: Path, environment: dict[str, str], args: list[str],
+                         specs: list[dict[str, str]], overrides: list[str]) -&gt; dict[str, Any]:
+        _require_empty_public_cwd(cwd)
+        cli = Path(executable).resolve(strict=True)
+        if os.name == "nt" and cli.suffix.lower() != ".exe":
+            raise ContractError("reviewed context requires a direct CLI executable, not an unhashed launcher chain")
+        home = Path(environment.get("CODEX_HOME") or str(Path(environment.get("USERPROFILE") or environment.get("HOME") or str(Path.home())) / ".codex")).resolve()
+        catalogs = [override.split("=", 1)[1] for override in overrides if override.startswith("model_catalog_json=")]
+        if len(catalogs) &gt; 1:
+            raise ContractError("one frozen model catalog override permitted")
+        catalog = None
+        if catalogs:
+            try:
+                catalog_value = json.loads(catalogs[0])
+                if not isinstance(catalog_value, str) or not Path(catalog_value).is_absolute():
+                    raise ValueError("absolute catalog path required")
+                catalog = Path(catalog_value).resolve(strict=True)
+                catalog_data = json.loads(catalog.read_bytes())
+                if not isinstance(catalog_data, dict) or set(catalog_data) != {"models"} or not isinstance(catalog_data["models"], list) or not catalog_data["models"]:
+                    raise ValueError("nonempty local model catalog required")
+            except (ValueError, OSError, TypeError) as exc:
+                raise ContractError("invalid frozen local model catalog") from exc
+        required = {canonical(spec) for spec in context_source_specs(home, cwd, model_catalog_path=catalog, environment=environment)}
+        if not required &lt;= {canonical(spec) for spec in specs}:
+            raise ContractError("frozen context omits mandatory default configuration sources")
+        sources = _source_manifest(specs)
+        for spec in specs:
+            source = Path(spec["path"])
+            if "glob" not in spec and source.suffix == ".toml" and source.is_file():
+                config = tomllib.loads(source.read_text(encoding="utf-8"))
+                for name in config.get("mcp_servers", {}):
+                    if f'mcp_servers.{name}.enabled=false' not in overrides:
+&gt;                       raise ContractError("every configured MCP server must be explicitly disabled")
+E                       research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled
+
+research_loop\modular\model_port.py:285: ContractError</failure></testcase><testcase classname="tests.test_m4_m5_useful_controls" name="test_new_recipe_keeps_primary_source_fail_closed[swapped_tokens]" time="1.356"><failure message="research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled">tmp_path = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_new_recipe_keeps_primary_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026063A21C70&gt;
+fault = 'swapped_tokens'
+
+    @pytest.mark.parametrize('fault', ['validation', 'swapped_tokens', 'export_receipt', 'completion_anchor'])
+    def test_new_recipe_keeps_primary_source_fail_closed(tmp_path, monkeypatch, fault):
+&gt;       run(configured(tmp_path), monkeypatch, fault=fault)
+
+tests\test_m4_m5_useful_controls.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_combination_prospective_train_source.py:122: in run
+    port=model_port(root/'port',monkeypatch,max_calls=b['max_calls'],max_tokens=b['max_tokens'],schemas=b['schemas'],response_factory=response)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_modular_train_controller.py:59: in model_port
+    candidate = audit_base_context(cli, cwd, root / "context-audit", config_overrides=('mcp_servers.fixture.enabled=false',), context_probe_runner=probe)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\model_port.py:317: in audit_base_context
+    binding = _runtime_binding(str(cli), cwd, environment, args, specs, overrides)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+executable = 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_new_recipe_keeps_primary_1\\port\\codex.exe'
+cwd = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_new_recipe_keeps_primary_1/port/reviewed-empty-cwd')
+environment = {'ALLUSERSPROFILE': 'C:\\ProgramData', 'APPDATA': 'C:\\Users\\Administrator\\AppData\\Roaming', 'BASH_ENV': '/etc/bash.bashrc', 'CLION': 'D:\\Program Files\\JetBrains\\CLion 2025.3.1\\bin', ...}
+args = ['-c', 'mcp_servers.fixture.enabled=false', '-c', 'model="gpt-5.6-luna"', '-c', 'model_reasoning_effort="low"', ...]
+specs = [{'path': 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_new_recipe_keep...mp\\modular-checks\\m4m5-final-provenance-green-r1\\test_new_recipe_keeps_primary_1\\port\\user\\.codex\\skills'}, ...]
+overrides = ['mcp_servers.fixture.enabled=false']
+
+    def _runtime_binding(executable: str, cwd: Path, environment: dict[str, str], args: list[str],
+                         specs: list[dict[str, str]], overrides: list[str]) -&gt; dict[str, Any]:
+        _require_empty_public_cwd(cwd)
+        cli = Path(executable).resolve(strict=True)
+        if os.name == "nt" and cli.suffix.lower() != ".exe":
+            raise ContractError("reviewed context requires a direct CLI executable, not an unhashed launcher chain")
+        home = Path(environment.get("CODEX_HOME") or str(Path(environment.get("USERPROFILE") or environment.get("HOME") or str(Path.home())) / ".codex")).resolve()
+        catalogs = [override.split("=", 1)[1] for override in overrides if override.startswith("model_catalog_json=")]
+        if len(catalogs) &gt; 1:
+            raise ContractError("one frozen model catalog override permitted")
+        catalog = None
+        if catalogs:
+            try:
+                catalog_value = json.loads(catalogs[0])
+                if not isinstance(catalog_value, str) or not Path(catalog_value).is_absolute():
+                    raise ValueError("absolute catalog path required")
+                catalog = Path(catalog_value).resolve(strict=True)
+                catalog_data = json.loads(catalog.read_bytes())
+                if not isinstance(catalog_data, dict) or set(catalog_data) != {"models"} or not isinstance(catalog_data["models"], list) or not catalog_data["models"]:
+                    raise ValueError("nonempty local model catalog required")
+            except (ValueError, OSError, TypeError) as exc:
+                raise ContractError("invalid frozen local model catalog") from exc
+        required = {canonical(spec) for spec in context_source_specs(home, cwd, model_catalog_path=catalog, environment=environment)}
+        if not required &lt;= {canonical(spec) for spec in specs}:
+            raise ContractError("frozen context omits mandatory default configuration sources")
+        sources = _source_manifest(specs)
+        for spec in specs:
+            source = Path(spec["path"])
+            if "glob" not in spec and source.suffix == ".toml" and source.is_file():
+                config = tomllib.loads(source.read_text(encoding="utf-8"))
+                for name in config.get("mcp_servers", {}):
+                    if f'mcp_servers.{name}.enabled=false' not in overrides:
+&gt;                       raise ContractError("every configured MCP server must be explicitly disabled")
+E                       research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled
+
+research_loop\modular\model_port.py:285: ContractError</failure></testcase><testcase classname="tests.test_m4_m5_useful_controls" name="test_new_recipe_keeps_primary_source_fail_closed[export_receipt]" time="1.386"><failure message="research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled">tmp_path = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_new_recipe_keeps_primary_2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026063A05850&gt;
+fault = 'export_receipt'
+
+    @pytest.mark.parametrize('fault', ['validation', 'swapped_tokens', 'export_receipt', 'completion_anchor'])
+    def test_new_recipe_keeps_primary_source_fail_closed(tmp_path, monkeypatch, fault):
+&gt;       run(configured(tmp_path), monkeypatch, fault=fault)
+
+tests\test_m4_m5_useful_controls.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_combination_prospective_train_source.py:122: in run
+    port=model_port(root/'port',monkeypatch,max_calls=b['max_calls'],max_tokens=b['max_tokens'],schemas=b['schemas'],response_factory=response)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_modular_train_controller.py:59: in model_port
+    candidate = audit_base_context(cli, cwd, root / "context-audit", config_overrides=('mcp_servers.fixture.enabled=false',), context_probe_runner=probe)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\model_port.py:317: in audit_base_context
+    binding = _runtime_binding(str(cli), cwd, environment, args, specs, overrides)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+executable = 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_new_recipe_keeps_primary_2\\port\\codex.exe'
+cwd = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_new_recipe_keeps_primary_2/port/reviewed-empty-cwd')
+environment = {'ALLUSERSPROFILE': 'C:\\ProgramData', 'APPDATA': 'C:\\Users\\Administrator\\AppData\\Roaming', 'BASH_ENV': '/etc/bash.bashrc', 'CLION': 'D:\\Program Files\\JetBrains\\CLion 2025.3.1\\bin', ...}
+args = ['-c', 'mcp_servers.fixture.enabled=false', '-c', 'model="gpt-5.6-luna"', '-c', 'model_reasoning_effort="low"', ...]
+specs = [{'path': 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_new_recipe_keep...mp\\modular-checks\\m4m5-final-provenance-green-r1\\test_new_recipe_keeps_primary_2\\port\\user\\.codex\\skills'}, ...]
+overrides = ['mcp_servers.fixture.enabled=false']
+
+    def _runtime_binding(executable: str, cwd: Path, environment: dict[str, str], args: list[str],
+                         specs: list[dict[str, str]], overrides: list[str]) -&gt; dict[str, Any]:
+        _require_empty_public_cwd(cwd)
+        cli = Path(executable).resolve(strict=True)
+        if os.name == "nt" and cli.suffix.lower() != ".exe":
+            raise ContractError("reviewed context requires a direct CLI executable, not an unhashed launcher chain")
+        home = Path(environment.get("CODEX_HOME") or str(Path(environment.get("USERPROFILE") or environment.get("HOME") or str(Path.home())) / ".codex")).resolve()
+        catalogs = [override.split("=", 1)[1] for override in overrides if override.startswith("model_catalog_json=")]
+        if len(catalogs) &gt; 1:
+            raise ContractError("one frozen model catalog override permitted")
+        catalog = None
+        if catalogs:
+            try:
+                catalog_value = json.loads(catalogs[0])
+                if not isinstance(catalog_value, str) or not Path(catalog_value).is_absolute():
+                    raise ValueError("absolute catalog path required")
+                catalog = Path(catalog_value).resolve(strict=True)
+                catalog_data = json.loads(catalog.read_bytes())
+                if not isinstance(catalog_data, dict) or set(catalog_data) != {"models"} or not isinstance(catalog_data["models"], list) or not catalog_data["models"]:
+                    raise ValueError("nonempty local model catalog required")
+            except (ValueError, OSError, TypeError) as exc:
+                raise ContractError("invalid frozen local model catalog") from exc
+        required = {canonical(spec) for spec in context_source_specs(home, cwd, model_catalog_path=catalog, environment=environment)}
+        if not required &lt;= {canonical(spec) for spec in specs}:
+            raise ContractError("frozen context omits mandatory default configuration sources")
+        sources = _source_manifest(specs)
+        for spec in specs:
+            source = Path(spec["path"])
+            if "glob" not in spec and source.suffix == ".toml" and source.is_file():
+                config = tomllib.loads(source.read_text(encoding="utf-8"))
+                for name in config.get("mcp_servers", {}):
+                    if f'mcp_servers.{name}.enabled=false' not in overrides:
+&gt;                       raise ContractError("every configured MCP server must be explicitly disabled")
+E                       research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled
+
+research_loop\modular\model_port.py:285: ContractError</failure></testcase><testcase classname="tests.test_m4_m5_useful_controls" name="test_new_recipe_keeps_primary_source_fail_closed[completion_anchor]" time="1.363"><failure message="research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled">tmp_path = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_new_recipe_keeps_primary_3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000026063945580&gt;
+fault = 'completion_anchor'
+
+    @pytest.mark.parametrize('fault', ['validation', 'swapped_tokens', 'export_receipt', 'completion_anchor'])
+    def test_new_recipe_keeps_primary_source_fail_closed(tmp_path, monkeypatch, fault):
+&gt;       run(configured(tmp_path), monkeypatch, fault=fault)
+
+tests\test_m4_m5_useful_controls.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_combination_prospective_train_source.py:122: in run
+    port=model_port(root/'port',monkeypatch,max_calls=b['max_calls'],max_tokens=b['max_tokens'],schemas=b['schemas'],response_factory=response)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_modular_train_controller.py:59: in model_port
+    candidate = audit_base_context(cli, cwd, root / "context-audit", config_overrides=('mcp_servers.fixture.enabled=false',), context_probe_runner=probe)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+research_loop\modular\model_port.py:317: in audit_base_context
+    binding = _runtime_binding(str(cli), cwd, environment, args, specs, overrides)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+executable = 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_new_recipe_keeps_primary_3\\port\\codex.exe'
+cwd = WindowsPath('C:/Users/Administrator/.codex/tmp/modular-checks/m4m5-final-provenance-green-r1/test_new_recipe_keeps_primary_3/port/reviewed-empty-cwd')
+environment = {'ALLUSERSPROFILE': 'C:\\ProgramData', 'APPDATA': 'C:\\Users\\Administrator\\AppData\\Roaming', 'BASH_ENV': '/etc/bash.bashrc', 'CLION': 'D:\\Program Files\\JetBrains\\CLion 2025.3.1\\bin', ...}
+args = ['-c', 'mcp_servers.fixture.enabled=false', '-c', 'model="gpt-5.6-luna"', '-c', 'model_reasoning_effort="low"', ...]
+specs = [{'path': 'C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\m4m5-final-provenance-green-r1\\test_new_recipe_keep...mp\\modular-checks\\m4m5-final-provenance-green-r1\\test_new_recipe_keeps_primary_3\\port\\user\\.codex\\skills'}, ...]
+overrides = ['mcp_servers.fixture.enabled=false']
+
+    def _runtime_binding(executable: str, cwd: Path, environment: dict[str, str], args: list[str],
+                         specs: list[dict[str, str]], overrides: list[str]) -&gt; dict[str, Any]:
+        _require_empty_public_cwd(cwd)
+        cli = Path(executable).resolve(strict=True)
+        if os.name == "nt" and cli.suffix.lower() != ".exe":
+            raise ContractError("reviewed context requires a direct CLI executable, not an unhashed launcher chain")
+        home = Path(environment.get("CODEX_HOME") or str(Path(environment.get("USERPROFILE") or environment.get("HOME") or str(Path.home())) / ".codex")).resolve()
+        catalogs = [override.split("=", 1)[1] for override in overrides if override.startswith("model_catalog_json=")]
+        if len(catalogs) &gt; 1:
+            raise ContractError("one frozen model catalog override permitted")
+        catalog = None
+        if catalogs:
+            try:
+                catalog_value = json.loads(catalogs[0])
+                if not isinstance(catalog_value, str) or not Path(catalog_value).is_absolute():
+                    raise ValueError("absolute catalog path required")
+                catalog = Path(catalog_value).resolve(strict=True)
+                catalog_data = json.loads(catalog.read_bytes())
+                if not isinstance(catalog_data, dict) or set(catalog_data) != {"models"} or not isinstance(catalog_data["models"], list) or not catalog_data["models"]:
+                    raise ValueError("nonempty local model catalog required")
+            except (ValueError, OSError, TypeError) as exc:
+                raise ContractError("invalid frozen local model catalog") from exc
+        required = {canonical(spec) for spec in context_source_specs(home, cwd, model_catalog_path=catalog, environment=environment)}
+        if not required &lt;= {canonical(spec) for spec in specs}:
+            raise ContractError("frozen context omits mandatory default configuration sources")
+        sources = _source_manifest(specs)
+        for spec in specs:
+            source = Path(spec["path"])
+            if "glob" not in spec and source.suffix == ".toml" and source.is_file():
+                config = tomllib.loads(source.read_text(encoding="utf-8"))
+                for name in config.get("mcp_servers", {}):
+                    if f'mcp_servers.{name}.enabled=false' not in overrides:
+&gt;                       raise ContractError("every configured MCP server must be explicitly disabled")
+E                       research_loop.ontology.ContractError: every configured MCP server must be explicitly disabled
+
+research_loop\modular\model_port.py:285: ContractError</failure></testcase><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.156" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.027" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.020" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.103" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.086" /></testsuite></testsuites>
