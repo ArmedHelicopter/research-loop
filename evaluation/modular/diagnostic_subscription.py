@@ -26,6 +26,10 @@ from research_loop.modular.grok_acp_transport import (
 )
 from research_loop.ontology import ContractError, canonical, digest
 
+import research_loop.modular.grok_native_deployment as native_deployment_module
+from research_loop.modular.grok_native_deployment import (
+    FrozenNativeDeployment, checked_deployment, diagnostic_receipt_schema)
+
 SCHEMA = 'four-train-diagnostic-included-subscription-v1'
 OBSERVATION_SCHEMA = 'four-train-diagnostic-subscription-observation-v1'
 CONFIG_SCHEMA = 'diagnostic-subscription-worker-config-v1'
@@ -47,6 +51,7 @@ def own_sources():
     import research_loop.modular.contracts as contracts
     import research_loop.ontology as ontology
     return {'subscription_code': Path(__file__), 'native_acp_code': Path(acp.__file__),
+            'native_deployment_code': Path(native_deployment_module.__file__),
             'private_renderer_code': Path(renderer.__file__), 'schema_validator_code': Path(schemas.__file__),
             'frozen_contracts_code': Path(contracts.__file__), 'ontology_code': Path(ontology.__file__)}
 
@@ -169,6 +174,7 @@ class SubscriptionResult:
     output: FrozenRecord | None
     native: FrozenRecord
     binding: FrozenRecord
+    deployment: FrozenNativeDeployment | None = None
 
 
 class SubscriptionBudget:
@@ -234,8 +240,12 @@ class SubscriptionBudget:
                 title_opportunity_may_have_occurred=r.get('prompt_may_have_been_dispatched'),
                 reported_main_cost_usd=r.get('reported_cost_usd'))
             self.journal.append('subscription_native_receipt', {'role': role, 'receipt': r, 'binding': b})
+            if result.deployment is not None:
+                if (r.get('native_deployment') != checked_deployment(result.deployment).record.data()
+                        or r.get('deployment_digest') != result.deployment.digest):
+                    raise ContractError('subscription deployment receipt differs')
             usage = row['known_main_usage']
-            if (r.get('schema') != 'grok-native-acp-diagnostic-receipt-v1' or r.get('accepted') is not True
+            if (r.get('schema') != diagnostic_receipt_schema(result.deployment) or r.get('accepted') is not True
                     or r.get('faults') != [] or r.get('known_usage_binding_verified') is not True
                     or not usage or usage['usageIsIncomplete'] or usage['modelCalls'] != 1
                     or usage['numTurns'] != 1 or usage['outputTokens'] > spec['main_output_cap']
@@ -293,7 +303,7 @@ class SubscriptionPilot(DiagnosticPilot):
             for state in ('known', 'unknown', 'not_applicable')}}
 
 
-def verify_native_request_binding(result, entry, directory, spec, frozen_files):
+def verify_native_request_binding(result, entry, directory, spec, frozen_files, *, deployment=None):
     """Bind returned objects to actual private native receipt/reservation bytes."""
     r = result.receipt.data()
     if record(json.loads((directory / 'native' / 'observer-receipt.json').read_bytes())) != result.receipt:
@@ -305,9 +315,17 @@ def verify_native_request_binding(result, entry, directory, spec, frozen_files):
         'reservation_sha256': sha(directory / 'native-reservation.json'),
         'source_manifest_sha256': digest(frozen_files),
         'input_byte_cap': spec['max_input_bytes'], 'observed_main_token_cap': spec['observed_main_token_cap']}
-    if r.get('schema') != 'grok-native-acp-diagnostic-receipt-v1' or r.get('diagnostic_binding') != expected:
+    if deployment is not None:
+        checked_deployment(deployment)
+        expected['deployment_digest'] = deployment.digest
+        if r.get('native_deployment') != deployment.record.data() or r.get('deployment_digest') != deployment.digest:
+            raise ContractError('native deployment receipt binding differs')
+    if r.get('schema') != diagnostic_receipt_schema(deployment) or r.get('diagnostic_binding') != expected:
         raise ContractError('native response/request/source binding differs')
     reservation = json.loads((directory / 'native-reservation.json').read_bytes())
+    if deployment is not None and (reservation.get('schema') != 'grok-acp-single-prompt-reservation-v2'
+            or reservation.get('deployment_digest') != deployment.digest):
+        raise ContractError('native deployment reservation differs')
     if (reservation.get('prompt_sha256') != entry['prompt_sha256']
             or reservation.get('schema_sha256') != entry['schema_digest']
             or reservation.get('source_manifest_sha256') != digest(frozen_files)
@@ -320,7 +338,8 @@ def verify_native_request_binding(result, entry, directory, spec, frozen_files):
 
 class PrivateSubscriptionPorts:
     def __init__(self, *, manifest, resolver, authorities, inventory, native_slots,
-                 frozen_files, executable, root, source_guard, fixture_factory=None):
+                 frozen_files, executable, root, source_guard, fixture_factory=None, deployment=None):
+        self.deployment = None if deployment is None else checked_deployment(deployment)
         self.renderer = SubscriptionRenderer(manifest, resolver)
         self.manifest, self.authorities, self.inventory = manifest, authorities, inventory
         self.root = _plain(Path(root)); self.root.mkdir(parents=True, exist_ok=False)
@@ -369,14 +388,15 @@ class PrivateSubscriptionPorts:
                     private_profile=slot['private_profile'], private_dir=directory / 'native',
                     reservation=directory / 'native-reservation.json', frozen_files=self.frozen_files,
                     prompt=wire, schema=schema, main_output_cap=spec['main_output_cap'],
-                    observed_main_token_cap=spec['observed_main_token_cap'], input_byte_cap=spec['max_input_bytes'])
+                    observed_main_token_cap=spec['observed_main_token_cap'], input_byte_cap=spec['max_input_bytes'],
+                    **({} if self.deployment is None else {'deployment': self.deployment}))
             if not isinstance(result, AcpResult):
                 raise ContractError('native result type differs')
             if not result.receipt.data().get('accepted'):
                 self.halted = True
             output = result.response
             try:
-                verify_native_request_binding(result, entry, directory, spec, self.frozen_files)
+                verify_native_request_binding(result, entry, directory, spec, self.frozen_files, deployment=self.deployment)
             except Exception:
                 self.halted = True
                 output = None  # Native usage survives even a coherent response swap.
@@ -387,7 +407,7 @@ class PrivateSubscriptionPorts:
                 except Exception:
                     self.halted = True
                     output = None  # Preserve native receipt even when review semantics fail.
-            return SubscriptionResult(output, result.receipt, record(entry))
+            return SubscriptionResult(output, result.receipt, record(entry), self.deployment)
         except Exception:
             self.halted = True
             raise ContractError('private subscription provider failed') from None
@@ -453,22 +473,34 @@ def run_private(config_descriptor, *, fixture_factory=None):
         guard(); load_record(c['request_inventory'])
         if c['native_deployment'] is not None:
             load_record(c['native_deployment'])
+    native_descriptor = None
     if fixture_factory is None:
-        deployment = exact(load_record(c['native_deployment']).data(),
-            ('schema', 'executable', 'frozen_files', 'slots'))
-        if deployment['schema'] != 'frozen-native-subscription-deployment-v1':
+        deployment = load_record(c['native_deployment']).data()
+        versioned = deployment.get('schema') == 'frozen-native-subscription-deployment-v2'
+        exact(deployment, ('schema', 'executable', 'frozen_files', 'slots', *(['native'] if versioned else [])))
+        if not versioned and deployment['schema'] != 'frozen-native-subscription-deployment-v1':
             raise ContractError('native deployment schema differs')
+        if versioned:
+            native_descriptor = FrozenNativeDeployment(record(deployment['native']))
         executable = deployment['executable']
-        if not Path(executable).is_absolute() or sha(executable) != EXECUTABLE_SHA256:
+        if native_descriptor is not None:
+            native_descriptor.verify_executable(executable)
+        elif not Path(executable).is_absolute() or sha(executable) != EXECUTABLE_SHA256:
             raise ContractError('native executable differs')
-        frozen = deployment['frozen_files']; slots = deployment['slots']
+        frozen = dict(deployment['frozen_files']); slots = deployment['slots']
+        if native_descriptor is not None:
+            frozen[c['native_deployment']['path']] = c['native_deployment']['sha256']
+            frozen[config_descriptor['path']] = config_descriptor['sha256']
         if not isinstance(frozen, dict) or any(not Path(p).is_absolute() for p in frozen):
             raise ContractError('native frozen source paths must be absolute')
         expected = {e['opportunity_id'] for e in inventory.data()['entries']}
         if set(slots) != expected:
             raise ContractError('all native request profiles must be frozen before execution')
         required = {str(Path(path)): manifest.data()['input_pins'][name] for name, path in c['input_files'].items()}
-        required[executable] = EXECUTABLE_SHA256
+        required[executable] = EXECUTABLE_SHA256 if native_descriptor is None else native_descriptor.record.data()['executable_sha256']
+        if native_descriptor is not None:
+            required.update(native_descriptor.source_pins())
+            required[c['native_deployment']['path']] = c['native_deployment']['sha256']
         homes = []
         roles = {e['opportunity_id']: e['role'] for e in inventory.data()['entries']}
         for opportunity_id, slot in slots.items():
@@ -492,7 +524,8 @@ def run_private(config_descriptor, *, fixture_factory=None):
         executable = None; slots = {}; frozen = {str(p): sha(p) for p in own_sources().values()}
     ports = PrivateSubscriptionPorts(manifest=manifest, resolver=resolver, authorities=authorities,
         inventory=inventory, native_slots=slots, frozen_files=frozen, executable=executable,
-        root=Path(c['journal_path'] + '.acp'), source_guard=full_guard, fixture_factory=fixture_factory)
+        root=Path(c['journal_path'] + '.acp'), source_guard=full_guard, fixture_factory=fixture_factory,
+        deployment=native_descriptor)
     pilot = SubscriptionPilot(manifest=manifest, resolver=resolver, materials=materials,
         keys={r: a.key for r, a in authorities.items()}, authority=authorities['diagnostic'],
         journal_path=Path(c['journal_path']), source_guard=full_guard, **ports.kwargs())

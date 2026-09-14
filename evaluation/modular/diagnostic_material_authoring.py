@@ -28,10 +28,13 @@ from research_loop.modular.grok_acp_transport import (
     AcpResult, DIAGNOSTIC_OPPORTUNITY_CONTRACT, EXECUTABLE_SHA256, MODEL,
     diagnostic_config, known_usage, run_native_diagnostic,
 )
+from research_loop.modular.grok_native_deployment import FrozenNativeDeployment, checked_deployment
 from research_loop.ontology import ContractError, canonical, digest
 
 SCHEMA = 'four-train-private-material-authoring-v1'
 CONFIG_SCHEMA = 'private-material-authoring-config-v1'
+SCHEMA_V2 = 'four-train-private-material-authoring-v2'
+CONFIG_SCHEMA_V2 = 'private-material-authoring-config-v2'
 LIMITS = {'model': MODEL, 'main_opportunities': 4, 'possible_title_opportunities': 4,
     'main_output_cap': 8192, 'title_output_cap': 100, 'max_input_bytes': 262144,
     'observed_main_token_cap': 131072, 'max_retries': 0, 'timeout_seconds': 60}
@@ -136,7 +139,7 @@ def validate_authored(response, references):
 def load_config(descriptor):
     c = exact(load_record(descriptor).data(), ('schema', 'publication', 'export_result',
         'source_files', 'authority_ids', 'key_files', 'native_deployment'))
-    if c['schema'] != CONFIG_SCHEMA:
+    if c['schema'] not in (CONFIG_SCHEMA, CONFIG_SCHEMA_V2):
         raise ContractError('authoring configuration schema differs')
     if not isinstance(c['source_files'], dict):
         raise ContractError('authoring sources missing')
@@ -207,7 +210,7 @@ def resolve_all(c):
     return tasks, references, store, files
 
 
-def provision_native(publication, export_result, directory, *, executable, existing_auth):
+def provision_native(publication, export_result, directory, *, executable, existing_auth, deployment=None):
     """Private file-only preparation with the already authorized local login.
 
     The auth file is copied opaquely and never inspected, hashed into evidence,
@@ -215,7 +218,9 @@ def provision_native(publication, export_result, directory, *, executable, exist
     """
     root = _plain(Path(directory)); root.mkdir(parents=True, exist_ok=False)
     executable = str(_plain(Path(executable)))
-    if sha(executable) != EXECUTABLE_SHA256:
+    if deployment is not None:
+        checked_deployment(deployment).verify_executable(executable)
+    elif sha(executable) != EXECUTABLE_SHA256:
         raise ContractError('authoring executable differs')
     keys = {}; ids = {}
     for role in ('material', 'reviewer1', 'reviewer2', 'arbitrator', 'capacity', 'diagnostic'):
@@ -224,14 +229,14 @@ def provision_native(publication, export_result, directory, *, executable, exist
             out.write(secrets.token_bytes(32)); out.flush(); os.fsync(out.fileno())
         keys[role] = {'path': str(path), 'sha256': sha(path)}
         ids[role] = 'provisional-authoring-' + role + '-' + secrets.token_hex(12)
-    c = {'schema': CONFIG_SCHEMA, 'publication': publication, 'export_result': export_result,
+    c = {'schema': CONFIG_SCHEMA if deployment is None else CONFIG_SCHEMA_V2, 'publication': publication, 'export_result': export_result,
         'authority_ids': ids, 'key_files': keys,
         'source_files': {str(p.absolute()): sha(p) for p in own_sources().values()},
         'native_deployment': None}
     tasks, _, _, _ = resolve_all(c)  # Full references remain inside this worker.
     slots = {}
     for task in tasks:
-        oid = digest({'schema': SCHEMA, 'identity_digest': digest(task['identity']),
+        oid = digest({'schema': _authoring_schema(c), 'identity_digest': digest(task['identity']),
             'task_handle': task['task_handle']})
         slot = {key: str(root / 'native-runtime' / oid / key)
             for key in ('cwd', 'private_home', 'private_profile')}
@@ -242,7 +247,8 @@ def provision_native(publication, export_result, directory, *, executable, exist
         (home / 'config.toml').write_text(diagnostic_config(LIMITS['main_output_cap']), encoding='utf-8')
         slots[oid] = slot
     c['native_deployment'] = write_record(root / 'native-deployment.private.json',
-        {'schema': 'four-task-native-authoring-deployment-v1', 'executable': executable, 'slots': slots})
+        {'schema': 'four-task-native-authoring-deployment-v1' if deployment is None else 'four-task-native-authoring-deployment-v2',
+         'executable': executable, 'slots': slots, **({} if deployment is None else {'native': deployment.record.data()})})
     desc = write_record(root / 'config.private.json', c)
     return compile_authoring(desc, root / 'freeze')
 
@@ -257,6 +263,29 @@ def fresh_native_slot(slot):
         raise ContractError('authoring native home is not fresh')
     if not (home / 'auth.json').is_file():
         raise ContractError('existing native login file is absent')
+
+
+def _authoring_schema(config):
+    return SCHEMA_V2 if config['schema'] == CONFIG_SCHEMA_V2 else SCHEMA
+
+
+def _native_deployment(config):
+    versioned = config['schema'] == CONFIG_SCHEMA_V2
+    if config['native_deployment'] is None:
+        if versioned:
+            raise ContractError('versioned authoring requires an exact native deployment')
+        return None, None
+    body = load_record(config['native_deployment']).data()
+    exact(body, ('schema', 'executable', 'slots', *(['native'] if versioned else [])))
+    expected = 'four-task-native-authoring-deployment-v2' if versioned else 'four-task-native-authoring-deployment-v1'
+    if body['schema'] != expected:
+        raise ContractError('authoring deployment schema differs')
+    native = FrozenNativeDeployment(record(body['native'])) if versioned else None
+    if native is not None:
+        native.verify_executable(body['executable'])
+    elif not Path(body['executable']).is_absolute() or sha(body['executable']) != EXECUTABLE_SHA256:
+        raise ContractError('authoring native executable differs')
+    return body, native
 
 
 def compile_authoring(config_descriptor, directory):
@@ -277,7 +306,7 @@ def compile_authoring(config_descriptor, directory):
         if size > LIMITS['max_input_bytes']:
             raise ContractError('complete authoring input exceeds frozen byte cap')
         output_schema = schema(len(ref['references']))
-        opportunity = digest({'schema': SCHEMA, 'identity_digest': identity, 'task_handle': task['task_handle']})
+        opportunity = digest({'schema': _authoring_schema(c), 'identity_digest': identity, 'task_handle': task['task_handle']})
         private = write_record(root / 'private-prompts' / (opportunity + '.json'),
             {'prompt': prompt, 'output_schema': output_schema})
         files[private['path']] = private['sha256']
@@ -286,16 +315,12 @@ def compile_authoring(config_descriptor, directory):
             'reference_count': len(ref['references']), 'input_bytes': size,
             'prompt_sha256': hashlib.sha256(prompt.encode()).hexdigest(),
             'schema_digest': digest(output_schema), 'private_request': private})
-    deployment = None
-    if c['native_deployment'] is not None:
-        deployment = load_record(c['native_deployment']).data()
-        exact(deployment, ('schema', 'executable', 'slots'))
-        if deployment['schema'] != 'four-task-native-authoring-deployment-v1':
-            raise ContractError('authoring deployment schema differs')
+    deployment, native_descriptor = _native_deployment(c)
+    if deployment is not None:
         executable = deployment['executable']
-        if not Path(executable).is_absolute() or sha(executable) != EXECUTABLE_SHA256:
-            raise ContractError('authoring native executable differs')
-        files[executable] = EXECUTABLE_SHA256
+        files[executable] = EXECUTABLE_SHA256 if native_descriptor is None else native_descriptor.record.data()['executable_sha256']
+        if native_descriptor is not None:
+            files.update(native_descriptor.source_pins())
         files[c['native_deployment']['path']] = c['native_deployment']['sha256']
         if set(deployment['slots']) != {e['opportunity_id'] for e in entries}:
             raise ContractError('authoring native slot mapping differs')
@@ -314,14 +339,14 @@ def compile_authoring(config_descriptor, directory):
             raise ContractError('authoring requires separate native profiles')
     for path, expected in files.items():
         _read_bound(Path(path), {expected})
-    envelope = {'schema': SCHEMA, 'limits': dict(LIMITS), 'tasks': tasks, 'entries': entries,
+    envelope = {'schema': _authoring_schema(c), 'limits': dict(LIMITS), 'tasks': tasks, 'entries': entries,
         'categories': list(COVERAGE_KINDS), 'reference_store': store, 'frozen_files': files,
         'config_descriptor': config_descriptor, 'native_deployment': deployment,
         'separate_review_evaluator_main_allocation': 180,
         'prospective_review_limits': dict(REVIEW_LIMITS),
         'expected_targets_policy': 'provisional_unknown_only', 'validation_eligible': False}
     descriptor = write_record(root / 'authoring-envelope.json', envelope)
-    metadata = {'schema': 'four-task-authoring-freeze-metadata-v1', 'envelope': descriptor,
+    metadata = {'schema': 'four-task-authoring-freeze-metadata-v1' if native_descriptor is None else 'four-task-authoring-freeze-metadata-v2', 'envelope': descriptor,
         'limits': dict(LIMITS), 'entries': [{k: v for k, v in e.items() if k != 'private_request'} for e in entries],
         'prospective_review_limits': dict(REVIEW_LIMITS),
         'source_file_count': len(files), 'source_manifest_digest': digest(files),
@@ -333,7 +358,7 @@ def compile_authoring(config_descriptor, directory):
 
 def run_authoring(envelope_descriptor, output_directory, *, fixture_factory=None):
     envelope = load_record(envelope_descriptor).data()
-    if (envelope.get('schema') != SCHEMA or envelope.get('limits') != LIMITS
+    if (envelope.get('schema') not in (SCHEMA, SCHEMA_V2) or envelope.get('limits') != LIMITS
             or envelope.get('categories') != list(COVERAGE_KINDS)
             or len(envelope.get('tasks', [])) != 4 or len(envelope.get('entries', [])) != 4
             or envelope.get('prospective_review_limits') != REVIEW_LIMITS
@@ -342,6 +367,9 @@ def run_authoring(envelope_descriptor, output_directory, *, fixture_factory=None
             or envelope.get('expected_targets_policy') != 'provisional_unknown_only'):
         raise ContractError('frozen authoring contract differs')
     c, authorities = load_config(envelope['config_descriptor'])
+    if envelope['schema'] != _authoring_schema(c):
+        raise ContractError('authoring envelope version differs from configuration')
+    deployment, native_descriptor = _native_deployment(c)
     # Reconstruct every complete request before the first native subprocess. A
     # malformed late entry must not consume earlier authoring opportunities.
     tasks, references, store, reference_files = resolve_all(c)
@@ -360,7 +388,7 @@ def run_authoring(envelope_descriptor, output_directory, *, fixture_factory=None
         if (entry['identity_digest'] != identity or entry['task_handle'] != task['task_handle']
                 or entry['reference_digest'] != task['reference_digest']
                 or entry['reference_count'] != len(ref['references'])
-                or entry['opportunity_id'] != digest({'schema': SCHEMA, 'identity_digest': identity,
+                or entry['opportunity_id'] != digest({'schema': _authoring_schema(c), 'identity_digest': identity,
                     'task_handle': task['task_handle']})
                 or private != {'prompt': prompt, 'output_schema': schema(len(ref['references']))}
                 or entry['input_bytes'] != len(prompt.encode()) or entry['input_bytes'] > LIMITS['max_input_bytes']
@@ -376,12 +404,13 @@ def run_authoring(envelope_descriptor, output_directory, *, fixture_factory=None
         if envelope['native_deployment'] is not None:
             raise ContractError('unexpected authoring deployment')
     else:
-        deployment = load_record(c['native_deployment']).data()
         if (envelope['native_deployment'] != deployment
                 or set(deployment['slots']) != {e['opportunity_id'] for e in envelope['entries']}
                 or envelope['frozen_files'].get(c['native_deployment']['path']) != c['native_deployment']['sha256']
-                or envelope['frozen_files'].get(deployment['executable']) != EXECUTABLE_SHA256):
+                or envelope['frozen_files'].get(deployment['executable']) != (EXECUTABLE_SHA256 if native_descriptor is None else native_descriptor.record.data()['executable_sha256'])):
             raise ContractError('authoring deployment binding differs')
+        if native_descriptor is not None and any(envelope['frozen_files'].get(k) != v for k, v in native_descriptor.source_pins().items()):
+            raise ContractError('authoring deployment implementation not frozen')
         for slot in deployment['slots'].values():
             fresh_native_slot(slot)
             config = Path(slot['private_home']) / 'config.toml'
@@ -390,7 +419,8 @@ def run_authoring(envelope_descriptor, output_directory, *, fixture_factory=None
                 raise ContractError('authoring deployment config binding differs')
     root = _plain(Path(output_directory)); root.mkdir(parents=True, exist_ok=False)
     reservation = Path(envelope_descriptor['path']).with_suffix('.run-reservation.json')
-    write_record(reservation, {'schema': 'authoring-four-opportunity-reservation-v1',
+    write_record(reservation, {'schema': 'authoring-four-opportunity-reservation-v1' if native_descriptor is None else 'authoring-four-opportunity-reservation-v2',
+        **({} if native_descriptor is None else {'deployment_digest': native_descriptor.digest}),
         'envelope_sha256': envelope_descriptor['sha256'], 'main_opportunities': 4,
         'possible_title_opportunities': 4, 'automatic_retry': False})
     journal = PrivateJournal(root / 'authoring.private.jsonl')
@@ -446,7 +476,8 @@ def run_authoring(envelope_descriptor, output_directory, *, fixture_factory=None
                         private_profile=native['private_profile'], private_dir=directory / 'native',
                         reservation=directory / 'native-reservation.json', frozen_files=frozen_files,
                         prompt=prompt, schema=output_schema, main_output_cap=LIMITS['main_output_cap'],
-                        observed_main_token_cap=LIMITS['observed_main_token_cap'], input_byte_cap=LIMITS['max_input_bytes'])
+                        observed_main_token_cap=LIMITS['observed_main_token_cap'], input_byte_cap=LIMITS['max_input_bytes'],
+                        **({} if native_descriptor is None else {'deployment': native_descriptor}))
                 if not isinstance(result, AcpResult):
                     raise ContractError('authoring native result type differs')
                 native_receipt = result.receipt.data()
@@ -457,7 +488,7 @@ def run_authoring(envelope_descriptor, output_directory, *, fixture_factory=None
                     native_prompt_may_have_been_dispatched=native_receipt.get('prompt_may_have_been_dispatched'),
                     native_faults=native_receipt.get('faults'), reported_main_cost_usd=native_receipt.get('reported_cost_usd'))
                 stage = 'native_result_binding'
-                verify_native_request_binding(result, entry, directory, LIMITS, frozen_files)
+                verify_native_request_binding(result, entry, directory, LIMITS, frozen_files, deployment=native_descriptor)
                 stage = 'native_accounting_and_account_gate'
                 usage = state['known_main_usage']
                 if (not native_receipt.get('accepted') or native_receipt.get('faults') != []
@@ -534,7 +565,8 @@ def run_authoring(envelope_descriptor, output_directory, *, fixture_factory=None
             journal.append('ready_review_compilation_rejected', {'ready_request_inventory_available': False})
     availability = {status: sum(s['status'] == status for s in slots)
                     for status in ('ready', 'unresolved_material', 'not_applicable')}
-    metadata = {'schema': 'four-task-private-authoring-outcome-v1',
+    metadata = {'schema': 'four-task-private-authoring-outcome-v1' if native_descriptor is None else 'four-task-private-authoring-outcome-v2',
+        **({} if native_descriptor is None else {'deployment_digest': native_descriptor.digest}),
         'authoring_envelope_sha256': envelope_descriptor['sha256'], 'task_count': 4,
         'planned_authoring_main_opportunities': 4, 'planned_authoring_possible_title_opportunities': 4,
         'authoring_outcomes': states, 'material_availability': availability, 'slot_count': 36,

@@ -21,6 +21,7 @@ import uuid
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.model_port import _validate_schema
 from research_loop.ontology import ContractError
+from research_loop.modular.grok_native_deployment import checked_deployment, diagnostic_receipt_schema
 
 MODEL = 'grok-4.6'
 
@@ -300,7 +301,7 @@ class SinglePromptACP:
     """
     def __init__(self, command, *, cwd, env, private_dir, reservation, frozen_files,
                  timeout=60, max_total_tokens=20000, main_output_cap=128,
-                 opportunity_contract=OPPORTUNITY_CONTRACT, input_byte_cap=None):
+                 opportunity_contract=OPPORTUNITY_CONTRACT, input_byte_cap=None, deployment=None):
         require(0 < timeout <= 60, 'timeout_contract')
         require(type(main_output_cap) is int and main_output_cap > 0
                 and type(max_total_tokens) is int and max_total_tokens > main_output_cap,
@@ -311,6 +312,11 @@ class SinglePromptACP:
                 'smoke_output_cap_changed')
         require(opportunity_contract not in (DIAGNOSTIC_OPPORTUNITY_CONTRACT, TRAIN_OPPORTUNITY_CONTRACT)
                 or (type(input_byte_cap) is int and input_byte_cap > 0), 'diagnostic_input_cap_missing')
+        self.deployment = None if deployment is None else checked_deployment(deployment)
+        if self.deployment is not None:
+            require(opportunity_contract != TRAIN_OPPORTUNITY_CONTRACT, 'versioned_train_deployment_not_admitted')
+            require(list(command) == self.deployment.command(cwd), 'deployment_command_binding')
+            require(env.get('GROK_DISABLE_AUTOUPDATER') == '1', 'deployment_update_binding')
         self.command = tuple(command); self.cwd = Path(cwd); self.env = dict(env)
         self.private = Path(private_dir); self.reservation = Path(reservation)
         self.frozen_files = dict(frozen_files)
@@ -326,6 +332,13 @@ class SinglePromptACP:
 
     def verify_files(self):
         require(bool(self.frozen_files), 'source_manifest_empty')
+        if self.deployment is not None:
+            try:
+                self.deployment.verify_executable(self.command[0])
+                required = self.deployment.source_pins()
+            except (ContractError, OSError):
+                raise Rejected('deployment_file_changed') from None
+            require(all(self.frozen_files.get(k) == v for k, v in required.items()), 'deployment_source_manifest')
         for path, expected in self.frozen_files.items():
             require(digest(Path(path).read_bytes()) == expected, 'frozen_file_changed')
 
@@ -611,6 +624,9 @@ class SinglePromptACP:
                     'source_manifest_sha256': digest(encoded(self.frozen_files)),
                     'created_at': datetime.now(timezone.utc).isoformat(),
                     'terminal_after_possible_dispatch': True}
+                if self.deployment is not None:
+                    reservation.update(schema='grok-acp-single-prompt-reservation-v2',
+                        deployment_digest=self.deployment.digest)
                 with self.reservation.open('xb') as out:
                     out.write(encoded(reservation)); out.flush(); os.fsync(out.fileno())
                 self.sent = True  # Before I/O: an uncertain write is still an attempt.
@@ -714,11 +730,18 @@ class SinglePromptACP:
                 'source_manifest_sha256': digest(encoded(self.frozen_files)), 'input_byte_cap': self.input_byte_cap,
                 'observed_main_token_cap': self.max_total_tokens,
                 'title_usage_and_all_opportunity_totals': 'unknown'}
+        if self.deployment is not None:
+            receipt['schema'] = (diagnostic_receipt_schema(self.deployment)
+                if self.opportunity_contract == DIAGNOSTIC_OPPORTUNITY_CONTRACT else 'grok-native-acp-receipt-v3')
+            receipt['native_deployment'] = self.deployment.record.data()
+            receipt['deployment_digest'] = self.deployment.digest
+            if 'diagnostic_binding' in receipt:
+                receipt['diagnostic_binding']['deployment_digest'] = self.deployment.digest
         (self.private / 'observer-receipt.json').write_bytes(encoded(receipt) + b'\n')
         return AcpResult(FrozenRecord.from_dict(receipt), response if not faults else None)
 
 
-def native_launch(*, executable, cwd, private_home, private_profile, frozen_files, expected_config=SAFE_CONFIG):
+def native_launch(*, executable, cwd, private_home, private_profile, frozen_files, expected_config=SAFE_CONFIG, deployment=None):
     """Prepare pinned native startup for read-only ACP investigation.
 
     The caller provisions the already-authorized native auth file without reading
@@ -727,7 +750,12 @@ def native_launch(*, executable, cwd, private_home, private_profile, frozen_file
     """
     executable = Path(executable).resolve(); cwd = Path(cwd).resolve()
     home = Path(private_home).resolve(); user = Path(private_profile).resolve()
-    require(digest(executable.read_bytes()) == EXECUTABLE_SHA256, 'executable_pin')
+    if deployment is None:
+        require(digest(executable.read_bytes()) == EXECUTABLE_SHA256, 'executable_pin')
+    else:
+        checked_deployment(deployment).verify_executable(executable)
+        require(all(frozen_files.get(k) == v for k, v in deployment.source_pins().items()),
+                'deployment_source_manifest')
     require((home / 'config.toml').read_text(encoding='utf-8') == expected_config, 'native_config_pin')
     require(set(p.name for p in home.iterdir()) == {'auth.json', 'config.toml'}, 'native_home_not_fresh')
     require(not any(cwd.iterdir()) and not any(user.iterdir()), 'native_context_not_empty')
@@ -745,11 +773,14 @@ def native_launch(*, executable, cwd, private_home, private_profile, frozen_file
     for key in ('APPDATA', 'LOCALAPPDATA', 'TEMP'):
         Path(env[key]).mkdir(parents=True, exist_ok=True)
     command = [str(executable), '--no-auto-update', '--cwd', str(cwd), 'agent', 'stdio']
+    if deployment is not None:
+        command = deployment.command(cwd)
+        env.update(deployment.record.data()['environment'])
     return command, env
 
 
 def run_native(*, opportunity_contract, executable, cwd, private_home, private_profile,
-               private_dir, reservation, frozen_files, prompt, schema, timeout=60):
+               private_dir, reservation, frozen_files, prompt, schema, timeout=60, deployment=None):
     """Execute the explicit two-opportunity contract using existing native login.
 
     One main prompt plus at most one first-title opportunity, with title usage
@@ -758,14 +789,15 @@ def run_native(*, opportunity_contract, executable, cwd, private_home, private_p
     """
     require(opportunity_contract == OPPORTUNITY_CONTRACT, 'opportunity_contract_unapproved')
     command, env = native_launch(executable=executable, cwd=cwd,
-        private_home=private_home, private_profile=private_profile, frozen_files=frozen_files)
+        private_home=private_home, private_profile=private_profile, frozen_files=frozen_files,
+        **({} if deployment is None else {'deployment': deployment}))
     return SinglePromptACP(command, cwd=cwd, env=env, private_dir=private_dir,
-        reservation=reservation, frozen_files=frozen_files, timeout=timeout).invoke(prompt, schema)
+        reservation=reservation, frozen_files=frozen_files, timeout=timeout, deployment=deployment).invoke(prompt, schema)
 
 
 def run_native_diagnostic(*, opportunity_contract, executable, cwd, private_home, private_profile,
                           private_dir, reservation, frozen_files, prompt, schema,
-                          main_output_cap, observed_main_token_cap, input_byte_cap):
+                          main_output_cap, observed_main_token_cap, input_byte_cap, deployment=None):
     """Separate diagnostic request bounds; no tokenizer or capacity claim."""
     require(opportunity_contract == DIAGNOSTIC_OPPORTUNITY_CONTRACT, 'diagnostic_contract_unapproved')
     require(type(input_byte_cap) is int and input_byte_cap > 0 and isinstance(prompt, str)
@@ -774,11 +806,12 @@ def run_native_diagnostic(*, opportunity_contract, executable, cwd, private_home
     require(type(observed_main_token_cap) is int and observed_main_token_cap > main_output_cap,
             'diagnostic_observed_token_cap')
     command, env = native_launch(executable=executable, cwd=cwd, private_home=private_home,
-        private_profile=private_profile, frozen_files=frozen_files, expected_config=config)
+        private_profile=private_profile, frozen_files=frozen_files, expected_config=config,
+        **({} if deployment is None else {'deployment': deployment}))
     return SinglePromptACP(command, cwd=cwd, env=env, private_dir=private_dir,
         reservation=reservation, frozen_files=frozen_files, timeout=60,
         main_output_cap=main_output_cap, max_total_tokens=observed_main_token_cap,
-        opportunity_contract=opportunity_contract, input_byte_cap=input_byte_cap).invoke(prompt, schema)
+        opportunity_contract=opportunity_contract, input_byte_cap=input_byte_cap, deployment=deployment).invoke(prompt, schema)
 
 
 def run_native_train(*, opportunity_contract, executable, cwd, private_home, private_profile,

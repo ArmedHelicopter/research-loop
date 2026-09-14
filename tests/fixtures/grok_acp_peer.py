@@ -30,6 +30,10 @@ for line in sys.stdin:
         out.write(line)
     method = req['method']; result = {}
     if method == 'initialize':
+        if scenario == 'startup_notifications':
+            send({'method':'_x.ai/models/update','params':{'currentModelId':'grok-4.6'}})
+            send({'method':'_x.ai/settings/update','params':{'allow_access':True,'consent_gate':None}})
+            send({'method':'_x.ai/announcements/update','params':{'announcements':[]}})
         result = {'protocolVersion': 1}
     elif method == 'session/new':
         if scenario == 'pre_timeout':
