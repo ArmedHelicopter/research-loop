@@ -25,7 +25,7 @@ source, executable and configuration. Each prompt reservation uses v2 and binds
 the deployment digest. The smoke receipt uses v3; diagnostic receipt/binding v2
 also binds the descriptor to original request, response, reservation and source
 manifest bytes. The original-byte reader rejects mismatched or omitted deployment
-identity. The protocol engine alone remains a synthetic seam, not an executable
+identity. The new deployment replays executable and source pins after process closure; a failure rejects eligibility while retaining observed known MAIN usage. The protocol engine alone remains a synthetic seam, not an executable
 provenance attestation.
 
 `provision_native(..., deployment=descriptor)` creates new material config,
@@ -35,7 +35,7 @@ and four possible initial TITLE opportunities, output cap 8192, input byte cap
 It copies only an explicitly supplied login opaquely; login bodies never enter
 source hashes. The old failed envelopes remain spent and cannot be reused.
 
-Diagnostic subscription deployment v2 adds `native: descriptor.record.data()`
+Diagnostic subscription worker config v2 requires deployment v2; worker config v1 rejects that deployment. The signed observation v2 includes the native deployment digest and the immutable outer deployment/config descriptors. Diagnostic subscription deployment v2 adds `native: descriptor.record.data()`
 to the old executable/slot/source inventory. Its immutable outer descriptor and
 config hashes join the per-call source manifest after loading, avoiding a
 self-referential hash. Existing manifest budgets and frozen request inventories
