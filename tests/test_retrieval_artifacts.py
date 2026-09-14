@@ -112,6 +112,10 @@ def test_q84_ledger_is_separate_persisted_source_and_replayable(tmp_path):
         m2_enabled=True, m6_enabled=True).data()['descriptor_count'] == 3
     verify_retrieval_event_stream(session.artifacts, trace_path=session.sidecar/'trace.jsonl', task=task)
     assert not session.evidence.roots()
+    changed_task = PublicTask(task.identity, FrozenRecord.from_dict({'question': 'another question with the same identity'}))
+    with pytest.raises(ContractError, match='subject lock'):
+        verify_q84_source_ledger_artifacts(session.artifacts, ledger_path=ledger_path, task=changed_task,
+            m2_enabled=True, m6_enabled=True)
     ledger_path.unlink()
     with pytest.raises(ContractError, match='missing'):
         verify_q84_source_ledger_artifacts(session.artifacts, ledger_path=ledger_path, task=task, m2_enabled=True, m6_enabled=True)

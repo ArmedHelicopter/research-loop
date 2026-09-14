@@ -171,8 +171,27 @@ def verify_session_context_artifacts(*, task: PublicTask, lock: FrozenRecord,
     if set(invocation_snapshots) != set(trace_requests):
         raise ContractError('M3 invocation snapshots do not cover the original request set')
     expected_source = source_snapshot(Path(__file__).with_name('runtime.py'))
-    records = [descriptor.data() for descriptor in catalogue.records()
-               if descriptor.data()['kind'] == 'model_context']
+    records = []
+    pending_context = latest_trace = None
+    for item in catalogue.records():
+        descriptor = item.data()
+        if descriptor['kind'] == 'trace_event':
+            trace = descriptor['payload']['canonical']
+            if pending_context is not None and (trace.get('stage') != 'model_request'
+                    or trace['data']['request_digest'] != pending_context):
+                raise ContractError('M3 context witness must immediately precede its request trace')
+            if trace.get('stage') == 'model_request':
+                if pending_context != trace['data']['request_digest']:
+                    raise ContractError('M3 request lacks its preceding context witness')
+                pending_context = None
+            latest_trace = item.content_hash
+        elif descriptor['kind'] == 'model_context':
+            if pending_context is not None or latest_trace is None or descriptor['parents'] != [latest_trace]:
+                raise ContractError('M3 context witness lacks its original preceding trace parent')
+            records.append(descriptor)
+            pending_context = descriptor['payload']['canonical'].get('request_digest')
+    if pending_context is not None:
+        raise ContractError('M3 context witness lacks its subsequent request trace')
     if len(records) != len(trace_requests):
         raise ContractError('every model request needs exactly one M3 context artifact')
     enabled = 'M3' in lock_body.get('arm', {}).get('enabled', [])

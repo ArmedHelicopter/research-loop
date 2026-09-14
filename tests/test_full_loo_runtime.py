@@ -158,7 +158,7 @@ def test_actual_complete_22_cell_composition(grid):
     full_target=next(r for r in run.results if r is not None and r.cell.arm_id=='full')
     descriptors=[]
     for result in (full_build,full_target):
-        descriptors.extend(json.loads(line) for line in (result.root/'runtime/artifacts.jsonl').read_text(encoding='utf-8').splitlines())
+        descriptors.extend(json.loads(line)['descriptor'] for line in (result.root/'runtime/artifacts.jsonl').read_text(encoding='utf-8').splitlines())
     assert {d['module'] for d in descriptors if d['coverage']=='covered'} >= {f'M{i}' for i in range(1,10)}
     assert all(d['scientific_validated'] is False for d in descriptors)
     recipes=setup['plan'].composition.data()['cells'];by_id={r['id']:r for r in recipes}

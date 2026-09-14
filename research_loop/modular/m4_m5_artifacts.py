@@ -165,11 +165,17 @@ def _verify_m4_m5_artifacts(catalogue, sidecar: Path):
     reveals = []
     prior_roles: dict[str, tuple[str, ...]] = {}
     prior_submissions: dict[str, dict[str, dict[str, Any]]] = {}
+    c4_sealed_traces = []
     latest_trace = None
     for descriptor in all_descriptors:
         body = descriptor.data()
         if body['kind'] == 'trace_event':
             trace = FrozenRecord.from_dict(body['payload']['canonical']).data()
+            if trace['stage'] == 'c4_prediction_frozen':
+                _check_c4_prediction_freezes([trace], consumed['predictions'], 'M4' in active)
+            if trace['stage'] == 'c4_review_sealed':
+                c4_sealed_traces.append(trace)
+                _check_c4_sealed_submissions(c4_sealed_traces, consumed['reviews'], 'M5' in active)
             if trace['stage'] == 'c4_review_reveal':
                 if 'M5' in active:
                     _bind_c4_reveal(trace, reveals)

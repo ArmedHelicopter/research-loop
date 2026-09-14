@@ -163,7 +163,9 @@ def verify_q84_source_ledger_artifacts(catalogue, *, ledger_path, task, m2_enabl
     # Check existence before the public reader's writable initialization mode.
     ledger = EvidenceLedger(task.identity, storage_path=ledger_path)
     traces = [d.data()['payload']['canonical'] for d in catalogue.records() if d.data()['kind'] == 'trace_event']
-    if not traces or traces[0]['stage'] != 'objective_lock' or traces[0]['data']['identity'] != task.identity.data():
+    if (not traces or traces[0]['stage'] != 'objective_lock' or catalogue.identity != task.identity
+            or traces[0]['data']['identity'] != task.identity.data()
+            or traces[0]['data']['task_digest'] != task.content_hash):
         raise ContractError('Q8.4 source ledger lacks its subject lock')
     enabled = traces[0]['data']['arm']['enabled']
     if type(m2_enabled) is not bool or type(m6_enabled) is not bool or m2_enabled != ('M2' in enabled) or m6_enabled != ('M6' in enabled):

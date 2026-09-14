@@ -11,8 +11,7 @@ from test_modular_predictions_review import branches, response
 from test_modular_runtime import session_at
 
 
-@pytest.mark.parametrize('modules', [('M4', 'M5'), ('M4',), ()])
-def test_actual_c4_prepare_preserves_enabled_and_ordinary_control_artifacts(tmp_path, monkeypatch, modules):
+def _actual_c4_prepare_session(tmp_path, monkeypatch, modules):
     from research_loop.modular import full_loo_modules as c4
     from test_modular_combination_benchmark_driver import _plan
     session, _, _ = session_at(tmp_path/'run', modules=modules, slots=c4.PREP_SLOTS)
@@ -36,10 +35,36 @@ def test_actual_c4_prepare_preserves_enabled_and_ordinary_control_artifacts(tmp_
         invoke=lambda slot, instruction, module: session.invoke(slot, model, instruction=instruction, module_context=module),
         record=session._record, retrieve=lambda: {'public': 'fixture'},
         phase_material=FrozenRecord.from_dict({'jobs': [{'id': 'main'}, {'id': 'auxiliary'}]}))
+    return session
+
+
+@pytest.mark.parametrize('modules', [('M4', 'M5'), ('M4',), ()])
+def test_actual_c4_prepare_preserves_enabled_and_ordinary_control_artifacts(tmp_path, monkeypatch, modules):
+    session = _actual_c4_prepare_session(tmp_path, monkeypatch, modules)
     checked = verify_m4_m5_artifacts(session.artifacts, session.sidecar).data()
     assert checked['prediction_events'] == int('M4' in modules)
     assert checked['review_events'] == (3 if 'M5' in modules else 0)
     assert checked['reveal_outputs'] == int('M5' in modules)
+
+
+@pytest.mark.parametrize('event,stage', [('freeze', 'c4_prediction_frozen'), ('submit', 'c4_review_sealed')])
+def test_actual_c4_events_require_prior_module_outputs(tmp_path, monkeypatch, event, stage):
+    session = _actual_c4_prepare_session(tmp_path, monkeypatch, ('M4', 'M5'))
+    session.artifacts.seal()
+    rows = [json.loads(line) for line in session.artifacts.path.read_bytes().splitlines()]
+    index = next(i for i, row in enumerate(rows) if row['descriptor']['kind'] == 'journal_event'
+                 and row['descriptor']['payload']['canonical']['event']['event'] == event)
+    late = rows.pop(index)
+    after = next(i for i, row in enumerate(rows) if row['descriptor']['kind'] == 'trace_event'
+                 and row['descriptor']['payload']['canonical']['stage'] == stage)
+    old_trace_parent = late['descriptor']['parents'][-1]
+    late['descriptor']['parents'][-1] = rows[after]['descriptor_digest']
+    rows.insert(after + 1, late)
+    # All hashes and the actual seal remain valid; only the historical claim
+    # that this module output was already available is false.
+    coherently_rehash_catalogue(session, rows)
+    with pytest.raises(ContractError, match='C4'):
+        verify_m4_m5_artifacts(session.artifacts, session.sidecar)
 
 
 def history(tmp_path, modules=('M4', 'M5')):

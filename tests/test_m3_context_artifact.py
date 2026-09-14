@@ -38,6 +38,24 @@ def _audited_snapshots(session):
         for request_digest, snapshots in raw.items()}
 
 
+@pytest.mark.parametrize('modules', [('M2', 'M3'), ()])
+@pytest.mark.parametrize('fault', ['parent', 'delayed'])
+def test_context_witness_rejects_rehashed_parent_or_position(tmp_path, modules, fault):
+    from test_m4_m5_artifacts import coherently_rehash_catalogue
+    session, _, _ = session_at(tmp_path/'run', modules=modules)
+    session.invoke('final', lambda _: FrozenRecord.from_dict({'ok': True}), instruction='Inspect.')
+    snapshots = _audited_snapshots(session)
+    session.artifacts.seal()
+    rows = [json.loads(line) for line in session.artifacts.path.read_bytes().splitlines()]
+    index = next(i for i, row in enumerate(rows) if row['descriptor']['kind'] == 'model_context')
+    if fault == 'parent': rows[index]['descriptor']['parents'] = []
+    else: rows.append(rows.pop(index))
+    coherently_rehash_catalogue(session, rows)
+    with pytest.raises(ContractError, match='M3'):
+        verify_session_context_artifacts(task=session.task, lock=session.lock, events=_trace_events(session),
+            catalogue=session.artifacts, invocation_snapshots=snapshots)
+
+
 @pytest.mark.parametrize('modules, mode, status', [
     (('M1', 'M2', 'M3'), 'candidate', 'produced'),
     (('M1', 'M2'), 'baseline', 'not_applied'),
