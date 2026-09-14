@@ -312,4 +312,6 @@ class ExtendedTrainProjectionExporter:
             "raw_private_payload_returned": False, "access_isolation": "not_verified"}) + "\n").encode("utf-8")
         from evaluation.modular.legacy_extended_packet_artifacts import seal_packet, verify_packet
         seal_packet(target, task, source_sha256, public, receipt)
-        verify_packet(target, task, expected_source_sha256=source_sha256)
+        checked = verify_packet(target, task, expected_source_sha256=source_sha256)
+        if checked.data().get('schema') != 'legacy-extended-train-packet-v2':
+            raise ContractError('failed legacy packet cannot return a usable training task')

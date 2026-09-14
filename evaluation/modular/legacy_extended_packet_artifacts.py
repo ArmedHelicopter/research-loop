@@ -42,28 +42,33 @@ class LegacyExtendedPacketArtifacts:
         task.identity.require_train()
         if not isinstance(source_sha256,str) or len(source_sha256)!=64 or any(c not in '0123456789abcdef' for c in source_sha256): raise ContractError('legacy packet requires a train source digest')
         self.root,self.task,self.source_sha256=_safe(directory),task,source_sha256
-        if self.root.exists() and any(self.root.iterdir()): raise ContractError('legacy packet directory already used')
-        self.root.mkdir(parents=True,exist_ok=False);self.sources=_sources();self.done=False
+        if self.root.exists(): raise ContractError('legacy packet directory already used')
+        self.root.mkdir(parents=True,exist_ok=False);self.sources=_sources();self.done=False;self.stage='reservation'
         self.binding=FrozenRecord.from_dict({'schema':'legacy-extended-packet-binding-v2','identity':task.identity.data(),'task_sha256':task.content_hash,'source_sha256':source_sha256,'scope':'train_only','raw_private_payload_returned':False,'producer_sources':self.sources,'scientific_validated':False})
         self.catalogue=ArtifactCatalogue(self.root/_CAT,identity=task.identity,run_id=uuid4().hex,experiment_id='P0:legacy-extended-export',lock_digest=self.binding.content_hash,producer_source=self.sources['adapter'])
         self.last=self.catalogue.append(kind='p0_legacy_extended_binding',module='P0',payload=self.binding,config_refs=(_ref(self.sources),))
     def write(self,public,receipt):
         try:
-            _new(self.root/'public.json',public);_new(self.root/'receipt.json',receipt);return self._finish('produced')
-        except Exception:
-            try: self.fail()
-            except Exception: pass
+            self.stage='public';_new(self.root/'public.json',public)
+            self.stage='receipt';_new(self.root/'receipt.json',receipt)
+            self.stage='seal';return self._finish('produced')
+        except Exception as error:
+            try: self.fail(error)
+            except Exception as closure_error:
+                error.add_note('legacy packet failure closure also failed: '+type(closure_error).__name__)
             raise
-    def _finish(self,status):
+    def _finish(self,status,error_type=None):
         if self.done: raise ContractError('legacy packet already sealed')
         files=_files(self.root,partial=True,complete=False)
         for snapshot in files.values(): self.last=self.catalogue.append(kind='p0_legacy_extended_file',module='P0',payload=snapshot,parents=(self.last.content_hash,),config_refs=(_ref(self.sources),))
-        terminal=FrozenRecord.from_dict({'schema':'legacy-extended-packet-terminal-v2','status':status,'files':files,'raw_private_payload_returned':False,'storage_verified':True,'operation_validated':status=='produced','engineering_verified':status=='produced','scientific_validated':False})
+        terminal=FrozenRecord.from_dict({'schema':'legacy-extended-packet-terminal-v2','status':status,'files':files,
+            'stage':'complete' if status=='produced' else self.stage,'error_type':error_type,
+            'raw_private_payload_returned':False,'scientific_validated':False})
         self.last=self.catalogue.append(kind='p0_legacy_extended_terminal',module='P0',payload=terminal,parents=(self.last.content_hash,),status=status,config_refs=(_ref(self.sources),))
         seal=self.catalogue.seal();packet=FrozenRecord.from_dict({'schema':'legacy-extended-train-packet-v2','binding':self.binding.data(),'catalogue_seal':seal.data(),'raw_private_payload_returned':False,'scope':'train_only'})
         _new(self.root/_SEAL,(packet.encoded+'\n').encode());self.done=True;return packet
-    def fail(self):
-        if not self.done:self._finish('failed')
+    def fail(self,error):
+        if not self.done:self._finish('failed',type(error).__name__)
 
 def seal_packet(directory,task,source_sha256,public,receipt): return LegacyExtendedPacketArtifacts(directory,task,source_sha256).write(public,receipt)
 
@@ -73,6 +78,7 @@ def verify_packet(directory,task,expected_source_sha256=None):
     task.identity.require_train()
     if not isinstance(expected_source_sha256,str) or len(expected_source_sha256)!=64 or any(c not in '0123456789abcdef' for c in expected_source_sha256): raise ContractError('legacy packet reader requires its expected train source digest')
     root=_safe(directory)
+    _files(root,partial=True)  # Validate every path before opening seal-supplied data.
     try: packet=FrozenRecord((root/_SEAL).read_text(encoding='utf-8').strip());body=packet.data();binding=FrozenRecord.from_dict(body['binding']);b=binding.data()
     except (OSError,UnicodeError,KeyError,ValueError,ContractError) as exc: raise ContractError('legacy packet seal is unreadable') from exc
     required_binding={'schema','identity','task_sha256','source_sha256','scope','raw_private_payload_returned','producer_sources','scientific_validated'}
@@ -83,20 +89,39 @@ def verify_packet(directory,task,expected_source_sha256=None):
     records=cat.records()
     if (binding_fields.get('experiment_id')!='P0:legacy-extended-export' or binding_fields.get('lock_digest')!=binding.content_hash or not isinstance(binding_fields.get('run_id'),str) or len(binding_fields['run_id'])!=32 or any(c not in '0123456789abcdef' for c in binding_fields['run_id']) or not records or records[0].data()['payload']['canonical']!=b): raise ContractError('legacy packet catalogue lacks its original reservation')
     terminal=records[-1].data();value=terminal['payload']['canonical'];status=value.get('status')
-    files=_files(root,partial=status=='failed');expected={'schema':'legacy-extended-packet-terminal-v2','status':status,'files':files,'raw_private_payload_returned':False,'storage_verified':True,'operation_validated':status=='produced','engineering_verified':status=='produced','scientific_validated':False}
+    files=_files(root,partial=status=='failed')
+    if status=='produced':
+        stage,error_type='complete',None
+    else:
+        stage,error_type=value.get('stage'),value.get('error_type')
+        if (stage not in {'public','receipt','seal'} or type(error_type)is not str or not error_type
+                or stage=='public' and 'receipt.json' in files
+                or stage in {'receipt','seal'} and 'public.json' not in files
+                or stage=='seal' and 'receipt.json' not in files):
+            raise ContractError('legacy packet failure stage differs from retained output prefix')
+    expected={'schema':'legacy-extended-packet-terminal-v2','status':status,'files':files,
+        'stage':stage,'error_type':error_type,'raw_private_payload_returned':False,'scientific_validated':False}
     reference=_ref(b['producer_sources']); previous=None
     if len(records)!=len(files)+2: raise ContractError('legacy packet descriptor count differs')
     for index,record in enumerate(records):
         row=record.data(); expected_kind='p0_legacy_extended_binding' if index==0 else 'p0_legacy_extended_terminal' if index==len(records)-1 else 'p0_legacy_extended_file'
         expected_payload=b if index==0 else expected if index==len(records)-1 else list(files.values())[index-1]
         expected_status=status if index==len(records)-1 else 'produced'
-        if (row['kind']!=expected_kind or row['module']!='P0' or row['coverage']!='covered' or row['status']!=expected_status or row['parents']!=([] if previous is None else [previous]) or row['producer_source']!=b['producer_sources']['adapter'] or row['config_refs']!=[reference] or row['optimizer_visible'] or row['scientific_validated'] or row['payload']['canonical']!=expected_payload): raise ContractError('legacy packet descriptor differs')
+        if (row['kind']!=expected_kind or row['module']!='P0' or row['coverage']!='covered' or row['status']!=expected_status
+                or row['parents']!=([] if previous is None else [previous]) or row['producer_source']!=b['producer_sources']['adapter']
+                or row['config_refs']!=[reference] or row['checks']!=[] or row['cost']!={'known':False,'units':None}
+                or row['optimizer_visible'] is not False or row['scientific_validated'] is not False
+                or FrozenRecord.from_dict(row['payload']['canonical'])!=FrozenRecord.from_dict(expected_payload)):
+            raise ContractError('legacy packet descriptor differs')
         previous=record.content_hash
     if (terminal['kind']!='p0_legacy_extended_terminal' or status not in {'produced','failed'} or value!=expected): raise ContractError('legacy packet terminal differs')
-    if status=='failed': return FrozenRecord.from_dict({'schema':'legacy-extended-packet-storage-v1','storage_verified':True,'operation_validated':False,'engineering_verified':False,'scientific_validated':False})
+    if status=='failed': return FrozenRecord.from_dict({'schema':'legacy-extended-packet-storage-v1',
+        'stage':stage,'error_type':error_type,'storage_verified':True,'operation_validated':False,
+        'engineering_verified':False,'scientific_validated':False})
     if set(files)!=set(_PUBLIC): raise ContractError('legacy packet omitted a public output')
     try: public=FrozenRecord((root/'public.json').read_text(encoding='utf-8').strip()).data();receipt=FrozenRecord((root/'receipt.json').read_text(encoding='utf-8').strip()).data()
     except (OSError,UnicodeError,ValueError,ContractError) as exc: raise ContractError('legacy packet public output is unreadable') from exc
     receipt_expected={'identity':task.identity.data(),'task_hash':task.content_hash,'public_projection_written':True,'public_projection_returned':True,'raw_private_payload_returned':False,'access_isolation':'not_verified'}
-    if public!=task.data() or receipt!=receipt_expected: raise ContractError('legacy packet public output differs')
+    if FrozenRecord.from_dict(public)!=FrozenRecord.from_dict(task.data()) or FrozenRecord.from_dict(receipt)!=FrozenRecord.from_dict(receipt_expected):
+        raise ContractError('legacy packet public output differs')
     return packet
