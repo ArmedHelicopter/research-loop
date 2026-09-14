@@ -127,3 +127,35 @@ def test_new_scope_cannot_enter_old_diagnostic_or_material_readers(tmp_path, mon
         provision_native(None, None, tmp_path/'unsupported', executable=kwargs['executable'],
             existing_auth=tmp_path/'must-not-read', deployment=deployment)
     assert not (tmp_path/'unsupported').exists() and not launches
+
+
+def test_config_link_is_rejected_before_reading_its_target(tmp_path, monkeypatch):
+    kwargs, launches = prepare(tmp_path/'run', monkeypatch)
+    config = kwargs['private_home']/'config.toml'
+    target = tmp_path/'synthetic-private-target'; target.write_bytes(config.read_bytes())
+    config.unlink(); config.symlink_to(target)
+    original = Path.read_text; reads = []
+    def read(path, *args, **kw):
+        if path == config: reads.append(str(path))
+        return original(path, *args, **kw)
+    monkeypatch.setattr(Path, 'read_text', read)
+    with pytest.raises((ContractError, acp.Rejected)):
+        acp.run_native(**kwargs)
+    assert not reads and not launches
+
+
+def test_fresh_context_check_cannot_push_main_dispatch_past_deadline(tmp_path, monkeypatch):
+    kwargs, launches = prepare(tmp_path/'run', monkeypatch)
+    original = acp.SinglePromptACP.verify_files
+    def verify(port):
+        original(port)
+        if port.sent and port.request_id == 4:
+            # Simulate the fresh filesystem replay using up the remaining
+            # original deadline, before rpc is allowed to write MAIN.
+            port.deadline = -1
+    monkeypatch.setattr(acp.SinglePromptACP, 'verify_files', verify)
+    result = acp.run_native(**kwargs)
+    assert not result.receipt.data()['accepted'] and 'timeout' in result.receipt.data()['faults']
+    requests = (kwargs['private_dir']/'requests.private.jsonl').read_bytes()
+    assert all(json.loads(x)['method'] != 'session/prompt' for x in requests.splitlines())
+    assert len(launches) == 1
