@@ -1,0 +1,12 @@
+{"job":"a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272","kind":"enqueue","run_id":"814a6ece63fcd3321a07bee5f0e84691a1ebe410fee179248753855a464c56ac","sequence":0,"time_ns":126843906000000}
+{"job":"7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1","kind":"enqueue","run_id":"bf837b7d3cdabb90b55292c7da5092eeefe8599094399adfa2fd66fa8ccf15aa","sequence":1,"time_ns":126844140000000}
+{"attempt":1,"job":"a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272","kind":"claim","run_id":"814a6ece63fcd3321a07bee5f0e84691a1ebe410fee179248753855a464c56ac","sequence":2,"time_ns":126844718000000}
+{"attempt":1,"job":"7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1","kind":"claim","run_id":"bf837b7d3cdabb90b55292c7da5092eeefe8599094399adfa2fd66fa8ccf15aa","sequence":3,"time_ns":126845062000000}
+{"job":"a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272","kind":"start","sequence":4,"time_ns":126845328000000}
+{"job":"7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1","kind":"start","sequence":5,"time_ns":126845531000000}
+{"job":"a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272","kind":"finish","return_digest":"c135de52bdf29418285dd631af30bb21436f069d338e740e72bf2a0995821a74","sequence":6,"time_ns":126846359000000}
+{"job":"7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1","kind":"finish","return_digest":"2192520667bbd4e05308ae59be8dffff46b20b91a26e29303f093b47b960c27b","sequence":7,"time_ns":126846718000000}
+{"job":"a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272","kind":"complete","return_digest":"c135de52bdf29418285dd631af30bb21436f069d338e740e72bf2a0995821a74","sequence":8,"time_ns":126846875000000}
+{"kind":"barrier_refused","sequence":9,"time_ns":126847031000000,"unfinished":1}
+{"job":"7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1","kind":"complete","return_digest":"2192520667bbd4e05308ae59be8dffff46b20b91a26e29303f093b47b960c27b","sequence":10,"time_ns":126847406000000}
+{"jobs":["a8232b6a0b993c32b2e06c9a8757c8478ecea534f544522751eca3b264d13272","7c69eba4b716938e92b0c2a88862892fd0d2f811f68d5e0b3aa292efc8ba61c1"],"kind":"merge","sequence":11,"time_ns":126847625000000}

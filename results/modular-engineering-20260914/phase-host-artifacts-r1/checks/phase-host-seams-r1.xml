@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="28" time="134.311" timestamp="2026-09-14T18:22:49.393990+08:00" hostname="SC-202507131830"><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.008" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.003" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.000" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.003" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[enabled-state_exploration]" time="8.531" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[enabled-state_scheduling]" time="9.116" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[enabled-mechanism_exploration]" time="8.065" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[enabled-mechanism_scheduling]" time="9.088" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[enabled-admission_prediction_exploration]" time="7.953" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[disabled-state_exploration]" time="7.346" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[disabled-state_scheduling]" time="7.704" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[disabled-mechanism_exploration]" time="7.699" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[disabled-mechanism_scheduling]" time="7.452" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[disabled-admission_prediction_exploration]" time="7.570" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[phase_failure-state_exploration]" time="6.832" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[phase_failure-state_scheduling]" time="8.630" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[phase_failure-mechanism_exploration]" time="6.542" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[phase_failure-mechanism_scheduling]" time="7.531" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_composite_host_and_reader_preserve_phase_outputs[phase_failure-admission_prediction_exploration]" time="5.893" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_phase_before_any_model_call_needs_no_invented_model_parent[enabled]" time="7.069" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_phase_before_any_model_call_needs_no_invented_model_parent[disabled]" time="5.802" /><testcase classname="tests.test_phase_host_artifacts" name="test_actual_phase_before_any_model_call_needs_no_invented_model_parent[phase_failure]" time="5.115"><failure message="research_loop.ontology.ContractError: runtime trace lacks a bound task and scenario request">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/phase-host-seams-r1/test_actual_phase_before_any_m2')
+mode = 'phase_failure'
+
+    @pytest.mark.parametrize('mode', ('enabled','disabled','phase_failure'))
+    def test_actual_phase_before_any_model_call_needs_no_invented_model_parent(tmp_path,mode):
+        from test_exploration_scheduler_combination import fixture
+        from research_loop.modular.exploration_scheduler_combination import (
+            FrozenExplorationSchedulerMaterial,run_exploration_scheduler_cell,verify_exploration_scheduler_cell)
+        _,_,config,compiled,service=fixture(tmp_path,job_fault='docker_failed' if mode=='phase_failure' else None)
+        service.close()
+        enabled=[] if mode=='disabled' else ['M7','M8']
+        cell=next(cell for cell in compiled.panel.cells if cell.runtime_arm.data()['enabled']==enabled)
+        packet=next(packet for packet in compiled.packets if packet.task.content_hash==cell.task_digest)
+        b=config.data();seen=[]
+        def model(request):
+            body=request.data();seen.append(body)
+            if body['slot']=='analysis_program':
+                values=[float(row['stdout']) for row in body['module_context']['joint_mechanism']['material']['observations']]
+                return R({'analysis':'Sum the actual public phase observations.','program':'print('+repr(sum(values))+')'})
+            return R({'objective_digest':body['module_context']['required_objective_digest'],'outcome':'unknown',
+                'evidence_ids':[],'conclusion':'Observed '+body['execution_feedback'][0]['stdout'],'programme_complete':False})
+        kwargs=dict(panel=compiled.panel,task=packet.task,scenario=compiled.scenarios[cell.key],
+            package=compiled.packages[cell.runtime_arm.content_hash],
+            material=FrozenExplorationSchedulerMaterial(R(b['materials_by_task'][cell.task_digest])),
+            public_inputs={'public_csv':packet.csv_path},broker=DockerExecutionBroker([tmp_path]),
+            image=b['image'],timeout_seconds=b['timeout_seconds'])
+        result=run_exploration_scheduler_cell(cell=cell,**kwargs,objective=R({'panel_digest':compiled.panel.digest}),
+            sidecar=tmp_path/'actual-host',model=model,audit_verifier=AUDIT)
+        assert result.runtime.status==('failed' if mode=='phase_failure' else 'succeeded')
+&gt;       check_outputs(result,verify_exploration_scheduler_cell,kwargs,tamper=mode=='enabled')
+
+tests\test_phase_host_artifacts.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_phase_host_artifacts.py:22: in check_outputs
+    verify(result, **kwargs)
+research_loop\modular\exploration_scheduler_combination.py:399: in verify_exploration_scheduler_cell
+    PanelReceiptVerifier()._verify_runtime(result.runtime,result.cell)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;research_loop.modular.panel_receipts.PanelReceiptVerifier object at 0x000001F5B6E19EE0&gt;
+receipt = RuntimeReceipt(cell_key=('pair:M7+M8', 'discoverybench', 'synth:train:family_1_1', 'discoverybench:synth:train:family_...54da61727bbcab742a0327403f9267597c53167b2', output_digest=None, failure_reason='combination mechanism or solve failed')
+expected = PanelCell(coverage_id='pair:M7+M8', identity=DataIdentity(benchmark='discoverybench', task_id='synth:train:family_1_1'...d85baca343eeb0e012ea89f1d0e26b47a15', scorer_digest='e549ee2fe0325f1aad81d1789c002f391c2eb8e754b59c771ca0405782f20895')
+
+    def _verify_runtime(self, receipt: RuntimeReceipt, expected: PanelCell, *, p0_control_digest: str | None = None) -&gt; None:
+        if receipt.cell_key != expected.key:
+            raise ContractError("runtime receipt cell key does not match the frozen panel cell")
+        verify_protocol_trace(receipt.trace_path)
+        trace = verify_trace(receipt.trace_path).data()
+        if trace["trace_digest"] != receipt.trace_digest:
+            raise ContractError("runtime trace digest does not match the hash-chained journal")
+        events = [FrozenRecord(line).data() for line in receipt.trace_path.read_text(encoding="utf-8").splitlines()]
+        lock = events[0].get("data")
+        if events[0].get("lock_digest") != FrozenRecord.from_dict(lock).content_hash:
+            raise ContractError("objective lock event does not bind its own lock")
+        if not isinstance(lock, dict) or lock.get("identity") != expected.identity.data():
+            raise ContractError("runtime trace task binding mismatch")
+        if lock.get("task_digest") != expected.task_digest or lock.get("package_digest") != expected.package_digest or lock.get("arm") != expected.runtime_arm.data():
+            raise ContractError("runtime trace package or legal-arm binding mismatch")
+        requests = [event["data"].get("request", {}) for event in events if event["stage"] == "model_request"]
+        expected_binding = {"experiment_id": expected.coverage_id, "variant": expected.variant,
+                            "replicate": expected.replicate, "arm_id": expected.arm_id,
+                            "scenario_digest": expected.scenario_digest}
+        protocol_bindings = [e["data"] for e in events if e["stage"] == "q27_panel_binding"]
+        bound_protocol_failure = (expected.coverage_id == "Q2.7" and not requests
+            and events[-1]["stage"] in {"controller_failure", "execution_failure", "execution_terminal"}
+            and protocol_bindings == [{"panel_cell": expected_binding, "p0_control_digest": p0_control_digest}])
+        if p0_control_digest is not None and not bound_protocol_failure and (not requests or any(
+                request.get("module_context", {}).get("p0_control_digest") != p0_control_digest for request in requests)):
+            raise ContractError("runtime request lacks the frozen P0 control binding")
+        expected_opaque_binding = opaque_panel_cell_binding(expected)
+        bound_request = any(request.get("task", {}).get("identity") == expected.identity.data()
+                            and request.get("module_context", {}).get("panel_cell") in (expected_binding, expected_opaque_binding)
+                            for request in requests)
+        bound_early_failure = (not requests and events[-1].get("stage") == "controller_failure"
+                               and events[-1].get("data", {}).get("panel_cell") == expected_binding)
+        if not bound_request and not bound_early_failure and not bound_protocol_failure:
+&gt;           raise ContractError("runtime trace lacks a bound task and scenario request")
+E           research_loop.ontology.ContractError: runtime trace lacks a bound task and scenario request
+
+research_loop\modular\panel_receipts.py:449: ContractError</failure></testcase></testsuite></testsuites>

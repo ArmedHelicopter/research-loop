@@ -1,0 +1,1 @@
+raise ValueError('public fixture failure')

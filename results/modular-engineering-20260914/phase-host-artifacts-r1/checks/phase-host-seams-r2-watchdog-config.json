@@ -1,0 +1,10 @@
+{
+  "root_pid": 13216,
+  "root_creation_utc_ticks": 639249784419142600,
+  "root_command": "\"E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe\" E:/_ryanDev/AI/research-loop-modular/work/run_frozen_checks_with_source.py E:/_ryanDev/AI/research-loop-modular/artifact-evidence-provenance E:/_ryanDev/AI/research-loop-modular/work/phase-host-seams-r2 tests/test_label_isolation.py tests/test_phase_host_artifacts.py tests/test_phase_artifacts.py tests/test_joint_train_runtime.py::test_actual_history_target_pipeline_with_full_catalogue tests/test_joint_train_runtime.py::test_actual_ordinary_control_preserves_module_disabled_artifact_status tests/test_execution_improvement_train_controller.py::test_complete_shared_builds_and_actual_execution_factorial -x",
+  "deadline": "2026-09-14T19:12:21.9142600+08:00",
+  "journal": "E:/_ryanDev/AI/research-loop-modular/work/phase-host-seams-r2-watchdog.json",
+  "prefix": "E:/_ryanDev/AI/research-loop-modular/work/phase-host-seams-r2",
+  "expected_cases": 39,
+  "new_paid_calls": 0
+}

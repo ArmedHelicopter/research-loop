@@ -1384,3 +1384,34 @@ Main integration remains frozen at `98eae28` for the active C5 r3 engineering
 run. No new module/combination efficacy, real calibration or VAL acceptance is
 claimed. All 48 questions, singleton/pair/triple/full/LOO/C5/Q6.3 experiments
 and TRAIN-only optimization remain required.
+
+# 2026-09-14 Seven additional phase host writers and readers
+
+`cd12b9b` connects the actual exploration/scheduling, state/exploration,
+state/scheduling, mechanism/exploration, mechanism/scheduling,
+admission/prediction/exploration and execution/improvement hosts. Their
+`execution_phase_inputs` records bind the exact material, cell, objective,
+public paths, image, timeout and requested selection. These hosts do not invent
+C4 model or retrieval parents when execution precedes a model call. The original
+trace anchors the completed descriptor prefix; readers check both actual inputs
+and original output bytes. Invented zero costs, optimizer visibility, extra
+metadata and foreign task bindings are rejected.
+
+The first frozen check at `1d0dc06` passed 27 of 28 tests: its failure exposed an
+existing mismatch between opaque early-failure bindings and the panel reader.
+The repaired reader accepts either exact original binding representation and
+rejects a foreign cell digest. At `cd12b9b`, all 39 checks passed in 608.141s,
+with 695 unchanged source files. The cases include six host families in enabled,
+disabled and failed-Docker modes, eight phase-artifact regressions, two C4 actual
+history/target paths and the complete 32-target execution/improvement grid.
+These use actual Docker and synthetic model peers, with zero paid provider calls.
+The overlapping 28- and 39-test batches belong to their respective versions.
+
+`results/modular-engineering-20260914/phase-host-artifacts-r1/` retains both
+attempts, exact source ZIPs and 51 public runtime witnesses: 1,717 files and
+2,120 descriptors. This includes the original rejected failure and all 32
+execution/improvement targets. Archive integrity is distinct from replay in the
+original execution environment. Six sampled host families do not establish
+complete scientific grids. Low-level interrupted-phase host acceptance,
+standalone M9 builders, cross-catalogue configuration edges and audit overhead
+remain open. No scientific effectiveness or VAL acceptance is inferred.
