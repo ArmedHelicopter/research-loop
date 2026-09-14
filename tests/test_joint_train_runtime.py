@@ -192,6 +192,29 @@ def test_unknown_main_keeps_complete_denominator_and_stops(tmp_path,monkeypatch)
     assert len(body['rows'])==len(runner.plan.builds)+runner.plan.protocol.record.data()['allocation']['target_cells']
     assert all(r['status'] in ('failed','blocked') for r in body['rows']) and len(setup['common_logs'])==1
     assert body['provider_usage']['unknown_main_opportunities']==1
+
+
+def test_artifact_writer_failure_retains_independent_failed_stage_receipt(tmp_path,monkeypatch):
+    from research_loop.modular.artifact_catalogue import ArtifactCatalogue
+    setup=prepare(tmp_path,monkeypatch);runner=executor(setup);recipe=full_recipe(runner.plan)
+    append=ArtifactCatalogue.append
+    def failed_append(self,**kwargs):
+        if kwargs['kind']=='trace_event' and kwargs['payload'].data()['stage']!='objective_lock':
+            raise OSError('synthetic artifact writer failure')
+        return append(self,**kwargs)
+    monkeypatch.setattr(ArtifactCatalogue,'append',failed_append)
+    try:
+        result=runner.execute(recipe_id=recipe['id'],stage='history_build')
+    except ContractError:
+        result=None
+    assert result is None or result.record.data()['status']=='failed'
+    assert runner.poisoned and not setup['common_logs']
+    stage_root=runner.root/'stages'/history_build_id(runner.plan.protocol,recipe)
+    failure=json.loads((stage_root/'artifact-journal-failure.json').read_bytes())
+    receipt=json.loads((stage_root/'receipt.json').read_bytes())
+    assert failure['journal_error_type']=='OSError'
+    assert receipt['status']=='failed' and receipt['candidate_digest'] is None
+    assert 'failure_journal:OSError' in receipt['reason']
     journal=result.inner.root/'runtime'/'artifacts.jsonl'
     assert journal.exists()
     rows=[json.loads(line)['descriptor'] for line in journal.read_text(encoding='utf-8').splitlines()]
