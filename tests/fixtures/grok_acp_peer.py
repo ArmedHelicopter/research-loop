@@ -111,7 +111,31 @@ for line in sys.stdin:
         if scenario.startswith('train_'):
             request = json.loads(req['params']['prompt'][0]['text'].split('\n', 1)[1])
             slot = request['slot']
-            if slot == 'm4_plan':
+            if scenario == 'train_c4' and slot == 'm4_plan':
+                answer = {'question':'Which fresh public statistic is useful?', 'budget_units':3, 'branches':[
+                    {'hypothesis_id':'h1','mechanism_key':'m1','mechanism':'public mechanism one','intervention':'public','elimination_condition':'x does not increase','predictions':[{'prediction_id':'p1','discriminator_id':'fresh_auxiliary_execution','observable':'statistic','direction':'increase','value_range':None,'failure_condition':'not increase'}]},
+                    {'hypothesis_id':'h2','mechanism_key':'m2','mechanism':'public mechanism two','intervention':'public','elimination_condition':'x does increase','predictions':[{'prediction_id':'p2','discriminator_id':'fresh_auxiliary_execution','observable':'statistic','direction':'decrease','value_range':None,'failure_condition':'not decrease'}]},
+                    {'hypothesis_id':'h3','mechanism_key':'m3','mechanism':'public mechanism three','intervention':'public','elimination_condition':'x is unchanged','predictions':[{'prediction_id':'p3','discriminator_id':'fresh_auxiliary_execution','observable':'statistic','direction':'unchanged','value_range':None,'failure_condition':'not unchanged'}]}]}
+            elif scenario == 'train_c4' and slot.startswith('review_'):
+                prior = request['module_context']['prior_responses']
+                answer = {'assessment':'concern','evidence_refs':['current public evidence'],
+                    'counterexamples':['Check the range'] if not prior else ['Reconsider previous range critique'],
+                    'uncertainty':'Use an outlier check' if not prior else 'Use ordinary sequential revision'}
+            elif scenario == 'train_c4' and slot == 'bounded_choice':
+                choice = request['module_context']['alternative_checks'][0]
+                answer = {'job_id':choice['id'],'rationale':'Use the frozen public alternative after both critiques.'}
+            elif scenario == 'train_c4' and slot == 'builder_proposal':
+                answer = {'entrypoint':'emit_literal_change_v1','surface':'prompt','key':'instructions',
+                    'value':'Apply a bounded public numerical adjustment.'}
+            elif scenario == 'train_c4' and slot == 'ordinary_revision':
+                answer = {'instructions':'Apply a bounded public numerical adjustment.'}
+            elif scenario == 'train_c4' and slot == 'analysis_program':
+                answer = {'analysis':'Calculate a public statistic in the restricted solver.',
+                    'program':"import csv,json\nwith open('/input/public_csv') as f: rows=list(csv.DictReader(f))\nprint(json.dumps({'statistic':sum(float(r['x']) for r in rows)/len(rows)}))"}
+            elif scenario == 'train_c4' and slot == 'final_answer':
+                answer = {'objective_digest':request['module_context']['required_objective_digest'],'outcome':'unknown',
+                    'evidence_ids':[],'conclusion':'Synthetic restricted public statistic.','programme_complete':False}
+            elif slot == 'm4_plan':
                 answer = {'question': 'Which public mechanism explains x?', 'budget_units': 3, 'branches': [
                     {'hypothesis_id':'h1','mechanism_key':'m1','mechanism':'public mechanism one','intervention':'public','elimination_condition':'x does not increase','predictions':[{'prediction_id':'p1','discriminator_id':'d','observable':'x','direction':'increase','value_range':None,'failure_condition':'not increase'}]},
                     {'hypothesis_id':'h2','mechanism_key':'m2','mechanism':'public mechanism two','intervention':'public','elimination_condition':'x does increase','predictions':[{'prediction_id':'p2','discriminator_id':'d','observable':'x','direction':'decrease','value_range':None,'failure_condition':'not decrease'}]},
