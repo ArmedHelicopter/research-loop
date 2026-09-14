@@ -8,6 +8,7 @@ import re
 import stat
 import subprocess
 import time
+import uuid
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Mapping, Sequence
@@ -222,7 +223,10 @@ class DockerExecutionBroker:
                                for key, path in inputs.items()}
         except (ContractError, OSError) as exc:
             return self._receipt(request.identity, "rejected", None, {"reason": f"program validation failed: {exc}"})
-        name = "research-loop-" + digest({"task": request.identity.data(), "program": artifact.sha256, "time": time.time_ns()})[:20]
+        # Wall-clock resolution cannot distinguish concurrent identical jobs.
+        # A per-invocation nonce also keeps timeout cleanup scoped to its run.
+        name = "research-loop-" + digest({"task": request.identity.data(), "program": artifact.sha256,
+                                         "invocation": uuid.uuid4().hex})[:20]
         argv = ["docker", "run", "--pull", "never", "--name", name, "--rm", "--network", "none", "--read-only",
                 "--user", "1000:1000", "--tmpfs", "/tmp:rw,noexec,nosuid,size=64m", "--pids-limit", "128",
                 "--memory", "1g", "--cpus", "1.0", "--cap-drop", "ALL", "--security-opt", "no-new-privileges"]

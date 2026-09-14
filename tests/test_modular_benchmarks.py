@@ -172,3 +172,29 @@ def test_scoring_preserves_dimension_boundaries_and_empty_outputs() -> None:
     assert blade_adapted_score("answer", {"cvars": 1, "transform": 0.5, "model": 0})["adapted_score"] == 0.5
     with pytest.raises(ContractError):
         discovery_adapted_score("answer", {"context": float("nan"), "variable_f1": 1, "relation": 1})
+
+
+def test_identical_concurrent_jobs_keep_distinct_names_and_timeout_cleanup(tmp_path, monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+    import threading
+    import re
+    import research_loop.modular.benchmarks.execution as execution
+    monkeypatch.setattr(execution.time, 'time_ns', lambda: 123456789)
+    program=tmp_path/'analysis.py';program.write_text('print(1)',encoding='utf-8')
+    data=tmp_path/'data.csv';data.write_text('x\n1\n',encoding='utf-8')
+    launched=[];removed=[];lock=threading.Lock()
+    def runner(argv,**kwargs):
+        with lock:
+            if argv[1]=='run':
+                launched.append(argv[argv.index('--name')+1])
+                raise subprocess.TimeoutExpired(argv,1)
+            assert argv[:3]==['docker','rm','-f']
+            removed.append(argv[3])
+        return subprocess.CompletedProcess(argv,0,b'removed',b'')
+    request=ExecutionRequest(identity('blade'),'example/image@sha256:'+'c'*64,program,{'data':data},timeout_seconds=1)
+    # Separate brokers model independent workers sharing the same Docker daemon.
+    def run(_):return DockerExecutionBroker([tmp_path],runner=runner).execute(request)
+    with ThreadPoolExecutor(max_workers=8) as pool:receipts=list(pool.map(run,range(32)))
+    assert len(set(launched))==32 and set(launched)==set(removed) and len(removed)==32
+    assert all(re.fullmatch('research-loop-[0-9a-f]{20}',name) for name in launched)
+    assert all(r.status=='timed_out' and r.record.data()['cleanup']['removed'] for r in receipts)

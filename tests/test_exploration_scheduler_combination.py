@@ -185,7 +185,10 @@ def phase_args(grid,tmp_path,mode):
 
 
 @pytest.mark.parametrize('mode',['dependency','conflict','timeout','order'])
-def test_actual_docker_dependency_resource_timeout_and_completion_mapping(grid,tmp_path,mode):
+def test_actual_docker_dependency_resource_timeout_and_completion_mapping(grid,tmp_path,mode,monkeypatch):
+    if mode=='timeout':
+        # The two equal programs must remain separate even at one clock tick.
+        monkeypatch.setattr('research_loop.modular.benchmarks.execution.time.time_ns',lambda:123456789)
     supplied=phase_args(grid,tmp_path,mode);report=run_phase(**supplied);replay={k:v for k,v in supplied.items() if k!='broker'}
     assert verify_phase(**replay)==report
     b=report.data();assert b['actual_docker_attempts']==b['execution_units_reserved']==2 and b['remaining_leases']==[]
