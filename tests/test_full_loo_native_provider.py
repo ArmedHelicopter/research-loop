@@ -60,11 +60,14 @@ def native_grid(tmp_path_factory):
 
 def test_complete_native_c4_grid_uses_scoped_grok_main_and_engine_seams(native_grid):
     setup, run = native_grid; receipt=run.receipt.data(); ledger=run.ledger
+    assert receipt['schema']=='c4-native-provider-run-receipt-v3'
     assert receipt['status']=='complete_train_engineering'
     assert receipt['actual']=={'model_calls':169,'builder_executions':9,'independent_source_qualification_calls':62,
         'corpus_qualification_calls':58,'retrieval_requests':87,'auxiliary_docker_attempts':58,'solver_docker_attempts':22,
         'docker_attempts':80,'scorer_calls':22}
     assert len(run.builds)==9 and len(run.results)==len(run.scores)==22 and len(receipt['structural'])==2
+    assert len(receipt['contrasts'])==10
+    assert all(c['provenance_status']=='current' and len(c['paired_rows'])==2 for c in receipt['contrasts'])
     assert receipt['native_accounting']['known_usage_scope']=='native_main'
     assert receipt['native_accounting']['provider_calls']==169
     assert receipt['native_accounting']['possible_initial_title_opportunities']==169
@@ -120,3 +123,25 @@ def test_mid_target_provenance_drift_aborts_without_later_calls_or_scores(tmp_pa
     assert len(receipt['targets'])==22 and all(row['status'] in {'failed','blocked'} for row in receipt['targets'])
     assert accounting['schema']=='train-phase-terminal-accounting-v2'
     assert accounting['provider_calls_lower_bound']==51 and accounting['unknown_unobserved_opportunities'] is True
+
+
+def test_final_accounting_drift_retains_historical_scores_but_closes_eligibility(tmp_path, monkeypatch):
+    """The accounting read precedes one final fresh original-evidence gate."""
+    import research_loop.modular.full_loo_native_provider as native
+    setup=native_setup(tmp_path,monkeypatch); original=native.PhaseProviderSession.usage; changed=False
+    def drift_after_usage(session):
+        nonlocal changed
+        usage=original(session)
+        journal=session.path.parent/'native-controller.jsonl'
+        if not changed and len(session.provider.inspect())==169 and journal.exists() and '"stage":"scorer_closed"' in journal.read_text(encoding='utf-8'):
+            changed=True
+            response=setup['native_backend'].calls_root/'0169-final_answer'/'response.private.json'
+            response.write_text('{"objective_digest":"foreign","outcome":"unknown","evidence_ids":[],"conclusion":"foreign","programme_complete":false}',encoding='utf-8')
+        return usage
+    monkeypatch.setattr(native.PhaseProviderSession,'usage',drift_after_usage)
+    run=invoke(setup,monkeypatch); receipt=run.receipt.data()
+    assert changed and receipt['status']=='inconclusive' and receipt['final_provider_eligible'] is False
+    assert len(receipt['targets'])==22 and receipt['historical_scorer_calls']==22
+    assert all(row['status']=='scoring_ineligible' and row['execution_status']=='scored' for row in receipt['targets'])
+    assert all(c['provenance_status']=='historical_ineligible' for c in receipt['contrasts'])
+    assert receipt['native_accounting']['provider_calls']==169

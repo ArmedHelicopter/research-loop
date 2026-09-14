@@ -183,9 +183,9 @@ def run_native_full_loo_train(plan, *, prospective_exporter, snapshot_root, expo
             'known_reported_tokens_lower_bound':usage['known_reported_tokens_lower_bound'],'known_usage_scope':'native_main',
             'unknown_unobserved_opportunities':True,'title_tokens':None,'all_opportunity_tokens':None,
             'settled_additional_charge_usd':None,'score_eligible':False}
-    def persist():
+    def persist(captured_accounting=None):
         _exclusive_or_replace(root / 'attempts.json', {'builds': buildrows, 'targets': rows, 'structural': structural,
-            'native_accounting': accounting()})
+            'native_accounting': accounting() if captured_accounting is None else captured_accounting})
     journal.append('phase_lock', {'plan_digest': plan.record.content_hash, 'allocation': allocation}); persist()
     source = CombinationTrainSource(plan.legacy.data(), custody=None, prospective_exporter=prospective_exporter,
         snapshot=_path(snapshot_root, exists=False), exported=_path(export_root, exists=False))
@@ -266,11 +266,20 @@ def run_native_full_loo_train(plan, *, prospective_exporter, snapshot_root, expo
                 for row in rows:
                     if row['status']=='succeeded': row.update(execution_status='succeeded',status='scoring_blocked',reason='scorer_startup: '+process_state['error'])
             journal.append('scorer_startup_completed', {'status':process_state['startup_status'],'error':process_state['error']}); persist()
-        for row,result in zip(rows,results,strict=True):
+        scorer_provider_terminal=False
+        for index,(row,result) in enumerate(zip(rows,results,strict=True)):
             if result is None or row['status']!='succeeded' or not ready: continue
             key={'arm_id':row['arm_id'],'task_digest':row['task_digest']}
             try:
                 verify_native_full_loo_cell(result, barrier=barrier, panel=panel, ledger=target_ledger)
+            except ContractError as exc:
+                scorer_provider_terminal=True
+                row.update(status='scoring_ineligible',reason='scorer_provider_replay: '+type(exc).__name__)
+                for later in rows[index+1:]:
+                    if later['status']=='succeeded': later.update(status='blocked',reason='scorer_provider_terminal: '+type(exc).__name__)
+                journal.append('scorer_provider_terminal',{**key,'error_type':type(exc).__name__}); persist()
+                break
+            try:
                 scoreinput=execution_authority.issue(_score_input_payload(panel,result).data()); row['scorer_calls']=1
                 journal.append('scorer_reserved',{**key,'input_digest':scoreinput.content_hash})
                 score=service.score_combination(panel=panel,cell=result.cell,score_input=scoreinput)
@@ -286,14 +295,9 @@ def run_native_full_loo_train(plan, *, prospective_exporter, snapshot_root, expo
             try: service.close(); process_state['closed']=service.process.poll() is not None
             except Exception as exc: process_state.update(closed=False,close_error=type(exc).__name__+': '+str(exc))
             journal.append('scorer_closed',{'closed':process_state['closed']}); persist()
-    final_provider_eligible=type(target_ledger) is PhaseProviderLedger
-    if final_provider_eligible:
-        try: target_ledger.verify()
-        except ContractError as exc:
-            final_provider_eligible=False
-            for row in rows:
-                if row['status']=='scored': row.update(execution_status='scored',status='scoring_ineligible',reason='final_provider_replay: '+type(exc).__name__)
-            journal.append('final_provider_replay_failed',{'error_type':type(exc).__name__}); persist()
+    # Capture every report input that can inspect originals before the final
+    # fresh provenance gate.  No receipt construction below may call usage()
+    # or re-read provider evidence after that gate.
     stages=[*builds,*[r for r in results if r is not None]]; sourcecalls=[]; corpuscalls=[]; auxiliary=solver=retrieval=builders=0
     for result in stages:
         for filename,destination in [('source/source.json',sourcecalls),('corpus/source.json',corpuscalls)]:
@@ -302,12 +306,37 @@ def run_native_full_loo_train(plan, *, prospective_exporter, snapshot_root, expo
         solver += sum(e['stage']=='execution_request' for e in events); retrieval += sum(e['stage']=='q8_retrieval_request' for e in events); builders += sum(e['stage']=='c4_builder_request' for e in events)
         if (result.root/'phase/events.jsonl').exists(): auxiliary += sum(json.loads(line)['kind']=='start' for line in (result.root/'phase/events.jsonl').read_bytes().splitlines())
     current_accounting=accounting()
+    contrasts=[]
+    for recipe in armrows[1:]:
+        pairs=[]
+        for digest in plan.composition.data()['train_task_digests']:
+            full=next(r for r in rows if r['arm_id']=='full' and r['task_digest']==digest); other=next(r for r in rows if r['arm_id']==recipe['id'] and r['task_digest']==digest)
+            pairs.append({'task_digest':digest,'difference':full['score']['body']['metric']['value']-other['score']['body']['metric']['value'] if full['status']==other['status']=='scored' else None})
+        contrasts.append({'contrast':'F-versus-'+recipe['id'],'changed_modules':[m for m,v in recipe['arm_bits'].items() if not v],
+            'estimand':recipe.get('estimand',recipe['comparison']),'matched_model_budget':recipe['procedure']!='baseline_b0',
+            'paired_rows':pairs,'confidence_interval':None,'unrestricted_interactions':'not_identified','provenance_status':'current'})
+    final_provider_eligible=type(target_ledger) is PhaseProviderLedger
+    if final_provider_eligible:
+        try: target_ledger.verify()
+        except ContractError as exc:
+            final_provider_eligible=False
+            for row in rows:
+                if row['status']=='scored': row.update(execution_status='scored',status='scoring_ineligible',reason='final_provider_replay: '+type(exc).__name__)
+            journal.append('final_provider_replay_failed',{'error_type':type(exc).__name__}); persist(current_accounting)
+    if scorer_provider_terminal:
+        final_provider_eligible=False
+    if not final_provider_eligible:
+        for row in rows:
+            if row['status']=='scored':
+                row.update(execution_status='scored',status='scoring_ineligible',reason='scorer_provider_terminal' if scorer_provider_terminal else 'final_provider_replay')
+        contrasts=[{**contrast,'provenance_status':'historical_ineligible'} for contrast in contrasts]
+        persist(current_accounting)
     actual={'model_calls':current_accounting.get('provider_calls'),'builder_executions':builders,'independent_source_qualification_calls':len(sourcecalls),
         'corpus_qualification_calls':len(corpuscalls),'retrieval_requests':retrieval,'auxiliary_docker_attempts':auxiliary,
         'solver_docker_attempts':solver,'docker_attempts':auxiliary+solver,'scorer_calls':sum(r['scorer_calls'] for r in rows)}
-    receipt=FrozenRecord.from_dict({'schema':'c4-native-provider-run-receipt-v2','plan_digest':plan.record.content_hash,'allocation':allocation,'actual':actual,
+    receipt=FrozenRecord.from_dict({'schema':'c4-native-provider-run-receipt-v3','plan_digest':plan.record.content_hash,'allocation':allocation,'actual':actual,
         'unused':{k:(None if v is None else allocation[k]-v) for k,v in actual.items()},'builds':buildrows,'targets':rows,'structural':structural,
-        'native_accounting':current_accounting,'target_provider_ledger_digest':target_ledger.record.content_hash,
+        'native_accounting':current_accounting,'contrasts':contrasts,'target_provider_ledger_digest':target_ledger.record.content_hash,
         'target_provider_ledger_kind':type(target_ledger).__name__,'final_provider_eligible':final_provider_eligible,'historical_scorer_calls':len(scores),
         'scorer_process':process_state,'p0':{'required':True,'scientific_execution_qualified':False,'promotion_allowed':False},
         'candidate_activation':'none_offline_experiment','validation_opened':False,'scientific_effectiveness_proven':False,
