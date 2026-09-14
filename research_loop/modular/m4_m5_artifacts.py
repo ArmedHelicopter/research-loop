@@ -152,7 +152,7 @@ def _verify_m4_m5_artifacts(catalogue, sidecar: Path):
                              'reviews': source_snapshot(Path(review_module.__file__))}
     bridge.bridge_source = source_snapshot(Path(__file__))
     all_descriptors = catalogue.records()
-    trace_rows = [d.data()['payload']['canonical'] for d in all_descriptors if d.data()['kind'] == 'trace_event']
+    trace_rows = _verified_trace_rows(all_descriptors)
     if not trace_rows:
         raise ContractError('M4/M5 artifact verification requires the original lock trace')
     lock = FrozenRecord.from_dict(trace_rows[0]['data']).data()
@@ -163,10 +163,15 @@ def _verify_m4_m5_artifacts(catalogue, sidecar: Path):
     seen: dict[tuple[str, str], str] = {}
     consumed = {'predictions': [], 'reviews': []}
     reveals = []
+    prior_roles: dict[str, tuple[str, ...]] = {}
+    prior_submissions: dict[str, dict[str, dict[str, Any]]] = {}
     latest_trace = None
     for descriptor in all_descriptors:
         body = descriptor.data()
         if body['kind'] == 'trace_event':
+            trace = FrozenRecord.from_dict(body['payload']['canonical']).data()
+            if trace['stage'] == 'c4_review_reveal':
+                _bind_c4_reveal(trace, reveals)
             latest_trace = descriptor.content_hash
             continue
         if body['kind'] == 'reveal_output' and body['module'] == 'M5':
@@ -176,13 +181,13 @@ def _verify_m4_m5_artifacts(catalogue, sidecar: Path):
                 'module_source': bridge.module_sources['reviews'], 'bridge_source': bridge.bridge_source}
             output = payload.get('output', {})
             review_id = output.get('review_id')
-            expected_rows = _submissions_for(journals['reviews'], review_id)
+            expected_rows = _prior_submissions(review_id, prior_roles, prior_submissions)
             parents = [seen[('reviews', review_id + ':' + row['role_id'])] for row in expected_rows] + [latest_trace]
             if (payload != expected or output.get('schema') != 'm5-reveal-output-v1' or output.get('submissions') != expected_rows
                     or body['status'] != ('produced' if payload['module_enabled'] else 'not_applied')
                     or body['parents'] != parents or body['producer_source'] != bridge.module_sources['reviews']):
                 raise ContractError('M5 reveal artifact differs from the actual sealed output')
-            reveals.append(output)
+            reveals.append({'descriptor': descriptor.content_hash, 'output': output, 'bound': False})
             continue
         if body['kind'] != 'journal_event' or body['module'] not in {'M4', 'M5'}:
             continue
@@ -215,55 +220,64 @@ def _verify_m4_m5_artifacts(catalogue, sidecar: Path):
         if body['status'] != status or body['parents'] != parents or body['producer_source'] != bridge.module_sources[journal]:
             raise ContractError('M4/M5 artifact status, source, or causal parents differ')
         seen[(journal, key)] = descriptor.content_hash
+        if journal == 'reviews' and event['event'] == 'open':
+            prior_roles[event['review_id']] = tuple(role['role_id'] for role in event['roles'])
+        elif journal == 'reviews' and event['event'] == 'submit':
+            prior_submissions.setdefault(event['review_id'], {})[event['role_id']] = {
+                'review_id': event['review_id'], 'role_id': event['role_id'], 'reviewer_id': event['reviewer_id'],
+                'response': event['response'], 'cost_units': event['cost_units'], 'before_hash': event['before_hash']}
         expected_index[journal] += 1
         consumed[journal].append(event)
     if consumed != journals:
         raise ContractError('M4/M5 artifact coverage differs from its original journal')
     _check_c4_prediction_freezes(trace_rows, journals['predictions'])
     _check_c4_sealed_submissions(trace_rows, journals['reviews'])
-    # The persisted log contains no reveal operation.  When a C4 trace records
-    # one, it must follow the complete sealed submission set for its review.
-    _check_c4_reveals(trace_rows, journals['reviews'])
     return FrozenRecord.from_dict({'schema': 'm4-m5-artifacts-check-v1', 'identity': catalogue.identity.data(),
         'prediction_events': len(journals['predictions']), 'review_events': len(journals['reviews']),
         'reveal_outputs': len(reveals),
         'scientific_validated': False})
 
 
-def _submissions_for(reviews, review_id):
-    opened = next((event for event in reviews if event['event'] == 'open' and event['review_id'] == review_id), None)
-    if opened is None:
+def _verified_trace_rows(descriptors):
+    """Return the trace payloads after authenticating their causal stream."""
+    traces = []
+    previous = None
+    for descriptor in descriptors:
+        body = descriptor.data()
+        if body['kind'] != 'trace_event':
+            continue
+        if body['parents'] != ([] if previous is None else [previous]):
+            raise ContractError('trace artifact has an arbitrary causal parent')
+        payload = body['payload']['canonical']
+        trace = FrozenRecord.from_dict(payload).data()
+        if not isinstance(trace, dict) or trace.get('stage') is None or not isinstance(trace.get('data'), dict):
+            raise ContractError('trace artifact payload is invalid')
+        traces.append(trace)
+        previous = descriptor.content_hash
+    return traces
+
+
+def _prior_submissions(review_id, roles, submissions):
+    role_order = roles.get(review_id)
+    by_role = submissions.get(review_id, {})
+    if role_order is None:
         raise ContractError('M5 reveal lacks its sealed review')
-    by_role = {event['role_id']: event for event in reviews if event['event'] == 'submit' and event['review_id'] == review_id}
-    if set(by_role) != {role['role_id'] for role in opened['roles']}:
+    if set(by_role) != set(role_order):
         raise ContractError('M5 reveal lacks complete sealed submissions')
-    return [{'review_id': event['review_id'], 'role_id': event['role_id'], 'reviewer_id': event['reviewer_id'],
-             'response': event['response'], 'cost_units': event['cost_units'], 'before_hash': event['before_hash']}
-            for event in (by_role[role['role_id']] for role in opened['roles'])]
+    return [by_role[role] for role in role_order]
 
 
 def _review_roles(seen, review_id: str) -> tuple[str, ...]:
     return tuple(key.rsplit(':', 1)[1] for journal, key in seen if journal == 'reviews' and key.startswith(review_id + ':'))
 
 
-def _check_c4_reveals(traces, reviews):
-    submitted: dict[str, set[str]] = {}
-    roles: dict[str, set[str]] = {}
-    submissions = {}
-    for event in reviews:
-        if event['event'] == 'open': roles[event['review_id']] = {r['role_id'] for r in event['roles']}
-        elif event['event'] == 'submit':
-            submitted.setdefault(event['review_id'], set()).add(event['role_id'])
-            submissions.setdefault(event['review_id'], []).append({
-                'review_id': event['review_id'], 'role_id': event['role_id'], 'reviewer_id': event['reviewer_id'],
-                'response': event['response'], 'cost_units': event['cost_units'], 'before_hash': event['before_hash']})
-    for trace in traces:
-        if trace['stage'] != 'c4_review_reveal':
-            continue
-        matches = [review_id for review_id, rows in submissions.items()
-                   if rows == trace['data'].get('submissions') and submitted.get(review_id, set()) == roles.get(review_id, set())]
-        if len(matches) != 1:
-            raise ContractError('C4 reveal does not follow its complete sealed review journal')
+def _bind_c4_reveal(trace, reveals):
+    """Bind a C4 trace to one earlier observed reveal output, once only."""
+    rows = trace['data'].get('submissions')
+    matches = [item for item in reveals if not item['bound'] and item['output']['submissions'] == rows]
+    if len(matches) != 1:
+        raise ContractError('C4 reveal lacks one preceding actual output descriptor')
+    matches[0]['bound'] = True
 
 
 def _check_c4_prediction_freezes(traces, predictions):
