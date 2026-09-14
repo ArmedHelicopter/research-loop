@@ -1,0 +1,184 @@
+{
+  "schema": "legacy-extended-artifact-archive-v1",
+  "source_commit": "cd607467318a0aaf8bfba3049fd33649ff5271e5",
+  "source_root": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance",
+  "originals": [
+    {
+      "file": "legacy-extended-artifacts-frozen-r1-before.json",
+      "sha256": "0cd828e0f7c8c6b226f73c6a8f6cdda45923f763952d92993af13834602fd97b",
+      "bytes": 84892
+    },
+    {
+      "file": "legacy-extended-artifacts-frozen-r1-closed.json",
+      "sha256": "99e5eb025b8530b12495b22a76e94a6305e0459342b20f054ad77059eac39e1a",
+      "bytes": 84979
+    },
+    {
+      "file": "legacy-extended-artifacts-frozen-r1.xml",
+      "sha256": "32093d9177c8f1217364a736181037afa9be8122be899bc20ccef49097ecb553",
+      "bytes": 4192
+    },
+    {
+      "file": "legacy-extended-artifacts-frozen-r1-sources.zip",
+      "sha256": "a2f6ac9dbe6df2c89150a07bee8da88354509c51b4152fb7852c281fcae4fe62",
+      "bytes": 2382662
+    },
+    {
+      "file": "legacy-extended-artifacts-frozen-r1-source-members.json",
+      "sha256": "a73d568eb7a5754863b5f6e029ba430287506918df268c75c2c0d21a1be9de4c",
+      "bytes": 127044
+    },
+    {
+      "file": "test_reader_rejects_tamper_omi0.zip",
+      "sha256": "9f93decc2f0ba0b0326678a6adeb294a9cf0d990f85354d3820e10415f71cc11",
+      "bytes": 3986
+    },
+    {
+      "file": "test_validation_is_denied_befo0.zip",
+      "sha256": "bb702d05df5d904b54923d67927bc3b014ef20ab91ae5f304254e58c381ce6de",
+      "bytes": 3982
+    },
+    {
+      "file": "test_expected_source_hash_mism0.zip",
+      "sha256": "2ddd082d9c14c05b8f6fe1afb853853a9cb819dbc9461af9a6500c0988fbcd29",
+      "bytes": 3987
+    },
+    {
+      "file": "test_partial_write_is_sealed_a0.zip",
+      "sha256": "e6a2083c8a03ba7303275e9d0afee1029516c2475a90cd051c1ae31fc9481e5d",
+      "bytes": 3359
+    },
+    {
+      "file": "test_actual_export_gate_blocks0.zip",
+      "sha256": "16d9a3089cade42ae52dce5d84adcbf3d9c4e1bce2addbc7a1ee9825757549af",
+      "bytes": 2693
+    },
+    {
+      "file": "test_seal_failure_preserves_or0.zip",
+      "sha256": "68caadf1d67fa29f97c21c21dbb92cccf58bd305b5060de0b93c35e4bc411056",
+      "bytes": 3086
+    }
+  ],
+  "specimens": [
+    {
+      "file": "test_reader_rejects_tamper_omi0.zip",
+      "sha256": "9f93decc2f0ba0b0326678a6adeb294a9cf0d990f85354d3820e10415f71cc11",
+      "bytes": 3986,
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-extended-artifacts-frozen-r1\\test_reader_rejects_tamper_omi0\\public\\scicode\\4a2462cd4d5dc942f4861b129f748c3035f7c1cd944fe2a86dfebfff186ac96e",
+      "status": "produced",
+      "read_only": true,
+      "descriptors": 4,
+      "source_expected_from_synthetic_frozen_inventory": true,
+      "source_sha256": "72e3038043d02aa0326f065fd97114b478e37b67dde7c32d4baa622470e16053",
+      "synthetic_inventory_sha256": "e2d0d7d2965ea2bef561e91de551d749faf16673a0adde49c02e5ae944100c05",
+      "private_inventory_copied": false,
+      "files": {
+        "legacy-extended-artifacts.jsonl": "48da6aa700589f00e2fcb48b2dba2ff063d4fb181460d677ffe9ca23f6a07a06",
+        "legacy-extended-artifacts.jsonl.seal.json": "dc1759db9ec7d524a4d1b8d98ff8efe3d0f7764039c449f526d54b216512af87",
+        "packet-seal.json": "2714c8220ce75eb6cc375ef70d971cadf1fb433427f824b461d426121bda6a15",
+        "public.json": "514215f2b57b91d976b5e299ccfcb359e8d1e9a62a56feb3b870ae6d41232cfb",
+        "receipt.json": "0270e0410151a11ec10d6c941f267389788fb421a02d2d6e96ae9368838cc300"
+      }
+    },
+    {
+      "file": "test_validation_is_denied_befo0.zip",
+      "sha256": "bb702d05df5d904b54923d67927bc3b014ef20ab91ae5f304254e58c381ce6de",
+      "bytes": 3982,
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-extended-artifacts-frozen-r1\\test_validation_is_denied_befo0\\public\\scicode\\4a2462cd4d5dc942f4861b129f748c3035f7c1cd944fe2a86dfebfff186ac96e",
+      "status": "produced",
+      "read_only": true,
+      "descriptors": 4,
+      "source_expected_from_synthetic_frozen_inventory": true,
+      "source_sha256": "72e3038043d02aa0326f065fd97114b478e37b67dde7c32d4baa622470e16053",
+      "synthetic_inventory_sha256": "e2d0d7d2965ea2bef561e91de551d749faf16673a0adde49c02e5ae944100c05",
+      "private_inventory_copied": false,
+      "files": {
+        "legacy-extended-artifacts.jsonl": "507a3a511b42a697ad3e64cf6a8c9af42127cd6070b0a95521de8bd78ebe9f3c",
+        "legacy-extended-artifacts.jsonl.seal.json": "3a51421c7103e9b6e6edd8f2ed4d4b82916e15401e5e6431a2fe30d1e68a9b6a",
+        "packet-seal.json": "284a6dc0e82f71d8cd2aa3867653e89032a4e59b1a25dc6290f3b19ed4800d47",
+        "public.json": "514215f2b57b91d976b5e299ccfcb359e8d1e9a62a56feb3b870ae6d41232cfb",
+        "receipt.json": "0270e0410151a11ec10d6c941f267389788fb421a02d2d6e96ae9368838cc300"
+      }
+    },
+    {
+      "file": "test_expected_source_hash_mism0.zip",
+      "sha256": "2ddd082d9c14c05b8f6fe1afb853853a9cb819dbc9461af9a6500c0988fbcd29",
+      "bytes": 3987,
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-extended-artifacts-frozen-r1\\test_expected_source_hash_mism0\\public\\scicode\\4a2462cd4d5dc942f4861b129f748c3035f7c1cd944fe2a86dfebfff186ac96e",
+      "status": "produced",
+      "read_only": true,
+      "descriptors": 4,
+      "source_expected_from_synthetic_frozen_inventory": true,
+      "source_sha256": "72e3038043d02aa0326f065fd97114b478e37b67dde7c32d4baa622470e16053",
+      "synthetic_inventory_sha256": "e2d0d7d2965ea2bef561e91de551d749faf16673a0adde49c02e5ae944100c05",
+      "private_inventory_copied": false,
+      "files": {
+        "legacy-extended-artifacts.jsonl": "4725313d780d494346e8e2aacd7c7a8b7e46389d3facd22f14f1ba4d63bfd693",
+        "legacy-extended-artifacts.jsonl.seal.json": "4bacdeb4a7d627d3309a5c5d6d4aa41f35373fdf70de6ddb0618597ac4358de0",
+        "packet-seal.json": "8b851657656e588427cf38339fe903c6e88c94d18282768670e116264e35871c",
+        "public.json": "514215f2b57b91d976b5e299ccfcb359e8d1e9a62a56feb3b870ae6d41232cfb",
+        "receipt.json": "0270e0410151a11ec10d6c941f267389788fb421a02d2d6e96ae9368838cc300"
+      }
+    },
+    {
+      "file": "test_partial_write_is_sealed_a0.zip",
+      "sha256": "e6a2083c8a03ba7303275e9d0afee1029516c2475a90cd051c1ae31fc9481e5d",
+      "bytes": 3359,
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-extended-artifacts-frozen-r1\\test_partial_write_is_sealed_a0\\public\\scicode\\4a2462cd4d5dc942f4861b129f748c3035f7c1cd944fe2a86dfebfff186ac96e",
+      "status": "failed",
+      "read_only": true,
+      "descriptors": 3,
+      "source_expected_from_synthetic_frozen_inventory": true,
+      "source_sha256": "72e3038043d02aa0326f065fd97114b478e37b67dde7c32d4baa622470e16053",
+      "synthetic_inventory_sha256": "e2d0d7d2965ea2bef561e91de551d749faf16673a0adde49c02e5ae944100c05",
+      "private_inventory_copied": false,
+      "files": {
+        "legacy-extended-artifacts.jsonl": "a842979abab6c4b265b19fe1ae0634a50dbe7486a00be14df71c281bfec2acf2",
+        "legacy-extended-artifacts.jsonl.seal.json": "559eb0dfb63128e91830512811f40efa237d5ef1646c5de0e5780994a9db2702",
+        "packet-seal.json": "243ff94a84a6ae2e879a1def52d04d7d54ba55248497407e52ab3cdb27076587",
+        "public.json": "514215f2b57b91d976b5e299ccfcb359e8d1e9a62a56feb3b870ae6d41232cfb"
+      }
+    },
+    {
+      "file": "test_actual_export_gate_blocks0.zip",
+      "sha256": "16d9a3089cade42ae52dce5d84adcbf3d9c4e1bce2addbc7a1ee9825757549af",
+      "bytes": 2693,
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-extended-artifacts-frozen-r1\\test_actual_export_gate_blocks0\\attempt\\scicode\\4a2462cd4d5dc942f4861b129f748c3035f7c1cd944fe2a86dfebfff186ac96e",
+      "status": "failed",
+      "read_only": true,
+      "descriptors": 2,
+      "source_expected_from_synthetic_frozen_inventory": true,
+      "source_sha256": "72e3038043d02aa0326f065fd97114b478e37b67dde7c32d4baa622470e16053",
+      "synthetic_inventory_sha256": "e2d0d7d2965ea2bef561e91de551d749faf16673a0adde49c02e5ae944100c05",
+      "private_inventory_copied": false,
+      "files": {
+        "legacy-extended-artifacts.jsonl": "42ee8bf75a5a9952c3900762dfd4fd98b36d80034bedd3e732335e12a882867f",
+        "legacy-extended-artifacts.jsonl.seal.json": "b38341e76374ac720a19331eed1b72050d13522ae3bb16948f8ed5b2672122b5",
+        "packet-seal.json": "b919e3f3cda0d83d4c8cb244199207d55c0fd6e03d7c1e5e3588ebe3413e8df1"
+      }
+    },
+    {
+      "file": "test_seal_failure_preserves_or0.zip",
+      "sha256": "68caadf1d67fa29f97c21c21dbb92cccf58bd305b5060de0b93c35e4bc411056",
+      "bytes": 3086,
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\legacy-extended-artifacts-frozen-r1\\test_seal_failure_preserves_or0\\attempt",
+      "status": "incomplete",
+      "read_only": true,
+      "descriptors": 4,
+      "source_expected_from_synthetic_frozen_inventory": true,
+      "source_sha256": "72e3038043d02aa0326f065fd97114b478e37b67dde7c32d4baa622470e16053",
+      "synthetic_inventory_sha256": "e2d0d7d2965ea2bef561e91de551d749faf16673a0adde49c02e5ae944100c05",
+      "private_inventory_copied": false,
+      "files": {
+        "legacy-extended-artifacts.jsonl": "8bacfa9c85c34c24b57182a11e667115f00807c35962dff95a30dd56347cab3f",
+        "legacy-extended-artifacts.jsonl.seal.json": "837015e6796006220eaa8a8d8e34cba9773e25437b15c184bbd04ac7f2f63675",
+        "public.json": "514215f2b57b91d976b5e299ccfcb359e8d1e9a62a56feb3b870ae6d41232cfb",
+        "receipt.json": "0270e0410151a11ec10d6c941f267389788fb421a02d2d6e96ae9368838cc300"
+      }
+    }
+  ],
+  "new_paid_api_calls": 0,
+  "scope": "actual exporter on synthetic data; no private source or custody files copied",
+  "scientific_effect": "not_measured",
+  "real_validation_access": false
+}

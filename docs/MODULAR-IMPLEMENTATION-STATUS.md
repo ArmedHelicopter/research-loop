@@ -1630,3 +1630,14 @@ API 为零。16 个完整操作目录和 250 条描述符完成独立只读回�
 提交后报错的终态保留原始字节，只有 storage_verified，不获得操作或工程成功标记。
 具体契约、来源补充与未覆盖范围见 [TRAIN 操作产物](TRAIN-OPERATION-ARTIFACTS.md)。
 本次未修改两个正在运行的 C5 工作树，也未完成真实增益或 VAL 验收。
+
+# 2026-09-15：旧扩展数据导出产物
+
+cd607467 为旧 ExtendedTrainProjectionExporter 接入实际 P0 预约、公共文件登记、
+源码与预期来源绑定、封存和返回前读取关口。28/28 冻结检查通过，724 份源码保持
+一致，15.485 秒；无模型 API 或 Docker 调用。六份公共目录、21 条描述符已回查
+并归档，三份正常、两份存储完整的失败、一份被拒绝的不完整封存分别保留。
+目录在 `results/modular-engineering-20260915/legacy-extended-artifacts-r1/`，
+完整私有来源与 custody 文件未复制。见 [接口与剩余范围](P0-LEGACY-EXTENDED-ARTIFACTS.md)。
+TRAIN 操作的来源补充另通过 21/21 检查，其 11 个目录和 191 条描述符位于
+`train-operation-artifacts-r2`，与首轮原件分开保留，不相加为独立实验样本。

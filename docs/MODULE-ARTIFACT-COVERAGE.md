@@ -6,7 +6,7 @@
 
 | 模块/边界 | 当前实际接入 | 待补齐的逐产物覆盖 |
 | --- | --- | --- |
-| P0 | 运行任务锁、独立 run ID、冻结计划摘要；主 benchmark 与扩展导出器的实际 TRAIN 数据包、公共文件、逐包封存和原始批次完成锚点；普通/组合训练消费者及参考答案桥接校验；失败写入与曝光预约位置 | 旧 custody 导出器、完整私有划分台账、权限/租约及其余资源/读取入口的独立登记 |
+| P0 | 运行任务锁、独立 run ID、冻结计划摘要；主 benchmark 与扩展导出器的实际 TRAIN 数据包、公共文件、逐包封存和原始批次完成锚点；普通/组合训练消费者及参考答案桥接校验；失败写入与曝光预约位置；旧 ExtendedTrainProjectionExporter 的公共输出、来源绑定、部分写入及实际返回关口 | 其他旧 custody 导出器、完整私有划分台账、权限/租约及其余资源/读取入口的独立登记 |
 | M1、M2 | RunSession 每项准入输入/拒绝/决定；evidence/claims 原日志逐项事件、实际输出、修订/撤回及依赖传播；磁盘重读与按操作重放；Q8.4 独立来源 ledger 逐项观察 | 材料资格评估等其他 M1 入口；其他独立持久化 ledger 接入 |
 | M3 | 每次实际调用的上下文、当时的 evidence/claims 快照、筛选/压缩及预算；公开投影重算；调用前的描述符位置与父项校验 | 历史版本的完整运行环境重建；其他上下文生产入口盘点 |
 | M4 | PredictionRegistry 每次 freeze/outcome 原始事件；C4 冻结声明必须对应此前产生的预测 | 其他宿主预测入口、跨目录适用范围及寿命管理 |
@@ -43,6 +43,7 @@ TRAIN/VAL 的描述符规则不等于操作系统权限隔离。优化器只能�
 成功记录和哈希校验不授予科学有效性、独立验收或部署权限。
 材料生成的具体绑定与失败边界见 [headless 调用回执](GROK-HEADLESS-TRANSPORT-CONTRACT.md)。
 新导出器的 v2 回执与公开读取边界详见 [P0 TRAIN 数据包产物](P0-TRAIN-PACKET-ARTIFACTS.md)。
+旧扩展格式单独见 [旧扩展 TRAIN 导出入口](P0-LEGACY-EXTENDED-ARTIFACTS.md)，不自动转换为 prospective v2。
 重复摘要计算的实现与检查范围见 [不可变记录摘要](IMMUTABLE-RECORD-DIGESTS.md)。
 九组件实际存储另见 [部署与回滚产物](JOINT-DEPLOYMENT-ARTIFACTS.md)。其完整审计
 包含验收授权信息，即使任务属于 TRAIN，也不能进入优化器上下文。
