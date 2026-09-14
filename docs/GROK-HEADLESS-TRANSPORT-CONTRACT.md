@@ -54,3 +54,12 @@ the nine-category material validator, distinct signing authorities and the
 separate 180-review/evaluator allocation are unchanged. `known_headless_main_usage`
 remains separate from ACP `known_main_usage`. All expected rubric targets remain
 unknown, and no author assertion grants expert certification or VAL eligibility.
+
+The retained startup-log comparison was refined on 2026-09-15 using the native
+`ts`/`msg`/`ctx` fields. Both runs had fetched a real model catalogue and observed
+an unexpired cached login. The failed material run last reported a long-running
+`acp_initialize` phase; it never recorded the later eager-auth/session phases.
+This narrows the logged location without identifying the blocked instruction or
+proving absence of unlogged work. No new native or model request was made, and
+the original timeout, unknown usage and unresolved materials are unchanged.
+See the [retained observation and limits](../results/modular-engineering-20260915/headless-startup-location-r2/FINDING.md).

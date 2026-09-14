@@ -1,0 +1,452 @@
+{
+  "schema": "retained-headless-startup-location-v2",
+  "new_native_calls": 0,
+  "new_model_calls": 0,
+  "original_outcomes_changed": false,
+  "extractor_sha256": "436991ef1acc9d3210d2c56e77869ca4ad6034becadbdf3773d749b00fd8c46d",
+  "variants": {
+    "successful_constant_r2": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\private-home\\logs\\unified.jsonl",
+      "source_sha256": "7b3ce5ee05e18b1bc95ec6c77e9bba61a3f5d9effa082552f3498f047f78f3e7",
+      "source_bytes": 18642,
+      "source_mtime_ns": 1789395742985969600,
+      "source_unchanged": true,
+      "events": [
+        {
+          "timestamp": "2026-09-14T14:22:10.698Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "managed_policy",
+            "elapsed_ms": 0
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:10.708Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "managed_policy",
+            "elapsed_ms": 1
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:10.708Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "bootstrap",
+            "elapsed_ms": 1
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:10.709Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.early_prefetch_launch",
+            "elapsed_ms": 0
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:10.710Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.http_blocking_client_build",
+            "elapsed_ms": 0
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.503Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.fetch_models_blocking",
+            "elapsed_ms": 793
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.503Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.early_models_fetch",
+            "elapsed_ms": 793
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.766Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.early_settings_fetch",
+            "elapsed_ms": 262
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.766Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.early_prefetch",
+            "elapsed_ms": 1056
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.767Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.bootstrap.remote_settings",
+            "elapsed_ms": 1058
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.769Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.bootstrap.resolve_config",
+            "elapsed_ms": 0
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.770Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.http_client_build",
+            "elapsed_ms": 0
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.770Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.bootstrap.init_process",
+            "elapsed_ms": 1
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.770Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "model_catalog",
+            "elapsed_ms": 1062
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.770Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.bootstrap.models_manager",
+            "elapsed_ms": 0
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.770Z",
+          "message": "model catalog: auth refresh watcher started",
+          "fields": {
+            "had_real_catalog": true,
+            "model_count": 2
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.770Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "worker_spawn",
+            "elapsed_ms": 1063
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.771Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "acp_initialize",
+            "elapsed_ms": 1064
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.771Z",
+          "message": "pager started",
+          "fields": {
+            "mode": "headless"
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.777Z",
+          "message": "agent initialized",
+          "fields": {}
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.777Z",
+          "message": "auth init user_info check",
+          "fields": {
+            "needs_user_info": false
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.777Z",
+          "message": "auth init disk refresh",
+          "fields": {
+            "changed": false
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.777Z",
+          "message": "auth init token state",
+          "fields": {
+            "has_current": true,
+            "is_expired": false
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:11.777Z",
+          "message": "auth method selection",
+          "fields": {
+            "default_auth_method_id": "cached_token",
+            "has_external_api_key": false,
+            "has_cached_token": true,
+            "methods_count": 2
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:14.463Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "eager_auth",
+            "elapsed_ms": 3756
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:14.463Z",
+          "message": "auth started",
+          "fields": {}
+        },
+        {
+          "timestamp": "2026-09-14T14:22:14.464Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "session_create",
+            "elapsed_ms": 3756
+          }
+        },
+        {
+          "timestamp": "2026-09-14T14:22:14.731Z",
+          "message": "session created",
+          "fields": {}
+        },
+        {
+          "timestamp": "2026-09-14T14:22:16.492Z",
+          "message": "prompt received",
+          "fields": {}
+        },
+        {
+          "timestamp": "2026-09-14T14:22:16.978Z",
+          "message": "shell.turn.inference_start",
+          "fields": {}
+        },
+        {
+          "timestamp": "2026-09-14T14:22:19.618Z",
+          "message": "shell.turn.inference_done",
+          "fields": {}
+        }
+      ]
+    },
+    "failed_material_r1": {
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-actual-preparation-r1\\native-runtime\\39a8966985e367851529da2d27b98bd4c0b2cfb77719f0e60ad62254a8ff1335\\private_home\\logs\\unified.jsonl",
+      "source_sha256": "f4765cee44f88af8a67e41cda6cc45a2c3621f8a6d70ece7c96e10356af64946",
+      "source_bytes": 11491,
+      "source_mtime_ns": 1789399068676475300,
+      "source_unchanged": true,
+      "events": [
+        {
+          "timestamp": "2026-09-14T15:17:37.169Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "managed_policy",
+            "elapsed_ms": 0
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:37.183Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "managed_policy",
+            "elapsed_ms": 1
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:37.183Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "bootstrap",
+            "elapsed_ms": 1
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:37.184Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.early_prefetch_launch",
+            "elapsed_ms": 0
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:37.184Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.http_blocking_client_build",
+            "elapsed_ms": 0
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:37.830Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.fetch_models_blocking",
+            "elapsed_ms": 646
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:37.830Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.early_models_fetch",
+            "elapsed_ms": 646
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.100Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.early_settings_fetch",
+            "elapsed_ms": 269
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.100Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.early_prefetch",
+            "elapsed_ms": 915
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.100Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.bootstrap.remote_settings",
+            "elapsed_ms": 917
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.331Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.bootstrap.resolve_config",
+            "elapsed_ms": 0
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.333Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.http_client_build",
+            "elapsed_ms": 0
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.333Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.bootstrap.init_process",
+            "elapsed_ms": 1
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.333Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "model_catalog",
+            "elapsed_ms": 1151
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.333Z",
+          "message": "startup timing",
+          "fields": {
+            "name": "startup.bootstrap.models_manager",
+            "elapsed_ms": 0
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.333Z",
+          "message": "model catalog: auth refresh watcher started",
+          "fields": {
+            "had_real_catalog": true,
+            "model_count": 2
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.333Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "worker_spawn",
+            "elapsed_ms": 1151
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.334Z",
+          "message": "startup phase",
+          "fields": {
+            "phase": "acp_initialize",
+            "elapsed_ms": 1152
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.334Z",
+          "message": "pager started",
+          "fields": {
+            "mode": "headless"
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.339Z",
+          "message": "agent initialized",
+          "fields": {}
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.339Z",
+          "message": "auth init user_info check",
+          "fields": {
+            "needs_user_info": false
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.339Z",
+          "message": "auth init disk refresh",
+          "fields": {
+            "changed": false
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.339Z",
+          "message": "auth init token state",
+          "fields": {
+            "has_current": true,
+            "is_expired": false
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:38.339Z",
+          "message": "auth method selection",
+          "fields": {
+            "default_auth_method_id": "cached_token",
+            "has_external_api_key": false,
+            "has_cached_token": true,
+            "methods_count": 2
+          }
+        },
+        {
+          "timestamp": "2026-09-14T15:17:48.676Z",
+          "message": "startup phase running long",
+          "fields": {
+            "phase": "acp_initialize",
+            "open_ms": 10341
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "retained-headless-startup-archive-v1",
+  "source_commit": "2e82baef1a55871eedddb2be352f33c9a3afa00a",
+  "files": [
+    {
+      "file": "observation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-initialize-location-r2\\observation.json",
+      "source_mtime_ns": 1789418591689360600,
+      "bytes": 13384,
+      "sha256": "ea18d63a9271b514f7eac37b8be3f87ef2d136f678bc34b88c3c11027c457bc9"
+    },
+    {
+      "file": "public-source.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-initialize-location-r2\\public-source.json",
+      "source_mtime_ns": 1789418616739689300,
+      "bytes": 464,
+      "sha256": "84aac76dca20a3210c71ce1bfe5d804457bdce1f2f7ace8123d0afa65dfe2fcf"
+    },
+    {
+      "file": "acp_agent.rs",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-initialize-location-r2\\acp_agent.rs",
+      "source_mtime_ns": 1789418612833876900,
+      "bytes": 137172,
+      "sha256": "4d4689029cbcaadca67c5c3561698f37f5cb02342098e5a7b9dc8fcc1f2bd56e"
+    },
+    {
+      "file": "FINDING.md",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-initialize-location-r2\\FINDING.md",
+      "source_mtime_ns": 1789418868627750300,
+      "bytes": 3027,
+      "sha256": "7d30a7d5f862908a0e3061df083f0e56631309698913d59a2945e019e803999f"
+    },
+    {
+      "file": "extractor.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\extract_headless_startup_location_r2.py",
+      "source_mtime_ns": 1789418585815775400,
+      "bytes": 3991,
+      "sha256": "436991ef1acc9d3210d2c56e77869ca4ad6034becadbdf3773d749b00fd8c46d"
+    }
+  ],
+  "new_native_calls": 0,
+  "new_model_calls": 0,
+  "validation_access": false,
+  "original_log_bytes_and_mtime_unchanged": true
+}
