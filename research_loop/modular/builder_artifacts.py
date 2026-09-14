@@ -299,8 +299,12 @@ def verify_builder_artifacts(catalogue, *, root, builder, parent, response, reci
                 value = returned[key]
                 if value is not None and type(value) is not dict:
                     raise ContractError('M9 returned output must be a canonical record or absent')
-                if name in snapshots and snapshots[name]['canonical'] is not None and value != snapshots[name]['canonical']:
-                    raise ContractError('M9 original return differs from its output file')
+                if name in snapshots:
+                    if snapshots[name]['canonical'] is None:
+                        if not failed or phase != 'write_' + key or value is None:
+                            raise ContractError('M9 partial output is impossible after its write phase')
+                    elif value != snapshots[name]['canonical']:
+                        raise ContractError('M9 original return differs from its output file')
             if not failed and (returned['candidate_type'] != 'CandidatePackage' or returned['receipt_type'] != 'BuilderRunReceipt'):
                 raise ContractError('M9 successful build returned untyped outputs')
     if 'builder.json' in snapshots:

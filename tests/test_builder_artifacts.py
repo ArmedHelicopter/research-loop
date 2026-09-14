@@ -149,13 +149,14 @@ def test_invalid_returned_candidate_and_receipt_are_retained(tmp_path, monkeypat
     assert artifacts.verify_builder_artifacts(session.artifacts, **kwargs).data()['status'] == 'failed'
 
 
-def test_partial_durable_write_is_retained_and_readonly(tmp_path, monkeypatch):
+@pytest.mark.parametrize('target', ['builder.json', 'm9-builder-return.json', 'builder-receipt.json', 'candidate.json'])
+def test_partial_durable_write_is_retained_and_readonly(tmp_path, monkeypatch, target):
     session, kwargs = fixture(tmp_path)
     bridge = artifacts.begin_builder_artifacts(session.artifacts, **kwargs)
     original = artifacts._exclusive
 
     def partial(path, record):
-        if path.name == 'builder.json':
+        if path.name == target:
             path.write_bytes(b'{"partial":')
             raise OSError('interrupted file write')
         return original(path, record)
@@ -163,7 +164,7 @@ def test_partial_durable_write_is_retained_and_readonly(tmp_path, monkeypatch):
     monkeypatch.setattr(artifacts, '_exclusive', partial)
     with pytest.raises(OSError, match='interrupted'):
         bridge.execute()
-    assert (tmp_path / 'builder.json').read_bytes() == b'{"partial":'
+    assert (tmp_path / target).read_bytes() == b'{"partial":'
     session.artifacts.seal()
     before = tree_bytes(tmp_path)
     assert artifacts.verify_builder_artifacts(session.artifacts, **kwargs).data()['status'] == 'failed'
@@ -300,3 +301,28 @@ def test_original_trace_blocks_rehashed_substitute_response_before_begin(tmp_pat
     with pytest.raises(ContractError, match='original trace'):
         artifacts.begin_builder_artifacts(session.artifacts, **other)
     assert not (tmp_path / 'builder.json').exists()
+
+
+@pytest.mark.parametrize('target', ['builder-receipt.json', 'candidate.json'])
+def test_rehashed_partial_output_cannot_appear_after_completed_writes(tmp_path, target):
+    session, kwargs = fixture(tmp_path)
+    artifacts.begin_builder_artifacts(session.artifacts, **kwargs).execute()
+    session.artifacts.seal()
+    (tmp_path / target).write_bytes(b'{"partial":')
+    terminal = json.loads((tmp_path / 'm9-build-terminal.json').read_bytes())
+    terminal.update(status='failed', phase='validate', error_type='ContractError', error='forged validation failure')
+    terminal['files'] = {name: artifacts._snapshot(tmp_path, name) for name in artifacts._FILES}
+    (tmp_path / 'm9-build-terminal.json').write_text(FrozenRecord.from_dict(terminal).encoded + '\n', encoding='utf-8', newline='\n')
+
+    def edit(body):
+        if body['kind'] == artifacts._KINDS[target]:
+            body['payload']['canonical'] = artifacts._snapshot(tmp_path, target)
+        if body['kind'] == 'm9_build_terminal':
+            body['payload']['canonical'] = artifacts._snapshot(tmp_path, 'm9-build-terminal.json')
+            body['status'] = 'failed'
+
+    rewrite_catalogue(session, edit)
+    before = tree_bytes(tmp_path)
+    with pytest.raises(ContractError, match='partial output is impossible'):
+        artifacts.verify_builder_artifacts(session.artifacts, **kwargs)
+    assert tree_bytes(tmp_path) == before
