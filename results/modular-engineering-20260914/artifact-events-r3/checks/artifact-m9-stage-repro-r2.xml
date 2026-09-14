@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="129.392" timestamp="2026-09-14T17:56:55.527778+08:00" hostname="SC-202507131830"><testcase classname="tests.test_joint_train_runtime" name="test_actual_history_target_pipeline_with_full_catalogue" time="128.649"><failure message="Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/artifact-m9-stage-repro-r2/test_actual_history_target_pip0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000025E7FF48D70&gt;
+
+    def test_actual_history_target_pipeline_with_full_catalogue(tmp_path,monkeypatch):
+        setup=prepare(tmp_path,monkeypatch);runner=executor(setup);plan=setup['common_plan'];recipe=full_recipe(plan)
+        assert len(plan.recipes)&gt;11 and plan.protocol.record.data()['allocation']['target_cells']&gt;22
+        history=runner.execute(recipe_id=recipe['id'],stage='history_build')
+        assert history.record.data()['status']=='succeeded',history.inner.record.data()
+        runner.verify(history)
+        with pytest.raises(ContractError,match='complete canonical'):JointTrainBarrier.seal(runner)
+        target=runner.execute(recipe_id=recipe['id'],stage='target',target_digest=plan.packets[0].task.content_hash,build=history)
+        assert target.record.data()['status']=='succeeded',target.inner.record.data()
+        runner.verify(target);runner.verify(history)
+        assert len(setup['common_logs'])==11
+        assert target.inner.solver.execution.record.data()['argv'][:4]==['docker','run','--pull','never']
+        assert history.inner.record.data()['artifact_catalogue_seal']['binding']['run_id']!=target.inner.record.data()['artifact_catalogue_seal']['binding']['run_id']
+        for stage in (history, target):
+            receipt=stage.inner.record.data();seal=receipt['artifact_catalogue_seal']
+            assert seal['binding']['experiment_id']==plan.record.content_hash
+            assert (stage.inner.root/'runtime'/'artifacts.jsonl.seal.json').is_file()
+            journal=stage.inner.root/'runtime'/'artifacts.jsonl'
+            rows=[json.loads(line)['descriptor'] for line in journal.read_text(encoding='utf-8').splitlines()]
+            assert seal['count']==len(rows) and seal['head'] is not None
+            assert all(row['scientific_validated'] is False for row in rows)
+            trace=[json.loads(line) for line in (stage.inner.root/'runtime'/'trace.jsonl').read_text(encoding='utf-8').splitlines()]
+            catalogue_trace=[row['payload']['canonical'] for row in rows if row['kind']=='trace_event']
+            assert catalogue_trace==trace
+            kinds = [row['kind'] for row in rows]
+            assert {'model_context', 'journal_event', 'reveal_output', 'retrieval_event'} &lt;= set(kinds)
+            assert kinds.count('phase_program') == kinds.count('phase_return') == 2
+            assert kinds.count('phase_allocation') == kinds.count('phase_receipt') == 1
+            assert kinds.count('phase_scheduler_event') == len((stage.inner.root/'phase/events.jsonl').read_bytes().splitlines())
+            assert kinds.count('phase_scheduler_sqlite') == int('M8' in stage.inner.cell.runtime_arm.data()['enabled'])
+            if stage is history:
+                assert {'m9_builder_selection', 'm9_builder_subjects', 'm9_builder_return', 'm9_builder_receipt',
+                        'm9_candidate', 'm9_build_terminal'} &lt;= set(kinds)
+                assert json.loads((stage.inner.root/'m9-build-terminal.json').read_bytes())['status'] == 'succeeded'
+        covered={row['module'] for row in [json.loads(line)['descriptor'] for line in (history.inner.root/'runtime'/'artifacts.jsonl').read_text(encoding='utf-8').splitlines()]
+                 + [json.loads(line)['descriptor'] for line in (target.inner.root/'runtime'/'artifacts.jsonl').read_text(encoding='utf-8').splitlines()] if row['coverage']=='covered' and row['status']=='produced'}
+        assert covered &gt;= {f'M{i}' for i in range(1,10)}
+        # A coherently sealed failed builder is valid audit evidence, but cannot
+        # support a successful enclosing history stage. Rehash both receipt levels
+        # so rejection must come from this state mismatch, not stale checksums.
+        from types import SimpleNamespace
+        from research_loop.modular import builder_artifacts
+        from research_loop.modular.artifact_catalogue import ArtifactCatalogue
+        from research_loop.modular.joint_train_runtime import _stage_record
+        from research_loop.modular.full_loo_driver import files
+        from test_builder_artifacts import rewrite_catalogue
+        stage_root = history.inner.root
+        outer_path = runner.root/(history.record.data()['trial_id']+'-stage.json')
+        changed_paths = [stage_root/'m9-build-terminal.json', stage_root/'runtime/artifacts.jsonl',
+            stage_root/'runtime/artifacts.jsonl.seal.json', stage_root/'receipt.json', outer_path]
+        originals = {path: path.read_bytes() for path in changed_paths}
+        binding = history.inner.record.data()['artifact_catalogue_seal']['binding']
+        catalogue = ArtifactCatalogue(stage_root/'runtime/artifacts.jsonl', identity=plan.history.task.identity,
+            run_id=binding['run_id'], experiment_id=binding['experiment_id'], lock_digest=binding['lock_digest'])
+        terminal = json.loads(changed_paths[0].read_bytes())
+        terminal.update(status='failed', error_type='OSError', error='terminal publication failed')
+        changed_paths[0].write_bytes((R(terminal).encoded+'\n').encode())
+        def change_terminal(body):
+            if body['kind'] == 'm9_build_terminal':
+                body['status'] = 'failed'
+                body['payload']['canonical'] = builder_artifacts._snapshot(stage_root, 'm9-build-terminal.json')
+        try:
+            rewrite_catalogue(SimpleNamespace(artifacts=catalogue), change_terminal)
+            inner_record = R({**history.inner.record.data(), 'files': files(stage_root),
+                'artifact_catalogue_seal': json.loads(changed_paths[2].read_bytes())})
+            changed_paths[3].write_bytes(inner_record.encoded.encode())
+            inner = replace(history.inner, record=inner_record)
+            forged = replace(history, inner=inner, record=_stage_record(plan, inner, history.ledger, history.barrier, status='succeeded'))
+            outer_path.write_bytes(forged.record.encoded.encode())
+            runner.stages[0] = forged
+&gt;           with pytest.raises(ContractError, match='successful C4 history requires a successful M9 build'):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE &lt;class 'research_loop.ontology.ContractError'&gt;
+
+tests\test_joint_train_runtime.py:163: Failed</failure></testcase></testsuite></testsuites>

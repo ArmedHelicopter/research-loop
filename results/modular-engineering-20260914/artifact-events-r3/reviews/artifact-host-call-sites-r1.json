@@ -1,0 +1,1372 @@
+{
+  "schema": "artifact-production-call-site-inventory-v1",
+  "commit": "348017ad40e13887ffee27a5bbb3eb2f7caac486",
+  "scope": "AST call sites in research_loop/modular only; aliases and runtime indirect calls require separate audit",
+  "source_pins": {
+    "research_loop/modular/admission_combination.py": "db9a003badc1f209d23583e744ef5735b196e1fac1aa45748674da1026539689",
+    "research_loop/modular/admission_prediction_exploration_driver.py": "7fe14b994c55324484e919908f8ac09a2dcd02373e63607e187805508e5ca575",
+    "research_loop/modular/builder_artifacts.py": "08a3c9c3e36ce03e67c1f7ef5afc703b36c7b520f7b8f8e0b761ea2cbf039328",
+    "research_loop/modular/combination_benchmark_driver.py": "09b26e999fa51f36e0ef8f1f229b5e578f40395f6ca71ac7433e87b0724d1cce",
+    "research_loop/modular/context_artifact.py": "8d94c1d4c8fea515fa50b5b4bc709c6331c4d1f6e4adc483baa37105808d03df",
+    "research_loop/modular/evidence_artifacts.py": "19126369787e6b44d385f8449900e7106c305b8c9434182ee58986908675cdf0",
+    "research_loop/modular/execution_improvement_combination_driver.py": "47457a7c4e9f0d26cb9cc5c1ae5f64cfa2198aa31bfcaf7c8e78c254e6f1cbe5",
+    "research_loop/modular/exploration_scheduler_combination.py": "2a225a08d5639a9d02f3c16ba002e2ebe9c8520573cf25c2283aab5ea8ee1fa1",
+    "research_loop/modular/feasibility_panel_drivers.py": "e8fd8ef904a61c92fb6db339b5dea5cdc57676f4712978080c21eb8b370db32e",
+    "research_loop/modular/full_loo_driver.py": "4ff5493eb5c4425cc1beebcb5051c9371da0ed07335b45418c5c9cc7faa5f58d",
+    "research_loop/modular/history_panel_drivers.py": "bde3330968102bff09f8a7a6ffc46b4a19097a324414f769822e3158aac0d767",
+    "research_loop/modular/lineage_combination_controller.py": "ba55b9f199bb992288209e5546b37f1d8afa0326018c40485822b9bd63d454ff",
+    "research_loop/modular/lineage_combination_driver.py": "4fedf68866cd8d3c04d5c03129cde86e6dad77959ba53fed7f17ccd4423bbd0c",
+    "research_loop/modular/lineage_retrieval_improvement_combination_driver.py": "cece6f59987bc1a5aad94e571e337069d6ca8c5d8347f0dfae9173704db044b1",
+    "research_loop/modular/lineage_singleton_replay.py": "2ebfa33993d73dd1fa086bd467aecfc53f144bc892abe23f1921b79bc7a5c39f",
+    "research_loop/modular/linked_prediction_projection.py": "ef9f3832c6bc334ee100ec54c2ac20401e34c87c8e62ceda369758d6d79de9c1",
+    "research_loop/modular/linked_public_projection.py": "f63a3af58faf588cca1a7583123f87259fccab523f7be554a5a2462ff0b5298e",
+    "research_loop/modular/m4_m5_artifacts.py": "6c6461f330ccbc94b370a239a04fc01483cbb461f68106d96751b3856c3d5dc6",
+    "research_loop/modular/mechanism_exploration_combination_driver.py": "fa2b9f105a0390146039eef1468b022fa3af8fb8e50a584d7c81b4f8d6c4764f",
+    "research_loop/modular/mechanism_improvement_combination_driver.py": "73e3e395a0ce5bbd77a0813bf5b3e61587937e29ea887ab492084fe419b73e0a",
+    "research_loop/modular/mechanism_scheduling_combination_driver.py": "09ed4abf318d9205fec5dc673ea0a8bedc82df491cd5d5cd21a16d55d4f9ec4d",
+    "research_loop/modular/metaprogram_training.py": "b85bd61865408e53b4cf37439e5b77053ccdf9cd9efdabda18a96ebf6c120790",
+    "research_loop/modular/prediction_panel_drivers.py": "e0ffa30585d3d2714b2246197e89507044c88e5129b75eb1b1d0d0fda7ff573e",
+    "research_loop/modular/q32_execution.py": "1fc089bfa41013a5e266a652566c60828615df1db1fe58e31949db5653ab9f39",
+    "research_loop/modular/q54_causal_driver.py": "d7050b5887e868004da0f8316480c35054630bf7bccba9d75cbe0288d2429894",
+    "research_loop/modular/retrieval_artifacts.py": "20385b384142a44922a3b411402ae44981198fd6219d68e63aacf1c7950b6847",
+    "research_loop/modular/retrieval_final_panel_drivers.py": "1caffef668a93a032aef62a18de31385677b6497d61e8ea0894f43df6eb719b5",
+    "research_loop/modular/retrieval_review_combination_driver.py": "c8a83ffda6cd4a429dedd967f55e589df1896b1c2328bfc41ad58c3308af97db",
+    "research_loop/modular/retrieval_stage_panel_drivers.py": "cfd54cedec5910d6378c24565ba8533f48a3d305c5cfb69558c7315a475f0542",
+    "research_loop/modular/runtime.py": "0a8ca9aef27cae30b887733630fa846f9c60e63e5a5988732c2a40f4b2f29ac7",
+    "research_loop/modular/scenarios_core.py": "2b6f018d34b2723f6f75de4f2438520cafe22783516357fa0e2a7a420af8529a",
+    "research_loop/modular/scenarios_exploration.py": "867ac1058eeaa35d4696e8c5305ab33db2f06752ad5760f2e329be42c21ba1b1",
+    "research_loop/modular/scenarios_history.py": "e72ef0093fe88c0b7c1e951293cc1992b15ab494f5b039414c78ebf1e55d3915",
+    "research_loop/modular/scenarios_improvement.py": "57b71371239d6a54e9314c6bc85b46ca20ff814b722a5c8d80359342af965cbf",
+    "research_loop/modular/scenarios_predictions.py": "c35263a75dbdc77fdd2273de5448fd6db423012711481d3b424bdd82e888124f",
+    "research_loop/modular/scenarios_review.py": "ea0ae847774c776b7f1afcee09befb05eba040a40330ee9c5b1c2f52a7098316",
+    "research_loop/modular/state_exploration_combination_controller.py": "9ecbf0f282b08c403fe5d46af2a4721e49d2d8fc5abb4cc7a8542d361e41d2df",
+    "research_loop/modular/state_exploration_combination_driver.py": "4d8197bc11391c426b9b98cf1ac9feadb98e3a5064f03ce78e3c44902d43267b",
+    "research_loop/modular/state_improvement_build.py": "33753143a0f656b5438abe6e291a83c43004065b4bde57149a099d65d578bf58",
+    "research_loop/modular/state_improvement_combination_driver.py": "a1a3ed1f7622955f8a4a4319fc77933c261d36368c313f0d15c43da996d3524f",
+    "research_loop/modular/state_prediction_combination_controller.py": "763747d195406946cfc2828b098a855b87cb29ce4af0ff282f295d03317acc8e",
+    "research_loop/modular/state_prediction_combination_driver.py": "a6474abc3ca296794b210ab5d1c57b3c5e8f5bc9089474b57818fe258716d9f8",
+    "research_loop/modular/state_retrieval_combination_controller.py": "623199c0e99523a4841a69e848818b414002ed9c90da520b84b69418374a0e38",
+    "research_loop/modular/state_retrieval_combination_driver.py": "f31f548bc070bde2ef55e3e5670a9b393f30b0006ddfe2939e0ba59ae61e4207",
+    "research_loop/modular/state_scheduling_combination_controller.py": "a6813cfa4592ae91f2084020ed549918a0bad4e202ef5b369ffceb37ca0b16f1",
+    "research_loop/modular/state_scheduling_combination_driver.py": "e220592ec8fdff35028c4739046970961d91a63c8431e2117c132ecd9b811200",
+    "research_loop/modular/support_panel_drivers.py": "bdd1e31eaff2fe3372eba72870f5ba72cb46413b01cb91121780745485cdd7af",
+    "research_loop/modular/withdrawal_panel_drivers.py": "9256592443c54a41d6eac59a00ade81d282de240d2535e53eba2970b6fa6beab",
+    "research_loop/modular/workflow.py": "58cbcbb79d9b7f427277d45331cbc2dfa25532f0a9bf74d47d98861bfb3b222a"
+  },
+  "call_sites": [
+    {
+      "path": "research_loop/modular/admission_prediction_exploration_driver.py",
+      "line": 227,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_admission_prediction_exploration_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/context_artifact.py",
+      "line": 73,
+      "callee": "ClaimLedger",
+      "enclosing": "_replay_ledgers",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/evidence_artifacts.py",
+      "line": 195,
+      "callee": "ClaimLedger",
+      "enclosing": "_verify_evidence_artifacts",
+      "keywords": [
+        "event_sink"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/execution_improvement_combination_driver.py",
+      "line": 116,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_execution_improvement_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/full_loo_driver.py",
+      "line": 231,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_stage",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/lineage_combination_controller.py",
+      "line": 342,
+      "callee": "ClaimLedger",
+      "enclosing": "run_lineage_train_panels",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/lineage_combination_driver.py",
+      "line": 176,
+      "callee": "ClaimLedger",
+      "enclosing": "run_lineage_combination_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/lineage_combination_driver.py",
+      "line": 237,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_lineage_combination_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/lineage_retrieval_improvement_combination_driver.py",
+      "line": 126,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_lineage_retrieval_improvement_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/lineage_singleton_replay.py",
+      "line": 93,
+      "callee": "ClaimLedger",
+      "enclosing": "_replay_checked",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_exploration_combination_driver.py",
+      "line": 264,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_mechanism_exploration_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_improvement_combination_driver.py",
+      "line": 130,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_mechanism_improvement_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_scheduling_combination_driver.py",
+      "line": 264,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_mechanism_scheduling_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/runtime.py",
+      "line": 254,
+      "callee": "ClaimLedger",
+      "enclosing": "RunSession.__init__",
+      "keywords": [
+        "storage_path",
+        "event_sink",
+        "on_failure"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_core.py",
+      "line": 49,
+      "callee": "ClaimLedger",
+      "enclosing": "_history",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_exploration.py",
+      "line": 214,
+      "callee": "ClaimLedger",
+      "enclosing": "_apply",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_history.py",
+      "line": 119,
+      "callee": "ClaimLedger",
+      "enclosing": "run_history_scenario",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_exploration_combination_controller.py",
+      "line": 278,
+      "callee": "ClaimLedger",
+      "enclosing": "run_state_exploration_train_panels",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_exploration_combination_driver.py",
+      "line": 216,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_state_exploration_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_improvement_build.py",
+      "line": 198,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_build",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_improvement_combination_driver.py",
+      "line": 110,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_state_improvement_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_prediction_combination_controller.py",
+      "line": 267,
+      "callee": "ClaimLedger",
+      "enclosing": "run_state_prediction_train_panels",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_prediction_combination_driver.py",
+      "line": 164,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_state_prediction_combination_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_retrieval_combination_controller.py",
+      "line": 290,
+      "callee": "ClaimLedger",
+      "enclosing": "run_state_retrieval_train_panels",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_retrieval_combination_driver.py",
+      "line": 217,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_state_retrieval_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_scheduling_combination_controller.py",
+      "line": 278,
+      "callee": "ClaimLedger",
+      "enclosing": "run_state_scheduling_train_panels",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_scheduling_combination_driver.py",
+      "line": 217,
+      "callee": "ClaimLedger",
+      "enclosing": "verify_state_scheduling_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/admission_combination.py",
+      "line": 141,
+      "callee": "ContextBuilder",
+      "enclosing": "transition",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/admission_prediction_exploration_driver.py",
+      "line": 234,
+      "callee": "ContextBuilder",
+      "enclosing": "verify_admission_prediction_exploration_cell",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/context_artifact.py",
+      "line": 97,
+      "callee": "ContextBuilder",
+      "enclosing": "_rebuild_context",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/execution_improvement_combination_driver.py",
+      "line": 142,
+      "callee": "ContextBuilder",
+      "enclosing": "verify_execution_improvement_cell",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/full_loo_driver.py",
+      "line": 238,
+      "callee": "ContextBuilder",
+      "enclosing": "verify_stage",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/history_panel_drivers.py",
+      "line": 35,
+      "callee": "ContextBuilder",
+      "enclosing": "_context",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/lineage_combination_driver.py",
+      "line": 82,
+      "callee": "ContextBuilder",
+      "enclosing": "_transition",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/lineage_combination_driver.py",
+      "line": 282,
+      "callee": "ContextBuilder",
+      "enclosing": "verify_lineage_combination_cell",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/lineage_retrieval_improvement_combination_driver.py",
+      "line": 168,
+      "callee": "ContextBuilder",
+      "enclosing": "verify_lineage_retrieval_improvement_cell",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_exploration_combination_driver.py",
+      "line": 264,
+      "callee": "ContextBuilder",
+      "enclosing": "verify_mechanism_exploration_cell",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_improvement_combination_driver.py",
+      "line": 203,
+      "callee": "ContextBuilder",
+      "enclosing": "verify_mechanism_improvement_cell",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_scheduling_combination_driver.py",
+      "line": 264,
+      "callee": "ContextBuilder",
+      "enclosing": "verify_mechanism_scheduling_cell",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/runtime.py",
+      "line": 364,
+      "callee": "ContextBuilder",
+      "enclosing": "RunSession.invoke",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_core.py",
+      "line": 49,
+      "callee": "ContextBuilder",
+      "enclosing": "_history",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_history.py",
+      "line": 121,
+      "callee": "ContextBuilder",
+      "enclosing": "run_history_scenario",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_history.py",
+      "line": 156,
+      "callee": "ContextBuilder",
+      "enclosing": "_apply",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_exploration_combination_driver.py",
+      "line": 261,
+      "callee": "ContextBuilder",
+      "enclosing": "verify_state_exploration_cell",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_improvement_build.py",
+      "line": 216,
+      "callee": "ContextBuilder",
+      "enclosing": "verify_build",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_improvement_combination_driver.py",
+      "line": 128,
+      "callee": "ContextBuilder",
+      "enclosing": "verify_state_improvement_cell",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_retrieval_combination_driver.py",
+      "line": 254,
+      "callee": "ContextBuilder",
+      "enclosing": "verify_state_retrieval_cell",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_scheduling_combination_driver.py",
+      "line": 262,
+      "callee": "ContextBuilder",
+      "enclosing": "verify_state_scheduling_cell",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/support_panel_drivers.py",
+      "line": 23,
+      "callee": "ContextBuilder",
+      "enclosing": "_context",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/withdrawal_panel_drivers.py",
+      "line": 150,
+      "callee": "ContextBuilder",
+      "enclosing": "Q17TimeInformationDriver.run",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/withdrawal_panel_drivers.py",
+      "line": 153,
+      "callee": "ContextBuilder",
+      "enclosing": "Q17TimeInformationDriver.run",
+      "keywords": [
+        "budget_bytes"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/admission_prediction_exploration_driver.py",
+      "line": 227,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_admission_prediction_exploration_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/context_artifact.py",
+      "line": 65,
+      "callee": "EvidenceLedger",
+      "enclosing": "_replay_ledgers",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/evidence_artifacts.py",
+      "line": 194,
+      "callee": "EvidenceLedger",
+      "enclosing": "_verify_evidence_artifacts",
+      "keywords": [
+        "event_sink"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/execution_improvement_combination_driver.py",
+      "line": 116,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_execution_improvement_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/full_loo_driver.py",
+      "line": 231,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_stage",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/lineage_combination_controller.py",
+      "line": 342,
+      "callee": "EvidenceLedger",
+      "enclosing": "run_lineage_train_panels",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/lineage_combination_driver.py",
+      "line": 176,
+      "callee": "EvidenceLedger",
+      "enclosing": "run_lineage_combination_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/lineage_combination_driver.py",
+      "line": 237,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_lineage_combination_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/lineage_retrieval_improvement_combination_driver.py",
+      "line": 126,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_lineage_retrieval_improvement_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/lineage_singleton_replay.py",
+      "line": 93,
+      "callee": "EvidenceLedger",
+      "enclosing": "_replay_checked",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_exploration_combination_driver.py",
+      "line": 264,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_mechanism_exploration_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_improvement_combination_driver.py",
+      "line": 130,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_mechanism_improvement_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_scheduling_combination_driver.py",
+      "line": 264,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_mechanism_scheduling_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/retrieval_artifacts.py",
+      "line": 164,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_q84_source_ledger_artifacts",
+      "keywords": [
+        "storage_path"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/retrieval_stage_panel_drivers.py",
+      "line": 138,
+      "callee": "EvidenceLedger",
+      "enclosing": "RetrievalStagePanelDriver._provenance",
+      "keywords": [
+        "storage_path",
+        "event_sink",
+        "on_failure"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/runtime.py",
+      "line": 252,
+      "callee": "EvidenceLedger",
+      "enclosing": "RunSession.__init__",
+      "keywords": [
+        "storage_path",
+        "event_sink",
+        "on_failure"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_core.py",
+      "line": 49,
+      "callee": "EvidenceLedger",
+      "enclosing": "_history",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_exploration.py",
+      "line": 209,
+      "callee": "EvidenceLedger",
+      "enclosing": "_apply",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_history.py",
+      "line": 114,
+      "callee": "EvidenceLedger",
+      "enclosing": "run_history_scenario",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_exploration_combination_controller.py",
+      "line": 278,
+      "callee": "EvidenceLedger",
+      "enclosing": "run_state_exploration_train_panels",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_exploration_combination_driver.py",
+      "line": 216,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_state_exploration_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_improvement_build.py",
+      "line": 198,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_build",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_improvement_combination_driver.py",
+      "line": 110,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_state_improvement_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_prediction_combination_controller.py",
+      "line": 267,
+      "callee": "EvidenceLedger",
+      "enclosing": "run_state_prediction_train_panels",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_prediction_combination_driver.py",
+      "line": 164,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_state_prediction_combination_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_retrieval_combination_controller.py",
+      "line": 290,
+      "callee": "EvidenceLedger",
+      "enclosing": "run_state_retrieval_train_panels",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_retrieval_combination_driver.py",
+      "line": 217,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_state_retrieval_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_scheduling_combination_controller.py",
+      "line": 278,
+      "callee": "EvidenceLedger",
+      "enclosing": "run_state_scheduling_train_panels",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_scheduling_combination_driver.py",
+      "line": 217,
+      "callee": "EvidenceLedger",
+      "enclosing": "verify_state_scheduling_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/admission_prediction_exploration_driver.py",
+      "line": 183,
+      "callee": "PredictionRegistry",
+      "enclosing": "_replay_mechanism",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/combination_benchmark_driver.py",
+      "line": 294,
+      "callee": "PredictionRegistry",
+      "enclosing": "_verify_module_logs",
+      "keywords": [
+        "storage_path"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/feasibility_panel_drivers.py",
+      "line": 96,
+      "callee": "PredictionRegistry",
+      "enclosing": "_branches",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/full_loo_driver.py",
+      "line": 249,
+      "callee": "PredictionRegistry",
+      "enclosing": "verify_stage",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/linked_prediction_projection.py",
+      "line": 76,
+      "callee": "PredictionRegistry",
+      "enclosing": "prediction_public_material",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/linked_public_projection.py",
+      "line": 191,
+      "callee": "PredictionRegistry",
+      "enclosing": "_q31_material",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/m4_m5_artifacts.py",
+      "line": 147,
+      "callee": "PredictionRegistry",
+      "enclosing": "_verify_m4_m5_artifacts",
+      "keywords": [
+        "storage_path"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_exploration_combination_driver.py",
+      "line": 213,
+      "callee": "PredictionRegistry",
+      "enclosing": "_replay_mechanism",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_improvement_combination_driver.py",
+      "line": 142,
+      "callee": "PredictionRegistry",
+      "enclosing": "verify_mechanism_improvement_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_scheduling_combination_driver.py",
+      "line": 213,
+      "callee": "PredictionRegistry",
+      "enclosing": "_replay_mechanism",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/prediction_panel_drivers.py",
+      "line": 132,
+      "callee": "PredictionRegistry",
+      "enclosing": "_validate_plan",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/q32_execution.py",
+      "line": 64,
+      "callee": "PredictionRegistry",
+      "enclosing": "compile_q32_execution",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/q32_execution.py",
+      "line": 148,
+      "callee": "PredictionRegistry",
+      "enclosing": "Q32ExecutionStage.__init__",
+      "keywords": [
+        "storage_path"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/q54_causal_driver.py",
+      "line": 91,
+      "callee": "PredictionRegistry",
+      "enclosing": "_item",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/retrieval_final_panel_drivers.py",
+      "line": 51,
+      "callee": "PredictionRegistry",
+      "enclosing": "freeze_retrieval_final_bundle",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/retrieval_review_combination_driver.py",
+      "line": 272,
+      "callee": "PredictionRegistry",
+      "enclosing": "verify_retrieval_review_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/scenarios_predictions.py",
+      "line": 83,
+      "callee": "PredictionRegistry",
+      "enclosing": "run_prediction_scenario",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_review.py",
+      "line": 332,
+      "callee": "PredictionRegistry",
+      "enclosing": "_freeze_callback_predictions",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_prediction_combination_driver.py",
+      "line": 197,
+      "callee": "PredictionRegistry",
+      "enclosing": "verify_state_prediction_combination_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/state_prediction_combination_driver.py",
+      "line": 198,
+      "callee": "PredictionRegistry",
+      "enclosing": "verify_state_prediction_combination_cell",
+      "keywords": [
+        "storage_path"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/workflow.py",
+      "line": 30,
+      "callee": "PredictionRegistry",
+      "enclosing": "ModularWorkflow.__init__",
+      "keywords": [
+        "storage_path",
+        "event_sink"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/builder_artifacts.py",
+      "line": 193,
+      "callee": "RestrictedBuilderPort",
+      "enclosing": "BuilderArtifactBridge.execute",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/builder_artifacts.py",
+      "line": 322,
+      "callee": "RestrictedBuilderPort",
+      "enclosing": "verify_builder_artifacts",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/metaprogram_training.py",
+      "line": 554,
+      "callee": "RestrictedBuilderPort",
+      "enclosing": "_run_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_improvement.py",
+      "line": 115,
+      "callee": "RestrictedBuilderPort",
+      "enclosing": "run_improvement_scenario",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_improvement_build.py",
+      "line": 121,
+      "callee": "RestrictedBuilderPort",
+      "enclosing": "run_build",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/combination_benchmark_driver.py",
+      "line": 295,
+      "callee": "ReviewEngine",
+      "enclosing": "_verify_module_logs",
+      "keywords": [
+        "storage_path"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/full_loo_driver.py",
+      "line": 249,
+      "callee": "ReviewEngine",
+      "enclosing": "verify_stage",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/lineage_combination_driver.py",
+      "line": 250,
+      "callee": "ReviewEngine",
+      "enclosing": "verify_lineage_combination_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/m4_m5_artifacts.py",
+      "line": 148,
+      "callee": "ReviewEngine",
+      "enclosing": "_verify_m4_m5_artifacts",
+      "keywords": [
+        "storage_path"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_exploration_combination_driver.py",
+      "line": 213,
+      "callee": "ReviewEngine",
+      "enclosing": "_replay_mechanism",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_improvement_combination_driver.py",
+      "line": 142,
+      "callee": "ReviewEngine",
+      "enclosing": "verify_mechanism_improvement_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/mechanism_scheduling_combination_driver.py",
+      "line": 213,
+      "callee": "ReviewEngine",
+      "enclosing": "_replay_mechanism",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/retrieval_review_combination_driver.py",
+      "line": 273,
+      "callee": "ReviewEngine",
+      "enclosing": "verify_retrieval_review_cell",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": true
+    },
+    {
+      "path": "research_loop/modular/scenarios_core.py",
+      "line": 71,
+      "callee": "ReviewEngine",
+      "enclosing": "_pressure",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_exploration.py",
+      "line": 148,
+      "callee": "ReviewEngine",
+      "enclosing": "_apply",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_exploration.py",
+      "line": 235,
+      "callee": "ReviewEngine",
+      "enclosing": "_apply",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_history.py",
+      "line": 213,
+      "callee": "ReviewEngine",
+      "enclosing": "_apply",
+      "keywords": [],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/scenarios_review.py",
+      "line": 141,
+      "callee": "ReviewEngine",
+      "enclosing": "run_review_scenario",
+      "keywords": [
+        "storage_path"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/workflow.py",
+      "line": 32,
+      "callee": "ReviewEngine",
+      "enclosing": "ModularWorkflow.__init__",
+      "keywords": [
+        "storage_path",
+        "event_sink",
+        "reveal_sink"
+      ],
+      "explicit_phase_bridge": null,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/admission_prediction_exploration_driver.py",
+      "line": 169,
+      "callee": "run_phase",
+      "enclosing": "run_admission_prediction_exploration_cell",
+      "keywords": [
+        "material",
+        "cell",
+        "objective",
+        "root",
+        "broker",
+        "inputs",
+        "image",
+        "timeout_seconds"
+      ],
+      "explicit_phase_bridge": false,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/execution_improvement_combination_driver.py",
+      "line": 86,
+      "callee": "run_phase",
+      "enclosing": "run_execution_improvement_cell",
+      "keywords": [
+        "material",
+        "cell",
+        "objective",
+        "root",
+        "broker",
+        "inputs",
+        "image",
+        "timeout_seconds"
+      ],
+      "explicit_phase_bridge": false,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/exploration_scheduler_combination.py",
+      "line": 380,
+      "callee": "run_phase",
+      "enclosing": "run_exploration_scheduler_cell",
+      "keywords": [
+        "material",
+        "cell",
+        "objective",
+        "root",
+        "broker",
+        "inputs",
+        "image",
+        "timeout_seconds"
+      ],
+      "explicit_phase_bridge": false,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/full_loo_driver.py",
+      "line": 111,
+      "callee": "run_phase",
+      "enclosing": "run_stage",
+      "keywords": [
+        "material",
+        "cell",
+        "objective",
+        "root",
+        "broker",
+        "inputs",
+        "image",
+        "timeout_seconds",
+        "selected_job_id",
+        "artifact_bridge"
+      ],
+      "explicit_phase_bridge": true,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/mechanism_exploration_combination_driver.py",
+      "line": 199,
+      "callee": "run_phase",
+      "enclosing": "run_mechanism_exploration_cell",
+      "keywords": [
+        "material",
+        "cell",
+        "objective",
+        "root",
+        "broker",
+        "inputs",
+        "image",
+        "timeout_seconds"
+      ],
+      "explicit_phase_bridge": false,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/mechanism_scheduling_combination_driver.py",
+      "line": 199,
+      "callee": "run_phase",
+      "enclosing": "run_mechanism_scheduling_cell",
+      "keywords": [
+        "material",
+        "cell",
+        "objective",
+        "root",
+        "broker",
+        "inputs",
+        "image",
+        "timeout_seconds"
+      ],
+      "explicit_phase_bridge": false,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_exploration_combination_driver.py",
+      "line": 177,
+      "callee": "run_phase",
+      "enclosing": "run_state_exploration_cell",
+      "keywords": [
+        "material",
+        "cell",
+        "objective",
+        "root",
+        "broker",
+        "inputs",
+        "image",
+        "timeout_seconds"
+      ],
+      "explicit_phase_bridge": false,
+      "replay_named_scope": false
+    },
+    {
+      "path": "research_loop/modular/state_scheduling_combination_driver.py",
+      "line": 178,
+      "callee": "run_phase",
+      "enclosing": "run_state_scheduling_cell",
+      "keywords": [
+        "material",
+        "cell",
+        "objective",
+        "root",
+        "broker",
+        "inputs",
+        "image",
+        "timeout_seconds"
+      ],
+      "explicit_phase_bridge": false,
+      "replay_named_scope": false
+    }
+  ],
+  "all_module_coverage_proven": false
+}

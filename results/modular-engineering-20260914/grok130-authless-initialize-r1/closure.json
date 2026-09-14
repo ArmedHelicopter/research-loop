@@ -1,0 +1,51 @@
+{
+  "auth_path_appeared": false,
+  "auth_read_copy_hash": false,
+  "elapsed_seconds": 60.171000000002095,
+  "envelope_sha256": "13ed8d69fa2d5043c00407aab7f1348c30f84ff3c3d7fb5375ac9c9a47fb0ceb",
+  "faults": [
+    "timeout"
+  ],
+  "initialize_writes_completed": 1,
+  "known_model_usage": null,
+  "model_calls_dispatched": 0,
+  "native_exit_code_after_shutdown": 0,
+  "native_launches": 1,
+  "outbound_method_counts": {
+    "_x.ai/auto-topup-rule": 0,
+    "_x.ai/billing": 0,
+    "authenticate": 0,
+    "initialize": 1,
+    "session/new": 0,
+    "session/prompt": 0
+  },
+  "owner": {
+    "argv": [
+      "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-cli-1.0.30\\grok.exe",
+      "--cwd",
+      "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\cwd",
+      "agent",
+      "stdio"
+    ],
+    "closed": true,
+    "creation_filetime": 134338536833139670,
+    "creation_matches_at_close": true,
+    "exit_code": 0,
+    "held_handle_closed": true,
+    "job_owned": true,
+    "pid": 21152
+  },
+  "post_context_valid": true,
+  "process_tree_closed": true,
+  "response": null,
+  "response_received": false,
+  "retry_count": 0,
+  "schema": "authless-initialize-closure-v1",
+  "settled_additional_charge_usd": null,
+  "settlement_status": "unknown",
+  "stderr_bytes": 0,
+  "stdout_bytes": 0,
+  "stdout_frames_parsed": 0,
+  "strict_acceptance": false,
+  "validation_eligible": false
+}

@@ -1,0 +1,120 @@
+{
+  "schema": "authless-initialize-public-archive-v1",
+  "items": [
+    {
+      "path": "FINDING.md",
+      "bytes": 2306,
+      "sha256": "e973461adccf419f3d1a02c4e56eaf16e254386cc14894ed4d4aeb3dc981f2b9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\FINDING.md"
+    },
+    {
+      "path": "closure.json",
+      "bytes": 1459,
+      "sha256": "bcf04278f8309b6d012fe28eedf1f503491aae107b2fb933647ebd3435ae7ddd",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\closure.json"
+    },
+    {
+      "path": "driver.py",
+      "bytes": 10990,
+      "sha256": "500910df3dff12a245534b11a4dbffc388c7eb9748df7139a66eed2f27cb8518",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\driver.py"
+    },
+    {
+      "path": "envelope.json",
+      "bytes": 3342,
+      "sha256": "13ed8d69fa2d5043c00407aab7f1348c30f84ff3c3d7fb5375ac9c9a47fb0ceb",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\envelope.json"
+    },
+    {
+      "path": "init_engine.py",
+      "bytes": 9114,
+      "sha256": "48fe670938e8d523d6e9cf6cb7da6f78f883655b9e47f1a79e60029dea36928c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\init_engine.py"
+    },
+    {
+      "path": "native-reservation.json",
+      "bytes": 256,
+      "sha256": "59dad880422f4e1bdba9223bc72fd18bb61c9c823e524e49a0a91e50c7da31d9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\native-reservation.json"
+    },
+    {
+      "path": "peer.py",
+      "bytes": 654,
+      "sha256": "a552b405a7737c8180d4cfac3c97037795078c98bf86693b2bf339d84069d21e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\peer.py"
+    },
+    {
+      "path": "synthetic-checks.json",
+      "bytes": 5081,
+      "sha256": "87f9891b7422da3188474c71e974f344e17f66b4327a26b8ab075e273c566b77",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\synthetic-checks.json"
+    },
+    {
+      "path": "sources/integration/research_loop/__init__.py",
+      "bytes": 85,
+      "sha256": "73476337e465194d8ac06470c9b1ee8b69289b3b29a45f519a26c3a8191d22a2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\__init__.py"
+    },
+    {
+      "path": "sources/integration/research_loop/modular/__init__.py",
+      "bytes": 202,
+      "sha256": "21a687ffeb68261a9fbad84845e873e811d5c8dbcf7e99a1ddb0ec6b539b856e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\__init__.py"
+    },
+    {
+      "path": "sources/integration/research_loop/modular/contracts.py",
+      "bytes": 3221,
+      "sha256": "f21603596fa1780650ff7ec255917107117716a39cf6e070a44e773847dc1f75",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\contracts.py"
+    },
+    {
+      "path": "sources/integration/research_loop/modular/grok_acp_transport.py",
+      "bytes": 53261,
+      "sha256": "f736d68218e49bf90fa6ead447097d8366d3827932bea5565c854e71d07aa855",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_acp_transport.py"
+    },
+    {
+      "path": "sources/integration/research_loop/modular/grok_native_deployment.py",
+      "bytes": 3923,
+      "sha256": "ce208abf93cad1f265c56a02c70ac68d7444f2c03d79a562cf45c0735cfa7309",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_native_deployment.py"
+    },
+    {
+      "path": "sources/integration/research_loop/modular/grok_skill_isolation.py",
+      "bytes": 5045,
+      "sha256": "694def3565b1f7df24fcbc59458eb88e33950cca07e68341080bcc89f1e6205f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_skill_isolation.py"
+    },
+    {
+      "path": "sources/integration/research_loop/modular/model_port.py",
+      "bytes": 51557,
+      "sha256": "c56bdaf3818841d0956a647c9e2ae012cc49d4a15dd94a5c91756c53a628d9b6",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\model_port.py"
+    },
+    {
+      "path": "sources/integration/research_loop/ontology.py",
+      "bytes": 8775,
+      "sha256": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\ontology.py"
+    },
+    {
+      "path": "sources/config.toml",
+      "bytes": 2329,
+      "sha256": "b0696493660c0b8c9ff9f3ae9cce740b92daa6c646591757458313cc5a8d14c4",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\home\\config.toml"
+    },
+    {
+      "path": "tools/archive_grok_authless_r1.py",
+      "bytes": 3422,
+      "sha256": "0c0365960a108ffa4536e02ccf3111d64b3f59e7f91b4c053f1c5bb0f8d50f0b",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\archive_grok_authless_r1.py"
+    }
+  ],
+  "raw_native_streams_and_credentials_included": false,
+  "native_model_generation_proven": false,
+  "scientific_effectiveness_proven": false,
+  "binary_archived": false,
+  "pinned_executable_sha256": "ca24ea63272ba7881261f4a52498d1f5bd884b01da25845990422a10dd315266",
+  "settlement_status": "unknown",
+  "native_launches": 1
+}

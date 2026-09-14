@@ -1,0 +1,120 @@
+{
+  "cases": [
+    {
+      "elapsed_seconds": 0.2659999999887077,
+      "faults": [
+        "timeout"
+      ],
+      "name": "delay-short",
+      "owner": {
+        "argv": [
+          "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+          "-B",
+          "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\peer.py",
+          "delay"
+        ],
+        "closed": true,
+        "creation_filetime": 134338536664703165,
+        "creation_matches_at_close": true,
+        "exit_code": 0,
+        "held_handle_closed": true,
+        "job_owned": true,
+        "pid": 42708
+      },
+      "passed": true,
+      "response_received": false,
+      "strict_acceptance": false
+    },
+    {
+      "elapsed_seconds": 0.5310000000026776,
+      "faults": [
+        "timeout"
+      ],
+      "name": "delay-long",
+      "owner": {
+        "argv": [
+          "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+          "-B",
+          "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\peer.py",
+          "delay"
+        ],
+        "closed": true,
+        "creation_filetime": 134338536669867150,
+        "creation_matches_at_close": true,
+        "exit_code": 0,
+        "held_handle_closed": true,
+        "job_owned": true,
+        "pid": 59764
+      },
+      "passed": true,
+      "response_received": false,
+      "strict_acceptance": false
+    },
+    {
+      "elapsed_seconds": 0.062000000005355105,
+      "faults": [
+        "unexpected_notification"
+      ],
+      "name": "response-and-notification",
+      "owner": {
+        "argv": [
+          "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+          "-B",
+          "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\peer.py",
+          "notification"
+        ],
+        "closed": true,
+        "creation_filetime": 134338536683894536,
+        "creation_matches_at_close": true,
+        "exit_code": 0,
+        "held_handle_closed": true,
+        "job_owned": true,
+        "pid": 38544
+      },
+      "passed": true,
+      "response_received": true,
+      "strict_acceptance": false
+    },
+    {
+      "elapsed_seconds": 0.15600000000267755,
+      "faults": [
+        "unexpected_auth_path"
+      ],
+      "name": "new-auth-path",
+      "owner": {
+        "argv": [
+          "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+          "-B",
+          "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\peer.py",
+          "auth-path"
+        ],
+        "closed": true,
+        "creation_filetime": 134338536687536849,
+        "creation_matches_at_close": true,
+        "exit_code": 0,
+        "held_handle_closed": true,
+        "job_owned": true,
+        "pid": 8268
+      },
+      "passed": true,
+      "response_received": false,
+      "strict_acceptance": false
+    }
+  ],
+  "native_launches": 0,
+  "passed": true,
+  "schema": "authless-initialize-helper-checks-v1",
+  "source_pins": {
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\__init__.py": "73476337e465194d8ac06470c9b1ee8b69289b3b29a45f519a26c3a8191d22a2",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\__init__.py": "21a687ffeb68261a9fbad84845e873e811d5c8dbcf7e99a1ddb0ec6b539b856e",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\contracts.py": "f21603596fa1780650ff7ec255917107117716a39cf6e070a44e773847dc1f75",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_acp_transport.py": "f736d68218e49bf90fa6ead447097d8366d3827932bea5565c854e71d07aa855",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_native_deployment.py": "ce208abf93cad1f265c56a02c70ac68d7444f2c03d79a562cf45c0735cfa7309",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_skill_isolation.py": "694def3565b1f7df24fcbc59458eb88e33950cca07e68341080bcc89f1e6205f",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\model_port.py": "c56bdaf3818841d0956a647c9e2ae012cc49d4a15dd94a5c91756c53a628d9b6",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\ontology.py": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\driver.py": "500910df3dff12a245534b11a4dbffc388c7eb9748df7139a66eed2f27cb8518",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\init_engine.py": "48fe670938e8d523d6e9cf6cb7da6f78f883655b9e47f1a79e60029dea36928c",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\peer.py": "a552b405a7737c8180d4cfac3c97037795078c98bf86693b2bf339d84069d21e"
+  }
+}

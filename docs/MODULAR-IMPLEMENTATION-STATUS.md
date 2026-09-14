@@ -1334,3 +1334,53 @@ frozen at `98eae28` while the complete C5 r3 engineering run is active. M7/M8/M9
 per-output stage wiring, other module entry points, cross-catalogue relationships,
 resource attribution and audit overhead remain required. All original 48
 questions and singleton/pair/triple/full/LOO studies remain in scope.
+
+# 2026-09-14 C4 M1–M9 per-output acceptance and remaining host inventory
+
+The C4/C5 common stage now writes and verifies the M7/M8 allocation, each
+program/return, every scheduler event, SQLite state and phase receipt. History
+builds record M9 selection, TRAIN subjects, DSL, original typed returns,
+individual candidate/receipt files and terminal state. Disabled modules retain
+ordinary-control outputs with `not_applied`; no parallel SQLite is invented.
+
+Frozen `64d42d1` passed 39 integrated checks (693 unchanged source files).
+Independent review then identified a success/failure mismatch: a coherently
+sealed failed M9 terminal was accepted by a successful outer history stage.
+The actual stage regression at `eb7d9e4` reproduced this failure in 130.813s;
+the result is retained. `348017a` now requires verified builder success, and
+passed both full and ordinary-control history→target checks in 342.672s.
+Those checks retained 693 unchanged source files, used actual Docker with
+synthetic model peers and incurred no paid provider calls. The 39/1/2 counts
+refer to distinct versions and overlapping tests, not 42 unique passing cases.
+
+`results/modular-engineering-20260914/artifact-events-r3/` preserves 438 files:
+eight check batches with exact source ZIPs, ten complete public stage folders,
+978 descriptor records, failure evidence and the source-only caller inventory.
+The descriptors span multiple executions, not 978 unique scientific artifacts.
+Earlier helper checks remain evidence for their own source versions only.
+M9 recorded cost units describe fixed builder search/attempt allocation;
+they do not establish total machine usage or a paid-API settlement.
+
+The caller inventory finds eight actual `run_phase` callers, of which C4 is the
+one connected caller; seven other hosts need their actual input/selection
+contracts, without inventing C4 model/retrieval parents. Three independent
+restricted-builder host families also need adapters. The complete inventory
+contains 128 named call sites in 49 modular source files, including replay-only
+constructors. P0 custody artifacts, other host writers/readers, cross-catalogue
+TRAIN configuration edges, generic resource attribution and audit overhead
+remain open. This is not a claim of universal module output coverage.
+
+A separate one-shot Grok 1.0.30 authless initialize probe timed out after 60.171s
+with no stdout/stderr, no response and no model/session/authentication/billing
+RPC. Four synthetic helper checks passed first; the owned Job and retained
+handle closed, and no new auth path appeared. It shows the stall can occur
+without supplied cached credentials, not its root cause or model readiness.
+Twenty public source/receipt files are archived at
+`results/modular-engineering-20260914/grok130-authless-initialize-r1/`;
+raw streams stay private and billing settlement remains unknown. Earlier
+authenticated successes/timeouts retain their original interpretation.
+
+Main integration remains frozen at `98eae28` for the active C5 r3 engineering
+run. No new module/combination efficacy, real calibration or VAL acceptance is
+claimed. All 48 questions, singleton/pair/triple/full/LOO/C5/Q6.3 experiments
+and TRAIN-only optimization remain required.

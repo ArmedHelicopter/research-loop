@@ -16,6 +16,13 @@ rechecks the actual invocation and replays the selected literal builder. M9's
 fixed search allocation and interpreter attempt count are distinct from paid
 API or total resource cost. Generic resource attribution remains incomplete.
 
+The builder reader returns the verified terminal state even for an auditable
+failed build. A successful enclosing C4 history now explicitly requires that
+state to be `succeeded`; valid failure evidence cannot satisfy success acceptance.
+A real-stage regression rewrites the terminal, catalogue chain/seal and both
+receipt levels coherently. It was accepted at `eb7d9e4` and is rejected after
+the fix at `348017a`, while the restored successful original remains accepted.
+
 Audit outputs never change the model request, source selection, selected jobs,
 builder DSL or optimization/acceptance permissions. They add durable local I/O.
 The audit's own latency and storage overhead still need a paired measurement.
@@ -25,3 +32,11 @@ M7/M8 callers must explicitly provide their own authenticated parent mapping;
 other M9 training/deployment paths still need adapters. Passing this seam cannot
 be reported as universal host coverage or scientific efficacy. Required module
 and combination studies, TRAIN-only optimization and VAL-only acceptance remain.
+
+Frozen evidence: the initial integrated source `64d42d1` passed 39 checks;
+the regression source `eb7d9e4` failed the added adversarial acceptance check;
+fixed source `348017a` passed both full and ordinary-control history→target
+checks. All retained 693 unchanged source files. The last two checks used actual
+Docker and synthetic model processes, with no paid provider calls. Original
+sources, all eight related check batches and ten public stage directories are
+preserved in `results/modular-engineering-20260914/artifact-events-r3/`.

@@ -1,0 +1,53 @@
+disable_web_search = true
+[cli]
+auto_update = false
+[models]
+default = "grok-4.6"
+session_summary = "grok-4.6"
+max_completion_tokens = 128
+max_retries = 0
+[model."grok-4.6"]
+max_completion_tokens = 128
+max_retries = 0
+[features]
+title_refresh = false
+turn_summary = false
+[skills]
+paths = []
+server_skill_dirs = []
+bundled_skill_dirs = []
+ignore = ["E:\\.agents", "E:\\.claude", "E:\\.cursor", "E:\\.grok", "E:\\_ryanDev\\.agents", "E:\\_ryanDev\\.claude", "E:\\_ryanDev\\.cursor", "E:\\_ryanDev\\.grok", "E:\\_ryanDev\\AI\\.agents", "E:\\_ryanDev\\AI\\.claude", "E:\\_ryanDev\\AI\\.cursor", "E:\\_ryanDev\\AI\\.grok", "E:\\_ryanDev\\AI\\research-loop-modular\\.agents", "E:\\_ryanDev\\AI\\research-loop-modular\\.claude", "E:\\_ryanDev\\AI\\research-loop-modular\\.cursor", "E:\\_ryanDev\\AI\\research-loop-modular\\.grok", "E:\\_ryanDev\\AI\\research-loop-modular\\work\\.agents", "E:\\_ryanDev\\AI\\research-loop-modular\\work\\.claude", "E:\\_ryanDev\\AI\\research-loop-modular\\work\\.cursor", "E:\\_ryanDev\\AI\\research-loop-modular\\work\\.grok", "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\.agents", "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\.claude", "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\.cursor", "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\.grok", "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\cwd", "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\home", "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-authless-initialize-r1\\profile"]
+disabled = []
+[plugins]
+paths = []
+enabled = []
+disabled = []
+[memory]
+enabled = false
+[workflows]
+enabled = false
+[managed_mcps]
+enabled = false
+gateway_tools_enabled = false
+[subagents]
+enabled = false
+[goal]
+enabled = false
+[compat.claude]
+agents = false
+hooks = false
+mcps = false
+rules = false
+skills = false
+[compat.cursor]
+agents = false
+hooks = false
+mcps = false
+rules = false
+skills = false
+[marketplace]
+default_skills_installs_purged = true
+official_marketplace_auto_installed = true
+[[marketplace.sources]]
+name = "xAI Official"
+git = "https://github.com/xai-org/plugin-marketplace.git"
