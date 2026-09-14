@@ -27,7 +27,7 @@ def fixture(root, host, enabled):
     fixed = FrozenBuilderVersion.freeze({'entrypoint':'emit_literal_change_v1','surface':'prompt','key':'instructions','value':'fixed'})
     proposed = FrozenBuilderVersion.freeze({'entrypoint':'emit_literal_change_v1','surface':'memory','key':'lesson','value':'public units'})
     session = RunSession(task, package_digest=parent.digest,
-        arm=default_compatibility('fixture').arm(('M9',) if enabled else ()),
+        arm=default_compatibility('fixture').arm(('M1','M2','M9') if enabled else ()),
         objective=FrozenRecord.from_dict({'question':'public'}), slots=('builder_proposal',), execution_limit=0,
         sidecar=root/'proposal', verifier=AuditVerifier({'first':b'a'*32,'second':b'b'*32}), required_audit=('measurement',))
     response = session.invoke('builder_proposal', lambda request: proposed.record, evidence_only=True)
