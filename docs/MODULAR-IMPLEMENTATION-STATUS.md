@@ -3,6 +3,50 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
+## Headless material provenance and real rejection (2026-09-14)
+
+The four-TRAIN material authoring worker now has an explicit v3 headless route.
+Its producer freezes full inputs and native context; its independent reader
+reconstructs both commands, checks process/environment/source bindings, replays
+the native stream, and recomputes account eligibility from all six raw GETs.
+Every material slot retains signed support and unknown expected rubric targets.
+See [the transport contract](GROK-HEADLESS-TRANSPORT-CONTRACT.md).
+
+At `e45533f3d2e4570399dd013b262076b84bca9561`, the full frozen checkpoint
+passed 86 of 88 tests. The two failures were retry assertions expecting only
+FileExistsError after the actual fresh-context guard had already rejected reuse
+with ContractError. Both original executions correctly rejected substituted
+responses/streams, preserved observed usage and stopped further dispatch.
+The repaired checks assert unchanged reservation bytes and no further calls.
+Constructor failures also preserve unknown launch/cleanup state instead of
+claiming no process could have started. At
+`4e227a797fe2c31e42251adc8916facd3f1b8223`, 70 focused headless, authoring,
+stream-protocol and label-isolation checks passed in 172.5 seconds. Both versions
+retain 718 unchanged source files and exact source archives; checks use synthetic
+HTTP payloads and actual local subprocesses, with no paid model API calls.
+
+The real four-TRAIN attempt under that second source passed inspect and the
+first account preflight, but its first prompt process timed out after 240
+seconds with empty stdout/stderr. The owned Job closed; the observed exit code
+was zero, which does not override timeout or missing events. Independent reread
+reproduced the rejected binding. MAIN usage, title usage and settlement remain
+unknown. Before/after included balance was 89 percent, with paid cap/use/prepaid
+all zero and no top-up rule; unchanged snapshots do not establish zero settlement.
+
+The first opportunity is rejected and the remaining three are unexecuted.
+All 36 slots remain unresolved; 72 evaluator opportunities and the separate
+180-review/evaluator allocation remain visible. No review/evaluator calls or VAL
+access occurred. The source stayed unchanged throughout the actual worker.
+Static comparison to the earlier successful constant trial found no demonstrated
+cause for this silent prompt stall; no automatic retry or extra paid API followed.
+
+`results/modular-engineering-20260914/headless-authoring-r1/` preserves both
+frozen reports/source archives, synthetic runtime outputs, the original early
+CRLF provisioning rejection, and safe actual-run receipts. Real candidate and
+reference bodies, OIDC credentials and private authority keys stay private.
+This closes a provenance seam; real material readiness, scientific module and
+combination efficacy, and VAL acceptance remain incomplete.
+
 ## Per-event M1/M2 audit bridge (2026-09-14)
 
 The isolated implementation records every RunSession admission operation and
