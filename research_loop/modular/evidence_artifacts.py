@@ -169,6 +169,8 @@ def verify_evidence_artifacts(catalogue, sidecar):
     """Read-only reconciliation, including exact event order and semantic replay."""
     try:
         return _verify_evidence_artifacts(catalogue, sidecar)
+    except ContractError:
+        raise
     except (KeyError, TypeError, ValueError, IndexError, StopIteration) as exc:
         raise ContractError('malformed module artifact cannot be replayed') from exc
 

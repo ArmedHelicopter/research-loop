@@ -37,7 +37,9 @@ def _snapshots(session, events):
 def test_actual_invoke_registers_exact_m3_context_and_request(tmp_path, modules, mode, status):
     session, _, _ = session_at(tmp_path, modules=modules)
     seen = []
-    session.invoke('final', lambda request: seen.append(request) or FrozenRecord.from_dict({'ok': True}), instruction='Inspect.')
+    baseline_summary = 'untrusted baseline summary' if mode == 'baseline' else ''
+    session.invoke('final', lambda request: seen.append(request) or FrozenRecord.from_dict({'ok': True}),
+        instruction='Inspect.', baseline_summary=baseline_summary)
 
     descriptor = _descriptor(session)
     record = FrozenRecord.from_dict(descriptor['payload']['canonical'])
@@ -45,6 +47,7 @@ def test_actual_invoke_registers_exact_m3_context_and_request(tmp_path, modules,
     assert data['mode'] == mode
     assert data['request'] == seen[0].data()
     assert data['final_context'] == seen[0].data()['context']
+    assert data['baseline_summary'] == baseline_summary
     assert data['m3_enabled'] == ('M3' in modules)
     assert descriptor['status'] == status
     assert descriptor['producer_source']['path'].replace('\\', '/').endswith('/research_loop/modular/runtime.py')
@@ -72,7 +75,7 @@ def test_projection_evidence_only_revalidates_every_snapshot_and_cross_domain(tm
 
     for field, replacement in [
         ('evidence_snapshot', {}), ('claims_snapshot', {}), ('before_projection', {}),
-        ('final_context', {}), ('request', {}),
+        ('final_context', {}), ('baseline_summary', 'forged summary'), ('request', {}),
     ]:
         forged = record.data()
         forged[field] = replacement
