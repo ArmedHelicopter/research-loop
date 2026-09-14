@@ -92,7 +92,9 @@ for line in sys.stdin:
         answer = {'ok': True}
         if scenario.startswith('authoring'):
             from tests.helpers.material_authoring_fixture import authored_answer
-            answer = authored_answer(json.loads(req['params']['prompt'][0]['text'])['references'])
+            references = json.loads(req['params']['prompt'][0]['text'])['references']
+            assert [row['reference_index'] for row in references] == list(range(len(references)))
+            answer = authored_answer([row['content'] for row in references])
         if scenario.startswith('diagnostic'):
             from tests.helpers.calibration_pilot_fixture import fixture_target
             messages = json.loads(req['params']['prompt'][0]['text'])['messages']

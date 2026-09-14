@@ -12,7 +12,11 @@ if sys.argv[1] == 'inspect':
 else:
     session, prompt_file = sys.argv[1:3]
     prompt = json.loads(Path(prompt_file).read_text(encoding='utf-8'))
-    answer = authored_answer(prompt['references']) if 'references' in prompt else {'ok': True}
+    if 'references' in prompt:
+        assert [row['reference_index'] for row in prompt['references']] == list(range(len(prompt['references'])))
+        answer = authored_answer([row['content'] for row in prompt['references']])
+    else:
+        answer = {'ok': True}
     usage = {'input_tokens': 8, 'cache_read_input_tokens': 0, 'cache_creation_input_tokens': 0,
         'output_tokens': 2, 'reasoning_tokens': 0}
     rows = [{'type': 'available_commands', 'tools': [], 'commands': []}] * 3

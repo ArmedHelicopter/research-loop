@@ -9,7 +9,7 @@ import pytest
 from evaluation.modular.calibration_pilot import verify
 from evaluation.modular.calibration_pilot_process import load_record
 from evaluation.modular.diagnostic_material_authoring import (
-    LIMITS, REVIEW_LIMITS, compile_authoring, load_config, run_authoring, validate_authored,
+    LIMITS, REVIEW_LIMITS, authoring_prompt, compile_authoring, load_config, run_authoring, validate_authored,
 )
 from research_loop.modular.grok_acp_transport import AcpResult
 from research_loop.ontology import ContractError
@@ -122,8 +122,21 @@ def test_full_reference_in_all_four_requests_and_explicit_caps(tmp_path):
     for entry in envelope['entries']:
         text = load_record(entry['private_request']).data()['prompt']
         assert 'X' * 173399 in text and entry['input_bytes'] == len(text.encode())
+        rendered = json.loads(text)['references']
+        assert [row['reference_index'] for row in rendered] == list(range(entry['reference_count']))
+        assert all(set(row) == {'reference_index', 'content'} for row in rendered)
     with pytest.raises(ContractError, match='byte cap'):
         prepare(tmp_path / 'oversized', reference_bytes=262144)
+
+
+def test_reference_numbers_preserve_long_duplicate_and_nested_source_content():
+    references = [{'hypothesis': 'same excerpt', 'nested': {'value': index, 'text': 'a\n b'}}
+                  for index in range(73)]
+    task = {'question': 'synthetic reference binding'}
+    rendered = json.loads(authoring_prompt({'task_context': task, 'references': references}))
+    assert rendered['task'] == task
+    assert [row['reference_index'] for row in rendered['references']] == list(range(73))
+    assert [row['content'] for row in rendered['references']] == references
 
 
 def test_file_only_native_provision_freezes_all_slots_without_launch(tmp_path, monkeypatch):
