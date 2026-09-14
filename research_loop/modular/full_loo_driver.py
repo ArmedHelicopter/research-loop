@@ -91,8 +91,7 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
             session._record('c4_phase',{'phase_digest':phase.content_hash})
             for module in ('M7','M8'):
                 session.record_artifact(kind='exploration_phase_receipt',module=module,payload=phase,
-                    status='produced' if module in enabled else 'not_applied',producer_source=catalogue_source,
-                    cost={'known': phase.data()['unknown_cost_attempts']==0,'units':phase.data()['execution_units_reserved'] if phase.data()['unknown_cost_attempts']==0 else None})
+                    status='produced' if module in enabled else 'not_applied',producer_source=catalogue_source)
         joined=joint(prepared,phase,cell,task,package)
         session._record('c4_joint',{'joint':joined.data(),'joint_digest':joined.content_hash})
         if stage=='history_build':
@@ -121,7 +120,15 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
     # Explicit separate success predicates prevent an auxiliary success from
     # promoting a missing common solve or missing restricted build.
     status='succeeded' if (candidate is not None if stage=='history_build' else solver is not None and solver.status=='execution_succeeded') and reason is None else 'failed'
-    seal=session.artifacts.seal() if session is not None else None
+    seal=None
+    if session is not None:
+        try:
+            seal=session.artifacts.seal()
+        except Exception as exc:
+            reason=(reason+'; ' if reason else '')+'artifact_catalogue_seal:'+type(exc).__name__
+            status='failed'
+            _exclusive(root/'artifact-catalogue-failure.json',FrozenRecord.from_dict({'schema':'artifact-catalogue-seal-failure-v1',
+                'error_type':type(exc).__name__,'trace_path':'runtime/trace.jsonl'}))
     record=FrozenRecord.from_dict({'schema':'c4-stage-receipt-v2','plan_digest':plan.record.content_hash,'recipe':recipe,'stage':stage,
         'cell':cell.data(),'status':status,'reason':reason,'candidate_digest':candidate.digest if status=='succeeded' and candidate else None,
         'artifact_catalogue_seal':seal.data() if seal else None,'files':files(root)})

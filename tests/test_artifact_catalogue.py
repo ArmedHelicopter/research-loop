@@ -27,9 +27,8 @@ def test_append_only_catalogue_rejects_missing_parent_cross_subject_and_validati
     with pytest.raises(ContractError, match="tampered"):
         contaminated.append(kind="cross_subject", module="M2", payload={"x": 2}, parents=(foreign_root.content_hash,))
     target = make_catalogue(tmp_path / "target.jsonl", identity_value=identity(task_id="target"))
-    selected = target.append(kind="target_control", module="M9", payload={"selection": "frozen"}, control_sources=(foreign_root,))
-    assert selected.data()["control_sources"][0]["identity"]["task_id"] == "other"
-    assert selected.data()["parents"] == []
+    with pytest.raises(ContractError, match="unsupported"):
+        target.append(kind="target_control", module="M9", payload={"selection": "frozen"}, control_sources=(foreign_root,))
     validation = make_catalogue(tmp_path / "validation.jsonl", identity_value=identity(domain="validation"))
     with pytest.raises(ContractError, match="validation"):
         validation.append(kind="leak", module="M9", payload={"x": 1}, optimizer_visible=True)
@@ -47,3 +46,5 @@ def test_failure_stays_append_only_and_tamper_is_detected(tmp_path):
     tampered = make_catalogue(path, identity_value=identity())
     with pytest.raises(ContractError, match="tampered"):
         tampered.verify()
+    with pytest.raises(ContractError, match="tampered"):
+        tampered.records()
