@@ -1,0 +1,126 @@
+{
+  "schema": "m4-m5-readonly-regression-archive-v1",
+  "source_commit": "0f77216a45ce729f7d88c4e62553d7b43830700c",
+  "originals": [
+    {
+      "file": "m4-m5-readonly-frozen-r1-before.json",
+      "sha256": "3b86fb9ead01beec3198a1bef4ba8de7fea5cf9c076e931e5c1ab53add5e7781",
+      "bytes": 87218
+    },
+    {
+      "file": "m4-m5-readonly-frozen-r1-closed.json",
+      "sha256": "7b25cb6c8527f34d8ef7849bdbf07d520c2ba6f21f6bb900e29a69cd69c99274",
+      "bytes": 87333
+    },
+    {
+      "file": "m4-m5-readonly-frozen-r1-source-members.json",
+      "sha256": "aa01ec3fe08da3b813a7ba4cfe349074d96128841e5bba4102396a36d375ee5b",
+      "bytes": 130568
+    },
+    {
+      "file": "m4-m5-readonly-frozen-r1-sources.zip",
+      "sha256": "094262174a146ae70e742d8690057d5f7ef13d1cd51afd55903de05af5df83d0",
+      "bytes": 2465822
+    },
+    {
+      "file": "m4-m5-readonly-frozen-r1.xml",
+      "sha256": "338cf45489e34eb4d35dc9e66b63c86361031768146ed1080acc7901448684aa",
+      "bytes": 4591
+    },
+    {
+      "file": "archive_m4_m5_readonly_r1.py",
+      "sha256": "475eb717ddff777f0086326a74678fd8cf7bcafd978aa04a8ff7888a0ecd5bfe",
+      "bytes": 4122
+    },
+    {
+      "file": "test_actual_combination_consum0.zip",
+      "sha256": "0d01620d2c470b0ff2e0becafdaac7fd5d316d3feeb8057e93f6e72dce3eb90d",
+      "bytes": 8836
+    },
+    {
+      "file": "test_actual_combination_consum1.zip",
+      "sha256": "bf6e236884538dd22a06f868067e140307d353286179c371f4f63f63de243d85",
+      "bytes": 11024
+    },
+    {
+      "file": "test_actual_combination_consum2.zip",
+      "sha256": "4bdbe65a1341f3ed96101e33fe65099c768354fda5beed0a340227a2fe1b4d5d",
+      "bytes": 9966
+    },
+    {
+      "file": "test_actual_combination_consum3.zip",
+      "sha256": "8dd0ed0c22eb82640958cf7ceca9a7201467678295ed78838508a47980ad062e",
+      "bytes": 11966
+    }
+  ],
+  "specimens": [
+    {
+      "file": "test_actual_combination_consum0.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4-m5-readonly-frozen-r1\\test_actual_combination_consum0\\blade\\00",
+      "files": 6,
+      "trace_and_artifact_catalogue_reverified": true,
+      "bytes_and_mtime_unchanged": true,
+      "original_sha256": {
+        "artifacts.jsonl": "c5605d6c04d0abb42641ede3472967b8ed6e821c64b1c4cee24fcf6910569dc9",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "predictions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "reviews.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "trace.jsonl": "95b1d0a2066b3a219486b0e06506bf11bba0f36a3b4a71f50e1d12d928aac111"
+      }
+    },
+    {
+      "file": "test_actual_combination_consum1.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4-m5-readonly-frozen-r1\\test_actual_combination_consum1\\blade\\01",
+      "files": 6,
+      "trace_and_artifact_catalogue_reverified": true,
+      "bytes_and_mtime_unchanged": true,
+      "original_sha256": {
+        "artifacts.jsonl": "a640902c3cb0dd53a7d448f271c157f4e1445e392f5763e134de01f2ca8cf160",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "predictions.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "reviews.jsonl": "3ae3939a693a5575d3084c4585645130e0ffd8a2e7f5af1c6de3577a1329614f",
+        "trace.jsonl": "329dffa14e94f05c4e159eef9ef6dbe87a0ba4af89e95d98320fad5d1dfe9127"
+      }
+    },
+    {
+      "file": "test_actual_combination_consum2.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4-m5-readonly-frozen-r1\\test_actual_combination_consum2\\blade\\10",
+      "files": 6,
+      "trace_and_artifact_catalogue_reverified": true,
+      "bytes_and_mtime_unchanged": true,
+      "original_sha256": {
+        "artifacts.jsonl": "9e142db7233786383ecf946bc58d4fe244c6c716231245471743b0425d6a810a",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "predictions.jsonl": "8f588ab7763d2b82508dadb7063abcaa7143fe92e0d2ca52ff2062ab88b3aa0d",
+        "reviews.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "trace.jsonl": "377fb86b1de7896bde1a0f85d527c78c6c684c845af4eb4faa8fbefee6bfc16e"
+      }
+    },
+    {
+      "file": "test_actual_combination_consum3.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\m4-m5-readonly-frozen-r1\\test_actual_combination_consum3\\blade\\11",
+      "files": 6,
+      "trace_and_artifact_catalogue_reverified": true,
+      "bytes_and_mtime_unchanged": true,
+      "original_sha256": {
+        "artifacts.jsonl": "b7843a5be25eb7ed270f15950a16572b62bbca7f7f5a0e48cce6412a78ca0e93",
+        "claims.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "evidence.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "predictions.jsonl": "8f588ab7763d2b82508dadb7063abcaa7143fe92e0d2ca52ff2062ab88b3aa0d",
+        "reviews.jsonl": "3ae3939a693a5575d3084c4585645130e0ffd8a2e7f5af1c6de3577a1329614f",
+        "trace.jsonl": "646a9478b8892fa85401573d329ee38f5df8663764edf610ebff96437c0deb96"
+      }
+    }
+  ],
+  "scope": "read-side effects; full joint consumer checked in frozen tests",
+  "docker_execution_calls": 0,
+  "new_model_service_calls": 0,
+  "real_validation_access": false,
+  "scientific_validated": false,
+  "synthetic_model_callbacks_in_four_combination_cells": 12,
+  "total_synthetic_model_callbacks_in_suite": null,
+  "accounting_correction": "The original helper labeled the four combination cells count as the entire suite. Corrected before commit; original helper bytes remain archived, pre-correction manifest preserved under work."
+}

@@ -71,6 +71,10 @@ benchmark 身份上的全部 24 格，以及 15 类重算摘要的内容/来源/
 字节。重复工程目录不作为独立科学样本。见
 [预测 fixture 产物](PREDICTION-SCENARIO-ARTIFACTS.md)。评审 fixture 尚在修复。
 
+共用 M4/M5 读取器与实际配对消费者随后改用内存重放，避免持久化构造器的
+`touch()` 改写日志 mtime。33 项冻结检查通过，四个实际开关组合的读取保持
+原始字节和 mtime；缺失日志不补建。这不改变预测/评审产生端或实验开关。
+
 本次调用点清单位于 `results/modular-engineering-20260914/artifact-events-r3/reviews/`。
 它检查了当时 modular 源码中七类入口的 128 个调用点、49 个文件，区分重放构造器与
 实际写入入口；这不是 128 个产物或 128 个缺口。该历史清单保留原状。
