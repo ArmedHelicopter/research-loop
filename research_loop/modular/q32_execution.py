@@ -267,6 +267,9 @@ def run_q32_execution_panel(*, custody, snapshot_root: Path, export_root: Path, 
     if run_root.exists() and any(run_root.iterdir()):
         raise ContractError("execution panel output already used")
     packets = TrainPacketExporter(custody, snapshot_root, export_root).export(item_ids)
+    from evaluation.modular.train_io import verify_primary_train_packets
+    verify_primary_train_packets(packets, custody=custody, snapshot_root=snapshot_root,
+                                 item_ids=item_ids, output_root=export_root)
     compiled = compile_q32_execution(packets, material_by_task, image=image)
     return _run_q32_compiled(packets, compiled, export_root, run_root, model_factory, verifier)
 

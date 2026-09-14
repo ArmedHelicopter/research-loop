@@ -3,6 +3,7 @@ from dataclasses import replace
 import hashlib
 import os
 from pathlib import Path
+import shutil
 import subprocess
 
 import pytest
@@ -20,6 +21,10 @@ ITEMS = ('discoverybench:synth:train:family_1_1', 'blade:fish')
 
 def _setup(tmp_path):
     snapshot, custody = fixture(tmp_path)
+    # Retain the actual independent synthetic custody input before any packet
+    # producer runs, so later archive readers need not infer it from a packet.
+    _put(tmp_path / 'independent-custody.json', {'schema': 'synthetic-primary-custody-input-v1',
+        'state': custody.state, 'identities': [identity.data() for identity in custody.export_train()]})
     sources = read_primary_train_sources(custody, snapshot, ITEMS)
     return snapshot, custody, sources
 
@@ -175,13 +180,17 @@ def test_partial_write_and_seal_failure_preserve_original_bytes_and_error(tmp_pa
     if stage == 'catalogue_seal': assert seal_calls == [1]
     before = {p.name: p.read_bytes() for p in root.iterdir()}
     report = artifacts.inspect_failure(root, source).data()
-    assert report['stage'] == stage and report['error'] == str(error)
+    assert report['stage'] == stage and report['error'] is None
+    assert report['error_type'] == type(error).__name__
     assert report['storage_integrity_verified'] is True and report['acceptance_eligible'] is False
     assert before == {p.name: p.read_bytes() for p in root.iterdir()}
     with pytest.raises(ContractError): artifacts.verify(root, source)
     retained = next(name for name in before if name not in {artifacts.FAILURE, artifacts.FAILURE_SEAL})
-    (root / retained).write_bytes(b'changed failed bytes')
-    with pytest.raises(ContractError): artifacts.inspect_failure(root, source)
+    attack = tmp_path / 'attack'
+    shutil.copytree(root, attack)
+    (attack / retained).write_bytes(b'changed failed bytes')
+    with pytest.raises(ContractError): artifacts.inspect_failure(attack, source)
+    assert artifacts.inspect_failure(root, source).data()['storage_integrity_verified'] is True
 
 
 def test_failure_storage_failure_cannot_replace_primary_exception(tmp_path, monkeypatch):
@@ -274,3 +283,125 @@ def test_actual_controller_gate_precedes_compile_and_model_calls(tmp_path, monke
     assert model.ledger['calls'] == []
     attempt = _record(tmp_path / 'run/controller-attempt.json').data()
     assert attempt['status'] == 'blocked_before_execution'
+
+
+def test_failure_error_text_is_never_exported_even_when_exception_contains_private_context(tmp_path, monkeypatch):
+    _, _, sources = _setup(tmp_path)
+    source = sources[0]; root = tmp_path / 'packet'
+    sentinel = 'PRIVATE-EXCEPTION-CONTEXT-SENTINEL-91'
+    error = RuntimeError(sentinel)
+    real_put = artifacts.put
+    def fail(path, raw):
+        if path.name == 'public.json': raise error
+        return real_put(path, raw)
+    monkeypatch.setattr(artifacts, 'put', fail)
+    with pytest.raises(RuntimeError) as caught: artifacts.write(root, source)
+    assert caught.value is error and str(caught.value) == sentinel
+    assert all(sentinel.encode() not in path.read_bytes() for path in root.iterdir())
+    report = artifacts.inspect_failure(root, source)
+    assert report.data()['error'] is None and sentinel not in report.encoded
+    attack = tmp_path / 'attack'; shutil.copytree(root, attack)
+    body = _record(attack / artifacts.FAILURE).data(); body['error'] = sentinel
+    _put(attack / artifacts.FAILURE, body)
+    raw = (attack / artifacts.FAILURE).read_bytes()
+    _put(attack / artifacts.FAILURE_SEAL, {'schema': 'legacy-primary-failure-seal-v1',
+        'failure': {'file': artifacts.FAILURE, 'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw)}})
+    with pytest.raises(ContractError): artifacts.inspect_failure(attack, source)
+
+
+@pytest.mark.parametrize('caller', ['combination', 'q32'])
+@pytest.mark.parametrize('tamper', [False, True])
+def test_other_actual_legacy_callers_gate_packets_before_return_or_execution(tmp_path, monkeypatch, caller, tamper):
+    from test_modular_train_controller import snapshot_and_custody
+    import evaluation.modular.train_io as train_io
+    from research_loop.modular.combination_train_source import CombinationTrainSource
+    import research_loop.modular.q32_execution as q32
+    snapshot, custody = snapshot_and_custody(tmp_path)
+    body = {'item_ids': list(ITEMS), 'task_bindings': {
+        identity.benchmark + ':' + identity.task_id: {'identity': identity.data()}
+        for identity in custody.export_train()}}
+    export_root = tmp_path / 'export'
+    original_export, original_gate = TrainPacketExporter.export, train_io.verify_primary_train_packets
+    gate_calls, phases = [], []
+    def export(self, items):
+        packets = original_export(self, items)
+        if tamper:
+            packet_root = packets[0].packet_path.parent
+            (packet_root / 'data.csv').write_bytes(b'x\n999\n')
+            _reseal(packet_root)
+        return packets
+    def gate(packets, **kwargs):
+        gate_calls.append(kwargs)
+        return original_gate(packets, **kwargs)
+    def compile_packets(*args, **kwargs):
+        phases.append('compile')
+        return FrozenRecord.from_dict({'synthetic': 'stop before broker'})
+    def after_compile(*args, **kwargs):
+        phases.append('execution-boundary')
+        return 'synthetic-boundary-reached'
+    def forbidden(*args, **kwargs): raise AssertionError('model or Docker must not run')
+    monkeypatch.setattr(TrainPacketExporter, 'export', export)
+    monkeypatch.setattr(train_io, 'verify_primary_train_packets', gate)
+    monkeypatch.setattr(q32, 'compile_q32_execution', compile_packets)
+    monkeypatch.setattr(q32, '_run_q32_compiled', after_compile)
+    monkeypatch.setattr(q32, 'DockerExecutionBroker', forbidden)
+    def invoke():
+        if caller == 'combination':
+            return CombinationTrainSource(body, custody=custody, prospective_exporter=None,
+                                          snapshot=snapshot, exported=export_root).export()
+        return q32.run_q32_execution_panel(custody=custody, snapshot_root=snapshot,
+            export_root=export_root, run_root=tmp_path / 'run', item_ids=ITEMS,
+            material_by_task={}, image='synthetic-no-execution', model_factory=forbidden, verifier=None)
+    if tamper:
+        with pytest.raises(ContractError): invoke()
+        assert phases == []
+    else:
+        result = invoke()
+        if caller == 'combination': assert len(result) == 2 and phases == []
+        else: assert result == 'synthetic-boundary-reached' and phases == ['compile', 'execution-boundary']
+    assert gate_calls == [dict(custody=custody, snapshot_root=snapshot, item_ids=body['item_ids'] if caller == 'combination' else ITEMS,
+                               output_root=export_root)]
+
+
+def test_same_source_has_distinct_attempt_ids_bound_to_success_catalogues(tmp_path):
+    _, _, sources = _setup(tmp_path)
+    ids = []
+    for name in ('first', 'second'):
+        root = tmp_path / name
+        packet = artifacts.write(root, sources[0])
+        attempt = packet.data()['binding']['attempt_id']
+        first = FrozenRecord((root / artifacts.CAT).read_text().splitlines()[0]).data()['descriptor']
+        assert first['binding']['run_id'] == attempt
+        assert len(attempt) == 32 and all(char in '0123456789abcdef' for char in attempt)
+        ids.append(attempt)
+    assert ids[0] != ids[1]
+
+
+@pytest.mark.parametrize('stage', ['reservation', 'public.json'])
+@pytest.mark.parametrize('invalid', [True, 'not-an-attempt', 'f' * 32])
+def test_failed_attempt_id_is_checked_even_before_catalogue_exists(tmp_path, monkeypatch, stage, invalid):
+    _, _, sources = _setup(tmp_path)
+    source = sources[0]; root = tmp_path / 'packet'; real_put = artifacts.put
+    def fail(path, raw):
+        target = artifacts.RESERVATION if stage == 'reservation' else stage
+        if path.name == target:
+            path.write_bytes(b'partial reservation or output')
+            raise RuntimeError('original failure remains caller-only')
+        return real_put(path, raw)
+    monkeypatch.setattr(artifacts, 'put', fail)
+    with pytest.raises(RuntimeError): artifacts.write(root, source)
+    original = artifacts.inspect_failure(root, source).data()['attempt_id']
+    assert len(original) == 32
+    attack = tmp_path / 'attack'; shutil.copytree(root, attack)
+    body = _record(attack / artifacts.FAILURE).data(); body['binding']['attempt_id'] = invalid
+    _put(attack / artifacts.FAILURE, body)
+    raw = (attack / artifacts.FAILURE).read_bytes()
+    _put(attack / artifacts.FAILURE_SEAL, {'schema': 'legacy-primary-failure-seal-v1',
+        'failure': {'file': artifacts.FAILURE, 'sha256': hashlib.sha256(raw).hexdigest(), 'bytes': len(raw)}})
+    if stage == 'reservation' and invalid == 'f' * 32:
+        # No readable original catalogue exists: storage-only can check format,
+        # not authenticate an external historical identity. Never accept success.
+        assert artifacts.inspect_failure(attack, source).data()['acceptance_eligible'] is False
+    else:
+        with pytest.raises(ContractError): artifacts.inspect_failure(attack, source)
+    with pytest.raises(ContractError): artifacts.verify(attack, source)

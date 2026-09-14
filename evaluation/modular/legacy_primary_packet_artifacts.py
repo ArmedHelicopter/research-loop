@@ -160,13 +160,27 @@ def _descriptor(kind, payload, *, binding, identity, source, source_ref, parents
         'optimizer_visible': False, 'scientific_validated': False})
 
 
+def _attempt_binding(source_binding, retained):
+    """Only the original attempt identity may vary from independent source data."""
+    if type(retained) is not dict:
+        raise ContractError('primary attempt binding must be an object')
+    attempt_id = retained.get('attempt_id')
+    if (type(attempt_id) is not str or len(attempt_id) != 32
+            or any(char not in '0123456789abcdef' for char in attempt_id)):
+        raise ContractError('primary attempt id must be a 32-character hexadecimal string')
+    expected = FrozenRecord.from_dict({**source_binding.data(), 'attempt_id': attempt_id})
+    if FrozenRecord.from_dict(retained) != expected:
+        raise ContractError('primary attempt binding differs from independent source')
+    return expected
+
+
 def _failure(root, binding, stage, error):
     # Never retry/overwrite a partly completed primary catalogue or its seal.
     # Preserve malformed terminal bytes exactly and bind them in separate storage
     # evidence. A failure marker permanently excludes success verification.
     files = _inventory(root)
     body = FrozenRecord.from_dict({'schema': 'legacy-primary-failure-storage-v1', 'binding': binding.data(),
-        'stage': stage, 'error_type': type(error).__name__, 'error': str(error), 'files': files,
+        'stage': stage, 'error_type': type(error).__name__, 'error': None, 'files': files,
         'status': 'failed', 'operation_validated': False, 'scientific_validated': False})
     put(root / FAILURE, (body.encoded + '\n').encode())
     put(root / FAILURE_SEAL, (FrozenRecord.from_dict({'schema': 'legacy-primary-failure-seal-v1',
@@ -175,7 +189,9 @@ def _failure(root, binding, stage, error):
 
 def write(directory, source):
     root = _safe_path(directory)
-    binding = _source(source)  # TRAIN and source contract before any mkdir/write.
+    source_binding = _source(source)  # TRAIN and source contract before any mkdir/write.
+    attempt_id = uuid4().hex
+    binding = FrozenRecord.from_dict({**source_binding.data(), 'attempt_id': attempt_id})
     if root.exists():
         raise ContractError('primary packet directory already used')
     root.mkdir(parents=True, exist_ok=False)
@@ -183,7 +199,7 @@ def write(directory, source):
     try:
         put(root / RESERVATION, (binding.encoded + '\n').encode())
         src = binding.data()['sources']
-        catalogue = ArtifactCatalogue(root / CAT, identity=source.task.identity, run_id=uuid4().hex,
+        catalogue = ArtifactCatalogue(root / CAT, identity=source.task.identity, run_id=attempt_id,
             experiment_id='P0:legacy-primary-export', lock_digest=binding.content_hash, producer_source=src['adapter'])
         last = catalogue.append(kind='p0_legacy_primary_binding', module='P0', payload=binding,
                                 config_refs=(ref(src),))
@@ -217,10 +233,9 @@ def write(directory, source):
 def verify(directory, expected_source):
     """Read a successful packet against independent custody/source material."""
     root = _safe_path(directory)
-    binding = _source(expected_source)
+    source_binding = _source(expected_source)
     _inventory(root, complete=True)
-    if _read(root / RESERVATION) != binding:
-        raise ContractError('primary packet reservation differs from independent source')
+    binding = _attempt_binding(source_binding, _read(root / RESERVATION).data())
     packet = _read(root / PACKET)
     body = packet.data()
     if (set(body) != {'schema', 'binding', 'seal', 'train_only'} or body['schema'] != 'legacy-primary-train-packet-v2'
@@ -232,6 +247,7 @@ def verify(directory, expected_source):
         run_id = run_binding['run_id']
         if (set(run_binding) != {'run_id', 'experiment_id', 'lock_digest'} or type(run_id) is not str
                 or len(run_id) != 32 or any(c not in '0123456789abcdef' for c in run_id)
+                or run_id != binding.data()['attempt_id']
                 or run_binding['experiment_id'] != 'P0:legacy-primary-export'
                 or run_binding['lock_digest'] != binding.content_hash):
             raise ContractError('primary packet original run binding differs')
@@ -266,7 +282,7 @@ def verify(directory, expected_source):
 def inspect_failure(directory, expected_source):
     """Verify retained failure bytes; never return an accepted packet."""
     root = _safe_path(directory)
-    binding = _source(expected_source)
+    source_binding = _source(expected_source)
     files = _inventory(root)
     if not {FAILURE, FAILURE_SEAL} <= set(files):
         raise ContractError('primary failure storage closure is missing')
@@ -275,16 +291,30 @@ def inspect_failure(directory, expected_source):
     if (set(failure) != {'schema', 'binding', 'stage', 'error_type', 'error', 'files', 'status',
                         'operation_validated', 'scientific_validated'}
             or failure['stage'] not in {'reservation', *FILES, 'terminal', 'catalogue_seal', 'packet_seal', 'verification'}
-            or type(failure['error_type']) is not str or not failure['error_type'] or type(failure['error']) is not str):
+            or type(failure['error_type']) is not str or not failure['error_type'] or failure['error'] is not None):
         raise ContractError('primary failure storage schema differs')
+    binding = _attempt_binding(source_binding, failure['binding'])
     retained = {name: value for name, value in files.items() if name not in {FAILURE, FAILURE_SEAL}}
     expected = {'schema': 'legacy-primary-failure-storage-v1', 'binding': binding.data(),
-        'stage': failure['stage'], 'error_type': failure['error_type'], 'error': failure['error'],
+        'stage': failure['stage'], 'error_type': failure['error_type'], 'error': None,
         'files': retained, 'status': 'failed', 'operation_validated': False, 'scientific_validated': False}
     if body != FrozenRecord.from_dict(expected) or _read(root / FAILURE_SEAL) != FrozenRecord.from_dict({
             'schema': 'legacy-primary-failure-seal-v1', 'failure': snapshot(root / FAILURE)}):
         raise ContractError('primary failure retained bytes or binding differ')
+    # A malformed/partial journal remains raw storage evidence. Every readable
+    # descriptor must still belong to this attempt; no second identity can be
+    # introduced by coherently rehashing the separate failure manifest.
+    if CAT in retained:
+        for line in (root / CAT).read_bytes().splitlines():
+            try:
+                row = FrozenRecord(line.decode('utf-8')).data()
+                run_id = row['descriptor']['binding']['run_id']
+            except (UnicodeError, ValueError, KeyError, TypeError, ContractError):
+                continue
+            if type(run_id) is not str or run_id != binding.data()['attempt_id']:
+                raise ContractError('primary failed catalogue belongs to another attempt')
     return FrozenRecord.from_dict({'schema': 'legacy-primary-failure-inspected-v1', 'status': 'failed',
-        'stage': failure['stage'], 'error_type': failure['error_type'], 'error': failure['error'],
+        'attempt_id': binding.data()['attempt_id'],
+        'stage': failure['stage'], 'error_type': failure['error_type'], 'error': None,
         'storage_integrity_verified': True, 'operation_validated': False, 'acceptance_eligible': False,
         'scientific_validated': False})

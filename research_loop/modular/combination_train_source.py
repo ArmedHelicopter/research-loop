@@ -148,6 +148,9 @@ class CombinationTrainSource:
     def export(self):
         if self.prospective_exporter is None:
             packets = TrainPacketExporter(self.custody, self.snapshot, self.exported).export(self.body["item_ids"])
+            from evaluation.modular.train_io import verify_primary_train_packets
+            verify_primary_train_packets(packets, custody=self.custody, snapshot_root=self.snapshot,
+                                         item_ids=self.body["item_ids"], output_root=self.exported)
         else:
             packets = self.prospective_exporter.export_controller_packets(self.body["item_ids"])
             verify_primary_export_completion(self.prospective_exporter,self.body['item_ids'],packets)
