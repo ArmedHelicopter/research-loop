@@ -9,6 +9,7 @@ from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.joint_train_controller import run_joint_common_train, verify_joint_common_train_run
 from research_loop.modular.joint_deployment import JointComponentVersion, JointDeploymentBundle
 from research_loop.modular.joint_selected_snapshot import freeze_selected_joint_snapshot
+from research_loop.modular.c5_selected_artifact_registration import register_authenticated_selected_run, verify_registration
 from research_loop.modular.modules.improvement import TrainingManifest
 from research_loop.ontology import canonical
 from test_joint_train_runtime import executor, prepare
@@ -72,6 +73,11 @@ def test_complete_common_train_controller_uses_real_barrier_docker_and_independe
     frozen = freeze_selected_joint_snapshot(run, parent=parent,
         execution_authority_keys={EXEC.authority_id: EXEC.key},
         scorer_authority_keys={SCORER.authority_id: SCORER.key}).data()
+    registration_path = tmp_path / 'selected-artifact-registration.json'
+    registration = register_authenticated_selected_run(registration_path, run, parent=parent,
+        execution_authority_keys={EXEC.authority_id: EXEC.key}, scorer_authority_keys={SCORER.authority_id: SCORER.key})
+    assert verify_registration(registration_path, run, parent=parent,
+        execution_authority_keys={EXEC.authority_id: EXEC.key}, scorer_authority_keys={SCORER.authority_id: SCORER.key}) == registration
     choice = frozen['selection']
     selected = JointDeploymentBundle(FrozenRecord.from_dict(frozen['bundle']))
     assert selected.digest == frozen['bundle_digest'] and selected.parent_digest == parent.digest
