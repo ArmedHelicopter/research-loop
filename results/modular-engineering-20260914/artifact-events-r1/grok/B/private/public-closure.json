@@ -1,0 +1,36 @@
+{
+  "schema": "initialize-only-closure-v1",
+  "accepted_initialize": false,
+  "faults": [
+    "timeout"
+  ],
+  "initialize_write_attempted": true,
+  "initialize_writes_completed": 1,
+  "outbound_method_counts": {
+    "initialize": 1,
+    "session/new": 0,
+    "authenticate": 0,
+    "_x.ai/billing": 0,
+    "_x.ai/auto-topup-rule": 0,
+    "session/prompt": 0
+  },
+  "stdout_frames_parsed": 0,
+  "server_requests_observed": 0,
+  "response": null,
+  "started_utc": "2026-09-14T07:57:47.222323+00:00",
+  "shutdown_started_seconds": 60.0,
+  "elapsed_seconds": 60.26499999999942,
+  "native_process_id": 25708,
+  "native_exit_code_after_shutdown": 0,
+  "process_tree_closed": true,
+  "stdout_bytes": 0,
+  "stderr_bytes": 0,
+  "stream_hashes": {
+    "stdout.private.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr.private.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "retry_allowed": false,
+  "model_account_tools_verified": false,
+  "known_model_usage": null,
+  "settled_additional_charge_usd": null
+}

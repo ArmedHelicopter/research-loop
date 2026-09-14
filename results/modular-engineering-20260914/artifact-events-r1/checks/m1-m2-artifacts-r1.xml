@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="24" time="413.772" timestamp="2026-09-14T16:08:12.290367+08:00" hostname="SC-202507131830"><testcase classname="tests.test_evidence_artifacts" name="test_actual_admission_direct_ledger_and_withdrawal_descendants_reconcile" time="17.465" /><testcase classname="tests.test_evidence_artifacts" name="test_disabled_modules_retain_actual_common_floor_without_false_activation" time="3.549" /><testcase classname="tests.test_evidence_artifacts" name="test_independent_replay_rejects_coherently_rehashed_forgery[output]" time="15.301" /><testcase classname="tests.test_evidence_artifacts" name="test_independent_replay_rejects_coherently_rehashed_forgery[cross_domain]" time="11.096" /><testcase classname="tests.test_evidence_artifacts" name="test_independent_replay_rejects_coherently_rehashed_forgery[refresh]" time="10.626" /><testcase classname="tests.test_evidence_artifacts" name="test_independent_replay_rejects_coherently_rehashed_forgery[activation]" time="16.107" /><testcase classname="tests.test_evidence_artifacts" name="test_independent_replay_rejects_coherently_rehashed_forgery[missing]" time="15.808" /><testcase classname="tests.test_evidence_artifacts" name="test_public_replay_recomputes_root_identity_even_if_source_journal_is_also_rehashed" time="10.949"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'replayed operation'&#10; Input: 'malformed module artifact cannot be replayed'">catalogue = &lt;research_loop.modular.artifact_catalogue.ArtifactCatalogue object at 0x000001FB5E376C90&gt;
+sidecar = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_public_replay_recomputes_0/root-forgery')
+
+    def verify_evidence_artifacts(catalogue, sidecar):
+        """Read-only reconciliation, including exact event order and semantic replay."""
+        try:
+&gt;           return _verify_evidence_artifacts(catalogue, sidecar)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+research_loop\modular\evidence_artifacts.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+catalogue = &lt;research_loop.modular.artifact_catalogue.ArtifactCatalogue object at 0x000001FB5E376C90&gt;
+sidecar = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_public_replay_recomputes_0/root-forgery')
+
+    def _verify_evidence_artifacts(catalogue, sidecar):
+        sidecar = Path(sidecar)
+        if (sidecar / 'audit-failure.json').exists():
+            raise ContractError('runtime audit failed and cannot be accepted as complete')
+        descriptors = catalogue.records()
+        traces = [d.data()['payload']['canonical'] for d in descriptors if d.data()['kind'] == 'trace_event']
+        if not traces or traces != _read_journal(sidecar / 'trace.jsonl'):
+            raise ContractError('evidence audit requires the exact source trace')
+        lock = FrozenRecord.from_dict(traces[0]['data'])
+        if lock.content_hash != catalogue.binding['lock_digest'] or lock.data()['identity'] != catalogue.identity.data():
+            raise ContractError('evidence audit lock or identity differs')
+        from types import SimpleNamespace
+        replayed = deque()
+        evidence = claims = None
+        def observe(journal, event):
+            replayed.append((journal, event.data(), _output(journal, event.data(), evidence, claims)))
+        evidence = EvidenceLedger(catalogue.identity, event_sink=lambda event: observe('evidence', event))
+        claims = ClaimLedger(evidence, event_sink=lambda event: observe('claims', event))
+        session = SimpleNamespace(evidence=evidence, claims=claims, arm=FrozenRecord.from_dict(lock.data()['arm']))
+        bridge = EvidenceArtifactBridge(session)
+        actual_events = {'evidence': [], 'claims': []}
+        m1_expected = [FrozenRecord.from_dict(t) for t in traces if t['stage'] in M1_STAGES]
+        m1_seen = []
+        model_inputs = {}
+        latest_trace = None
+        latest_trace_event = None
+        for descriptor in descriptors:
+            d = descriptor.data()
+            if d['kind'] == 'trace_event':
+                if replayed:
+                    raise ContractError('trace interrupts an incomplete ledger operation audit')
+                latest_trace = descriptor.content_hash
+                latest_trace_event = d['payload']['canonical']
+                if latest_trace_event['stage'] == 'model_request':
+                    request = FrozenRecord.from_dict(latest_trace_event['data']['request'])
+                    if request.content_hash != latest_trace_event['data']['request_digest'] or request.content_hash in model_inputs:
+                        raise ContractError('ambiguous model request in ledger history')
+                    model_inputs[request.content_hash] = {'evidence_snapshot': evidence.snapshot().data(),
+                        'claims_snapshot': claims.snapshot().data()}
+                continue
+            if d['kind'] in M1_STAGES.values():
+                payload = d['payload']['canonical']
+                event = FrozenRecord.from_dict(payload['trace'])
+                stage = event.data()['stage']
+                enabled = 'M1' in lock.data()['arm']['enabled']
+                expected = {'schema': 'm1-admission-artifact-v1', 'trace': event.data(),
+                    'trace_digest': event.content_hash, 'module_enabled': enabled, 'bridge_source': bridge.bridge_source}
+                status = ('rejected' if stage == 'audit_rejected' else 'produced') if enabled else 'not_applied'
+                if (payload != expected or event.data() != latest_trace_event
+                        or d['module'] != 'M1' or d['kind'] != M1_STAGES.get(stage)
+                        or d['status'] != status or d['parents'] != [latest_trace]
+                        or d['producer_source']['path'] != str((Path(__file__).parent / 'runtime.py').resolve())):
+                    raise ContractError('admission artifact differs from the original operation')
+                m1_seen.append(event)
+                if stage == 'scientific_admission' and event.data()['data'].get('execution_digest') is not None:
+                    bridge.decisions[event.data()['data']['execution_digest']] = descriptor.content_hash
+                continue
+            if d['kind'] != 'ledger_event':
+                continue
+            body = d['payload']['canonical']
+            journal, event = body['journal'], body['event']
+            if journal not in actual_events or event.get('identity') != catalogue.identity.data():
+                raise ContractError('ledger artifact crosses a task or data domain')
+            if not replayed:
+                _replay(journal, event, evidence, claims)
+            if not replayed:
+                raise ContractError('ledger operation produced no event')
+            observed_journal, observed_event, observed_output = replayed.popleft()
+            if (observed_journal, observed_event, observed_output) != (journal, event, body['output']):
+&gt;               raise ContractError('ledger artifact does not match replayed operation and output')
+E               research_loop.ontology.ContractError: ledger artifact does not match replayed operation and output
+
+research_loop\modular\evidence_artifacts.py:245: ContractError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_public_replay_recomputes_0')
+
+    def test_public_replay_recomputes_root_identity_even_if_source_journal_is_also_rehashed(tmp_path):
+        session, execution, receipts = session_at(tmp_path / 'root-forgery')
+        session.admit(execution.content_hash, receipts)
+        def mutate(rows):
+            event = rows[-1]['descriptor']['payload']['canonical']['event']
+            event['root_id'] = 'f' * 64
+            frozen = FrozenRecord.from_dict({'root_id': event['root_id'], 'representation': event['representation'], 'payload': event['payload']})
+            event['record_id'] = frozen.content_hash
+            output = rows[-1]['descriptor']['payload']['canonical']['output']
+            output.update(root_id=event['root_id'], record_id=event['record_id'])
+            (session.sidecar / 'evidence.jsonl').write_bytes((FrozenRecord.from_dict(event).encoded + '\n').encode())
+        rewrite_catalogue(session, mutate)
+        with pytest.raises(ContractError, match='replayed operation'):
+&gt;           verify_evidence_artifacts(session.artifacts, session.sidecar)
+
+tests\test_evidence_artifacts.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+catalogue = &lt;research_loop.modular.artifact_catalogue.ArtifactCatalogue object at 0x000001FB5E376C90&gt;
+sidecar = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_public_replay_recomputes_0/root-forgery')
+
+    def verify_evidence_artifacts(catalogue, sidecar):
+        """Read-only reconciliation, including exact event order and semantic replay."""
+        try:
+            return _verify_evidence_artifacts(catalogue, sidecar)
+        except (KeyError, TypeError, ValueError, IndexError, StopIteration) as exc:
+&gt;           raise ContractError('malformed module artifact cannot be replayed') from exc
+E           research_loop.ontology.ContractError: malformed module artifact cannot be replayed
+
+research_loop\modular\evidence_artifacts.py:173: ContractError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_public_replay_recomputes_0')
+
+    def test_public_replay_recomputes_root_identity_even_if_source_journal_is_also_rehashed(tmp_path):
+        session, execution, receipts = session_at(tmp_path / 'root-forgery')
+        session.admit(execution.content_hash, receipts)
+        def mutate(rows):
+            event = rows[-1]['descriptor']['payload']['canonical']['event']
+            event['root_id'] = 'f' * 64
+            frozen = FrozenRecord.from_dict({'root_id': event['root_id'], 'representation': event['representation'], 'payload': event['payload']})
+            event['record_id'] = frozen.content_hash
+            output = rows[-1]['descriptor']['payload']['canonical']['output']
+            output.update(root_id=event['root_id'], record_id=event['record_id'])
+            (session.sidecar / 'evidence.jsonl').write_bytes((FrozenRecord.from_dict(event).encoded + '\n').encode())
+        rewrite_catalogue(session, mutate)
+&gt;       with pytest.raises(ContractError, match='replayed operation'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'replayed operation'
+E        Input: 'malformed module artifact cannot be replayed'
+
+tests\test_evidence_artifacts.py:114: AssertionError</failure></testcase><testcase classname="tests.test_evidence_artifacts" name="test_audit_failure_after_mutation_stops_next_model_call_and_keeps_marker[catalogue]" time="9.350"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'audit failed'&#10; Input: 'malformed module artifact cannot be replayed'">catalogue = &lt;research_loop.modular.artifact_catalogue.ArtifactCatalogue object at 0x000001FB5E3D1430&gt;
+sidecar = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_audit_failure_after_mutat0/catalogue')
+
+    def verify_evidence_artifacts(catalogue, sidecar):
+        """Read-only reconciliation, including exact event order and semantic replay."""
+        try:
+&gt;           return _verify_evidence_artifacts(catalogue, sidecar)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+research_loop\modular\evidence_artifacts.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+catalogue = &lt;research_loop.modular.artifact_catalogue.ArtifactCatalogue object at 0x000001FB5E3D1430&gt;
+sidecar = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_audit_failure_after_mutat0/catalogue')
+
+    def _verify_evidence_artifacts(catalogue, sidecar):
+        sidecar = Path(sidecar)
+        if (sidecar / 'audit-failure.json').exists():
+&gt;           raise ContractError('runtime audit failed and cannot be accepted as complete')
+E           research_loop.ontology.ContractError: runtime audit failed and cannot be accepted as complete
+
+research_loop\modular\evidence_artifacts.py:179: ContractError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_audit_failure_after_mutat0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001FB5E3C8470&gt;
+failure = 'catalogue'
+
+    @pytest.mark.parametrize('failure', ['catalogue', 'source_journal'])
+    def test_audit_failure_after_mutation_stops_next_model_call_and_keeps_marker(tmp_path, monkeypatch, failure):
+        session, execution, receipts = session_at(tmp_path / failure)
+        session.admit(execution.content_hash, receipts)
+        root = session.admission_roots[execution.content_hash]
+        original_append = session.artifacts.append
+        original_open = Path.open
+        if failure == 'catalogue':
+            def broken(**kw):
+                if kw['kind'] == 'ledger_event':
+                    raise OSError('injected artifact disk failure')
+                return original_append(**kw)
+            monkeypatch.setattr(session.artifacts, 'append', broken)
+        else:
+            def broken_open(path, *args, **kwargs):
+                if path == session.sidecar / 'evidence.jsonl' and args and args[0] == 'a':
+                    raise OSError('injected ledger disk failure')
+                return original_open(path, *args, **kwargs)
+            monkeypatch.setattr(Path, 'open', broken_open)
+        with pytest.raises(OSError):
+            session.evidence.withdraw(root, 'withdrawal must remain visible on failed audit')
+        seen = []
+        with pytest.raises(ContractError):
+            session.invoke('final', lambda request: seen.append(request), instruction='Inspect.')
+        assert not seen
+        assert root in session.evidence.snapshot().data()['withdrawn']
+        assert json.loads((session.sidecar / 'audit-failure.json').read_bytes())['terminal'] is True
+        with pytest.raises(ContractError, match='audit failed'):
+&gt;           verify_evidence_artifacts(session.artifacts, session.sidecar)
+
+tests\test_evidence_artifacts.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+catalogue = &lt;research_loop.modular.artifact_catalogue.ArtifactCatalogue object at 0x000001FB5E3D1430&gt;
+sidecar = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_audit_failure_after_mutat0/catalogue')
+
+    def verify_evidence_artifacts(catalogue, sidecar):
+        """Read-only reconciliation, including exact event order and semantic replay."""
+        try:
+            return _verify_evidence_artifacts(catalogue, sidecar)
+        except (KeyError, TypeError, ValueError, IndexError, StopIteration) as exc:
+&gt;           raise ContractError('malformed module artifact cannot be replayed') from exc
+E           research_loop.ontology.ContractError: malformed module artifact cannot be replayed
+
+research_loop\modular\evidence_artifacts.py:173: ContractError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_audit_failure_after_mutat0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001FB5E3C8470&gt;
+failure = 'catalogue'
+
+    @pytest.mark.parametrize('failure', ['catalogue', 'source_journal'])
+    def test_audit_failure_after_mutation_stops_next_model_call_and_keeps_marker(tmp_path, monkeypatch, failure):
+        session, execution, receipts = session_at(tmp_path / failure)
+        session.admit(execution.content_hash, receipts)
+        root = session.admission_roots[execution.content_hash]
+        original_append = session.artifacts.append
+        original_open = Path.open
+        if failure == 'catalogue':
+            def broken(**kw):
+                if kw['kind'] == 'ledger_event':
+                    raise OSError('injected artifact disk failure')
+                return original_append(**kw)
+            monkeypatch.setattr(session.artifacts, 'append', broken)
+        else:
+            def broken_open(path, *args, **kwargs):
+                if path == session.sidecar / 'evidence.jsonl' and args and args[0] == 'a':
+                    raise OSError('injected ledger disk failure')
+                return original_open(path, *args, **kwargs)
+            monkeypatch.setattr(Path, 'open', broken_open)
+        with pytest.raises(OSError):
+            session.evidence.withdraw(root, 'withdrawal must remain visible on failed audit')
+        seen = []
+        with pytest.raises(ContractError):
+            session.invoke('final', lambda request: seen.append(request), instruction='Inspect.')
+        assert not seen
+        assert root in session.evidence.snapshot().data()['withdrawn']
+        assert json.loads((session.sidecar / 'audit-failure.json').read_bytes())['terminal'] is True
+&gt;       with pytest.raises(ContractError, match='audit failed'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'audit failed'
+E        Input: 'malformed module artifact cannot be replayed'
+
+tests\test_evidence_artifacts.py:145: AssertionError</failure></testcase><testcase classname="tests.test_evidence_artifacts" name="test_audit_failure_after_mutation_stops_next_model_call_and_keeps_marker[source_journal]" time="8.897"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'audit failed'&#10; Input: 'malformed module artifact cannot be replayed'">catalogue = &lt;research_loop.modular.artifact_catalogue.ArtifactCatalogue object at 0x000001FB5E3D3080&gt;
+sidecar = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_audit_failure_after_mutat1/source_journal')
+
+    def verify_evidence_artifacts(catalogue, sidecar):
+        """Read-only reconciliation, including exact event order and semantic replay."""
+        try:
+&gt;           return _verify_evidence_artifacts(catalogue, sidecar)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+research_loop\modular\evidence_artifacts.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+catalogue = &lt;research_loop.modular.artifact_catalogue.ArtifactCatalogue object at 0x000001FB5E3D3080&gt;
+sidecar = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_audit_failure_after_mutat1/source_journal')
+
+    def _verify_evidence_artifacts(catalogue, sidecar):
+        sidecar = Path(sidecar)
+        if (sidecar / 'audit-failure.json').exists():
+&gt;           raise ContractError('runtime audit failed and cannot be accepted as complete')
+E           research_loop.ontology.ContractError: runtime audit failed and cannot be accepted as complete
+
+research_loop\modular\evidence_artifacts.py:179: ContractError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_audit_failure_after_mutat1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001FB5E3D0710&gt;
+failure = 'source_journal'
+
+    @pytest.mark.parametrize('failure', ['catalogue', 'source_journal'])
+    def test_audit_failure_after_mutation_stops_next_model_call_and_keeps_marker(tmp_path, monkeypatch, failure):
+        session, execution, receipts = session_at(tmp_path / failure)
+        session.admit(execution.content_hash, receipts)
+        root = session.admission_roots[execution.content_hash]
+        original_append = session.artifacts.append
+        original_open = Path.open
+        if failure == 'catalogue':
+            def broken(**kw):
+                if kw['kind'] == 'ledger_event':
+                    raise OSError('injected artifact disk failure')
+                return original_append(**kw)
+            monkeypatch.setattr(session.artifacts, 'append', broken)
+        else:
+            def broken_open(path, *args, **kwargs):
+                if path == session.sidecar / 'evidence.jsonl' and args and args[0] == 'a':
+                    raise OSError('injected ledger disk failure')
+                return original_open(path, *args, **kwargs)
+            monkeypatch.setattr(Path, 'open', broken_open)
+        with pytest.raises(OSError):
+            session.evidence.withdraw(root, 'withdrawal must remain visible on failed audit')
+        seen = []
+        with pytest.raises(ContractError):
+            session.invoke('final', lambda request: seen.append(request), instruction='Inspect.')
+        assert not seen
+        assert root in session.evidence.snapshot().data()['withdrawn']
+        assert json.loads((session.sidecar / 'audit-failure.json').read_bytes())['terminal'] is True
+        with pytest.raises(ContractError, match='audit failed'):
+&gt;           verify_evidence_artifacts(session.artifacts, session.sidecar)
+
+tests\test_evidence_artifacts.py:146: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+catalogue = &lt;research_loop.modular.artifact_catalogue.ArtifactCatalogue object at 0x000001FB5E3D3080&gt;
+sidecar = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_audit_failure_after_mutat1/source_journal')
+
+    def verify_evidence_artifacts(catalogue, sidecar):
+        """Read-only reconciliation, including exact event order and semantic replay."""
+        try:
+            return _verify_evidence_artifacts(catalogue, sidecar)
+        except (KeyError, TypeError, ValueError, IndexError, StopIteration) as exc:
+&gt;           raise ContractError('malformed module artifact cannot be replayed') from exc
+E           research_loop.ontology.ContractError: malformed module artifact cannot be replayed
+
+research_loop\modular\evidence_artifacts.py:173: ContractError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_audit_failure_after_mutat1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001FB5E3D0710&gt;
+failure = 'source_journal'
+
+    @pytest.mark.parametrize('failure', ['catalogue', 'source_journal'])
+    def test_audit_failure_after_mutation_stops_next_model_call_and_keeps_marker(tmp_path, monkeypatch, failure):
+        session, execution, receipts = session_at(tmp_path / failure)
+        session.admit(execution.content_hash, receipts)
+        root = session.admission_roots[execution.content_hash]
+        original_append = session.artifacts.append
+        original_open = Path.open
+        if failure == 'catalogue':
+            def broken(**kw):
+                if kw['kind'] == 'ledger_event':
+                    raise OSError('injected artifact disk failure')
+                return original_append(**kw)
+            monkeypatch.setattr(session.artifacts, 'append', broken)
+        else:
+            def broken_open(path, *args, **kwargs):
+                if path == session.sidecar / 'evidence.jsonl' and args and args[0] == 'a':
+                    raise OSError('injected ledger disk failure')
+                return original_open(path, *args, **kwargs)
+            monkeypatch.setattr(Path, 'open', broken_open)
+        with pytest.raises(OSError):
+            session.evidence.withdraw(root, 'withdrawal must remain visible on failed audit')
+        seen = []
+        with pytest.raises(ContractError):
+            session.invoke('final', lambda request: seen.append(request), instruction='Inspect.')
+        assert not seen
+        assert root in session.evidence.snapshot().data()['withdrawn']
+        assert json.loads((session.sidecar / 'audit-failure.json').read_bytes())['terminal'] is True
+&gt;       with pytest.raises(ContractError, match='audit failed'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'audit failed'
+E        Input: 'malformed module artifact cannot be replayed'
+
+tests\test_evidence_artifacts.py:145: AssertionError</failure></testcase><testcase classname="tests.test_evidence_artifacts" name="test_rejected_admission_is_an_output_without_fabricating_evidence" time="6.375" /><testcase classname="tests.test_evidence_artifacts" name="test_each_model_request_receives_its_own_replayed_historical_inputs" time="7.301" /><testcase classname="tests.test_label_isolation" name="test_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_prompts_do_not_contain_label_payloads" time="0.010" /><testcase classname="tests.test_label_isolation" name="test_error_catching_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_error_catching_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_iteration_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_iteration_prompts_do_not_contain_label_payloads" time="0.002" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_audit_contrast_prompts_do_not_contain_label_payloads" time="0.004" /><testcase classname="tests.test_label_isolation" name="test_true_lock_every_task_has_a_label" time="0.001" /><testcase classname="tests.test_label_isolation" name="test_true_lock_prompts_omit_gold_rule" time="0.005" /><testcase classname="tests.test_joint_train_runtime" name="test_actual_history_target_pipeline_with_full_catalogue" time="228.260" /><testcase classname="tests.test_joint_train_runtime" name="test_artifact_writer_failure_retains_independent_failed_stage_receipt" time="45.799"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\m1-m2-artifacts-r1\\test_artifact_writer_failure_r0\\common-run\\stages\\da81a98b60d9ec512011716a80bc17c0e9e811d851d8d79ae249a4707ebbc57f\\artifact-journal-failure.json'">tmp_path = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_artifact_writer_failure_r0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001FB5D1982C0&gt;
+
+    def test_artifact_writer_failure_retains_independent_failed_stage_receipt(tmp_path,monkeypatch):
+        from research_loop.modular.artifact_catalogue import ArtifactCatalogue
+        setup=prepare(tmp_path,monkeypatch);runner=executor(setup);recipe=full_recipe(runner.plan)
+        append=ArtifactCatalogue.append
+        def failed_append(self,**kwargs):
+            if kwargs['kind']=='trace_event' and kwargs['payload'].data()['stage']!='objective_lock':
+                raise OSError('synthetic artifact writer failure')
+            return append(self,**kwargs)
+        monkeypatch.setattr(ArtifactCatalogue,'append',failed_append)
+        try:
+            result=runner.execute(recipe_id=recipe['id'],stage='history_build')
+        except ContractError:
+            result=None
+        assert result is None or result.record.data()['status']=='failed'
+        assert runner.poisoned and not setup['common_logs']
+        stage_root=runner.root/'stages'/history_build_id(runner.plan.protocol,recipe)
+&gt;       failure=json.loads((stage_root/'artifact-journal-failure.json').read_bytes())
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_joint_train_runtime.py:218: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('E:/_ryanDev/AI/research-loop-modular/work/m1-m2-artifacts-r1/test_artifact_writer_failure_r0/common-run/stages/da81a98b60d9ec512011716a80bc17c0e9e811d851d8d79ae249a4707ebbc57f/artifact-journal-failure.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+&gt;       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: 'E:\\_ryanDev\\AI\\research-loop-modular\\work\\m1-m2-artifacts-r1\\test_artifact_writer_failure_r0\\common-run\\stages\\da81a98b60d9ec512011716a80bc17c0e9e811d851d8d79ae249a4707ebbc57f\\artifact-journal-failure.json'
+
+C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py:1013: FileNotFoundError</failure></testcase></testsuite></testsuites>

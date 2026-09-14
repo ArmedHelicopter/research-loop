@@ -1,0 +1,43 @@
+{
+  "schema": "artifact-event-deliveries-root-verification-v1",
+  "checks": [
+    {
+      "prefix": "m3-context-artifact-r1",
+      "commit": "c2dcffc7b16c0140a8586438b2fd2c9135ae68e5",
+      "junit": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_files": 675,
+      "original_bytes_verified": true,
+      "review_status": "later independent review found historical-state and projection gaps; repair pending"
+    },
+    {
+      "prefix": "m3-context-artifact-r2",
+      "commit": "f5eb91f75e1d02b5c693303e729184ee8981c663",
+      "junit": {
+        "tests": 15,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "source_files": 675,
+      "original_bytes_verified": true,
+      "review_status": "later independent review found historical-state and projection gaps; repair pending"
+    },
+    {
+      "prefix": "grok130-initialize-stdin-ab-public-r1",
+      "files": 18,
+      "manifest_sha256": "622d39b619f0b5b02cb098227ded02ed34c51f90634c3c75f998d0b48d13f4f4",
+      "original_public_bytes_verified": true,
+      "outcome": "both bounded initialize-only attempts timed out",
+      "settlement_status": "unknown",
+      "private_streams_and_auth_inspected": false,
+      "stdin_treatment_receipt_limit": "treatment is in frozen driver and aggregate, not in per-run public closure"
+    }
+  ],
+  "scientific_validated": false,
+  "full_artifact_coverage_complete": false
+}

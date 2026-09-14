@@ -1,0 +1,88 @@
+{
+  "auth_contents_read_or_hashed": false,
+  "authenticate_writes": 0,
+  "billing_writes": 0,
+  "envelope_sha256": "d6cfffb41c95e8d2580d4fa41a37ac0665f9c585006bb1f6e36c03742f63c499",
+  "global_auth_metadata_unchanged": true,
+  "model_calls": 0,
+  "native_launches": 2,
+  "prompt_writes": 0,
+  "retry_count": 0,
+  "schema": "grok130-initialize-stdin-ab-closure-v1",
+  "session_new_writes": 0,
+  "settled_additional_charge_usd": null,
+  "settlement_status": "unknown",
+  "synthetic_helper": {
+    "closed_stdin": {
+      "accepted_initialize": true,
+      "faults": [],
+      "process_tree_closed": true
+    },
+    "held_stdin": {
+      "accepted_initialize": false,
+      "faults": [
+        "timeout"
+      ],
+      "process_tree_closed": true
+    },
+    "schema": "eof-dependent-peer-v1"
+  },
+  "variants": [
+    {
+      "accepted_initialize": false,
+      "config_unchanged": true,
+      "elapsed_seconds": 60.187999999994645,
+      "envelope_sha256": "d6cfffb41c95e8d2580d4fa41a37ac0665f9c585006bb1f6e36c03742f63c499",
+      "faults": [
+        "timeout"
+      ],
+      "initialize_writes_completed": 1,
+      "known_model_usage": null,
+      "native_exit_code_after_shutdown": 0,
+      "outbound_method_counts": {
+        "_x.ai/auto-topup-rule": 0,
+        "_x.ai/billing": 0,
+        "authenticate": 0,
+        "initialize": 1,
+        "session/new": 0,
+        "session/prompt": 0
+      },
+      "process_tree_closed": true,
+      "response": null,
+      "settled_additional_charge_usd": null,
+      "stderr_bytes": 0,
+      "stdin_closed_after_write": false,
+      "stdout_bytes": 0,
+      "stdout_frames_parsed": 0,
+      "variant": "A"
+    },
+    {
+      "accepted_initialize": false,
+      "config_unchanged": true,
+      "elapsed_seconds": 60.26499999999942,
+      "envelope_sha256": "d6cfffb41c95e8d2580d4fa41a37ac0665f9c585006bb1f6e36c03742f63c499",
+      "faults": [
+        "timeout"
+      ],
+      "initialize_writes_completed": 1,
+      "known_model_usage": null,
+      "native_exit_code_after_shutdown": 0,
+      "outbound_method_counts": {
+        "_x.ai/auto-topup-rule": 0,
+        "_x.ai/billing": 0,
+        "authenticate": 0,
+        "initialize": 1,
+        "session/new": 0,
+        "session/prompt": 0
+      },
+      "process_tree_closed": true,
+      "response": null,
+      "settled_additional_charge_usd": null,
+      "stderr_bytes": 0,
+      "stdin_closed_after_write": true,
+      "stdout_bytes": 0,
+      "stdout_frames_parsed": 0,
+      "variant": "B"
+    }
+  ]
+}

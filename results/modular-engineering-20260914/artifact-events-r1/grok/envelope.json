@@ -1,0 +1,30 @@
+{
+  "executable_sha256": "ca24ea63272ba7881261f4a52498d1f5bd884b01da25845990422a10dd315266",
+  "frozen_files": {
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_acp_transport.py": "f736d68218e49bf90fa6ead447097d8366d3827932bea5565c854e71d07aa855",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_skill_isolation.py": "694def3565b1f7df24fcbc59458eb88e33950cca07e68341080bcc89f1e6205f",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-cli-1.0.30\\grok.exe": "ca24ea63272ba7881261f4a52498d1f5bd884b01da25845990422a10dd315266",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stdin-ab-r1\\A\\home\\config.toml": "76a25e204a19a2331c406f38fe51d934436dc8164e0a1cc79bdaa0ff6273cba5",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stdin-ab-r1\\B\\home\\config.toml": "eb7c30d7da3c93675928baaf5285ccd83329955163edbc8250678c28fd83ffae",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stdin-ab-r1\\driver.py": "651691be59e24b4908f113084fd563abe7cc33274129429fa51cb38d76e15e1b",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stdin-ab-r1\\eof_peer.py": "a3a27b96be0cb5bf6c5a4c87e58e7dba345234a9f648559ce1398ed7407fdf6b",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-initialize-stdin-ab-r1\\init_engine.py": "2396bfa21457ae89a3a7bf631ab3ea74faf207e15d3587701743f33e7bcb8db3"
+  },
+  "global_auth_contents_read_or_hashed": false,
+  "native_launch_order": [
+    "A-held-stdin",
+    "B-close-stdin-after-write"
+  ],
+  "native_launches_exactly": 2,
+  "only_intended_difference": "stdin_closed_immediately_after_the_single_initialize_write",
+  "outbound_method_limits": {
+    "authenticate": 0,
+    "billing": 0,
+    "initialize": 1,
+    "prompt": 0,
+    "session/new": 0
+  },
+  "per_launch_wall_timeout_seconds": 60,
+  "retry_count": 0,
+  "schema": "grok130-initialize-stdin-ab-envelope-v1"
+}

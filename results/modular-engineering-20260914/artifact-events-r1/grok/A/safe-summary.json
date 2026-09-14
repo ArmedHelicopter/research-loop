@@ -1,0 +1,28 @@
+{
+  "accepted_initialize": false,
+  "config_unchanged": true,
+  "elapsed_seconds": 60.187999999994645,
+  "envelope_sha256": "d6cfffb41c95e8d2580d4fa41a37ac0665f9c585006bb1f6e36c03742f63c499",
+  "faults": [
+    "timeout"
+  ],
+  "initialize_writes_completed": 1,
+  "known_model_usage": null,
+  "native_exit_code_after_shutdown": 0,
+  "outbound_method_counts": {
+    "_x.ai/auto-topup-rule": 0,
+    "_x.ai/billing": 0,
+    "authenticate": 0,
+    "initialize": 1,
+    "session/new": 0,
+    "session/prompt": 0
+  },
+  "process_tree_closed": true,
+  "response": null,
+  "settled_additional_charge_usd": null,
+  "stderr_bytes": 0,
+  "stdin_closed_after_write": false,
+  "stdout_bytes": 0,
+  "stdout_frames_parsed": 0,
+  "variant": "A"
+}

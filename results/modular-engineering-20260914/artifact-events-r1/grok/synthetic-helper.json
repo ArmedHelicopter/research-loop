@@ -1,0 +1,15 @@
+{
+  "closed_stdin": {
+    "accepted_initialize": true,
+    "faults": [],
+    "process_tree_closed": true
+  },
+  "held_stdin": {
+    "accepted_initialize": false,
+    "faults": [
+      "timeout"
+    ],
+    "process_tree_closed": true
+  },
+  "schema": "eof-dependent-peer-v1"
+}

@@ -1,0 +1,35 @@
+{
+  "allowlist": [
+    "agent initialized",
+    "auth initialize refreshed auth state",
+    "auth update enrichment done",
+    "built auth_methods",
+    "model catalog fetch/retry succeeded",
+    "notifying clients"
+  ],
+  "schema": "allowlisted-native-log-summary-v1",
+  "variants": {
+    "A": {
+      "allowlisted_events": [
+        {
+          "message": "agent initialized",
+          "timestamp": null
+        },
+        {
+          "message": "auth update enrichment done",
+          "timestamp": null
+        }
+      ],
+      "malformed_lines": 0
+    },
+    "B": {
+      "allowlisted_events": [
+        {
+          "message": "agent initialized",
+          "timestamp": null
+        }
+      ],
+      "malformed_lines": 0
+    }
+  }
+}

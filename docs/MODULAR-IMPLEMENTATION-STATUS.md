@@ -3,7 +3,41 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Module artifact provenance: integrated and exercised (2026-09-14, current update)
+## Per-event M1/M2 audit bridge (2026-09-14)
+
+The isolated implementation records every RunSession admission operation and
+every durable evidence/claim event, including direct ledger callers, withdrawal,
+revision and downstream review propagation. Independent stage verification
+reconciles the actual source logs and replays public ledger operations in order.
+It returns historical snapshots for each model request, preserving the state
+before a later withdrawal. See [the M1/M2 contract](M1-M2-ARTIFACTS.md).
+
+Frozen r1 at `3c016a53e11366347cf6f29d368a30d9b622d5c1` ran 24 cases:
+20 passed and four failed. The actual Docker history-to-target pipeline and its
+independent stage verification passed. Three failures exposed error wrapping
+that obscured ContractError reasons; the fourth exposed an old failure-test
+assumption about the now-expanded journal and independent failure marker.
+The original failed report remains unchanged. At `863cb5c6b87bb5389ea75203b2c83ff9c0a1dcd9`,
+r2 reran those four cases and passed all four. Both runs retained 676 unchanged
+source files. These are engineering checks with synthetic model responses and
+no added paid API calls, not scientific benchmark or VAL acceptance results.
+
+`results/modular-engineering-20260914/artifact-events-r1/` retains the exact
+source ZIPs/JUnit/closures, original runtime logs from two successful and two
+failed stages, independent review findings and the closed Grok stdin A/B
+diagnostic. The M3 r1/r2 checks in this archive passed their tests but were later
+found insufficient by independent review; their historical-state and projection
+repairs are separately tested in the M3 worktree. The two Grok initialize-only
+attempts both timed out, and settlement remains unknown. These records do not
+establish model availability or complete artifact coverage.
+
+Archive validation checks each recorded producer/bridge source against its
+original frozen source ZIP even after the live file changes. A general runtime
+historical-source resolver remains necessary before claiming old runs can be
+fully reverified through the normal current-code entrypoint. Other module
+writers and independent ledgers remain listed in the coverage document.
+
+## Module artifact provenance: integrated and exercised (2026-09-14, earlier update)
 
 The catalogue core and native history/target bridges are integrated. Descriptors
 bind canonical payloads, actual producer source, configuration/check references,
