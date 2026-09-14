@@ -1,0 +1,85 @@
+{
+  "schema": "independent-formal-authoring-readback-v1",
+  "envelope_sha256": "7150aa1bf2e4e3c81297fdc6141059c3207d3b1749e4b53014964c9689c12ae1",
+  "public_outcome_sha256": "1303736db8ee03a42a2a83bf0cc5ea26c50aa929dd30e5e1a6c523069c01780d",
+  "source_commit": "062c87f17d5b0f8dbb3c25b50da14b023b44f556",
+  "rows": [
+    {
+      "opportunity_id": "39a8966985e367851529da2d27b98bd4c0b2cfb77719f0e60ad62254a8ff1335",
+      "benchmark": "discoverybench",
+      "authoring_status": "accepted_provisional_authoring",
+      "native_receipt_present": true,
+      "native_binding_verified": true,
+      "native_binding_accepted": true,
+      "usage": {
+        "all_opportunities": null,
+        "initial_title": null,
+        "main": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 3298,
+          "output_tokens": 1748,
+          "reasoning_tokens": 714,
+          "total_tokens": 5046
+        },
+        "main_model_calls": 1,
+        "num_turns": 1
+      },
+      "native_receipt_sha256": "1bbdea76b848a165233008e073a5d301c10ebacf6baaeaca2abc3a690e826510",
+      "material_contract_verified": true,
+      "availability": {
+        "ready": 6,
+        "unresolved_material": 2,
+        "not_applicable": 1
+      }
+    },
+    {
+      "opportunity_id": "9ca280addf61a9d78cb02c6a3cf9feb458fd38f7268581873fed6074f5cf73ad",
+      "benchmark": "blade",
+      "authoring_status": "rejected_authoring",
+      "native_receipt_present": true,
+      "native_binding_verified": true,
+      "native_binding_accepted": true,
+      "usage": {
+        "all_opportunities": null,
+        "initial_title": null,
+        "main": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 44866,
+          "output_tokens": 2167,
+          "reasoning_tokens": 503,
+          "total_tokens": 47033
+        },
+        "main_model_calls": 1,
+        "num_turns": 1
+      },
+      "native_receipt_sha256": "704b51e1ada2908151065221c8d850b990da907211742007a2f279d776699031",
+      "material_contract_verified": false,
+      "fixed_contract_reason": "authoring excerpt is not in the supplied reference"
+    },
+    {
+      "opportunity_id": "0e45445fc706343c99e3d617934c3ed554abe513c5c0a7d44e5ac692f8d935c2",
+      "benchmark": "blade",
+      "authoring_status": "blocked_prior_authoring",
+      "native_receipt_present": false
+    },
+    {
+      "opportunity_id": "d8503f7745c3f559955c8ce95d3d1d5d5b82a188d7f4005f5e3ef887d8356957",
+      "benchmark": "discoverybench",
+      "authoring_status": "blocked_prior_authoring",
+      "native_receipt_present": false
+    }
+  ],
+  "planned_authoring_main_opportunities": 4,
+  "material_availability": {
+    "not_applicable": 1,
+    "ready": 6,
+    "unresolved_material": 29
+  },
+  "new_model_calls": 0,
+  "validation_access": false,
+  "old_outcomes_unchanged": true,
+  "calibration_eligible": false,
+  "validation_eligible": false
+}

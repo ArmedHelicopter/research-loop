@@ -1,0 +1,310 @@
+{
+  "actual_runtime_archives": {
+    "isolated-ab77": {
+      "member_bytes": 1321908,
+      "member_inventory": "isolated-ab77-actual-runtime-members.json",
+      "members": 15,
+      "selected_runtime_directories": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-plan-cache\\history-target-frozen\\test_actual_history_target_pip0\\common-run\\stages\\1fd7c00b794b5b588a1ef6bbe6623e8f5474fc3d17192930383d4a80ae7ad46d\\runtime",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-plan-cache\\history-target-frozen\\test_actual_history_target_pip0\\common-run\\stages\\274e811454169ad6d7a1b0e4257749c1a3a823e5b0554ce8a705fa90c86e6662\\runtime"
+      ],
+      "zip": "isolated-ab77-actual-runtime.zip",
+      "zip_bytes": 112037,
+      "zip_sha256": "e8b63cb1385fb8b1ae2455560cffb3e6fccc494e69439f92dc3258f7c5d9f712"
+    },
+    "root-a1db": {
+      "member_bytes": 1323200,
+      "member_inventory": "root-a1db-actual-runtime-members.json",
+      "members": 15,
+      "selected_runtime_directories": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-cache-root-r1\\test_actual_history_target_pip0\\common-run\\stages\\518bfad230a232fe663ad83cf46afca62c83b87bf281d547f57558d478043b36\\runtime",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-cache-root-r1\\test_actual_history_target_pip0\\common-run\\stages\\d8b01fc80937509e5797779fdcb8da5cfc6e8278dc5fcc7ce27d334344e7e9ef\\runtime"
+      ],
+      "zip": "root-a1db-actual-runtime.zip",
+      "zip_bytes": 112020,
+      "zip_sha256": "4696d151c81c539df15ffb6d40a98c3bb05a1c854bd634052cc7930e54694bda"
+    }
+  },
+  "archive_relationship": "runtime archives are derivative extracts of the full selected case archives and are not independent samples",
+  "full_case_archives": {
+    "isolated-ab77-history-target": {
+      "member_bytes": 3713402,
+      "member_inventory": "isolated-ab77-history-target-full-case-members.json",
+      "members": 428,
+      "test_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-plan-cache\\history-target-frozen\\test_actual_history_target_pip0",
+      "zip": "isolated-ab77-history-target-full-case.zip",
+      "zip_bytes": 732573,
+      "zip_sha256": "1d01f768220b8aa7ec7cdf9b9b639e1cd0fcdf5321ff435fb009c92942a1655d"
+    },
+    "root-a1db-cached-status": {
+      "member_bytes": 656290,
+      "member_inventory": "root-a1db-cached-status-full-case-members.json",
+      "members": 103,
+      "test_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-cache-root-r1\\test_checkpoint_rows_are_froze0",
+      "zip": "root-a1db-cached-status-full-case.zip",
+      "zip_bytes": 122469,
+      "zip_sha256": "e1329d6e54b7c0e918f1d804013758fa2b0359206f7140ec344d8662f0210ef2"
+    },
+    "root-a1db-history-target": {
+      "member_bytes": 3672508,
+      "member_inventory": "root-a1db-history-target-full-case-members.json",
+      "members": 428,
+      "test_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-cache-root-r1\\test_actual_history_target_pip0",
+      "zip": "root-a1db-history-target-full-case.zip",
+      "zip_bytes": 732347,
+      "zip_sha256": "f1b15b90ffade7f0c14016cbc85dc2bf42cb9f2464d9a5f248046a691d7f8365"
+    }
+  },
+  "originals": {
+    "isolated-405e": {
+      "commit": "405e7b0d8554598a2176749ba51b56bac6939607",
+      "files": {
+        "before.json": {
+          "bytes": 88380,
+          "sha256": "685e68f5a3356ec1825f10eab757bfc5cd2df287df2d9f7b1c6552e180738e9d",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-plan-cache\\frozen-check-before.json"
+        },
+        "closed.json": {
+          "bytes": 88507,
+          "sha256": "4309a63697a1258dcef4b688fbf351b601e6234ab602d0638e4b0a009ce9fb4b",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-plan-cache\\frozen-check-closed.json"
+        },
+        "source-members.json": {
+          "bytes": 132329,
+          "sha256": "19e89abfed1817f95a3e2c1d971f79f2c6b035ec3258e13db2cb2459a5da73da",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-plan-cache\\frozen-check-source-members.json"
+        },
+        "sources.zip": {
+          "bytes": 2508031,
+          "sha256": "7dc99b45f6adedbd868626b2cb4f565b38fafc9f74f92a2f549f3d04c15ef372",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-plan-cache\\frozen-check-sources.zip"
+        },
+        "xml": {
+          "bytes": 383,
+          "sha256": "a82af272bc99a031653bd5504ca7f9fa941127e96827650fe04578a94164c004",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-plan-cache\\frozen-check.xml"
+        }
+      },
+      "source_unchanged": true
+    },
+    "isolated-ab77": {
+      "commit": "ab77a0ca1f6f0d7d86b9749c7ff3567cac9c40ae",
+      "files": {
+        "before.json": {
+          "bytes": 88379,
+          "sha256": "12567d1289c3cb96a9cbf3baa04b55d1e2f5e72fb806060d06354c3ac2a169f3",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-plan-cache\\history-target-frozen-before.json"
+        },
+        "closed.json": {
+          "bytes": 88507,
+          "sha256": "dbb40cc1e9f238ed4c58d97c25f3fd890bfd5c7a1e0e17de9465334892979ac0",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-plan-cache\\history-target-frozen-closed.json"
+        },
+        "source-members.json": {
+          "bytes": 132329,
+          "sha256": "84995a1d78ce64999ea2d9769e3a164081343c5009a5c4d2821a8792e1458b40",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-plan-cache\\history-target-frozen-source-members.json"
+        },
+        "sources.zip": {
+          "bytes": 2508156,
+          "sha256": "8f4b483d2b031a0892b663b0d0d243915d8ac009e05541cd590b32d6aa581144",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-plan-cache\\history-target-frozen-sources.zip"
+        },
+        "xml": {
+          "bytes": 384,
+          "sha256": "e574529d68b47b46c00bc3489b443482d77929d169adc22f23d6f20169f2c69d",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-plan-cache\\history-target-frozen.xml"
+        }
+      },
+      "source_unchanged": true
+    },
+    "root-a1db": {
+      "commit": "a1db763ad1119d058e3c285f1dab6d8237d71eac",
+      "files": {
+        "before.json": {
+          "bytes": 88479,
+          "sha256": "d58a71a7d3b3db580e3d17700fca0a8bbcd81a57505e06a8ed3bea1a35f9140d",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-cache-root-r1-before.json"
+        },
+        "closed.json": {
+          "bytes": 88507,
+          "sha256": "e56db758b100e6cdafb66226df99d8af918746e758591a1a5fb1b6d93328cfd0",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-cache-root-r1-closed.json"
+        },
+        "source-members.json": {
+          "bytes": 132328,
+          "sha256": "bc8627ce08d6f6fa5c95524c46eea1942cb0c59f5a44a76d3ab3467f5c98b01b",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-cache-root-r1-source-members.json"
+        },
+        "sources.zip": {
+          "bytes": 2508321,
+          "sha256": "1048d432670c37ba0c78548ac64ea27ee40d463f78dc6c939b2acb614c21290c",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-cache-root-r1-sources.zip"
+        },
+        "xml": {
+          "bytes": 517,
+          "sha256": "4b722c7bce644b38887abfdb00a1836ffb2fd98eea954ee799672d9361f2eea4",
+          "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-cache-root-r1.xml"
+        }
+      },
+      "source_unchanged": true
+    }
+  },
+  "profile": {
+    "bytes": 786819,
+    "sha256": "8b71caec3aaa0496f5596c97dfcd897a95442b0e4065b24cb5fa6348e96ac3d1",
+    "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-verifier-profile-r1\\actual-history-target.pstats"
+  },
+  "scope": "bounded synthetic checkpoint-cache evidence archive",
+  "source_change_claim": "pure immutable planned-row derivation only; no live immutable-record-runtime changes; no full-grid effect claim",
+  "stage": "c5-checkpoint-cache-archive-stage-r1",
+  "stage_bytes_excluding_manifest": 11298983,
+  "stage_file_count_excluding_manifest": 29,
+  "stage_files_excluding_manifest": [
+    {
+      "bytes": 11042,
+      "path": "archive-helper.py",
+      "sha256": "5e252d9884218b403e040dd54f0d67a0e6cae460bdbcf0a2e2bfc65551737520"
+    },
+    {
+      "bytes": 4402,
+      "path": "isolated-ab77-actual-runtime-members.json",
+      "sha256": "7f5f95ffcc2cf13f40b872a4ed17dd8df0dbd4a49931e6a3036b50a069cd2064"
+    },
+    {
+      "bytes": 112037,
+      "path": "isolated-ab77-actual-runtime.zip",
+      "sha256": "e8b63cb1385fb8b1ae2455560cffb3e6fccc494e69439f92dc3258f7c5d9f712"
+    },
+    {
+      "bytes": 102750,
+      "path": "isolated-ab77-history-target-full-case-members.json",
+      "sha256": "a02778d7516d694c8c0a6b14c830d170c8d67b259ce3798808fa6f8e8d694ccf"
+    },
+    {
+      "bytes": 732573,
+      "path": "isolated-ab77-history-target-full-case.zip",
+      "sha256": "1d01f768220b8aa7ec7cdf9b9b639e1cd0fcdf5321ff435fb009c92942a1655d"
+    },
+    {
+      "bytes": 88380,
+      "path": "originals/isolated-405e/frozen-check-before.json",
+      "sha256": "685e68f5a3356ec1825f10eab757bfc5cd2df287df2d9f7b1c6552e180738e9d"
+    },
+    {
+      "bytes": 88507,
+      "path": "originals/isolated-405e/frozen-check-closed.json",
+      "sha256": "4309a63697a1258dcef4b688fbf351b601e6234ab602d0638e4b0a009ce9fb4b"
+    },
+    {
+      "bytes": 132329,
+      "path": "originals/isolated-405e/frozen-check-source-members.json",
+      "sha256": "19e89abfed1817f95a3e2c1d971f79f2c6b035ec3258e13db2cb2459a5da73da"
+    },
+    {
+      "bytes": 2508031,
+      "path": "originals/isolated-405e/frozen-check-sources.zip",
+      "sha256": "7dc99b45f6adedbd868626b2cb4f565b38fafc9f74f92a2f549f3d04c15ef372"
+    },
+    {
+      "bytes": 383,
+      "path": "originals/isolated-405e/frozen-check.xml",
+      "sha256": "a82af272bc99a031653bd5504ca7f9fa941127e96827650fe04578a94164c004"
+    },
+    {
+      "bytes": 88379,
+      "path": "originals/isolated-ab77/history-target-frozen-before.json",
+      "sha256": "12567d1289c3cb96a9cbf3baa04b55d1e2f5e72fb806060d06354c3ac2a169f3"
+    },
+    {
+      "bytes": 88507,
+      "path": "originals/isolated-ab77/history-target-frozen-closed.json",
+      "sha256": "dbb40cc1e9f238ed4c58d97c25f3fd890bfd5c7a1e0e17de9465334892979ac0"
+    },
+    {
+      "bytes": 132329,
+      "path": "originals/isolated-ab77/history-target-frozen-source-members.json",
+      "sha256": "84995a1d78ce64999ea2d9769e3a164081343c5009a5c4d2821a8792e1458b40"
+    },
+    {
+      "bytes": 2508156,
+      "path": "originals/isolated-ab77/history-target-frozen-sources.zip",
+      "sha256": "8f4b483d2b031a0892b663b0d0d243915d8ac009e05541cd590b32d6aa581144"
+    },
+    {
+      "bytes": 384,
+      "path": "originals/isolated-ab77/history-target-frozen.xml",
+      "sha256": "e574529d68b47b46c00bc3489b443482d77929d169adc22f23d6f20169f2c69d"
+    },
+    {
+      "bytes": 786819,
+      "path": "originals/profile/actual-history-target.pstats",
+      "sha256": "8b71caec3aaa0496f5596c97dfcd897a95442b0e4065b24cb5fa6348e96ac3d1"
+    },
+    {
+      "bytes": 893,
+      "path": "originals/profile/profile-command-reconstructed.json",
+      "sha256": "2849ff544b4a6f1237d97e0ae8e0bd19bf12849458bd2263de3254aefbab42cf"
+    },
+    {
+      "bytes": 88479,
+      "path": "originals/root-a1db/c5-checkpoint-cache-root-r1-before.json",
+      "sha256": "d58a71a7d3b3db580e3d17700fca0a8bbcd81a57505e06a8ed3bea1a35f9140d"
+    },
+    {
+      "bytes": 88507,
+      "path": "originals/root-a1db/c5-checkpoint-cache-root-r1-closed.json",
+      "sha256": "e56db758b100e6cdafb66226df99d8af918746e758591a1a5fb1b6d93328cfd0"
+    },
+    {
+      "bytes": 132328,
+      "path": "originals/root-a1db/c5-checkpoint-cache-root-r1-source-members.json",
+      "sha256": "bc8627ce08d6f6fa5c95524c46eea1942cb0c59f5a44a76d3ab3467f5c98b01b"
+    },
+    {
+      "bytes": 2508321,
+      "path": "originals/root-a1db/c5-checkpoint-cache-root-r1-sources.zip",
+      "sha256": "1048d432670c37ba0c78548ac64ea27ee40d463f78dc6c939b2acb614c21290c"
+    },
+    {
+      "bytes": 517,
+      "path": "originals/root-a1db/c5-checkpoint-cache-root-r1.xml",
+      "sha256": "4b722c7bce644b38887abfdb00a1836ffb2fd98eea954ee799672d9361f2eea4"
+    },
+    {
+      "bytes": 4342,
+      "path": "root-a1db-actual-runtime-members.json",
+      "sha256": "231fc4ee06e62d060a83f0fd6973c5720c2ddfb6abf43ede5d056f3d0a0e07ad"
+    },
+    {
+      "bytes": 112020,
+      "path": "root-a1db-actual-runtime.zip",
+      "sha256": "4696d151c81c539df15ffb6d40a98c3bb05a1c854bd634052cc7930e54694bda"
+    },
+    {
+      "bytes": 19921,
+      "path": "root-a1db-cached-status-full-case-members.json",
+      "sha256": "682d8910ca988aab22813d1979e0f6b8337e907460ea626abdbbbedbdd9ca163"
+    },
+    {
+      "bytes": 122469,
+      "path": "root-a1db-cached-status-full-case.zip",
+      "sha256": "e1329d6e54b7c0e918f1d804013758fa2b0359206f7140ec344d8662f0210ef2"
+    },
+    {
+      "bytes": 102729,
+      "path": "root-a1db-history-target-full-case-members.json",
+      "sha256": "318eb9ec93448e50dff10106987b7eb3e35eee058ef38bc28a54f482b8346135"
+    },
+    {
+      "bytes": 732347,
+      "path": "root-a1db-history-target-full-case.zip",
+      "sha256": "f1b15b90ffade7f0c14016cbc85dc2bf42cb9f2464d9a5f248046a691d7f8365"
+    },
+    {
+      "bytes": 1102,
+      "path": "SUMMARY.md",
+      "sha256": "9235d7a0e0399d1c0e49559f8b1dbbf900e675dae3c69b3621b6401efeb700b6"
+    }
+  ]
+}

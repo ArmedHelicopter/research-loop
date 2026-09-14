@@ -1,0 +1,19 @@
+{
+  "command_reconstructed_from_recorded_execution": [
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+    "-m",
+    "cProfile",
+    "-o",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-verifier-profile-r1\\actual-history-target.pstats",
+    "-m",
+    "pytest",
+    "tests/test_joint_train_runtime.py::test_actual_history_target_pipeline_with_full_catalogue",
+    "--basetemp",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-verifier-profile-r1\\pytest",
+    "-q"
+  ],
+  "measurement": "106873119 calls in 107.661 seconds before deliberate bounded stop; not a completed test result.",
+  "note": "No original standalone helper was retained. This command record is reconstructed, and is not represented as an original helper.",
+  "pstats": "actual-history-target.pstats",
+  "status": "partial_profile_incomplete"
+}

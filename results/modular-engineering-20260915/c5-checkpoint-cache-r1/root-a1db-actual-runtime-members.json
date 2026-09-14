@@ -1,0 +1,84 @@
+{
+  "members": [
+    {
+      "bytes": 540111,
+      "member": "common-run/stages/518bfad230a232fe663ad83cf46afca62c83b87bf281d547f57558d478043b36/runtime/artifacts.jsonl",
+      "sha256": "f31ec5258eca409505912ea13fe5d87c6e1ed6d7b3be1e9464f4675eb70dd097"
+    },
+    {
+      "bytes": 346,
+      "member": "common-run/stages/518bfad230a232fe663ad83cf46afca62c83b87bf281d547f57558d478043b36/runtime/artifacts.jsonl.seal.json",
+      "sha256": "4ac6fc6478f6101285faa54a23988d1930d2480d8459a30228723cfae93fd629"
+    },
+    {
+      "bytes": 4471,
+      "member": "common-run/stages/518bfad230a232fe663ad83cf46afca62c83b87bf281d547f57558d478043b36/runtime/claims.jsonl",
+      "sha256": "8a293751cffbe44c009fc18ec189b6a1d9e7269efe12a5d6dfcbaa586d9fe674"
+    },
+    {
+      "bytes": 4899,
+      "member": "common-run/stages/518bfad230a232fe663ad83cf46afca62c83b87bf281d547f57558d478043b36/runtime/evidence.jsonl",
+      "sha256": "eebdfbe025e6a3ac7030466b19adf8afceb0885ef652e1c94fd89bf449ab31ca"
+    },
+    {
+      "bytes": 1454,
+      "member": "common-run/stages/518bfad230a232fe663ad83cf46afca62c83b87bf281d547f57558d478043b36/runtime/predictions.jsonl",
+      "sha256": "d21fefcdf43d83f92d46b28897bc7242070d63ebb8b39fdc229121a597f14e5d"
+    },
+    {
+      "bytes": 2127,
+      "member": "common-run/stages/518bfad230a232fe663ad83cf46afca62c83b87bf281d547f57558d478043b36/runtime/reviews.jsonl",
+      "sha256": "944f76bcea4bfdaa01c5e500ef35b41d0773c4964337a306371cf3a3bbbc7f25"
+    },
+    {
+      "bytes": 76416,
+      "member": "common-run/stages/518bfad230a232fe663ad83cf46afca62c83b87bf281d547f57558d478043b36/runtime/trace.jsonl",
+      "sha256": "975c4f8b250feeafe78d18e8b4cc7df66610310cf7e6a1d79202d87e9de745d7"
+    },
+    {
+      "bytes": 149,
+      "member": "common-run/stages/d8b01fc80937509e5797779fdcb8da5cfc6e8278dc5fcc7ce27d334344e7e9ef/runtime/analysis-1.py",
+      "sha256": "3d20e1d4505fed9555389fb74241665c3744a1bc8c9dbc8d154d5178046c77c9"
+    },
+    {
+      "bytes": 585060,
+      "member": "common-run/stages/d8b01fc80937509e5797779fdcb8da5cfc6e8278dc5fcc7ce27d334344e7e9ef/runtime/artifacts.jsonl",
+      "sha256": "a51a042074d435e65da1399ec6fe92967cd6603ce86e99ebf531a5ade07b948e"
+    },
+    {
+      "bytes": 346,
+      "member": "common-run/stages/d8b01fc80937509e5797779fdcb8da5cfc6e8278dc5fcc7ce27d334344e7e9ef/runtime/artifacts.jsonl.seal.json",
+      "sha256": "fc05e97a70d5e2826fd1fdb5e56d9671a5d1f1882dd557d6fb35171e78b49af4"
+    },
+    {
+      "bytes": 4978,
+      "member": "common-run/stages/d8b01fc80937509e5797779fdcb8da5cfc6e8278dc5fcc7ce27d334344e7e9ef/runtime/claims.jsonl",
+      "sha256": "c69d65b2bf603ed789d725b80fe882e582573c2dfe31826ca304955af6fe1f33"
+    },
+    {
+      "bytes": 5079,
+      "member": "common-run/stages/d8b01fc80937509e5797779fdcb8da5cfc6e8278dc5fcc7ce27d334344e7e9ef/runtime/evidence.jsonl",
+      "sha256": "287c89f21451e5c82a692172483e39f7875a026ef28ba95c9830491288fc297b"
+    },
+    {
+      "bytes": 1509,
+      "member": "common-run/stages/d8b01fc80937509e5797779fdcb8da5cfc6e8278dc5fcc7ce27d334344e7e9ef/runtime/predictions.jsonl",
+      "sha256": "6c6bdf9e2ec9d63766476e4e68e3e657705d49e9370e0e35f9775666b4cbbb6c"
+    },
+    {
+      "bytes": 2292,
+      "member": "common-run/stages/d8b01fc80937509e5797779fdcb8da5cfc6e8278dc5fcc7ce27d334344e7e9ef/runtime/reviews.jsonl",
+      "sha256": "ebffe67eebf8a909a72bb131f41ab226cd37cf67abbf3a94284c8edfa8ed4bcf"
+    },
+    {
+      "bytes": 93963,
+      "member": "common-run/stages/d8b01fc80937509e5797779fdcb8da5cfc6e8278dc5fcc7ce27d334344e7e9ef/runtime/trace.jsonl",
+      "sha256": "7eaa3c22e0229da013c267a5b547d53ff803200814fccf4d0def1291f9f4816b"
+    }
+  ],
+  "selected_runtime_directories": [
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-cache-root-r1\\test_actual_history_target_pip0\\common-run\\stages\\518bfad230a232fe663ad83cf46afca62c83b87bf281d547f57558d478043b36\\runtime",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-cache-root-r1\\test_actual_history_target_pip0\\common-run\\stages\\d8b01fc80937509e5797779fdcb8da5cfc6e8278dc5fcc7ce27d334344e7e9ef\\runtime"
+  ],
+  "test_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-checkpoint-cache-root-r1\\test_actual_history_target_pip0"
+}

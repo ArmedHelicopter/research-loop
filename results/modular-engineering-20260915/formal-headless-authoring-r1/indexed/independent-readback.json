@@ -1,0 +1,135 @@
+{
+  "schema": "independent-formal-authoring-readback-v1",
+  "envelope_sha256": "2b879e0a358a08a314c196695394fd40d8381273758ee8d6b5ba84eda87b1805",
+  "public_outcome_sha256": "7ce822b54e46a7fa2fe9c796b29b2560f68403813753cd97a9cec56128589240",
+  "source_commit": "520d91019ef84dab0c57d754b53047e3ab362135",
+  "rows": [
+    {
+      "opportunity_id": "39a8966985e367851529da2d27b98bd4c0b2cfb77719f0e60ad62254a8ff1335",
+      "benchmark": "discoverybench",
+      "authoring_status": "accepted_provisional_authoring",
+      "native_receipt_present": true,
+      "native_binding_verified": true,
+      "native_binding_accepted": true,
+      "usage": {
+        "all_opportunities": null,
+        "initial_title": null,
+        "main": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 3361,
+          "output_tokens": 1899,
+          "reasoning_tokens": 986,
+          "total_tokens": 5260
+        },
+        "main_model_calls": 1,
+        "num_turns": 1
+      },
+      "native_receipt_sha256": "a418f5372497c4c8223ad2fcb0217e281b1e85b934569c08e46c68ddd84cdc2f",
+      "material_contract_verified": true,
+      "availability": {
+        "ready": 6,
+        "unresolved_material": 2,
+        "not_applicable": 1
+      }
+    },
+    {
+      "opportunity_id": "9ca280addf61a9d78cb02c6a3cf9feb458fd38f7268581873fed6074f5cf73ad",
+      "benchmark": "blade",
+      "authoring_status": "accepted_provisional_authoring",
+      "native_receipt_present": true,
+      "native_binding_verified": true,
+      "native_binding_accepted": true,
+      "usage": {
+        "all_opportunities": null,
+        "initial_title": null,
+        "main": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 0,
+          "input_tokens": 45650,
+          "output_tokens": 2429,
+          "reasoning_tokens": 357,
+          "total_tokens": 48079
+        },
+        "main_model_calls": 1,
+        "num_turns": 1
+      },
+      "native_receipt_sha256": "08f897aa1af817daaffbcd3b748c9933b6ec05a583014cf532e4e7419fdf3445",
+      "material_contract_verified": true,
+      "availability": {
+        "ready": 9,
+        "unresolved_material": 0,
+        "not_applicable": 0
+      }
+    },
+    {
+      "opportunity_id": "0e45445fc706343c99e3d617934c3ed554abe513c5c0a7d44e5ac692f8d935c2",
+      "benchmark": "blade",
+      "authoring_status": "accepted_provisional_authoring",
+      "native_receipt_present": true,
+      "native_binding_verified": true,
+      "native_binding_accepted": true,
+      "usage": {
+        "all_opportunities": null,
+        "initial_title": null,
+        "main": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 128,
+          "input_tokens": 57402,
+          "output_tokens": 1825,
+          "reasoning_tokens": 288,
+          "total_tokens": 59355
+        },
+        "main_model_calls": 1,
+        "num_turns": 1
+      },
+      "native_receipt_sha256": "f7b056553421a948ffda8bd749cab56cd7e6a7c983df7e29f9b6c78d957d7400",
+      "material_contract_verified": true,
+      "availability": {
+        "ready": 9,
+        "unresolved_material": 0,
+        "not_applicable": 0
+      }
+    },
+    {
+      "opportunity_id": "d8503f7745c3f559955c8ce95d3d1d5d5b82a188d7f4005f5e3ef887d8356957",
+      "benchmark": "discoverybench",
+      "authoring_status": "accepted_provisional_authoring",
+      "native_receipt_present": true,
+      "native_binding_verified": true,
+      "native_binding_accepted": true,
+      "usage": {
+        "all_opportunities": null,
+        "initial_title": null,
+        "main": {
+          "cache_creation_input_tokens": 0,
+          "cache_read_input_tokens": 128,
+          "input_tokens": 3556,
+          "output_tokens": 1148,
+          "reasoning_tokens": 396,
+          "total_tokens": 4832
+        },
+        "main_model_calls": 1,
+        "num_turns": 1
+      },
+      "native_receipt_sha256": "5321bb63defc1850494fbae78cc224135f762b89e600c8607c102fd20de8e8f3",
+      "material_contract_verified": true,
+      "availability": {
+        "ready": 2,
+        "unresolved_material": 5,
+        "not_applicable": 2
+      }
+    }
+  ],
+  "planned_authoring_main_opportunities": 4,
+  "material_availability": {
+    "not_applicable": 3,
+    "ready": 26,
+    "unresolved_material": 7
+  },
+  "new_model_calls": 0,
+  "validation_access": false,
+  "old_outcomes_unchanged": true,
+  "calibration_eligible": false,
+  "validation_eligible": false
+}

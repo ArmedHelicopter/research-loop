@@ -1,0 +1,153 @@
+{
+  "schema": "reference-index-diagnosis-v1",
+  "reference_count": 73,
+  "evidence_count": 16,
+  "matches_claimed_index": 2,
+  "matches_some_reference": 14,
+  "evidence": [
+    {
+      "category": "valid_positive",
+      "claimed_index": 6,
+      "exact_match_indices": [
+        6
+      ],
+      "excerpt_bytes": 61,
+      "excerpt_sha256": "d73ae6e0a80cf9e6177986a8da7108652e200a02116ed380dffc0c282100ebc9"
+    },
+    {
+      "category": "valid_positive",
+      "claimed_index": 8,
+      "exact_match_indices": [
+        9,
+        71
+      ],
+      "excerpt_bytes": 144,
+      "excerpt_sha256": "de66020509ba623429e06e42a605d837e7d1bb991ec95ed2f949efde91e9c379"
+    },
+    {
+      "category": "valid_positive",
+      "claimed_index": 72,
+      "exact_match_indices": [],
+      "excerpt_bytes": 208,
+      "excerpt_sha256": "7588b606a640c4a38e2ce3d171f5fa317135fe1741fc4556bb86e36e18067780"
+    },
+    {
+      "category": "valid_negative",
+      "claimed_index": 51,
+      "exact_match_indices": [
+        56
+      ],
+      "excerpt_bytes": 106,
+      "excerpt_sha256": "36a7e82a379bea6eb46c2e5fd971f4f6035d11ed14f8391609032a44e4a59cfe"
+    },
+    {
+      "category": "valid_negative",
+      "claimed_index": 52,
+      "exact_match_indices": [
+        57
+      ],
+      "excerpt_bytes": 126,
+      "excerpt_sha256": "1a5d5b6be073bd32b344609bd3879fdbc1fad3bbea7fd1062982be411a2c3779"
+    },
+    {
+      "category": "invalid_measurement",
+      "claimed_index": 46,
+      "exact_match_indices": [
+        51
+      ],
+      "excerpt_bytes": 84,
+      "excerpt_sha256": "9f7fc5d2d0cdc704088a8c6c59357bcb3c236ac6e174a5d0daa54048bc550628"
+    },
+    {
+      "category": "invalid_measurement",
+      "claimed_index": 46,
+      "exact_match_indices": [
+        51
+      ],
+      "excerpt_bytes": 86,
+      "excerpt_sha256": "dfe2d4d1a3818796b9ee2917a61d8f100c3ead75ca49787a19d61cda5942502d"
+    },
+    {
+      "category": "uncertain",
+      "claimed_index": 22,
+      "exact_match_indices": [
+        20
+      ],
+      "excerpt_bytes": 103,
+      "excerpt_sha256": "67367dfe15959918d6e7b1b7e6085d42e91af5f9272f9bed5d37d4193ee5234c"
+    },
+    {
+      "category": "uncertain",
+      "claimed_index": 23,
+      "exact_match_indices": [
+        21
+      ],
+      "excerpt_bytes": 182,
+      "excerpt_sha256": "b4a3ff482f4b22b7a8a163f2d8f61c089739267598ebd5ac3182b58c0d3e75d0"
+    },
+    {
+      "category": "negation_or_quoted_completion",
+      "claimed_index": 13,
+      "exact_match_indices": [
+        14
+      ],
+      "excerpt_bytes": 206,
+      "excerpt_sha256": "da4d64f5789ce26929f72bc479e8e435213879f4132ef13515c924c65f521181"
+    },
+    {
+      "category": "correct_rejection",
+      "claimed_index": 72,
+      "exact_match_indices": [],
+      "excerpt_bytes": 152,
+      "excerpt_sha256": "59bbf51ce6fcbc6ada1117ad09c7541356e3303705a7853441f5ddc1986fff57"
+    },
+    {
+      "category": "correct_rejection",
+      "claimed_index": 8,
+      "exact_match_indices": [
+        9
+      ],
+      "excerpt_bytes": 245,
+      "excerpt_sha256": "91891280f39f02283f023ff729f6221406414e0d7646bd9818de99525c2fdbed"
+    },
+    {
+      "category": "over_rejection",
+      "claimed_index": 2,
+      "exact_match_indices": [
+        2
+      ],
+      "excerpt_bytes": 39,
+      "excerpt_sha256": "ba36d7de9c58f2948234da0186b8a7e050598d03d3ad95d60ea8c1bf3eed96a0"
+    },
+    {
+      "category": "over_rejection",
+      "claimed_index": 11,
+      "exact_match_indices": [
+        12
+      ],
+      "excerpt_bytes": 69,
+      "excerpt_sha256": "a167ac0c453fc8faf9e95378422522d8d38cd5d29df2e8258fd6097b3f5f38a3"
+    },
+    {
+      "category": "reasonable_alternative",
+      "claimed_index": 19,
+      "exact_match_indices": [
+        17
+      ],
+      "excerpt_bytes": 155,
+      "excerpt_sha256": "771bb4d6eb01c600ad80115829b1bb7040c929eb7b94c0ba59a0a63655ae3423"
+    },
+    {
+      "category": "reasonable_alternative",
+      "claimed_index": 13,
+      "exact_match_indices": [
+        14
+      ],
+      "excerpt_bytes": 130,
+      "excerpt_sha256": "1928e170de73fff5fa87e478e97ced3b7c09c78d0d33e25833555a654234ce6f"
+    }
+  ],
+  "raw_output_unchanged": true,
+  "new_model_calls": 0,
+  "validation_access": false
+}

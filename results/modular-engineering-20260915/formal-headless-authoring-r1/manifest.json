@@ -1,0 +1,338 @@
+{
+  "schema": "formal-headless-authoring-archive-v1",
+  "files": [
+    {
+      "file": "low-effort/parent-closure.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-run-r1\\public-parent-closure.json",
+      "bytes": 884,
+      "source_mtime_ns": 1789422110785194100,
+      "sha256": "ee9dd4b464f4754cd8eeade5028b4a99efce1b267a4b2e58014453908573b2bd"
+    },
+    {
+      "file": "low-effort/parent-reservation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-run-r1\\parent-reservation.json",
+      "bytes": 84167,
+      "source_mtime_ns": 1789422018443821300,
+      "sha256": "c8ec837da160b5f1dac513653dc6f55d0ec921062cd734d2246086fb13a75a3e"
+    },
+    {
+      "file": "low-effort/independent-readback.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-run-r1\\independent-readback.json",
+      "bytes": 3045,
+      "source_mtime_ns": 1789422822808765800,
+      "sha256": "b4ea11ce34421cbce4361e13c3adc34ade52319051d7d6c9208c871ef967c703"
+    },
+    {
+      "file": "low-effort/public-outcome.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-run-r1\\private-output\\public-outcome.json",
+      "bytes": 4779,
+      "source_mtime_ns": 1789422110680694200,
+      "sha256": "1303736db8ee03a42a2a83bf0cc5ea26c50aa929dd30e5e1a6c523069c01780d"
+    },
+    {
+      "file": "low-effort/public-preparation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-preparation-r1\\public-preparation.json",
+      "bytes": 1268,
+      "source_mtime_ns": 1789422017897801000,
+      "sha256": "64fd43d1581b68a4485740d3890d03bbce9a53d07fdbcb6ef5d23b4cd95e0869"
+    },
+    {
+      "file": "low-effort/authoring-envelope.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-preparation-r1\\freeze\\authoring-envelope.json",
+      "bytes": 16906,
+      "source_mtime_ns": 1789422017781566700,
+      "sha256": "7150aa1bf2e4e3c81297fdc6141059c3207d3b1749e4b53014964c9689c12ae1"
+    },
+    {
+      "file": "low-effort/authoring-reservation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-preparation-r1\\freeze\\authoring-envelope.run-reservation.json",
+      "bytes": 219,
+      "source_mtime_ns": 1789422018884687500,
+      "sha256": "a1a52477ef1d4fb5798e0c6c3a3da005f5496abc153440861797d9cce5d373cc"
+    },
+    {
+      "file": "low-effort/native/39a8966985e367851529da2d27b98bd4c0b2cfb77719f0e60ad62254a8ff1335/observer-receipt.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-run-r1\\private-output\\39a8966985e367851529da2d27b98bd4c0b2cfb77719f0e60ad62254a8ff1335\\native\\observer-receipt.json",
+      "bytes": 27151,
+      "source_mtime_ns": 1789422058566384600,
+      "sha256": "1bbdea76b848a165233008e073a5d301c10ebacf6baaeaca2abc3a690e826510"
+    },
+    {
+      "file": "low-effort/native/39a8966985e367851529da2d27b98bd4c0b2cfb77719f0e60ad62254a8ff1335/headless-request-binding.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-run-r1\\private-output\\39a8966985e367851529da2d27b98bd4c0b2cfb77719f0e60ad62254a8ff1335\\headless-request-binding.json",
+      "bytes": 3000,
+      "source_mtime_ns": 1789422058851900200,
+      "sha256": "a453e517517d5b587e70c999598ab7bc107424d3ecce2bdd0e94e95ed17f2007"
+    },
+    {
+      "file": "low-effort/native/9ca280addf61a9d78cb02c6a3cf9feb458fd38f7268581873fed6074f5cf73ad/observer-receipt.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-run-r1\\private-output\\9ca280addf61a9d78cb02c6a3cf9feb458fd38f7268581873fed6074f5cf73ad\\native\\observer-receipt.json",
+      "bytes": 27160,
+      "source_mtime_ns": 1789422109644279200,
+      "sha256": "704b51e1ada2908151065221c8d850b990da907211742007a2f279d776699031"
+    },
+    {
+      "file": "low-effort/native/9ca280addf61a9d78cb02c6a3cf9feb458fd38f7268581873fed6074f5cf73ad/headless-request-binding.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-run-r1\\private-output\\9ca280addf61a9d78cb02c6a3cf9feb458fd38f7268581873fed6074f5cf73ad\\headless-request-binding.json",
+      "bytes": 3004,
+      "source_mtime_ns": 1789422109935922100,
+      "sha256": "ec47a078673823bdc02255da2b22671dff4252b605fd0ec5c0b9c3838a538b9a"
+    },
+    {
+      "file": "low-effort/private-artifact-inventory.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-private-inventory-r1.json",
+      "bytes": 441916,
+      "source_mtime_ns": 1789422990300230400,
+      "sha256": "4a90be075f9572351938a6a8fe199e7e5d05d669e19bc50b179bf6473116d0a4"
+    },
+    {
+      "file": "low-effort/prepare.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prepare_formal_low_effort_authoring_r1.py",
+      "bytes": 3335,
+      "source_mtime_ns": 1789421961994261300,
+      "sha256": "8e25d105da7c39bc8abfc91c64e7d7707d15c674a7d0b7a6b56da5d81f90fc5e"
+    },
+    {
+      "file": "low-effort/run.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_formal_low_effort_authoring_r1.py",
+      "bytes": 4099,
+      "source_mtime_ns": 1789421961994261300,
+      "sha256": "97c45be2a08efbadb41b8ab6be7f34e8438d0b348b13aeeea54b463e973f3366"
+    },
+    {
+      "file": "low-effort/checks/before.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-explicit-effort-root-r1-before.json",
+      "bytes": 88506,
+      "source_mtime_ns": 1789421872527633300,
+      "sha256": "78e40f6de92bf44f2e871b8ff011b939b680cd1b3bc955cdf08ed0ce271478f2"
+    },
+    {
+      "file": "low-effort/checks/closed.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-explicit-effort-root-r1-closed.json",
+      "bytes": 88496,
+      "source_mtime_ns": 1789421922281567900,
+      "sha256": "07cbd6ed004ad7e87cddf2a468d1a8e3b0e104c46b31b879130af4874e96e1a1"
+    },
+    {
+      "file": "low-effort/checks/sources.zip",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-explicit-effort-root-r1-sources.zip",
+      "bytes": 2508853,
+      "source_mtime_ns": 1789421872278486600,
+      "sha256": "9bb7e61123fc58f050beee285cab690aebd8ef8ad8d460909ef3bf9ca4666861"
+    },
+    {
+      "file": "low-effort/checks/source-members.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-explicit-effort-root-r1-source-members.json",
+      "bytes": 132328,
+      "source_mtime_ns": 1789421872288319900,
+      "sha256": "5f39587f722d3d1527fbf52c2998e60451aa71f2b79a1fda3fa96b66ba4ed142"
+    },
+    {
+      "file": "low-effort/checks/junit.xml",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-explicit-effort-root-r1.xml",
+      "bytes": 13470,
+      "source_mtime_ns": 1789421922126958700,
+      "sha256": "9250ae86091707db8e9c619ef15fee8e8f683bfa85d1222859c3a14afebd7315"
+    },
+    {
+      "file": "indexed/parent-closure.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-run-r1\\public-parent-closure.json",
+      "bytes": 878,
+      "source_mtime_ns": 1789422737783912000,
+      "sha256": "32558c32d2f3d571ae00abd1a0be894c5a63d6d3c51972f7604542ba480f37dd"
+    },
+    {
+      "file": "indexed/parent-reservation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-run-r1\\parent-reservation.json",
+      "bytes": 84158,
+      "source_mtime_ns": 1789422556362450700,
+      "sha256": "1f5c2239d58bc85deb16b2da5aa9fb86038deb03d8b385912591e0364395a880"
+    },
+    {
+      "file": "indexed/independent-readback.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-run-r1\\independent-readback.json",
+      "bytes": 4602,
+      "source_mtime_ns": 1789422880535515400,
+      "sha256": "a3b3fc2c18dc71980173a89ea1768f49032f6694b08ec5b281a6a58bd70d068a"
+    },
+    {
+      "file": "indexed/public-outcome.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-run-r1\\private-output\\public-outcome.json",
+      "bytes": 5365,
+      "source_mtime_ns": 1789422737707914100,
+      "sha256": "7ce822b54e46a7fa2fe9c796b29b2560f68403813753cd97a9cec56128589240"
+    },
+    {
+      "file": "indexed/public-preparation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-preparation-r1\\public-preparation.json",
+      "bytes": 1265,
+      "source_mtime_ns": 1789422555804951700,
+      "sha256": "b1270e0781efda0e0ea269f366a931514b7ec1d9dcca473153f0ca78c83b9eeb"
+    },
+    {
+      "file": "indexed/authoring-envelope.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-preparation-r1\\freeze\\authoring-envelope.json",
+      "bytes": 16780,
+      "source_mtime_ns": 1789422555717547500,
+      "sha256": "2b879e0a358a08a314c196695394fd40d8381273758ee8d6b5ba84eda87b1805"
+    },
+    {
+      "file": "indexed/authoring-reservation.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-preparation-r1\\freeze\\authoring-envelope.run-reservation.json",
+      "bytes": 219,
+      "source_mtime_ns": 1789422556805716000,
+      "sha256": "63df3eae04ced9536f19d774e6a2371e1313183fabb6c1493ee61af69ff4b34f"
+    },
+    {
+      "file": "indexed/native/39a8966985e367851529da2d27b98bd4c0b2cfb77719f0e60ad62254a8ff1335/observer-receipt.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-run-r1\\private-output\\39a8966985e367851529da2d27b98bd4c0b2cfb77719f0e60ad62254a8ff1335\\native\\observer-receipt.json",
+      "bytes": 27000,
+      "source_mtime_ns": 1789422604388131100,
+      "sha256": "a418f5372497c4c8223ad2fcb0217e281b1e85b934569c08e46c68ddd84cdc2f"
+    },
+    {
+      "file": "indexed/native/39a8966985e367851529da2d27b98bd4c0b2cfb77719f0e60ad62254a8ff1335/headless-request-binding.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-run-r1\\private-output\\39a8966985e367851529da2d27b98bd4c0b2cfb77719f0e60ad62254a8ff1335\\headless-request-binding.json",
+      "bytes": 2991,
+      "source_mtime_ns": 1789422604697758400,
+      "sha256": "ab4fd608474f410cf4d1bfbd028c30cf4c126be6e801e1749ab383ea883e23b5"
+    },
+    {
+      "file": "indexed/native/9ca280addf61a9d78cb02c6a3cf9feb458fd38f7268581873fed6074f5cf73ad/observer-receipt.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-run-r1\\private-output\\9ca280addf61a9d78cb02c6a3cf9feb458fd38f7268581873fed6074f5cf73ad\\native\\observer-receipt.json",
+      "bytes": 27010,
+      "source_mtime_ns": 1789422657089031200,
+      "sha256": "08f897aa1af817daaffbcd3b748c9933b6ec05a583014cf532e4e7419fdf3445"
+    },
+    {
+      "file": "indexed/native/9ca280addf61a9d78cb02c6a3cf9feb458fd38f7268581873fed6074f5cf73ad/headless-request-binding.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-run-r1\\private-output\\9ca280addf61a9d78cb02c6a3cf9feb458fd38f7268581873fed6074f5cf73ad\\headless-request-binding.json",
+      "bytes": 2995,
+      "source_mtime_ns": 1789422657430143100,
+      "sha256": "a785d2cdfdb45a44c2fced2655a047f5f7df29e26800657d833f913e592c7c26"
+    },
+    {
+      "file": "indexed/native/0e45445fc706343c99e3d617934c3ed554abe513c5c0a7d44e5ac692f8d935c2/observer-receipt.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-run-r1\\private-output\\0e45445fc706343c99e3d617934c3ed554abe513c5c0a7d44e5ac692f8d935c2\\native\\observer-receipt.json",
+      "bytes": 27016,
+      "source_mtime_ns": 1789422703105479500,
+      "sha256": "f7b056553421a948ffda8bd749cab56cd7e6a7c983df7e29f9b6c78d957d7400"
+    },
+    {
+      "file": "indexed/native/0e45445fc706343c99e3d617934c3ed554abe513c5c0a7d44e5ac692f8d935c2/headless-request-binding.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-run-r1\\private-output\\0e45445fc706343c99e3d617934c3ed554abe513c5c0a7d44e5ac692f8d935c2\\headless-request-binding.json",
+      "bytes": 2997,
+      "source_mtime_ns": 1789422703423194600,
+      "sha256": "e8c1857930332f20c6ecd4c633ed547f62bb267df355b04b17470322de54d579"
+    },
+    {
+      "file": "indexed/native/d8503f7745c3f559955c8ce95d3d1d5d5b82a188d7f4005f5e3ef887d8356957/observer-receipt.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-run-r1\\private-output\\d8503f7745c3f559955c8ce95d3d1d5d5b82a188d7f4005f5e3ef887d8356957\\native\\observer-receipt.json",
+      "bytes": 27002,
+      "source_mtime_ns": 1789422735875074800,
+      "sha256": "5321bb63defc1850494fbae78cc224135f762b89e600c8607c102fd20de8e8f3"
+    },
+    {
+      "file": "indexed/native/d8503f7745c3f559955c8ce95d3d1d5d5b82a188d7f4005f5e3ef887d8356957/headless-request-binding.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-run-r1\\private-output\\d8503f7745c3f559955c8ce95d3d1d5d5b82a188d7f4005f5e3ef887d8356957\\headless-request-binding.json",
+      "bytes": 2993,
+      "source_mtime_ns": 1789422736165210400,
+      "sha256": "61dbfc7e93d05e342d88397c0633acff2270aceb9ec2814ee356dd8ddc996086"
+    },
+    {
+      "file": "indexed/private-artifact-inventory.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-indexed-private-inventory-r1.json",
+      "bytes": 867952,
+      "source_mtime_ns": 1789422990872660300,
+      "sha256": "636d1604409af18a734647757389c075e82672f57f85c9741ef71077d08ee42d"
+    },
+    {
+      "file": "indexed/prepare.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prepare_formal_indexed_authoring_r1.py",
+      "bytes": 3332,
+      "source_mtime_ns": 1789422529324967400,
+      "sha256": "fd22d6d8402ea6973be9a1873ff0b5656803c4a3948fb63cd08eae8f706e1520"
+    },
+    {
+      "file": "indexed/run.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_formal_indexed_authoring_r1.py",
+      "bytes": 4093,
+      "source_mtime_ns": 1789422529326110200,
+      "sha256": "b3a223b63aae4cad5895a84d91ea46cb874bce4e8fe22882b3b39a640a032170"
+    },
+    {
+      "file": "indexed/checks/before.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-indexed-references-root-r1-before.json",
+      "bytes": 88506,
+      "source_mtime_ns": 1789422431799477400,
+      "sha256": "95a738d53d7846007982b014321611751b1c91468def878c7825dcad9f8cc6b1"
+    },
+    {
+      "file": "indexed/checks/closed.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-indexed-references-root-r1-closed.json",
+      "bytes": 88508,
+      "source_mtime_ns": 1789422498945148100,
+      "sha256": "0eec77b7a72caeba06ee9f75600fd5cc1349c873860d3ef1a7a72be1b946e32d"
+    },
+    {
+      "file": "indexed/checks/sources.zip",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-indexed-references-root-r1-sources.zip",
+      "bytes": 2509402,
+      "source_mtime_ns": 1789422431553406900,
+      "sha256": "cca10edcf98d5f4921d827cf27ebf659a4ca82e626aa049969d6266df069838a"
+    },
+    {
+      "file": "indexed/checks/source-members.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-indexed-references-root-r1-source-members.json",
+      "bytes": 132328,
+      "source_mtime_ns": 1789422431562296100,
+      "sha256": "ae0cd0df57e2eb27fb864cb06722da9f83b4f40f67ce17026b9464086f4a426d"
+    },
+    {
+      "file": "indexed/checks/junit.xml",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-indexed-references-root-r1.xml",
+      "bytes": 13628,
+      "source_mtime_ns": 1789422498786216800,
+      "sha256": "31d5d61e4dd2c668eb908b36bcf9b58b9bf15e06919a2b9c2082fea80ceea307"
+    },
+    {
+      "file": "low-effort/postfailure-contract-diagnosis.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-run-r1\\postfailure-contract-diagnosis.json",
+      "bytes": 3234,
+      "source_mtime_ns": 1789422180981472900,
+      "sha256": "5bd5fd6d390ed0c2e818192ef62cba85f4d23674090e2ef7a20fa44970c79258"
+    },
+    {
+      "file": "low-effort/postfailure-reference-index-diagnosis.json",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-authoring-low-effort-run-r1\\postfailure-reference-index-diagnosis.json",
+      "bytes": 4353,
+      "source_mtime_ns": 1789422234865925500,
+      "sha256": "bb52c88e5575eea5a327922fd49c04015e183633c6afc33c5737698fbc93e88b"
+    },
+    {
+      "file": "audit-originals.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\audit_formal_authoring_batch_r1.py",
+      "bytes": 4723,
+      "source_mtime_ns": 1789422822079240200,
+      "sha256": "6fca29fc248d43a3458a8648b74b5a52d7c3fc477f21c91af8673b8210518579"
+    },
+    {
+      "file": "archive-originals.py",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\archive_formal_authoring_r1.py",
+      "bytes": 4686,
+      "source_mtime_ns": 1789422989789051400,
+      "sha256": "763080d79d82420893b94ef1f4eff38919a9b231cfa111aee22851d5820bd624"
+    },
+    {
+      "file": "README.md",
+      "source": "authored from independently reread batches",
+      "bytes": 2217,
+      "sha256": "42e8e32965f9a55373cca749d565b7d84029bdbfffbeff19bc7b51925ec77cb9"
+    }
+  ],
+  "validation_access": false,
+  "formal_calibration_issued": false,
+  "original_failed_batch_unchanged": true,
+  "indexed_batch_ready_materials": 26,
+  "extra_paid_api_budget": 0
+}

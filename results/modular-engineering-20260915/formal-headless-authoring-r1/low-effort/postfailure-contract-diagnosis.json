@@ -1,0 +1,133 @@
+{
+  "schema": "postfailure-authoring-contract-diagnosis-v1",
+  "opportunity_id": "9ca280addf61a9d78cb02c6a3cf9feb458fd38f7268581873fed6074f5cf73ad",
+  "benchmark": "blade",
+  "response_sha256": "de00a7df8f56305ffc2510ed9a51c940894cf18f1a943c4fdff63d97ab5e1b98",
+  "validation_access": false,
+  "new_model_calls": 0,
+  "old_result_unchanged": true,
+  "valid": false,
+  "error_type": "ContractError",
+  "fixed_contract_reason": "authoring excerpt is not in the supplied reference",
+  "slot_metadata": [
+    {
+      "category": "valid_positive",
+      "status": "ready",
+      "provenance": "reference_supported",
+      "negative_basis": "not_claimed",
+      "reference_indices": [
+        6,
+        8,
+        72
+      ],
+      "exact_excerpt_membership": [
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "category": "valid_negative",
+      "status": "ready",
+      "provenance": "reference_supported",
+      "negative_basis": "explicit_supported_negative",
+      "reference_indices": [
+        51,
+        52
+      ],
+      "exact_excerpt_membership": [
+        false,
+        false
+      ]
+    },
+    {
+      "category": "invalid_measurement",
+      "status": "ready",
+      "provenance": "reference_supported",
+      "negative_basis": "explicit_supported_negative",
+      "reference_indices": [
+        46
+      ],
+      "exact_excerpt_membership": [
+        false,
+        false
+      ]
+    },
+    {
+      "category": "uncertain",
+      "status": "ready",
+      "provenance": "reference_supported",
+      "negative_basis": "not_claimed",
+      "reference_indices": [
+        22,
+        23
+      ],
+      "exact_excerpt_membership": [
+        false,
+        false
+      ]
+    },
+    {
+      "category": "negation_or_quoted_completion",
+      "status": "ready",
+      "provenance": "reference_supported",
+      "negative_basis": "not_claimed",
+      "reference_indices": [
+        13
+      ],
+      "exact_excerpt_membership": [
+        false
+      ]
+    },
+    {
+      "category": "correct_rejection",
+      "status": "ready",
+      "provenance": "reference_supported",
+      "negative_basis": "not_claimed",
+      "reference_indices": [
+        8,
+        72
+      ],
+      "exact_excerpt_membership": [
+        false,
+        false
+      ]
+    },
+    {
+      "category": "over_rejection",
+      "status": "ready",
+      "provenance": "controlled_hypothetical",
+      "negative_basis": "incorrect_answer",
+      "reference_indices": [
+        2,
+        11
+      ],
+      "exact_excerpt_membership": [
+        true,
+        false
+      ]
+    },
+    {
+      "category": "reasonable_alternative",
+      "status": "ready",
+      "provenance": "reference_supported",
+      "negative_basis": "not_claimed",
+      "reference_indices": [
+        19,
+        13
+      ],
+      "exact_excerpt_membership": [
+        false,
+        false
+      ]
+    },
+    {
+      "category": "empty_output",
+      "status": "ready",
+      "provenance": "controlled_hypothetical",
+      "negative_basis": "not_claimed",
+      "reference_indices": [],
+      "exact_excerpt_membership": []
+    }
+  ]
+}
