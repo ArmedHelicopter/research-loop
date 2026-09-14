@@ -56,6 +56,8 @@
 - `consumes` / `derived_from`：实际输入和派生产物。
 - `supports` / `refutes`：支持或反驳同一任务/研究对象的证据；禁止对象替换。
 - `trained_on` / `selected_using`：跨训练题的学习与候选选择来源，只允许 TRAIN。
+- `configured_by`：后续任务使用冻结组件或组合配置；配置保留全部 TRAIN 来源。
+  在独立验收流程允许使用该配置时，VAL 任务可以消费它，但不得反向进入训练选择。
 - `executed_by` / `checked_by`：执行者与检查回执，不等同科学支持。
 - `supersedes` / `withdraws`：生命周期记录，原产物保持可查。
 
@@ -91,3 +93,6 @@ TRAIN 和 VAL 使用独立存储根、索引和读取权限。优化器只能接
 故障检查包括实际 payload 篡改、伪造源码绑定、缺失父项、记录重排/重复/截断、
 trace 与目录不一致、跨对象证据替换、VAL 及其索引泄漏，以及未知成本冒充零。
 交付包含源代码、契约、冻结版本的检查原件、覆盖清单和可从最终结果反向追踪的图。
+
+实际接入范围与未接入项见[产物审计覆盖清单](MODULE-ARTIFACT-COVERAGE.md)，
+具体版本的执行证据见[实施状态](MODULAR-IMPLEMENTATION-STATUS.md)。
