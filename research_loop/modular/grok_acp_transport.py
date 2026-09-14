@@ -317,6 +317,8 @@ class SinglePromptACP:
             require(opportunity_contract != TRAIN_OPPORTUNITY_CONTRACT, 'versioned_train_deployment_not_admitted')
             require(list(command) == self.deployment.command(cwd), 'deployment_command_binding')
             require(env.get('GROK_DISABLE_AUTOUPDATER') == '1', 'deployment_update_binding')
+            require(not self.deployment.skill_isolation or opportunity_contract == OPPORTUNITY_CONTRACT,
+                    'isolated_readiness_only')
         self.command = tuple(command); self.cwd = Path(cwd); self.env = dict(env)
         self.private = Path(private_dir); self.reservation = Path(reservation)
         self.frozen_files = dict(frozen_files)
@@ -329,6 +331,10 @@ class SinglePromptACP:
         self.usage_bound = False
         self.sent = False; self.event_counts = {}; self.pre = None; self.post = None
         self.raw_bytes = 0
+        self.context = None; self.context_observations = []; self.internal_events = []
+        if self.deployment is not None and self.deployment.skill_isolation:
+            from research_loop.modular.grok_skill_isolation import context_record
+            self.context = context_record(cwd, env['GROK_HOME'], env['USERPROFILE'])
 
     def verify_files(self):
         require(bool(self.frozen_files), 'source_manifest_empty')
@@ -341,6 +347,13 @@ class SinglePromptACP:
             require(all(self.frozen_files.get(k) == v for k, v in required.items()), 'deployment_source_manifest')
         for path, expected in self.frozen_files.items():
             require(digest(Path(path).read_bytes()) == expected, 'frozen_file_changed')
+        if self.context is not None:
+            from research_loop.modular.grok_skill_isolation import observe_context
+            try:
+                observation = observe_context(self.context)
+            except ContractError as exc:
+                raise Rejected(str(exc)) from None
+            self.context_observations.append(observation)
 
     def notification(self, row):
         method = row.get('method'); params = row.get('params')
@@ -360,6 +373,13 @@ class SinglePromptACP:
                 require(isinstance(update.get('availableCommands'), list), 'command_inventory_shape')
                 require(isinstance(update.get('_meta'), dict) and update['_meta'].get('tools') == [],
                         'runtime_tools_not_empty')
+                if self.context is not None:
+                    from research_loop.modular.grok_skill_isolation import BUILTIN_COMMANDS
+                    commands = update['availableCommands']
+                    require(all(isinstance(c, dict) and isinstance(c.get('name'), str) for c in commands),
+                            'isolated_command_shape')
+                    require(len(commands) == len(BUILTIN_COMMANDS)
+                            and {c['name'] for c in commands} == BUILTIN_COMMANDS, 'isolated_command_inventory')
                 self.inventory_sessions.append(sid)
             elif kind in ('agent_message_chunk', 'agent_thought_chunk', 'user_message_chunk'):
                 require(self.sent, 'content_before_prompt')
@@ -465,6 +485,27 @@ class SinglePromptACP:
             raise Rejected('unknown_notification')
 
     def next_row(self):
+        while True:
+            row = self._next_row()
+            if self.context is not None:
+                self.verify_files()
+                if row.get('id') == 'skills-reload':
+                    require(set(row) == {'jsonrpc', 'id', 'result'}
+                            and isinstance(row['result'], dict) and set(row['result']) == {'result'}
+                            and isinstance(row['result']['result'], dict)
+                            and set(row['result']['result']) == {'reloaded'}
+                            and type(row['result']['result']['reloaded']) is int
+                            and row['result']['result']['reloaded'] == 1, 'internal_reload_shape')
+                    require(self.sid is not None and self.seen_sessions == {self.sid}
+                            and self.sid in self.inventory_sessions, 'internal_reload_session_binding')
+                    self.internal_events.append({'frame': row, 'outstanding_request_id': self.request_id,
+                        'session_id': self.sid, 'context_digest': self.context.content_hash,
+                        'context_observation_index': len(self.context_observations) - 1,
+                        'meaning': 'one resident session enqueued; completion and skill count unknown'})
+                    continue
+            return row
+
+    def _next_row(self):
         remaining = self.deadline - time.monotonic()
         require(remaining > 0, 'timeout')
         try:
@@ -481,6 +522,8 @@ class SinglePromptACP:
         return row
 
     def rpc(self, method, params):
+        if self.context is not None:
+            self.verify_files()
         self.request_id += 1
         row = {'jsonrpc': '2.0', 'id': self.request_id, 'method': method, 'params': params}
         data = encoded(row) + b'\n'
@@ -634,6 +677,9 @@ class SinglePromptACP:
                 if self.deployment is not None:
                     reservation.update(schema='grok-acp-single-prompt-reservation-v2',
                         deployment_digest=self.deployment.digest)
+                if self.context is not None:
+                    reservation.update(schema='grok-acp-single-prompt-reservation-v3',
+                                       context_digest=self.context.content_hash)
                 with self.reservation.open('xb') as out:
                     out.write(encoded(reservation)); out.flush(); os.fsync(out.fileno())
                 self.sent = True  # Before I/O: an uncertain write is still an attempt.
@@ -751,6 +797,12 @@ class SinglePromptACP:
             receipt['deployment_digest'] = self.deployment.digest
             if 'diagnostic_binding' in receipt:
                 receipt['diagnostic_binding']['deployment_digest'] = self.deployment.digest
+        if self.context is not None:
+            receipt.update(schema='grok-native-acp-receipt-v4',
+                context_isolation=self.context.data(), context_digest=self.context.content_hash,
+                context_observations=self.context_observations, internal_events=self.internal_events,
+                internal_reload_is_completion_acknowledgement=False,
+                request_stream_sha256=digest((self.private / 'requests.private.jsonl').read_bytes()))
         (self.private / 'observer-receipt.json').write_bytes(encoded(receipt) + b'\n')
         return AcpResult(FrozenRecord.from_dict(receipt), response if not faults else None)
 
@@ -770,6 +822,10 @@ def native_launch(*, executable, cwd, private_home, private_profile, frozen_file
         checked_deployment(deployment).verify_executable(executable)
         require(all(frozen_files.get(k) == v for k, v in deployment.source_pins().items()),
                 'deployment_source_manifest')
+        if deployment.skill_isolation:
+            from research_loop.modular.grok_skill_isolation import isolated_config
+            require(expected_config == SAFE_CONFIG, 'isolated_readiness_only')
+            expected_config = isolated_config(cwd, home, user)
     require((home / 'config.toml').read_text(encoding='utf-8') == expected_config, 'native_config_pin')
     require(set(p.name for p in home.iterdir()) == {'auth.json', 'config.toml'}, 'native_home_not_fresh')
     require(not any(cwd.iterdir()) and not any(user.iterdir()), 'native_context_not_empty')
@@ -790,6 +846,9 @@ def native_launch(*, executable, cwd, private_home, private_profile, frozen_file
     if deployment is not None:
         command = deployment.command(cwd)
         env.update(deployment.record.data()['environment'])
+        if deployment.skill_isolation:
+            from research_loop.modular.grok_skill_isolation import context_record, observe_context
+            observe_context(context_record(cwd, home, user))
     return command, env
 
 
@@ -813,6 +872,8 @@ def run_native_diagnostic(*, opportunity_contract, executable, cwd, private_home
                           private_dir, reservation, frozen_files, prompt, schema,
                           main_output_cap, observed_main_token_cap, input_byte_cap, deployment=None):
     """Separate diagnostic request bounds; no tokenizer or capacity claim."""
+    require(deployment is None or not checked_deployment(deployment).skill_isolation,
+            'isolated_readiness_only')
     require(opportunity_contract == DIAGNOSTIC_OPPORTUNITY_CONTRACT, 'diagnostic_contract_unapproved')
     require(type(input_byte_cap) is int and input_byte_cap > 0 and isinstance(prompt, str)
             and len(prompt.encode('utf-8')) <= input_byte_cap, 'diagnostic_input_bytes')

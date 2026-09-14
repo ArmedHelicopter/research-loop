@@ -216,6 +216,8 @@ def provision_native(publication, export_result, directory, *, executable, exist
     The auth file is copied opaquely and never inspected, hashed into evidence,
     returned, or archived. No executable is launched by this operation.
     """
+    if deployment is not None and checked_deployment(deployment).skill_isolation:
+        raise ContractError('isolated readiness deployment is not admitted by material authoring')
     root = _plain(Path(directory)); root.mkdir(parents=True, exist_ok=False)
     executable = str(_plain(Path(executable)))
     if deployment is not None:
@@ -282,6 +284,8 @@ def _native_deployment(config):
         raise ContractError('authoring deployment schema differs')
     native = FrozenNativeDeployment(record(body['native'])) if versioned else None
     if native is not None:
+        if native.skill_isolation:
+            raise ContractError('isolated readiness deployment is not admitted by material authoring')
         native.verify_executable(body['executable'])
     elif not Path(body['executable']).is_absolute() or sha(body['executable']) != EXECUTABLE_SHA256:
         raise ContractError('authoring native executable differs')

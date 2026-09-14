@@ -342,6 +342,7 @@ class PrivateSubscriptionPorts:
     def __init__(self, *, manifest, resolver, authorities, inventory, native_slots,
                  frozen_files, executable, root, source_guard, fixture_factory=None, deployment=None):
         self.deployment = None if deployment is None else checked_deployment(deployment)
+        diagnostic_receipt_schema(self.deployment)
         self.renderer = SubscriptionRenderer(manifest, resolver)
         self.manifest, self.authorities, self.inventory = manifest, authorities, inventory
         self.root = _plain(Path(root)); self.root.mkdir(parents=True, exist_ok=False)
@@ -486,6 +487,7 @@ def run_private(config_descriptor, *, fixture_factory=None):
             raise ContractError('native deployment schema differs')
         if versioned:
             native_descriptor = FrozenNativeDeployment(record(deployment['native']))
+            diagnostic_receipt_schema(native_descriptor)
         executable = deployment['executable']
         if native_descriptor is not None:
             native_descriptor.verify_executable(executable)
