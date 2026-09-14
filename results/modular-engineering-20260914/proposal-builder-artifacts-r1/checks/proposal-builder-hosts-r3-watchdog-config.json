@@ -1,0 +1,10 @@
+{
+  "root_pid": 50584,
+  "root_creation_utc_ticks": 639249800072860120,
+  "root_command": "\"E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe\" E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_frozen_checks_with_source.py E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance E:\\_ryanDev\\AI\\research-loop-modular\\work\\proposal-builder-hosts-r3 tests/test_label_isolation.py tests/test_builder_artifacts.py tests/test_proposal_builder_artifacts.py tests/test_joint_train_runtime.py::test_actual_history_target_pipeline_with_full_catalogue tests/test_joint_train_runtime.py::test_actual_ordinary_control_preserves_module_disabled_artifact_status tests/test_modular_metaprogram_training.py::test_foreign_builder_return_is_archived_and_never_reaches_solver tests/test_modular_train_operations.py::test_full_operation_grids_execute_and_consume_actual_shadow_results tests/test_modular_improvement_training.py -x",
+  "deadline": "2026-09-14T19:38:27.2860120+08:00",
+  "journal": "E:/_ryanDev/AI/research-loop-modular/work/proposal-builder-hosts-r3-watchdog.json",
+  "prefix": "E:/_ryanDev/AI/research-loop-modular/work/proposal-builder-hosts-r3",
+  "expected_cases": 50,
+  "new_paid_calls": 0
+}

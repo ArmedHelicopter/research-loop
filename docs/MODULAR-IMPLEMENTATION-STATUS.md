@@ -1415,3 +1415,55 @@ original execution environment. Six sampled host families do not establish
 complete scientific grids. Low-level interrupted-phase host acceptance,
 standalone M9 builders, cross-catalogue configuration edges and audit overhead
 remain open. No scientific effectiveness or VAL acceptance is inferred.
+
+# 2026-09-14 Closed proposal builder hosts and control attribution
+
+State-improvement builds and the shared metaprogram training host now register
+the actual closed proposal, selection inputs, original parent TRAIN manifest,
+selected DSL, raw returned components, each durable candidate/receipt file and
+terminal state. The model session remains terminal. Its catalogue seals after
+local build bookkeeping; the original success readers require a successful
+verified build. Restricted interpreter output checks remain separate from each
+host's selection policy. A proposal task is not silently added to the parent's
+manifest. Model/provider accounting and study success criteria are unchanged.
+
+The shared writer preserves the original return before invoking the host's
+return observer or writing individual outputs. Interpreter errors, observer
+errors and writes that fail after creating bytes retain their original error
+and existing outputs. A failure while sealing adds a note rather than replacing
+the original exception. C4 retains its own proposal/revision selection contract
+and projection check; the new hosts do not fabricate C4 invocation parents.
+
+Frozen `35d2209` passed 50 checks in 760.765s with 697 unchanged source files.
+These cover 19 existing builder cases, 10 label-isolation cases, 10 direct closed
+proposal cases, the 11-build/22-target state grid, an 8-cell Q6.3 run, two C4
+history/target paths, retained foreign builder returns, Q6.1/6.5/6.6 operation
+grids and three complete 12-cell Q6.2 normal/failure runs. Actual Docker and
+synthetic model peers were used, with no paid provider calls. Earlier attempts
+at `8515688` and `a3a636d` each stopped at test 30 after fixture-construction
+errors (missing M9 prerequisites, then a required instruction); both are retained.
+
+Read-only review then found eight actual closed Q6.5 controls whose shared
+proposed builder had incorrectly marked disabled M9 as applied. This did not
+change the selected builder but invalidated that attribution field. `782772f`
+checks the disabled arm before the shared-proposal case. All 11 targeted checks
+passed in 63.735s, including the full 16-cell Q6.5 grid and label isolation.
+The original response and selected DSL remain shared by those controls; the
+corrected status does not estimate the builder's causal contribution or audit
+the separate downstream guard. The earlier 50-check pass retains this known
+limitation and is not presented as covering the later correction.
+
+`results/modular-engineering-20260914/proposal-builder-artifacts-r1/` preserves
+four check versions, source ZIPs, the review/reproduction, and selected public
+builder files plus proposal catalogues and host receipts: 1,626 files, 131 build
+witnesses and 1,707 descriptors. These are selected output witnesses, not complete
+host directory archives or execution in the original environment. An initial
+archive allowlist omitted two existing public journal filenames; its error and
+helper are retained, and the reviewed seven-name allowlist was used to finish.
+
+The separate scenario fixture builder, other candidate optimizers, downstream
+activation/rollback artifacts, cross-catalogue TRAIN configuration edges and
+audit overhead remain open. The complete C5 run still owns frozen integration
+`98eae28`; these changes reside in the artifact worktree. All original questions
+and combination studies remain required. No real module efficacy, scientific
+calibration, VAL acceptance or production promotion is claimed.
