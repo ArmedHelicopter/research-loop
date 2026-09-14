@@ -8,6 +8,7 @@ import evaluation.modular.legacy_extended_packet_artifacts as artifacts
 from evaluation.modular.custody import CustodyStore, InventoryItem
 from evaluation.modular.extended_ingestion import ExtendedInventoryImporter, ExtendedTrainProjectionExporter
 from research_loop.ontology import ContractError, digest
+from research_loop.modular.contracts import FrozenRecord
 
 
 @pytest.fixture
@@ -29,9 +30,13 @@ def _export(tmp_path, snapshots, source_data):
     return exporter, task, directory
 
 
+def _source(directory):
+    return FrozenRecord((directory/'packet-seal.json').read_text(encoding='utf-8').strip()).data()['binding']['source_sha256']
+
+
 def test_reader_rejects_tamper_omission_and_unregistered_paths(tmp_path, synthetic_snapshots):
     exporter, task, directory = _export(tmp_path, *synthetic_snapshots)
-    source = artifacts.verify_packet(directory, task).data()['binding']['source_sha256']
+    source = _source(directory)
     for name, action in (
         ('public.json', lambda p: p.write_bytes(p.read_bytes()+b' ')),
         ('receipt.json', lambda p: p.unlink()),
@@ -70,7 +75,7 @@ def test_partial_write_is_sealed_as_storage_only(tmp_path, synthetic_snapshots, 
     # The typed task is reconstructed only from the public material, never a private record.
     from evaluation.modular.extended_ingestion import prepare_extended_public_task
     public_task = prepare_extended_public_task(custody.export_train()[0], task[0])
-    checked = artifacts.verify_packet(directory, public_task).data()
+    checked = artifacts.verify_packet(directory, public_task, _source(directory)).data()
     assert checked['storage_verified'] and not checked['operation_validated'] and not checked['engineering_verified']
 
 
