@@ -1,0 +1,28 @@
+{
+  "schema": "ordinary-native-provider-dispatch-evidence-v1",
+  "source_commits": [
+    "661226b8a635c7f6534bc8dd68550cc01fd01ab9",
+    "9c2b2c9e2e872d50d928e32088924073d649b653",
+    "db1175893f3c6556d229d03ef8f71663f50fc287",
+    "ee711687e11a41848e80872615b750968e7ff022"
+  ],
+  "checkpoints": 6,
+  "raw_members": 31653,
+  "all_raw_bytes_equal_originals": true,
+  "exact_tested_source_zip_matches_every_frozen_disk_hash": true,
+  "scope": "43 singleton driver slot unions;30 ordinary combination IDs across11 families; separate Q3.2 prospective execution. Exact executed checks are in CHECKPOINTS.json.",
+  "separate_owners": [
+    "M4/M5 v4",
+    "C4 full/LOO",
+    "15 build/phase obligations"
+  ],
+  "older_checkpoint": {
+    "commit": "8918b41",
+    "outer_zip_sha256": "5e83b1c4c5569186a3d68ab930b4729513ac77b384c4942a7df9656fd0996dea",
+    "qualification": "67 tests at6e0221f: original runtime bytes archived, source-before==after, but tested train_controller.py mixed disk line endings not reconstructed from normalized Git. Original reconstruction failure retained."
+  },
+  "C5": "Selection and separate validation remain outstanding; this provider port does not complete them.",
+  "real_model_or_api_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}

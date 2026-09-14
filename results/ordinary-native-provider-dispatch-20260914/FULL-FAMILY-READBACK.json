@@ -1,0 +1,100 @@
+{
+  "source": "original frozen full-family controller attempts and receipts",
+  "families": [
+    {
+      "configuration_schema": "state-prediction-combination-train-config-v3",
+      "status": "complete_train_engineering",
+      "cells": 24,
+      "main": 72,
+      "docker_attempts": 24,
+      "independent_scorer_calls": 24
+    },
+    {
+      "configuration_schema": "state-retrieval-combination-train-config-v3",
+      "status": "complete_train_engineering",
+      "cells": 24,
+      "main": 48,
+      "docker_attempts": 24,
+      "independent_scorer_calls": 24
+    },
+    {
+      "configuration_schema": "state-exploration-combination-train-config-v3",
+      "status": "complete_train_engineering",
+      "cells": 24,
+      "main": 48,
+      "docker_attempts": 72,
+      "independent_scorer_calls": 24
+    },
+    {
+      "configuration_schema": "state-scheduling-combination-train-config-v3",
+      "status": "complete_train_engineering",
+      "cells": 24,
+      "main": 48,
+      "docker_attempts": 72,
+      "independent_scorer_calls": 24
+    },
+    {
+      "configuration_schema": "mechanism-exploration-combination-train-config-v3",
+      "status": "complete_train_engineering",
+      "cells": 24,
+      "main": 72,
+      "docker_attempts": 72,
+      "independent_scorer_calls": 24
+    },
+    {
+      "configuration_schema": "mechanism-scheduling-combination-train-config-v3",
+      "status": "complete_train_engineering",
+      "cells": 24,
+      "main": 72,
+      "docker_attempts": 72,
+      "independent_scorer_calls": 24
+    },
+    {
+      "configuration_schema": "admission-prediction-exploration-combination-train-config-v3",
+      "status": "complete_train_engineering",
+      "cells": 16,
+      "main": 48,
+      "docker_attempts": 48,
+      "independent_scorer_calls": 16
+    },
+    {
+      "configuration_schema": "lineage-combination-train-config-v4",
+      "status": "complete_train_engineering",
+      "cells": 34,
+      "main": 136,
+      "docker_attempts": 34,
+      "independent_scorer_calls": 34
+    },
+    {
+      "configuration_schema": "admission-combination-train-config-v4",
+      "status": "complete_train_engineering",
+      "cells": 24,
+      "main": 96,
+      "docker_attempts": 24,
+      "independent_scorer_calls": 24
+    },
+    {
+      "configuration_schema": "retrieval-review-combination-train-config-v3",
+      "status": "complete_engineering_grid_with_scientific_endpoint_gap",
+      "cells": 32,
+      "main": 160,
+      "docker_attempts": 32,
+      "independent_scorer_calls": 32
+    },
+    {
+      "configuration_schema": "exploration-scheduler-train-controller-config-v3",
+      "status": "estimated",
+      "cells": 8,
+      "main": 16,
+      "docker_attempts": 24,
+      "independent_scorer_calls": 8
+    }
+  ],
+  "totals": {
+    "cells": 258,
+    "main": 816,
+    "docker_attempts": 498,
+    "independent_scorer_calls": 258
+  },
+  "qualification": "Synthetic provider engineering; native entry peers replace only final OS spawn. Not actual model or scientific validation."
+}

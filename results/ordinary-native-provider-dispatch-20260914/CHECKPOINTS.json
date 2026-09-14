@@ -1,0 +1,211 @@
+[
+  {
+    "run": "ordinary-final-singleton-r1",
+    "pytest_counts": {
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "661226b8a635c7f6534bc8dd68550cc01fd01ab9",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_ordinary_native_singleton_dispatch.py",
+        "tests/test_ordinary_native_controllers.py::test_last_score_original_fault_keeps_historical_scores_but_no_eligible_contrast",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\ordinary-final-singleton-r1\\pytest",
+        "-o",
+        "cache_dir=C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\ordinary-final-singleton-r1\\cache",
+        "--junitxml",
+        "C:\\Users\\Administrator\\.codex\\tmp\\modular-checks\\ordinary-final-singleton-r1\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 150.4907467365265,
+      "source_hash_count": 657,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "57dd1b6bffeb938a21f1384af4540d7d27404601947226e9c00e2264748b6c22"
+  },
+  {
+    "run": "ordinary-final-report-r2",
+    "pytest_counts": {
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "ee711687e11a41848e80872615b750968e7ff022",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_ordinary_native_controllers.py::test_last_score_original_fault_keeps_historical_scores_but_no_eligible_contrast",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "C:\\codex-modular-checks\\ordinary-final-report-r2\\pytest",
+        "-o",
+        "cache_dir=C:\\codex-modular-checks\\ordinary-final-report-r2\\cache",
+        "--junitxml",
+        "C:\\codex-modular-checks\\ordinary-final-report-r2\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 70.36784029006958,
+      "source_hash_count": 657,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "bb43c860e3c99b61c78e4c98fab88ef951a9cfc658e1c6e92c8a5bf5e64b4c22"
+  },
+  {
+    "run": "ordinary-q32-native-r1",
+    "pytest_counts": {
+      "tests": "18",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "9c2b2c9e2e872d50d928e32088924073d649b653",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_q32_native_provider.py",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "C:\\codex-modular-checks\\ordinary-q32-native-r1\\pytest",
+        "-o",
+        "cache_dir=C:\\codex-modular-checks\\ordinary-q32-native-r1\\cache",
+        "--junitxml",
+        "C:\\codex-modular-checks\\ordinary-q32-native-r1\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 29.36337161064148,
+      "source_hash_count": 660,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "dcdd15c81a96821839ad8aeb2c5036e8fbd3016a81c7489dd543bbf867f4b075"
+  },
+  {
+    "run": "ordinary-legacy-regression-r1",
+    "pytest_counts": {
+      "tests": "28",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "9c2b2c9e2e872d50d928e32088924073d649b653",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_modular_train_controller.py",
+        "tests/test_modular_linked_train_controller.py::test_linked_controller_runs_custody_export_real_port_live_docker_and_replays_receipts",
+        "tests/test_remaining_prospective_train_sources.py::test_actual_q32_prospective_packets_reach_all_twelve_measurements",
+        "tests/test_state_prediction_train_controller.py::test_all_24_prospective_cells_actual_modules_docker_and_scorer",
+        "--basetemp",
+        "C:\\codex-modular-checks\\ordinary-legacy-regression-r1\\pytest",
+        "-o",
+        "cache_dir=C:\\codex-modular-checks\\ordinary-legacy-regression-r1\\cache",
+        "--junitxml",
+        "C:\\codex-modular-checks\\ordinary-legacy-regression-r1\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 62.67191553115845,
+      "source_hash_count": 660,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "027761518f1d4405f0543e11d8e6a41e1f1d959ae202de62a3ed9db7ba071c49"
+  },
+  {
+    "run": "ordinary-all-families-r2",
+    "pytest_counts": {
+      "tests": "82",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "9c2b2c9e2e872d50d928e32088924073d649b653",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_ordinary_native_controllers.py",
+        "tests/test_ordinary_native_singleton_config.py",
+        "tests/test_ordinary_native_singleton_dispatch.py",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "C:\\codex-modular-checks\\ordinary-all-families-r2\\pytest",
+        "-o",
+        "cache_dir=C:\\codex-modular-checks\\ordinary-all-families-r2\\cache",
+        "--junitxml",
+        "C:\\codex-modular-checks\\ordinary-all-families-r2\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 3649.608053922653,
+      "source_hash_count": 660,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "37a5563523f8a10f6f50bcc7fb611aad30bd8cb22bcfe6e9719ae782e5267dc8"
+  },
+  {
+    "run": "ordinary-q32-final-status-r2",
+    "pytest_counts": {
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "db1175893f3c6556d229d03ef8f71663f50fc287",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_q32_native_provider.py::test_native_q32_prospective_execution_and_run_terminal_denominator",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "C:\\codex-modular-checks\\ordinary-q32-final-status-r2\\pytest",
+        "-o",
+        "cache_dir=C:\\codex-modular-checks\\ordinary-q32-final-status-r2\\cache",
+        "--junitxml",
+        "C:\\codex-modular-checks\\ordinary-q32-final-status-r2\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 30.109019994735718,
+      "source_hash_count": 660,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "dcf315c1aa947a4919cdbb026f94f85c5a66144a5b231da452383e2466c64098"
+  }
+]
