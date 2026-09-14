@@ -81,6 +81,35 @@ def test_secondary_failure_does_not_replace_original_cause(tmp_path, monkeypatch
         MaterialQualificationArtifacts.inspect(receipt)
 
 
+@pytest.mark.parametrize('rejected', [False, True])
+def test_partial_terminal_seal_is_not_retried_or_promoted(tmp_path, monkeypatch, rejected):
+    verifier, material, cell, calls = _subject(tmp_path, 'unknown' if rejected else None)
+    _retain(tmp_path, verifier, material, cell)
+    receipt = tmp_path/'attempt'/'source.json'
+    failure = OSError('PRIVATE-SEAL-MESSAGE')
+    seals = []
+
+    def fail_terminal(self, outcome):
+        seals.append(outcome)
+        (self.root/'seal.json').write_bytes(b'{"partial":')
+        raise failure
+
+    monkeypatch.setattr(MaterialQualificationArtifacts, 'terminal', fail_terminal)
+    with pytest.raises(ContractError) as caught:
+        verifier.qualify(material, receipt, cell_binding=cell)
+    assert seals == ['rejected' if rejected else 'accepted'] and len(calls) == 2
+    if rejected:
+        assert type(caught.value.__cause__) is ContractError
+        assert caught.value.__cause__.__cause__ is failure
+    else:
+        assert caught.value.__cause__ is failure
+    root, _, seal, _ = MaterialQualificationArtifacts.inspect(receipt)
+    assert seal is None and (root/'seal.json').read_bytes() == b'{"partial":'
+    with pytest.raises(ContractError):
+        verifier.replay(material, receipt, cell_binding=cell)
+    assert len(calls) == 2 and len(seals) == 1
+
+
 def test_post_return_custody_failure_preserves_return_and_stops_before_next_call(tmp_path, monkeypatch):
     verifier, material, cell, calls = _subject(tmp_path)
     _retain(tmp_path, verifier, material, cell)

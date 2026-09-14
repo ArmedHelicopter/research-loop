@@ -192,8 +192,12 @@ class DualMaterialVerifier:
             try:
                 # Includes Admission's subject/agreement policy before sealing.
                 self._verify_receipt(material, path, cell_binding=cell_binding)
-            except Exception:
-                artifacts.terminal('rejected')
+            except Exception as qualification_error:
+                try:
+                    artifacts.terminal('rejected')
+                except Exception as closure_error:
+                    qualification_error.add_note('material rejection storage incomplete: ' + type(closure_error).__name__)
+                    raise qualification_error from closure_error
                 rejected = True
                 raise
             artifacts.terminal('accepted')
