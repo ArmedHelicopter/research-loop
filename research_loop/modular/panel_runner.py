@@ -8,6 +8,7 @@ receipt into a scientific claim.
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
+import hashlib
 from pathlib import Path
 from typing import Callable, Mapping, Protocol
 
@@ -333,6 +334,9 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
     slots = slots_for(cell) if callable(slots_for) else driver.slots
     if (not isinstance(slots, tuple) or not slots or any(slot not in driver.slots for slot in slots)):
         raise ContractError("driver variant schedule must be a nonempty subset of its frozen schema slots")
+    if cell.coverage_id == "Q8.6":
+        from research_loop.modular.research_versions import _safe
+        _safe(sidecar)
     session = RunSession(task, package_digest=package.digest, arm=cell.runtime_arm,
                          objective=objective, slots=slots, execution_limit=driver.execution_limit,
                          sidecar=sidecar, verifier=audit_verifier, required_audit=("measurement",))
@@ -368,7 +372,26 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
                 "source_admission_cost": "not_provided_by_caller_port" if attempts else 0}
     try:
         stage, candidate, responses = driver.run(workflow, cell=cell, scenario=scenario, model=model, package=package)
+        if cell.coverage_id == "Q8.6":
+            terminal = session.finish(candidate)
+            from research_loop.modular.research_versions import verify_research_version_artifacts
+            session.artifacts.seal()
+            trace_rows = tuple(FrozenRecord(line).data() for line in (sidecar / "trace.jsonl").read_text(encoding="utf-8").splitlines())
+            verify_research_version_artifacts(sidecar, cell=cell, scenario=scenario, identity=cell.identity, task_digest=cell.task_digest,
+                lock=trace_rows[0]["data"], events=trace_rows, expected_run_id=session.artifacts.binding["run_id"])
     except Exception as exc:
+        if cell.coverage_id == "Q8.6":
+            from research_loop.modular.research_versions import _publish, _safe
+            session._terminal = True
+            try:
+                failure = FrozenRecord.from_dict({"schema": "research-version-failure-v1", "cell": cell.data(),
+                    "scenario_digest": scenario.content_hash, "lock_digest": session.lock.content_hash,
+                    "run_id": session.artifacts.binding["run_id"], "trace_digest": session._events[-1].content_hash,
+                    "catalogue_sha256": hashlib.sha256(_safe(session.artifacts.path).read_bytes()).hexdigest(),
+                    "error_type": type(exc).__name__, "audit_complete": False, "scientific_verified": False})
+                _publish(sidecar / "research-version-failure.json", failure)
+            except Exception:
+                pass  # The returned failure survives even if storage is unusable.
         if not session._terminal:
             last = session._events[-1].data()
             if last["stage"] == "model_response":
@@ -392,13 +415,8 @@ def run_train_cell(cell: PanelCell, *, task: PublicTask, scenario: FrozenRecord,
             "actual_token_measurement": "not_measured",
             "terminal": session._events[-1].data()["stage"]})
         return TrainCellResult(runtime, None, plan)
-    terminal = session.finish(candidate)
-    if cell.coverage_id == "Q8.6":
-        from research_loop.modular.research_versions import verify_research_version_artifacts
-        session.artifacts.seal()
-        trace_rows = tuple(FrozenRecord(line).data() for line in (sidecar / "trace.jsonl").read_text(encoding="utf-8").splitlines())
-        verify_research_version_artifacts(sidecar, cell=cell, scenario=scenario, identity=cell.identity, task_digest=cell.task_digest,
-                                          lock=trace_rows[0]["data"], events=trace_rows)
+    if cell.coverage_id != "Q8.6":
+        terminal = session.finish(candidate)
     trace_path = sidecar / "trace.jsonl"
     trace_lines = trace_path.read_text(encoding="utf-8").splitlines()
     trace_digest = FrozenRecord(trace_lines[-1]).content_hash

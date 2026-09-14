@@ -263,8 +263,8 @@ def test_origin_authority_rejects_binding_and_science_upgrade(field,value):
 
 def test_version_rejects_unqualified_freeze_and_rewrites(tmp_path):
     from test_modular_retrieval_panel_drivers import _task
-    events=[]; task=_task("blade"); objective=FrozenRecord.from_dict({"question":"fixed"})
-    session=SimpleNamespace(task=task,objective=objective,lock=FrozenRecord.from_dict({"objective":objective.data()}),sidecar=tmp_path,_record=lambda a,b:events.append((a,b)),bind_research_version=lambda _:None)
+    from test_research_version_artifacts import _session
+    session = _session(tmp_path)
     boundary=ResearchVersionBoundary(session); before=boundary.path.read_bytes(); proposed=FrozenRecord.from_dict({"question":"new"})
     with pytest.raises(ContractError,match="immutable"): boundary.replace_objective(proposed)
     authority=SimpleNamespace(freeze_version=lambda _: FrozenRecord.from_dict({"authorized":True}))
@@ -321,7 +321,8 @@ def test_real_session_and_workflow_ports_refuse_inactive_research_before_io(tmp_
     else:
         authority=SimpleNamespace(freeze_version=lambda s:FrozenRecord.from_dict({"schema":"independent-research-version-freeze-v1",
             "subject_digest":s.content_hash,"authorized":True,"scientific_verified":False}))
-        boundary.pause_and_freeze(FrozenRecord.from_dict({"question":"new"}),authority,FrozenRecord.from_dict({"caller":"independent"}))
+        from test_research_version_artifacts import _authorization
+        boundary.pause_and_freeze(FrozenRecord.from_dict({"question":"new"}),authority,_authorization(session))
     fail_model=lambda _:io.append("model")
     with pytest.raises(ContractError,match="not running"): workflow.invoke_model("final",fail_model,instruction="Continue research.")
     with pytest.raises(ContractError,match="not running"): session.invoke("final",fail_model,instruction="Continue research.")

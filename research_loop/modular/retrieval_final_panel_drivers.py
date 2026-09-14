@@ -134,7 +134,7 @@ class RetrievalFinalPanelDriver:
             detail = {"retrieval": self._retrieve(session, data, decision["retrieve"])}
             stage = workflow._trace("operation_m6_trigger", "executed", **decision)
         elif self.experiment_id == "Q8.6":
-            detail, stage = self._authority(workflow, cell, data, model)
+            detail, stage = self._authority(workflow, cell, data, model, scenario)
         else:
             detail, stage = self._frontier(workflow, cell, data, bundle, model)
         final = workflow.invoke_model("final", model, instruction="Report the observed result under the immutable objective. Public origins and execution do not establish scientific validity. No programme completion.", evidence_only=True, reporting_only=self.experiment_id == "Q8.6",
@@ -150,15 +150,16 @@ class RetrievalFinalPanelDriver:
         projection, _ = _select_sources(self.provider, session, docs, data["query"], data["budget"], "Q8.2", "correct", enabled)
         return projection
 
-    def _authority(self, workflow, cell, data, model):
-        session = workflow.session; projection = self._retrieve(session, data, "M6" in workflow.enabled)
-        boundary = ResearchVersionBoundary(session)
+    def _authority(self, workflow, cell, data, model, scenario):
+        session = workflow.session
+        boundary = ResearchVersionBoundary(session, cell=cell, scenario=scenario)
+        projection = self._retrieve(session, data, "M6" in workflow.enabled)
         request = data["requests"][cell.variant]
         visible = {doc["source_id"] for docs in projection["by_lane"].values() for doc in docs}
         subject = FrozenRecord.from_dict({"kind": "source_request", "identity": session.task.identity.data(), "task_digest": session.task.content_hash,
             "source_bundle_digest": projection["source_bundle_digest"], "visible_source_ids": sorted(visible),
             "request": request if request["source_id"] in visible else None})
-        checked = qualify(self.authority, subject)
+        checked = boundary.qualify_origin(self.authority, subject)
         session._record("q86_source_authority", {"subject": subject.data(), "receipt": checked.data()})
         authorization = FrozenRecord.from_dict({"schema": "q86-origin-authorization-v1",
             "subject": subject.data(), "receipt": checked.data(), "authority_artifact": session._event_artifacts[-1]})

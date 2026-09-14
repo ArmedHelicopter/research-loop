@@ -419,7 +419,9 @@ class PanelReceiptVerifier:
                         p0_control_digest: str | None = None) -> None:
         if receipt.cell_key != expected.key:
             raise ContractError("runtime receipt cell key does not match the frozen panel cell")
-        verify_protocol_trace(receipt.trace_path)
+        if expected.coverage_id == "Q8.6":
+            from research_loop.modular.research_versions import _safe
+            _safe(receipt.trace_path)
         trace = verify_trace(receipt.trace_path).data()
         if trace["trace_digest"] != receipt.trace_digest:
             raise ContractError("runtime trace digest does not match the hash-chained journal")
@@ -431,6 +433,29 @@ class PanelReceiptVerifier:
             raise ContractError("runtime trace task binding mismatch")
         if lock.get("task_digest") != expected.task_digest or lock.get("package_digest") != expected.package_digest or lock.get("arm") != expected.runtime_arm.data():
             raise ContractError("runtime trace package or legal-arm binding mismatch")
+        if expected.coverage_id == "Q8.6" and receipt.status == "failed":
+            from research_loop.modular.research_versions import _safe, _snapshot
+            marker_path = _safe(receipt.trace_path.parent / "research-version-failure.json")
+            if marker_path.exists():
+                import hashlib
+                marker = FrozenRecord(marker_path.read_text(encoding="utf-8").strip())
+                catalogue_path = _safe(receipt.trace_path.parent / "artifacts.jsonl")
+                catalogue_raw = catalogue_path.read_bytes()
+                run_id = FrozenRecord(catalogue_raw.decode("utf-8").splitlines()[0]).data()["descriptor"]["binding"]["run_id"]
+                expected_marker = {"schema": "research-version-failure-v1", "cell": expected.data(),
+                    "scenario_digest": expected.scenario_digest, "lock_digest": FrozenRecord.from_dict(lock).content_hash,
+                    "run_id": run_id, "trace_digest": receipt.trace_digest,
+                    "catalogue_sha256": hashlib.sha256(catalogue_raw).hexdigest(),
+                    "error_type": marker.data().get("error_type"), "audit_complete": False, "scientific_verified": False}
+                if (scenario is None or scenario.content_hash != expected.scenario_digest or marker.data() != expected_marker
+                        or not isinstance(expected_marker["error_type"], str) or not expected_marker["error_type"]
+                        or receipt.output_digest is not None):
+                    raise ContractError("research version failure does not bind the expected cell")
+                _snapshot(marker_path, marker)
+                # This accounts for a failed attempt only. Partial journals are
+                # retained; no complete artifact or successful outcome is claimed.
+                return
+        verify_protocol_trace(receipt.trace_path)
         requests = [event["data"].get("request", {}) for event in events if event["stage"] == "model_request"]
         expected_binding = {"experiment_id": expected.coverage_id, "variant": expected.variant,
                             "replicate": expected.replicate, "arm_id": expected.arm_id,
@@ -497,7 +522,7 @@ class PanelReceiptVerifier:
             raise ContractError("non-success receipt lacks a bound terminal decision")
         if receipt.status == "blocked" and terminal["data"].get("decision") != "blocked":
             raise ContractError("blocked receipt contradicts the actual terminal decision")
-        if expected.coverage_id == "Q8.6":
+        if expected.coverage_id == "Q8.6" and receipt.status != "failed":
             from research_loop.modular.research_versions import verify_research_version_artifacts
             if scenario is None:
                 raise ContractError("Q8.6 receipt verification requires the retained compiled scenario")
