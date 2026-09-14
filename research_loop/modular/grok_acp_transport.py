@@ -609,6 +609,13 @@ class SinglePromptACP:
                 require(isinstance(new.get('models'), dict)
                         and new['models'].get('currentModelId') == MODEL, 'selected_model_mismatch')
                 require(self.seen_sessions <= {self.sid}, 'session_binding')
+                if self.deployment is not None:
+                    # A native session response may precede its inventory notification.
+                    # Keep the original process deadline and all strict notification gates.
+                    while self.sid not in self.inventory_sessions:
+                        row = self.next_row()
+                        require('id' not in row, 'server_request_disallowed')
+                        self.notification(row)
                 require(self.sid in self.inventory_sessions, 'preprompt_inventory_missing')
                 self.pre = self.bill()  # Same live process, after session setup, before prompt.
                 while not self.queue.empty():

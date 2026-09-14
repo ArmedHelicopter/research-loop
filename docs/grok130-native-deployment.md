@@ -49,3 +49,14 @@ gates, original reader, material envelope and diagnostic subscription path.
 No real initialize, session, prompt, billing RPC, API fee or validation is part
 of this implementation's verification. A real readiness probe requires its own
 separately frozen reservation; source support does not itself prove readiness.
+
+
+For the explicit 1.0.30 deployment, the session response may arrive before the
+runtime inventory notification. The transport waits for the existing strict
+handler to accept an explicit empty inventory for that same session, within the
+original process deadline. It performs no billing or prompt request while
+waiting, never infers empty tools from configuration or MCP servers, and rejects
+nonempty/malformed/foreign inventory, unexpected responses, EOF or timeout.
+Legacy no-descriptor behavior is unchanged. The original real readiness failure
+is retained; synthetic ordering coverage does not prove that the actual binary
+will eventually send a qualifying inventory.
