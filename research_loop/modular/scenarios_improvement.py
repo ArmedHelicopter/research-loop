@@ -266,3 +266,10 @@ def verify_q63_fixture_artifacts(result: ImprovementScenarioResult, *, task: Pub
     """Read original Q6.3 fixture outputs without rerunning callbacks or activation."""
     from research_loop.modular.fixture_builder_artifacts import verify_q63_fixture
     return verify_q63_fixture(result,task=task,frozen_controls=frozen_controls,sidecar=sidecar,variant=variant)
+
+
+def inspect_q63_fixture_failure(*, task: PublicTask, frozen_controls: FrozenRecord,
+                                sidecar: Path, variant: str) -> FrozenRecord:
+    """Inspect failed fixture storage without treating it as accepted execution."""
+    from research_loop.modular.fixture_builder_artifacts import inspect_q63_fixture_failure as inspect_failure
+    return inspect_failure(task=task,frozen_controls=frozen_controls,sidecar=sidecar,variant=variant)

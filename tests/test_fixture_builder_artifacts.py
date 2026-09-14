@@ -10,7 +10,9 @@ from research_loop.modular import fixture_builder_artifacts as fixture
 from research_loop.modular.artifact_catalogue import ArtifactCatalogue
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.modules.improvement import BuilderRegistry, RestrictedBuilderPort
-from research_loop.modular.scenarios_improvement import run_improvement_scenario, verify_q63_fixture_artifacts
+from research_loop.modular.scenarios_improvement import (
+    run_improvement_scenario, verify_q63_fixture_artifacts, inspect_q63_fixture_failure,
+)
 from research_loop.ontology import ContractError
 from test_builder_artifacts import rewrite_catalogue, tree_bytes
 from test_modular_improvement_scenarios import task_for, controls
@@ -100,6 +102,16 @@ def test_actual_failed_fixture_preserves_original_exception_and_outputs(tmp_path
     assert cat.seal_path.is_file() and (root/fixture._CLOSURE).is_file()
     assert (root/'candidate.json').exists()==(fault=='partial_candidate')
     if fault!='callback':assert durable._read(root,durable._TERMINAL).data()['status']=='failed'
+    args=dict(task=task,frozen_controls=controls(task),sidecar=root,variant=variant)
+    before=tree_bytes(root)
+    report=inspect_q63_fixture_failure(**args).data()
+    assert report['storage_integrity_verified'] and not report['stage_semantics_verified']
+    assert not report['acceptance_eligible'] and tree_bytes(root)==before
+    path=root/'builder.json' if (root/'builder.json').is_file() else cat.path
+    raw=path.read_bytes();path.write_bytes(raw+b'corruption')
+    with pytest.raises(ContractError):inspect_q63_fixture_failure(**args)
+    path.write_bytes(raw)
+    inspect_q63_fixture_failure(**args)
 
 
 @pytest.mark.parametrize('fault',['consumption','allocation','selected','failed_terminal'])
@@ -139,3 +151,36 @@ def test_reader_rejects_unregistered_nested_file_even_if_name_matches_root_journ
     result,args=prepare(tmp_path/'run','fixed');root=args['sidecar']
     extra=root/'unexpected'/fixture._CATALOGUE;extra.parent.mkdir();extra.write_bytes(b'unknown')
     with pytest.raises(ContractError,match='unexpected'):verify_q63_fixture_artifacts(result,**args)
+
+
+def test_failure_after_registry_commit_preserves_the_changed_database(tmp_path,monkeypatch):
+    root=tmp_path/'run';task=task_for('blade');error=ContractError('after actual registry commit')
+    original=BuilderRegistry.activate_meta
+    def fail_after_commit(registry,*args,**kwargs):
+        original(registry,*args,**kwargs)
+        raise error
+    monkeypatch.setattr(BuilderRegistry,'activate_meta',fail_after_commit)
+    with pytest.raises(ContractError) as caught:prepare(root,'train_proposed')
+    assert caught.value is error
+    before=tree_bytes(root)
+    report=inspect_q63_fixture_failure(task=task,frozen_controls=controls(task),sidecar=root,variant='train_proposed').data()
+    assert report['stage']=='registry_activate' and not report['acceptance_eligible']
+    _,_,fixed=fixture._base(task)
+    state=fixture._db_state((root/'builders.sqlite').read_bytes())
+    assert state['active']!=[[1,fixed.digest]] and len(state['consumed'])==1
+    rows=[r.data() for r in catalogue(root,task).records()]
+    snapshot=next(r['payload']['canonical'] for r in rows if r['kind']=='fixture_registry_initialized')
+    assert fixture._db_state((root/snapshot['blob']).read_bytes())['active']==[[1,fixed.digest]]
+    assert tree_bytes(root)==before
+
+
+def test_coherently_sealed_missing_acceptance_return_is_a_contract_rejection(tmp_path):
+    result,args=prepare(tmp_path/'run','train_proposed');root=args['sidecar']
+    cat=catalogue(root,args['task']);lines=cat.path.read_bytes().splitlines(keepends=True)[:5]
+    assert json.loads(lines[-1])['descriptor']['kind']=='fixture_acceptance_request'
+    cat.path.write_bytes(b''.join(lines))
+    seal=FrozenRecord.from_dict({'schema':'artifact-catalogue-seal-v1','count':len(lines),
+        'head':FrozenRecord(lines[-1].decode().strip()).content_hash,'binding':cat.binding})
+    cat.seal_path.write_text(seal.encoded+'\n',encoding='utf-8',newline='\n')
+    cat.verify(seal)
+    with pytest.raises(ContractError,match='missing'):verify_q63_fixture_artifacts(result,**args)
