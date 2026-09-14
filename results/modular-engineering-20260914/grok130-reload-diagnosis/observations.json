@@ -1,0 +1,40 @@
+{
+  "r1": {
+    "skill_paths_observed_now": []
+  },
+  "r2": {
+    "skill_paths_observed_now": [
+      "bundled/skills/build-with-ai/SKILL.md",
+      "bundled/skills/code-review/SKILL.md",
+      "bundled/skills/create-skill/SKILL.md",
+      "bundled/skills/create-workflow/SKILL.md",
+      "bundled/skills/design/SKILL.md",
+      "bundled/skills/docx/SKILL.md",
+      "bundled/skills/execute-plan/SKILL.md",
+      "bundled/skills/game-animation-frames/SKILL.md",
+      "bundled/skills/game-asset-core/SKILL.md",
+      "bundled/skills/game-character-consistency/SKILL.md",
+      "bundled/skills/game-tilesets/SKILL.md",
+      "bundled/skills/game-ui-icons/SKILL.md",
+      "bundled/skills/imagine/SKILL.md",
+      "bundled/skills/implement/SKILL.md",
+      "bundled/skills/learn/SKILL.md",
+      "bundled/skills/long-running-background-tasks/SKILL.md",
+      "bundled/skills/pdf/SKILL.md",
+      "bundled/skills/pptx/SKILL.md",
+      "bundled/skills/pr-babysit/SKILL.md",
+      "bundled/skills/resume-claude/SKILL.md",
+      "bundled/skills/resume-codex/SKILL.md",
+      "bundled/skills/resume-cursor/SKILL.md",
+      "bundled/skills/review/SKILL.md",
+      "bundled/skills/skill-design-principles/SKILL.md",
+      "bundled/skills/statusline/SKILL.md"
+    ]
+  },
+  "scope": "Post-run owned private-home filename inventory only; no credential or skill body read; does not prove actual model context",
+  "public_commit": "bc7f02eddd3d84085849dc19ed216f11c23b0571",
+  "public_tree_sha256": "09bfddb5c314aab1c7034f419b30b18bea58c1d3b497e247b02f8cdc5131dcac",
+  "binary_source_equivalence_established": false,
+  "new_model_calls": 0,
+  "r2_main_and_title_usage": "unknown"
+}

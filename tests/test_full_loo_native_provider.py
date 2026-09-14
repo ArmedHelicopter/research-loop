@@ -69,8 +69,8 @@ def test_complete_native_c4_grid_uses_scoped_grok_main_and_engine_seams(native_g
     assert len(receipt['contrasts'])==10
     assert all(c['provenance_status']=='current' and len(c['paired_rows'])==2 for c in receipt['contrasts'])
     assert receipt['native_accounting']['known_usage_scope']=='native_main'
-    assert receipt['native_accounting']['schema']=='train-phase-terminal-accounting-v2'
-    assert receipt['native_accounting']['provider_calls_lower_bound']==169
+    assert receipt['native_accounting']['schema']=='train-phase-call-accounting-v2'
+    assert receipt['native_accounting']['provider_calls']==169
     assert receipt['native_accounting']['possible_initial_title_opportunities']==169
     assert receipt['native_accounting']['title_tokens'] is None and receipt['native_accounting']['all_opportunity_tokens'] is None
     scopes=ledger.record.data()['scopes']['scopes']; ids=[number for scope in scopes for number in scope['call_ids']]

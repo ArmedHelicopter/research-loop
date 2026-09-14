@@ -1,0 +1,154 @@
+{
+  "public-source": [
+    {
+      "path": "agent_builder.rs",
+      "bytes": 118040,
+      "sha256": "d011c18a2897ebab1477e3b46958de37fbfd85e6f0f8cdb78b629b855b4d13bc"
+    },
+    {
+      "path": "agent_config.rs",
+      "bytes": 247344,
+      "sha256": "3e834e36faa72e304df295eb0181e8d3696766ed528d89fea84882f0edf81ce7"
+    },
+    {
+      "path": "agent_config_full.rs",
+      "bytes": 105458,
+      "sha256": "d254db589711fc28a5895a109045da45d1eaa60f9a1ad24b3ca8636315ebaf17"
+    },
+    {
+      "path": "agent_prompt_mod.rs",
+      "bytes": 262,
+      "sha256": "5e4d841663b3c9f808c03b60b75d1e9de5c61d11c1e2c1437508e6ea6a1b7539"
+    },
+    {
+      "path": "app.rs",
+      "bytes": 96164,
+      "sha256": "7cd4023f956cc842dbc535350ba56e52aff21dd33c8d282870d09d5d494b8727"
+    },
+    {
+      "path": "bundle_lib.rs",
+      "bytes": 54681,
+      "sha256": "a98b3b0e52deb4639e1a5543a7dd3c647fd2f63dba48861123fdec9053ddd731"
+    },
+    {
+      "path": "config_lib.rs",
+      "bytes": 4219,
+      "sha256": "028db3f2ac48b93548a67b9a8bbcdbe72383d596238293f622b90dbfca99d267"
+    },
+    {
+      "path": "config_loader.rs",
+      "bytes": 33734,
+      "sha256": "c003e76741e25abdb39ac2e95a7a6894356b9138c7a2dea7d4a4392f217a14f8"
+    },
+    {
+      "path": "config_types_lib.rs",
+      "bytes": 100666,
+      "sha256": "8e786b1d33d1ba3ce475562baaa2c7ee041dad801cbed2e8220002ef92332b29"
+    },
+    {
+      "path": "config_watcher.rs",
+      "bytes": 70718,
+      "sha256": "4b83ad2a86d4391ab2c7ce05d0720c94641a80c249e0987b3ca7ba0b8ab6cb53"
+    },
+    {
+      "path": "extensions_bundle.rs",
+      "bytes": 43698,
+      "sha256": "832e98a0dfd0a8e09f90c591045de947d43ff24e7ca62a15d23cc28f6ad4563b"
+    },
+    {
+      "path": "extensions_routing.rs",
+      "bytes": 5102,
+      "sha256": "041fabffa94384fd0b49d7dc8c75d15bb62f65d9a58d3e5e2b049db76484e54e"
+    },
+    {
+      "path": "extensions_skills.rs",
+      "bytes": 22858,
+      "sha256": "9ec9f364ed917332a33b98503924bd1b509e4fc2a520a36f299233becc58c559"
+    },
+    {
+      "path": "independent-chain-byte-check-r1.json",
+      "bytes": 4489,
+      "sha256": "395a8c1666f7371d0082c5946fb1332188ec2adce26b1d04bbe322fd8debd6ed"
+    },
+    {
+      "path": "independent-chain-provenance-r1.json",
+      "bytes": 1080,
+      "sha256": "d088838f39d6b07b369427c75ccf93b692d1ef75ba57490cef5b0055eb05fba8"
+    },
+    {
+      "path": "independent-chain-provenance-r2.json",
+      "bytes": 727,
+      "sha256": "31d92f79ed381c5e84ac3e9f50c98e44b8c87d2af4cc8d4c9fda9a5c7c1dcc62"
+    },
+    {
+      "path": "mvp_agent_ops.rs",
+      "bytes": 216012,
+      "sha256": "76069fb5502fe876b1065e9fd8d1e1b7a0f0ec425c495dc7671eb36d918f39b8"
+    },
+    {
+      "path": "mvp_mod.rs",
+      "bytes": 123816,
+      "sha256": "3d423ed28fa7b090afa7694cadbeb4e55b1f4c395b5253057fd571592a8010b8"
+    },
+    {
+      "path": "mvp_session_setup.rs",
+      "bytes": 71073,
+      "sha256": "626f0406e07b61fa87820f8ab00c7fdb0958635899b38eb0690c57ac14023e0e"
+    },
+    {
+      "path": "prompt_skills.rs",
+      "bytes": 100760,
+      "sha256": "4fd243cac07e3726be39e8b52a7271795f23efbaaa34c48feb45aaf4f30a2077"
+    },
+    {
+      "path": "reload-followup-provenance-2.json",
+      "bytes": 1540,
+      "sha256": "858025bd51caa1b4efda2096ef9484169be686c793b436322b8e61308bfe8644"
+    },
+    {
+      "path": "reload-followup-provenance-3.json",
+      "bytes": 1223,
+      "sha256": "f5b7e5ff4e80c758dbb89fce82b33c1f918379304a563bb87e3dd42f5c94674a"
+    },
+    {
+      "path": "reload-followup-provenance-4.json",
+      "bytes": 938,
+      "sha256": "0188565fdc66e1ccddef5dece49d18c7f42ad20104974c761ce531539404eae0"
+    },
+    {
+      "path": "reload-followup-provenance.json",
+      "bytes": 936,
+      "sha256": "e465bdb00fc1c12b2facd3d13e882e940d57cb6ea416c344ca4aebbfd95b614e"
+    },
+    {
+      "path": "session_admin.rs",
+      "bytes": 45119,
+      "sha256": "0bde97d31ea21821ff09f442c610523782390e4ad63a948e9f0310ba6a7026c2"
+    },
+    {
+      "path": "session_setup.rs",
+      "bytes": 32745,
+      "sha256": "c14d386dda141c3caf4cb6099fa1a5f110cd7b40a3de21719ac4fc8fd8e20c6b"
+    },
+    {
+      "path": "shell_tools_bridge.rs",
+      "bytes": 255,
+      "sha256": "34490876149f09e9a117497a29177aabf018b8556bda5336d2498f3e498dfe30"
+    },
+    {
+      "path": "skill_tracker.rs",
+      "bytes": 60383,
+      "sha256": "ff64cbb242b0635fa944b4d8b4c00440013ddf587685b715c838ccb58ec82cfd"
+    },
+    {
+      "path": "source-provenance.json",
+      "bytes": 722,
+      "sha256": "e8b9458232a078f4b687f702349ab974f70dffebe54d98163ccbdfa86dbcef54"
+    },
+    {
+      "path": "tools_bridge.rs",
+      "bytes": 37954,
+      "sha256": "fcf0b9fd772fc2766877edafa9f591994abf74ad2e9149ee6e2302ceac79b5e7"
+    }
+  ]
+}
