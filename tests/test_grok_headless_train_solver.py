@@ -78,6 +78,14 @@ def test_supplied_executable_pin_is_an_input_not_overwritten(tmp_path):
         GrokHeadlessTrainModelPort(executable=exe,work_root=tmp_path/"ledger",private_home=home,private_profile=tmp_path/"profile",public_cwd=tmp_path/"cwd",frozen_files={str(exe):"0"*64},max_calls=1,schemas={"m4_plan":SCHEMA},slot_output_caps={"m4_plan":2048},slot_input_byte_caps={"m4_plan":262144},observed_main_token_cap=131072)
 
 
+def test_supplied_generated_source_pin_is_not_overwritten(tmp_path):
+    import research_loop.modular.grok_headless_train_solver as solver
+    exe=tmp_path/"grok.exe"; exe.write_bytes(b"synthetic executable")
+    home=tmp_path/"home"; home.mkdir(); (home/"auth.json").write_text("{}",encoding="utf-8")
+    with pytest.raises(ContractError):
+        GrokHeadlessTrainModelPort(executable=exe,work_root=tmp_path/"ledger",private_home=home,private_profile=tmp_path/"profile",public_cwd=tmp_path/"cwd",frozen_files={str(exe):hashlib.sha256(exe.read_bytes()).hexdigest(),str(Path(solver.__file__).resolve()):"0"*64},max_calls=1,schemas={"m4_plan":SCHEMA},slot_output_caps={"m4_plan":2048},slot_input_byte_caps={"m4_plan":262144},observed_main_token_cap=131072)
+
+
 def test_invalid_public_request_stops_before_native_context_creation(tmp_path):
     value=port(tmp_path)
     bad=FrozenRecord.from_dict({**REQUEST.data(),"slot":"foreign"})
@@ -157,3 +165,15 @@ def test_second_port_with_stale_ledger_cannot_allocate_again(tmp_path, monkeypat
     first(REQUEST)
     with pytest.raises(ContractError): other(REQUEST)
     assert len(first.ledger["calls"]) == 1
+
+
+def test_constructor_lock_and_corrupt_disk_bytes_are_preserved(tmp_path):
+    first=port(tmp_path); original=first.ledger_path.read_bytes()
+    first.lock_path.write_text("active",encoding="utf-8")
+    with pytest.raises(ContractError):
+        GrokHeadlessTrainModelPort(executable=first.executable,work_root=first.root,private_home=first.private_home,private_profile=first.private_profile,public_cwd=first.public_cwd,frozen_files={first.executable:hashlib.sha256(Path(first.executable).read_bytes()).hexdigest()},max_calls=1,schemas=first.schemas,slot_output_caps=first.slot_output_caps,slot_input_byte_caps=first.slot_input_byte_caps,observed_main_token_cap=first.observed_main_token_cap)
+    assert first.ledger_path.read_bytes() == original and first.lock_path.exists()
+    first.lock_path.unlink(); first.ledger_path.write_bytes(b'{"broken":')
+    with pytest.raises(ContractError):
+        GrokHeadlessTrainModelPort(executable=first.executable,work_root=first.root,private_home=first.private_home,private_profile=first.private_profile,public_cwd=first.public_cwd,frozen_files={first.executable:hashlib.sha256(Path(first.executable).read_bytes()).hexdigest()},max_calls=1,schemas=first.schemas,slot_output_caps=first.slot_output_caps,slot_input_byte_caps=first.slot_input_byte_caps,observed_main_token_cap=first.observed_main_token_cap)
+    assert first.ledger_path.read_bytes() == b'{"broken":' and (first.root/"ledger.constructor-fault.json").read_bytes() == b'{"broken":'
