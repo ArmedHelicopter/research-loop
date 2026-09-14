@@ -101,7 +101,7 @@ class PhaseProviderSession:
     """Own the complete run allocation; no call may occur outside its scopes."""
     def __init__(self, provider, path):
         _require(type(self) is PhaseProviderSession and type(provider) in PROVIDERS, 'closed phase provider required')
-        self.provider=provider;self.path=Path(path);self.active=None;self.aborted=None
+        self.provider=provider;self.path=Path(path);self.active=None;self.aborted=None;self._abort_record=None
         _require(not provider.inspect() and not provider.terminal(), 'phase requires a fresh healthy provider')
         self.record=_record({'schema':'train-phase-provider-scopes-v2',
             'configuration_digest':provider.configuration().content_hash,'scopes':[]})
@@ -156,7 +156,8 @@ class PhaseProviderSession:
             'current_originals_verified':False,'score_eligible':False,'eligible_original_seal_created':False})
         path=self.path.with_name(self.path.stem+'-aborted.json')
         _write(path,record,exclusive=True)
-        self.aborted=PhaseProviderAbort(path,record,snapshot,self.provider)
+        self._abort_record=record
+        self.aborted=PhaseProviderAbort(path,record,snapshot,self)
         self.active=None;return self.aborted
 
     def terminal(self):
@@ -177,7 +178,7 @@ class PhaseProviderSession:
             try:return self.seal(path)
             except ContractError:self.abort()
         self.aborted.verify();_write(path,self.aborted.record,exclusive=True)
-        return PhaseProviderAbort(Path(path),self.aborted.record,self.aborted.snapshot,self.provider)
+        return PhaseProviderAbort(Path(path),self.aborted.record,self.aborted.snapshot,self)
 
     def seal(self,path):
         self.verify();_require(self.active is None, 'cannot seal an active provider scope')
@@ -244,12 +245,16 @@ class PhaseProviderAbort:
     path: Path
     record: FrozenRecord
     snapshot: FrozenRecord
-    provider: object
+    session: PhaseProviderSession
 
     def verify(self):
-        _require(type(self) is PhaseProviderAbort and type(self.provider) in PROVIDERS
+        _require(type(self) is PhaseProviderAbort and type(self.session) is PhaseProviderSession
+            and type(self.session.provider) in PROVIDERS
             and type(self.record) is FrozenRecord and type(self.snapshot) is FrozenRecord,
             'exact typed phase abort required')
+        _require(self.record is self.session._abort_record and self.session.aborted is not None
+            and self.session.aborted.record is self.record and self.session.aborted.snapshot is self.snapshot,
+            'abort differs from its originating phase and captured record')
         _require(self.path.read_bytes()==self.record.encoded.encode('utf-8'), 'terminal phase accounting bytes differ')
         b=self.record.data();s=self.snapshot.data()
         _require(set(b)=={'schema','completed_scope_prefix','scope_journal_path','scope_journal_sha256','unresolved_scope','provider_snapshot',
@@ -258,8 +263,33 @@ class PhaseProviderAbort:
             and all(b[k] is False for k in ('scope_partition_complete','current_originals_verified','score_eligible','eligible_original_seal_created'))
             and b['provider_snapshot']==s and s.get('schema')=='public-train-provider-terminal-snapshot-v1'
             and s.get('terminal_fault') is True and s.get('current_originals_verified') is False
-            and s.get('score_eligible') is False and self.provider.failure_snapshot()==self.snapshot,
+            and s.get('score_eligible') is False and self.session.provider.failure_snapshot()==self.snapshot,
             'terminal phase snapshot is not the original noneligible accounting evidence')
+        prefix=b['completed_scope_prefix'];unresolved=b['unresolved_scope']
+        _require(set(prefix)=={'schema','configuration_digest','scopes'}
+            and prefix['schema']=='train-phase-provider-scopes-v2'
+            and prefix==self.session.record.data() and b['scope_journal_path']==str(self.session.path)
+            and type(prefix['configuration_digest']) is str and len(prefix['configuration_digest'])==64
+            and all(c in '0123456789abcdef' for c in prefix['configuration_digest'])
+            and type(prefix['scopes']) is list, 'aborted phase scope origin/configuration differs')
+        ids=[];names=[]
+        for row in prefix['scopes']:
+            _require(type(row) is dict and set(row)=={'scope_id','start_cursor','call_ids','call_digests'}
+                and type(row['scope_id']) is str and bool(row['scope_id']) and row['scope_id'] not in names
+                and type(row['start_cursor']) is int and row['start_cursor']==len(ids)
+                and type(row['call_ids']) is list and all(type(n) is int for n in row['call_ids'])
+                and row['call_ids']==list(range(len(ids)+1,len(ids)+len(row['call_ids'])+1))
+                and type(row['call_digests']) is list and len(row['call_digests'])==len(row['call_ids'])
+                and all(type(v) is str and len(v)==64 and all(c in '0123456789abcdef' for c in v)
+                    for v in row['call_digests']), 'aborted completed prefix shape differs')
+            names.append(row['scope_id']);ids.extend(row['call_ids'])
+        _require(unresolved is None or (type(unresolved) is dict and set(unresolved)=={'scope_id','start_cursor'}
+            and type(unresolved['scope_id']) is str and bool(unresolved['scope_id']) and unresolved['scope_id'] not in names
+            and type(unresolved['start_cursor']) is int and unresolved['start_cursor']==len(ids)),
+            'aborted unresolved scope shape differs')
+        historical=s.get('historical_observation')
+        _require(historical is None or historical['configuration_digest']==prefix['configuration_digest'],
+            'historical provider configuration belongs to another phase')
         raw=Path(b['scope_journal_path']).read_bytes()
         _require(raw==_record(b['completed_scope_prefix']).encoded.encode('utf-8')
             and hashlib.sha256(raw).hexdigest()==b['scope_journal_sha256'], 'terminal completed scope journal differs')

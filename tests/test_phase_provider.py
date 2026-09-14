@@ -98,6 +98,7 @@ def test_native_configuration_cannot_reinterpret_lifetime_or_allocation(tmp_path
 def test_provenance_abort_retains_unresolved_scope_and_only_historical_lower_bounds(tmp_path,monkeypatch):
     provider,logs,request=fixture(tmp_path,monkeypatch)
     session=PhaseProviderSession(provider,tmp_path/'scopes.json')
+    sibling=PhaseProviderSession(provider,tmp_path/'sibling-scopes.json')
     with session.scope('history') as model:model(request)
     with pytest.raises(ContractError):
         with session.scope('target') as model:
@@ -118,6 +119,18 @@ def test_provenance_abort_retains_unresolved_scope_and_only_historical_lower_bou
     assert [r['scope_id'] for r in b['completed_scope_prefix']['scopes']]==['history']
     assert not b['scope_partition_complete'] and len(logs)==2
     assert aborted.verify().data()['status']=='terminal_accounting_only'
+    with pytest.raises(ContractError,match='originating'):replace(aborted,session=sibling).verify()
+    replaced=FrozenRecord.from_dict({**b,'unresolved_scope':{'scope_id':'foreign','start_cursor':1}})
+    path=tmp_path/'replaced-abort.json';path.write_bytes(replaced.encoded.encode())
+    with pytest.raises(ContractError,match='originating'):replace(aborted,path=path,record=replaced).verify()
+    rewritten={**b,'completed_scope_prefix':{**b['completed_scope_prefix'],'scopes':[]},
+        'unresolved_scope':{'scope_id':'invented','start_cursor':0}}
+    prefix=tmp_path/'invented-prefix.json';raw=FrozenRecord.from_dict(rewritten['completed_scope_prefix']).encoded.encode()
+    prefix.write_bytes(raw)
+    import hashlib
+    rewritten.update(scope_journal_path=str(prefix),scope_journal_sha256=hashlib.sha256(raw).hexdigest())
+    fabricated=FrozenRecord.from_dict(rewritten);path=tmp_path/'coherent-abort.json';path.write_bytes(fabricated.encoded.encode())
+    with pytest.raises(ContractError,match='originating'):replace(aborted,path=path,record=fabricated).verify()
     assert not (tmp_path/'finished-originals.json').exists()
     with pytest.raises(ContractError):aborted.bind_events([],scope_id='target')
     with pytest.raises(ContractError):
