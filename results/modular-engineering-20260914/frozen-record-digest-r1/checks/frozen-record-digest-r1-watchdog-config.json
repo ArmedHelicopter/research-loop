@@ -1,0 +1,10 @@
+{
+  "root_pid": 33000,
+  "root_creation_utc_ticks": 639249868599452520,
+  "root_command": "\"E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe\" E:/_ryanDev/AI/research-loop-modular/work/run_frozen_checks_with_source.py E:/_ryanDev/AI/research-loop-modular/artifact-evidence-provenance E:/_ryanDev/AI/research-loop-modular/work/frozen-record-digest-r1 tests/test_frozen_record_digest.py tests/test_label_isolation.py tests/test_artifact_catalogue.py tests/test_artifact_source_archive.py tests/test_joint_train_runtime_lease_unit.py tests/test_joint_train_protocol.py tests/test_joint_train_panel.py tests/test_joint_train_selection.py tests/test_joint_train_runtime.py tests/test_train_packet_artifacts.py tests/test_primary_reference_bridge.py -x",
+  "deadline": "2026-09-14T21:08:15.3136655+08:00",
+  "journal": "E:/_ryanDev/AI/research-loop-modular/work/frozen-record-digest-r1-watchdog.jsonl",
+  "prefix": "E:/_ryanDev/AI/research-loop-modular/work/frozen-record-digest-r1",
+  "new_paid_calls": 0,
+  "scope": "Bounded frozen source digest and actual provenance integration checks; original C5 untouched"
+}

@@ -1553,3 +1553,14 @@ public.json、receipt.json 和主 benchmark 的 data.csv，并在 v2 导出回�
 数据包目录和 63 条描述符。详见 [P0 接口与限制](P0-TRAIN-PACKET-ARTIFACTS.md)。
 新消费者要求 v2；旧 v1 保留历史格式。完整私有划分、旧 custody 入口、权限/租约
 和资源分摊仍待接入，当前目录不替代实际访问隔离。
+# 2026-09-14：有界摘要复用与实际审计回归
+
+`105dfcd` 将大 `FrozenRecord` 的纯摘要计算按完整当前内容做有界复用，
+不缓存文件读取、源码校验、封存、TRAIN 绑定或 C5 验证租约。147 项工程检查
+通过，耗时 480.047 秒，706 个源码/文档文件前后一致，新增付费调用为零。
+包含实际完整模块及普通对照的 history→target、失败阶段、C5 协议与训练选择、
+P0 数据包及参考桥接。4 个成功与 2 个失败阶段的 418 条描述符和检查源码原件
+保存在 `results/modular-engineering-20260914/frozen-record-digest-r1/`，共 188 文件。
+局部计时不证明 C5 总加速、科学效果或 VAL 验收。新版完整 C5 的 46/118 分母
+在独立冻结工作树检验，结果与旧 integration 运行分开记录；目前均不据此声明完成。
+详见 [摘要复用边界](IMMUTABLE-RECORD-DIGESTS.md)。

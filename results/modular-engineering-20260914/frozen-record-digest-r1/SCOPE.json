@@ -1,0 +1,1220 @@
+{
+  "schema": "frozen-record-digest-engineering-archive-v1",
+  "checks": {
+    "commit": "105dfcd321faa3245b9a1605515e1eb147d04c5f",
+    "source_unchanged": true,
+    "source_count": 706,
+    "exit_code": 0,
+    "wall_seconds": 480.0469999999914,
+    "new_paid_calls": 0,
+    "report_sha256": "e8d4138fca99c9d1d4747f76280dc29c5d5271d63d82a2f5c09b4f182f66d714",
+    "junit": {
+      "tests": 147,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "source_archive_sha256": "6bb56f626f8ea79068d742fb9c7e1e868b2ec1fbb45ca8a306c77cd8b4ed5daa",
+  "original_tree": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance",
+  "files": [
+    {
+      "path": "checks/frozen-record-digest-r1-before.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1-before.json",
+      "bytes": 83125,
+      "sha256": "9f678f9628bca88ca63323981b5331f8f61fd9a0c32c950b6c1e6e68a7df2502"
+    },
+    {
+      "path": "checks/frozen-record-digest-r1-closed.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1-closed.json",
+      "bytes": 82861,
+      "sha256": "53b6a29ffbfdf06436cb2d75a89ecb88a7a89fc73d6c6f2662e4d03490aa155c"
+    },
+    {
+      "path": "checks/frozen-record-digest-r1-source-members.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1-source-members.json",
+      "bytes": 123876,
+      "sha256": "a7bba96c62a989a127135160d7769d29b491aa51da8f1f4803bdaf471c5f6359"
+    },
+    {
+      "path": "checks/frozen-record-digest-r1-sources.zip",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1-sources.zip",
+      "bytes": 2319011,
+      "sha256": "6bb56f626f8ea79068d742fb9c7e1e868b2ec1fbb45ca8a306c77cd8b4ed5daa"
+    },
+    {
+      "path": "checks/frozen-record-digest-r1.xml",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1.xml",
+      "bytes": 31396,
+      "sha256": "e8d4138fca99c9d1d4747f76280dc29c5d5271d63d82a2f5c09b4f182f66d714"
+    },
+    {
+      "path": "checks/frozen-record-digest-r1-watchdog-config.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1-watchdog-config.json",
+      "bytes": 1157,
+      "sha256": "02be7787dd0e8b40e7deb554e43ac4c0044adfd190f9d7403d9bcf87fc88f5e1"
+    },
+    {
+      "path": "checks/frozen-record-digest-r1-watchdog.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1-watchdog.jsonl",
+      "bytes": 258,
+      "sha256": "50780ba8bb6dcb04ab13ebd1fa9b4046f492ac293c83c6347f9ae00a3d75f319"
+    },
+    {
+      "path": "microtiming/canonical-hash-cost-observation-r1.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\canonical-hash-cost-observation-r1.json",
+      "bytes": 2067,
+      "sha256": "f4401ef6134600415d3b3cc2113a11826d3ae40981595a92cb3a505ea475a88e"
+    },
+    {
+      "path": "microtiming/probe_canonical_hash_cost_r1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\probe_canonical_hash_cost_r1.py",
+      "bytes": 2541,
+      "sha256": "b269810be993519d011d41fdf6eb3ea3ef8a0b1a9cd0f6cfb13425c2651f4617"
+    },
+    {
+      "path": "microtiming/bounded-record-digest-microtiming-r1.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\bounded-record-digest-microtiming-r1.json",
+      "bytes": 2539,
+      "sha256": "30965b2693c28416c0f4c997728981fe39fcfb0bb7f0f5de7cdcaa66c1ffc064"
+    },
+    {
+      "path": "archive_frozen_record_digest_r1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\archive_frozen_record_digest_r1.py",
+      "bytes": 6282,
+      "sha256": "f0da75d1566e133ea5215c9615872a0e38d1631368988082c4bff96aa17c1407"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/builder-receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\builder-receipt.json",
+      "bytes": 560,
+      "sha256": "34af3901e8e14d7584d996b1cfa33a53214ae102edae9131c8cf4b9fa480c03b"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/builder.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\builder.json",
+      "bytes": 117,
+      "sha256": "31950cabcbb3e3d63832d9492306571ca20c6027ac7a6b3bbd07cc2f83c39075"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/candidate.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\candidate.json",
+      "bytes": 599,
+      "sha256": "bd17583b0784688fbf614b6df27928c6bfcf6b1ca060fcd529e70f059fed09c8"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/corpus/source.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\corpus\\source.json",
+      "bytes": 7284,
+      "sha256": "9321adedc9df9182a119ca04a54c4710bb8ab40edd1394165d7e58d19b546b09"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/m9-build-terminal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\m9-build-terminal.json",
+      "bytes": 3587,
+      "sha256": "5c4ac581837d14d53904ff6acce292122a9b4d2d747bbe1344a3782f60dc1a52"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/m9-builder-return.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\m9-builder-return.json",
+      "bytes": 1254,
+      "sha256": "cc45e2807dc3bfdcce4aeba11c06bd9f9ef0f8a992e73eae8e8dc0210bb9606c"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase/397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase\\397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.json",
+      "bytes": 2674,
+      "sha256": "8dc7e9d260ae5d3f453d2dd281c8e0d306b5dea246e52c5ce37255e58e064684"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase/397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase\\397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.py",
+      "bytes": 241,
+      "sha256": "131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase/allocation.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase\\allocation.json",
+      "bytes": 2058,
+      "sha256": "0cb8e9b4134ba51df7efa388159dd8552f72174dea4ee78a7af093e083ce4ba0"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase/d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase\\d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.json",
+      "bytes": 2674,
+      "sha256": "e15c5530188f04f71c8e5f632e2e136d9a65fe134bb699b45b4d5d8d356f043e"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase/d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase\\d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.py",
+      "bytes": 241,
+      "sha256": "bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase/events.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase\\events.jsonl",
+      "bytes": 2228,
+      "sha256": "ebceeabf5371df28e12ee64f752314cffdcac03572ae31c3d6c0f268742f21a9"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase\\receipt.json",
+      "bytes": 2340,
+      "sha256": "94508cab39c81eb49a3630463a785f12c78b0c16869573020ce651d3164ebaf7"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/0cb8e9b4134ba51df7efa388159dd8552f72174dea4ee78a7af093e083ce4ba0",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\0cb8e9b4134ba51df7efa388159dd8552f72174dea4ee78a7af093e083ce4ba0",
+      "bytes": 2058,
+      "sha256": "0cb8e9b4134ba51df7efa388159dd8552f72174dea4ee78a7af093e083ce4ba0"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558",
+      "bytes": 241,
+      "sha256": "131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/320544a0fc2a7cc0adb1160a0cde7783f537d700f108fd10c984c63da2ac23c2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\320544a0fc2a7cc0adb1160a0cde7783f537d700f108fd10c984c63da2ac23c2",
+      "bytes": 213,
+      "sha256": "320544a0fc2a7cc0adb1160a0cde7783f537d700f108fd10c984c63da2ac23c2"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/460aa36f50ba083c90c8831da2720119b13533b2d7a1171ce505dfe5a88666c2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\460aa36f50ba083c90c8831da2720119b13533b2d7a1171ce505dfe5a88666c2",
+      "bytes": 207,
+      "sha256": "460aa36f50ba083c90c8831da2720119b13533b2d7a1171ce505dfe5a88666c2"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/4e65e955cfec5fd25ffc608ad36466b39b2cc9df77d3defe08d9ee83ec3e1a95",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\4e65e955cfec5fd25ffc608ad36466b39b2cc9df77d3defe08d9ee83ec3e1a95",
+      "bytes": 129,
+      "sha256": "4e65e955cfec5fd25ffc608ad36466b39b2cc9df77d3defe08d9ee83ec3e1a95"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/8113aa651b3f61d9e63c0f7ffe4adf540aa91e57a96474b8ba6664e5b6f9dd6c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\8113aa651b3f61d9e63c0f7ffe4adf540aa91e57a96474b8ba6664e5b6f9dd6c",
+      "bytes": 216,
+      "sha256": "8113aa651b3f61d9e63c0f7ffe4adf540aa91e57a96474b8ba6664e5b6f9dd6c"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/8a2046fedd65c3c2509f70e236488f54c28999c9ba56acb61fb194d2d60b450f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\8a2046fedd65c3c2509f70e236488f54c28999c9ba56acb61fb194d2d60b450f",
+      "bytes": 132,
+      "sha256": "8a2046fedd65c3c2509f70e236488f54c28999c9ba56acb61fb194d2d60b450f"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/8dc7e9d260ae5d3f453d2dd281c8e0d306b5dea246e52c5ce37255e58e064684",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\8dc7e9d260ae5d3f453d2dd281c8e0d306b5dea246e52c5ce37255e58e064684",
+      "bytes": 2674,
+      "sha256": "8dc7e9d260ae5d3f453d2dd281c8e0d306b5dea246e52c5ce37255e58e064684"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/94508cab39c81eb49a3630463a785f12c78b0c16869573020ce651d3164ebaf7",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\94508cab39c81eb49a3630463a785f12c78b0c16869573020ce651d3164ebaf7",
+      "bytes": 2340,
+      "sha256": "94508cab39c81eb49a3630463a785f12c78b0c16869573020ce651d3164ebaf7"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/abd9544d9bd33df08f2844acb23db393a9bc0182308ecf3e6c0b3d99b800e0fa",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\abd9544d9bd33df08f2844acb23db393a9bc0182308ecf3e6c0b3d99b800e0fa",
+      "bytes": 133,
+      "sha256": "abd9544d9bd33df08f2844acb23db393a9bc0182308ecf3e6c0b3d99b800e0fa"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/b9311cb025f4b9d2c26ce4fd81ceb938703a8c761e9e59e45e47c9132241f42e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\b9311cb025f4b9d2c26ce4fd81ceb938703a8c761e9e59e45e47c9132241f42e",
+      "bytes": 217,
+      "sha256": "b9311cb025f4b9d2c26ce4fd81ceb938703a8c761e9e59e45e47c9132241f42e"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06",
+      "bytes": 241,
+      "sha256": "bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/c36c517bd9cb7dafa87e2a0ee6d15a31df3b7ff220259d0e366c54d73042ce0f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\c36c517bd9cb7dafa87e2a0ee6d15a31df3b7ff220259d0e366c54d73042ce0f",
+      "bytes": 129,
+      "sha256": "c36c517bd9cb7dafa87e2a0ee6d15a31df3b7ff220259d0e366c54d73042ce0f"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/d8367cc5223b6df192e14752c6947a11e37037b88f589a646b8e19c91096a51f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\d8367cc5223b6df192e14752c6947a11e37037b88f589a646b8e19c91096a51f",
+      "bytes": 207,
+      "sha256": "d8367cc5223b6df192e14752c6947a11e37037b88f589a646b8e19c91096a51f"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/dd3e3ecb97e81b91ad35ce301b6c4a13422277c7d28b663e5b02af28be849bee",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\dd3e3ecb97e81b91ad35ce301b6c4a13422277c7d28b663e5b02af28be849bee",
+      "bytes": 217,
+      "sha256": "dd3e3ecb97e81b91ad35ce301b6c4a13422277c7d28b663e5b02af28be849bee"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/e15c5530188f04f71c8e5f632e2e136d9a65fe134bb699b45b4d5d8d356f043e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\e15c5530188f04f71c8e5f632e2e136d9a65fe134bb699b45b4d5d8d356f043e",
+      "bytes": 2674,
+      "sha256": "e15c5530188f04f71c8e5f632e2e136d9a65fe134bb699b45b4d5d8d356f043e"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/f5a02a611170a084ea3244627e7b7e5beab344244b7fac0233ac9064891894fb",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\f5a02a611170a084ea3244627e7b7e5beab344244b7fac0233ac9064891894fb",
+      "bytes": 213,
+      "sha256": "f5a02a611170a084ea3244627e7b7e5beab344244b7fac0233ac9064891894fb"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/phase-artifacts/blobs/fe7ea2b8f88ae72c3dee57f0f4f4e6c9b63a5c803f7115963ecfa437c0bcb48d",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\phase-artifacts\\blobs\\fe7ea2b8f88ae72c3dee57f0f4f4e6c9b63a5c803f7115963ecfa437c0bcb48d",
+      "bytes": 215,
+      "sha256": "fe7ea2b8f88ae72c3dee57f0f4f4e6c9b63a5c803f7115963ecfa437c0bcb48d"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\receipt.json",
+      "bytes": 10255,
+      "sha256": "b347e655381ac8be7a22bc2f08923e20eec5104f0de845cb4f124d83526e4b9f"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/runtime/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\runtime\\artifacts.jsonl",
+      "bytes": 540111,
+      "sha256": "6678ee6a711beaa402c8b2aec91ddf384d2812745f746e6095f05909f7ac86a0"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/runtime/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\runtime\\artifacts.jsonl.seal.json",
+      "bytes": 346,
+      "sha256": "8ccdbeacd8a8a3d31425e00587a4710cbf60f6d7796a91849cdbaa0bf21077c8"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/runtime/claims.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\runtime\\claims.jsonl",
+      "bytes": 4471,
+      "sha256": "01e609b2e8e74b051a6086e3d5d1410f643100c27283163e5596336cfe056beb"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/runtime/evidence.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\runtime\\evidence.jsonl",
+      "bytes": 4899,
+      "sha256": "8b2e222500647004a418e39b266fd1781ab72d3fcab7d155c3fa23b9c71d175b"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/runtime/predictions.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\runtime\\predictions.jsonl",
+      "bytes": 1454,
+      "sha256": "ac268424a62787cad281f0577a0311cd7d593a81f9e95f662084fba26faa58bb"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/runtime/reviews.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\runtime\\reviews.jsonl",
+      "bytes": 2127,
+      "sha256": "9552cd3cc40c4c5c2bfb6cedcfec332a8810747f8ba62368b5ac2035233bb485"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/runtime/trace.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\runtime\\trace.jsonl",
+      "bytes": 76416,
+      "sha256": "723635b72eb687950402db9322566418aee7530770a78f7baedcdc413b12a4f0"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/source/source.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1\\source\\source.json",
+      "bytes": 9101,
+      "sha256": "b9d24b6d29bb5b4f400f14cae045b3cb9f773c4a2dc9ec93e3dff5f388e34771"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/corpus/source.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\corpus\\source.json",
+      "bytes": 7395,
+      "sha256": "16027dcea01a66e66c91f41d7f1176b08acc10f605412c9737d72d4c7608e358"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase/397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase\\397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.json",
+      "bytes": 2859,
+      "sha256": "547798170dcb02bf90ac1e452a22ae6793f2171b8472c9ebfc12f5d2bfd3e59f"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase/397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase\\397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.py",
+      "bytes": 241,
+      "sha256": "131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase/allocation.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase\\allocation.json",
+      "bytes": 2219,
+      "sha256": "9c3238a289d0d89f55427c048c7cc85ca6d8df8c411ceea45e95d0a048f3f63b"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase/d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase\\d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.json",
+      "bytes": 2858,
+      "sha256": "dedbddcf4ba1e82a6bd58ff0a4c1d2a48eeb869d1a43e94ca98e16220a7f48fc"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase/d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase\\d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.py",
+      "bytes": 241,
+      "sha256": "bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase/events.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase\\events.jsonl",
+      "bytes": 2244,
+      "sha256": "93c914e1d2ab3c0ba334d3009c688312eb9addc950fdcc2405eefa926f906bf5"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase/queue.sqlite",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase\\queue.sqlite",
+      "bytes": 49152,
+      "sha256": "288c45c8422238820cdffdf48ea59040806414689255fbe5f0f2934a653fe791"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase\\receipt.json",
+      "bytes": 2347,
+      "sha256": "70212f77dff60b2d994e9a2a5e2427db335f126c519a8f63291291a8f96b6edc"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/06af3d0801b150fae4b27ceb8995dd7ea0d53c81d76ebe9dcdaf8305b235dc19",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\06af3d0801b150fae4b27ceb8995dd7ea0d53c81d76ebe9dcdaf8305b235dc19",
+      "bytes": 215,
+      "sha256": "06af3d0801b150fae4b27ceb8995dd7ea0d53c81d76ebe9dcdaf8305b235dc19"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558",
+      "bytes": 241,
+      "sha256": "131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/270179a7497ac51c39e7fb3d857e2b7d4f04f69cb26b9ae5bec155a627847671",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\270179a7497ac51c39e7fb3d857e2b7d4f04f69cb26b9ae5bec155a627847671",
+      "bytes": 129,
+      "sha256": "270179a7497ac51c39e7fb3d857e2b7d4f04f69cb26b9ae5bec155a627847671"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/288c45c8422238820cdffdf48ea59040806414689255fbe5f0f2934a653fe791",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\288c45c8422238820cdffdf48ea59040806414689255fbe5f0f2934a653fe791",
+      "bytes": 49152,
+      "sha256": "288c45c8422238820cdffdf48ea59040806414689255fbe5f0f2934a653fe791"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/2d4afeee75be292dd2ea7b377a85657b4fe101408e9fd8e5da5ac0d72758bffa",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\2d4afeee75be292dd2ea7b377a85657b4fe101408e9fd8e5da5ac0d72758bffa",
+      "bytes": 207,
+      "sha256": "2d4afeee75be292dd2ea7b377a85657b4fe101408e9fd8e5da5ac0d72758bffa"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/2fd230ad01329579183577dc0d3e52b9d356cc83bef13791a061a78000c24b53",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\2fd230ad01329579183577dc0d3e52b9d356cc83bef13791a061a78000c24b53",
+      "bytes": 207,
+      "sha256": "2fd230ad01329579183577dc0d3e52b9d356cc83bef13791a061a78000c24b53"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/49b632a574c36e9b18a00e28a01f2b4298ddc1c89505fb4de4c3e09a08a6a028",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\49b632a574c36e9b18a00e28a01f2b4298ddc1c89505fb4de4c3e09a08a6a028",
+      "bytes": 216,
+      "sha256": "49b632a574c36e9b18a00e28a01f2b4298ddc1c89505fb4de4c3e09a08a6a028"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/4baef9a4e11c1f9bfbd9c424e8cf590f13d538f76a6ed093917847ce232957ab",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\4baef9a4e11c1f9bfbd9c424e8cf590f13d538f76a6ed093917847ce232957ab",
+      "bytes": 129,
+      "sha256": "4baef9a4e11c1f9bfbd9c424e8cf590f13d538f76a6ed093917847ce232957ab"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/547798170dcb02bf90ac1e452a22ae6793f2171b8472c9ebfc12f5d2bfd3e59f",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\547798170dcb02bf90ac1e452a22ae6793f2171b8472c9ebfc12f5d2bfd3e59f",
+      "bytes": 2859,
+      "sha256": "547798170dcb02bf90ac1e452a22ae6793f2171b8472c9ebfc12f5d2bfd3e59f"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/70212f77dff60b2d994e9a2a5e2427db335f126c519a8f63291291a8f96b6edc",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\70212f77dff60b2d994e9a2a5e2427db335f126c519a8f63291291a8f96b6edc",
+      "bytes": 2347,
+      "sha256": "70212f77dff60b2d994e9a2a5e2427db335f126c519a8f63291291a8f96b6edc"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/7031f822d618d041911e33bdf82b91c44cff175caa49861cf8c27e9a26c81eb0",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\7031f822d618d041911e33bdf82b91c44cff175caa49861cf8c27e9a26c81eb0",
+      "bytes": 200,
+      "sha256": "7031f822d618d041911e33bdf82b91c44cff175caa49861cf8c27e9a26c81eb0"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/9c3238a289d0d89f55427c048c7cc85ca6d8df8c411ceea45e95d0a048f3f63b",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\9c3238a289d0d89f55427c048c7cc85ca6d8df8c411ceea45e95d0a048f3f63b",
+      "bytes": 2219,
+      "sha256": "9c3238a289d0d89f55427c048c7cc85ca6d8df8c411ceea45e95d0a048f3f63b"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/a72db1022baa5f6d56bca42fe85e7c61a2b2e954ae1acbaa583a7828f225e543",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\a72db1022baa5f6d56bca42fe85e7c61a2b2e954ae1acbaa583a7828f225e543",
+      "bytes": 213,
+      "sha256": "a72db1022baa5f6d56bca42fe85e7c61a2b2e954ae1acbaa583a7828f225e543"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/b5a9bfdf10ded60e865d3992fc5ba5cb437d16ac8ef0b1c09e304108bf878f04",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\b5a9bfdf10ded60e865d3992fc5ba5cb437d16ac8ef0b1c09e304108bf878f04",
+      "bytes": 217,
+      "sha256": "b5a9bfdf10ded60e865d3992fc5ba5cb437d16ac8ef0b1c09e304108bf878f04"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06",
+      "bytes": 241,
+      "sha256": "bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/c872235f902e3f1fbd0f9e4267d5a1a779c3d4fe3472f9bd46ff04824b312f8c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\c872235f902e3f1fbd0f9e4267d5a1a779c3d4fe3472f9bd46ff04824b312f8c",
+      "bytes": 217,
+      "sha256": "c872235f902e3f1fbd0f9e4267d5a1a779c3d4fe3472f9bd46ff04824b312f8c"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/cebbdbe6bae973af41e0fe7c8e219c767f6d5f0996af5a7f74da1930ef28e363",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\cebbdbe6bae973af41e0fe7c8e219c767f6d5f0996af5a7f74da1930ef28e363",
+      "bytes": 81,
+      "sha256": "cebbdbe6bae973af41e0fe7c8e219c767f6d5f0996af5a7f74da1930ef28e363"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/de31e814673f933715c4b92a77a5d076b4a1ad0db20f887705d3282bef4a2952",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\de31e814673f933715c4b92a77a5d076b4a1ad0db20f887705d3282bef4a2952",
+      "bytes": 213,
+      "sha256": "de31e814673f933715c4b92a77a5d076b4a1ad0db20f887705d3282bef4a2952"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/phase-artifacts/blobs/dedbddcf4ba1e82a6bd58ff0a4c1d2a48eeb869d1a43e94ca98e16220a7f48fc",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\phase-artifacts\\blobs\\dedbddcf4ba1e82a6bd58ff0a4c1d2a48eeb869d1a43e94ca98e16220a7f48fc",
+      "bytes": 2858,
+      "sha256": "dedbddcf4ba1e82a6bd58ff0a4c1d2a48eeb869d1a43e94ca98e16220a7f48fc"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\receipt.json",
+      "bytes": 10136,
+      "sha256": "8ff331953c48f23ee42c607ccc632a0b3c7bfd9444174b9301644ec4f8c093f1"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/runtime/analysis-1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\runtime\\analysis-1.py",
+      "bytes": 149,
+      "sha256": "3d20e1d4505fed9555389fb74241665c3744a1bc8c9dbc8d154d5178046c77c9"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/runtime/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\runtime\\artifacts.jsonl",
+      "bytes": 585040,
+      "sha256": "fc864e3f171bb867a52f09f10aaa309cbf10c15ae5a4f1b1cbc53d810e9d4ecb"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/runtime/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\runtime\\artifacts.jsonl.seal.json",
+      "bytes": 346,
+      "sha256": "21ed268210967b607ceeedff8be8b1b762b4dafbbcde10b0730e60d2e75f5188"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/runtime/claims.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\runtime\\claims.jsonl",
+      "bytes": 4978,
+      "sha256": "e75d6868152f174d9d58a381696a99beb324287bd41928b31c0474d911e0de80"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/runtime/evidence.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\runtime\\evidence.jsonl",
+      "bytes": 5079,
+      "sha256": "d99ab33f8d0682d8f4db71d147f00ada211975f9c6f1e0590352b9cca56a904a"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/runtime/predictions.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\runtime\\predictions.jsonl",
+      "bytes": 1509,
+      "sha256": "0986ddce13b853501fdf413456d0646b46a7d492722237e3ee83d6a09cea6ebf"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/runtime/reviews.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\runtime\\reviews.jsonl",
+      "bytes": 2292,
+      "sha256": "6882dbed6d71ffab09d50242c3157af3e5dd15e85cc119eaba7921d3432bcfb4"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/runtime/trace.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\runtime\\trace.jsonl",
+      "bytes": 93943,
+      "sha256": "f9a79bf1939a532300b4c2bd648b69c52dd6d55410579525e278f34a6c7338a4"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/source/source.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_history_target_pip0\\common-run\\stages\\9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b\\source\\source.json",
+      "bytes": 9047,
+      "sha256": "5c709d5cbdbdbb6ea1c370b3e2f1a3fbbc0a937d4bc60cccd5bc62cf6ca9ceba"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/builder-receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\builder-receipt.json",
+      "bytes": 560,
+      "sha256": "1d0169fb56f337c7f968f5f0ee6da6995eaeaa93070dd226dd5a19f0c1fbad1a"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/builder.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\builder.json",
+      "bytes": 117,
+      "sha256": "31950cabcbb3e3d63832d9492306571ca20c6027ac7a6b3bbd07cc2f83c39075"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/candidate.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\candidate.json",
+      "bytes": 599,
+      "sha256": "86081e6afdb10e2208e3f1d167875f508cdd3bd4661790f32e78fb33fcdf7e78"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/corpus/source.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\corpus\\source.json",
+      "bytes": 7284,
+      "sha256": "f394a0678bd1a09a5f1530a8c21105d26a7a2a8075bbcfcd83508b81ded29114"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/m9-build-terminal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\m9-build-terminal.json",
+      "bytes": 3591,
+      "sha256": "0b050be31eaee97813d53c35a726e7e54e707f3eaf609ddde202631ca31ab6dc"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/m9-builder-return.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\m9-builder-return.json",
+      "bytes": 1254,
+      "sha256": "f3f37822ee186ef80523c3f5930fe671680be137dd569448d81e9e3211d8e686"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase/397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase\\397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.json",
+      "bytes": 2674,
+      "sha256": "5cc6ca479653e6e3fc8abca6c25f57ae4384fc23169d4afc97d12dc16841c9c8"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase/397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase\\397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.py",
+      "bytes": 241,
+      "sha256": "131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase/allocation.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase\\allocation.json",
+      "bytes": 1660,
+      "sha256": "005a054b2c189d3f80f5f1a2541116d5bdf690d37e55d8cd35728a84cea5413c"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase/d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase\\d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.json",
+      "bytes": 2674,
+      "sha256": "3139d92351da209ba8b94c3cab66d1e22f5acde53e7d60b55d4a8072b534b6ad"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase/d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase\\d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.py",
+      "bytes": 241,
+      "sha256": "bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase/events.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase\\events.jsonl",
+      "bytes": 2228,
+      "sha256": "cc92ce21327565c227f5dde9763f96f0f1714637776809aa89ac71d42c73d204"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase\\receipt.json",
+      "bytes": 2035,
+      "sha256": "96a43b1d5826e4c23d111cdb8b2596ee176ba0d2cef289a62e714710f2b8a53b"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/005a054b2c189d3f80f5f1a2541116d5bdf690d37e55d8cd35728a84cea5413c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\005a054b2c189d3f80f5f1a2541116d5bdf690d37e55d8cd35728a84cea5413c",
+      "bytes": 1660,
+      "sha256": "005a054b2c189d3f80f5f1a2541116d5bdf690d37e55d8cd35728a84cea5413c"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/10c6d1489caf2d8c63f2fdd395cae18ce760e120887e9727f7f77cc0a65f592a",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\10c6d1489caf2d8c63f2fdd395cae18ce760e120887e9727f7f77cc0a65f592a",
+      "bytes": 132,
+      "sha256": "10c6d1489caf2d8c63f2fdd395cae18ce760e120887e9727f7f77cc0a65f592a"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558",
+      "bytes": 241,
+      "sha256": "131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/3139d92351da209ba8b94c3cab66d1e22f5acde53e7d60b55d4a8072b534b6ad",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\3139d92351da209ba8b94c3cab66d1e22f5acde53e7d60b55d4a8072b534b6ad",
+      "bytes": 2674,
+      "sha256": "3139d92351da209ba8b94c3cab66d1e22f5acde53e7d60b55d4a8072b534b6ad"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/37fd0cb51f6de21b473d52d75e3067e519dc3c42499f69d7a5580046b94333c2",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\37fd0cb51f6de21b473d52d75e3067e519dc3c42499f69d7a5580046b94333c2",
+      "bytes": 207,
+      "sha256": "37fd0cb51f6de21b473d52d75e3067e519dc3c42499f69d7a5580046b94333c2"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/45245d6c9cbbd2377e42eb5469814f7d4d4d53a9cdff8c7ecfbb7fac3fed31bf",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\45245d6c9cbbd2377e42eb5469814f7d4d4d53a9cdff8c7ecfbb7fac3fed31bf",
+      "bytes": 216,
+      "sha256": "45245d6c9cbbd2377e42eb5469814f7d4d4d53a9cdff8c7ecfbb7fac3fed31bf"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/5cc6ca479653e6e3fc8abca6c25f57ae4384fc23169d4afc97d12dc16841c9c8",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\5cc6ca479653e6e3fc8abca6c25f57ae4384fc23169d4afc97d12dc16841c9c8",
+      "bytes": 2674,
+      "sha256": "5cc6ca479653e6e3fc8abca6c25f57ae4384fc23169d4afc97d12dc16841c9c8"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/7c4da8f9448b0dac174e9e8a40d097e58f8956d47a3d9e2dfde9465701bb9e95",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\7c4da8f9448b0dac174e9e8a40d097e58f8956d47a3d9e2dfde9465701bb9e95",
+      "bytes": 217,
+      "sha256": "7c4da8f9448b0dac174e9e8a40d097e58f8956d47a3d9e2dfde9465701bb9e95"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/7cb9238c16f2e2c4e45ac0bc9da5e031f466057a813209dd7d0300c5ffeaf284",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\7cb9238c16f2e2c4e45ac0bc9da5e031f466057a813209dd7d0300c5ffeaf284",
+      "bytes": 213,
+      "sha256": "7cb9238c16f2e2c4e45ac0bc9da5e031f466057a813209dd7d0300c5ffeaf284"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/81062f311f8b7dc8a0c7468f48ce30303b3b9fd58e1869f2b95212f7408be8cc",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\81062f311f8b7dc8a0c7468f48ce30303b3b9fd58e1869f2b95212f7408be8cc",
+      "bytes": 217,
+      "sha256": "81062f311f8b7dc8a0c7468f48ce30303b3b9fd58e1869f2b95212f7408be8cc"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/8251b50f8274b81d76c9cecd517e19ec94c718030b84649eef9efcacf4ad210e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\8251b50f8274b81d76c9cecd517e19ec94c718030b84649eef9efcacf4ad210e",
+      "bytes": 133,
+      "sha256": "8251b50f8274b81d76c9cecd517e19ec94c718030b84649eef9efcacf4ad210e"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/96a43b1d5826e4c23d111cdb8b2596ee176ba0d2cef289a62e714710f2b8a53b",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\96a43b1d5826e4c23d111cdb8b2596ee176ba0d2cef289a62e714710f2b8a53b",
+      "bytes": 2035,
+      "sha256": "96a43b1d5826e4c23d111cdb8b2596ee176ba0d2cef289a62e714710f2b8a53b"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06",
+      "bytes": 241,
+      "sha256": "bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/ca341c9363b4aa6c1d585452143aa9b292b62a58a190114760fa78b169aac457",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\ca341c9363b4aa6c1d585452143aa9b292b62a58a190114760fa78b169aac457",
+      "bytes": 129,
+      "sha256": "ca341c9363b4aa6c1d585452143aa9b292b62a58a190114760fa78b169aac457"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/cb27b1bb9a4097f402b8cbd030666d5fd891c1068a26aea8064f138cda2eaed5",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\cb27b1bb9a4097f402b8cbd030666d5fd891c1068a26aea8064f138cda2eaed5",
+      "bytes": 207,
+      "sha256": "cb27b1bb9a4097f402b8cbd030666d5fd891c1068a26aea8064f138cda2eaed5"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/dc4b3c43159849a875886d800a751b19fb1b562d4c2bed39d89dcdc4af05b59c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\dc4b3c43159849a875886d800a751b19fb1b562d4c2bed39d89dcdc4af05b59c",
+      "bytes": 129,
+      "sha256": "dc4b3c43159849a875886d800a751b19fb1b562d4c2bed39d89dcdc4af05b59c"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/e14da1d85ea616de83cfb00b390bbdc13e55cd98e9de5696e66eb57d1a67aef7",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\e14da1d85ea616de83cfb00b390bbdc13e55cd98e9de5696e66eb57d1a67aef7",
+      "bytes": 215,
+      "sha256": "e14da1d85ea616de83cfb00b390bbdc13e55cd98e9de5696e66eb57d1a67aef7"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/phase-artifacts/blobs/f3a75a442e3be6a6e302da5027727e0e7fa05859ca6445a370789c9b820d7eda",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\phase-artifacts\\blobs\\f3a75a442e3be6a6e302da5027727e0e7fa05859ca6445a370789c9b820d7eda",
+      "bytes": 213,
+      "sha256": "f3a75a442e3be6a6e302da5027727e0e7fa05859ca6445a370789c9b820d7eda"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\receipt.json",
+      "bytes": 10061,
+      "sha256": "cd9595ffb7ec92c498690267ced7aaf3b49d3ecb90bb88998ec60a1e0102d69c"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/runtime/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\runtime\\artifacts.jsonl",
+      "bytes": 336767,
+      "sha256": "3872168f618b460b4c329de75d9cc65105086ca261eeabd0c6dd3dbad24e072d"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/runtime/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\runtime\\artifacts.jsonl.seal.json",
+      "bytes": 345,
+      "sha256": "88ab1c59f50a6f96bcb2f4677a23a5aec548ba686cb58c897d8a35a8c646ecc2"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/runtime/claims.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\runtime\\claims.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/runtime/evidence.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\runtime\\evidence.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/runtime/predictions.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\runtime\\predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/runtime/reviews.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\runtime\\reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/runtime/trace.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\runtime\\trace.jsonl",
+      "bytes": 48625,
+      "sha256": "e48990034ec7ee2d1f7c08a22bd715429cb2169ca9453e8ac455bdf6ea5e17b9"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/source/source.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052\\source\\source.json",
+      "bytes": 9101,
+      "sha256": "bf8070aeb6bc64cc1fe17be44c08ccadb2730726eacfbd5159e823db5c7d5adc"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/corpus/source.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\corpus\\source.json",
+      "bytes": 7395,
+      "sha256": "f2a8888c375e191defb8832f09b056047b8324c072e07670fab34c7c48307326"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase/397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase\\397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.json",
+      "bytes": 2859,
+      "sha256": "375be478fb7ee194b8eb98bcb4b8dcb199170459e85411ea53605f1639a76734"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase/397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase\\397c60e1f4b28d1df291f16f77472d55e9e285881adf93197526db908dd2314c.py",
+      "bytes": 241,
+      "sha256": "131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase/allocation.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase\\allocation.json",
+      "bytes": 1821,
+      "sha256": "bae459df3eaf4f5cc410bc83bf6d9a2107fcd6fb9852cf3232fed11245beb6e9"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase/d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase\\d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.json",
+      "bytes": 2858,
+      "sha256": "ccd389b76e7cd5ede26d10c74d8a35b61c7a0f3b8b94d11525bc79f45dd32656"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase/d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase\\d15a018608c769309ee887b25c161b1efb8c52361e3d5c3e40a43f9fccea945a.py",
+      "bytes": 241,
+      "sha256": "bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase/events.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase\\events.jsonl",
+      "bytes": 2228,
+      "sha256": "964778f16b61710f88fe0648d48466379838b249def898d6cd98c024a81f18fd"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase\\receipt.json",
+      "bytes": 2034,
+      "sha256": "ed9295d7e2badaed05a3ad2f687f9785bc34277bc660b7b6fe3b2638d8a43b32"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/0ef1acb37de36234e5bd40b1cab145aee272facb35f8b02b34f6f52c2d39233c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\0ef1acb37de36234e5bd40b1cab145aee272facb35f8b02b34f6f52c2d39233c",
+      "bytes": 129,
+      "sha256": "0ef1acb37de36234e5bd40b1cab145aee272facb35f8b02b34f6f52c2d39233c"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/0f9460fd4effa15721c8a82672d22a6863e18711be4319244cf34222207a642e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\0f9460fd4effa15721c8a82672d22a6863e18711be4319244cf34222207a642e",
+      "bytes": 133,
+      "sha256": "0f9460fd4effa15721c8a82672d22a6863e18711be4319244cf34222207a642e"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558",
+      "bytes": 241,
+      "sha256": "131b41c59cbc4c79d5c5119b773ee9eec653562b42f9422bd3cc620269009558"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/18c6b29522c7f6cb46b1524fa6a496c69161578e2eb2dac64a5b3eb95e065d2c",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\18c6b29522c7f6cb46b1524fa6a496c69161578e2eb2dac64a5b3eb95e065d2c",
+      "bytes": 213,
+      "sha256": "18c6b29522c7f6cb46b1524fa6a496c69161578e2eb2dac64a5b3eb95e065d2c"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/375be478fb7ee194b8eb98bcb4b8dcb199170459e85411ea53605f1639a76734",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\375be478fb7ee194b8eb98bcb4b8dcb199170459e85411ea53605f1639a76734",
+      "bytes": 2859,
+      "sha256": "375be478fb7ee194b8eb98bcb4b8dcb199170459e85411ea53605f1639a76734"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/4a2800f3defc753d7557519fb37e1fa1187da2c34128843b8e485d94f76061d5",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\4a2800f3defc753d7557519fb37e1fa1187da2c34128843b8e485d94f76061d5",
+      "bytes": 207,
+      "sha256": "4a2800f3defc753d7557519fb37e1fa1187da2c34128843b8e485d94f76061d5"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/52201e4e764e2d59a3d0188657c326b63c9e06edda0f014d7d8eb3e0b1d03e6e",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\52201e4e764e2d59a3d0188657c326b63c9e06edda0f014d7d8eb3e0b1d03e6e",
+      "bytes": 207,
+      "sha256": "52201e4e764e2d59a3d0188657c326b63c9e06edda0f014d7d8eb3e0b1d03e6e"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/8f65c44c65391b6703edc6374ceea2a35ae594572a71eefff4dcceedf6ca88d6",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\8f65c44c65391b6703edc6374ceea2a35ae594572a71eefff4dcceedf6ca88d6",
+      "bytes": 132,
+      "sha256": "8f65c44c65391b6703edc6374ceea2a35ae594572a71eefff4dcceedf6ca88d6"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/b1ffec99e071ec9e39701f7ba5c167245d5d1135525df10febc0b5de076576cc",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\b1ffec99e071ec9e39701f7ba5c167245d5d1135525df10febc0b5de076576cc",
+      "bytes": 213,
+      "sha256": "b1ffec99e071ec9e39701f7ba5c167245d5d1135525df10febc0b5de076576cc"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/bae459df3eaf4f5cc410bc83bf6d9a2107fcd6fb9852cf3232fed11245beb6e9",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\bae459df3eaf4f5cc410bc83bf6d9a2107fcd6fb9852cf3232fed11245beb6e9",
+      "bytes": 1821,
+      "sha256": "bae459df3eaf4f5cc410bc83bf6d9a2107fcd6fb9852cf3232fed11245beb6e9"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/be309fcf55a64121bd554df6ca14e10055b9c2657a2f7ac4871551d8c097d761",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\be309fcf55a64121bd554df6ca14e10055b9c2657a2f7ac4871551d8c097d761",
+      "bytes": 216,
+      "sha256": "be309fcf55a64121bd554df6ca14e10055b9c2657a2f7ac4871551d8c097d761"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06",
+      "bytes": 241,
+      "sha256": "bfdfb45b726537d084f720ec0d50787328641d310d97aaede57bef148d070f06"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/ccd389b76e7cd5ede26d10c74d8a35b61c7a0f3b8b94d11525bc79f45dd32656",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\ccd389b76e7cd5ede26d10c74d8a35b61c7a0f3b8b94d11525bc79f45dd32656",
+      "bytes": 2858,
+      "sha256": "ccd389b76e7cd5ede26d10c74d8a35b61c7a0f3b8b94d11525bc79f45dd32656"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/d1e3790b9bf96ab0055ae270095a164553fa6986ebe6c9dc77ea8690b76e14b8",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\d1e3790b9bf96ab0055ae270095a164553fa6986ebe6c9dc77ea8690b76e14b8",
+      "bytes": 129,
+      "sha256": "d1e3790b9bf96ab0055ae270095a164553fa6986ebe6c9dc77ea8690b76e14b8"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/d30e7856b9ffcc2a59718761999d454786e5bdf7c726c729c664b9d7f335f167",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\d30e7856b9ffcc2a59718761999d454786e5bdf7c726c729c664b9d7f335f167",
+      "bytes": 215,
+      "sha256": "d30e7856b9ffcc2a59718761999d454786e5bdf7c726c729c664b9d7f335f167"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/d48237e88c8b55a4f3b72ce5e127f6318dde664b8becab17e8950232c264bf65",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\d48237e88c8b55a4f3b72ce5e127f6318dde664b8becab17e8950232c264bf65",
+      "bytes": 217,
+      "sha256": "d48237e88c8b55a4f3b72ce5e127f6318dde664b8becab17e8950232c264bf65"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/ed9295d7e2badaed05a3ad2f687f9785bc34277bc660b7b6fe3b2638d8a43b32",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\ed9295d7e2badaed05a3ad2f687f9785bc34277bc660b7b6fe3b2638d8a43b32",
+      "bytes": 2034,
+      "sha256": "ed9295d7e2badaed05a3ad2f687f9785bc34277bc660b7b6fe3b2638d8a43b32"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/phase-artifacts/blobs/f45e6acd938d4e8cd40f58c2a8454689639e3a9b86e312ab00928917a5bd2949",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\phase-artifacts\\blobs\\f45e6acd938d4e8cd40f58c2a8454689639e3a9b86e312ab00928917a5bd2949",
+      "bytes": 217,
+      "sha256": "f45e6acd938d4e8cd40f58c2a8454689639e3a9b86e312ab00928917a5bd2949"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\receipt.json",
+      "bytes": 9698,
+      "sha256": "8b19bf826412f8af0d8d018165fb7d743aaab9aa68a9958144438b65661cbeb9"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/runtime/analysis-1.py",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\runtime\\analysis-1.py",
+      "bytes": 149,
+      "sha256": "3d20e1d4505fed9555389fb74241665c3744a1bc8c9dbc8d154d5178046c77c9"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/runtime/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\runtime\\artifacts.jsonl",
+      "bytes": 362991,
+      "sha256": "f6a733235ee69264b3d3ba62999def9f7115f6a5a49b2478dd13e780c99235f2"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/runtime/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\runtime\\artifacts.jsonl.seal.json",
+      "bytes": 345,
+      "sha256": "2327179844a1de2c30d503c916a7f3a9cb37afb6b911aa57ad200729f62ba0fd"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/runtime/claims.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\runtime\\claims.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/runtime/evidence.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\runtime\\evidence.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/runtime/predictions.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\runtime\\predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/runtime/reviews.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\runtime\\reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/runtime/trace.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\runtime\\trace.jsonl",
+      "bytes": 64461,
+      "sha256": "25bfa4f08e7b0e9a08e49bc4b4f61678f09e85a4257e8530f6137591a212605d"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/source/source.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_actual_ordinary_control_p0\\common-run\\stages\\2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c\\source\\source.json",
+      "bytes": 9047,
+      "sha256": "bd125c13b97eb2ca2a9debc22c93b20c1174351829d2d1bcdb05294454183ba4"
+    },
+    {
+      "path": "stages/test_unknown_main_keeps_comple0/660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8/corpus/source.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_unknown_main_keeps_comple0\\common-run\\stages\\660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8\\corpus\\source.json",
+      "bytes": 7284,
+      "sha256": "0176cea525fd1e21aceb5c6dbf7c6d3a17d1161d10fb5586248883d09fd65ea3"
+    },
+    {
+      "path": "stages/test_unknown_main_keeps_comple0/660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_unknown_main_keeps_comple0\\common-run\\stages\\660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8\\receipt.json",
+      "bytes": 6251,
+      "sha256": "6723fab194573b70be48c0e46f1d9c9bcd9ccf8025ad57f42a784b552409daac"
+    },
+    {
+      "path": "stages/test_unknown_main_keeps_comple0/660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8/runtime/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_unknown_main_keeps_comple0\\common-run\\stages\\660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8\\runtime\\artifacts.jsonl",
+      "bytes": 163279,
+      "sha256": "7f39474fbfd898bc37d2d98fc676ba7d27b50578e9d192fb59a17b8504062720"
+    },
+    {
+      "path": "stages/test_unknown_main_keeps_comple0/660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8/runtime/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_unknown_main_keeps_comple0\\common-run\\stages\\660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8\\runtime\\artifacts.jsonl.seal.json",
+      "bytes": 345,
+      "sha256": "00a2299bd299ba2564ffcd1ca65e7e970ac75725dd3ff2d55dd36e82bf06ba0a"
+    },
+    {
+      "path": "stages/test_unknown_main_keeps_comple0/660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8/runtime/claims.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_unknown_main_keeps_comple0\\common-run\\stages\\660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8\\runtime\\claims.jsonl",
+      "bytes": 4471,
+      "sha256": "154c2e1a1e4ad1f29b6811746571ba7e7dd6fbf71f3748c45bf62527636a1800"
+    },
+    {
+      "path": "stages/test_unknown_main_keeps_comple0/660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8/runtime/evidence.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_unknown_main_keeps_comple0\\common-run\\stages\\660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8\\runtime\\evidence.jsonl",
+      "bytes": 4899,
+      "sha256": "6d1f361e2666c8a1028e9a2c8a2740d1a7bb7428dfc8eb92a9a2ad2f6846979f"
+    },
+    {
+      "path": "stages/test_unknown_main_keeps_comple0/660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8/runtime/predictions.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_unknown_main_keeps_comple0\\common-run\\stages\\660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8\\runtime\\predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stages/test_unknown_main_keeps_comple0/660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8/runtime/reviews.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_unknown_main_keeps_comple0\\common-run\\stages\\660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8\\runtime\\reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stages/test_unknown_main_keeps_comple0/660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8/runtime/trace.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_unknown_main_keeps_comple0\\common-run\\stages\\660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8\\runtime\\trace.jsonl",
+      "bytes": 21918,
+      "sha256": "1c0d4c96710fab9cac9d7bf14be02cd64a7731aa4166166a186f0d5ed1051914"
+    },
+    {
+      "path": "stages/test_unknown_main_keeps_comple0/660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8/source/source.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_unknown_main_keeps_comple0\\common-run\\stages\\660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8\\source\\source.json",
+      "bytes": 9101,
+      "sha256": "73db75685152a7e9d026e41249a8394190b4d6c20c5a0e687fc08fac51e54e31"
+    },
+    {
+      "path": "stages/test_artifact_writer_failure_r0/46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e/corpus/source.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_artifact_writer_failure_r0\\common-run\\stages\\46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e\\corpus\\source.json",
+      "bytes": 7284,
+      "sha256": "6ae214d4daf2e685c3bc8d128da0d81633ad4d7d6f2ef863929f9c6777206a42"
+    },
+    {
+      "path": "stages/test_artifact_writer_failure_r0/46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e/receipt.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_artifact_writer_failure_r0\\common-run\\stages\\46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e\\receipt.json",
+      "bytes": 6322,
+      "sha256": "8193fbafe0ff7fd112f9c103dfe449cd9114fe20ed447f49d20b6fcb6f3dc129"
+    },
+    {
+      "path": "stages/test_artifact_writer_failure_r0/46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e/runtime/artifacts.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_artifact_writer_failure_r0\\common-run\\stages\\46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e\\runtime\\artifacts.jsonl",
+      "bytes": 64439,
+      "sha256": "4f1fab513abddd9b1690cd1ff79f99c0dbf2ea2292b1b4354eae99b2eeb2d381"
+    },
+    {
+      "path": "stages/test_artifact_writer_failure_r0/46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e/runtime/artifacts.jsonl.seal.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_artifact_writer_failure_r0\\common-run\\stages\\46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e\\runtime\\artifacts.jsonl.seal.json",
+      "bytes": 345,
+      "sha256": "cb830eb58980788e5d89c59cd5231e65c5654c48a338c5b04bc85e51c3a4196b"
+    },
+    {
+      "path": "stages/test_artifact_writer_failure_r0/46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e/runtime/audit-failure.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_artifact_writer_failure_r0\\common-run\\stages\\46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e\\runtime\\audit-failure.json",
+      "bytes": 461,
+      "sha256": "b599936f30086a3af04bed670a3b3dd69fc4468dc1fefc25bb531b29ca94f905"
+    },
+    {
+      "path": "stages/test_artifact_writer_failure_r0/46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e/runtime/claims.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_artifact_writer_failure_r0\\common-run\\stages\\46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e\\runtime\\claims.jsonl",
+      "bytes": 4471,
+      "sha256": "dc6b7a674d47595c8469bafd5407ee6572c90fccc246a14e9d5649646b40e9a7"
+    },
+    {
+      "path": "stages/test_artifact_writer_failure_r0/46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e/runtime/evidence.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_artifact_writer_failure_r0\\common-run\\stages\\46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e\\runtime\\evidence.jsonl",
+      "bytes": 4899,
+      "sha256": "65e35ef995c1141b6be51fcc74b223df9d67452cd98c92efe2e0946746d75e69"
+    },
+    {
+      "path": "stages/test_artifact_writer_failure_r0/46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e/runtime/predictions.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_artifact_writer_failure_r0\\common-run\\stages\\46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e\\runtime\\predictions.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stages/test_artifact_writer_failure_r0/46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e/runtime/reviews.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_artifact_writer_failure_r0\\common-run\\stages\\46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e\\runtime\\reviews.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stages/test_artifact_writer_failure_r0/46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e/runtime/trace.jsonl",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_artifact_writer_failure_r0\\common-run\\stages\\46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e\\runtime\\trace.jsonl",
+      "bytes": 16688,
+      "sha256": "4af4496a451c3d5f9209dd17cf0fc80473686f61a5691d20adcd8036752a29fc"
+    },
+    {
+      "path": "stages/test_artifact_writer_failure_r0/46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e/source/source.json",
+      "original": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\frozen-record-digest-r1\\test_artifact_writer_failure_r0\\common-run\\stages\\46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e\\source\\source.json",
+      "bytes": 9101,
+      "sha256": "f9acb3ea52ce61e33d79f98adb8722d3f8dd9eea9dd1403061efc0bb77c79559"
+    }
+  ],
+  "stages": [
+    {
+      "case": "test_actual_history_target_pip0",
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1",
+      "files": 40,
+      "status": "succeeded"
+    },
+    {
+      "case": "test_actual_history_target_pip0",
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b",
+      "files": 38,
+      "status": "succeeded"
+    },
+    {
+      "case": "test_actual_ordinary_control_p0",
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052",
+      "files": 40,
+      "status": "succeeded"
+    },
+    {
+      "case": "test_actual_ordinary_control_p0",
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c",
+      "files": 36,
+      "status": "succeeded"
+    },
+    {
+      "case": "test_unknown_main_keeps_comple0",
+      "path": "stages/test_unknown_main_keeps_comple0/660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8",
+      "files": 10,
+      "status": "failed"
+    },
+    {
+      "case": "test_artifact_writer_failure_r0",
+      "path": "stages/test_artifact_writer_failure_r0/46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e",
+      "files": 11,
+      "status": "failed"
+    }
+  ],
+  "catalogues": [
+    {
+      "path": "stages/test_actual_history_target_pip0/48208f5af748390b284ea59b98a1919f9b46e5d7057af1b0d2bc44feda38e9e1/runtime/artifacts.jsonl",
+      "descriptors": 108,
+      "seal_digest": "2804167df0a5a9fcce524886a981e699278e4291e3657bd2f50fa70644bd15d7",
+      "stage_status": "succeeded"
+    },
+    {
+      "path": "stages/test_actual_history_target_pip0/9c70b855396ef99f674ca3d44464f40c3be36339fc7ffcffab5b2cea9f9f521b/runtime/artifacts.jsonl",
+      "descriptors": 104,
+      "seal_digest": "8e34e99eeb4f051def675ca2b8f82bb41c0351da5e13eeb1900c9705b13fa7c3",
+      "stage_status": "succeeded"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/0ac2573ced9fd1dafefba5dd59a5d7c3d2f9519314127d9c63e0a324ad5ca052/runtime/artifacts.jsonl",
+      "descriptors": 88,
+      "seal_digest": "24a3925d61d6a90535d0d9d288820097e0536ae16c9564a7b9c02a2226a07561",
+      "stage_status": "succeeded"
+    },
+    {
+      "path": "stages/test_actual_ordinary_control_p0/2cfaa4eacb45d8939fc14dcbe1addd2ab6fe2e502c267bb89f98f193e9fe625c/runtime/artifacts.jsonl",
+      "descriptors": 83,
+      "seal_digest": "a7c60e933dd12e784865a6524c272a428146b6e27d9688e2685804979c4d5840",
+      "stage_status": "succeeded"
+    },
+    {
+      "path": "stages/test_unknown_main_keeps_comple0/660c8ab176802ad28c71b501e739922511bf57ab7ec581080717bb36457c68a8/runtime/artifacts.jsonl",
+      "descriptors": 21,
+      "seal_digest": "262438da2b91990411f0b73b973149154e49e7f20079ba977b8737add03f7c78",
+      "stage_status": "failed"
+    },
+    {
+      "path": "stages/test_artifact_writer_failure_r0/46809ec019361c6700b9a19db46f41ce609f79e2c3bf9648249adbee874ebd2e/runtime/artifacts.jsonl",
+      "descriptors": 14,
+      "seal_digest": "6761896942ffc001532fb6f59b9cf9763b95be8fdf536b3fdfaf62e0bca57d31",
+      "stage_status": "failed"
+    }
+  ],
+  "scope": "Selected four successful and two failed public synthetic C5 stage directories. The complete C5 controller is a separate run. Raw source and all check outcomes preserved. Microtiming does not estimate total runtime speedup.",
+  "exclusions": "Private scorer stores, keys, source snapshot roots, full split or VAL indexes, provider streams; other test case originals remain in work.",
+  "historical_stage_semantic_replay_executed": false,
+  "scientific_effectiveness_proven": false,
+  "validation_acceptance": false,
+  "new_paid_calls": 0
+}

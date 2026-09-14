@@ -1,0 +1,56 @@
+{
+  "schema": "canonical-hash-cost-observation-v1",
+  "source": "98eae2811b929d2d2f0eaf2863711280cf753ce5",
+  "contracts_sha256": "f21603596fa1780650ff7ec255917107117716a39cf6e070a44e773847dc1f75",
+  "rows": [
+    {
+      "file": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-complete-r3\\test_complete_common_train_con0\\common-run\\plan.json",
+      "bytes": 26691,
+      "sha256": "830dc71007895524cf36e1bae9b3c32fd893fd40dea19dd63dac5f1fd9952458",
+      "iterations_per_block": 40,
+      "seconds_per_call": {
+        "current": [
+          0.00017353500006720424,
+          0.0001641175003896933,
+          0.00016425499998149463,
+          0.0001634050000575371
+        ],
+        "canonical_bytes": [
+          6.3850005972199145e-06,
+          6.322500121314079e-06,
+          6.432500231312588e-06,
+          6.352499622153118e-06
+        ]
+      },
+      "median_ratio_current_over_canonical_bytes": 25.77997995805735,
+      "digests_identical": true,
+      "original_unchanged": true
+    },
+    {
+      "file": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-complete-r3\\test_complete_common_train_con0\\common-run\\protocol.json",
+      "bytes": 287615,
+      "sha256": "5399810f31f12def6b7ed9a478a157b3a70ae8f34052984abb8110f81cddba5b",
+      "iterations_per_block": 40,
+      "seconds_per_call": {
+        "current": [
+          0.002001067499804776,
+          0.0019727399994735606,
+          0.0020392400001583155,
+          0.0020029675004479943
+        ],
+        "canonical_bytes": [
+          6.491249951068312e-05,
+          6.335750003927387e-05,
+          6.44275001832284e-05,
+          6.305250062723644e-05
+        ]
+      },
+      "median_ratio_current_over_canonical_bytes": 31.334154973438586,
+      "digests_identical": true,
+      "original_unchanged": true
+    }
+  ],
+  "scope": "Micro-timing on two real frozen public engineering records. No running process altered, no production optimization applied, no extrapolation to total C5 speedup.",
+  "new_paid_calls": 0,
+  "scientific_effectiveness_proven": false
+}

@@ -1,0 +1,76 @@
+{
+  "schema": "bounded-record-digest-microtiming-v1",
+  "source": "105dfcd321faa3245b9a1605515e1eb147d04c5f",
+  "contracts_sha256": "980ffbb92cd918adc4398a908612dfbf29c2f73995958585dd9c9d214ea4111f",
+  "rows": [
+    {
+      "file": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-complete-r3\\test_complete_common_train_con0\\common-run\\plan.json",
+      "bytes": 26691,
+      "sha256": "830dc71007895524cf36e1bae9b3c32fd893fd40dea19dd63dac5f1fd9952458",
+      "iterations_per_block": {
+        "reference": 80,
+        "reused": 10000
+      },
+      "cold_seconds": 0.00019580000662244856,
+      "seconds_per_call": {
+        "reference": [
+          0.0001654649997362867,
+          0.00017394624992448371,
+          0.00017650000008870848,
+          0.00016925874988373834
+        ],
+        "reused": [
+          1.1292999843135476e-07,
+          1.1245000059716403e-07,
+          1.116100000217557e-07,
+          1.1172000085934997e-07
+        ]
+      },
+      "median_ratio_reference_over_reused": 1531.003245654166,
+      "digests_identical": true,
+      "original_unchanged": true,
+      "cache_info": {
+        "hits": 40000,
+        "misses": 1,
+        "maxsize": 16,
+        "currsize": 1
+      }
+    },
+    {
+      "file": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\c5-common-complete-r3\\test_complete_common_train_con0\\common-run\\protocol.json",
+      "bytes": 287615,
+      "sha256": "5399810f31f12def6b7ed9a478a157b3a70ae8f34052984abb8110f81cddba5b",
+      "iterations_per_block": {
+        "reference": 80,
+        "reused": 10000
+      },
+      "cold_seconds": 0.002125800005160272,
+      "seconds_per_call": {
+        "reference": [
+          0.0020111887501116144,
+          0.002193697499751579,
+          0.00251362999988487,
+          0.0023008000000118043
+        ],
+        "reused": [
+          1.1206000053789467e-07,
+          1.1391000007279218e-07,
+          1.3675000227522105e-07,
+          1.1473000049591064e-07
+        ]
+      },
+      "median_ratio_reference_over_reused": 19657.529253779267,
+      "digests_identical": true,
+      "original_unchanged": true,
+      "cache_info": {
+        "hits": 40000,
+        "misses": 1,
+        "maxsize": 16,
+        "currsize": 1
+      }
+    }
+  ],
+  "scope": "Paired alternating microtimings on two public frozen engineering records. Warm exact-content reuse only; no total C5 speedup, scientific efficacy or VAL result inferred. Original running C5 and source untouched.",
+  "new_paid_calls": 0,
+  "scientific_effectiveness_proven": false
+}
