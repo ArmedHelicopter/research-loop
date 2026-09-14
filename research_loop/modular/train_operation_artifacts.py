@@ -34,7 +34,8 @@ def _safe(path):
 def _sources():
     here = Path(__file__)
     return {name: source_snapshot(here.parent/name) for name in
-            ('train_operation_artifacts.py', 'train_operations.py', 'deployment.py', 'modules/improvement.py')}
+            ('train_operation_artifacts.py', 'train_operations.py', 'metaprogram_training.py',
+             'deployment.py', 'modules/improvement.py')}
 
 
 def _inputs(plan, cell, parent, candidate, histories, authority):
@@ -80,13 +81,19 @@ def _file_payload(root, name, raw, stage, *, write):
 
 
 def _source(kind, payload, sources):
+    if kind == 'operation_event':
+        return sources['metaprogram_training.py']
     if kind == 'operation_file':
         name = payload['file']
+        if name == 'operations.jsonl':
+            return sources['metaprogram_training.py']
         if name.startswith('deployment.json'):
             return sources['deployment.py']
         if name == 'shadow.sqlite':
             return sources['modules/improvement.py']
-    return sources['train_operations.py']
+        if name == 'state.sqlite':
+            return sources['train_operations.py']
+    return sources['train_operation_artifacts.py']
 
 
 def _spec(kind, payload, parents, *, status='produced', sources=None):

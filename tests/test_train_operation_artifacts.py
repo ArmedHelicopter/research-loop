@@ -59,6 +59,10 @@ def test_actual_operation_outputs_and_readonly_consumer(tmp_path, monkeypatch, e
     assert files and all(r['optimizer_visible'] is False and r['scientific_validated'] is False for r in rows)
     assert {r['identity']['domain'] for r in rows} == {'train'}
     assert all(r['payload']['canonical']['blob'].startswith('operation-blobs/') for r in files)
+    assert rows[0]['producer_source']['path'].endswith('train_operation_artifacts.py')
+    for row in rows:
+        if row['kind'] == 'operation_event' or row['kind'] == 'operation_file' and row['payload']['canonical']['file'] == 'operations.jsonl':
+            assert row['producer_source']['path'].endswith('metaprogram_training.py')
     if variant in {'drift','offline'}:
         assert result is None and record['status'] == 'blocked'
     elif experiment == 'Q6.1':
