@@ -1,0 +1,3 @@
+# Actual Grok readiness r3
+
+One bounded official Grok CLI 1.0.30 launch used the existing Grok 4.6 subscription with isolated deployment v2. It timed out after 61.453 seconds without an initialize response. Only initialize was written: no session/new or session/prompt, zero prompt reservations. Accepted=false, source unchanged. CLI stderr and stdout were empty. Provider usage and settlement remain unavailable; no success or zero settled charge is inferred. Authentication bytes and private streams are excluded. Previous r1/r2 failures remain unchanged. No benchmark or validation data was supplied.

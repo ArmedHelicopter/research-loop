@@ -1,0 +1,42 @@
+{
+  "accepted": false,
+  "auth_file_metadata_after": {
+    "global": {
+      "byte_count": 1768,
+      "mtime_ns": 1789306365223449700
+    },
+    "private": {
+      "byte_count": 1768,
+      "mtime_ns": 1789363478720305100
+    }
+  },
+  "auth_file_metadata_before": {
+    "global": {
+      "byte_count": 1768,
+      "mtime_ns": 1789306365223449700
+    },
+    "private": {
+      "byte_count": 1768,
+      "mtime_ns": 1789363461010302600
+    }
+  },
+  "elapsed_seconds": 61.45299999999406,
+  "envelope_sha256": "b92bf5cd8a463645b28a4a6700a2538016953d6ae3dadf0a1fdbf946069ad4ea",
+  "event_counts": {},
+  "faults": [
+    "timeout"
+  ],
+  "global_auth_metadata_unchanged": true,
+  "initial_title_usage": null,
+  "known_usage": null,
+  "native_receipt_digest": "8f610353960ad00d2bd30ac9f0c8b17978aff18567273571de0bb62e1b9f6d15",
+  "native_receipt_file_sha256": "a5516246af909bcefbc81db4e260254e26a2ca4c1c3a7ca9220a123efd144222",
+  "prompt_requests_reserved": 0,
+  "reported_main_cost_usd": null,
+  "retry_authorized": false,
+  "runtime_empty_inventory_count": 0,
+  "schema": "grok130-readiness-closure-v1",
+  "scientific_validation": false,
+  "settled_additional_charge_usd": null,
+  "source_unchanged": true
+}

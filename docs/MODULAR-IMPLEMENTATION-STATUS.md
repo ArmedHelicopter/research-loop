@@ -3,7 +3,42 @@
 Goal: implement all 48 research scenarios, M1–M9 including the separate meta-program
 stage, and C1–C5 combination experiments defined in the design documents.
 
-## Native Q6/M9 integration and common C5 runtime (2026-09-14, current update)
+## C4 completion checks and Grok isolation repair (2026-09-14, current update)
+
+C4 source `840697c` passed the complete success grid and unknown-MAIN
+denominator checks: 2/2 in 1104.297 seconds with 651 source files unchanged.
+The success case exercised 169 synthetic MAIN opportunities, nine builds,
+80 Docker executions and 22 independent scores. The unknown-MAIN case retained
+all 22 blocked targets. This closes those engineering checks, not real-model
+effect evaluation. The complete root evidence is retained under
+`results/modular-engineering-20260914/c4-native-root-r1/`.
+
+The explicit Grok 1.0.30 isolation repair is integrated through `805fbca`.
+Root checks passed 36/36 in 15.359 seconds, including label isolation. It accepts
+the documented internal reload response without treating it as a completion,
+excludes skill sources through the native configuration, and allows the CLI's
+empty plugin registry lock while rejecting registry data. These are synthetic
+ACP checks. The admitted model remains Grok 4.6 through the existing subscription;
+Daybreak is not a requirement in this implementation or experiment protocol.
+
+Actual readiness r3 then timed out in 61.453 seconds before an initialize
+response. The transport wrote only initialize: no session or prompt request,
+zero prompt reservations, and empty native stdout/stderr. Accepted remains false;
+unknown usage or settlement is not converted to zero. This initialization
+failure is separate from r2's post-prompt reload rejection. Exact source,
+configuration, envelope and closure are retained under
+`results/modular-engineering-20260914/grok130-readiness-r3/`; private login bytes
+and streams are excluded. No benchmark or validation data was sent.
+
+C5's complete controller and authenticated TRAIN selector are implemented in
+their isolated worktrees. Selector arithmetic and label checks passed 19/19,
+including a case where negative singletons combine positively. This is not a
+completed full-controller result. The full 46-build/118-target check remains
+unclosed at this update; no selection or validation acceptance is claimed.
+All 48 questions and all singleton, pair, triple, full/LOO and final joint studies
+remain in scope. Optimization may access TRAIN only; VAL remains acceptance only.
+
+## Native Q6/M9 integration and common C5 runtime (2026-09-14, earlier update)
 
 The separate Q6 and M9 native provider implementation is now integrated through
 `5619cd5`. Its root check passed12/12 in65.985s with645 source hashes unchanged,

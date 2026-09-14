@@ -1,0 +1,67 @@
+{
+  "deployment": {
+    "argv": [
+      "{executable}",
+      "--cwd",
+      "{cwd}",
+      "agent",
+      "stdio"
+    ],
+    "binary_source_equivalence_verified": false,
+    "build": "04b7ffed98c6",
+    "cli_version": "1.0.30",
+    "context_policy": "grok130-readiness-context-v1",
+    "environment": {
+      "GROK_DISABLE_AUTOUPDATER": "1"
+    },
+    "executable": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-cli-1.0.30\\grok.exe",
+    "executable_sha256": "ca24ea63272ba7881261f4a52498d1f5bd884b01da25845990422a10dd315266",
+    "schema": "isolated-grok-native-deployment-v2",
+    "scope": "readiness-only"
+  },
+  "engineering_preflight": {
+    "failures": 0,
+    "junit_sha256": "2f50cb3dab1df2fb25650b8a0ef839617d7a769b42034ba8eacbc3857b5fc10c",
+    "source": "805fbca5e353385ad969795813eb5709bcee70f2",
+    "tests": 36
+  },
+  "frozen_files": {
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\contracts.py": "f21603596fa1780650ff7ec255917107117716a39cf6e070a44e773847dc1f75",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_acp_transport.py": "f736d68218e49bf90fa6ead447097d8366d3827932bea5565c854e71d07aa855",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_native_deployment.py": "ce208abf93cad1f265c56a02c70ac68d7444f2c03d79a562cf45c0735cfa7309",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\grok_skill_isolation.py": "694def3565b1f7df24fcbc59458eb88e33950cca07e68341080bcc89f1e6205f",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\modular\\model_port.py": "c56bdaf3818841d0956a647c9e2ae012cc49d4a15dd94a5c91756c53a628d9b6",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\integration\\research_loop\\ontology.py": "01ce9b554c28f6130f759cb414529046f77c9ec0f1e709d2e7f609ad760d77bb",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-cli-1.0.30\\grok.exe": "ca24ea63272ba7881261f4a52498d1f5bd884b01da25845990422a10dd315266",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-readiness-r3\\driver.py": "5fe10e114c13c88807a5074fe0f8af25a93fde99d8b12c19d06d8e36e7e1ab7c",
+    "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-readiness-r3\\home\\config.toml": "e7ce454f1581fa63933cb08412aafc38dc63cb90f0ff79b15e998bb72debf8b1"
+  },
+  "limits": {
+    "additional_paid_api_budget_usd": 0,
+    "main_opportunities": 1,
+    "main_output_cap": 128,
+    "native_launches": 1,
+    "observed_main_token_cap": 20000,
+    "possible_initial_title_opportunities": 1,
+    "retries": 0,
+    "timeout_seconds": 60
+  },
+  "new_attempt_reason": "Reviewed response-before-inventory compatibility repair; original attempt remains failed",
+  "new_probe_reason": "Test repaired native skill isolation and documented internal reload frame; previous failed opportunities remain spent and unchanged.",
+  "output_schema": {
+    "additionalProperties": false,
+    "properties": {
+      "ready": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "ready"
+    ],
+    "type": "object"
+  },
+  "prior_failed_envelope_sha256": "0b0e62e9aef56f7a7852fbda7e5655fa6c730af3f3d609c216dc1c45f2c9ef57",
+  "prompt": "Return exactly the JSON object {\"ready\":true}. Do not use tools.",
+  "schema": "grok130-single-readiness-envelope-v1",
+  "source_commit": "fcd175cb9cc14e58b3a56d56791b4c764eaf2d40"
+}
