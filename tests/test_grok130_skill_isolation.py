@@ -46,7 +46,7 @@ def prepare(root, patch, mode='reload'):
     return kwargs, launches
 
 
-@pytest.mark.parametrize('mode', ['reload', 'no_rpc'])
+@pytest.mark.parametrize('mode', ['reload', 'no_rpc', 'registry_lock'])
 def test_real_native_entry_bundle_filter_and_exact_main_binding(tmp_path, monkeypatch, mode):
     kwargs, launches = prepare(tmp_path/'run', monkeypatch, mode)
     result = acp.run_native(**kwargs); body = result.receipt.data()
@@ -54,7 +54,7 @@ def test_real_native_entry_bundle_filter_and_exact_main_binding(tmp_path, monkey
     assert body['schema'] == 'grok-native-acp-receipt-v4'
     assert body['known_usage']['totalTokens'] == 12 and body['known_usage_binding_verified']
     assert body['initial_title_usage'] is None and body['settled_additional_charge_usd'] is None
-    assert len(body['internal_events']) == (mode == 'reload')
+    assert len(body['internal_events']) == (mode != 'no_rpc')
     assert body['internal_reload_is_completion_acknowledgement'] is False
     assert any(x['ignored_bundle_present'] for x in body['context_observations'])
     assert all(x['context_digest'] == body['context_digest'] for x in body['context_observations'])
@@ -71,7 +71,7 @@ def test_real_native_entry_bundle_filter_and_exact_main_binding(tmp_path, monkey
     reservation = json.loads(kwargs['reservation'].read_bytes())
     assert reservation['schema'] == 'grok-acp-single-prompt-reservation-v3'
     assert reservation['context_digest'] == body['context_digest']
-    if mode == 'reload':
+    if mode != 'no_rpc':
         event = body['internal_events'][0]
         assert event['frame'] in [json.loads(x) for x in raw.splitlines()]
         assert event['frame'] == {'jsonrpc':'2.0','id':'skills-reload','result':{'result':{'reloaded':1}}}
@@ -84,6 +84,7 @@ def test_real_native_entry_bundle_filter_and_exact_main_binding(tmp_path, monkey
     ('early_reload','internal_reload_session_binding'),('foreign_session','session_binding'),
     ('extra_command','isolated_command_inventory'),('tools','runtime_tools_not_empty'),
     ('plugin_arrival','skill_isolation_unexpected_discovery_source'),
+    ('registry_arrival','skill_isolation_unexpected_discovery_source'),
     ('managed_arrival','skill_isolation_unexpected_discovery_source'),('config_drift','skill_isolation_config_changed'),
     ('no_main_result','timeout')])
 def test_native_stream_keeps_closed_protocol_and_context(tmp_path, monkeypatch, mode, fault):

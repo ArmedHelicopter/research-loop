@@ -40,6 +40,10 @@ class Stream:
         update = row.get('params', {}).get('update', {})
         kind = update.get('sessionUpdate')
         if kind == 'available_commands_update':
+            if mode == 'registry_lock':
+                lock = Path(os.environ['GROK_HOME']) / 'installed-plugins' / 'registry.lock'
+                lock.parent.mkdir(exist_ok=True)
+                lock.touch()
             update['availableCommands'] = [{'name': name, 'description': 'synthetic built-in'} for name in names]
             if mode == 'foreign_session': row['params']['sessionId'] = '00000000-0000-4000-8000-000000000002'
             if mode == 'extra_command': update['availableCommands'].append({'name': 'unapproved-skill'})
@@ -65,6 +69,10 @@ class Stream:
             if mode == 'plugin_arrival':
                 plugin = home / 'plugins' / 'synthetic'; plugin.mkdir(parents=True)
                 (plugin / 'SKILL.md').write_text('synthetic plugin')
+            if mode == 'registry_arrival':
+                registry = home / 'installed-plugins' / 'registry.json'
+                registry.parent.mkdir(exist_ok=True)
+                registry.write_text('{"plugins": ["synthetic"]}')
             if mode == 'managed_arrival': (home / 'managed_config.toml').write_text('[skills]\npaths=["E:/outside"]')
             if mode == 'config_drift':
                 with (home / 'config.toml').open('a') as out: out.write('\n')

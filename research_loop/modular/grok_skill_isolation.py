@@ -33,7 +33,7 @@ def context_record(cwd, home, user):
     # repository, config layer, marketplace registry or workspace-user source.
     absent = {p / name for p in (cwd, *cwd.parents) for name in (*DISCOVERY_DIRS, '.git')}
     absent.update(user / name for name in DISCOVERY_DIRS)
-    absent.update(home / name for name in ('plugins', 'installed-plugins', 'managed_config.toml',
+    absent.update(home / name for name in ('plugins', 'managed_config.toml',
                                          'requirements.toml'))
     return FrozenRecord.from_dict({'schema': 'grok130-readiness-context-v1',
         'cwd': str(cwd), 'private_home': str(home), 'private_profile': str(user),
@@ -78,6 +78,15 @@ def observe_context(record):
                 path = Path(directory) / name
                 _require(not (path.lstat().st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT),
                          'content_reparse_point')
+    # The native CLI creates this empty registry lock even with no installed
+    # plugins. A lock is not a plugin source. Registry data or other entries
+    # remain unadmitted; content links have already been rejected above.
+    installed = roots[1] / 'installed-plugins'
+    if installed.exists():
+        _require(installed.is_dir(), 'installed_registry_shape')
+        for entry in installed.iterdir():
+            _require(entry.name == 'registry.lock' and entry.is_file()
+                     and entry.stat().st_size == 0, 'unexpected_discovery_source')
     config = roots[1] / 'config.toml'
     _require(config.read_text(encoding='utf-8') == isolated_config(*roots), 'config_changed')
     return {'schema': 'grok130-readiness-context-observation-v1',
