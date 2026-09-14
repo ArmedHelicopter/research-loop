@@ -54,7 +54,8 @@ def test_real_grid_binds_all_22_targets_to_their_exact_11_original_builds(grid, 
             assert row['status'] == 'not_applied'
         else:
             assert row['status'] == 'produced'
-    assert len(sources) == 11 and inactive == 10
+    # M2+M9 excludes 01 (M9 requires M2); 00 and 10 both keep M9 off.
+    assert len(sources) == 11 and inactive == 12
     assert all(p.read_bytes() == raw for p, raw in before.items())
 
 
