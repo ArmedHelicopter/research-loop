@@ -24,3 +24,11 @@ restricted builders and actual Docker successors. The Q6 phases retain their
 existing no-scoring contract; independent scorer integration belongs to the
 separate scored benchmark controllers. This document describes implementation;
 test closure is recorded separately.
+# Final provenance closure
+
+The Q6 routes replay provider originals after final phase verification. If drift is
+discovered there, the provisional phase receipt is preserved byte for byte and the
+final receipt records all planned cells as terminal accounting. It cannot report an
+engineering completion from the earlier provisional receipt. Q6.3 retains its own
+proposal, restricted builder, and successor journal; this closure does not activate
+the generated builder or authorize production promotion.

@@ -302,7 +302,7 @@ def run_state_improvement_train(plan,*,prospective_exporter,snapshot_root,export
     targets=[{**r,'status':'not_started','scorer_calls':0,'docker_attempts':0} for r in target_recipes(b)]
     journal={'schema':('state-improvement-controller-attempt-v2' if b['schema'].endswith('-v2') else 'state-improvement-controller-attempt-v1'),'plan_digest':plan.record.content_hash,'builds':buildrows,
         'targets':targets,'structural_exclusions':excluded,'allocation':ALLOCATION,'status':'exporting'}
-    def persist(): journal['model_usage']=usage();_atomic(root/'controller-attempt.json',journal)
+    def persist(checked_usage=None): journal['model_usage']=usage() if checked_usage is None else checked_usage;_atomic(root/'controller-attempt.json',journal)
     persist()
     try:
         packets=tuple(source.export());plan.check_packets(packets)
@@ -395,7 +395,7 @@ def run_state_improvement_train(plan,*,prospective_exporter,snapshot_root,export
             results.append(result);phase.append('target_completed',{'cell_key':list(cell.key),'status':row['status']});persist()
         ledger=(scopes.finish(root/'target-provider-ledger.json') if native else FrozenProviderLedger.freeze(model,root/'target-provider-ledger.json'));phase.append('target_provider_aborted' if type(ledger) is PhaseProviderAbort else 'target_ledger_sealed',{'digest':ledger.record.content_hash})
         for row,result in zip(targets,results,strict=True):
-            if type(ledger) is PhaseProviderAbort:
+            if type(ledger) is PhaseProviderAbort or (native and scopes.aborted is not None):
                 if row['status']=='executed':row.update(status='failed',reason='provider_provenance_fault')
                 continue
             if result is None or row['status']!='executed': continue
@@ -419,6 +419,8 @@ def run_state_improvement_train(plan,*,prospective_exporter,snapshot_root,export
             panel=next((p for p in panels if p.obligation_id==pair),None)
             try:
                 if panel is None: raise ContractError('candidate barrier unavailable')
+                if native and (scopes.aborted is not None or type(ledger) is PhaseProviderAbort):
+                    raise ContractError('provider_provenance_fault')
                 if pair=='pair:M1+M9':
                     values=[qualification_semantics(plan.history_material(pair),source_verifiers[pair],r.root/'source'/'source-verification.json',
                         build_binding(plan.record.content_hash,r.record.data()['recipe'])).content_hash for r in builds if r.record.data()['recipe']['pair']==pair]
@@ -434,23 +436,43 @@ def run_state_improvement_train(plan,*,prospective_exporter,snapshot_root,export
         sourcecalls=len(sourcecharges)
         buildercalls=sum(sum(x['stage']=='builder_request' for x in _phase_rows(r.root/'phase.jsonl')) for r in builds)
         dockercalls=sum(r['docker_attempts'] for r in targets);scorercalls=sum(r['scorer_calls'] for r in targets)
+        # Replay after the last scorer and contrast return, before final eligibility.
+        provider_eligible=True
+        if native:
+            provider_eligible=False
+            if scopes.aborted is None and type(ledger) is PhaseProviderLedger:
+                try:provider_eligible=ledger.verify().data()['score_eligible']
+                except ContractError:scopes.abort()
+            final_usage=usage()
+            if scopes.aborted is not None:
+                if type(ledger) is not PhaseProviderAbort:
+                    ledger=scopes.finish(root/'final-provider-abort.json')
+                provider_eligible=False
+            if not provider_eligible:
+                contrasts=[FrozenRecord.from_dict({'pair':pair,'status':'inconclusive',
+                    'reason':'provider_provenance_fault' if type(ledger) is PhaseProviderAbort else 'provider_not_score_eligible',
+                    'scientific_effect':'not_measured'}) for pair in DESIGNS]
+            for row in targets:
+                row['score_eligible']=provider_eligible and row['status']=='succeeded'
+        else:final_usage=usage()
         receipt=FrozenRecord.from_dict({'schema':('state-improvement-train-receipt-v2' if b['schema'].endswith('-v2') else 'state-improvement-train-receipt-v1'),'plan_digest':plan.record.content_hash,'allocation':ALLOCATION,
             'expected_builds':11,'successful_builds':sum(r['status']=='succeeded' for r in buildrows),'expected_cells':22,
             'failed_builds':sum(r['status']=='failed' for r in buildrows),'blocked_builds':sum(r['status']=='blocked' for r in buildrows),
             'scored_cells':len(scores),'failed_cells':sum(r['status']=='failed' for r in targets),'blocked_cells':sum(r['status']=='blocked' for r in targets),
-            'actual_model_usage':usage(),'source_calls':sourcecalls,'actual_builder_executions':buildercalls,
+            'actual_model_usage':final_usage,'source_calls':sourcecalls,'actual_builder_executions':buildercalls,
             'known_source_cost_units':sum(c['cost_units'] for c in sourcecharges if c.get('cost_units') is not None),
             'source_cost_unknown':any(c.get('cost_units') is None for c in sourcecharges),
             'actual_docker_attempts':dockercalls,'actual_scorer_calls':scorercalls,
             'unused_builder_opportunities':11-buildercalls,'unused_docker_opportunities':22-dockercalls,'unused_scorer_opportunities':22-scorercalls,
-            'unused_model_opportunities':None if type(ledger) is PhaseProviderAbort else 55-(usage()['main_opportunities'] if native else len(model.ledger['calls'])),'unused_source_opportunities':66-sourcecalls,
+            'unused_model_opportunities':None if type(ledger) is PhaseProviderAbort else 55-(final_usage['main_opportunities'] if native else len(model.ledger['calls'])),'unused_source_opportunities':66-sourcecalls,
             'structural_exclusions':excluded,'pruned_cells':[],'contrasts':[c.data() for c in contrasts],
             'history_acquisition':{'model_requests':len(plan.history.binding.data()['request_digests']),'cost':'inherited_unknown_not_in_current_allocation'},
             **({'provider_provenance_failed':type(ledger) is PhaseProviderAbort,
+                'provider_final_score_eligible':provider_eligible,'eligible_scored_cells':len(scores) if provider_eligible else 0,
                 'provider_abort_digest':ledger.record.content_hash if type(ledger) is PhaseProviderAbort else None} if native else {}),
             'validation_opened':False,'scientific_effectiveness_proven':False,'scorer_usage_unknown':bool(scorercalls),
-            'status':'complete_train_engineering' if len(scores)==22 and all(c.data()['status'] in {'estimated','not_identifiable'} for c in contrasts) else 'inconclusive'})
-        _exclusive(root/'controller-receipt.json',receipt);journal['status']=receipt.data()['status'];persist()
+            'status':'complete_train_engineering' if provider_eligible and len(scores)==22 and all(c.data()['status'] in {'estimated','not_identifiable'} for c in contrasts) else 'inconclusive'})
+        _exclusive(root/'controller-receipt.json',receipt);journal['status']=receipt.data()['status'];persist(final_usage)
         return StateImprovementRun(root,barrier,panels,scenarios,tuple(results),tuple(scores),tuple(FrozenRecord.from_dict(r) for r in targets),tuple(builds),ledger,receipt)
     finally:
         if native:

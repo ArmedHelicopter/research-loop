@@ -475,6 +475,9 @@ def run_train_operations(plan,*,run_root,model,audit_verifier,authority):
     record=_result_record(plan,cells,ledger_path)
     shared._exclusive(root/'receipt.json',record)
     result=shared.MetaTrainingRun(root,ledger_path,cells,record,provider_ledger)
+    if native:
+        return shared._close_native_phase(result,plan,scopes,
+            lambda candidate:verify_train_operations(candidate,plan=plan,authority=authority),operation=True)
     verify_train_operations(result,plan=plan,authority=authority);return result
 
 

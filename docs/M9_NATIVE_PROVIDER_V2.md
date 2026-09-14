@@ -28,3 +28,11 @@ verifiable failed attempt and exact consumed opportunities.
 This is TRAIN engineering execution and evidence preservation. Validation remains
 closed, native TITLE/settlement remain unknown, and scientific efficacy is not
 established. Integration closures are recorded separately from this design.
+# Final scoring closure
+
+Every native controller replays the original provider evidence after its last scorer
+and contrast return. Only this final check can mark the run or comparisons eligible.
+If original files drift, already returned scores remain historical observations;
+the final receipt reports zero eligible scored cells, inconclusive contrasts, and
+terminal accounting with unknown exact unused MAIN opportunities. Returned owned
+scorer processes are closed on both success and failure.

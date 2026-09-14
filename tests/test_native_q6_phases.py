@@ -112,3 +112,23 @@ def test_native_q6_original_drift_stops_with_all_planned_rows_and_unresolved_sco
         else verify_metaprogram_training(run,plan=plan)).data()
     assert checked['status']=='terminal_accounting_only' and not checked['engineering_verified']
     assert len(feedback)==(1 if experiment=='Q6.5' else 0)
+
+
+def test_q63_drift_after_final_verifier_retains_full_provisional_receipt(tmp_path,monkeypatch):
+    from research_loop.modular import metaprogram_training as phase
+    plan,args,_,_,logs=prepare_native(tmp_path,monkeypatch,'Q6.3')
+    original=phase.verify_metaprogram_training
+    def verify(result,*,plan):
+        checked=original(result,plan=plan)
+        path=args['model'].backend.calls_root/'0001-builder_proposal'/'response.private.json'
+        path.write_bytes(path.read_bytes()+b' ')
+        return checked
+    monkeypatch.setattr(phase,'verify_metaprogram_training',verify)
+    run=phase.run_metaprogram_training(plan,**args);b=run.receipt.data()
+    assert type(run.provider_ledger) is PhaseProviderAbort and b['status']=='engineering_incomplete'
+    assert b['expected_cells']==b['observed_cell_receipts']==len(b['attempts'])==8
+    assert all(row['status']=='executed_unverified' for row in b['attempts'])
+    assert len(logs)==24 and b['provider_snapshot']['observed_main_opportunities_lower_bound']==24
+    assert b['provisional_phase_receipt'] is not None
+    assert (run.root/'provisional-phase-receipt.json').is_file()
+    assert original(run,plan=plan).data()['engineering_verified'] is False

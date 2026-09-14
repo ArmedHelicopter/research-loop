@@ -427,6 +427,7 @@ def _aborted_phase_record(plan,root,cells,abort,*,operation=False):
         'expected_cells':len(declared),'observed_cell_receipts':len(cells),'attempts':attempts,
         'allocation':body['budget'] if operation else {'cells':len(declared),'per_cell':_ALLOCATION,'model_calls':len(declared)*3},
         'provider_snapshot':abort.snapshot.data(),'provider_abort_digest':abort.record.content_hash,
+        'provisional_phase_receipt':_proof(root/'provisional-phase-receipt.json') if (root/'provisional-phase-receipt.json').exists() else None,
         'exact_unused_main_opportunities':None,'current_originals_verified':False,'provider_scope_partition_complete':False,
         'scientific_effect':'not_measured','builder_activation':'not_performed','production_promotion':'not_authorized',
         'scoring':'not_configured','accounting_status':'historical_lower_bounds_only'})
@@ -436,6 +437,27 @@ def _finish_aborted_phase(plan,root,cells,abort,*,operation=False):
     record=_aborted_phase_record(plan,root,cells,abort,operation=operation)
     _exclusive(root/('receipt.json' if operation else 'training-receipt.json'),record)
     return MetaTrainingRun(root,abort.path,tuple(cells),record,abort)
+
+
+def _close_native_phase(result,plan,scopes,verify,*,operation=False):
+    """Retain a provisional receipt if final replay discovers original drift."""
+    try:
+        verify(result)
+        result.provider_ledger.verify()
+        return result
+    except ContractError:
+        scopes.abort()  # Unrelated errors have no durable provider snapshot.
+    original=result.root/('receipt.json' if operation else 'training-receipt.json')
+    raw=original.read_bytes()
+    with (result.root/'provisional-phase-receipt.json').open('xb') as stream:stream.write(raw)
+    abort=scopes.finish(result.root/'final-provider-abort.json')
+    record=_aborted_phase_record(plan,result.root,result.cells,abort,operation=operation)
+    _atomic(original,record.data())
+    closed=MetaTrainingRun(result.root,abort.path,result.cells,record,abort)
+    _verify_aborted_phase(closed,plan,operation=operation)
+    attempt=result.root/('attempt.json' if operation else 'training-attempt.json')
+    _atomic(attempt,{'plan_digest':plan.record.content_hash,'status':'provider_provenance_failed','attempts':record.data()['attempts']})
+    return closed
 
 
 def _verify_aborted_phase(result,plan,*,operation=False):
@@ -627,6 +649,8 @@ def run_metaprogram_training(plan,*,run_root,model,audit_verifier):
     _exclusive(root/'training-receipt.json',receipt)
     attempt.update(status=receipt.data()['status']);_atomic(root/'training-attempt.json',attempt)
     result=MetaTrainingRun(root,ledger_path,tuple(cells),receipt,provider_ledger)
+    if native:
+        return _close_native_phase(result,plan,scopes,lambda candidate:verify_metaprogram_training(candidate,plan=plan))
     verify_metaprogram_training(result,plan=plan)
     return result
 

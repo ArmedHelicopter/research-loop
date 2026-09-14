@@ -51,6 +51,7 @@ def test_complete_native_build_barrier_target_and_score(family,tmp_path,monkeypa
     assert b['actual_model_usage']['possible_initial_title_opportunities']==calls
     assert b['actual_model_usage']['settled_additional_charge_usd'] is None
     assert not b['validation_opened'] and not b['scientific_effectiveness_proven']
+    assert b['provider_final_score_eligible'] and b['eligible_scored_cells']==targets
     assert len(setup['native_logs'])==calls and type(run.ledger) is PhaseProviderLedger
     run.barrier.verify();run.ledger.verify()
     scopes=run.ledger.record.data()['scopes']['scopes']
@@ -123,3 +124,26 @@ def test_original_response_substitution_blocks_all_later_work_and_closes_owned_s
     assert run.ledger.verify().data()['status']=='terminal_accounting_only'
     assert not (run.root/'target-provider-ledger-originals.json').exists()
     assert not b['validation_opened'] and b['pruned_cells']==[]
+
+
+def test_last_scorer_original_drift_retains_scores_but_closes_ineligible(tmp_path,monkeypatch):
+    module,setup=prepare_native(tmp_path,monkeypatch,'state')
+    from evaluation.modular.scorer_process import CombinationScorerProcessClient
+    original=CombinationScorerProcessClient.score_combination;observed=[]
+    def score(client,**kwargs):
+        result=original(client,**kwargs);observed.append(result)
+        if len(observed)==22:
+            path=setup['port'].backend.calls_root/'0001-builder_proposal'/'response.private.json'
+            path.write_bytes(path.read_bytes()+b' ')
+        return result
+    monkeypatch.setattr(CombinationScorerProcessClient,'score_combination',score)
+    run=module.invoke(setup,monkeypatch);b=run.receipt.data()
+    assert b['scored_cells']==b['actual_scorer_calls']==len(observed)==22
+    assert len(run.scores)==22 and b['status']=='inconclusive'
+    assert type(run.ledger) is PhaseProviderAbort and b['provider_provenance_failed']
+    assert not b['provider_final_score_eligible'] and b['eligible_scored_cells']==0
+    assert all(row.data()['score_eligible'] is False for row in run.attempts)
+    assert all(row['status']=='inconclusive' for row in b['contrasts'])
+    assert b['unused_model_opportunities'] is None
+    assert b['actual_model_usage']['observed_main_opportunities_lower_bound']==55
+    assert len(setup['native_logs'])==55 and run.ledger.verify().data()['score_eligible'] is False
