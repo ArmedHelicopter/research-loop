@@ -30,7 +30,8 @@ from research_loop.modular.joint_train_runtime import (
     JointTrainStage,
     JointTrainStageExecutor,
     compile_panel,
-    _verified_barrier_context,
+    _barrier_validation_scope,
+    _compile_panel_from_context,
 )
 from research_loop.modular.metaprogram_training import _Journal, _exclusive
 from research_loop.modular.phase_provider import PhaseProviderAbort, PhaseProviderLedger, call_accounting
@@ -99,25 +100,25 @@ def _verify_target(stage: JointTrainStage, *, barrier: JointTrainBarrier, panel:
     """Bind one scorer input to the final target seal and the actual stage."""
     if type(stage) is not JointTrainStage or type(barrier) is not JointTrainBarrier or type(panel) is not JointTrainPanel:
         raise ContractError('typed common target and panel required')
-    context = _verified_barrier_context(barrier)
-    expected_panel, _ = compile_panel(barrier, verified_context=context)
-    if panel != expected_panel or stage.inner.cell not in panel.cells:
-        raise ContractError('common scorer panel differs from sealed history barrier')
-    executor = barrier.executor
-    executor.verify(stage, verified_context=context, verified_panel=expected_panel)
-    body = stage.record.data()
-    if body['stage'] != 'target' or body['history_barrier_digest'] != barrier.record.content_hash:
-        raise ContractError('common target did not bind its sealed history barrier')
-    recipe = next(recipe for recipe in executor.plan.recipes if recipe['id'] == stage.inner.cell.arm_id)
-    calls = ledger.calls_for_scope(_scope(stage))
-    if tuple(call.data()['slot'] for call in calls) != slots(recipe, 'target'):
-        raise ContractError('common target scope has a missing, foreign, or reordered slot')
-    packet = next(packet for packet in executor.plan.packets if packet.task.content_hash == stage.inner.cell.task_digest)
-    verify_stage(stage.inner, plan=executor.plan, recipe=recipe, stage='target', task=packet.task,
-                 package=context.package(recipe), material=executor.plan.material(packet.task.content_hash),
-                 phase_material=executor.plan.phase_material(packet.task.content_hash), source_verifier=executor.source,
-                 corpus_verifier=executor.corpus, broker=executor.broker, inputs={'public_csv': packet.csv_path},
-                 ledger=ledger, provider_scope_id=_scope(stage), require_provider_eligible=True)
+    with _barrier_validation_scope(barrier) as context:
+        expected_panel, _ = _compile_panel_from_context(context)
+        if panel != expected_panel or stage.inner.cell not in panel.cells:
+            raise ContractError('common scorer panel differs from sealed history barrier')
+        executor = barrier.executor
+        executor._verify(stage, context)
+        body = stage.record.data()
+        if body['stage'] != 'target' or body['history_barrier_digest'] != barrier.record.content_hash:
+            raise ContractError('common target did not bind its sealed history barrier')
+        recipe = next(recipe for recipe in executor.plan.recipes if recipe['id'] == stage.inner.cell.arm_id)
+        calls = ledger.calls_for_scope(_scope(stage))
+        if tuple(call.data()['slot'] for call in calls) != slots(recipe, 'target'):
+            raise ContractError('common target scope has a missing, foreign, or reordered slot')
+        packet = next(packet for packet in executor.plan.packets if packet.task.content_hash == stage.inner.cell.task_digest)
+        verify_stage(stage.inner, plan=executor.plan, recipe=recipe, stage='target', task=packet.task,
+                     package=context.package(recipe), material=executor.plan.material(packet.task.content_hash),
+                     phase_material=executor.plan.phase_material(packet.task.content_hash), source_verifier=executor.source,
+                     corpus_verifier=executor.corpus, broker=executor.broker, inputs={'public_csv': packet.csv_path},
+                     ledger=ledger, provider_scope_id=_scope(stage), require_provider_eligible=True)
 
 
 @dataclass(frozen=True)
@@ -198,8 +199,8 @@ def run_joint_common_train(executor: JointTrainStageExecutor, *, scorer_factory:
             and all(row['status'] == 'succeeded' for row in build_rows)):
         try:
             barrier = JointTrainBarrier.seal(executor)
-            context = _verified_barrier_context(barrier)
-            panel, scenarios = compile_panel(barrier, verified_context=context)
+            with _barrier_validation_scope(barrier) as context:
+                panel, scenarios = _compile_panel_from_context(context)
             journal.append('complete_history_barrier', {'digest': barrier.record.content_hash, 'panel_digest': panel.digest})
         except Exception as exc:
             journal.append('history_barrier_failed', {'error_type': type(exc).__name__})

@@ -3,6 +3,7 @@
 The reused inner pipeline does not complete C4 or any original Q experiment.
 This module does not issue scoring authority, selection or validation receipts.
 """
+from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -233,42 +234,52 @@ class JointTrainStageExecutor:
                                      scorer_handle_bindings=self.handles)
             self._verify_protocol_file()
             if _read_record(self.root/'plan.json') != plan.record: raise ContractError('original runtime plan drift')
-            for previous in self.stages:
-                if previous.record.data()['status']=='succeeded': self.verify(previous)
             recipe=next((r for r in plan.recipes if r['id']==recipe_id),None)
             if recipe is None or stage not in ('history_build','target'): raise ContractError('unregistered common stage')
             if stage=='history_build':
+                for previous in self.stages:
+                    if previous.record.data()['status']=='succeeded': self.verify(previous)
                 if target_digest is not None or build is not None or barrier is not None: raise ContractError('history stage cannot receive target evidence')
                 task=plan.history.task; package=plan.parent; inputs=dict(plan.history_inputs)
                 trial=history_build_id(plan.protocol,recipe)
+                cell=None
             else:
                 packet=next((p for p in plan.packets if p.task.content_hash==target_digest),None)
                 if packet is None or type(build) is not JointTrainStage or build not in self.stages:
                     raise ContractError('target requires original bound history stage')
-                verified_barrier = None
                 if barrier is not None:
                     if type(barrier) is not JointTrainBarrier or barrier.executor is not self:
                         raise ContractError('formal target requires this exact executor history barrier')
-                    # This context is local to this dispatch.  Its construction
-                    # freshly replays every history build before the selected
-                    # package is read, so the build need not be replayed twice.
-                    verified_barrier = _verified_barrier_context(barrier)
-                    verified_barrier.require_build(build)
+                    # The lease ends before any model call.  It is never kept
+                    # for a later dispatch, score, or final verification.
+                    with _barrier_validation_scope(barrier) as context:
+                        for previous in self.stages:
+                            if previous.record.data()['status']!='succeeded': continue
+                            if previous.record.data()['stage']=='history_build': context.require_build(previous)
+                            else: self._verify(previous, context)
+                        context.require_build(build)
+                        if build.record.data()['stage']!='history_build' or build.record.data()['build_id']!=history_build_id(plan.protocol,recipe):
+                            raise ContractError('target package belongs to a different history procedure')
+                        task=packet.task; package=CandidatePackage(_read_record(build.inner.root/'candidate.json')); inputs={'public_csv':packet.csv_path}
+                        trial=plan.protocol.trial_binding(recipe_id,target_digest).content_hash
+                        scenario=R({'schema':'c5-stage-scenario-v1','plan_digest':plan.record.content_hash,'trial_id':trial})
+                        panel,_=_compile_panel_from_context(context)
+                        cell=next(c for c in panel.cells if c.arm_id==recipe_id and c.task_digest==task.content_hash)
+                        if cell.package_digest!=package.digest:raise ContractError('formal target package differs from its barrier')
                 else:
+                    for previous in self.stages:
+                        if previous.record.data()['status']=='succeeded': self.verify(previous)
                     self.verify(build)
-                if build.record.data()['stage']!='history_build' or build.record.data()['build_id']!=history_build_id(plan.protocol,recipe):
-                    raise ContractError('target package belongs to a different history procedure')
-                task=packet.task; package=CandidatePackage(_read_record(build.inner.root/'candidate.json')); inputs={'public_csv':packet.csv_path}
-                trial=plan.protocol.trial_binding(recipe_id,target_digest).content_hash
+                    if build.record.data()['stage']!='history_build' or build.record.data()['build_id']!=history_build_id(plan.protocol,recipe):
+                        raise ContractError('target package belongs to a different history procedure')
+                    task=packet.task; package=CandidatePackage(_read_record(build.inner.root/'candidate.json')); inputs={'public_csv':packet.csv_path}
+                    trial=plan.protocol.trial_binding(recipe_id,target_digest).content_hash; cell=None
             scope='c5-stage-v1:'+stage+':'+trial
             if any(s.record.data()['scope_id']==scope for s in self.stages): raise ContractError('common stage opportunity already used')
-            scenario=R({'schema':'c5-stage-scenario-v1','plan_digest':plan.record.content_hash,'trial_id':trial})
-            cell=PanelCell(OBLIGATION,task.identity,'r1','combination',recipe_id,runtime_arm(plan.composition,recipe,stage),
-                task.content_hash,scenario.content_hash,package.digest,ScorerConfig(R(plan.protocol.record.data()['scorer'])).digest)
-            if barrier is not None:
-                panel,_=compile_panel(barrier,verified_context=verified_barrier)
-                cell=next(c for c in panel.cells if c.arm_id==recipe_id and c.task_digest==task.content_hash)
-                if cell.package_digest!=package.digest:raise ContractError('formal target package differs from its barrier')
+            if cell is None:
+                scenario=R({'schema':'c5-stage-scenario-v1','plan_digest':plan.record.content_hash,'trial_id':trial})
+                cell=PanelCell(OBLIGATION,task.identity,'r1','combination',recipe_id,runtime_arm(plan.composition,recipe,stage),
+                    task.content_hash,scenario.content_hash,package.digest,ScorerConfig(R(plan.protocol.record.data()['scorer'])).digest)
             if stage=='history_build':check_history(plan.history,plan.material(task.content_hash).state(),self.broker,inputs)
             self.attempts[(stage,trial)]={'status':'reserved'};self._persist()
             with self.session.scope(scope) as scoped:
@@ -303,18 +314,22 @@ class JointTrainStageExecutor:
         finally:
             self._persist()
 
-    def verify(self, result, *, verified_context=None, verified_panel=None):
+    def verify(self, result):
+        if type(result) is JointTrainStage and result.barrier is not None:
+            with _barrier_validation_scope(result.barrier) as context:
+                return self._verify(result, context)
+        return self._verify(result, None)
+
+    def _verify(self, result, context):
         self._verify_protocol_file()
         if type(result) is not JointTrainStage or result not in self.stages or type(result.ledger) is not PhaseProviderLedger:
             raise ContractError('original common stage and eligible provider seal required')
         if result.barrier is not None and (type(result.barrier) is not JointTrainBarrier or result.barrier.executor is not self):
             raise ContractError('common stage barrier origin differs')
-        if verified_context is not None:
-            if result.barrier is None or type(verified_context) is not _VerifiedJointTrainBarrier:
+        if context is not None:
+            if result.barrier is None or type(context) is not _VerifiedJointTrainBarrier:
                 raise ContractError('verified common context applies only to its target barrier')
-            verified_context.require(result.barrier)
-        if verified_panel is not None and type(verified_panel) is not JointTrainPanel:
-            raise ContractError('exact verified common panel required')
+            context.require(result.barrier)
         expected=_stage_record(self.plan,result.inner,result.ledger,result.barrier,status='succeeded')
         if result.record!=expected or result.inner.record.data()['status']!='succeeded':
             raise ContractError('common outer receipt differs from complete original cross-binding')
@@ -329,19 +344,17 @@ class JointTrainStageExecutor:
         if b['stage']=='history_build': package=self.plan.parent; inputs=dict(self.plan.history_inputs)
         else:
             build=next(s for s in self.stages if s.record.data()['stage']=='history_build' and s.record.data()['build_id']==b['build_id'])
-            if verified_context is None:
+            if context is None:
                 self.verify(build)
             else:
-                verified_context.require_build(build)
+                context.require_build(build)
             package=CandidatePackage(_read_record(build.inner.root/'candidate.json'))
             inputs={'public_csv':next(p.csv_path for p in self.plan.packets if p.task==task)}
         if result.barrier is not None:
             if type(result.barrier) is not JointTrainBarrier or result.barrier.executor is not self or b['stage']!='target':
                 raise ContractError('common target barrier origin differs')
-            panel = verified_panel
-            if panel is None:
-                context = _verified_barrier_context(result.barrier) if verified_context is None else verified_context
-                panel,_=compile_panel(result.barrier,verified_context=context)
+            if context is None: raise ContractError('target verification requires a fresh common barrier lease')
+            panel,_=_compile_panel_from_context(context)
             if result.inner.cell not in panel.cells:raise ContractError('formal target did not execute its exact common panel cell')
         else:
             scenario=R({'schema':'c5-stage-scenario-v1','plan_digest':self.plan.record.content_hash,'trial_id':b['trial_id']})
@@ -403,17 +416,21 @@ class JointTrainBarrier:
         return CandidatePackage(_read_record(build.inner.root/'candidate.json'))
 
 
-@dataclass(frozen=True)
 class _VerifiedJointTrainBarrier:
-    """An unpersisted proof valid only for the caller's synchronous replay."""
-    barrier: JointTrainBarrier
-    barrier_digest: str
-    plan_digest: str
-    protocol_digest: str
-    build_receipts: tuple[tuple[str, str], ...]
+    """Private active lease for one synchronous provenance validation pass."""
+    __slots__ = ('barrier', 'barrier_digest', 'plan_digest', 'protocol_digest', 'build_receipts', 'panel', '_active')
+
+    def __init__(self, barrier):
+        self.barrier=barrier; self.barrier_digest=barrier.record.content_hash
+        self.plan_digest=barrier.executor.plan.record.content_hash; self.protocol_digest=barrier.executor.plan.protocol.digest
+        self.build_receipts=tuple(sorted(barrier.record.data()['build_receipts'].items())); self.panel=None; self._active=True
+
+    def close(self): self._active=False; self.panel=None
+    def __copy__(self): raise ContractError('common barrier lease cannot be copied')
+    def __deepcopy__(self, memo): raise ContractError('common barrier lease cannot be copied')
 
     def require(self, barrier):
-        if (type(barrier) is not JointTrainBarrier or barrier is not self.barrier
+        if (not self._active or type(barrier) is not JointTrainBarrier or barrier is not self.barrier
                 or barrier.record.content_hash != self.barrier_digest
                 or barrier.executor.plan.record.content_hash != self.plan_digest
                 or barrier.executor.plan.protocol.digest != self.protocol_digest
@@ -432,23 +449,23 @@ class _VerifiedJointTrainBarrier:
         return CandidatePackage(_read_record(build.inner.root/'candidate.json'))
 
 
-def _verified_barrier_context(barrier):
-    """Freshly seal a barrier for one call stack; never cache or serialize it."""
+@contextmanager
+def _barrier_validation_scope(barrier):
+    """Create a fresh lease and revoke it before control returns to the caller."""
     if type(barrier) is not JointTrainBarrier:
         raise ContractError('exact common history barrier required')
     barrier.verify()
-    return _VerifiedJointTrainBarrier(barrier, barrier.record.content_hash, barrier.executor.plan.record.content_hash,
-        barrier.executor.plan.protocol.digest, tuple(sorted(barrier.record.data()['build_receipts'].items())))
+    context=_VerifiedJointTrainBarrier(barrier)
+    try:
+        yield context
+    finally:
+        context.close()
 
 
-def compile_panel(barrier, *, verified_context=None):
-    if type(barrier) is not JointTrainBarrier: raise ContractError('original common history barrier required')
-    if verified_context is None:
-        barrier.verify()
-    elif type(verified_context) is _VerifiedJointTrainBarrier:
-        verified_context.require(barrier)
-    else:
-        raise ContractError('exact verified common barrier context required')
+def _compile_panel_from_context(context):
+    if type(context) is not _VerifiedJointTrainBarrier: raise ContractError('exact active common barrier lease required')
+    barrier=context.barrier; context.require(barrier)
+    if context.panel is not None: return context.panel
     plan=barrier.executor.plan; protocol=plan.protocol; body=protocol.record.data()
     # This invocation already replayed every original build above. Read each
     # selected package once and bind it to that verified build; do not replay
@@ -474,4 +491,11 @@ def compile_panel(barrier, *, verified_context=None):
         training_provenance=R({'schema':'c5-common-history-build-exposure-v1','protocol_digest':protocol.digest,
             'runtime_plan_digest':plan.record.content_hash,'barrier_digest':barrier.record.content_hash,
             'build_receipts':barrier.record.data()['build_receipts'],'candidate_selections':{k:v.digest for k,v in packages.items()}}))
-    return panel,scenarios
+    context.panel=(panel,scenarios)
+    return context.panel
+
+
+def compile_panel(barrier):
+    """Public panel construction always starts a new fresh barrier replay."""
+    with _barrier_validation_scope(barrier) as context:
+        return _compile_panel_from_context(context)
