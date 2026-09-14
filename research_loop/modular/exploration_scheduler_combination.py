@@ -184,11 +184,17 @@ def run_phase(*, material, cell, objective, root, broker, inputs, image, timeout
         with ThreadPoolExecutor(max_workers=2) as pool:
             pending = {}
             while len(completed)<len(jobs):
-                while len(pending)<2:
+                # Persist the ready batch before dispatch. Otherwise a short
+                # worker can finish while the next independent lease is still
+                # being committed, making the concurrent arm run serially.
+                ready = []
+                while len(pending)+len(ready)<2:
                     lease=scheduler.claim_next('worker-'+str(len(events)),lease_seconds=timeout_seconds+60)
                     if lease is None: break
                     emit('claim',job=lease.task_id,run_id=lease.run_id,attempt=lease.attempt)
-                    pending[pool.submit(work,jobs[lease.task_id])]=lease.task_id
+                    ready.append(lease.task_id)
+                for job_id in ready:
+                    pending[pool.submit(work,jobs[job_id])]=job_id
                 if not pending: raise ContractError('frozen dependency group cannot progress')
                 done,_=wait(pending,return_when=FIRST_COMPLETED)
                 for future in sorted(done,key=lambda f: next(e['sequence'] for e in events if e['kind']=='finish' and e['job']==pending[f])):

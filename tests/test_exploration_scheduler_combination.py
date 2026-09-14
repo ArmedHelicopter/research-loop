@@ -216,6 +216,30 @@ def test_atomic_claims_from_independent_connections_never_duplicate(tmp_path):
     assert len(scheduler.merge('public'))==2
 
 
+def test_ready_capacity_is_persisted_before_fast_worker_dispatch(grid,tmp_path,monkeypatch):
+    """Slow lease persistence must not consume the independent worker window."""
+    import threading
+    from research_loop.modular.modules.scheduling import FifoScheduler
+    supplied=phase_args(grid,tmp_path,'normal');entered=threading.Event();claims=[]
+    original_claim=FifoScheduler.claim_next;original_execute=supplied['broker'].execute
+    def claim(scheduler,*args,**kwargs):
+        if len(claims)==1:
+            # A bounded pause at the persistence seam exposes an early worker
+            # without assuming a particular Docker startup duration.
+            assert not entered.wait(.1), 'worker dispatched before ready capacity was reserved'
+        lease=original_claim(scheduler,*args,**kwargs)
+        if lease is not None:claims.append(lease.run_id)
+        return lease
+    def execute(request):
+        entered.set();return original_execute(request)
+    monkeypatch.setattr(FifoScheduler,'claim_next',claim)
+    monkeypatch.setattr(supplied['broker'],'execute',execute)
+    report=run_phase(**supplied)
+    assert len(claims)==2 and entered.is_set()
+    assert report.data()['status']=='succeeded' and report.data()['peak_leases']==2
+    assert verify_phase(**{k:v for k,v in supplied.items() if k!='broker'})==report
+
+
 @pytest.mark.parametrize('fault',['literal','input','limits','duplicate_claim','early_merge','snapshot','budget','return_subject'])
 def test_replay_rejects_actual_artifact_and_operation_forgery(grid,tmp_path,fault):
     from shutil import copytree
