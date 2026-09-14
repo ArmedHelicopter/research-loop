@@ -6,7 +6,7 @@ Host signatures authenticate configured provenance, never scientific validity.
 """
 from __future__ import annotations
 from contextlib import nullcontext
-from research_loop.modular.phase_provider import PhaseProviderSession,provider_configuration
+from research_loop.modular.phase_provider import PhaseProviderSession,PhaseProviderAbort,provider_configuration
 from dataclasses import dataclass, replace
 import hashlib
 import hmac
@@ -449,13 +449,28 @@ def run_train_operations(plan,*,run_root,model,audit_verifier,authority):
     completed={};targets={t.task.content_hash:t for t in plan.targets}
     for cell in plan.record.data()['cells']:
         adapter=_attempt(plan,cell,completed,authority)
-        with (scopes.scope(cell['cell_id']) if native else nullcontext(model)) as scoped:
-            result=shared._run_cell(adapter,cell,targets[cell['task_digest']],root/'cells'/cell['cell_id'],scoped,broker,audit_verifier)
+        result=None
+        try:
+            with (scopes.scope(cell['cell_id']) if native else nullcontext(model)) as scoped:
+                result=shared._run_cell(adapter,cell,targets[cell['task_digest']],root/'cells'/cell['cell_id'],scoped,broker,audit_verifier)
+        except ContractError:
+            if not native:raise
+            scopes.abort()
+        if native and scopes.aborted is not None:
+            if result is not None:completed[cell['cell_id']]=result
+            abort=scopes.finish(root/'provider-ledger.json')
+            result=shared._finish_aborted_phase(plan,root,tuple(completed.values()),abort,operation=True)
+            shared._atomic(root/'attempt.json',{'plan_digest':plan.record.content_hash,'status':'provider_provenance_failed',
+                'attempts':result.receipt.data()['attempts']})
+            shared._verify_aborted_phase(result,plan,operation=True);return result
         completed[cell['cell_id']]=result
         shared._atomic(root/'attempt.json',{'plan_digest':plan.record.content_hash,
             'allocated_cells':[c['cell_id'] for c in plan.record.data()['cells']],'cells':[c.record.data() for c in completed.values()]})
     cells=tuple(completed.values())
-    provider_ledger=scopes.seal(root/'provider-ledger.json') if native else None
+    provider_ledger=scopes.finish(root/'provider-ledger.json') if native else None
+    if type(provider_ledger) is PhaseProviderAbort:
+        result=shared._finish_aborted_phase(plan,root,cells,provider_ledger,operation=True)
+        shared._verify_aborted_phase(result,plan,operation=True);return result
     ledger_path=provider_ledger.path if native else model.ledger_path
     record=_result_record(plan,cells,ledger_path)
     shared._exclusive(root/'receipt.json',record)
@@ -483,6 +498,8 @@ def verify_train_operations(result,*,plan,authority):
     plan.verify_sources()
     if authority.descriptor!=plan.record.data()['authority'] or shared._read_record(result.root/'plan.json')!=plan.record:
         raise ContractError('operation verification authority or frozen plan differs')
+    if type(result.provider_ledger) is PhaseProviderAbort:
+        return shared._verify_aborted_phase(result,plan,operation=True)
     if shared._read_record(result.root/'receipt.json')!=result.receipt: raise ContractError('actual operation receipt differs')
     if len(result.cells)!=len(plan.record.data()['cells']): raise ContractError('operation phase omitted allocated denominator cells')
     native=plan.record.data()['schema']=='train-operation-plan-v2';completed={};used=[]

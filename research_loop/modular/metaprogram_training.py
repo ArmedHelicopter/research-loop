@@ -26,7 +26,7 @@ from research_loop.modular.panel_plan import obligation_grids, executable_arms
 from research_loop.modular.runtime import AuditVerifier, RunSession, verify_trace
 from research_loop.modular.train_controller import _reviewed_model_policy
 from research_loop.ontology import ContractError, canonical, digest
-from research_loop.modular.phase_provider import (PROVIDERS,PhaseProviderSession,PhaseProviderScope,PhaseProviderLedger,
+from research_loop.modular.phase_provider import (PROVIDERS,PhaseProviderSession,PhaseProviderScope,PhaseProviderLedger,PhaseProviderAbort,
     provider_configuration,validate_configuration,call_accounting)
 
 
@@ -401,6 +401,55 @@ def _ledger_ids(ledger):
     return ([c['view']['id'] for c in ledger.original.record.data()['calls']]
         if type(ledger) is PhaseProviderLedger else [c['id'] for c in ledger['calls']])
 
+
+def _aborted_phase_record(plan,root,cells,abort,*,operation=False):
+    """Keep all planned rows without claiming a replay-valid failed suffix."""
+    if type(abort) is not PhaseProviderAbort:raise ContractError('typed terminal phase accounting required')
+    abort.verify();body=plan.record.data();config=body['common']['model_config'] if operation else body['model_config']
+    if abort.record.data()['completed_scope_prefix']['configuration_digest']!=FrozenRecord.from_dict(config).content_hash:
+        raise ContractError('terminal phase belongs to another provider allocation')
+    declared=body['cells'];ids=[c['cell_id'] for c in declared]
+    actual={c.record.data()['cell_id']:c for c in cells}
+    if len(actual)!=len(cells) or list(actual)!=ids[:len(cells)]:raise ContractError('aborted phase observed prefix differs')
+    attempts=[]
+    for cell in declared:
+        path=root/'cells'/cell['cell_id'];observed=actual.get(cell['cell_id'])
+        if observed is not None and observed.root!=path:raise ContractError('aborted cell source path differs')
+        files={str(p.relative_to(path)).replace('\\','/'):_sha(_path(p).read_bytes())
+            for p in path.rglob('*') if p.is_file()} if path.exists() else {}
+        if observed is not None and _read_record(path/'cell-receipt.json')!=observed.record:
+            raise ContractError('aborted original cell receipt differs')
+        attempts.append({'cell':cell,'status':'executed_unverified' if observed is not None
+            else 'interrupted' if path.exists() else 'blocked','reason':'provider_provenance_fault',
+            'original_cell_receipt_digest':observed.record.content_hash if observed else None,'files':files})
+    schema='train-operation-aborted-phase-receipt-v2' if operation else 'q63-training-aborted-phase-receipt-v2'
+    return FrozenRecord.from_dict({'schema':schema,'plan_digest':plan.record.content_hash,'status':'engineering_incomplete',
+        'expected_cells':len(declared),'observed_cell_receipts':len(cells),'attempts':attempts,
+        'allocation':body['budget'] if operation else {'cells':len(declared),'per_cell':_ALLOCATION,'model_calls':len(declared)*3},
+        'provider_snapshot':abort.snapshot.data(),'provider_abort_digest':abort.record.content_hash,
+        'exact_unused_main_opportunities':None,'current_originals_verified':False,'provider_scope_partition_complete':False,
+        'scientific_effect':'not_measured','builder_activation':'not_performed','production_promotion':'not_authorized',
+        'scoring':'not_configured','accounting_status':'historical_lower_bounds_only'})
+
+
+def _finish_aborted_phase(plan,root,cells,abort,*,operation=False):
+    record=_aborted_phase_record(plan,root,cells,abort,operation=operation)
+    _exclusive(root/('receipt.json' if operation else 'training-receipt.json'),record)
+    return MetaTrainingRun(root,abort.path,tuple(cells),record,abort)
+
+
+def _verify_aborted_phase(result,plan,*,operation=False):
+    if _read_record(result.root/'plan.json')!=plan.record:raise ContractError('aborted phase plan differs')
+    if _read_record(result.root/('receipt.json' if operation else 'training-receipt.json'))!=result.receipt:
+        raise ContractError('aborted phase receipt differs')
+    if result.model_ledger_path!=result.provider_ledger.path:raise ContractError('aborted phase ledger path differs')
+    expected=_aborted_phase_record(plan,result.root,result.cells,result.provider_ledger,operation=operation)
+    if result.receipt!=expected:raise ContractError('terminal phase denominator or retained evidence differs')
+    return FrozenRecord.from_dict({'schema':'train-phase-abort-verification-v2','status':'terminal_accounting_only',
+        'expected_cells':expected.data()['expected_cells'],'observed_cell_receipts':len(result.cells),
+        'engineering_verified':False,'current_originals_verified':False,'score_eligible':False,
+        'scientific_effect':'not_measured','builder_activation':'not_performed','production_promotion':'not_authorized'})
+
 def _projection(candidate):
     changes=candidate.record.data()['changes']
     if len(changes)!=1: raise ContractError('generated package has an unsupported public change set')
@@ -440,7 +489,7 @@ class MetaTrainingRun:
     model_ledger_path: Path
     cells: tuple[MetaTrainingCell,...]
     receipt: FrozenRecord
-    provider_ledger: PhaseProviderLedger | None = None
+    provider_ledger: PhaseProviderLedger | PhaseProviderAbort | None = None
 
 
 def _run_cell(plan,cell,target,root,model,broker,audit_verifier):
@@ -545,13 +594,28 @@ def run_metaprogram_training(plan,*,run_root,model,audit_verifier):
         broker=DockerExecutionBroker([root,*sorted({p.parent for t in plan.targets for _,p in t.inputs})])
         cells=[];targets={t.task.content_hash:t for t in plan.targets}
         for cell in plan.record.data()['cells']:
-            with (scopes.scope(cell['cell_id']) if native else nullcontext(model)) as scoped:
-                result=_run_cell(plan,cell,targets[cell['task_digest']],root/'cells'/cell['cell_id'],scoped,broker,audit_verifier)
+            result=None
+            try:
+                with (scopes.scope(cell['cell_id']) if native else nullcontext(model)) as scoped:
+                    result=_run_cell(plan,cell,targets[cell['task_digest']],root/'cells'/cell['cell_id'],scoped,broker,audit_verifier)
+            except ContractError:
+                if not native:raise
+                scopes.abort()  # Rejects unrelated errors without a durable core fault.
+            if native and scopes.aborted is not None:
+                if result is not None:cells.append(result)
+                abort=scopes.finish(root/'provider-ledger.json')
+                result=_finish_aborted_phase(plan,root,cells,abort)
+                attempt.update(status='provider_provenance_failed',attempts=result.receipt.data()['attempts'])
+                _atomic(root/'training-attempt.json',attempt)
+                _verify_aborted_phase(result,plan);return result
             cells.append(result);attempt.update(status='executing',cell_receipts=[c.record.data() for c in cells])
             _atomic(root/'training-attempt.json',attempt)
     except Exception as exc:
         attempt.update(status='interrupted',error_type=type(exc).__name__);_atomic(root/'training-attempt.json',attempt);raise
-    provider_ledger=scopes.seal(root/'provider-ledger.json') if native else None
+    provider_ledger=scopes.finish(root/'provider-ledger.json') if native else None
+    if type(provider_ledger) is PhaseProviderAbort:
+        result=_finish_aborted_phase(plan,root,cells,provider_ledger)
+        _verify_aborted_phase(result,plan);return result
     ledger_path=provider_ledger.path if native else model.ledger_path
     complete=all(c.record.data()['status']=='succeeded' for c in cells)
     receipt=FrozenRecord.from_dict({'schema':'q63-training-phase-receipt-v2' if native else 'q63-training-phase-receipt-v1','plan_digest':plan.record.content_hash,
@@ -739,6 +803,8 @@ def verify_metaprogram_training(result,*,plan):
     """Read actual immutable artifacts and model costs; never create or resume work."""
     if not isinstance(result,MetaTrainingRun) or not isinstance(plan,FrozenMetaTrainingPlan):
         raise ContractError('typed phase result and frozen plan required')
+    if type(result.provider_ledger) is PhaseProviderAbort:
+        plan.verify_sources();return _verify_aborted_phase(result,plan)
     plan.verify_sources();root=result.root;_path(result.model_ledger_path)
     if _read_record(root/'plan.json')!=plan.record:
         raise ContractError('actual phase plan differs from expected caller plan')

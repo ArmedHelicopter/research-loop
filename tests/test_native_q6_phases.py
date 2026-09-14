@@ -7,6 +7,7 @@ import pytest
 
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.phase_provider import provider_configuration
+from research_loop.modular.phase_provider import PhaseProviderAbort
 from research_loop.modular.train_provider import GrokTrainProvider
 from research_loop.modular.metaprogram_training import run_metaprogram_training,verify_metaprogram_training
 from research_loop.modular.improvement_training import freeze_candidate_training,run_candidate_training
@@ -84,3 +85,30 @@ def test_native_q63_failure_retains_eight_allocated_cells_and_known_main(tmp_pat
     assert b['actual']['provider_calls']==1 and b['actual']['builder_attempts']==b['actual']['docker_attempts']==0
     assert b['builder_activation']=='not_performed'
     assert verify_metaprogram_training(run,plan=plan).data()['observed_cells']==8
+
+
+@pytest.mark.parametrize('experiment',['Q6.3','Q6.5'])
+def test_native_q6_original_drift_stops_with_all_planned_rows_and_unresolved_scope(tmp_path,monkeypatch,experiment):
+    from research_loop.modular import metaprogram_training as phase
+    plan,args,_,feedback,logs=prepare_native(tmp_path,monkeypatch,experiment)
+    original=phase._run_cell
+    def corrupt(*a,**k):
+        result=original(*a,**k)
+        path=args['model'].backend.calls_root/'0001-builder_proposal'/'response.private.json'
+        path.write_bytes(path.read_bytes()+b' ')
+        return result
+    monkeypatch.setattr(phase,'_run_cell',corrupt)
+    run=(run_train_operations if experiment=='Q6.5' else run_metaprogram_training)(plan,**args)
+    b=run.receipt.data();count=16 if experiment=='Q6.5' else 8
+    assert type(run.provider_ledger) is PhaseProviderAbort and b['status']=='engineering_incomplete'
+    assert b['expected_cells']==len(b['attempts'])==count and b['observed_cell_receipts']==1
+    assert b['attempts'][0]['status']=='executed_unverified'
+    assert all(row['status']=='blocked' for row in b['attempts'][1:])
+    assert len(logs)==3 and b['provider_snapshot']['observed_main_opportunities_lower_bound']==3
+    assert b['provider_snapshot']['known_reported_tokens_lower_bound']==36
+    assert b['exact_unused_main_opportunities'] is None and not b['current_originals_verified']
+    assert run.provider_ledger.record.data()['unresolved_scope']['scope_id']==plan.record.data()['cells'][0]['cell_id']
+    checked=(verify_train_operations(run,plan=plan,authority=args['authority']) if experiment=='Q6.5'
+        else verify_metaprogram_training(run,plan=plan)).data()
+    assert checked['status']=='terminal_accounting_only' and not checked['engineering_verified']
+    assert len(feedback)==(1 if experiment=='Q6.5' else 0)
