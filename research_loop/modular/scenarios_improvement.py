@@ -59,6 +59,9 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
     if experiment_id == "Q6.3":
         from research_loop.modular.fixture_builder_artifacts import run_q63_fixture
         return run_q63_fixture(task=task,frozen_controls=frozen_controls,sidecar=sidecar,variant=variant,callback=callback)
+    from research_loop.modular.scenario_artifacts import ScenarioArtifactWriter
+    writer = ScenarioArtifactWriter(sidecar, task=task, controls=frozen_controls,
+                                    injection=injection, experiment_id=experiment_id, variant=variant)
     seen: list[FrozenRecord] = []
     outputs: list[FrozenRecord] = []
 
@@ -70,13 +73,15 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
         if not isinstance(result, FrozenRecord):
             raise ContractError("improvement callback must return FrozenRecord")
         outputs.append(result)
+        writer.callback(payload, result)
         return result
 
-    manifest = TrainingManifest.freeze((task.identity,))
-    base = CandidatePackage.create(parent_digest=None, manifest=manifest, changes={"memory": {"mode": "off"}}, search_cost=2)
-    detail: dict[str, Any] = {"fixture_only": True, "train_manifest_digest": manifest.content_hash,
-        "baseline_digest": base.digest, "search_budget": 2, "injection": injection.data()}
-    if experiment_id == "Q6.1":
+    try:
+      manifest = TrainingManifest.freeze((task.identity,))
+      base = CandidatePackage.create(parent_digest=None, manifest=manifest, changes={"memory": {"mode": "off"}}, search_cost=2)
+      detail: dict[str, Any] = {"fixture_only": True, "train_manifest_digest": manifest.content_hash,
+          "baseline_digest": base.digest, "search_budget": 2, "injection": injection.data()}
+      if experiment_id == "Q6.1":
         # These attempted inputs cross the actual package/authority boundaries.
         payload = call("privilege_attempt", {"attempt": variant, "package_parent": base.digest})
         errors: list[str] = []
@@ -89,12 +94,15 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
                 _authority(lambda: base, lambda: base).validate(base, base.digest, SignedValidation(FrozenRecord.from_dict({"forged": True}), "not-a-signature"))
             else:
                 runtime = ExecutionRuntime(sidecar / "runtime.sqlite", FileDeploymentPort(sidecar / "active.json", base), _authority(lambda: base, lambda: base), base)
-                runtime.activate(type("Forged", (), {"record": FrozenRecord.from_dict({}), "signature": "forged", "receipt_id": "forged"})(), base)  # type: ignore[arg-type]
+                try:
+                    runtime.activate(type("Forged", (), {"record": FrozenRecord.from_dict({}), "signature": "forged", "receipt_id": "forged"})(), base)  # type: ignore[arg-type]
+                finally:
+                    runtime.close()
         except (ContractError, AttributeError) as exc:
             errors.append(str(exc))
         detail.update({"attempt_callback_digest": payload.content_hash, "rejections": errors,
             "boundary_limit": "in-process checks show package/API rejection only; they do not demonstrate OS/process isolation or secret custody"})
-    elif experiment_id == "Q6.2":
+      elif experiment_id == "Q6.2":
         manual = {"memory": {"mode": "manual", "lesson": "predeclared train-only fixture"}}
         proposal = None if variant == "fixed" else call("train_candidate_proposal", {"arm": variant, "fixed_base_digest": base.digest, "manual_changes": manual, "matched_search_budget": 2})
         changes, rejected = (None if variant == "fixed" else manual if variant == "manual_train" else None), None
@@ -111,9 +119,13 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
         candidate = base if variant == "fixed" else None
         if changes is not None:
             candidate = BoundedCandidateBuilder().build(manifest, base, changes, search_cost=2)
-            optimizer = TrainOptimizer(sidecar / "optimizer.sqlite"); optimizer.register(base); optimizer.propose(BoundedCandidateBuilder(), manifest, base, changes, search_cost=2); optimizer.compare_train(base, candidate); optimizer.close()
+            optimizer = TrainOptimizer(sidecar / "optimizer.sqlite")
+            try:
+                optimizer.register(base); optimizer.propose(BoundedCandidateBuilder(), manifest, base, changes, search_cost=2); optimizer.compare_train(base, candidate)
+            finally:
+                optimizer.close()
         detail.update({"proposal_digest": proposal.content_hash if proposal else None, "candidate_digest": candidate.digest if candidate else None, "candidate_changes": candidate.record.data()["changes"] if candidate and variant != "fixed" else None, "rejected": rejected, "acceptance": "not_requested; validation-only acceptance is external", "cost": 0 if variant == "fixed" else 2, "fixed_identity_preserved": variant != "fixed" or candidate.digest == base.digest, "callback_calls": len(seen)})
-    elif experiment_id == "Q6.5":
+      elif experiment_id == "Q6.5":
         rounds, parent, bad_experience = [], base, 0
         deployment = FileDeploymentPort(sidecar / "shadow-deployment.json", base)
         # One authority remains installed for the whole shadow run.  Each
@@ -122,53 +134,56 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
         shadow_authority = _shadow_authority()
         runtime = ExecutionRuntime(sidecar / "shadow-runtime.sqlite", deployment, shadow_authority, base)
         activation_count = 0
-        for round_id in range(2):
-            feedback = call("offline_scoring_feedback", {"round": round_id, "variant": variant, "feedback": "intentionally faulty fixture score", "offline_replay": True, "budget": 2})
-            bad_experience += 1
-            parent_before = parent.digest
+        try:
+          for round_id in range(2):
+              feedback = call("offline_scoring_feedback", {"round": round_id, "variant": variant, "feedback": "intentionally faulty fixture score", "offline_replay": True, "budget": 2})
+              bad_experience += 1
+              parent_before = parent.digest
             # The retained callback output is part of the package material;
             # this is a real two-round parent chain, albeit an offline fixture.
-            candidate = BoundedCandidateBuilder().build(manifest, parent, {"memory": {"mode": "shadow", "lesson": "fixture-feedback-" + feedback.content_hash}}, search_cost=2)
-            decision, active_after, error = "not_attempted", runtime.active().digest, None
-            if variant == "unprotected":
-                receipt = shadow_authority.validate(candidate, parent.digest, _signed_shadow_validation(candidate.digest, parent.digest))
-                ack = runtime.activate(receipt, candidate); parent = candidate
-                activation_count += 1
-                decision, active_after = "offline_shadow_activated", ack.active_digest
-            else:
+              candidate = BoundedCandidateBuilder().build(manifest, parent, {"memory": {"mode": "shadow", "lesson": "fixture-feedback-" + feedback.content_hash}}, search_cost=2)
+              decision, active_after, error = "not_attempted", runtime.active().digest, None
+              if variant == "unprotected":
+                  receipt = shadow_authority.validate(candidate, parent.digest, _signed_shadow_validation(candidate.digest, parent.digest))
+                  ack = runtime.activate(receipt, candidate); parent = candidate
+                  activation_count += 1
+                  decision, active_after = "offline_shadow_activated", ack.active_digest
+              else:
                 # The calibration receipt is correctly authenticated and binds
                 # these exact digests.  It fails eligibility (not its MAC), so
                 # no acceptance receipt or activation can be reached.
-                bad = _signed_calibration(parent.digest, base.digest, frozen_controls.content_hash, eligible=False)
-                try:
-                    _activate_with_calibration_guard(runtime, shadow_authority, candidate, parent.digest, bad,
-                                                      scorer_digest=base.digest, protocol_digest=frozen_controls.content_hash)
-                except ContractError as exc:
-                    error = str(exc); decision = "calibration_eligibility_rejected"
-            rounds.append({"round": round_id, "feedback_digest": feedback.content_hash, "budget": 2, "parent_digest_before": parent_before, "candidate_digest": candidate.digest, "bad_experience_count": bad_experience, "authority_decision": decision, "active_digest_after": active_after, "activation_attempted": variant == "unprotected", "calibration_receipt_digest": bad.content_hash if variant != "unprotected" else None, "calibration_eligible": None if variant == "unprotected" else False, "rejection": error, "scientific_effect_status": "not_measured"})
-        runtime.close()
+                  bad = _signed_calibration(parent.digest, base.digest, frozen_controls.content_hash, eligible=False)
+                  try:
+                      _activate_with_calibration_guard(runtime, shadow_authority, candidate, parent.digest, bad,
+                                                        scorer_digest=base.digest, protocol_digest=frozen_controls.content_hash)
+                  except ContractError as exc:
+                      error = str(exc); decision = "calibration_eligibility_rejected"
+              rounds.append({"round": round_id, "feedback_digest": feedback.content_hash, "budget": 2, "parent_digest_before": parent_before, "candidate_digest": candidate.digest, "bad_experience_count": bad_experience, "authority_decision": decision, "active_digest_after": active_after, "activation_attempted": variant == "unprotected", "calibration_receipt_digest": bad.content_hash if variant != "unprotected" else None, "calibration_eligible": None if variant == "unprotected" else False, "rejection": error, "scientific_effect_status": "not_measured"})
+        finally:
+            runtime.close()
         detail.update({"offline_shadow_rounds": rounds, "promotion": "offline_shadow_activation" if variant == "unprotected" else "calibration_eligibility_rejected", "real_promoter_changed": variant == "unprotected", "activation_count": activation_count, "oracle_visibility": "controller_only_not_callback", "scientific_calibration_claimed": False, "scientific_effect_status": "not_measured"})
-    else:
+      else:
         candidate = BoundedCandidateBuilder().build(manifest, base, {"memory": {"mode": "on", "lesson": "fixture"}}, search_cost=2)
         authority = _authority(lambda: candidate, lambda: base)
         deployment = FileDeploymentPort(sidecar / "deployment.json", base)
         runtime = ExecutionRuntime(sidecar / "runtime.sqlite", deployment, authority, base)
-        before = runtime.run_task(task.identity, lambda _identity, package: package.digest)
-        call("validation_acceptance_request", {"candidate_digest": candidate.digest, "expected_active_digest": base.digest})
-        receipt = authority.validate(candidate, base.digest, _signed_validation())
-        activated = runtime.activate(receipt, candidate)
-        next_task = runtime.run_task(task.identity, lambda _identity, package: package.digest)
-        boundary_fault = None
-        if variant == "duplicate":
+        try:
+          before = runtime.run_task(task.identity, lambda _identity, package: package.digest)
+          call("validation_acceptance_request", {"candidate_digest": candidate.digest, "expected_active_digest": base.digest})
+          receipt = authority.validate(candidate, base.digest, _signed_validation())
+          activated = runtime.activate(receipt, candidate)
+          next_task = runtime.run_task(task.identity, lambda _identity, package: package.digest)
+          boundary_fault = None
+          if variant == "duplicate":
             try: runtime.activate(receipt, candidate)
             except ContractError as exc: boundary_fault = str(exc)
-        elif variant == "drift":
+          elif variant == "drift":
             # A complete, hash-valid snapshot of the parent is unexpected by
             # runtime state, so this is digest drift rather than corruption.
             deployment.activate(base, candidate.digest)
             try: runtime.run_task(task.identity, lambda _identity, package: package.digest)
             except ContractError as exc: boundary_fault = str(exc)
-        elif variant == "offline":
+          elif variant == "offline":
             # Transport-specific fixture failure: state stays complete, but the
             # deployment port's dedicated transport wrapper reports unavailable.
             class OfflineTransport:
@@ -179,14 +194,24 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
             runtime._deployment = OfflineTransport()  # owned runtime seam, fixture transport fault
             try: runtime.run_task(task.identity, lambda _identity, package: package.digest)
             except ContractError as exc: boundary_fault = str(exc)
-        rollback = None if variant in {"promote", "drift", "offline"} else runtime.rollback(authority.authorize_rollback(candidate.digest, base.digest, "fixture rollback"))
-        after = runtime.run_task(task.identity, lambda _identity, package: package.digest) if variant not in {"drift", "offline"} else None
-        runtime.close()
+          rollback = None if variant in {"promote", "drift", "offline"} else runtime.rollback(authority.authorize_rollback(candidate.digest, base.digest, "fixture rollback"))
+          after = runtime.run_task(task.identity, lambda _identity, package: package.digest) if variant not in {"drift", "offline"} else None
+        finally:
+            runtime.close()
         detail.update({"before": before.data(), "activation": activated.__dict__, "next_workflow": next_task.data(), "rollback": rollback.__dict__ if rollback else None, "after": after.data() if after else None, "boundary_fault": boundary_fault, "previous_snapshot_digest": deployment.previous().digest if deployment.previous() else None})
-    return ImprovementScenarioResult(experiment_id, variant, tuple(seen), tuple(outputs), FrozenRecord.from_dict({
-        "experiment_id": experiment_id, "variant": variant, "fixture_only": True, "journal_directory": str(sidecar),
-        "callback_count": len(seen), "detail": detail,
-        "limitation": "offline engineering fixtures retain package, receipt, cost and deployment state but do not measure train gains, validation quality, scientific validity, production host isolation, or cross-process security"}))
+      result = ImprovementScenarioResult(experiment_id, variant, tuple(seen), tuple(outputs), FrozenRecord.from_dict({
+          "experiment_id": experiment_id, "variant": variant, "fixture_only": True, "journal_directory": str(sidecar),
+          "callback_count": len(seen), "detail": detail,
+          "limitation": "offline engineering fixtures retain package, receipt, cost and deployment state but do not measure train gains, validation quality, scientific validity, production host isolation, or cross-process security"}))
+      writer.close(result=result)
+      return result
+    except Exception as exc:
+      if not writer.ended:
+          try:
+              writer.close(error=exc)
+          except Exception as journal_error:
+              exc.add_note("scenario artifact closure failure: " + type(journal_error).__name__)
+      raise
 
 
 def _authority(candidate: Callable[[], CandidatePackage], active: Callable[[], CandidatePackage]) -> AcceptanceAuthority:
@@ -273,3 +298,24 @@ def inspect_q63_fixture_failure(*, task: PublicTask, frozen_controls: FrozenReco
     """Inspect failed fixture storage without treating it as accepted execution."""
     from research_loop.modular.fixture_builder_artifacts import inspect_q63_fixture_failure as inspect_failure
     return inspect_failure(task=task,frozen_controls=frozen_controls,sidecar=sidecar,variant=variant)
+
+
+def verify_scenario_artifacts(result: ImprovementScenarioResult, *, task: PublicTask,
+                              frozen_controls: FrozenRecord, sidecar: Path,
+                              experiment_id: str, variant: str) -> FrozenRecord:
+    """Read original non-Q6.3 fixture outputs without replaying the operation."""
+    if experiment_id == "Q6.3":
+        raise ContractError("Q6.3 retains its dedicated fixture artifact adapter")
+    from research_loop.modular.scenario_artifacts import verify_scenario_artifacts as verify
+    return verify(result, task=task, frozen_controls=frozen_controls, sidecar=sidecar,
+                  experiment_id=experiment_id, variant=variant)
+
+
+def inspect_scenario_artifact_failure(*, task: PublicTask, frozen_controls: FrozenRecord,
+                                      sidecar: Path, experiment_id: str, variant: str) -> FrozenRecord:
+    """Read a non-Q6.3 failed prefix without accepting its operation semantics."""
+    if experiment_id == "Q6.3":
+        raise ContractError("Q6.3 retains its dedicated fixture artifact adapter")
+    from research_loop.modular.scenario_artifacts import inspect_scenario_failure
+    return inspect_scenario_failure(task=task, frozen_controls=frozen_controls, sidecar=sidecar,
+                                    experiment_id=experiment_id, variant=variant)
