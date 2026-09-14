@@ -1,0 +1,132 @@
+# 一次评审运行的实际产物依赖图
+
+这是 Q4.1 roles 合成工程用例的真实落盘记录，已从调用方独立输入只读重建。
+箭头表示该次运行声明并经核验的 consumes 关系；不表示科学因果支持。
+时间顺序链没有被当作消费关系画入图中。所有完整摘要与原件哈希在
+[lineage.json](lineage.json)，对应原运行 ZIP 见
+[原件](../review-scenario-artifacts-r1/test_actual_m4_freeze_payload_0-original.zip)。
+读取和导出没有重跑模块、用户回调或模型，原目录字节与 mtime 未变化。
+此示例不代表所有模块或跨目录关系已经覆盖。
+
+```mermaid
+flowchart TD
+  n0["frozen_inputs<br/>224fa8bec4b3"]
+  n1["audit_open<br/>1976f69d8470"]
+  n2["review_engine_event<br/>3347e88ff8da"]
+  n3["callback_reserved<br/>99a82c24fa79"]
+  n4["callback_payload<br/>53c5e8d3694f"]
+  n5["callback_raw<br/>9cf38bcf63cd"]
+  n6["callback_response<br/>2538dde52cd4"]
+  n7["prediction_candidate<br/>d0661e790535"]
+  n8["review_engine_event<br/>4a053360c7aa"]
+  n9["callback_reserved<br/>2be635c5653f"]
+  n10["callback_payload<br/>a919dda298a3"]
+  n11["callback_raw<br/>57901de578f9"]
+  n12["callback_response<br/>dfb71a692f73"]
+  n13["prediction_candidate<br/>6c9b6bae7cd6"]
+  n14["review_engine_event<br/>75654237ac74"]
+  n15["callback_reserved<br/>c5b8f03e6247"]
+  n16["callback_payload<br/>cf5eafa42c6d"]
+  n17["callback_raw<br/>b6e1b3770bee"]
+  n18["callback_response<br/>2ac60c3ba29c"]
+  n19["prediction_candidate<br/>3cf3e20f4728"]
+  n20["review_engine_event<br/>63c317de6307"]
+  n21["callback_reserved<br/>f3c08b86d96d"]
+  n22["callback_payload<br/>91fbae1102cd"]
+  n23["callback_raw<br/>47732541c4ae"]
+  n24["callback_response<br/>714273cf103c"]
+  n25["prediction_candidate<br/>108e5119cb46"]
+  n26["review_engine_event<br/>b1ba6171b997"]
+  n27["review_reveal<br/>736fa5b9cd05"]
+  n28["review_engine_event<br/>51d5b2a4e960"]
+  n29["prediction_registry_event<br/>3fbad93bd2c4"]
+  n30["prediction_frozen_plan<br/>67e74f40fa0f"]
+  n31["output<br/>87d1bb634ba1"]
+  n0 --> n1
+  n1 --> n2
+  n1 --> n3
+  n3 --> n4
+  n2 --> n4
+  n4 --> n5
+  n5 --> n6
+  n6 --> n7
+  n2 --> n8
+  n3 --> n8
+  n6 --> n8
+  n1 --> n9
+  n9 --> n10
+  n2 --> n10
+  n10 --> n11
+  n11 --> n12
+  n12 --> n13
+  n2 --> n14
+  n8 --> n14
+  n9 --> n14
+  n12 --> n14
+  n1 --> n15
+  n15 --> n16
+  n2 --> n16
+  n16 --> n17
+  n17 --> n18
+  n18 --> n19
+  n2 --> n20
+  n8 --> n20
+  n14 --> n20
+  n15 --> n20
+  n18 --> n20
+  n1 --> n21
+  n21 --> n22
+  n2 --> n22
+  n22 --> n23
+  n23 --> n24
+  n24 --> n25
+  n2 --> n26
+  n8 --> n26
+  n14 --> n26
+  n20 --> n26
+  n21 --> n26
+  n24 --> n26
+  n2 --> n27
+  n8 --> n27
+  n14 --> n27
+  n20 --> n27
+  n26 --> n27
+  n2 --> n28
+  n8 --> n28
+  n14 --> n28
+  n20 --> n28
+  n26 --> n28
+  n27 --> n28
+  n1 --> n29
+  n7 --> n29
+  n13 --> n29
+  n19 --> n29
+  n25 --> n29
+  n29 --> n30
+  n1 --> n31
+  n2 --> n31
+  n3 --> n31
+  n4 --> n31
+  n6 --> n31
+  n7 --> n31
+  n8 --> n31
+  n9 --> n31
+  n10 --> n31
+  n12 --> n31
+  n13 --> n31
+  n14 --> n31
+  n15 --> n31
+  n16 --> n31
+  n18 --> n31
+  n19 --> n31
+  n20 --> n31
+  n21 --> n31
+  n22 --> n31
+  n24 --> n31
+  n25 --> n31
+  n26 --> n31
+  n27 --> n31
+  n28 --> n31
+  n29 --> n31
+  n30 --> n31
+```
