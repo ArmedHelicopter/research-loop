@@ -1,0 +1,7 @@
+{
+  "failed_operation": "tested-source reconstruction from Git LF/CRLF candidates",
+  "source": "6e0221f94f00ca6396c3bef5f99412b9b9c3a785",
+  "file": "research_loop/modular/train_controller.py",
+  "expected_disk_sha256": "06d72eb9b23f5f43f424f4c59c7b8e2a35ae811fde49174607bf5bbf384558a2",
+  "error": "AssertionError: no candidate matches; incomplete tested-source.zip preserved as first-attempt evidence"
+}
