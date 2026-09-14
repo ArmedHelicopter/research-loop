@@ -1,6 +1,7 @@
 import json
 
 import pytest
+from types import SimpleNamespace
 
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.m4_m5_artifacts import verify_m4_m5_artifacts
@@ -8,6 +9,37 @@ from research_loop.modular.workflow import ModularWorkflow
 from research_loop.ontology import ContractError
 from test_modular_predictions_review import branches, response
 from test_modular_runtime import session_at
+
+
+@pytest.mark.parametrize('modules', [('M4', 'M5'), ('M4',), ()])
+def test_actual_c4_prepare_preserves_enabled_and_ordinary_control_artifacts(tmp_path, monkeypatch, modules):
+    from research_loop.modular import full_loo_modules as c4
+    from test_modular_combination_benchmark_driver import _plan
+    session, _, _ = session_at(tmp_path/'run', modules=modules, slots=c4.PREP_SLOTS)
+    workflow = ModularWorkflow(session)
+    # This seam test isolates the caller's review contract from package and
+    # panel serialization, which the actual native stage test covers.
+    monkeypatch.setattr(c4, '_projection', lambda _: FrozenRecord.from_dict({'instructions': 'public guidance'}))
+    monkeypatch.setattr(c4, 'opaque_panel_cell_binding', lambda _: {'fixture': 'public'})
+    def model(request):
+        slot = request.data()['slot']
+        if slot == 'm4_plan':
+            plan = _plan()
+            for branch in plan['branches']:
+                for prediction in branch['predictions']:
+                    prediction.update(observable=c4.MEASUREMENT['observable'], discriminator_id=c4.MEASUREMENT['discriminator_id'])
+            return FrozenRecord.from_dict(plan)
+        if slot.startswith('review_'): return FrozenRecord.from_dict(response())
+        return FrozenRecord.from_dict({'job_id': 'auxiliary', 'rationale': 'Check a public alternative.'})
+    c4.prepare(cell=SimpleNamespace(runtime_arm=session.arm), task=session.task, package=None,
+        transition=FrozenRecord.from_dict({'public': {}}), predictions=workflow.predictions, reviews=workflow.reviews,
+        invoke=lambda slot, instruction, module: session.invoke(slot, model, instruction=instruction, module_context=module),
+        record=session._record, retrieve=lambda: {'public': 'fixture'},
+        phase_material=FrozenRecord.from_dict({'jobs': [{'id': 'main'}, {'id': 'auxiliary'}]}))
+    checked = verify_m4_m5_artifacts(session.artifacts, session.sidecar).data()
+    assert checked['prediction_events'] == int('M4' in modules)
+    assert checked['review_events'] == (3 if 'M5' in modules else 0)
+    assert checked['reveal_outputs'] == int('M5' in modules)
 
 
 def history(tmp_path, modules=('M4', 'M5')):

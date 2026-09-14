@@ -171,7 +171,10 @@ def _verify_m4_m5_artifacts(catalogue, sidecar: Path):
         if body['kind'] == 'trace_event':
             trace = FrozenRecord.from_dict(body['payload']['canonical']).data()
             if trace['stage'] == 'c4_review_reveal':
-                _bind_c4_reveal(trace, reveals)
+                if 'M5' in active:
+                    _bind_c4_reveal(trace, reveals)
+                elif trace['data'] != {'submissions': None}:
+                    raise ContractError('disabled M5 ordinary control cannot claim a sealed reveal')
             latest_trace = descriptor.content_hash
             continue
         if body['kind'] == 'reveal_output' and body['module'] == 'M5':
@@ -230,8 +233,8 @@ def _verify_m4_m5_artifacts(catalogue, sidecar: Path):
         consumed[journal].append(event)
     if consumed != journals:
         raise ContractError('M4/M5 artifact coverage differs from its original journal')
-    _check_c4_prediction_freezes(trace_rows, journals['predictions'])
-    _check_c4_sealed_submissions(trace_rows, journals['reviews'])
+    _check_c4_prediction_freezes(trace_rows, journals['predictions'], 'M4' in active)
+    _check_c4_sealed_submissions(trace_rows, journals['reviews'], 'M5' in active)
     return FrozenRecord.from_dict({'schema': 'm4-m5-artifacts-check-v1', 'identity': catalogue.identity.data(),
         'prediction_events': len(journals['predictions']), 'review_events': len(journals['reviews']),
         'reveal_outputs': len(reveals),
@@ -280,15 +283,19 @@ def _bind_c4_reveal(trace, reveals):
     matches[0]['bound'] = True
 
 
-def _check_c4_prediction_freezes(traces, predictions):
+def _check_c4_prediction_freezes(traces, predictions, enabled):
     c4 = [event['data'] for event in traces if event['stage'] == 'c4_prediction_frozen']
     if not c4:
         return
     freezes = [event for event in predictions if event['event'] == 'freeze']
     for trace in c4:
         registered = trace.get('registered')
-        if registered is None:
+        if not enabled:
+            if registered is not None:
+                raise ContractError('disabled M4 ordinary control cannot claim a registered prediction')
             continue
+        if registered is None:
+            raise ContractError('enabled M4 lacks its original registered prediction')
         matches = [event for event in freezes if {
             'plan_id': event['plan_id'], 'identity': event['identity'], 'question': event['question'],
             'branches': event['branches'], 'budget_units': event['budget_units'], 'frozen': True,
@@ -298,9 +305,13 @@ def _check_c4_prediction_freezes(traces, predictions):
             raise ContractError('C4 frozen prediction does not bind its original prediction journal')
 
 
-def _check_c4_sealed_submissions(traces, reviews):
+def _check_c4_sealed_submissions(traces, reviews, enabled):
     c4 = [event['data'] for event in traces if event['stage'] == 'c4_review_sealed']
     if not c4:
+        return
+    if not enabled:
+        if any(trace.get('barrier_open') is not None for trace in c4) or reviews:
+            raise ContractError('disabled M5 ordinary control cannot claim sealed submissions')
         return
     submissions = [event for event in reviews if event['event'] == 'submit']
     if len(c4) != len(submissions):
