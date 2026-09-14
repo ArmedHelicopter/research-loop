@@ -101,6 +101,26 @@ def test_actual_history_target_pipeline_with_full_catalogue(tmp_path,monkeypatch
     runner.verify(target);runner.verify(history)
     assert len(setup['common_logs'])==11
     assert target.inner.solver.execution.record.data()['argv'][:4]==['docker','run','--pull','never']
+    for stage in (history, target):
+        receipt=stage.inner.record.data();seal=receipt['artifact_catalogue_seal']
+        journal=stage.inner.root/'runtime'/'artifacts.jsonl'
+        rows=[json.loads(line)['descriptor'] for line in journal.read_text(encoding='utf-8').splitlines()]
+        assert seal['count']==len(rows) and seal['head'] is not None
+        assert all(row['scientific_validated'] is False for row in rows)
+        trace=[json.loads(line) for line in (stage.inner.root/'runtime'/'trace.jsonl').read_text(encoding='utf-8').splitlines()]
+        catalogue_trace=[row['payload']['canonical'] for row in rows if row['kind']=='trace_event']
+        assert catalogue_trace==trace
+    covered={row['module'] for row in [json.loads(line)['descriptor'] for line in (history.inner.root/'runtime'/'artifacts.jsonl').read_text(encoding='utf-8').splitlines()]
+             + [json.loads(line)['descriptor'] for line in (target.inner.root/'runtime'/'artifacts.jsonl').read_text(encoding='utf-8').splitlines()] if row['coverage']=='covered' and row['status']=='produced'}
+    assert covered >= {f'M{i}' for i in range(1,10)}
+    receipt_path=history.inner.root/'receipt.json';original_receipt=receipt_path.read_bytes();changed=history.inner.record.data()
+    changed['artifact_catalogue_seal']={**changed['artifact_catalogue_seal'],'head':'0'*64}
+    receipt_path.write_bytes(R(changed).encoded.encode())
+    try:
+        with pytest.raises(ContractError):runner.verify(history)
+    finally:
+        receipt_path.write_bytes(original_receipt)
+    runner.verify(history)
     checkpoint=json.loads((runner.root/'checkpoint.json').read_bytes())
     assert len(checkpoint['rows'])==len(plan.builds)+len(plan.recipes)*len(plan.packets)
     assert sum(r['status']=='succeeded' for r in checkpoint['rows'])==2
@@ -169,6 +189,10 @@ def test_unknown_main_keeps_complete_denominator_and_stops(tmp_path,monkeypatch)
     assert len(body['rows'])==len(runner.plan.builds)+runner.plan.protocol.record.data()['allocation']['target_cells']
     assert all(r['status'] in ('failed','blocked') for r in body['rows']) and len(setup['common_logs'])==1
     assert body['provider_usage']['unknown_main_opportunities']==1
+    journal=result.inner.root/'runtime'/'artifacts.jsonl'
+    assert journal.exists()
+    rows=[json.loads(line)['descriptor'] for line in journal.read_text(encoding='utf-8').splitlines()]
+    assert any(row['kind']=='trace_event' and row['coverage']=='uncovered' for row in rows)
 
 
 def test_completed_history_provenance_drift_blocks_target(tmp_path,monkeypatch):
