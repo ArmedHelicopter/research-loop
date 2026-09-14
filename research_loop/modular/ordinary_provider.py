@@ -88,12 +88,15 @@ def final_provider_gate(session,path):
     # consumes this captured view without starting another accounting read.
     usage=session.usage().data()
     final=session.finish(path)
-    eligible=False;verification=None
-    if type(final) is PhaseProviderLedger:
+    try:
         verification=final.verify()
-        eligible=verification.data()['score_eligible'] is True
-    else:
-        verification=final.verify()
+    except ContractError:
+        # abort() itself requires an existing durable core provenance fault;
+        # unrelated programming errors cannot manufacture terminal evidence.
+        final=session.abort();verification=final.verify()
+    eligible=type(final) is PhaseProviderLedger and verification.data()['score_eligible'] is True
+    if type(final) is not PhaseProviderLedger:
+        usage=final.snapshot.data()
     return FrozenRecord.from_dict({'schema':'ordinary-native-final-provider-gate-v1',
         'provider_evidence_eligible':eligible,'final_record_schema':final.record.data()['schema'],
         'final_record_digest':final.record.content_hash,'verification':verification.data(),
