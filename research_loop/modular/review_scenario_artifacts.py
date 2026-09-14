@@ -1,237 +1,409 @@
-"""Append-only, fixture-only Q4 review provenance."""
+"""Durable fixture provenance with complete, memory-only Q4 event replay."""
 from __future__ import annotations
 
 import hashlib
-import json
 import os
+import re
 import stat
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Mapping
+from uuid import uuid4
 
 from research_loop.modular.artifact_catalogue import source_snapshot
-from research_loop.modular.contracts import FrozenRecord, PublicTask
+from research_loop.modular.contracts import FrozenRecord
 from research_loop.ontology import ContractError, canonical
 
 _INPUTS = "review-inputs.json"
 _ATTEMPTS = "review-attempts.jsonl"
 _OUTPUTS = "review-outputs.json"
 _TERMINAL = "review-terminal.json"
-_FILES = frozenset({_INPUTS, _ATTEMPTS, _OUTPUTS, _TERMINAL})
+_EXTERNAL = "review-engine-log.jsonl"
 
 
-def _plain(path: Path) -> Path:
+def _plain(path):
     path = Path(os.path.abspath(path))
     for part in (*reversed(path.parents), path):
-        try: info = part.lstat()
-        except FileNotFoundError: continue
+        try:
+            info = part.lstat()
+        except FileNotFoundError:
+            continue
         if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
             raise ContractError("review artifact path traverses a link")
     return path
 
 
-def _write_new(path: Path, record: FrozenRecord) -> None:
+def _write_bytes_new(path, raw):
     with _plain(path).open("xb") as stream:
-        stream.write((record.encoded + "\n").encode("utf-8")); stream.flush(); os.fsync(stream.fileno())
+        stream.write(raw)
+        stream.flush()
+        os.fsync(stream.fileno())
 
 
-def _append(path: Path, value: Mapping[str, Any]) -> None:
-    with _plain(path).open("ab") as stream:
-        stream.write((canonical(dict(value)) + "\n").encode("utf-8")); stream.flush(); os.fsync(stream.fileno())
+def _write_new(path, record):
+    _write_bytes_new(path, (record.encoded + "\n").encode("utf-8"))
 
 
-def _record(path: Path) -> FrozenRecord:
+def _record(path):
     raw = _plain(path).read_bytes()
-    if not raw.endswith(b"\n"): raise ContractError("review artifact record has an incomplete tail")
-    try: return FrozenRecord(raw[:-1].decode("utf-8"))
-    except UnicodeDecodeError as exc: raise ContractError("review artifact record is not utf-8") from exc
+    record = FrozenRecord(raw.decode("utf-8").strip())
+    if raw != (record.encoded + "\n").encode("utf-8"):
+        raise ContractError("review artifact record is incomplete or noncanonical")
+    return record
 
 
-def _rows(path: Path) -> list[dict[str, Any]]:
+def _rows(path):
     raw = _plain(path).read_bytes()
-    if not raw.endswith(b"\n"): raise ContractError("review artifact attempt journal has an incomplete tail")
-    try: rows = [json.loads(line) for line in raw.decode("utf-8").splitlines()]
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc: raise ContractError("review artifact attempt journal is malformed") from exc
-    if any(type(row) is not dict for row in rows) or raw != b"".join((canonical(row) + "\n").encode("utf-8") for row in rows):
-        raise ContractError("review artifact attempt journal is not canonical")
+    rows = [FrozenRecord(line) for line in raw.decode("utf-8").splitlines()]
+    if not rows or raw != _bytes(rows):
+        raise ContractError("review artifact journal is incomplete or noncanonical")
     return rows
 
 
-def inventory(root: Path, *, include_terminal: bool = True) -> dict[str, dict[str, Any]]:
+def _bytes(rows):
+    return b"".join((row.encoded + "\n").encode("utf-8") for row in rows)
+
+
+def inventory(root, *, include_terminal=True):
     root = _plain(root)
-    if not root.is_dir(): raise ContractError("review artifact root is missing")
+    if not root.is_dir():
+        raise ContractError("review artifact root is missing")
     rows = {}
     for directory, dirs, names in os.walk(root, followlinks=False):
-        for name in dirs: _plain(Path(directory) / name)
+        for name in dirs:
+            _plain(Path(directory) / name)
         for name in names:
-            path = _plain(Path(directory) / name); relative = path.relative_to(root).as_posix()
+            path = _plain(Path(directory) / name)
+            relative = path.relative_to(root).as_posix()
             if include_terminal or relative != _TERMINAL:
-                rows[relative] = {"sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "bytes": path.stat().st_size}
+                raw = path.read_bytes()
+                rows[relative] = {"sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
     return dict(sorted(rows.items()))
 
 
-class ReviewArtifactSession:
-    """Writes the producer-side audit before any callback opportunity exists."""
-    def __init__(self, root: Path, *, task: PublicTask, controls: FrozenRecord, experiment_id: str, variant: str, call_plan: list[dict[str, Any]], identities: Mapping[str, Mapping[str, Any]], review_log_path: Path | None) -> None:
-        self.root = _plain(Path(root))
-        if self.root.exists(): raise ContractError("review artifact root must be new")
-        self.root.mkdir(parents=True); self._closed = False; self._sequence = 1
-        self.sources = {"scenario": source_snapshot(Path(__file__).with_name("scenarios_review.py")), "artifact_writer": source_snapshot(Path(__file__))}
-        _write_new(self.root / _INPUTS, FrozenRecord.from_dict({"schema": "q4-review-artifact-inputs-v2", "fixture_only": True,
-            "task": task.data(), "cell": task.identity.data(), "controls": controls.data(), "experiment_id": experiment_id, "variant": variant, "call_plan": call_plan, "reviewer_identities": dict(identities), "review_log_path": str(review_log_path) if review_log_path is not None else None, "sources": self.sources}))
-        _append(self.root / _ATTEMPTS, {"sequence": 0, "event": "audit_open", "task_digest": task.content_hash, "controls_digest": controls.content_hash, "fixture_only": True})
-    def _event(self, event: str, **data: Any) -> None:
-        if self._closed: raise ContractError("review artifact audit is already closed")
-        _append(self.root / _ATTEMPTS, {"sequence": self._sequence, "event": event, **data}); self._sequence += 1
-    def reserve(self, allocation: Mapping[str, Any]) -> None: self._event("callback_reserved", allocation=dict(allocation), reserved_before_callback=True)
-    def callback_payload(self, payload: FrozenRecord) -> None: self._event("callback_payload", payload=payload.data(), payload_digest=payload.content_hash)
-    def callback_response(self, *, raw: FrozenRecord, typed: FrozenRecord, candidate: Any) -> None:
-        self._event("callback_response", raw_response=raw.data(), raw_digest=raw.content_hash, typed_response=typed.data(), typed_digest=typed.content_hash, prediction_candidate=candidate)
-    def review_event(self, event: FrozenRecord) -> None: self._event("review_engine_event", review_event=event.data(), review_event_digest=event.content_hash)
-    def prediction_event(self, event: FrozenRecord) -> None: self._event("prediction_registry_event", prediction_event=event.data(), prediction_event_digest=event.content_hash)
-    def complete(self, result: Any) -> None:
-        _write_new(self.root / _OUTPUTS, FrozenRecord.from_dict({"schema": "q4-review-artifact-outputs-v2", "fixture_only": True,
-            "result": result.record.data(), "mechanism_trace": result.mechanism_trace.data(), "callback_payloads": [x.data() for x in result.callback_payloads], "callback_responses": [x.data() for x in result.callback_responses]}))
-        self._terminal("succeeded", None)
-    def fail(self, exc: BaseException) -> None:
-        if not self._closed:
-            self._event("producer_failure", exception_type=type(exc).__name__, message=str(exc)); self._terminal("failed", {"exception_type": type(exc).__name__, "message": str(exc)})
-    def _terminal(self, status: str, failure: dict[str, str] | None) -> None:
-        _write_new(self.root / _TERMINAL, FrozenRecord.from_dict({"schema": "q4-review-artifact-terminal-v2", "fixture_only": True, "status": status, "failure": failure, "files": inventory(self.root, include_terminal=False), "scientific_validated": False})); self._closed = True
+def _sources():
+    here = Path(__file__).parent
+    paths = [Path(__file__), here / "scenarios_review.py", here / "contracts.py",
+             here / "artifact_catalogue.py", here / "modules/review.py",
+             here / "modules/predictions.py", here.parent / "ontology.py"]
+    return [source_snapshot(_plain(path)) for path in paths]
 
 
-def verify_review_artifacts(root: Path, *, task: PublicTask, controls: FrozenRecord, experiment_id: str, variant: str, result: Any | None = None, reviewer_identities: Mapping[str, Mapping[str, Any]] | None = None, review_log_path: Path | None = None) -> FrozenRecord:
-    """Strict offline consumer: compare original producer files without replaying callbacks."""
-    try:
-        root = _plain(Path(root)); actual_files = inventory(root)
-        if set(actual_files) != _FILES and set(actual_files) != {_INPUTS, _ATTEMPTS, _TERMINAL}: raise ContractError("review artifact literal file inventory differs")
-        from research_loop.modular.scenarios_review import _design, _freeze_call_plan, _identities
-        roles, costs, _, _ = _design(experiment_id, variant)
-        plan = _freeze_call_plan(experiment_id, variant, roles, costs)
-        identities = _identities(roles, reviewer_identities, heterogeneous=(experiment_id == "Q4.5" and variant == "heterogeneous"))
-        expected_sources = {"scenario": source_snapshot(Path(__file__).with_name("scenarios_review.py")), "artifact_writer": source_snapshot(Path(__file__))}
-        expected_inputs = {"schema": "q4-review-artifact-inputs-v2", "fixture_only": True, "task": task.data(), "cell": task.identity.data(), "controls": controls.data(), "experiment_id": experiment_id, "variant": variant, "call_plan": plan, "reviewer_identities": identities, "review_log_path": str(review_log_path) if review_log_path is not None else None, "sources": expected_sources}
-        if _record(root / _INPUTS).data() != expected_inputs: raise ContractError("review artifact task, cell, variant, controls, or producer source differs")
-        attempts = _rows(root / _ATTEMPTS); _verify_attempts(attempts, task=task, controls=controls)
-        terminal = _record(root / _TERMINAL).data()
-        if terminal.get("files") != inventory(root, include_terminal=False) or terminal.get("scientific_validated") is not False: raise ContractError("review artifact terminal inventory differs")
-        if terminal.get("status") == "failed":
-            if terminal.get("failure") is None or (root / _OUTPUTS).exists(): raise ContractError("review artifact failed closure is malformed")
-            return FrozenRecord.from_dict({"schema": "q4-review-artifacts-verified-v2", "status": "failed", "scientific_validated": False})
-        if terminal.get("status") != "succeeded" or terminal.get("failure") is not None: raise ContractError("review artifact terminal status is malformed")
-        outputs = _record(root / _OUTPUTS).data()
-        if set(outputs) != {"schema", "fixture_only", "result", "mechanism_trace", "callback_payloads", "callback_responses"} or outputs["schema"] != "q4-review-artifact-outputs-v2" or outputs["fixture_only"] is not True: raise ContractError("review artifact outputs are malformed")
-        if result is not None and (outputs["result"] != result.record.data() or outputs["mechanism_trace"] != result.mechanism_trace.data() or outputs["callback_payloads"] != [x.data() for x in result.callback_payloads] or outputs["callback_responses"] != [x.data() for x in result.callback_responses]): raise ContractError("review artifact outputs differ from the consumer result")
-        _verify_semantics(attempts, outputs, task=task, controls=controls, experiment_id=experiment_id, variant=variant)
-        return FrozenRecord.from_dict({"schema": "q4-review-artifacts-verified-v2", "status": "succeeded", "attempts": len(attempts), "scientific_validated": False})
-    except ContractError: raise
-    except (OSError, ValueError, TypeError, KeyError, IndexError) as exc: raise ContractError("review artifacts are incomplete or malformed") from exc
-
-
-def _verify_attempts(rows: list[dict[str, Any]], *, task: PublicTask, controls: FrozenRecord) -> None:
-    if not rows or rows[0] != {"sequence": 0, "event": "audit_open", "task_digest": task.content_hash, "controls_digest": controls.content_hash, "fixture_only": True}: raise ContractError("review artifact audit does not bind independent inputs")
-    reservations, outstanding = set(), None
-    for index, row in enumerate(rows):
-        if row.get("sequence") != index or type(row.get("event")) is not str: raise ContractError("review artifact attempt sequence differs")
-        event = row["event"]
-        if event == "callback_reserved":
-            allocation = row.get("allocation")
-            if set(row) != {"sequence", "event", "allocation", "reserved_before_callback"} or not isinstance(allocation, dict) or set(allocation) != {"phase", "role_id", "fixture_units"} or row["reserved_before_callback"] is not True: raise ContractError("review callback reservation is malformed")
-            key = (allocation["phase"], allocation["role_id"])
-            if key in reservations or outstanding is not None: raise ContractError("review callback reservation order differs")
-            reservations.add(key); outstanding = key
-        elif event == "callback_payload":
-            if outstanding is None or set(row) != {"sequence", "event", "payload", "payload_digest"} or FrozenRecord.from_dict(row["payload"]).content_hash != row["payload_digest"]: raise ContractError("review callback payload lacks a prior reservation")
-        elif event == "callback_response":
-            if outstanding is None or set(row) != {"sequence", "event", "raw_response", "raw_digest", "typed_response", "typed_digest", "prediction_candidate"}: raise ContractError("review callback response is malformed")
-            if FrozenRecord.from_dict(row["raw_response"]).content_hash != row["raw_digest"] or FrozenRecord.from_dict(row["typed_response"]).content_hash != row["typed_digest"]: raise ContractError("review callback response digest differs")
-            outstanding = None
-        elif event == "review_engine_event":
-            if set(row) != {"sequence", "event", "review_event", "review_event_digest"} or FrozenRecord.from_dict(row["review_event"]).content_hash != row["review_event_digest"]: raise ContractError("review engine journal event differs")
-        elif event == "prediction_registry_event":
-            if set(row) != {"sequence", "event", "prediction_event", "prediction_event_digest"} or FrozenRecord.from_dict(row["prediction_event"]).content_hash != row["prediction_event_digest"]: raise ContractError("prediction registry journal event differs")
-        elif event == "producer_failure":
-            if set(row) != {"sequence", "event", "exception_type", "message"} or type(row["exception_type"]) is not str or type(row["message"]) is not str: raise ContractError("review producer failure is malformed")
-        elif event != "audit_open": raise ContractError("review artifact event is unrecognized")
-
-
-def _verify_semantics(rows: list[dict[str, Any]], outputs: dict[str, Any], *, task: PublicTask, controls: FrozenRecord, experiment_id: str, variant: str) -> None:
-    """Rebuild allowed fixture requests and consume the persisted M5 journal in memory only."""
-    from research_loop.modular.modules.review import ReviewEngine
+def _inputs(task, controls, experiment_id, variant, identities, review_log_path):
     from research_loop.modular.scenarios_review import _design, _freeze_call_plan
-    roles, costs, visibility, case = _design(experiment_id, variant)
-    plan = _freeze_call_plan(experiment_id, variant, roles, costs)
-    payload_rows = [row for row in rows if row["event"] == "callback_payload"]
-    response_rows = [row for row in rows if row["event"] == "callback_response"]
-    engine_rows = [row["review_event"] for row in rows if row["event"] == "review_engine_event"]
-    expected_phases = [(item["phase"], item["role_id"]) for item in plan]
-    if len(payload_rows) != len(plan) or len(response_rows) != len(plan): raise ContractError("review callback journal omits a planned opportunity")
-    review_id = None
-    for index, (payload_row, expected) in enumerate(zip(payload_rows, expected_phases)):
-        payload = payload_row["payload"]
-        phase, role_id = expected
-        if (payload.get("task") != task.data() or payload.get("frozen_controls") != controls.data() or payload.get("fixture_only") is not True
-                or payload.get("public_case") != case or payload.get("invocation") != phase or payload.get("role") != next(role for role in roles if role["role_id"] == role_id)):
-            raise ContractError("review callback request differs from independent fixture inputs")
-        if review_id is None: review_id = payload.get("review_id")
-        if payload.get("review_id") != review_id: raise ContractError("review callback requests use different sessions")
-        prior = payload.get("prior_visible_submission")
-        if phase == "initial" and ((visibility == "sealed" and prior is not None) or (visibility == "sequential" and index == 0 and prior is not None)):
-            raise ContractError("review initial visibility differs from registered variant")
-        if phase == "revision" and not isinstance(prior, list): raise ContractError("review revision lacks revealed submissions")
-    # Re-adapt each captured raw provider return.  This is the same pure
-    # boundary conversion used by the producer, but cannot invoke a callback.
-    candidates = []
-    for row in response_rows:
-        raw = row["raw_response"]
-        if not isinstance(raw, dict): raise ContractError("raw callback return is not a mapping")
-        review = raw
-        candidate = None
-        if set(raw) == {"review", "prediction_candidate"}:
-            review, candidate = raw["review"], raw["prediction_candidate"]
-        typed = ReviewEngine._response(review).data()
-        if typed != row["typed_response"] or candidate != row["prediction_candidate"]:
-            raise ContractError("raw callback return does not produce the retained typed response")
-        candidates.append(candidate)
-    engine = ReviewEngine(task.identity)
-    for event in engine_rows: engine._apply(event, persist=False)
-    session = engine.session(review_id)
-    if [role.data() for role in session.roles] != roles or session.task_binding != task.content_hash or session.evidence_snapshot != controls.data()["evidence_digest"]:
-        raise ContractError("persisted review engine journal differs from independent inputs")
-    revealed = engine.reveal(review_id)
-    if len(revealed) != len(roles) or (experiment_id in {"Q4.3", "Q4.5"}) != bool(engine._revisions):
-        raise ContractError("persisted reveal or revision journal differs from registered variant")
-    typed = [row["typed_response"] for row in response_rows]
-    submissions = [event for event in engine_rows if event.get("event") == "submit"]
-    revisions = [event for event in engine_rows if event.get("event") == "revise"]
-    if [event["response"] for event in submissions] != typed[:len(roles)] or [event["response"] for event in revisions] != typed[len(roles):]:
-        raise ContractError("persisted M5 submissions do not consume the retained typed responses")
-    if outputs["callback_payloads"] != [row["payload"] for row in payload_rows] or outputs["callback_responses"] != typed:
-        raise ContractError("review outputs do not retain original callback records")
-    record = outputs["result"]
-    if record.get("callback_plan") != plan or record.get("callback_payload_digests") != [FrozenRecord.from_dict(row["payload"]).content_hash for row in payload_rows] or record.get("callback_response_digests") != [FrozenRecord.from_dict(value).content_hash for value in typed]:
-        raise ContractError("review result does not bind original callback contents")
-    if record.get("task_digest") != task.content_hash or record.get("controls_digest") != controls.content_hash or record.get("experiment_id") != experiment_id or record.get("variant") != variant or record.get("budget", {}).get("fixture_units") != sum(item["fixture_units"] for item in plan):
-        raise ContractError("review result subject or budget differs")
-    from research_loop.modular.scenarios_review import _fixture_oracle, _freeze_callback_predictions
-    score_changes, metrics = _fixture_oracle(case, revealed, tuple(engine._revisions.values()))
-    score = [event for event in engine_rows if event.get("event") == "score"]
-    if len(score) != 1 or score[0].get("changes") != score_changes or record.get("metrics") != metrics:
-        raise ContractError("review score receipt or metrics differs from replay")
-    m4 = _freeze_callback_predictions(task, experiment_id, [item for item in candidates[:len(roles)] if item is not None], plan)
-    if record.get("m4") != m4:
-        raise ContractError("review prediction extraction differs from raw callback candidates")
-    from research_loop.modular.modules.predictions import PredictionRegistry
-    prediction_events = [row["prediction_event"] for row in rows if row["event"] == "prediction_registry_event"]
-    if m4["status"] == "on":
-        if len(prediction_events) != 1 or prediction_events[0].get("event") != "freeze":
-            raise ContractError("frozen M4 plan journal is missing")
-        registry = PredictionRegistry(task.identity)
-        registry._apply(prediction_events[0], persist=False)
-        frozen = registry.plan(m4["plan_id"])
-        if frozen.payload.content_hash != m4["plan_digest"]:
-            raise ContractError("frozen M4 plan payload differs from result metadata")
-    elif prediction_events:
-        raise ContractError("rejected or disabled M4 has an unexpected journal")
-    trace = outputs["mechanism_trace"].get("events")
-    if not isinstance(trace, list) or not any(event.get("event") == "sealed_barrier_revealed" for event in trace) or not any(event.get("event") == "independent_fixture_oracle" for event in trace) or not any(event.get("event") == "callback_prediction_extraction" for event in trace):
-        raise ContractError("review reveal, score, or prediction extraction output is missing")
+    roles, costs, _, _ = _design(experiment_id, variant)
+    return FrozenRecord.from_dict({"schema": "q4-review-artifact-inputs-v3", "fixture_only": True,
+        "task": task.data(), "cell": task.identity.data(), "controls": controls.data(),
+        "experiment_id": experiment_id, "variant": variant,
+        "call_plan": _freeze_call_plan(experiment_id, variant, roles, costs),
+        "reviewer_identities": identities,
+        "review_log_path": str(review_log_path) if review_log_path is not None else None,
+        "sources": _sources()})
+
+
+def _raw_record(value):
+    if type(value) is FrozenRecord:
+        return {"encoding": "frozen_record", "value": value.data()}
+    if value is None or isinstance(value, Mapping) or type(value) in (str, bool, int, float, list):
+        try:
+            return FrozenRecord.from_dict({"encoding": "json", "value": dict(value) if isinstance(value, Mapping) else value}).data()
+        except (TypeError, ValueError, ContractError):
+            pass
+    return {"encoding": "unsupported_python", "type": type(value).__name__}
+
+
+def _error(exc):
+    return {"exception_type": type(exc).__name__, "message": str(exc)}
+
+
+def _output(result):
+    return FrozenRecord.from_dict({"schema": "q4-review-artifact-outputs-v3", "fixture_only": True,
+        "result": result.record.data(), "mechanism_trace": result.mechanism_trace.data(),
+        "callback_payloads": [x.data() for x in result.callback_payloads],
+        "callback_responses": [x.data() for x in result.callback_responses]})
+
+
+class _ReplayEnd(Exception):
+    pass
+
+
+class _RecordedFailure(Exception):
+    pass
+
+
+class _ReplayMismatch(ContractError):
+    pass
+
+
+class _Records:
+    def __init__(self, run_id):
+        self.run_id, self.entries, self.replay_responses = run_id, [], None
+
+    def _event(self, event, **data):
+        module = "M5" if event in {"review_engine_event", "review_reveal"} else "M4" if event in {"prediction_registry_event", "prediction_frozen_plan"} else "P0"
+        record = FrozenRecord.from_dict({"sequence": len(self.entries), "event": event,
+            "run_id": self.run_id, "module": module,
+            "previous": self.entries[-1].content_hash if self.entries else None, **data})
+        self._persist(record)
+        self.entries.append(record)
+
+    def _persist(self, record):
+        pass
+
+    def initialize(self, inputs):
+        self.inputs = inputs
+        self._event("audit_open", input_digest=inputs.content_hash, fixture_only=True)
+
+    def reserve(self, allocation):
+        self._event("callback_reserved", allocation=dict(allocation), reserved_before_callback=True)
+
+    def callback_payload(self, payload):
+        self._event("callback_payload", payload=payload.data(), payload_digest=payload.content_hash)
+
+    def callback_raw(self, value):
+        self._event("callback_raw", raw=_raw_record(value))
+
+    def callback_response(self, *, typed, candidate):
+        self._event("callback_response", typed_response=typed.data(), typed_digest=typed.content_hash,
+                    prediction_candidate=candidate)
+
+    def callback_failure(self, exc):
+        self._event("callback_failure", **_error(exc))
+
+    def review_event(self, event):
+        self._event("review_engine_event", review_event=event.data(), review_event_digest=event.content_hash)
+
+    def reveal_event(self, event):
+        self._event("review_reveal", reveal=event.data(), reveal_digest=event.content_hash)
+
+    def prediction_event(self, event):
+        self._event("prediction_registry_event", prediction_event=event.data(), prediction_event_digest=event.content_hash)
+
+    def prediction_plan(self, payload):
+        self._event("prediction_frozen_plan", payload=payload.data(), payload_digest=payload.content_hash)
+
+    def output(self, result):
+        self._event("output", output=_output(result).data())
+
+    def before_callback(self):
+        pass
+
+    def replay_response(self):
+        if not self.replay_responses:
+            raise _ReplayEnd()
+        row = self.replay_responses.pop(0)
+        if row["event"] == "callback_failure":
+            if not all(type(row[key]) is str for key in ("exception_type", "message")):
+                raise _ReplayMismatch("malformed retained callback failure")
+            self._event("callback_failure", exception_type=row["exception_type"], message=row["message"])
+            raise _RecordedFailure()
+        raw = row["raw"]
+        if set(raw) == {"encoding", "value"} and raw["encoding"] == "frozen_record":
+            return FrozenRecord.from_dict(raw["value"])
+        if set(raw) == {"encoding", "value"} and raw["encoding"] == "json":
+            return raw["value"]
+        if set(raw) == {"encoding", "type"} and raw["encoding"] == "unsupported_python" and type(raw["type"]) is str:
+            self._event("callback_raw", raw=raw)
+            raise _RecordedFailure()
+        raise _ReplayMismatch("malformed retained raw value")
+
+
+class ReviewArtifactSession(_Records):
+    """Write exact input and attempt binding before the first callback."""
+    def __init__(self, root, *, task, controls, experiment_id, variant, call_plan, identities, review_log_path):
+        super().__init__(uuid4().hex)
+        self.root, self._closed = _plain(root), False
+        self.external = _plain(review_log_path) if review_log_path is not None else None
+        if self.root.exists():
+            raise ContractError("review artifact root must be new")
+        if self.external is not None:
+            if self.external.exists():
+                raise ContractError("review log must be fresh")
+            if self.external == self.root or self.root in self.external.parents:
+                raise ContractError("external review log must be outside the artifact root")
+        self.root.mkdir(parents=True)
+        self.external_ready = False
+        try:
+            inputs = _inputs(task, controls, experiment_id, variant, identities, review_log_path)
+            if call_plan != inputs.data()["call_plan"]:
+                raise ContractError("review allocation plan differs from independent design")
+            _write_new(self.root / _INPUTS, inputs)
+            self.initialize(inputs)
+        except BaseException as exc:
+            self.fail(exc)
+            raise
+
+    def prepare_external(self):
+        if self.external is not None:
+            _plain(self.external.parent).mkdir(parents=True, exist_ok=True)
+            _write_bytes_new(self.external, b"")
+            self.external_ready = True
+
+    def _external_bytes(self):
+        return b"".join((canonical(r.data()["review_event"]) + "\n").encode("utf-8")
+            for r in self.entries if r.data()["event"] == "review_engine_event")
+
+    def _check_prefix(self):
+        if _record(self.root / _INPUTS) != self.inputs:
+            raise ContractError("review inputs changed during production")
+        path = _plain(self.root / _ATTEMPTS)
+        if (path.read_bytes() if path.exists() else b"") != _bytes(self.entries):
+            raise ContractError("review journal changed during production")
+
+    def _check_external(self):
+        if self.external_ready and _plain(self.external).read_bytes() != self._external_bytes():
+            raise ContractError("external review log changed during production")
+
+    def _persist(self, record):
+        if self._closed:
+            raise ContractError("review artifact audit is already closed")
+        self._check_prefix()
+        with _plain(self.root / _ATTEMPTS).open("ab") as stream:
+            stream.write((record.encoded + "\n").encode("utf-8"))
+            stream.flush()
+            os.fsync(stream.fileno())
+
+    def before_callback(self):
+        self._check_prefix()
+        self._check_external()
+        if _sources() != self.inputs.data()["sources"]:
+            raise ContractError("review source changed before callback")
+
+    def review_event(self, event):
+        self._check_external()
+        super().review_event(event)
+        if self.external_ready:
+            with _plain(self.external).open("ab") as stream:
+                stream.write((event.encoded + "\n").encode("utf-8"))
+                stream.flush()
+                os.fsync(stream.fileno())
+
+    def complete(self, result):
+        self.before_callback()
+        _write_new(self.root / _OUTPUTS, _output(result))
+        self._terminal("succeeded", None)
+
+    def fail(self, exc):
+        # Failure closure must never overwrite partial writes or mask the cause.
+        try:
+            if self._closed or (self.root / _TERMINAL).exists():
+                _write_new(self.root / "review-delivery-failure.json", FrozenRecord.from_dict(_error(exc)))
+                return
+            try:
+                self._event("producer_failure", **_error(exc))
+            except BaseException:
+                pass
+            self._terminal("failed", _error(exc))
+        except BaseException:
+            pass
+
+    def _terminal(self, status, failure):
+        if self.external_ready:
+            _write_bytes_new(self.root / _EXTERNAL, _plain(self.external).read_bytes())
+        _write_new(self.root / _TERMINAL, FrozenRecord.from_dict({"schema": "q4-review-artifact-terminal-v3",
+            "fixture_only": True, "run_id": self.run_id, "input_digest": self.inputs.content_hash,
+            "entry_count": len(self.entries), "status": status, "failure": failure,
+            "files": inventory(self.root, include_terminal=False), "scientific_validated": False}))
+        self._closed = True
+
+
+class _ReplayRecords(_Records):
+    def __init__(self, run_id, observed):
+        super().__init__(run_id)
+        self.observed = observed
+
+    def _persist(self, record):
+        if len(self.entries) >= len(self.observed):
+            raise _ReplayEnd()
+        if record != self.observed[len(self.entries)]:
+            raise _ReplayMismatch("review semantic event differs from independently reconstructed fixture")
+
+
+def verify_review_artifacts(root, *, task, controls, experiment_id, variant, result=None,
+                            reviewer_identities=None, review_log_path=None, expected_run_id=None):
+    """Read producer bytes and reconstruct every event; never open the external log.
+
+    Failed attempts certify an exact retained prefix, not successful completion
+    or the provenance of an arbitrary external exception's message.
+    """
+    from research_loop.modular.scenarios_review import _controls, _validate, _design, _identities, _evaluate_review_scenario
+    try:
+        _validate(experiment_id, variant)
+        _controls(task, controls)
+        task.identity.require_train()
+        root = _plain(root)
+        files = inventory(root)
+        inputs = _record(root / _INPUTS)
+        roles, _, _, _ = _design(experiment_id, variant)
+        identities = _identities(roles, reviewer_identities, heterogeneous=(experiment_id == "Q4.5" and variant == "heterogeneous"))
+        expected_inputs = _inputs(task, controls, experiment_id, variant, identities, review_log_path)
+        if inputs != expected_inputs:
+            raise ContractError("review artifact independent inputs or exact producer source differ")
+        entries = _rows(root / _ATTEMPTS)
+        run_id = entries[0].data()["run_id"]
+        if type(run_id) is not str or not re.fullmatch(r"[0-9a-f]{32}", run_id) or (expected_run_id is not None and run_id != expected_run_id):
+            raise ContractError("review attempt binding differs")
+        terminal = _record(root / _TERMINAL).data()
+        if (set(terminal) != {"schema", "fixture_only", "run_id", "input_digest", "entry_count", "status", "failure", "files", "scientific_validated"}
+                or terminal["schema"] != "q4-review-artifact-terminal-v3" or terminal["fixture_only"] is not True
+                or terminal["scientific_validated"] is not False or terminal["run_id"] != run_id
+                or terminal["input_digest"] != inputs.content_hash or terminal["entry_count"] != len(entries)
+                or type(terminal["entry_count"]) is not int or terminal["status"] not in {"failed", "succeeded"}
+                or terminal["files"] != inventory(root, include_terminal=False)):
+            raise ContractError("review terminal binding or inventory differs")
+        failed = terminal["status"] == "failed"
+        expected_files = {_INPUTS, _ATTEMPTS, _TERMINAL}
+        if not failed:
+            expected_files.add(_OUTPUTS)
+        if review_log_path is not None:
+            expected_files.add(_EXTERNAL)
+        if set(files) != expected_files:
+            raise ContractError("review literal artifact inventory differs")
+        semantic_entries = entries
+        if failed:
+            failure = terminal["failure"]
+            if type(failure) is not dict or set(failure) != {"exception_type", "message"} or not all(type(v) is str for v in failure.values()):
+                raise ContractError("review failure closure is malformed")
+            semantic_entries = entries[:-1]
+        elif terminal["failure"] is not None:
+            raise ContractError("review succeeded attempt carries a failure")
+        replay = _ReplayRecords(run_id, semantic_entries)
+        replay.initialize(expected_inputs)
+        replay.replay_responses = [r.data() for r in semantic_entries if r.data()["event"] in {"callback_raw", "callback_failure"}]
+        reconstructed = None
+        try:
+            reconstructed = _evaluate_review_scenario(experiment_id, variant, task=task,
+                frozen_controls=controls, reviewer_identities=reviewer_identities, audit=replay)
+        except _ReplayMismatch:
+            raise
+        except (_ReplayEnd, _RecordedFailure):
+            if not failed:
+                raise ContractError("review completed attempt lacks allocated operations")
+        except (ContractError, ValueError, TypeError, KeyError) as exc:
+            if not failed or len(replay.entries) != len(semantic_entries):
+                raise
+            if _error(exc) != terminal["failure"]:
+                raise ContractError("review retained invalid response failure differs") from exc
+        if len(replay.entries) != len(semantic_entries) or replay.replay_responses:
+            raise ContractError("review journal has unconsumed semantic records")
+        if failed:
+            replay.observed = entries
+            replay._event("producer_failure", **terminal["failure"])
+        else:
+            if reconstructed is None or _record(root / _OUTPUTS) != _output(reconstructed):
+                raise ContractError("review output differs from full deterministic reconstruction")
+            if result is not None and _output(result) != _output(reconstructed):
+                raise ContractError("review consumer result differs from reconstruction")
+        if review_log_path is not None:
+            expected_log = b"".join((canonical(r.data()["review_event"]) + "\n").encode("utf-8")
+                for r in semantic_entries if r.data()["event"] == "review_engine_event")
+            if _plain(root / _EXTERNAL).read_bytes() != expected_log:
+                raise ContractError("archived actual external review log differs")
+        if inventory(root) != files or _sources() != expected_inputs.data()["sources"]:
+            raise ContractError("review artifacts or sources changed during verification")
+        return FrozenRecord.from_dict({"schema": "q4-review-artifacts-verified-v3", "run_id": run_id,
+            "status": terminal["status"], "attempts": len(entries), "storage_integrity_verified": True,
+            "semantic_completion_verified": not failed, "scientific_validated": False})
+    except ContractError:
+        raise
+    except (OSError, ValueError, TypeError, KeyError, IndexError, UnicodeError, _ReplayEnd) as exc:
+        raise ContractError("review artifacts are incomplete or malformed") from exc

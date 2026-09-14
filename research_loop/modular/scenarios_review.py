@@ -144,7 +144,34 @@ def run_review_scenario(
     audit = ReviewArtifactSession(artifact_root, task=task, controls=frozen_controls,
                                   experiment_id=experiment_id, variant=variant, call_plan=call_plan,
                                   identities=identities, review_log_path=review_log_path)
-    engine = ReviewEngine(task.identity, storage_path=review_log_path, event_sink=audit.review_event)
+    try:
+        audit.prepare_external()
+        result = _evaluate_review_scenario(experiment_id, variant, task=task,
+            frozen_controls=frozen_controls, review_callback=review_callback,
+            reviewer_identities=reviewer_identities, audit=audit)
+        audit.complete(result)
+        verify_review_artifacts(artifact_root, task=task, controls=frozen_controls,
+            experiment_id=experiment_id, variant=variant, result=result,
+            reviewer_identities=reviewer_identities, review_log_path=review_log_path,
+            expected_run_id=audit.run_id)
+        return result
+    except BaseException as exc:
+        audit.fail(exc)
+        raise
+
+
+def _evaluate_review_scenario(experiment_id, variant, *, task, frozen_controls,
+                              audit, review_callback=None, reviewer_identities=None):
+    """Common deterministic core: all registries are memory-only.
+
+    During verification raw values come from the records sink; no user callable,
+    registry log reader, or file writer is reachable from this core.
+    """
+    controls = _controls(task, frozen_controls)
+    roles, costs, visibility, case = _design(experiment_id, variant)
+    call_plan = _freeze_call_plan(experiment_id, variant, roles, costs)
+    identities = _identities(roles, reviewer_identities, heterogeneous=(experiment_id == "Q4.5" and variant == "heterogeneous"))
+    engine = ReviewEngine(task.identity, event_sink=audit.review_event, reveal_sink=audit.reveal_event)
     session = engine.open(task_binding=task.content_hash, evidence_snapshot=controls["evidence_digest"],
                           roles=roles, budget_units=sum(item["fixture_units"] for item in call_plan))
     payloads: list[FrozenRecord] = []
@@ -165,20 +192,11 @@ def run_review_scenario(
         payload = _payload(task, controls, session.review_id, role, identities[role["role_id"]],
                            invocation="initial", prior_visible_submission=prior, case=case)
         audit.callback_payload(payload)
-        try:
-            response, candidate, raw = _call(review_callback, payload, case)
-        except Exception as exc:
-            audit.fail(exc)
-            raise
-        audit.callback_response(raw=raw, typed=response, candidate=candidate)
+        response, candidate = _call(review_callback, payload, case, audit)
         if candidate is not None: prediction_candidates.append(candidate)
-        try:
-            submission = engine.submit(session.review_id, role_id=role["role_id"],
-                                       reviewer_id=identities[role["role_id"]]["reviewer_id"],
-                                       response=response.data(), cost_units=allocation["fixture_units"])
-        except Exception as exc:
-            audit.fail(exc)
-            raise
+        submission = engine.submit(session.review_id, role_id=role["role_id"],
+                                   reviewer_id=identities[role["role_id"]]["reviewer_id"],
+                                   response=response.data(), cost_units=allocation["fixture_units"])
         payloads.append(payload); responses.append(response); submissions.append(submission)
     revealed = engine.reveal(session.review_id)
     events.append({"event": "sealed_barrier_revealed", "review_id": session.review_id,
@@ -194,33 +212,20 @@ def run_review_scenario(
             payload = _payload(task, controls, session.review_id, role, identities[role_id], invocation="revision",
                                prior_visible_submission=[item.data() for item in revealed], case=case)
             audit.callback_payload(payload)
-            try:
-                response, _, raw = _call(review_callback, payload, case)
-            except Exception as exc:
-                audit.fail(exc)
-                raise
-            audit.callback_response(raw=raw, typed=response, candidate=None)
-            try:
-                revision = engine.revise_after_reveal(session.review_id, role_id=role_id,
-                                                      reviewer_id=identities[role_id]["reviewer_id"], response=response.data())
-            except Exception as exc:
-                audit.fail(exc)
-                raise
+            response, _ = _call(review_callback, payload, case, audit)
+            revision = engine.revise_after_reveal(session.review_id, role_id=role_id,
+                                                  reviewer_id=identities[role_id]["reviewer_id"], response=response.data())
             payloads.append(payload); responses.append(response); revisions.append(revision)
         events.append({"event": "post_reveal_revisions", "before_hashes": [item.before_hash for item in revealed],
                        "after_hashes": [item.after_hash for item in revisions]})
 
-    try:
-        score_changes, metrics = _fixture_oracle(case, revealed, revisions)
-        receipt = engine.record_score(session.review_id, changes=score_changes,
-                                      scorer_receipt={"trusted_scorer": "fixture-oracle-v1", "verified": True})
-        events.append({"event": "independent_fixture_oracle", "score_receipt": receipt.data(), "metrics": metrics,
-                       "oracle_not_exposed_to_callback": True})
-        m4 = _freeze_callback_predictions(task, experiment_id, prediction_candidates, call_plan,
-                                          event_sink=audit.prediction_event)
-    except Exception as exc:
-        audit.fail(exc)
-        raise
+    score_changes, metrics = _fixture_oracle(case, revealed, revisions)
+    receipt = engine.record_score(session.review_id, changes=score_changes,
+                                  scorer_receipt={"trusted_scorer": "fixture-oracle-v1", "verified": True})
+    events.append({"event": "independent_fixture_oracle", "score_receipt": receipt.data(), "metrics": metrics,
+                   "oracle_not_exposed_to_callback": True})
+    m4 = _freeze_callback_predictions(task, experiment_id, prediction_candidates, call_plan,
+                                      event_sink=audit.prediction_event, plan_sink=audit.prediction_plan)
     events.append({"event": "callback_prediction_extraction", **m4})
     record = FrozenRecord.from_dict({"fixture_only": True, "experiment_id": experiment_id, "variant": variant,
         "task_digest": task.content_hash, "controls_digest": frozen_controls.content_hash,
@@ -235,10 +240,7 @@ def run_review_scenario(
         "limitation": "fixture-only mechanism trace; no benchmark efficacy, provider independence, or scientific validity claim"})
     result = ReviewScenarioResult(experiment_id, variant, tuple(payloads), tuple(responses),
                                   FrozenRecord.from_dict({"events": events}), record)
-    audit.complete(result)
-    verify_review_artifacts(artifact_root, task=task, controls=frozen_controls,
-                            experiment_id=experiment_id, variant=variant, result=result,
-                            reviewer_identities=reviewer_identities, review_log_path=review_log_path)
+    audit.output(result)
     return result
 
 
@@ -346,21 +348,31 @@ def _reserve(events: list[dict[str, Any]], plan: list[dict[str, Any]], phase: st
     return allocation
 
 
-def _call(callback, payload, case) -> tuple[FrozenRecord, Mapping[str, Any] | None, FrozenRecord]:
-    value = callback(payload) if callback else {"assessment": "unknown", "evidence_refs": [case["observations"][0]["evidence_id"]], "counterexamples": [], "uncertainty": "fixture default; no model invoked"}
+def _call(callback, payload, case, audit):
+    audit.before_callback()
+    if audit.replay_responses is not None:
+        value = audit.replay_response()
+    else:
+        try:
+            value = callback(payload) if callback else {"assessment": "unknown", "evidence_refs": [case["observations"][0]["evidence_id"]], "counterexamples": [], "uncertainty": "fixture default; no model invoked"}
+        except BaseException as exc:
+            audit.callback_failure(exc)
+            raise
+    audit.callback_raw(value)
     if isinstance(value, FrozenRecord): value = value.data()
     if not isinstance(value, Mapping): raise ContractError("review callback must return a response mapping")
-    raw = FrozenRecord.from_dict(dict(value))
     candidate = None
     if set(value) == {"review", "prediction_candidate"}:
-        candidate = value["prediction_candidate"]
-        value = value["review"]
-    return FrozenRecord.from_dict(dict(value)), candidate if candidate is not None else None, raw
+        candidate, value = value["prediction_candidate"], value["review"]
+    response = ReviewEngine._response(value)
+    audit.callback_response(typed=response, candidate=candidate)
+    return response, candidate
 
 
 def _freeze_callback_predictions(task: PublicTask, experiment_id: str,
                                  candidates: list[Mapping[str, Any]], call_plan: list[dict[str, Any]],
-                                 event_sink: Callable[[FrozenRecord], None] | None = None) -> dict[str, Any]:
+                                 event_sink: Callable[[FrozenRecord], None] | None = None,
+                                 plan_sink: Callable[[FrozenRecord], None] | None = None) -> dict[str, Any]:
     """Use only callback-provided M4 branches; never fill in missing structure."""
     if experiment_id != "Q4.1":
         return {"status": "off", "reason": "Q4.1 is the only M4/M5 review scenario"}
@@ -371,6 +383,8 @@ def _freeze_callback_predictions(task: PublicTask, experiment_id: str,
                                         budget_units=sum(item["fixture_units"] for item in call_plan))
     except ContractError as exc:
         return {"status": "rejected", "reason": str(exc), "candidate_count": len(candidates)}
+    if plan_sink is not None:
+        plan_sink(plan.payload)
     return {"status": "on", "plan_id": plan.plan_id, "plan_digest": plan.payload.content_hash,
             "candidate_count": len(candidates), "budget_units": plan.budget_units,
             "outcome": "unknown", "limitation": "fixture verifies declared prediction structure only"}
