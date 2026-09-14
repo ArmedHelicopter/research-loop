@@ -1,5 +1,6 @@
 """C5 panel and real scorer subprocess, using only synthetic signed candidates."""
 from dataclasses import replace
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -129,7 +130,7 @@ def test_actual_common_scorer_process_both_benchmarks_and_closed_scope(tmp_path,
     worker=tmp_path/'worker.jsonl';client_log=tmp_path/'client.jsonl'
     command=_command(path,worker);command[1]=str(Path(__file__).parent/'helpers/joint_train_scorer_process_helper.py')
     client=CombinationScorerProcessClient(panel=panel,config=args['scorer'],joint_train=True,
-        command=command,journal_path=client_log,task_handle_bindings={k:digest(v) for k,v in handles.items()},
+        command=command,journal_path=client_log,task_handle_bindings={k:hashlib.sha256(v.encode()).hexdigest() for k,v in handles.items()},
         execution_authority_keys={EXEC.authority_id:EXEC.key},scorer_authority_keys={SCORER.authority_id:SCORER.key},
         environment={**os.environ,'PYTHONIOENCODING':'gbk'})
     try:
