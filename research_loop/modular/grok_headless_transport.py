@@ -13,6 +13,9 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import time
+import urllib.error
+import urllib.request
 import uuid
 
 from research_loop.modular.contracts import FrozenRecord
@@ -24,6 +27,7 @@ from research_loop.ontology import ContractError
 
 MODEL = "grok-4.6"
 ACCOUNT_ISSUER = "https://auth.x.ai"
+PROXY = "https://cli-chat-proxy.grok.com/v1"
 RECEIPT_SCHEMA = "grok-headless-diagnostic-receipt-v1"
 
 
@@ -113,6 +117,44 @@ def _account_projection(raw: bytes):
             "on_demand_used": 0, "prepaid_balance": 0, "auto_topup": False}
 
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl): return None
+
+
+def _account(home: Path, destination: Path):
+    """Three first-party CLI proxy GETs using only copied native OIDC."""
+    destination.mkdir(exist_ok=False)
+    store = _strict_json(_read(home / "auth.json"))
+    choices = [v for v in store.values() if type(v) is dict and v.get("auth_mode") == "oidc"
+               and v.get("oidc_issuer") == ACCOUNT_ISSUER
+               and v.get("oidc_client_id") == "b1a00492-073a-47ea-816f-4c329264a828"]
+    _require(len(choices) == 1, "native login identity")
+    auth = choices[0]
+    _require(all(isinstance(auth.get(k), str) and auth[k] and "\n" not in auth[k] and "\r" not in auth[k]
+                 for k in ("key", "user_id")), "native login shape")
+    _require(datetime.fromisoformat(auth["expires_at"].replace("Z", "+00:00")).timestamp() > time.time()+120,
+             "native login near expiry")
+    raws = {}; rows=[]; first=time.monotonic(); opener=urllib.request.build_opener(_NoRedirect)
+    for name, route in (("credits", "/billing?format=credits"), ("topup", "/auto-topup-rule"), ("user", "/user?include=subscription")):
+        url=PROXY+route; request=urllib.request.Request(url, method="GET", headers={"Authorization":"Bearer "+auth["key"],"X-XAI-Token-Auth":"xai-grok-cli","x-userid":auth["user_id"],"x-grok-client-version":"1.0.13","Accept":"application/json"})
+        row={"name":name,"method":"GET","url":url,"status":"reserved","started_at":datetime.now(timezone.utc).isoformat()}; rows.append(row); _write(destination/"requests.json",rows)
+        try:
+            with opener.open(request, timeout=10) as response:
+                _require(response.geturl()==url, "account redirect")
+                raw=response.read(1048577); _require(len(raw)<=1048576,"account response size"); row["http_status"]=response.status
+        except urllib.error.HTTPError as exc: raise ContractError("account http error") from exc
+        _write(destination/(name+".private.json"),raw); row.update(status="received",bytes=len(raw),sha256=_sha(raw),received_at=datetime.now(timezone.utc).isoformat()); _write(destination/"requests.json",rows); raws[name]=_strict_json(raw)
+    credits,topup,user=raws["credits"],raws["topup"],raws["user"]
+    _require(user.get("userId")==auth["user_id"] and user.get("hasGrokCodeAccess") is True and user.get("userBlockedReason") in (None,"") and user.get("teamBlockedReasons")==[],"account access")
+    cfg=credits.get("config") if isinstance(credits,dict) else None; _require(isinstance(cfg,dict) and cfg.get("isUnifiedBillingUser") is True,"unified pool")
+    for k in ("onDemandCap","onDemandUsed","prepaidBalance"): _require(isinstance(cfg.get(k),dict) and type(cfg[k].get("val")) is int and cfg[k]["val"]==0,"paid fallback")
+    _require(topup in ({},{"rule":None}),"auto topup")
+    period=cfg.get("currentPeriod"); now=datetime.now(timezone.utc); _require(isinstance(period,dict) and datetime.fromisoformat(period["start"].replace("Z","+00:00"))<=now<datetime.fromisoformat(period["end"].replace("Z","+00:00")),"period stale")
+    pct=cfg.get("creditUsagePercent"); _require(type(pct) in (int,float) and not isinstance(pct,bool) and 0<=pct<100,"included balance")
+    projection={"raw_sha256":{k:_sha(_read(destination/(k+".private.json"))) for k in raws},"account_binding":_sha(auth["user_id"].encode()),"issuer":ACCOUNT_ISSUER,"client_id":"b1a00492-073a-47ea-816f-4c329264a828","observed_at":now.isoformat(),"first_request_age_seconds":time.monotonic()-first,"remaining_percentage":100-pct,"code_access":True,"unified_pool":True,"on_demand_cap":0,"on_demand_used":0,"prepaid_balance":0,"auto_topup":False,"reported_subscription_tier":user.get("subscriptionTier")}
+    _write(destination/"observation.json",projection); return projection
+
+
 def _fresh_env(home: Path, profile_dir: Path):
     keep = {key: value for key, value in os.environ.items() if key.upper() in {
         "SYSTEMROOT", "WINDIR", "SYSTEMDRIVE", "COMSPEC", "PATHEXT", "PATH",
@@ -175,8 +217,6 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
     native.mkdir(parents=True, exist_ok=True)
     prompt_raw, schema_raw = prompt.encode("utf-8"), _canon(schema)
     prompt_sha, schema_sha = _sha(prompt_raw), _sha(schema_raw)
-    pre_path = native / "account-preflight.private.json"
-    pre = _account_projection(_read(pre_path))
     reservation_path = Path(reservation)
     _require(reservation_path.name == "native-reservation.json" and not reservation_path.exists(),
              "exclusive reservation path required")
@@ -184,15 +224,14 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
     reservation_body = {"schema": "grok-headless-reservation-v1", "reservation": reservation_value,
                         "prompt_sha256": prompt_sha, "schema_digest": schema_sha, "input_bytes": len(prompt_raw),
                         "main_output_cap": main_output_cap, "observed_main_token_cap": observed_main_token_cap,
-                        "timeout_seconds": timeout, "frozen_files": dict(sorted(frozen_files.items())),
-                        "account_preflight_sha256": pre["raw_sha256"], "retries": 0}
+                        "timeout_seconds": timeout, "frozen_files": dict(sorted(frozen_files.items())), "retries": 0}
     reservation_sha = _write(reservation_path, reservation_body)
     _write(native / "prompt.private.txt", prompt_raw); _write(native / "schema.private.json", schema_raw)
-    command = [str(executable), "--no-auto-update", "--cwd", str(cwd), "agent", "--session-id", reservation_value["session_id"], "--prompt-file", str(native / "prompt.private.txt"),
-               "--output-format", "streaming-json", "--model", MODEL, "--agents", json.dumps({"transport-no-tools": profile()}, separators=(",", ":")),
-               "--agent", "transport-no-tools", "--system-prompt", "Return only the requested JSON. Do not use tools."]
+    inspect_dir=native/"inspect"; pre = _account(home,native/"billing-before")
+    command = [str(executable), "--no-auto-update", "--cwd", str(cwd), "--model", MODEL, "--prompt-file", str(native / "prompt.private.txt"), "--json-schema", _canon(schema).decode(), "--output-format", "streaming-json", "--max-turns", "1", "--session-id", reservation_value["session_id"], "--no-subagents", "--no-plan", "--disable-web-search", "--disallowed-tools", ",".join(DENIED_TOOLS), "--agents", _canon({"transport-no-tools":profile()}).decode(), "--agent", "transport-no-tools", "--permission-mode", "dontAsk", "--deny", "MCPTool", "--system-prompt-override", "Return only the requested JSON. Do not use tools.", "--verbatim"]
     command_sha = _write(native / "command.json", command)
     launched_at = datetime.now(timezone.utc).isoformat()
+    _require(pre["first_request_age_seconds"] <= 5, "account snapshot stale")
     raw = b""; stderr = b""; exit_code = None; fault = None; launched = False
     tree = None
     try:
@@ -212,15 +251,14 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
             try: tree.close()
             except (OSError, subprocess.TimeoutExpired): pass
     stream_sha, stderr_sha = _write(native / "stdout.private.jsonl", raw), _write(native / "stderr.private.txt", stderr)
-    session, request_id = _end_identity(raw)
-    inspection = inspect_grok_stream(raw, schema=schema, session_id=session, max_output_tokens=main_output_cap,
+    terminal_session, request_id = _end_identity(raw)
+    inspection = inspect_grok_stream(raw, schema=schema, session_id=reservation_value["session_id"], max_output_tokens=main_output_cap,
                                      max_total_tokens=observed_main_token_cap, process_exit_code=exit_code if isinstance(exit_code, int) else -1)
     response_sha = None
     if inspection.response is not None:
         response_sha = _write(native / "response.private.json", inspection.response.data())
-    post_path = native / "account-postflight.private.json"
     post = None
-    try: post = _account_projection(_read(post_path))
+    try: post = _account(home,native/"billing-after")
     except ContractError: fault = fault or "postflight_account_unavailable"
     body = inspection.receipt.data(); faults = list(body["faults"])
     if fault and fault not in faults: faults.append(fault)
@@ -230,7 +268,7 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
         "prompt_sha256": prompt_sha, "schema_digest": schema_sha, "input_bytes": len(prompt_raw),
         "command_sha256": command_sha, "reservation_sha256": reservation_sha, "frozen_files": dict(sorted(frozen_files.items())),
         "native": {"stream_sha256": stream_sha, "stderr_sha256": stderr_sha, "process_exit_code": exit_code,
-                   "launched_at": launched_at, "session_id": session, "request_id": request_id},
+                   "launched_at": launched_at, "session_id": reservation_value["session_id"], "terminal_session_id": terminal_session, "request_id": request_id if terminal_session == reservation_value["session_id"] else None},
         "stream_inspection": body, "account_preflight": pre, "account_postflight": post,
         "prompt_process_launched": launched,
         "response_sha256": response_sha,
@@ -284,7 +322,10 @@ def verify_headless_request_binding(result, entry, directory, spec, frozen_files
         _require(receipt["response_sha256"] == _sha(_read(native / "response.private.json"))
                  and _strict_json(_read(native / "response.private.json")) == inspected.response.data(),
                  "response artifact mismatch")
-    pre = _account_projection(_read(native / "account-preflight.private.json")); post = _account_projection(_read(native / "account-postflight.private.json"))
+    try:
+        pre = _strict_json(_read(native / "billing-before" / "observation.json")); post = _strict_json(_read(native / "billing-after" / "observation.json"))
+    except (TypeError, ValueError) as exc:
+        raise ContractError("account observation changed") from exc
     _require(pre == receipt["account_preflight"] and post == receipt["account_postflight"]
              and pre["account_binding"] == post["account_binding"], "account observation binding mismatch")
     accepted = bool(receipt["accepted"] and inspected.receipt.data()["accepted"] and result.response is not None)

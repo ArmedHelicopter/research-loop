@@ -27,8 +27,11 @@ def prepared(tmp_path, monkeypatch):
     for path in (home, profile, native): path.mkdir(parents=True)
     (home / "auth.json").write_text('{"opaque":true}')
     (home / "config.toml").write_bytes(diagnostic_config(8192).encode())
-    (native / "account-preflight.private.json").write_text(json.dumps(account()))
-    (native / "account-postflight.private.json").write_text(json.dumps(account("2026-09-14T00:01:00+00:00")))
+    calls=[]
+    def fake_account(home_arg, dest):
+        dest.mkdir(); row={"raw_sha256":{"credits":"a","topup":"b","user":"c"},"account_binding":"synthetic","issuer":"https://auth.x.ai","client_id":"official","observed_at":"2026-09-14T00:00:00+00:00","first_request_age_seconds":0.01,"remaining_percentage":99,"code_access":True,"unified_pool":True,"on_demand_cap":0,"on_demand_used":0,"prepaid_balance":0,"auto_topup":False}
+        (dest / "observation.json").write_bytes(json.dumps(row, separators=(",", ":")).encode()); calls.append(dest); return row
+    monkeypatch.setattr(transport, "_account", fake_account)
     exe = root / "grok.exe"; exe.write_bytes(b"synthetic pinned executable")
     monkeypatch.setattr(transport, "EXECUTABLE_SHA256", hashlib.sha256(exe.read_bytes()).hexdigest())
     seen = []
@@ -65,7 +68,7 @@ def test_reader_rejects_tampering(tmp_path, monkeypatch, kind):
     root, kwargs, _, descriptor = prepared(tmp_path, monkeypatch); kwargs["cwd"].mkdir(); result = transport.run_headless_diagnostic(**kwargs)
     if kind == "stream": (root / "native" / "stdout.private.jsonl").write_bytes(b"bad")
     elif kind == "source": Path(next(iter(kwargs["frozen_files"]))).write_text("changed")
-    else: (root / "native" / "account-postflight.private.json").write_text(json.dumps(account("not-a-time")))
+    else: (root / "native" / "billing-after" / "observation.json").write_text("bad")
     entry = {"opportunity_id": "o1", "prompt_sha256": result.receipt.data()["prompt_sha256"], "schema_digest": result.receipt.data()["schema_digest"], "input_bytes": len(kwargs["prompt"].encode()), "private_request":{"path":str(descriptor),"sha256":hashlib.sha256(descriptor.read_bytes()).hexdigest()}}
     with pytest.raises(ContractError):
         transport.verify_headless_request_binding(result, entry, root, {"main_output_cap":8192,"observed_main_token_cap":262144,"max_input_bytes":131072,"timeout_seconds":240}, kwargs["frozen_files"])
@@ -74,7 +77,8 @@ def test_reader_rejects_tampering(tmp_path, monkeypatch, kind):
 @pytest.mark.parametrize("field,value", [("remaining_percentage", 0), ("onDemandCap", 1), ("redirected", True)])
 def test_account_denial_happens_before_dispatch(tmp_path, monkeypatch, field, value):
     root, kwargs, seen, _ = prepared(tmp_path, monkeypatch); kwargs["cwd"].mkdir(); row = account(); row[field] = value
-    (root / "native" / "account-preflight.private.json").write_text(json.dumps(row))
+    def deny(home_arg,dest): raise ContractError("denied")
+    monkeypatch.setattr(transport,"_account",deny)
     with pytest.raises(ContractError): transport.run_headless_diagnostic(**kwargs)
     assert not seen
 
