@@ -1,0 +1,398 @@
+{
+  "commit": "781e5c7c533f1d393b8d1b866c6f94173217bc04",
+  "scope": "offline fixtures only; no provider/model/API/Docker/scoring",
+  "baselines": [
+    {
+      "adapter": "blade",
+      "experiment": "Q3.1",
+      "variant": "computation",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q3.1",
+      "variant": "measurement",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q3.1",
+      "variant": "mechanism",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q3.2",
+      "variant": "joint",
+      "callbacks": 3,
+      "verified": true
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q3.2",
+      "variant": "separate",
+      "callbacks": 3,
+      "verified": true
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q5.2",
+      "variant": "negative_control",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q5.2",
+      "variant": "zero_exit_same_prediction",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q5.3",
+      "variant": "opposite_prediction",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q5.3",
+      "variant": "same_mechanism",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q5.3",
+      "variant": "title",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q5.4",
+      "variant": "preregistered_cost",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "blade",
+      "experiment": "Q5.4",
+      "variant": "subjective",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q3.1",
+      "variant": "computation",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q3.1",
+      "variant": "measurement",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q3.1",
+      "variant": "mechanism",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q3.2",
+      "variant": "joint",
+      "callbacks": 3,
+      "verified": true
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q3.2",
+      "variant": "separate",
+      "callbacks": 3,
+      "verified": true
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q5.2",
+      "variant": "negative_control",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q5.2",
+      "variant": "zero_exit_same_prediction",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q5.3",
+      "variant": "opposite_prediction",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q5.3",
+      "variant": "same_mechanism",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q5.3",
+      "variant": "title",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q5.4",
+      "variant": "preregistered_cost",
+      "callbacks": 1,
+      "verified": true
+    },
+    {
+      "adapter": "discovery",
+      "experiment": "Q5.4",
+      "variant": "subjective",
+      "callbacks": 1,
+      "verified": true
+    }
+  ],
+  "attacks": [
+    {
+      "name": "cross_subject_plans_requests_resealed",
+      "intact_copy_verified_first": true,
+      "coherently_resealed": true,
+      "accepted": true,
+      "check": {
+        "callback_count": 3,
+        "run_id": "73e134a6ac4f45de809b406ff39887cf",
+        "schema": "prediction-scenario-artifact-check-v1",
+        "scientific_validated": false,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      }
+    },
+    {
+      "name": "unrelated_source_resealed",
+      "intact_copy_verified_first": true,
+      "coherently_resealed": true,
+      "accepted": true,
+      "check": {
+        "callback_count": 3,
+        "run_id": "73e134a6ac4f45de809b406ff39887cf",
+        "schema": "prediction-scenario-artifact-check-v1",
+        "scientific_validated": false,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      }
+    },
+    {
+      "name": "attempt_binding_resealed",
+      "intact_copy_verified_first": true,
+      "coherently_resealed": true,
+      "accepted": true,
+      "check": {
+        "callback_count": 3,
+        "run_id": "73e134a6ac4f45de809b406ff39887cf",
+        "schema": "prediction-scenario-artifact-check-v1",
+        "scientific_validated": false,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      }
+    },
+    {
+      "name": "erase_all_callbacks_plans_trace_resealed",
+      "intact_copy_verified_first": true,
+      "coherently_resealed": true,
+      "accepted": true,
+      "check": {
+        "callback_count": 0,
+        "run_id": "73e134a6ac4f45de809b406ff39887cf",
+        "schema": "prediction-scenario-artifact-check-v1",
+        "scientific_validated": false,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      }
+    },
+    {
+      "name": "raw_typed_disagree_resealed",
+      "intact_copy_verified_first": true,
+      "coherently_resealed": true,
+      "accepted": true,
+      "check": {
+        "callback_count": 3,
+        "run_id": "73e134a6ac4f45de809b406ff39887cf",
+        "schema": "prediction-scenario-artifact-check-v1",
+        "scientific_validated": false,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      }
+    },
+    {
+      "name": "scientific_trace_forgery_resealed",
+      "intact_copy_verified_first": true,
+      "coherently_resealed": true,
+      "accepted": true,
+      "check": {
+        "callback_count": 3,
+        "run_id": "73e134a6ac4f45de809b406ff39887cf",
+        "schema": "prediction-scenario-artifact-check-v1",
+        "scientific_validated": false,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      }
+    },
+    {
+      "name": "wrong_outcome_subject_variant_budget_resealed",
+      "intact_copy_verified_first": true,
+      "coherently_resealed": true,
+      "accepted": true,
+      "check": {
+        "callback_count": 3,
+        "run_id": "73e134a6ac4f45de809b406ff39887cf",
+        "schema": "prediction-scenario-artifact-check-v1",
+        "scientific_validated": false,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      }
+    },
+    {
+      "name": "wrong_result_digest_resealed",
+      "intact_copy_verified_first": true,
+      "coherently_resealed": true,
+      "accepted": true,
+      "check": {
+        "callback_count": 3,
+        "run_id": "73e134a6ac4f45de809b406ff39887cf",
+        "schema": "prediction-scenario-artifact-check-v1",
+        "scientific_validated": false,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      }
+    }
+  ],
+  "failure_checks": [
+    {
+      "experiment": "Q3.1",
+      "variant": "computation",
+      "fail_at": 1,
+      "retained": true
+    },
+    {
+      "experiment": "Q3.1",
+      "variant": "measurement",
+      "fail_at": 1,
+      "retained": true
+    },
+    {
+      "experiment": "Q3.1",
+      "variant": "mechanism",
+      "fail_at": 1,
+      "retained": true
+    },
+    {
+      "experiment": "Q3.2",
+      "variant": "joint",
+      "fail_at": 1,
+      "retained": true
+    },
+    {
+      "experiment": "Q3.2",
+      "variant": "joint",
+      "fail_at": 2,
+      "retained": true
+    },
+    {
+      "experiment": "Q3.2",
+      "variant": "joint",
+      "fail_at": 3,
+      "retained": true
+    },
+    {
+      "experiment": "Q3.2",
+      "variant": "separate",
+      "fail_at": 1,
+      "retained": true
+    },
+    {
+      "experiment": "Q3.2",
+      "variant": "separate",
+      "fail_at": 2,
+      "retained": true
+    },
+    {
+      "experiment": "Q3.2",
+      "variant": "separate",
+      "fail_at": 3,
+      "retained": true
+    },
+    {
+      "experiment": "Q5.2",
+      "variant": "negative_control",
+      "fail_at": 1,
+      "retained": true
+    },
+    {
+      "experiment": "Q5.2",
+      "variant": "zero_exit_same_prediction",
+      "fail_at": 1,
+      "retained": true
+    },
+    {
+      "experiment": "Q5.3",
+      "variant": "opposite_prediction",
+      "fail_at": 1,
+      "retained": true
+    },
+    {
+      "experiment": "Q5.3",
+      "variant": "same_mechanism",
+      "fail_at": 1,
+      "retained": true
+    },
+    {
+      "experiment": "Q5.3",
+      "variant": "title",
+      "fail_at": 1,
+      "retained": true
+    },
+    {
+      "experiment": "Q5.4",
+      "variant": "preregistered_cost",
+      "fail_at": 1,
+      "retained": true
+    },
+    {
+      "experiment": "Q5.4",
+      "variant": "subjective",
+      "fail_at": 1,
+      "retained": true
+    }
+  ],
+  "post_callback_failure": {
+    "callbacks": 1,
+    "files": [
+      "prediction-scenario-artifacts.jsonl"
+    ],
+    "failed_attempt_readable": false,
+    "error": "prediction scenario artifact inventory is incomplete or has extra files"
+  },
+  "train_preflight": {
+    "rejected": true,
+    "directory_created": false
+  }
+}

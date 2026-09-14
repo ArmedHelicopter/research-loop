@@ -1,0 +1,2123 @@
+{
+  "schema": "prediction-fixture-artifact-archive-v1",
+  "source_commit": "75f33a9c09ccc5d026a36805bdde38ac9fa5cb9c",
+  "originals": [
+    {
+      "file": "prediction-artifacts-final-source-members.json",
+      "sha256": "7f16a1e602d79f0560fe32f9dc63323f6661b641b757776a0831ffdeb3e108d5",
+      "bytes": 130226
+    },
+    {
+      "file": "prediction-artifacts-final-sources.zip",
+      "sha256": "4764f38b33512cbb4e81ca0cdb705bbe29b5b906491a7d581bab4366f103d54b",
+      "bytes": 2457501
+    },
+    {
+      "file": "prediction-artifacts-final-before.json",
+      "sha256": "2fa086ca1435f4c0dcb3273268f86180a3c427bc235145954e5e44a4983f8859",
+      "bytes": 86981
+    },
+    {
+      "file": "prediction-artifacts-final-closed.json",
+      "sha256": "590ad798cb2e2f1caa0beeb83660cd87469ae9f63c006669473ff282a6cc169c",
+      "bytes": 87107
+    },
+    {
+      "file": "prediction-artifacts-final.xml",
+      "sha256": "271ef3bd6c00d4d513d2a766b2972d05395e28fdc63d381fe6783324dd588ad0",
+      "bytes": 6098
+    },
+    {
+      "file": "prediction-artifacts-root-r2-source-members.json",
+      "sha256": "9d523c1278c1506077ead3a3e04a0ac5d57905dccf2f4a553b8fcf119a0633fd",
+      "bytes": 130404
+    },
+    {
+      "file": "prediction-artifacts-root-r2-sources.zip",
+      "sha256": "9af7d6d216a850b9c691884472d4b109f4594f523b892ae4cd00306c4c0734df",
+      "bytes": 2462223
+    },
+    {
+      "file": "prediction-artifacts-root-r2-before.json",
+      "sha256": "01d184e5c82001e57af89365d5f2e37794c6a2a5ef05cddb885e7b256d4f5741",
+      "bytes": 87191
+    },
+    {
+      "file": "prediction-artifacts-root-r2-closed.json",
+      "sha256": "36fda37a99e2451d3f2c8dc6c47796d8862a3b0446653f10b52acdf832a7f51d",
+      "bytes": 87215
+    },
+    {
+      "file": "prediction-artifacts-root-r2.xml",
+      "sha256": "bc70dda7498f7a82d81f8d06dac98b25c2293fcf2e5160fba7576f8b0a10abf5",
+      "bytes": 9884
+    },
+    {
+      "file": "prediction-artifacts-root-r4-source-members.json",
+      "sha256": "2c5364420a158f8b1e85ed85930f006540464238bf5d2555fb32beecb9e54ca8",
+      "bytes": 130404
+    },
+    {
+      "file": "prediction-artifacts-root-r4-sources.zip",
+      "sha256": "446ba23d4f621380623343f5f7bd9cdc15a77634d49c2f520d8ecbf321820314",
+      "bytes": 2463105
+    },
+    {
+      "file": "prediction-artifacts-root-r4-before.json",
+      "sha256": "a67c4d035e85d9d7588621e08ee8399e8c9c283e3fd654f607d8207676d9c681",
+      "bytes": 87191
+    },
+    {
+      "file": "prediction-artifacts-root-r4-closed.json",
+      "sha256": "d24be5f34318e6f9758acbe3e7b65b89f1d2fd04761e99d894cb13089422f8cf",
+      "bytes": 87226
+    },
+    {
+      "file": "prediction-artifacts-root-r4.xml",
+      "sha256": "c62dd3e7aaab4ed6e2c25809eefc5570b5e3ad77bfd992fc3352d83023a96e10",
+      "bytes": 10655
+    },
+    {
+      "file": "independent-v1-review.py",
+      "sha256": "a9cb2603f4ebc1d1ea68bfe2de76b009d510bf02947b94f2795899eb4de5c660",
+      "bytes": 8404
+    },
+    {
+      "file": "independent-v1-report.json",
+      "sha256": "5b97b43bc573c74645a83df5792a0157f31f2ec3bb459a07ba96ca0ad5dc7404",
+      "bytes": 9877
+    },
+    {
+      "file": "archive_prediction_artifacts_r2.py",
+      "sha256": "ff1f49eb231c7cecac39bf78b296c0da19e07901915a8a688edf0fc1b4d7eaaf",
+      "bytes": 8263
+    },
+    {
+      "file": "test_actual_mechanism_output_f0-original.zip",
+      "sha256": "b357a4ad689bd7e5ca60a81a1d9a979b6f7e857d75aa76e5b0373dd89f32bd70",
+      "bytes": 6291
+    },
+    {
+      "file": "test_actual_mechanism_output_f0-attack.zip",
+      "sha256": "bae255fc7c4e5388cb63985fd2cabc1f0aac85b9c3c0c007da6f3dc652143dc6",
+      "bytes": 6291
+    },
+    {
+      "file": "test_actual_mechanism_output_f1-original.zip",
+      "sha256": "20b6fbaf7c77334672ddd594b831f13c3f6d6d784389e153cdc4c3cbe7eef697",
+      "bytes": 6195
+    },
+    {
+      "file": "test_actual_mechanism_output_f1-attack.zip",
+      "sha256": "bb526726bd1ecceaf8898a9f6bab96a802f7039821f4b89929a640770daf4147",
+      "bytes": 6203
+    },
+    {
+      "file": "test_actual_mechanism_output_f2-original.zip",
+      "sha256": "ec4c78cc2429b24b8b186857dde62100349b6075839898e8cb79c64def37f1d5",
+      "bytes": 6160
+    },
+    {
+      "file": "test_actual_mechanism_output_f2-attack.zip",
+      "sha256": "21d04b980e647d766d936a699331959023c29a3080d80e79803f9302ac2be1ce",
+      "bytes": 6170
+    },
+    {
+      "file": "test_actual_mechanism_output_f3-original.zip",
+      "sha256": "0fcb59a532136e4f6035b1776de1377055a16b46a74bb0b113c3943fc92b778d",
+      "bytes": 6401
+    },
+    {
+      "file": "test_actual_mechanism_output_f3-attack.zip",
+      "sha256": "4b6c34d4d9de10b53a6df302f49e036fdc3d779a040fd94c0404bdb87ae60c79",
+      "bytes": 6406
+    },
+    {
+      "file": "test_callback_failure_is_durab0-failed.zip",
+      "sha256": "36a64ef48c046975626692a4618c0b957d680f5176a2f0004115dea791e1e08e",
+      "bytes": 4220
+    },
+    {
+      "file": "test_closed_controls_and_callb0-Q3.1-mechanism.zip",
+      "sha256": "04e02e595d1dba4dd9e8cc555a5e2e6155c398ca28f0019273bc84be56c69c3a",
+      "bytes": 5998
+    },
+    {
+      "file": "test_invalid_callback_value_su0-invalid.zip",
+      "sha256": "f56ef43622a47fd4e229719972a5c51f956e3c50ca19d12e22046b33bf44c64a",
+      "bytes": 4289
+    },
+    {
+      "file": "test_invalid_callback_value_su1-invalid.zip",
+      "sha256": "f8dccf23aee529cdc2bb612ebdac61827a98aec0093d93c989964cdb5e884e73",
+      "bytes": 4267
+    },
+    {
+      "file": "test_invalid_callback_value_su2-invalid.zip",
+      "sha256": "d86574cc857a49d9e806543fa1a70aa6d49ffd9bbd44ea67844e40e5a3c1579d",
+      "bytes": 4270
+    },
+    {
+      "file": "test_joint_and_separate_have_s0-Q3.2-joint.zip",
+      "sha256": "4632e45d8dee49687a5fe5334955fba799df78c7d35003ff85e064da063d88d2",
+      "bytes": 6808
+    },
+    {
+      "file": "test_joint_and_separate_have_s0-Q3.2-separate.zip",
+      "sha256": "fae70c99fa6d50a17468181f42e45834c7d81c16ead72ef148877ddd3f4549c8",
+      "bytes": 7467
+    },
+    {
+      "file": "test_partial_write_is_retained0-partial.zip",
+      "sha256": "1bda61bba14f8cdb0430a6c9d9dd9a6aa8cdff19ac656bb96a9ec99b27e06063",
+      "bytes": 4076
+    },
+    {
+      "file": "test_post_callback_mechanism_f0-late-failure.zip",
+      "sha256": "5ae1da10d930aae06bfb35dff3f73803227280be6f27cbc5b4eff397761e6563",
+      "bytes": 5039
+    },
+    {
+      "file": "test_q52_retains_zero_exit_as_0-Q5.2-zero_exit_same_prediction.zip",
+      "sha256": "1ac11e5abba1d345ed08af385c7c1896a1d9ee86b610201c21d187661dd1e379",
+      "bytes": 6017
+    },
+    {
+      "file": "test_q53_dedup_uses_mechanism_0-Q5.3-opposite_prediction.zip",
+      "sha256": "4015bf028cf10077273a8cd7db33b3fc0d6efdecc318d3c161bba899d3b4d36d",
+      "bytes": 6203
+    },
+    {
+      "file": "test_q53_dedup_uses_mechanism_0-Q5.3-same_mechanism.zip",
+      "sha256": "fbc8abdd00f4efd3c2e25635f84990270e5dd396c79d800c54e450a5eabaf221",
+      "bytes": 6203
+    },
+    {
+      "file": "test_q53_dedup_uses_mechanism_0-Q5.3-title.zip",
+      "sha256": "2c49111015ef6d9fcec8d55acb6ff87923768e7a04f28584e29694e0455f4877",
+      "bytes": 6176
+    },
+    {
+      "file": "test_q54_selection_is_within_c0-Q5.4-preregistered_cost.zip",
+      "sha256": "28602829eb68ff44c882d7f06973b92b9582b160bf353b128b119417e6f10865",
+      "bytes": 6419
+    },
+    {
+      "file": "test_q54_selection_is_within_c0-Q5.4-subjective.zip",
+      "sha256": "ac116bc8cb4c5964940583bb319fbe493de7ea05648bb21898f43f3562f7b601",
+      "bytes": 6374
+    },
+    {
+      "file": "test_registered_variants_captu0-Q3.1-mechanism.zip",
+      "sha256": "1f54f8f068c3fc175cda5f2bb2620387205f6b7c3ff1e759ebcfdff478be42f0",
+      "bytes": 5956
+    },
+    {
+      "file": "test_registered_variants_captu1-Q3.1-mechanism.zip",
+      "sha256": "41c72c08c88a48bd5fc9c3e4c94c53634796aaa6d421afbd527f18c392d23dae",
+      "bytes": 5983
+    },
+    {
+      "file": "test_registered_variants_captu10-Q5.2-zero_exit_same_prediction.zip",
+      "sha256": "f36f0cdcc51987e5ed9e9de9d84c0e816b19eabb835acbe1b95d9f42fc50a80d",
+      "bytes": 5996
+    },
+    {
+      "file": "test_registered_variants_captu11-Q5.2-zero_exit_same_prediction.zip",
+      "sha256": "3c62cf4331f0338eb449818a1462442b74abd77cdea417ef90163d7aff128a59",
+      "bytes": 6011
+    },
+    {
+      "file": "test_registered_variants_captu12-Q5.2-negative_control.zip",
+      "sha256": "597df779c2323e193002116073dd9b08bf88a02715b724a0f368ebea43c0fa14",
+      "bytes": 6302
+    },
+    {
+      "file": "test_registered_variants_captu13-Q5.2-negative_control.zip",
+      "sha256": "78cd58b80b0fd5d2ea7704c23f624cfb5c6a18478b15e5b174a5cf65e3d64d29",
+      "bytes": 6341
+    },
+    {
+      "file": "test_registered_variants_captu14-Q5.3-same_mechanism.zip",
+      "sha256": "2a3827f12c12944554f24a0ec142ebecf5696389cee7bb2cbbf282fddf9b2254",
+      "bytes": 6208
+    },
+    {
+      "file": "test_registered_variants_captu15-Q5.3-same_mechanism.zip",
+      "sha256": "f36018e0f6715b82dc4518895e77b8b0428337c9081bc59aa2c4c5ed037383ad",
+      "bytes": 6228
+    },
+    {
+      "file": "test_registered_variants_captu16-Q5.3-opposite_prediction.zip",
+      "sha256": "6055e9ddfc83f3ca8db4e27af93ca4b43f9cd5c06f15b8825a1ea3abeb57b98f",
+      "bytes": 6196
+    },
+    {
+      "file": "test_registered_variants_captu17-Q5.3-opposite_prediction.zip",
+      "sha256": "1eeab8391c650ecfcdc6ac06bf16e62ecc2579c1adef2a39a83ef5dc6a06dab2",
+      "bytes": 6232
+    },
+    {
+      "file": "test_registered_variants_captu18-Q5.3-title.zip",
+      "sha256": "0ee1cc02ec31b1e80758455c58ee677642e7ae310f97f8b460a10d93f0513425",
+      "bytes": 6173
+    },
+    {
+      "file": "test_registered_variants_captu19-Q5.3-title.zip",
+      "sha256": "adcf22bda9f68f40173a3eed64acbcfeaf8844b375e1f4238bc149cc6d843ed5",
+      "bytes": 6182
+    },
+    {
+      "file": "test_registered_variants_captu2-Q3.1-computation.zip",
+      "sha256": "2644cd6088a090b2a53faac44e08fd520d9371cf994b4ca186d441504f101816",
+      "bytes": 5976
+    },
+    {
+      "file": "test_registered_variants_captu20-Q5.4-subjective.zip",
+      "sha256": "cdfa69c8e52db852b7471398e688081f99e5396ac66b10853f7803ea9a741abf",
+      "bytes": 6373
+    },
+    {
+      "file": "test_registered_variants_captu21-Q5.4-subjective.zip",
+      "sha256": "0fdba35f6fa1848537d6d4a9628f16ed9d0d6d0b37268bb1ac0cff367ffa3474",
+      "bytes": 6408
+    },
+    {
+      "file": "test_registered_variants_captu22-Q5.4-preregistered_cost.zip",
+      "sha256": "a9c1f22f0a7ec206783abc4b08087fed0ed48910a8fcab149d926a8b890cf3e3",
+      "bytes": 6418
+    },
+    {
+      "file": "test_registered_variants_captu23-Q5.4-preregistered_cost.zip",
+      "sha256": "9604fc255e3b7bc83976cf70dbd9457a9cc1373b61fc52536514eb6aaba7c5fa",
+      "bytes": 6455
+    },
+    {
+      "file": "test_registered_variants_captu3-Q3.1-computation.zip",
+      "sha256": "52cd793d57ef7bbea93dbcf8baf76a0df4ee040204b247e9480c16f0f9c08e4e",
+      "bytes": 6001
+    },
+    {
+      "file": "test_registered_variants_captu4-Q3.1-measurement.zip",
+      "sha256": "6e02a05f4245943a9e8be8265f03ec1625ffc41cd85879130917686118307b14",
+      "bytes": 5976
+    },
+    {
+      "file": "test_registered_variants_captu5-Q3.1-measurement.zip",
+      "sha256": "b9f91e0fc5c23d52f1c3020227ac6f066eeeed7f07a7659c2665afd103b00a1b",
+      "bytes": 5987
+    },
+    {
+      "file": "test_registered_variants_captu6-Q3.2-joint.zip",
+      "sha256": "a7a7127d85684d6fb129c6d8203efe63f57edfc3b1cedf84bc0273fc67fdd8d6",
+      "bytes": 6807
+    },
+    {
+      "file": "test_registered_variants_captu7-Q3.2-joint.zip",
+      "sha256": "0b5ba491f253bee66d579e2194431f6b2247b6dfbef48eab886e5620fa98c961",
+      "bytes": 6837
+    },
+    {
+      "file": "test_registered_variants_captu8-Q3.2-separate.zip",
+      "sha256": "3e5abaab1cccfd1cb37fa0af3e5e7faa878dce384692544483aa95a028cf60ac",
+      "bytes": 7467
+    },
+    {
+      "file": "test_registered_variants_captu9-Q3.2-separate.zip",
+      "sha256": "b8a77c85f55c9a531a1e5e0f94cb13229e84f428e04b1abd45c0b9bb4d7ec2b0",
+      "bytes": 7485
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec0-original.zip",
+      "sha256": "17d4d22e9e3f03a80f64bc92a2096c937403749419c1537264237fcac2e92210",
+      "bytes": 7442
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec0-attack.zip",
+      "sha256": "9e30c13e42afcf78ec82c12d508a366774685ddf319b2fef509cfe5f78d25ddc",
+      "bytes": 7454
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec1-original.zip",
+      "sha256": "2a41eb8ecbd109d43a669eab0ed8a66b101ed8aa02bd1135be5c969624f9b156",
+      "bytes": 7441
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec1-attack.zip",
+      "sha256": "6759b526bb0e032049b15ac79c32cfbd5091ec067d4508f07bcdb338d809a550",
+      "bytes": 6822
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec10-original.zip",
+      "sha256": "82adfdf21fcb32552b9d2c17a718455de697a06a39a4b73f525302a8e50e6a8c",
+      "bytes": 7447
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec10-attack.zip",
+      "sha256": "1aad65f032c6ed890fb035b9b2570d73fc67fd5ff39fa846abbf5fec11dc1073",
+      "bytes": 7455
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec2-original.zip",
+      "sha256": "428a0e1c5e4a90f848a2c03363f40c2f2b39962c6a3526cdc3759c37a519c4c7",
+      "bytes": 7449
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec2-attack.zip",
+      "sha256": "cce9c4800aa2deadb6dfe0ead51a3d1c2db8a28224e20c09eaefbeda7644dd4a",
+      "bytes": 7462
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec3-original.zip",
+      "sha256": "7e0613a97ad1aa8058aa4fcdae83bd992aa409ee0a6f0ed5036e1096afb47b6f",
+      "bytes": 7451
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec3-attack.zip",
+      "sha256": "6b84aac88cfc7c1c1669505be220758f72d3f5b3dbbe11600234621a9e20af14",
+      "bytes": 4892
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec4-original.zip",
+      "sha256": "01287cb77bc1b021078d7730f06eafc66f0f58e1a644dfbf3b8214099cc17846",
+      "bytes": 7443
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec4-attack.zip",
+      "sha256": "dec66bab49094e28372d58a53b933254039bd7263636e181e42b36462fa3a972",
+      "bytes": 7447
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec5-original.zip",
+      "sha256": "69f2ed62f7bf78443d06817a590f4fcfce043957ff696cc20a02d0939f7063b0",
+      "bytes": 7454
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec5-attack.zip",
+      "sha256": "4cf4713ad4d97b09c59e8eb1890a589f5c4c9440f59bfb6b1e7370983e0cd744",
+      "bytes": 7474
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec6-original.zip",
+      "sha256": "f746901aec57396407e4af596c12aedeb210266c69d4fd2c6ab3478f88acca87",
+      "bytes": 7440
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec6-attack.zip",
+      "sha256": "dc0aaf53ee1776e2e5be91a4f76f8dfb82bf0fbd799bdb3b0e7f1c73c7cfa703",
+      "bytes": 7438
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec7-original.zip",
+      "sha256": "985849d707b0212194078ff14cdb5f499eee705ac0dcb2f19922c7518a2111f7",
+      "bytes": 7448
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec7-attack.zip",
+      "sha256": "c40eee69bd009dd710015a68b74598c60d7530218998c90389fc285bc0f6a903",
+      "bytes": 7378
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec8-original.zip",
+      "sha256": "0b316ec11c86f8678ce94fa9a78bce23fa26418ed3ff91b85aaaba419af2a3b6",
+      "bytes": 7450
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec8-attack.zip",
+      "sha256": "c5e25771d8edf036a91523b63c916846395757fb34d601005d96f4efc5a4f163",
+      "bytes": 7442
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec9-original.zip",
+      "sha256": "63626f19600e6e492e02b93ecdf5ff835a577d52a912f90e36e26b1f91589afb",
+      "bytes": 7437
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec9-attack.zip",
+      "sha256": "21bf054742730cf65b502e4197e6a1bba5fa87ee28327173f04ad1ce2bd6e29b",
+      "bytes": 7455
+    }
+  ],
+  "specimens": [
+    {
+      "file": "test_actual_mechanism_output_f0-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f0\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "56390f34a6294bd8853e2484f2ff7f8b",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f0\\independent-inputs.json",
+      "experiment_id": "Q5.2",
+      "variant": "negative_control",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "45ecd85f5bf67c57cdd6e765102e39d82c4544a671046bbf53766a8b50604077",
+        "prediction-scenario-closure.json": "15bfed3ce614cf2db8e707569bc9b173ef95bcb9b5dd507a9b025845afb320e6",
+        "prediction-scenario-terminal.json": "7a86f4e8eea4dcdaa0910d16e5e36c2228782fc172d7b91c0950e28a5454c890"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_actual_mechanism_output_f0-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f0\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f0\\independent-inputs.json",
+      "experiment_id": "Q5.2",
+      "variant": "negative_control",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "4cda980ce78e7661b0cddeb58fc5ebb249c0818675ab780d71b6ceb56262f557",
+        "prediction-scenario-closure.json": "c1af4318b9bdb6722e31d1ba6a293d38f69f7131b0bcb226216fbdd38e18176c",
+        "prediction-scenario-terminal.json": "7a86f4e8eea4dcdaa0910d16e5e36c2228782fc172d7b91c0950e28a5454c890"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_actual_mechanism_output_f1-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f1\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "049205857a6d42a298e1b38b3de90fe9",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f1\\independent-inputs.json",
+      "experiment_id": "Q5.3",
+      "variant": "same_mechanism",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "fb0ff20a58d5009279322624c9a2bf4403a068d378b0c5886ed104e9a63f9f2b",
+        "prediction-scenario-closure.json": "bac9fdf5c9f22002969db82003182f7443ff7d4b7f55674d6a29a06ea103f85e",
+        "prediction-scenario-terminal.json": "85d784c66e5d7771b0a4890e5c15b7d3319ed561d640491bb684a7662acc9a1d"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_actual_mechanism_output_f1-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f1\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f1\\independent-inputs.json",
+      "experiment_id": "Q5.3",
+      "variant": "same_mechanism",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "446c9c75e621f1122a48668317f2aff09aae509bd60e46913652f63a6b20106d",
+        "prediction-scenario-closure.json": "39210f811c1450fb6245202c0a11835fe6f7e972e0f446bc3dd8e49b1de437a5",
+        "prediction-scenario-terminal.json": "85d784c66e5d7771b0a4890e5c15b7d3319ed561d640491bb684a7662acc9a1d"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_actual_mechanism_output_f2-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f2\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "c0b007d15ff842d1b79ddc599ffa65ae",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f2\\independent-inputs.json",
+      "experiment_id": "Q5.3",
+      "variant": "title",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "1343c89a796f7ea7c38a82680a21a9ff69b95a106fa5aac186cb7139bc19e923",
+        "prediction-scenario-closure.json": "a1c98697ad906f952a06474fb237058d0f5876ea2145f845e23d911f2919c1ae",
+        "prediction-scenario-terminal.json": "28b92f148572755cf83a5dbe274471c1574c9024dc7c0d8f34c983f27f2c291f"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_actual_mechanism_output_f2-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f2\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f2\\independent-inputs.json",
+      "experiment_id": "Q5.3",
+      "variant": "title",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "f66462611263729b767552216343ccbcadc2315956c1665a02755ea5ef579bf7",
+        "prediction-scenario-closure.json": "4ca5b457345462863d59b8ea41b5158970e70df45c44d8bde9272cd0e54e048c",
+        "prediction-scenario-terminal.json": "28b92f148572755cf83a5dbe274471c1574c9024dc7c0d8f34c983f27f2c291f"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_actual_mechanism_output_f3-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f3\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "6858c7d9bd3148afb1e0739bd43e2aef",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f3\\independent-inputs.json",
+      "experiment_id": "Q5.4",
+      "variant": "preregistered_cost",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "051aba74f1b1ca72119e31abee224cd48f7404c5adc538a1168fd7cc5c9e8ab3",
+        "prediction-scenario-closure.json": "90c65caee9ec6a8142cc15bec605a1dd60164c6a328242dc60f86768e974f6ad",
+        "prediction-scenario-terminal.json": "e40b418f6d9685609fe4334fabb433578aeafc5074bc7bb7705208007ce2004e"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_actual_mechanism_output_f3-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f3\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_actual_mechanism_output_f3\\independent-inputs.json",
+      "experiment_id": "Q5.4",
+      "variant": "preregistered_cost",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "696f9eb1e1927199c78fbf464012eebb3b7a7e68fe9902b33c0865325161d327",
+        "prediction-scenario-closure.json": "c3b84bd6b7d8c8243b80505ea4572a1e2a59d22751227a2ae4ede0c64930cdda",
+        "prediction-scenario-terminal.json": "e40b418f6d9685609fe4334fabb433578aeafc5074bc7bb7705208007ce2004e"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_callback_failure_is_durab0-failed.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_callback_failure_is_durab0\\failed",
+      "status": "verified_failed_prefix",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "62de1cfbf54c4767adc888eed4008886",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": false,
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "original_control": "caller definition in frozen tests",
+      "experiment_id": "Q3.1",
+      "variant": "mechanism",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "c924edba2bf97b88475f27f22383dc6f5c0c31efa0a32b82416c411320c9d0f8",
+        "prediction-scenario-closure.json": "f1b05a1e89ad6954abb7ab8c6effeb56c31e77525d5060f6d12d86d86a35f764",
+        "prediction-scenario-terminal.json": "31869443d0f8e53ea14248db524db8f80ede9d3c49ddcc49ac43131c4862d30d"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_closed_controls_and_callb0-Q3.1-mechanism.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_closed_controls_and_callb0\\Q3.1-mechanism",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "6697ba6332f04dccb4030c7ce003ea70",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_closed_controls_and_callb0\\Q3.1-mechanism-independent-inputs.json",
+      "experiment_id": "Q3.1",
+      "variant": "mechanism",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "dc132b3bb2ea58bf2d569ad4dbdfe55c82aec1c3cd88a9a8e41c0085a4ad0cbe",
+        "prediction-scenario-closure.json": "e457d9b2c827c50ee85d17fc9dc01633e6249876c9a91f378f33c4cfb7330c2a",
+        "prediction-scenario-terminal.json": "382536c3ddc2c10fd23fa512306dc633a5ef995cd07aef3009bea2b316490be9"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_invalid_callback_value_su0-invalid.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_invalid_callback_value_su0\\invalid",
+      "status": "verified_failed_prefix",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "46b31779a96f426d8df9ccd3cafca835",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": false,
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "original_control": "caller definition in frozen tests",
+      "experiment_id": "Q3.1",
+      "variant": "mechanism",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "4d6817d4a9c1661662b20a9ac5b31398546c2d266950f53e476b8db393b38e8f",
+        "prediction-scenario-closure.json": "6a835c844e5812abf1eacd759d9a10bf8a7190024af6922d2ebdcedd5f500c7c",
+        "prediction-scenario-terminal.json": "7510593cbf18dade2d05ec2c2f0daa4f691f07f3b561bfdc4658e7e9dff398ba"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_invalid_callback_value_su1-invalid.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_invalid_callback_value_su1\\invalid",
+      "status": "verified_failed_prefix",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "ed1b41c530bd4eb2a53126e0fdb14a6c",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": false,
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "original_control": "caller definition in frozen tests",
+      "experiment_id": "Q3.1",
+      "variant": "mechanism",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "52a2e5feb76e3b8749659c0c808fa21aa907da35fbf9b9486a8156ce0fa5cb20",
+        "prediction-scenario-closure.json": "850efb6face68d19d316d80968664857be13a56cf33589c3f9e4d9ff4c0af47b",
+        "prediction-scenario-terminal.json": "41ae38cd56a5ef5499f50f4b608206edfeff11892ce56b74bfa5eb6578977f2a"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_invalid_callback_value_su2-invalid.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_invalid_callback_value_su2\\invalid",
+      "status": "verified_failed_prefix",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "88e4df9b04874320b1cfe509df4fe0df",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": false,
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "original_control": "caller definition in frozen tests",
+      "experiment_id": "Q3.1",
+      "variant": "mechanism",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "21d0b62bf40787f4fc205636ed0e7b887b52ae2149107f3928bf994f5a7d3d21",
+        "prediction-scenario-closure.json": "b96fad09bdfebfc3a59b5a55e11179170eb93d3a0ad869df26ef88de19a4da72",
+        "prediction-scenario-terminal.json": "87641a9827eab4867e2d50e1b6550414b158987395fc9e53b7ee1120b0eb05ea"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_joint_and_separate_have_s0-Q3.2-joint.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_joint_and_separate_have_s0\\Q3.2-joint",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "7d4705a48f8141778cbf409b707766e1",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_joint_and_separate_have_s0\\Q3.2-joint-independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "joint",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "3b12256195ac33ae44fc036b9a729349070d8ae10f8072a58305d0014b7e5567",
+        "prediction-scenario-closure.json": "b69870ddf5c2f2c3819e5646f7ee94bcc16ff786153de3eaca9717dc342e45ab",
+        "prediction-scenario-terminal.json": "7e5ba160060eeb4a5a1d2c4513d0f9eab2a24297dcf4bb395683f9ce47a9719b"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_joint_and_separate_have_s0-Q3.2-separate.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_joint_and_separate_have_s0\\Q3.2-separate",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "b4b45ed40a3c4a8f8653c16ea91473f8",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_joint_and_separate_have_s0\\Q3.2-separate-independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "925d76fe13270dd0149308b12d902297c260b23f3398310f6b6de6c6ff292d45",
+        "prediction-scenario-closure.json": "95f15392ade5e70fcfa8edfe95ff18bc2b8371e5bdd61f76f9e533f47b172520",
+        "prediction-scenario-terminal.json": "e4bdf7dc84bbd22cbdc538a8262105f032891d51daf6aef46f8904d663ffaa4c"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_partial_write_is_retained0-partial.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_partial_write_is_retained0\\partial",
+      "status": "nonaccepted_retained_bytes",
+      "attack": false,
+      "verification": null,
+      "original_control": "caller definition in frozen tests",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "c77f236b57614f56e0c186a89adbec7114b73ed490872d8003182fc811e54ad0",
+        "prediction-scenario-closure.json": "3a53b3c0372feaefddc49505d293b5a3bc2a3e6514d15d742792b393d2de50fc",
+        "prediction-scenario-terminal.json": "645236b26f17f0940685cbf4d63bae95f8ee41734760f5e2f53de7a3f7c8e778"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_post_callback_mechanism_f0-late-failure.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_post_callback_mechanism_f0\\late-failure",
+      "status": "verified_failed_prefix",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "128aa0a2b36042398bc72099d41e4ad9",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": false,
+        "status": "failed",
+        "storage_integrity_verified": true
+      },
+      "original_control": "caller definition in frozen tests",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "689b9f54c13fd6ddf3e8ae74e5cc3d3849bd7420eb46611230f18e5aebb72d7b",
+        "prediction-scenario-closure.json": "3f80f8f2472d78ed7013036d1fb7fb86955d927be5751dc77a8212a1a5c2bfa0",
+        "prediction-scenario-terminal.json": "9a0472510bf3de2ce4b94a491620e8bcff2f0fcc790658f93864837b1b06a0e1"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_q52_retains_zero_exit_as_0-Q5.2-zero_exit_same_prediction.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_q52_retains_zero_exit_as_0\\Q5.2-zero_exit_same_prediction",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "95365659af504c53834493004711c8b5",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_q52_retains_zero_exit_as_0\\Q5.2-zero_exit_same_prediction-independent-inputs.json",
+      "experiment_id": "Q5.2",
+      "variant": "zero_exit_same_prediction",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "eb7768ef761d00a504cf1a6044ec222940693891b15398587bfbd53392396596",
+        "prediction-scenario-closure.json": "b7134bbc382a5d185e87fb916c6ad8c890306283642bad2e945ad9a02fb0702c",
+        "prediction-scenario-terminal.json": "d6a326115397a26e87e46b7657ffa7a35de1edd699e338c3a82a448ca7bab611"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_q53_dedup_uses_mechanism_0-Q5.3-opposite_prediction.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_q53_dedup_uses_mechanism_0\\Q5.3-opposite_prediction",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "4c6646328a33477aa3d7c567b0ac11bc",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_q53_dedup_uses_mechanism_0\\Q5.3-opposite_prediction-independent-inputs.json",
+      "experiment_id": "Q5.3",
+      "variant": "opposite_prediction",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "cead4c91a3315ca2ecec1d253465750fdbd190cd71e0b45d336ecc96b0363574",
+        "prediction-scenario-closure.json": "cc7f59768eee0c40cdd6f52515bd9465e0693cc2163b31598f27b9acfb1bf75a",
+        "prediction-scenario-terminal.json": "32b08ecf8a923a9db15764c89f5042fe102e00747514ff4e7d92b971271a1f6e"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_q53_dedup_uses_mechanism_0-Q5.3-same_mechanism.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_q53_dedup_uses_mechanism_0\\Q5.3-same_mechanism",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "1f1ab82d924243c2a37caecccfedbd74",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_q53_dedup_uses_mechanism_0\\Q5.3-same_mechanism-independent-inputs.json",
+      "experiment_id": "Q5.3",
+      "variant": "same_mechanism",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "c9f77d91ab082f7e3f563a39a75f6f9e43501a6c2077457134b89bf85e6e07ba",
+        "prediction-scenario-closure.json": "351599c73f72a0752ee923c560775d36a9881aa3d2f994fb7b3204a05368d2f2",
+        "prediction-scenario-terminal.json": "3533faa525b9dcb911fd02a24bf43524ed4673f2f327ab5fc64de0e43bf7c8c9"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_q53_dedup_uses_mechanism_0-Q5.3-title.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_q53_dedup_uses_mechanism_0\\Q5.3-title",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "73e3ea1c98ea43af9d53f2b75763f1fb",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_q53_dedup_uses_mechanism_0\\Q5.3-title-independent-inputs.json",
+      "experiment_id": "Q5.3",
+      "variant": "title",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "13a6aaf3c422ebe808d3e1eaac8776858e9381fce8f160ebd0ab83cd63439186",
+        "prediction-scenario-closure.json": "69f8b4eec020e223f579b8298b214914bd9fd0b3f2606293dd9eb09033919081",
+        "prediction-scenario-terminal.json": "d3133c8a37f02b9ee4c5946da28d83c5de1fc2248da290ff09fae0412ce6b45d"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_q54_selection_is_within_c0-Q5.4-preregistered_cost.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_q54_selection_is_within_c0\\Q5.4-preregistered_cost",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "f2d381bb1dd045af8be9ca2c513337a5",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_q54_selection_is_within_c0\\Q5.4-preregistered_cost-independent-inputs.json",
+      "experiment_id": "Q5.4",
+      "variant": "preregistered_cost",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "fe7e05dfcaa068e13f0c40a16eb48930e9d844f3c0b094cbf764798863067baa",
+        "prediction-scenario-closure.json": "5fbb0f6d95890b7ee05ea721dc63d46f3e47b580bfa694d783d20a71ad8b1237",
+        "prediction-scenario-terminal.json": "0d6a7399f237a82aa87312709cf98395a160d6a71440566b247d45a5c9e1d71b"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_q54_selection_is_within_c0-Q5.4-subjective.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_q54_selection_is_within_c0\\Q5.4-subjective",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "f33352fc98ed4c8b8d5e41fad626ff6c",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_q54_selection_is_within_c0\\Q5.4-subjective-independent-inputs.json",
+      "experiment_id": "Q5.4",
+      "variant": "subjective",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "9d886e46b98590552543ba7299e55388c97b346e78ac68998161f13ba11ecb10",
+        "prediction-scenario-closure.json": "9d8be0a73ba0518b7aedb90bc4cc9d265ae06620d912117e8acf68931eca6501",
+        "prediction-scenario-terminal.json": "bf6a3c077b3b9240f31d44e7ba01777115048153df8285eea204a6d5cbf406a4"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu0-Q3.1-mechanism.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu0\\Q3.1-mechanism",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "650529fd7cc64e8691cdab041ec99d44",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu0\\Q3.1-mechanism-independent-inputs.json",
+      "experiment_id": "Q3.1",
+      "variant": "mechanism",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "fc27411816320c39923685990c2289cc30cb699491fd37eaeff43a4be6519039",
+        "prediction-scenario-closure.json": "668dc7564d5742c2118ca2cf56f0d506e1e6ab9651696a5893f1c0bad353e535",
+        "prediction-scenario-terminal.json": "ae4a65def9c4aff14eb595ee45a4081426502f30ebeffc19f99d4a9e3b73c1d1"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu1-Q3.1-mechanism.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu1\\Q3.1-mechanism",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "6fb2b3cd2e9544528958868e58477435",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu1\\Q3.1-mechanism-independent-inputs.json",
+      "experiment_id": "Q3.1",
+      "variant": "mechanism",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "d595c19b9d340798f54717df7d83f8875974829c090d20f0fd57a7866a6c6645",
+        "prediction-scenario-closure.json": "77a035696bc3387e10037546691eb537e22598f1722cb23eb001ba64a0741b3e",
+        "prediction-scenario-terminal.json": "aa7187ca4fd7cd210e146cf16bff8c8669a6c3cf34cfa03a7b58fb4a6044bd6c"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu10-Q5.2-zero_exit_same_prediction.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu10\\Q5.2-zero_exit_same_prediction",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "4916becf87224d4e9710baf0ed2332c0",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu10\\Q5.2-zero_exit_same_prediction-independent-inputs.json",
+      "experiment_id": "Q5.2",
+      "variant": "zero_exit_same_prediction",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "c94e87e80251f72400ac8c6dd7298437ded22c8e8f0802c171eadebabb599b00",
+        "prediction-scenario-closure.json": "92fd27d65a75ea21cdc868de2282905b12023551891440007aa36242081addcc",
+        "prediction-scenario-terminal.json": "4cf20041a6f0a8a082f8e8b9a993a6a19a4e248d7c9ab986b6850c5397428a56"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu11-Q5.2-zero_exit_same_prediction.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu11\\Q5.2-zero_exit_same_prediction",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "c3aac465f357418e8a8dfc6ebe0cde4f",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu11\\Q5.2-zero_exit_same_prediction-independent-inputs.json",
+      "experiment_id": "Q5.2",
+      "variant": "zero_exit_same_prediction",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "3ddd68c256f2a0f3d3a3406f151373610aa364a22b3e5cf03443f49f77331a6a",
+        "prediction-scenario-closure.json": "a5597b863d600a4c949c8a1431868c1921b580ff2885bf4edab7689c0407b911",
+        "prediction-scenario-terminal.json": "dd9ac4286948415bdb0fae9b5b9310da0ed796d2ba19fbc69414a9992317b00b"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu12-Q5.2-negative_control.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu12\\Q5.2-negative_control",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "75df90c5ed40466fa956ea8b329a2bc7",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu12\\Q5.2-negative_control-independent-inputs.json",
+      "experiment_id": "Q5.2",
+      "variant": "negative_control",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "6a9a91f107e5ff503d8a6bab21fb35348a2b0c43f855a2b95d817e67603cc154",
+        "prediction-scenario-closure.json": "ac2466ebf5349b8fde1d331b69484484a49872e0f2cbf7e8e4c654661c10311f",
+        "prediction-scenario-terminal.json": "deab891a769e62d9a5de89b33f654e9e04930a5f922b182fbfdb40f1bb29b47c"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu13-Q5.2-negative_control.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu13\\Q5.2-negative_control",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "b5b7c52faae949508f46b1b55bcd4aa7",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu13\\Q5.2-negative_control-independent-inputs.json",
+      "experiment_id": "Q5.2",
+      "variant": "negative_control",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "70ab43e3dae3835de6f1f114dd7e4ecbe0e1adcaa4a5ed9a28d8a2358d71848c",
+        "prediction-scenario-closure.json": "da70689955ae36abc55310df4b2eaa7595b0cd2c07a9582b0e22d3968f592504",
+        "prediction-scenario-terminal.json": "56ba82c44c60ff655c69a16446d3b2fc0362313e4fe5a1547f43fff2d97aa206"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu14-Q5.3-same_mechanism.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu14\\Q5.3-same_mechanism",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "f41a4113af224fbe96b118bef8b3b2b5",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu14\\Q5.3-same_mechanism-independent-inputs.json",
+      "experiment_id": "Q5.3",
+      "variant": "same_mechanism",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "79ef8747d59244481beb96dd87257a6f04bdfd9d47db0fd42553bf41067321e6",
+        "prediction-scenario-closure.json": "bcacc70394a3801e1d28fe27578311dbc37e3ab201e29ea1c3ea9eaf66804500",
+        "prediction-scenario-terminal.json": "7db6fd4cb1ccfe43c7f6f72d12c7ff162c3ff2a914fb29d6c923fc5acac39800"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu15-Q5.3-same_mechanism.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu15\\Q5.3-same_mechanism",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "73a5981b757a487fa42042f69b751dbb",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu15\\Q5.3-same_mechanism-independent-inputs.json",
+      "experiment_id": "Q5.3",
+      "variant": "same_mechanism",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "a173650ebc4c27015469f1c90245012df2f161930b23daead067192d72ed294d",
+        "prediction-scenario-closure.json": "95fb009ea02e007e0cc965b0d543ed2c57aa99d0bf02ffab4303059404bb8dc0",
+        "prediction-scenario-terminal.json": "969f872e74decfc91e71a951b05c40e61643157c0a5b6518f354539c002ac064"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu16-Q5.3-opposite_prediction.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu16\\Q5.3-opposite_prediction",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "88e6c54d5a8f494dace946ec0a6b868f",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu16\\Q5.3-opposite_prediction-independent-inputs.json",
+      "experiment_id": "Q5.3",
+      "variant": "opposite_prediction",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "0b8796c536997f479cd7570e67bca5a61ddbffc4a1a1d26e672bba93ecc9af01",
+        "prediction-scenario-closure.json": "62dde03b8f581af1a7eda0160bfa1d31795dd62ce535545f098aa863506dc7f3",
+        "prediction-scenario-terminal.json": "759922b9a6588aa9c9f4dfc42775d47f9fd7c35ae1f0ea4a03a4b9b46480518e"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu17-Q5.3-opposite_prediction.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu17\\Q5.3-opposite_prediction",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "268c8738492146748ea2b6920b71519f",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu17\\Q5.3-opposite_prediction-independent-inputs.json",
+      "experiment_id": "Q5.3",
+      "variant": "opposite_prediction",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "aee7ce54e5dcad267fc1c6969d1fb41648050b7e8740b48894733436502dd73b",
+        "prediction-scenario-closure.json": "f4fe5ca73cf4bdff93c813d81a7134b8e46c5629894d1664da1c8135f7bdc240",
+        "prediction-scenario-terminal.json": "410b9671929351c516a41efe2eba2e08e6c72d2621dc1e36013d673ac4a36376"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu18-Q5.3-title.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu18\\Q5.3-title",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "549c5a799fa342e7b3b40e5af7fbef04",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu18\\Q5.3-title-independent-inputs.json",
+      "experiment_id": "Q5.3",
+      "variant": "title",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "cfa3da21eb44b39fb9d96deb58219efed4aa64e37540d71d2fbea72c1db457a1",
+        "prediction-scenario-closure.json": "a601f872d086f3277b123211bb38341cd83e1695c0fac869923615737d2420e1",
+        "prediction-scenario-terminal.json": "1bbb34cff88d5db0a6ddd38285c5468c38da64f5e658c5148d9504434e3fd3bc"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu19-Q5.3-title.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu19\\Q5.3-title",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "7b9322cc293b4c57be0fa7eacab811e3",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu19\\Q5.3-title-independent-inputs.json",
+      "experiment_id": "Q5.3",
+      "variant": "title",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "4fe6d98918433fb580cf82c3f949540e57841e6c8be61ccf89326ca412b9289f",
+        "prediction-scenario-closure.json": "54568230befa1b59bdf904b654e89170f676be32cdd4a4f50a13eed9c131b9c1",
+        "prediction-scenario-terminal.json": "660ad19d06fdd0ece38bd05dbc8a7dbc28dc7ba79155cf0971973475bb191e70"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu2-Q3.1-computation.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu2\\Q3.1-computation",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "c4e2f0413f9b42b587b48889188de652",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu2\\Q3.1-computation-independent-inputs.json",
+      "experiment_id": "Q3.1",
+      "variant": "computation",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "8f75459c537bd066c17474c47d1dc73c81db0bd0a280b71fb386a252a78bcd19",
+        "prediction-scenario-closure.json": "2fcc82da54de825b5aa9157c9bf9a04780e25c1ed65416ce8ab731ca717ff3c6",
+        "prediction-scenario-terminal.json": "fa7607aee8333467554f236949d3f934388ba9bde053c01973e302672adae76c"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu20-Q5.4-subjective.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu20\\Q5.4-subjective",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "067f896f785b4aea89dbb79cbcf5c49a",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu20\\Q5.4-subjective-independent-inputs.json",
+      "experiment_id": "Q5.4",
+      "variant": "subjective",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "1d8758ebeb03aaa17cd45f11a120944bef82d9a9fdeeda3311a0fb3616041f11",
+        "prediction-scenario-closure.json": "6eeb9b56387d8d4b853aba0590e98fe35bf1e1bb40258202d82d3298151615de",
+        "prediction-scenario-terminal.json": "1872279a207d661dfaa6936f323d8a5eac5363e37366f05a0cee67719db4ad41"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu21-Q5.4-subjective.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu21\\Q5.4-subjective",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "188a85a76245470a99ed3d78d9ab979a",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu21\\Q5.4-subjective-independent-inputs.json",
+      "experiment_id": "Q5.4",
+      "variant": "subjective",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "ead07670c706380eeb32d6362ea1fcd0caf1a4073342399769a235d1a38c46b6",
+        "prediction-scenario-closure.json": "13009bf8ee5d1a46e2967c69aeffcf7725ef2700a87c64208c7be41e3fe139f4",
+        "prediction-scenario-terminal.json": "18d46bd4da0ccefa173f0f304f544c56d26b9bb676bfc6b118a07679f9022a3a"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu22-Q5.4-preregistered_cost.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu22\\Q5.4-preregistered_cost",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "8e864cc50a0a4f2599791f88b3499d04",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu22\\Q5.4-preregistered_cost-independent-inputs.json",
+      "experiment_id": "Q5.4",
+      "variant": "preregistered_cost",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "66d0516a18f43695791e7b2b0cf851ae2e40a092ee8d0cd761d417dc06c08ec8",
+        "prediction-scenario-closure.json": "32ba194a6f99cdd5856c0d01295ccc5fa3a4dea5ffc2c9ed5364c609fa7a4248",
+        "prediction-scenario-terminal.json": "6226f9f562cbd2ddcb2c5d25fae7bcf3888e0304ab7ebbaade9de2016e06f480"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu23-Q5.4-preregistered_cost.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu23\\Q5.4-preregistered_cost",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "c867f3710e7649a4a6a5f036281dca2f",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu23\\Q5.4-preregistered_cost-independent-inputs.json",
+      "experiment_id": "Q5.4",
+      "variant": "preregistered_cost",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "7519dcdb590e611f8bad8d481b19bd58efac941894fd99b10dba20334a1367f0",
+        "prediction-scenario-closure.json": "2ce581f6ab7f7ec9ac1c3a6d40d2500b58a63aebf4c498ba804cf25284e48907",
+        "prediction-scenario-terminal.json": "24c6fd0dd0190b83e8f0b9f159bf9d2e7688bea7586cd74ee8495058e514be95"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu3-Q3.1-computation.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu3\\Q3.1-computation",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "617df991175d434bb44168b1679430ca",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu3\\Q3.1-computation-independent-inputs.json",
+      "experiment_id": "Q3.1",
+      "variant": "computation",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "d2179ae894a6f7b459a45d2a07d10450e8896910ba5cadd69e9f03fa896edd2b",
+        "prediction-scenario-closure.json": "00e1cd25ead6986cf9e299e4ceff80767d99cc0e604f13439a72a1d56289efc2",
+        "prediction-scenario-terminal.json": "80ebfc5eba813f3443888c403d348f0cb7efed2408545c63372fedf6cfb6dbac"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu4-Q3.1-measurement.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu4\\Q3.1-measurement",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "818575a6dee74ffdbf690f17299e994d",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu4\\Q3.1-measurement-independent-inputs.json",
+      "experiment_id": "Q3.1",
+      "variant": "measurement",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "304ca53842648496967486f2767166dcc927e2e91c05a0ed1cdd53420f6187aa",
+        "prediction-scenario-closure.json": "43f78aa1c6bf8f440ff6776c29e1da028d004194dff2ac28ee8e6a593d6bad55",
+        "prediction-scenario-terminal.json": "133626cfb456ffd3d6c0e159f68d063f93978bea33d85434ec2381ac5460c471"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu5-Q3.1-measurement.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu5\\Q3.1-measurement",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 1,
+        "run_id": "5ea542f2d3754ca1b42ffd401aabdd61",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu5\\Q3.1-measurement-independent-inputs.json",
+      "experiment_id": "Q3.1",
+      "variant": "measurement",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "fd92a9d1e791523d0b7462bd97442d397ad4118f018421365d638e9ac8abb372",
+        "prediction-scenario-closure.json": "06cbc2f6fef615351e954677b3f50dcef387e526830b674166569aebb2d28ff0",
+        "prediction-scenario-terminal.json": "1f8cbdf993394cdd2f9ae59a3e0ee391fd22cb6d2faba787b7462b66e204b573"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu6-Q3.2-joint.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu6\\Q3.2-joint",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "c216eaa956f74ea1acc89e94cc1f2a26",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu6\\Q3.2-joint-independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "joint",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "c4c2b6fea7e441bc96cb9b128a67a3ec94eb524624630d592325abb86c020941",
+        "prediction-scenario-closure.json": "645a683eb64de80bcec660b5a10bf793e80ed3833106d49ea2ae93a8e4de05eb",
+        "prediction-scenario-terminal.json": "32bdbe30e44414efae89b221b402e1cb199b79e5ebf7e2c44cac6a5e4b1af76d"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu7-Q3.2-joint.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu7\\Q3.2-joint",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "d4e050304527406abcda5e619371ddd8",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu7\\Q3.2-joint-independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "joint",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "56b57c63439f21419f4d94d1e0511c8b7995c411efb0fab9ab8643321605f4d6",
+        "prediction-scenario-closure.json": "a9c9fde03011141e3b9f3febc63e082c53bbb7a6715a3d08dc2b7571f59b8cde",
+        "prediction-scenario-terminal.json": "21504ba45f63b2d4355714e7cb74388b5f59ec8099f4d8c6e54706d200f54370"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu8-Q3.2-separate.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu8\\Q3.2-separate",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "22308fb3475d4539894ed7aa997acf30",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu8\\Q3.2-separate-independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "0d2ac9fe2f639a5d38fc4775bb38d2d9209bda58810e6882bfc736113b6698b3",
+        "prediction-scenario-closure.json": "da87a65e01fe5632424ac6574cfd5987246d065fcfe13c1ce3de4e61593fc13a",
+        "prediction-scenario-terminal.json": "afed16ef8ae6b572bc415af48a2083de5623413d6f6ba9bc183e0b29ef84b11f"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_registered_variants_captu9-Q3.2-separate.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu9\\Q3.2-separate",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "dd9422451aea4056bde9673bd6e758e7",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_registered_variants_captu9\\Q3.2-separate-independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "discoverybench",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "8ed24b43b2e2888e4474a5a8f467d26e16321cd30acd28e005b2f27a640b4488",
+        "prediction-scenario-closure.json": "2e480040fcca30e80678be8b4edcc1119a01d3b02f6bc231859d39f610fcb2ac",
+        "prediction-scenario-terminal.json": "54d3076327911408ad2deeedb4493f79cc266ae5950392b292ad856d5b38c493"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec0-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec0\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "aff35e5420ca45fc932b7c7f0cce281d",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec0\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "f693c094a48508353bf8a9b02142d0ac4c4cc2a5826945a5125b82cbd29f57ec",
+        "prediction-scenario-closure.json": "14c247c5fd30c43c9121a60a9c45fa3f8ad57066ba11b421b4651c835aac9604",
+        "prediction-scenario-terminal.json": "a7c94acd3e126facd0292ba68ad268fc83fe9df4fd16cfa52baa74024c518ffc"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec0-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec0\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec0\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "577a06698a745d12edbde2c962ab221abfeaccb2784bfd49ea58df7f8ed0f84d",
+        "prediction-scenario-closure.json": "24a7dcc9bf600f1bedaa252430200c55cb9cdb7ccc91c02053abaf623f959293",
+        "prediction-scenario-terminal.json": "a7c94acd3e126facd0292ba68ad268fc83fe9df4fd16cfa52baa74024c518ffc"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec1-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec1\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "3a9d91faeeb04cc2881ed0e537dc7dcc",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec1\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "fcebd741ff45b4b42c4db6acdc6a758f7a3734803ff7e19dad0e6659d49949fe",
+        "prediction-scenario-closure.json": "eab7b66a0ea5b890bb09f7bc424fb1aa79407c30ec1d677e3980adef0a5dcad6",
+        "prediction-scenario-terminal.json": "0cbcf9272f1f998acaa1683a06065631f800f6625d4e8a364a2aa35dbb9f2ab9"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec1-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec1\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec1\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "96acb1234778ef889823a5ed2a1108b875d5836ebb9fed4ea690a3e538a3c005",
+        "prediction-scenario-closure.json": "931836e2eb6c99d711db1090d27f5b5d09bda2572fcb9ee5ae070bc572075a40",
+        "prediction-scenario-terminal.json": "85726090f7393a05c7b9318238cd4567321fac1cab2effff1a73bed8c7a441c7"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec10-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec10\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "8c11420eb155498495fcec334d2e015b",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec10\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "ff9726cb4dcddf1baa2318ea820f355987db5078198e01e10d30b571843aa957",
+        "prediction-scenario-closure.json": "137a389fc3492d9394b0cbfb61cbeca7af12ed0e021d36e2093529778bebc076",
+        "prediction-scenario-terminal.json": "561a89f7e891190beb1c11e7228ab13fefd9d408c5c91eed027d313ca7f19bf6"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec10-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec10\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec10\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "8e619b1b01c26f477b6fd7b5fc3c693185971daa20193e7cc9d68771990e5df9",
+        "prediction-scenario-closure.json": "7bf5f8ced7a4e00027329416aa613985dc2a9f9bb4a551a1f7325ce7dcc09fcb",
+        "prediction-scenario-terminal.json": "561a89f7e891190beb1c11e7228ab13fefd9d408c5c91eed027d313ca7f19bf6"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec2-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec2\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "dc8d37a4133b4be3ac02512342f22e44",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec2\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "2c08ed85af96398cb1fd40f7248f591dea2810eaceb00377ea4bc49fc7e3b550",
+        "prediction-scenario-closure.json": "497cb3f0e824bfbc600ba3281caa0692bae3cb76a44d23e4865c1f9bce011461",
+        "prediction-scenario-terminal.json": "cdf6b43ec34831621832ff52dd6210080f365d91ce73de5718b85bddcca819a4"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec2-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec2\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec2\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "4526308613d29764c217e88c91e1bae4f608a1da838c699d2ac502ea29ba09ab",
+        "prediction-scenario-closure.json": "a1a4b3f30453c904eb561e18329b7dacefe494a6affd61248085fc49c6295084",
+        "prediction-scenario-terminal.json": "cdf6b43ec34831621832ff52dd6210080f365d91ce73de5718b85bddcca819a4"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec3-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec3\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "94a05936f1a44dd78d2e0fe38856af77",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec3\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "d25d3882e45538202803882f7a42a8250d675baceb012c41ff7bd00ddcb53a80",
+        "prediction-scenario-closure.json": "fdcda72a87a721d24885c7b743a1e72aa15a10bd6f9c691119849e7731d5581b",
+        "prediction-scenario-terminal.json": "49acd056f69e69f346faf9978f78178080f2874e93d9dff1f99cb36ee2fe8f19"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec3-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec3\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec3\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "bf4981905e2e1e9ae93c941651d7bf03955e2e7444d43a72e9362c95eaaff20a",
+        "prediction-scenario-closure.json": "3fd74886a1a2dc9deb2a73d7bcf4fad7731be596e1eb3568ea2bad513b52ae30",
+        "prediction-scenario-terminal.json": "a9d8ff4f6fcaf39ac8f42318de7d8862163fe4d92ab2338a73499a96055dd06f"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec4-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec4\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "7e452325a7f7491f9c23ae1dc21aef77",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec4\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "9f98a530d80aaea6e3f75432555457e8b8361ed646e07bfd059a02ed3001d59b",
+        "prediction-scenario-closure.json": "e9c75520b307308ac01865f08a7f651ac01594f70f1fafdd0e1dba0175c4cdfd",
+        "prediction-scenario-terminal.json": "39322c995dd5548f1fe59a96d477965302530ac904fe125a6f8b6f0cb234d20f"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec4-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec4\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec4\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "78253e4fe5811f33d0c5570b66caa58c341d4f9e8e725773b1ebc2f2b332d0df",
+        "prediction-scenario-closure.json": "da6a6f0e4ec7349c851cc6a579cb2ea3fa4b00a87873cf184aa98b205a469f3f",
+        "prediction-scenario-terminal.json": "39322c995dd5548f1fe59a96d477965302530ac904fe125a6f8b6f0cb234d20f"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec5-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec5\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "4ca17648f7c54da192c37d77fc765616",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec5\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "58cce8d17cc6c54c24fbd2b3e2ee46f0b231431a78d22258949e634e43a4c6d7",
+        "prediction-scenario-closure.json": "86c6e3765d2f8f19d2999f8375bcdbf92fec824983c178837a1911d72171d7fd",
+        "prediction-scenario-terminal.json": "c190f219f94b7cbd23fcc4df5a711583d3c4050d3bb6e64576675557bb35e20a"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec5-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec5\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec5\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "b4f22b84839da49a429ab1f78cdbf73b4d4a8c7e3bfa7007c316426d74af95ed",
+        "prediction-scenario-closure.json": "fe65307fee49d1ae27ee314602628bebfa9b35e5037495c32d822102e8fd9e2f",
+        "prediction-scenario-terminal.json": "c190f219f94b7cbd23fcc4df5a711583d3c4050d3bb6e64576675557bb35e20a"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec6-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec6\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "e0b9659f9888444a9cd6200dafd60469",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec6\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "5b4c5c5e374199f0c0fe8e43e4ec5ff5489722f66d286576ad7ac2f9c2194076",
+        "prediction-scenario-closure.json": "fbbe1d867152d8f58723f679254ecbc5b93905bda0d73e51b0ea99f566b9851c",
+        "prediction-scenario-terminal.json": "1db953f0b453ce82c1913ff94109976b7eebb7cffe5e0f102f954813ad690545"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec6-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec6\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec6\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "b773831c61c3c1194b5725580f0ea52a3ad43ef624e1e192eade92b572a94ca4",
+        "prediction-scenario-closure.json": "cc8a7c8519cacbe683727d629c309dca52128be425dbae5664013dbd93c15577",
+        "prediction-scenario-terminal.json": "3348fa4e502ee1e81a77717e2eedcfd51e5371e9f7f76da18dd7c61e20c41c54"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec7-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec7\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "25c3c3706f71494881eb5d97c0e981ec",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec7\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "010fa36b556303b098cb38de7bfac4408e0fd6f06116bd60dd201f6b5a2a9aa7",
+        "prediction-scenario-closure.json": "f3aa6bd89622af409707acdf975d430dd7bd19e9d09b143559fbf5e02afc2336",
+        "prediction-scenario-terminal.json": "bba5fb0a025198ec97228ad92222341ebd1b43d3279863401815aaafa4aafbe0"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec7-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec7\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec7\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "010fa36b556303b098cb38de7bfac4408e0fd6f06116bd60dd201f6b5a2a9aa7",
+        "prediction-scenario-closure.json": "6342ab390750f6da97fda7ee55c0ba14d4ab003e00ef9628de19aa82b2927e1e",
+        "prediction-scenario-terminal.json": "fe888bbbb5f1a48aaea04bd92cd8f1b2b861a12896fd796d9134515e910a91d3"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec8-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec8\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "4148a39a084d400bb806e18514eaa97b",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec8\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "3f8b7cdba3c19047439beb28c9e89eb96213a90e0a793cb60da8ca9bf07ae8f5",
+        "prediction-scenario-closure.json": "84d956a22dbdc7002d20c1ee443451892f53fb196daf561872a088afd556f294",
+        "prediction-scenario-terminal.json": "76d130523ab3a207de3fc7f89deb35e7daedb9d93e6b0f7925e39dc473c2f8e8"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec8-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec8\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec8\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "c95026ee573aca5f88b0f6ccc7edc3ee0411781e020c6eb38d463e670e19457d",
+        "prediction-scenario-closure.json": "8873f84a6d0811c8925c0c2f918e3c55bfa96a6238d22ffa2dc35bd5fda92f74",
+        "prediction-scenario-terminal.json": "76d130523ab3a207de3fc7f89deb35e7daedb9d93e6b0f7925e39dc473c2f8e8"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec9-original.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec9\\original",
+      "status": "verified_completed_fixture",
+      "attack": false,
+      "verification": {
+        "callback_count": 3,
+        "run_id": "b75aa27618504dbcb77923c9779acde4",
+        "schema": "prediction-scenario-artifact-check-v2",
+        "scientific_validated": false,
+        "semantic_completion_verified": true,
+        "status": "succeeded",
+        "storage_integrity_verified": true
+      },
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec9\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "fb6a274adc35be8a470315f041c792e89206090a48fd6ac2877088c0f127d735",
+        "prediction-scenario-closure.json": "c2161b21ad5da055b67a03f5ba4585c1652a53f9a7b955615302ff0f29d617c0",
+        "prediction-scenario-terminal.json": "344a911173e657ea28fb12117328b69d8e7a3778b2cfcafecf1acfd120166841"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    },
+    {
+      "file": "test_rehashed_forgery_is_rejec9-attack.zip",
+      "original_root": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec9\\attack",
+      "status": "nonaccepted_retained_bytes",
+      "attack": true,
+      "verification": null,
+      "original_control": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\prediction-artifacts-root-r4\\test_rehashed_forgery_is_rejec9\\independent-inputs.json",
+      "experiment_id": "Q3.2",
+      "variant": "separate",
+      "benchmark": "blade",
+      "original_files": 3,
+      "original_sha256": {
+        "prediction-scenario-artifacts.jsonl": "23adfd96a3259764fc1b6e2701eced873ab0822d9d770bfec9292535d08bf290",
+        "prediction-scenario-closure.json": "52daf1d9192df0d8d4c87e89cf48f5dfb35edf52bbf81f1bf5587d4a1b1774d4",
+        "prediction-scenario-terminal.json": "344a911173e657ea28fb12117328b69d8e7a3778b2cfcafecf1acfd120166841"
+      },
+      "bytes_and_mtime_unchanged_after_read": true
+    }
+  ],
+  "counts": {
+    "verified_completed_fixture": 48,
+    "verified_failed_prefix": 5,
+    "nonaccepted_retained_bytes": 16
+  },
+  "matrix_cells": 24,
+  "new_model_or_docker_calls": 0,
+  "validation_access": false,
+  "scientific_validated": false,
+  "limitations": [
+    "original source paths required",
+    "failed prefixes prove stored mechanism history, not external failure cause",
+    "no external model response attestation or complete historical environment replay"
+  ]
+}
