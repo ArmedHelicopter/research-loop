@@ -16,7 +16,8 @@ from test_train_adapted_selection import EXEC, SCORER
 
 def _factory(tmp_path, plan):
     """Return a real subprocess scorer factory over the normal synthetic worker."""
-    store, handles, manifest = _store(tmp_path, {'tasks': {packet.task.content_hash: packet.task for packet in plan.packets}})
+    scorer_root = tmp_path / 'common-scorer-inputs'; scorer_root.mkdir()
+    store, handles, manifest = _store(scorer_root, {'tasks': {packet.task.content_hash: packet.task for packet in plan.packets}})
     expected = {key: hashlib.sha256(value.encode()).hexdigest() for key, value in handles.items()}
     assert expected == plan.data()['scorer_handle_bindings']
     execution_key = tmp_path / 'execution.key'; scorer_key = tmp_path / 'scorer.key'
