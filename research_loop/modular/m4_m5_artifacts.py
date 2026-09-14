@@ -29,6 +29,7 @@ class M4M5ArtifactBridge:
     def __init__(self, session) -> None:
         self.session = session
         self.counts = {'predictions': 0, 'reviews': 0}
+        self.reveals = 0
         self.events: dict[tuple[str, str], str] = {}
         self.module_sources = {
             'predictions': source_snapshot(Path(predictions_module.__file__)),
@@ -84,6 +85,29 @@ class M4M5ArtifactBridge:
             self.session._audit_failure()
             raise
 
+    def reveal(self, output: FrozenRecord) -> None:
+        """Capture the actual sealed tuple returned by ``ReviewEngine.reveal``.
+
+        Reveal has no journal event by design, so this is an output observer;
+        it leaves the established review JSONL algorithm and bytes unchanged.
+        """
+        try:
+            body = output.data()
+            review_id = body.get('review_id')
+            if set(body) != {'schema', 'review_id', 'submissions'} or body['schema'] != 'm5-reveal-output-v1' or not isinstance(body['submissions'], list):
+                raise ContractError('M5 reveal observer received an invalid output')
+            parents = tuple(self.events[('reviews', review_id + ':' + item['role_id'])] for item in body['submissions'])
+            enabled = 'M5' in self.session.arm.data()['enabled']
+            payload = FrozenRecord.from_dict({'schema': 'm5-reveal-artifact-v1', 'reveal_index': self.reveals,
+                'output': body, 'module_enabled': enabled, 'module_source': self.module_sources['reviews'],
+                'bridge_source': self.bridge_source})
+            self.session.record_artifact(kind='reveal_output', module='M5', payload=payload, parents=parents,
+                status='produced' if enabled else 'not_applied', producer_source=self.module_sources['reviews'])
+            self.reveals += 1
+        except Exception:
+            self.session._audit_failure()
+            raise
+
 
 def _read_journal(path: Path) -> list[dict[str, Any]]:
     raw = path.read_bytes()
@@ -105,6 +129,8 @@ def verify_m4_m5_artifacts(catalogue, sidecar):
     """Reopen public registries and reconcile every persisted event descriptor."""
     try:
         return _verify_m4_m5_artifacts(catalogue, Path(sidecar))
+    except ContractError:
+        raise
     except (KeyError, IndexError, TypeError, ValueError) as exc:
         raise ContractError('malformed M4/M5 module artifact cannot be replayed') from exc
 
@@ -112,13 +138,15 @@ def verify_m4_m5_artifacts(catalogue, sidecar):
 def _verify_m4_m5_artifacts(catalogue, sidecar: Path):
     if (sidecar / 'audit-failure.json').exists():
         raise ContractError('runtime audit failed and cannot be accepted as complete')
+    prediction_path, review_path = sidecar / 'predictions.jsonl', sidecar / 'reviews.jsonl'
+    if not prediction_path.is_file() or not review_path.is_file():
+        raise ContractError('M4/M5 source journals are missing')
     # Construction replays each source journal using the module's validation;
     # it checks plan/review IDs, identities, budget, duplicate roles, barrier,
     # revisions and score semantics before descriptors are trusted.
-    PredictionRegistry(catalogue.identity, storage_path=sidecar / 'predictions.jsonl')
-    ReviewEngine(catalogue.identity, storage_path=sidecar / 'reviews.jsonl')
-    journals = {'predictions': _read_journal(sidecar / 'predictions.jsonl'),
-                'reviews': _read_journal(sidecar / 'reviews.jsonl')}
+    PredictionRegistry(catalogue.identity, storage_path=prediction_path)
+    ReviewEngine(catalogue.identity, storage_path=review_path)
+    journals = {'predictions': _read_journal(prediction_path), 'reviews': _read_journal(review_path)}
     bridge = M4M5ArtifactBridge.__new__(M4M5ArtifactBridge)
     bridge.module_sources = {'predictions': source_snapshot(Path(predictions_module.__file__)),
                              'reviews': source_snapshot(Path(review_module.__file__))}
@@ -134,11 +162,27 @@ def _verify_m4_m5_artifacts(catalogue, sidecar: Path):
     expected_index = {'predictions': 0, 'reviews': 0}
     seen: dict[tuple[str, str], str] = {}
     consumed = {'predictions': [], 'reviews': []}
+    reveals = []
     latest_trace = None
     for descriptor in all_descriptors:
         body = descriptor.data()
         if body['kind'] == 'trace_event':
             latest_trace = descriptor.content_hash
+            continue
+        if body['kind'] == 'reveal_output' and body['module'] == 'M5':
+            payload = body['payload']['canonical']
+            expected = {'schema': 'm5-reveal-artifact-v1', 'reveal_index': len(reveals),
+                'output': payload['output'], 'module_enabled': 'M5' in active,
+                'module_source': bridge.module_sources['reviews'], 'bridge_source': bridge.bridge_source}
+            output = payload.get('output', {})
+            review_id = output.get('review_id')
+            expected_rows = _submissions_for(journals['reviews'], review_id)
+            parents = [seen[('reviews', review_id + ':' + row['role_id'])] for row in expected_rows] + [latest_trace]
+            if (payload != expected or output.get('schema') != 'm5-reveal-output-v1' or output.get('submissions') != expected_rows
+                    or body['status'] != ('produced' if payload['module_enabled'] else 'not_applied')
+                    or body['parents'] != parents or body['producer_source'] != bridge.module_sources['reviews']):
+                raise ContractError('M5 reveal artifact differs from the actual sealed output')
+            reveals.append(output)
             continue
         if body['kind'] != 'journal_event' or body['module'] not in {'M4', 'M5'}:
             continue
@@ -182,7 +226,20 @@ def _verify_m4_m5_artifacts(catalogue, sidecar: Path):
     _check_c4_reveals(trace_rows, journals['reviews'])
     return FrozenRecord.from_dict({'schema': 'm4-m5-artifacts-check-v1', 'identity': catalogue.identity.data(),
         'prediction_events': len(journals['predictions']), 'review_events': len(journals['reviews']),
+        'reveal_outputs': len(reveals),
         'scientific_validated': False})
+
+
+def _submissions_for(reviews, review_id):
+    opened = next((event for event in reviews if event['event'] == 'open' and event['review_id'] == review_id), None)
+    if opened is None:
+        raise ContractError('M5 reveal lacks its sealed review')
+    by_role = {event['role_id']: event for event in reviews if event['event'] == 'submit' and event['review_id'] == review_id}
+    if set(by_role) != {role['role_id'] for role in opened['roles']}:
+        raise ContractError('M5 reveal lacks complete sealed submissions')
+    return [{'review_id': event['review_id'], 'role_id': event['role_id'], 'reviewer_id': event['reviewer_id'],
+             'response': event['response'], 'cost_units': event['cost_units'], 'before_hash': event['before_hash']}
+            for event in (by_role[role['role_id']] for role in opened['roles'])]
 
 
 def _review_roles(seen, review_id: str) -> tuple[str, ...]:

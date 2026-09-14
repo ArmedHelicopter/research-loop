@@ -5,6 +5,11 @@ Each observer runs only after the module has appended and fsynced its original J
 It writes one `journal_event` descriptor for each M4 `freeze`/`outcome` and M5
 `open`/`submit`/`revise`/`score` event.
 
+`ReviewEngine.reveal` intentionally has no JSONL event. Its optional output
+observer therefore writes a separate `reveal_output` descriptor containing the
+actual returned ordered submission tuple and parents every sealed submission.
+This does not change the existing review journal format or algorithm.
+
 The descriptor holds the exact persisted event, journal index, activation status,
 module source snapshot, and bridge source snapshot. M4 outcomes parent the frozen
 plan. M5 submissions parent their `open`; revisions and scores also parent the

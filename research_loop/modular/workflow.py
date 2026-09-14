@@ -30,7 +30,8 @@ class ModularWorkflow:
         self.predictions=PredictionRegistry(session.task.identity, storage_path=session.sidecar/"predictions.jsonl",
             event_sink=lambda event:self._m4_m5_artifacts.journal('predictions',event))
         self.reviews=ReviewEngine(session.task.identity, storage_path=session.sidecar/"reviews.jsonl",
-            event_sink=lambda event:self._m4_m5_artifacts.journal('reviews',event))
+            event_sink=lambda event:self._m4_m5_artifacts.journal('reviews',event),
+            reveal_sink=self._m4_m5_artifacts.reveal)
         self.revealed: FrozenRecord|None=None; self.deployment=deployment
         self.frontier_result: FrozenRecord | None = None
         self.public_input_boundary = None

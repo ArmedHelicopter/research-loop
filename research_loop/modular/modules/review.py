@@ -119,7 +119,8 @@ class ReviewEngine:
     """A persistent review barrier, independent of any model provider."""
 
     def __init__(self, identity: DataIdentity, *, storage_path: Path | None = None,
-                 event_sink: Callable[[FrozenRecord], None] | None = None) -> None:
+                 event_sink: Callable[[FrozenRecord], None] | None = None,
+                 reveal_sink: Callable[[FrozenRecord], None] | None = None) -> None:
         self.identity = identity
         self._sessions: dict[str, ReviewSession] = {}
         self._submissions: dict[tuple[str, str], ReviewSubmission] = {}
@@ -127,6 +128,7 @@ class ReviewEngine:
         self._scores: dict[str, ReviewScoreReceipt] = {}
         self._log = _JsonlLog(storage_path)
         self._event_sink = event_sink
+        self._reveal_sink = reveal_sink
         for event in self._log.events():
             self._apply(event, persist=False)
 
@@ -187,7 +189,11 @@ class ReviewEngine:
     def reveal(self, review_id: str) -> tuple[ReviewSubmission, ...]:
         if not self.barrier_open(review_id):
             raise ContractError("sealed submissions remain unavailable until every role submits")
-        return tuple(self._submissions[(review_id, role.role_id)] for role in self.session(review_id).roles)
+        result = tuple(self._submissions[(review_id, role.role_id)] for role in self.session(review_id).roles)
+        if self._reveal_sink is not None:
+            self._reveal_sink(FrozenRecord.from_dict({'schema': 'm5-reveal-output-v1', 'review_id': review_id,
+                'submissions': [item.data() for item in result]}))
+        return result
 
     def revise_after_reveal(self, review_id: str, *, role_id: str, reviewer_id: str, response: Mapping[str, Any]) -> ReviewRevision:
         if not self.barrier_open(review_id):
