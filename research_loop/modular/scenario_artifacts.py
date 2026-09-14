@@ -27,6 +27,26 @@ _BLOBS = "scenario-blobs"
 _IGNORED = {_CATALOGUE, _CATALOGUE + ".seal.json", _END, _CLOSURE, _MANIFEST}
 
 
+def _safe_root(root: Path):
+    root = Path(root)
+    if root.is_symlink() or any(parent.is_symlink() for parent in (root, *root.parents)):
+        raise ContractError("scenario sidecar root or ancestor cannot be linked")
+    return root
+
+
+def _known_source(name: str):
+    if name in {"runtime.sqlite", "optimizer.sqlite", "shadow-runtime.sqlite"}:
+        return source_snapshot(Path(__file__).with_name("modules") / "improvement.py")
+    deployment = {"active.json", "active.json.sha256", "active.json.previous", "active.json.previous.sha256",
+                  "deployment.json", "deployment.json.sha256", "deployment.json.previous", "deployment.json.previous.sha256",
+                  "shadow-deployment.json", "shadow-deployment.json.sha256", "shadow-deployment.json.previous", "shadow-deployment.json.previous.sha256"}
+    if name in deployment:
+        return source_snapshot(Path(__file__).with_name("deployment.py"))
+    if name in {_RESULT, _MANIFEST}:
+        return _source()
+    return None
+
+
 def _source() -> dict:
     return source_snapshot(Path(__file__))
 
@@ -72,7 +92,8 @@ def _sqlite_state(raw: bytes) -> dict:
 
 
 def _files(root: Path) -> dict:
-    if root.is_symlink() or not root.is_dir():
+    root = _safe_root(root)
+    if not root.is_dir():
         raise ContractError("original scenario directory required")
     files = {}
     for path in sorted(root.rglob("*")):
@@ -101,8 +122,8 @@ def _inputs(task, controls, injection, experiment_id, variant) -> FrozenRecord:
 
 class ScenarioArtifactWriter:
     def __init__(self, root, *, task, controls, injection, experiment_id, variant):
-        self.root = Path(root)
-        if self.root.is_symlink() or not self.root.is_dir() or any(self.root.iterdir()):
+        self.root = _safe_root(root)
+        if not self.root.is_dir() or any(self.root.iterdir()):
             raise ContractError("scenario sidecar requires its newly created empty directory")
         self.inputs = _inputs(task, controls, injection, experiment_id, variant)
         self.task, self.variant, self.experiment_id = task, variant, experiment_id
@@ -147,8 +168,8 @@ class ScenarioArtifactWriter:
                     stream.write(raw); stream.flush(); os.fsync(stream.fileno())
             if blob.is_symlink() or blob.read_bytes() != raw:
                 raise ContractError("scenario immutable sidecar copy differs")
-            source = source_snapshot(Path(__file__).with_name("deployment.py")) if name.endswith((".json", ".sha256", ".previous")) else source_snapshot(Path(__file__).with_name("modules") / "improvement.py") if name.endswith(".sqlite") else _source()
-            known = name.endswith((".sqlite", ".json", ".sha256", ".previous"))
+            source = _known_source(name)
+            known = source is not None
             payload = {"file": name, "blob": _BLOBS + "/" + digest, **snapshot}
             self.append("scenario_sidecar", payload, source=source,
                         module="M9" if known else None, coverage="covered" if known else "uncovered")
@@ -187,8 +208,8 @@ class ScenarioArtifactWriter:
 
 
 def _open(root, task, inputs, experiment_id, variant):
-    root = Path(root); path = root / _CATALOGUE
-    if root.is_symlink() or path.is_symlink() or not path.is_file() or not path.with_name(path.name + ".seal.json").is_file():
+    root = _safe_root(root); path = root / _CATALOGUE
+    if path.is_symlink() or not path.is_file() or not path.with_name(path.name + ".seal.json").is_file():
         raise ContractError("original sealed scenario catalogue is missing")
     try:
         first = FrozenRecord(path.read_text(encoding="utf-8").splitlines()[0]).data()["descriptor"]
@@ -203,12 +224,12 @@ def _open(root, task, inputs, experiment_id, variant):
     return root, catalogue
 
 
-def _take(records, cursor, kind, payload, *, status="produced", module="M9"):
+def _take(records, cursor, kind, payload, *, status="produced", module="M9", source=None, coverage="covered"):
     if cursor >= len(records):
         raise ContractError("scenario original output is missing")
     row = records[cursor]
     expected = _spec(kind, payload, (records[cursor - 1].content_hash,) if cursor else (),
-                     status=status, module=module)
+                     status=status, module=module, source=source, coverage=coverage)
     data = row.data()
     for key, value in expected.items():
         if key == "payload":
@@ -313,14 +334,17 @@ def verify_scenario_artifacts(result, *, task, frozen_controls, sidecar, experim
     if manifest != {"schema": "m9-scenario-file-manifest-v1", "files": [
             {"file": name, "blob": _BLOBS + "/" + item["sha256"], **item} for name, item in files.items()], "fixture_only": True}:
         raise ContractError("scenario file manifest differs from original sidecars")
+    if {path.name for path in (root / _BLOBS).iterdir()} != {item["sha256"] for item in manifest["files"]}:
+        raise ContractError("scenario immutable sidecar inventory differs")
     for item in manifest["files"]:
         blob = root / item["blob"]
         if blob.is_symlink() or not blob.is_file() or hashlib.sha256(blob.read_bytes()).hexdigest() != item["sha256"]:
             raise ContractError("scenario immutable sidecar copy differs")
-    while cursor < len(records) and records[cursor].data()["kind"] == "scenario_sidecar":
-        item = records[cursor].data()["payload"]["canonical"]
-        if item not in manifest["files"]: raise ContractError("scenario sidecar descriptor differs from manifest")
-        cursor += 1
+    for item in manifest["files"]:
+        source = _known_source(item["file"])
+        cursor = _take(records, cursor, "scenario_sidecar", item,
+                       module="M9" if source else None, coverage="covered" if source else "uncovered",
+                       source=source or _source())
     cursor = _take(records, cursor, "scenario_file_manifest", _snapshot(root, _MANIFEST), module="P0")
     terminal = _read(root / _END)
     expected_terminal = {"schema": "m9-scenario-terminal-v1", "status": "succeeded", "stage": "result",
@@ -363,12 +387,26 @@ def inspect_scenario_failure(*, task, frozen_controls, sidecar, experiment_id, v
         if set(body) != {"record", "returned_type", "raw_content_available", "error_type", "error"}:
             raise ContractError("failed scenario callback outcome schema differs")
         cursor += 1
+    manifest_record = next((row for row in records if row.data()["kind"] == "scenario_file_manifest"), None)
+    if manifest_record is None:
+        raise ContractError("failed scenario has no sealed sidecar manifest")
+    manifest = _read(root / _MANIFEST).data()
+    if manifest_record.data()["payload"]["canonical"] != _snapshot(root, _MANIFEST):
+        raise ContractError("failed scenario sidecar manifest descriptor differs")
+    files = _files(root)
+    expected_files = [{"file": name, "blob": _BLOBS + "/" + item["sha256"], **item} for name, item in files.items()]
+    if manifest != {"schema": "m9-scenario-file-manifest-v1", "files": expected_files, "fixture_only": True}:
+        raise ContractError("failed scenario sidecar manifest differs")
+    for item in expected_files:
+        blob = root / item["blob"]
+        if blob.is_symlink() or not blob.is_file() or blob.read_bytes() != (root / item["file"]).read_bytes():
+            raise ContractError("failed scenario immutable sidecar copy differs")
     terminal = _read(root / _END).data()
     if (set(terminal) != {"schema", "status", "stage", "error_type", "error", "result_digest", "files", "fixture_only", "scientific_validated"}
             or terminal["schema"] != "m9-scenario-terminal-v1" or terminal["status"] != "failed"
             or type(terminal["stage"]) is not str or type(terminal["error_type"]) is not str
             or not terminal["error_type"] or type(terminal["error"]) is not str
-            or terminal["result_digest"] is not None or terminal["files"] != _files(root)
+            or terminal["result_digest"] is not None or terminal["files"] != files
             or terminal["fixture_only"] is not True or terminal["scientific_validated"] is not False):
         raise ContractError("failed scenario terminal does not bind retained sidecars")
     _take(records, len(records) - 1, "scenario_terminal", _snapshot(root, _END), status="failed", module="P0")
