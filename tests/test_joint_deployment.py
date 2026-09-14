@@ -1,5 +1,4 @@
 """Real SQLite/RunSession boundaries; synthetic builds and independent grants."""
-from dataclasses import replace
 import multiprocessing
 from pathlib import Path
 
@@ -66,7 +65,7 @@ def test_all_nine_components_reach_a_pinned_task_then_restore_exact_previous_sna
     def task_run(task_id, bundle):
         components = bundle.components()
         session = RunSession(PublicTask.create(task_id, {'question':'Synthetic snapshot dispatch'}),
-            package_digest=bundle.digest, arm=default_compatibility(H).arm(components),
+            package_digest=bundle.digest, arm=default_compatibility(H).arm(tuple(components)),
             objective=record({'question':'Use the exact pinned component versions'}), slots=('final',),
             execution_limit=0, sidecar=tmp_path/task_id.task_id,
             verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32}), required_audit=('measurement',))

@@ -102,7 +102,7 @@ class JointDeploymentBundle:
         components = {k: JointComponentVersion(FrozenRecord.from_dict(v)) for k, v in b['components'].items()}
         if any(k != v.module_id for k, v in components.items()):
             raise ContractError('joint component identity differs from its slot')
-        default_compatibility(b['baseline_digest']).arm(components)
+        default_compatibility(b['baseline_digest']).arm(tuple(components))
         identities = [i for c in components.values() for i in TrainingManifest(
             FrozenRecord.from_dict(c.record.data()['training_manifest'])).identities()]
         if len({i.split_id for i in identities}) > 1:
