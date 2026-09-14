@@ -22,8 +22,16 @@ class WorkflowResult:
 class ModularWorkflow:
     def __init__(self, session: RunSession, *, deployment: ExecutionRuntime | None = None) -> None:
         self.session=session; self.enabled=frozenset(session.arm.data()["enabled"])
-        self.predictions=PredictionRegistry(session.task.identity, storage_path=session.sidecar/"predictions.jsonl")
-        self.reviews=ReviewEngine(session.task.identity, storage_path=session.sidecar/"reviews.jsonl")
+        # Each module journal calls this bridge only after its own JSONL append
+        # has reached fsync.  A bridge failure marks the session terminal before
+        # a caller can issue another model request.
+        from research_loop.modular.m4_m5_artifacts import M4M5ArtifactBridge
+        self._m4_m5_artifacts=M4M5ArtifactBridge(session)
+        self.predictions=PredictionRegistry(session.task.identity, storage_path=session.sidecar/"predictions.jsonl",
+            event_sink=lambda event:self._m4_m5_artifacts.journal('predictions',event))
+        self.reviews=ReviewEngine(session.task.identity, storage_path=session.sidecar/"reviews.jsonl",
+            event_sink=lambda event:self._m4_m5_artifacts.journal('reviews',event),
+            reveal_sink=self._m4_m5_artifacts.reveal)
         self.revealed: FrozenRecord|None=None; self.deployment=deployment
         self.frontier_result: FrozenRecord | None = None
         self.public_input_boundary = None
