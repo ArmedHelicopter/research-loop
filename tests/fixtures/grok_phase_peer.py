@@ -31,6 +31,10 @@ for line in sys.stdin:
         pid=req['params']['_meta']['promptId']
         send({'method':'session/update','params':{'sessionId':sid,'update':{
             'sessionUpdate':'agent_message_chunk','content':{'type':'text','text':json.dumps(answer)}}}})
+        send({'method':'_x.ai/session_notification','params':{'sessionId':sid,'update':{
+            'sessionUpdate':'response_completed','stop_reason':'end_turn','usage':{
+                'input_tokens':8,'output_tokens':2,'cache_read_input_tokens':2,
+                'cache_creation_input_tokens':0,'reasoning_tokens':0}}}})
         usage={'inputTokens':10,'outputTokens':2,'totalTokens':12,'cachedReadTokens':2,
             'cacheCreationTokens':0,'reasoningTokens':0,'modelCalls':1,'apiDurationMs':20,'costUsdTicks':123}
         usage={**usage,'numTurns':1,'modelUsage':{'grok-4.6-build':dict(usage)}}
