@@ -29,7 +29,7 @@ def setup_native(root, patch, mode='ok'):
     deployment = FrozenNativeDeployment.create(exe)
     original = acp.ProcessTree; launches = []
     def spawn(command, cwd, env, stderr):
-        assert command == deployment.command(cwd)
+        assert list(command) == deployment.command(cwd)
         assert '--no-auto-update' not in command and env['GROK_DISABLE_AUTOUPDATER'] == '1'
         assert not {'XAI_API_KEY', 'GROK_API_KEY', 'OPENAI_API_KEY', 'PYTHONPATH'} & set(env)
         assert not list(Path(cwd).iterdir())
@@ -104,7 +104,14 @@ def test_default_entry_deployment_bound_originals_and_accounting(tmp_path, monke
         with pytest.raises(ContractError): verify_native_request_binding(result,entry,root,spec,files)
         reservation['deployment_digest']='0'*64
         (root/'native-reservation.json').write_text(json.dumps(reservation))
-        with pytest.raises(ContractError): verify_native_request_binding(result,entry,root,spec,files,deployment=deployment)
+        # Rehash the modified reservation into a coherent original observer
+        # receipt: rejection must still reach the deployment cross-binding.
+        changed=body.copy();changed['diagnostic_binding']=dict(body['diagnostic_binding'])
+        changed['diagnostic_binding']['reservation_sha256']=acp.digest((root/'native-reservation.json').read_bytes())
+        (root/'native/observer-receipt.json').write_text(json.dumps(changed))
+        rebound=acp.AcpResult(FrozenRecord.from_dict(changed),result.response)
+        with pytest.raises(ContractError,match='deployment reservation'):
+            verify_native_request_binding(rebound,entry,root,spec,files,deployment=deployment)
 
 
 @pytest.mark.parametrize('mode', ['paid','topup','tools','model'])
@@ -183,3 +190,20 @@ def test_subscription_v2_deployment_uses_actual_native_entry(tmp_path,monkeypatc
     result=unpack(run_private(descriptor),manifest,authorities)
     assert result['budget']['reserved_main_opportunities']==8 and len(logs)==8
     assert result['budget']['all_opportunity_tokens'] is None
+
+
+def test_postcall_executable_drift_retains_known_main_and_terminal_receipt(tmp_path,monkeypatch):
+    deployment,logs=setup_native(tmp_path/'binary',monkeypatch)
+    spawn=acp.ProcessTree
+    def drift_after_close(*args,**kwargs):
+        tree=spawn(*args,**kwargs);close=tree.close
+        def close_and_drift():
+            close();Path(deployment.executable).write_bytes(b'synthetic executable drift')
+        tree.close=close_and_drift
+        return tree
+    monkeypatch.setattr(acp,'ProcessTree',drift_after_close)
+    result,_=invoke(tmp_path/'run',deployment)
+    body=result.receipt.data()
+    assert not body['accepted'] and 'deployment_file_changed' in body['faults']
+    assert body['known_usage']['totalTokens']==12 and body['prompt_may_have_been_dispatched']
+    assert body['initial_title_usage'] is None and result.response is None and len(logs)==1
