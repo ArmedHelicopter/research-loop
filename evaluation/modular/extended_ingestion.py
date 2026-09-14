@@ -279,7 +279,7 @@ class ExtendedTrainProjectionExporter:
             if record_hash not in set(inventory[item_id]["content_hashes"]):
                 raise ContractError("source record no longer matches frozen inventory")
             task = prepare_extended_public_task(identity, public)
-            self._write(task)
+            self._write(task, record_hash)
             tasks.append(task)
         return tuple(tasks)
 
@@ -303,10 +303,12 @@ class ExtendedTrainProjectionExporter:
                     result[f"scienceagentbench:{_token('scienceagentbench-task', public)}"] = (public, hashlib.sha256(canonical(public).encode()).hexdigest())
         return result
 
-    def _write(self, task: PublicTask) -> None:
+    def _write(self, task: PublicTask, source_sha256: str) -> None:
         target = self.output_root / task.identity.benchmark / digest(task.identity.data())
         target.mkdir(parents=True, exist_ok=False)
         (target / "public.json").write_text(canonical(task.data()) + "\n", encoding="utf-8")
         (target / "receipt.json").write_text(canonical({"identity": task.identity.data(), "task_hash": task.content_hash,
             "public_projection_written": True, "public_projection_returned": True,
             "raw_private_payload_returned": False, "access_isolation": "not_verified"}) + "\n", encoding="utf-8")
+        from evaluation.modular.legacy_extended_packet_artifacts import seal_packet
+        seal_packet(target, task, source_sha256)
