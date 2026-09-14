@@ -86,7 +86,26 @@ def run_prediction_scenario(
     task.identity.require_train()
     writer = PredictionScenarioArtifactWriter(artifact_root, task=task, controls=frozen_controls,
                                               experiment_id=experiment_id, variant=variant)
-    registry = PredictionRegistry(task.identity)
+    try:
+        result = _evaluate_prediction_scenario(experiment_id, variant, task=task,
+            frozen_controls=frozen_controls, writer=writer, plan_callback=plan_callback)
+        writer.close(result.record)
+        verify_prediction_scenario_artifacts(artifact_root, task=task, controls=frozen_controls,
+            experiment_id=experiment_id, variant=variant, expected_run_id=writer.run_id)
+        return result
+    except Exception as exc:
+        writer.close_failure(exc)
+        raise
+
+
+def _evaluate_prediction_scenario(experiment_id, variant, *, task, frozen_controls, writer,
+                                 plan_callback=None, replay_responses=None):
+    """Deterministic mechanism logic; replay has no user callback or storage path."""
+    _validate(experiment_id, variant)
+    controls = _controls(task, frozen_controls)
+    task.identity.require_train()
+    writer.replay_responses = replay_responses
+    registry = PredictionRegistry(task.identity, event_sink=writer.registry_event)
     callbacks: list[FrozenRecord] = []
     callback_responses: list[FrozenRecord] = []
     events: list[dict[str, Any]] = [{"event": "fixture_start", "fixture_only": True,
@@ -161,8 +180,7 @@ def run_prediction_scenario(
         "callback_response_digests": [item.content_hash for item in callback_responses],
         "limitation": "mechanism fixture only; it does not measure benchmark efficacy or scientific validity"})
     trace = FrozenRecord.from_dict({"events": events})
-    writer.trace(trace); writer.outcome(record); writer.close(record)
-    verify_prediction_scenario_artifacts(artifact_root, task=task, controls=frozen_controls, experiment_id=experiment_id, variant=variant)
+    writer.trace(trace); writer.outcome(record)
     return PredictionScenarioResult(experiment_id, variant, tuple(callbacks), trace, record, tuple(callback_responses))
 
 
@@ -184,11 +202,7 @@ def _freeze_and_capture(registry: PredictionRegistry, task: PublicTask, captured
             "observation_id": observation_id, "call_id": f"{plan.plan_id[:12]}-{len(captured)+1}",
             "scenario_context": dict(context or {})})
         captured.append(payload); writer.plan(payload); writer.callback_request(payload)
-        try:
-            raw = callback(payload) if callback else None
-            response = _response_record(raw); writer.callback_return(raw, response)
-        except Exception as exc:
-            writer.callback_failure(exc); writer.close(None, exc); raise
+        response = _capture_response(writer, callback, payload)
         responses.append(response)
     return plan
 
@@ -233,10 +247,7 @@ def _reject_non_discriminating(registry: PredictionRegistry, task: PublicTask, c
             "plan_request": {"question": _question(task), "branches": _same_prediction_pair(), "budget_units": 2},
             "observation_id": "fixture-same-prediction-measurement"})
         captured.append(payload); writer.plan(payload); writer.callback_request(payload)
-        try:
-            raw = callback(payload) if callback else None; response = _response_record(raw); writer.callback_return(raw, response)
-        except Exception as exc:
-            writer.callback_failure(exc); writer.close(None, exc); raise
+        response = _capture_response(writer, callback, payload)
         responses.append(response)
         return payload
     raise ContractError("fixture non-discriminating plan was unexpectedly admitted")
@@ -295,6 +306,22 @@ def _response_record(value: Any) -> FrozenRecord:
     if value is None or isinstance(value, Mapping):
         return FrozenRecord.from_dict({"schema": "prediction-scenario-callback-response-v1", "response": value})
     raise ContractError("plan callback response must be a frozen record, mapping, or None")
+
+
+def _capture_response(writer, callback, payload):
+    if writer.replay_responses is not None:
+        raw = writer.replay_response()
+    else:
+        writer.before_callback()
+        try:
+            raw = callback(payload) if callback else None
+        except Exception as exc:
+            writer.callback_failure(exc)
+            raise
+    writer.callback_raw(raw)
+    response = _response_record(raw)
+    writer.callback_return(response)
+    return response
 
 
 def _intervention(variant: str) -> str:

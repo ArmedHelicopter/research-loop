@@ -1,6 +1,6 @@
 # Q3/Q5 prediction fixture scenarios
 
-`research_loop.modular.scenarios_predictions.run_prediction_scenario()` implements the remaining exact fixture mechanisms for Q3.1, Q3.2, Q5.2, Q5.3, and Q5.4.  It accepts an already-prepared immutable `PublicTask`, a closed frozen public control record, and an optional callback.  It never accepts a path, data contents, labels, gold answers, score, optimizer state, validation feedback, or network/model client.
+`research_loop.modular.scenarios_predictions.run_prediction_scenario()` implements the remaining exact fixture mechanisms for Q3.1, Q3.2, Q5.2, Q5.3, and Q5.4. It accepts an already-prepared immutable `PublicTask`, a closed frozen public control record, a required fresh `artifact_root` for durable output, and an optional callback. Data preparation and label custody remain outside this fixture entry point. Its return is gated by the [prediction artifact reader](PREDICTION-SCENARIO-ARTIFACTS.md).
 
 Every registered variant freezes and exposes the actual M4 plan payload to the callback, records a real shared-discriminator update through `PredictionRegistry` when M4 admits the plan, and retains both payload and ordinary callback-response digests. Callback text is never treated as a trusted scientific validator; admitted plans remain recorded as `unknown`, which deliberately avoids inventing an outcome or a scientific winner.
 
