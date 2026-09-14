@@ -1,0 +1,150 @@
+{
+  "commits": {
+    "isolated_final": "afb118bad3a921ce8679852db2ab4e35e47287e8",
+    "root_final": "a334cd63fbb61f767b34656bb10844ac0d73e692"
+  },
+  "exclusions": "No real authoring/review private directories, auth copies, profile trees, or key files are archived.",
+  "integration_note": "The earlier e87d9a0a conflict was resolved to the exact afb118ba final test version.",
+  "isolated_synthetic_journal_archives": {
+    "binding-rejection": {
+      "member_bytes": 284028,
+      "member_inventory": "isolated-binding-rejection-synthetic-journals-members.json",
+      "members": 24,
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-subscription-pilot-r6\\pytest\\test_headless_rejection_preser0\\source",
+      "zip": "isolated-binding-rejection-synthetic-journals.zip",
+      "zip_bytes": 61958,
+      "zip_sha256": "4485fab5779e75a71f9519767dbc6e67fffac6df2c809672ed36783a096703fd"
+    },
+    "positive": {
+      "member_bytes": 286139,
+      "member_inventory": "isolated-positive-synthetic-journals-members.json",
+      "members": 24,
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-subscription-pilot-r6\\pytest\\test_headless_subscription_por0\\source",
+      "zip": "isolated-positive-synthetic-journals.zip",
+      "zip_bytes": 62162,
+      "zip_sha256": "41597ef71c5d6a3aa946f78808773a2b77ce2c517477fd06dc7020a375ca4590"
+    },
+    "private-request-mutation": {
+      "member_bytes": 284029,
+      "member_inventory": "isolated-private-request-mutation-synthetic-journals-members.json",
+      "members": 24,
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-subscription-pilot-r6\\pytest\\test_headless_rejection_preser1\\source",
+      "zip": "isolated-private-request-mutation-synthetic-journals.zip",
+      "zip_bytes": 61949,
+      "zip_sha256": "6375b3e6a6d832c091c2c6579f16ad845d7a388505bbb05b2a95bc6dab3a556d"
+    },
+    "target-rejection": {
+      "member_bytes": 287148,
+      "member_inventory": "isolated-target-rejection-synthetic-journals-members.json",
+      "members": 24,
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-subscription-pilot-r6\\pytest\\test_headless_rejection_preser2\\source",
+      "zip": "isolated-target-rejection-synthetic-journals.zip",
+      "zip_bytes": 62191,
+      "zip_sha256": "b0bc386e6c3b7c97e1fe6cfb584cbe9414cd8764b720ba69c4765f2b0e180749"
+    }
+  },
+  "root_frozen_originals": {
+    "headless-review-adapter-root-r1-before.json": {
+      "bytes": 88804,
+      "sha256": "02b91ae622b04941ea75c51440751db67a7e403c8dbe6bf2b6f8f3d5f9441862",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-adapter-root-r1-before.json"
+    },
+    "headless-review-adapter-root-r1-closed.json": {
+      "bytes": 88628,
+      "sha256": "4c22d1ecd353bd1cc714186e86756165db8ed8ef7d3b9fdc52c1138e281b610a",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-adapter-root-r1-closed.json"
+    },
+    "headless-review-adapter-root-r1-source-members.json": {
+      "bytes": 132504,
+      "sha256": "3e52a5b8af7f79a6670aad598ee86ff15c651a9cf1f2d5a2b939ceaa13eb1ce0",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-adapter-root-r1-source-members.json"
+    },
+    "headless-review-adapter-root-r1-sources.zip": {
+      "bytes": 2515243,
+      "sha256": "4a981d2b2327d4ca79ae7e298cf891d629c652e28177e147a1f66e0e234b1893",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-adapter-root-r1-sources.zip"
+    },
+    "headless-review-adapter-root-r1.xml": {
+      "bytes": 19440,
+      "sha256": "f7d79e2101d35c81ae9ed3749b99b15a2d4889c4af69c752b0aeef09907927ba",
+      "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-review-adapter-root-r1.xml"
+    }
+  },
+  "scope": "synthetic headless producer, PrivateSubscriptionPorts, and DiagnosticPilot adapter evidence",
+  "stage": "headless-review-adapter-archive-stage-r1",
+  "stage_bytes_excluding_manifest": 3124672,
+  "stage_file_count_excluding_manifest": 14,
+  "stage_files_excluding_manifest": [
+    {
+      "bytes": 5325,
+      "path": "archive-helper.py",
+      "sha256": "696264b9f7610d8ff4c546ceda7bc2508357d1fa813a4b6fda7f6db85b6c60ae"
+    },
+    {
+      "bytes": 6617,
+      "path": "isolated-binding-rejection-synthetic-journals-members.json",
+      "sha256": "e7021850987af564dcef336e19d3b3afd80936e5ecb61e1ffd6091968c07908e"
+    },
+    {
+      "bytes": 61958,
+      "path": "isolated-binding-rejection-synthetic-journals.zip",
+      "sha256": "4485fab5779e75a71f9519767dbc6e67fffac6df2c809672ed36783a096703fd"
+    },
+    {
+      "bytes": 6617,
+      "path": "isolated-positive-synthetic-journals-members.json",
+      "sha256": "bb4d3cb7c4f851e85bce2c3b9be14bc21d5b9cdd63f51820d478575a7d403816"
+    },
+    {
+      "bytes": 62162,
+      "path": "isolated-positive-synthetic-journals.zip",
+      "sha256": "41597ef71c5d6a3aa946f78808773a2b77ce2c517477fd06dc7020a375ca4590"
+    },
+    {
+      "bytes": 6617,
+      "path": "isolated-private-request-mutation-synthetic-journals-members.json",
+      "sha256": "a4ce404e35006571ccd6c88b36499b04fcb79067217bd3c6b4c64e00fe2e643e"
+    },
+    {
+      "bytes": 61949,
+      "path": "isolated-private-request-mutation-synthetic-journals.zip",
+      "sha256": "6375b3e6a6d832c091c2c6579f16ad845d7a388505bbb05b2a95bc6dab3a556d"
+    },
+    {
+      "bytes": 6617,
+      "path": "isolated-target-rejection-synthetic-journals-members.json",
+      "sha256": "132012f223e0a1bb42b5a0c2f2b0ef4fa74dff548a7751ba781e9c1f6171e4dd"
+    },
+    {
+      "bytes": 62191,
+      "path": "isolated-target-rejection-synthetic-journals.zip",
+      "sha256": "b0bc386e6c3b7c97e1fe6cfb584cbe9414cd8764b720ba69c4765f2b0e180749"
+    },
+    {
+      "bytes": 88804,
+      "path": "root-frozen-originals/headless-review-adapter-root-r1-before.json",
+      "sha256": "02b91ae622b04941ea75c51440751db67a7e403c8dbe6bf2b6f8f3d5f9441862"
+    },
+    {
+      "bytes": 88628,
+      "path": "root-frozen-originals/headless-review-adapter-root-r1-closed.json",
+      "sha256": "4c22d1ecd353bd1cc714186e86756165db8ed8ef7d3b9fdc52c1138e281b610a"
+    },
+    {
+      "bytes": 132504,
+      "path": "root-frozen-originals/headless-review-adapter-root-r1-source-members.json",
+      "sha256": "3e52a5b8af7f79a6670aad598ee86ff15c651a9cf1f2d5a2b939ceaa13eb1ce0"
+    },
+    {
+      "bytes": 2515243,
+      "path": "root-frozen-originals/headless-review-adapter-root-r1-sources.zip",
+      "sha256": "4a981d2b2327d4ca79ae7e298cf891d629c652e28177e147a1f66e0e234b1893"
+    },
+    {
+      "bytes": 19440,
+      "path": "root-frozen-originals/headless-review-adapter-root-r1.xml",
+      "sha256": "f7d79e2101d35c81ae9ed3749b99b15a2d4889c4af69c752b0aeef09907927ba"
+    }
+  ],
+  "test_claim": "Synthetic only; no API calls and no VAL. Isolated focused pilot run retained five passing tests; no JUnit XML or standalone stdout record was retained."
+}

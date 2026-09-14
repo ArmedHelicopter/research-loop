@@ -1,0 +1,126 @@
+{
+  "members": [
+    {
+      "bytes": 117741,
+      "member": "private-journal.jsonl",
+      "sha256": "dc02271eeb54cef0184df949c0c4534967eda0ec0b4bb93a53332bd35287fe40"
+    },
+    {
+      "bytes": 2718,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/headless-request.private.json",
+      "sha256": "bb0fd2eb08425a34ca1a19705d49797b6daf82eb694edccd38c4f23b3f6ffd7c"
+    },
+    {
+      "bytes": 263,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/credits.private.json",
+      "sha256": "1dd81e3e0afd3d562af9d82a32d7ea3b6025456988e526a5af0f3b9076085043"
+    },
+    {
+      "bytes": 692,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/observation.json",
+      "sha256": "1d5cf696fa271a1513ca50d4a58768b77ba35f4430c662f1ff5150002819cb9b"
+    },
+    {
+      "bytes": 959,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/requests.json",
+      "sha256": "4011b6b836ec13db87423af5117cdb59a7afe91ec3912a6c3e453cacd01e193b"
+    },
+    {
+      "bytes": 2,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "bytes": 142,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-after/user.private.json",
+      "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762"
+    },
+    {
+      "bytes": 263,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/credits.private.json",
+      "sha256": "6bcafdbb88eb407e88d221b3819ecdd5e026930e9d7e1ed036eba8fa7362d0f1"
+    },
+    {
+      "bytes": 692,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/observation.json",
+      "sha256": "a414866bf70310d67b0b95f18bc4821b0e76852f58cd3b89a45d220dc82274b6"
+    },
+    {
+      "bytes": 959,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/requests.json",
+      "sha256": "fa9ddf84a65623a252e2b004d2e55269f779b64fd9e500f665d5635439b207e7"
+    },
+    {
+      "bytes": 2,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/topup.private.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "bytes": 142,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/billing-before/user.private.json",
+      "sha256": "56cc03df8899f89c9059fe8db7c12c1e10015b5abf8b882b8bd87221c2954762"
+    },
+    {
+      "bytes": 2830,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/command.json",
+      "sha256": "e4d7b36f4cbb1aed0df592a8f45ca4879b3f14b1f21a7d4ddce2dd0935fd2fc0"
+    },
+    {
+      "bytes": 6518,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/inspect/process.json",
+      "sha256": "fe22d7e11d7a03e64f40aaafd4d30192edd032722233c61f0d3cd9fed902ed45"
+    },
+    {
+      "bytes": 0,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/inspect/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 179,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/inspect/stdout.private.jsonl",
+      "sha256": "4ede3fe5926584428971f55e9d13e23b2f0a08b90a53ef91307d7dbb8d9b6a1a"
+    },
+    {
+      "bytes": 73282,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/observer-receipt.json",
+      "sha256": "371da33ebc28d8057b2fef27e4bd9c75439da5aa3bd97afd7a49cf816e2db1a8"
+    },
+    {
+      "bytes": 8958,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/process.json",
+      "sha256": "f577cacec6a75e212ab5a1853d8703d9278bd940de4f267e468c99ed97072dbe"
+    },
+    {
+      "bytes": 2054,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/prompt.private.txt",
+      "sha256": "af18f1852a2d50e6f27d5c8ed068473a1fc281fb66f7ff669d6fde091f6600a8"
+    },
+    {
+      "bytes": 72,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/response.private.json",
+      "sha256": "7b036983d71c497f35d4924d45b67b6ef5eaf1a6512ce9e2dcdbc33975c61f4a"
+    },
+    {
+      "bytes": 444,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/schema.private.json",
+      "sha256": "57bf52d73bbb96454bbf39d8e8781339fa9d0268b9043d8cfb47b08e3c02f35e"
+    },
+    {
+      "bytes": 0,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/stderr.private.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 1063,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native/stdout.private.jsonl",
+      "sha256": "655bc6ca14856abb2277fb5a2352c9f5a390df91890273865ecb7fc71234a851"
+    },
+    {
+      "bytes": 64053,
+      "member": "private-journal.jsonl.headless/f9db60aa9e0e4456f9cc9860abffe5bd539cb9a8deae426a873ec04fc8a0cbf2/native-reservation.json",
+      "sha256": "274395f123d785f5292a82466d41a590f89723998ad81c80f8816cd17dc1a7f4"
+    }
+  ],
+  "selection": "private journal and headless producer journal only; excludes auth/profile/key copies",
+  "source": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\headless-subscription-pilot-r6\\pytest\\test_headless_rejection_preser0\\source"
+}
