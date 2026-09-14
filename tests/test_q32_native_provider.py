@@ -1,5 +1,6 @@
 """Prospective source -> native default entry -> actual twelve Docker measurements."""
 import hashlib
+import json
 import pytest
 from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.q32_execution import FrozenQ32ProspectiveConfig,run_q32_prospective_execution_panel,SLOTS,PROGRAM_SCHEMA
@@ -32,7 +33,7 @@ def prepare(root,patch,*,fault=None):
     return exporter,config,providers,logs
 
 
-@pytest.mark.parametrize('fault',[None,'unknown_main','provenance'])
+@pytest.mark.parametrize('fault',[None,'unknown_main','provenance','later_provenance'])
 def test_native_q32_prospective_execution_and_run_terminal_denominator(tmp_path,monkeypatch,fault):
     exporter,config,providers,logs=prepare(tmp_path,monkeypatch,fault=fault)
     if fault=='provenance':
@@ -43,18 +44,33 @@ def test_native_q32_prospective_execution_and_run_terminal_denominator(tmp_path,
             next(providers[0].backend.calls_root.glob('*/response.private.json')).write_bytes(b'{"synthetic_drift":true}')
             return result
         monkeypatch.setattr(Q32ExecutionStage,'execute_next',corrupt_after_execution)
+    if fault=='later_provenance':
+        from research_loop.modular.q32_execution import Q32ExecutionStage
+        run=Q32ExecutionStage.run
+        def corrupt_prior_cell_after_later_cell(self,model,broker):
+            result=run(self,model,broker)
+            if model.session.provider is providers[1]:
+                next(providers[0].backend.calls_root.glob('*/response.private.json')).write_bytes(b'{"synthetic_later_drift":true}')
+            return result
+        monkeypatch.setattr(Q32ExecutionStage,'run',corrupt_prior_cell_after_later_cell)
     result=run_q32_prospective_execution_panel(config,prospective_exporter=exporter,
         snapshot_root=exporter.config['snapshot_root'],export_root=exporter.output_root,run_root=tmp_path/'run',
         model_factory=lambda i:providers[i],verifier=AuditVerifier({'a':b'a'*32,'b':b'b'*32})).data()['result']
-    assert result['schema']=='q32-native-panel-result-v1'
+    assert result['schema']=='q32-native-panel-result-v2'
+    assert json.loads((tmp_path/'run/source-attempt.json').read_text())['status']==result['status']
+    assert all(r['schema']=='q32-native-cell-result-v2' for r in result['results'])
     assert result['cell_count']==4 and result['measurement_denominator']==12
     assert len(result['results'])==4 and sum(len(r['rows']) for r in result['results'])==12
     assert all(not r['scientific_validated'] for r in result['results'])
     if fault:
         assert result['status']=='incomplete' and result['eligible_measurements']==0 and result['run_terminal']
-        assert [len(x) for x in logs]==([2,0,0,0] if fault=='unknown_main' else [3,0,0,0])
-        assert all(r['status']=='blocked' for r in result['results'][1:])
-        assert result['historical_measurements']==(0 if fault=='unknown_main' else 1)
+        assert [len(x) for x in logs]=={'unknown_main':[2,0,0,0],'provenance':[3,0,0,0],'later_provenance':[4,4,0,0]}[fault]
+        assert all(r['status']=='blocked' for r in result['results'][2 if fault=='later_provenance' else 1:])
+        assert result['historical_measurements']=={'unknown_main':0,'provenance':1,'later_provenance':6}[fault]
+        assert all(r['score_eligible'] is False for r in result['results'])
+        if fault=='later_provenance':
+            assert [r['historical_cell_score_eligible'] for r in result['results']]==[True,True,False,False]
+            assert json.loads((tmp_path/'run/0/native-result.json').read_text())['score_eligible'] is True
     else:
         assert [len(x) for x in logs]==[4,4,4,4]
         assert result['status']=='completed' and result['eligible_measurements']==12

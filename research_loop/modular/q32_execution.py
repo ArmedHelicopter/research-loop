@@ -385,7 +385,7 @@ def run_q32_prospective_execution_panel(config, *, prospective_exporter, snapsho
             compiled=compile_native(compiled,b)
         journal.update(status='executing', compiled_digest=compiled.content_hash); persist()
         result = _run_q32_compiled(packets, compiled, exported, root, model_factory, verifier)
-        journal['status'] = 'completed'; persist()
+        journal['status'] = result.data()['status'] if native else 'completed'; persist()
         envelope = FrozenRecord.from_dict({**({'schema':'q32-native-prospective-source-result-v1'} if native else {}),
             'source_config_digest': config.record.content_hash, 'result': result.data()})
         _write(root / 'source-result.json', envelope.data())

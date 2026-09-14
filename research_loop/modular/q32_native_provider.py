@@ -139,7 +139,11 @@ def run_native(packets,compiled,export_root,run_root,model_factory,verifier):
         results.append(row);_write(sidecar/'native-result.json',row)
     gates=[final_provider_gate(session,run_root/f'final-provider-{i}.json') for i,session in enumerate(sessions)]
     eligible=not stopped and len(sessions)==4 and all(g.data()['provider_evidence_eligible'] for g in gates) and all(r['status']=='completed' for r in results)
-    result=FrozenRecord.from_dict({'schema':'q32-native-panel-result-v1','compiled_digest':compiled.content_hash,
+    for row in results:
+        row['schema']='q32-native-cell-result-v2'
+        row['historical_cell_score_eligible']=row['score_eligible']
+        row['score_eligible']=eligible and row['score_eligible']
+    result=FrozenRecord.from_dict({'schema':'q32-native-panel-result-v2','compiled_digest':compiled.content_hash,
         'cell_count':4,'measurement_denominator':12,'results':results,'provider_final_gates':[g.data() for g in gates],
         'status':'completed' if eligible and all(r['status']=='completed' for r in results) else 'incomplete',
         'score_eligible':eligible,'eligible_measurements':12 if eligible else 0,

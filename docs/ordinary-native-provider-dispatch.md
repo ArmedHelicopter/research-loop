@@ -37,3 +37,9 @@ spawn seam, with real Docker and scorer processes where applicable. Such checks
 establish bounded engineering behavior, not model capability or scientific
 effectiveness. C5 still requires the separately frozen selection and validation
 work; this provider port does not resolve that limitation or open VAL.
+
+Q3.2 final panel/result rows use v2 after the global provenance gate. Each row
+retains `historical_cell_score_eligible`, while current `score_eligible` is false
+for every row if any provider's final replay fails. Original per-cell v1 files
+are preserved unchanged. The native source-attempt status follows the inner
+panel status; the legacy source-attempt contract is unchanged.
