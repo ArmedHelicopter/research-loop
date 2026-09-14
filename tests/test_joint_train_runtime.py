@@ -9,6 +9,7 @@ from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.full_loo_modules import model_schemas, MEASUREMENT
 from research_loop.modular.full_loo_composition import derive_allocation
 from research_loop.modular.joint_train_protocol import FrozenJointTrainProtocol, common_recipes, OBLIGATION
+from research_loop.modular.joint_train_panel import history_build_id
 from research_loop.modular.joint_train_runtime import (FrozenJointTrainRuntimePlan, JointTrainStageExecutor,
     JointTrainBarrier, _barrier_record, _barrier_validation_scope, compile_panel, component_templates, runtime_sources)
 from research_loop.modular.phase_provider import provider_configuration
@@ -192,6 +193,10 @@ def test_unknown_main_keeps_complete_denominator_and_stops(tmp_path,monkeypatch)
     assert len(body['rows'])==len(runner.plan.builds)+runner.plan.protocol.record.data()['allocation']['target_cells']
     assert all(r['status'] in ('failed','blocked') for r in body['rows']) and len(setup['common_logs'])==1
     assert body['provider_usage']['unknown_main_opportunities']==1
+    journal=result.inner.root/'runtime'/'artifacts.jsonl'
+    assert journal.exists()
+    rows=[json.loads(line)['descriptor'] for line in journal.read_text(encoding='utf-8').splitlines()]
+    assert any(row['kind']=='trace_event' and row['coverage']=='uncovered' for row in rows)
 
 
 def test_artifact_writer_failure_retains_independent_failed_stage_receipt(tmp_path,monkeypatch):
@@ -215,10 +220,15 @@ def test_artifact_writer_failure_retains_independent_failed_stage_receipt(tmp_pa
     assert failure['journal_error_type']=='OSError'
     assert receipt['status']=='failed' and receipt['candidate_digest'] is None
     assert 'failure_journal:OSError' in receipt['reason']
-    journal=result.inner.root/'runtime'/'artifacts.jsonl'
+    journal=stage_root/'runtime'/'artifacts.jsonl'
     assert journal.exists()
     rows=[json.loads(line)['descriptor'] for line in journal.read_text(encoding='utf-8').splitlines()]
-    assert any(row['kind']=='trace_event' and row['coverage']=='uncovered' for row in rows)
+    assert len(rows)==1 and rows[0]['module']=='P0'
+    assert receipt['artifact_catalogue_seal']['count']==1
+    assert receipt['files']['artifact-journal-failure.json']
+    checkpoint=json.loads((runner.root/'checkpoint.json').read_bytes())
+    assert checkpoint['score_eligible'] is False
+    assert all(row['status'] in ('failed','blocked') for row in checkpoint['rows'])
 
 
 def test_completed_history_provenance_drift_blocks_target(tmp_path,monkeypatch):
