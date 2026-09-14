@@ -305,10 +305,11 @@ class ExtendedTrainProjectionExporter:
 
     def _write(self, task: PublicTask, source_sha256: str) -> None:
         target = self.output_root / task.identity.benchmark / digest(task.identity.data())
-        target.mkdir(parents=True, exist_ok=False)
-        (target / "public.json").write_text(canonical(task.data()) + "\n", encoding="utf-8")
-        (target / "receipt.json").write_text(canonical({"identity": task.identity.data(), "task_hash": task.content_hash,
+        task.identity.require_train()
+        public = (canonical(task.data()) + "\n").encode("utf-8")
+        receipt = (canonical({"identity": task.identity.data(), "task_hash": task.content_hash,
             "public_projection_written": True, "public_projection_returned": True,
-            "raw_private_payload_returned": False, "access_isolation": "not_verified"}) + "\n", encoding="utf-8")
-        from evaluation.modular.legacy_extended_packet_artifacts import seal_packet
-        seal_packet(target, task, source_sha256)
+            "raw_private_payload_returned": False, "access_isolation": "not_verified"}) + "\n").encode("utf-8")
+        from evaluation.modular.legacy_extended_packet_artifacts import seal_packet, verify_packet
+        seal_packet(target, task, source_sha256, public, receipt)
+        verify_packet(target, task, expected_source_sha256=source_sha256)
