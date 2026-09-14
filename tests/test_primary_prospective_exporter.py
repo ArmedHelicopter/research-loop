@@ -149,7 +149,7 @@ def test_partial_failure_keeps_exposure_and_fixed_cost_receipts(tmp_path, monkey
     assert len(list(exporter.audit_root.glob("attempt-*/staging/*/data.csv"))) == 2
 
 
-@pytest.mark.parametrize("fault", [None, "validation", "hold", "roots", "both_ports"])
+@pytest.mark.parametrize("fault", [None, "validation", "hold", "roots", "both_ports", "packet_catalogue", "completion_anchor"])
 def test_actual_controller_consumes_prospective_packets_without_custody_conversion(tmp_path, monkeypatch, fault):
     from test_modular_train_controller import model_port, SCENARIO, FINAL
     from research_loop.modular.modules.improvement import CandidatePackage, TrainingManifest
@@ -190,6 +190,18 @@ def test_actual_controller_consumes_prospective_packets_without_custody_conversi
     elif fault == "both_ports":
         from evaluation.modular.custody import CustodyStore
         custody = CustodyStore(tmp_path / "other-custody.json")
+    elif fault in {'packet_catalogue','completion_anchor'}:
+        original=actual.export_controller_packets
+        def corrupt_after_export(tokens):
+            packets=original(tokens)
+            if fault=='packet_catalogue':
+                path=packets[0].packet_path.parent/'artifacts.jsonl'
+                path.write_bytes(path.read_bytes()+b' ')
+            else:
+                path=actual.audit_root/'exports.jsonl'
+                path.write_bytes(b'\n'.join(path.read_bytes().splitlines()[:-1])+b'\n')
+            return packets
+        monkeypatch.setattr(actual,'export_controller_packets',corrupt_after_export)
     kwargs = dict(custody=custody, prospective_exporter=actual,
         snapshot_root=Path(actual.config["snapshot_root"]), export_root=export_root, run_root=tmp_path / "run", model=port,
         audit_verifier=AuditVerifier({"a": b"a" * 32, "b": b"b" * 32}))
@@ -198,7 +210,9 @@ def test_actual_controller_consumes_prospective_packets_without_custody_conversi
         with pytest.raises((CustodyError, ContractError)):
             run_train_panel(config, **kwargs)
         assert port.ledger["calls"] == []
-        assert not actual.output_root.exists()
+        assert actual.output_root.exists() == (fault in {'packet_catalogue','completion_anchor'})
+        if fault in {'packet_catalogue','completion_anchor'}:
+            assert json.loads((tmp_path/'run/controller-attempt.json').read_bytes())['status']=='blocked_before_execution'
         return
     result = run_train_panel(config, **kwargs)
     assert len(result.packets) == 2 and len(result.runtimes) == 12

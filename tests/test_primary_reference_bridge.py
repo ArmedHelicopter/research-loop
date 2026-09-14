@@ -213,6 +213,19 @@ def test_repinning_forged_public_material_does_not_replace_source_proof(tmp_path
     export_path = bridge.exporter.output_root / "export-receipt.json"
     receipt = json.loads(export_path.read_bytes())
     receipt["packets"] = [metadata if row["export_token"] == requests[0].item.token else row for row in receipt["packets"]]
+    # A v2 export also pins public P0 catalogues. Forge those coherently, so this
+    # existing counterexample still reaches the independent original-source
+    # check rather than stopping at an unrevised public byte commitment.
+    from evaluation.modular.train_packet_artifacts import TrainPacketArtifacts
+    counterfeit=tmp_path/'counterfeit-public-packet'
+    writer=TrainPacketArtifacts(counterfeit,exporter=bridge.exporter,item=requests[0].item,task=packet.task,
+        attempt=1,request_digest=receipt['request_sha256'],source_digests=receipt['source_receipt_digests'])
+    for name in ('public.json','data.csv','receipt.json'):
+        (counterfeit/name).write_bytes((packet.packet_path.parent/name).read_bytes())
+    anchor=writer.finish(metadata)
+    for name in ('artifacts.jsonl','artifacts.jsonl.seal.json'):
+        (packet.packet_path.parent/name).write_bytes((counterfeit/name).read_bytes())
+    receipt['artifact_catalogues']=[anchor if row['token']==requests[0].item.token else row for row in receipt['artifact_catalogues']]
     write(export_path, receipt)
     bridge.export_receipt_sha256 = pin(export_path)["sha256"]
     requests[0] = PrimaryReferenceItem(requests[0].item, packet.task.content_hash, pin(packet.packet_path)["sha256"],

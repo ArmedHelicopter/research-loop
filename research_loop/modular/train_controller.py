@@ -294,6 +294,9 @@ def run_train_panel(config: FrozenTrainControllerConfig, *, custody: CustodyStor
         protocol_broker = DockerExecutionBroker([root]) if protocol else None
         packets = (prospective_exporter.export_controller_packets(data["item_ids"]) if prospective_export
                    else TrainPacketExporter(custody, snapshot, exported).export(data["item_ids"]))
+        if prospective_export:
+            from research_loop.modular.combination_train_source import verify_primary_export_completion
+            verify_primary_export_completion(prospective_exporter,data['item_ids'],packets)
         attempt.update({"status": "exported", "packet_receipts": [packet.receipt.data() for packet in packets]})
         _write(root / "controller-attempt.json", attempt)
         tasks = [packet.task for packet in packets]

@@ -150,30 +150,39 @@ class CombinationTrainSource:
             packets = TrainPacketExporter(self.custody, self.snapshot, self.exported).export(self.body["item_ids"])
         else:
             packets = self.prospective_exporter.export_controller_packets(self.body["item_ids"])
-            for packet in packets:
-                token = packet.receipt.data().get("export_token")
-                if (not isinstance(token, str) or packet.packet_path != self.exported / token / "public.json"
-                        or packet.csv_path != self.exported / token / "data.csv"):
-                    raise ContractError("exporter returned paths outside the frozen token output")
-            batch = _batch_receipt(self.body, packets)
-            exporter = self.prospective_exporter
-            _, audit = exporter._sealed_metadata()
-            if (batch.data()['audit_sha256'] != exporter.expected_audit_digest
-                    or any(p.receipt.data()['eligibility_sha256'] != exporter.eligibility_sha256
-                           or p.receipt.data()['input_bindings_digest'] != digest(audit['input_bindings']) for p in packets)):
-                raise ContractError('prospective batch metadata differs from the concrete exporter')
-            previous = '0'*64; sequence = 0; last = None
-            for line in _concrete(exporter.audit_root/'exports.jsonl').read_bytes().splitlines():
-                row = json.loads(line); entry = row.pop('entry_sha256',None)
-                if (entry != digest(row) or row.get('sequence') != sequence+1 or row.get('previous_sha256') != previous
-                        or row.get('split_sha256') != exporter.expected_split_digest
-                        or row.get('audit_sha256') != exporter.expected_audit_digest):
-                    raise ContractError('prospective export completion journal differs')
-                previous, sequence, last = entry, sequence+1, row
-            if (previous != exporter._previous or sequence != exporter._sequence or last is None
-                    or last.get('event') != 'export_completed' or last.get('receipt_sha256') != batch.content_hash
-                    or last.get('request_sha256') != batch.data()['request_sha256']
-                    or last.get('possibly_exposed_tokens') != sorted(self.body['item_ids'])
-                    or last.get('source_receipt_digests') != batch.data()['source_receipt_digests']):
-                raise ContractError('prospective packets lack the original completed export anchor')
+            verify_primary_export_completion(self.prospective_exporter,self.body['item_ids'],packets)
         return packets
+
+
+def verify_primary_export_completion(exporter, item_ids, packets):
+    """Shared actual controller gate, including the original completed journal."""
+    if type(exporter) is not PrimaryProspectiveTrainExporter:
+        raise ContractError('exact primary exporter required for completed packet provenance')
+    body={'export_mode':PROSPECTIVE,'item_ids':item_ids}
+    packet_index(body,packets)
+    for packet in packets:
+        token=packet.receipt.data().get('export_token')
+        if (packet.packet_path != exporter.output_root/token/'public.json'
+                or packet.csv_path != exporter.output_root/token/'data.csv'):
+            raise ContractError('exporter returned paths outside the frozen token output')
+    batch=_batch_receipt(body,packets)
+    _,audit=exporter._sealed_metadata()
+    if (batch.data()['audit_sha256'] != exporter.expected_audit_digest
+            or any(p.receipt.data()['eligibility_sha256'] != exporter.eligibility_sha256
+                or p.receipt.data()['input_bindings_digest'] != digest(audit['input_bindings']) for p in packets)):
+        raise ContractError('prospective batch metadata differs from the concrete exporter')
+    previous='0'*64; sequence=0; last=None
+    for line in _concrete(exporter.audit_root/'exports.jsonl').read_bytes().splitlines():
+        row=json.loads(line); entry=row.pop('entry_sha256',None)
+        if (entry != digest(row) or row.get('sequence') != sequence+1 or row.get('previous_sha256') != previous
+                or row.get('split_sha256') != exporter.expected_split_digest
+                or row.get('audit_sha256') != exporter.expected_audit_digest):
+            raise ContractError('prospective export completion journal differs')
+        previous,sequence,last=entry,sequence+1,row
+    if (previous != exporter._previous or sequence != exporter._sequence or last is None
+            or last.get('event') != 'export_completed' or last.get('receipt_sha256') != batch.content_hash
+            or last.get('request_sha256') != batch.data()['request_sha256']
+            or last.get('possibly_exposed_tokens') != sorted(item_ids)
+            or last.get('source_receipt_digests') != batch.data()['source_receipt_digests']):
+        raise ContractError('prospective packets lack the original completed export anchor')
+    return batch
