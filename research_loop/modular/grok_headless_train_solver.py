@@ -90,6 +90,8 @@ class GrokHeadlessTrainModelPort:
         self.observed_main_token_cap, self.account_read_recovery = observed_main_token_cap, json.loads(canonical(account_read_recovery)) if account_read_recovery is not None else None
         self.model, self.effort = MODEL, "low"; self.root.mkdir(parents=True, exist_ok=True); self.calls_root = self.root / "calls"; self.calls_root.mkdir(exist_ok=True); self.ledger_path = self.root / "ledger.json"; self.lock_path = self.root / "allocator.lock"
         config = {"schema":"grok-headless-train-solver-port-v1", "provider_kind":self.provider_kind, "model":MODEL, "opportunity_contract":TRAIN_OPPORTUNITY_CONTRACT, "reasoning_effort":"low", "timeout_seconds":60, "max_retries":0, "paid_fallback":False, "max_calls":max_calls, "title_opportunities_per_main":1, "title_usage_and_all_call_totals":"unknown", "api_key_route_permitted":False, "included_only":True, "schemas":self.schemas, "slot_output_caps":self.slot_output_caps, "slot_input_byte_caps":self.slot_input_byte_caps, "observed_main_token_cap":observed_main_token_cap, "account_read_recovery":self.account_read_recovery, "executable":self.executable, "executable_sha256":actual, "private_home":str(self.private_home), "private_profile_root":str(self.private_profile), "public_cwd_root":str(self.public_cwd), "frozen_files":self.frozen_files}
+        self._config_record = FrozenRecord.from_dict(config)
+        config = self._config_record.data()
         with _exclusive(self.lock_path):
             if self.ledger_path.exists():
                 raw = self.ledger_path.read_bytes()
@@ -105,6 +107,7 @@ class GrokHeadlessTrainModelPort:
                 self.ledger = {"config":config, "calls":[], "known_main_tokens":0, "tokens":0, "usage_incomplete":False}; _write(self.ledger_path, self.ledger)
 
     def __call__(self, request: FrozenRecord) -> FrozenRecord:
+        _verify_live_config(self)
         if not isinstance(request, FrozenRecord): raise ContractError("headless TRAIN port accepts frozen requests only")
         body=request.data(); slot=body.get("slot")
         if (set(body) != {"schema","task","lock_digest","objective","slot","instruction","context","module_context","execution_feedback"} or body.get("schema") != "public-model-request-v1" or slot not in self.schemas): raise ContractError("unexpected public headless TRAIN request")
@@ -127,12 +130,27 @@ class GrokHeadlessTrainModelPort:
                 reservation=directory/"native-reservation.json"; row.update(native_receipt_sha256=_sha(receipt_path.read_bytes()),reservation_sha256=_sha(reservation.read_bytes()),accepted=receipt.get("accepted") is True,native_prompt_reservations=1 if receipt.get("prompt_process_launched") is True else 0 if receipt.get("prompt_process_launched") is False else None,main_dispatch_state="possibly_dispatched" if receipt.get("prompt_process_launched") is True else "not_dispatched")
                 binding=_verify_row(self,row,result)
                 if not (receipt.get("accepted") is True and result.response is not None and binding.data().get("accepted") is True): raise ContractError("headless main dispatch or binding is unknown")
-                _validate_schema(self.schemas[slot],result.response.data()); (directory/"response.private.json").write_bytes(result.response.encoded.encode()); row.update(status="succeeded",response_sha256=result.response.content_hash,headless_binding=binding.data()); _write(self.ledger_path,self.ledger); replay_headless_train_ledger(self); return result.response
+                _validate_schema(self.schemas[slot],result.response.data()); (directory/"response.private.json").write_bytes(result.response.encoded.encode()); row.update(status="succeeded",response_sha256=result.response.content_hash,headless_binding=binding.data()); _write(self.ledger_path,self.ledger); replay_headless_train_ledger(self); _verify_live_config(self); return result.response
             except Exception as exc:
                 row.update(status="unknown_or_failed",error_type=type(exc).__name__); self.ledger["usage_incomplete"]=True; _write(self.ledger_path,self.ledger); raise ContractError("headless native request is terminal; do not retry") from exc
 
 
 def _directory(port, row): return port.calls_root/f"{row['id']:04d}-{row['slot']}"
+
+
+def _verify_live_config(port):
+    """Bind mutable Python attributes to the immutable constructor record before I/O."""
+    frozen = port._config_record.data()
+    expected = {"provider_kind":port.provider_kind, "model":port.model, "reasoning_effort":port.effort,
+                "max_calls":port.max_calls, "schemas":port.schemas, "slot_output_caps":port.slot_output_caps,
+                "slot_input_byte_caps":port.slot_input_byte_caps, "observed_main_token_cap":port.observed_main_token_cap,
+                "account_read_recovery":port.account_read_recovery, "executable":port.executable,
+                "private_home":str(port.private_home), "private_profile_root":str(port.private_profile),
+                "public_cwd_root":str(port.public_cwd), "frozen_files":port.frozen_files}
+    if any(frozen.get(key) != value for key, value in expected.items()): raise ContractError("live headless TRAIN configuration drifted")
+    if _sha(Path(port.executable).read_bytes()) != frozen["executable_sha256"]: raise ContractError("live headless executable drifted")
+    if port.ledger.get("config") != frozen: raise ContractError("headless TRAIN ledger configuration drifted")
+    return frozen
 
 
 def _expected_context(port, row):
@@ -185,12 +203,13 @@ def _replay_headless_native_call(port, row):
 
 def replay_headless_train_ledger(port, *, preserve_failure=False):
     try:
+        frozen = _verify_live_config(port)
         disk=json.loads(port.ledger_path.read_text(encoding="utf-8"))
-        if disk != port.ledger or disk.get("config") != port.ledger.get("config"): raise ContractError("headless ledger drifted")
+        if disk != port.ledger or disk.get("config") != frozen: raise ContractError("headless ledger drifted")
         for path, expected in port.ledger["config"]["frozen_files"].items():
             if _sha(Path(path).read_bytes()) != expected: raise ContractError("headless source drifted")
         rows=port.ledger.get("calls")
-        if not isinstance(rows,list) or port.ledger.get("usage_incomplete") or any(row.get("status") != "succeeded" for row in rows): raise ContractError("headless ledger contains unresolved opportunity")
+        if not isinstance(rows,list) or len(rows) > frozen["max_calls"] or port.ledger.get("usage_incomplete") or any(row.get("status") != "succeeded" for row in rows): raise ContractError("headless ledger contains unresolved opportunity")
         if [row.get("id") for row in rows] != list(range(1,len(rows)+1)): raise ContractError("headless opportunity order differs")
         total=0
         for row in rows:

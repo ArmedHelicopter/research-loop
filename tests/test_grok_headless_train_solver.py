@@ -133,7 +133,7 @@ def test_source_drift_closes_before_later_native_io(tmp_path, monkeypatch):
     calls,_=synthetic_native(tmp_path,monkeypatch,value)
     value(REQUEST); Path(value.executable).write_bytes(b"drift")
     with pytest.raises(ContractError): value(REQUEST)
-    assert value.ledger["usage_incomplete"] is True and len(calls)==1
+    assert len(calls)==1
 
 
 def test_rehashed_private_request_closes_replay(tmp_path, monkeypatch):
@@ -177,3 +177,14 @@ def test_constructor_lock_and_corrupt_disk_bytes_are_preserved(tmp_path):
     with pytest.raises(ContractError):
         GrokHeadlessTrainModelPort(executable=first.executable,work_root=first.root,private_home=first.private_home,private_profile=first.private_profile,public_cwd=first.public_cwd,frozen_files={first.executable:hashlib.sha256(Path(first.executable).read_bytes()).hexdigest()},max_calls=1,schemas=first.schemas,slot_output_caps=first.slot_output_caps,slot_input_byte_caps=first.slot_input_byte_caps,observed_main_token_cap=first.observed_main_token_cap)
     assert first.ledger_path.read_bytes() == b'{"broken":' and (first.root/"ledger.constructor-fault.json").read_bytes() == b'{"broken":'
+
+
+@pytest.mark.parametrize("mutate",[
+    lambda value: value.slot_output_caps.__setitem__("m4_plan", 1),
+    lambda value: value.schemas.__setitem__("m4_plan", {"type":"object","properties":{},"additionalProperties":False}),
+    lambda value: setattr(value, "model", "foreign-model"),
+])
+def test_live_port_configuration_mutation_rejects_before_native_io(tmp_path, mutate):
+    value=port(tmp_path); mutate(value)
+    with pytest.raises(ContractError): value(REQUEST)
+    assert value.ledger["calls"] == [] and not list(value.calls_root.iterdir())
