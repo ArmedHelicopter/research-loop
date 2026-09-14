@@ -15,6 +15,8 @@ _VARIANTS = [("Q4.1", "single"), ("Q4.1", "independent_samples"), ("Q4.1", "role
 def test_every_registered_variant_has_a_strict_durable_round_trip(tmp_path, adapter, experiment_id, variant):
     public = task(adapter); root = tmp_path / "review"
     identities = None if variant != "heterogeneous" else {"reviewer_one": {"reviewer_id": "a", "model_id": "m1", "provider": "p1", "provenance": "fixture A"}, "reviewer_two": {"reviewer_id": "b", "model_id": "m2", "provider": "p2", "provenance": "fixture B"}}
+    _record_independent_inputs(tmp_path / 'independent-inputs.json', public,
+        experiment_id, variant, reviewer_identities=identities)
     result = run_review_scenario(experiment_id, variant, task=public, frozen_controls=controls(public), review_callback=responder, artifact_root=root, reviewer_identities=identities)
     assert verify_review_artifacts(root, task=public, controls=controls(public), experiment_id=experiment_id, variant=variant, result=result, reviewer_identities=identities).data()["status"] == "succeeded"
 
@@ -59,15 +61,30 @@ def _write_record(path, body):
     path.write_bytes((FrozenRecord.from_dict(body).encoded + '\n').encode())
 
 
+def _record_independent_inputs(path, public, experiment, variant, *, reviewer_identities=None):
+    body = {'task': public.data(), 'controls': controls(public).data(),
+            'experiment_id': experiment, 'variant': variant,
+            'reviewer_identities': reviewer_identities, 'review_log_path': None}
+    with path.open('xb') as stream:
+        stream.write((FrozenRecord.from_dict(body).encoded + '\n').encode())
+
+
 def _reseal(root, rows):
+    original_hashes = {row['sequence']: FrozenRecord.from_dict(row).content_hash
+                       for row in _read_rows(root)}
+    remapped = {}
     previous = None
     for index, row in enumerate(rows):
+        original_hash = original_hashes[row['sequence']]
+        if 'parents' in row:
+            row['parents'] = [remapped.get(parent, parent) for parent in row['parents']]
         row.update(sequence=index, previous=previous)
         for field, digest in [('payload', 'payload_digest'), ('typed_response', 'typed_digest'),
                               ('review_event', 'review_event_digest'), ('prediction_event', 'prediction_event_digest')]:
             if field in row:
                 row[digest] = FrozenRecord.from_dict(row[field]).content_hash
         previous = FrozenRecord.from_dict(row).content_hash
+        remapped[original_hash] = previous
     (root / 'review-attempts.jsonl').write_bytes(b''.join((FrozenRecord.from_dict(row).encoded + '\n').encode() for row in rows))
     terminal = json.loads((root / 'review-terminal.json').read_bytes())
     terminal['entry_count'] = len(rows)
@@ -89,6 +106,8 @@ def _produce(root, experiment='Q4.3', variant='sequential', **kwargs):
 @pytest.fixture
 def sequential_artifact(tmp_path):
     root = tmp_path / 'original'
+    _record_independent_inputs(tmp_path / 'independent-inputs.json', task('blade'),
+        'Q4.3', 'sequential')
     _produce(root)
     return root
 
