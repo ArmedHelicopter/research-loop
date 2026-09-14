@@ -167,7 +167,8 @@ def test_material_v2_default_native_entry_and_original_reader(tmp_path,monkeypat
         assert result['authoring_outcomes'][0]['known_main_usage']['totalTokens']==12
 
 
-def test_subscription_v2_deployment_uses_actual_native_entry(tmp_path,monkeypatch):
+@pytest.mark.parametrize('legacy_config',[False,True])
+def test_subscription_v2_deployment_uses_actual_native_entry(tmp_path,monkeypatch,legacy_config):
     from test_diagnostic_subscription import setup_subscription,unpack
     from tests.helpers.calibration_pilot_fixture import write
     from evaluation.modular.calibration_pilot_process import load_record
@@ -186,8 +187,17 @@ def test_subscription_v2_deployment_uses_actual_native_entry(tmp_path,monkeypatc
     # joins the actual per-call source manifest after loading, avoiding a cycle.
     native=write(tmp_path/'deployment.json',{'schema':'frozen-native-subscription-deployment-v2',
         'executable':deployment.executable,'native':deployment.record.data(),'slots':slots,'frozen_files':files})
-    config['native_deployment']=native;descriptor=write(tmp_path/'config.json',config)
+    config['native_deployment']=native
+    if not legacy_config:config['schema']='diagnostic-subscription-worker-config-v2'
+    descriptor=write(tmp_path/'config.json',config)
+    if legacy_config:
+        with pytest.raises(ContractError,match='version binding'):run_private(descriptor)
+        assert not logs
+        return
     result=unpack(run_private(descriptor),manifest,authorities)
+    assert result['schema']=='four-train-diagnostic-subscription-observation-v2'
+    assert result['native_deployment_digest']==deployment.digest
+    assert result['native_deployment_descriptor']==native and result['worker_config_descriptor']==descriptor
     assert result['budget']['reserved_main_opportunities']==8 and len(logs)==8
     assert result['budget']['all_opportunity_tokens'] is None
 

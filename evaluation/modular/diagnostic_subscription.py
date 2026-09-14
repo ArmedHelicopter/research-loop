@@ -33,6 +33,8 @@ from research_loop.modular.grok_native_deployment import (
 SCHEMA = 'four-train-diagnostic-included-subscription-v1'
 OBSERVATION_SCHEMA = 'four-train-diagnostic-subscription-observation-v1'
 CONFIG_SCHEMA = 'diagnostic-subscription-worker-config-v1'
+CONFIG_SCHEMA_V2 = 'diagnostic-subscription-worker-config-v2'
+OBSERVATION_SCHEMA_V2 = 'four-train-diagnostic-subscription-observation-v2'
 LIMITS = {'reviewer1': 36, 'reviewer2': 36, 'arbitrator': 36, 'evaluator': 72}
 
 
@@ -419,7 +421,7 @@ class PrivateSubscriptionPorts:
 def load_private(config_descriptor):
     c = exact(load_record(config_descriptor).data(), ('schema', 'manifest', 'materials', 'key_files',
         'reference_store', 'input_files', 'journal_path', 'request_inventory', 'native_deployment'))
-    if c['schema'] != CONFIG_SCHEMA:
+    if c['schema'] not in (CONFIG_SCHEMA, CONFIG_SCHEMA_V2):
         raise ContractError('subscription worker schema differs')
     manifest = load_record(c['manifest']); b, _, _ = validate_manifest(manifest)
     if set(c['input_files']) != set(b['input_pins']):
@@ -477,6 +479,8 @@ def run_private(config_descriptor, *, fixture_factory=None):
     if fixture_factory is None:
         deployment = load_record(c['native_deployment']).data()
         versioned = deployment.get('schema') == 'frozen-native-subscription-deployment-v2'
+        if versioned != (c['schema'] == CONFIG_SCHEMA_V2):
+            raise ContractError('subscription worker/deployment version binding differs')
         exact(deployment, ('schema', 'executable', 'frozen_files', 'slots', *(['native'] if versioned else [])))
         if not versioned and deployment['schema'] != 'frozen-native-subscription-deployment-v1':
             raise ContractError('native deployment schema differs')
@@ -521,6 +525,8 @@ def run_private(config_descriptor, *, fixture_factory=None):
             for path, expected_hash in frozen.items():
                 _read_bound(Path(path), {pin(expected_hash)})
     else:
+        if c['schema'] == CONFIG_SCHEMA_V2:
+            raise ContractError('versioned subscription requires the native deployment entry')
         executable = None; slots = {}; frozen = {str(p): sha(p) for p in own_sources().values()}
     ports = PrivateSubscriptionPorts(manifest=manifest, resolver=resolver, authorities=authorities,
         inventory=inventory, native_slots=slots, frozen_files=frozen, executable=executable,
@@ -542,6 +548,9 @@ def run_private(config_descriptor, *, fixture_factory=None):
         report['postrun_sources_verified'] = False
         report['budget'] = pilot.budget.data()
         pilot.journal.append('subscription_postrun_source_rejected', {'further_io_blocked': True})
+    if native_descriptor is not None:
+        report.update(schema=OBSERVATION_SCHEMA_V2, native_deployment_digest=native_descriptor.digest,
+            native_deployment_descriptor=dict(c['native_deployment']), worker_config_descriptor=dict(config_descriptor))
     result = authorities['diagnostic'].issue('diagnostic', manifest.content_hash, report)
     pilot.journal.append('subscription_result_finalized', {'receipt_digest': result.content_hash})
     return result

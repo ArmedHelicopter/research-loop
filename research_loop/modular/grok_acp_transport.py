@@ -654,6 +654,13 @@ class SinglePromptACP:
                 if reader:
                     reader.join(timeout=5)
                 raw.flush(); os.fsync(raw.fileno())
+        if self.deployment is not None:
+            try:
+                self.verify_files()
+            except Rejected as exc:
+                faults.append(str(exc))
+            except (OSError, ValueError, TypeError):
+                faults.append('deployment_final_source_failure')
         # Terminal raw streams may contain a usage frame already delivered when
         # an earlier tool/protocol fault stopped the client. Preserve it privately
         # and expose valid scalar accounting without accepting its binding.
