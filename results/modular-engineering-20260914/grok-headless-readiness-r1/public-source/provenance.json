@@ -1,0 +1,71 @@
+{
+  "public_commit": "bc7f02eddd3d84085849dc19ed216f11c23b0571",
+  "files": [
+    {
+      "path": "billing.rs",
+      "url": "https://raw.githubusercontent.com/xai-org/grok-build/bc7f02eddd3d84085849dc19ed216f11c23b0571/crates/codegen/xai-grok-shell/src/extensions/billing.rs",
+      "sha256": "308da9699b857c0f5b541b8aef61bfea83a39e570ac725c039a36ea9fbe52bb5",
+      "bytes": 25042,
+      "git_blob_sha1": "28b519efc5672ad78d194d0ff0283203869d87a8",
+      "matches_pinned_tree": true,
+      "first_fetch_completed": true
+    },
+    {
+      "path": "auth_model.rs",
+      "url": "https://raw.githubusercontent.com/xai-org/grok-build/bc7f02eddd3d84085849dc19ed216f11c23b0571/crates/codegen/xai-grok-shell/src/auth/model.rs",
+      "sha256": "69cbca486f438a0f791daa53a7fbed6bba51b70e4e9fa15a9005f7a2cecf807d",
+      "bytes": 20478,
+      "git_blob_sha1": "a05c8a609a1dc549524ffb0181d14cd5266f30b4",
+      "matches_pinned_tree": true,
+      "first_fetch_completed": true
+    },
+    {
+      "path": "auth_config.rs",
+      "url": "https://raw.githubusercontent.com/xai-org/grok-build/bc7f02eddd3d84085849dc19ed216f11c23b0571/crates/codegen/xai-grok-shell/src/auth/config.rs",
+      "sha256": "d182cb0e3579c94f058898f44d688517eb0f10b82fce2d63bc8de9a510946c58",
+      "bytes": 23945,
+      "git_blob_sha1": "1447d4f48691a1090ef459348b2837d169a30f6c",
+      "matches_pinned_tree": true,
+      "first_fetch_completed": false
+    },
+    {
+      "path": "agent_server.rs",
+      "url": "https://raw.githubusercontent.com/xai-org/grok-build/bc7f02eddd3d84085849dc19ed216f11c23b0571/crates/codegen/xai-grok-shell/src/agent/server.rs",
+      "sha256": "00c70937250198d836cdfcce8dbd5df2657dcccec020c793698fe386bd870a3e",
+      "bytes": 24855,
+      "git_blob_sha1": "bb784865feb21717d2d35aa4d7ba95473b0181b6",
+      "matches_pinned_tree": true,
+      "first_fetch_completed": true
+    },
+    {
+      "path": "headless_cli.rs",
+      "url": "https://raw.githubusercontent.com/xai-org/grok-build/bc7f02eddd3d84085849dc19ed216f11c23b0571/crates/codegen/xai-grok-pager/src/headless/cli.rs",
+      "sha256": "bf574d5370614f065ff30a90cc5add586c61bc462fd0dd0cad5f022beef1ffe2",
+      "bytes": 8749,
+      "git_blob_sha1": "99d5732f95ec023debeffc2f00cb4ae4532f0f0b",
+      "matches_pinned_tree": true,
+      "first_fetch_completed": true
+    },
+    {
+      "path": "headless.rs",
+      "url": "https://raw.githubusercontent.com/xai-org/grok-build/bc7f02eddd3d84085849dc19ed216f11c23b0571/crates/codegen/xai-grok-pager/src/headless.rs",
+      "sha256": "df492c59af238ae9c012579eaedb87df28c3ba1dde24f0c0b52950510971af92",
+      "bytes": 61505,
+      "git_blob_sha1": "e79a6cbfe200a3a8612522789c89885390de5178",
+      "matches_pinned_tree": true,
+      "first_fetch_completed": true
+    },
+    {
+      "path": "models.rs",
+      "url": "https://raw.githubusercontent.com/xai-org/grok-build/bc7f02eddd3d84085849dc19ed216f11c23b0571/crates/codegen/xai-grok-pager/src/models.rs",
+      "sha256": "21ce0100ec9f527ca10b0f71bc3d5071942a9abfd5c8f3911c00056afacf6c66",
+      "bytes": 1719,
+      "git_blob_sha1": "9481341dc614f4b92312866fd3f171a1f39c8ddb",
+      "matches_pinned_tree": true,
+      "first_fetch_completed": false
+    }
+  ],
+  "first_fetch_fault": "One concurrent source read timed out; successful files retained",
+  "followup_failures": [],
+  "binary_source_equivalence_verified": false
+}

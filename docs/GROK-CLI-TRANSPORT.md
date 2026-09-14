@@ -1,5 +1,12 @@
 # Grok CLI transport and subscription accounting
 
+The installed CLI's official headless path completed two real constant requests
+on 2026-09-14. The first retained an output-budget failure; the separately frozen
+second passed the existing stream verifier with empty tools and known main usage.
+This separate route is not yet an experimental provider. See
+[the native headless evidence](GROK-HEADLESS-READINESS.md) before repeating startup
+diagnostics or treating all CLI entrypoints as unavailable.
+
 On 2026-09-14, separate authless `inspect --json` commands completed for the
 installed 1.0.13 and staged 1.0.30 binaries. Both reported the isolated config
 and no external discovered context; authenticated remote settings were not

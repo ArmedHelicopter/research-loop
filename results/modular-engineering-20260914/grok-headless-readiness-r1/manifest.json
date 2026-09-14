@@ -1,0 +1,296 @@
+[
+  {
+    "path": "account-query-r1.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-subscription-readonly-http-r1\\receipt.json",
+    "bytes": 431,
+    "sha256": "f5c48d76fad5dc673bb29ab80d317586bac5b60417bb7d49eaf00c4069bdb226"
+  },
+  {
+    "path": "account-query-r2.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-subscription-readonly-http-r2\\receipt.json",
+    "bytes": 1217,
+    "sha256": "4cffff886ec8a5e44b23ce55fb2f6a005499ceec37d1fc08e06ffb846e0ca610"
+  },
+  {
+    "path": "grok-headless-readiness-gate-r2-checks.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-readiness-gate-r2-checks.json",
+    "bytes": 174,
+    "sha256": "7b06bd8a67055e4f8719fede62aa0b64a66ceac9b9bccb0aa8e02af6d6ee5705"
+  },
+  {
+    "path": "initial-login-shape.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-subscription-readonly-http-r1\\login-shape.json",
+    "bytes": 315,
+    "sha256": "a5358628b34b2baf815f0778cd1b17542432c81debf55fd9777d9db33ecb2bf6"
+  },
+  {
+    "path": "models-receipt.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-installed-models-r1\\receipt.json",
+    "bytes": 1288,
+    "sha256": "12d5ca6bb5a81476eddfa89c4c59a7c1940d461741be253d05e0e2499156cf4c"
+  },
+  {
+    "path": "models-stderr.txt",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-installed-models-r1\\stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "models-stdout.txt",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-installed-models-r1\\stdout.private.txt",
+    "bytes": 107,
+    "sha256": "c8bf1cda6d26972a7170039ad74bfa6e0ef0622f6dafd60302b2ae7e2c0acdaf"
+  },
+  {
+    "path": "observer-dependencies/grok_acp_transport.py",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance\\research_loop\\modular\\grok_acp_transport.py",
+    "bytes": 53261,
+    "sha256": "f736d68218e49bf90fa6ead447097d8366d3827932bea5565c854e71d07aa855"
+  },
+  {
+    "path": "observer-dependencies/grok_cli_protocol.py",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\artifact-evidence-provenance\\research_loop\\modular\\grok_cli_protocol.py",
+    "bytes": 11816,
+    "sha256": "96abbca469035ca8edd3585e0061f2ba14a67eb664ae12d33308269fe681d21b"
+  },
+  {
+    "path": "observer-r1.py",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok_headless_constant_readiness_r1.py",
+    "bytes": 13852,
+    "sha256": "448c1c84e53fefae8d5f4f340c19d3ed876a2f4521e2468b863c557b9ea0f463"
+  },
+  {
+    "path": "observer-r2.py",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok_headless_constant_readiness_r2.py",
+    "bytes": 14146,
+    "sha256": "5c39bd2b0f4e91e0effc50c68864e66127ef1a3b34d82ed9ca2d0c184cba932a"
+  },
+  {
+    "path": "public-source/agent_server.rs",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-supported-route-source-r1\\agent_server.rs",
+    "bytes": 24855,
+    "sha256": "00c70937250198d836cdfcce8dbd5df2657dcccec020c793698fe386bd870a3e"
+  },
+  {
+    "path": "public-source/auth_config.rs",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-supported-route-source-r1\\auth_config.rs",
+    "bytes": 23945,
+    "sha256": "d182cb0e3579c94f058898f44d688517eb0f10b82fce2d63bc8de9a510946c58"
+  },
+  {
+    "path": "public-source/auth_model.rs",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-supported-route-source-r1\\auth_model.rs",
+    "bytes": 20478,
+    "sha256": "69cbca486f438a0f791daa53a7fbed6bba51b70e4e9fa15a9005f7a2cecf807d"
+  },
+  {
+    "path": "public-source/billing.rs",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-supported-route-source-r1\\billing.rs",
+    "bytes": 25042,
+    "sha256": "308da9699b857c0f5b541b8aef61bfea83a39e570ac725c039a36ea9fbe52bb5"
+  },
+  {
+    "path": "public-source/headless.rs",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-supported-route-source-r1\\headless.rs",
+    "bytes": 61505,
+    "sha256": "df492c59af238ae9c012579eaedb87df28c3ba1dde24f0c0b52950510971af92"
+  },
+  {
+    "path": "public-source/headless_cli.rs",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-supported-route-source-r1\\headless_cli.rs",
+    "bytes": 8749,
+    "sha256": "bf574d5370614f065ff30a90cc5add586c61bc462fd0dd0cad5f022beef1ffe2"
+  },
+  {
+    "path": "public-source/models.rs",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-supported-route-source-r1\\models.rs",
+    "bytes": 1719,
+    "sha256": "21ce0100ec9f527ca10b0f71bc3d5071942a9abfd5c8f3911c00056afacf6c66"
+  },
+  {
+    "path": "public-source/provenance.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-supported-route-source-r1\\provenance.json",
+    "bytes": 3441,
+    "sha256": "3dce5e1e9882e593208506e9f7a5a52ede87d069dd08eaf261c93188fc005512"
+  },
+  {
+    "path": "r1/billing-after/observation.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r1\\billing-after\\observation.json",
+    "bytes": 450,
+    "sha256": "674f999ad8fa9a6732e4e3680267961d44413e90c74e60f952227eac309e7d1c"
+  },
+  {
+    "path": "r1/billing-after/requests.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r1\\billing-after\\requests.json",
+    "bytes": 1031,
+    "sha256": "c229b7581a8f44a0d5a61ee086c07e35c758126444af5732b9010fbba6c779a8"
+  },
+  {
+    "path": "r1/billing-before/observation.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r1\\billing-before\\observation.json",
+    "bytes": 450,
+    "sha256": "4aa6f59171834f7fbaf0da15de9ec82cc3eb5f45341586cca980f2d519dc2c91"
+  },
+  {
+    "path": "r1/billing-before/requests.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r1\\billing-before\\requests.json",
+    "bytes": 1030,
+    "sha256": "3bd74dbbba1451ec9490a64e554343e44d3c458ad3276fb167979ad25f60f799"
+  },
+  {
+    "path": "r1/config.toml",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r1\\private-home\\config.toml",
+    "bytes": 870,
+    "sha256": "258307c9cf9842aba185855e99833d1d6ef8a77539f9bee30ac2a4af6db865c7"
+  },
+  {
+    "path": "r1/inspect-stderr.txt",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r1\\inspect\\stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "r1/inspect.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r1\\inspect\\stdout.private.jsonl",
+    "bytes": 3153,
+    "sha256": "6719cc2c2d78d6e2ef232a6a0e29dd6c678c76a80e5d42fe9b363cfba5497fce"
+  },
+  {
+    "path": "r1/model-events.jsonl",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r1\\model\\stdout.private.jsonl",
+    "bytes": 2599,
+    "sha256": "0c898add0c09af6b17ffed28d86d6db1731174642d8dd2379606b020576b4afb"
+  },
+  {
+    "path": "r1/model-stderr.txt",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r1\\model\\stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "r1/prompt.txt",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r1\\prompt.txt",
+    "bytes": 54,
+    "sha256": "f93df2caf6b30fbedea9e43f24e2cc19c72b7ffaeeb909c87629fb0208fbd5b0"
+  },
+  {
+    "path": "r1/receipt.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r1\\receipt.json",
+    "bytes": 6623,
+    "sha256": "2cf6d254b217410f36ec941cc5fb24e8d83e002ae70c347e3a79ca9d9f827b67"
+  },
+  {
+    "path": "r1/reservation.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r1\\reservation.json",
+    "bytes": 4876,
+    "sha256": "10eeedffe0a9e33b2e9d80722fea0ba3a31bcae2f7cce6f6fd0539e7946a92ec"
+  },
+  {
+    "path": "r1/stream-inspection.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r1\\stream-inspection.json",
+    "bytes": 917,
+    "sha256": "97016240d6e6ba4e1569767d532dd15118975c06cd56a31bef6a00c75f341428"
+  },
+  {
+    "path": "r2/billing-after/observation.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\billing-after\\observation.json",
+    "bytes": 449,
+    "sha256": "168beab26216e446004755b4be7fdf360795cd34eb6ecf0ce82eedfadc69e027"
+  },
+  {
+    "path": "r2/billing-after/requests.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\billing-after\\requests.json",
+    "bytes": 1030,
+    "sha256": "33b857d01e999e5c48d8c2528d6807655fd697f222584b6b4067f9ad19ba8434"
+  },
+  {
+    "path": "r2/billing-before/observation.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\billing-before\\observation.json",
+    "bytes": 451,
+    "sha256": "ea92839b5a42fdd57430235d7bbe9845bf94b8a05fec41503fd0b89faa0ad5f7"
+  },
+  {
+    "path": "r2/billing-before/requests.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\billing-before\\requests.json",
+    "bytes": 1030,
+    "sha256": "1dee78ee11921c14123c8bf78749a71dd8a1242d848e00d7374623f4a9c35b82"
+  },
+  {
+    "path": "r2/config.toml",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\private-home\\config.toml",
+    "bytes": 870,
+    "sha256": "9c6ee2117dff13a5c07d859c2226a6754a6b27efbc9f463d5f324c3be5769ae2"
+  },
+  {
+    "path": "r2/inspect-stderr.txt",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\inspect\\stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "r2/inspect.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\inspect\\stdout.private.jsonl",
+    "bytes": 3153,
+    "sha256": "48519f33ea5a80c1500c3f0ae3daa2d182c0e56f2afcb82de12549e8638dd16c"
+  },
+  {
+    "path": "r2/model-events.jsonl",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\model\\stdout.private.jsonl",
+    "bytes": 2852,
+    "sha256": "d0ac0a01ab1c78a40fad5fe171cf1d3517ad350f71d99549af3b3f47ce466735"
+  },
+  {
+    "path": "r2/model-stderr.txt",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\model\\stderr.private.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "r2/prompt.txt",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\prompt.txt",
+    "bytes": 54,
+    "sha256": "f93df2caf6b30fbedea9e43f24e2cc19c72b7ffaeeb909c87629fb0208fbd5b0"
+  },
+  {
+    "path": "r2/receipt.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\receipt.json",
+    "bytes": 6587,
+    "sha256": "b933c78db340a6bc12fe71c365f70e34af2ad4ebdaf59bf26ab9457911140641"
+  },
+  {
+    "path": "r2/reservation.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\reservation.json",
+    "bytes": 4877,
+    "sha256": "4ce00b875328af178cb4fc53f4b81fdfda304cf8e572964cc59debb06aa5d8e9"
+  },
+  {
+    "path": "r2/response.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\response.json",
+    "bytes": 21,
+    "sha256": "17d40b43a07f6595998eac96f808f89734e4a014c4b9641f7110f5b7f587955c"
+  },
+  {
+    "path": "r2/stream-inspection.json",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok-headless-constant-readiness-r2\\stream-inspection.json",
+    "bytes": 882,
+    "sha256": "6cdc01777a14f51f144f361c47725033796518e1b07f69114b38a86f452b5344"
+  },
+  {
+    "path": "read_grok_subscription_http_r1.py",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\read_grok_subscription_http_r1.py",
+    "bytes": 5602,
+    "sha256": "f031c3e477fd626af1f85322ac2aa61f79c391f853804745fc985a3ef653eeae"
+  },
+  {
+    "path": "read_grok_subscription_http_r2.py",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\read_grok_subscription_http_r2.py",
+    "bytes": 5835,
+    "sha256": "43ce28b83735a8aa7638b4ff2cf44b7a50e55006b6c87f07cf8a7c5ad3d75e52"
+  },
+  {
+    "path": "run_installed_grok_models_r1.py",
+    "source_path": "E:\\_ryanDev\\AI\\research-loop-modular\\work\\run_installed_grok_models_r1.py",
+    "bytes": 4181,
+    "sha256": "f862d797c03040877d177edea0ef64bc6cf0ff69d3176dae85323da71d9af72e"
+  }
+]
