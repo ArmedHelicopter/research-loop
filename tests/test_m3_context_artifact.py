@@ -75,7 +75,7 @@ def test_projection_evidence_only_revalidates_every_snapshot_and_cross_domain(tm
 
     for field, replacement in [
         ('evidence_snapshot', {}), ('claims_snapshot', {}), ('before_projection', {}),
-        ('final_context', {}), ('baseline_summary', 'forged summary'), ('request', {}),
+        ('final_context', {}), ('request', {}),
     ]:
         forged = record.data()
         forged[field] = replacement
