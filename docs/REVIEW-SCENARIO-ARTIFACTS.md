@@ -1,8 +1,17 @@
 # Review scenario artifacts
 
-`run_review_scenario(..., artifact_root=...)` can retain a fixture-only review audit.
-The reader validates the original frozen task and controls, callback payloads and
-responses, mechanism trace, result record, and byte hashes without invoking a
-callback or opening a review engine. This is engineering provenance for the
-offline fixture; it does not make the scenario a benchmark dispatcher or claim
-efficacy, provider independence, or scientific validity.
+`run_review_scenario(..., artifact_root=...)` requires a new, non-linked output
+directory. Before the first callback opportunity it durably writes the frozen
+TRAIN task, cell identity, controls, and both producer-source snapshots. It
+then appends each reservation, exact callback request, raw callback return,
+typed response, and actual M5 engine event. Success retains the original
+reveal, score, prediction-extraction trace, and result; callback failures close
+the partial audit with an explicit failed terminal record.
+
+`verify_review_artifacts()` is an offline strict consumer. It checks literal
+inventory and bytes, independently supplied task/cell/variant/controls and the
+known producer sources; reconstructs permitted requests, visibility, reveal,
+revisions, and M5 journal in memory; and never invokes callbacks or writes,
+recreates, or repairs an artifact. This is engineering provenance for an
+offline fixture. It does not dispatch a benchmark or establish efficacy,
+provider independence, or scientific validity.

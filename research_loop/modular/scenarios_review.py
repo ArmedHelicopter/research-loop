@@ -123,7 +123,7 @@ def run_review_scenario(
     frozen_controls: FrozenRecord,
     review_callback: Callable[[FrozenRecord], Mapping[str, Any]] | None = None,
     review_log_path: Path | None = None,
-    artifact_root: Path | None = None,
+    artifact_root: Path,
     reviewer_identities: Mapping[str, Mapping[str, Any]] | None = None,
 ) -> ReviewScenarioResult:
     """Exercise one Q4 fixture with sealed submissions and retained responses.
@@ -135,11 +135,15 @@ def run_review_scenario(
     fixture never invents a provider identity.
     """
     _validate(experiment_id, variant)
+    task.identity.require_train()
     controls = _controls(task, frozen_controls)
+    from research_loop.modular.review_scenario_artifacts import ReviewArtifactSession
+    audit = ReviewArtifactSession(artifact_root, task=task, controls=frozen_controls,
+                                  experiment_id=experiment_id, variant=variant)
     roles, costs, visibility, case = _design(experiment_id, variant)
     call_plan = _freeze_call_plan(experiment_id, variant, roles, costs)
     identities = _identities(roles, reviewer_identities, heterogeneous=(experiment_id == "Q4.5" and variant == "heterogeneous"))
-    engine = ReviewEngine(task.identity, storage_path=review_log_path)
+    engine = ReviewEngine(task.identity, storage_path=review_log_path, event_sink=audit.review_event)
     session = engine.open(task_binding=task.content_hash, evidence_snapshot=controls["evidence_digest"],
                           roles=roles, budget_units=sum(item["fixture_units"] for item in call_plan))
     payloads: list[FrozenRecord] = []
@@ -156,13 +160,24 @@ def run_review_scenario(
     for index, role in enumerate(roles):
         prior = submissions[0].data() if visibility == "sequential" and index else None
         allocation = _reserve(events, call_plan, "initial", role["role_id"])
+        audit.reserve(allocation)
         payload = _payload(task, controls, session.review_id, role, identities[role["role_id"]],
                            invocation="initial", prior_visible_submission=prior, case=case)
-        response, candidate = _call(review_callback, payload, case)
+        audit.callback_payload(payload)
+        try:
+            response, candidate, raw = _call(review_callback, payload, case)
+        except Exception as exc:
+            audit.fail(exc)
+            raise
+        audit.callback_response(raw=raw, typed=response, candidate=candidate)
         if candidate is not None: prediction_candidates.append(candidate)
-        submission = engine.submit(session.review_id, role_id=role["role_id"],
-                                   reviewer_id=identities[role["role_id"]]["reviewer_id"],
-                                   response=response.data(), cost_units=allocation["fixture_units"])
+        try:
+            submission = engine.submit(session.review_id, role_id=role["role_id"],
+                                       reviewer_id=identities[role["role_id"]]["reviewer_id"],
+                                       response=response.data(), cost_units=allocation["fixture_units"])
+        except Exception as exc:
+            audit.fail(exc)
+            raise
         payloads.append(payload); responses.append(response); submissions.append(submission)
     revealed = engine.reveal(session.review_id)
     events.append({"event": "sealed_barrier_revealed", "review_id": session.review_id,
@@ -173,12 +188,23 @@ def run_review_scenario(
     if experiment_id in {"Q4.3", "Q4.5"}:
         for role in roles:
             role_id = role["role_id"]
-            _reserve(events, call_plan, "revision", role_id)
+            allocation = _reserve(events, call_plan, "revision", role_id)
+            audit.reserve(allocation)
             payload = _payload(task, controls, session.review_id, role, identities[role_id], invocation="revision",
                                prior_visible_submission=[item.data() for item in revealed], case=case)
-            response, _ = _call(review_callback, payload, case)
-            revision = engine.revise_after_reveal(session.review_id, role_id=role_id,
-                                                  reviewer_id=identities[role_id]["reviewer_id"], response=response.data())
+            audit.callback_payload(payload)
+            try:
+                response, _, raw = _call(review_callback, payload, case)
+            except Exception as exc:
+                audit.fail(exc)
+                raise
+            audit.callback_response(raw=raw, typed=response, candidate=None)
+            try:
+                revision = engine.revise_after_reveal(session.review_id, role_id=role_id,
+                                                      reviewer_id=identities[role_id]["reviewer_id"], response=response.data())
+            except Exception as exc:
+                audit.fail(exc)
+                raise
             payloads.append(payload); responses.append(response); revisions.append(revision)
         events.append({"event": "post_reveal_revisions", "before_hashes": [item.before_hash for item in revealed],
                        "after_hashes": [item.after_hash for item in revisions]})
@@ -203,9 +229,7 @@ def run_review_scenario(
         "limitation": "fixture-only mechanism trace; no benchmark efficacy, provider independence, or scientific validity claim"})
     result = ReviewScenarioResult(experiment_id, variant, tuple(payloads), tuple(responses),
                                   FrozenRecord.from_dict({"events": events}), record)
-    if artifact_root is not None:
-        from research_loop.modular.review_scenario_artifacts import write_review_artifacts
-        write_review_artifacts(artifact_root, task=task, controls=frozen_controls, result=result)
+    audit.complete(result)
     return result
 
 
@@ -313,17 +337,18 @@ def _reserve(events: list[dict[str, Any]], plan: list[dict[str, Any]], phase: st
     return allocation
 
 
-def _call(callback, payload, case) -> tuple[FrozenRecord, Mapping[str, Any] | None]:
+def _call(callback, payload, case) -> tuple[FrozenRecord, Mapping[str, Any] | None, FrozenRecord]:
     value = callback(payload) if callback else {"assessment": "unknown", "evidence_refs": [case["observations"][0]["evidence_id"]], "counterexamples": [], "uncertainty": "fixture default; no model invoked"}
     if isinstance(value, FrozenRecord): value = value.data()
     if not isinstance(value, Mapping): raise ContractError("review callback must return a response mapping")
+    raw = FrozenRecord.from_dict(dict(value))
     candidate = None
     if set(value) == {"review", "prediction_candidate"}:
         candidate = value["prediction_candidate"]
         value = value["review"]
         if candidate is not None and not isinstance(candidate, Mapping):
             raise ContractError("prediction candidate must be a mapping or null")
-    return FrozenRecord.from_dict(dict(value)), dict(candidate) if candidate is not None else None
+    return FrozenRecord.from_dict(dict(value)), dict(candidate) if candidate is not None else None, raw
 
 
 def _freeze_callback_predictions(task: PublicTask, experiment_id: str,

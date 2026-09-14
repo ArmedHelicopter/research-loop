@@ -1,12 +1,23 @@
 """Q4 engineering fixtures: callback binding and M5 receipts, not experiments."""
 from __future__ import annotations
 
+import tempfile
+from pathlib import Path
+
 import pytest
 
 from research_loop.modular.benchmarks import BladeAdapter, DiscoveryBenchAdapter
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
-from research_loop.modular.scenarios_review import run_review_scenario
+from research_loop.modular.scenarios_review import run_review_scenario as _run_review_scenario
 from research_loop.ontology import ContractError
+
+
+def run_review_scenario(*args, **kwargs):
+    """Every fixture invocation supplies a fresh durable producer root."""
+    root = Path(tempfile.mkdtemp(prefix="q4-review-"))
+    root.rmdir()
+    kwargs["artifact_root"] = root
+    return _run_review_scenario(*args, **kwargs)
 
 
 def task(adapter: str):
