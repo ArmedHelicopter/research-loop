@@ -72,6 +72,28 @@ observed main usage. The headless accounting fields remain separate from ACP;
 unknown launch counts, title usage and settlement remain unknown. The resulting
 observation is diagnostic only and cannot grant calibration or VAL eligibility.
 
+Review worker config v4 and headless deployment v2 explicitly opt into
+`account_read_recovery={schema: headless-account-read-recovery-v1, max_attempts: 2}`.
+Only this route accepts native receipt/reservation v2. The configuration is bound
+to the native context, reservation, receipt and independent consumer; the budget
+uses the frozen configuration to select the expected receipt version. A returned
+receipt cannot select its own admission policy. Existing v3 keeps the v1 route.
+
+Recovery applies to the read-only three-GET account snapshot, not the MAIN
+generation. A transient account transport failure may start one new snapshot;
+each attempt keeps its request prefix, received bytes and terminal failure.
+Non-transient failures, observed policy/identity violations and stale preflight
+observations do not permit a MAIN call. A postflight retry never repeats MAIN.
+The reader checks the bounded attempt sequence and winning raw projection,
+and the observer receipt anchors each attempt manifest. These are local
+observations; they do not independently attest the upstream service's response.
+
+Each new review batch retains previous reservations in its cumulative allocation,
+including failed calls. Reduced per-role limits are reported separately from
+the original study design. Reusing the same TRAIN materials in a new source
+version produces correlated diagnostic observations, not independent samples.
+This contract does not retroactively admit an incomplete earlier account record.
+
 The retained startup-log comparison was refined on 2026-09-15 using the native
 `ts`/`msg`/`ctx` fields. Both runs had fetched a real model catalogue and observed
 an unexpired cached login. The failed material run last reported a long-running

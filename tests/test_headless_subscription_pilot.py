@@ -13,7 +13,8 @@ def _peer(path):
     path.write_text('''import json,sys\nfrom pathlib import Path\ndef value(s):\n if "enum" in s:return s["enum"][0]\n t=s.get("type")\n if isinstance(t,list): t=next((x for x in t if x!="null"),"null")\n if t=="object": return {k:value(v) for k,v in s.get("properties",{}).items() if k in s.get("required",[])}\n if t=="array": return []\n if t=="number": return 0.0\n if t=="integer": return 0\n if t=="boolean": return False\n return "synthetic"\nif sys.argv[1]=="inspect":\n print(json.dumps({**{k:[] for k in ("skills","hooks","plugins","mcpServers","projectInstructions")},"loginPolicy":{"apiKeyAuthDisabled":True},"workflowGuide":None,"memoryDigest":None}))\nelse:\n session,prompt,schema=sys.argv[1:4]; answer=value(json.loads(schema)); usage={"input_tokens":8,"cache_read_input_tokens":0,"cache_creation_input_tokens":0,"output_tokens":2,"reasoning_tokens":0}\n for row in ([{"type":"available_commands","tools":[],"commands":[]}] * 3 + [{"type":"text","data":json.dumps(answer)},{"type":"usage","usage":usage,"signature":"synthetic"},{"type":"end","stopReason":"end_turn","sessionId":session,"requestId":"synthetic-"+session,"usage":usage|{"total_tokens":10},"num_turns":1,"modelUsage":{"grok-4.6":{"inputTokens":8,"outputTokens":2,"cacheReadInputTokens":0,"cacheCreationInputTokens":0,"modelCalls":1}},"structuredOutput":answer}]): print(json.dumps(row),flush=True)\n''', encoding='utf-8')
 
 
-def _run_headless_subscription(tmp_path, monkeypatch, rejection=None):
+def _run_headless_subscription(tmp_path, monkeypatch, rejection=None, *, recovery=False,
+                               account_fault=None):
     desc, manifest, authorities, _ = setup_subscription(tmp_path / 'source', all_ready=True, main_cap=1)
     config = load_record(desc).data(); inventory = load_record(config['request_inventory']).data()
     exe = tmp_path / 'synthetic-executable'; exe.write_bytes(b'synthetic')
@@ -29,14 +30,25 @@ def _run_headless_subscription(tmp_path, monkeypatch, rejection=None):
         (home/'config.toml').write_bytes(subscription.diagnostic_config(512).encode())
         slots[entry['opportunity_id']] = {'cwd':str(cwd),'private_home':str(home),'private_profile':str(profile)}
         frozen[str(home/'config.toml')] = subscription.sha(home/'config.toml')
-    deployment = write(tmp_path/'headless-deployment.json', {'schema':'frozen-native-subscription-headless-deployment-v1','executable':str(exe),'slots':slots,'frozen_files':frozen})
-    config.update(schema=subscription.CONFIG_SCHEMA_V3, transport='headless', native_deployment=deployment)
+    deployment_body = {'schema':'frozen-native-subscription-headless-deployment-v1',
+                       'executable':str(exe),'slots':slots,'frozen_files':frozen}
+    recovery_policy = {'schema':'headless-account-read-recovery-v1', 'max_attempts':2}
+    if recovery:
+        deployment_body.update(schema='frozen-native-subscription-headless-deployment-v2',
+                               account_read_recovery=recovery_policy)
+        config['account_read_recovery'] = recovery_policy
+    deployment = write(tmp_path/'headless-deployment.json', deployment_body)
+    config.update(schema=subscription.CONFIG_SCHEMA_V4 if recovery else subscription.CONFIG_SCHEMA_V3,
+                  transport='headless', native_deployment=deployment)
     desc = write(tmp_path/'headless-config.json', config)
     peer = tmp_path/'peer.py'; _peer(peer)
     from research_loop.modular.grok_acp_transport import ProcessTree
+    main_calls = []
     def spawn(command, cwd, env, stderr):
         if 'inspect' in command: args=['inspect']
-        else: args=[command[command.index('--session-id')+1], command[command.index('--prompt-file')+1], command[command.index('--json-schema')+1]]
+        else:
+            main_calls.append(command)
+            args=[command[command.index('--session-id')+1], command[command.index('--prompt-file')+1], command[command.index('--json-schema')+1]]
         return ProcessTree([sys.executable, str(peer), *args], cwd=cwd, env=env, stderr=stderr)
     import sys
     monkeypatch.setattr(transport, 'EXECUTABLE_SHA256', subscription.sha(exe)); monkeypatch.setattr(transport, 'ProcessTree', spawn)
@@ -44,6 +56,19 @@ def _run_headless_subscription(tmp_path, monkeypatch, rejection=None):
     from tests.helpers.headless_authoring_fixture import install_synthetic_native
     install_synthetic_native(monkeypatch, {'native_deployment': {'slots':slots, 'executable':str(exe)}})
     monkeypatch.setattr(transport, 'ProcessTree', spawn)
+    if account_fault:
+        original_opener = transport.urllib.request.build_opener
+        reads = []
+        class FaultOpener:
+            def __init__(self, *handlers): self.inner = original_opener(*handlers)
+            def open(self, request, timeout):
+                reads.append(request.full_url)
+                # Three successful preflight GETs; fail the first postflight
+                # topup request, retaining its successful credits prefix.
+                if len(reads) == 5 or (account_fault == 'exhausted' and len(reads) == 7):
+                    raise transport.urllib.error.URLError(TimeoutError('synthetic account read timeout'))
+                return self.inner.open(request, timeout)
+        monkeypatch.setattr(transport.urllib.request, 'build_opener', FaultOpener)
     if rejection == 'binding':
         def reject_binding(*args, **kwargs):
             raise subscription.ContractError('synthetic independent binding mismatch')
@@ -59,7 +84,9 @@ def _run_headless_subscription(tmp_path, monkeypatch, rejection=None):
         def reject_target(*args, **kwargs):
             raise subscription.ContractError('synthetic review semantic rejection')
         monkeypatch.setattr(subscription, 'target', reject_target)
-    return unpack(subscription.run_private(desc), manifest, authorities)
+    result = unpack(subscription.run_private(desc), manifest, authorities)
+    assert len(main_calls) == 1
+    return result
 
 
 def test_headless_subscription_ports_use_actual_producer_and_preserve_failure_denominator(tmp_path, monkeypatch):
@@ -88,6 +115,53 @@ def test_headless_rejection_preserves_observed_usage_and_stops(tmp_path, monkeyp
     assert budget['records'][0]['known_headless_main_usage']['total_tokens'] == 10
     assert budget['records'][0]['status'] == 'rejected_with_known_usage_preserved'
     assert budget['further_io_blocked'] is True
+
+
+def test_recovered_account_snapshot_flows_through_real_subscription_consumer(tmp_path, monkeypatch):
+    result = _run_headless_subscription(tmp_path, monkeypatch, recovery=True, account_fault='topup')
+    assert result['schema'] == subscription.OBSERVATION_SCHEMA_V4
+    assert result['budget']['reserved_main_opportunities'] == 1
+    row = result['budget']['records'][0]
+    assert row['native_accepted'] is True and row['main_binding_verified'] is True
+    assert row['known_headless_main_usage']['total_tokens'] == 10
+    assert row['status'] == 'known_headless_main_expected_unknown_title'
+    assert result['budget']['further_io_blocked'] is False
+    native = next((tmp_path/'source/private-journal.jsonl.headless').glob('*/native'))
+    receipt = json.loads((native/'observer-receipt.json').read_text())
+    attempts = json.loads((native/'billing-after/attempts.json').read_text())
+    assert receipt['schema'] == transport.RECOVERY_RECEIPT_SCHEMA
+    assert receipt['account_read_recovery'] == result['account_read_recovery']
+    assert receipt['account_postflight_attempts_sha256'] == subscription.sha(native/'billing-after/attempts.json')
+    assert len(attempts['attempts']) == 2
+    assert list((native/'billing-after').glob('*/credits.private.json'))
+    journal = [json.loads(line) for line in (tmp_path/'source/private-journal.jsonl').read_text().splitlines()]
+    decisions = next(row['data']['decisions'] for row in journal if row['event'] == 'reviews_frozen')
+    assert any('reviewed' in d.get('review_statuses', []) for d in decisions.values())
+
+
+@pytest.mark.parametrize('failure', ['exhausted', 'binding'])
+def test_recovery_failure_preserves_main_usage_without_another_main(tmp_path, monkeypatch, failure):
+    result = _run_headless_subscription(tmp_path, monkeypatch, recovery=True,
+        account_fault='exhausted' if failure == 'exhausted' else 'topup',
+        rejection='binding' if failure == 'binding' else None)
+    assert result['budget']['reserved_main_opportunities'] == 1
+    row = result['budget']['records'][0]
+    assert row['known_headless_main_usage']['total_tokens'] == 10
+    assert row['status'] == 'rejected_with_known_usage_preserved'
+    assert result['budget']['further_io_blocked'] is True
+
+
+@pytest.mark.parametrize('value', [None, 2.0, True, 3])
+def test_v4_recovery_configuration_rejected_before_native_io(tmp_path, value):
+    desc, _, _, _ = setup_subscription(tmp_path/'source')
+    config = load_record(desc).data()
+    config.update(schema=subscription.CONFIG_SCHEMA_V4, transport='headless',
+        account_read_recovery=None if value is None else {
+            'schema':'headless-account-read-recovery-v1', 'max_attempts':value})
+    desc = write(tmp_path/'invalid-recovery.json', config)
+    with pytest.raises(subscription.ContractError, match='recovery'):
+        subscription.run_private(desc)
+    assert not list(tmp_path.glob('**/native-reservation.json'))
 
 
 def test_closed_nullable_object_schema_accepts_object_or_null_only():

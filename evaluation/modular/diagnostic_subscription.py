@@ -6,6 +6,7 @@ private worker. The public ledger preserves incomplete accounting as unknown.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import partial
 import hashlib
 import json
 import os
@@ -26,6 +27,7 @@ from research_loop.modular.grok_acp_transport import (
 )
 from research_loop.modular.grok_headless_transport import (
     HeadlessResult, RECEIPT_SCHEMA as HEADLESS_RECEIPT_SCHEMA,
+    RECOVERY_RECEIPT_SCHEMA as HEADLESS_RECOVERY_RECEIPT_SCHEMA,
     run_headless_diagnostic, verify_headless_request_binding,
 )
 from research_loop.ontology import ContractError, canonical, digest
@@ -42,7 +44,18 @@ CONFIG_SCHEMA_V3 = 'diagnostic-subscription-worker-config-v3'
 CONFIG_SCHEMA_V4 = 'diagnostic-subscription-worker-config-v4'
 OBSERVATION_SCHEMA_V2 = 'four-train-diagnostic-subscription-observation-v2'
 OBSERVATION_SCHEMA_V3 = 'four-train-diagnostic-subscription-observation-v3'
+OBSERVATION_SCHEMA_V4 = 'four-train-diagnostic-subscription-observation-v4'
 LIMITS = {'reviewer1': 36, 'reviewer2': 36, 'arbitrator': 36, 'evaluator': 72}
+
+
+def checked_account_recovery(value):
+    if value is None:
+        return None
+    value = exact(value, ('schema', 'max_attempts'))
+    if (value['schema'] != 'headless-account-read-recovery-v1'
+            or type(value['max_attempts']) is not int or value['max_attempts'] != 2):
+        raise ContractError('headless account recovery differs')
+    return dict(value)
 
 
 def record(value):
@@ -192,10 +205,12 @@ class SubscriptionResult:
 
 class SubscriptionBudget:
     """Reservation remains spent on failure; unknown main blocks later I/O."""
-    def __init__(self, manifest, journal, *, capacity_port, capacity_key, source_guard):
+    def __init__(self, manifest, journal, *, capacity_port, capacity_key, source_guard,
+                 account_read_recovery=None):
         self.body, _, _ = validate_manifest(manifest)
         self.manifest, self.journal, self.plan = manifest, journal, capacity_port
         self.source_guard = source_guard
+        self.account_read_recovery = checked_account_recovery(account_read_recovery)
         self.calls = {r: 0 for r in ROLES}
         self.invalid = {r: 0 for r in ROLES}
         self.records = []
@@ -276,7 +291,11 @@ class SubscriptionBudget:
                     'binding': b, 'headless_binding': binding})
                 identity = binding.get('identity') if isinstance(binding, dict) else None
                 account = binding.get('account') if isinstance(binding, dict) else None
-                if (r.get('schema') != HEADLESS_RECEIPT_SCHEMA or r.get('accepted') is not True
+                expected_schema = (HEADLESS_RECOVERY_RECEIPT_SCHEMA if self.account_read_recovery
+                                   else HEADLESS_RECEIPT_SCHEMA)
+                if (r.get('schema') != expected_schema
+                        or r.get('account_read_recovery') != self.account_read_recovery
+                        or r.get('accepted') is not True
                         or r.get('faults') != [] or not isinstance(binding, dict) or binding.get('accepted') is not True
                         or not usage or usage['output_tokens'] > spec['main_output_cap']
                         or usage['total_tokens'] > spec['observed_main_token_cap']
@@ -353,6 +372,9 @@ class SubscriptionBudget:
             'unused_possible_title_opportunities': self.body['policy']['max_title_opportunities'] - sum(self.calls.values()),
             'role_opportunities': {r: {'design': LIMITS[r], 'reserved': self.calls[r],
                 'unused': LIMITS[r] - self.calls[r]} for r in ROLES},
+            'allocated_role_opportunities': {r: {
+                'cap': self.body['policy']['ports'][r]['max_calls'], 'reserved': self.calls[r],
+                'unused': self.body['policy']['ports'][r]['max_calls'] - self.calls[r]} for r in ROLES},
             'records': list(self.records), 'all_opportunity_tokens': None,
             'all_opportunity_cost_usd': None, 'settled_additional_charge_usd': None,
             'further_io_blocked': self.halted, 'halt_reason': self.halt_reason}
@@ -362,6 +384,11 @@ class SubscriptionPilot(DiagnosticPilot):
     manifest_validator = staticmethod(validate_manifest)
     budget_type = SubscriptionBudget
     observation_schema = OBSERVATION_SCHEMA
+
+    def __init__(self, *, account_read_recovery=None, **kwargs):
+        self.budget_type = partial(SubscriptionBudget,
+            account_read_recovery=checked_account_recovery(account_read_recovery))
+        super().__init__(**kwargs)
 
     def augment_report(self, report):
         return report | {'material_availability': {state: sum(s['status'] == state for s in self.slots.values())
@@ -419,7 +446,9 @@ class PrivateSubscriptionPorts:
         self.root = _plain(Path(root)); self.root.mkdir(parents=True, exist_ok=False)
         self.native_slots, self.frozen_files = native_slots, frozen_files
         self.executable, self.guard, self.fixture_factory, self.transport = executable, source_guard, fixture_factory, transport
-        self.account_read_recovery = account_read_recovery
+        self.account_read_recovery = checked_account_recovery(account_read_recovery)
+        if self.account_read_recovery is not None and transport != 'headless':
+            raise ContractError('account recovery requires headless transport')
         self.pending = {}; self.used = set(); self.halted = False
 
     def plan(self, role, request):
@@ -488,6 +517,8 @@ class PrivateSubscriptionPorts:
                     raise ContractError('headless result type differs')
                 slot = self.native_slots[entry['opportunity_id']]
                 context = slot | {'executable': self.executable, 'reasoning_effort': 'low'}
+                if self.account_read_recovery is not None:
+                    context['account_read_recovery'] = self.account_read_recovery
                 output = result.response
                 binding = None
                 try:
@@ -495,7 +526,8 @@ class PrivateSubscriptionPorts:
                         'private_request': private_request,
                         'prompt_sha256': entry['prompt_sha256'], 'schema_digest': entry['schema_digest'],
                         'input_bytes': entry['input_bytes']}, directory,
-                        spec | {'native_context': context, 'reasoning_effort': 'low'}, call_files)
+                        spec | {'native_context': context, 'reasoning_effort': 'low',
+                                'account_read_recovery': self.account_read_recovery}, call_files)
                     if output is not None and role != 'evaluator':
                         target(output.data(), request.data()['benchmark'])
                         output = self.authorities[role].issue(role, request.content_hash, output.data())
@@ -537,13 +569,16 @@ def load_private(config_descriptor):
     raw = load_record(config_descriptor).data()
     keys = ('schema', 'manifest', 'materials', 'key_files', 'reference_store', 'input_files',
         'journal_path', 'request_inventory', 'native_deployment')
-    c = exact(raw, keys + (('transport','account_read_recovery') if raw.get('schema') == CONFIG_SCHEMA_V4 else (('transport',) if raw.get('schema') == CONFIG_SCHEMA_V3 else ())) )
+    extra = (('transport', 'account_read_recovery') if raw.get('schema') == CONFIG_SCHEMA_V4
+             else ('transport',) if raw.get('schema') == CONFIG_SCHEMA_V3 else ())
+    c = exact(raw, keys + extra)
     if c['schema'] not in (CONFIG_SCHEMA, CONFIG_SCHEMA_V2, CONFIG_SCHEMA_V3, CONFIG_SCHEMA_V4):
         raise ContractError('subscription worker schema differs')
     if c['schema'] in (CONFIG_SCHEMA_V3, CONFIG_SCHEMA_V4) and c['transport'] != 'headless':
         raise ContractError('headless subscription transport differs')
-    if c['schema'] == CONFIG_SCHEMA_V4 and c['account_read_recovery'] != {'schema':'headless-account-read-recovery-v1','max_attempts':2}:
-        raise ContractError('headless account recovery differs')
+    if c['schema'] == CONFIG_SCHEMA_V4:
+        if checked_account_recovery(c['account_read_recovery']) is None:
+            raise ContractError('headless account recovery is required')
     manifest = load_record(c['manifest']); b, _, _ = validate_manifest(manifest)
     if set(c['input_files']) != set(b['input_pins']):
         raise ContractError('subscription source inventory differs')
@@ -607,7 +642,8 @@ def run_private(config_descriptor, *, fixture_factory=None):
             raise ContractError('headless subscription deployment differs')
         if c['schema'] == CONFIG_SCHEMA_V4:
             exact(deployment, ('schema','executable','frozen_files','slots','account_read_recovery'))
-            if deployment['schema'] != 'frozen-native-subscription-headless-deployment-v2' or deployment['account_read_recovery'] != c['account_read_recovery']:
+            if (deployment['schema'] != 'frozen-native-subscription-headless-deployment-v2'
+                    or checked_account_recovery(deployment['account_read_recovery']) != c['account_read_recovery']):
                 raise ContractError('headless recovery deployment differs')
         else:
             exact(deployment, ('schema', 'executable', 'frozen_files', 'slots', *(['native'] if versioned else [])))
@@ -666,7 +702,8 @@ def run_private(config_descriptor, *, fixture_factory=None):
         account_read_recovery=c.get('account_read_recovery'))
     pilot = SubscriptionPilot(manifest=manifest, resolver=resolver, materials=materials,
         keys={r: a.key for r, a in authorities.items()}, authority=authorities['diagnostic'],
-        journal_path=Path(c['journal_path']), source_guard=full_guard, **ports.kwargs())
+        journal_path=Path(c['journal_path']), source_guard=full_guard,
+        account_read_recovery=c.get('account_read_recovery'), **ports.kwargs())
     if request_inventory(manifest, pilot.materials, ports.renderer) != inventory:
         raise ContractError('all private request mappings must match the frozen inventory')
     result = pilot.run()
@@ -684,8 +721,12 @@ def run_private(config_descriptor, *, fixture_factory=None):
         report.update(schema=OBSERVATION_SCHEMA_V2, native_deployment_digest=native_descriptor.digest,
             native_deployment_descriptor=dict(c['native_deployment']), worker_config_descriptor=dict(config_descriptor))
     elif headless:
-        report.update(schema=OBSERVATION_SCHEMA_V3, headless_transport='headless',
+        report.update(schema=OBSERVATION_SCHEMA_V4 if c['schema'] == CONFIG_SCHEMA_V4 else OBSERVATION_SCHEMA_V3,
+            headless_transport='headless',
             worker_config_descriptor=dict(config_descriptor))
+        if c['schema'] == CONFIG_SCHEMA_V4:
+            report.update(account_read_recovery=dict(c['account_read_recovery']),
+                native_deployment_descriptor=dict(c['native_deployment']))
     result = authorities['diagnostic'].issue('diagnostic', manifest.content_hash, report)
     pilot.journal.append('subscription_result_finalized', {'receipt_digest': result.content_hash})
     return result
