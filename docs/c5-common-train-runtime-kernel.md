@@ -45,3 +45,6 @@ replay, including component identities and all false authority flags. The first
 bounded integration exercises the checkpoint path and rejects incomplete formal
 barriers; a successful full-barrier target path awaits the full-grid controller
 checkpoint and is not claimed as tested here.
+
+Barrier replay also reconstructs the entire header from its actual plan and
+original build records, including component digests and false authority flags.

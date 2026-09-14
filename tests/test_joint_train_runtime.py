@@ -122,6 +122,16 @@ def test_actual_history_target_pipeline_with_full_catalogue(tmp_path,monkeypatch
             with pytest.raises(ContractError,match='cross-binding'):runner.verify(forged)
         finally:
             runner.stages[0]=history;path.write_bytes(original)
+    from research_loop.modular.joint_train_runtime import _barrier_record
+    partial=_barrier_record(plan,(history,));barrier_path=runner.root/'common-history-barrier.json'
+    barrier_path.write_bytes(partial.encoded.encode())
+    incomplete=JointTrainBarrier(partial,runner,(history,))
+    with pytest.raises(ContractError,match='complete original history'):incomplete.verify()
+    for key,value in {'schema':'other','runtime_plan_digest':'0'*64,'protocol_digest':'0'*64,
+            'component_digests':{},'original_experiments_completed':True,'score_eligible':True}.items():
+        changed=R({**partial.data(),key:value});barrier_path.write_bytes(changed.encoded.encode())
+        with pytest.raises(ContractError,match='header.*cross-binding'):replace(incomplete,record=changed).verify()
+    barrier_path.write_bytes(partial.encoded.encode())
     with pytest.raises(ContractError):
         runner.execute(recipe_id=recipe['id'],stage='target',target_digest=plan.packets[1].task.content_hash,
             build=history,barrier=JointTrainBarrier(R({'schema':'invented'}),runner,(history,)))

@@ -323,6 +323,13 @@ class JointTrainStageExecutor:
             provider_scope_id=b['scope_id'],require_provider_eligible=True)
 
 
+def _barrier_record(plan, builds):
+    return R({'schema':'c5-common-history-barrier-v1','runtime_plan_digest':plan.record.content_hash,
+        'protocol_digest':plan.protocol.digest,'build_receipts':{s.record.data()['build_id']:s.record.content_hash for s in builds},
+        'component_digests':{k:JointComponentVersion(R(v)).digest for k,v in plan.protocol.record.data()['component_templates'].items()},
+        'original_experiments_completed':False,'score_eligible':False})
+
+
 @dataclass(frozen=True)
 class JointTrainBarrier:
     record: FrozenRecord
@@ -338,17 +345,18 @@ class JointTrainBarrier:
                 or {s.record.data()['build_id'] for s in executor.stages}!={history_build_id(plan.protocol,r) for r in plan.builds}):
             raise ContractError('complete canonical history grid required before common target panel')
         for stage in executor.stages: executor.verify(stage)
-        record=R({'schema':'c5-common-history-barrier-v1','runtime_plan_digest':plan.record.content_hash,
-            'protocol_digest':plan.protocol.digest,'build_receipts':{s.record.data()['build_id']:s.record.content_hash for s in executor.stages},
-            'component_digests':{k:JointComponentVersion(R(v)).digest for k,v in plan.protocol.record.data()['component_templates'].items()},
-            'original_experiments_completed':False,'score_eligible':False})
+        record=_barrier_record(plan,executor.stages)
         _exclusive(executor.root/'common-history-barrier.json',record)
         return cls(record,executor,tuple(executor.stages))
 
     def verify(self):
-        if type(self) is not JointTrainBarrier or type(self.executor) is not JointTrainStageExecutor:
+        if (type(self) is not JointTrainBarrier or type(self.executor) is not JointTrainStageExecutor
+                or type(self.record) is not FrozenRecord or type(self.builds) is not tuple
+                or any(type(s) is not JointTrainStage for s in self.builds)):
             raise ContractError('exact original common history barrier required')
         plan=self.executor.plan
+        if self.record!=_barrier_record(plan,self.builds):
+            raise ContractError('common barrier header differs from complete original cross-binding')
         if (self.executor.poisoned or self.executor.session.terminal()
                 or _read_record(self.executor.root/'common-history-barrier.json')!=self.record
                 or len(self.builds)!=len(plan.builds)
