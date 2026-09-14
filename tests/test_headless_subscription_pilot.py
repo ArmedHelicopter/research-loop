@@ -48,6 +48,13 @@ def _run_headless_subscription(tmp_path, monkeypatch, rejection=None):
         def reject_binding(*args, **kwargs):
             raise subscription.ContractError('synthetic independent binding mismatch')
         monkeypatch.setattr(subscription, 'verify_headless_request_binding', reject_binding)
+    elif rejection == 'private_request':
+        original_binding = subscription.verify_headless_request_binding
+        def mutate_private_request(result, entry, directory, spec, frozen_files):
+            path = directory / 'headless-request.private.json'
+            path.write_bytes(path.read_bytes() + b' ')
+            return original_binding(result, entry, directory, spec, frozen_files)
+        monkeypatch.setattr(subscription, 'verify_headless_request_binding', mutate_private_request)
     elif rejection == 'target':
         def reject_target(*args, **kwargs):
             raise subscription.ContractError('synthetic review semantic rejection')
@@ -59,11 +66,21 @@ def test_headless_subscription_ports_use_actual_producer_and_preserve_failure_de
     result = _run_headless_subscription(tmp_path, monkeypatch)
     assert result['schema'] == subscription.OBSERVATION_SCHEMA_V3
     assert result['budget']['reserved_main_opportunities'] >= 1
-    assert result['budget']['records'][0]['known_headless_main_usage'] is None
-    assert result['budget']['records'][0]['title_usage'] is None
+    record = result['budget']['records'][0]
+    assert record['known_headless_main_usage']['total_tokens'] == 10
+    assert record['native_accepted'] is True and record['main_binding_verified'] is True
+    assert record['status'] == 'known_headless_main_expected_unknown_title'
+    assert record['title_usage'] is None
+    journal = [json.loads(line) for line in (tmp_path / 'source' / 'private-journal.jsonl').read_text().splitlines()]
+    decisions = next(row['data']['decisions'] for row in journal if row['event'] == 'reviews_frozen')
+    assert any('reviewed' in decision.get('review_statuses', []) for decision in decisions.values())
+    receipt_path = next((tmp_path / 'source' / 'private-journal.jsonl.headless').glob('*/native/observer-receipt.json'))
+    receipt = json.loads(receipt_path.read_text())
+    assert receipt['frozen_files'][str(tmp_path / 'headless-config.json')] == subscription.sha(tmp_path / 'headless-config.json')
+    assert receipt['frozen_files'][str(tmp_path / 'headless-deployment.json')] == subscription.sha(tmp_path / 'headless-deployment.json')
 
 
-@pytest.mark.parametrize('rejection', ('binding', 'target'))
+@pytest.mark.parametrize('rejection', ('binding', 'private_request', 'target'))
 def test_headless_rejection_preserves_observed_usage_and_stops(tmp_path, monkeypatch, rejection):
     result = _run_headless_subscription(tmp_path, monkeypatch, rejection=rejection)
     budget = result['budget']
@@ -71,3 +88,17 @@ def test_headless_rejection_preserves_observed_usage_and_stops(tmp_path, monkeyp
     assert budget['records'][0]['known_headless_main_usage']['total_tokens'] == 10
     assert budget['records'][0]['status'] == 'rejected_with_known_usage_preserved'
     assert budget['further_io_blocked'] is True
+
+
+def test_closed_nullable_object_schema_accepts_object_or_null_only():
+    from research_loop.modular.model_port import _validate_schema
+    schema = {'type': ['object', 'null'], 'properties': {'value': {'type': 'number'}},
+              'required': ['value'], 'additionalProperties': False}
+    _validate_schema(schema, {'value': 0.0})
+    _validate_schema(schema, None)
+    with pytest.raises(subscription.ContractError):
+        _validate_schema(schema, {'value': 'wrong'})
+    with pytest.raises(subscription.ContractError):
+        _validate_schema(schema | {'additionalProperties': True}, None)
+    with pytest.raises(subscription.ContractError):
+        _validate_schema(schema | {'enum': [{'value': 0.0}]}, None)

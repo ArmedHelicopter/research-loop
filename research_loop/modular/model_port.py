@@ -371,10 +371,23 @@ def _validate_schema(schema: Any, value: Any) -> None:
         if kind != ["string", "null"] or set(schema) != {"type"}:
             if kind != ["object", "null"]:
                 raise ContractError("only closed nullable string or object schemas are supported")
-            if value is None:
-                return
             narrowed = dict(schema)
             narrowed["type"] = "object"
+            if set(narrowed) - {"type", "properties", "required", "additionalProperties", "enum"}:
+                raise ContractError("unsupported nullable object schema")
+            properties, required = narrowed.get("properties", {}), narrowed.get("required", [])
+            if (not isinstance(properties, Mapping) or not isinstance(required, list)
+                    or any(not isinstance(key, str) for key in properties)
+                    or any(not isinstance(key, str) for key in required)
+                    or not set(required) <= set(properties)
+                    or narrowed.get("additionalProperties", False) is not False):
+                raise ContractError("invalid closed nullable object schema")
+            if "enum" in narrowed and not isinstance(narrowed["enum"], list):
+                raise ContractError("invalid nullable object enum")
+            if value is None:
+                if "enum" in narrowed and None not in narrowed["enum"]:
+                    raise ContractError("model output violates enum schema")
+                return
             _validate_schema(narrowed, value)
             return
         if value is not None and not isinstance(value, str):

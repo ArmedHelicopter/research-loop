@@ -248,6 +248,8 @@ class SubscriptionBudget:
             result = port(request)
             if not isinstance(result, SubscriptionResult) or result.binding != bound:
                 raise ContractError('native provider binding differs')
+            if result.transport not in ('acp', 'headless'):
+                raise ContractError('native provider transport differs')
             r = result.native.data()
             if result.transport == 'headless':
                 binding = result.headless_binding.data() if isinstance(result.headless_binding, FrozenRecord) else None
@@ -265,8 +267,10 @@ class SubscriptionBudget:
                     main_binding_verified=isinstance(binding, dict) and binding.get('accepted') is True,
                     main_dispatch_state='possibly_dispatched' if r.get('prompt_process_launched') is True
                         else 'not_dispatched' if r.get('prompt_process_launched') is False else 'unknown',
-                    native_prompt_reservations=1 if r.get('prompt_process_launched') is True else 0,
-                    title_opportunity_may_have_occurred=None, reported_main_cost_usd=None)
+                    native_prompt_reservations=1 if r.get('prompt_process_launched') is True
+                        else 0 if r.get('prompt_process_launched') is False else None,
+                    title_opportunity_may_have_occurred=None,
+                    reported_main_cost_usd=inspection.get('server_reported_usd') if isinstance(inspection, dict) else None)
                 self.journal.append('subscription_headless_receipt', {'role': role, 'receipt': r,
                     'binding': b, 'headless_binding': binding})
                 identity = binding.get('identity') if isinstance(binding, dict) else None
@@ -608,7 +612,7 @@ def run_private(config_descriptor, *, fixture_factory=None):
         elif not Path(executable).is_absolute() or sha(executable) != EXECUTABLE_SHA256:
             raise ContractError('native executable differs')
         frozen = dict(deployment['frozen_files']); slots = deployment['slots']
-        if native_descriptor is not None:
+        if native_descriptor is not None or headless:
             frozen[c['native_deployment']['path']] = c['native_deployment']['sha256']
             frozen[config_descriptor['path']] = config_descriptor['sha256']
         if not isinstance(frozen, dict) or any(not Path(p).is_absolute() for p in frozen):
