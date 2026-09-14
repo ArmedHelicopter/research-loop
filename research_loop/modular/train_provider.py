@@ -30,6 +30,17 @@ def _exclusive(path, raw):
     with path.open('xb') as stream: stream.write(raw)
 
 
+def _original_files(root, grok):
+    # Do not traverse the native login home or hash opaque login/body files.
+    names=(('request.private.json','prompt.private.txt','schema.private.json',
+        'response.private.json','observer-receipt.private.json','reservation.private.json',
+        'native-home/config.toml','native-private/requests.private.jsonl',
+        'native-private/stdout.private.jsonl','native-private/stderr.private.txt',
+        'native-private/observer-receipt.json') if grok else
+        ('prompt.txt','schema.json','output.json','events.jsonl','stderr.txt'))
+    return {str(root/name):_sha((root/name).read_bytes()) for name in names if (root/name).is_file()}
+
+
 def _native_config(backend):
     config=_read(backend.ledger_path)['config']
     _require(config==backend.ledger['config'], 'native configuration memory/disk drift')
@@ -109,8 +120,10 @@ def _verify_call(backend, row, ledger):
     request_hash=row['request_sha256' if grok else 'request_hash']
     _require(request.content_hash==request_hash and request.data().get('slot')==slot, 'original request/slot drift')
     response_hash=row.get('response_sha256' if grok else 'output_hash');usage=None;usage_bound=False
-    originals={str(p):_sha(p.read_bytes()) for p in root.rglob('*') if p.is_file() and p.name!='auth.json'}
+    originals=_original_files(root,grok)
     if grok:
+        _require(row['native_private_path']==str(root/'native-private')
+            and row['reservation_path']==str(root/'reservation.private.json'), 'native original path drift')
         _require((root/'request.private.json').read_bytes()==request.encoded.encode(), 'native request bytes drift')
         receipt_path=root/'observer-receipt.private.json'
         if receipt_path.exists():
@@ -192,7 +205,7 @@ def _failed_observation(backend,row,error):
     """
     grok=type(backend) is GrokTrainModelPort
     root=(backend.calls_root if grok else backend.call_root)/f'{row["id"]:04d}-{row["slot"]}'
-    originals={str(p):_sha(p.read_bytes()) for p in root.rglob('*') if p.is_file() and p.name!='auth.json'}
+    originals=_original_files(root,grok)
     usage=None
     try:
         if grok:
@@ -238,10 +251,10 @@ class _TrainProvider:
         self.state['terminal_fault']=True;self.state['reason']=reason;_write(self.state_path,self.state)
         self.backend.ledger['usage_incomplete']=True;_write(self.backend.ledger_path,self.backend.ledger)
 
-    def configuration(self):
+    def configuration(self) -> FrozenRecord:
         self.inspect();return _record(self.state['configuration'])
 
-    def inspect(self):
+    def inspect(self) -> tuple[FrozenRecord, ...]:
         """Read-only successful/failed evidence audit; never promotes failed output."""
         try:
             _require(_read(self.state_path)==self.state, 'adapter state bytes changed')
@@ -264,14 +277,14 @@ class _TrainProvider:
             self._poison('provenance_fault')
             raise ContractError('provider provenance fault; dispatch closed') from exc
 
-    def terminal(self):
+    def terminal(self) -> bool:
         self.inspect();return bool(self.state['terminal_fault'] or self.backend.ledger['usage_incomplete'])
 
-    def calls_since(self,cursor=0):
+    def calls_since(self,cursor: int=0) -> tuple[FrozenRecord, ...]:
         _require(type(cursor) is int and 0<=cursor<=len(self.state['calls']), 'invalid provider cursor')
         return self.inspect()[cursor:]
 
-    def usage(self):
+    def usage(self) -> FrozenRecord:
         calls=self.inspect();grok=type(self) is GrokTrainProvider
         rows=[c.data() for c in calls];known=sum(c['known_tokens'] or 0 for c in rows)
         return _record({'schema':'public-train-provider-usage-v1','main_opportunities':len(rows),
@@ -282,7 +295,7 @@ class _TrainProvider:
             'all_opportunity_tokens':None,'settled_additional_charge_usd':None,
             'terminal_fault':bool(self.state['terminal_fault'] or self.backend.ledger['usage_incomplete'])})
 
-    def call(self, request):
+    def call(self, request: FrozenRecord) -> FrozenRecord:
         _require(type(request) is FrozenRecord, 'frozen public request required')
         self.inspect();_require(not self.terminal(), 'provider is terminal')
         _require(len(self.state['calls'])<self.backend.max_calls, 'provider opportunity allocation exhausted')
@@ -315,7 +328,7 @@ class _TrainProvider:
 
     __call__=call
 
-    def seal(self,path,*,prefix=None):
+    def seal(self,path: Path,*,prefix: int | None=None) -> FrozenTrainProviderLedgerV2:
         self.inspect();count=len(self.state['calls']) if prefix is None else prefix
         _require(type(count) is int and 0<=count<=len(self.state['calls']), 'invalid seal prefix')
         body={'schema':'frozen-train-provider-ledger-v2','configuration':self.state['configuration'],
@@ -336,7 +349,7 @@ class GrokTrainProvider(_TrainProvider):
 TrainProvider: TypeAlias = CodexTrainProvider | GrokTrainProvider
 
 
-def wrap_train_provider(backend):
+def wrap_train_provider(backend: CodexModelPort | GrokTrainModelPort) -> TrainProvider:
     if type(backend) is CodexModelPort:return CodexTrainProvider(backend)
     if type(backend) is GrokTrainModelPort:return GrokTrainProvider(backend)
     raise ContractError('unadmitted provider type; callable assertions are not evidence')
@@ -348,7 +361,13 @@ class FrozenTrainProviderLedgerV2:
     record: FrozenRecord
     provider: TrainProvider
 
-    def verify_originals(self):
+    def verify_originals(self) -> FrozenRecord:
+        try:return self._verify_originals()
+        except Exception as exc:
+            if type(self.provider) in (CodexTrainProvider,GrokTrainProvider):self.provider._poison('sealed_provenance_fault')
+            raise ContractError('sealed provider provenance fault; dispatch closed') from exc
+
+    def _verify_originals(self):
         _require(type(self) is FrozenTrainProviderLedgerV2 and type(self.provider) in (CodexTrainProvider,GrokTrainProvider), 'typed provider seal required')
         _require(self.path.read_bytes()==self.record.encoded.encode('utf-8'), 'sealed provider record drift')
         b=self.record.data();self.provider.inspect()
@@ -361,7 +380,13 @@ class FrozenTrainProviderLedgerV2:
             'score_eligible':success and not b['terminal_at_seal'] and not self.provider.terminal(),
             'later_calls':len(self.provider.state['calls'])-b['prefix_length']})
 
-    def bind_events(self,events,*,require_eligible=True):
+    def bind_events(self,events,*,require_eligible: bool=True) -> tuple[int, ...]:
+        try:return self._bind_events(events,require_eligible=require_eligible)
+        except Exception as exc:
+            if type(self.provider) in (CodexTrainProvider,GrokTrainProvider):self.provider._poison('runtime_binding_fault')
+            raise ContractError('runtime provider binding fault; dispatch closed') from exc
+
+    def _bind_events(self,events,*,require_eligible):
         verified=self.verify_originals().data()
         _require(not require_eligible or verified['score_eligible'], 'terminal or failed evidence is not score-eligible')
         calls=self.record.data()['calls'];used=[];pending=None

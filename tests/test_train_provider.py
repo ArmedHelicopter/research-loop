@@ -153,6 +153,8 @@ def test_runtime_binding_rejects_unmatched_or_changed_responses(tmp_path,monkeyp
     elif fault=='missing':trace.pop()
     else:trace[-1]['data']['response']={'ok':False}
     with pytest.raises(ContractError):seal.bind_events(trace)
+    with pytest.raises(ContractError):provider(REQUEST)
+    assert provider.terminal()
     assert len(logs)==1
 
 
@@ -189,3 +191,25 @@ def test_pre_dispatch_failure_has_zero_new_opportunities_and_blocks_retry(tmp_pa
     assert not provider.seal(tmp_path/'empty.json').verify_originals().data()['score_eligible']
     with pytest.raises(ContractError):provider(REQUEST)
     assert not logs
+
+
+def test_seal_bytes_are_original_evidence_and_close_future_dispatch(tmp_path,monkeypatch):
+    backend,logs=native(tmp_path,monkeypatch);provider=wrap_train_provider(backend)
+    provider(REQUEST);seal=provider.seal(tmp_path/'prefix.json')
+    seal.path.write_bytes(seal.path.read_bytes()+b' ')
+    with pytest.raises(ContractError):seal.verify_originals()
+    with pytest.raises(ContractError):provider(REQUEST)
+    assert provider.terminal() and len(logs)==1
+
+
+def test_original_audit_never_opens_login_file_bodies(tmp_path,monkeypatch):
+    backend,logs=native(tmp_path,monkeypatch);provider=wrap_train_provider(backend)
+    original=Path.read_bytes
+    def guarded(path):
+        assert path.name not in ('auth.json','login-backup.json'), 'opaque login read forbidden'
+        return original(path)
+    monkeypatch.setattr(Path,'read_bytes',guarded)
+    provider(REQUEST)
+    (backend.calls_root/'0001-m4_plan/native-home/login-backup.json').write_text('{}')
+    assert provider.seal(tmp_path/'prefix.json').verify_originals().data()['score_eligible']
+    assert len(logs)==1
