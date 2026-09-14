@@ -29,7 +29,8 @@ _IGNORED = {_CATALOGUE, _CATALOGUE + ".seal.json", _END, _CLOSURE, _MANIFEST}
 
 def _safe_root(root: Path):
     root = Path(root)
-    if root.is_symlink() or any(parent.is_symlink() for parent in (root, *root.parents)):
+    if any(parent.is_symlink() or getattr(parent, "is_junction", lambda: False)()
+           for parent in (root, *root.parents)):
         raise ContractError("scenario sidecar root or ancestor cannot be linked")
     return root
 
@@ -58,6 +59,7 @@ def _spec(kind, payload, parents, *, status="produced", module="M9", source=None
 
 
 def _read(path: Path) -> FrozenRecord:
+    _safe_root(path)
     if path.is_symlink() or not path.is_file():
         raise ContractError("original scenario artifact output is missing")
     try:
@@ -67,7 +69,7 @@ def _read(path: Path) -> FrozenRecord:
 
 
 def _snapshot(root: Path, name: str) -> dict:
-    path = root / name
+    path = _safe_root(root / name)
     if path.is_symlink() or not path.is_file():
         raise ContractError("original scenario artifact output is missing")
     raw = path.read_bytes()
@@ -96,12 +98,20 @@ def _files(root: Path) -> dict:
     root = _safe_root(root)
     if not root.is_dir():
         raise ContractError("original scenario directory required")
+    # Validate all paths before opening any retained output. In particular,
+    # Windows directory junctions must be rejected before descending into them.
+    pending, paths = [root], []
+    while pending:
+        for path in pending.pop().iterdir():
+            _safe_root(path)
+            if path.is_dir():
+                pending.append(path)
+            elif path.is_file():
+                paths.append(path)
+            else:
+                raise ContractError("scenario output must be a regular file or directory")
     files = {}
-    for path in sorted(root.rglob("*")):
-        if path.is_symlink():
-            raise ContractError("scenario output cannot be a symlink")
-        if not path.is_file():
-            continue
+    for path in sorted(paths):
         name = path.relative_to(root).as_posix()
         if name in _IGNORED or name.startswith(_BLOBS + "/"):
             continue
@@ -210,6 +220,7 @@ class ScenarioArtifactWriter:
 
 def _open(root, task, inputs, experiment_id, variant):
     root = _safe_root(root); path = root / _CATALOGUE
+    _files(root)
     seal_path = path.with_name(path.name + ".seal.json")
     if path.is_symlink() or not path.is_file() or seal_path.is_symlink() or not seal_path.is_file():
         raise ContractError("original sealed scenario catalogue is missing")

@@ -55,11 +55,13 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
                              callback: Callable[[FrozenRecord], FrozenRecord] | None = None) -> ImprovementScenarioResult:
     injection = improvement_injection(experiment_id, variant)
     _controls(task, frozen_controls)
+    task.identity.require_train()
+    from research_loop.modular.scenario_artifacts import ScenarioArtifactWriter, _safe_root
+    _safe_root(sidecar)
     sidecar.mkdir(parents=True, exist_ok=False)
     if experiment_id == "Q6.3":
         from research_loop.modular.fixture_builder_artifacts import run_q63_fixture
         return run_q63_fixture(task=task,frozen_controls=frozen_controls,sidecar=sidecar,variant=variant,callback=callback)
-    from research_loop.modular.scenario_artifacts import ScenarioArtifactWriter
     writer = ScenarioArtifactWriter(sidecar, task=task, controls=frozen_controls,
                                     injection=injection, experiment_id=experiment_id, variant=variant)
     seen: list[FrozenRecord] = []
@@ -76,7 +78,7 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
             writer.callback_failure(exc)
             raise
         writer.callback_return(result)
-        if not isinstance(result, FrozenRecord):
+        if type(result) is not FrozenRecord:
             raise ContractError("improvement callback must return FrozenRecord")
         outputs.append(result)
         return result
@@ -209,6 +211,8 @@ def run_improvement_scenario(experiment_id: str, variant: str, *, task: PublicTa
           "callback_count": len(seen), "detail": detail,
           "limitation": "offline engineering fixtures retain package, receipt, cost and deployment state but do not measure train gains, validation quality, scientific validity, production host isolation, or cross-process security"}))
       writer.close(result=result)
+      verify_scenario_artifacts(result, task=task, frozen_controls=frozen_controls,
+                                sidecar=sidecar, experiment_id=experiment_id, variant=variant)
       return result
     except Exception as exc:
       if not writer.ended:

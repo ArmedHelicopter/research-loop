@@ -2,6 +2,7 @@
 from pathlib import Path
 from dataclasses import replace
 import hashlib
+import os
 import sqlite3
 
 import pytest
@@ -13,6 +14,111 @@ from research_loop.modular.scenarios_improvement import (
 )
 from research_loop.ontology import ContractError
 from test_modular_improvement_scenarios import controls, task_for
+
+
+def _directory_link(target, link):
+    if os.name == "nt":
+        import _winapi
+        _winapi.CreateJunction(str(target), str(link))
+    else:
+        link.symlink_to(target, target_is_directory=True)
+
+
+def _remove_directory_link(link):
+    # Remove only the link itself; never recursively traverse its target.
+    if os.name == "nt":
+        assert link.is_junction()
+        link.rmdir()
+    else:
+        assert link.is_symlink()
+        link.unlink()
+
+
+def test_linked_parent_is_rejected_before_scenario_directory_creation(tmp_path):
+    outside = tmp_path / "outside"; outside.mkdir()
+    link = tmp_path / "alias"; _directory_link(outside, link)
+    calls = []
+    try:
+        with pytest.raises(ContractError, match="linked"):
+            _run(link / "attempt", "Q6.1", "change_rule", lambda request: calls.append(request))
+        assert not list(outside.iterdir()) and not calls
+    finally:
+        _remove_directory_link(link)
+
+
+@pytest.mark.parametrize("nested", [False, True])
+def test_reader_rejects_link_before_opening_retained_outputs(tmp_path, monkeypatch, nested):
+    result, args = _run(tmp_path / "run", "Q6.6", "promote")
+    root = args["sidecar"]
+    outside = tmp_path / "outside"; outside.mkdir()
+    (outside / "not-a-scenario.txt").write_bytes(b"outside retained scope")
+    parent = root / "extra" if nested else root
+    parent.mkdir(exist_ok=True)
+    link = parent / "alias"; _directory_link(outside, link)
+    original_bytes, original_text = Path.read_bytes, Path.read_text
+    def deny_artifact_read(path, original, *args, **kwargs):
+        if path.is_relative_to(root) or path.is_relative_to(outside):
+            raise AssertionError("reader opened output before checking every path")
+        return original(path, *args, **kwargs)
+    monkeypatch.setattr(Path, "read_bytes", lambda p: deny_artifact_read(p, original_bytes))
+    monkeypatch.setattr(Path, "read_text", lambda p, *a, **k: deny_artifact_read(p, original_text, *a, **k))
+    try:
+        with pytest.raises(ContractError, match="linked"):
+            verify_scenario_artifacts(result, **args)
+    finally:
+        _remove_directory_link(link)
+
+
+def test_callback_link_preserves_original_error_and_incomplete_prefix(tmp_path):
+    outside = tmp_path / "outside"; outside.mkdir()
+    root = tmp_path / "run"; link = root / "alias"
+    error = RuntimeError("original callback failure")
+    def callback(_request):
+        _directory_link(outside, link)
+        raise error
+    try:
+        with pytest.raises(RuntimeError) as caught:
+            _run(root, "Q6.1", "change_rule", callback)
+        assert caught.value is error
+        assert "scenario artifact closure failure: ContractError" in error.__notes__
+        assert (root / "scenario-artifacts.jsonl").is_file()
+        assert not (root / "scenario-closure.json").exists()
+        assert not list(outside.iterdir())
+    finally:
+        _remove_directory_link(link)
+
+
+def test_actual_return_gate_requires_original_closure(tmp_path, monkeypatch):
+    from research_loop.modular.scenario_artifacts import ScenarioArtifactWriter
+    close = ScenarioArtifactWriter.close
+    def incomplete(writer, **kwargs):
+        close(writer, **kwargs)
+        (writer.root / "scenario-closure.json").unlink()
+    monkeypatch.setattr(ScenarioArtifactWriter, "close", incomplete)
+    with pytest.raises(ContractError, match="missing"):
+        _run(tmp_path / "run", "Q6.2", "fixed")
+    assert (tmp_path / "run" / "scenario-result.json").is_file()
+
+
+def test_validation_is_rejected_before_scenario_directory_creation(tmp_path):
+    task = task_for("blade")
+    from research_loop.modular.contracts import PublicTask
+    task = PublicTask.create(replace(task.identity, domain="validation"), task.payload.data())
+    with pytest.raises(ContractError, match="training"):
+        run_improvement_scenario("Q6.1", "change_rule", task=task, frozen_controls=controls(task), sidecar=tmp_path / "run")
+    assert not (tmp_path / "run").exists()
+
+
+def test_callback_subclass_is_rejected_consistently_at_producer_and_reader(tmp_path):
+    class DerivedRecord(FrozenRecord):
+        pass
+    root = tmp_path / "run"
+    with pytest.raises(ContractError, match="must return FrozenRecord"):
+        _run(root, "Q6.1", "change_rule", lambda _: DerivedRecord('{"reply":"typed subclass"}'))
+    task = task_for("blade")
+    report = inspect_scenario_artifact_failure(task=task, frozen_controls=controls(task), sidecar=root,
+                                              experiment_id="Q6.1", variant="change_rule")
+    assert report.data()["storage_integrity_verified"] and not report.data()["acceptance_eligible"]
 
 
 def _run(root: Path, experiment: str, variant: str, callback=None):
