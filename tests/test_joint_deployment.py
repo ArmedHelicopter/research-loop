@@ -152,6 +152,47 @@ def test_rollback_cannot_mix_old_state_or_restore_an_unaccepted_sibling(tmp_path
     runtime.close()
 
 
+@pytest.mark.parametrize('reconstruct_earlier_store', [False, True])
+def test_same_independent_acceptance_cannot_be_reenveloped_after_rollback(tmp_path, reconstruct_earlier_store):
+    base,target,roots=fixtures(tmp_path)
+    runtime=store(tmp_path/'joint.sqlite',base,roots)
+    first=approval(base,target)
+    runtime.activate(target,first)
+    runtime.rollback(rollback(target,base))
+    # A trusted service has produced a different envelope for the same original
+    # acceptance; envelope identity alone would permit it after rollback.
+    second=approval(base,target,selection_digest='f'*64)
+    assert second.content_hash != first.content_hash
+    if reconstruct_earlier_store:
+        runtime._db.execute('DROP TABLE consumed_acceptances')
+        runtime.close()
+        runtime=store(tmp_path/'joint.sqlite',base,roots)
+    with pytest.raises(ContractError,match='acceptance receipt was already consumed'):
+        runtime.activate(target,second)
+    assert runtime.active()==base
+    assert runtime._db.execute('SELECT count(*) FROM consumed_acceptances').fetchone()[0]==1
+    runtime.close()
+
+
+def test_failure_at_acceptance_consumption_rolls_back_active_pointer_and_both_receipts(tmp_path):
+    base,target,roots=fixtures(tmp_path)
+    class FailConsume(JointDeploymentStore):
+        failing=False
+        def _consume_acceptance(self, acceptance_digest, grant_digest):
+            super()._consume_acceptance(acceptance_digest,grant_digest)
+            if self.failing:raise OSError('synthetic failure at transaction tail')
+    runtime=store(tmp_path/'joint.sqlite',base,roots,FailConsume)
+    runtime.failing=True
+    grant=approval(base,target)
+    with pytest.raises(OSError,match='transaction tail'):runtime.activate(target,grant)
+    assert runtime.active()==base
+    assert runtime._db.execute('SELECT count(*) FROM used_grants').fetchone()[0]==0
+    assert runtime._db.execute('SELECT count(*) FROM consumed_acceptances').fetchone()[0]==0
+    runtime.failing=False
+    assert runtime.activate(target,grant)==target.acknowledgement()
+    runtime.close()
+
+
 def test_train_provenance_dependency_and_source_drift_are_enforced(tmp_path):
     base,target,roots=fixtures(tmp_path)
     body=target.record.data()

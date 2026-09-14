@@ -11,7 +11,10 @@ and used approval receipt in one SQLite transaction. Failure while staging any
 component leaves the previous bundle active and the grant unused. A competing
 writer must match the active parent. Rollback needs a separate signed grant and
 can restore only the exact stored parent, including all previous state views.
-Reopening the store does not forget consumed grants. P0 and baseline cannot be
+Reopening the store does not forget consumed grants or acceptance receipts.
+The original `acceptance_digest` is independently unique, so signing a different
+envelope for the same acceptance after rollback cannot grant a second use.
+Earlier stored grants rebuild that consumption registry when opened. P0 and baseline cannot be
 replaced by a joint candidate.
 
 Each task reads one immutable bundle and passes that bundle to its executor.

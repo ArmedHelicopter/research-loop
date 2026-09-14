@@ -161,8 +161,18 @@ class JointDeploymentStore:
                 module TEXT NOT NULL, record TEXT NOT NULL, PRIMARY KEY(bundle,module));
             CREATE TABLE IF NOT EXISTS active (id INTEGER PRIMARY KEY CHECK(id=1), digest TEXT NOT NULL REFERENCES bundles(digest));
             CREATE TABLE IF NOT EXISTS used_grants (digest TEXT PRIMARY KEY, record TEXT NOT NULL);
+            CREATE TABLE IF NOT EXISTS consumed_acceptances (digest TEXT PRIMARY KEY,
+                grant_digest TEXT NOT NULL UNIQUE REFERENCES used_grants(digest));
         ''')
         with self._transaction():
+            # Preserve one-use acceptance across reopening an earlier store.
+            # A different signed envelope must not reset its upstream receipt.
+            for grant_digest, encoded in self._db.execute('SELECT digest,record FROM used_grants').fetchall():
+                grant = FrozenRecord(encoded)
+                if grant.content_hash != grant_digest: raise ContractError('stored deployment grant drift')
+                if grant.data().get('body', {}).get('schema') == 'c5-joint-deployment-grant-v1':
+                    body = verify_signed(grant, self._acceptance_keys, schema='c5-joint-deployment-grant-v1')
+                    self._consume_acceptance(_hash(body['acceptance_digest'], 'acceptance receipt'), grant_digest)
             if self._db.execute('SELECT digest FROM active WHERE id=1').fetchone() is None:
                 initial.verify_sources(self._roots)
                 self._stage_bundle(initial)
@@ -219,6 +229,13 @@ class JointDeploymentStore:
             raise ContractError('joint grant was already consumed')
         return body
 
+    def _consume_acceptance(self, acceptance_digest, grant_digest):
+        prior = self._db.execute('SELECT grant_digest FROM consumed_acceptances WHERE digest=?', (acceptance_digest,)).fetchone()
+        if prior is not None:
+            if prior[0] != grant_digest: raise ContractError('independent acceptance receipt was already consumed')
+            return  # Idempotent reconstruction of a stored grant on reopen.
+        self._db.execute('INSERT INTO consumed_acceptances VALUES(?,?)', (acceptance_digest, grant_digest))
+
     def activate(self, bundle: JointDeploymentBundle, grant: FrozenRecord):
         if type(bundle) is not JointDeploymentBundle: raise ContractError('joint activation requires an exact bundle')
         with self._transaction():
@@ -228,6 +245,8 @@ class JointDeploymentStore:
             if set(b) != fields or b['stage'] != 'C5' or b['allocation_stage'] != 'V_final' or b['decision'] != 'approved':
                 raise ContractError('joint activation requires the independent C5 approval')
             for name in ('selection_digest','panel_digest','acceptance_digest'): _hash(b[name], name)
+            if self._db.execute('SELECT 1 FROM consumed_acceptances WHERE digest=?', (b['acceptance_digest'],)).fetchone():
+                raise ContractError('independent acceptance receipt was already consumed')
             active = self._read_active()
             if (b['target_bundle_digest'] != bundle.digest or b['expected_active_digest'] != active.digest
                     or bundle.parent_digest != active.digest):
@@ -242,6 +261,7 @@ class JointDeploymentStore:
             bundle.verify_sources(self._roots)
             self._db.execute('UPDATE active SET digest=? WHERE id=1', (bundle.digest,))
             self._db.execute('INSERT INTO used_grants VALUES(?,?)', (grant.content_hash, grant.encoded))
+            self._consume_acceptance(b['acceptance_digest'], grant.content_hash)
         return bundle.acknowledgement()
 
     def rollback(self, grant):
