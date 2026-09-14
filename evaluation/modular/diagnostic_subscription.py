@@ -24,6 +24,10 @@ from research_loop.modular.grok_acp_transport import (
     AcpResult, EXECUTABLE_SHA256, MODEL, DIAGNOSTIC_OPPORTUNITY_CONTRACT,
     diagnostic_config, known_usage, run_native_diagnostic,
 )
+from research_loop.modular.grok_headless_transport import (
+    HeadlessResult, RECEIPT_SCHEMA as HEADLESS_RECEIPT_SCHEMA,
+    run_headless_diagnostic, verify_headless_request_binding,
+)
 from research_loop.ontology import ContractError, canonical, digest
 
 import research_loop.modular.grok_native_deployment as native_deployment_module
@@ -34,7 +38,9 @@ SCHEMA = 'four-train-diagnostic-included-subscription-v1'
 OBSERVATION_SCHEMA = 'four-train-diagnostic-subscription-observation-v1'
 CONFIG_SCHEMA = 'diagnostic-subscription-worker-config-v1'
 CONFIG_SCHEMA_V2 = 'diagnostic-subscription-worker-config-v2'
+CONFIG_SCHEMA_V3 = 'diagnostic-subscription-worker-config-v3'
 OBSERVATION_SCHEMA_V2 = 'four-train-diagnostic-subscription-observation-v2'
+OBSERVATION_SCHEMA_V3 = 'four-train-diagnostic-subscription-observation-v3'
 LIMITS = {'reviewer1': 36, 'reviewer2': 36, 'arbitrator': 36, 'evaluator': 72}
 
 
@@ -48,11 +54,13 @@ def sha(path):
 
 def own_sources():
     import research_loop.modular.grok_acp_transport as acp
+    import research_loop.modular.grok_headless_transport as headless
     import evaluation.modular.diagnostic_private_ports as renderer
     import research_loop.modular.model_port as schemas
     import research_loop.modular.contracts as contracts
     import research_loop.ontology as ontology
     return {'subscription_code': Path(__file__), 'native_acp_code': Path(acp.__file__),
+            'native_headless_code': Path(headless.__file__),
             'native_deployment_code': Path(native_deployment_module.__file__),
             'private_renderer_code': Path(renderer.__file__), 'schema_validator_code': Path(schemas.__file__),
             'frozen_contracts_code': Path(contracts.__file__), 'ontology_code': Path(ontology.__file__)}
@@ -177,6 +185,8 @@ class SubscriptionResult:
     native: FrozenRecord
     binding: FrozenRecord
     deployment: FrozenNativeDeployment | None = None
+    transport: str = 'acp'
+    headless_binding: FrozenRecord | None = None
 
 
 class SubscriptionBudget:
@@ -195,6 +205,13 @@ class SubscriptionBudget:
     def included_snapshot(snapshot):
         return (isinstance(snapshot, dict) and snapshot.get('route') == 'grok_com_unified_subscription'
             and snapshot.get('auto_topup_rule_present') is False
+            and all(type(snapshot.get(k)) is int and snapshot[k] == 0
+                    for k in ('on_demand_cap', 'on_demand_used', 'prepaid_balance')))
+
+    @staticmethod
+    def headless_included_snapshot(snapshot):
+        return (isinstance(snapshot, dict) and snapshot.get('code_access') is True
+            and snapshot.get('unified_pool') is True and snapshot.get('auto_topup') is False
             and all(type(snapshot.get(k)) is int and snapshot[k] == 0
                     for k in ('on_demand_cap', 'on_demand_used', 'prepaid_balance')))
 
@@ -223,6 +240,7 @@ class SubscriptionBudget:
             'binding': b, 'main_opportunities': 1, 'possible_title_opportunities': 1})
         result = None
         row = {'role': role, 'binding': b, 'known_main_usage': None, 'known_response_usage': [],
+            'known_headless_main_usage': None,
             'title_usage': None, 'title_cost_usd': None, 'all_opportunity_tokens': None,
             'all_opportunity_cost_usd': None, 'settled_additional_charge_usd': None,
             'status': 'unknown_main', 'native_receipt_digest': None}
@@ -231,6 +249,47 @@ class SubscriptionBudget:
             if not isinstance(result, SubscriptionResult) or result.binding != bound:
                 raise ContractError('native provider binding differs')
             r = result.native.data()
+            if result.transport == 'headless':
+                binding = result.headless_binding.data() if isinstance(result.headless_binding, FrozenRecord) else None
+                inspection = r.get('stream_inspection') if isinstance(r, dict) else None
+                usage = inspection.get('usage') if isinstance(inspection, dict) else None
+                if not (isinstance(usage, dict) and all(type(usage.get(k)) is int and usage[k] >= 0
+                        for k in ('input_tokens', 'output_tokens', 'cached_read_tokens', 'cache_creation_tokens',
+                                  'reasoning_tokens', 'total_tokens'))
+                        and usage['reasoning_tokens'] <= usage['output_tokens']
+                        and usage['total_tokens'] == usage['input_tokens'] + usage['output_tokens']):
+                    usage = None
+                row.update(native_receipt_digest=result.native.content_hash,
+                    known_headless_main_usage=usage, native_accepted=r.get('accepted'), native_faults=r.get('faults'),
+                    main_binding_verified=isinstance(binding, dict) and binding.get('accepted') is True,
+                    main_dispatch_state='possibly_dispatched' if r.get('prompt_process_launched') is True
+                        else 'not_dispatched' if r.get('prompt_process_launched') is False else 'unknown',
+                    native_prompt_reservations=1 if r.get('prompt_process_launched') is True else 0,
+                    title_opportunity_may_have_occurred=None, reported_main_cost_usd=None)
+                self.journal.append('subscription_headless_receipt', {'role': role, 'receipt': r,
+                    'binding': b, 'headless_binding': binding})
+                identity = binding.get('identity') if isinstance(binding, dict) else None
+                account = binding.get('account') if isinstance(binding, dict) else None
+                if (r.get('schema') != HEADLESS_RECEIPT_SCHEMA or r.get('accepted') is not True
+                        or r.get('faults') != [] or not isinstance(binding, dict) or binding.get('accepted') is not True
+                        or not usage or usage['output_tokens'] > spec['main_output_cap']
+                        or usage['total_tokens'] > spec['observed_main_token_cap']
+                        or not isinstance(identity, dict) or identity.get('requested_model') != MODEL
+                        or identity.get('requested_reasoning_effort') != 'low'
+                        or binding.get('usage', {}).get('main_model_calls') != 1
+                        or binding.get('usage', {}).get('num_turns') != 1
+                        or not isinstance(account, dict)
+                        or not self.headless_included_snapshot(account.get('preflight'))
+                        or not self.headless_included_snapshot(account.get('postflight'))
+                        or not isinstance(result.output, FrozenRecord)):
+                    raise ContractError('headless main accounting or gate rejected')
+                if identity.get('session_id') in self.session_ids or identity.get('request_id') in self.prompt_ids:
+                    raise ContractError('headless identity replay')
+                self.session_ids.add(identity['session_id']); self.prompt_ids.add(identity['request_id'])
+                self.source_guard()
+                row['status'] = 'known_headless_main_expected_unknown_title'
+                self.records.append(row); self.journal.append('subscription_closed', row)
+                return result.output, 'received'
             row.update(native_receipt_digest=result.native.content_hash,
                 known_main_usage=known_usage(r.get('known_usage')),
                 known_response_usage=r.get('known_response_usage', []),
@@ -340,14 +399,20 @@ def verify_native_request_binding(result, entry, directory, spec, frozen_files, 
 
 class PrivateSubscriptionPorts:
     def __init__(self, *, manifest, resolver, authorities, inventory, native_slots,
-                 frozen_files, executable, root, source_guard, fixture_factory=None, deployment=None):
+                 frozen_files, executable, root, source_guard, fixture_factory=None, deployment=None,
+                 transport='acp'):
+        if transport not in ('acp', 'headless'):
+            raise ContractError('subscription transport differs')
         self.deployment = None if deployment is None else checked_deployment(deployment)
-        diagnostic_receipt_schema(self.deployment)
+        if transport == 'acp':
+            diagnostic_receipt_schema(self.deployment)
+        elif self.deployment is not None:
+            raise ContractError('headless subscription must not claim ACP deployment')
         self.renderer = SubscriptionRenderer(manifest, resolver)
         self.manifest, self.authorities, self.inventory = manifest, authorities, inventory
         self.root = _plain(Path(root)); self.root.mkdir(parents=True, exist_ok=False)
         self.native_slots, self.frozen_files = native_slots, frozen_files
-        self.executable, self.guard, self.fixture_factory = executable, source_guard, fixture_factory
+        self.executable, self.guard, self.fixture_factory, self.transport = executable, source_guard, fixture_factory, transport
         self.pending = {}; self.used = set(); self.halted = False
 
     def plan(self, role, request):
@@ -381,18 +446,52 @@ class PrivateSubscriptionPorts:
             directory = self.root / entry['opportunity_id']
             directory.mkdir(exist_ok=False)
             spec = self.renderer.body['policy']['ports'][role]
+            call_files = self.frozen_files
+            private_request = None
+            if self.transport == 'headless':
+                path = directory / 'headless-request.private.json'
+                raw = canonical({'prompt': wire, 'output_schema': schema}).encode()
+                with path.open('xb') as out:
+                    out.write(raw); out.flush(); os.fsync(out.fileno())
+                private_request = {'path': str(path), 'sha256': hashlib.sha256(raw).hexdigest()}
+                call_files = self.frozen_files | {private_request['path']: private_request['sha256']}
             if self.fixture_factory is not None:
                 result = self.fixture_factory(entry, wire, schema, directory, self.frozen_files,
                     spec)
             else:
                 slot = self.native_slots[entry['opportunity_id']]
-                result = run_native_diagnostic(opportunity_contract=DIAGNOSTIC_OPPORTUNITY_CONTRACT,
-                    executable=self.executable, cwd=slot['cwd'], private_home=slot['private_home'],
-                    private_profile=slot['private_profile'], private_dir=directory / 'native',
-                    reservation=directory / 'native-reservation.json', frozen_files=self.frozen_files,
-                    prompt=wire, schema=schema, main_output_cap=spec['main_output_cap'],
-                    observed_main_token_cap=spec['observed_main_token_cap'], input_byte_cap=spec['max_input_bytes'],
-                    **({} if self.deployment is None else {'deployment': self.deployment}))
+                if self.transport == 'headless':
+                    result = run_headless_diagnostic(executable=self.executable, cwd=slot['cwd'],
+                        private_home=slot['private_home'], private_profile=slot['private_profile'],
+                        private_dir=directory / 'native', reservation=directory / 'native-reservation.json',
+                        frozen_files=call_files, prompt=wire, schema=schema,
+                        main_output_cap=spec['main_output_cap'], observed_main_token_cap=spec['observed_main_token_cap'],
+                        input_byte_cap=spec['max_input_bytes'], timeout=240, reasoning_effort='low')
+                else:
+                    result = run_native_diagnostic(opportunity_contract=DIAGNOSTIC_OPPORTUNITY_CONTRACT,
+                        executable=self.executable, cwd=slot['cwd'], private_home=slot['private_home'],
+                        private_profile=slot['private_profile'], private_dir=directory / 'native',
+                        reservation=directory / 'native-reservation.json', frozen_files=self.frozen_files,
+                        prompt=wire, schema=schema, main_output_cap=spec['main_output_cap'],
+                        observed_main_token_cap=spec['observed_main_token_cap'], input_byte_cap=spec['max_input_bytes'],
+                        **({} if self.deployment is None else {'deployment': self.deployment}))
+            if self.transport == 'headless':
+                if not isinstance(result, HeadlessResult):
+                    raise ContractError('headless result type differs')
+                slot = self.native_slots[entry['opportunity_id']]
+                context = slot | {'executable': self.executable, 'reasoning_effort': 'low'}
+                binding = verify_headless_request_binding(result, {'opportunity_id': entry['opportunity_id'],
+                    'private_request': private_request,
+                    'prompt_sha256': entry['prompt_sha256'], 'schema_digest': entry['schema_digest'],
+                    'input_bytes': entry['input_bytes']}, directory,
+                    spec | {'native_context': context, 'reasoning_effort': 'low'}, call_files)
+                output = result.response
+                if not result.receipt.data().get('accepted'):
+                    self.halted = True
+                if output is not None and role != 'evaluator':
+                    target(output.data(), request.data()['benchmark'])
+                    output = self.authorities[role].issue(role, request.content_hash, output.data())
+                return SubscriptionResult(output, result.receipt, record(entry), None, 'headless', binding)
             if not isinstance(result, AcpResult):
                 raise ContractError('native result type differs')
             if not result.receipt.data().get('accepted'):
@@ -420,10 +519,14 @@ class PrivateSubscriptionPorts:
 
 
 def load_private(config_descriptor):
-    c = exact(load_record(config_descriptor).data(), ('schema', 'manifest', 'materials', 'key_files',
-        'reference_store', 'input_files', 'journal_path', 'request_inventory', 'native_deployment'))
-    if c['schema'] not in (CONFIG_SCHEMA, CONFIG_SCHEMA_V2):
+    raw = load_record(config_descriptor).data()
+    keys = ('schema', 'manifest', 'materials', 'key_files', 'reference_store', 'input_files',
+        'journal_path', 'request_inventory', 'native_deployment')
+    c = exact(raw, keys + (('transport',) if raw.get('schema') == CONFIG_SCHEMA_V3 else ()))
+    if c['schema'] not in (CONFIG_SCHEMA, CONFIG_SCHEMA_V2, CONFIG_SCHEMA_V3):
         raise ContractError('subscription worker schema differs')
+    if c['schema'] == CONFIG_SCHEMA_V3 and c['transport'] != 'headless':
+        raise ContractError('headless subscription transport differs')
     manifest = load_record(c['manifest']); b, _, _ = validate_manifest(manifest)
     if set(c['input_files']) != set(b['input_pins']):
         raise ContractError('subscription source inventory differs')
@@ -477,13 +580,16 @@ def run_private(config_descriptor, *, fixture_factory=None):
         if c['native_deployment'] is not None:
             load_record(c['native_deployment'])
     native_descriptor = None
+    headless = c['schema'] == CONFIG_SCHEMA_V3
     if fixture_factory is None:
         deployment = load_record(c['native_deployment']).data()
         versioned = deployment.get('schema') == 'frozen-native-subscription-deployment-v2'
-        if versioned != (c['schema'] == CONFIG_SCHEMA_V2):
+        if not headless and versioned != (c['schema'] == CONFIG_SCHEMA_V2):
             raise ContractError('subscription worker/deployment version binding differs')
+        if headless and deployment.get('schema') != 'frozen-native-subscription-headless-deployment-v1':
+            raise ContractError('headless subscription deployment differs')
         exact(deployment, ('schema', 'executable', 'frozen_files', 'slots', *(['native'] if versioned else [])))
-        if not versioned and deployment['schema'] != 'frozen-native-subscription-deployment-v1':
+        if not headless and not versioned and deployment['schema'] != 'frozen-native-subscription-deployment-v1':
             raise ContractError('native deployment schema differs')
         if versioned:
             native_descriptor = FrozenNativeDeployment(record(deployment['native']))
@@ -527,13 +633,14 @@ def run_private(config_descriptor, *, fixture_factory=None):
             for path, expected_hash in frozen.items():
                 _read_bound(Path(path), {pin(expected_hash)})
     else:
-        if c['schema'] == CONFIG_SCHEMA_V2:
+        if c['schema'] in (CONFIG_SCHEMA_V2, CONFIG_SCHEMA_V3):
             raise ContractError('versioned subscription requires the native deployment entry')
         executable = None; slots = {}; frozen = {str(p): sha(p) for p in own_sources().values()}
     ports = PrivateSubscriptionPorts(manifest=manifest, resolver=resolver, authorities=authorities,
         inventory=inventory, native_slots=slots, frozen_files=frozen, executable=executable,
-        root=Path(c['journal_path'] + '.acp'), source_guard=full_guard, fixture_factory=fixture_factory,
-        deployment=native_descriptor)
+        root=Path(c['journal_path'] + ('.headless' if headless else '.acp')),
+        source_guard=full_guard, fixture_factory=fixture_factory,
+        deployment=native_descriptor, transport='headless' if headless else 'acp')
     pilot = SubscriptionPilot(manifest=manifest, resolver=resolver, materials=materials,
         keys={r: a.key for r, a in authorities.items()}, authority=authorities['diagnostic'],
         journal_path=Path(c['journal_path']), source_guard=full_guard, **ports.kwargs())
@@ -553,6 +660,9 @@ def run_private(config_descriptor, *, fixture_factory=None):
     if native_descriptor is not None:
         report.update(schema=OBSERVATION_SCHEMA_V2, native_deployment_digest=native_descriptor.digest,
             native_deployment_descriptor=dict(c['native_deployment']), worker_config_descriptor=dict(config_descriptor))
+    elif headless:
+        report.update(schema=OBSERVATION_SCHEMA_V3, headless_transport='headless',
+            worker_config_descriptor=dict(config_descriptor))
     result = authorities['diagnostic'].issue('diagnostic', manifest.content_hash, report)
     pilot.journal.append('subscription_result_finalized', {'receipt_digest': result.content_hash})
     return result
