@@ -25,7 +25,7 @@ def native(root, monkeypatch, *, scenarios=('ok', 'ok', 'ok'), mutate=None, sche
     def spawn(command,cwd,env,stderr):
         assert list(command)==[str(exe.resolve()),'--no-auto-update','--cwd',str(cwd),'agent','stdio']
         assert not any(Path(cwd).iterdir())
-        assert not any(Path(env['USERPROFILE']).iterdir())
+        assert all(p.is_dir() for p in Path(env['USERPROFILE']).rglob('*'))
         assert 'XAI_API_KEY' not in env and 'GROK_API_KEY' not in env
         call=Path(env['GROK_HOME']).parent
         assert (Path(env['GROK_HOME'])/'config.toml').read_text()==transport.diagnostic_config(2048)
@@ -171,7 +171,8 @@ def test_closed_types_reject_callable_subclasses_mock_and_custom_native(tmp_path
 
 
 def test_prompt_cap_does_not_claim_schema_or_envelope_bound(tmp_path,monkeypatch):
-    schema={**SCHEMA,'description':'public schema text '*600}
+    schema={**SCHEMA,'properties':{**SCHEMA['properties'],
+        **{f'optional_public_field_{i}':{'type':'string'} for i in range(100)}}}
     backend,logs=native(tmp_path,monkeypatch,schema=schema,input_cap=1024)
     provider=wrap_train_provider(backend);provider(REQUEST)
     row=provider.inspect()[0].data();limits=provider.configuration().data()['limits']

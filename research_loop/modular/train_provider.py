@@ -108,7 +108,7 @@ def _verify_call(backend, row, ledger):
     request=_record(json.loads(prompt_text[len(_PROMPT):]))
     request_hash=row['request_sha256' if grok else 'request_hash']
     _require(request.content_hash==request_hash and request.data().get('slot')==slot, 'original request/slot drift')
-    response_hash=row.get('response_sha256' if grok else 'output_hash');usage=None
+    response_hash=row.get('response_sha256' if grok else 'output_hash');usage=None;usage_bound=False
     originals={str(p):_sha(p.read_bytes()) for p in root.rglob('*') if p.is_file() and p.name!='auth.json'}
     if grok:
         _require((root/'request.private.json').read_bytes()==request.encoded.encode(), 'native request bytes drift')
@@ -119,6 +119,7 @@ def _verify_call(backend, row, ledger):
             _require(_read(native/'observer-receipt.json')==receipt, 'native observer substitution')
             _require(_sha((native/'stdout.private.jsonl').read_bytes())==receipt['private_stream_sha256'], 'native stdout drift')
             usage=known_usage(receipt.get('known_usage'))
+            usage_bound=receipt.get('known_usage_binding_verified') is True
             _require(receipt.get('known_usage')==row.get('known_main_usage'), 'native reported usage drift')
             _require(usage is None or usage in _native_usage_candidates(native/'stdout.private.jsonl'), 'native reported usage has no raw frame')
             if row['status']=='succeeded':
@@ -144,6 +145,7 @@ def _verify_call(backend, row, ledger):
         events_path=root/'events.jsonl'
         if events_path.exists():
             raw=events_path.read_bytes();events=_events(raw.decode('utf-8'));usage=_usage(events)
+            usage_bound=usage is not None
             faults,notices=_context_diagnostics(events,backend.allowed_notice_messages)
             _require(_sha(raw)==row['events_hash'] and _sha((root/'stderr.txt').read_bytes())==row['stderr_hash'], 'Codex raw stream drift')
             _require(usage==row['usage'] and _tool_events(events)==row['tool_events']
@@ -159,7 +161,8 @@ def _verify_call(backend, row, ledger):
         'response_digest':response_hash,'native_status':row['status'],'successful':row['status']=='succeeded',
         'originals_verified':True,'verification_error':None,
         'known_tokens':known,'known_usage_scope':'native_main' if grok else 'codex_turn_completed',
-        'main_usage_incomplete':bool(usage is None or (grok and usage.get('usageIsIncomplete'))),
+        'known_usage_binding_verified':usage_bound,
+        'main_usage_incomplete':bool(usage is None or not usage_bound or (grok and usage.get('usageIsIncomplete'))),
         'possible_initial_title_opportunities':1 if grok else None,'title_tokens':None,
         'all_opportunity_tokens':None,'settled_additional_charge_usd':None,
         'prompt_bytes':len(prompt_raw),'schema_bytes':len(schema_raw),
@@ -204,6 +207,7 @@ def _failed_observation(backend,row,error):
         'originals_verified':False,'verification_error':type(error).__name__,
         'known_tokens':usage['totalTokens' if grok else 'total_tokens'] if usage else None,
         'known_usage_scope':'native_main' if grok else 'codex_turn_completed',
+        'known_usage_binding_verified':False,
         'main_usage_incomplete':True,'possible_initial_title_opportunities':1 if grok else None,
         'title_tokens':None,'all_opportunity_tokens':None,'settled_additional_charge_usd':None,
         'prompt_bytes':None,'schema_bytes':None,'request_stream_bytes':None,
@@ -272,6 +276,7 @@ class _TrainProvider:
         rows=[c.data() for c in calls];known=sum(c['known_tokens'] or 0 for c in rows)
         return _record({'schema':'public-train-provider-usage-v1','main_opportunities':len(rows),
             'known_reported_tokens':known,'known_usage_scope':'native_main' if grok else 'codex_turn_completed',
+            'legacy_ledger_reported_tokens':self.backend.ledger['tokens'],
             'unknown_main_opportunities':sum(c['main_usage_incomplete'] for c in rows),
             'possible_initial_title_opportunities':len(rows) if grok else None,'title_tokens':None,
             'all_opportunity_tokens':None,'settled_additional_charge_usd':None,
@@ -348,6 +353,7 @@ class FrozenTrainProviderLedgerV2:
         _require(self.path.read_bytes()==self.record.encoded.encode('utf-8'), 'sealed provider record drift')
         b=self.record.data();self.provider.inspect()
         _require(b['schema']=='frozen-train-provider-ledger-v2' and b['configuration']==self.provider.state['configuration']
+            and b['original_ledger_path']==str(self.provider.backend.ledger_path)
             and b['prefix_length']==len(b['calls']) and b['calls']==self.provider.state['calls'][:b['prefix_length']], 'sealed original prefix differs')
         success=bool(b['calls']) and all(c['view']['originals_verified'] and c['view']['successful'] and not c['view']['main_usage_incomplete'] for c in b['calls'])
         return _record({'schema':'train-provider-seal-verification-v1','seal_digest':self.record.content_hash,
