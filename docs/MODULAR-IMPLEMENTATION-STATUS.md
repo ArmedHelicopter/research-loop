@@ -1814,3 +1814,30 @@ root 首次集成检查因遗漏 E 盘 TEMP/TMP 而主动中断，没有完整 J
 重复 fixture 目录不是独立科学样本，未读取真实 VAL，没有付费服务调用。
 原始源码路径仍须可解析；外部响应身份、完整历史环境和其他产物入口仍有边界。
 见 [评审契约](REVIEW-SCENARIO-ARTIFACTS.md) 与逐产物覆盖清单。
+
+## 2026-09-15 03:33 +08：原 C5 完整工程批次到期，结果未完成
+
+原 `integration` 工作树 98eae281 的 `c5-common-complete-r3` 到既定 12 小时
+截止后，已有守护进程核对 PID、创建时间及命令，结束它观察到的六个 Python
+进程。清理回执未发现这些进程仍存活；当时未观察到所属 Docker 子进程，
+不据此宣称所有未观察到的资源都不存在。没有延长、重启或修改冻结运行源码。
+这是这一工程批次的截止，总目标仍在推进。
+
+最终 checkpoint：46/46 history build 和 57/118 target 标为 succeeded，
+61 个 target 为 not_executed；完整网格、原实验完成和评分资格均为 false。
+无完成的 JUnit 或 frozen closure，不能把这些单元数记为整个测试通过。
+checkpoint 的 provider_usage 与最后原始 provider ledger 都保留 572 次合成
+MAIN 机会，ledger 中 572 条为 succeeded；已知报告 token 共 6864，仅属于
+native_main 范围。标题/全机会 token 和结算字段仍为未知。这不是 Grok/API
+调用数。原计划为 930 合成 MAIN、442 Docker 机会与 118 scorer 机会；后两项
+实际调用数尚未单独对账，不用计划数冒充已执行数。
+
+11530 个原始文件、733868787 字节封存为 31 个分块 ZIP；原始源码 ZIP、
+watchdog 配置/日志、首轮冻结记录与归档助手一起保存在
+`results/modular-engineering-20260915/c5-common-complete-r3-deadline/`。
+38 份原件加属性、manifest、verification 共 41 文件。每个原始文件都核对
+摘要、大小和 mtime，归档前后相同；冻结开始时的源码字节仍匹配。没有改写
+checkpoint、制造成功终态或运行新的模型、Docker、优化/VAL 操作。
+
+`immutable-record-runtime` 的另一个 C5 工程批次有独立的原预算与截止，
+不由本次到期推定其状态，也不把两批不同运行环境当作受控性能对照。

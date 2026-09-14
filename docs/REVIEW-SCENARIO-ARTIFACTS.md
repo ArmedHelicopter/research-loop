@@ -75,3 +75,8 @@ corrected run used a new prefix. An older worker label-isolation run has five
 failures out of ten because that sparse worker omitted the required fixtures;
 those failures remain archived. The root's integrated label checks used its
 existing engineering fixtures. No model service, Docker or real VAL was used.
+
+A [concrete consumption graph](../results/modular-engineering-20260915/review-lineage-r1/README.md)
+shows 32 actual retained nodes and 87 verified edges from the Q4.1 roles fixture.
+The companion JSON contains full record and original-file hashes. The graph
+omits chronological edges and does not assert scientific causal support.

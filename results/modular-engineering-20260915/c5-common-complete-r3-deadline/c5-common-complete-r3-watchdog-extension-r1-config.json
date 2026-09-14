@@ -1,0 +1,15 @@
+{
+  "root_pid": 44832,
+  "root_creation_utc_ticks": 639249680333138020,
+  "root_command": "\"E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe\" E:/_ryanDev/AI/research-loop-modular/work/run_frozen_checks_with_source.py E:/_ryanDev/AI/research-loop-modular/integration E:/_ryanDev/AI/research-loop-modular/work/c5-common-complete-r3 tests/test_joint_train_controller.py::test_complete_common_train_controller_uses_real_barrier_docker_and_independent_scorer",
+  "deadline": "2026-09-15T03:33:53.3138020+08:00",
+  "journal": "E:/_ryanDev/AI/research-loop-modular/work/c5-common-complete-r3-watchdog-extension-r1.jsonl",
+  "prefix": "E:/_ryanDev/AI/research-loop-modular/work/c5-common-complete-r3",
+  "expected_cases": 1,
+  "expected_history_builds": 46,
+  "expected_target_cells": 118,
+  "expected_synthetic_main": 930,
+  "expected_docker_attempts": 442,
+  "new_paid_calls": 0,
+  "scope": "Continuation of the same original engineering run: outer watchdog only extended from 6 to 12 hours after observed progress; frozen source and all scientific/per-call constraints unchanged"
+}
