@@ -40,7 +40,7 @@ CONFIG_SCHEMA_V3 = 'private-material-authoring-config-v3'
 LIMITS = {'model': MODEL, 'main_opportunities': 4, 'possible_title_opportunities': 4,
     'main_output_cap': 8192, 'title_output_cap': 100, 'max_input_bytes': 262144,
     'observed_main_token_cap': 131072, 'max_retries': 0, 'timeout_seconds': 60}
-HEADLESS_LIMITS = LIMITS | {'timeout_seconds': 240}
+HEADLESS_LIMITS = LIMITS | {'timeout_seconds': 240, 'reasoning_effort': 'low'}
 REVIEW_LIMITS = {'input_byte_cap': 262144, 'main_output_cap': 2048,
     'observed_main_token_cap': 131072}
 INSTRUCTION = """Prepare provisional anonymous candidate materials from the complete supplied TRAIN task and references.
@@ -346,9 +346,10 @@ def _accept_headless(result, entry, directory, limits, frozen_files, state,
         reported_main_cost_usd=inspection.get('server_reported_usd') if isinstance(inspection, dict) else None)
     # These remain headless observations. They never populate the ACP-specific
     # known_main_usage/known_response_usage fields or claim settled charges.
-    context = deployment['slots'][entry['opportunity_id']] | {'executable': deployment['executable']}
+    context = deployment['slots'][entry['opportunity_id']] | {
+        'executable': deployment['executable'], 'reasoning_effort': limits['reasoning_effort']}
     binding = verify_headless_request_binding(result, entry, directory,
-        limits | {'native_context': context}, frozen_files)
+        limits | {'native_context': context, 'reasoning_effort': limits['reasoning_effort']}, frozen_files)
     write_record(directory / 'headless-request-binding.json', binding.data())
     state['headless_request_binding_digest'] = binding.content_hash
     body = binding.data(); usage = state['known_headless_main_usage']; identity = body['identity']
@@ -359,6 +360,7 @@ def _accept_headless(result, entry, directory, limits, frozen_files, state,
             or usage['output_tokens'] > limits['main_output_cap']
             or usage['total_tokens'] > limits['observed_main_token_cap']
             or identity['requested_model'] != MODEL
+            or identity.get('requested_reasoning_effort') != limits['reasoning_effort']
             or not isinstance(identity['session_id'], str) or not identity['session_id']
             or not isinstance(identity['request_id'], str) or not identity['request_id']
             or identity['session_id'] in seen_sessions or identity['request_id'] in seen_prompts):
@@ -563,7 +565,7 @@ def run_authoring(envelope_descriptor, output_directory, *, fixture_factory=None
                             reservation=directory / 'native-reservation.json', frozen_files=frozen_files,
                             prompt=prompt, schema=output_schema, main_output_cap=limits['main_output_cap'],
                             observed_main_token_cap=limits['observed_main_token_cap'], input_byte_cap=limits['max_input_bytes'],
-                            timeout=limits['timeout_seconds'])
+                            timeout=limits['timeout_seconds'], reasoning_effort=limits['reasoning_effort'])
                     else:
                         result = run_native_diagnostic(opportunity_contract=DIAGNOSTIC_OPPORTUNITY_CONTRACT,
                             executable=deployment['executable'], cwd=native['cwd'], private_home=native['private_home'],

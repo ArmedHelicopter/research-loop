@@ -26,6 +26,7 @@ from research_loop.modular.grok_cli_protocol import inspect_grok_stream
 from research_loop.ontology import ContractError
 
 MODEL = "grok-4.6"
+ALLOWED_REASONING_EFFORTS = frozenset({'low', 'medium', 'high', 'xhigh'})
 ACCOUNT_ISSUER = "https://auth.x.ai"
 PROXY = "https://cli-chat-proxy.grok.com/v1"
 RECEIPT_SCHEMA = "grok-headless-diagnostic-receipt-v1"
@@ -205,8 +206,11 @@ def _sources(files):
         _require(_sha(_read(_plain(path))) == expected, 'frozen source changed')
 
 
-def _command(context, native, session, schema):
-    return [context['executable'], '--no-auto-update', '--cwd', context['cwd'], '--model', MODEL,
+def _command(context, native, session, schema, reasoning_effort=None):
+    command = [context['executable'], '--no-auto-update', '--cwd', context['cwd'], '--model', MODEL]
+    if reasoning_effort is not None:
+        command.extend(('--reasoning-effort', reasoning_effort))
+    return command + [
         '--prompt-file', str(native / 'prompt.private.txt'), '--json-schema', _canon(schema).decode(),
         '--output-format', 'streaming-json', '--max-turns', '1', '--session-id', session,
         '--no-subagents', '--no-plan', '--disable-web-search', '--disallowed-tools', ','.join(DENIED_TOOLS),
@@ -285,10 +289,13 @@ def _process_ok(process):
 
 def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, private_dir,
                             reservation, frozen_files, prompt, schema, main_output_cap,
-                            observed_main_token_cap, input_byte_cap, timeout=240) -> HeadlessResult:
+                            observed_main_token_cap, input_byte_cap, timeout=240,
+                            reasoning_effort=None) -> HeadlessResult:
     """Reserve once; inspect, query account, launch once, then retain a terminal receipt."""
     context = {k: str(_plain(v)) for k, v in dict(executable=executable, cwd=cwd,
         private_home=private_home, private_profile=private_profile).items()}
+    if reasoning_effort is not None:
+        context['reasoning_effort'] = reasoning_effort
     native = _plain(private_dir); reservation_path = _plain(reservation)
     home, user = Path(context['private_home']), Path(context['private_profile'])
     _require(type(prompt) is str and isinstance(schema, dict), 'headless request shape')
@@ -296,6 +303,8 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
         and type(observed_main_token_cap) is int and observed_main_token_cap >= main_output_cap
         and type(input_byte_cap) is int and 0 < len(prompt.encode()) <= input_byte_cap
         and type(timeout) in (int, float) and 0 < timeout <= 240, 'headless request bounds')
+    _require(reasoning_effort is None or reasoning_effort in ALLOWED_REASONING_EFFORTS,
+        'unsupported headless reasoning effort')
     _require(_sha(_read(Path(context['executable']))) == EXECUTABLE_SHA256, 'headless executable pin')
     _require(home.is_dir() and {p.name for p in home.iterdir()} == {'auth.json', 'config.toml'}
         and (home / 'auth.json').is_file()
@@ -309,11 +318,12 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
         _require(frozen_files.get(path) == _sha(_read(Path(path))), 'native source not frozen')
     environment = _fresh_env(home, user)
     session = str(uuid.uuid4()); prompt_raw = prompt.encode(); schema_raw = _canon(schema)
-    command = _command(context, native, session, schema)
+    command = _command(context, native, session, schema, reasoning_effort)
     bound = {'schema': 'grok-headless-reservation-v1', 'session_id': session, 'context': context,
         'environment': environment, 'prompt_sha256': _sha(prompt_raw), 'schema_digest': _sha(schema_raw),
         'input_bytes': len(prompt_raw), 'input_byte_cap': input_byte_cap,
         'main_output_cap': main_output_cap, 'observed_main_token_cap': observed_main_token_cap,
+        'reasoning_effort': reasoning_effort,
         'timeout_seconds': timeout, 'frozen_files': frozen_files, 'retries': 0,
         'reserved_at': datetime.now(timezone.utc).isoformat(), 'command': command,
         'inspect_command': _inspect_command(context), 'inspect_timeout_seconds': 10}
@@ -325,7 +335,8 @@ def run_headless_diagnostic(*, executable, cwd, private_home, private_profile, p
     receipt = {'schema': RECEIPT_SCHEMA, 'accepted': False, 'faults': [],
         'reservation_sha256': _sha(_canon(bound)), 'context': context,
         'prompt_sha256': bound['prompt_sha256'], 'schema_digest': bound['schema_digest'],
-        'input_bytes': len(prompt_raw), 'requested_model': MODEL, 'frozen_files': frozen_files,
+        'input_bytes': len(prompt_raw), 'requested_model': MODEL,
+        'requested_reasoning_effort': reasoning_effort, 'frozen_files': frozen_files,
         'inspect_process': None, 'native_process': None, 'stream_inspection': None,
         'account_preflight': None, 'account_postflight': None, 'prompt_process_launched': False,
         'response_sha256': None, 'initial_title_usage': None, 'all_opportunity_usage': None,
@@ -386,6 +397,8 @@ def _reread_account(folder):
 def verify_headless_request_binding(result, entry, directory, spec, frozen_files) -> FrozenRecord:
     try:
         return _verify_headless_request_binding(result, entry, directory, spec, frozen_files)
+    except ContractError:
+        raise
     except (KeyError, TypeError, ValueError, AttributeError) as exc:
         raise ContractError('malformed headless binding artifact') from exc
 
@@ -401,7 +414,14 @@ def _verify_headless_request_binding(result, entry, directory, spec, frozen_file
     _require(_sha(bound_raw) == receipt['reservation_sha256'] and bound['schema'] == 'grok-headless-reservation-v1'
         and bound['retries'] == 0 and bound['frozen_files'] == frozen_files == receipt['frozen_files'],
         'headless reservation binding')
+    expected_effort = spec.get('reasoning_effort')
     context = bound['context']
+    _require(context.get('reasoning_effort') == expected_effort
+        and spec['native_context'].get('reasoning_effort') == expected_effort
+        and bound.get('reasoning_effort') == expected_effort
+        and receipt.get('requested_reasoning_effort') == expected_effort
+        and (expected_effort is None or expected_effort in ALLOWED_REASONING_EFFORTS),
+        'native reasoning effort binding')
     _require(context == spec['native_context'] == receipt['context'], 'native deployment binding')
     for key in ('executable', 'cwd', 'private_home', 'private_profile'): _plain(context[key])
     _require(_sha(_read(Path(context['executable']))) == EXECUTABLE_SHA256, 'headless executable pin')
@@ -426,7 +446,7 @@ def _verify_headless_request_binding(result, entry, directory, spec, frozen_file
     _require(request['input_bytes'] <= spec['max_input_bytes']
         and _read(native/'prompt.private.txt') == prompt.encode()
         and _read(native/'schema.private.json') == _canon(schema), 'native request bytes binding')
-    _require(bound['command'] == _command(context, native, bound['session_id'], schema)
+    _require(bound['command'] == _command(context, native, bound['session_id'], schema, expected_effort)
         == _strict_json(_read(native/'command.json')) and bound['inspect_command'] == _inspect_command(context)
         and bound['inspect_timeout_seconds'] == 10, 'native command contract')
     # Rebuild environment from the recorded non-secret OS values; ambient caller
@@ -475,7 +495,8 @@ def _verify_headless_request_binding(result, entry, directory, spec, frozen_file
     observed = inspected.receipt.data()
     return FrozenRecord.from_dict({'schema': 'grok-headless-request-binding-v1', 'accepted': accepted,
         'opportunity_id': entry['opportunity_id'], 'request': request, 'context': context,
-        'identity': {'requested_model': MODEL, 'accounting_model': observed['accounting_model'],
+        'identity': {'requested_model': MODEL, 'requested_reasoning_effort': expected_effort,
+            'accounting_model': observed['accounting_model'],
             'session_id': bound['session_id'], 'request_id': request_id},
         'usage': {'main': observed['usage'], 'main_model_calls': observed['reported_main_model_calls'],
             'num_turns': ends[0].get('num_turns') if len(ends) == 1 else None,

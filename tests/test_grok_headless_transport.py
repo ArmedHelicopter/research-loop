@@ -47,6 +47,27 @@ def test_context_binding_rejects_swap(tmp_path, monkeypatch):
     with pytest.raises(transport.ContractError): transport.verify_headless_request_binding(result, entry, directory, spec, kwargs['frozen_files'])
 
 
+def test_reasoning_effort_is_frozen_in_command_reservation_and_reader(tmp_path, monkeypatch):
+    entry, kwargs, spec, directory, calls, _ = prepared(tmp_path, monkeypatch)
+    kwargs['reasoning_effort'] = 'low'; spec['reasoning_effort'] = 'low'
+    spec['native_context'] = dict(spec['native_context'], reasoning_effort='low')
+    result = transport.run_headless_diagnostic(**kwargs)
+    assert calls[0][calls[0].index('--reasoning-effort') + 1] == 'low'
+    binding = transport.verify_headless_request_binding(result, entry, directory, spec, kwargs['frozen_files']).data()
+    assert binding['identity']['requested_reasoning_effort'] == 'low'
+    spec['reasoning_effort'] = 'high'
+    spec['native_context']['reasoning_effort'] = 'high'
+    with pytest.raises(transport.ContractError, match='reasoning effort'):
+        transport.verify_headless_request_binding(result, entry, directory, spec, kwargs['frozen_files'])
+
+
+def test_reasoning_effort_rejects_values_outside_frozen_model_contract(tmp_path, monkeypatch):
+    _, kwargs, _, _, _, _ = prepared(tmp_path, monkeypatch)
+    kwargs['reasoning_effort'] = 'maximum'
+    with pytest.raises(transport.ContractError):
+        transport.run_headless_diagnostic(**kwargs)
+
+
 def test_preflight_denial_has_terminal_no_dispatch_receipt(tmp_path, monkeypatch):
     entry, kwargs, spec, directory, calls, _ = prepared(tmp_path, monkeypatch)
     monkeypatch.setattr(transport, '_account', lambda *args: (_ for _ in ()).throw(transport.ContractError('denied')))

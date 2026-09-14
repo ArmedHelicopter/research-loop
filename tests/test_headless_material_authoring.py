@@ -31,6 +31,7 @@ def test_headless_freeze_has_distinct_schema_complete_inputs_and_runtime_pins(tm
     assert 'native' not in envelope['native_deployment']
     assert envelope['limits'] == authoring.HEADLESS_LIMITS
     assert envelope['limits']['timeout_seconds'] == 240 and authoring.LIMITS['timeout_seconds'] == 60
+    assert envelope['limits']['reasoning_effort'] == 'low'
     assert envelope['prospective_review_limits'] == authoring.REVIEW_LIMITS
     assert envelope['separate_review_evaluator_main_allocation'] == 180
     assert envelope['validation_eligible'] is False
@@ -91,6 +92,7 @@ def test_actual_headless_authoring_dispatch_to_signed_material_and_review_invent
         lambda *a, **k: pytest.fail('headless result was routed through ACP verifier'))
     result = authoring.run_authoring(metadata['envelope'], tmp_path / 'out')
     assert len(calls) == 4 and len(gets) == 24
+    assert all(command[command.index('--reasoning-effort') + 1] == 'low' for command in calls)
     assert result['schema'] == 'four-task-private-authoring-outcome-v3'
     assert result['material_availability'] == {'ready': 28, 'unresolved_material': 8, 'not_applicable': 0}
     assert result['slot_count'] == 36 and result['evaluator_opportunity_count'] == 72
