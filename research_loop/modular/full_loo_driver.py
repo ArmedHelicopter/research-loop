@@ -107,8 +107,20 @@ def run_stage(*, plan, recipe, stage, cell, task, package, material, phase_mater
     return FullLooResult(root,record,cell,_runtime(cell,session,joined,status) if session else None,solver,joined,phase)
 
 
-def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_material, source_verifier, corpus_verifier, broker, inputs, ledger):
-    if type(result) is not FullLooResult or type(ledger) is not FrozenProviderLedger:
+def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_material, source_verifier, corpus_verifier, broker, inputs, ledger,
+                 provider_scope_id=None, require_provider_eligible=True):
+    """Replay a C4 stage against its original provider evidence.
+
+    The legacy route supplies ``FrozenProviderLedger``.  The separately
+    versioned native C4 route supplies a sealed ``PhaseProviderLedger`` and a
+    mandatory globally unique scope identifier.  Keeping that dispatch here
+    lets both routes replay the same actual builder, Docker and solver trace
+    without treating a native ledger as a Codex ledger.
+    """
+    native = provider_scope_id is not None
+    if (type(result) is not FullLooResult or (not native and type(ledger) is not FrozenProviderLedger)
+            or (native and (type(provider_scope_id) is not str or not provider_scope_id
+                           or type(require_provider_eligible) is not bool))):
         raise ContractError('C4 exact original stage and provider ledger required')
     if type(source_verifier) is not AdmissionMaterialVerifier or type(corpus_verifier) is not DualMaterialVerifier:
         raise ContractError('C4 replay requires exact source authority verifiers')
@@ -125,7 +137,13 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
             or lock['arm']!=cell.runtime_arm.data() or lock['objective']!=plan.objective(stage).data() or lock['slots']!=list(slots(recipe,stage))
             or lock['execution_limit']!=int(stage=='target') or lock['required_audit']!=['measurement'] or lock['context_budget']!=material.state().data()['context_budget_bytes']):
         raise ContractError('C4 lock allocation drift')
-    ledger.bind_events(events)
+    if native:
+        from research_loop.modular.phase_provider import PhaseProviderLedger
+        if type(ledger) is not PhaseProviderLedger:
+            raise ContractError('C4 native replay requires a sealed phase provider ledger')
+        ledger.bind_events(events, scope_id=provider_scope_id, require_eligible=require_provider_eligible)
+    else:
+        ledger.bind_events(events)
     binding=_source_binding(cell);source=source_verifier.replay(material.state(),root/'source/source.json',cell_binding=binding)
     q=source_verifier.assessments(material.state(),root/'source/source.json',cell_binding=binding)
     nonbaseline=stage=='history_build' or recipe['procedure']!='baseline_b0'
