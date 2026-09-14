@@ -24,6 +24,7 @@ from research_loop.modular.combination_benchmark_driver import _runtime, _privat
 from research_loop.modular.panel_receipts import PanelCell, PanelReceiptVerifier, opaque_panel_cell_binding
 from research_loop.modular.runtime import RunSession, verify_trace
 from research_loop.modular.artifact_catalogue import source_snapshot, ArtifactCatalogue
+from research_loop.modular.context_artifact import verify_session_context_artifacts
 from research_loop.modular.workflow import ModularWorkflow
 from research_loop.modular.state_retrieval_combination_driver import _INSTRUCTIONS
 from research_loop.modular.benchmarks.execution import DockerExecutionBroker
@@ -200,6 +201,8 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
     evidence=EvidenceLedger(task.identity);claims=ClaimLedger(evidence);cache=ContextCache()
     evidence._log=_MemoryLog();claims._log=_MemoryLog()
     transition=_transition(evidence,claims,cache,material.state(),set(cell.runtime_arm.data()['enabled']),q)
+    verify_session_context_artifacts(task=task, lock=FrozenRecord.from_dict(lock), events=events,
+        catalogue=catalogue, evidence=evidence.snapshot(), claims=claims.snapshot())
     expected=[]
     def record(name,data):expected.append((name,data))
     record('c4_state',{'transition':transition.data(),'source_sha256':source,'corpus_sha256':corpus})

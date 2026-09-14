@@ -1,4 +1,6 @@
-"""M3 audit record for the exact context carried by one model request."""
+"""M3 audit records for the exact contexts carried by model requests."""
+from typing import Iterable
+
 from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.ontology import ContractError
 
@@ -50,3 +52,83 @@ def verify_context_artifact(record: FrozenRecord, *, task: PublicTask, request: 
     if record != expected:
         raise ContractError('M3 context artifact differs from the invocation inputs')
     return expected
+
+
+def verify_session_context_artifacts(*, task: PublicTask, lock: FrozenRecord,
+                                     events: Iterable[dict], catalogue, evidence: FrozenRecord,
+                                     claims: FrozenRecord) -> None:
+    """Cross-check each persisted M3 record against its sealed trace request.
+
+    ``catalogue`` is deliberately duck-typed here to avoid a dependency cycle;
+    callers must pass the already source-validated, sealed catalogue instance.
+    """
+    if (type(task) is not PublicTask or type(lock) is not FrozenRecord
+            or any(type(item) is not FrozenRecord for item in (evidence, claims))):
+        raise ContractError('exact M3 replay task, lock and ledger snapshots required')
+    lock_body = lock.data()
+    if lock_body.get('schema') != 'run-lock-v1' or lock_body.get('identity') != task.identity.data():
+        raise ContractError('M3 replay lock differs from task')
+    trace_requests: dict[str, tuple[dict, int]] = {}
+    projection_before: dict[str, FrozenRecord] = {}
+    rows = list(events)
+    for position, event in enumerate(rows):
+        if type(event) is not dict or not isinstance(event.get('data'), dict):
+            raise ContractError('M3 replay requires canonical trace event objects')
+        if event.get('stage') == 'q8_public_evidence_context':
+            data = event['data']
+            if set(data) != {'slot', 'controller_context', 'public_context', 'public_digest'}:
+                raise ContractError('M3 projection trace fields differ')
+            before = FrozenRecord.from_dict(data['controller_context'])
+            after = FrozenRecord.from_dict(data['public_context'])
+            if after.content_hash != data['public_digest'] or data['slot'] in projection_before:
+                raise ContractError('M3 projection trace is ambiguous or rehashed')
+            projection_before[data['slot']] = before
+        if event.get('stage') == 'model_request':
+            data = event['data']
+            if set(data) != {'request_digest', 'request'}:
+                raise ContractError('M3 model request trace fields differ')
+            request = FrozenRecord.from_dict(data['request'])
+            if data['request_digest'] != request.content_hash or data['request_digest'] in trace_requests:
+                raise ContractError('M3 model request trace digest is ambiguous or rehashed')
+            trace_requests[data['request_digest']] = (data['request'], position)
+    records = [descriptor.data() for descriptor in catalogue.records()
+               if descriptor.data()['kind'] == 'model_context']
+    if len(records) != len(trace_requests):
+        raise ContractError('every model request needs exactly one M3 context artifact')
+    enabled = 'M3' in lock_body.get('arm', {}).get('enabled', [])
+    seen: set[str] = set()
+    for descriptor in records:
+        if (descriptor['module'] != 'M3' or descriptor['coverage'] != 'covered'
+                or descriptor['status'] != ('produced' if enabled else 'not_applied')):
+            raise ContractError('M3 artifact module activation differs from original lock')
+        record = FrozenRecord.from_dict(descriptor['payload']['canonical'])
+        data = record.data()
+        digest = data.get('request_digest')
+        if type(digest) is not str or digest in seen or digest not in trace_requests:
+            raise ContractError('M3 context artifact has no unique trace request')
+        trace_request, position = trace_requests[digest]
+        request = FrozenRecord.from_dict(trace_request)
+        if (data['identity'] != task.identity.data() or data['budget_bytes'] != lock_body.get('context_budget')
+                or data['m3_enabled'] is not enabled or data['request'] != trace_request
+                or request.data().get('lock_digest') != lock.content_hash):
+            raise ContractError('M3 artifact task, lock, budget or request differs')
+        slot = request.data().get('slot')
+        if data['slot'] != slot:
+            raise ContractError('M3 artifact slot differs from trace request')
+        before = projection_before.get(slot, FrozenRecord.from_dict(request.data()['context']))
+        if slot in projection_before:
+            projected = next((row['data'] for row in rows[:position]
+                              if row['stage'] == 'q8_public_evidence_context' and row['data']['slot'] == slot), None)
+            if projected is None or projected['public_context'] != request.data()['context']:
+                raise ContractError('M3 projected context differs from actual request')
+        mode = data['mode']
+        if mode == 'evidence_only':
+            if set(before.data()) != {'identity', 'records', 'withdrawn'}:
+                raise ContractError('M3 evidence-only context differs from raw evidence form')
+        elif mode != ('candidate' if enabled else 'baseline'):
+            raise ContractError('M3 context mode differs from runtime activation')
+        verify_context_artifact(record, task=task, request=request, evidence=evidence,
+            claims=claims, before_projection=before)
+        seen.add(digest)
+    if seen != set(trace_requests):
+        raise ContractError('M3 context artifact trace coverage differs')

@@ -3,7 +3,7 @@ import json
 import pytest
 
 from research_loop.modular.benchmarks import BladeAdapter
-from research_loop.modular.context_artifact import verify_context_artifact
+from research_loop.modular.context_artifact import verify_context_artifact, verify_session_context_artifacts
 from research_loop.modular.contracts import ContractError, DataIdentity, FrozenRecord
 from test_modular_runtime import session_at
 
@@ -16,6 +16,10 @@ def _descriptor(session):
 def _verify(record, session, request, before):
     return verify_context_artifact(record, task=session.task, request=request,
         evidence=session.evidence.snapshot(), claims=session.claims.snapshot(), before_projection=before)
+
+
+def _trace_events(session):
+    return [json.loads(line) for line in (session.sidecar / 'trace.jsonl').read_text().splitlines()]
 
 
 @pytest.mark.parametrize('modules, mode, status', [
@@ -37,6 +41,8 @@ def test_actual_invoke_registers_exact_m3_context_and_request(tmp_path, modules,
     assert descriptor['status'] == status
     assert descriptor['producer_source']['path'].replace('\\', '/').endswith('/research_loop/modular/runtime.py')
     assert _verify(record, session, seen[0], FrozenRecord.from_dict(seen[0].data()['context'])) == record
+    verify_session_context_artifacts(task=session.task, lock=session.lock, events=_trace_events(session),
+        catalogue=session.artifacts, evidence=session.evidence.snapshot(), claims=session.claims.snapshot())
 
 
 def test_projection_evidence_only_revalidates_every_snapshot_and_cross_domain(tmp_path):
@@ -70,6 +76,29 @@ def test_projection_evidence_only_revalidates_every_snapshot_and_cross_domain(tm
     with pytest.raises(ContractError):
         verify_context_artifact(record, task=val_task, request=seen[0], evidence=session.evidence.snapshot(),
             claims=session.claims.snapshot(), before_projection=before[0])
+
+
+def test_rehashed_m3_payload_cannot_pass_trace_catalogue_replay(tmp_path):
+    session, _, _ = session_at(tmp_path)
+    session.invoke('final', lambda _: FrozenRecord.from_dict({'ok': True}), instruction='Inspect.')
+    events = _trace_events(session)
+    descriptors = list(session.artifacts.records())
+    index = next(index for index, descriptor in enumerate(descriptors) if descriptor.data()['kind'] == 'model_context')
+    body = descriptors[index].data()
+    payload = FrozenRecord.from_dict(body['payload']['canonical']).data()
+    payload['evidence_snapshot']['withdrawn'] = ['rehashed-fake-root']
+    forged = FrozenRecord.from_dict(payload)
+    body['payload'] = {'digest': forged.content_hash, 'bytes': len(forged.encoded.encode()),
+                       'encoding': 'canonical_json', 'canonical': forged.data()}
+    descriptors[index] = FrozenRecord.from_dict(body)
+
+    class RehashedCatalogue:
+        def records(self):
+            return tuple(descriptors)
+
+    with pytest.raises(ContractError):
+        verify_session_context_artifacts(task=session.task, lock=session.lock, events=events,
+            catalogue=RehashedCatalogue(), evidence=session.evidence.snapshot(), claims=session.claims.snapshot())
 
 
 def test_audit_write_failure_closes_before_any_model_call(tmp_path, monkeypatch):
