@@ -1,0 +1,16 @@
+{
+  "schema": "artifact-readback-evidence-v1",
+  "verified_archive_head": "b6bb3bac342babb6c9000242d0ab3ef9b0a71cde",
+  "git_disk_staging_files": 756,
+  "catalogues": 66,
+  "configuration_edges": 44,
+  "scope": "Two engineering versions with the same 22 target cases. Not 44 independent scientific samples. Exact Git/disk/staging bytes and archived catalogue/edge references were verified; historical stage semantics were not replayed.",
+  "prior_attempt": {
+    "outcome": "failed_before_readback_report",
+    "error": "ValueError: not enough values to unpack (expected 3, got 2)",
+    "cause": "Verifier was invoked before the archive commit command finished; git cat-file reported missing objects at the preceding HEAD.",
+    "repair": "Waited for the original commit/automatic maintenance to finish, then reran the same reader against b6bb3bac342babb6c9000242d0ab3ef9b0a71cde."
+  },
+  "scientific_effectiveness_proven": false,
+  "validation_acceptance": false
+}
