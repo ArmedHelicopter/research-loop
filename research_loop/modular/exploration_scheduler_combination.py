@@ -154,7 +154,7 @@ def run_phase(*, material, cell, objective, root, broker, inputs, image, timeout
     enabled = set(cell.runtime_arm.data()['enabled']); chosen = selection(material, enabled, selected_job_id)
     jobs = {j['id']: j for j in material.data()['jobs'] if j['id'] in chosen.data()['selected']}
     snapshot = _snapshot(material, cell, objective); experiment = _record(cell.data()).content_hash
-    if artifact_bridge is not None and (artifact_bridge.phase_root != root.resolve() or artifact_bridge.enabled != frozenset(enabled)):
+    if artifact_bridge is not None and (artifact_bridge.phase_root != root.resolve() or artifact_bridge.enabled != frozenset(enabled & {'M7','M8'})):
         raise ContractError('phase artifact bridge root or module activation differs')
     events, lock = [], threading.Lock()
     def emit(kind, **data):

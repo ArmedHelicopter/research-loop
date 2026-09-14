@@ -1,5 +1,6 @@
 """Bounded actual-Docker M7/M8 artifact bridge checks."""
 from pathlib import Path
+from dataclasses import replace
 
 import pytest
 
@@ -18,8 +19,9 @@ def _bridge(tmp_path, supplied):
         run_id='phase-run', experiment_id='phase-experiment', lock_digest='f' * 64,
         producer_source=source_snapshot(Path(__file__)))
     parents = {}
-    for name in ('invocation', 'selection', 'source'):
-        descriptor = catalogue.append(kind='bound_phase_' + name, module=None, coverage='uncovered',
+    kinds = {'invocation': ('model_context','M3'), 'selection': ('c4_choice_frozen','M7'), 'source': ('retrieval_result','M6')}
+    for name, (kind, module) in kinds.items():
+        descriptor = catalogue.append(kind=kind, module=module,
             payload={'schema': 'phase-parent-v1', 'name': name}, producer_source=source_snapshot(Path(__file__)),
             cost={'known': True, 'units': 0})
         parents[name] = descriptor.content_hash
@@ -50,6 +52,8 @@ def test_actual_phase_artifacts_cover_parallel_and_serial_sources(tmp_path, enab
     supplied = _for_arm(tmp_path, enabled)
     bridge = _bridge(tmp_path, supplied)
     report = run_phase(**supplied, artifact_bridge=bridge)
+    assert _verify(supplied, bridge) == report
+    bridge.context.catalogue.seal()
     assert _verify(supplied, bridge) == report
     records = [record.data() for record in bridge.context.catalogue.records() if record.data()['kind'].startswith('phase_')]
     m8 = [record for record in records if record['module'] == 'M8']
@@ -82,3 +86,63 @@ def test_phase_artifact_context_rejects_unbound_parent(tmp_path):
     with pytest.raises(ContractError, match='parent'):
         PhaseArtifactContext(catalogue, tmp_path / 'artifact-root', {'invocation': 'a' * 64,
             'selection': 'b' * 64, 'source': 'c' * 64})
+
+
+def test_actual_full_c4_arm_only_uses_m7_m8_phase_bridge(tmp_path):
+    supplied = _for_arm(tmp_path, ['M7', 'M8'])
+    arm = supplied['cell'].runtime_arm.data(); arm['enabled'] = [f'M{i}' for i in range(1, 10)]
+    supplied['cell'] = replace(supplied['cell'], runtime_arm=FrozenRecord.from_dict(arm))
+    bridge = _bridge(tmp_path, supplied)
+    report = run_phase(**supplied, artifact_bridge=bridge)
+    assert bridge.enabled == frozenset({'M7','M8'})
+    assert _verify(supplied, bridge) == report
+
+
+def test_sealed_catalogue_rejects_coherent_duplicate_program_witness(tmp_path):
+    supplied = _for_arm(tmp_path, ['M7', 'M8'])
+    bridge = _bridge(tmp_path, supplied)
+    report = run_phase(**supplied, artifact_bridge=bridge)
+    records = {record.content_hash: record.data() for record in bridge.context.catalogue.records()}
+    allocation = next(digest for digest, body in records.items() if body['kind'] == 'phase_allocation')
+    job = report.data()['fifo_order'][1]
+    raw = (supplied['root'] / (job + '.py')).read_bytes()
+    blob = {'schema':'phase-artifact-bytes-v1','relative_path':job + '.py','sha256':__import__('hashlib').sha256(raw).hexdigest(),'byte_count':len(raw)}
+    bridge.context.catalogue.append(kind='phase_program', module='M7', status='produced', parents=(allocation,),
+        payload={'schema':'phase-artifact-witness-v1','kind':'phase_program','bytes':blob,
+                 'extra':{'job':report.data()['fifo_order'][0]}}, producer_source=bridge.source,
+        config_refs=(bridge.bridge_source_ref,))
+    bridge.context.catalogue.seal()
+    with pytest.raises(ContractError, match='bijection|job binding'):
+        _verify(supplied, bridge)
+
+
+def test_sealed_catalogue_rejects_misordered_event_witness(tmp_path):
+    supplied = _for_arm(tmp_path, ['M7', 'M8'])
+    bridge = _bridge(tmp_path, supplied)
+    run_phase(**supplied, artifact_bridge=bridge)
+    records = {record.content_hash: record.data() for record in bridge.context.catalogue.records()}
+    allocation = next(digest for digest, body in records.items() if body['kind'] == 'phase_allocation')
+    line = (supplied['root'] / 'events.jsonl').read_bytes().splitlines(keepends=True)[1]
+    event = FrozenRecord(line.decode().rstrip('\n')).data()
+    blob = {'schema':'phase-artifact-bytes-v1','relative_path':'events.jsonl#1',
+        'sha256':__import__('hashlib').sha256(line).hexdigest(),'byte_count':len(line)}
+    bridge.context.catalogue.append(kind='phase_scheduler_event', module='M8', status='produced', parents=(allocation,),
+        payload={'schema':'phase-artifact-witness-v1','kind':'phase_scheduler_event','bytes':blob,
+                 'extra':{'sequence':1,'event':event}}, producer_source=bridge.source,
+        config_refs=(bridge.bridge_source_ref,))
+    bridge.context.catalogue.seal()
+    with pytest.raises(ContractError, match='unordered|chronology'):
+        _verify(supplied, bridge)
+
+
+def test_context_rejects_known_parent_with_forged_semantic_role(tmp_path):
+    identity = DataIdentity('synthetic', 'phase-task', 'group', 'dataset-v1', 'split-v1', 'train')
+    catalogue = ArtifactCatalogue(tmp_path / 'catalogue.jsonl', identity=identity,
+        run_id='phase-run', experiment_id='phase-experiment', lock_digest='f' * 64,
+        producer_source=source_snapshot(Path(__file__)))
+    descriptors = [catalogue.append(kind=kind, module=module, payload={'schema':'phase-parent-v1','name':name},
+        producer_source=source_snapshot(Path(__file__))) for name, kind, module in (
+            ('invocation','model_context','M3'), ('selection','c4_choice_frozen','M7'), ('not-source','c4_choice_frozen','M7'))]
+    with pytest.raises(ContractError, match='semantic role'):
+        PhaseArtifactContext(catalogue, tmp_path / 'artifact-root', {'invocation':descriptors[0].content_hash,
+            'selection':descriptors[1].content_hash, 'source':descriptors[2].content_hash})
