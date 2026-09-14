@@ -94,10 +94,20 @@ def apply_target_module(*,cell,task,package,transition,predictions,reviews,invok
 
 
 def execute_retrieval(session,task,material,provider,enabled):
+    from research_loop.modular.retrieval_artifacts import append_retrieval_artifacts
     from research_loop.modular.retrieval_review_combination_driver import check_material
     docs=check_material(material.retrieval(),task);pool=FrozenSourceBundle('public-train-retrieval-pool-v1',docs)
     admitted=admission_receipt(task,pool)
     session._record('q8_source_admission',{'receipt':admitted.data(),'receipt_digest':admitted.content_hash})
-    projection,usage=_select_sources(provider,session,docs,material.retrieval().data()['query'],BUDGET,'Q8.3','three_lane',enabled)
-    session._record('retrieval_review_sources',{'projection':projection,'usage':usage})
+    try:
+        projection,usage=_select_sources(provider,session,docs,material.retrieval().data()['query'],BUDGET,'Q8.3','three_lane',enabled)
+        session._record('retrieval_review_sources',{'projection':projection,'usage':usage})
+    except Exception:
+        # The provider failure record is already durable.  Bind it before the
+        # caller converts this failure into its stage-terminal receipt.
+        append_retrieval_artifacts(session.artifacts,trace_path=session.sidecar/'trace.jsonl',
+            task=task,material=material.retrieval(),enabled=enabled)
+        raise
+    append_retrieval_artifacts(session.artifacts,trace_path=session.sidecar/'trace.jsonl',
+        task=task,material=material.retrieval(),enabled=enabled)
     return public_retrieval(projection)

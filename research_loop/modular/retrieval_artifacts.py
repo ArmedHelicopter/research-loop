@@ -37,6 +37,14 @@ def _retrieval_events(trace_path: Path):
     rows = _read_events(trace_path)
     return rows, [(index, row) for index, row in enumerate(rows) if row['stage'] in _STAGES]
 
+def _replay_scope(rows):
+    """Keep earlier C4 model calls out, but retain post-retrieval calls.
+
+    A failure followed by a model call must still be rejected by _verify_sources.
+    """
+    start = next((index for index, row in enumerate(rows) if row['stage'] == 'q8_source_admission'), None)
+    return rows[start:] if start is not None else rows
+
 
 def append_retrieval_artifacts(catalogue: ArtifactCatalogue, *, trace_path: Path, task: PublicTask,
                                material: FrozenRecord, enabled: bool) -> tuple[FrozenRecord, ...]:
@@ -46,8 +54,8 @@ def append_retrieval_artifacts(catalogue: ArtifactCatalogue, *, trace_path: Path
     rows, events = _retrieval_events(Path(trace_path))
     # Independent replay catches substitution, missing/extra events, and a
     # provider failure that improperly reaches model I/O before we append.
-    _verify_sources(rows, task, material, enabled)
-    source = source_snapshot(Path(trace_path)); parents = [] ; out = []
+    _verify_sources(_replay_scope(rows), task, material, enabled)
+    source = source_snapshot(Path(__file__)); parents = [] ; out = []
     for index, row in events:
         payload = {'schema': 'm6-retrieval-event-v1', 'trace_index': index,
                    'event': row, 'activation': _activation(enabled)}
@@ -65,7 +73,7 @@ def verify_retrieval_artifacts(catalogue: ArtifactCatalogue, *, trace_path: Path
     """Independently replay M6 and require exact descriptor correspondence."""
     if type(catalogue) is not ArtifactCatalogue:
         raise ContractError('exact retrieval artifact catalogue required')
-    rows, events = _retrieval_events(Path(trace_path)); projection = _verify_sources(rows, task, material, enabled)
+    rows, events = _retrieval_events(Path(trace_path)); projection = _verify_sources(_replay_scope(rows), task, material, enabled)
     expected = []
     for index, row in events:
         expected.append({'schema': 'm6-retrieval-event-v1', 'trace_index': index,
@@ -88,7 +96,9 @@ def append_q84_source_ledger_artifacts(catalogue: ArtifactCatalogue, *, ledger_p
     """Persist every Q8.4 source-ledger append with its own file snapshot."""
     if type(catalogue) is not ArtifactCatalogue or type(m2_enabled) is not bool or type(m6_enabled) is not bool:
         raise ContractError('exact Q8.4 ledger inputs required')
-    ledger_path = Path(ledger_path); ledger = EvidenceLedger(task.identity, storage_path=ledger_path)
+    ledger_path = Path(ledger_path)
+    if not ledger_path.is_file(): raise ContractError('Q8.4 source ledger is missing')
+    ledger = EvidenceLedger(task.identity, storage_path=ledger_path)
     rows = _read_events(ledger_path); source = source_snapshot(ledger_path)
     parents = []; out = []
     for index, row in enumerate(rows):
@@ -97,7 +107,7 @@ def append_q84_source_ledger_artifacts(catalogue: ArtifactCatalogue, *, ledger_p
                    'ledger_version': ledger.version}
         _assert_public(payload)
         descriptor = catalogue.append(kind='m6_q84_source_ledger_append', module='M6', payload=payload,
-            parents=parents, status='produced' if m6_enabled else 'not_applied', producer_source=source,
+            parents=parents, status='produced' if m6_enabled else 'not_applied', producer_source=source_snapshot(Path(__file__)),
             cost={'known': False, 'units': None})
         parents = [descriptor.content_hash]; out.append(descriptor)
     return tuple(out)
@@ -105,7 +115,9 @@ def append_q84_source_ledger_artifacts(catalogue: ArtifactCatalogue, *, ledger_p
 
 def verify_q84_source_ledger_artifacts(catalogue: ArtifactCatalogue, *, ledger_path: Path,
                                        task: PublicTask, m2_enabled: bool, m6_enabled: bool) -> FrozenRecord:
-    ledger_path = Path(ledger_path); ledger = EvidenceLedger(task.identity, storage_path=ledger_path)
+    ledger_path = Path(ledger_path)
+    if not ledger_path.is_file(): raise ContractError('Q8.4 source ledger is missing')
+    ledger = EvidenceLedger(task.identity, storage_path=ledger_path)
     rows = _read_events(ledger_path)
     actual = [d.data() for d in catalogue.records() if d.data()['kind'] == 'm6_q84_source_ledger_append']
     if len(actual) != len(rows):
