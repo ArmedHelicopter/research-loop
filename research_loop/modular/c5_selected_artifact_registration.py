@@ -12,6 +12,7 @@ from pathlib import Path
 from research_loop.modular.artifact_subjects import JointBundleSubject
 from research_loop.modular.contracts import DataIdentity, FrozenRecord
 from research_loop.modular.joint_deployment import JointDeploymentBundle
+from research_loop.modular.artifact_catalogue import source_snapshot
 from research_loop.ontology import ContractError
 
 
@@ -25,7 +26,7 @@ class RegisteredSelectedBundle:
         data = self.record.data()
         fields = {"schema", "snapshot", "snapshot_digest", "bundle_digest", "components", "history", "targets",
                   "protocol_digest", "selection_digest", "package_digest", "typed_edges", "scientific_validated",
-                  "acceptance_verified", "deployment_authorized"}
+                  "acceptance_verified", "deployment_authorized", "producer_source"}
         if set(data) != fields or data["schema"] != "c5-selected-artifact-registration-v1":
             raise ContractError("selected artifact registration schema differs")
         if FrozenRecord.from_dict(data["snapshot"]).content_hash != data["snapshot_digest"]:
@@ -42,9 +43,28 @@ class RegisteredSelectedBundle:
             raise ContractError("registered selected snapshot bindings differ")
         if data["components"] != snapshot["component_digests"] or data["history"] is None or data["targets"] == []:
             raise ContractError("registered selected provenance differs")
+        if data["producer_source"] != source_snapshot(Path(__file__)):
+            raise ContractError("registered adapter source differs")
         if data["typed_edges"] != [{"kind": "derived_from", "component_digest": data["components"][name], "bundle_digest": data["bundle_digest"]}
                                    for name in sorted(data["components"])]:
             raise ContractError("registered selected bundle edges differ")
+
+
+def _registration_record(snapshot: FrozenRecord, protocol, parent: JointDeploymentBundle, timeout_seconds: int) -> RegisteredSelectedBundle:
+    """Pure projection-to-registration constructor; no authentication or disk I/O."""
+    subject = JointBundleSubject.from_selected_snapshot(snapshot, protocol, parent=parent, timeout_seconds=timeout_seconds)
+    data = snapshot.data(); p = protocol.record.data()
+    return RegisteredSelectedBundle(FrozenRecord.from_dict({
+        "schema": "c5-selected-artifact-registration-v1", "snapshot": snapshot.data(),
+        "snapshot_digest": snapshot.content_hash, "bundle_digest": subject.digest,
+        "components": subject.component_digests, "history": p["history"]["identity"],
+        "targets": [row["identity"] for row in p["targets"]], "protocol_digest": protocol.digest,
+        "selection_digest": data["selection_digest"], "package_digest": data["package_digest"],
+        "typed_edges": [{"kind": "derived_from", "component_digest": subject.component_digests[name], "bundle_digest": subject.digest}
+                        for name in sorted(subject.component_digests)],
+        "scientific_validated": False, "acceptance_verified": False, "deployment_authorized": False,
+        "producer_source": source_snapshot(Path(__file__)),
+    }))
 
 
 def register_authenticated_selected_run(path: Path, run, *, parent: JointDeploymentBundle, execution_authority_keys, scorer_authority_keys) -> RegisteredSelectedBundle:
@@ -58,20 +78,7 @@ def register_authenticated_selected_run(path: Path, run, *, parent: JointDeploym
         raise ContractError("selected artifact registration requires typed preceding bundle")
     snapshot = freeze_selected_joint_snapshot(run, parent=parent,
         execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
-    protocol = run.plan.protocol
-    subject = JointBundleSubject.from_selected_snapshot(snapshot, protocol, parent=parent,
-        timeout_seconds=run.plan.data()["timeout_seconds"])
-    data = snapshot.data(); p = protocol.record.data()
-    result = RegisteredSelectedBundle(FrozenRecord.from_dict({
-        "schema": "c5-selected-artifact-registration-v1", "snapshot": snapshot.data(),
-        "snapshot_digest": snapshot.content_hash, "bundle_digest": subject.digest,
-        "components": subject.component_digests, "history": p["history"]["identity"],
-        "targets": [row["identity"] for row in p["targets"]], "protocol_digest": protocol.digest,
-        "selection_digest": data["selection_digest"], "package_digest": data["package_digest"],
-        "typed_edges": [{"kind": "derived_from", "component_digest": subject.component_digests[name], "bundle_digest": subject.digest}
-                        for name in sorted(subject.component_digests)],
-        "scientific_validated": False, "acceptance_verified": False, "deployment_authorized": False,
-    }))
+    result = _registration_record(snapshot, run.plan.protocol, parent, run.plan.data()["timeout_seconds"])
     target = Path(path)
     target.parent.mkdir(parents=True, exist_ok=True)
     with target.open("x", encoding="utf-8", newline="\n") as stream:
@@ -85,9 +92,10 @@ def verify_registration(path: Path, run, *, parent: JointDeploymentBundle, execu
     if not raw.endswith("\n") or raw.count("\n") != 1:
         raise ContractError("registration file must contain one complete canonical record")
     persisted = RegisteredSelectedBundle(FrozenRecord(raw[:-1]))
-    rebuilt = register_authenticated_selected_run(Path(str(path) + ".rebuild"), run, parent=parent,
+    from research_loop.modular.joint_selected_snapshot import freeze_selected_joint_snapshot
+    snapshot = freeze_selected_joint_snapshot(run, parent=parent,
         execution_authority_keys=execution_authority_keys, scorer_authority_keys=scorer_authority_keys)
-    Path(str(path) + ".rebuild").unlink()
+    rebuilt = _registration_record(snapshot, run.plan.protocol, parent, run.plan.data()["timeout_seconds"])
     if persisted != rebuilt:
         raise ContractError("persisted selected artifact registration differs from reauthenticated run")
     return persisted
