@@ -9,6 +9,7 @@ load data or labels and they make no claim about benchmark or scientific effect.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Callable, Mapping, Sequence
 
 from research_loop.modular.contracts import DataIdentity, FrozenRecord, PublicTask, required_text
@@ -19,6 +20,7 @@ from research_loop.modular.modules.predictions import (PredictionPlan, Predictio
     deduplicate_mechanism_predictions, freeze_shared_experiment)
 from research_loop.modular.modules.predictions import deduplicate_titles
 from research_loop.ontology import ContractError, digest
+from research_loop.modular.prediction_scenario_artifacts import PredictionScenarioArtifactWriter, verify_prediction_scenario_artifacts
 
 
 _VARIANTS = {
@@ -70,6 +72,7 @@ def run_prediction_scenario(
     *,
     task: PublicTask,
     frozen_controls: FrozenRecord,
+    artifact_root: Path,
     plan_callback: Callable[[FrozenRecord], Mapping[str, str] | None] | None = None,
 ) -> PredictionScenarioResult:
     """Run one exact Q3/Q5 fixture through frozen M4/M7 mechanism ports.
@@ -80,28 +83,32 @@ def run_prediction_scenario(
     """
     _validate(experiment_id, variant)
     controls = _controls(task, frozen_controls)
+    task.identity.require_train()
+    writer = PredictionScenarioArtifactWriter(artifact_root, task=task, controls=frozen_controls,
+                                              experiment_id=experiment_id, variant=variant)
     registry = PredictionRegistry(task.identity)
     callbacks: list[FrozenRecord] = []
+    callback_responses: list[FrozenRecord] = []
     events: list[dict[str, Any]] = [{"event": "fixture_start", "fixture_only": True,
         "task_digest": task.content_hash, "budget_digest": controls["budget_digest"]}]
 
     callback_context: dict[str, Any] = {}
     if experiment_id == "Q3.1":
-        plans = (_freeze_and_capture(registry, task, callbacks, plan_callback, _three_branch_plan(_intervention(variant)), 3,
+        plans = (_freeze_and_capture(registry, task, callbacks, callback_responses, plan_callback, writer, _three_branch_plan(_intervention(variant)), 3,
                                      observation_ids=("shared-observation-1",)),)
         events.append({"event": "three_competing_mechanisms", "plan_ids": [plans[0].plan_id],
                        "shared_discriminator": "frozen-intervention", "branch_count": 3,
                        "focal_fixture_branch": variant})
     elif experiment_id == "Q3.2":
         if variant == "joint":
-            plans = (_freeze_and_capture(registry, task, callbacks, plan_callback, _three_branch_plan("joint-intervention"), 3,
+            plans = (_freeze_and_capture(registry, task, callbacks, callback_responses, plan_callback, writer, _three_branch_plan("joint-intervention"), 3,
                                          observation_ids=("joint-observation-1", "joint-observation-1", "joint-observation-1")),)
             evidence_layout = [{"hypothesis_id": branch.hypothesis_id, "observation_id": "joint-observation-1"} for branch in plans[0].branches]
         else:
             # Each arm is independently planned with the same total three-unit
             # budget.  A common control branch makes its distinct evidence use
             # explicit instead of allowing separate support searches to look joint.
-            plans = tuple(_freeze_and_capture(registry, task, callbacks, plan_callback, pair, 1,
+            plans = tuple(_freeze_and_capture(registry, task, callbacks, callback_responses, plan_callback, writer, pair, 1,
                                                observation_ids=(f"separate-observation-{index}",))
                           for index, pair in enumerate(_separate_pairs(), 1))
             evidence_layout = [{"plan_id": plan.plan_id, "observation_id": f"separate-observation-{index}"}
@@ -112,11 +119,11 @@ def run_prediction_scenario(
                        "evidence_layout": evidence_layout, "selection_bias_not_support": True})
     elif experiment_id == "Q5.2":
         if variant == "zero_exit_same_prediction":
-            rejected = _reject_non_discriminating(registry, task, callbacks, plan_callback, events)
+            rejected = _reject_non_discriminating(registry, task, callbacks, callback_responses, plan_callback, writer, events)
             report = _feasibility(task, rejected, "failed", "fixture-same-prediction-measurement")
             plans = ()
         else:
-            plan = _freeze_and_capture(registry, task, callbacks, plan_callback, _negative_control_pair(), 2)
+            plan = _freeze_and_capture(registry, task, callbacks, callback_responses, plan_callback, writer, _negative_control_pair(), 2)
             report = _feasibility(task, plan.payload, "passed", "fixture-negative-control-measurement")
             plans = (plan,)
         events.append({"event": "zero_exit_is_not_identifiability", "execution_status": "fixture_zero_exit",
@@ -128,7 +135,7 @@ def run_prediction_scenario(
         kept, removed = deduplicate_mechanism_predictions(proposals)
         title_kept, title_removed = deduplicate_titles(proposals)
         callback_context["dedup"] = {"kept": kept, "removed": removed, "title_baseline": {"kept": title_kept, "removed": title_removed}}
-        plan = _freeze_and_capture(registry, task, callbacks, plan_callback, branches, 2, context=callback_context)
+        plan = _freeze_and_capture(registry, task, callbacks, callback_responses, plan_callback, writer, branches, 2, context=callback_context)
         plans = (plan,)
         events.append({"event": "mechanism_prediction_dedup", "mode": variant, "kept": kept,
                        "removed": removed, "title_only_would_keep": [item["title"] for item in proposals],
@@ -141,20 +148,22 @@ def run_prediction_scenario(
         selected = select_claimed_diagnostic(selection_plan, policy, _diagnostics()).data()["diagnostic_id"]
         callback_context["diagnostic_selection"] = {"selected": selected, "policy_digest": policy.content_hash,
                                                        "claimed_plan_digest": selection_plan.content_hash}
-        plan = _freeze_and_capture(registry, task, callbacks, plan_callback, _negative_control_pair(), 2, context=callback_context)
+        plan = _freeze_and_capture(registry, task, callbacks, callback_responses, plan_callback, writer, _negative_control_pair(), 2, context=callback_context)
         plans = (plan,)
         events.append({"event": "internal_diagnostic_selection", "mode": variant, "selected": selected,
                        "outer_queue": {"policy": "FIFO", "position": 7, "changed": False},
                        "selection_scope": "within_already_claimed_research_item"})
 
-    callback_responses = tuple(_response_record(plan_callback(payload)) for payload in callbacks) if plan_callback else ()
     _record_unknown_outcomes(registry, plans, callbacks, events)
     record = FrozenRecord.from_dict({"fixture_only": True, "experiment_id": experiment_id, "variant": variant,
         "task_digest": task.content_hash, "budget_digest": controls["budget_digest"],
         "plan_ids": [plan.plan_id for plan in plans], "callback_payload_digests": [item.content_hash for item in callbacks],
         "callback_response_digests": [item.content_hash for item in callback_responses],
         "limitation": "mechanism fixture only; it does not measure benchmark efficacy or scientific validity"})
-    return PredictionScenarioResult(experiment_id, variant, tuple(callbacks), FrozenRecord.from_dict({"events": events}), record, callback_responses)
+    trace = FrozenRecord.from_dict({"events": events})
+    writer.trace(trace); writer.outcome(record); writer.close(record)
+    verify_prediction_scenario_artifacts(artifact_root, task=task, controls=frozen_controls, experiment_id=experiment_id, variant=variant)
+    return PredictionScenarioResult(experiment_id, variant, tuple(callbacks), trace, record, tuple(callback_responses))
 
 
 def _controls(task: PublicTask, frozen: FrozenRecord) -> dict[str, Any]:
@@ -165,15 +174,22 @@ def _controls(task: PublicTask, frozen: FrozenRecord) -> dict[str, Any]:
     return controls
 
 
-def _freeze_and_capture(registry: PredictionRegistry, task: PublicTask, captured: list[FrozenRecord],
+def _freeze_and_capture(registry: PredictionRegistry, task: PublicTask, captured: list[FrozenRecord], responses: list[FrozenRecord],
                         callback: Callable[[FrozenRecord], Mapping[str, str] | None] | None,
-                        branches: Sequence[Mapping[str, Any]], budget: int, observation_ids: tuple[str, ...] = (), context: Mapping[str, Any] | None = None) -> PredictionPlan:
+                        writer: PredictionScenarioArtifactWriter, branches: Sequence[Mapping[str, Any]], budget: int, observation_ids: tuple[str, ...] = (), context: Mapping[str, Any] | None = None) -> PredictionPlan:
     plan = freeze_shared_experiment(registry, _question(task), branches, budget_units=budget)
     for observation_id in observation_ids or ("fixture-observation",):
-        captured.append(FrozenRecord.from_dict({"schema": "prediction-scenario-plan-v1", "fixture_only": True,
+        payload = FrozenRecord.from_dict({"schema": "prediction-scenario-plan-v1", "fixture_only": True,
             "task": task.data(), "plan": plan.payload.data(), "plan_id": plan.plan_id,
             "observation_id": observation_id, "call_id": f"{plan.plan_id[:12]}-{len(captured)+1}",
-            "scenario_context": dict(context or {})}))
+            "scenario_context": dict(context or {})})
+        captured.append(payload); writer.plan(payload); writer.callback_request(payload)
+        try:
+            raw = callback(payload) if callback else None
+            response = _response_record(raw); writer.callback_return(raw, response)
+        except Exception as exc:
+            writer.callback_failure(exc); writer.close(None, exc); raise
+        responses.append(response)
     return plan
 
 
@@ -206,7 +222,7 @@ def _same_prediction_pair() -> list[dict[str, Any]]:
             _branch("alternative", "separate-title", "different title with same prediction", "fixed intervention", "positive")]
 
 
-def _reject_non_discriminating(registry: PredictionRegistry, task: PublicTask, captured: list[FrozenRecord], callback, events: list[dict[str, Any]]) -> FrozenRecord:
+def _reject_non_discriminating(registry: PredictionRegistry, task: PublicTask, captured: list[FrozenRecord], responses: list[FrozenRecord], callback, writer: PredictionScenarioArtifactWriter, events: list[dict[str, Any]]) -> FrozenRecord:
     """Exercise M4's actual rejection of a plan whose predictions are identical."""
     try:
         freeze_shared_experiment(registry, _question(task), _same_prediction_pair(), budget_units=2)
@@ -216,7 +232,12 @@ def _reject_non_discriminating(registry: PredictionRegistry, task: PublicTask, c
             "task": task.data(), "m4_decision": "rejected", "rejection_reason": str(exc),
             "plan_request": {"question": _question(task), "branches": _same_prediction_pair(), "budget_units": 2},
             "observation_id": "fixture-same-prediction-measurement"})
-        captured.append(payload)
+        captured.append(payload); writer.plan(payload); writer.callback_request(payload)
+        try:
+            raw = callback(payload) if callback else None; response = _response_record(raw); writer.callback_return(raw, response)
+        except Exception as exc:
+            writer.callback_failure(exc); writer.close(None, exc); raise
+        responses.append(response)
         return payload
     raise ContractError("fixture non-discriminating plan was unexpectedly admitted")
 
