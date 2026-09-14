@@ -1,5 +1,11 @@
 # Grok CLI transport and subscription accounting
 
+On 2026-09-14, separate authless `inspect --json` commands completed for the
+installed 1.0.13 and staged 1.0.30 binaries. Both reported the isolated config
+and no external discovered context; authenticated remote settings were not
+loaded. This is a configuration-discovery observation, not generation readiness.
+Exact outputs and limits are in [the inspection record](../results/modular-engineering-20260914/grok-authless-inspect-r1/FINDING.md).
+
 The user permits the existing Grok CLI `grok-4.6` and permits no additional API
 fees. The implementation must use the included subscription route, refresh
 account metadata before each prompt, and fail without retry or purchase when
