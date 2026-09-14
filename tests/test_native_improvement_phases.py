@@ -81,11 +81,13 @@ def test_unknown_native_history_or_target_retains_complete_state_denominator(tmp
         assert not run.ledger.verify().data()['score_eligible']
 
 
-@pytest.mark.parametrize('boundary',['build','target'])
-def test_original_response_substitution_blocks_all_later_work_and_closes_owned_scorers(tmp_path,monkeypatch,boundary):
-    module,setup=prepare_native(tmp_path,monkeypatch,'state')
-    controller=importlib.import_module('research_loop.modular.state_improvement_combination_controller')
-    original_build=controller.run_build;original_target=controller.run_state_improvement_cell
+@pytest.mark.parametrize('family,boundary',[
+    ('state','build'),('state','target'),('mechanism','build'),
+    ('execution','build'),('lineage_retrieval','build')])
+def test_original_response_substitution_blocks_all_later_work_and_closes_owned_scorers(tmp_path,monkeypatch,family,boundary):
+    module,setup=prepare_native(tmp_path,monkeypatch,family)
+    controller=importlib.import_module('research_loop.modular.'+family+'_improvement_combination_controller')
+    original_build=controller.run_build
     def corrupt_call(number):
         slot='builder_proposal' if number==1 else 'analysis_program'
         path=setup['port'].backend.calls_root/f'{number:04d}-{slot}'/'response.private.json'
@@ -95,6 +97,7 @@ def test_original_response_substitution_blocks_all_later_work_and_closes_owned_s
             result=original_build(**kwargs);corrupt_call(1);return result
         monkeypatch.setattr(controller,'run_build',build)
     else:
+        original_target=controller.run_state_improvement_cell
         def target(**kwargs):
             result=original_target(**kwargs);corrupt_call(12);return result
         monkeypatch.setattr(controller,'run_state_improvement_cell',target)
@@ -112,9 +115,11 @@ def test_original_response_substitution_blocks_all_later_work_and_closes_owned_s
         # Cleanup after assertion only; it cannot make the ownership assertion pass.
         for service in owned:service.close()
     b=run.receipt.data();expected_calls=1 if boundary=='build' else 13
+    _,_,builds,targets,_=FAMILIES[family]
     assert type(run.ledger) is PhaseProviderAbort and b['provider_provenance_failed']
-    assert b['expected_builds']==11 and b['expected_cells']==22 and len(b['structural_exclusions'])==2
-    assert b['blocked_cells']==(22 if boundary=='build' else 21)
+    assert b['expected_builds']==builds and b['expected_cells']==targets
+    assert len(b['structural_exclusions'])==(2 if family=='state' else 0)
+    assert b['blocked_cells']==(targets if boundary=='build' else targets-1)
     assert b['failed_cells']==(0 if boundary=='build' else 1)
     assert b['actual_scorer_calls']==b['scored_cells']==0 and b['unused_model_opportunities'] is None
     assert b['actual_model_usage']['observed_main_opportunities_lower_bound']==expected_calls
