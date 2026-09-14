@@ -160,12 +160,12 @@ class TrainPacketExporter:
         csv_bytes = data.read_bytes()
         task = prepare_primary_public_task(identity, row, raw, csv_bytes)
         destination = self.output_root / identity.benchmark / digest(identity.data())
-        destination.mkdir(parents=True, exist_ok=False)
         csv_target = destination / "data.csv"
-        csv_target.write_bytes(csv_bytes)
         receipt = FrozenRecord.from_dict({"identity": identity.data(), "source_group": identity.group_id, "official_split": row["official_split"], "split_digest": split_digest, "csv_sha256": _sha(data), "packet_hash": task.content_hash})
         if source_selector is not None:
             receipt = FrozenRecord.from_dict({**receipt.data(), "source_selector": source_selector})
         packet_path = destination / "public.json"
-        packet_path.write_text(canonical({"task": task.data(), "receipt": receipt.data()}), encoding="utf-8")
+        from evaluation.modular.legacy_primary_packet_artifacts import write
+        anchor={'source_group':identity.group_id,'official_split':row['official_split'],'split_digest':split_digest,'csv_source_sha256':_sha(data)}
+        write(destination,task,anchor,csv_bytes,canonical({"task":task.data(),"receipt":receipt.data()}).encode('utf-8'))
         return PublicTrainPacket(task, packet_path, csv_target, receipt)
