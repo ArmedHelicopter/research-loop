@@ -1,0 +1,959 @@
+{
+  "schema": "fixture-builder-committed-verification-v1",
+  "head": "0009c3d29036bb40aadcc53c24c59062fc8b0b0b",
+  "git_disk_staging_identical": true,
+  "files": [
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/.gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r1-before.json",
+      "bytes": 81995,
+      "sha256": "9fa0828e201e5fb49c6d36ae62f7cbd8f4ab874b5e35856bc7fd691c5ed19f07"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r1-closed.json",
+      "bytes": 82034,
+      "sha256": "7edd3a7f762ac5c3f3b3af03540ec4bd4e4af1b4f705da544b63ee9f58bfd317"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r1-source-members.json",
+      "bytes": 122641,
+      "sha256": "6d12d6db13d318a9e268051d25601d03c82292954a1be097357f31f206788325"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r1-sources.zip",
+      "bytes": 2295273,
+      "sha256": "1ac0f09baeec0fe795562765d86dca24f7fecdd94c01c740f027835e13b5baef"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r1-watchdog-config.json",
+      "bytes": 854,
+      "sha256": "8e50a460ff0484e84034678f2d4e07b3b220572f42e05d94bd6d02e1c49f4822"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r1-watchdog.json",
+      "bytes": 258,
+      "sha256": "a7704d3731c57a5d5419b350ded535d4576415ae007c6b0b21504dd5b514d7dd"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r1.xml",
+      "bytes": 12979,
+      "sha256": "fd49421981ec044991fae2dde04e2782945958a5e8fac7d2a59ccbafdc7921b5"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r2-before.json",
+      "bytes": 81995,
+      "sha256": "2952a323b0709027c21597560274aa68559cd304e126a3207e5e58cff98e7cda"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r2-closed.json",
+      "bytes": 82034,
+      "sha256": "d33bcda3c88bde367e86df318807beca170df7def5ad5bc722a55399be203b63"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r2-source-members.json",
+      "bytes": 122642,
+      "sha256": "b686fb776846e27d0504313c9e546d54b304d354ad9d92641097c41b0f317fe9"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r2-sources.zip",
+      "bytes": 2296457,
+      "sha256": "c72b668492ef74e213ce296432e078d6d35d3a44d18cb4b9b57ce7021b02410b"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r2-watchdog-config.json",
+      "bytes": 854,
+      "sha256": "91b2312c1ce9a1f20566b61830fd8646c9fa6e1585630ab79c514c6283059e6c"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r2-watchdog.json",
+      "bytes": 258,
+      "sha256": "6ca6f84dcf85ac2228c02ec7a01911a5e24adefa220ae552c2937bba605d1461"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/checks/fixture-builder-artifacts-r2.xml",
+      "bytes": 13280,
+      "sha256": "bff8596d8734797d8b21c052e480c61082e4141cb3d9e76a61d724fcef7f74a0"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre0/run/builder.json",
+      "bytes": 96,
+      "sha256": "8c4c0ec57ece6bcc2b92873274a7b2f06327754a6417fe63a47ff173e0dfd928"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre0/run/fixture-artifacts.jsonl",
+      "bytes": 15480,
+      "sha256": "b2a931f7751eb7db436e954ad90aaffcf8013227081700dd6c19d286e02ec395"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre0/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 294,
+      "sha256": "9e37c899fb1c639d4c9a45a11b5e2a04c27e1d85f49cdf76826c4e125aeb3c3e"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre0/run/fixture-closure.json",
+      "bytes": 903,
+      "sha256": "6f2ebdf05a3d5bbb34fe231a038faea5bdc5e61278f000989cd55ef4582a47d6"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre0/run/fixture-terminal.json",
+      "bytes": 412,
+      "sha256": "911592910c5d9d55b15ccbcbfffc1f05d025fe24c7a891241472bf6d4c17fa4d"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre0/run/m9-build-terminal.json",
+      "bytes": 723,
+      "sha256": "47f0575c17db799d25b93031899ddae96f3ba452dbf89d1e1243235d77ff9ae9"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre1/run/builder.json",
+      "bytes": 104,
+      "sha256": "34ce4f50f7fc6ad6fbb73f385a63b8ac1cfba85c5647157df5fc1a0839022650"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre1/run/builders.sqlite",
+      "bytes": 24576,
+      "sha256": "09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre1/run/fixture-artifacts.jsonl",
+      "bytes": 27210,
+      "sha256": "999abfae8bb783975432c315dc8b78ff01bba229b5586d48a713ee721822fbc3"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre1/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 304,
+      "sha256": "1ff03ab451e6cad9b53edfa9536b21480fce673f2ddf76f58ed8fe12c67d9b75"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre1/run/fixture-blobs/09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234",
+      "bytes": 24576,
+      "sha256": "09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre1/run/fixture-blobs/bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b",
+      "bytes": 24576,
+      "sha256": "bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre1/run/fixture-closure.json",
+      "bytes": 1370,
+      "sha256": "e5a0dbf76c4e7e077f5ceb2e950f5d97e5645077f4c7e4fe56b0d1088d8d4a42"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre1/run/fixture-terminal.json",
+      "bytes": 869,
+      "sha256": "07cfef73562150b464a644eca919d1cc0688cb43ab37d616207757cfc95d7c39"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre1/run/m9-build-terminal.json",
+      "bytes": 728,
+      "sha256": "6201fe1235915cacee187e524736af4ef477f3f7fdfa9241f1b8fbda388754dd"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre2/run/builder-receipt.json",
+      "bytes": 539,
+      "sha256": "c9296dd25d0df9ccf717ae69ed97971ebec2b80341d0c468d0155a4bbacc6e20"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre2/run/builder.json",
+      "bytes": 96,
+      "sha256": "8c4c0ec57ece6bcc2b92873274a7b2f06327754a6417fe63a47ff173e0dfd928"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre2/run/candidate.json",
+      "bytes": 441,
+      "sha256": "95fa15c9eaa933fe6edb18fda2f269c6c36ee2b86015239e98cd88403e2f4675"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre2/run/fixture-artifacts.jsonl",
+      "bytes": 24560,
+      "sha256": "70162a0c2112a7f6e4161e74bc9ddf3735750c483bed7c2664ce3fb7923626ca"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre2/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "c2a4666017d27601ec8e77cb6638344a3713b0cc64eccf9ef23bfa05ec9d21b3"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre2/run/fixture-closure.json",
+      "bytes": 1247,
+      "sha256": "d040c75768ef4d5c5967526da9f1a5c862db287f5e7c80c817f2da641c423d11"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre2/run/fixture-terminal.json",
+      "bytes": 755,
+      "sha256": "841cde49d86e5f137f568e12555f8b2a579c354531c29cc0ade732b8835e5eae"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre2/run/m9-build-terminal.json",
+      "bytes": 3250,
+      "sha256": "7679b5566bf25625798634e52481bbb8463f9f6cd9e34a652bd4f720726c51ca"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre2/run/m9-builder-return.json",
+      "bytes": 1075,
+      "sha256": "64204dabfa07212eeda155ade7dd818ab9e042f14b98fd2c8f5eeb95551897e1"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre3/run/builder-receipt.json",
+      "bytes": 547,
+      "sha256": "c8e5f600d91b691076f4b56e6efc2b319972f770a6974bd3f864a6ff1e9a935f"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre3/run/builder.json",
+      "bytes": 104,
+      "sha256": "34ce4f50f7fc6ad6fbb73f385a63b8ac1cfba85c5647157df5fc1a0839022650"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre3/run/builders.sqlite",
+      "bytes": 24576,
+      "sha256": "09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre3/run/candidate.json",
+      "bytes": 449,
+      "sha256": "832b788cbf0a3728de66a92d5fc433f62e74bff356b3ec3bafc6baebe7f1f4e1"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre3/run/fixture-artifacts.jsonl",
+      "bytes": 36375,
+      "sha256": "c9c5532fce3d9a3298cee45e5f32cf65fb045c1037faa9a3c4b4b3220b263ea1"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre3/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 304,
+      "sha256": "4badc0a7e1577a670199ca759e2e886fb670d4f06545ff482464c4005a83f679"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre3/run/fixture-blobs/09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234",
+      "bytes": 24576,
+      "sha256": "09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre3/run/fixture-blobs/bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b",
+      "bytes": 24576,
+      "sha256": "bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre3/run/fixture-closure.json",
+      "bytes": 1714,
+      "sha256": "67a0408dfad7cf1e40ef013b5c55237a1c251b077046d817045fe0693808985b"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre3/run/fixture-terminal.json",
+      "bytes": 1212,
+      "sha256": "45bce7cdce7b31c28dede8898c4d7b6b333e15c32a7e790439982c2beab8caa9"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre3/run/m9-build-terminal.json",
+      "bytes": 3287,
+      "sha256": "39e030b4cd9098e228a02167cefa7cd3233bb1934e8f04231aea5ea2314453da"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre3/run/m9-builder-return.json",
+      "bytes": 1091,
+      "sha256": "3acc21597c547bd3c90442e708c93e5eaf48cbaa20071a07ae73156f9c7b46a7"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre4/run/fixture-artifacts.jsonl",
+      "bytes": 6175,
+      "sha256": "6490986f5dad1a7e0577510dfcc499efcc5ec4dc8d5afd68f4246810be7d074e"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre4/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 294,
+      "sha256": "1071f198e4264eebfc1c21007478efbb14b3ea9b0c4e6042a52dd48f554eff93"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre4/run/fixture-closure.json",
+      "bytes": 683,
+      "sha256": "31fbf31d8c46d2cf48e38ad887bb5d2210b78be55d49b23741a57003b209dabb"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre4/run/fixture-terminal.json",
+      "bytes": 192,
+      "sha256": "051463e698211a727fb48304bba53c5ab50083b166b853f052ea1250b1747eb8"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre5/run/fixture-artifacts.jsonl",
+      "bytes": 6275,
+      "sha256": "f112c789d8600c9c40642b5434a27f5012c7f97ef1191fd35037c3f0cd126eec"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre5/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 303,
+      "sha256": "9931f2edc4b01250535600e4a0c6a08e05fe8966957cbb9437174d2ffb633dbd"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre5/run/fixture-closure.json",
+      "bytes": 692,
+      "sha256": "7c49ef75201958e66b915541597b5d1b32f299fb900829d30764e91281dcb82f"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_failed_fixture_pre5/run/fixture-terminal.json",
+      "bytes": 192,
+      "sha256": "051463e698211a727fb48304bba53c5ab50083b166b853f052ea1250b1747eb8"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw0/run/builder-receipt.json",
+      "bytes": 539,
+      "sha256": "c9296dd25d0df9ccf717ae69ed97971ebec2b80341d0c468d0155a4bbacc6e20"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw0/run/builder.json",
+      "bytes": 96,
+      "sha256": "8c4c0ec57ece6bcc2b92873274a7b2f06327754a6417fe63a47ff173e0dfd928"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw0/run/candidate.json",
+      "bytes": 441,
+      "sha256": "95fa15c9eaa933fe6edb18fda2f269c6c36ee2b86015239e98cd88403e2f4675"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw0/run/fixture-artifacts.jsonl",
+      "bytes": 27579,
+      "sha256": "7a065558c0d58a27d0dd3a78c2ded7314cad7d85e2c1bee5d10a87484215b368"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw0/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "2830033c9982fda2f718ee3758d76a008f9e0061a2f9ae41541a02b42448cf54"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw0/run/fixture-closure.json",
+      "bytes": 1391,
+      "sha256": "a9f4f667706d9d96c5d78231cc880f2b6cabc4a01313ad0a46d9a8ad9cf5ee1e"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw0/run/fixture-result.json",
+      "bytes": 1515,
+      "sha256": "dc3cef3e6b2eee13565960bb98f9bc0d2b1ddf9725064921e8970f36d0cd814d"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw0/run/fixture-terminal.json",
+      "bytes": 899,
+      "sha256": "12ba9e040b94002fb2b1e8be7c9dbe3ce28dd78a5f4b900aa0cb632f5dede76c"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw0/run/m9-build-terminal.json",
+      "bytes": 3211,
+      "sha256": "81e3f5edb1a9ae07be4cdb35868996f22091bd61c50969865a6ff381ba6dc7d0"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw0/run/m9-builder-return.json",
+      "bytes": 1075,
+      "sha256": "64204dabfa07212eeda155ade7dd818ab9e042f14b98fd2c8f5eeb95551897e1"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw1/run/builder-receipt.json",
+      "bytes": 547,
+      "sha256": "c8e5f600d91b691076f4b56e6efc2b319972f770a6974bd3f864a6ff1e9a935f"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw1/run/builder.json",
+      "bytes": 104,
+      "sha256": "34ce4f50f7fc6ad6fbb73f385a63b8ac1cfba85c5647157df5fc1a0839022650"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw1/run/builders.sqlite",
+      "bytes": 24576,
+      "sha256": "09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw1/run/candidate.json",
+      "bytes": 449,
+      "sha256": "832b788cbf0a3728de66a92d5fc433f62e74bff356b3ec3bafc6baebe7f1f4e1"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw1/run/fixture-artifacts.jsonl",
+      "bytes": 39521,
+      "sha256": "a6bc4e1f97d9a559d37aa98a1392ad0388715b00eb7cd0a695edc703174599d9"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw1/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 304,
+      "sha256": "ef40991261eced575ce33b1992e90d2c23d2ca4b7613fb7a7bf6df924c4a284b"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw1/run/fixture-blobs/09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234",
+      "bytes": 24576,
+      "sha256": "09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw1/run/fixture-blobs/bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b",
+      "bytes": 24576,
+      "sha256": "bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw1/run/fixture-closure.json",
+      "bytes": 1858,
+      "sha256": "b8780668d87abcab5b02fe126119a90e9bc4a53e57d6432531e4625a60751b60"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw1/run/fixture-result.json",
+      "bytes": 1637,
+      "sha256": "0ddbf23d1f543fca18785a7cdecef949c3b47fc768a7cfab71363bb15608587e"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw1/run/fixture-terminal.json",
+      "bytes": 1356,
+      "sha256": "032c91ecec724f622a547424d11035e80b2d8702849bca4319b40c639a6fd8ee"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw1/run/m9-build-terminal.json",
+      "bytes": 3248,
+      "sha256": "d881f98df94a4de47f7c6a0ee47aaaca2038c19367af6e1711aea633a8d552e5"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_actual_fixture_records_tw1/run/m9-builder-return.json",
+      "bytes": 1091,
+      "sha256": "3acc21597c547bd3c90442e708c93e5eaf48cbaa20071a07ae73156f9c7b46a7"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_invalid_original_proposal0/run/fixture-artifacts.jsonl",
+      "bytes": 10033,
+      "sha256": "33751cdb721d2b03cc3dc61a8102824af0915191f451ddbc6790909ace20168c"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_invalid_original_proposal0/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 303,
+      "sha256": "01fec7375c08fd267316a787aefea84dcff34e36834015bfb9e0d2982d51a8b4"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_invalid_original_proposal0/run/fixture-closure.json",
+      "bytes": 842,
+      "sha256": "16937534a064fa74e97c1368098a16aa7efbd6361c364f80ba5a312e588369e8"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_invalid_original_proposal0/run/fixture-result.json",
+      "bytes": 842,
+      "sha256": "cad8d370eb14a4b7a24da1d153853ff428e9fd764b2c43cf58693bd914453e58"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r1/test_invalid_original_proposal0/run/fixture-terminal.json",
+      "bytes": 342,
+      "sha256": "5e2833c42d87e94da2a18eea8669459b7463ce08dc0911e83ca122bdaac22a58"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre0/run/builder.json",
+      "bytes": 96,
+      "sha256": "8c4c0ec57ece6bcc2b92873274a7b2f06327754a6417fe63a47ff173e0dfd928"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre0/run/fixture-artifacts.jsonl",
+      "bytes": 15480,
+      "sha256": "fc75b13814e45824d07bd14ace904a5eeecf09127dccba5746a874b912dde59a"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre0/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 294,
+      "sha256": "2496b94034684c7eed88cabc09d28e5a323cf70c19f4afc4d71b8b88c6890d0e"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre0/run/fixture-closure.json",
+      "bytes": 903,
+      "sha256": "c95d1e7d7673adc1acbd010425f0ae090667acd1b0a156f5fd6386ec0f781601"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre0/run/fixture-terminal.json",
+      "bytes": 412,
+      "sha256": "911592910c5d9d55b15ccbcbfffc1f05d025fe24c7a891241472bf6d4c17fa4d"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre0/run/m9-build-terminal.json",
+      "bytes": 723,
+      "sha256": "47f0575c17db799d25b93031899ddae96f3ba452dbf89d1e1243235d77ff9ae9"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre1/run/builder.json",
+      "bytes": 104,
+      "sha256": "34ce4f50f7fc6ad6fbb73f385a63b8ac1cfba85c5647157df5fc1a0839022650"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre1/run/builders.sqlite",
+      "bytes": 24576,
+      "sha256": "09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre1/run/fixture-artifacts.jsonl",
+      "bytes": 27210,
+      "sha256": "125352b451fdad3b417ea8724c89794d238e9a854b8ba1cafcd816c575571941"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre1/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 304,
+      "sha256": "f6aeb392a6783900cbffd85b1450e1fbfc24b53550dfd904e4ada1d0b3d26cf9"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre1/run/fixture-blobs/09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234",
+      "bytes": 24576,
+      "sha256": "09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre1/run/fixture-blobs/bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b",
+      "bytes": 24576,
+      "sha256": "bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre1/run/fixture-closure.json",
+      "bytes": 1370,
+      "sha256": "74e9004f104a028cc04e92d1ee9a3ec32d6cb1a7cccca4a63c269dccd732c508"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre1/run/fixture-terminal.json",
+      "bytes": 869,
+      "sha256": "07cfef73562150b464a644eca919d1cc0688cb43ab37d616207757cfc95d7c39"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre1/run/m9-build-terminal.json",
+      "bytes": 728,
+      "sha256": "6201fe1235915cacee187e524736af4ef477f3f7fdfa9241f1b8fbda388754dd"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre2/run/builder-receipt.json",
+      "bytes": 539,
+      "sha256": "c9296dd25d0df9ccf717ae69ed97971ebec2b80341d0c468d0155a4bbacc6e20"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre2/run/builder.json",
+      "bytes": 96,
+      "sha256": "8c4c0ec57ece6bcc2b92873274a7b2f06327754a6417fe63a47ff173e0dfd928"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre2/run/candidate.json",
+      "bytes": 441,
+      "sha256": "95fa15c9eaa933fe6edb18fda2f269c6c36ee2b86015239e98cd88403e2f4675"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre2/run/fixture-artifacts.jsonl",
+      "bytes": 24560,
+      "sha256": "a25572c30d7e7c4bf470c84497cde9f9e9c2aad0dbf66764689bd769553546e4"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre2/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "cf2abe5ff5dfa3b7a164f5d3bbe8ca65e61219b5b2e27cb4421bf652fb8f6763"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre2/run/fixture-closure.json",
+      "bytes": 1247,
+      "sha256": "cc470af048af9ddd67dd11c659285ee19d7c83b5d9cacef1205db1144f331822"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre2/run/fixture-terminal.json",
+      "bytes": 755,
+      "sha256": "841cde49d86e5f137f568e12555f8b2a579c354531c29cc0ade732b8835e5eae"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre2/run/m9-build-terminal.json",
+      "bytes": 3250,
+      "sha256": "7679b5566bf25625798634e52481bbb8463f9f6cd9e34a652bd4f720726c51ca"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre2/run/m9-builder-return.json",
+      "bytes": 1075,
+      "sha256": "64204dabfa07212eeda155ade7dd818ab9e042f14b98fd2c8f5eeb95551897e1"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre3/run/builder-receipt.json",
+      "bytes": 547,
+      "sha256": "c8e5f600d91b691076f4b56e6efc2b319972f770a6974bd3f864a6ff1e9a935f"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre3/run/builder.json",
+      "bytes": 104,
+      "sha256": "34ce4f50f7fc6ad6fbb73f385a63b8ac1cfba85c5647157df5fc1a0839022650"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre3/run/builders.sqlite",
+      "bytes": 24576,
+      "sha256": "09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre3/run/candidate.json",
+      "bytes": 449,
+      "sha256": "832b788cbf0a3728de66a92d5fc433f62e74bff356b3ec3bafc6baebe7f1f4e1"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre3/run/fixture-artifacts.jsonl",
+      "bytes": 36375,
+      "sha256": "766e98a90a23f6b01a3c5c327335fe2a3e476dbb0233d6474684fccea5c1e73f"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre3/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 304,
+      "sha256": "c02a64f93096b1194613b9d1387467f7a6b258ec462111d188613e3feddbe00b"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre3/run/fixture-blobs/09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234",
+      "bytes": 24576,
+      "sha256": "09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre3/run/fixture-blobs/bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b",
+      "bytes": 24576,
+      "sha256": "bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre3/run/fixture-closure.json",
+      "bytes": 1714,
+      "sha256": "5ed5fc989716cb148156be2778189ba0595865e6a67c0a5fea0f86b0887e17cb"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre3/run/fixture-terminal.json",
+      "bytes": 1212,
+      "sha256": "45bce7cdce7b31c28dede8898c4d7b6b333e15c32a7e790439982c2beab8caa9"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre3/run/m9-build-terminal.json",
+      "bytes": 3287,
+      "sha256": "39e030b4cd9098e228a02167cefa7cd3233bb1934e8f04231aea5ea2314453da"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre3/run/m9-builder-return.json",
+      "bytes": 1091,
+      "sha256": "3acc21597c547bd3c90442e708c93e5eaf48cbaa20071a07ae73156f9c7b46a7"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre4/run/fixture-artifacts.jsonl",
+      "bytes": 6175,
+      "sha256": "605290aff7be11b5a458f5c9def893c1731eb0d9db6e33b1aab39940867cab6a"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre4/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 294,
+      "sha256": "638ec6efef32657fb6f7f7c5da81ae5487e397282b14f111b7625c3414fe0523"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre4/run/fixture-closure.json",
+      "bytes": 683,
+      "sha256": "6d6a383ab59bb63ec7a76ee9eba8bca9385201b65b9396c5ee25e4f385b0596d"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre4/run/fixture-terminal.json",
+      "bytes": 192,
+      "sha256": "051463e698211a727fb48304bba53c5ab50083b166b853f052ea1250b1747eb8"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre5/run/fixture-artifacts.jsonl",
+      "bytes": 6275,
+      "sha256": "1f99070d8822629a8f7856de05a7f9c11a03d157a6307fb5a34bdabd8a5ebbd1"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre5/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 303,
+      "sha256": "b8c50b56b2d35fbc6dcb6c74b4717d81ab455e2e57e39a78c9c868e5ad97f52b"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre5/run/fixture-closure.json",
+      "bytes": 692,
+      "sha256": "4aa7d908cf6dbea72fa99cf8fcb16fff1349f12dd89e672a9073f19846956938"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_failed_fixture_pre5/run/fixture-terminal.json",
+      "bytes": 192,
+      "sha256": "051463e698211a727fb48304bba53c5ab50083b166b853f052ea1250b1747eb8"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw0/run/builder-receipt.json",
+      "bytes": 539,
+      "sha256": "c9296dd25d0df9ccf717ae69ed97971ebec2b80341d0c468d0155a4bbacc6e20"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw0/run/builder.json",
+      "bytes": 96,
+      "sha256": "8c4c0ec57ece6bcc2b92873274a7b2f06327754a6417fe63a47ff173e0dfd928"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw0/run/candidate.json",
+      "bytes": 441,
+      "sha256": "95fa15c9eaa933fe6edb18fda2f269c6c36ee2b86015239e98cd88403e2f4675"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw0/run/fixture-artifacts.jsonl",
+      "bytes": 27579,
+      "sha256": "7a3d498c758e0a5b34c52feb83ec2a94b0a0805ac569d6cebed37d87bf14f354"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw0/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 295,
+      "sha256": "ea537bee20dc604a22d42891ec34caeeb77a7dd67ecfbcda2c8e84e239f15fd3"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw0/run/fixture-closure.json",
+      "bytes": 1391,
+      "sha256": "edb9dad018bbbc03042b7d6b8f047e34ff4027660967347fd39be5fb8c85bd2a"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw0/run/fixture-result.json",
+      "bytes": 1515,
+      "sha256": "692d0086f2741e869f000c173be3a005f4a7b4cab695873fde70127f5d46160f"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw0/run/fixture-terminal.json",
+      "bytes": 899,
+      "sha256": "52abec0b4463bd04160758ee3008f355705e5696b45159d7450d2563a1a443cb"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw0/run/m9-build-terminal.json",
+      "bytes": 3211,
+      "sha256": "81e3f5edb1a9ae07be4cdb35868996f22091bd61c50969865a6ff381ba6dc7d0"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw0/run/m9-builder-return.json",
+      "bytes": 1075,
+      "sha256": "64204dabfa07212eeda155ade7dd818ab9e042f14b98fd2c8f5eeb95551897e1"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw1/run/builder-receipt.json",
+      "bytes": 547,
+      "sha256": "c8e5f600d91b691076f4b56e6efc2b319972f770a6974bd3f864a6ff1e9a935f"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw1/run/builder.json",
+      "bytes": 104,
+      "sha256": "34ce4f50f7fc6ad6fbb73f385a63b8ac1cfba85c5647157df5fc1a0839022650"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw1/run/builders.sqlite",
+      "bytes": 24576,
+      "sha256": "09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw1/run/candidate.json",
+      "bytes": 449,
+      "sha256": "832b788cbf0a3728de66a92d5fc433f62e74bff356b3ec3bafc6baebe7f1f4e1"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw1/run/fixture-artifacts.jsonl",
+      "bytes": 39521,
+      "sha256": "1c2e7ac24866f1d2f84ce7893de3169de15bb98ba6f290275053ef522156cddd"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw1/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 304,
+      "sha256": "c72b240cf0a0400988f4d12e7e3b30d5b2ad34980b95f58a4517b2d09b10e35c"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw1/run/fixture-blobs/09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234",
+      "bytes": 24576,
+      "sha256": "09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw1/run/fixture-blobs/bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b",
+      "bytes": 24576,
+      "sha256": "bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw1/run/fixture-closure.json",
+      "bytes": 1858,
+      "sha256": "5bcc8ece92871b53f1d7744ae3e00eed90e01d64f056a1addde12a3fef86cb9b"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw1/run/fixture-result.json",
+      "bytes": 1637,
+      "sha256": "b6a03750f5fe9a14043ebbe41e340e9b8fb55343ccb55c03b32f22905f450434"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw1/run/fixture-terminal.json",
+      "bytes": 1356,
+      "sha256": "4f83a855d0e4c4efab35edee9f6acc3940d88f804b832f063ab49c57da04b601"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw1/run/m9-build-terminal.json",
+      "bytes": 3248,
+      "sha256": "d881f98df94a4de47f7c6a0ee47aaaca2038c19367af6e1711aea633a8d552e5"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_actual_fixture_records_tw1/run/m9-builder-return.json",
+      "bytes": 1091,
+      "sha256": "3acc21597c547bd3c90442e708c93e5eaf48cbaa20071a07ae73156f9c7b46a7"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_failure_after_registry_co0/run/builders.sqlite",
+      "bytes": 24576,
+      "sha256": "09c383bfd6109ba21de0d2ccbc2d70b5931ee0ff2572463964acf8c053337234"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_failure_after_registry_co0/run/fixture-artifacts.jsonl",
+      "bytes": 16993,
+      "sha256": "ffef5e0b0c5465358efcb738edfc7d1a6e70845c110c92b19500834148c62796"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_failure_after_registry_co0/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 303,
+      "sha256": "ad3906f29794e41ff70da572ac64297b82baa81d56aca754ea96455f2683c2bb"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_failure_after_registry_co0/run/fixture-blobs/bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b",
+      "bytes": 24576,
+      "sha256": "bfa75c3e2d5e8ef0812811489c150f3202f184335fb8f17c7d853a2cbf3a7f6b"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_failure_after_registry_co0/run/fixture-closure.json",
+      "bytes": 994,
+      "sha256": "833a5f30f0d4a116364fb9535c0dff624a2c997e083025b35d3dc5560d8fccfb"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_failure_after_registry_co0/run/fixture-terminal.json",
+      "bytes": 494,
+      "sha256": "6302e766d915f217ec7009bf083dd26d176a7cbe50f187d18bd7a4e7d189ebad"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_invalid_original_proposal0/run/fixture-artifacts.jsonl",
+      "bytes": 10033,
+      "sha256": "8f06b13bd30fe8900d7bac17464432f231879ff82d724f902e941742d4f156ba"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_invalid_original_proposal0/run/fixture-artifacts.jsonl.seal.json",
+      "bytes": 303,
+      "sha256": "b1b36650192441f02b2e8fe17ed3f7601d77a3e99de9e7ac43f6d9d6c80c840c"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_invalid_original_proposal0/run/fixture-closure.json",
+      "bytes": 842,
+      "sha256": "5ac92b04e7bae45f84a86a6d2d53c6a8d8acc99402ebd19824a72430b21771c1"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_invalid_original_proposal0/run/fixture-result.json",
+      "bytes": 842,
+      "sha256": "ca435059b26d6b1ee152c36f9838e2723ce781debfc027f71b9ee1b856fe8254"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/runtime/fixture-builder-artifacts-r2/test_invalid_original_proposal0/run/fixture-terminal.json",
+      "bytes": 342,
+      "sha256": "67cfe243414efacc975f2d84b40a705a927211e9304a021c2ea4c7d035790ad3"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/SCOPE.json",
+      "bytes": 72133,
+      "sha256": "003be58a6dc6ff8b39b12b186e6d22a9d8d4d0813c65d93183f4be8b5ee25feb"
+    },
+    {
+      "path": "results/modular-engineering-20260914/fixture-builder-artifacts-r1/tools/archive_fixture_builders_r1.py",
+      "bytes": 7313,
+      "sha256": "9378a33fcb11ec7af8103b71e6e24c84b0a9b44ec77e247b4e8ffd81a63cf11c"
+    }
+  ],
+  "historical_reads": [
+    {
+      "prefix": "fixture-builder-artifacts-r1",
+      "runtime": "test_actual_failed_fixture_pre0/run",
+      "descriptors": 8,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r1",
+      "runtime": "test_actual_failed_fixture_pre1/run",
+      "descriptors": 14,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r1",
+      "runtime": "test_actual_failed_fixture_pre2/run",
+      "descriptors": 11,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r1",
+      "runtime": "test_actual_failed_fixture_pre3/run",
+      "descriptors": 17,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r1",
+      "runtime": "test_actual_failed_fixture_pre4/run",
+      "descriptors": 3,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r1",
+      "runtime": "test_actual_failed_fixture_pre5/run",
+      "descriptors": 3,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r1",
+      "runtime": "test_actual_fixture_records_tw0/run",
+      "descriptors": 12,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r1",
+      "runtime": "test_actual_fixture_records_tw1/run",
+      "descriptors": 18,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r1",
+      "runtime": "test_invalid_original_proposal0/run",
+      "descriptors": 5,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r2",
+      "runtime": "test_actual_failed_fixture_pre0/run",
+      "descriptors": 8,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r2",
+      "runtime": "test_actual_failed_fixture_pre1/run",
+      "descriptors": 14,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r2",
+      "runtime": "test_actual_failed_fixture_pre2/run",
+      "descriptors": 11,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r2",
+      "runtime": "test_actual_failed_fixture_pre3/run",
+      "descriptors": 17,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r2",
+      "runtime": "test_actual_failed_fixture_pre4/run",
+      "descriptors": 3,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r2",
+      "runtime": "test_actual_failed_fixture_pre5/run",
+      "descriptors": 3,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r2",
+      "runtime": "test_actual_fixture_records_tw0/run",
+      "descriptors": 12,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r2",
+      "runtime": "test_actual_fixture_records_tw1/run",
+      "descriptors": 18,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r2",
+      "runtime": "test_failure_after_registry_co0/run",
+      "descriptors": 9,
+      "historical_semantic_replay_executed": false
+    },
+    {
+      "prefix": "fixture-builder-artifacts-r2",
+      "runtime": "test_invalid_original_proposal0/run",
+      "descriptors": 5,
+      "historical_semantic_replay_executed": false
+    }
+  ],
+  "scientific_effectiveness_proven": false
+}

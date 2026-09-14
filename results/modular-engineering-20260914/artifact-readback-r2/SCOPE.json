@@ -1,0 +1,19 @@
+{
+  "schema": "fixture-committed-readback-record-v1",
+  "items": [
+    {
+      "path": "verify_fixture_builders_commit_r1.py",
+      "sha256": "5f7be153898a084ab6d9188e6750ffca06bf96020500a2b773c571340eca58bf",
+      "bytes": 3156
+    },
+    {
+      "path": "fixture-builders-committed-verification-r1.json",
+      "sha256": "9fb450dbe1e6d2c8961a7c6e1c41b94439a21151ed1ec55505e0a41251f63701",
+      "bytes": 53050
+    }
+  ],
+  "verified_archived_files": 167,
+  "catalogues_read": 19,
+  "descriptor_records": 191,
+  "scope": "Git/disk/staging byte equality and original catalogue reader through archived source; not historical semantic environment replay"
+}

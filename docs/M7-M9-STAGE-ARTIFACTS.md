@@ -1,4 +1,4 @@
-# M7–M9 production stage artifact seam
+# M7–M9 C4 stage artifact seam
 
 C4 now constructs its phase bridge from the actual bounded-choice model context,
 the recorded choice, and the actual public retrieval projection. These parent
@@ -27,11 +27,14 @@ Audit outputs never change the model request, source selection, selected jobs,
 builder DSL or optimization/acceptance permissions. They add durable local I/O.
 The audit's own latency and storage overhead still need a paired measurement.
 
-This connects the C4/C5 common stage and the shared phase writer. Other standalone
-M7/M8 callers must explicitly provide their own authenticated parent mapping;
-other M9 training/deployment paths still need adapters. Passing this seam cannot
-be reported as universal host coverage or scientific efficacy. Required module
-and combination studies, TRAIN-only optimization and VAL-only acceptance remain.
+This section records the C4/C5 common stage at the source versions listed below.
+Subsequent changes connected the seven other phase callers through their actual
+input witnesses, the independent state/metaprogram builders, and the Q6.3 fixture
+builder. See `MODULE-ARTIFACT-COVERAGE.md` for current tested coverage and the
+remaining optimizer, cross-catalogue, deployment and lifecycle outputs. Passing
+this seam does not establish universal output coverage or scientific efficacy.
+Required module and combination studies, TRAIN-only optimization and VAL-only
+acceptance remain.
 
 Frozen evidence: the initial integrated source `64d42d1` passed 39 checks;
 the regression source `eb7d9e4` failed the added adversarial acceptance check;
