@@ -15,7 +15,7 @@ from research_loop.modular.modules.evidence import EvidenceLedger, ClaimLedger
 from research_loop.modular.lineage_combination_material import DualMaterialVerifier
 from research_loop.modular.lineage_combination_driver import _MemoryLog, _read_events, _source_binding, _verify_solver_files
 from research_loop.modular.exploration_scheduler_combination import (
-    FrozenExplorationSchedulerMaterial, check_inputs, selection, run_phase, verify_phase, _joint as phase_public, _read, _hash)
+    FrozenExplorationSchedulerMaterial, check_inputs, selection, _joint as phase_public, _read, _hash)
 from research_loop.modular.m4_m5_useful_controls import (
     PLAN_INSTRUCTION, ORDINARY_INSTRUCTION, REVIEW_INSTRUCTION, REVISION_INSTRUCTION, proposal_envelope, review_context)
 from research_loop.modular.retrieval_review_combination_driver import (
@@ -29,6 +29,7 @@ from research_loop.modular.state_scheduling_combination_driver import _INSTRUCTI
 from research_loop.modular.panel_receipts import PanelReceiptVerifier, opaque_panel_cell_binding
 from research_loop.modular.runtime import RunSession, AuditVerifier
 from research_loop.modular.workflow import ModularWorkflow
+from research_loop.modular.phase_host_artifacts import run_audited_phase, verify_audited_phase
 from research_loop.ontology import ContractError, canonical
 
 DESIGNS = {'pair:M4+M8': ('M4','M8'), 'pair:M5+M8': ('M5','M8'), 'pair:M6+M8': ('M6','M8')}
@@ -196,7 +197,7 @@ def run_mechanism_scheduling_cell(*,panel,cell,task,scenario,package,material,so
         session._record('mechanism_scheduling_mechanism',{'mechanism':mechanism.data(),'mechanism_digest':mechanism.content_hash})
         phase_objective=_phase_objective(objective,mechanism,material)
         session._record('mechanism_scheduling_phase_start',{'objective':phase_objective.data(),'selection':selection(material.scheduling(),workflow.enabled).data()})
-        phase=run_phase(material=material.scheduling(),cell=cell,objective=phase_objective,root=sidecar/'phase',broker=broker,inputs=public_inputs,image=image,timeout_seconds=timeout_seconds)
+        phase=run_audited_phase(session=session, material=material.scheduling(),cell=cell,objective=phase_objective,root=sidecar/'phase',broker=broker,inputs=public_inputs,image=image,timeout_seconds=timeout_seconds)
         session._record('mechanism_scheduling_phase',{'phase_digest':phase.content_hash,'phase_receipt_sha256':_hash(_read(sidecar/'phase/receipt.json'))})
         if phase.data()['status']!='succeeded':raise ContractError('auxiliary phase failed')
         joint=_joint(cell,mechanism,phase,material,package)
@@ -274,7 +275,7 @@ def verify_mechanism_scheduling_cell(result,*,panel,task,scenario,package,materi
         if result.mechanism!=mechanism or len(owned)!=1 or owned[0]['data']!={'mechanism':mechanism.data(),'mechanism_digest':mechanism.content_hash} or events.index(owned[0])<=cursor:raise ContractError('mechanism differs from original module responses or order')
         objective=_phase_objective(FrozenRecord.from_dict(scenario.data()['objective']),mechanism,material)
         starts=[e for e in events if e['stage']=='mechanism_scheduling_phase_start'];ends=[e for e in events if e['stage']=='mechanism_scheduling_phase']
-        phase=verify_phase(material=material.scheduling(),cell=cell,objective=objective,root=path.parent.parent/'phase',image=scenario.data()['image'],timeout_seconds=scenario.data()['timeout_seconds'],inputs=public_inputs)
+        phase=verify_audited_phase(trace_path=path, material=material.scheduling(),cell=cell,objective=objective,root=path.parent.parent/'phase',image=scenario.data()['image'],timeout_seconds=scenario.data()['timeout_seconds'],inputs=public_inputs)
         if (result.phase!=phase or len(starts)!=1 or starts[0]['data']!={'objective':objective.data(),'selection':selection(material.scheduling(),set(cell.runtime_arm.data()['enabled'])).data()}
                 or len(ends)!=1 or ends[0]['data']!={'phase_digest':phase.content_hash,'phase_receipt_sha256':_hash(_read(path.parent.parent/'phase/receipt.json'))}
                 or not events.index(owned[0])<events.index(starts[0])<events.index(ends[0])):raise ContractError('phase original inputs, permit, budget or ordering drift')

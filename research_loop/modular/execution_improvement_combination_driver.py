@@ -21,11 +21,12 @@ from research_loop.modular.runtime import RunSession, AuditVerifier
 from research_loop.modular.workflow import ModularWorkflow
 from research_loop.modular.contracts import FrozenRecord, PublicTask
 from research_loop.modular.panel_receipts import PanelReceiptVerifier, opaque_panel_cell_binding
+from research_loop.modular.phase_host_artifacts import run_audited_phase, verify_audited_phase
 from research_loop.ontology import ContractError, canonical
 from research_loop.modular.phase_provider import PhaseProviderLedger
 
 from research_loop.modular.execution_improvement_modules import slots, joint_context
-from research_loop.modular.exploration_scheduler_combination import FrozenExplorationSchedulerMaterial, run_phase, verify_phase, check_inputs, _hash, _read
+from research_loop.modular.exploration_scheduler_combination import FrozenExplorationSchedulerMaterial, check_inputs, _hash, _read
 
 
 def _validate(panel,cell,task,scenario,package,material,source_verifier,barrier,phase_material):
@@ -83,7 +84,7 @@ def run_execution_improvement_cell(*,panel,cell,task,scenario,package,material,s
         'barrier_digest':barrier.record.content_hash})
     joint=solver=phase=None
     try:
-        phase=run_phase(material=phase_material,cell=cell,objective=FrozenRecord.from_dict(scenario.data()['objective']),
+        phase=run_audited_phase(session=session, material=phase_material,cell=cell,objective=FrozenRecord.from_dict(scenario.data()['objective']),
             root=sidecar/'phase',broker=broker,inputs=public_inputs,image=scenario.data()['image'],timeout_seconds=scenario.data()['timeout_seconds'])
         session._record('execution_improvement_phase',{'phase_digest':phase.content_hash,'phase_receipt_sha256':_hash(_read(sidecar/'phase'/'receipt.json'))})
         if phase.data()['status']!='succeeded':raise ContractError('actual auxiliary phase failed')
@@ -118,7 +119,7 @@ def verify_execution_improvement_cell(result,*,panel,task,scenario,package,mater
     if (transition!=result.transition or _read_events(path.parent/'evidence.jsonl')!=evidence._log.rows
             or _read_events(path.parent/'claims.jsonl')!=claims._log.rows):
         raise ContractError('target state side effects differ from source replay')
-    phase=verify_phase(material=phase_material,cell=cell,objective=FrozenRecord.from_dict(scenario.data()['objective']),
+    phase=verify_audited_phase(trace_path=path, material=phase_material,cell=cell,objective=FrozenRecord.from_dict(scenario.data()['objective']),
         root=path.parent.parent/'phase',image=scenario.data()['image'],timeout_seconds=scenario.data()['timeout_seconds'],inputs=public_inputs)
     phases=[e for e in events if e['stage']=='execution_improvement_phase']
     if (phase!=result.phase or phase.data()['status']!='succeeded' or len(phases)!=1 or phases[0]['data']!=

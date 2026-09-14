@@ -377,7 +377,8 @@ def run_exploration_scheduler_cell(*,panel,cell,task,scenario,package,material,o
     if sidecar.exists() or type(timeout_seconds) is not int or not 1<=timeout_seconds<=120: raise ContractError('unused cell and bounded timeout required')
     session=RunSession(task,package_digest=package.digest,arm=cell.runtime_arm,objective=objective,slots=SLOTS,
         execution_limit=1,sidecar=sidecar/'runtime',verifier=audit_verifier,required_audit=('measurement',),context_budget=material.data()['context_budget_bytes'])
-    phase=run_phase(material=material,cell=cell,objective=objective,root=sidecar/'phase',broker=broker,inputs=public_inputs,image=image,timeout_seconds=timeout_seconds)
+    from research_loop.modular.phase_host_artifacts import run_audited_phase
+    phase=run_audited_phase(session=session,material=material,cell=cell,objective=objective,root=sidecar/'phase',broker=broker,inputs=public_inputs,image=image,timeout_seconds=timeout_seconds)
     session._record('exploration_scheduler_phase',{'phase_digest':phase.content_hash,'phase_receipt_sha256':_hash(_read(sidecar/'phase/receipt.json'))})
     joint=None;solver=None
     try:
@@ -397,7 +398,8 @@ def verify_exploration_scheduler_cell(result,*,panel,task,scenario,package,mater
     _validate(panel,result.cell,task,scenario,package,material);check_inputs(material,task,broker,public_inputs)
     PanelReceiptVerifier()._verify_runtime(result.runtime,result.cell)
     path=result.runtime.trace_path; events=_read_events(path);objective=_record(events[0]['data']['objective'])
-    phase=verify_phase(material=material,cell=result.cell,objective=objective,root=path.parent.parent/'phase',image=image,timeout_seconds=timeout_seconds,inputs=public_inputs)
+    from research_loop.modular.phase_host_artifacts import verify_audited_phase
+    phase=verify_audited_phase(trace_path=path,material=material,cell=result.cell,objective=objective,root=path.parent.parent/'phase',image=image,timeout_seconds=timeout_seconds,inputs=public_inputs)
     if phase!=result.phase: raise ContractError('returned phase differs from immutable sidecar')
     bindings=[e for e in events if e['stage']=='exploration_scheduler_phase']
     expected_binding={'phase_digest':phase.content_hash,'phase_receipt_sha256':_hash(_read(path.parent.parent/'phase/receipt.json'))}

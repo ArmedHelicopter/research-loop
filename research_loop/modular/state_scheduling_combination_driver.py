@@ -23,10 +23,11 @@ from research_loop.modular.modules.evidence import EvidenceLedger, ClaimLedger
 from research_loop.modular.modules.improvement import CandidatePackage
 from research_loop.modular.panel_receipts import PanelReceiptVerifier, opaque_panel_cell_binding
 from research_loop.modular.exploration_scheduler_combination import (
-    FrozenExplorationSchedulerMaterial, check_inputs, selection, run_phase, verify_phase,
+    FrozenExplorationSchedulerMaterial, check_inputs, selection,
     _joint as phase_public, _read, _hash)
 from research_loop.modular.runtime import AuditVerifier, RunSession
 from research_loop.modular.workflow import ModularWorkflow
+from research_loop.modular.phase_host_artifacts import run_audited_phase, verify_audited_phase
 from research_loop.ontology import ContractError, canonical
 
 DESIGNS = {'pair:M1+M8': ('M1', 'M8'), 'pair:M2+M8': ('M2', 'M8'), 'pair:M3+M8': ('M3', 'M8')}
@@ -175,7 +176,7 @@ def run_state_scheduling_cell(*, panel, cell, task, scenario, package, material,
         phase_objective = _phase_objective(objective, transition, material)
         session._record('state_scheduling_phase_start', {'objective': phase_objective.data(),
             'selection': selection(jobs, workflow.enabled).data()})
-        phase = run_phase(material=jobs, cell=cell, objective=phase_objective, root=sidecar/'phase',
+        phase = run_audited_phase(session=session, material=jobs, cell=cell, objective=phase_objective, root=sidecar/'phase',
             broker=broker, inputs=public_inputs, image=image, timeout_seconds=timeout_seconds)
         session._record('state_scheduling_phase', {'phase_digest': phase.content_hash,
             'phase_receipt_sha256': _hash(_read(sidecar/'phase/receipt.json'))})
@@ -228,7 +229,7 @@ def verify_state_scheduling_cell(result, *, panel, task, scenario, package, mate
     completions = [e for e in events if e['stage'] == 'state_scheduling_phase']
     expected_start = {'objective': phase_objective.data(),
         'selection': selection(material.scheduling(), set(cell.runtime_arm.data()['enabled'])).data()}
-    phase = verify_phase(material=material.scheduling(), cell=cell, objective=phase_objective,
+    phase = verify_audited_phase(trace_path=path, material=material.scheduling(), cell=cell, objective=phase_objective,
         root=path.parent.parent/'phase', image=scenario.data()['image'],
         timeout_seconds=scenario.data()['timeout_seconds'], inputs=public_inputs)
     if (phase != result.phase or len(starts) != 1 or starts[0]['data'] != expected_start

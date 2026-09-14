@@ -40,19 +40,20 @@ class PhaseArtifactContext:
     def __post_init__(self) -> None:
         if type(self.catalogue) is not ArtifactCatalogue or not isinstance(self.artifact_root, Path):
             raise ContractError('typed phase artifact context required')
-        if set(self.parents) != {'invocation', 'selection', 'source'} or any(type(v) is not str for v in self.parents.values()):
-            raise ContractError('phase bridge requires bound invocation, selection and source parents')
+        roles = ({'inputs': ('execution_phase_inputs', 'P0')} if set(self.parents) == {'inputs'} else
+            {'invocation': ('model_context', 'M3'), 'selection': ('c4_choice_frozen', 'M7'),
+             'source': ('retrieval_result', 'M6')})
+        if set(self.parents) != set(roles) or any(type(v) is not str for v in self.parents.values()):
+            raise ContractError('phase bridge requires actual bound phase inputs or C4 parents')
         known = {record.content_hash: record.data() for record in self.catalogue.records()}
-        if len(set(self.parents.values())) != 3 or any(value not in known for value in self.parents.values()):
+        if len(set(self.parents.values())) != len(roles) or any(value not in known for value in self.parents.values()):
             raise ContractError('phase artifact parent is not in the authenticated catalogue')
-        expected = {'invocation': ('model_context', 'M3'), 'selection': ('c4_choice_frozen', 'M7'),
-                    'source': ('retrieval_result', 'M6')}
-        for role, (kind, module) in expected.items():
+        for role, (kind, module) in roles.items():
             body = known[self.parents[role]]
             if body['kind'] != kind or body['module'] != module or body['identity'] != self.catalogue.identity.data():
                 raise ContractError('phase artifact parent has the wrong semantic role')
         object.__setattr__(self, 'parents', MappingProxyType({role: self.parents[role]
-            for role in ('invocation', 'selection', 'source')}))
+            for role in roles}))
         root = self.artifact_root.resolve()
         if root.exists() and (root.is_symlink() or not root.is_dir()):
             raise ContractError('phase artifact root must be a regular directory')
