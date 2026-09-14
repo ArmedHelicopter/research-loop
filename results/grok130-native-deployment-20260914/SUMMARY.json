@@ -1,0 +1,27 @@
+{
+  "schema": "grok130-native-deployment-evidence-v1",
+  "source_commits": [
+    "3432e6aad1561274066932817f457b1eb5941f96",
+    "8071ed64fe3907e8efc950060c37548836f70d8d",
+    "b3022eac2d10083aafc24c1761251221e8e162dc",
+    "c8fdcc76b1a488c885ff8e87114eeb6546efd06a"
+  ],
+  "checkpoints": 4,
+  "raw_members": 3769,
+  "all_raw_bytes_equal_originals": true,
+  "exact_tested_source_zip_matches_every_frozen_disk_hash": true,
+  "scope": "Closed isolated 1.0.30 native deployment, diagnostic and material envelopes. Synthetic final-spawn peers exercise actual native launch preflight and original provenance readers. Legacy 1.0.13 default preserved; public TRAIN provider unchanged.",
+  "runner_scope_correction": "The reused runner labels ordinary TRAIN engineering; actual executed suites and source pins are authoritative. This archive is deployment plumbing only.",
+  "checkpoint_qualifications": {
+    "r1": "104 passed / 9 failed: tuple-list fixture assertion prevented synthetic spawn. Retained.",
+    "r2": "28 passed / 1 failed: final executable drift was accepted. Reproduced production missing final replay. Retained.",
+    "r3": "115 passed:20 new deployment cases plus95 legacy cases; production source3432e6a.",
+    "r4": "30 passed:20 deployment plus10 label checks; final doc-only source8071ed6, production identical to r3."
+  },
+  "binary_sha256": "ca24ea63272ba7881261f4a52498d1f5bd884b01da25845990422a10dd315266",
+  "binary_source_equivalence_verified": false,
+  "readiness_proven": false,
+  "real_model_or_api_calls": 0,
+  "validation_opened": false,
+  "scientific_effectiveness_proven": false
+}

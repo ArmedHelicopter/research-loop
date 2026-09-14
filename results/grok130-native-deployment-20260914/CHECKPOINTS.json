@@ -1,0 +1,144 @@
+[
+  {
+    "run": "grok130-deployment-check-r1",
+    "pytest_counts": {
+      "tests": "113",
+      "failures": "9",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "c8fdcc76b1a488c885ff8e87114eeb6546efd06a",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_grok130_deployment.py",
+        "tests/test_grok_acp_transport.py",
+        "tests/test_diagnostic_material_authoring.py",
+        "tests/test_diagnostic_subscription.py",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-deployment-check-r1\\pytest",
+        "-o",
+        "cache_dir=E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-deployment-check-r1\\cache",
+        "--junitxml",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-deployment-check-r1\\pytest.xml"
+      ],
+      "exit_code": 1,
+      "seconds": 156.75462412834167,
+      "source_hash_count": 675,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "0cf826ad2c5c7a1a84e17f3160077d4319cee94b8a9156a91141549aa6700309"
+  },
+  {
+    "run": "grok130-deployment-check-r2",
+    "pytest_counts": {
+      "tests": "29",
+      "failures": "1",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "b3022eac2d10083aafc24c1761251221e8e162dc",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_grok130_deployment.py",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-deployment-check-r2\\pytest",
+        "-o",
+        "cache_dir=E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-deployment-check-r2\\cache",
+        "--junitxml",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-deployment-check-r2\\pytest.xml"
+      ],
+      "exit_code": 1,
+      "seconds": 20.929508686065674,
+      "source_hash_count": 675,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "a5507f1e6995b2386874ed32dc416185144b692eb7e30afb68cab16038e2d6f2"
+  },
+  {
+    "run": "grok130-deployment-check-r3",
+    "pytest_counts": {
+      "tests": "115",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "3432e6aad1561274066932817f457b1eb5941f96",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_grok130_deployment.py",
+        "tests/test_grok_acp_transport.py",
+        "tests/test_diagnostic_material_authoring.py",
+        "tests/test_diagnostic_subscription.py",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-deployment-check-r3\\pytest",
+        "-o",
+        "cache_dir=E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-deployment-check-r3\\cache",
+        "--junitxml",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-deployment-check-r3\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 152.6324737071991,
+      "source_hash_count": 675,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "1a077263fadb4814ed72e43ead175bb6f78e8e52d85c0517b263f063d7d04914"
+  },
+  {
+    "run": "grok130-deployment-check-r4",
+    "pytest_counts": {
+      "tests": "30",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    "check": {
+      "source_commit": "8071ed64fe3907e8efc950060c37548836f70d8d",
+      "command": [
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\custody-root-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_grok130_deployment.py",
+        "tests/test_label_isolation.py",
+        "--basetemp",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-deployment-check-r4\\pytest",
+        "-o",
+        "cache_dir=E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-deployment-check-r4\\cache",
+        "--junitxml",
+        "E:\\_ryanDev\\AI\\research-loop-modular\\work\\grok130-deployment-check-r4\\pytest.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 20.71689486503601,
+      "source_hash_count": 675,
+      "source_unchanged": true,
+      "clean_status": "",
+      "real_model_or_api_calls": 0,
+      "scope": "synthetic ordinary TRAIN provider engineering; no scientific validation"
+    },
+    "exact_tested_source_sha256": "b6892b631a8b4997e1839dcdd6fecb9603419a019635af8c2d492ed231705fb1"
+  }
+]
