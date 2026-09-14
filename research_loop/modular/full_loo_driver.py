@@ -270,8 +270,10 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
         response=invoke(slots(recipe,stage)[-1],PROPOSAL_INSTRUCTION if recipe['history_build_levels']['M9'] else REVISION_INSTRUCTION,joined)
         selected=select_builder(response,recipe,plan.fixed_builder)
         from research_loop.modular.builder_artifacts import verify_builder_artifacts
-        verify_builder_artifacts(catalogue, root=root, builder=selected, parent=package,
+        build_verification = verify_builder_artifacts(catalogue, root=root, builder=selected, parent=package,
             response=response, recipe=recipe, fixed_builder=plan.fixed_builder)
+        if build_verification.data()['status'] != 'succeeded':
+            raise ContractError('successful C4 history requires a successful M9 build')
         candidate=CandidatePackage(_read_record(root/'candidate.json'));receipt=BuilderRunReceipt(_read_record(root/'builder-receipt.json'))
         _checked_build(candidate,receipt,selected,package)
         if _read_record(root/'builder.json')!=selected.record or candidate.digest!=b['candidate_digest']:raise ContractError('C4 selected builder differs')
