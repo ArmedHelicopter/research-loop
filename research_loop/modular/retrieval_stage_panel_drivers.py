@@ -135,7 +135,8 @@ class RetrievalStagePanelDriver:
             returned.extend(port.search(lane="support", query=FrozenRecord.from_dict({**data["query"], "call_ordinal": ordinal}), source_bundle=pool, source_limit=1))
         # Dedicated source-provenance ledger: admission here cannot mint session
         # scientific evidence or bypass P0. It is the real M2 ledger implementation.
-        ledger = EvidenceLedger(session.task.identity, storage_path=session.sidecar / "q84-source-ledger.jsonl")
+        ledger = EvidenceLedger(session.task.identity, storage_path=session.sidecar / "q84-source-ledger.jsonl",
+            event_sink=session._retrieval_artifacts.source_ledger, on_failure=session._audit_failure)
         records = []
         if "M2" in workflow.enabled:
             for doc in returned:
@@ -160,11 +161,6 @@ class RetrievalStagePanelDriver:
         session._record("q84_source_accounting", {"returned_document_count": len(returned), "context_unit_count": len(result["units"]),
             "m2_admitted_records": len(records), "m2_admitted_roots": len(admitted_roots), "ledger_digest": ledger.version,
             "excluded_context_budget": excluded, "incremental_m6_given_m2": "mechanistically_redundant_expected_null", "scientific_verified": False})
-        # Each EvidenceLedger append is already fsynced.  Mirror the separate
-        # Q8.4 source journal before subsequent controller/model work.
-        from research_loop.modular.retrieval_artifacts import append_q84_source_ledger_artifacts
-        append_q84_source_ledger_artifacts(session.artifacts, ledger_path=session.sidecar/"q84-source-ledger.jsonl",
-            task=session.task, m2_enabled="M2" in workflow.enabled, m6_enabled="M6" in workflow.enabled)
         session._record("q8_retrieval_budget", {"limits": budget, "provider_calls": port.calls_used, "unused_provider_calls": 3-port.calls_used,
             "sources_returned": port.sources_returned, "unused_source_slots": 3-port.sources_returned,
             "context_bytes": len(FrozenRecord.from_dict(result).encoded.encode("utf-8")), "external_cost": {"units": None, "status": "unknown"}})

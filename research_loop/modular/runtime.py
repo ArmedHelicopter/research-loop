@@ -266,6 +266,8 @@ class RunSession:
         self._event_artifacts: list[str] = []
         self._next_call, self._attempts, self._terminal = 0, 0, False
         self._research_version = None
+        from .retrieval_artifacts import RetrievalArtifactBridge
+        self._retrieval_artifacts = RetrievalArtifactBridge(self)
         self._record("objective_lock", self.lock.data())
 
     def bind_research_version(self, boundary) -> None:
@@ -324,6 +326,7 @@ class RunSession:
             coverage='covered' if stage=='objective_lock' else 'uncovered')
         self._event_artifacts.append(descriptor.content_hash)
         self._evidence_artifacts.admission(event)
+        self._retrieval_artifacts.trace(event)
         return event
 
     def record_artifact(self, *, kind: str, module: str, payload: FrozenRecord | Mapping[str, Any] | None,

@@ -188,6 +188,10 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
         for request_digest, snapshots in evidence_replay['model_inputs'].items()}
     verify_session_context_artifacts(task=task, lock=FrozenRecord.from_dict(lock), events=events,
         catalogue=catalogue, invocation_snapshots=invocation_snapshots)
+    from research_loop.modular.m4_m5_artifacts import verify_m4_m5_artifacts
+    from research_loop.modular.retrieval_artifacts import verify_retrieval_event_stream, verify_retrieval_artifacts
+    verify_m4_m5_artifacts(catalogue, root/'runtime')
+    verify_retrieval_event_stream(catalogue, trace_path=path, task=task)
     if (lock['task_digest']!=task.content_hash or lock['identity']!=task.identity.data() or lock['package_digest']!=package.digest
             or lock['arm']!=cell.runtime_arm.data() or lock['objective']!=plan.objective(stage).data() or lock['slots']!=list(slots(recipe,stage))
             or lock['execution_limit']!=int(stage=='target') or lock['required_audit']!=['measurement'] or lock['context_budget']!=material.state().data()['context_budget_bytes']):
@@ -227,6 +231,8 @@ def verify_stage(result, *, plan, recipe, stage, task, package, material, phase_
     predictions._log=_MemoryLog();reviews._log=_MemoryLog()
     prepared=phase=None
     if nonbaseline:
+        verify_retrieval_artifacts(catalogue, trace_path=path, task=task, material=material.retrieval(),
+            enabled='M6' in cell.runtime_arm.data()['enabled'])
         # The older retrieval-first verifier owns the retrieval transaction,
         # while C4 owns its later placement after both sealed critiques.
         retrieval_events=[e for e in events if e['stage'].startswith('q8_') or e['stage']=='retrieval_review_sources']

@@ -1,135 +1,174 @@
-"""Per-output M6 provenance derived from durable retrieval journals.
-
-This bridge never calls a provider or model.  Producers append descriptors only
-after the trace/ledger write has completed; readers reconstruct the original
-selection with the existing retrieval verifier before trusting the catalogue.
-"""
+"""Durable per-event M6 witnesses; no provider or model calls in readers."""
 from __future__ import annotations
 
 from pathlib import Path
 
-from research_loop.modular.artifact_catalogue import ArtifactCatalogue, source_snapshot
-from research_loop.modular.contracts import FrozenRecord, PublicTask
-from research_loop.modular.lineage_combination_driver import _read_events
+from research_loop.modular.artifact_catalogue import source_snapshot
+from research_loop.modular.contracts import FrozenRecord
 from research_loop.modular.modules.evidence import EvidenceLedger
-from research_loop.modular.retrieval_review_combination_driver import _verify_sources
-from research_loop.ontology import ContractError
-
-_STAGES = frozenset({
-    'q8_source_admission', 'q8_retrieval_request', 'q8_retrieval_item',
-    'q8_retrieval_result', 'q8_retrieval_failure', 'q8_retrieval_selection',
-    'q8_retrieval_budget', 'retrieval_review_sources',
-})
+from research_loop.modular import runtime as runtime_module
+from research_loop.modular.modules import evidence as evidence_module
+from research_loop.ontology import ContractError, canonical
 
 
-def _activation(enabled: bool) -> str:
-    return 'applied' if enabled else 'not_applied'
+def _is_retrieval(stage):
+    return stage.startswith(('q8_', 'q84_')) or stage == 'retrieval_review_sources'
 
 
-def _assert_public(value) -> None:
-    # Labels must remain in the isolated scorer tree and never enter retrieval
-    # descriptors, even when a caller accidentally places a path in a source.
-    if 'data/labels/' in FrozenRecord.from_dict({'value': value}).encoded.replace('\\', '/'):
+def _read_rows(path):
+    if not path.is_file():
+        raise ContractError('retrieval source journal is missing')
+    raw = path.read_bytes()
+    if raw and not raw.endswith(b'\n'):
+        raise ContractError('retrieval source journal has an incomplete final line')
+    import json
+    rows = []
+    for line in raw.decode('utf-8').splitlines():
+        row = json.loads(line)
+        if not isinstance(row, dict) or canonical(row) != line:
+            raise ContractError('retrieval source journal is not canonical')
+        rows.append(row)
+    return rows
+
+
+def _assert_public(payload):
+    if 'data/labels/' in FrozenRecord.from_dict(payload).encoded.replace('\\', '/'):
         raise ContractError('retrieval artifact would expose isolated labels')
 
 
-def _retrieval_events(trace_path: Path):
-    rows = _read_events(trace_path)
-    return rows, [(index, row) for index, row in enumerate(rows) if row['stage'] in _STAGES]
+class RetrievalArtifactBridge:
+    """Observe each trace append, even when later work fails.
 
-def _replay_scope(rows):
-    """Keep earlier C4 model calls out, but retain post-retrieval calls.
-
-    A failure followed by a model call must still be rejected by _verify_sources.
+    Q8.4 also attaches source_ledger directly to its dedicated ledger. The
+    common scientific evidence ledger and Q8.4 source ledger remain distinct.
     """
-    start = next((index for index, row in enumerate(rows) if row['stage'] == 'q8_source_admission'), None)
-    return rows[start:] if start is not None else rows
+    def __init__(self, session):
+        self.session = session
+        self.previous = {'trace': None, 'source_ledger': None}
+        self.indices = {'trace': 0, 'source_ledger': 0}
+        self.sources = {'trace': source_snapshot(Path(runtime_module.__file__)),
+                        'source_ledger': source_snapshot(Path(evidence_module.__file__))}
+        self.bridge_source = source_snapshot(Path(__file__))
+
+    def trace(self, event):
+        if _is_retrieval(event.data()['stage']):
+            self._append('trace', event)
+
+    def source_ledger(self, event):
+        self._append('source_ledger', event)
+
+    def _append(self, stream, event):
+        try:
+            payload = _payload(stream, self.indices[stream], event.data(), self.session.arm.data()['enabled'],
+                               self.sources[stream], self.bridge_source)
+            _assert_public(payload)
+            previous = self.previous[stream]
+            descriptor = self.session.record_artifact(kind=_kind(stream), module='M6', payload=payload,
+                parents=(() if previous is None else (previous,)),
+                status='produced' if 'M6' in self.session.arm.data()['enabled'] else 'not_applied',
+                producer_source=self.sources[stream])
+            self.previous[stream] = descriptor.content_hash
+            self.indices[stream] += 1
+        except Exception:
+            self.session._audit_failure()
+            raise
 
 
-def append_retrieval_artifacts(catalogue: ArtifactCatalogue, *, trace_path: Path, task: PublicTask,
-                               material: FrozenRecord, enabled: bool) -> tuple[FrozenRecord, ...]:
-    """Append one M6 descriptor per fsynced source event, in trace order."""
-    if type(catalogue) is not ArtifactCatalogue or not isinstance(task, PublicTask) or type(material) is not FrozenRecord or type(enabled) is not bool:
-        raise ContractError('exact catalogue, task, material and activation required')
-    rows, events = _retrieval_events(Path(trace_path))
-    # Independent replay catches substitution, missing/extra events, and a
-    # provider failure that improperly reaches model I/O before we append.
-    _verify_sources(_replay_scope(rows), task, material, enabled)
-    source = source_snapshot(Path(__file__)); parents = [] ; out = []
-    for index, row in events:
-        payload = {'schema': 'm6-retrieval-event-v1', 'trace_index': index,
-                   'event': row, 'activation': _activation(enabled)}
-        _assert_public(payload)
-        status = 'produced' if enabled else 'not_applied'
-        descriptor = catalogue.append(kind='m6_'+row['stage'], module='M6', payload=payload,
-            parents=parents, status=status, producer_source=source,
-            cost={'known': False, 'units': None})
-        parents = [descriptor.content_hash]; out.append(descriptor)
-    return tuple(out)
+def _kind(stream):
+    return 'retrieval_event' if stream == 'trace' else 'q84_source_ledger_event'
 
 
-def verify_retrieval_artifacts(catalogue: ArtifactCatalogue, *, trace_path: Path, task: PublicTask,
-                               material: FrozenRecord, enabled: bool) -> FrozenRecord:
-    """Independently replay M6 and require exact descriptor correspondence."""
-    if type(catalogue) is not ArtifactCatalogue:
-        raise ContractError('exact retrieval artifact catalogue required')
-    rows, events = _retrieval_events(Path(trace_path)); projection = _verify_sources(_replay_scope(rows), task, material, enabled)
-    expected = []
-    for index, row in events:
-        expected.append({'schema': 'm6-retrieval-event-v1', 'trace_index': index,
-                         'event': row, 'activation': _activation(enabled)})
-    actual = [d.data() for d in catalogue.records() if d.data()['kind'].startswith('m6_q8_') or d.data()['kind'] == 'm6_retrieval_review_sources']
-    if len(actual) != len(expected):
-        raise ContractError('M6 descriptor count differs from durable retrieval events')
-    for descriptor, payload in zip(actual, expected, strict=True):
-        if (descriptor['module'] != 'M6' or descriptor['status'] != ('produced' if enabled else 'not_applied')
-                or descriptor['payload']['canonical'] != payload):
-            raise ContractError('M6 descriptor differs from durable retrieval event')
-        _assert_public(payload)
-    return FrozenRecord.from_dict({'schema': 'm6-retrieval-artifacts-verified-v1',
-        'descriptor_count': len(actual), 'projection_digest': FrozenRecord.from_dict(projection).content_hash if projection else None,
-        'activation': _activation(enabled), 'scientific_effect': 'not_measured'})
+def _payload(stream, index, event, enabled, source, bridge_source):
+    return {'schema': 'm6-durable-event-artifact-v2', 'stream': stream, 'stream_index': index,
+            'event': event, 'm2_enabled': 'M2' in enabled, 'm6_enabled': 'M6' in enabled,
+            'module_source': source, 'bridge_source': bridge_source}
 
 
-def append_q84_source_ledger_artifacts(catalogue: ArtifactCatalogue, *, ledger_path: Path,
-                                       task: PublicTask, m2_enabled: bool, m6_enabled: bool) -> tuple[FrozenRecord, ...]:
-    """Persist every Q8.4 source-ledger append with its own file snapshot."""
-    if type(catalogue) is not ArtifactCatalogue or type(m2_enabled) is not bool or type(m6_enabled) is not bool:
-        raise ContractError('exact Q8.4 ledger inputs required')
-    ledger_path = Path(ledger_path)
-    if not ledger_path.is_file(): raise ContractError('Q8.4 source ledger is missing')
-    ledger = EvidenceLedger(task.identity, storage_path=ledger_path)
-    rows = _read_events(ledger_path); source = source_snapshot(ledger_path)
-    parents = []; out = []
-    for index, row in enumerate(rows):
-        payload = {'schema': 'q84-source-ledger-event-v1', 'ledger_index': index, 'event': row,
-                   'm2_activation': _activation(m2_enabled), 'm6_activation': _activation(m6_enabled),
-                   'ledger_version': ledger.version}
-        _assert_public(payload)
-        descriptor = catalogue.append(kind='m6_q84_source_ledger_append', module='M6', payload=payload,
-            parents=parents, status='produced' if m6_enabled else 'not_applied', producer_source=source_snapshot(Path(__file__)),
-            cost={'known': False, 'units': None})
-        parents = [descriptor.content_hash]; out.append(descriptor)
-    return tuple(out)
+def _verify_stream(catalogue, *, rows, stream, enabled):
+    descriptors = catalogue.records()
+    wanted, latest_trace, previous, consumed = list(rows), None, None, 0
+    source = source_snapshot(Path((runtime_module if stream == 'trace' else evidence_module).__file__))
+    bridge_source = source_snapshot(Path(__file__))
+    pending_trace = None
+    for descriptor in descriptors:
+        body = descriptor.data()
+        if body['kind'] == 'trace_event':
+            if stream == 'trace' and pending_trace is not None:
+                raise ContractError('retrieval artifact was not recorded at its durable source event')
+            latest_trace = descriptor.content_hash
+            if stream == 'trace' and _is_retrieval(body['payload']['canonical']['stage']):
+                pending_trace = body['payload']['canonical']
+            continue
+        if body['kind'] != _kind(stream):
+            continue
+        if consumed >= len(wanted) or latest_trace is None:
+            raise ContractError('unexpected retrieval artifact or missing trace anchor')
+        row = wanted[consumed]
+        expected = _payload(stream, consumed, row, enabled, source, bridge_source)
+        parents = ([] if previous is None else [previous]) + [latest_trace]
+        if (body['module'] != 'M6' or body['payload']['canonical'] != expected
+                or body['parents'] != parents or body['producer_source'] != source
+                or body['status'] != ('produced' if 'M6' in enabled else 'not_applied')
+                or stream == 'trace' and pending_trace != row):
+            raise ContractError('retrieval artifact source, event, activation or causal parents differ')
+        _assert_public(expected)
+        pending_trace = None
+        previous = descriptor.content_hash
+        consumed += 1
+    if consumed != len(wanted) or pending_trace is not None:
+        raise ContractError('retrieval artifact coverage differs from durable source events')
+    return consumed
 
 
-def verify_q84_source_ledger_artifacts(catalogue: ArtifactCatalogue, *, ledger_path: Path,
-                                       task: PublicTask, m2_enabled: bool, m6_enabled: bool) -> FrozenRecord:
-    ledger_path = Path(ledger_path)
-    if not ledger_path.is_file(): raise ContractError('Q8.4 source ledger is missing')
-    ledger = EvidenceLedger(task.identity, storage_path=ledger_path)
-    rows = _read_events(ledger_path)
-    actual = [d.data() for d in catalogue.records() if d.data()['kind'] == 'm6_q84_source_ledger_append']
-    if len(actual) != len(rows):
-        raise ContractError('Q8.4 source-ledger descriptor count differs from ledger')
-    for index, (descriptor, row) in enumerate(zip(actual, rows, strict=True)):
-        payload = {'schema': 'q84-source-ledger-event-v1', 'ledger_index': index, 'event': row,
-                   'm2_activation': _activation(m2_enabled), 'm6_activation': _activation(m6_enabled),
-                   'ledger_version': ledger.version}
-        if (descriptor['status'] != ('produced' if m6_enabled else 'not_applied')
-                or descriptor['payload']['canonical'] != payload):
-            raise ContractError('Q8.4 source-ledger descriptor differs from persisted ledger')
-        _assert_public(payload)
-    return FrozenRecord.from_dict({'schema': 'q84-source-ledger-artifacts-verified-v1',
-        'descriptor_count': len(actual), 'ledger_version': ledger.version,
+def verify_retrieval_event_stream(catalogue, *, trace_path, task):
+    """Check exact source correspondence; policy replay is a separate step."""
+    try:
+        catalogue.verify()
+        rows = _read_rows(Path(trace_path))
+        traces = [d.data()['payload']['canonical'] for d in catalogue.records() if d.data()['kind'] == 'trace_event']
+        if rows != traces or not rows or rows[0]['stage'] != 'objective_lock':
+            raise ContractError('retrieval stream lacks its original lock and trace')
+        lock = rows[0]['data']
+        if catalogue.identity != task.identity or lock['identity'] != task.identity.data() or lock['task_digest'] != task.content_hash:
+            raise ContractError('retrieval stream subject differs')
+        count = _verify_stream(catalogue, rows=[r for r in rows if _is_retrieval(r['stage'])],
+                               stream='trace', enabled=lock['arm']['enabled'])
+        return FrozenRecord.from_dict({'schema': 'm6-event-stream-check-v2', 'descriptor_count': count,
+                                       'scientific_validated': False})
+    except ContractError:
+        raise
+    except (KeyError, ValueError, TypeError, IndexError) as exc:
+        raise ContractError('malformed retrieval event cannot be replayed') from exc
+
+
+def verify_retrieval_artifacts(catalogue, *, trace_path, task, material, enabled):
+    from research_loop.modular.retrieval_review_combination_driver import _verify_sources
+    result = verify_retrieval_event_stream(catalogue, trace_path=trace_path, task=task)
+    rows = _read_rows(Path(trace_path))
+    if type(enabled) is not bool or enabled != ('M6' in rows[0]['data']['arm']['enabled']):
+        raise ContractError('retrieval replay activation differs from the original lock')
+    start = next((i for i, row in enumerate(rows) if row['stage'] == 'q8_source_admission'), None)
+    # Earlier C4 critiques are legal. Later calls remain in scope so failed
+    # retrieval cannot authorize them.
+    projection = _verify_sources(rows[start:] if start is not None else rows, task, material, enabled)
+    return FrozenRecord.from_dict({'schema': 'm6-retrieval-artifacts-verified-v2',
+        'descriptor_count': result.data()['descriptor_count'],
+        'projection_digest': FrozenRecord.from_dict(projection).content_hash if projection else None,
         'scientific_effect': 'not_measured'})
+
+
+def verify_q84_source_ledger_artifacts(catalogue, *, ledger_path, task, m2_enabled, m6_enabled):
+    ledger_path = Path(ledger_path)
+    rows = _read_rows(ledger_path)
+    # Check existence before the public reader's writable initialization mode.
+    ledger = EvidenceLedger(task.identity, storage_path=ledger_path)
+    traces = [d.data()['payload']['canonical'] for d in catalogue.records() if d.data()['kind'] == 'trace_event']
+    if not traces or traces[0]['stage'] != 'objective_lock' or traces[0]['data']['identity'] != task.identity.data():
+        raise ContractError('Q8.4 source ledger lacks its subject lock')
+    enabled = traces[0]['data']['arm']['enabled']
+    if type(m2_enabled) is not bool or type(m6_enabled) is not bool or m2_enabled != ('M2' in enabled) or m6_enabled != ('M6' in enabled):
+        raise ContractError('Q8.4 source ledger activation differs')
+    catalogue.verify()
+    count = _verify_stream(catalogue, rows=rows, stream='source_ledger', enabled=enabled)
+    return FrozenRecord.from_dict({'schema': 'q84-source-ledger-artifacts-verified-v2',
+        'descriptor_count': count, 'ledger_version': ledger.version, 'scientific_effect': 'not_measured'})
