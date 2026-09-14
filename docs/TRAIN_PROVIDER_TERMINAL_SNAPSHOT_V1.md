@@ -20,7 +20,13 @@ and all-opportunity tokens and additional-charge settlement remain unknown.
 Controllers may persist this snapshot in a distinct aborted-attempt receipt to
 retain every planned denominator and permit cleanup. They must not pass it to
 scoring or interpret the history as current verified provenance. Normal
-`inspect`, `usage`, `calls_since`, and `seal` still reject original drift. A
+`inspect`, `usage`, `calls_since`, and `seal` still reject unresolved original drift. A
 successful prefix remains verifiable after legitimate append; corrupting an
 original invalidates its current verification even though prior observations
 remain inspectable as historical evidence.
+
+For an adapter-state or ledger-disk mismatch, the stop operation preserves the
+corrupt bytes before writing its terminal marker from the retained in-memory
+record. If those resulting originals replay, an audit seal can still be written;
+the durable terminal state makes its score eligibility false. A terminal snapshot
+itself never triggers this replay and always marks current originals unverified.

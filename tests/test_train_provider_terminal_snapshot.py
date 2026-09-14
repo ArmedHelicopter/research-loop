@@ -34,9 +34,17 @@ def test_terminal_snapshot_retains_history_after_original_drift_without_reinspec
     before=target.read_bytes()
     with pytest.raises(ContractError,match='provenance'):
         provider.inspect()
-    with pytest.raises(ContractError):seal.verify_originals()
+    if fault in {'source','response'}:
+        with pytest.raises(ContractError):seal.verify_originals()
+        with pytest.raises(ContractError):provider.seal(tmp_path/'invalid-seal.json')
+    else:
+        # Poison preserves the corrupt disk bytes before restoring the durable
+        # stop marker from the in-memory record. Such originals can replay, but
+        # terminal state permanently prevents their use for new scoring.
+        assert seal.verify_originals().data()['score_eligible'] is False
+        failed_seal=provider.seal(tmp_path/'terminal-audit-seal.json')
+        assert failed_seal.verify_originals().data()['score_eligible'] is False
     with pytest.raises(ContractError):provider(REQUEST)
-    with pytest.raises(ContractError):provider.seal(tmp_path/'invalid-seal.json')
     def forbidden(*args,**kwargs):raise AssertionError('terminal snapshot retried inspection or native dispatch')
     monkeypatch.setattr(provider,'inspect',forbidden)
     monkeypatch.setattr(backend,'native_invoke',forbidden)
