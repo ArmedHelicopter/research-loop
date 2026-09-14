@@ -71,13 +71,13 @@ def inventory(root: Path, *, include_terminal: bool = True) -> dict[str, dict[st
 
 class ReviewArtifactSession:
     """Writes the producer-side audit before any callback opportunity exists."""
-    def __init__(self, root: Path, *, task: PublicTask, controls: FrozenRecord, experiment_id: str, variant: str) -> None:
+    def __init__(self, root: Path, *, task: PublicTask, controls: FrozenRecord, experiment_id: str, variant: str, call_plan: list[dict[str, Any]], identities: Mapping[str, Mapping[str, Any]], review_log_path: Path | None) -> None:
         self.root = _plain(Path(root))
         if self.root.exists(): raise ContractError("review artifact root must be new")
         self.root.mkdir(parents=True); self._closed = False; self._sequence = 1
         self.sources = {"scenario": source_snapshot(Path(__file__).with_name("scenarios_review.py")), "artifact_writer": source_snapshot(Path(__file__))}
         _write_new(self.root / _INPUTS, FrozenRecord.from_dict({"schema": "q4-review-artifact-inputs-v2", "fixture_only": True,
-            "task": task.data(), "cell": task.identity.data(), "controls": controls.data(), "experiment_id": experiment_id, "variant": variant, "sources": self.sources}))
+            "task": task.data(), "cell": task.identity.data(), "controls": controls.data(), "experiment_id": experiment_id, "variant": variant, "call_plan": call_plan, "reviewer_identities": dict(identities), "review_log_path": str(review_log_path) if review_log_path is not None else None, "sources": self.sources}))
         _append(self.root / _ATTEMPTS, {"sequence": 0, "event": "audit_open", "task_digest": task.content_hash, "controls_digest": controls.content_hash, "fixture_only": True})
     def _event(self, event: str, **data: Any) -> None:
         if self._closed: raise ContractError("review artifact audit is already closed")
@@ -98,13 +98,17 @@ class ReviewArtifactSession:
         _write_new(self.root / _TERMINAL, FrozenRecord.from_dict({"schema": "q4-review-artifact-terminal-v2", "fixture_only": True, "status": status, "failure": failure, "files": inventory(self.root, include_terminal=False), "scientific_validated": False})); self._closed = True
 
 
-def verify_review_artifacts(root: Path, *, task: PublicTask, controls: FrozenRecord, experiment_id: str, variant: str, result: Any | None = None) -> FrozenRecord:
+def verify_review_artifacts(root: Path, *, task: PublicTask, controls: FrozenRecord, experiment_id: str, variant: str, result: Any | None = None, reviewer_identities: Mapping[str, Mapping[str, Any]] | None = None, review_log_path: Path | None = None) -> FrozenRecord:
     """Strict offline consumer: compare original producer files without replaying callbacks."""
     try:
         root = _plain(Path(root)); actual_files = inventory(root)
         if set(actual_files) != _FILES and set(actual_files) != {_INPUTS, _ATTEMPTS, _TERMINAL}: raise ContractError("review artifact literal file inventory differs")
+        from research_loop.modular.scenarios_review import _design, _freeze_call_plan, _identities
+        roles, costs, _, _ = _design(experiment_id, variant)
+        plan = _freeze_call_plan(experiment_id, variant, roles, costs)
+        identities = _identities(roles, reviewer_identities, heterogeneous=(experiment_id == "Q4.5" and variant == "heterogeneous"))
         expected_sources = {"scenario": source_snapshot(Path(__file__).with_name("scenarios_review.py")), "artifact_writer": source_snapshot(Path(__file__))}
-        expected_inputs = {"schema": "q4-review-artifact-inputs-v2", "fixture_only": True, "task": task.data(), "cell": task.identity.data(), "controls": controls.data(), "experiment_id": experiment_id, "variant": variant, "sources": expected_sources}
+        expected_inputs = {"schema": "q4-review-artifact-inputs-v2", "fixture_only": True, "task": task.data(), "cell": task.identity.data(), "controls": controls.data(), "experiment_id": experiment_id, "variant": variant, "call_plan": plan, "reviewer_identities": identities, "review_log_path": str(review_log_path) if review_log_path is not None else None, "sources": expected_sources}
         if _record(root / _INPUTS).data() != expected_inputs: raise ContractError("review artifact task, cell, variant, controls, or producer source differs")
         attempts = _rows(root / _ATTEMPTS); _verify_attempts(attempts, task=task, controls=controls)
         terminal = _record(root / _TERMINAL).data()
@@ -171,6 +175,21 @@ def _verify_semantics(rows: list[dict[str, Any]], outputs: dict[str, Any], *, ta
         if phase == "initial" and ((visibility == "sealed" and prior is not None) or (visibility == "sequential" and index == 0 and prior is not None)):
             raise ContractError("review initial visibility differs from registered variant")
         if phase == "revision" and not isinstance(prior, list): raise ContractError("review revision lacks revealed submissions")
+    # Re-adapt each captured raw provider return.  This is the same pure
+    # boundary conversion used by the producer, but cannot invoke a callback.
+    candidates = []
+    for row in response_rows:
+        raw = row["raw_response"]
+        if not isinstance(raw, dict): raise ContractError("raw callback return is not a mapping")
+        review = raw
+        candidate = None
+        if set(raw) == {"review", "prediction_candidate"}:
+            review, candidate = raw["review"], raw["prediction_candidate"]
+            if candidate is not None and not isinstance(candidate, dict): raise ContractError("raw prediction candidate is malformed")
+        typed = ReviewEngine._response(review).data()
+        if typed != row["typed_response"] or (dict(candidate) if candidate is not None else None) != row["prediction_candidate"]:
+            raise ContractError("raw callback return does not produce the retained typed response")
+        candidates.append(dict(candidate) if candidate is not None else None)
     engine = ReviewEngine(task.identity)
     for event in engine_rows: engine._apply(event, persist=False)
     session = engine.session(review_id)
@@ -180,11 +199,25 @@ def _verify_semantics(rows: list[dict[str, Any]], outputs: dict[str, Any], *, ta
     if len(revealed) != len(roles) or (experiment_id in {"Q4.3", "Q4.5"}) != bool(engine._revisions):
         raise ContractError("persisted reveal or revision journal differs from registered variant")
     typed = [row["typed_response"] for row in response_rows]
+    submissions = [event for event in engine_rows if event.get("event") == "submit"]
+    revisions = [event for event in engine_rows if event.get("event") == "revise"]
+    if [event["response"] for event in submissions] != typed[:len(roles)] or [event["response"] for event in revisions] != typed[len(roles):]:
+        raise ContractError("persisted M5 submissions do not consume the retained typed responses")
     if outputs["callback_payloads"] != [row["payload"] for row in payload_rows] or outputs["callback_responses"] != typed:
         raise ContractError("review outputs do not retain original callback records")
     record = outputs["result"]
     if record.get("callback_plan") != plan or record.get("callback_payload_digests") != [FrozenRecord.from_dict(row["payload"]).content_hash for row in payload_rows] or record.get("callback_response_digests") != [FrozenRecord.from_dict(value).content_hash for value in typed]:
         raise ContractError("review result does not bind original callback contents")
+    if record.get("task_digest") != task.content_hash or record.get("controls_digest") != controls.content_hash or record.get("experiment_id") != experiment_id or record.get("variant") != variant or record.get("budget", {}).get("fixture_units") != sum(item["fixture_units"] for item in plan):
+        raise ContractError("review result subject or budget differs")
+    from research_loop.modular.scenarios_review import _fixture_oracle, _freeze_callback_predictions
+    score_changes, metrics = _fixture_oracle(case, revealed, tuple(engine._revisions.values()))
+    score = [event for event in engine_rows if event.get("event") == "score"]
+    if len(score) != 1 or score[0].get("changes") != score_changes or record.get("metrics") != metrics:
+        raise ContractError("review score receipt or metrics differs from replay")
+    m4 = _freeze_callback_predictions(task, experiment_id, [item for item in candidates[:len(roles)] if item is not None], plan)
+    if record.get("m4") != m4:
+        raise ContractError("review prediction extraction differs from raw callback candidates")
     trace = outputs["mechanism_trace"].get("events")
     if not isinstance(trace, list) or not any(event.get("event") == "sealed_barrier_revealed" for event in trace) or not any(event.get("event") == "independent_fixture_oracle" for event in trace) or not any(event.get("event") == "callback_prediction_extraction" for event in trace):
         raise ContractError("review reveal, score, or prediction extraction output is missing")

@@ -16,7 +16,7 @@ def test_every_registered_variant_has_a_strict_durable_round_trip(tmp_path, adap
     public = task(adapter); root = tmp_path / "review"
     identities = None if variant != "heterogeneous" else {"reviewer_one": {"reviewer_id": "a", "model_id": "m1", "provider": "p1", "provenance": "fixture A"}, "reviewer_two": {"reviewer_id": "b", "model_id": "m2", "provider": "p2", "provenance": "fixture B"}}
     result = run_review_scenario(experiment_id, variant, task=public, frozen_controls=controls(public), review_callback=responder, artifact_root=root, reviewer_identities=identities)
-    assert verify_review_artifacts(root, task=public, controls=controls(public), experiment_id=experiment_id, variant=variant, result=result).data()["status"] == "succeeded"
+    assert verify_review_artifacts(root, task=public, controls=controls(public), experiment_id=experiment_id, variant=variant, result=result, reviewer_identities=identities).data()["status"] == "succeeded"
 
 
 def test_strict_reader_rejects_coherent_content_attack_without_a_callback(tmp_path):

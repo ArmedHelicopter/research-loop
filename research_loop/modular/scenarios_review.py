@@ -137,12 +137,13 @@ def run_review_scenario(
     _validate(experiment_id, variant)
     task.identity.require_train()
     controls = _controls(task, frozen_controls)
-    from research_loop.modular.review_scenario_artifacts import ReviewArtifactSession
-    audit = ReviewArtifactSession(artifact_root, task=task, controls=frozen_controls,
-                                  experiment_id=experiment_id, variant=variant)
     roles, costs, visibility, case = _design(experiment_id, variant)
     call_plan = _freeze_call_plan(experiment_id, variant, roles, costs)
     identities = _identities(roles, reviewer_identities, heterogeneous=(experiment_id == "Q4.5" and variant == "heterogeneous"))
+    from research_loop.modular.review_scenario_artifacts import ReviewArtifactSession, verify_review_artifacts
+    audit = ReviewArtifactSession(artifact_root, task=task, controls=frozen_controls,
+                                  experiment_id=experiment_id, variant=variant, call_plan=call_plan,
+                                  identities=identities, review_log_path=review_log_path)
     engine = ReviewEngine(task.identity, storage_path=review_log_path, event_sink=audit.review_event)
     session = engine.open(task_binding=task.content_hash, evidence_snapshot=controls["evidence_digest"],
                           roles=roles, budget_units=sum(item["fixture_units"] for item in call_plan))
@@ -230,6 +231,9 @@ def run_review_scenario(
     result = ReviewScenarioResult(experiment_id, variant, tuple(payloads), tuple(responses),
                                   FrozenRecord.from_dict({"events": events}), record)
     audit.complete(result)
+    verify_review_artifacts(artifact_root, task=task, controls=frozen_controls,
+                            experiment_id=experiment_id, variant=variant, result=result,
+                            reviewer_identities=reviewer_identities, review_log_path=review_log_path)
     return result
 
 
